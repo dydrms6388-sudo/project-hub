@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-19",
+  "updatedAt": "2026-06-20",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "DSR미리보기 (DSR Check)",
+      "emoji": "📊",
+      "domain": "대출/금융·계산기",
+      "desc": "연소득과 기존 대출만 넣으면 내 DSR(총부채원리금상환비율)과 \"추가로 얼마까지 더 빌릴 수 있는지\" 한도를 1초 만에 추정. 은행 40%·2금융 50%·스트레스DSR 가산 반영, 원리금/원금/만기 상환방식별 정밀 산정, 시나리오 저장·비교·공유. 최고 입찰가군(주담대·전세·신용대출) 광고+대출모집인 제휴 수익화 레디. 100개 큐 rank #2.",
+      "live": "https://dsr-limit-check.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dsr-limit-check",
+      "status": "live",
+      "date": "2026-06-20"
+    },
     {
       "name": "기초대사량 계산기 (BMR·TDEE)",
       "emoji": "🔥",
