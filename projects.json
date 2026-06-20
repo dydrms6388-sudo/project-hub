@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-21T02:30:00.000Z",
+  "updatedAt": "2026-06-21T04:30:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "물주기 (식물 물주기 알리미)",
+      "emoji": "🪴",
+      "domain": "반려/식물·트래커",
+      "desc": "키우는 식물을 추가하면 화분 크기·놓는 자리 햇빛·계절(여름 생장기/겨울 휴면기)을 자동 반영해 다음 물 주는 날을 D-day로 알려주는 반려식물 물주기 트래커. 스킨답서스·몬스테라·다육이·스파티필름 등 23종 큐레이션 가이드(물 주는 신호·물 양·난이도·반려동물 안전성·집사 팁) 내장, 화분/광량/계절 3중 보정 급수 엔진으로 '며칠마다'를 개체별로 계산. 내 정원 대시보드는 급한 순 정렬·진행 링·'물줬어요' 한 탭(컨페티+물방울 합성음)으로 기록, localStorage 영속이라 로그인 없이 재방문해도 그대로. 3D 떠다니는 화분·물방울 씬, framer-motion 카드/링 애니, canvas-confetti, Web Audio 합성음(음소거 토글·기본 OFF) 몰입 4종. '다육이 물주기/몬스테라 물주기' 검색 정조준 SEO+FAQ JSON-LD·OG, 원예용품 쿠팡 제휴+애드센스 수익화 레디. 다음 급수일 알림이 강력한 재방문 훅. 100개 큐 rank #6.",
+      "live": "https://mulju-plant-care.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/mulju-plant-care",
+      "status": "live",
+      "date": "2026-06-21"
+    },
     {
       "name": "MBTI 궁합표",
       "emoji": "💞",
