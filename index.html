@@ -72,5 +72,13 @@
       .catch(() => fetch("./projects.json").then(r => r.json()).then(render)
         .catch(() => { document.getElementById("meta").textContent = "레지스트리를 불러오지 못했어요."; }));
   </script>
+  <footer style="max-width:920px;margin:40px auto 0;padding:24px 20px 48px;border-top:1px solid rgba(255,255,255,.1);text-align:center;color:#8b95bd;font-size:13px">
+    <p style="margin:0 0 8px">🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구 모음</p>
+    <p style="margin:0">
+      <a href="/privacy.html" style="color:#7aa2ff;margin:0 8px">개인정보처리방침</a>·
+      <a href="/terms.html" style="color:#7aa2ff;margin:0 8px">이용약관</a>·
+      <a href="/contact.html" style="color:#7aa2ff;margin:0 8px">문의</a>
+    </p>
+  </footer>
 </body>
 </html>
