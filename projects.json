@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-21T00:00:00.000Z",
+  "updatedAt": "2026-06-21T10:30:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "한글 타자연습 스피드",
+      "emoji": "⌨️",
+      "domain": "교육/타자연습",
+      "desc": "한글 타자연습을 게임처럼! 기상 시각이 아니라 손끝의 속도를 잰다 — 분당 타수(CPM)와 정확도를 실시간 측정하고, 한 판 끝나면 6단계 등급(독수리→입문→평균→능숙→고수→타신)·최대 콤보·소요시간으로 결과 카드를 띄운다. 핵심 차별점은 한컴타자연습 방식의 정확한 타수 계산: 한글 한 글자를 초성·중성·종성 자모로 분해하고 겹받침·이중모음·쌍자음을 2타로 세는 charStrokes 엔진(완성형 음절·호환 자모·영문/숫자/기호 모두 처리). 7가지 연습 모드(짧은 글·긴 글 문단·낱말 연속·속담·명언·영문·숫자/기호), 날짜 시드 결정적 '오늘의 도전'(모두 같은 문장)+연속 출석 스트릭+회원가입 없는 기록 그래프(최근 12판 막대·총 연습·누적 타수, localStorage). 연속 정타 콤보 시스템(10콤보마다 상승 아르페지오), 오타 시 흔들림·저음 버즈 피드백. IME 조합(compositionEnd) 안전 처리로 한글 입력 정확 측정, 입력 캡처용 textarea는 uncontrolled로 두어 조합 중 캐럿/포커스 깨짐 방지. 몰입 4종: r3f 3D 떠다니는 키캡 씬(타이핑 시 활성 키 하이라이트), framer-motion 라운드 전환·진행바·결과 리빌·CPM 카운트업(setInterval 기반으로 백그라운드 탭에서도 동작), canvas-confetti(신기록·400타+), Web Audio 합성 타건음/콤보/완주 팡파르(음소거 기본 OFF). 결과 공유(Web Share/클립보드 도전장 카드), prefers-reduced-motion 대응. '타자연습·한글 타자연습·타수 측정·타자 게임·분당 타수' SEO 정조준+WebApplication/FAQPage JSON-LD·OG 이미지·sitemap/robots·개인정보/문의. 교육 애드센스+기계식 키보드 쿠팡 제휴 수익화 레디, 무DB 전 클라이언트(서버 전송 없음). 100개 큐 rank #41 플래그십.",
+      "live": "https://korean-typing-speed.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/korean-typing-speed",
+      "status": "live",
+      "date": "2026-06-21"
+    },
     {
       "name": "청약가점기",
       "emoji": "🏠",
