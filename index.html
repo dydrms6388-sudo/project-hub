@@ -33,13 +33,30 @@
     .a-live { background: #10b981; color: #06281f; }
     .a-gh { background: #262626; color: #e5e7eb; }
     .empty { color: #6b7280; }
+    .tools { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .tool { display: block; text-decoration: none; border: 1px solid #262626; background: #171717; border-radius: 16px; padding: 16px; transition: transform .15s, border-color .15s; }
+    .tool:hover { transform: translateY(-2px); border-color: #10b981; }
+    .tool .te { font-size: 24px; display: block; }
+    .tool .tn { display: block; font-weight: 700; color: #ededed; margin-top: 8px; font-size: 15px; }
+    .tool .td { display: block; color: #9ca3af; font-size: 12.5px; margin-top: 4px; line-height: 1.45; }
+    .h2 { font-size: 16px; color: #d4d4d4; margin: 34px 0 6px; }
+    @media (max-width: 480px) { .tools { grid-template-columns: 1fr; } }
     footer { margin-top: 40px; text-align: center; color: #4b5563; font-size: 12px; }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>🚀 내 프로젝트 허브</h1>
-    <p class="sub">매일 자동 생성·배포되는 프로젝트들이 한 곳에 모입니다.</p>
+    <h1>🍅 TomatoEggCat</h1>
+    <p class="sub">일상에 바로 쓰는 무료 계산기·도구 모음. 설치도 가입도 없이, 브라우저에서 즉시.</p>
+
+    <div class="tools">
+      <a class="tool" href="/age/"><span class="te">🎂</span><span class="tn">만나이 계산기</span><span class="td">만 나이·연 나이·띠·다음 생일 D-day</span></a>
+      <a class="tool" href="/dday/"><span class="te">📅</span><span class="tn">D-day 계산기</span><span class="td">남은 날·지난 날·날짜 사이 일수</span></a>
+      <a class="tool" href="/bmi/"><span class="te">⚖️</span><span class="tn">BMI 계산기</span><span class="td">체질량지수·비만도·표준체중</span></a>
+      <a class="tool" href="/pyeong/"><span class="te">📐</span><span class="tn">평수 변환기</span><span class="td">평 ↔ ㎡ 실시간 변환</span></a>
+    </div>
+
+    <h2 class="h2">자동 생성 프로젝트</h2>
     <p class="meta" id="meta">불러오는 중…</p>
     <div class="grid" id="grid"></div>
     <footer>자동 업데이트 · projects.json 푸시 시 즉시 반영</footer>

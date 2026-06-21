@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>평수 변환기 — 평 ↔ ㎡(제곱미터) 변환·전용/공급면적 | TomatoEggCat</title>
+<meta name="description" content="평을 제곱미터(㎡)로, ㎡를 평으로 즉시 변환합니다. 1평 = 3.3058㎡. 아파트 전용면적·공급면적, 분양 평수 가늠에 바로 쓰세요." />
+<link rel="canonical" href="https://tomatoeggcat.com/pyeong/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"1평은 몇 제곱미터인가요?","acceptedAnswer":{"@type":"Answer","text":"1평은 약 3.3058㎡입니다. 반대로 1㎡는 약 0.3025평입니다."}},
+{"@type":"Question","name":"84㎡는 몇 평인가요?","acceptedAnswer":{"@type":"Answer","text":"84㎡는 약 25.4평입니다. 흔히 말하는 '국민평형 84타입(34평형)'은 전용 84㎡에 공용면적을 더한 공급면적 기준입니다."}}
+]}
+</script>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
+.nav{font-size:13px;color:#6b7280;margin-bottom:18px}.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px}.lead{color:#9ca3af;margin:0 0 22px;font-size:15px}
+.card{border:1px solid #262626;background:#171717;border-radius:18px;padding:20px;margin-bottom:18px}
+.conv{display:flex;align-items:end;gap:12px}
+.conv>div{flex:1}.conv .swap{flex:0 0 auto;padding-bottom:6px}
+label{display:block;font-size:13px;color:#9ca3af;margin:0 0 6px}
+input{width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:20px;font-weight:700}
+.unit{font-size:13px;color:#6b7280;margin-top:6px;text-align:center}
+.swap button{border:1px solid #333;background:#0f0f0f;color:#10b981;border-radius:10px;width:42px;height:48px;font-size:18px;cursor:pointer}
+.quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.quick button{background:#1f2937;border:0;color:#cdd6ff;padding:8px 12px;border-radius:999px;font-size:13px;cursor:pointer}
+h2{font-size:18px;margin:28px 0 8px}.prose p{color:#d4d4d4;font-size:14.5px}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+td,th{border:1px solid #262626;padding:8px 10px;text-align:center}th{color:#9ca3af;font-weight:600}
+.faq{border-top:1px solid #262626;padding:14px 0}.faq b{display:block;margin-bottom:4px}.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.ad{margin:22px 0;min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #2a2a2a;border-radius:12px;color:#3a3a3a;font-size:12px}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.more a{font-size:13px;background:#1f2937;color:#cdd6ff;padding:7px 12px;border-radius:999px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 평수 변환기</div>
+<h1>평수 변환기</h1>
+<p class="lead"><b>평 ↔ 제곱미터(㎡)</b>를 실시간으로 변환합니다. 1평 = 3.3058㎡. 아파트 면적·분양 평수 가늠에 바로.</p>
+
+<div class="card">
+  <div class="conv">
+    <div>
+      <label id="lA">평</label>
+      <input type="number" id="a" inputmode="decimal" placeholder="0" />
+      <div class="unit" id="uA">평 (坪)</div>
+    </div>
+    <div class="swap"><button id="swap" title="단위 바꾸기">⇄</button></div>
+    <div>
+      <label id="lB">제곱미터</label>
+      <input type="number" id="b" inputmode="decimal" placeholder="0" />
+      <div class="unit" id="uB">㎡ (제곱미터)</div>
+    </div>
+  </div>
+  <div class="quick">
+    <button data-v="24">24평</button>
+    <button data-v="32">32평</button>
+    <button data-v="34">34평(84㎡)</button>
+    <button data-v="44">44평</button>
+    <button data-v="59">59㎡→</button>
+    <button data-v="84">84㎡→</button>
+  </div>
+</div>
+
+<div class="ad">광고 영역</div>
+
+<div class="prose">
+  <h2>평과 ㎡ 환산 공식</h2>
+  <p>1평은 가로·세로 6자(약 1.818m)인 정사각형 넓이로, <b>1평 = 3.3058㎡</b>입니다. 반대로 1㎡ = 0.3025평. 평을 ㎡로 바꾸려면 ×3.3058, ㎡를 평으로 바꾸려면 ÷3.3058(=×0.3025) 하면 됩니다.</p>
+  <h2>자주 쓰는 아파트 평형</h2>
+  <table>
+    <tr><th>평형</th><th>전용면적(약)</th><th>공급면적(약)</th></tr>
+    <tr><td>24평형</td><td>59㎡</td><td>79㎡</td></tr>
+    <tr><td>34평형</td><td>84㎡</td><td>112㎡</td></tr>
+    <tr><td>44평형</td><td>114㎡</td><td>145㎡</td></tr>
+  </table>
+  <p>흔히 말하는 ‘국민평형 84’는 <b>전용면적 84㎡</b>를 뜻하고, 분양 광고의 ‘34평’은 보통 <b>공급면적(전용+공용)</b> 기준이라 숫자가 다릅니다.</p>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>Q. 전용면적과 공급면적 차이는?</b><p>전용면적은 실제 세대 내부 공간, 공급면적은 전용 + 계단·복도 등 공용면적입니다. 분양 평수는 보통 공급면적 기준입니다.</p></div>
+  <div class="faq"><b>Q. 평을 토지·논밭에도 쓰나요?</b><p>네. 다만 토지는 ㎡가 공식 단위이며, 등기부·공부상 면적은 ㎡로 표기됩니다.</p></div>
+</div>
+
+<h2>다른 도구</h2>
+<div class="more"><a href="/age/">만나이 계산기</a><a href="/dday/">D-day 계산기</a><a href="/bmi/">BMI 계산기</a><a href="/">전체 도구 보기</a></div>
+
+<footer>🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/><a href="/privacy.html">개인정보처리방침</a>·<a href="/terms.html">이용약관</a>·<a href="/contact.html">문의</a></footer>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var P2M=3.3057851;
+  var pyToM=true; // true: 왼쪽=평, 오른쪽=㎡
+  function relabel(){
+    $('lA').textContent=pyToM?'평':'제곱미터';$('uA').textContent=pyToM?'평 (坪)':'㎡ (제곱미터)';
+    $('lB').textContent=pyToM?'제곱미터':'평';$('uB').textContent=pyToM?'㎡ (제곱미터)':'평 (坪)';
+  }
+  function fromA(){
+    var v=parseFloat($('a').value);
+    if(isNaN(v)){$('b').value='';return;}
+    $('b').value=(pyToM?v*P2M:v/P2M).toFixed(2);
+  }
+  function fromB(){
+    var v=parseFloat($('b').value);
+    if(isNaN(v)){$('a').value='';return;}
+    $('a').value=(pyToM?v/P2M:v*P2M).toFixed(2);
+  }
+  $('a').addEventListener('input',fromA);
+  $('b').addEventListener('input',fromB);
+  $('swap').addEventListener('click',function(){pyToM=!pyToM;relabel();fromA();});
+  document.querySelectorAll('.quick button').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var v=parseFloat(btn.getAttribute('data-v'));
+      var t=btn.textContent;
+      if(t.indexOf('㎡')>-1){ // ㎡ 입력으로 처리
+        if(pyToM){pyToM=false;relabel();}
+      }else{
+        if(!pyToM){pyToM=true;relabel();}
+      }
+      $('a').value=v;fromA();
+    });
+  });
+  relabel();
+})();
+</script>
+</body>
+</html>
