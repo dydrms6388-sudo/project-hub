@@ -8,8 +8,8 @@
  */
 (function () {
   var COUPANG = {
-    trackingCode: '', // 예: 'AF1234567'  ← 쿠팡 파트너스에서 발급
-    widgetId: '',     // 예: '123456'      ← 다이나믹 배너 위젯 id
+    trackingCode: 'AF2114854', // 쿠팡 파트너스 추적코드
+    widgetId: '999155',        // 다이나믹 배너(carousel) 위젯 id
   };
 
   if (!COUPANG.trackingCode || !COUPANG.widgetId) return; // 미설정 → 표시 안 함
