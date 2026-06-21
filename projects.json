@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-22T06:00:00.000Z",
+  "updatedAt": "2026-06-22T07:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "컬러무드 (ColorMood)",
+      "emoji": "🎨",
+      "domain": "디자인/도구",
+      "desc": "감성 한 번에 어울리는 색조합을 추천받는 무료 컬러 팔레트 스튜디오. 3가지 생성 모드 — ①무드(차분한·노을·네온·파스텔 등 12종 감성을 색상/채도/명도 범위로 매핑) ②색이론(보색·유사색·3색조화·분리보색·사각조화·단색 HSL 규칙으로 어울리는 5색 생성) ③이미지 색추출(사진 업로드 후 브라우저 내 canvas 양자화로 대표 5색 추출, 서버 전송 없음). 좋은 색은 자물쇠로 고정하고 Space로 나머지만 새로 굴리는 빠른 탐색. 접근성 WCAG 명암대비 검사(글자/배경 조합 명암비·AA/AAA 통과 배지·실시간 미리보기), 내보내기(HEX 탭복사·CSS 변수·Tailwind config 스니펫·1200x630 PNG 팔레트 카드 다운로드), 팔레트 저장/히스토리(localStorage). 리텐션: 매일 바뀌는 '오늘의 색'(날짜 결정적 시드)+연속 방문 스트릭. 바이럴: URL에 색을 담아 공유(동적 OG 카드 1200x630)+인기 색조합 큐레이션 갤러리(검증된 12배색, SEO 랜딩). 몰입 4종: r3f 3D 떠다니는 팔레트 컬러 오브 5구체 씬(3D), framer-motion 스와치 호버 확장·토스트·탭 전환(애니메이션), canvas-confetti 저장·추출시 팔레트색 버스트(효과), Web Audio 합성음(틱·복사 팝·저장 차임, 음소거 기본 OFF 토글/사운드). 무DB 전 클라이언트(무가입). '색조합 추천·컬러 팔레트 생성기·배색·color palette generator·보색 추천·이미지 색추출·WCAG 명암대비' SEO 정조준 + WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 디자이너·개발자·콘텐츠 제작자 재방문 트래픽 애드센스 + 색채/디자인 도서·태블릿·디자인 모니터 맥락 쿠팡 파트너스(고지문) 수익화 레디. 큐 #color-palette(다각화: 비금융 디자인/도구 카테고리).",
+      "live": "https://dydrms-colormood.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-colormood",
+      "status": "live",
+      "date": "2026-06-22"
+    },
     {
       "name": "보카스프린트 (VocaSprint)",
       "emoji": "⚡",
