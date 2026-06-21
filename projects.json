@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-22T13:30:00.000Z",
+  "updatedAt": "2026-06-21T20:13:20.346Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "또박또박",
+      "emoji": "🟩",
+      "domain": "게임/엔터(바이럴)",
+      "desc": "매일 바뀌는 숨은 두 글자 한글 단어를 자모(초성·중성·종성) 색 힌트로 6번 안에 맞히는 무료 단어 게임. 꼬들·한글 워들 스타일을 깔끔한 모바일 UX로 재해석 — 직접 만든 두벌식 온스크린 자모 키보드(겹받침 분해·쌍자음 시프트), 받침 없음은 ∅로 표기해 길이 힌트 누출 방지, 정답 시 '오늘의 단어 뜻' 페이오프 공개. 리텐션: 자정(KST) 리셋 데일리 + 연속(스트릭)·승률·시도분포 통계 + 연습 무한모드. 바이럴: 스포일러 없는 🟩🟨⬛ 이모지 그리드 + 모바일 네이티브 공유/클립보드. 색약 모드(기호 병기)·물리 키보드 입력·prefers-reduced-motion 접근성. 몰입 4종: react-three-fiber 떠다니는 3D 자모 타일(3D), framer-motion 타일 플립·행 흔들림·모달(애니메이션), canvas-confetti 정답 폭죽(효과), Web Audio 합성 타이핑·플립·정답/오답음(음소거 기본 OFF). 수익화 키트: AdSense(보드 사이·결과·사전), 단어 사전 페이지(전 단어 뜻 ItemList JSON-LD, SEO·PV 증대), FAQ/WebApplication JSON-LD, 동적 OG 1200x630(한글폰트 페치)·sitemap·robots, 개인정보/문의. 무가입·무백엔드(localStorage). 타깃 키워드: 한글 워들·꼬들·단어 맞추기 게임·오늘의 단어.",
+      "live": "https://dydrms-natmal.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-natmal",
+      "status": "live",
+      "date": "2026-06-22"
+    },
     {
       "name": "이상형월드컵 메이커",
       "emoji": "👑",
