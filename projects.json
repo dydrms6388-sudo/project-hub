@@ -3,6 +3,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "썸타이밍궁합",
+      "emoji": "💞",
+      "domain": "바이럴/연애(엔터)",
+      "desc": "이름과 생년월일만 넣으면 두 사람의 케미를 5가지 차원(첫인상·대화·연애 스타일·가치관·설렘)으로 분석하고, '고백하기 좋은 시기·추천 멘트·관계 발전 시나리오·주의 한마디'까지 처방해주는 무료 궁합 테스트. 결정적(deterministic) 엔진(이름 자모합·생일 띠/별자리 affinity + 시드 해시)이라 같은 입력은 항상 같은 결과 → 공유 링크로 친구와 동일 결과를 확인하는 바이럴 루프. 입력은 서버 전송 없이 기기 내에서만 계산(프라이버시), 최근 본 궁합 localStorage 히스토리(리텐션). 몰입 4종: react-three-fiber로 두 사람을 상징하는 글로우 구체가 점수가 높을수록 가까이 공전 + 박동하는 3D 하트(3D), framer-motion 단계 전환·점수 카운트업·차원 막대 스프링(애니메이션), canvas-confetti 결과 폭죽(효과), Web Audio 합성 탭·하트비트·공개 아르페지오 사운드(음소거 기본 OFF 토글). 수익화 키트: AdSense(입력·결과·하단), 데이트/고백/선물 맥락 쿠팡 파트너스(커플선물·향수·데이트소품·커플템, 고지문), WebApplication+FAQPage JSON-LD·동적 OG 1200x630·sitemap·robots·웹공유, 엔터테인먼트 면책. 무가입·무백엔드. 타깃 키워드: 궁합·이름궁합·연애 궁합·고백 타이밍·커플 테스트. 큐 #couple-chemistry-test(다각화: 비금융 바이럴 포맷).",
+      "live": "https://couple-chemistry-test.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/couple-chemistry-test",
+      "status": "live",
+      "date": "2026-06-22"
+    },
+    {
       "name": "또박또박",
       "emoji": "🟩",
       "domain": "게임/엔터(바이럴)",
