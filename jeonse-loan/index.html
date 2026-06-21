@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>전세자금대출 한도 계산기 — 보증금·소득·지역으로 대출 한도·자격 즉시 추정 | TomatoEggCat</title>
+<meta name="description" content="전세 보증금·부부합산 소득·순자산·지역·나이를 넣으면 버팀목·청년·신생아 특례·시중은행 전세대출의 예상 한도와 자격, 예상 금리·월 이자를 즉시 추정합니다. 2026 상반기 기준(주택도시기금·HF·HUG)." />
+<link rel="canonical" href="https://tomatoeggcat.com/jeonse-loan/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"전세자금대출은 보증금의 몇 %까지 받을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"보증기관·상품에 따라 보통 보증금의 70~80%까지 가능합니다. 버팀목은 약 70%, 시중은행(HF·HUG 보증)은 최대 80% 수준이며 상품별 최대 한도(버팀목 수도권 1.2억, 청년 2억, 신생아 특례 2.4억)가 별도로 적용됩니다."}},
+{"@type":"Question","name":"무주택이어야만 버팀목·신생아 특례를 받을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 주택도시기금 전세대출(버팀목·청년·신생아 특례)은 접수일 기준 세대원 전원이 무주택이어야 합니다. 분양권·입주권도 주택 보유로 간주될 수 있습니다."}},
+{"@type":"Question","name":"전세대출도 DSR 규제를 받나요?","acceptedAnswer":{"@type":"Answer","text":"전세대출 원금은 어떤 경우에도 DSR에 미포함입니다(만기 시 보증금으로 일시상환). 무주택자의 전세대출 이자도 DSR 적용 밖입니다. 다만 2025년 10·15 대책으로 규제지역에서 전세대출을 받는 1주택자는 이자 상환액이 DSR에 포함됩니다."}}
+]}
+</script>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
+a{color:#34d399}
+.nav{font-size:13px;color:#6b7280;margin-bottom:18px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px}
+.lead{color:#9ca3af;margin:0 0 22px;font-size:15px}
+.card{border:1px solid #262626;background:#171717;border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;color:#9ca3af;margin-bottom:6px}
+input[type=number],input[type=text],select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px}
+.row{display:flex;gap:12px}.row>div{flex:1}
+.seg{display:flex;gap:8px;margin-top:2px}
+.seg button{flex:1;margin:0;padding:11px;border:1px solid #333;border-radius:12px;background:#0f0f0f;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer}
+.seg button.on{border-color:#10b981;background:rgba(16,185,129,.15);color:#6ee7b7}
+.chk{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.chk button{padding:10px 14px;border:1px solid #333;border-radius:12px;background:#0f0f0f;color:#9ca3af;font-size:13px;font-weight:600;cursor:pointer;margin:0;width:auto}
+.chk button.on{border-color:#10b981;background:rgba(16,185,129,.15);color:#6ee7b7}
+button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:12px;background:#10b981;color:#06281f;font-size:16px;font-weight:700;cursor:pointer}
+.field{margin-bottom:14px}
+.out{display:none;margin-top:18px}
+.big{font-size:38px;font-weight:800;color:#6ee7b7;text-align:center;margin:4px 0}
+.bigsub{text-align:center;color:#9ca3af;font-size:14px;margin-bottom:16px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.fact{background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:12px}
+.fact .k{font-size:12px;color:#6b7280}.fact .v{font-size:18px;font-weight:700;margin-top:2px}
+.prods{display:grid;gap:10px}
+.prod{border:1px solid #262626;background:#0f0f0f;border-radius:14px;padding:14px}
+.prod.hl{border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.06)}
+.prod.bad{opacity:.62}
+.prod .ph{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.prod .pn{font-weight:700;color:#ededed}
+.prod .pt{font-size:11px;color:#6b7280;margin-top:1px}
+.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.badge.ok{background:rgba(16,185,129,.15);color:#6ee7b7}
+.badge.no{background:rgba(244,63,94,.15);color:#fda4af}
+.tag-rec{font-size:10px;font-weight:800;background:#fbbf24;color:#000;padding:2px 7px;border-radius:999px;margin-left:6px}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;text-align:center}
+.pcell{background:rgba(255,255,255,.04);border-radius:10px;padding:8px 4px}
+.pcell .pk{font-size:10px;color:#6b7280}
+.pcell .pv{font-size:14px;font-weight:700;margin-top:2px}
+.pv.amber{color:#fcd34d}
+.reasons{margin:10px 0 0;padding-left:2px;list-style:none}
+.reasons li{font-size:12px;color:rgba(253,164,175,.8);margin-bottom:3px}
+.dsr{border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.07);border-radius:14px;padding:14px;margin-top:14px}
+.dsr .dt{font-size:13px;font-weight:700;color:#7dd3fc}
+.dsr p{margin:6px 0 0;font-size:13px;color:#cbd5e1}
+.disc{font-size:12px;color:#6b7280;margin-top:14px;line-height:1.55}
+h2{font-size:18px;margin:28px 0 8px}
+.prose p{color:#d4d4d4;font-size:14.5px}
+.faq{border-top:1px solid #262626;padding:14px 0}
+.faq b{display:block;margin-bottom:4px}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.ad{margin:22px 0;min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #2a2a2a;border-radius:12px;color:#3a3a3a;font-size:12px}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.more a{font-size:13px;background:#1f2937;color:#cdd6ff;padding:7px 12px;border-radius:999px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 전세대출 한도 계산기</div>
+<h1>전세자금대출 한도 계산기</h1>
+<p class="lead">전세 보증금·소득·지역·나이를 넣으면 <b>버팀목·청년·신생아 특례·시중은행</b> 전세대출의 예상 한도·자격·금리를 한 번에. 2026 상반기 공개 기준(주택도시기금·HF·HUG) 추정값입니다.</p>
+
+<div class="card">
+  <div class="field">
+    <label for="deposit">전세 보증금 (만원)</label>
+    <input type="number" id="deposit" inputmode="numeric" placeholder="예: 30000 (3억)" value="30000" />
+  </div>
+
+  <div class="field">
+    <label>소재 지역</label>
+    <div class="seg" id="segRegion">
+      <button data-v="metro" class="on">수도권</button>
+      <button data-v="nonmetro">지방(그 외)</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="income">부부합산 연소득 (만원)</label>
+      <input type="number" id="income" inputmode="numeric" placeholder="예: 4500" value="4500" />
+    </div>
+    <div class="field">
+      <label for="age">만 나이</label>
+      <input type="number" id="age" inputmode="numeric" placeholder="예: 31" value="31" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="netAsset">순자산 (만원)</label>
+    <input type="number" id="netAsset" inputmode="numeric" placeholder="예: 15000" value="15000" />
+  </div>
+
+  <div class="field">
+    <label>해당 조건</label>
+    <div class="chk" id="chks">
+      <button data-k="noHome" class="on">무주택 세대주</button>
+      <button data-k="newborn">2년내 출산(예정) 가구</button>
+    </div>
+  </div>
+
+  <button id="calc">한도 계산하기</button>
+
+  <div class="out" id="out">
+    <div class="big" id="bigLimit">–</div>
+    <div class="bigsub" id="bigSub"></div>
+    <div class="facts">
+      <div class="fact"><div class="k">받을 수 있는 최대 한도</div><div class="v" id="fMax">–</div></div>
+      <div class="fact"><div class="k">자기부담(보증금−추천대출)</div><div class="v" id="fSelf">–</div></div>
+    </div>
+    <div class="prods" id="prods"></div>
+    <div class="dsr">
+      <div class="dt">📊 DSR(총부채원리금상환비율) 영향</div>
+      <p id="dsrNote"></p>
+    </div>
+    <p class="disc">⚠️ 추정용 참고 도구입니다. 실제 한도·금리·자격은 보증기관 평가, 은행 심사, 신용점수, 방공제(소액임차보증금), 대상 주택 등에 따라 달라집니다. 정확한 한도는 은행·기금e든든·주택도시기금(myhome.go.kr)에서 확인하세요.</p>
+  </div>
+</div>
+
+<div class="ad" id="ad1">광고 영역</div>
+
+<div class="prose">
+  <h2>전세자금대출 한도, 어떻게 정해지나요?</h2>
+  <p>전세자금대출 한도는 크게 ① <b>보증금 대비 비율(LTV 성격)</b>과 ② <b>상품별 최대 한도(보증기관 한도)</b> 중 더 낮은 금액으로 결정됩니다. 예를 들어 버팀목 전세대출은 보증금의 약 70%, 시중은행 보증부 대출은 약 80%까지 인정하되, 버팀목은 수도권 1.2억(지방 8천만), 청년전용은 2억, 신생아 특례는 2.4억처럼 상품별 상한이 별도로 걸립니다. 따라서 보증금이 아무리 커도 상한을 넘는 금액은 받을 수 없습니다.</p>
+  <h2>계산 공식</h2>
+  <p>이 계산기는 각 상품마다 <b>min( 보증금 × 보증금비율, 상품 최대한도 )</b>를 한도로 계산합니다. 동시에 연소득·순자산·나이·무주택·출산 요건을 모두 충족해야 자격이 인정되며, 하나라도 어긋나면 한도 0으로 처리합니다. 예상 금리는 상품별 구간(버팀목 약 2.0~3.5%, 청년·신생아 특례 약 1.3~4.3%, 시중은행 약 3.7~4.5%)으로 보여주고, 월 이자는 <b>한도 × 금리 ÷ 12</b>로 추정합니다.</p>
+  <h2>상품별 핵심 자격(2026 상반기 추정)</h2>
+  <p><b>버팀목 전세대출</b>: 부부합산 연소득 5천만원 이하, 순자산 약 3.37억 이하, 무주택 세대주. <b>청년전용 버팀목</b>: 만 19~34세, 지역무관 보증금 3억까지, 최대 2억. <b>신생아 특례</b>: 2년내 출산(예정) 가구, 연소득 1.3억 이하, 최대 2.4억. <b>시중은행 일반 전세대출</b>: 소득 무관으로 1주택자도 가능하나 HF·HUG·SGI 보증 한도와 심사 조건이 붙습니다.</p>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>Q. 전세대출은 보증금의 몇 %까지 받나요?</b><p>보통 70~80%입니다. 버팀목 약 70%, 시중은행(HF·HUG) 최대 80% 수준이며, 상품별 최대 한도(버팀목 수도권 1.2억, 청년 2억, 신생아 2.4억)가 함께 적용됩니다.</p></div>
+  <div class="faq"><b>Q. 무주택이어야만 버팀목·신생아 특례를 받나요?</b><p>네. 주택도시기금 전세대출은 접수일 기준 세대원 전원이 무주택이어야 합니다. 분양권·입주권도 주택 보유로 간주될 수 있습니다.</p></div>
+  <div class="faq"><b>Q. 전세대출도 DSR 규제를 받나요?</b><p>전세대출 원금은 어떤 경우에도 DSR 미포함입니다. 무주택자 이자도 적용 밖이지만, 2025년 10·15 대책으로 규제지역에서 전세대출을 받는 1주택자는 이자가 DSR에 포함될 수 있습니다.</p></div>
+  <div class="faq"><b>Q. 이 계산기 결과대로 대출이 나오나요?</b><p>아니요, 추정값입니다. 실제 한도·금리는 보증기관 평가, 은행 심사, 신용점수, 방공제, 대상 주택 등에 따라 달라집니다.</p></div>
+  <div class="faq"><b>Q. 입력한 정보가 저장되나요?</b><p>아니요. 모든 계산은 브라우저 안에서만 이뤄지며 서버로 전송·저장되지 않습니다.</p></div>
+</div>
+
+<div class="coupang-slot" data-subid="jeonse-loan" style="margin:24px 0"></div>
+
+<h2>다른 도구</h2>
+<div class="more">
+  <a href="/dsr/">DSR 계산기</a>
+  <a href="/refinance/">대환대출 계산기</a>
+  <a href="/yangdo/">양도소득세 계산기</a>
+  <a href="/">전체 도구 보기</a>
+</div>
+
+<footer>
+  🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/>
+  <a href="/privacy.html">개인정보처리방침</a>·<a href="/terms.html">이용약관</a>·<a href="/contact.html">문의</a>
+</footer>
+</div>
+
+<script>
+/*
+  전세자금대출 한도·자격 추정 로직.
+  포팅 출처(EXACT logic): C:\Users\dydrm\projects\daily\2026-06-20-jeonse-loan-eligibility\src\lib\jeonse.ts
+  (CONFIG / evalProduct / estimate) + src\lib\format.ts (formatManwon/formatWon/formatPct).
+  모든 금액은 "만원" 단위 정수. asOf 2026-06 (주택도시기금/HF/HUG 공개정보 기반 추정).
+*/
+(function(){
+  var $=function(id){return document.getElementById(id)};
+
+  // ── format.ts 포팅 ───────────────────────────────────────
+  function formatManwon(manwon){
+    var v=Math.round(manwon);
+    if(v===0)return"0원";
+    var eok=Math.floor(Math.abs(v)/10000);
+    var man=Math.abs(v)%10000;
+    var sign=v<0?"-":"";
+    var parts=[];
+    if(eok>0)parts.push(eok.toLocaleString("ko-KR")+"억");
+    if(man>0)parts.push(man.toLocaleString("ko-KR")+"만");
+    return sign+parts.join(" ")+"원";
+  }
+  function formatWon(won){return Math.round(won).toLocaleString("ko-KR")+"원";}
+  function formatPct(p,digits){if(digits===undefined)digits=1;return p.toFixed(digits)+"%";}
+
+  // ── jeonse.ts CONFIG 포팅 ────────────────────────────────
+  var CONFIG={
+    asOf:"2026-06",
+    products:{
+      bworm:{name:"버팀목 전세자금대출",tag:"주택도시기금 · 저금리 서민형",incomeLimit:5000,assetLimit:33700,depositCap:{metro:30000,nonmetro:20000},loanCap:{metro:12000,nonmetro:8000},ltv:0.7,rate:[2.0,3.5],requireNoHome:true},
+      youth:{name:"청년전용 버팀목",tag:"만 19~34세 · 최저금리",incomeLimit:5000,assetLimit:33700,depositCap:{metro:30000,nonmetro:30000},loanCap:{metro:20000,nonmetro:20000},ltv:0.8,rate:[1.3,4.3],requireNoHome:true,ageMin:19,ageMax:34},
+      newborn:{name:"신생아 특례 전세대출",tag:"2년내 출산가구 · 특례금리",incomeLimit:13000,assetLimit:33700,depositCap:{metro:50000,nonmetro:40000},loanCap:{metro:24000,nonmetro:24000},ltv:0.8,rate:[1.3,4.3],requireNoHome:true,requireNewborn:true},
+      bank:{name:"시중은행 전세대출",tag:"소득무관 · 보증기관 보증",incomeLimit:Infinity,assetLimit:Infinity,depositCap:{metro:700000,nonmetro:700000},loanCap:{metro:44400,nonmetro:44400},ltv:0.8,rate:[3.7,4.5],requireNoHome:false}
+    }
+  };
+
+  function monthlyInterest(loanManwon,ratePct){return(loanManwon*10000*(ratePct/100))/12;}
+
+  function evalProduct(id,cfg,input){
+    var reasons=[];
+    var eligible=true;
+    if(input.income>cfg.incomeLimit){eligible=false;reasons.push("연소득 "+cfg.incomeLimit.toLocaleString()+"만원 이하 대상 (입력 "+input.income.toLocaleString()+"만원)");}
+    if(input.netAsset>cfg.assetLimit){eligible=false;reasons.push("순자산 "+(cfg.assetLimit/10000).toFixed(2)+"억 이하 대상");}
+    if(cfg.requireNoHome&&!input.noHome){eligible=false;reasons.push("무주택 세대주 요건 미충족");}
+    if(cfg.ageMin!==undefined&&(input.age<cfg.ageMin||input.age>cfg.ageMax)){eligible=false;reasons.push("만 "+cfg.ageMin+"~"+cfg.ageMax+"세 대상 (입력 "+input.age+"세)");}
+    if(cfg.requireNewborn&&!input.newborn){eligible=false;reasons.push("2년내 출산(예정) 가구 대상");}
+    var depCap=cfg.depositCap[input.region];
+    if(input.deposit>depCap){eligible=false;reasons.push("보증금 상한 "+(depCap/10000).toFixed(1)+"억 초과 (입력 "+(input.deposit/10000).toFixed(2)+"억)");}
+    var loanCap=cfg.loanCap[input.region];
+    var byLtv=Math.floor(input.deposit*cfg.ltv);
+    var loanLimit=eligible?Math.min(byLtv,loanCap):0;
+    return{
+      id:id,name:cfg.name,tag:cfg.tag,eligible:eligible,reasons:reasons,
+      loanLimit:loanLimit,ltvUsed:cfg.ltv*100,rateMin:cfg.rate[0],rateMax:cfg.rate[1],
+      monthlyInterestMin:monthlyInterest(loanLimit,cfg.rate[0]),
+      monthlyInterestMax:monthlyInterest(loanLimit,cfg.rate[1])
+    };
+  }
+
+  function estimate(input){
+    var p=CONFIG.products;
+    var products=[
+      evalProduct("youth",p.youth,input),
+      evalProduct("newborn",p.newborn,input),
+      evalProduct("bworm",p.bworm,input),
+      evalProduct("bank",p.bank,input)
+    ];
+    var eligibles=products.filter(function(x){return x.eligible&&x.loanLimit>0;});
+    // 추천(best) = 금리 낮은 순 → 같으면 한도 큰 순
+    var byValue=eligibles.slice().sort(function(a,b){if(a.rateMin!==b.rateMin)return a.rateMin-b.rateMin;return b.loanLimit-a.loanLimit;});
+    var best=byValue[0]||null;
+    if(best){
+      var idx=-1;for(var i=0;i<products.length;i++){if(products[i].id===best.id){idx=i;break;}}
+      if(idx>=0)products[idx].highlight=true;
+    }
+    var byLimit=eligibles.slice().sort(function(a,b){return b.loanLimit-a.loanLimit;});
+    var maxLimit=byLimit[0]?byLimit[0].loanLimit:0;
+    var maxLimitName=byLimit[0]?byLimit[0].name:null;
+    var recLoan=best?best.loanLimit:0;
+    var selfFund=Math.max(0,input.deposit-recLoan);
+    var bank=null;for(var j=0;j<products.length;j++){if(products[j].id==="bank")bank=products[j];}
+    var bankInterestAnnual=bank.loanLimit*(bank.rateMin/100);
+    var dsrNote=input.noHome
+      ?"무주택자는 전세대출이 DSR 산정에서 제외돼 다른 대출 한도에 영향이 거의 없어요. (원금·이자 모두 미반영, 스트레스 DSR도 예외)"
+      :"1주택자는 2025년 10·15 대책으로 규제지역 전세대출 이자가 DSR에 포함될 수 있어요. (원금은 여전히 제외) 보유 주택·규제지역 여부에 따라 보증이 거절될 수도 있습니다.";
+    return{products:products,best:best,maxLimit:maxLimit,maxLimitName:maxLimitName,selfFund:selfFund,dsr:{bankInterestAnnual:bankInterestAnnual,note:dsrNote}};
+  }
+
+  // ── UI 상태 ──────────────────────────────────────────────
+  var state={region:"metro",noHome:true,newborn:false};
+
+  // 지역 세그먼트
+  Array.prototype.forEach.call($('segRegion').querySelectorAll('button'),function(b){
+    b.addEventListener('click',function(){
+      state.region=b.getAttribute('data-v');
+      Array.prototype.forEach.call($('segRegion').querySelectorAll('button'),function(x){x.classList.remove('on');});
+      b.classList.add('on');
+    });
+  });
+  // 체크 토글
+  Array.prototype.forEach.call($('chks').querySelectorAll('button'),function(b){
+    b.addEventListener('click',function(){
+      var k=b.getAttribute('data-k');
+      state[k]=!state[k];
+      b.classList.toggle('on',state[k]);
+    });
+  });
+
+  function num(id){var v=parseFloat($(id).value);return isNaN(v)?0:Math.max(0,Math.round(v));}
+
+  function render(r,input){
+    if(r.best){
+      $('bigLimit').textContent=formatManwon(r.best.loanLimit);
+      $('bigSub').textContent="추천: "+r.best.name+" · 예상금리 "+formatPct(r.best.rateMin)+"~"+formatPct(r.best.rateMax)+" · 월 이자 "+formatWon(r.best.monthlyInterestMin)+"~";
+    }else{
+      $('bigLimit').textContent="자격 상품 없음";
+      $('bigSub').textContent="입력 조건으로 자격을 충족하는 상품이 없어요. 보증금·소득·지역을 조정해 보세요.";
+    }
+    $('fMax').textContent=r.maxLimit>0?(formatManwon(r.maxLimit)+(r.maxLimitName?" ("+r.maxLimitName+")":"")):"–";
+    $('fSelf').textContent=formatManwon(r.selfFund);
+
+    var html="";
+    r.products.forEach(function(p){
+      var cls="prod"+(p.highlight?" hl":(p.eligible?"":" bad"));
+      html+='<div class="'+cls+'">';
+      html+='<div class="ph"><div><span class="pn">'+p.name+'</span>'+(p.highlight?'<span class="tag-rec">추천</span>':'')+'<div class="pt">'+p.tag+'</div></div>';
+      html+='<span class="badge '+(p.eligible?'ok':'no')+'">'+(p.eligible?'자격 가능':'조건 미충족')+'</span></div>';
+      if(p.eligible){
+        html+='<div class="pgrid">';
+        html+='<div class="pcell"><div class="pk">한도</div><div class="pv amber">'+formatManwon(p.loanLimit)+'</div></div>';
+        html+='<div class="pcell"><div class="pk">금리</div><div class="pv">'+formatPct(p.rateMin)+'~'+formatPct(p.rateMax)+'</div></div>';
+        html+='<div class="pcell"><div class="pk">보증금 비율</div><div class="pv">'+p.ltvUsed+'%</div></div>';
+        html+='</div>';
+      }else{
+        html+='<ul class="reasons">';
+        p.reasons.forEach(function(rs){html+='<li>· '+rs+'</li>';});
+        html+='</ul>';
+      }
+      html+='</div>';
+    });
+    $('prods').innerHTML=html;
+    $('dsrNote').textContent=r.dsr.note;
+    $('out').style.display='block';
+  }
+
+  function run(){
+    var input={
+      deposit:num('deposit'),
+      region:state.region,
+      income:num('income'),
+      netAsset:num('netAsset'),
+      age:num('age'),
+      noHome:state.noHome,
+      newborn:state.newborn,
+      existingAnnualRepay:0
+    };
+    if(input.deposit<=0){alert('전세 보증금을 입력하세요 (만원)');return;}
+    var r=estimate(input);
+    render(r,input);
+  }
+
+  $('calc').addEventListener('click',run);
+  ['deposit','income','age','netAsset'].forEach(function(id){
+    $(id).addEventListener('keydown',function(e){if(e.key==='Enter')run();});
+  });
+})();
+</script>
+<script src="/coupang.js"></script>
+</body>
+</html>

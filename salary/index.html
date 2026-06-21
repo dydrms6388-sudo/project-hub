@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>연봉 실수령액 계산기 — 2026년 4대보험·소득세 공제 후 월급 | TomatoEggCat</title>
+<meta name="description" content="연봉을 넣으면 2026년 4대보험(국민연금·건강보험·장기요양·고용보험)과 근로소득세·지방소득세를 공제한 월 실수령액과 연 실수령액을 즉시 계산합니다. 부양가족·자녀·비과세·퇴직금 포함 옵션 반영." />
+<link rel="canonical" href="https://tomatoeggcat.com/salary/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"연봉 실수령액은 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"연봉을 12개월(퇴직금 포함 시 13개월)로 나눠 월 급여를 구한 뒤, 비과세액을 뺀 과세대상 금액에 국민연금 4.75%·건강보험 3.595%·장기요양(건보료의 13.14%)·고용보험 0.9%를 공제합니다. 이어 연 환산 소득으로 근로소득공제·인적공제·보험료공제를 적용해 과세표준을 구하고 누진세율로 소득세를 계산한 뒤 지방소득세 10%를 더해 공제합니다. 이 값을 월 급여에서 빼면 월 실수령액입니다."}},
+{"@type":"Question","name":"2026년 4대보험 요율은 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"근로자 부담 기준 2026년 국민연금 4.75%(총 9.5%), 건강보험 3.595%(총 7.19%), 장기요양보험은 건강보험료의 13.14%, 고용보험 0.9%입니다. 국민연금은 기준소득월액 상한 637만원·하한 39만원이 적용됩니다."}},
+{"@type":"Question","name":"이 계산기 결과는 실제 월급과 정확히 같나요?","acceptedAnswer":{"@type":"Answer","text":"4대보험은 거의 동일하지만 소득세는 회사가 간이세액표로 원천징수하는 반면 이 계산기는 연 환산 결정세액 기준 추정치라서 월별로 ±몇만원 오차가 날 수 있습니다. 연말정산 시 정산되므로 연 단위로는 근사하게 맞습니다."}}
+]}
+</script>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
+a{color:#34d399}
+.nav{font-size:13px;color:#6b7280;margin-bottom:18px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px}
+.lead{color:#9ca3af;margin:0 0 22px;font-size:15px}
+.card{border:1px solid #262626;background:#171717;border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;color:#9ca3af;margin-bottom:6px}
+input[type=text],input[type=number],select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px}
+.row{display:flex;gap:12px}.row>div{flex:1}
+.field{margin-bottom:14px}
+.chips{display:flex;gap:8px;margin-top:2px}
+.chips button{flex:1;margin:0;padding:10px;font-size:14px;font-weight:600;background:#0f0f0f;color:#9ca3af;border:1px solid #333}
+.chips button.on{background:rgba(16,185,129,.12);border-color:#10b981;color:#6ee7b7}
+.checkrow{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:14px;color:#cbd5e1;cursor:pointer}
+.checkrow input{width:18px;height:18px;accent-color:#10b981}
+button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:12px;background:#10b981;color:#06281f;font-size:16px;font-weight:700;cursor:pointer}
+.out{display:none;margin-top:18px}
+.big{font-size:40px;font-weight:800;color:#6ee7b7;text-align:center;margin:4px 0}
+.bigsub{text-align:center;color:#9ca3af;font-size:14px;margin-bottom:16px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fact{background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:12px}
+.fact .k{font-size:12px;color:#6b7280}.fact .v{font-size:18px;font-weight:700;margin-top:2px}
+.bd{margin-top:14px;border:1px solid #262626;border-radius:12px;overflow:hidden}
+.bd .item{display:flex;justify-content:space-between;padding:10px 14px;font-size:14px;border-top:1px solid #1f1f1f}
+.bd .item:first-child{border-top:0}
+.bd .item .k{color:#9ca3af}.bd .item .v{color:#fca5a5;font-variant-numeric:tabular-nums}
+.bd .item.total{background:#0f0f0f;font-weight:700}
+.bd .item.total .v{color:#f87171}
+h2{font-size:18px;margin:28px 0 8px}
+.prose p{color:#d4d4d4;font-size:14.5px}
+table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:14px}
+table th,table td{border:1px solid #262626;padding:8px 10px;text-align:left}
+table th{background:#141414;color:#9ca3af;font-weight:600}
+.faq{border-top:1px solid #262626;padding:14px 0}
+.faq b{display:block;margin-bottom:4px}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.note{font-size:12px;color:#6b7280;margin-top:10px}
+.ad{margin:22px 0;min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #2a2a2a;border-radius:12px;color:#3a3a3a;font-size:12px}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.more a{font-size:13px;background:#1f2937;color:#cdd6ff;padding:7px 12px;border-radius:999px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 연봉 실수령액 계산기</div>
+<h1>연봉 실수령액 계산기</h1>
+<p class="lead">연봉을 넣으면 <b>2026년 4대보험·소득세·지방세</b>를 공제한 <b>월/연 실수령액</b>을 즉시 계산합니다. 부양가족·자녀·비과세·퇴직금 포함까지 반영.</p>
+
+<div class="card">
+  <div class="field">
+    <label for="salary">연봉 (세전, 원)</label>
+    <input type="text" id="salary" inputmode="numeric" value="40,000,000" />
+  </div>
+  <div class="row">
+    <div class="field">
+      <label for="dependents">부양가족 수 (본인 포함)</label>
+      <input type="number" id="dependents" min="1" max="10" value="1" />
+    </div>
+    <div class="field">
+      <label for="children">자녀 수 (8~20세)</label>
+      <input type="number" id="children" min="0" max="8" value="0" />
+    </div>
+  </div>
+  <div class="field">
+    <label>월 비과세액 (식대 등)</label>
+    <div class="chips" id="nonTaxChips">
+      <button data-v="0">없음</button>
+      <button data-v="100000">10만</button>
+      <button data-v="200000" class="on">20만</button>
+      <button data-v="300000">30만</button>
+    </div>
+  </div>
+  <label class="checkrow"><input type="checkbox" id="severance" /> 연봉에 퇴직금 포함 (13으로 나눠 계산)</label>
+  <button id="calc">실수령액 계산하기</button>
+  <div class="out" id="out">
+    <div class="big" id="netMonthly">–</div>
+    <div class="bigsub" id="bsub"></div>
+    <div class="facts">
+      <div class="fact"><div class="k">연 실수령액</div><div class="v" id="netAnnual">–</div></div>
+      <div class="fact"><div class="k">월 세전 급여</div><div class="v" id="monthlyGross">–</div></div>
+      <div class="fact"><div class="k">총 공제액(월)</div><div class="v" id="totalDed">–</div></div>
+      <div class="fact"><div class="k">공제율</div><div class="v" id="dedRate">–</div></div>
+    </div>
+    <div class="bd" id="bd">
+      <div class="item"><span class="k">국민연금</span><span class="v" id="pension">–</span></div>
+      <div class="item"><span class="k">건강보험</span><span class="v" id="health">–</span></div>
+      <div class="item"><span class="k">장기요양</span><span class="v" id="ltc">–</span></div>
+      <div class="item"><span class="k">고용보험</span><span class="v" id="employment">–</span></div>
+      <div class="item"><span class="k">소득세</span><span class="v" id="incomeTax">–</span></div>
+      <div class="item"><span class="k">지방소득세</span><span class="v" id="localTax">–</span></div>
+      <div class="item total"><span class="k">월 총 공제</span><span class="v" id="totalDed2">–</span></div>
+    </div>
+    <p class="note">※ 4대보험은 고시 요율 기준으로 정확하며, 소득세는 회사 간이세액표 원천징수와 달리 연 환산 결정세액 기준 추정치입니다(월별 ±오차 가능, 연말정산 시 정산).</p>
+  </div>
+</div>
+
+<div class="ad" id="ad1">광고 영역</div>
+
+<div class="prose">
+  <h2>연봉 실수령액이란?</h2>
+  <p>실수령액은 회사가 주는 세전 급여에서 <b>4대보험료(국민연금·건강보험·장기요양·고용보험)</b>와 <b>근로소득세·지방소득세</b>를 뺀, 실제로 통장에 들어오는 금액입니다. 같은 연봉이라도 비과세 식대, 부양가족 수, 자녀 수, 퇴직금 포함 여부에 따라 실수령액이 달라집니다. 이 계산기는 2026년 고시 요율과 소득세 구간을 적용해 월·연 실수령액을 한 번에 보여줍니다.</p>
+
+  <h2>2026년 4대보험 요율 (근로자 부담)</h2>
+  <table>
+    <tr><th>항목</th><th>근로자 부담률</th><th>비고</th></tr>
+    <tr><td>국민연금</td><td>4.75%</td><td>총 9.5% / 기준소득월액 상한 637만·하한 39만</td></tr>
+    <tr><td>건강보험</td><td>3.595%</td><td>총 7.19%의 절반</td></tr>
+    <tr><td>장기요양보험</td><td>건강보험료 × 13.14%</td><td>건보료에 부가</td></tr>
+    <tr><td>고용보험</td><td>0.9%</td><td>실업급여분</td></tr>
+  </table>
+
+  <h2>소득세는 어떻게 계산하나요?</h2>
+  <p>월 과세대상 급여를 1년치로 환산한 뒤 <b>근로소득공제</b>를 빼고, <b>인적공제(1인당 150만원)</b>와 1년치 <b>4대보험료(소득공제)</b>를 추가로 빼 과세표준을 구합니다. 여기에 6~45%의 누진세율을 적용하고, <b>근로소득세액공제</b>와 자녀세액공제(8~20세)를 차감해 연 소득세를 산출합니다. 이를 12로 나눈 값이 월 소득세이고, 그 10%가 지방소득세입니다.</p>
+
+  <table>
+    <tr><th>과세표준</th><th>세율</th><th>누진공제</th></tr>
+    <tr><td>1,400만원 이하</td><td>6%</td><td>0</td></tr>
+    <tr><td>5,000만원 이하</td><td>15%</td><td>126만</td></tr>
+    <tr><td>8,800만원 이하</td><td>24%</td><td>576만</td></tr>
+    <tr><td>1.5억원 이하</td><td>35%</td><td>1,544만</td></tr>
+    <tr><td>3억원 이하</td><td>38%</td><td>1,994만</td></tr>
+    <tr><td>5억원 이하</td><td>40%</td><td>2,594만</td></tr>
+    <tr><td>10억원 이하</td><td>42%</td><td>3,594만</td></tr>
+    <tr><td>10억원 초과</td><td>45%</td><td>6,594만</td></tr>
+  </table>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>Q. 비과세 식대는 왜 빼나요?</b><p>식대 등 비과세 항목(월 20만원까지)은 소득세와 건강·고용보험 산정에서 제외돼 공제가 줄고 실수령이 늘어납니다. 단 국민연금은 기준소득월액 상·하한 안에서 별도로 산정됩니다.</p></div>
+  <div class="faq"><b>Q. 퇴직금 포함 연봉은 어떻게 다른가요?</b><p>퇴직금 포함 연봉은 13으로 나눠 월 급여를 계산하므로, 같은 숫자라도 월 실수령액이 12로 나눈 경우보다 낮게 나옵니다. 체크박스로 전환해 비교할 수 있습니다.</p></div>
+  <div class="faq"><b>Q. 입력한 연봉이 저장되나요?</b><p>아니요. 모든 계산은 브라우저 안에서만 이뤄지며 서버로 전송·저장되지 않습니다.</p></div>
+</div>
+
+<div class="coupang-slot" data-subid="salary" style="margin:24px 0"></div>
+
+<h2>다른 도구</h2>
+<div class="more">
+  <a href="/dsr/">DSR 계산기</a>
+  <a href="/yangdo/">양도소득세 계산기</a>
+  <a href="/age/">만나이 계산기</a>
+  <a href="/">전체 도구 보기</a>
+</div>
+
+<footer>
+  🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/>
+  <a href="/privacy.html">개인정보처리방침</a>·<a href="/terms.html">이용약관</a>·<a href="/contact.html">문의</a>
+</footer>
+</div>
+
+<script>
+(function(){
+  // ─────────────────────────────────────────────────────────────
+  // 연봉 실수령액 계산 로직 — 원본 포팅
+  // 출처: C:\Users\dydrm\projects\daily\2026-06-20-salary-net-pay\src\lib\salary.ts
+  // (2026년 4대보험 요율·근로소득공제·누진세율·세액공제 EXACT 재현)
+  // ─────────────────────────────────────────────────────────────
+  var $=function(id){return document.getElementById(id)};
+
+  // 2026년 4대보험 요율
+  var RATES = {
+    pension: 0.0475,        // 국민연금 근로자부담 4.75%
+    pensionBaseMax: 6370000,// 기준소득월액 상한 (2025.7~2026.6)
+    pensionBaseMin: 390000, // 기준소득월액 하한
+    health: 0.03595,        // 건강보험 근로자부담 3.595%
+    ltc: 0.1314,            // 장기요양 = 건강보험료 × 13.14%
+    employment: 0.009       // 고용보험 근로자부담 0.9%
+  };
+
+  // 근로소득공제 (연 총급여 기준)
+  function earnedIncomeDeduction(gross){
+    if(gross<=5000000) return gross*0.7;
+    if(gross<=15000000) return 3500000+(gross-5000000)*0.4;
+    if(gross<=45000000) return 7500000+(gross-15000000)*0.15;
+    if(gross<=100000000) return 12000000+(gross-45000000)*0.05;
+    return Math.min(14750000+(gross-100000000)*0.02, 20000000);
+  }
+
+  // 과세표준 누진세 (2023~)
+  function progressiveTax(base){
+    if(base<=0) return 0;
+    var brackets=[
+      [14000000,0.06,0],
+      [50000000,0.15,1260000],
+      [88000000,0.24,5760000],
+      [150000000,0.35,15440000],
+      [300000000,0.38,19940000],
+      [500000000,0.40,25940000],
+      [1000000000,0.42,35940000],
+      [Infinity,0.45,65940000]
+    ];
+    for(var i=0;i<brackets.length;i++){
+      var cap=brackets[i][0],rate=brackets[i][1],sub=brackets[i][2];
+      if(base<=cap) return Math.max(0, base*rate-sub);
+    }
+    return 0;
+  }
+
+  // 근로소득세액공제
+  function earnedIncomeTaxCredit(calcTax, gross){
+    var credit = calcTax<=1300000 ? calcTax*0.55 : 715000+(calcTax-1300000)*0.3;
+    var limit;
+    if(gross<=33000000) limit=740000;
+    else if(gross<=70000000) limit=Math.max(660000, 740000-(gross-33000000)*0.008);
+    else if(gross<=120000000) limit=Math.max(500000, 660000-(gross-70000000)*0.5);
+    else limit=Math.max(200000, 500000-(gross-120000000)*0.5);
+    return Math.min(credit, limit);
+  }
+
+  function calcSalary(input){
+    var months = input.severanceIncluded ? 13 : 12;
+    var monthlyGross = input.annualSalary / months;
+    var nonTax = Math.min(input.nonTaxableMonthly, monthlyGross);
+    var monthlyTaxable = Math.max(0, monthlyGross - nonTax);
+
+    // 국민연금: 기준소득월액 상·하한 적용
+    var pensionBase = Math.min(Math.max(monthlyTaxable, RATES.pensionBaseMin), RATES.pensionBaseMax);
+    var pension = Math.floor((pensionBase*RATES.pension)/10)*10;
+    var health = Math.floor((monthlyTaxable*RATES.health)/10)*10;
+    var ltc = Math.floor((health*RATES.ltc)/10)*10;
+    var employment = Math.floor((monthlyTaxable*RATES.employment)/10)*10;
+
+    // 연 환산 소득세
+    var annualTaxable = monthlyTaxable*12;
+    var gross = annualTaxable; // 비과세 제외 총급여
+    var earnedDed = earnedIncomeDeduction(gross);
+    var personalDed = input.dependents*1500000; // 인적공제(본인+부양가족)
+    var insuranceDed = (pension+health+ltc+employment)*12; // 보험료 소득공제
+    var base = Math.max(0, gross-earnedDed-personalDed-insuranceDed);
+    var annualTax = progressiveTax(base);
+    annualTax -= earnedIncomeTaxCredit(annualTax, gross);
+    // 자녀세액공제 (8~20세): 1명 25만, 2명 55만, 3명+ 55만+추가40만
+    if(input.children>=1){
+      var childCredit = input.children===1 ? 250000 : input.children===2 ? 550000 : 550000+(input.children-2)*400000;
+      annualTax = Math.max(0, annualTax-childCredit);
+    }
+    var incomeTax = Math.floor(Math.max(0,annualTax)/12/10)*10;
+    var localTax = Math.floor((incomeTax*0.1)/10)*10;
+
+    var totalDeduction = pension+health+ltc+employment+incomeTax+localTax;
+    var netMonthly = Math.round(monthlyGross-totalDeduction);
+    var netAnnual = netMonthly*months;
+    var deductionRate = monthlyGross>0 ? (totalDeduction/monthlyGross)*100 : 0;
+
+    return {
+      monthlyGross: Math.round(monthlyGross),
+      monthlyTaxable: Math.round(monthlyTaxable),
+      pension:pension, health:health, ltc:ltc, employment:employment,
+      incomeTax:incomeTax, localTax:localTax,
+      totalDeduction: Math.round(totalDeduction),
+      netMonthly:netMonthly, netAnnual:netAnnual, deductionRate:deductionRate
+    };
+  }
+
+  // ── UI ──────────────────────────────────────────────────────
+  function won(n){return n.toLocaleString('ko-KR')}
+  function digits(s){return Number(String(s).replace(/[^0-9]/g,''))||0}
+
+  var nonTax = 200000;
+  var salaryEl = $('salary');
+  salaryEl.addEventListener('input', function(){
+    var v = Math.min(digits(salaryEl.value), 2000000000);
+    var pos = salaryEl.selectionStart;
+    salaryEl.value = v ? v.toLocaleString('ko-KR') : '';
+  });
+
+  var chips = $('nonTaxChips').querySelectorAll('button');
+  chips.forEach(function(b){
+    b.addEventListener('click', function(){
+      chips.forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on');
+      nonTax = Number(b.getAttribute('data-v'));
+    });
+  });
+
+  function calc(){
+    var annual = Math.min(digits(salaryEl.value), 2000000000);
+    if(!annual){alert('연봉을 입력하세요');return;}
+    var input = {
+      annualSalary: annual,
+      dependents: Math.max(1, digits($('dependents').value)||1),
+      children: Math.max(0, digits($('children').value)),
+      nonTaxableMonthly: nonTax,
+      severanceIncluded: $('severance').checked
+    };
+    var r = calcSalary(input);
+    $('netMonthly').textContent = won(r.netMonthly)+'원';
+    $('bsub').textContent = '연봉 '+won(annual)+'원 · '+(input.severanceIncluded?'퇴직금 포함(÷13)':'÷12')+' 기준';
+    $('netAnnual').textContent = won(r.netAnnual)+'원';
+    $('monthlyGross').textContent = won(r.monthlyGross)+'원';
+    $('totalDed').textContent = won(r.totalDeduction)+'원';
+    $('dedRate').textContent = r.deductionRate.toFixed(1)+'%';
+    $('pension').textContent = '-'+won(r.pension);
+    $('health').textContent = '-'+won(r.health);
+    $('ltc').textContent = '-'+won(r.ltc);
+    $('employment').textContent = '-'+won(r.employment);
+    $('incomeTax').textContent = '-'+won(r.incomeTax);
+    $('localTax').textContent = '-'+won(r.localTax);
+    $('totalDed2').textContent = '-'+won(r.totalDeduction)+'원';
+    $('out').style.display='block';
+  }
+  $('calc').addEventListener('click', calc);
+  salaryEl.addEventListener('keydown', function(e){if(e.key==='Enter')calc()});
+})();
+</script>
+<script src="/coupang.js"></script>
+</body>
+</html>

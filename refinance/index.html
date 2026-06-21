@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>대출 갈아타기 계산기 — 대환 이자 절감·중도상환수수료 손익분기 | TomatoEggCat</title>
+<meta name="description" content="기존 대출 잔액·금리·잔여기간과 신규 금리를 넣으면 원리금균등 상환표 기준으로 월 상환액, 총이자 절감액, 중도상환수수료를 반영한 순절감액과 손익분기 개월수를 즉시 계산합니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/refinance/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"대출 갈아타기는 언제 이득인가요?","acceptedAnswer":{"@type":"Answer","text":"신규 금리가 현재 금리보다 낮아 줄어드는 총이자가 중도상환수수료와 부대비용(인지세·설정비 등)을 합한 비용보다 클 때 이득입니다. 이 계산기는 단순 금리차가 아니라 원리금균등 상환표로 기존·신규 총이자를 각각 계산한 뒤 비용을 빼서 순절감액을 알려줍니다."}},
+{"@type":"Question","name":"중도상환수수료는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"중도상환수수료는 보통 남은 대출 원금에 수수료율(예: 1.2%)을 곱해 계산합니다. 잔여 원금 1억 원에 1.2%라면 약 120만 원입니다. 대출 실행 후 3년이 지나면 면제되는 경우가 많으니 약정서를 확인하세요."}},
+{"@type":"Question","name":"손익분기 개월수는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"갈아타기 비용(수수료+부대비용)을 회수하는 데 걸리는 개월수입니다. 평균 월 이자절감액으로 총비용을 나눠 구하며, 잔여 기간이 손익분기 개월수보다 길면 갈아타는 게 유리합니다."}}
+]}
+</script>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
+a{color:#34d399}
+.nav{font-size:13px;color:#6b7280;margin-bottom:18px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px}
+.lead{color:#9ca3af;margin:0 0 22px;font-size:15px}
+.card{border:1px solid #262626;background:#171717;border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;color:#9ca3af;margin-bottom:6px}
+input[type=text],input[type=number],select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px}
+.row{display:flex;gap:12px}.row>div{flex:1}
+.seg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.seg button{margin:0;padding:11px 0;border:1px solid #333;background:#0f0f0f;color:#9ca3af;font-size:14px;font-weight:600;border-radius:12px;cursor:pointer}
+.seg button.on{border-color:#10b981;background:#0c2a22;color:#6ee7b7}
+.hint{font-size:11px;color:#34d399;float:right;font-weight:600}
+button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:12px;background:#10b981;color:#06281f;font-size:16px;font-weight:700;cursor:pointer}
+.out{display:none;margin-top:18px}
+.big{font-size:34px;font-weight:800;color:#6ee7b7;text-align:center;margin:4px 0}
+.big.warn{color:#fca5a5}
+.bigsub{text-align:center;color:#9ca3af;font-size:14px;margin-bottom:16px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fact{background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:12px}
+.fact .k{font-size:12px;color:#6b7280}.fact .v{font-size:18px;font-weight:700;margin-top:2px}
+.fact .v.good{color:#6ee7b7}.fact .v.bad{color:#fca5a5}
+.disc{font-size:11px;color:#6b7280;margin-top:12px;line-height:1.5}
+h2{font-size:18px;margin:28px 0 8px}
+.prose p{color:#d4d4d4;font-size:14.5px}
+.prose ul{color:#d4d4d4;font-size:14.5px;padding-left:20px}
+.faq{border-top:1px solid #262626;padding:14px 0}
+.faq b{display:block;margin-bottom:4px}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.ad{margin:22px 0;min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #2a2a2a;border-radius:12px;color:#3a3a3a;font-size:12px}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.more a{font-size:13px;background:#1f2937;color:#cdd6ff;padding:7px 12px;border-radius:999px;text-decoration:none}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#0f0f0f;border:1px solid #262626;border-radius:8px;padding:2px 6px;font-size:13px;color:#9ca3af}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 대출 갈아타기 계산기</div>
+<h1>대출 갈아타기 계산기</h1>
+<p class="lead">기존 대출 <b>잔액·금리·잔여기간</b>과 <b>신규 금리</b>를 넣으면 상환표 기준 <b>월 상환액·총이자 절감액·중도상환수수료</b>까지 따져 <b>순절감액과 손익분기</b>를 계산합니다.</p>
+
+<div class="card">
+  <label>상환방식</label>
+  <div class="seg" id="seg">
+    <button data-m="equal" class="on">원리금균등</button>
+    <button data-m="principal">원금균등</button>
+    <button data-m="bullet">만기일시</button>
+  </div>
+
+  <label for="principal">잔여 대출 원금 (만원) <span class="hint" id="hp">= 1억 원</span></label>
+  <input type="text" inputmode="decimal" id="principal" value="10,000" />
+
+  <div class="row" style="margin-top:14px">
+    <div>
+      <label for="oldRate">현재 금리 (%)</label>
+      <input type="text" inputmode="decimal" id="oldRate" value="5.5" />
+    </div>
+    <div>
+      <label for="newRate">갈아탈 금리 (%)</label>
+      <input type="text" inputmode="decimal" id="newRate" value="4.2" />
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:14px">
+    <div>
+      <label for="months">잔여 기간 (개월) <span class="hint" id="hm">10년</span></label>
+      <input type="text" inputmode="decimal" id="months" value="120" />
+    </div>
+    <div>
+      <label for="feeRate">중도상환수수료율 (%)</label>
+      <input type="text" inputmode="decimal" id="feeRate" value="1.2" />
+    </div>
+  </div>
+
+  <label for="extra" style="margin-top:14px">신규 부대비용 — 인지세·설정비 등 (만원)</label>
+  <input type="text" inputmode="decimal" id="extra" value="30" />
+
+  <button id="calc">갈아타기 손익 계산하기</button>
+
+  <div class="out" id="out">
+    <div class="big" id="verdict">–</div>
+    <div class="bigsub" id="vsub"></div>
+    <div class="facts">
+      <div class="fact"><div class="k">기존 대출 월 상환액</div><div class="v" id="oldPay">–</div></div>
+      <div class="fact"><div class="k">갈아탈 대출 월 상환액</div><div class="v good" id="newPay">–</div></div>
+      <div class="fact"><div class="k">기존 총이자</div><div class="v" id="oldInt">–</div></div>
+      <div class="fact"><div class="k">갈아탈 총이자</div><div class="v good" id="newInt">–</div></div>
+      <div class="fact"><div class="k">총이자 절감</div><div class="v good" id="save">–</div></div>
+      <div class="fact"><div class="k">갈아타기 비용</div><div class="v bad" id="cost">–</div></div>
+      <div class="fact"><div class="k">순 절감액</div><div class="v" id="net">–</div></div>
+      <div class="fact"><div class="k">손익분기</div><div class="v" id="be">–</div></div>
+    </div>
+    <p class="disc" id="disc"></p>
+  </div>
+</div>
+
+<div class="ad" id="ad1">광고 영역</div>
+
+<div class="prose">
+  <h2>대출 갈아타기(대환)란?</h2>
+  <p>대출 갈아타기는 기존 대출을 더 낮은 금리의 새 대출로 갈아타 이자 부담을 줄이는 것입니다. 금리가 낮아지면 이자를 아낄 수 있지만, 기존 대출을 미리 갚을 때 내는 <b>중도상환수수료</b>와 신규 대출의 <b>부대비용</b>(인지세·근저당 설정비 등)이 듭니다. 그래서 단순히 금리차만 볼 게 아니라, 줄어드는 총이자에서 이 비용들을 빼고 남는 <b>순절감액</b>을 따져야 진짜 이득인지 알 수 있습니다.</p>
+
+  <h2>원리금균등 상환 공식</h2>
+  <p>이 계산기는 <b>상환표(amortization)</b>로 기존·신규 대출의 총이자를 각각 계산합니다. 가장 흔한 <b>원리금균등상환</b>은 매달 같은 금액(원금+이자)을 갚는 방식으로, 월 상환액 M은 아래 공식으로 구합니다.</p>
+  <p><span class="code">M = P · r · (1+r)<sup>n</sup> / ( (1+r)<sup>n</sup> − 1 )</span></p>
+  <p>여기서 <b>P</b>는 잔여 원금, <b>r</b>은 월이율(연이율 ÷ 12 ÷ 100), <b>n</b>은 잔여 개월수입니다. 총상환액은 <span class="code">M × n</span>, 총이자는 <span class="code">M × n − P</span>가 됩니다. 금리가 0%면 단순히 원금을 개월수로 나눈 값이 월 상환액입니다.</p>
+  <ul>
+    <li><b>원금균등</b>: 매달 원금(P/n)은 고정하고 이자는 남은 잔액×월이율로 점점 줄어듭니다. 초반 부담이 크지만 총이자는 가장 적습니다.</li>
+    <li><b>만기일시</b>: 만기 전까지는 매달 이자(P×월이율)만 내고 만기에 원금을 한 번에 갚습니다. 총이자가 가장 큽니다.</li>
+  </ul>
+
+  <h2>중도상환수수료와 손익분기</h2>
+  <p>중도상환수수료는 보통 <b>남은 원금 × 수수료율</b>로 계산합니다(예: 1억 원 × 1.2% = 120만 원). 대출 실행 후 3년이 지나면 면제되는 경우가 많습니다. <b>손익분기 개월수</b>는 갈아타기 총비용을 평균 월 이자절감액으로 나눈 값으로, 잔여 기간이 이보다 길면 갈아타는 게 유리합니다.</p>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>Q. 결과 금액이 실제와 정확히 같나요?</b><p>상환방식별 상환표 기준 추정치입니다. 실제 금액은 우대금리·상환방식·수수료 면제 조건 등 세부사항에 따라 달라질 수 있어, 최종 판단 전 대출 약정서를 확인하세요.</p></div>
+  <div class="faq"><b>Q. 금리가 같거나 더 높으면?</b><p>신규 금리가 현재 금리보다 낮아야 절감 효과가 생깁니다. 금리차가 없으면 갈아탈 이유가 줄어듭니다.</p></div>
+  <div class="faq"><b>Q. 입력한 값이 저장되나요?</b><p>아니요. 모든 계산은 브라우저 안에서만 이뤄지며 서버로 전송·저장되지 않습니다.</p></div>
+</div>
+
+<div class="coupang-slot" data-subid="refinance" style="margin:24px 0"></div>
+
+<h2>다른 도구</h2>
+<div class="more">
+  <a href="/dsr/">DSR 계산기</a>
+  <a href="/jeonse-loan/">전세자금대출 계산기</a>
+  <a href="/salary/">연봉 실수령액 계산기</a>
+  <a href="/">전체 도구 보기</a>
+</div>
+
+<footer>
+  🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/>
+  <a href="/privacy.html">개인정보처리방침</a>·<a href="/terms.html">이용약관</a>·<a href="/contact.html">문의</a>
+</footer>
+</div>
+
+<script>
+/*
+  대출 갈아타기(대환) 계산 로직 — 아래 amortize/calcRefi 는 소스 앱에서 그대로 포팅함.
+  Source: C:\Users\dydrm\projects\daily\2026-06-20-loan-refi\src\lib\refi.ts
+  (원리금균등 M = P·r·(1+r)^n / ((1+r)^n − 1), 총이자 = M·n − P;
+   원금균등은 매달 원금 P/n 고정·이자 잔액×r 체감; 만기일시는 매달 이자 P·r·만기 원금일시)
+*/
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var MAN=10000;
+  var method='equal';
+
+  // ── 소스 포팅: amortize() ─────────────────────────────────
+  function amortize(principal, annualRatePct, months, method){
+    var P=Math.max(0,principal);
+    var n=Math.max(0,Math.floor(months));
+    var r=Math.max(0,annualRatePct)/100/12; // 월이율
+
+    if(P===0||n===0){
+      return {firstPayment:0,totalInterest:0,totalPayment:P};
+    }
+
+    if(method==='bullet'){
+      var monthlyInterest=P*r;
+      var totalInterestB=monthlyInterest*n;
+      return {firstPayment:monthlyInterest,totalInterest:totalInterestB,totalPayment:P+totalInterestB};
+    }
+
+    if(method==='principal'){
+      var principalPart=P/n;
+      var totalInterestP=0;
+      for(var k=0;k<n;k++){
+        var balance=P-principalPart*k;
+        totalInterestP+=balance*r;
+      }
+      var firstPaymentP=principalPart+P*r;
+      return {firstPayment:firstPaymentP,totalInterest:totalInterestP,totalPayment:P+totalInterestP};
+    }
+
+    // equal — 원리금균등
+    if(r===0){
+      var M0=P/n;
+      return {firstPayment:M0,totalInterest:0,totalPayment:P};
+    }
+    var pow=Math.pow(1+r,n);
+    var M=(P*r*pow)/(pow-1);
+    var totalPayment=M*n;
+    var totalInterest=totalPayment-P;
+    return {firstPayment:M,totalInterest:totalInterest,totalPayment:totalPayment};
+  }
+
+  // ── 소스 포팅: calcRefi() ─────────────────────────────────
+  function calcRefi(i){
+    var P=Math.max(0,i.principal);
+    var months=Math.max(0,Math.floor(i.months));
+    var oldS=amortize(P,i.oldRate,months,i.method);
+    var next=amortize(P,i.newRate,months,i.method);
+
+    var interestSaving=oldS.totalInterest-next.totalInterest;
+    var prepayFee=Math.round((P*Math.max(0,i.prepayFeeRate))/100);
+    var extraCost=Math.max(0,i.extraCost);
+    var totalCost=prepayFee+extraCost;
+    var netSaving=interestSaving-totalCost;
+
+    var monthlySavingAvg=months>0?interestSaving/months:0;
+    var breakEvenMonths=monthlySavingAvg>0?Math.ceil(totalCost/monthlySavingAvg):null;
+
+    var outcome;
+    if(i.oldRate<=i.newRate) outcome='nodiff';
+    else if(netSaving>0) outcome='win';
+    else if(netSaving<0) outcome='lose';
+    else outcome='even';
+
+    return {old:oldS,next:next,interestSaving:interestSaving,prepayFee:prepayFee,
+      extraCost:extraCost,totalCost:totalCost,netSaving:netSaving,
+      monthlySavingAvg:monthlySavingAvg,breakEvenMonths:breakEvenMonths,outcome:outcome};
+  }
+
+  // ── 포맷 헬퍼 (소스 won/manWon 포팅) ─────────────────────────
+  function won(n){
+    if(!isFinite(n)) return '—';
+    return Math.round(n).toLocaleString('ko-KR')+'원';
+  }
+  function manWon(n){
+    if(!isFinite(n)) return '—';
+    var sign=n<0?'-':'';
+    var abs=Math.abs(n);
+    var e=Math.floor(abs/100000000);
+    var manTotal=Math.round(abs/10000);
+    if(e>0){
+      var man=manTotal-e*10000;
+      if(man>0) return sign+e+'억 '+man.toLocaleString('ko-KR')+'만 원';
+      return sign+e+'억 원';
+    }
+    return sign+manTotal.toLocaleString('ko-KR')+'만 원';
+  }
+  function eok(n){
+    if(!isFinite(n)||n<=0) return '0원';
+    var e=Math.floor(n/100000000);
+    var man=Math.round((n-e*100000000)/10000);
+    if(e>0&&man>0) return e+'억 '+man.toLocaleString('ko-KR')+'만 원';
+    if(e>0) return e+'억 원';
+    return man.toLocaleString('ko-KR')+'만 원';
+  }
+
+  function numv(id){
+    var raw=($(id).value||'').replace(/[^0-9.]/g,'');
+    return Math.max(0,Number(raw)||0);
+  }
+  function periodLabel(m){
+    var y=Math.floor(m/12), rem=m%12;
+    if(y>0) return rem>0?(y+'년 '+rem+'개월'):(y+'년');
+    return m+'개월';
+  }
+
+  // 상환방식 토글
+  $('seg').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    method=b.getAttribute('data-m');
+    Array.prototype.forEach.call($('seg').children,function(c){c.classList.remove('on')});
+    b.classList.add('on');
+  });
+
+  // 입력 보조 힌트
+  function refreshHints(){
+    $('hp').textContent='= '+eok(numv('principal')*MAN);
+    $('hm').textContent=periodLabel(Math.floor(numv('months')));
+  }
+  $('principal').addEventListener('input',refreshHints);
+  $('months').addEventListener('input',refreshHints);
+
+  function calc(){
+    var P=numv('principal')*MAN;
+    var months=Math.floor(numv('months'));
+    if(P<=0){alert('잔여 대출 원금을 입력하세요');return;}
+    if(months<=0){alert('잔여 기간(개월)을 입력하세요');return;}
+
+    var r=calcRefi({
+      principal:P,
+      oldRate:numv('oldRate'),
+      newRate:numv('newRate'),
+      months:months,
+      prepayFeeRate:numv('feeRate'),
+      extraCost:numv('extra')*MAN,
+      method:method
+    });
+
+    var v=$('verdict'), vs=$('vsub'), net=$('net'), be=$('be');
+    v.classList.remove('warn');
+    if(r.outcome==='nodiff'){
+      v.textContent='금리차가 없어요';
+      vs.textContent='갈아탈 금리를 현재보다 낮게 입력하면 절감 효과가 생겨요.';
+    } else if(r.outcome==='win'){
+      v.textContent='갈아타는 게 이득 👍';
+      vs.textContent='비용 빼고 약 '+manWon(r.netSaving)+' 순절감'
+        +(r.breakEvenMonths!=null?(' · 손익분기 '+r.breakEvenMonths+'개월'):'');
+    } else if(r.outcome==='lose'){
+      v.classList.add('warn');
+      v.textContent='갈아타면 손해 👎';
+      vs.textContent='약 '+manWon(Math.abs(r.netSaving))+' 더 냅니다 (이자절감 < 비용).';
+    } else {
+      v.textContent='본전이에요 ⚖️';
+      vs.textContent='이자절감과 비용이 거의 같아요.';
+    }
+
+    $('oldPay').textContent=won(r.old.firstPayment);
+    $('newPay').textContent=won(r.next.firstPayment);
+    $('oldInt').textContent=won(r.old.totalInterest);
+    $('newInt').textContent=won(r.next.totalInterest);
+    $('save').textContent=won(r.interestSaving);
+    $('cost').textContent=won(r.totalCost);
+    net.textContent=won(r.netSaving);
+    net.className='v '+(r.netSaving>=0?'good':'bad');
+    be.textContent=r.breakEvenMonths!=null?(r.breakEvenMonths+'개월'):'—';
+
+    var ml=({equal:'원리금균등',principal:'원금균등',bullet:'만기일시'})[method];
+    $('disc').textContent='※ '+ml+' 상환표 기준 추정치입니다. 월 상환액은 '
+      +(method==='equal'?'매달 동일':'첫 달 기준')
+      +'이며, 중도상환수수료는 잔여 원금 × '+numv('feeRate')+'% = '+won(r.prepayFee)
+      +'로 계산했습니다. 실제 금액은 우대금리·세부조건에 따라 달라질 수 있고, 모든 계산은 기기 안에서 처리됩니다.';
+
+    $('out').style.display='block';
+  }
+
+  $('calc').addEventListener('click',calc);
+  refreshHints();
+})();
+</script>
+<script src="/coupang.js"></script>
+</body>
+</html>
