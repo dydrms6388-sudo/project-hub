@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-22T12:00:00.000Z",
+  "updatedAt": "2026-06-22T13:30:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "이상형월드컵 메이커",
+      "emoji": "👑",
+      "domain": "바이럴/엔터",
+      "desc": "음식·여행·연예인·동물 무엇이든 토너먼트로! 탭 한 번으로 끝까지 골라보는 이상형 월드컵. 큐레이션 10종(야식·여행지·디저트·초능력·심쿵행동·세계음식 등 각 16강)을 바로 플레이하고, 누구나 '내 월드컵'을 만들어 공유 링크 하나로 친구를 끌어옵니다(바이럴 루프). 우승 결과는 익명으로 집계돼 '전체의 N%가 이걸 우승으로 뽑았어요' + 모두의 우승 랭킹 막대그래프로 표시(Neon 격리스키마 worldcup, 매치 승률·우승·등장 횟수 트래킹). 8/16/32강 선택, '방금 선택 되돌리기' UX, 카테고리 필터·랜덤 플레이·최근 만들어진 월드컵 피드(리텐션). 몰입 4종: react-three-fiber 회전 3D 황금 트로피 우승 연출(3D), framer-motion 카드 VS 슬라이드·진행바 스프링(애니메이션), canvas-confetti 우승 폭죽(효과), Web Audio 합성 선택·전진·팡파레 사운드(음소거 기본 OFF 토글). 수익화 키트: AdSense(홈·결과), 카테고리 맥락 쿠팡 파트너스(음식→밀키트·여행→캐리어·동물→반려용품, 고지문), 큐별 동적 OG 1200x630·sitemap·robots·Game/WebSite JSON-LD·웹공유. 무가입. 바이럴 트래픽 광고+제휴 수익 정조준. 큐 #ideal-worldcup(다각화: 비금융 바이럴 포맷).",
+      "live": "https://dydrms-worldcup.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-worldcup",
+      "status": "live",
+      "date": "2026-06-22"
+    },
     {
       "name": "여행 짐싸기 체크리스트",
       "emoji": "🧳",
