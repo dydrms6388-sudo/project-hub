@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-22T07:30:00.000Z",
+  "updatedAt": "2026-06-22T16:40:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "바디스캔",
+      "emoji": "🩻",
+      "domain": "건강/다이어트",
+      "desc": "키·체중·허리·목둘레(여성은 엉덩이)만 입력하면 30초 만에 내 몸을 종합 진단하는 무료 셀프 체크 도구. 미 해군식(US Navy, WebSearch로 상수 검증) 둘레측정 공식으로 체지방률을 추정하고 BMI(아시아 기준)·허리/키 비율(WHtR)·체지방량/제외지방량·건강 체중 범위를 한 화면에 산출. KNHANES 기반 분포로 '또래 중 상위 %' 게이미피케이션, 체지방·비만단계·복부비만을 종합한 S~E 등급. 임상영양·비만의학 전문가 콘텐츠로 단계별 식단/운동 맞춤 가이드와 의료 면책, 정확한 측정법, 단백질 식품표, FAQ 8문항(JSON-LD). 진단 기록 로컬 저장·변화 추이 그래프·주간 연속측정 스트릭(리텐션), 결과 공유 카드(바이럴). r3f 3D 신체 스캔(체지방에 따라 체형 변형·스캔링·파티클)·framer 애니·canvas-confetti·Web Audio 합성사운드 토글(기본OFF) 몰입4종, 수익화키트(AdSlot·체중계/단백질 쿠팡 제휴·동적 OG/sitemap/robots/JSON-LD·Web Share 공유·ads.txt·개인정보). 입력값 서버 미전송, 무백엔드·무유료API.",
+      "live": "https://body-fat-diagnosis.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/body-fat-diagnosis",
+      "status": "live",
+      "date": "2026-06-22"
+    },
     {
       "name": "줍줍",
       "emoji": "🎰",
