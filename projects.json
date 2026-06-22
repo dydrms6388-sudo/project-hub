@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-22T06:20:00Z",
+  "updatedAt": "2026-06-22T00:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -849,6 +849,16 @@
       "desc": "에어컨·가전 사용시간만 넣으면 이번달 전기요금을 누진제·세금까지 추정. 2026 한전 단가·월별 추적·절전 인사이트.",
       "live": "https://dydrms-power-bill.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/electricity-bill-sim",
+      "status": "live",
+      "date": "2026-06-22"
+    },
+    {
+      "name": "구독해지알리미",
+      "emoji": "🧾",
+      "domain": "생활/구독관리",
+      "desc": "흩어진 구독을 모아 결제일·무료체험 종료를 미리 알리고, 안 쓰는 구독이 새는 연간 금액을 한눈에. 로그인 없이 브라우저에만 저장.",
+      "live": "https://dydrms-subreminder.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-subreminder",
       "status": "live",
       "date": "2026-06-22"
     }
