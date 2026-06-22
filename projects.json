@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-22T05:00:00.000Z",
+  "updatedAt": "2026-06-22T05:21:07Z",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -819,6 +819,16 @@
       "desc": "대학 학점·평점(GPA) 계산기. 4.5/4.3/4.0 만점·전공평점·P/F·재수강·목표 역계산·4.0/100점 환산·학기별 추이. 무료, 기기 저장.",
       "live": "https://dydrms-hakjeom.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/dydrms-hakjeom",
+      "status": "live",
+      "date": "2026-06-22"
+    },
+    {
+      "name": "전기요금시뮬",
+      "emoji": "⚡",
+      "domain": "생활공과금",
+      "desc": "에어컨·가전 사용시간만 넣으면 이번달 전기요금을 누진제·세금까지 추정. 2026 한전 단가·월별 추적·절전 인사이트.",
+      "live": "https://dydrms-power-bill.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/electricity-bill-sim",
       "status": "live",
       "date": "2026-06-22"
     }
