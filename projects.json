@@ -3,6 +3,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "낮잠알람 파워냅",
+      "emoji": "🌙",
+      "domain": "건강/수면",
+      "desc": "지금 누우면 몇 시에 깨워줄까? 수면 과학(N1~N3·90분 주기·수면관성) 기반으로 10·20·30·90분 낮잠 기상 시각을 즉시 계산하고, 페이지 자체가 브라우저 알람(setTimeout+Web Audio 점점 커지는 종소리+Wake Lock 화면 켜둠+진동+document.title 카운트다운)이 된다. 3탭: ①낮잠(모드별 기상시각·과학설명·시작) ②카페인 냅(커피 마시고 20분—아데노신/카페인 메커니즘 체크리스트) ③밤잠(지금 자면 90분주기 기상시각 + '몇시 기상' 역산 취침시각). 잠들기까지 시간 슬라이더(5~20분)로 개인화·localStorage 기억해 재방문 인사, 점심후 졸림 골든타임 배지, 낮잠 연속기록(streak)·주간/누적 통계, Web Share 공유. 몰입4종: r3f 3D 밤하늘 달+별(Stars)·진행도따라 달빛 청→앰버, framer 카운트다운·알람 흔들림·토스트, canvas-confetti 기상 폭죽, Web Audio 합성 앰비언트(빗소리/화이트노이즈/파도 LFO)+효과음 토글(기본OFF). 수익화키트: AdSense(env 인라인 스크립트+메타+ads.txt)·쿠팡 제휴(수면안대·목베개·귀마개·백색소음기)·SEO 메타/OG 1200x630·sitemap/robots·WebApplication+FAQPage JSON-LD. 무백엔드·무유료API, 기록은 기기에만 저장. 수면 사실은 Sleep Foundation/CDC/Mayo 등 교차검증, 90분주기는 '근사치'로 정직 표기.",
+      "live": "https://dydrms-power-nap-alarm.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-power-nap-alarm",
+      "status": "live",
+      "date": "2026-06-22"
+    },
+    {
       "name": "내신등급컷시뮬",
       "emoji": "📊",
       "domain": "교육/입시",
