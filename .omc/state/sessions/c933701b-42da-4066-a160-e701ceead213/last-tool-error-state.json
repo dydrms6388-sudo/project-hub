@@ -1,7 +1,7 @@
 {
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"C:\\\\Users\\\\dydrm\\\\projects\\\\Taro\\\\onsaemiro\\\\app\\\\[locale]\\\\breathe\\\\soundscape.ts\"}",
-  "error": "File does not exist. Note: your current working directory is C:\\Users\\dydrm\\projects\\daily\\project-hub.",
-  "timestamp": "2026-06-23T02:10:56.905Z",
-  "retry_count": 2
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"rm -f \\\"/c/Users/dydrm/projects/daily/2026-06-20-factory-dash/.perm-test.txt\\\"\\ncd /c/Users/dydrm/projects/daily/2026-06-20-factory-dash\\necho \\\"=== unresolved count ===\\\"; node fb-helper....",
+  "error": "Exit code 1\n=== unresolved count ===\n4\n=== reprocess-list count + sample ===\ntotal 87\n[\n {\n  \"slug\": \"dydrms-dalian\",\n  \"name\": \"다롄 위켄드 (Dalian Weekend)\",\n  \"flagged\": false,\n  \"disliked\": true,\n  \"resolved\": false,\n  \"note\": \"\",\n  \"feedback\": \"너무 정적 컨텐츠 단순해 더 자유롭고 실제!! 구글 링크 까지 안내 하고 컨텐츠 더 다양하게헤서 자유도 높게 짤 수 있게 하고 고른 선택지들 동선도 고려해서 짜봐\",\n  \"auto_score\": null\n },\n {\n  \"slug\": \"jaksim\",\n  \"name\": \"작심 (Jaksim)\",\n  \"flagged\": true,\n  \"disliked\": false,\n  \"resolved\": false,\n  \"note\": \"실제 힘나는 한마디들?? 그런것...",
+  "timestamp": "2026-06-23T02:39:13.102Z",
+  "retry_count": 1
 }
