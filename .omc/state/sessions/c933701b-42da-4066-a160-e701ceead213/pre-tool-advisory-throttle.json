@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "entries": {
+    "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
+      "last_emitted_at_ms": 1782180679978,
+      "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
+    },
+    "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
+      "last_emitted_at_ms": 1782180606126,
+      "message": "Read multiple files in parallel when possible for faster analysis."
+    },
+    "459c54e5f35d6a58dcd90d2aecc21fa6d1f35d241bc5b134c506f87dc7b6d67b": {
+      "last_emitted_at_ms": 1782180584394,
+      "message": "Combine searches in parallel when investigating multiple patterns."
+    },
+    "445ed27a3872b681d98190bae61ccb84954e1bc4e140df5370be958dee776b3a": {
+      "last_emitted_at_ms": 1782180520006,
+      "message": "Verify changes work after editing. Test functionality before marking complete."
+    },
+    "d565236bae0c13ae416eef04b120f13a35661c06f51f41e5b8f16710e077778c": {
+      "last_emitted_at_ms": 1782180223463,
+      "message": "Spawning agent: oh-my-claudecode:executor (inherit) [BACKGROUND] | Task: Redesign admin dashboard compact"
+    },
+    "dc69c3718347a38d1c863d7bfba4945e30290e0624640ac84a18e63fe9aae9ff": {
+      "last_emitted_at_ms": 1782177539521,
+      "message": "Spawning agent: episodic-memory:search-conversations (inherit) | Task: Search past conversations for priority"
+    }
+  },
+  "updated_at": "2026-06-23T02:11:19.978Z"
+}

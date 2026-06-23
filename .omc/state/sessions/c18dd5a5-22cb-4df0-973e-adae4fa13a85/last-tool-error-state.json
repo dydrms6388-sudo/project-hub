@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cat <<'PY' > /tmp/chk.py\\ndef case(sharePct, takenCount, liveTotal, liveSame, liveSharePct):\\n    sameCount = max(11, round(takenCount*sharePct/100))\\n    effShare = round((sharePct + live...",
+  "error": "Exit code 49\nPython",
+  "timestamp": "2026-06-22T23:20:35.331Z",
+  "retry_count": 1
+}
