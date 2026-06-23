@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-23T04:45:52.456Z",
+  "updatedAt": "2026-06-23T07:51:55.638Z",
   "missions": [
     {
       "id": "session:c933701b-42da-4066-a160-e701ceead213:none",
@@ -7,14 +7,14 @@
       "name": "none",
       "objective": "Session mission",
       "createdAt": "2026-06-23T01:19:00.735Z",
-      "updatedAt": "2026-06-23T04:45:52.456Z",
+      "updatedAt": "2026-06-23T07:51:55.638Z",
       "status": "running",
-      "workerCount": 26,
+      "workerCount": 27,
       "taskCounts": {
-        "total": 26,
+        "total": 27,
         "pending": 0,
         "blocked": 0,
-        "inProgress": 15,
+        "inProgress": 16,
         "completed": 11,
         "failed": 0
       },
@@ -278,17 +278,19 @@
           "latestUpdate": null,
           "completedSummary": null,
           "updatedAt": "2026-06-23T04:45:52.456Z"
+        },
+        {
+          "name": "workflow-subagent:a576463",
+          "role": "workflow-subagent",
+          "ownership": "a576463601850c527",
+          "status": "running",
+          "currentStep": null,
+          "latestUpdate": null,
+          "completedSummary": null,
+          "updatedAt": "2026-06-23T07:51:55.638Z"
         }
       ],
       "timeline": [
-        {
-          "id": "session-start:a749402850cab1056:2026-06-23T04:40:52.181Z",
-          "at": "2026-06-23T04:40:52.181Z",
-          "kind": "update",
-          "agent": "workflow-subagent:a749402",
-          "detail": "started workflow-subagent:a749402",
-          "sourceKey": "session-start:a749402850cab1056"
-        },
         {
           "id": "session-stop:a749402850cab1056:2026-06-23T04:45:50.545Z",
           "at": "2026-06-23T04:45:50.545Z",
@@ -304,6 +306,14 @@
           "agent": "workflow-subagent:aa74d9e",
           "detail": "started workflow-subagent:aa74d9e",
           "sourceKey": "session-start:aa74d9ece6b1ea3a4"
+        },
+        {
+          "id": "session-start:a576463601850c527:2026-06-23T07:51:55.638Z",
+          "at": "2026-06-23T07:51:55.638Z",
+          "kind": "update",
+          "agent": "workflow-subagent:a576463",
+          "detail": "started workflow-subagent:a576463",
+          "sourceKey": "session-start:a576463601850c527"
         }
       ]
     }
