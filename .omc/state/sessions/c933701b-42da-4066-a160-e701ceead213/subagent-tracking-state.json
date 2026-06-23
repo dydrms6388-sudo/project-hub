@@ -132,10 +132,24 @@
       "started_at": "2026-06-23T02:57:16.277Z",
       "parent_mode": "none",
       "status": "running"
+    },
+    {
+      "agent_id": "a91bd62a9f6ce4f3a",
+      "agent_type": "workflow-subagent",
+      "started_at": "2026-06-23T04:10:48.492Z",
+      "parent_mode": "none",
+      "status": "running"
+    },
+    {
+      "agent_id": "a2e35030c2667faf1",
+      "agent_type": "workflow-subagent",
+      "started_at": "2026-06-23T04:11:46.780Z",
+      "parent_mode": "none",
+      "status": "running"
     }
   ],
-  "total_spawned": 8,
+  "total_spawned": 10,
   "total_completed": 8,
   "total_failed": 4,
-  "last_updated": "2026-06-23T02:57:16.405Z"
+  "last_updated": "2026-06-23T04:11:46.891Z"
 }
