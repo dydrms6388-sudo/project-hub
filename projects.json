@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-23T00:00:00.000Z",
+  "updatedAt": "2026-06-23T03:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "오라랩 (AuraLab)",
+      "emoji": "🔮",
+      "domain": "심리테스트/엔터",
+      "desc": "질문에 답하면 내 성향이 하나의 '컬러 오라'로 떠오르는 무료 심리·성향 진단 허브. 컬러 오라(성격·8유형)·연애 오라(6유형)·직장 오라(6유형) 3종 테스트, 문항별 진행·궁합(환상의 짝/조심할 케미)·희귀도·강점/주의점 결과 카드. 결과 보관함(localStorage)·다시하기로 재방문, 결과별 동적 OG 이미지+공유로 바이럴. react-three-fiber 3D 오라 오브(유형 컬러로 모핑)·framer-motion 전환·canvas-confetti·Web Audio 합성 사운드(음소거 토글·기본OFF) 몰입4종. 수익화키트(AdSlot 애드센스 다중 슬롯·결과맥락 쿠팡 제휴·Pro 일회성 언락·SEO/OG/JSON-LD/sitemap/robots).",
+      "live": "https://dydrms-auralab.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-auralab",
+      "status": "live",
+      "date": "2026-06-23"
+    },
     {
       "name": "마음날씨 (Mind Weather)",
       "emoji": "🌤️",
@@ -56,7 +66,7 @@
       "name": "에그캣 ($EGGCAT)",
       "emoji": "🐱",
       "domain": "크립토/커뮤니티",
-      "desc": "100개+ 바이럴 콘텐츠 네트워크의 어텐션 밈코인 채널. '왜 성장하는가' 성장논리·토크노믹스·로드맵, 실시간 시세(CoinGecko)로 24시간 방향을 맞히는 예측게임(포인트·연속출석·리더보드·에어드랍 가중치, 도박 아님), 매일 회전하는 크립토 가이드, 최저 수수료 솔라나 구매가이드. 몰입4종(3D 회전코인·framer·confetti·Web Audio)+수익화키트(애드센스·SEO/OG/JSON-LD/sitemap). 실제 온체인 토큰 발행은 대표 지갑·키 필요로 대기.",
+      "desc": "실시세 기반 5분 예측 풀게임. 코인은 CoinGecko 실시세로 '화면 시세=정산 기준'을 단일화(상승 표시인데 하락 정산 나는 불일치 0건), 3분 오픈+2분 락 라운드에 풀이 차오르는 동안 환급배수가 1초마다 갱신, 락 구간엔 실현경로 스파크라인+잠정 승패까지. 14종 멀티마켓 라이브 보드로 동시 베팅, 다음 라운드 자동 베팅, 연승 보상(상한↑·배지)으로 참여성↑. 맞춘 쪽이 틀린 쪽 풀을 비율대로 배분(수수료 0% 보존). EGG는 가상 포인트(실제 자금·도박·투자권유 아님). '왜 성장하는가' 성장논리·토크노믹스·로드맵·크립토 가이드+수익화키트(애드센스·SEO/OG/JSON-LD/sitemap). 실제 온체인 토큰 발행은 대표 지갑·키 필요로 대기.",
       "live": "https://dydrms-eggcat.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/dydrms-eggcat",
       "status": "live",
