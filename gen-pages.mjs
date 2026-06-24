@@ -151,13 +151,15 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 writeFileSync("sitemap.xml", sitemap);
 
 // ── Phase2: apex 서빙 앱 rewrite(vercel.json 자동생성) — APEX_SERVED에 slug만 추가하면 됨 ──
-const rewrites = [];
+const rewrites = [], headers = [];
 for (const d of daily.filter(d => APEX_SERVED.has(d.slug))) {
   const base = d.live.replace(/\/$/, "");
   rewrites.push({ source: `/${d.slug}`, destination: `${base}/${d.slug}` });
   rewrites.push({ source: `/${d.slug}/:path*`, destination: `${base}/${d.slug}/:path*` });
+  // canonical→apex (프록시 응답에 Link 헤더 — 앱 코드 무수정으로 vercel.app를 apex에 통합)
+  headers.push({ source: `/${d.slug}`, headers: [{ key: "Link", value: `<${SITE}/${d.slug}/>; rel="canonical"` }] });
 }
-writeFileSync("vercel.json", JSON.stringify({ rewrites }, null, 2) + "\n");
+writeFileSync("vercel.json", JSON.stringify({ rewrites, headers }, null, 2) + "\n");
 
 // ── 내장 9개 정적 페이지에 verification 메타 주입(멱등) ──
 let patched = 0;
