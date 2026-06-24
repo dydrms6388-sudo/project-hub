@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>배란일 캘린더 — 건강 무료 도구 | TomatoEggCat</title>
+<meta name="description" content="마지막 생리 시작일과 평균 주기만 입력하면 배란일·가임기·다음 생리 예정일을 달력으로 한눈에 보여주는 여성 건강 도구. 표준 캘린더법(다음생리=LMP+주기, 배란일=다음생리−황체기14일, 가임기=배란 -5~+1일, ACOG/CDC/국민건강보험공단 검증)으로 계산하고, 8주기를 앞으로 투영해 이번달·다음달 달력에 생리/가임기/배란일/생리예정을 색으로 구분. 임신준비(TTC) 모드는 임신 확률이 가장 높은 배란 1~2일 전을 강조하고, 피임주의 모드는 '완전히 안전한 날은 없다' 경고를 강화(리듬법 부정확 면책). 재방문 훅: 주기 다이어리(생리 시작일 1탭 기록→최근 3~6주기 평균으로 예측 정밀도 자동 향상·신뢰도 배지), 오늘의 컨디션 증상 로그 8종, 생리주기 4단계(월경·난포·배란·황체) 교육. 입력검증(미래일·과거200일·범위 클램프)·NaN 방어. 몰입 4종: r3f 3D 달 오브(주기 단계별 색 변화·디스토트·파티클), framer-motion 진입/달력셀/FAQ 모션·D-day, canvas-confetti(계산 완료), Web Audio 합성음(탭·성공 아르페지오, 음소거 기본 OFF). 데이터는 서버 전송 없이 기기에만 저장(localStorage). '배란일 계산기·가임기 계산기·다음 생리일·임신 가능일·안전한 날' SEO 정조준 + WebApplication/FAQPage(8문항) JSON-LD·동적 OG·sitemap/robots. femcare 고CPC 애드센스 + 쿠팡 파트너스(배란테스트기·엽산·기초체온계·임테기 / 생리대·여성유산균 — 모드별 맥락 노출) 수익화 레디. 100개 큐 rank #18 플래그십." />
+<link rel="canonical" href="https://tomatoeggcat.com/ovulation-calendar/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="배란일 캘린더 — 건강 무료 도구 | TomatoEggCat" />
+<meta property="og:description" content="마지막 생리 시작일과 평균 주기만 입력하면 배란일·가임기·다음 생리 예정일을 달력으로 한눈에 보여주는 여성 건강 도구. 표준 캘린더법(다음생리=LMP+주기, 배란일=다음생리−황체기14일, 가임기=배란 -5~+1일, ACOG/CDC/국민건강보험공단 검증)으로 계산하고, 8주기를 앞으로 투영해 이번달·다음달 달력에 생리/가임기/배란일/생리예정을 색으로 구분. 임신준비(TTC) 모드는 임신 확률이 가장 높은 배란 1~2일 전을 강조하고, 피임주의 모드는 '완전히 안전한 날은 없다' 경고를 강화(리듬법 부정확 면책). 재방문 훅: 주기 다이어리(생리 시작일 1탭 기록→최근 3~6주기 평균으로 예측 정밀도 자동 향상·신뢰도 배지), 오늘의 컨디션 증상 로그 8종, 생리주기 4단계(월경·난포·배란·황체) 교육. 입력검증(미래일·과거200일·범위 클램프)·NaN 방어. 몰입 4종: r3f 3D 달 오브(주기 단계별 색 변화·디스토트·파티클), framer-motion 진입/달력셀/FAQ 모션·D-day, canvas-confetti(계산 완료), Web Audio 합성음(탭·성공 아르페지오, 음소거 기본 OFF). 데이터는 서버 전송 없이 기기에만 저장(localStorage). '배란일 계산기·가임기 계산기·다음 생리일·임신 가능일·안전한 날' SEO 정조준 + WebApplication/FAQPage(8문항) JSON-LD·동적 OG·sitemap/robots. femcare 고CPC 애드센스 + 쿠팡 파트너스(배란테스트기·엽산·기초체온계·임테기 / 생리대·여성유산균 — 모드별 맥락 노출) 수익화 레디. 100개 큐 rank #18 플래그십." />
+<meta property="og:url" content="https://tomatoeggcat.com/ovulation-calendar/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="배란일 캘린더 — 건강 무료 도구 | TomatoEggCat" />
+<meta name="twitter:description" content="마지막 생리 시작일과 평균 주기만 입력하면 배란일·가임기·다음 생리 예정일을 달력으로 한눈에 보여주는 여성 건강 도구. 표준 캘린더법(다음생리=LMP+주기, 배란일=다음생리−황체기14일, 가임기=배란 -5~+1일, ACOG/CDC/국민건강보험공단 검증)으로 계산하고, 8주기를 앞으로 투영해 이번달·다음달 달력에 생리/가임기/배란일/생리예정을 색으로 구분. 임신준비(TTC) 모드는 임신 확률이 가장 높은 배란 1~2일 전을 강조하고, 피임주의 모드는 '완전히 안전한 날은 없다' 경고를 강화(리듬법 부정확 면책). 재방문 훅: 주기 다이어리(생리 시작일 1탭 기록→최근 3~6주기 평균으로 예측 정밀도 자동 향상·신뢰도 배지), 오늘의 컨디션 증상 로그 8종, 생리주기 4단계(월경·난포·배란·황체) 교육. 입력검증(미래일·과거200일·범위 클램프)·NaN 방어. 몰입 4종: r3f 3D 달 오브(주기 단계별 색 변화·디스토트·파티클), framer-motion 진입/달력셀/FAQ 모션·D-day, canvas-confetti(계산 완료), Web Audio 합성음(탭·성공 아르페지오, 음소거 기본 OFF). 데이터는 서버 전송 없이 기기에만 저장(localStorage). '배란일 계산기·가임기 계산기·다음 생리일·임신 가능일·안전한 날' SEO 정조준 + WebApplication/FAQPage(8문항) JSON-LD·동적 OG·sitemap/robots. femcare 고CPC 애드센스 + 쿠팡 파트너스(배란테스트기·엽산·기초체온계·임테기 / 생리대·여성유산균 — 모드별 맥락 노출) 수익화 레디. 100개 큐 rank #18 플래그십." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"배란일 캘린더","description":"마지막 생리 시작일과 평균 주기만 입력하면 배란일·가임기·다음 생리 예정일을 달력으로 한눈에 보여주는 여성 건강 도구. 표준 캘린더법(다음생리=LMP+주기, 배란일=다음생리−황체기14일, 가임기=배란 -5~+1일, ACOG/CDC/국민건강보험공단 검증)으로 계산하고, 8주기를 앞으로 투영해 이번달·다음달 달력에 생리/가임기/배란일/생리예정을 색으로 구분. 임신준비(TTC) 모드는 임신 확률이 가장 높은 배란 1~2일 전을 강조하고, 피임주의 모드는 '완전히 안전한 날은 없다' 경고를 강화(리듬법 부정확 면책). 재방문 훅: 주기 다이어리(생리 시작일 1탭 기록→최근 3~6주기 평균으로 예측 정밀도 자동 향상·신뢰도 배지), 오늘의 컨디션 증상 로그 8종, 생리주기 4단계(월경·난포·배란·황체) 교육. 입력검증(미래일·과거200일·범위 클램프)·NaN 방어. 몰입 4종: r3f 3D 달 오브(주기 단계별 색 변화·디스토트·파티클), framer-motion 진입/달력셀/FAQ 모션·D-day, canvas-confetti(계산 완료), Web Audio 합성음(탭·성공 아르페지오, 음소거 기본 OFF). 데이터는 서버 전송 없이 기기에만 저장(localStorage). '배란일 계산기·가임기 계산기·다음 생리일·임신 가능일·안전한 날' SEO 정조준 + WebApplication/FAQPage(8문항) JSON-LD·동적 OG·sitemap/robots. femcare 고CPC 애드센스 + 쿠팡 파트너스(배란테스트기·엽산·기초체온계·임테기 / 생리대·여성유산균 — 모드별 맥락 노출) 수익화 레디. 100개 큐 rank #18 플래그십.","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/ovulation-calendar/"}</script>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
+a{color:#34d399}
+.nav{font-size:13px;color:#6b7280;margin:18px 0 0}
+.nav a{color:#7aa2ff;text-decoration:none}
+.hero{text-align:center;padding:34px 0 8px}
+.emoji{font-size:46px}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+.cta:hover{transform:translateY(-2px)}
+.ad{margin:30px 0 0;min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #232323;border-radius:14px;color:#2f2f2f;font-size:12px}
+.about{margin:34px 0 0}
+.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
+.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
+.about ul{margin:0;padding-left:20px;color:#c4c9d2;font-size:14.5px}
+.about li{margin:5px 0}
+.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.related{margin:38px 0 0}
+.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel span{font-size:18px}
+footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
+footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+@media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav"><a href="/">← TomatoEggCat 홈</a> · <span>건강</span></div>
+  <div class="hero">
+    <div class="emoji">🌙</div>
+    <h1>배란일 캘린더</h1>
+    <p class="lead">마지막 생리 시작일과 평균 주기만 입력하면 배란일·가임기·다음 생리 예정일을 달력으로 한눈에 보여주는 여성 건강 도구. 표준 캘린더법(다음생리=LMP+주기, 배란일=다음생리−황체기14일, 가임기=배란 -5~+1일, ACOG/CDC/국민건강보험공단 검증)으로 계산하고, 8주기를 앞으로 투영해 이번달·다음달 달력에 생리/가임기/배란일/생리예정을 색으로 구분. 임신준비(TTC) 모드는 임신 확률이 가장 높은 배란 1~2일 전을 강조하고, 피임주의 모드는 '완전히 안전한 날은 없다' 경고를 강화(리듬법 부정확 면책). 재방문 훅: 주기 다이어리(생리 시작일 1탭 기록→최근 3~6주기 평균으로 예측 정밀도 자동 향상·신뢰도 배지), 오늘의 컨디션 증상 로그 8종, 생리주기 4단계(월경·난포·배란·황체) 교육. 입력검증(미래일·과거200일·범위 클램프)·NaN 방어. 몰입 4종: r3f 3D 달 오브(주기 단계별 색 변화·디스토트·파티클), framer-motion 진입/달력셀/FAQ 모션·D-day, canvas-confetti(계산 완료), Web Audio 합성음(탭·성공 아르페지오, 음소거 기본 OFF). 데이터는 서버 전송 없이 기기에만 저장(localStorage). '배란일 계산기·가임기 계산기·다음 생리일·임신 가능일·안전한 날' SEO 정조준 + WebApplication/FAQPage(8문항) JSON-LD·동적 OG·sitemap/robots. femcare 고CPC 애드센스 + 쿠팡 파트너스(배란테스트기·엽산·기초체온계·임테기 / 생리대·여성유산균 — 모드별 맥락 노출) 수익화 레디. 100개 큐 rank #18 플래그십.</p>
+    <a class="cta" href="https://ovulation-calendar.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
+  </div>
+  <div class="ad">광고 영역</div>
+  <section class="about"><h2>배란일 캘린더 소개</h2>
+    <p>마지막 생리 시작일과 평균 주기만 입력하면 배란일·가임기·다음 생리 예정일을 달력으로 한눈에 보여주는 여성 건강 도구. 표준 캘린더법(다음생리=LMP+주기, 배란일=다음생리−황체기14일, 가임기=배란 -5~+1일, ACOG/CDC/국민건강보험공단 검증)으로 계산하고, 8주기를 앞으로 투영해 이번달·다음달 달력에 생리/가임기/배란일/생리예정을 색으로 구분. 임신준비(TTC) 모드는 임신 확률이 가장 높은 배란 1~2일 전을 강조하고, 피임주의 모드는 '완전히 안전한 날은 없다' 경고를 강화(리듬법 부정확 면책). 재방문 훅: 주기 다이어리(생리 시작일 1탭 기록→최근 3~6주기 평균으로 예측 정밀도 자동 향상·신뢰도 배지), 오늘의 컨디션 증상 로그 8종, 생리주기 4단계(월경·난포·배란·황체) 교육. 입력검증(미래일·과거200일·범위 클램프)·NaN 방어. 몰입 4종: r3f 3D 달 오브(주기 단계별 색 변화·디스토트·파티클), framer-motion 진입/달력셀/FAQ 모션·D-day, canvas-confetti(계산 완료), Web Audio 합성음(탭·성공 아르페지오, 음소거 기본 OFF). 데이터는 서버 전송 없이 기기에만 저장(localStorage). '배란일 계산기·가임기 계산기·다음 생리일·임신 가능일·안전한 날' SEO 정조준 + WebApplication/FAQPage(8문항) JSON-LD·동적 OG·sitemap/robots. femcare 고CPC 애드센스 + 쿠팡 파트너스(배란테스트기·엽산·기초체온계·임테기 / 생리대·여성유산균 — 모드별 맥락 노출) 수익화 레디. 100개 큐 rank #18 플래그십.</p>
+    <h2>주요 특징</h2>
+    <ul>
+        <li>마지막 생리 시작일과 평균 주기만 입력하면 배란일·가임기·다음 생리 예정일을 달력으로 한눈에 보여주는 여성 건강 도구.</li>
+        <li>표준 캘린더법(다음생리=LMP+주기, 배란일=다음생리−황체기14일, 가임기=배란 -5~+1일, ACOG/CDC/국민건강보험공단 검증)으로 계산하고, 8주기를 앞으로 투영해 이번달·다음달 달력에 생리/가임기/배란일/생리예정을 색으로 구분.</li>
+        <li>임신준비(TTC) 모드는 임신 확률이 가장 높은 배란 1~2일 전을 강조하고, 피임주의 모드는 '완전히 안전한 날은 없다' 경고를 강화(리듬법 부정확 면책).</li>
+        <li>재방문 훅: 주기 다이어리(생리 시작일 1탭 기록→최근 3~6주기 평균으로 예측 정밀도 자동 향상·신뢰도 배지), 오늘의 컨디션 증상 로그 8종, 생리주기 4단계(월경·난포·배란·황체) 교육.</li>
+        <li>입력검증(미래일·과거200일·범위 클램프)·NaN 방어.</li>
+        <li>몰입 4종: r3f 3D 달 오브(주기 단계별 색 변화·디스토트·파티클), framer-motion 진입/달력셀/FAQ 모션·D-day, canvas-confetti(계산 완료), Web Audio 합성음(탭·성공 아르페지오, 음소거 기본 OFF).</li>
+    </ul>
+    <p class="cat-note">카테고리: 건강/여성·femcare · 설치·가입 없이 브라우저에서 무료로 바로 사용</p></section>
+  <div class="coupang-slot" data-subid="ovulation-calendar" style="margin:28px 0 0"></div>
+  <section class="related">
+    <h2>관련 서비스</h2>
+    <div class="rel-grid"><a class="rel" href="/weight-roadmap/"><span>🟢</span> 감량로드맵</a>
+      <a class="rel" href="/dydrms-owanwan/"><span>🏋️</span> 오운완 AI 코치 (OWANWAN)</a>
+      <a class="rel" href="/dydrms-power-nap-alarm/"><span>🌙</span> 낮잠알람 파워냅</a>
+      <a class="rel" href="/body-fat-diagnosis/"><span>🩻</span> 바디스캔</a>
+      <a class="rel" href="/dydrms-calorie-killer/"><span>🔥</span> 칼로리킬러</a>
+      <a class="rel" href="/dydrms-liftrank/"><span>🏋️</span> 리프트랭크</a></div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>
+    <p style="margin:0">
+      <a href="/privacy.html">개인정보처리방침</a>·
+      <a href="/terms.html">이용약관</a>·
+      <a href="/contact.html">문의</a>
+    </p>
+  </footer>
+</div>
+<script src="/coupang.js"></script>
+</body>
+</html>
