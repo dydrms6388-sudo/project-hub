@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-24",
+  "updatedAt": "2026-06-24T00:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -1309,6 +1309,16 @@
       "desc": "각자 14문항을 풀면 두 사람 답을 합산·대조해 결혼 가능성과 대화가 필요한 지점을 알려주는 관계심리 기반 커플 테스트",
       "live": "https://marriage-odds-test.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/marriage-odds-test",
+      "status": "live",
+      "date": "2026-06-24"
+    },
+    {
+      "name": "GPA 변환소",
+      "emoji": "🎓",
+      "domain": "교육/유학",
+      "desc": "한국 학점(4.5·4.3·100점)을 미국 4.0으로 변환 + 학기별 GPA 추적 + 목표 역산. 유학·교환·대학원 지원용.",
+      "live": "https://gpa-converter-wes.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/gpa-converter-wes",
       "status": "live",
       "date": "2026-06-24"
     }
