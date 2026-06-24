@@ -2,12 +2,15 @@
 // 사용: node gen-pages.mjs           (생성만)
 //       node gen-pages.mjs --ping    (생성 + IndexNow 제출)
 // 정적 사이트(빌드 없음). 실행은 project-hub 루트에서.
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+// slug = slug-map.json(대표명) 우선, 없으면 live 서브도메인. 허브 UI = lib/hub.mjs.
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from "node:fs";
 import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
+import { renderHub } from "./lib/hub.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
 const VERIFY_META = `<meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}" />\n  <meta name="naver-site-verification" content="${NAVER_SITE_VERIFICATION}" />`;
+const SLUG_MAP = JSON.parse(readFileSync("slug-map.json", "utf8"));
 
 // ── 내장 도구 9개(현 index.html과 동일) ──
 const BUILTINS = [
@@ -25,11 +28,26 @@ const BUILTIN_CATS = [
   { title: "💰 금융 · 세금", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 생활 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
 ];
-const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "age", "bmi", "dday", "dsr", "pyeong", "salary", "yangdo", "refinance"]);
+const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config"]);
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const slugify = live => { try { return new URL(live).host.replace(/\.vercel\.app$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase(); } catch { return null; } };
-const topcat = d => ((d || "기타").split("/")[0].trim() || "기타");
+
+// domain(118종 세분) → 상위 카테고리 ~12개
+const CATEGORY_RULES = [
+  ["건강·운동", /건강|운동|다이어트|피트니스|수면|러닝|습관|영양|임신|육아|웰니스|마음챙김|femcare|bmr|bmi|만성/i],
+  ["교육·학습", /교육|입시|자격증|어학|어휘|영어|한국사|타자|맞춤법|과학|개발자|퀴즈|학습|두뇌/i],
+  ["금융·부동산", /금융|부동산|대출|세금|보험|청약|전세|급여|dsr|연봉|노동|프리랜서/i],
+  ["취업·생산성", /취업|자소서|자기소개서|직장|근무|생산성|미팅|업무|\bai\b/i],
+  ["운세·심리", /운세|타로|심리|성격|사주|관상|점\b/i],
+  ["연애·관계", /연애|썸|커플|관계|결혼|웨딩|데이팅|궁합/i],
+  ["엔터·바이럴", /엔터|바이럴|팬덤|k-?pop|커뮤니티|게임|파티|월드컵|투표|밸런스|추천/i],
+  ["반려·식물", /반려|펫|식물|동물|강아지|고양이/i],
+  ["여행·문화", /여행|중국|다롄|관광/i],
+  ["뷰티·패션", /뷰티|퍼스널컬러|피부|컬러|패션/i],
+  ["투자·크립토", /투자|크립토|코인|주식/i],
+];
+const getCategory = d => { for (const [c, re] of CATEGORY_RULES) if (re.test(d || "")) return c; return "생활·계산기"; };
 
 // ── 데이터 ──
 const raw = JSON.parse(readFileSync("projects.json", "utf8"));
@@ -40,12 +58,12 @@ const daily = [];
 const seen = new Set();
 for (const p of projects) {
   if (!p.live || !/^https?:\/\//.test(p.live)) continue;
-  let s = slugify(p.live);
+  let s = SLUG_MAP[p.live] || slugify(p.live);
   if (!s) continue;
   if (RESERVED.has(s)) s = s + "-app";
   while (seen.has(s)) s = s + "-x";
   seen.add(s);
-  daily.push({ name: p.name, emoji: p.emoji || "🔧", desc: p.desc || p.name, domain: p.domain || "", live: p.live, slug: s, cat: topcat(p.domain) });
+  daily.push({ name: p.name, emoji: p.emoji || "🔧", desc: p.desc || p.name, domain: p.domain || "", live: p.live, slug: s, cat: getCategory(p.domain) });
 }
 
 // ── per-service 랜딩 생성 ──
@@ -70,7 +88,7 @@ for (const d of daily) {
     <ul>
         ${features}
     </ul>
-    <p class="cat-note">카테고리: ${esc(d.domain || d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
+    <p class="cat-note">카테고리: ${esc(d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
 
   const title = `${d.name} — ${d.cat} 무료 도구 | TomatoEggCat`;
   const html = tpl
@@ -92,140 +110,33 @@ for (const d of daily) {
   landingCount++;
 }
 
-// ── 허브 index.html 재생성 ──
-const card = (slug, emoji, name, desc, k) =>
-  `<a class="tool" href="/${slug}/" data-k="${esc(k)}"><span class="te">${emoji}</span><span class="tn">${esc(name)}</span><span class="td">${esc(desc)}</span></a>`;
-
-let sections = "";
-for (const c of BUILTIN_CATS) {
-  const cards = c.slugs.map(s => { const b = BUILTINS.find(x => x.slug === s); return "        " + card(b.slug, b.emoji, b.name, b.desc, b.k); }).join("\n");
-  sections += `
-    <section class="cat" data-cat>
-      <h2>${c.title}${c.tag ? ` <span class="tag">${c.tag}</span>` : ""}</h2>
-      <div class="grid">
-${cards}
-      </div>
-    </section>\n`;
+// ── 옛 slug 디렉터리 정리(대표명화로 바뀐 것 제거, 중복콘텐츠 방지) ──
+const validSlugs = new Set([...daily.map(d => d.slug), ...BUILTINS.map(b => b.slug)]);
+let removed = 0;
+for (const p of projects) {
+  if (!p.live) continue;
+  const old = slugify(p.live);
+  if (old && !validSlugs.has(old) && !RESERVED.has(old) && existsSync(`${old}/index.html`)) {
+    rmSync(old, { recursive: true, force: true });
+    removed++;
+  }
 }
-// 데일리: 카테고리별 그룹(건수 많은 순)
+
+// ── 허브 index.html (lib/hub.mjs) ──
+const builtinCats = BUILTIN_CATS.map(c => ({
+  title: c.title, tag: c.tag,
+  items: c.slugs.map(s => BUILTINS.find(b => b.slug === s)).filter(Boolean)
+    .map(b => ({ slug: b.slug, emoji: b.emoji, name: b.name, desc: b.desc, k: b.k })),
+}));
 const byCat = {};
 for (const d of daily) (byCat[d.cat] = byCat[d.cat] || []).push(d);
-for (const [cat, list] of Object.entries(byCat).sort((a, b) => b[1].length - a[1].length)) {
-  const cards = list.map(d => {
-    const short = String(d.desc).replace(/\s+/g, " ").slice(0, 64);
-    return "        " + card(d.slug, d.emoji, d.name, short, `${d.name} ${d.domain}`);
-  }).join("\n");
-  sections += `
-    <section class="cat" data-cat>
-      <h2>🗂️ ${esc(cat)}</h2>
-      <div class="grid">
-${cards}
-      </div>
-    </section>\n`;
-}
-
+const dailyByCat = Object.entries(byCat).sort((a, b) => b[1].length - a[1].length)
+  .map(([cat, items]) => ({ cat, items: items.map(d => ({ slug: d.slug, emoji: d.emoji, name: d.name, desc: String(d.desc).replace(/\s+/g, " ").slice(0, 70), domain: d.domain })) }));
 const total = BUILTINS.length + daily.length;
-const indexHtml = `<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0a0a0a" />
-  ${VERIFY_META}
-  <meta name="google-adsense-account" content="${ADSENSE}" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
-  <title>TomatoEggCat — 무료 계산기·생활 도구 ${total}종 모음</title>
-  <meta name="description" content="연봉 실수령액·DSR·세금·만나이·BMI부터 건강·교육·심리테스트·생활 도구까지 ${total}종. 설치도 가입도 없이 브라우저에서 바로 쓰는 무료 도구 모음." />
-  <link rel="canonical" href="${SITE}/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="TomatoEggCat" />
-  <meta property="og:title" content="TomatoEggCat — 무료 도구 ${total}종 모음" />
-  <meta property="og:url" content="${SITE}/" />
-  <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #0a0a0a; color: #ededed;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; line-height: 1.6; }
-    .wrap { max-width: 860px; margin: 0 auto; padding: 0 18px 64px; }
-    .hero { text-align: center; padding: 56px 0 18px; }
-    .logo { font-size: 40px; }
-    h1 { font-size: 30px; font-weight: 900; margin: 10px 0 0;
-      background: linear-gradient(90deg,#fff,#9ee7c8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-    .sub { color: #9ca3af; margin: 12px auto 0; max-width: 520px; font-size: 15px; }
-    .count { display: inline-block; margin-top: 16px; font-size: 12px; color: #6ee7b7; background: #06281f; border: 1px solid #0f5132; padding: 5px 12px; border-radius: 999px; }
-    .search { margin: 26px auto 0; max-width: 460px; display: block; width: 100%;
-      background: #141414; border: 1px solid #2a2a2a; border-radius: 14px; color: #ededed; padding: 13px 16px; font-size: 15px; }
-    .search:focus { outline: none; border-color: #10b981; }
-    .cat { margin-top: 38px; }
-    .cat h2 { font-size: 15px; font-weight: 800; color: #d4d4d4; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
-    .cat h2 .tag { font-size: 11px; font-weight: 700; color: #fbbf24; background: #2a230a; border: 1px solid #50410f; padding: 2px 8px; border-radius: 999px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .tool { display: block; text-decoration: none; border: 1px solid #232323; background: #161616; border-radius: 16px; padding: 16px 16px 15px; transition: transform .14s, border-color .14s, background .14s; }
-    .tool:hover { transform: translateY(-2px); border-color: #10b981; background: #181a19; }
-    .tool .te { font-size: 25px; display: block; }
-    .tool .tn { display: block; font-weight: 700; color: #f5f5f5; margin-top: 9px; font-size: 15.5px; }
-    .tool .td { display: block; color: #9ca3af; font-size: 12.5px; margin-top: 4px; line-height: 1.45; }
-    .ad { margin: 34px 0 0; min-height: 90px; display: flex; align-items: center; justify-content: center; border: 1px dashed #232323; border-radius: 14px; color: #2f2f2f; font-size: 12px; }
-    footer { margin-top: 44px; text-align: center; color: #6b7280; font-size: 12px; border-top: 1px solid #1c1c1c; padding-top: 22px; }
-    footer a { color: #7aa2ff; margin: 0 7px; text-decoration: none; }
-    .empty { color: #555; text-align: center; padding: 20px; font-size: 13px; display: none; }
-    @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 25px; } }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="hero">
-      <div class="logo">🍅🥚🐈</div>
-      <h1>TomatoEggCat</h1>
-      <p class="sub">연봉·대출·세금부터 건강·교육·심리테스트·생활 도구까지 — 설치도 가입도 없이 브라우저에서 즉시.</p>
-      <div class="count">무료 도구 ${total}종 · 매일 추가 중</div>
-      <input class="search" id="q" type="search" placeholder="🔍 도구 검색 (예: 연봉, 대출, 나이…)" autocomplete="off" />
-    </div>
-${sections}
-    <p class="empty" id="empty">검색 결과가 없어요. 다른 키워드로 찾아보세요.</p>
-
-    <div class="ad">광고 영역</div>
-    <div class="coupang-slot" data-subid="home" style="margin:28px 0 0"></div>
-
-    <footer>
-      <p style="margin:0 0 8px">🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구 모음</p>
-      <p style="margin:0">
-        <a href="/privacy.html">개인정보처리방침</a>·
-        <a href="/terms.html">이용약관</a>·
-        <a href="/contact.html">문의</a>
-      </p>
-    </footer>
-  </div>
-
-  <script>
-    var q = document.getElementById('q');
-    var tools = Array.prototype.slice.call(document.querySelectorAll('.tool'));
-    var cats = Array.prototype.slice.call(document.querySelectorAll('[data-cat]'));
-    var empty = document.getElementById('empty');
-    q.addEventListener('input', function () {
-      var v = q.value.trim().toLowerCase();
-      var any = false;
-      tools.forEach(function (t) {
-        var hay = (t.textContent + ' ' + (t.getAttribute('data-k') || '')).toLowerCase();
-        var show = !v || hay.indexOf(v) > -1;
-        t.style.display = show ? '' : 'none';
-        if (show) any = true;
-      });
-      cats.forEach(function (c) {
-        var visible = c.querySelectorAll('.tool:not([style*="none"])').length;
-        c.style.display = visible ? '' : 'none';
-      });
-      empty.style.display = any ? 'none' : 'block';
-    });
-  </script>
-  <script src="/coupang.js"></script>
-</body>
-</html>
-`;
+const indexHtml = renderHub({ site: SITE, adsense: ADSENSE, verifyMeta: VERIFY_META, total, builtinCats, dailyByCat });
 writeFileSync("index.html", indexHtml);
 
 // ── sitemap.xml ──
-const today = (raw.updatedAt || "").slice(0, 10) || "";
 const urls = [];
 urls.push(`  <url><loc>${SITE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`);
 for (const b of BUILTINS) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
@@ -249,9 +160,10 @@ for (const b of BUILTINS) {
   writeFileSync(f, h);
   patched++;
 }
-console.log(`builtin pages patched(verify): ${patched}`);
 
 console.log(`landing pages: ${landingCount}`);
+console.log(`removed stale slug dirs: ${removed}`);
+console.log(`builtin pages patched(verify): ${patched}`);
 console.log(`hub tools: ${total} (builtin ${BUILTINS.length} + daily ${daily.length})`);
 console.log(`sitemap urls: ${urls.length}`);
 console.log(`skipped (no live): ${projects.length - daily.length}`);
