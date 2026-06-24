@@ -33,6 +33,9 @@ const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "con
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const slugify = live => { try { return new URL(live).host.replace(/\.vercel\.app$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase(); } catch { return null; } };
 
+// Phase 2: apex에서 앱이 직접 서빙되는 slug → 정적 랜딩 생성 스킵(vercel.json rewrite가 처리). sitemap엔 동일 apex URL 유지.
+const APEX_SERVED = new Set(["dalian-weekend"]);
+
 // domain(118종 세분) → 상위 카테고리 ~12개
 const CATEGORY_RULES = [
   ["건강·운동", /건강|운동|다이어트|피트니스|수면|러닝|습관|영양|임신|육아|웰니스|마음챙김|femcare|bmr|bmi|만성/i],
@@ -69,6 +72,7 @@ for (const p of projects) {
 // ── per-service 랜딩 생성 ──
 let landingCount = 0;
 for (const d of daily) {
+  if (APEX_SERVED.has(d.slug)) { if (existsSync(`${d.slug}/index.html`)) rmSync(d.slug, { recursive: true, force: true }); continue; }
   let related = daily.filter(x => x.cat === d.cat && x.slug !== d.slug).slice(0, 6);
   if (related.length < 4) related = related.concat(daily.filter(x => x.slug !== d.slug && !related.includes(x)).slice(0, 6 - related.length));
   const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span>${r.emoji}</span> ${esc(r.name)}</a>`).join("\n      ");
@@ -144,6 +148,15 @@ for (const d of daily) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefre
 for (const p of ["privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 writeFileSync("sitemap.xml", sitemap);
+
+// ── Phase2: apex 서빙 앱 rewrite(vercel.json 자동생성) — APEX_SERVED에 slug만 추가하면 됨 ──
+const rewrites = [];
+for (const d of daily.filter(d => APEX_SERVED.has(d.slug))) {
+  const base = d.live.replace(/\/$/, "");
+  rewrites.push({ source: `/${d.slug}`, destination: `${base}/${d.slug}` });
+  rewrites.push({ source: `/${d.slug}/:path*`, destination: `${base}/${d.slug}/:path*` });
+}
+writeFileSync("vercel.json", JSON.stringify({ rewrites }, null, 2) + "\n");
 
 // ── 내장 9개 정적 페이지에 verification 메타 주입(멱등) ──
 let patched = 0;

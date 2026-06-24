@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/dalian-weekend",
+      "destination": "https://dydrms-dalian.vercel.app/dalian-weekend"
+    },
+    {
+      "source": "/dalian-weekend/:path*",
+      "destination": "https://dydrms-dalian.vercel.app/dalian-weekend/:path*"
+    }
+  ]
+}
