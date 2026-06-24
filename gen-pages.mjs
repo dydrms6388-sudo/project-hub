@@ -34,7 +34,8 @@ const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").re
 const slugify = live => { try { return new URL(live).host.replace(/\.vercel\.app$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase(); } catch { return null; } };
 
 // Phase 2: apex에서 앱이 직접 서빙되는 slug → 정적 랜딩 생성 스킵(vercel.json rewrite가 처리). sitemap엔 동일 apex URL 유지.
-const APEX_SERVED = new Set(["dalian-weekend"]);
+// 목록은 apex-served.json(데이터)에서 읽음 — 롤아웃이 이 파일에 통과 slug를 누적.
+const APEX_SERVED = new Set(existsSync("apex-served.json") ? JSON.parse(readFileSync("apex-served.json", "utf8")) : ["dalian-weekend"]);
 
 // domain(118종 세분) → 상위 카테고리 ~12개
 const CATEGORY_RULES = [
