@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd /c/Users/dydrm/projects/daily/2026-06-20-factory-dash\\necho \\\"=== 티어1: 내가 시킨 작업물(ideas pending) ===\\\"; node fb-helper.mjs ideas 2>&1 | node -e \\\"let s='';process.stdin.on('data',d=>s+=d...",
-  "error": "Exit code 1\n=== 티어1: 내가 시킨 작업물(ideas pending) ===\npending ideas: 0\n=== 티어2: 피드백 작업물(reprocess-list) ===\n재개발 대상: 105 (미해결 flagged: 9 )\n=== 티어3: 창작 무한 — 현재 서비스 수 ===\nnode:internal/modules/cjs/loader:1228\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module '/c/Users/dydrm/projects/daily/project-hub/projects.json'\r\nRequire stack:\r\n- C:\\Users\\dydrm\\projects\\daily\\2026-06-20-factory-dash\\[eval]\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1225:15)\r\n    at Module._load (node:internal/m...",
-  "timestamp": "2026-06-24T13:56:41.872Z",
+  "tool_input_preview": "{\"command\":\"python3 -c \\\"\\nimport json\\nwith open('C:/Users/dydrm/projects/daily/project-hub/apex-queue.json') as f:\\n    data = json.load(f)\\nfor i in range(126, 132):\\n    print(f'Index {i}: slug={d...",
+  "error": "Exit code 49\nPython",
+  "timestamp": "2026-06-24T17:36:54.645Z",
   "retry_count": 1
 }
