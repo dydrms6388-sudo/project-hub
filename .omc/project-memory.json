@@ -9,7 +9,7 @@
     "runtime": null
   },
   "build": {
-    "buildCommand": null,
+    "buildCommand": "cd /c/Users/dydrm/projects/daily/2026-06-20-factory-dash && npm run build 2>&1 | tail -40",
     "testCommand": null,
     "lintCommand": null,
     "devCommand": null,
@@ -206,6 +206,102 @@
       "path": "cleanup-rollout.mjs",
       "accessCount": 1,
       "lastAccessed": 1782291992381,
+      "type": "file"
+    },
+    {
+      "path": "auth-billing\\README.md",
+      "accessCount": 1,
+      "lastAccessed": 1782309114371,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\package.json",
+      "accessCount": 1,
+      "lastAccessed": 1782309194556,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\tsconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1782309221789,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\.env.example",
+      "accessCount": 1,
+      "lastAccessed": 1782309308833,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\prisma\\schema.prisma",
+      "accessCount": 1,
+      "lastAccessed": 1782309354594,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\lib\\prisma.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309376919,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\auth.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309443378,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\types\\next-auth.d.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309461030,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\middleware.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309504887,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\lib\\billing\\credits.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309542827,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\lib\\billing\\stripe.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309562514,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\lib\\billing\\toss.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309586735,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\lib\\billing\\catalog.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309607575,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\app\\api\\billing\\stripe\\checkout\\route.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309634847,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\app\\api\\billing\\stripe\\webhook\\route.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309670524,
+      "type": "file"
+    },
+    {
+      "path": "auth-hub\\src\\app\\api\\billing\\toss\\confirm\\route.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782309705468,
       "type": "file"
     }
   ],

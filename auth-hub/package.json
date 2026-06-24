@@ -1,0 +1,33 @@
+{
+  "name": "auth-hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "tomatoeggcat.com 통합 SSO + 중앙 과금 허브 (Next.js App Router + Auth.js v5 + Prisma)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@auth/prisma-adapter": "^2.7.4",
+    "@prisma/client": "^6.1.0",
+    "next": "^15.1.3",
+    "next-auth": "5.0.0-beta.25",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "stripe": "^17.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "prisma": "^6.1.0",
+    "typescript": "^5.7.2"
+  }
+}

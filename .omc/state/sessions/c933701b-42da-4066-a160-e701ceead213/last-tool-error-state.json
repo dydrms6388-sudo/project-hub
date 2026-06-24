@@ -1,7 +1,7 @@
 {
-  "tool_name": "PowerShell",
-  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/dydrm/projects/daily/2026-06-24-moving-cost-quote\\\"; npx vercel --prod --yes 2>&1\",\"description\":\"Deploy moving-cost-quote to Vercel production\",\"timeout\":300000}",
-  "error": "Exit code 1\nnpx : <claude-code-hint v=\"1\" type=\"plugin\" value=\"vercel@claude-plugins-official\" />\r\nAt line:1 char:66\r\n+ ... cts/daily/2026-06-24-moving-cost-quote\"; npx vercel --prod --yes 2>&1\r\n+                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (<claude-code-hi...ns-official\" />:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError\r\n \r\nVercel CLI 54.14.0 (Node.js 20.18.3)\r\nRetrieving project…\r\nDeployin...",
-  "timestamp": "2026-06-24T04:48:40.318Z",
-  "retry_count": 8
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /c/Users/dydrm/projects/daily/2026-06-20-factory-dash\\necho \\\"=== 티어1: 내가 시킨 작업물(ideas pending) ===\\\"; node fb-helper.mjs ideas 2>&1 | node -e \\\"let s='';process.stdin.on('data',d=>s+=d...",
+  "error": "Exit code 1\n=== 티어1: 내가 시킨 작업물(ideas pending) ===\npending ideas: 0\n=== 티어2: 피드백 작업물(reprocess-list) ===\n재개발 대상: 105 (미해결 flagged: 9 )\n=== 티어3: 창작 무한 — 현재 서비스 수 ===\nnode:internal/modules/cjs/loader:1228\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module '/c/Users/dydrm/projects/daily/project-hub/projects.json'\r\nRequire stack:\r\n- C:\\Users\\dydrm\\projects\\daily\\2026-06-20-factory-dash\\[eval]\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1225:15)\r\n    at Module._load (node:internal/m...",
+  "timestamp": "2026-06-24T13:56:41.872Z",
+  "retry_count": 1
 }

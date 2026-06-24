@@ -1391,10 +1391,24 @@
       "started_at": "2026-06-24T04:49:50.633Z",
       "parent_mode": "none",
       "status": "running"
+    },
+    {
+      "agent_id": "a01e00d735c01f02d",
+      "agent_type": "oh-my-claudecode:designer",
+      "started_at": "2026-06-24T13:50:58.934Z",
+      "parent_mode": "none",
+      "status": "running"
+    },
+    {
+      "agent_id": "aab30b61447da738c",
+      "agent_type": "workflow-subagent",
+      "started_at": "2026-06-24T13:50:59.229Z",
+      "parent_mode": "none",
+      "status": "running"
     }
   ],
-  "total_spawned": 78,
+  "total_spawned": 80,
   "total_completed": 42,
   "total_failed": 24,
-  "last_updated": "2026-06-24T04:49:51.223Z"
+  "last_updated": "2026-06-24T13:50:59.366Z"
 }

@@ -1,0 +1,208 @@
+// auth-hub Prisma schema
+// DB: Neon (Postgres). DATABASE_URL = pooled, DIRECT_URL = direct(마이그레이션용).
+// 마이그레이션: npx prisma migrate dev --name init
+// 배포 환경: npx prisma migrate deploy
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Auth.js (NextAuth) 표준 모델 — @auth/prisma-adapter 호환
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+
+  // 중앙 과금 관계
+  subscriptions Subscription[]
+  creditLedger  CreditLedger[]
+  purchases     Purchase[]
+
+  // 비정규화된 빠른 조회용 캐시(웹훅이 갱신). 권한 게이트에서 DB 합산 대신 사용 가능.
+  plan          Plan      @default(FREE)
+  creditBalance Int       @default(0)
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─────────────────────────────────────────────────────────────
+// 중앙 과금 모델 — 구독 / 크레딧 / 단건구매
+// ─────────────────────────────────────────────────────────────
+
+enum Plan {
+  FREE
+  PRO
+}
+
+enum PaymentProvider {
+  STRIPE
+  TOSS
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+}
+
+// 구독: Stripe subscription 1:1 매핑(토스는 정기결제 빌링키로 확장 가능)
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider             PaymentProvider
+  plan                 Plan               @default(PRO)
+  status               SubscriptionStatus @default(INCOMPLETE)
+
+  // 외부 PSP 식별자
+  externalCustomerId   String? // stripe customer id / toss customerKey
+  externalSubscriptionId String? @unique // stripe subscription id / toss billing 식별자
+
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+enum CreditReason {
+  PURCHASE     // 결제로 충전
+  GRANT        // 프로모션/관리자 지급
+  CONSUME      // 서비스 사용으로 차감(음수 delta)
+  REFUND       // 환불 회수(음수 delta)
+  ADJUST       // 수동 보정
+}
+
+// 크레딧 원장: append-only. 잔액 = sum(delta). User.creditBalance 는 캐시.
+model CreditLedger {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  delta       Int          // +충전 / -차감
+  reason      CreditReason
+  balanceAfter Int         // 기록 시점의 잔액 스냅샷(감사용)
+
+  // 멱등성/추적: 결제·서비스 사용 식별자. 동일 키 재처리 방지.
+  idempotencyKey String?    @unique
+  // 어떤 마이크로서비스가 소비했는지 (예: "ai-tarot")
+  service     String?
+  purchaseId  String?
+  purchase    Purchase?    @relation(fields: [purchaseId], references: [id])
+
+  createdAt   DateTime     @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+enum PurchaseKind {
+  SUBSCRIPTION // 구독 결제 1회분
+  CREDITS      // 크레딧 단건 구매
+  ONE_TIME     // 일반 단건 상품
+}
+
+enum PurchaseStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+// 단건구매(one-time) + 모든 결제의 원장 기록(구독 첫 결제 포함)
+model Purchase {
+  id              String         @id @default(cuid())
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider        PaymentProvider
+  kind            PurchaseKind
+  status          PurchaseStatus @default(PENDING)
+
+  // 금액(최소단위: KRW=원, USD=cent). currency 로 구분.
+  amount          Int
+  currency        String         @default("KRW")
+  creditsGranted  Int            @default(0) // CREDITS 구매 시 지급할 크레딧 수
+
+  // 외부 PSP 식별자 (Stripe: checkout session / payment_intent, Toss: orderId / paymentKey)
+  externalOrderId   String?      @unique
+  externalPaymentId String?
+
+  metadata        Json?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  ledger          CreditLedger[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+// 웹훅 멱등성 보장용: PSP 이벤트 id 를 한 번만 처리.
+model WebhookEvent {
+  id          String          @id @default(cuid())
+  provider    PaymentProvider
+  eventId     String
+  type        String
+  processedAt DateTime        @default(now())
+
+  @@unique([provider, eventId])
+}
