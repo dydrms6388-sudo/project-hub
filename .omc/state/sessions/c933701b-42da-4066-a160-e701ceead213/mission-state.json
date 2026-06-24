@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-24T13:50:59.229Z",
+  "updatedAt": "2026-06-24T14:27:25.193Z",
   "missions": [
     {
       "id": "session:c933701b-42da-4066-a160-e701ceead213:none",
@@ -7,15 +7,15 @@
       "name": "none",
       "objective": "Session mission",
       "createdAt": "2026-06-23T01:19:00.735Z",
-      "updatedAt": "2026-06-24T13:50:59.229Z",
+      "updatedAt": "2026-06-24T14:27:25.193Z",
       "status": "running",
       "workerCount": 172,
       "taskCounts": {
         "total": 172,
         "pending": 0,
         "blocked": 0,
-        "inProgress": 138,
-        "completed": 34,
+        "inProgress": 136,
+        "completed": 36,
         "failed": 0
       },
       "agents": [
@@ -1723,21 +1723,21 @@
           "name": "designer:a01e00d",
           "role": "designer",
           "ownership": "a01e00d735c01f02d",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
+          "latestUpdate": "completed",
           "completedSummary": null,
-          "updatedAt": "2026-06-24T13:50:58.934Z"
+          "updatedAt": "2026-06-24T14:05:22.764Z"
         },
         {
           "name": "workflow-subagent:aab30b6",
           "role": "workflow-subagent",
           "ownership": "aab30b61447da738c",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
+          "latestUpdate": "completed",
           "completedSummary": null,
-          "updatedAt": "2026-06-24T13:50:59.229Z"
+          "updatedAt": "2026-06-24T14:27:25.193Z"
         }
       ],
       "timeline": [
@@ -1764,6 +1764,22 @@
           "agent": "workflow-subagent:aab30b6",
           "detail": "started workflow-subagent:aab30b6",
           "sourceKey": "session-start:aab30b61447da738c"
+        },
+        {
+          "id": "session-stop:a01e00d735c01f02d:2026-06-24T14:05:22.764Z",
+          "at": "2026-06-24T14:05:22.764Z",
+          "kind": "completion",
+          "agent": "designer:a01e00d",
+          "detail": "completed",
+          "sourceKey": "session-stop:a01e00d735c01f02d"
+        },
+        {
+          "id": "session-stop:aab30b61447da738c:2026-06-24T14:27:25.193Z",
+          "at": "2026-06-24T14:27:25.193Z",
+          "kind": "completion",
+          "agent": "workflow-subagent:aab30b6",
+          "detail": "completed",
+          "sourceKey": "session-stop:aab30b61447da738c"
         }
       ]
     }
