@@ -1,7 +1,7 @@
 {
-  "tool_name": "Glob",
-  "tool_input_preview": "{\"pattern\":\"*.md\",\"path\":\"C:/Users/dydrm/projects/daily\"}",
-  "error": "Ripgrep search timed out after 20 seconds. The search may have matched files but did not complete in time. Try searching a more specific path or pattern.",
-  "timestamp": "2026-06-24T01:37:30.510Z",
-  "retry_count": 2
+  "tool_name": "PowerShell",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/dydrm/projects/daily/2026-06-24-moving-cost-quote\\\"; npx vercel --prod --yes 2>&1\",\"description\":\"Deploy moving-cost-quote to Vercel production\",\"timeout\":300000}",
+  "error": "Exit code 1\nnpx : <claude-code-hint v=\"1\" type=\"plugin\" value=\"vercel@claude-plugins-official\" />\r\nAt line:1 char:66\r\n+ ... cts/daily/2026-06-24-moving-cost-quote\"; npx vercel --prod --yes 2>&1\r\n+                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (<claude-code-hi...ns-official\" />:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError\r\n \r\nVercel CLI 54.14.0 (Node.js 20.18.3)\r\nRetrieving project…\r\nDeployin...",
+  "timestamp": "2026-06-24T04:48:40.318Z",
+  "retry_count": 8
 }
