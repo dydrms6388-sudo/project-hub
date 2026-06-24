@@ -2,10 +2,12 @@
 // 사용: node gen-pages.mjs           (생성만)
 //       node gen-pages.mjs --ping    (생성 + IndexNow 제출)
 // 정적 사이트(빌드 없음). 실행은 project-hub 루트에서.
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
+const VERIFY_META = `<meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}" />\n  <meta name="naver-site-verification" content="${NAVER_SITE_VERIFICATION}" />`;
 
 // ── 내장 도구 9개(현 index.html과 동일) ──
 const BUILTINS = [
@@ -82,7 +84,8 @@ for (const d of daily) {
     .replaceAll("%%CATEGORY%%", esc(d.cat))
     .replaceAll("%%JSONLD%%", jsonld)
     .replaceAll("%%BODY%%", body)
-    .replaceAll("%%RELATED%%", relHtml);
+    .replaceAll("%%RELATED%%", relHtml)
+    .replaceAll("%%VERIFY%%", VERIFY_META);
 
   mkdirSync(d.slug, { recursive: true });
   writeFileSync(`${d.slug}/index.html`, html);
@@ -128,6 +131,7 @@ const indexHtml = `<!doctype html>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0a0a0a" />
+  ${VERIFY_META}
   <meta name="google-adsense-account" content="${ADSENSE}" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE}" crossorigin="anonymous"></script>
   <title>TomatoEggCat — 무료 계산기·생활 도구 ${total}종 모음</title>
@@ -229,6 +233,23 @@ for (const d of daily) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefre
 for (const p of ["privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 writeFileSync("sitemap.xml", sitemap);
+
+// ── 내장 9개 정적 페이지에 verification 메타 주입(멱등) ──
+let patched = 0;
+for (const b of BUILTINS) {
+  const f = `${b.slug}/index.html`;
+  if (!existsSync(f)) continue;
+  let h = readFileSync(f, "utf8");
+  if (h.includes("google-site-verification")) continue;
+  if (h.includes('name="theme-color"')) {
+    h = h.replace(/(<meta name="theme-color"[^>]*>)/, `$1\n${VERIFY_META}`);
+  } else {
+    h = h.replace(/<\/title>/, `</title>\n${VERIFY_META}`);
+  }
+  writeFileSync(f, h);
+  patched++;
+}
+console.log(`builtin pages patched(verify): ${patched}`);
 
 console.log(`landing pages: ${landingCount}`);
 console.log(`hub tools: ${total} (builtin ${BUILTINS.length} + daily ${daily.length})`);

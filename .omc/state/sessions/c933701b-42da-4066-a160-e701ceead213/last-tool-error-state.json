@@ -1,7 +1,7 @@
 {
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"C:\\\\Users\\\\dydrm\\\\projects\\\\jaksim\\\\src\\\\lib\\\\programs\"}",
-  "error": "EISDIR: illegal operation on a directory, read 'C:\\Users\\dydrm\\projects\\jaksim\\src\\lib\\programs'",
-  "timestamp": "2026-06-23T15:07:45.296Z",
-  "retry_count": 1
+  "tool_name": "Glob",
+  "tool_input_preview": "{\"pattern\":\"*.md\",\"path\":\"C:/Users/dydrm/projects/daily\"}",
+  "error": "Ripgrep search timed out after 20 seconds. The search may have matched files but did not complete in time. Try searching a more specific path or pattern.",
+  "timestamp": "2026-06-24T01:37:30.510Z",
+  "retry_count": 2
 }

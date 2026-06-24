@@ -4,6 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#0a0a0a" />
+<meta name="google-site-verification" content="REPLACE_GOOGLE_CODE" />
+  <meta name="naver-site-verification" content="REPLACE_NAVER_CODE" />
 <title>청약가점기 — 부동산 무료 도구 | TomatoEggCat</title>
 <meta name="description" content="숫자 3개로 끝나는 청약 가점 계산기. 무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다. 청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점). 세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화. 점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback). 커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김). 몰입 4종: r3f 3D 떠다니는 집·동전 씬(3D), framer-motion 결과 리빌·점수 카운트업·막대 애니, 고득점 canvas-confetti, Web Audio 합성 인터랙션·성공음(음소거 기본 OFF). 모든 계산 기기 안에서만(서버 전송 없음). &quot;청약 가점 계산기·무주택기간·부양가족 가점·청약통장 가입기간&quot; SEO 정조준+WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 부동산 고CPC 애드센스+청약 대출/적금 제휴+Pro(가점 상승 시나리오) 수익화 레디. 100개 큐 rank #9 플래그십." />
 <link rel="canonical" href="https://tomatoeggcat.com/cheongyak-score/" />
@@ -78,9 +80,9 @@ footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
     <div class="rel-grid"><a class="rel" href="/jeonse-loan-eligibility/"><span>🏠</span> 전세대출되나 (전세자금대출 한도 계산기)</a>
       <a class="rel" href="/jeonse/"><span>🏠</span> 전월세메이트 (JeonseMate)</a>
       <a class="rel" href="/capital-gains-tax-seven/"><span>🏠</span> 양도세미리</a>
+      <a class="rel" href="/dydrms-isamiri/"><span>🚚</span> 이사미리</a>
       <a class="rel" href="/dydrms-ssogi/"><span>🎡</span> 쏘기 룰렛</a>
-      <a class="rel" href="/idiom-quiz/"><span>🀄</span> 사자성어퀴즈</a>
-      <a class="rel" href="/dydrms-urisai/"><span>👨‍👩‍👧‍👦</span> 우리사이</a></div>
+      <a class="rel" href="/idiom-quiz/"><span>🀄</span> 사자성어퀴즈</a></div>
   </section>
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>
