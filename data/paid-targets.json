@@ -1,0 +1,154 @@
+{
+  "generated_at": "2026-06-25",
+  "for": "roadmap #11 인증·결제 전면",
+  "count": 10,
+  "targets": [
+    {
+      "slug": "2026-06-22-yeonssul",
+      "name": "연애썰",
+      "dir": "daily/2026-06-22-yeonssul",
+      "reason": "서버 계정(/api/account)+랭킹+포인트 경제, 프리미엄(포인트 소진) 보유 → SSO·실결제 연동 후보(현재 익명/무현금)",
+      "existing": {
+        "auth": [
+          "custom auth route"
+        ],
+        "payment": [],
+        "db": [
+          "@neondatabase/serverless"
+        ]
+      }
+    },
+    {
+      "slug": "Ai_Article",
+      "name": "Ai_Article",
+      "dir": "Ai_Article",
+      "reason": "결제 API/코드",
+      "existing": {
+        "auth": [],
+        "payment": [
+          "custom payment route"
+        ],
+        "db": []
+      }
+    },
+    {
+      "slug": "AnimalCare",
+      "name": "AnimalCare",
+      "dir": "AnimalCare",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "existing": {
+        "auth": [],
+        "payment": [
+          "react-native-iap"
+        ],
+        "db": []
+      }
+    },
+    {
+      "slug": "BeautyCoach",
+      "name": "BeautyCoach",
+      "dir": "BeautyCoach",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "existing": {
+        "auth": [],
+        "payment": [
+          "react-native-iap"
+        ],
+        "db": []
+      }
+    },
+    {
+      "slug": "jaksim",
+      "name": "작심 (Jaksim)",
+      "dir": "jaksim",
+      "reason": "인증 API 라우트; 결제 API/코드",
+      "existing": {
+        "auth": [
+          "custom auth route"
+        ],
+        "payment": [
+          "custom payment route"
+        ],
+        "db": [
+          "@prisma/client",
+          "prisma"
+        ]
+      }
+    },
+    {
+      "slug": "LearnChinese",
+      "name": "LearnChinese",
+      "dir": "LearnChinese",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "existing": {
+        "auth": [],
+        "payment": [
+          "react-native-iap"
+        ],
+        "db": []
+      }
+    },
+    {
+      "slug": "lumora",
+      "name": "Lumora",
+      "dir": "lumora",
+      "reason": "인증 라이브러리:expo-apple-authentication/expo-auth-session; 결제 API/코드",
+      "existing": {
+        "auth": [
+          "expo-apple-authentication",
+          "expo-auth-session"
+        ],
+        "payment": [],
+        "db": []
+      }
+    },
+    {
+      "slug": "MeetInTravel",
+      "name": "MeetInTravel",
+      "dir": "MeetInTravel",
+      "reason": "인증 라이브러리:@supabase/supabase-js/expo-auth-session",
+      "existing": {
+        "auth": [
+          "@supabase/supabase-js",
+          "expo-auth-session"
+        ],
+        "payment": [],
+        "db": []
+      }
+    },
+    {
+      "slug": "Taro",
+      "name": "Taro",
+      "dir": "Taro",
+      "reason": "결제 SDK 의존성:@tosspayments/tosspayments-sdk/stripe; 인증 라이브러리:@next-auth/prisma-adapter/next-auth; 인증 API 라우트; 결제 API/코드",
+      "existing": {
+        "auth": [
+          "@next-auth/prisma-adapter",
+          "next-auth"
+        ],
+        "payment": [
+          "@tosspayments/tosspayments-sdk",
+          "stripe"
+        ],
+        "db": [
+          "@next-auth/prisma-adapter",
+          "@prisma/client",
+          "prisma"
+        ]
+      }
+    },
+    {
+      "slug": "VocalTranning",
+      "name": "VocalTranning",
+      "dir": "VocalTranning",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "existing": {
+        "auth": [],
+        "payment": [
+          "react-native-iap"
+        ],
+        "db": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,2491 @@
+{
+  "generated_at": "2026-06-25",
+  "method": "static analysis (package.json deps + source grep; no builds, no API calls)",
+  "total": 172,
+  "counts": {
+    "ad": 162,
+    "paid": 10
+  },
+  "criteria": {
+    "paid": "실제 인증 라이브러리(next-auth/supabase/expo-auth/firebase 등) 또는 결제 SDK(toss/stripe/react-native-iap 등) 보유, 또는 서버 계정+프리미엄 경제 보유",
+    "ad": "상태없는/로컬저장 단순 도구·테스트·계산기·퀴즈. 인증·결제 코드 없음(localStorage·AdSense·쿠팡 제휴는 광고로 분류)"
+  },
+  "projects": [
+    {
+      "slug": "2026-06-22-yeonssul",
+      "name": "연애썰",
+      "dir": "daily/2026-06-22-yeonssul",
+      "verdict": "paid",
+      "reason": "서버 계정(/api/account)+랭킹+포인트 경제, 프리미엄(포인트 소진) 보유 → SSO·실결제 연동 후보(현재 익명/무현금)",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": true,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "Ai_Article",
+      "name": "Ai_Article",
+      "dir": "Ai_Article",
+      "verdict": "paid",
+      "reason": "결제 API/코드",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": true
+      }
+    },
+    {
+      "slug": "AnimalCare",
+      "name": "AnimalCare",
+      "dir": "AnimalCare",
+      "verdict": "paid",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "signals": {
+        "authDep": [],
+        "payDep": [
+          "react-native-iap"
+        ],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "BeautyCoach",
+      "name": "BeautyCoach",
+      "dir": "BeautyCoach",
+      "verdict": "paid",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "signals": {
+        "authDep": [],
+        "payDep": [
+          "react-native-iap"
+        ],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "jaksim",
+      "name": "작심 (Jaksim)",
+      "dir": "jaksim",
+      "verdict": "paid",
+      "reason": "인증 API 라우트; 결제 API/코드",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@prisma/client",
+          "prisma"
+        ],
+        "authRoute": true,
+        "payRoute": true
+      }
+    },
+    {
+      "slug": "LearnChinese",
+      "name": "LearnChinese",
+      "dir": "LearnChinese",
+      "verdict": "paid",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "signals": {
+        "authDep": [],
+        "payDep": [
+          "react-native-iap"
+        ],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "lumora",
+      "name": "Lumora",
+      "dir": "lumora",
+      "verdict": "paid",
+      "reason": "인증 라이브러리:expo-apple-authentication/expo-auth-session; 결제 API/코드",
+      "signals": {
+        "authDep": [
+          "expo-apple-authentication",
+          "expo-auth-session"
+        ],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "MeetInTravel",
+      "name": "MeetInTravel",
+      "dir": "MeetInTravel",
+      "verdict": "paid",
+      "reason": "인증 라이브러리:@supabase/supabase-js/expo-auth-session",
+      "signals": {
+        "authDep": [
+          "@supabase/supabase-js",
+          "expo-auth-session"
+        ],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "Taro",
+      "name": "Taro",
+      "dir": "Taro",
+      "verdict": "paid",
+      "reason": "결제 SDK 의존성:@tosspayments/tosspayments-sdk/stripe; 인증 라이브러리:@next-auth/prisma-adapter/next-auth; 인증 API 라우트; 결제 API/코드",
+      "signals": {
+        "authDep": [
+          "@next-auth/prisma-adapter",
+          "next-auth"
+        ],
+        "payDep": [
+          "@tosspayments/tosspayments-sdk",
+          "stripe"
+        ],
+        "dbDep": [
+          "@next-auth/prisma-adapter",
+          "@prisma/client",
+          "prisma"
+        ],
+        "authRoute": true,
+        "payRoute": true
+      }
+    },
+    {
+      "slug": "VocalTranning",
+      "name": "VocalTranning",
+      "dir": "VocalTranning",
+      "verdict": "paid",
+      "reason": "결제 SDK 의존성:react-native-iap; 결제 API/코드",
+      "signals": {
+        "authDep": [],
+        "payDep": [
+          "react-native-iap"
+        ],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-18-dicetower",
+      "name": "다이스타워 (DiceTower)",
+      "dir": "daily/2026-06-18-dicetower",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-18-jumsim-slot",
+      "name": "점심뭐먹 (Jumsim)",
+      "dir": "daily/2026-06-18-jumsim-slot",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-18-moodwave",
+      "name": "MoodWave",
+      "dir": "daily/2026-06-18-moodwave",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-18-salary-calc",
+      "name": "2026 연봉 실수령액 계산기",
+      "dir": "daily/2026-06-18-salary-calc",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-19-balancepick",
+      "name": "밸런스픽 (BalancePick)",
+      "dir": "daily/2026-06-19-balancepick",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-19-chok-reflex",
+      "name": "촉 (Chok)",
+      "dir": "daily/2026-06-19-chok-reflex",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-19-cosmoscale",
+      "name": "별저울 (CosmoScale)",
+      "dir": "daily/2026-06-19-cosmoscale",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-19-giknote",
+      "name": "긱노트 (GigNote)",
+      "dir": "daily/2026-06-19-giknote",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-albapay",
+      "name": "알바머니 (AlbaPay)",
+      "dir": "daily/2026-06-20-albapay",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-bmr-tdee",
+      "name": "기초대사량 계산기 (BMR·TDEE)",
+      "dir": "daily/2026-06-20-bmr-tdee",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-carinsurance-rider-survey",
+      "name": "특약고르미 (특약고르미)",
+      "dir": "daily/2026-06-20-carinsurance-rider-survey",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-ddayhub",
+      "name": "디데이허브 (D-dayHub)",
+      "dir": "daily/2026-06-20-ddayhub",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-dsr-limit-check",
+      "name": "DSR미리보기 (DSR Check)",
+      "dir": "daily/2026-06-20-dsr-limit-check",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-factory-dash",
+      "name": "팩토리 대시보드",
+      "dir": "daily/2026-06-20-factory-dash",
+      "verdict": "ad",
+      "reason": "내부 운영 대시보드(제품 아님). 'oauth'는 카테고리 라벨 문자열일 뿐, 자체 인증·결제 없음",
+      "note": "non-product/internal",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-income-tax-refund-bot",
+      "name": "종소세환급봇 (TaxRefundBot)",
+      "dir": "daily/2026-06-20-income-tax-refund-bot",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-jeonse",
+      "name": "전월세메이트 (JeonseMate)",
+      "dir": "daily/2026-06-20-jeonse",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-jeonse-loan-eligibility",
+      "name": "전세대출되나 (전세자금대출 한도 계산기)",
+      "dir": "daily/2026-06-20-jeonse-loan-eligibility",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-loan-refi",
+      "name": "갈아타이밍 (LoanRefi)",
+      "dir": "daily/2026-06-20-loan-refi",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-love-style-test",
+      "name": "연애 스타일 테스트",
+      "dir": "daily/2026-06-20-love-style-test",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-personal-color-test",
+      "name": "테스트모아 (퍼스널컬러·심리테스트)",
+      "dir": "daily/2026-06-20-personal-color-test",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-petage",
+      "name": "펫나이 (PetAge)",
+      "dir": "daily/2026-06-20-petage",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-pregnancy-due-date",
+      "name": "임신주수계산 (출산 예정일 계산기)",
+      "dir": "daily/2026-06-20-pregnancy-due-date",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-20-salary-net-pay",
+      "name": "급여실수령 (연봉 실수령액 계산기)",
+      "dir": "daily/2026-06-20-salary-net-pay",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-bp-glucose-log",
+      "name": "혈압혈당일지",
+      "dir": "daily/2026-06-21-bp-glucose-log",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-capital-gains-tax",
+      "name": "양도세미리",
+      "dir": "daily/2026-06-21-capital-gains-tax",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-cheongyak-score",
+      "name": "청약가점기",
+      "dir": "daily/2026-06-21-cheongyak-score",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-driver-license-quiz",
+      "name": "면허패스",
+      "dir": "daily/2026-06-21-driver-license-quiz",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-dukzigram",
+      "name": "덕질그램",
+      "dir": "daily/2026-06-21-dukzigram",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-fasting-timer",
+      "name": "단식타이머",
+      "dir": "daily/2026-06-21-fasting-timer",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-hanja-quiz",
+      "name": "사자성어 퀴즈",
+      "dir": "daily/2026-06-21-hanja-quiz",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-home-workout",
+      "name": "홈트 루틴 생성기",
+      "dir": "daily/2026-06-21-home-workout",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-idol-worldcup",
+      "name": "이상형 월드컵 메이커",
+      "dir": "daily/2026-06-21-idol-worldcup",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-jecheol365",
+      "name": "제철365",
+      "dir": "daily/2026-06-21-jecheol365",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-korean-age",
+      "name": "만 나이 계산기",
+      "dir": "daily/2026-06-21-korean-age",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-korean-typing-speed",
+      "name": "한글 타자연습 스피드",
+      "dir": "daily/2026-06-21-korean-typing-speed",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-mbti-match",
+      "name": "MBTI 궁합표",
+      "dir": "daily/2026-06-21-mbti-match",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-movie-roulette",
+      "name": "오늘 뭐 볼까 룰렛",
+      "dir": "daily/2026-06-21-movie-roulette",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-mystica-psi",
+      "name": "Mystica — AI 타로",
+      "dir": "daily/2026-06-21-mystica-psi",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-ovulation-calendar",
+      "name": "배란일 캘린더",
+      "dir": "daily/2026-06-21-ovulation-calendar",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-plant-care",
+      "name": "물주기 (식물 물주기 알리미)",
+      "dir": "daily/2026-06-21-plant-care",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-shift-work-calendar",
+      "name": "교대근무달력",
+      "dir": "daily/2026-06-21-shift-work-calendar",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-skin-type-test",
+      "name": "피부타입닷 (피부 타입 진단)",
+      "dir": "daily/2026-06-21-skin-type-test",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-sleep-cycle-alarm",
+      "name": "2026-06-21-sleep-cycle-alarm",
+      "dir": "daily/2026-06-21-sleep-cycle-alarm",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-split-bill-clear",
+      "name": "엔빵클리어",
+      "dir": "daily/2026-06-21-split-bill-clear",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-suneung-dday-planner",
+      "name": "수능플랜",
+      "dir": "daily/2026-06-21-suneung-dday-planner",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-supplement-combo-check",
+      "name": "영양제 궁합 체커",
+      "dir": "daily/2026-06-21-supplement-combo-check",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-today-fortune",
+      "name": "오늘의 운세",
+      "dir": "daily/2026-06-21-today-fortune",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-travel-pin",
+      "name": "여행핀 (Travel Pin)",
+      "dir": "daily/2026-06-21-travel-pin",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-21-vocal-routine",
+      "name": "보컬루틴 (Vocal Routine)",
+      "dir": "daily/2026-06-21-vocal-routine",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-animal-face-dex",
+      "name": "동물상 도감",
+      "dir": "daily/2026-06-22-animal-face-dex",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-aura",
+      "name": "오라 (Aura)",
+      "dir": "daily/2026-06-22-aura",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-baby-name",
+      "name": "2026-06-22-baby-name",
+      "dir": "daily/2026-06-22-baby-name",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-body-fat-diagnosis",
+      "name": "바디스캔",
+      "dir": "daily/2026-06-22-body-fat-diagnosis",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-caffeine-tracker",
+      "name": "카페인한도추적",
+      "dir": "daily/2026-06-22-caffeine-tracker",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-calorie-killer",
+      "name": "칼로리킬러",
+      "dir": "daily/2026-06-22-calorie-killer",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-chat-emotion-card",
+      "name": "썸톡",
+      "dir": "daily/2026-06-22-chat-emotion-card",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-china-travel",
+      "name": "중국여행 마스터",
+      "dir": "daily/2026-06-22-china-travel",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-color-palette",
+      "name": "2026-06-22-color-palette",
+      "dir": "daily/2026-06-22-color-palette",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-couple-chemistry-test",
+      "name": "썸타이밍궁합",
+      "dir": "daily/2026-06-22-couple-chemistry-test",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-dalian-weekend",
+      "name": "2026-06-22-dalian-weekend",
+      "dir": "daily/2026-06-22-dalian-weekend",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-dydrms-jupjup",
+      "name": "줍줍",
+      "dir": "daily/2026-06-22-dydrms-jupjup",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-dydrms-zodiac",
+      "name": "오늘의 띠·별자리 운세",
+      "dir": "daily/2026-06-22-dydrms-zodiac",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-eggcat-coin",
+      "name": "2026-06-22-eggcat-coin",
+      "dir": "daily/2026-06-22-eggcat-coin",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-electricity-bill-sim",
+      "name": "전기요금시뮬",
+      "dir": "daily/2026-06-22-electricity-bill-sim",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-friend-chemistry-test",
+      "name": "내친구 케미테스트",
+      "dir": "daily/2026-06-22-friend-chemistry-test",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-gpa-calculator-pro",
+      "name": "2026-06-22-gpa-calculator-pro",
+      "dir": "daily/2026-06-22-gpa-calculator-pro",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-hanja-grade-master",
+      "name": "한자급수마스터",
+      "dir": "daily/2026-06-22-hanja-grade-master",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-ideal-worldcup",
+      "name": "2026-06-22-ideal-worldcup",
+      "dir": "daily/2026-06-22-ideal-worldcup",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-ireumsaju",
+      "name": "이름연구소",
+      "dir": "daily/2026-06-22-ireumsaju",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-liftrank",
+      "name": "리프트랭크",
+      "dir": "daily/2026-06-22-liftrank",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-meeting-summary-ai",
+      "name": "2026-06-22-meeting-summary-ai",
+      "dir": "daily/2026-06-22-meeting-summary-ai",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-naengpago",
+      "name": "냉파고",
+      "dir": "daily/2026-06-22-naengpago",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-naesin-grade-sim",
+      "name": "내신등급컷시뮬",
+      "dir": "daily/2026-06-22-naesin-grade-sim",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-name-saju-reading",
+      "name": "2026-06-22-name-saju-reading",
+      "dir": "daily/2026-06-22-name-saju-reading",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-natmal",
+      "name": "또박또박",
+      "dir": "daily/2026-06-22-natmal",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-personal-color-diag",
+      "name": "컬러무드 퍼스널컬러",
+      "dir": "daily/2026-06-22-personal-color-diag",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-pet-vet-cost",
+      "name": "펫병원비추정",
+      "dir": "daily/2026-06-22-pet-vet-cost",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-power-nap-alarm",
+      "name": "낮잠알람 파워냅",
+      "dir": "daily/2026-06-22-power-nap-alarm",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-protein-daily-need",
+      "name": "단백질 마스터",
+      "dir": "daily/2026-06-22-protein-daily-need",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-quizpop",
+      "name": "퀴즈팝 (QuizPop)",
+      "dir": "daily/2026-06-22-quizpop",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-running-pace",
+      "name": "러닝페이스",
+      "dir": "daily/2026-06-22-running-pace",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-salary-percentile",
+      "name": "2026-06-22-salary-percentile",
+      "dir": "daily/2026-06-22-salary-percentile",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-sober-up-time",
+      "name": "깰때 — 술 깨는 시간 계산기",
+      "dir": "daily/2026-06-22-sober-up-time",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-spelling-self-quiz",
+      "name": "맞춤법셀프점검",
+      "dir": "daily/2026-06-22-spelling-self-quiz",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-subscription-reminder",
+      "name": "2026-06-22-subscription-reminder",
+      "dir": "daily/2026-06-22-subscription-reminder",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-travel-budget-planner",
+      "name": "여행경비플래너",
+      "dir": "daily/2026-06-22-travel-budget-planner",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-travel-packing",
+      "name": "여행 짐싸기 체크리스트",
+      "dir": "daily/2026-06-22-travel-packing",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-tteoksang",
+      "name": "떡상각",
+      "dir": "daily/2026-06-22-tteoksang",
+      "verdict": "ad",
+      "reason": "익명 device_id 기반(외부 OAuth 없음), 결제·프리미엄 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-ttotto",
+      "name": "또또 (Ttotto)",
+      "dir": "daily/2026-06-22-ttotto",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-used-price-check",
+      "name": "중고시세체크",
+      "dir": "daily/2026-06-22-used-price-check",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-vaccine-timeline",
+      "name": "베이비샷",
+      "dir": "daily/2026-06-22-vaccine-timeline",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-vocasprint",
+      "name": "보카스프린트 (VocaSprint)",
+      "dir": "daily/2026-06-22-vocasprint",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-water-tracker",
+      "name": "하루 물 마시기",
+      "dir": "daily/2026-06-22-water-tracker",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-watertracker",
+      "name": "하루 물 섭취 트래커",
+      "dir": "daily/2026-06-22-watertracker",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-22-wedding-dday",
+      "name": "위드디 (WedDday)",
+      "dir": "daily/2026-06-22-wedding-dday",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-amby",
+      "name": "Amby (앰비)",
+      "dir": "daily/2026-06-23-amby",
+      "verdict": "ad",
+      "reason": "익명 deviceId 리퍼럴 집계 전용(외부 OAuth/개인정보 없음) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-coding-test-dday",
+      "name": "코테 준비실",
+      "dir": "daily/2026-06-23-coding-test-dday",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-dog-personality-test",
+      "name": "2026-06-23-dog-personality-test",
+      "dir": "daily/2026-06-23-dog-personality-test",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "pg",
+          "@types/pg"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-dydrms-auralab",
+      "name": "오라랩 (AuraLab)",
+      "dir": "daily/2026-06-23-dydrms-auralab",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-dydrms-chemicode",
+      "name": "케미코드 (ChemiCode)",
+      "dir": "daily/2026-06-23-dydrms-chemicode",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-fandom-bias-vote",
+      "name": "덕질최애투표소",
+      "dir": "daily/2026-06-23-fandom-bias-vote",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-gift-money-ledger",
+      "name": "얼마내지",
+      "dir": "daily/2026-06-23-gift-money-ledger",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-hapgyeok-dday",
+      "name": "합격 D-DAY",
+      "dir": "daily/2026-06-23-hapgyeok-dday",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-idiom-quiz",
+      "name": "사자성어퀴즈",
+      "dir": "daily/2026-06-23-idiom-quiz",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-insurance-overlap-check",
+      "name": "보험과진단",
+      "dir": "daily/2026-06-23-insurance-overlap-check",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-jasoseo-clinic",
+      "name": "자소서 닥터",
+      "dir": "daily/2026-06-23-jasoseo-clinic",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-jeommechu",
+      "name": "점메추",
+      "dir": "daily/2026-06-23-jeommechu",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-jeonsaeng-atelier",
+      "name": "2026-06-23-jeonsaeng-atelier",
+      "dir": "daily/2026-06-23-jeonsaeng-atelier",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-korhistory-timeline",
+      "name": "한국사 연표 마스터",
+      "dir": "daily/2026-06-23-korhistory-timeline",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-mind-weather",
+      "name": "2026-06-23-mind-weather",
+      "dir": "daily/2026-06-23-mind-weather",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-noeryeok",
+      "name": "두뇌력",
+      "dir": "daily/2026-06-23-noeryeok",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-numberrush",
+      "name": "넘버러시 NumberRush",
+      "dir": "daily/2026-06-23-numberrush",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-owanwan",
+      "name": "오운완 AI 코치 (OWANWAN)",
+      "dir": "daily/2026-06-23-owanwan",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-pet-meal-plan",
+      "name": "2026-06-23-pet-meal-plan",
+      "dir": "daily/2026-06-23-pet-meal-plan",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-pyeong-converter-plus",
+      "name": "평수변환플러스",
+      "dir": "daily/2026-06-23-pyeong-converter-plus",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-steps-to-calorie",
+      "name": "2026-06-23-steps-to-calorie",
+      "dir": "daily/2026-06-23-steps-to-calorie",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-suneung-grade-cut",
+      "name": "2026-06-23-suneung-grade-cut",
+      "dir": "daily/2026-06-23-suneung-grade-cut",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-toeic-target-planner",
+      "name": "토익 역산 플래너",
+      "dir": "daily/2026-06-23-toeic-target-planner",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-urisai",
+      "name": "우리사이",
+      "dir": "daily/2026-06-23-urisai",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-23-weight-roadmap",
+      "name": "감량로드맵",
+      "dir": "daily/2026-06-23-weight-roadmap",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-batja",
+      "name": "받자 (Batja)",
+      "dir": "daily/2026-06-24-batja",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-blog-keyword-draft",
+      "name": "2026-06-24-blog-keyword-draft",
+      "dir": "daily/2026-06-24-blog-keyword-draft",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "pg",
+          "@types/pg"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-chosung-fortune-card",
+      "name": "초성 운세 카드",
+      "dir": "daily/2026-06-24-chosung-fortune-card",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-company-vs-average",
+      "name": "우리회사 점수",
+      "dir": "daily/2026-06-24-company-vs-average",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-dydrms-emailsign",
+      "name": "메일서명만들기",
+      "dir": "daily/2026-06-24-dydrms-emailsign",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-dydrms-mbticard",
+      "name": "내 MBTI 캐릭터 카드 메이커",
+      "dir": "daily/2026-06-24-dydrms-mbticard",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-dydrms-ssogi",
+      "name": "쏘기 룰렛",
+      "dir": "daily/2026-06-24-dydrms-ssogi",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-dynamic-qr-card",
+      "name": "큐알핀",
+      "dir": "daily/2026-06-24-dynamic-qr-card",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-glass-mind",
+      "name": "2026-06-24-glass-mind",
+      "dir": "daily/2026-06-24-glass-mind",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-gpa-converter-wes",
+      "name": "GPA 변환소",
+      "dir": "daily/2026-06-24-gpa-converter-wes",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-kkuljamgak",
+      "name": "꿀잠각",
+      "dir": "daily/2026-06-24-kkuljamgak",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-lucky-item-year",
+      "name": "오늘의 행운템",
+      "dir": "daily/2026-06-24-lucky-item-year",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-marriage-odds-test",
+      "name": "우리 결혼 가능성 테스트",
+      "dir": "daily/2026-06-24-marriage-odds-test",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-moving-cost-quote",
+      "name": "2026-06-24-moving-cost-quote",
+      "dir": "daily/2026-06-24-moving-cost-quote",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-nobling",
+      "name": "노블링 (Nobling)",
+      "dir": "daily/2026-06-24-nobling",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-psat-time-pacer",
+      "name": "페이스컷",
+      "dir": "daily/2026-06-24-psat-time-pacer",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-24-ssonda",
+      "name": "2026-06-24-ssonda",
+      "dir": "daily/2026-06-24-ssonda",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-auralog",
+      "name": "오라로그",
+      "dir": "daily/2026-06-25-auralog",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-byeolchik",
+      "name": "dydrms-byeolchik",
+      "dir": "daily/2026-06-25-byeolchik",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-dasibom",
+      "name": "다시봄",
+      "dir": "daily/2026-06-25-dasibom",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-dawatda",
+      "name": "다왔다",
+      "dir": "daily/2026-06-25-dawatda",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-dydrms-honeysleep",
+      "name": "꿀잠타입",
+      "dir": "daily/2026-06-25-dydrms-honeysleep",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-dydrms-jjuk",
+      "name": "쭉 (Jjuk)",
+      "dir": "daily/2026-06-25-dydrms-jjuk",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-dydrms-petsafe",
+      "name": "댕냥세이프",
+      "dir": "daily/2026-06-25-dydrms-petsafe",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-dydrms-seonmulgak",
+      "name": "선물각",
+      "dir": "daily/2026-06-25-dydrms-seonmulgak",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-dydrms-tonefit",
+      "name": "톤핏",
+      "dir": "daily/2026-06-25-dydrms-tonefit",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-giftpick",
+      "name": "뭐사주지",
+      "dir": "daily/2026-06-25-giftpick",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-hagwon-lounge",
+      "name": "2026-06-25-hagwon-lounge",
+      "dir": "daily/2026-06-25-hagwon-lounge",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-jeomsim-today",
+      "name": "2026-06-25-jeomsim-today",
+      "dir": "daily/2026-06-25-jeomsim-today",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-mapscore",
+      "name": "맵스코어",
+      "dir": "daily/2026-06-25-mapscore",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-menodiary",
+      "name": "갱년기 다이어리 (MenoDiary)",
+      "dir": "daily/2026-06-25-menodiary",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-naengpa",
+      "name": "냉장고 구조대",
+      "dir": "daily/2026-06-25-naengpa",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-ohaeng",
+      "name": "오행나침반",
+      "dir": "daily/2026-06-25-ohaeng",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-omul",
+      "name": "오물오물",
+      "dir": "daily/2026-06-25-omul",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-pokecard",
+      "name": "포켓카드 라운지",
+      "dir": "daily/2026-06-25-pokecard",
+      "verdict": "ad",
+      "reason": "서버DB 있으나 계정/결제 코드 없음(집계·읽기용) → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "pg",
+          "@types/pg"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-scholarship-cut-calc",
+      "name": "국장컷",
+      "dir": "daily/2026-06-25-scholarship-cut-calc",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-skinsync",
+      "name": "스킨싱크",
+      "dir": "daily/2026-06-25-skinsync",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-sniffquest",
+      "name": "SniffQuest (스니프퀘스트)",
+      "dir": "daily/2026-06-25-sniffquest",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "2026-06-25-tadak",
+      "name": "타닥",
+      "dir": "daily/2026-06-25-tadak",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "jaksim-app",
+      "name": "작심 모바일 앱",
+      "dir": "jaksim-app",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "learnchinese-api",
+      "name": "learnchinese-api",
+      "dir": "daily/learnchinese-api",
+      "verdict": "ad",
+      "reason": "콘텐츠 백엔드 API(인증·결제 코드 없음), 단독 수익화 대상 아님",
+      "note": "backend-infra",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [
+          "@neondatabase/serverless"
+        ],
+        "authRoute": false,
+        "payRoute": false
+      }
+    },
+    {
+      "slug": "soom-breath",
+      "name": "숨고르기 — 호흡 코치",
+      "dir": "daily/soom-breath",
+      "verdict": "ad",
+      "reason": "상태없는 단순 도구/테스트, 인증·결제 코드 없음 → 광고",
+      "signals": {
+        "authDep": [],
+        "payDep": [],
+        "dbDep": [],
+        "authRoute": false,
+        "payRoute": false
+      }
+    }
+  ]
+}
