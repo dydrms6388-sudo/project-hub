@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-24T17:36:26.416Z",
+  "updatedAt": "2026-06-25T05:54:05.992Z",
   "missions": [
     {
       "id": "session:c933701b-42da-4066-a160-e701ceead213:none",
@@ -7,15 +7,15 @@
       "name": "none",
       "objective": "Session mission",
       "createdAt": "2026-06-23T01:19:00.735Z",
-      "updatedAt": "2026-06-24T17:36:26.416Z",
+      "updatedAt": "2026-06-25T05:54:05.992Z",
       "status": "running",
       "workerCount": 191,
       "taskCounts": {
         "total": 191,
         "pending": 0,
         "blocked": 0,
-        "inProgress": 152,
-        "completed": 39,
+        "inProgress": 149,
+        "completed": 42,
         "failed": 0
       },
       "agents": [
@@ -27,7 +27,7 @@
           "currentStep": null,
           "latestUpdate": "completed",
           "completedSummary": null,
-          "updatedAt": "2026-06-24T17:03:42.003Z"
+          "updatedAt": "2026-06-25T05:32:30.643Z"
         },
         {
           "name": "executor:a45a0c3",
@@ -1843,11 +1843,11 @@
           "name": "workflow-subagent:adf24ec",
           "role": "workflow-subagent",
           "ownership": "adf24ecf2da541aa5",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
-          "completedSummary": null,
-          "updatedAt": "2026-06-24T17:07:32.283Z"
+          "latestUpdate": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "completedSummary": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "updatedAt": "2026-06-25T03:50:58.021Z"
         },
         {
           "name": "workflow-subagent:a8cd26a",
@@ -1873,11 +1873,11 @@
           "name": "workflow-subagent:aa572f0",
           "role": "workflow-subagent",
           "ownership": "aa572f095d0cdf837",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
-          "completedSummary": null,
-          "updatedAt": "2026-06-24T17:07:33.159Z"
+          "latestUpdate": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "completedSummary": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "updatedAt": "2026-06-25T05:51:39.713Z"
         },
         {
           "name": "workflow-subagent:ac8e305",
@@ -1913,11 +1913,11 @@
           "name": "workflow-subagent:abcc7e7",
           "role": "workflow-subagent",
           "ownership": "abcc7e737f848f790",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
-          "completedSummary": null,
-          "updatedAt": "2026-06-24T17:07:33.828Z"
+          "latestUpdate": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "completedSummary": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "updatedAt": "2026-06-25T05:54:05.992Z"
         },
         {
           "name": "workflow-subagent:aafc2e2",
@@ -1954,6 +1954,46 @@
           "agent": "workflow-subagent:aafc2e2",
           "detail": "started workflow-subagent:aafc2e2",
           "sourceKey": "session-start:aafc2e2b1944194e8"
+        },
+        {
+          "id": "session-stop:ae471b2b658182201:2026-06-25T03:50:32.015Z",
+          "at": "2026-06-25T03:50:32.015Z",
+          "kind": "completion",
+          "agent": "episodic-memory:search-conversations:ab94fc7",
+          "detail": "completed",
+          "sourceKey": "session-stop:ae471b2b658182201"
+        },
+        {
+          "id": "session-stop:adf24ecf2da541aa5:2026-06-25T03:50:58.021Z",
+          "at": "2026-06-25T03:50:58.021Z",
+          "kind": "completion",
+          "agent": "workflow-subagent:adf24ec",
+          "detail": "Marked as stale during unmatched stop reconciliation - exceeded timeout",
+          "sourceKey": "session-stop:adf24ecf2da541aa5"
+        },
+        {
+          "id": "session-stop:a223b30c7c5aa5afd:2026-06-25T05:32:30.643Z",
+          "at": "2026-06-25T05:32:30.643Z",
+          "kind": "completion",
+          "agent": "episodic-memory:search-conversations:ab94fc7",
+          "detail": "completed",
+          "sourceKey": "session-stop:a223b30c7c5aa5afd"
+        },
+        {
+          "id": "session-stop:aa572f095d0cdf837:2026-06-25T05:51:39.713Z",
+          "at": "2026-06-25T05:51:39.713Z",
+          "kind": "completion",
+          "agent": "workflow-subagent:aa572f0",
+          "detail": "Marked as stale during unmatched stop reconciliation - exceeded timeout",
+          "sourceKey": "session-stop:aa572f095d0cdf837"
+        },
+        {
+          "id": "session-stop:abcc7e737f848f790:2026-06-25T05:54:05.992Z",
+          "at": "2026-06-25T05:54:05.992Z",
+          "kind": "completion",
+          "agent": "workflow-subagent:abcc7e7",
+          "detail": "Marked as stale during unmatched stop reconciliation - exceeded timeout",
+          "sourceKey": "session-stop:abcc7e737f848f790"
         }
       ]
     }
