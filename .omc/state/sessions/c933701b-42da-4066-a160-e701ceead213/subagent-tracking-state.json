@@ -1833,9 +1833,9 @@
       "agent_type": "workflow-subagent",
       "started_at": "2026-06-24T17:07:31.754Z",
       "parent_mode": "none",
-      "status": "failed",
-      "completed_at": "2026-06-25T03:50:32.015Z",
-      "duration_ms": 38580261,
+      "status": "completed",
+      "completed_at": "2026-06-25T06:11:53.504Z",
+      "duration_ms": 47061750,
       "output_summary": "Marked as stale during unmatched stop reconciliation - exceeded timeout"
     },
     {
@@ -1932,9 +1932,9 @@
       "agent_type": "workflow-subagent",
       "started_at": "2026-06-24T17:07:33.711Z",
       "parent_mode": "none",
-      "status": "failed",
-      "completed_at": "2026-06-25T03:50:32.015Z",
-      "duration_ms": 38578304,
+      "status": "completed",
+      "completed_at": "2026-06-25T06:01:29.023Z",
+      "duration_ms": 46435312,
       "output_summary": "Marked as stale during unmatched stop reconciliation - exceeded timeout"
     },
     {
@@ -1977,7 +1977,7 @@
     }
   ],
   "total_spawned": 91,
-  "total_completed": 54,
+  "total_completed": 56,
   "total_failed": 174,
-  "last_updated": "2026-06-25T05:54:06.110Z"
+  "last_updated": "2026-06-25T06:11:53.638Z"
 }

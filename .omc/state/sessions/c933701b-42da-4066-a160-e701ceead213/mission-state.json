@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-25T05:54:05.992Z",
+  "updatedAt": "2026-06-25T06:11:53.504Z",
   "missions": [
     {
       "id": "session:c933701b-42da-4066-a160-e701ceead213:none",
@@ -7,15 +7,15 @@
       "name": "none",
       "objective": "Session mission",
       "createdAt": "2026-06-23T01:19:00.735Z",
-      "updatedAt": "2026-06-25T05:54:05.992Z",
+      "updatedAt": "2026-06-25T06:11:53.504Z",
       "status": "running",
       "workerCount": 191,
       "taskCounts": {
         "total": 191,
         "pending": 0,
         "blocked": 0,
-        "inProgress": 149,
-        "completed": 42,
+        "inProgress": 147,
+        "completed": 44,
         "failed": 0
       },
       "agents": [
@@ -1803,11 +1803,11 @@
           "name": "workflow-subagent:ab72449",
           "role": "workflow-subagent",
           "ownership": "ab724496f83702df7",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
-          "completedSummary": null,
-          "updatedAt": "2026-06-24T17:07:31.754Z"
+          "latestUpdate": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "completedSummary": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "updatedAt": "2026-06-25T06:11:53.504Z"
         },
         {
           "name": "workflow-subagent:ae26b19",
@@ -1903,11 +1903,11 @@
           "name": "workflow-subagent:ac89c18",
           "role": "workflow-subagent",
           "ownership": "ac89c18136a990cda",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
-          "completedSummary": null,
-          "updatedAt": "2026-06-24T17:07:33.711Z"
+          "latestUpdate": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "completedSummary": "Marked as stale during unmatched stop reconciliation - exceed...",
+          "updatedAt": "2026-06-25T06:01:29.023Z"
         },
         {
           "name": "workflow-subagent:abcc7e7",
@@ -1994,6 +1994,22 @@
           "agent": "workflow-subagent:abcc7e7",
           "detail": "Marked as stale during unmatched stop reconciliation - exceeded timeout",
           "sourceKey": "session-stop:abcc7e737f848f790"
+        },
+        {
+          "id": "session-stop:ac89c18136a990cda:2026-06-25T06:01:29.023Z",
+          "at": "2026-06-25T06:01:29.023Z",
+          "kind": "completion",
+          "agent": "workflow-subagent:ac89c18",
+          "detail": "Marked as stale during unmatched stop reconciliation - exceeded timeout",
+          "sourceKey": "session-stop:ac89c18136a990cda"
+        },
+        {
+          "id": "session-stop:ab724496f83702df7:2026-06-25T06:11:53.504Z",
+          "at": "2026-06-25T06:11:53.504Z",
+          "kind": "completion",
+          "agent": "workflow-subagent:ab72449",
+          "detail": "Marked as stale during unmatched stop reconciliation - exceeded timeout",
+          "sourceKey": "session-stop:ab724496f83702df7"
         }
       ]
     }
