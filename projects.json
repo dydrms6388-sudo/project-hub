@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-25T23:53:30.332Z",
+  "updatedAt": "2026-06-26T00:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -1739,6 +1739,16 @@
       "desc": "주행거리만 넣으면 엔진오일·타이어·브레이크 등 16개 소모품 교환시기 진단. 차종별 와이퍼·타이어 사이즈 + 계절점검 + 내 차고 저장.",
       "live": "https://jeongbigak.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/jeongbigak",
+      "status": "live",
+      "date": "2026-06-26"
+    },
+    {
+      "name": "밥줬어?",
+      "emoji": "🐾",
+      "domain": "반려동물/생활",
+      "desc": "“강아지 밥 줬어?” “약 먹였나?” 가족이 같이 보는 반려동물 밥·약·물·산책 공유 체크판. 회원가입 없이 6자리 코드(또는 링크)만 공유하면 엄마·아빠·아이 누구의 폰에서든 같은 화면이 실시간 동기화되고, 한 사람이 ‘밥 줬어요’를 누르면 가족 모두에게 몇 초 안에 표시된다. 매일 자정(KST) 자동 초기화로 ‘오늘 아직 안 준 끼니’가 한눈에, 심장사상충약 등 정기 투약도 ‘누가 언제 줬는지’ 기록으로 남아 중복 급여·투약 누락을 막는다. 다견·다묘 지원, 연속기록(streak), 최근 7일 차트, 가족 초대 공유 카드. 몰입 4종: r3f 3D 밥그릇이 완료도만큼 사료로 차오르고 떠다니는 간식 글로우(3D), framer-motion 카드 진입·카운트업·체크 스프링(애니메이션), 전체 완료 시 canvas-confetti(효과), Web Audio 합성 탭·냠냠·완료 아르페지오 사운드(음소거 기본 OFF). 수익화: AdSense(env 인라인)+사료·자동급식기·영양제·약보관함 쿠팡 파트너스 맥락 슬롯, WebApplication+FAQPage JSON-LD·동적 OG 1200x630·sitemap·robots(개별 방 noindex)·웹공유·ads.txt·개인정보/면책. 공유 보드는 Neon 격리스키마(babjwo)·무유료API. 타깃 키워드: 강아지 밥 줬는지·반려동물 투약 기록·가족 강아지 밥 공유.",
+      "live": "https://dydrms-babjwo.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-babjwo",
       "status": "live",
       "date": "2026-06-26"
     }
