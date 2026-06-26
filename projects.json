@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-06-26T12:54:46Z",
+  "updatedAt": "2026-06-26T13:30:00Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "띵운",
+      "emoji": "✨",
+      "domain": "엔터/바이럴 (이름 운세·테스트)",
+      "desc": "이름으로 매일 한 장씩 여는 운세 카드 컬렉션. 운세를 '결정론적 캐릭터 카드 가챠'로 재해석 — 훈민정음 오행(이름 초성 발음)으로 성향을 고정하고 날짜 시드로 오늘 운세만 변동시켜 '랜덤 junk' 아닌 '내 얘기' 체감. 오늘의 카드(0.8초 길게 눌러 봉인 해제·N/R/SR/SSR 레어도·4축 점수·컨페티), 이름 궁합(오행 상생상극 기반·상대 이름 박힌 공유 카드·딥링크 prefill), 올해의 한자(띠+오행), 이름 풀이(5축 캐릭터 레이더+4글자 코드), 카드 컬렉션·연속출석(streak)·1일1카드 손실회피 리텐션. 인스타 스토리 9:16 결과카드 이미지 저장(html-to-image)·웹공유 바이럴 훅. 몰입 4종: react-three-fiber 3D 홀로 카드(룬 캔버스텍스처·오행 오브·포인터 틸트)·framer-motion(카운트업·스태거)·canvas-confetti(SSR 골드버스트)·Web Audio 100% 합성음(앰비언트/차임/벨, 음소거 기본 OFF). 무백엔드(localStorage), 광고 폭탄·결제강요 제로 포지셔닝. 애드센스+쿠팡 파트너스(행운템 색매칭)+Pro 상세풀이 언락 수익화, SEO/OG/sitemap/JSON-LD.",
+      "live": "https://ttingun.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/ttingun",
+      "status": "live",
+      "date": "2026-06-26"
+    },
     {
       "name": "고요",
       "emoji": "🌙",
