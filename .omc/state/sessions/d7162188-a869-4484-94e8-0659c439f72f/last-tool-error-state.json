@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"find auth-hub auth-billing -type f 2>/dev/null | head -60 && echo \\\"===TARGETS LOC===\\\" && ls -d ../AnimalCare ../Taro ../jaksim ../lumora 2>/dev/null; ls -d AnimalCare Taro jaksim lumora ...",
+  "error": "Exit code 2\nauth-hub/.env.example\nauth-hub/.gitignore\nauth-hub/next.config.mjs\nauth-hub/package.json\nauth-hub/prisma/schema.prisma\nauth-hub/README.md\nauth-hub/src/app/api/auth/[...nextauth]/route.ts\nauth-hub/src/app/api/billing/stripe/checkout/route.ts\nauth-hub/src/app/api/billing/stripe/webhook/route.ts\nauth-hub/src/app/api/billing/toss/confirm/route.ts\nauth-hub/src/app/api/billing/toss/webhook/route.ts\nauth-hub/src/app/api/credits/deduct/route.ts\nauth-hub/src/app/api/me/route.ts\nauth-hub/src/a...",
+  "timestamp": "2026-06-27T00:49:41.187Z",
+  "retry_count": 2
+}

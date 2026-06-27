@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1782263673001,
+  "lastScanned": 1782521347918,
   "projectRoot": "C:\\Users\\dydrm\\projects\\daily\\project-hub",
   "techStack": {
     "languages": [],
@@ -9,7 +9,7 @@
     "runtime": null
   },
   "build": {
-    "buildCommand": "cd \"C:/Users/dydrm/projects/daily/2026-06-20-factory-dash\" && npm run build 2>&1",
+    "buildCommand": null,
     "testCommand": null,
     "lintCommand": null,
     "devCommand": null,
@@ -24,8 +24,13 @@
   "structure": {
     "isMonorepo": false,
     "workspaces": [],
-    "mainDirectories": [],
-    "gitBranches": null
+    "mainDirectories": [
+      "lib"
+    ],
+    "gitBranches": {
+      "defaultBranch": "master",
+      "branchingStrategy": null
+    }
   },
   "customNotes": [],
   "directoryMap": {
@@ -33,7 +38,128 @@
       "path": "age",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672144,
+      "lastAccessed": 1782521347556,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "ai-tarot": {
+      "path": "ai-tarot",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347557,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "ai-webnovel": {
+      "path": "ai-webnovel",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347558,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "alba-pay": {
+      "path": "alba-pay",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347558,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "amby-dating": {
+      "path": "amby-dating",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347559,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "animal-face-test": {
+      "path": "animal-face-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347560,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "aura-lab": {
+      "path": "aura-lab",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347560,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "aura-test": {
+      "path": "aura-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347561,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "auth-billing": {
+      "path": "auth-billing",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1782521347562,
+      "keyFiles": [
+        "env.example",
+        "README.md"
+      ]
+    },
+    "auth-hub": {
+      "path": "auth-hub",
+      "purpose": null,
+      "fileCount": 6,
+      "lastAccessed": 1782521347562,
+      "keyFiles": [
+        "next.config.mjs",
+        "package.json",
+        "README.md",
+        "tsconfig.json"
+      ]
+    },
+    "baby-name-maker": {
+      "path": "baby-name-maker",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347563,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "baby-vaccine-schedule": {
+      "path": "baby-vaccine-schedule",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347564,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "balance-pick": {
+      "path": "balance-pick",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347564,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "batja-eight": {
+      "path": "batja-eight",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347565,
       "keyFiles": [
         "index.html"
       ]
@@ -42,16 +168,224 @@
       "path": "bmi",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672147,
+      "lastAccessed": 1782521347566,
       "keyFiles": [
         "index.html"
+      ]
+    },
+    "bmr-tdee-calc": {
+      "path": "bmr-tdee-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347566,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "body-fat-check": {
+      "path": "body-fat-check",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347567,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "bp-glucose-log": {
+      "path": "bp-glucose-log",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347568,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "brain-power-game": {
+      "path": "brain-power-game",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347568,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "brain-reflex-age": {
+      "path": "brain-reflex-age",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347569,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "breath-coach": {
+      "path": "breath-coach",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347570,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "caffeine-tracker": {
+      "path": "caffeine-tracker",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347570,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "calorie-burn-calc": {
+      "path": "calorie-burn-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347571,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "capital-gains-tax": {
+      "path": "capital-gains-tax",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347571,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "car-insurance-rider": {
+      "path": "car-insurance-rider",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347572,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "chemi-code": {
+      "path": "chemi-code",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347573,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "cheongyak-score-calc": {
+      "path": "cheongyak-score-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347573,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "china-travel": {
+      "path": "china-travel",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347574,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "coding-test-prep": {
+      "path": "coding-test-prep",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347574,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "color-palette": {
+      "path": "color-palette",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347575,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "couple-chemistry": {
+      "path": "couple-chemistry",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347576,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "daily-quiz-pop": {
+      "path": "daily-quiz-pop",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347576,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "daily-zodiac": {
+      "path": "daily-zodiac",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347577,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "data": {
+      "path": "data",
+      "purpose": "Data files",
+      "fileCount": 2,
+      "lastAccessed": 1782521347577,
+      "keyFiles": [
+        "classification.json",
+        "paid-targets.json"
       ]
     },
     "dday": {
       "path": "dday",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672162,
+      "lastAccessed": 1782521347578,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "dday-hub": {
+      "path": "dday-hub",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347579,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "dice-tower": {
+      "path": "dice-tower",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347579,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "dog-personality-test": {
+      "path": "dog-personality-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347580,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "driver-license-quiz": {
+      "path": "driver-license-quiz",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347581,
       "keyFiles": [
         "index.html"
       ]
@@ -60,7 +394,259 @@
       "path": "dsr",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672165,
+      "lastAccessed": 1782521347581,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "dsr-limit-check": {
+      "path": "dsr-limit-check",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347582,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "due-date-calc": {
+      "path": "due-date-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347582,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "dydrms-mbticard": {
+      "path": "dydrms-mbticard",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347583,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "dynamic-qr-card": {
+      "path": "dynamic-qr-card",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347584,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "eggcat-predict": {
+      "path": "eggcat-predict",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347584,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "electric-bill-calc": {
+      "path": "electric-bill-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347585,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "exam-dday-study": {
+      "path": "exam-dday-study",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347585,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "factory-dash": {
+      "path": "factory-dash",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347586,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "family-title-finder": {
+      "path": "family-title-finder",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347587,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "fandom-bias-vote": {
+      "path": "fandom-bias-vote",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347587,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "fasting-timer": {
+      "path": "fasting-timer",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347588,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "fridge-recipe": {
+      "path": "fridge-recipe",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347588,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "friend-chemistry": {
+      "path": "friend-chemistry",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347589,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "gift-money": {
+      "path": "gift-money",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347589,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "gig-note-tax": {
+      "path": "gig-note-tax",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347590,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "glass-mind-test": {
+      "path": "glass-mind-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347590,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "gpa-calc-pro": {
+      "path": "gpa-calc-pro",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347591,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "gpa-converter": {
+      "path": "gpa-converter",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347592,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "hangul-wordle": {
+      "path": "hangul-wordle",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347592,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "hanja-grade-master": {
+      "path": "hanja-grade-master",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347593,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "home-workout-routine": {
+      "path": "home-workout-routine",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347593,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "ideal-worldcup": {
+      "path": "ideal-worldcup",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347593,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "idiom-quiz": {
+      "path": "idiom-quiz",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347594,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "idiom-quiz-game": {
+      "path": "idiom-quiz-game",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347594,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "idol-worldcup": {
+      "path": "idol-worldcup",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347595,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "insurance-overlap": {
+      "path": "insurance-overlap",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347595,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "jaksim-habit": {
+      "path": "jaksim-habit",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347596,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "jasoseo-doctor": {
+      "path": "jasoseo-doctor",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347597,
       "keyFiles": [
         "index.html"
       ]
@@ -69,7 +655,331 @@
       "path": "jeonse-loan",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672178,
+      "lastAccessed": 1782521347597,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "jeonse-loan-limit": {
+      "path": "jeonse-loan-limit",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347598,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "jeonse-monthly-convert": {
+      "path": "jeonse-monthly-convert",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347598,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "katalk-chemistry": {
+      "path": "katalk-chemistry",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347599,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "korean-age": {
+      "path": "korean-age",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347600,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "korean-history-timeline": {
+      "path": "korean-history-timeline",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347600,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "korean-typing-speed": {
+      "path": "korean-typing-speed",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347600,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "kpop-fan-feed": {
+      "path": "kpop-fan-feed",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347601,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "lib": {
+      "path": "lib",
+      "purpose": "Library code",
+      "fileCount": 1,
+      "lastAccessed": 1782521347602,
+      "keyFiles": [
+        "hub.mjs"
+      ]
+    },
+    "lift-rank-1rm": {
+      "path": "lift-rank-1rm",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347602,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "loan-refi-calc": {
+      "path": "loan-refi-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347603,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "love-story-board": {
+      "path": "love-story-board",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347603,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "love-style-test": {
+      "path": "love-style-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347604,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "lucky-item": {
+      "path": "lucky-item",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347605,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "lunch-picker": {
+      "path": "lunch-picker",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347605,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "lunch-slot-machine": {
+      "path": "lunch-slot-machine",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347606,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "manbo-steps": {
+      "path": "manbo-steps",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347606,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "marriage-odds-test": {
+      "path": "marriage-odds-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347607,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "mbti-match": {
+      "path": "mbti-match",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347607,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "meeting-note-ai": {
+      "path": "meeting-note-ai",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347608,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "mind-weather": {
+      "path": "mind-weather",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347608,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "mood-wave-focus": {
+      "path": "mood-wave-focus",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347609,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "moving-cost-calc": {
+      "path": "moving-cost-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347609,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "naesin-grade-sim": {
+      "path": "naesin-grade-sim",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347610,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "name-score": {
+      "path": "name-score",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347610,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "number-rush": {
+      "path": "number-rush",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347611,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "onsaemiro": {
+      "path": "onsaemiro",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347612,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "ovulation-calendar": {
+      "path": "ovulation-calendar",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347612,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "past-life-job": {
+      "path": "past-life-job",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347613,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "personal-color-test": {
+      "path": "personal-color-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347613,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "pet-age-calc": {
+      "path": "pet-age-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347614,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "pet-meal-calc": {
+      "path": "pet-meal-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347614,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "pet-vet-cost": {
+      "path": "pet-vet-cost",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347615,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "planet-weight-scale": {
+      "path": "planet-weight-scale",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347616,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "plant-watering": {
+      "path": "plant-watering",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347616,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "power-nap-alarm": {
+      "path": "power-nap-alarm",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347617,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "protein-calc": {
+      "path": "protein-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347617,
       "keyFiles": [
         "index.html"
       ]
@@ -78,7 +988,16 @@
       "path": "pyeong",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672201,
+      "lastAccessed": 1782521347618,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "pyeong-converter": {
+      "path": "pyeong-converter",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347618,
       "keyFiles": [
         "index.html"
       ]
@@ -87,7 +1006,16 @@
       "path": "refinance",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672211,
+      "lastAccessed": 1782521347619,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "running-pace-calc": {
+      "path": "running-pace-calc",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347619,
       "keyFiles": [
         "index.html"
       ]
@@ -96,7 +1024,322 @@
       "path": "salary",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672226,
+      "lastAccessed": 1782521347620,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "salary-calc-2026": {
+      "path": "salary-calc-2026",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347621,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "salary-net-pay": {
+      "path": "salary-net-pay",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347621,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "salary-rank": {
+      "path": "salary-rank",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347622,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "seasonal-food": {
+      "path": "seasonal-food",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347622,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "shift-work-calendar": {
+      "path": "shift-work-calendar",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347623,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "skin-type-test": {
+      "path": "skin-type-test",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347623,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "slang-vending": {
+      "path": "slang-vending",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347624,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "sleep-cycle-alarm": {
+      "path": "sleep-cycle-alarm",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347624,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "sober-up-time": {
+      "path": "sober-up-time",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347625,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "spelling-quiz": {
+      "path": "spelling-quiz",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347625,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "split-bill": {
+      "path": "split-bill",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347626,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "ssogi-roulette": {
+      "path": "ssogi-roulette",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347627,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "stock-predict-battle": {
+      "path": "stock-predict-battle",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347627,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "subscription-reminder": {
+      "path": "subscription-reminder",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347628,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "suneung-gradecut": {
+      "path": "suneung-gradecut",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347628,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "suneung-planner": {
+      "path": "suneung-planner",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347629,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "supplement-combo": {
+      "path": "supplement-combo",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347629,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "tax-refund-bot": {
+      "path": "tax-refund-bot",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347630,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "templates": {
+      "path": "templates",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347630,
+      "keyFiles": [
+        "service.html"
+      ]
+    },
+    "test-hub": {
+      "path": "test-hub",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347631,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "today-fortune": {
+      "path": "today-fortune",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347631,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "toeic-planner": {
+      "path": "toeic-planner",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347632,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "travel-budget": {
+      "path": "travel-budget",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347632,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "travel-packing": {
+      "path": "travel-packing",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347633,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "travel-pin": {
+      "path": "travel-pin",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347634,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "ttotto-pet": {
+      "path": "ttotto-pet",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347634,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "used-price-check": {
+      "path": "used-price-check",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347635,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "voca-sprint": {
+      "path": "voca-sprint",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347635,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "vocal-routine": {
+      "path": "vocal-routine",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347635,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "water-intake": {
+      "path": "water-intake",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347636,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "water-tracker-2": {
+      "path": "water-tracker-2",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347636,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "wedding-prep-dday": {
+      "path": "wedding-prep-dday",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347637,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "weight-roadmap": {
+      "path": "weight-roadmap",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347637,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "what-to-watch-roulette": {
+      "path": "what-to-watch-roulette",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347638,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "workout-ai-coach": {
+      "path": "workout-ai-coach",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782521347638,
       "keyFiles": [
         "index.html"
       ]
@@ -105,251 +1348,80 @@
       "path": "yangdo",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1782263672231,
+      "lastAccessed": 1782521347639,
       "keyFiles": [
         "index.html"
+      ]
+    },
+    "auth-billing\\types": {
+      "path": "auth-billing\\types",
+      "purpose": "Type definitions",
+      "fileCount": 2,
+      "lastAccessed": 1782521347642,
+      "keyFiles": [
+        "auth.types.md",
+        "billing.types.md"
+      ]
+    },
+    "auth-hub\\node_modules": {
+      "path": "auth-hub\\node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 0,
+      "lastAccessed": 1782521347643,
+      "keyFiles": []
+    },
+    "auth-hub\\src": {
+      "path": "auth-hub\\src",
+      "purpose": "Source code",
+      "fileCount": 2,
+      "lastAccessed": 1782521347644,
+      "keyFiles": [
+        "auth.ts",
+        "middleware.ts"
       ]
     }
   },
   "hotPaths": [
     {
-      "path": "gen-pages.mjs",
-      "accessCount": 12,
-      "lastAccessed": 1782275987591,
-      "type": "file"
-    },
-    {
-      "path": "templates\\service.html",
-      "accessCount": 6,
-      "lastAccessed": 1782265273753,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 4,
-      "lastAccessed": 1782265031631,
-      "type": "directory"
-    },
-    {
-      "path": ".claude\\settings.local.json",
-      "accessCount": 3,
-      "lastAccessed": 1782182264534,
-      "type": "file"
-    },
-    {
-      "path": "projects.json",
-      "accessCount": 3,
-      "lastAccessed": 1782265027936,
-      "type": "file"
-    },
-    {
-      "path": "apex-queue.json",
-      "accessCount": 3,
-      "lastAccessed": 1782322596229,
-      "type": "file"
-    },
-    {
-      "path": "robots.txt",
-      "accessCount": 2,
-      "lastAccessed": 1782264985444,
-      "type": "file"
-    },
-    {
-      "path": "index.html",
-      "accessCount": 2,
-      "lastAccessed": 1782264985977,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\pricing\\pricing-client.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1782309999755,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\package.json",
-      "accessCount": 2,
-      "lastAccessed": 1782310018987,
-      "type": "file"
-    },
-    {
-      "path": "sitemap.xml",
+      "path": "data\\paid-targets.json",
       "accessCount": 1,
-      "lastAccessed": 1782263705989,
+      "lastAccessed": 1782521367779,
       "type": "file"
     },
     {
-      "path": "salary\\index.html",
+      "path": "AUTH-BILLING-PLAN.md",
       "accessCount": 1,
-      "lastAccessed": 1782263737618,
+      "lastAccessed": 1782521378407,
       "type": "file"
     },
     {
-      "path": "dydrms-dalian\\index.html",
+      "path": "PHASE2-PLAN.md",
       "accessCount": 1,
-      "lastAccessed": 1782264342196,
-      "type": "file"
-    },
-    {
-      "path": "site.config.mjs",
-      "accessCount": 1,
-      "lastAccessed": 1782265270809,
-      "type": "file"
-    },
-    {
-      "path": "SEO-CHECKLIST.md",
-      "accessCount": 1,
-      "lastAccessed": 1782265373299,
-      "type": "file"
-    },
-    {
-      "path": "apex-map.mjs",
-      "accessCount": 1,
-      "lastAccessed": 1782274445755,
-      "type": "file"
-    },
-    {
-      "path": "apex-rollout-slugs.json",
-      "accessCount": 1,
-      "lastAccessed": 1782275932470,
-      "type": "file"
-    },
-    {
-      "path": "cleanup-rollout.mjs",
-      "accessCount": 1,
-      "lastAccessed": 1782291992381,
-      "type": "file"
-    },
-    {
-      "path": "auth-billing\\README.md",
-      "accessCount": 1,
-      "lastAccessed": 1782309114371,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\tsconfig.json",
-      "accessCount": 1,
-      "lastAccessed": 1782309221789,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\.env.example",
-      "accessCount": 1,
-      "lastAccessed": 1782309308833,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\prisma\\schema.prisma",
-      "accessCount": 1,
-      "lastAccessed": 1782309354594,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\lib\\prisma.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309376919,
+      "lastAccessed": 1782521379100,
       "type": "file"
     },
     {
       "path": "auth-hub\\src\\auth.ts",
       "accessCount": 1,
-      "lastAccessed": 1782309443378,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\types\\next-auth.d.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309461030,
+      "lastAccessed": 1782526460772,
       "type": "file"
     },
     {
       "path": "auth-hub\\src\\middleware.ts",
       "accessCount": 1,
-      "lastAccessed": 1782309504887,
+      "lastAccessed": 1782526461937,
       "type": "file"
     },
     {
-      "path": "auth-hub\\src\\lib\\billing\\credits.ts",
+      "path": "auth-hub\\.env.example",
       "accessCount": 1,
-      "lastAccessed": 1782309542827,
+      "lastAccessed": 1782526462444,
       "type": "file"
     },
     {
-      "path": "auth-hub\\src\\lib\\billing\\stripe.ts",
+      "path": "auth-hub\\src\\app\\api\\me\\route.ts",
       "accessCount": 1,
-      "lastAccessed": 1782309562514,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\lib\\billing\\toss.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309586735,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\lib\\billing\\catalog.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309607575,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\api\\billing\\stripe\\checkout\\route.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309634847,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\api\\billing\\stripe\\webhook\\route.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309670524,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\api\\billing\\toss\\confirm\\route.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309705468,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\api\\billing\\toss\\webhook\\route.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309736181,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\api\\credits\\deduct\\route.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782309765857,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782309822687,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\login\\page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782309845616,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\dashboard\\page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782309877932,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\src\\app\\pricing\\page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782309898294,
-      "type": "file"
-    },
-    {
-      "path": "auth-hub\\README.md",
-      "accessCount": 1,
-      "lastAccessed": 1782310078716,
+      "lastAccessed": 1782526463211,
       "type": "file"
     }
   ],
