@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { getRequestUser } from "@/lib/request-user";
 import { consumeCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 
 export const runtime = "nodejs";
 
 // POST /api/credits/deduct
 // 마이크로서비스가 사용자 크레딧을 차감할 때 호출.
-// 인증: 허브 세션(쿠키) 또는 마이크로서비스가 전달한 JWT 가 미들웨어/auth 로 검증됨.
+// 인증: 허브 세션(쿠키, 웹 SSO) 또는 Authorization: Bearer <mobile JWT>(네이티브).
 // body: { amount: number, service: string, idempotencyKey?: string }
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getRequestUser(req);
+  if (!user) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
   try {
     const { balance, applied } = await consumeCredits({
-      userId: session.user.id,
+      userId: user.id,
       amount,
       service,
       idempotencyKey,

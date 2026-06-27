@@ -89,6 +89,8 @@ enum Plan {
 enum PaymentProvider {
   STRIPE
   TOSS
+  IAP_APPLE  // App Store 인앱결제(영수증 검증)
+  IAP_GOOGLE // Google Play 인앱결제(purchaseToken 검증)
 }
 
 enum SubscriptionStatus {

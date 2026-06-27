@@ -94,7 +94,7 @@ export async function consumeCredits(params: {
 /** 구독 상태 갱신 + User.plan 캐시 동기화. 웹훅에서 호출. */
 export async function upsertSubscription(params: {
   userId: string;
-  provider: "STRIPE" | "TOSS";
+  provider: "STRIPE" | "TOSS" | "IAP_APPLE" | "IAP_GOOGLE";
   externalSubscriptionId: string;
   externalCustomerId?: string;
   status: SubscriptionStatus;

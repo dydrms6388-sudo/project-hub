@@ -1,23 +1,24 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { getRequestUser } from "@/lib/request-user";
 
 export const runtime = "nodejs";
 
-// GET /api/me — 현재 사용자의 인증/과금 상태. 마이크로서비스가 권한 확인용으로 호출 가능.
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
+// GET /api/me — 현재 사용자의 인증/과금 상태.
+// 웹(세션 쿠키) + 네이티브(Authorization: Bearer <mobile JWT>) 모두 지원.
+// 마이크로서비스가 권한 확인용으로 호출.
+export async function GET(req: Request) {
+  const user = await getRequestUser(req);
+  if (!user) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }
   return NextResponse.json({
     authenticated: true,
     user: {
-      id: session.user.id,
-      name: session.user.name,
-      email: session.user.email,
-      image: session.user.image,
-      plan: session.user.plan,
-      credits: session.user.credits,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      plan: user.plan,
+      credits: user.credits,
     },
   });
 }
