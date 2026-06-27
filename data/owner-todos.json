@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-06-27",
+  "for": "roadmap #11 인증·결제 전면 — 사장님(소유자) 직접 발급/등록 필요 항목",
+  "note": "에이전트는 코드/연동만 완료. 아래 키·계정·결제·상품 등록은 비용/소유권 문제로 사장님 몫. 모든 시크릿은 .env.local 또는 Vercel/EAS 환경변수에만 입력(코드/깃 커밋 금지).",
+  "summary": {
+    "targets_total": 10,
+    "wired": 10,
+    "web_pwa_done": 4,
+    "native_done": 6,
+    "blocked": 0
+  },
+  "hub_env": {
+    "where": "auth-hub Vercel 환경변수 (.env.example 참고)",
+    "items": [
+      { "key": "AUTH_SECRET", "how": "openssl rand -base64 32", "status": "owner" },
+      { "key": "MOBILE_JWT_SECRET", "how": "openssl rand -base64 32 (네이티브 베어러 서명)", "status": "owner" },
+      { "key": "ALLOWED_MOBILE_SCHEMES", "value": "nyangstat,beautytimeline,popupchinese,vocalroutine,lumora,meetintravel", "how": "오픈리다이렉트 방지 화이트리스트(네이티브 6앱 스킴)", "status": "owner" },
+      { "key": "AUTH_COOKIE_DOMAIN", "value": ".tomatoeggcat.com", "how": "웹 4앱 SSO 쿠키 공유. 앱들이 apex/서브도메인으로 서빙돼야 유효", "status": "owner" },
+      { "key": "DATABASE_URL / DIRECT_URL", "how": "neon.tech 프로젝트 → pooled/direct. 이후 npx prisma migrate deploy (IAP_APPLE/IAP_GOOGLE enum 반영)", "status": "owner" }
+    ]
+  },
+  "oauth": [
+    { "provider": "Google", "console": "console.cloud.google.com", "redirect": "{AUTH_URL}/api/auth/callback/google", "keys": ["AUTH_GOOGLE_ID", "AUTH_GOOGLE_SECRET"], "status": "owner" },
+    { "provider": "Kakao", "console": "developers.kakao.com", "redirect": "{AUTH_URL}/api/auth/callback/kakao", "keys": ["KAKAO_CLIENT_ID", "KAKAO_CLIENT_SECRET"], "status": "owner" },
+    { "provider": "Naver", "console": "developers.naver.com", "redirect": "{AUTH_URL}/api/auth/callback/naver", "keys": ["NAVER_CLIENT_ID", "NAVER_CLIENT_SECRET"], "status": "owner" }
+  ],
+  "payments_web": [
+    { "provider": "토스페이먼츠(카드/카카오페이/네이버페이/계좌)", "console": "developers.tosspayments.com", "keys": ["TOSS_SECRET_KEY", "NEXT_PUBLIC_TOSS_CLIENT_KEY", "TOSS_WEBHOOK_SECRET"], "todo": "가맹/상점 개설, 결제위젯 활성, 웹훅 URL {AUTH_URL}/api/billing/toss/webhook 등록, catalog.ts 금액을 실판매가로 조정", "status": "owner" },
+    { "provider": "Stripe(해외 구독/단건)", "console": "dashboard.stripe.com", "keys": ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "STRIPE_PRICE_PRO_MONTHLY", "STRIPE_PRICE_PRO_YEARLY", "STRIPE_PRICE_CREDITS_10"], "todo": "계정/상품/Price 생성, 웹훅 {AUTH_URL}/api/billing/stripe/webhook 등록", "status": "owner" },
+    { "provider": "PayPal(선택)", "console": "developer.paypal.com", "keys": ["(미연동)"], "todo": "필요 시 Stripe 외 PayPal 별도 연동(현재 코드 미포함). 우선순위 낮음", "status": "optional" }
+  ],
+  "native_iap": {
+    "product_ids_required": ["credits_10", "credits_50", "pro_monthly", "pro_yearly"],
+    "note": "허브 IAP_CATALOG 와 동일 ID 로 스토어에 상품 생성해야 purchaseAndEntitle 동작. 앱별 기존 자체 SKU(예: nyangstat premium_unlock, vocal_routine_pro_*)는 별개로 유지됨 — 통합 여부는 사장님 결정.",
+    "apple": { "console": "App Store Connect", "keys": ["APPLE_SHARED_SECRET"], "todo": "앱별 인앱상품(위 4개 ID) 등록 + 공유 비밀키 발급 → 허브 ENV", "status": "owner" },
+    "google": { "console": "Play Console", "keys": ["GOOGLE_PLAY_SERVICE_ACCOUNT_JSON", "GOOGLE_PLAY_PACKAGE_NAME"], "todo": "인앱상품 등록 + 서비스계정 JSON 발급(한 줄). 허브 verifyGoogle 런타임 구현은 googleapis 추가 시 활성", "status": "owner" }
+  },
+  "per_app_followups": [
+    { "app": "Taro", "items": ["Navbar 에 /account 링크 추가", "푸시 SW(public/sw.js)와 허브 오프라인 SW(public/hub-sw.js) 공존 전략 결정", "사용 안 하면 public/manifest.json 제거", "onsaemiro/ 중첩 폴더 위치 점검"] },
+    { "app": "ai-webnovel(Ai_Article)", "items": ["/account 를 Header/nav 에 노출", "허브 credits 와 자체 Supabase 코인지갑 정합 여부 결정", ".omc/ .next/ gitignore 권장"] },
+    { "app": "jaksim", "items": ["허브 미들웨어는 자체 getSessionUser 와 병행 — 허브 단일화 원하면 후속 결정", "Next manifest.ts → 정적 manifest.webmanifest 로 교체됨(확인)"] },
+    { "app": "yeonssul", "items": ["실 premium URL 경로 없음(포인트 경제는 client/Neon) — 과금 경로 신설 시 미들웨어 prefix 추가", "기존 커밋 안 된 WIP(points/report) 별도 처리"] },
+    { "app": "AnimalCare/BeautyCoach/LearnChinese/VocalTranning/lumora/MeetInTravel", "items": ["npx expo install react-native-iap expo-web-browser expo-linking @react-native-async-storage/async-storage 로 버전 핀 고정", "EXPO_PUBLIC_HUB_URL 실 빌드 env 설정", "HubAccountButton/구매 버튼 위치 UI 점검", "lumora·MeetInTravel: react-native-iap 신규 추가됨(설치 필요)"] }
+  ],
+  "blocked": [
+    { "item": "roadmap #11 진행률 DB 갱신(node scripts/sync-roadmap.mjs 11 <%>)", "reason": "scripts/sync-roadmap.mjs 가 레포에 존재하지 않음 + factory.roadmap DB 반영은 허브/팩토리 배포 1회 선행 필요인데 Vercel 인증/연동 막힘. 스크립트·DB 엔드포인트 확보 후 1회 실행 필요.", "status": "blocked" },
+    { "item": "라이브 배포", "reason": "Vercel 인증/연동 부재로 push≠배포. 본 작업은 전부 커밋만 완료(각 레포).", "status": "blocked" }
+  ]
+}
