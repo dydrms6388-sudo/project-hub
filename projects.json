@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-27T19:01:32.808Z",
+  "updatedAt": "2026-06-28T00:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -1278,6 +1278,16 @@
       "domain": "세금/금융",
       "desc": "프리랜서·N잡러가 업종과 수입만 넣으면 종합소득세와 예상 환급액을 계산식까지 풀어서 추정. 2025년 귀속 세율·단순경비율 일반/초과율·적용배제 경고·절세팁·FAQ.",
       "live": "https://income-tax-refund-bot.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/income-tax-refund-bot",
+      "status": "live",
+      "date": "2026-06"
+    },
+    {
+      "name": "퇴직금계산소 (세후)",
+      "emoji": "🧳",
+      "domain": "세금/금융",
+      "desc": "입·퇴사일과 월급여만 넣으면 법정 퇴직금과 퇴직소득세(근속연수공제·환산급여·12배수)를 계산식까지 풀어 세후 실수령액으로. 평균임금·통상임금 보정, IRP 과세이연 절세 안내까지. '퇴직금 계산기 세후' 정조준. 3D 코인·confetti·합성음 몰입 4종.",
+      "live": "https://income-tax-refund-bot.vercel.app/severance",
       "github": "https://github.com/dydrms6388-sudo/income-tax-refund-bot",
       "status": "live",
       "date": "2026-06"
