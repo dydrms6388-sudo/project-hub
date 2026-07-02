@@ -108,16 +108,24 @@ for (const d of daily) {
   const lead = firstSentence.length > 120 ? firstSentence.slice(0, 118).replace(/\s+\S*$/, "") + "…" : firstSentence;
   const metaDesc = (intro.replace(/\s+/g, " ").slice(0, 155)).trim();
 
+  const background = (c.background && c.background.trim()) ? c.background.trim() : "";
+  const scenarios = Array.isArray(c.scenarios) ? c.scenarios.filter(Boolean) : [];
+  const cautions = Array.isArray(c.cautions) ? c.cautions.filter(Boolean) : [];
   const steps = Array.isArray(c.steps) && c.steps.length ? c.steps
     : ["아래 ‘바로 실행하기’를 눌러 도구를 엽니다.", "안내에 따라 값을 입력하거나 항목을 선택합니다.", "결과를 확인하고 필요하면 저장·공유합니다."];
   const tips = Array.isArray(c.tips) ? c.tips.filter(Boolean) : [];
   const faq = Array.isArray(c.faq) ? c.faq.filter(f => f && f.q && f.a) : [];
   const note = (c.note && c.note.trim()) ? c.note.trim() : disclaimerFor(d.cat, d.domain, d.name);
 
-  const stepsHtml = steps.map(s => `<li>${esc(s)}</li>`).join("\n        ");
-  const tipsHtml = tips.length
-    ? `<h2>활용 팁</h2>\n    <ul>\n        ${tips.map(t => `<li>${esc(t)}</li>`).join("\n        ")}\n    </ul>`
-    : "";
+  const secUl = (title, items) => items.length
+    ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${esc(x)}</li>`).join("\n        ")}\n    </ul>` : "";
+  const bgHtml = background
+    ? `<h2>알아두면 좋은 배경지식</h2>\n    ${background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("\n    ")}` : "";
+  const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${esc(s)}</li>`).join("\n        ")}\n    </ol>`;
+  const scenHtml = secUl("이럴 때 유용해요", scenarios);
+  const tipsHtml = secUl("활용 팁", tips);
+  const cautHtml = cautions.length
+    ? `<h2>주의사항</h2>\n    <ul class="cautions">\n        ${cautions.map(x => `<li>${esc(x)}</li>`).join("\n        ")}\n    </ul>` : "";
   const faqHtml = faq.length
     ? `<h2>자주 묻는 질문</h2>\n    ${faq.map(f => `<div class="qa"><p class="q">Q. ${esc(f.q)}</p><p class="a">${esc(f.a)}</p></div>`).join("\n    ")}`
     : "";
@@ -125,16 +133,16 @@ for (const d of daily) {
 
   const body = `<h2>${esc(d.name)} 소개</h2>
     <p>${esc(intro)}</p>
-    <h2>이렇게 사용하세요</h2>
-    <ol>
-        ${stepsHtml}
-    </ol>
+    ${bgHtml}
+    ${stepsHtml}
+    ${scenHtml}
     ${tipsHtml}
+    ${cautHtml}
     ${faqHtml}
     ${noteHtml}
     <p class="cat-note">카테고리: ${esc(d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
 
-  // JSON-LD: SoftwareApplication + (FAQ 있을 때) FAQPage
+  // JSON-LD: SoftwareApplication + FAQPage(있을 때) + BreadcrumbList
   const graph = [{
     "@type": "SoftwareApplication",
     name: d.name, description: metaDesc, applicationCategory: "WebApplication",
@@ -144,6 +152,14 @@ for (const d of daily) {
   if (faq.length) graph.push({
     "@type": "FAQPage",
     mainEntity: faq.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  });
+  graph.push({
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "홈", item: `${SITE}/` },
+      { "@type": "ListItem", position: 2, name: d.cat },
+      { "@type": "ListItem", position: 3, name: d.name, item: `${SITE}/${d.slug}/` },
+    ],
   });
   const jsonld = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 
