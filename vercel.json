@@ -8,5 +8,16 @@
       "source": "/dalian-weekend/:path*",
       "destination": "https://dydrms-dalian.vercel.app/dalian-weekend/:path*"
     }
+  ],
+  "headers": [
+    {
+      "source": "/dalian-weekend",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://tomatoeggcat.com/dalian-weekend/>; rel=\"canonical\""
+        }
+      ]
+    }
   ]
 }

@@ -7,19 +7,19 @@
 <meta name="google-site-verification" content="REPLACE_GOOGLE_CODE" />
   <meta name="naver-site-verification" content="REPLACE_NAVER_CODE" />
 <title>보험과진단 — 금융·부동산 무료 도구 | TomatoEggCat</title>
-<meta name="description" content="가입한 보험을 종류만 골라 추가하면 실손 중복·과보험·미보장 구간을 한 화면에 시각화. 비례/정액 보장을 구분해 매달 새는 보험료를 진단(무서버·프라이버시)." />
+<meta name="description" content="가입한 보험 종류를 입력하면 실손 중복·과보험·보장 공백 구간을 한 화면에 시각화해 주는 진단 도구입니다. 여러 보험에 가입해도 실제로 중복 보장이 적용되지 않는 구간이 있어 보험료를 낭비하는 경우가 많은데, 이 도구로 전체 구조를 파악할 수 있습니다. 로그인 없이 사용할 수" />
 <link rel="canonical" href="https://tomatoeggcat.com/insurance-overlap/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TomatoEggCat" />
 <meta property="og:title" content="보험과진단 — 금융·부동산 무료 도구 | TomatoEggCat" />
-<meta property="og:description" content="가입한 보험을 종류만 골라 추가하면 실손 중복·과보험·미보장 구간을 한 화면에 시각화. 비례/정액 보장을 구분해 매달 새는 보험료를 진단(무서버·프라이버시)." />
+<meta property="og:description" content="가입한 보험 종류를 입력하면 실손 중복·과보험·보장 공백 구간을 한 화면에 시각화해 주는 진단 도구입니다. 여러 보험에 가입해도 실제로 중복 보장이 적용되지 않는 구간이 있어 보험료를 낭비하는 경우가 많은데, 이 도구로 전체 구조를 파악할 수 있습니다. 로그인 없이 사용할 수" />
 <meta property="og:url" content="https://tomatoeggcat.com/insurance-overlap/" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="보험과진단 — 금융·부동산 무료 도구 | TomatoEggCat" />
-<meta name="twitter:description" content="가입한 보험을 종류만 골라 추가하면 실손 중복·과보험·미보장 구간을 한 화면에 시각화. 비례/정액 보장을 구분해 매달 새는 보험료를 진단(무서버·프라이버시)." />
+<meta name="twitter:description" content="가입한 보험 종류를 입력하면 실손 중복·과보험·보장 공백 구간을 한 화면에 시각화해 주는 진단 도구입니다. 여러 보험에 가입해도 실제로 중복 보장이 적용되지 않는 구간이 있어 보험료를 낭비하는 경우가 많은데, 이 도구로 전체 구조를 파악할 수 있습니다. 로그인 없이 사용할 수" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"보험과진단","description":"가입한 보험을 종류만 골라 추가하면 실손 중복·과보험·미보장 구간을 한 화면에 시각화. 비례/정액 보장을 구분해 매달 새는 보험료를 진단(무서버·프라이버시).","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/insurance-overlap/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"보험과진단","description":"가입한 보험 종류를 입력하면 실손 중복·과보험·보장 공백 구간을 한 화면에 시각화해 주는 진단 도구입니다. 여러 보험에 가입해도 실제로 중복 보장이 적용되지 않는 구간이 있어 보험료를 낭비하는 경우가 많은데, 이 도구로 전체 구조를 파악할 수 있습니다. 로그인 없이 사용할 수","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/insurance-overlap/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"이 도구가 전문 보험 설계사를 대체할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 보험 구조를 스스로 파악하는 데 도움을 주는 참고용 도구이며, 전문적인 보험 상담이나 계약 변경은 보험사 또는 공인된 전문가와 진행하세요."}},{"@type":"Question","name":"입력한 보험 정보가 외부로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"모든 정보는 기기 내 브라우저에서만 처리되며 서버로 전송되지 않습니다."}},{"@type":"Question","name":"어떤 보험 종류를 지원하나요?","acceptedAnswer":{"@type":"Answer","text":"실손보험·종신보험·암보험·상해보험·운전자보험 등 주요 보험 유형을 지원하며, 목록에서 선택해 추가할 수 있습니다."}}]}]}</script>
 <style>
 :root{color-scheme:dark}
 *{box-sizing:border-box}
@@ -38,8 +38,12 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about{margin:34px 0 0}
 .about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
 .about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul{margin:0;padding-left:20px;color:#c4c9d2;font-size:14.5px}
-.about li{margin:5px 0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about li{margin:6px 0}
+.about .qa{margin:0 0 14px}
+.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
 .cat-note{color:#6b7280;font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
 .related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
@@ -58,22 +62,36 @@ footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
   <div class="hero">
     <div class="emoji">🛡️</div>
     <h1>보험과진단</h1>
-    <p class="lead">가입한 보험을 종류만 골라 추가하면 실손 중복·과보험·미보장 구간을 한 화면에 시각화. 비례/정액 보장을 구분해 매달 새는 보험료를 진단(무서버·프라이버시).</p>
+    <p class="lead">가입한 보험 종류를 입력하면 실손 중복·과보험·보장 공백 구간을 한 화면에 시각화해 주는 진단 도구입니다.</p>
     <a class="cta" href="https://insurance-overlap-check.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
   <div class="ad">광고 영역</div>
   <section class="about"><h2>보험과진단 소개</h2>
-    <p>가입한 보험을 종류만 골라 추가하면 실손 중복·과보험·미보장 구간을 한 화면에 시각화. 비례/정액 보장을 구분해 매달 새는 보험료를 진단(무서버·프라이버시).</p>
-    <h2>주요 특징</h2>
+    <p>가입한 보험 종류를 입력하면 실손 중복·과보험·보장 공백 구간을 한 화면에 시각화해 주는 진단 도구입니다. 여러 보험에 가입해도 실제로 중복 보장이 적용되지 않는 구간이 있어 보험료를 낭비하는 경우가 많은데, 이 도구로 전체 구조를 파악할 수 있습니다. 로그인 없이 사용할 수 있어 개인 정보 걱정 없이 점검해 볼 수 있습니다.</p>
+    <h2>이렇게 사용하세요</h2>
+    <ol>
+        <li>가입한 보험 종류(실손보험·암보험·정기보험 등)를 목록에서 추가합니다.</li>
+        <li>보장 유형(비례·정액)을 확인하거나 선택합니다.</li>
+        <li>입력이 완료되면 보장 구간 시각화 화면을 확인합니다.</li>
+        <li>중복 구간·미보장 구간·과보험 위험 항목을 검토합니다.</li>
+        <li>결과를 참고해 보험 구성을 조정할지 검토합니다.</li>
+    </ol>
+    <h2>활용 팁</h2>
     <ul>
-        <li>가입한 보험을 종류만 골라 추가하면 실손 중복·과보험·미보장 구간을 한 화면에 시각화.</li>
-        <li>비례/정액 보장을 구분해 매달 새는 보험료를 진단(무서버·프라이버시).</li>
+        <li>실손보험은 여러 개 가입해도 중복 보상이 되지 않으므로, 1개만 유지하는 것이 일반적으로 유리합니다.</li>
+        <li>정액형(암·입원 특약 등)은 중복 지급이 가능하므로 보장 내용을 꼼꼼히 확인하세요.</li>
+        <li>보험 정리를 고려할 때는 해지 전 보장 공백이 생기지 않도록 순서를 신중히 계획하세요.</li>
     </ul>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 이 도구가 전문 보험 설계사를 대체할 수 있나요?</p><p class="a">이 도구는 보험 구조를 스스로 파악하는 데 도움을 주는 참고용 도구이며, 전문적인 보험 상담이나 계약 변경은 보험사 또는 공인된 전문가와 진행하세요.</p></div>
+    <div class="qa"><p class="q">Q. 입력한 보험 정보가 외부로 전송되나요?</p><p class="a">모든 정보는 기기 내 브라우저에서만 처리되며 서버로 전송되지 않습니다.</p></div>
+    <div class="qa"><p class="q">Q. 어떤 보험 종류를 지원하나요?</p><p class="a">실손보험·종신보험·암보험·상해보험·운전자보험 등 주요 보험 유형을 지원하며, 목록에서 선택해 추가할 수 있습니다.</p></div>
+    <p class="disclaimer">이 도구는 보험 계약 변경이나 해지를 권유하지 않으며, 구체적인 보험 결정은 반드시 전문 보험 설계사나 금융 전문가와 상담하세요.</p>
     <p class="cat-note">카테고리: 금융·부동산 · 설치·가입 없이 브라우저에서 무료로 바로 사용</p></section>
   <div class="coupang-slot" data-subid="insurance-overlap" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/pyeong-converter/"><span>📐</span> 평수변환플러스</a>
+    <div class="rel-grid"><a class="rel" href="/pyeong-converter-plus/"><span>📐</span> 평수변환플러스</a>
       <a class="rel" href="/salary-rank/"><span>💰</span> 연봉상위 (SalaryRank)</a>
       <a class="rel" href="/cheongyak-score-calc/"><span>🏠</span> 청약가점기</a>
       <a class="rel" href="/jeonse-loan-limit/"><span>🏠</span> 전세대출되나 (전세자금대출 한도 계산기)</a>
@@ -83,6 +101,7 @@ footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>
     <p style="margin:0">
+      <a href="/about.html">소개</a>·
       <a href="/privacy.html">개인정보처리방침</a>·
       <a href="/terms.html">이용약관</a>·
       <a href="/contact.html">문의</a>

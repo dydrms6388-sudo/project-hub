@@ -7,19 +7,19 @@
 <meta name="google-site-verification" content="REPLACE_GOOGLE_CODE" />
   <meta name="naver-site-verification" content="REPLACE_NAVER_CODE" />
 <title>청약가점기 — 금융·부동산 무료 도구 | TomatoEggCat</title>
-<meta name="description" content="숫자 3개로 끝나는 청약 가점 계산기. 무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다. 청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점). 세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화. 점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback). 커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김). 몰입 4종: r3f 3D 떠다니는 집·동전 씬(3D), framer-motion 결과 리빌·점수 카운트업·막대 애니, 고득점 canvas-confetti, Web Audio 합성 인터랙션·성공음(음소거 기본 OFF). 모든 계산 기기 안에서만(서버 전송 없음). &quot;청약 가점 계산기·무주택기간·부양가족 가점·청약통장 가입기간&quot; SEO 정조준+WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 부동산 고CPC 애드센스+청약 대출/적금 제휴+Pro(가점 상승 시나리오) 수익화 레디. 100개 큐 rank #9 플래그십." />
+<meta name="description" content="주택 청약 가점을 빠르게 계산해주는 도구입니다. 무주택 기간, 부양가족 수, 청약통장 가입기간 세 가지만 입력하면 84점 만점 기준의 가점이 바로 산출됩니다. 배우자 청약통장 합산(2024년 3월 시행)도 반영되어 있어 최신 기준으로 내 점수를 확인할 수 있습니다." />
 <link rel="canonical" href="https://tomatoeggcat.com/cheongyak-score-calc/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TomatoEggCat" />
 <meta property="og:title" content="청약가점기 — 금융·부동산 무료 도구 | TomatoEggCat" />
-<meta property="og:description" content="숫자 3개로 끝나는 청약 가점 계산기. 무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다. 청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점). 세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화. 점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback). 커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김). 몰입 4종: r3f 3D 떠다니는 집·동전 씬(3D), framer-motion 결과 리빌·점수 카운트업·막대 애니, 고득점 canvas-confetti, Web Audio 합성 인터랙션·성공음(음소거 기본 OFF). 모든 계산 기기 안에서만(서버 전송 없음). &quot;청약 가점 계산기·무주택기간·부양가족 가점·청약통장 가입기간&quot; SEO 정조준+WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 부동산 고CPC 애드센스+청약 대출/적금 제휴+Pro(가점 상승 시나리오) 수익화 레디. 100개 큐 rank #9 플래그십." />
+<meta property="og:description" content="주택 청약 가점을 빠르게 계산해주는 도구입니다. 무주택 기간, 부양가족 수, 청약통장 가입기간 세 가지만 입력하면 84점 만점 기준의 가점이 바로 산출됩니다. 배우자 청약통장 합산(2024년 3월 시행)도 반영되어 있어 최신 기준으로 내 점수를 확인할 수 있습니다." />
 <meta property="og:url" content="https://tomatoeggcat.com/cheongyak-score-calc/" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="청약가점기 — 금융·부동산 무료 도구 | TomatoEggCat" />
-<meta name="twitter:description" content="숫자 3개로 끝나는 청약 가점 계산기. 무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다. 청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점). 세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화. 점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback). 커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김). 몰입 4종: r3f 3D 떠다니는 집·동전 씬(3D), framer-motion 결과 리빌·점수 카운트업·막대 애니, 고득점 canvas-confetti, Web Audio 합성 인터랙션·성공음(음소거 기본 OFF). 모든 계산 기기 안에서만(서버 전송 없음). &quot;청약 가점 계산기·무주택기간·부양가족 가점·청약통장 가입기간&quot; SEO 정조준+WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 부동산 고CPC 애드센스+청약 대출/적금 제휴+Pro(가점 상승 시나리오) 수익화 레디. 100개 큐 rank #9 플래그십." />
+<meta name="twitter:description" content="주택 청약 가점을 빠르게 계산해주는 도구입니다. 무주택 기간, 부양가족 수, 청약통장 가입기간 세 가지만 입력하면 84점 만점 기준의 가점이 바로 산출됩니다. 배우자 청약통장 합산(2024년 3월 시행)도 반영되어 있어 최신 기준으로 내 점수를 확인할 수 있습니다." />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"청약가점기","description":"숫자 3개로 끝나는 청약 가점 계산기. 무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다. 청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점). 세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화. 점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback). 커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김). 몰입 4종: r3f 3D 떠다니는 집·동전 씬(3D), framer-motion 결과 리빌·점수 카운트업·막대 애니, 고득점 canvas-confetti, Web Audio 합성 인터랙션·성공음(음소거 기본 OFF). 모든 계산 기기 안에서만(서버 전송 없음). \"청약 가점 계산기·무주택기간·부양가족 가점·청약통장 가입기간\" SEO 정조준+WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 부동산 고CPC 애드센스+청약 대출/적금 제휴+Pro(가점 상승 시나리오) 수익화 레디. 100개 큐 rank #9 플래그십.","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/cheongyak-score-calc/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"청약가점기","description":"주택 청약 가점을 빠르게 계산해주는 도구입니다. 무주택 기간, 부양가족 수, 청약통장 가입기간 세 가지만 입력하면 84점 만점 기준의 가점이 바로 산출됩니다. 배우자 청약통장 합산(2024년 3월 시행)도 반영되어 있어 최신 기준으로 내 점수를 확인할 수 있습니다.","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/cheongyak-score-calc/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"비세대주도 청약 가점제에 지원할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"민영주택 가점제는 세대주만 신청할 수 있습니다. 비세대주는 추첨제로만 지원 가능하므로, 도구에서 비세대주로 설정하면 총점이 가려집니다."}},{"@type":"Question","name":"배우자 청약통장 점수는 자동으로 합산되나요?","acceptedAnswer":{"@type":"Answer","text":"배우자가 무주택자이고 동일 세대원으로 등재되어 있는 경우, 배우자 통장 기간의 50%가 최대 3점까지 합산됩니다. 해당 조건 입력 후 자동 계산됩니다."}},{"@type":"Question","name":"이 도구의 계산 결과가 청약홈 공식 점수와 다를 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"공식 점수표를 기반으로 설계되었지만, 개인 상황에 따라 실제 청약 시 담당 기관의 확인이 필요합니다. 최종 청약은 반드시 청약홈에서 직접 확인하시기 바랍니다."}}]}]}</script>
 <style>
 :root{color-scheme:dark}
 *{box-sizing:border-box}
@@ -38,8 +38,12 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about{margin:34px 0 0}
 .about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
 .about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul{margin:0;padding-left:20px;color:#c4c9d2;font-size:14.5px}
-.about li{margin:5px 0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about li{margin:6px 0}
+.about .qa{margin:0 0 14px}
+.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
 .cat-note{color:#6b7280;font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
 .related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
@@ -58,26 +62,36 @@ footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
   <div class="hero">
     <div class="emoji">🏠</div>
     <h1>청약가점기</h1>
-    <p class="lead">숫자 3개로 끝나는 청약 가점 계산기. 무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다. 청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점). 세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화. 점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback). 커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김). 몰입 4종: r3f 3D 떠다니는 집·동전 씬(3D), framer-motion 결과 리빌·점수 카운트업·막대 애니, 고득점 canvas-confetti, Web Audio 합성 인터랙션·성공음(음소거 기본 OFF). 모든 계산 기기 안에서만(서버 전송 없음). &quot;청약 가점 계산기·무주택기간·부양가족 가점·청약통장 가입기간&quot; SEO 정조준+WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 부동산 고CPC 애드센스+청약 대출/적금 제휴+Pro(가점 상승 시나리오) 수익화 레디. 100개 큐 rank #9 플래그십.</p>
+    <p class="lead">주택 청약 가점을 빠르게 계산해주는 도구입니다.</p>
     <a class="cta" href="https://cheongyak-score.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
   <div class="ad">광고 영역</div>
   <section class="about"><h2>청약가점기 소개</h2>
-    <p>숫자 3개로 끝나는 청약 가점 계산기. 무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다. 청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점). 세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화. 점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback). 커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김). 몰입 4종: r3f 3D 떠다니는 집·동전 씬(3D), framer-motion 결과 리빌·점수 카운트업·막대 애니, 고득점 canvas-confetti, Web Audio 합성 인터랙션·성공음(음소거 기본 OFF). 모든 계산 기기 안에서만(서버 전송 없음). &quot;청약 가점 계산기·무주택기간·부양가족 가점·청약통장 가입기간&quot; SEO 정조준+WebApplication/FAQPage JSON-LD·동적 OG·sitemap/robots. 부동산 고CPC 애드센스+청약 대출/적금 제휴+Pro(가점 상승 시나리오) 수익화 레디. 100개 큐 rank #9 플래그십.</p>
-    <h2>주요 특징</h2>
+    <p>주택 청약 가점을 빠르게 계산해주는 도구입니다. 무주택 기간, 부양가족 수, 청약통장 가입기간 세 가지만 입력하면 84점 만점 기준의 가점이 바로 산출됩니다. 배우자 청약통장 합산(2024년 3월 시행)도 반영되어 있어 최신 기준으로 내 점수를 확인할 수 있습니다.</p>
+    <h2>이렇게 사용하세요</h2>
+    <ol>
+        <li>세대주 여부를 확인하고 무주택 기간(연 단위)을 입력한다.</li>
+        <li>본인을 제외한 실제 부양가족 수를 입력한다.</li>
+        <li>청약통장 가입기간을 입력하고, 배우자 통장이 있으면 해당 항목도 입력한다.</li>
+        <li>산출된 가점 분해 막대를 보며 어느 항목에서 점수가 부족한지 파악한다.</li>
+        <li>'+1년 시 가점 변화' 기능으로 내년까지 기다리면 점수가 얼마나 오르는지 미리 확인한다.</li>
+    </ol>
+    <h2>활용 팁</h2>
     <ul>
-        <li>숫자 3개로 끝나는 청약 가점 계산기.</li>
-        <li>무주택 년수·부양가족 수·청약통장 가입기간만 넣으면 84점 만점 청약 가점이 즉시 산출된다.</li>
-        <li>청약홈 공식 점수표를 공식 추론이 아닌 룩업표로 매칭(무주택 16구간·부양가족 7구간·통장 17구간 — off-by-one 차단 구간수 단언), 만30세/혼인일 기산 0점 게이트(미혼·만30세미만 무주택 0점, 무주택만 0점·나머지 정상합산), 비세대주 총점 마스킹(자기점수 오인 차단), 부양가족 게이트 카운트 clamp(0~6, 본인 제외·0명=본인1인 5점), 배우자 청약통장 50% 합산(2024.3.25 시행, 배우자 무주택·동일세대 게이트, 최대 +3점).</li>
-        <li>세대주 강제 첫토글 없이 결과 먼저(기본 세대주)·사후보정 칩으로 이탈 최소화.</li>
-        <li>점수 분해 막대·넥스트스텝(+1년 시 가점 변화)·시나리오 비교(최대 3슬롯)·결과 공유 링크(/r base64url, 디코드 실패 graceful fallback).</li>
-        <li>커트라인 미달일 때만 특공·신혼·생애최초 자가진단 CTA를 결과 바로 아래 노출(고점수자에겐 숨김).</li>
+        <li>부양가족 수는 주민등록상 동일 세대원으로 등재된 직계존속·직계비속 기준으로 세며, 본인은 제외합니다.</li>
+        <li>무주택 기간은 만 30세 또는 혼인일 중 빠른 시점부터 기산되므로, 30세 이전 미혼이면 0점으로 산정됩니다.</li>
+        <li>시나리오 비교 슬롯을 최대 3개까지 만들면 가족 구성 변화나 가입기간 연장 시 점수 차이를 나란히 비교할 수 있습니다.</li>
     </ul>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 비세대주도 청약 가점제에 지원할 수 있나요?</p><p class="a">민영주택 가점제는 세대주만 신청할 수 있습니다. 비세대주는 추첨제로만 지원 가능하므로, 도구에서 비세대주로 설정하면 총점이 가려집니다.</p></div>
+    <div class="qa"><p class="q">Q. 배우자 청약통장 점수는 자동으로 합산되나요?</p><p class="a">배우자가 무주택자이고 동일 세대원으로 등재되어 있는 경우, 배우자 통장 기간의 50%가 최대 3점까지 합산됩니다. 해당 조건 입력 후 자동 계산됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 이 도구의 계산 결과가 청약홈 공식 점수와 다를 수 있나요?</p><p class="a">공식 점수표를 기반으로 설계되었지만, 개인 상황에 따라 실제 청약 시 담당 기관의 확인이 필요합니다. 최종 청약은 반드시 청약홈에서 직접 확인하시기 바랍니다.</p></div>
+    <p class="disclaimer">이 도구는 참고용 계산기이며 법적 효력이 없습니다. 실제 청약 신청 전 청약홈(apply.lh.or.kr) 및 관련 기관을 통해 정확한 자격을 확인하세요.</p>
     <p class="cat-note">카테고리: 금융·부동산 · 설치·가입 없이 브라우저에서 무료로 바로 사용</p></section>
   <div class="coupang-slot" data-subid="cheongyak-score-calc" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/pyeong-converter/"><span>📐</span> 평수변환플러스</a>
+    <div class="rel-grid"><a class="rel" href="/pyeong-converter-plus/"><span>📐</span> 평수변환플러스</a>
       <a class="rel" href="/salary-rank/"><span>💰</span> 연봉상위 (SalaryRank)</a>
       <a class="rel" href="/jeonse-loan-limit/"><span>🏠</span> 전세대출되나 (전세자금대출 한도 계산기)</a>
       <a class="rel" href="/salary-net-pay/"><span>💰</span> 급여실수령 (연봉 실수령액 계산기)</a>
@@ -87,6 +101,7 @@ footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>
     <p style="margin:0">
+      <a href="/about.html">소개</a>·
       <a href="/privacy.html">개인정보처리방침</a>·
       <a href="/terms.html">이용약관</a>·
       <a href="/contact.html">문의</a>

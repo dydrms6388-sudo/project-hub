@@ -58,6 +58,27 @@ const raw = JSON.parse(readFileSync("projects.json", "utf8"));
 const projects = raw.projects || raw;
 const tpl = readFileSync("templates/service.html", "utf8");
 
+// per-service 고유 콘텐츠(사용자용): data/landing-content.json = { slug: {intro, steps[], tips[], faq[{q,a}], note} }
+const CONTENT = existsSync("data/landing-content.json")
+  ? JSON.parse(readFileSync("data/landing-content.json", "utf8")) : {};
+
+// projects.json의 desc는 내부 마케팅/SEO 메모 → 사용자 노출 전 은어 문장 제거(폴백용).
+const JARGON = /수익화|애드센스|adsense|ca-pub|쿠팡\s*제휴|제휴\s*링크|\bSEO\b|\bOG\b|JSON-?LD|sitemap|robots|ads\.txt|정조준|파운더|무API|격리스키마|Neon|three-fiber|framer-motion|confetti|Web Audio|9:16|바이럴|키워드/i;
+const sanitize = (s) => {
+  const parts = String(s ?? "").split(/(?<=[.。!?])\s+/).map(x => x.trim()).filter(Boolean);
+  const kept = parts.filter(p => !JARGON.test(p));
+  let out = (kept.length ? kept : parts).join(" ")
+    .replace(/\([^)]*(ca-pub|adsense|pub-)[^)]*\)/gi, "")
+    .replace(/\s{2,}/g, " ").trim();
+  return out || String(s ?? "");
+};
+// 금융·세금·건강·법률·투자류 면책 자동 부여(콘텐츠에 note 없을 때 폴백)
+const NEEDS_NOTE = /금융|부동산|대출|세금|보험|청약|전세|급여|연봉|투자|주식|코인|건강|운동|다이어트|의료|임신|영양|혈압|혈당|약|법률/;
+const disclaimerFor = (cat, domain, name) =>
+  NEEDS_NOTE.test(`${cat} ${domain} ${name}`)
+    ? "본 결과는 일반적인 참고용 추정이며, 의료·법률·세무·금융 등 전문가의 진단이나 상담을 대체하지 않습니다."
+    : "";
+
 const daily = [];
 const seen = new Set();
 for (const p of projects) {
@@ -78,28 +99,59 @@ for (const d of daily) {
   if (related.length < 4) related = related.concat(daily.filter(x => x.slug !== d.slug && !related.includes(x)).slice(0, 6 - related.length));
   const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span>${r.emoji}</span> ${esc(r.name)}</a>`).join("\n      ");
 
-  const jsonld = JSON.stringify({
-    "@context": "https://schema.org", "@type": "SoftwareApplication",
-    name: d.name, description: d.desc, applicationCategory: "WebApplication",
+  // ── 사용자용 콘텐츠 조립(고유 콘텐츠 우선, 없으면 정제된 폴백) ──
+  const c = CONTENT[d.slug] || {};
+  const cleanDesc = sanitize(d.desc);
+  const intro = (c.intro && c.intro.trim()) ? c.intro.trim() : cleanDesc;
+  // 히어로 lead는 소개 문단과 중복되지 않도록 첫 문장(길면 절단)만 사용
+  const firstSentence = (intro.split(/(?<=[.。!?])\s+/)[0] || intro).trim();
+  const lead = firstSentence.length > 120 ? firstSentence.slice(0, 118).replace(/\s+\S*$/, "") + "…" : firstSentence;
+  const metaDesc = (intro.replace(/\s+/g, " ").slice(0, 155)).trim();
+
+  const steps = Array.isArray(c.steps) && c.steps.length ? c.steps
+    : ["아래 ‘바로 실행하기’를 눌러 도구를 엽니다.", "안내에 따라 값을 입력하거나 항목을 선택합니다.", "결과를 확인하고 필요하면 저장·공유합니다."];
+  const tips = Array.isArray(c.tips) ? c.tips.filter(Boolean) : [];
+  const faq = Array.isArray(c.faq) ? c.faq.filter(f => f && f.q && f.a) : [];
+  const note = (c.note && c.note.trim()) ? c.note.trim() : disclaimerFor(d.cat, d.domain, d.name);
+
+  const stepsHtml = steps.map(s => `<li>${esc(s)}</li>`).join("\n        ");
+  const tipsHtml = tips.length
+    ? `<h2>활용 팁</h2>\n    <ul>\n        ${tips.map(t => `<li>${esc(t)}</li>`).join("\n        ")}\n    </ul>`
+    : "";
+  const faqHtml = faq.length
+    ? `<h2>자주 묻는 질문</h2>\n    ${faq.map(f => `<div class="qa"><p class="q">Q. ${esc(f.q)}</p><p class="a">${esc(f.a)}</p></div>`).join("\n    ")}`
+    : "";
+  const noteHtml = note ? `<p class="disclaimer">${esc(note)}</p>` : "";
+
+  const body = `<h2>${esc(d.name)} 소개</h2>
+    <p>${esc(intro)}</p>
+    <h2>이렇게 사용하세요</h2>
+    <ol>
+        ${stepsHtml}
+    </ol>
+    ${tipsHtml}
+    ${faqHtml}
+    ${noteHtml}
+    <p class="cat-note">카테고리: ${esc(d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
+
+  // JSON-LD: SoftwareApplication + (FAQ 있을 때) FAQPage
+  const graph = [{
+    "@type": "SoftwareApplication",
+    name: d.name, description: metaDesc, applicationCategory: "WebApplication",
     operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
     url: `${SITE}/${d.slug}/`,
-  }).replace(/</g, "\\u003c");
-
-  const sentences = String(d.desc).split(/(?<=[.。!?])\s+/).map(x => x.trim()).filter(Boolean);
-  const features = (sentences.length ? sentences : [d.desc]).slice(0, 6).map(s => `<li>${esc(s)}</li>`).join("\n        ");
-  const body = `<h2>${esc(d.name)} 소개</h2>
-    <p>${esc(d.desc)}</p>
-    <h2>주요 특징</h2>
-    <ul>
-        ${features}
-    </ul>
-    <p class="cat-note">카테고리: ${esc(d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
+  }];
+  if (faq.length) graph.push({
+    "@type": "FAQPage",
+    mainEntity: faq.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  });
+  const jsonld = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 
   const title = `${d.name} — ${d.cat} 무료 도구 | TomatoEggCat`;
   const html = tpl
     .replaceAll("%%TITLE%%", esc(title))
-    .replaceAll("%%DESC_ATTR%%", esc(d.desc))
-    .replaceAll("%%DESC%%", esc(d.desc))
+    .replaceAll("%%DESC_ATTR%%", esc(metaDesc))
+    .replaceAll("%%DESC%%", esc(lead))
     .replaceAll("%%SLUG%%", d.slug)
     .replaceAll("%%NAME%%", esc(d.name))
     .replaceAll("%%EMOJI%%", d.emoji)
@@ -136,7 +188,10 @@ const builtinCats = BUILTIN_CATS.map(c => ({
 const byCat = {};
 for (const d of daily) (byCat[d.cat] = byCat[d.cat] || []).push(d);
 const dailyByCat = Object.entries(byCat).sort((a, b) => b[1].length - a[1].length)
-  .map(([cat, items]) => ({ cat, items: items.map(d => ({ slug: d.slug, emoji: d.emoji, name: d.name, desc: String(d.desc).replace(/\s+/g, " ").slice(0, 70), domain: d.domain })) }));
+  .map(([cat, items]) => ({ cat, items: items.map(d => {
+    const intro = CONTENT[d.slug] && CONTENT[d.slug].intro ? CONTENT[d.slug].intro : sanitize(d.desc);
+    return { slug: d.slug, emoji: d.emoji, name: d.name, desc: String(intro).replace(/\s+/g, " ").slice(0, 70), domain: d.domain };
+  }) }));
 const total = BUILTINS.length + daily.length;
 const indexHtml = renderHub({ site: SITE, adsense: ADSENSE, verifyMeta: VERIFY_META, total, builtinCats, dailyByCat });
 writeFileSync("index.html", indexHtml);
@@ -146,7 +201,7 @@ const urls = [];
 urls.push(`  <url><loc>${SITE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`);
 for (const b of BUILTINS) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
 for (const d of daily) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
-for (const p of ["privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
+for (const p of ["about.html", "privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 writeFileSync("sitemap.xml", sitemap);
 
