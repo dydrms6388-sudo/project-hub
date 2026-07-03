@@ -1412,6 +1412,12 @@
      합성 규칙: 같은 카드 + 같은 레벨 2장 → 다음 레벨 1장 (최대 ★5) */
   const MILESTONES = [16, 32, 64, 96, 128];
   function ownedKinds() { return CD.CHARS.filter((c) => cardOwned(c.id)).length; }
+  /* 주간 픽업 SSR — 특정 카드를 노릴 수단 (SSR 당첨 시 50%는 픽업 카드) */
+  function weekOfYear() { return Math.floor(dayOfYear() / 7); }
+  function pickupSSR() {
+    const pool = CD.CHARS.filter((c) => c.rarity === "SSR");
+    return pool.length ? pool[weekOfYear() % pool.length] : null;
+  }
   function rollGacha() {
     // 천장 2단: 10회 내 SR+ 확정, 40회 내 SSR 확정
     let rarity;
@@ -1423,6 +1429,8 @@
     }
     S.gacha.pity = (rarity === "SR" || rarity === "SSR") ? 0 : S.gacha.pity + 1;
     S.gacha.ssrPity = rarity === "SSR" ? 0 : (S.gacha.ssrPity || 0) + 1;
+    const pk = pickupSSR();
+    if (rarity === "SSR" && pk && Math.random() < 0.5) return pk; // 픽업 50%
     const pool = CD.CHARS.filter((c) => c.rarity === rarity);
     return pool[Math.floor(Math.random() * pool.length)];
   }
@@ -1431,6 +1439,10 @@
     const c = rollGacha();
     const isNew = !cardOwned(c.id);
     const copies = S.cards[c.id] || (S.cards[c.id] = {});
+    if (cardMaxLv(c.id) >= MAX_CARD_LV) { // ★5 완성 카드의 중복은 뽑기권으로 환급
+      S.items.gachaticket++;
+      return { c, isNew: false, milestone: 0, refund: true };
+    }
     copies[1] = (copies[1] || 0) + 1;
     let milestone = 0;
     if (isNew && MILESTONES.includes(ownedKinds())) { milestone = ownedKinds(); S.items.gachaticket += milestone === 128 ? 10 : 2; }
@@ -1445,7 +1457,7 @@
     } else S.items.gachaticket--;
     const r = pullOnce();
     save(); badges();
-    gachaReveal(r.c, r.isNew, r.milestone);
+    gachaReveal(r.c, r.isNew, r.milestone, r.refund);
   }
   /* 10연챠 — 뽑기권 10장, 결과 요약 시트 */
   function doGacha10() {
@@ -1469,7 +1481,7 @@
       <button class="btn-grad big" style="margin-top:14px" data-g10ok>확인</button></div>`, { sticky: true });
     $("[data-g10ok]", m).onclick = () => { m.remove(); if (tab === "cards") vCards(); };
   }
-  function gachaReveal(c, isNew, milestone) {
+  function gachaReveal(c, isNew, milestone, refund) {
     const R = CD.RARITY[c.rarity];
     const m = modal(`<div class="gacha-stage">
       <div class="gacha-flip"><div class="gacha-inner">
@@ -1481,7 +1493,7 @@
         </div></div>
       </div></div>
       <p class="gacha-line">"${esc(c.line)}"</p>
-      <p class="gacha-note">${isNew ? `<b style="color:${R.color}">NEW!</b> 컬렉션 ${ownedKinds()}/128` : `중복! ★1 +1장 — 같은 레벨 2장을 모으면 합성할 수 있어요 (★1 ×${cardCopies(c.id)[1] || 0})`}
+      <p class="gacha-note">${refund ? `👑 ★5 완성 카드 — 중복이 <b>뽑기권 +1</b>로 환급됐어요` : isNew ? `<b style="color:${R.color}">NEW!</b> 컬렉션 ${ownedKinds()}/128` : `중복! ★1 +1장 — 같은 레벨 2장을 모으면 합성할 수 있어요 (★1 ×${cardCopies(c.id)[1] || 0})`}
       ${milestone ? `<br>🎁 컬렉션 ${milestone}종 달성 보상: 뽑기권 +${milestone === 128 ? 10 : 2}` : ""}</p>
       <div class="match-btns">
         <button class="btn-grad big" data-again>${gachaFreeAvail() ? "무료로 한 번 더" : S.items.gachaticket > 0 ? `한 번 더 (뽑기권 ${S.items.gachaticket}장)` : "뽑기권 구매하기 🛍️"}</button>
@@ -1511,7 +1523,8 @@
           <button class="btn-ghost" id="g-pull10" style="font-size:12px;padding:9px 12px">10연챠 ${S.items.gachaticket >= 10 ? "" : "🛍️"}</button>
         </div>
       </div>
-      <p class="tiny" style="padding:0 18px 8px">천장: SR+ 확정까지 <b>${Math.max(0, 10 - (S.gacha.pity || 0) - 1) + 1}회</b> · SSR 확정까지 <b>${Math.max(0, 40 - (S.gacha.ssrPity || 0))}회</b></p>
+      <p class="tiny" style="padding:0 18px 4px">천장: SR+ 확정까지 <b>${Math.max(0, 10 - (S.gacha.pity || 0) - 1) + 1}회</b> · SSR 확정까지 <b>${Math.max(0, 40 - (S.gacha.ssrPity || 0))}회</b></p>
+      ${(() => { const pk = pickupSSR(); return pk ? `<div class="pickup-row"><span class="pickup-tag">이번 주 픽업</span> <b style="color:${CD.RARITY.SSR.color}">SSR ${esc(pk.name)}</b> · ${pk.age}세 ${esc(pk.job)} — SSR 당첨 시 <b>50%</b> 확률로 이 카드! <button class="pickup-view" data-pkview="${pk.id}">미리보기</button></div>` : ""; })()}
       <div class="fx-row" style="padding:0 16px 10px;margin:0" id="alb-filter">${FILTERS.map(([k, lb2]) =>
         `<button class="fx-chip ${albumFilter === k ? "on" : ""}" data-f="${k}" style="${k === albumFilter ? "border-color:var(--vio);color:var(--tx)" : ""}">${lb2}${k === "owned" ? ` ${owned}` : ""}</button>`).join("")}</div>
       <div class="ccard-grid">${list.map((c) => {
@@ -1529,6 +1542,16 @@
       ${adSlot()}`;
     $("#g-pull").onclick = doGacha;
     $("#g-pull10").onclick = doGacha10;
+    const pkv = $("[data-pkview]");
+    if (pkv) pkv.onclick = () => {
+      const pk = cardOf(pkv.dataset.pkview); if (!pk) return;
+      const R = CD.RARITY.SSR;
+      const m = modal(`<div class="dialog" style="max-width:300px"><div class="ccard big r-SSR" style="--frame:${R.color};--fgrad:${R.frame};width:100%;margin:0 auto 12px"><div class="holo"></div>${CD.charSVG(pk, { animate: true, uid: "pk" })}
+        <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">SSR · 이번 주 픽업</span><b>${esc(pk.name)}</b><small>${pk.age}세 · ${esc(pk.job)}</small></div></div>
+        <p style="font-size:12.5px">"${esc(pk.line)}"</p>
+        <button class="btn-grad big" data-ok>닫기</button></div>`, { center: true });
+      $("[data-ok]", m).onclick = () => m.remove();
+    };
     $("#alb-filter").onclick = (e) => {
       const b = e.target.closest("[data-f]"); if (!b) return;
       albumFilter = b.dataset.f; vCards();

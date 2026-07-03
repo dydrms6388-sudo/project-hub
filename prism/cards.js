@@ -56,29 +56,67 @@
       case "buzz": default: return `<path d="M59,84 C59,52 79,40 100,40 C121,40 141,52 141,84 C137,64 121,54 100,54 C79,54 63,64 59,84Z" fill="${color}" opacity=".92"/>`;
     }
   }
-  function eyesSVG(kind, browColor) {
+  function eyesSVG(kind, shape) {
     const iris = "#1c1410";
     const lid = "#2a1d14";
-    const openEye = (cx) => `<path d="M${cx - 9},101 Q${cx},95 ${cx + 9},100 Q${cx + 8},106 ${cx - 1},106 Q${cx - 8},106 ${cx - 9},101Z" fill="#fff"/>
+    // shape 0=기본, 1=날카로운 눈매(가늘고 치켜올라감), 2=순한 눈매(둥글고 처짐)
+    const openEye = (cx) => {
+      if (shape === 1) return `<path d="M${cx - 10},102 Q${cx},97.5 ${cx + 10},99 Q${cx + 8},104.5 ${cx - 1},104.5 Q${cx - 8},104.5 ${cx - 10},102Z" fill="#fff"/>
+      <circle cx="${cx + 1.5}" cy="101.5" r="3.4" fill="${iris}"/><circle cx="${cx + 2.8}" cy="100.2" r="1.2" fill="#fff"/>
+      <path d="M${cx - 11},101.5 Q${cx},95.5 ${cx + 11},97.5" stroke="${lid}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <path d="M${cx + 9},97.8 L${cx + 12.5},95.6" stroke="${lid}" stroke-width="2.6" stroke-linecap="round"/>`;
+      if (shape === 2) return `<path d="M${cx - 8.5},100 Q${cx},94.5 ${cx + 8.5},100.5 Q${cx + 7.5},108 ${cx - 1},108 Q${cx - 8},107 ${cx - 8.5},100Z" fill="#fff"/>
+      <circle cx="${cx}" cy="102.5" r="4.4" fill="${iris}"/><circle cx="${cx + 1.7}" cy="100.6" r="1.6" fill="#fff"/>
+      <path d="M${cx - 9.5},99 Q${cx},93.5 ${cx + 9.5},100.5" stroke="${lid}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
+      return `<path d="M${cx - 9},101 Q${cx},95 ${cx + 9},100 Q${cx + 8},106 ${cx - 1},106 Q${cx - 8},106 ${cx - 9},101Z" fill="#fff"/>
       <circle cx="${cx + 1}" cy="101.5" r="4" fill="${iris}"/><circle cx="${cx + 2.6}" cy="99.8" r="1.4" fill="#fff"/>
       <path d="M${cx - 10},100 Q${cx},93.5 ${cx + 10},99" stroke="${lid}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
-    const smileEye = (cx) => `<path d="M${cx - 9},104 Q${cx},96 ${cx + 9},104" stroke="${lid}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+    };
+    const smileEye = (cx) => shape === 1
+      ? `<path d="M${cx - 9},103 Q${cx},96.5 ${cx + 10},101.5" stroke="${lid}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+      : `<path d="M${cx - 9},104 Q${cx},96 ${cx + 9},104" stroke="${lid}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
     const winkEye = (cx) => `<path d="M${cx - 9},102 Q${cx},106.5 ${cx + 9},102" stroke="${lid}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
     if (kind === "smile") return `<g class="cv-eyes">${smileEye(81)}${smileEye(119)}</g>`;
     if (kind === "wink") return `<g class="cv-eyes">${openEye(81)}${winkEye(119)}</g>`;
     return `<g class="cv-eyes">${openEye(81)}${openEye(119)}</g>`;
   }
-  function browsSVG(color) {
+  function browsSVG(color, style) {
     const c = shade(color, 1.15);
-    return `<g class="cv-brows" fill="${c}">
-      <path d="M67,91 L93,86 L94,90.5 L68,95.5Z"/>
-      <path d="M133,91 L107,86 L106,90.5 L132,95.5Z"/></g>`;
+    // 0=각진(기본) 1=아치형 2=일자 두꺼움 3=완만한 사선
+    switch (style) {
+      case 1: return `<g class="cv-brows" stroke="${c}" stroke-width="4.6" fill="none" stroke-linecap="round">
+        <path d="M68,92 Q80,84.5 93,89"/><path d="M132,92 Q120,84.5 107,89"/></g>`;
+      case 2: return `<g class="cv-brows" fill="${c}">
+        <rect x="66" y="86.5" width="28" height="5.6" rx="2.8"/><rect x="106" y="86.5" width="28" height="5.6" rx="2.8"/></g>`;
+      case 3: return `<g class="cv-brows" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M69,93.5 L92,88"/><path d="M131,93.5 L108,88"/></g>`;
+      default: return `<g class="cv-brows" fill="${c}">
+        <path d="M67,91 L93,86 L94,90.5 L68,95.5Z"/>
+        <path d="M133,91 L107,86 L106,90.5 L132,95.5Z"/></g>`;
+    }
   }
   function mouthSVG(kind) {
     const lip = "#6e2c37";
     if (kind === "grin") return `<path d="M85,126 Q100,140 115,126 Q100,132 85,126Z" fill="#5e1f2c"/><path d="M88.5,127.5 Q100,133 111.5,127.5" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
     if (kind === "smirk") return `<path d="M88,130 Q103,136 115,127" stroke="${lip}" stroke-width="3.6" fill="none" stroke-linecap="round"/><path d="M113,127 L117,124" stroke="${lip}" stroke-width="3" stroke-linecap="round"/>`;
+    if (kind === "soft") return `<path d="M91,129 Q100,134 109,129" stroke="${lip}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
     return `<path d="M87,128 Q100,136 113,128" stroke="${lip}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`;
+  }
+  /* 턱선 3종 + 나이 표현 */
+  const HEADS = [
+    // 0: 계란형 (기본)
+    "M58,98 C58,56 76,42 100,42 C124,42 142,56 142,98 C142,124 133,142 118,149 C112,152.5 106,154 100,154 C94,154 88,152.5 82,149 C67,142 58,124 58,98Z",
+    // 1: 각진 사각턱 (남성적)
+    "M58,96 C58,54 76,40 100,40 C124,40 142,54 142,96 C142,120 139,138 126,148 C118,153.5 108,155.5 100,155.5 C92,155.5 82,153.5 74,148 C61,138 58,120 58,96Z",
+    // 2: 갸름한 V라인
+    "M60,96 C60,54 78,42 100,42 C122,42 140,54 140,96 C140,124 129,145 113,152 C107,154.8 103,155.5 100,155.5 C97,155.5 93,154.8 87,152 C71,145 60,124 60,96Z",
+  ];
+  function ageLinesSVG(age, skin) {
+    const c = shade(skin, 0.72);
+    let out = "";
+    if (age >= 36) out += `<path d="M87,117 Q84.5,125 88,131 M113,117 Q115.5,125 112,131" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".32"/>`;
+    if (age >= 44) out += `<path d="M72,104.5 Q75,107 78,105 M128,104.5 Q125,107 122,105" stroke="${c}" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".3"/>`;
+    return out;
   }
 
   /* ── 몸 (넓은 어깨 · 두꺼운 목 · 가슴 라인) ── */
@@ -258,6 +296,8 @@
       </defs>
       <rect width="200" height="270" fill="url(#aura-${idSuf})"/>
       <g class="cv-sparks">${bgSVG(c.bg || "stars")}</g>
+      ${c.rarity === "SSR" ? `<path d="M-10,180 C40,150 70,200 120,168 C160,142 190,170 210,150 L210,210 C160,230 120,200 70,224 C40,238 10,222 -10,232Z" fill="${c.aura[0]}" opacity=".22"/>
+      <path d="M-10,60 C50,90 90,40 150,66 C175,77 195,60 210,70" stroke="${c.aura[0]}" stroke-width="9" fill="none" opacity=".28" stroke-linecap="round"/>` : ""}
       ${c.rarity === "SSR" ? `<g opacity=".85"><path d="M6,6 L36,6 M6,6 L6,36 M164,6 L194,6 L194,36 M6,234 L6,264 L36,264 M194,234 L194,264 L164,264" stroke="#fbe08a" stroke-width="3.5" fill="none"/>
         <circle cx="100" cy="96" r="88" fill="none" stroke="#fff" stroke-width="1.2" opacity=".5" stroke-dasharray="3 7"/>
         <g class="cv-sparks" fill="#fde68a"><path d="M30,40 l3,7 7,3 -7,3 -3,7 -3,-7 -7,-3 7,-3Z"/><path d="M170,60 l2.4,5.6 5.6,2.4 -5.6,2.4 -2.4,5.6 -2.4,-5.6 -5.6,-2.4 5.6,-2.4Z"/><path d="M162,180 l2,4.8 4.8,2 -4.8,2 -2,4.8 -2,-4.8 -4.8,-2 4.8,-2Z"/></g></g>` : ""}
@@ -266,10 +306,14 @@
       <g class="cv-body">
         <g transform="translate(100,0) scale(${B},1) translate(-100,0)">
           ${outfitSVG(c.outfit[0], c.outfit[1], c.outfit[2] || c.outfit[1], skin, skinD)}
+          ${(c.build === "muscular" || c.build === "bulky") && ["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
+            ? `<path d="M84,154 C77,162 69,169 61,175 C70,172 78,169 84,168Z M116,154 C123,162 131,169 139,175 C130,172 122,169 116,168Z" fill="${skinD}" opacity=".65"/>` : ""}
+          ${c.build === "bulky" && ["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
+            ? `<path d="M54,248 Q100,262 146,248" stroke="${shade(skin, 0.78)}" stroke-width="2.6" fill="none" opacity=".55"/>` : ""}
           <path d="M84,138 L84,174 C84,188 116,188 116,174 L116,138Z" fill="${skinD}"/>
           <path d="M87,152 Q100,158 113,152" stroke="${shade(skin, 0.68)}" stroke-width="2" fill="none" opacity=".6"/>
         </g>
-        <path d="M58,98 C58,56 76,42 100,42 C124,42 142,56 142,98 C142,124 133,142 118,149 C112,152.5 106,154 100,154 C94,154 88,152.5 82,149 C67,142 58,124 58,98Z" fill="${skin}"/>
+        <path d="${HEADS[(c.face && c.face.jaw) || 0]}" fill="${skin}"/>
         <path d="M62,90 C62,64 74,50 92,46 C76,54 68,70 66,90 C65,106 68,124 76,136 C66,126 62,110 62,90Z" fill="${shade(skin, 0.88)}" opacity=".55"/>
         <path d="M124,52 C134,60 139,74 139,96 C139,114 134,130 124,140" stroke="#fff" stroke-width="3" fill="none" opacity=".28" stroke-linecap="round"/>
         <path d="M72,126 C78,144 122,144 128,126 C124,142 112,150 100,150 C88,150 76,142 72,126Z" fill="${shade(skin, 0.75)}" opacity=".3"/>
@@ -278,9 +322,12 @@
         <path d="M87,125 Q100,134 113,125" stroke="#5e2530" stroke-width="3.4" fill="none" stroke-linecap="round"/>` : c.stubble ? `<path d="M73,122 C76,144 124,144 127,122 C126,147 111,153 100,153 C89,153 74,147 73,122Z" fill="${c.hair[1]}" opacity=".16"/>` : ""}
         <ellipse cx="56.5" cy="104" rx="7" ry="10.5" fill="${skin}"/><ellipse cx="143.5" cy="104" rx="7" ry="10.5" fill="${skin}"/>
         ${hairSVG(c.hair[0], c.hair[1])}
-        ${browsSVG(c.hair[1])}
-        ${eyesSVG(c.eye, c.hair[1])}
-        <path d="M99,100 L98,116 M95,119 Q100,122 105,119" stroke="${shade(skin, 0.72)}" stroke-width="2.7" fill="none" stroke-linecap="round"/>
+        ${browsSVG(c.hair[1], (c.face && c.face.brow) || 0)}
+        ${eyesSVG(c.eye, (c.face && c.face.eyeShape) || 0)}
+        ${[`<path d="M99,101 L98.4,113 M96,116 Q100,118.5 104,116" stroke="${shade(skin, 0.72)}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+           `<path d="M99,100 L98,116 M95,119 Q100,122 105,119" stroke="${shade(skin, 0.72)}" stroke-width="2.7" fill="none" stroke-linecap="round"/>`,
+           `<path d="M99.5,99 L97.8,118 M94,121 Q100,124.5 106,121" stroke="${shade(skin, 0.72)}" stroke-width="3" fill="none" stroke-linecap="round"/>`][(c.face && c.face.nose) || 0]}
+        ${ageLinesSVG(c.age || 27, skin)}
         ${mouthSVG(c.mouth)}
         ${c.rarity !== "N" && !c.stubble ? `<ellipse cx="73" cy="117" rx="6" ry="3.2" fill="#f87171" opacity=".16"/><ellipse cx="127" cy="117" rx="6" ry="3.2" fill="#f87171" opacity=".16"/>` : ""}
         ${accSVG(c.acc)}
@@ -355,6 +402,7 @@
       : ["slim", "fit", "fit", "fit", "muscular", "fit", "muscular", "slim", "bulky", "fit"][(i * 3) % 10];
     CHARS.push({
       build,
+      face: { jaw: build === "bulky" ? 1 : (i * 5 + 1) % 3, eyeShape: build === "slim" && i % 2 ? 2 : (i * 11) % 3, brow: (i * 7 + 2) % 4, nose: (i * 13 + 1) % 3 },
       id: "c" + String(i + 17).padStart(3, "0"),
       name: NAMES[i % NAMES.length],
       job: job[0],
@@ -376,7 +424,12 @@
   // 기존 16장 나이·체형 부여
   const BASE_AGES = { c01: 26, c02: 23, c03: 29, c04: 31, c05: 27, c06: 28, c07: 33, c08: 30, c09: 27, c10: 34, c11: 32, c12: 36, c13: 29, c14: 38, c15: 24, c16: 26 };
   const BASE_BUILDS = { c01: "fit", c02: "slim", c03: "slim", c04: "muscular", c05: "fit", c06: "fit", c07: "bulky", c08: "muscular", c09: "fit", c10: "fit", c11: "fit", c12: "bulky", c13: "muscular", c14: "fit", c15: "slim", c16: "slim" };
-  CHARS.forEach((c) => { if (BASE_AGES[c.id]) c.age = BASE_AGES[c.id]; if (BASE_BUILDS[c.id]) c.build = BASE_BUILDS[c.id]; });
+  const BASE_FACES = { c01: [0,0,1,0], c02: [2,2,3,0], c03: [2,0,1,1], c04: [1,1,0,1], c05: [2,2,1,0], c06: [0,1,3,1], c07: [1,0,2,2], c08: [0,1,0,1], c09: [1,1,2,2], c10: [2,1,3,1], c11: [0,2,1,0], c12: [1,0,2,2], c13: [1,1,0,1], c14: [0,1,3,1], c15: [2,2,1,0], c16: [2,1,3,0] };
+  CHARS.forEach((c) => {
+    if (BASE_AGES[c.id]) c.age = BASE_AGES[c.id];
+    if (BASE_BUILDS[c.id]) c.build = BASE_BUILDS[c.id];
+    if (BASE_FACES[c.id]) { const f = BASE_FACES[c.id]; c.face = { jaw: f[0], eyeShape: f[1], brow: f[2], nose: f[3] }; }
+  });
 
   window.PRISM_CARDS = { CHARS, RARITY, charSVG };
 })();
