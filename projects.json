@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-07-03T11:40:00.000Z",
+  "updatedAt": "2026-07-03T12:30:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "전기요금 계산기 (누진세·에어컨)",
+      "emoji": "⚡",
+      "domain": "pyeong-converter-plus.vercel.app",
+      "desc": "이번 달 사용량이나 에어컨 사용시간만 넣으면 2026 주택용 전기요금을 누진구간·기후환경요금·부가세까지 반영해 계산. 여름철 완화, 저압/고압, 한계요금, 3구간 경고, 가전 추정, 절약 코치, 월별 기록. 3D 누진 타워.",
+      "live": "https://pyeong-converter-plus.vercel.app/pyeong-converter/electric",
+      "github": "https://github.com/dydrms6388-sudo/pyeong-converter-plus",
+      "status": "live",
+      "date": "2026-07-03"
+    },
     {
       "name": "열대야 꿀잠 예보",
       "emoji": "🌡",
