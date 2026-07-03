@@ -150,6 +150,48 @@
         <path d="M100,240 L126,184 L142,202 L106,252Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
         <path d="M100,238 L88,190 L100,198 L112,190Z" fill="${skin}" opacity=".95"/>
         <path d="M58,252 L142,252 L142,262 L58,262Z" fill="${c1}"/><path d="M94,252 L88,270 M106,252 L112,270" stroke="${c1}" stroke-width="5"/>`;
+      case "swim": { // 수영 선수 — 상반신 + 복근 라인 (스포츠 컨텍스트)
+        const abs = `<path d="M100,238 L100,268 M88,246 Q100,251 112,246 M86,260 Q100,265 114,260" stroke="${muscle}" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/>`;
+        return `${base(skin)}${traps}${chest}${delts}${abs}
+        <path d="M30,262 Q54,250 74,252 M170,262 Q146,250 126,252" stroke="${shade(c1, 1.1)}" stroke-width="5" fill="none" opacity=".5"/>`;
+      }
+      case "ssireum": { // 씨름 — 샅바
+        const abs = `<path d="M100,236 L100,258 M88,244 Q100,249 112,244" stroke="${muscle}" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/>`;
+        return `${base(skin)}${traps}${chest}${delts}${abs}
+        <path d="M46,270 L58,256 Q100,246 142,256 L154,270 L46,270Z" fill="${c1}"/>
+        <path d="M58,256 Q100,246 142,256" stroke="${shade(c1, 0.7)}" stroke-width="3" fill="none"/>
+        <path d="M138,258 L152,246 L158,254 L146,264Z" fill="${shade(c1, 0.85)}"/>`;
+      }
+      case "kimono": return `${base(c2)}
+        <path d="M100,244 L72,184 L52,206 L92,258Z" fill="${c1}" stroke="${shade(c1, 0.7)}" stroke-width="2"/>
+        <path d="M100,244 L128,184 L148,206 L108,258Z" fill="${shade(c1, 0.88)}" stroke="${shade(c1, 0.7)}" stroke-width="2"/>
+        <path d="M100,242 L88,192 L100,200 L112,192Z" fill="${skin}" opacity=".95"/>
+        <g fill="${shade(c1, 1.5)}" opacity=".7"><circle cx="70" cy="220" r="3"/><circle cx="128" cy="212" r="3"/><circle cx="82" cy="244" r="2.5"/><circle cx="120" cy="240" r="2.5"/></g>
+        <path d="M54,258 L146,258 L146,270 L54,270Z" fill="${shade(c2, 0.7)}"/><path d="M92,258 L108,258 L108,270 L92,270Z" fill="${shade(c2, 1.4)}"/>`;
+      case "school": return `${base(c1)}
+        <path d="M84,178 L84,190 L116,190 L116,178" stroke="${shade(c1, 1.6)}" stroke-width="3" fill="none"/>
+        <path d="M100,190 L100,270" stroke="${shade(c1, 1.5)}" stroke-width="2.5"/>
+        <circle cx="100" cy="206" r="2.6" fill="#fbbf24"/><circle cx="100" cy="226" r="2.6" fill="#fbbf24"/><circle cx="100" cy="246" r="2.6" fill="#fbbf24"/>
+        <path d="M84,190 L92,200 M116,190 L108,200" stroke="${shade(c1, 1.5)}" stroke-width="2" opacity=".8"/>`;
+      case "soccer": return `${base(c1)}
+        <path d="M100,196 L86,182 L78,192 L94,204Z M100,196 L114,182 L122,192 L106,204Z" fill="#fff"/>
+        <path d="M66,196 L72,270 M134,196 L128,270" stroke="${shade(c1, 0.7)}" stroke-width="6" opacity=".8"/>
+        <text x="100" y="248" font-size="34" font-weight="800" fill="#fff" text-anchor="middle" font-family="sans-serif">10</text>`;
+      case "basketball": return `${base(skin)}${traps}${chest}${delts}
+        <path d="M58,272 C60,222 70,200 84,192 C94,204 106,204 116,192 C130,200 140,222 142,272Z" fill="${c1}"/>
+        <path d="M84,192 C94,204 106,204 116,192" stroke="#fff" stroke-width="3" fill="none"/>
+        <path d="M62,240 C64,220 70,204 82,194 M138,240 C136,220 130,204 118,194" stroke="#fff" stroke-width="3" fill="none" opacity=".85"/>
+        <text x="100" y="250" font-size="30" font-weight="800" fill="#fff" text-anchor="middle" font-family="sans-serif">23</text>`;
+      case "badminton": return `${base("#f8fafc")}
+        <path d="M100,196 L88,184 L80,194 L94,206Z M100,196 L112,184 L120,194 L106,206Z" fill="${c1}"/>
+        <path d="M100,206 L100,236" stroke="#cbd5e1" stroke-width="2.5"/><circle cx="100" cy="214" r="2.2" fill="#cbd5e1"/><circle cx="100" cy="228" r="2.2" fill="#cbd5e1"/>
+        <path d="M52,238 L148,254 L148,266 L52,250Z" fill="${c1}" opacity=".9"/>
+        <path d="M36,240 C44,214 58,196 78,188 M164,240 C156,214 142,196 122,188" stroke="#cbd5e1" stroke-width="2.4" fill="none" opacity=".8"/>`;
+      case "dobok": return `${base("#f8fafc")}
+        <path d="M100,232 L80,184 L100,192 L120,184Z" fill="#111"/>
+        <path d="M80,184 L60,204 L94,246 L100,232 L106,246 L140,204 L120,184 L100,196Z" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+        <path d="M100,196 L86,188 M100,196 L114,188" stroke="#111" stroke-width="4"/>
+        <path d="M56,254 L144,254 L144,264 L56,264Z" fill="${c1}"/><path d="M94,254 L106,254 L106,270 L94,270Z" fill="${c1}"/>`;
       case "tee": default: return `${base(c1)}<path d="M82,182 C90,196 110,196 118,182 C113,192 108,196 100,196 C92,196 87,192 82,182Z" fill="${shade(c1, 0.72)}"/>
         <path d="M62,232 C66,214 74,200 86,192 M138,232 C134,214 126,200 114,192" stroke="${shade(c1, 0.72)}" stroke-width="2.6" fill="none" opacity=".85"/>
         <path d="M74,246 Q86,254 100,252 M126,246 Q114,254 100,252" stroke="${shade(c1, 0.78)}" stroke-width="2.2" fill="none" opacity=".6"/>`;
@@ -176,6 +218,11 @@
       case "headphones": return `<path d="M53,90 C53,50 147,50 147,90" stroke="#111827" stroke-width="7" fill="none"/><rect x="45" y="86" width="14" height="27" rx="7" fill="#0ea5e9"/><rect x="141" y="86" width="14" height="27" rx="7" fill="#0ea5e9"/>`;
       case "flower": return `<g transform="translate(135,62)"><circle r="5" fill="#fbbf24"/><g fill="#f472b6"><circle cx="0" cy="-8" r="4.6"/><circle cx="7.6" cy="-2.4" r="4.6"/><circle cx="4.7" cy="6.5" r="4.6"/><circle cx="-4.7" cy="6.5" r="4.6"/><circle cx="-7.6" cy="-2.4" r="4.6"/></g></g>`;
       case "choker": return `<path d="M85,164 Q100,171 115,164" stroke="#111" stroke-width="5.5" fill="none"/><circle cx="100" cy="169" r="2.6" fill="#e4e4e7"/>`;
+      case "goggles": return `<path d="M56,70 C70,60 130,60 144,70" stroke="#0f172a" stroke-width="5" fill="none"/>
+        <rect x="66" y="58" width="28" height="15" rx="7" fill="#22d3ee" opacity=".85" stroke="#0f172a" stroke-width="2.5"/>
+        <rect x="106" y="58" width="28" height="15" rx="7" fill="#22d3ee" opacity=".85" stroke="#0f172a" stroke-width="2.5"/>
+        <path d="M94,65 L106,65" stroke="#0f172a" stroke-width="3"/>`;
+      case "headband": return `<path d="M56,76 C70,64 130,64 144,76 L144,86 C130,74 70,74 56,86Z" fill="#ef4444"/>`;
       default: return "";
     }
   }
@@ -220,7 +267,14 @@
   const JOBS = [
     ["경호원", "suit", "#1e293b", "#334155", 1], ["변호사", "suit", "#0f172a", "#7c3aed", 0], ["회계사", "suit", "#1e293b", "#0ea5e9", 0], ["아나운서", "suit", "#312e81", "#f43f5e", 0],
     ["웹툰 작가", "hoodie", "#4338ca", "", 0], ["게임 개발자", "hoodie", "#0f766e", "", 0], ["프로게이머", "hoodie", "#b91c1c", "", 0], ["스트리머", "hoodie", "#7c3aed", "", 0], ["힙합 프로듀서", "hoodie", "#111827", "", 1],
-    ["태권도 사범", "gi", "#111", "", 0], ["유도 선수", "gi", "#1d4ed8", "", 1], ["검도 사범", "gi", "#312e81", "", 1], ["주짓수 코치", "gi", "#7c3aed", "", 1], ["합기도 사범", "gi", "#0f766e", "", 0],
+    ["태권도 사범", "dobok", "#111", "", 0], ["태권도 국가대표", "dobok", "#dc2626", "", 0], ["유도 선수", "gi", "#1d4ed8", "", 1], ["검도 사범", "gi", "#312e81", "", 1], ["주짓수 코치", "gi", "#7c3aed", "", 1], ["합기도 사범", "gi", "#0f766e", "", 0],
+    ["수영 선수", "swim", "#0ea5e9", "", 0, "goggles"], ["다이빙 선수", "swim", "#2563eb", "", 0, "goggles"], ["철인3종 선수", "swim", "#0f766e", "", 1, "goggles"],
+    ["씨름 선수", "ssireum", "#dc2626", "", 1], ["씨름 천하장사", "ssireum", "#2563eb", "", 1],
+    ["료칸 지배인", "kimono", "#3f6212", "#292524", 0], ["유카타 찻집 주인", "kimono", "#7c2d12", "#1c1917", 0], ["온천 마을 안내인", "kimono", "#1e3a8a", "#0f172a", 0],
+    ["체대생", "school", "#111827", "", 0], ["미대생", "school", "#1e3a8a", "", 0], ["공대생", "school", "#0f172a", "", 0], ["음대생", "school", "#312e81", "", 0],
+    ["축구 선수", "soccer", "#dc2626", "", 0], ["풋살 코치", "soccer", "#1d4ed8", "", 0], ["골키퍼", "soccer", "#16a34a", "", 0],
+    ["농구 선수", "basketball", "#f97316", "", 0], ["스트릿볼러", "basketball", "#111827", "", 0, "headband"],
+    ["배드민턴 선수", "badminton", "#16a34a", "", 0], ["탁구 선수", "badminton", "#dc2626", "", 0], ["테니스 코치", "badminton", "#1d4ed8", "", 0, "headband"],
     ["응급구조사", "scrub", "#ef4444", "", 0], ["물리치료사", "scrub", "#0ea5e9", "", 0], ["한의사", "scrub", "#14b8a6", "", 0], ["치과의사", "scrub", "#38bdf8", "", 0], ["간호사", "scrub", "#22c55e", "", 0], ["약사", "scrub", "#f8fafc", "", 0],
     ["헬스 트레이너", "tank", "#f43f5e", "", 1], ["크로스핏 코치", "tank", "#f97316", "", 1], ["클라이밍 강사", "tank", "#84cc16", "", 0], ["럭비 선수", "tank", "#166534", "", 1], ["배구 선수", "tank", "#2563eb", "", 0], ["서퍼", "tank", "#06b6d4", "", 0], ["인명구조원", "tank", "#ef4444", "", 0], ["복싱 코치", "tank", "#dc2626", "", 1],
     ["파티시에", "chef", "#fdf2f8", "", 0], ["스시 셰프", "chef", "#f8fafc", "", 1], ["브런치 셰프", "chef", "#fffbeb", "", 0], ["정육 장인", "apron", "#7f1d1d", "#27272a", 1], ["도예가", "apron", "#78716c", "#292524", 0], ["플랜트 집사", "apron", "#166534", "#14532d", 0], ["조향사", "apron", "#6d28d9", "#1e1b4b", 0], ["수제맥주 브루어", "apron", "#b45309", "#292524", 1],
@@ -254,24 +308,28 @@
   const EYES = ["open", "smile", "wink"], MOUTHS = ["smile", "grin", "smirk"], ACCS = ["none", "none", "earring", "none", "glasses", "none", "choker", "none"];
   // 등급 분포: 기존 16장(N6/R5/SR3/SSR2) + 생성 112장 = N56/R36/SR24/SSR12
   const GEN_RARITY = [].concat(Array(50).fill("N"), Array(31).fill("R"), Array(21).fill("SR"), Array(10).fill("SSR"));
+  // 직업 순서 결정적 셔플 (모든 직업이 고르게 등장하도록 — 곱셈 계수와 배열 길이의 공약수 문제 회피)
+  const JOB_ORDER = JOBS.map((_, k) => k).sort((a, b) => ((a * 137 + 71) % 997) - ((b * 137 + 71) % 997));
   for (let i = 0; i < 112; i++) {
     const rarity = GEN_RARITY[(i * 53) % 112]; // 결정적 셔플
-    const job = JOBS[(i * 29) % JOBS.length];
+    const job = JOBS[JOB_ORDER[i % JOBS.length]];
     const auras = AURAS[rarity];
+    const NO_ACC = ["gi", "dobok", "fire", "ssireum", "kimono", "swim"];
     CHARS.push({
       id: "c" + String(i + 17).padStart(3, "0"),
       name: NAMES[i % NAMES.length],
       job: job[0],
-      age: 20 + ((i * 11) % 30), // 20~49세 (나이군)
+      // 나이군: 20~49 · 학생 콘셉트는 20대 초반으로 고정
+      age: job[1] === "school" ? 20 + ((i * 11) % 6) : 20 + ((i * 11) % 30),
       rarity,
       skin: (i * 7) % 4,
-      hair: [HAIR_STYLES[(i * 13) % 6], HAIR_COLORS[(i * 17) % 10]],
+      hair: [job[1] === "swim" ? "buzz" : HAIR_STYLES[(i * 13) % 6], HAIR_COLORS[(i * 17) % 10]],
       outfit: [job[1], job[2], job[3] || job[2]],
-      acc: job[1] === "gi" || job[1] === "fire" ? "none" : ACCS[(i * 19) % ACCS.length],
+      acc: job[5] || (NO_ACC.includes(job[1]) ? "none" : ACCS[(i * 19) % ACCS.length]),
       eye: EYES[(i * 23) % 3],
       mouth: MOUTHS[(i * 31) % 3],
       stubble: job[4] || (i % 5 === 0 ? 1 : 0),
-      bg: BGS[(i * 37) % 8],
+      bg: job[1] === "swim" ? "waves" : job[1] === "kimono" ? "petals" : BGS[(i * 37) % 8],
       aura: auras[(i * 41) % auras.length],
       line: LINES[(i * 43) % LINES.length],
     });
