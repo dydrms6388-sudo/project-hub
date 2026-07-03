@@ -47,7 +47,7 @@ window.PRISM_DATA = {
       vibe: "warm", verified: true, lastActiveMin: 3, likedYou: false,
     },
     {
-      id: "p06", name: "시우", age: 26, region: "서울 관악", distanceKm: 6.7,
+      id: "p06", name: "시우", age: 26, region: "부산 서면", distanceKm: 6.7,
       job: "사회학 대학원생", height: 174, mbti: "INFP", emoji: "📚",
       grad: ["#0ea5e9", "#8b5cf6"],
       tags: ["독서", "영화", "카페투어", "식물"],
@@ -137,7 +137,7 @@ window.PRISM_DATA = {
       vibe: "calm", verified: true, lastActiveMin: 400, likedYou: false,
     },
     {
-      id: "p16", name: "태윤", age: 23, region: "서울 강서", distanceKm: 9.2,
+      id: "p16", name: "태윤", age: 23, region: "천안 불당", distanceKm: 9.2,
       job: "승무원", height: 184, mbti: "ESFP", emoji: "✈️",
       grad: ["#0284c7", "#f472b6"],
       tags: ["여행", "수영", "맛집탐방", "요가"],
@@ -146,7 +146,7 @@ window.PRISM_DATA = {
       vibe: "witty", verified: false, lastActiveMin: 22, likedYou: false,
     },
     {
-      id: "p17", name: "수호", age: 36, region: "서울 노원", distanceKm: 11.6,
+      id: "p17", name: "수호", age: 36, region: "대전 둔산", distanceKm: 11.6,
       job: "약사", height: 175, mbti: "ISFJ", emoji: "💊",
       grad: ["#22c55e", "#38bdf8"],
       tags: ["반려묘", "영화", "베이킹", "독서"],
@@ -182,7 +182,7 @@ window.PRISM_DATA = {
       vibe: "witty", verified: false, lastActiveMin: 48, likedYou: false,
     },
     {
-      id: "p21", name: "한결", age: 40, region: "서울 은평", distanceKm: 8.8,
+      id: "p21", name: "한결", age: 40, region: "광주 상무", distanceKm: 8.8,
       job: "가구 공방 목수", height: 183, mbti: "ISTP", emoji: "🪵",
       grad: ["#b45309", "#fbbf24"],
       tags: ["캠핑", "등산", "반려견", "드라이브"],
@@ -191,7 +191,7 @@ window.PRISM_DATA = {
       vibe: "warm", verified: true, lastActiveMin: 150, likedYou: false,
     },
     {
-      id: "p22", name: "동현", age: 30, region: "서울 동작", distanceKm: 6.2,
+      id: "p22", name: "동현", age: 30, region: "대구 수성", distanceKm: 6.2,
       job: "소방공무원", height: 185, mbti: "ESTJ", emoji: "🔥",
       grad: ["#dc2626", "#fb923c"],
       tags: ["헬스", "수영", "등산", "요리"],
@@ -290,7 +290,7 @@ window.PRISM_DATA = {
       vibe: "witty", verified: true, lastActiveMin: 95, likedYou: false,
     },
     {
-      id: "p33", name: "승우", age: 24, region: "경기 안양", distanceKm: 14.2,
+      id: "p33", name: "승우", age: 24, region: "포항 양덕", distanceKm: 14.2,
       job: "제빵사", height: 173, mbti: "ISFP", emoji: "🧁",
       grad: ["#ec4899", "#fdba74"],
       tags: ["베이킹", "카페투어", "반려묘", "음악"],
@@ -308,7 +308,7 @@ window.PRISM_DATA = {
       vibe: "playful", verified: true, lastActiveMin: 160, likedYou: false,
     },
     {
-      id: "p35", name: "용준", age: 45, region: "서울 중랑", distanceKm: 12.9,
+      id: "p35", name: "용준", age: 45, region: "창원 상남", distanceKm: 12.9,
       job: "사진 스튜디오 운영", height: 177, mbti: "ISFJ", emoji: "📷",
       grad: ["#1d4ed8", "#f43f5e"],
       tags: ["사진", "여행", "미술관", "드라이브"],
@@ -326,7 +326,7 @@ window.PRISM_DATA = {
       vibe: "witty", verified: false, lastActiveMin: 25, likedYou: false,
     },
     {
-      id: "p37", name: "도현", age: 30, region: "서울 강북", distanceKm: 9.7,
+      id: "p37", name: "도현", age: 30, region: "전주 효자", distanceKm: 9.7,
       job: "수의사", height: 178, mbti: "INFJ", emoji: "🐶",
       grad: ["#fbbf24", "#34d399"],
       tags: ["반려견", "반려묘", "등산", "요리"],
@@ -335,7 +335,7 @@ window.PRISM_DATA = {
       vibe: "warm", verified: true, lastActiveMin: 40, likedYou: false,
     },
     {
-      id: "p38", name: "종우", age: 35, region: "경기 부천", distanceKm: 17.5,
+      id: "p38", name: "종우", age: 35, region: "울산 삼산", distanceKm: 17.5,
       job: "자동차 엔지니어", height: 180, mbti: "ISTP", emoji: "🚗",
       grad: ["#0ea5e9", "#f59e0b"],
       tags: ["드라이브", "캠핑", "자전거", "게임"],
@@ -362,7 +362,7 @@ window.PRISM_DATA = {
       vibe: "witty", verified: true, lastActiveMin: 55, likedYou: false,
     },
     {
-      id: "p41", name: "경민", age: 23, region: "서울 도봉", distanceKm: 13.1,
+      id: "p41", name: "경민", age: 23, region: "제주 노형", distanceKm: 13.1,
       job: "헤어디자이너", height: 170, mbti: "ESFP", emoji: "✂️",
       grad: ["#f43f5e", "#38bdf8"],
       tags: ["영화", "음악", "맛집탐방"],
@@ -371,7 +371,7 @@ window.PRISM_DATA = {
       vibe: "warm", verified: false, lastActiveMin: 4, likedYou: false,
     },
     {
-      id: "p42", name: "인성", age: 32, region: "서울 금천", distanceKm: 9.9,
+      id: "p42", name: "인성", age: 32, region: "청주 복대", distanceKm: 9.9,
       job: "사회복지사", height: 174, mbti: "ENFJ", emoji: "🌻",
       grad: ["#facc15", "#fb7185"],
       tags: ["러닝", "보드게임", "반려견", "요리"],
@@ -425,7 +425,7 @@ window.PRISM_DATA = {
       vibe: "calm", verified: false, lastActiveMin: 19, likedYou: false,
     },
     {
-      id: "p48", name: "윤호", age: 30, region: "경기 광명", distanceKm: 11.8,
+      id: "p48", name: "윤호", age: 30, region: "순천 조례", distanceKm: 11.8,
       job: "라디오 작가", height: 176, mbti: "ENFP", emoji: "📻",
       grad: ["#6366f1", "#ec4899"],
       tags: ["음악", "영화", "독서", "카페투어", "러닝"],

@@ -13,8 +13,7 @@
 <meta property="og:description" content="한국 게이 남성을 위한 안전한 데이팅 PWA. 스와이프·매칭·채팅·커뮤니티 무료, 아우팅 방지 설계." />
 <meta property="og:url" content="https://tomatoeggcat.com/prism/" />
 <meta name="twitter:card" content="summary" />
-<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<!-- 프라이버시 원칙: 이 앱 페이지는 외부 광고·추적 스크립트를 로드하지 않습니다 (수익화 광고는 /prism-dating/ 랜딩에서) -->
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -42,9 +41,9 @@
   <!-- 웰컴 -->
   <section id="scr-welcome" class="scr" hidden>
     <div class="welcome">
-      <div class="w-logo"><span class="prism-mark">◈</span></div>
+      <div class="w-logo"><img src="favicon.svg" alt="PRISM 로고" width="76" height="76" style="border-radius:20px;box-shadow:0 12px 36px rgba(139,92,246,.45)"></div>
       <h1 class="w-title">PRISM</h1>
-      <p class="w-tag">나를 숨기지 않는 만남</p>
+      <p class="w-tag">나를 숨기지 않는 만남 — 게이·바이·퀴어 남성 모두 환영</p>
       <ul class="w-feats">
         <li><span>🔐</span><div><b>아우팅 방지 설계</b><small>PIN 잠금 · 스텔스 모드 · 서버에 아무것도 남지 않는 로컬 저장</small></div></li>
         <li><span>💜</span><div><b>취향 기반 매칭</b><small>관심사·거리·활동성으로 계산되는 궁합 점수</small></div></li>
@@ -69,8 +68,9 @@
   <!-- 메인 -->
   <section id="scr-main" class="scr" hidden>
     <header id="topbar">
-      <div class="tb-logo"><span class="prism-mark sm">◈</span> PRISM</div>
+      <div class="tb-logo"><img src="favicon.svg" alt="" width="22" height="22" style="border-radius:6px;vertical-align:-5px"> PRISM</div>
       <div class="tb-right">
+        <button id="btn-shop" class="tb-ic" title="아이템 상점">🛍️</button>
         <button id="btn-stealth" class="tb-ic" title="스텔스 모드 (빠른 숨김)">👓</button>
         <button id="btn-premium-badge" class="tb-premium">무료</button>
       </div>
@@ -81,6 +81,7 @@
       <button data-tab="likes" class="tab"><span class="t-ic">💜</span><span class="t-lb">좋아요</span><i class="badge" id="badge-likes" hidden></i></button>
       <button data-tab="chats" class="tab"><span class="t-ic">💬</span><span class="t-lb">채팅</span><i class="badge" id="badge-chats" hidden></i></button>
       <button data-tab="community" class="tab"><span class="t-ic">🗳️</span><span class="t-lb">라운지</span></button>
+      <button data-tab="cards" class="tab"><span class="t-ic">🎴</span><span class="t-lb">카드</span><i class="badge" id="badge-cards" hidden></i></button>
       <button data-tab="my" class="tab"><span class="t-ic">👤</span><span class="t-lb">MY</span></button>
     </nav>
   </section>
@@ -88,10 +89,11 @@
   <!-- 오버레이 & 모달 루트 -->
   <div id="overlay-root"></div>
   <div id="modal-root"></div>
-  <div id="toast-root"></div>
+  <div id="toast-root" aria-live="polite"></div>
 </div>
 
 <script src="data.js"></script>
+<script src="cards.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
