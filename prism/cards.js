@@ -227,25 +227,47 @@
     }
   }
 
-  /* 캐릭터 SVG — 망가풍 근육질 남성 (애니메이션 클래스는 app.css) */
+  /* 체형 4종 — 상반신 가로 스케일 (몸 체형 다양화) */
+  const BUILDS = { slim: 0.88, fit: 1.0, muscular: 1.14, bulky: 1.3 };
+
+  /* 캐릭터 렌더 — art/ 폴더에 일러스트가 있으면 이미지 우선, 없으면 절차적 SVG 폴백
+     (일러스트 등록: prism/art/에 <id>.webp|.png 추가 후 `node prism/gen-art-manifest.mjs`) */
   function charSVG(c, opts) {
+    const ART = window.PRISM_CARD_ART || {};
+    if (ART[c.id]) {
+      return `<img class="cv cv-art" src="art/${ART[c.id]}" alt="${c.name} — ${c.job}" loading="lazy" draggable="false">`;
+    }
     const skin = SKIN[c.skin], skinD = shade(skin, 0.8);
     const o = opts || {};
     const idSuf = c.id + (o.uid || "");
+    const B = BUILDS[c.build] || 1.0;
     return `<svg viewBox="0 0 200 270" xmlns="http://www.w3.org/2000/svg" class="cv ${o.animate ? "cv-anim" : ""}" role="img" aria-label="${c.name} — ${c.job}">
       <defs>
         <radialGradient id="aura-${idSuf}" cx="50%" cy="38%" r="68%">
-          <stop offset="0%" stop-color="${c.aura[0]}" stop-opacity=".85"/>
-          <stop offset="100%" stop-color="${c.aura[1]}" stop-opacity=".25"/>
+          <stop offset="0%" stop-color="${c.aura[0]}" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="${c.aura[1]}" stop-opacity=".3"/>
         </radialGradient>
+        <radialGradient id="halo-${idSuf}" cx="50%" cy="34%" r="42%">
+          <stop offset="0%" stop-color="#fff" stop-opacity=".28"/>
+          <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="vig-${idSuf}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+          <stop offset="1" stop-color="#000" stop-opacity=".38"/>
+        </linearGradient>
       </defs>
       <rect width="200" height="270" fill="url(#aura-${idSuf})"/>
       <g class="cv-sparks">${bgSVG(c.bg || "stars")}</g>
+      <circle cx="100" cy="96" r="82" fill="url(#halo-${idSuf})"/>
       <g class="cv-body">
-        ${outfitSVG(c.outfit[0], c.outfit[1], c.outfit[2] || c.outfit[1], skin, skinD)}
-        <path d="M84,138 L84,174 C84,188 116,188 116,174 L116,138Z" fill="${skinD}"/>
-        <path d="M87,152 Q100,158 113,152" stroke="${shade(skin, 0.68)}" stroke-width="2" fill="none" opacity=".6"/>
+        <g transform="translate(100,0) scale(${B},1) translate(-100,0)">
+          ${outfitSVG(c.outfit[0], c.outfit[1], c.outfit[2] || c.outfit[1], skin, skinD)}
+          <path d="M84,138 L84,174 C84,188 116,188 116,174 L116,138Z" fill="${skinD}"/>
+          <path d="M87,152 Q100,158 113,152" stroke="${shade(skin, 0.68)}" stroke-width="2" fill="none" opacity=".6"/>
+        </g>
         <path d="M58,98 C58,56 76,42 100,42 C124,42 142,56 142,98 C142,124 133,142 118,149 C112,152.5 106,154 100,154 C94,154 88,152.5 82,149 C67,142 58,124 58,98Z" fill="${skin}"/>
+        <path d="M62,90 C62,64 74,50 92,46 C76,54 68,70 66,90 C65,106 68,124 76,136 C66,126 62,110 62,90Z" fill="${shade(skin, 0.88)}" opacity=".55"/>
+        <path d="M124,52 C134,60 139,74 139,96 C139,114 134,130 124,140" stroke="#fff" stroke-width="3" fill="none" opacity=".28" stroke-linecap="round"/>
         <path d="M72,126 C78,144 122,144 128,126 C124,142 112,150 100,150 C88,150 76,142 72,126Z" fill="${shade(skin, 0.75)}" opacity=".3"/>
         ${c.stubble ? `<path d="M73,122 C76,144 124,144 127,122 C126,147 111,153 100,153 C89,153 74,147 73,122Z" fill="${c.hair[1]}" opacity=".16"/>` : ""}
         <ellipse cx="56.5" cy="104" rx="7" ry="10.5" fill="${skin}"/><ellipse cx="143.5" cy="104" rx="7" ry="10.5" fill="${skin}"/>
@@ -257,6 +279,7 @@
         ${c.rarity !== "N" && !c.stubble ? `<ellipse cx="73" cy="117" rx="6" ry="3.2" fill="#f87171" opacity=".16"/><ellipse cx="127" cy="117" rx="6" ry="3.2" fill="#f87171" opacity=".16"/>` : ""}
         ${accSVG(c.acc)}
       </g>
+      <rect width="200" height="270" fill="url(#vig-${idSuf})"/>
       <g class="cv-shine"><rect x="-70" y="0" width="46" height="270" fill="#fff" opacity=".14" transform="skewX(-18)"/></g>
     </svg>`;
   }
@@ -315,7 +338,16 @@
     const job = JOBS[JOB_ORDER[i % JOBS.length]];
     const auras = AURAS[rarity];
     const NO_ACC = ["gi", "dobok", "fire", "ssireum", "kimono", "swim"];
+    // 체형: 직업 특성 우선, 나머지는 분포 (슬림 20% / 탄탄 40% / 근육질 25% / 곰 15%)
+    const BULKY_JOBS = ["씨름 선수", "씨름 천하장사", "럭비 선수", "정육 장인", "수제맥주 브루어", "목수"];
+    const MUSC_OUTFITS = ["tank", "swim", "fire", "basketball", "gi", "dobok"];
+    const SLIM_OUTFITS = ["school", "stage", "ballet"];
+    const build = BULKY_JOBS.includes(job[0]) ? "bulky"
+      : MUSC_OUTFITS.includes(job[1]) ? ((i % 3) ? "muscular" : "bulky")
+      : SLIM_OUTFITS.includes(job[1]) ? ((i % 3) ? "slim" : "fit")
+      : ["slim", "fit", "fit", "fit", "muscular", "fit", "muscular", "slim", "bulky", "fit"][(i * 3) % 10];
     CHARS.push({
+      build,
       id: "c" + String(i + 17).padStart(3, "0"),
       name: NAMES[i % NAMES.length],
       job: job[0],
@@ -334,9 +366,10 @@
       line: LINES[(i * 43) % LINES.length],
     });
   }
-  // 기존 16장 나이 부여
+  // 기존 16장 나이·체형 부여
   const BASE_AGES = { c01: 26, c02: 23, c03: 29, c04: 31, c05: 27, c06: 28, c07: 33, c08: 30, c09: 27, c10: 34, c11: 32, c12: 36, c13: 29, c14: 38, c15: 24, c16: 26 };
-  CHARS.forEach((c) => { if (BASE_AGES[c.id]) c.age = BASE_AGES[c.id]; });
+  const BASE_BUILDS = { c01: "fit", c02: "slim", c03: "slim", c04: "muscular", c05: "fit", c06: "fit", c07: "bulky", c08: "muscular", c09: "fit", c10: "fit", c11: "fit", c12: "bulky", c13: "muscular", c14: "fit", c15: "slim", c16: "slim" };
+  CHARS.forEach((c) => { if (BASE_AGES[c.id]) c.age = BASE_AGES[c.id]; if (BASE_BUILDS[c.id]) c.build = BASE_BUILDS[c.id]; });
 
   window.PRISM_CARDS = { CHARS, RARITY, charSVG };
 })();

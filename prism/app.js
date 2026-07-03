@@ -24,7 +24,7 @@
     votes: {},
     lastSwipe: null,
     settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 },
-    filters: { ageMin: 20, ageMax: 45, area: "all", looking: "all" },
+    filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all" },
     stats: { likesSent: 0, matches: 0 },
     items: { teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 },
     fx: { teleport: null, spotlightUntil: 0 }, // teleport: {region, until}
@@ -50,26 +50,28 @@
   });
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
-  S.filters = Object.assign({ ageMin: 20, ageMax: 45, area: "all", looking: "all" }, S.filters || {});
+  S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
+  if (S.filters.ageMax === 45) S.filters.ageMax = 50; // 구버전 기본값 승격
   S.stats = Object.assign({ likesSent: 0, matches: 0 }, S.stats || {});
   const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
 
   const PLANS = {
-    free:  { label: "무료",        likes: 20, supers: 1, seeLikes: false, rewind: false, boost: 0, ads: true,  read: false },
-    plus:  { label: "PRISM+",      likes: Infinity, supers: 1, seeLikes: true, rewind: true, boost: 1, ads: false, read: false },
-    black: { label: "PRISM Black", likes: Infinity, supers: 5, seeLikes: true, rewind: true, boost: 4, ads: false, read: true },
+    free:  { label: "무료",        likes: 20, supers: 1, seeLikes: false, rewind: 1,        boost: 0, ads: true,  read: false },
+    plus:  { label: "PRISM+",      likes: Infinity, supers: 1, seeLikes: true, rewind: Infinity, boost: 1, ads: false, read: false },
+    black: { label: "PRISM Black", likes: Infinity, supers: 5, seeLikes: true, rewind: Infinity, boost: 4, ads: false, read: true },
   };
+  const rewindLeft = () => plan().rewind === Infinity ? Infinity : Math.max(0, plan().rewind - (S.rewindsUsed || 0));
   const plan = () => PLANS[S.premium.plan] || PLANS.free;
   const P = (id) => D.profiles.find((p) => p.id === id);
 
   /* ── 아이템 상점 (소모품 수익) ── */
   const SHOP = [
     { key: "teleport", em: "🌏", name: "텔레포트", desc: "24시간 동안 원하는 지역으로 순간이동 — 그 동네 사람들이 먼저 보여요", packs: [{ n: 1, price: 3500 }, { n: 3, price: 8900 }] },
-    { key: "spotlight", em: "✨", name: "스포트라이트", desc: "3시간 동안 내 프로필 상단 고정 노출 — 좋아요가 쏟아져요", packs: [{ n: 1, price: 2500 }, { n: 5, price: 9900 }] },
+    { key: "spotlight", em: "✨", name: "스포트라이트", desc: "3시간 동안 내 프로필 상단 고정 노출 — 노출이 크게 늘어요", packs: [{ n: 1, price: 2500 }, { n: 5, price: 9900 }] },
     { key: "superlike", em: "⭐", name: "슈퍼라이크 팩", desc: "일일 한도와 무관하게 쓰는 슈퍼라이크 5개", packs: [{ n: 5, price: 4500 }] },
     { key: "boostticket", em: "🚀", name: "부스트 1회권", desc: "플랜과 무관하게 30분 부스트 — 무료 플랜도 OK", packs: [{ n: 1, price: 3900 }] },
     { key: "refill", em: "💜", name: "좋아요 리필", desc: "오늘의 좋아요 20개 즉시 충전", packs: [{ n: 1, price: 1900 }] },
-    { key: "gachaticket", em: "🎴", name: "크러시 팩 뽑기권", desc: "크러시 카드 1장 뽑기 — SSR 홀로그램에 도전!", packs: [{ n: 1, price: 1500 }, { n: 10, price: 12900 }] },
+    { key: "gachaticket", em: "🎴", name: "크러시 팩 뽑기권", desc: "카드 1장 뽑기 · 확률 N 60% / R 27% / SR 10% / SSR 3% · 10회 내 SR+ 확정", packs: [{ n: 1, price: 1500 }, { n: 10, price: 12900 }] },
   ];
   const itemDiscount = () => (S.premium.plan === "black" ? 0.15 : S.premium.plan === "plus" ? 0.05 : 0);
   const itemPrice = (base) => Math.round(base * (1 - itemDiscount()) / 100) * 100;
@@ -102,7 +104,7 @@
     const t = todayStr();
     let dirty = false;
     if (S.day !== t) {
-      S.day = t; S.likesUsed = 0; S.supersUsed = 0;
+      S.day = t; S.likesUsed = 0; S.supersUsed = 0; S.rewindsUsed = 0;
       seedIncoming(1 + Math.floor(Math.random() * 2));
       dirty = true;
     }
@@ -123,29 +125,34 @@
     }
   }
 
-  /* ── 지역 인식 거리 ── */
+  /* ── 지역 인식 거리 (권역 그룹핑 — 지방 사용자 풀 확대) ── */
   const AREA_GROUP = { 천안: "충청", 청주: "충청", 전주: "전라", 순천: "전라", 포항: "경상", 창원: "경상" };
+  const REGION_ZONE = { 서울: "수도권", 경기: "수도권", 인천: "수도권", 부산: "영남", 대구: "영남", 울산: "영남", 경상: "영남", 광주: "호남", 전라: "호남", 대전: "충청권", 세종: "충청권", 충청: "충청권", 강원: "강원", 제주: "제주" };
+  const ZONES = ["수도권", "영남", "호남", "충청권", "강원", "제주"];
   const groupOf = (a) => AREA_GROUP[a] || a;
+  const zoneOf = (a) => REGION_ZONE[groupOf(a)] || groupOf(a);
   const myArea = () => ((S.user && S.user.region) || "").split(" ")[0];
   const areaOf = (p) => p.region.split(" ")[0];
   const sameArea = (p) => {
     const tp = teleportActive();
-    if (tp) return groupOf(areaOf(p)) === groupOf(tp.region);
-    return groupOf(areaOf(p)) === groupOf(myArea());
+    if (tp) return zoneOf(areaOf(p)) === zoneOf(tp.region);
+    return zoneOf(areaOf(p)) === zoneOf(myArea());
   };
   function distLabel(p) {
     if (S.settings.hideDistance) return `📍 ${esc(p.region)}`;
     return sameArea(p) ? `📍 ${esc(p.region)} · ${p.distanceKm}km` : `📍 ${esc(p.region)} · 다른 지역`;
   }
 
-  /* ── 궁합 점수 (하한 없음 — 실제 분산 노출) ── */
+  /* ── 궁합 점수 (감산 포함 실분산 31~99) ── */
   function compat(p) {
     if (!S.user) return 70;
-    let sc = 42;
+    let sc = 46;
     const shared = p.tags.filter((t) => S.user.tags.includes(t));
     sc += Math.min(32, shared.length * 8);
     if (p.lastActiveMin < 60) sc += 8; else if (p.lastActiveMin < 720) sc += 4;
-    if (sameArea(p)) { sc += 8; if (p.distanceKm < 5) sc += 6; else if (p.distanceKm < 15) sc += 3; }
+    else if (p.lastActiveMin > 2880) sc -= 7; // 이틀 이상 미접속 감산
+    if (sameArea(p)) { sc += 6; if (p.distanceKm < 5) sc += 6; else if (p.distanceKm < 15) sc += 3; }
+    else sc -= 8; // 타 권역 감산
     if (p.lookingFor === S.user.lookingFor) sc += 6;
     return Math.max(31, Math.min(99, sc));
   }
@@ -165,7 +172,22 @@
     back.setAttribute("aria-modal", "true");
     back.innerHTML = html;
     back.addEventListener("click", (e) => { if (e.target === back && !(opts && opts.sticky)) back.remove(); });
+    // 접근성: 포커스 이동·트랩·복원 + Esc 닫기
+    const prevFocus = document.activeElement;
+    const origRemove = back.remove.bind(back);
+    back.remove = () => { origRemove(); if (prevFocus && prevFocus.focus) try { prevFocus.focus(); } catch (e) {} };
+    back.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !(opts && opts.sticky)) { back.remove(); return; }
+      if (e.key !== "Tab") return;
+      const f = $$("button,input,select,textarea,a[href]", back).filter((x) => !x.disabled);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
     $("#modal-root").appendChild(back);
+    const focusables = $$("button,input,select,textarea", back).filter((x) => !x.disabled);
+    if (focusables.length) setTimeout(() => focusables[0].focus(), 30);
     return back;
   }
   function confirmDlg(em, title, body, okLabel, onOk, danger) {
@@ -206,7 +228,8 @@
     if (S.settings.pinHash) return (await pinHash(pin)) === S.settings.pinHash;
     return pin === S.settings.pin; // 구버전 평문 (아래 boot에서 자동 마이그레이션)
   }
-  let pinFails = 0, pinCoolUntil = 0;
+  // 시도 제한을 localStorage에 영속화 (새로고침 우회 방지)
+  S.pinGuard = Object.assign({ fails: 0, coolUntil: 0 }, S.pinGuard || {});
   let locked = false;
   function renderLock(onPass) {
     locked = true;
@@ -228,16 +251,17 @@
       `<button data-k="${k}" ${k === "⌫" ? "class='ghost'" : ""} aria-label="${k === "⌫" ? "지우기" : k}">${k}</button>`).join("");
     pad.onclick = async (e) => {
       const b = e.target.closest("button[data-k]"); if (!b) return;
-      if (Date.now() < pinCoolUntil) { toast(`잠시 후 다시 시도하세요 (${Math.ceil((pinCoolUntil - Date.now()) / 1000)}초)`); return; }
+      if (Date.now() < S.pinGuard.coolUntil) { toast(`잠시 후 다시 시도하세요 (${Math.ceil((S.pinGuard.coolUntil - Date.now()) / 1000)}초)`); return; }
       const k = b.dataset.k;
       if (k === "⌫") buf = buf.slice(0, -1);
       else if (buf.length < 4) buf += k;
       paint();
       if (buf.length === 4) {
-        if (await checkPin(buf)) { buf = ""; pinFails = 0; unlock(); }
+        if (await checkPin(buf)) { buf = ""; S.pinGuard = { fails: 0, coolUntil: 0 }; save(); unlock(); }
         else {
-          pinFails++; buf = "";
-          if (pinFails >= 5) { pinCoolUntil = Date.now() + 30000; pinFails = 0; toast("5회 오류 — 30초 후 다시 시도하세요"); }
+          S.pinGuard.fails++; buf = "";
+          if (S.pinGuard.fails >= 5) { S.pinGuard.coolUntil = Date.now() + 30000; S.pinGuard.fails = 0; toast("5회 오류 — 30초 후 다시 시도하세요"); }
+          save();
           dots.classList.add("err"); vibrate(80);
           setTimeout(() => { dots.classList.remove("err"); paint(); }, 450);
         }
@@ -245,12 +269,22 @@
     };
     paint();
   }
-  /* 화면 이탈 시 즉시 잠금 (아우팅 방지 핵심 시나리오) */
+  /* 화면 이탈 시 즉시 잠금 + 중립 커버 (태스크 스위처·탭 미리보기 노출 방지) */
+  let privacyCover = null;
+  function showCover() {
+    if (privacyCover || !S.user || !(hasPin() && S.settings.bgLock)) return;
+    privacyCover = document.createElement("div");
+    privacyCover.style.cssText = "position:fixed;inset:0;background:#f4f5f7;z-index:9998;display:flex;align-items:center;justify-content:center";
+    privacyCover.innerHTML = `<div style="text-align:center;color:#999;font-size:15px;font-weight:700">메모</div>`;
+    document.body.appendChild(privacyCover);
+  }
+  function hideCover() { if (privacyCover) { privacyCover.remove(); privacyCover = null; } }
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) { dailyTick(); return; }
+    if (document.hidden) { showCover(); dailyTick(); return; }
     if (hasPin() && S.settings.bgLock && S.user && !locked && !stealthEl) {
-      renderLock(() => show("scr-main"));
-    }
+      renderLock(() => { hideCover(); show("scr-main"); });
+      hideCover();
+    } else hideCover();
   });
 
   /* ══ 온보딩 ══ */
@@ -359,6 +393,16 @@
         seedIncoming(3); save();
         enterMain();
         setTimeout(() => toast("🎉 가입 완료! 벌써 " + S.incoming.length + "명이 좋아요를 보냈어요"), 700);
+        // 30초 프라이버시 설정 — 핵심 차별점을 첫 경험에 노출
+        setTimeout(() => {
+          const pm = modal(`<div class="dialog"><div class="em">🔐</div><h3>30초 프라이버시 설정</h3>
+            <p style="text-align:left">아우팅 걱정 없이 쓰도록 지금 설정할 수 있어요:<br><br>· <b>PIN 잠금</b> — 화면 이탈 시 자동 잠금<br>· <b>위장 제목</b> — 탭 제목·아이콘이 '메모'로</p>
+            <div class="row"><button class="btn-ghost" data-skip>나중에</button><button class="btn-grad" data-pin>PIN 설정하기</button></div>
+            <button class="pw-item" data-dg>🎭 위장 제목만 바로 켜기</button></div>`, { center: true });
+          $("[data-skip]", pm).onclick = () => pm.remove();
+          $("[data-pin]", pm).onclick = () => { pm.remove(); pinSheet(); };
+          $("[data-dg]", pm).onclick = () => { pm.remove(); S.settings.disguise = true; save(); applyDisguise(); toast("🎭 위장 제목 ON — 방문 기록·홈 화면 아이콘은 위장되지 않아요"); };
+        }, 2600);
       }
     });
     $("#ob-back").onclick = () => { if (ob.step > 0) { ob.step--; renderOb(); } };
@@ -398,15 +442,16 @@
     const tp = teleportActive();
     const F = S.filters;
     deck = D.profiles.filter((p) => !gone.has(p.id))
-      .filter((p) => p.age >= F.ageMin && p.age <= F.ageMax)
-      .filter((p) => F.area === "all" || sameArea(p))
+      .filter((p) => p.age >= F.ageMin && (F.ageMax >= 50 || p.age <= F.ageMax)) // 50 = "50+" (상한 없음)
+      .filter((p) => F.area === "all" || (F.area === "mine" ? sameArea(p) : zoneOf(areaOf(p)) === F.area))
       .filter((p) => F.looking === "all" || p.lookingFor === F.looking)
       .map((p) => ({ p, sc: compat(p) + Math.random() * 8 + (tp && groupOf(areaOf(p)) === groupOf(tp.region) ? 100 : 0) }))
       .sort((a, b) => b.sc - a.sc).map((x) => x.p);
-    // 되돌린 카드는 항상 맨 위로
+    // 되돌린 카드는 항상 맨 위로 (필터에 걸려도 복귀 보장)
     if (S.restoredPid) {
       const i = deck.findIndex((p) => p.id === S.restoredPid);
       if (i > 0) deck.unshift(deck.splice(i, 1)[0]);
+      else if (i < 0) { const rp = P(S.restoredPid); if (rp && !S.blocked.includes(rp.id)) deck.unshift(rp); }
       S.restoredPid = null;
     }
   }
@@ -420,12 +465,12 @@
       spotlightActive() ? `✨ 스포트라이트 ${Math.ceil((S.fx.spotlightUntil - Date.now()) / 60000)}분` : "",
     ].filter(Boolean);
     const F = S.filters;
-    const filterOn = F.ageMin > 20 || F.ageMax < 45 || F.area !== "all" || F.looking !== "all";
+    const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all";
     $("#view").innerHTML = `<div class="disc">
       <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ 필터${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
       <div class="deck" id="deck"></div>
       <div class="actions">
-        <div class="act-w"><button class="act md rew" id="a-rew" aria-label="마지막 카드 되돌리기">↩${plan().rewind ? "" : '<span class="lock">🔒</span>'}</button><small>되돌리기</small></div>
+        <div class="act-w"><button class="act md rew" id="a-rew" aria-label="마지막 카드 되돌리기">↩${rewindLeft() > 0 ? "" : '<span class="lock">🔒</span>'}</button><small>되돌리기</small></div>
         <div class="act-w"><button class="act lg nope" id="a-nope" aria-label="패스">✕</button><small>패스</small></div>
         <div class="act-w"><button class="act md sup" id="a-sup" aria-label="슈퍼라이크 보내기">⭐</button><small>슈퍼</small></div>
         <div class="act-w"><button class="act lg like" id="a-like" aria-label="좋아요 보내기">💜</button><small>좋아요</small></div>
@@ -447,14 +492,16 @@
     const F = S.filters;
     const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 4px">탐색 필터</h3>
       <p class="muted" style="font-size:13px;margin:0 0 16px">원하는 조건의 사람만 보여드려요. 필터는 전 플랜 무료.</p>
-      <div class="ob-field"><label>나이 — <b id="fv-age">${F.ageMin}~${F.ageMax}세</b></label>
+      <div class="ob-field"><label>나이 — <b id="fv-age">${F.ageMin}~${F.ageMax >= 50 ? "50+" : F.ageMax + "세"}</b></label>
         <div style="display:flex;gap:12px;align-items:center">
-          <input type="range" id="f-amin" min="20" max="45" value="${F.ageMin}" style="flex:1;accent-color:var(--vio)" aria-label="최소 나이">
-          <input type="range" id="f-amax" min="20" max="45" value="${F.ageMax}" style="flex:1;accent-color:var(--vio)" aria-label="최대 나이">
+          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최소</small><input type="range" id="f-amin" min="20" max="50" value="${F.ageMin}" style="accent-color:var(--vio)" aria-label="최소 나이"></span>
+          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최대</small><input type="range" id="f-amax" min="20" max="50" value="${F.ageMax}" style="accent-color:var(--vio)" aria-label="최대 나이 (50은 상한 없음)"></span>
         </div></div>
-      <div class="ob-field"><label>지역</label><div class="seg" style="grid-template-columns:1fr 1fr">
+      <div class="ob-field"><label>지역 (권역)</label><div class="chips">
         <button class="chip ${F.area === "all" ? "on" : ""}" data-area="all">전국</button>
-        <button class="chip ${F.area === "mine" ? "on" : ""}" data-area="mine">${esc(myArea() || "내 지역")}만</button></div></div>
+        <button class="chip ${F.area === "mine" ? "on" : ""}" data-area="mine">내 권역 (${esc(zoneOf(myArea()) || "내 지역")})</button>
+        ${ZONES.filter((z) => z !== zoneOf(myArea())).map((z) => `<button class="chip ${F.area === z ? "on" : ""}" data-area="${z}">${z}</button>`).join("")}</div>
+        <p class="tiny" style="margin:6px 0 0">다른 권역도 무료로 탐색할 수 있어요 · 텔레포트는 해당 권역을 우선 노출해주는 아이템이에요</p></div>
       <div class="ob-field"><label>찾는 관계</label><div class="chips" id="f-look">
         <button class="chip ${F.looking === "all" ? "on" : ""}" data-look="all">전체</button>
         ${LOOKING.map((l) => `<button class="chip ${F.looking === l ? "on" : ""}" data-look="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
@@ -464,7 +511,7 @@
     const amin = $("#f-amin", m), amax = $("#f-amax", m);
     const sync = () => {
       if (+amin.value > +amax.value) amax.value = amin.value;
-      $("#fv-age", m).textContent = `${amin.value}~${amax.value}세`;
+      $("#fv-age", m).textContent = `${amin.value}~${+amax.value >= 50 ? "50+" : amax.value + "세"}`;
     };
     amin.oninput = sync; amax.oninput = sync;
     m.addEventListener("click", (e) => {
@@ -473,7 +520,7 @@
       const lk = e.target.closest("[data-look]");
       if (lk) { $$("[data-look]", m).forEach((x) => x.classList.remove("on")); lk.classList.add("on"); }
     });
-    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 45, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
+    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 50, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
     $("#f-apply", m).onclick = () => {
       S.filters = { ageMin: +amin.value, ageMax: +amax.value,
         area: ($(".chip.on[data-area]", m) || {}).dataset ? $(".chip.on[data-area]", m).dataset.area : "all",
@@ -503,7 +550,7 @@
   function paintDeck() {
     const d = $("#deck"); if (!d) return;
     if (!deck.length) {
-      const filtered = S.filters.area !== "all" || S.filters.looking !== "all" || S.filters.ageMin > 20 || S.filters.ageMax < 45;
+      const filtered = S.filters.area !== "all" || S.filters.looking !== "all" || S.filters.ageMin > 20 || S.filters.ageMax < 50;
       d.innerHTML = `<div class="deck-empty"><div class="em">🌈</div><b>${filtered ? "조건에 맞는 프로필을 다 봤어요" : "오늘의 추천을 모두 봤어요"}</b>
         <p class="muted" style="margin:0;font-size:13.5px">${filtered ? "필터를 넓히면 더 많은 사람을 만날 수 있어요." : "내일 새로운 프로필이 도착해요.<br>받은 좋아요를 확인해보는 건 어때요?"}</p>
         ${filtered ? `<button class="btn-grad" id="de-filter">필터 넓히기 ⚙️</button>` : `<button class="btn-grad" id="de-likes">받은 좋아요 보기 💜</button>`}
@@ -624,6 +671,11 @@
     S.matches.push({ pid, at: Date.now(), unread: 0 });
     S.stats.matches++;
     S.lastSwipe = null; // 매치는 되돌리기 불가
+    // 매일 첫 매치 보상: 뽑기권 +1 (무료 유저도 카드 성장 경로 확보)
+    if (S.matchTicketDay !== todayStr()) {
+      S.matchTicketDay = todayStr(); S.items.gachaticket++;
+      setTimeout(() => toast("🎁 오늘의 첫 매치 보상 — 크러시 팩 뽑기권 +1"), 1600);
+    }
     save(); vibrate([30, 60, 30]);
     matchModal(pid);
   }
@@ -656,7 +708,7 @@
     return h;
   }
   function rewind() {
-    if (!plan().rewind) { paywall("rewind"); return; }
+    if (rewindLeft() <= 0) { paywall("rewind"); return; }
     if (!S.lastSwipe) { toast("되돌릴 카드가 없어요"); return; }
     const { pid, kind } = S.lastSwipe;
     S.liked = S.liked.filter((x) => x !== pid);
@@ -664,9 +716,10 @@
     S.superliked = S.superliked.filter((x) => x !== pid);
     if (kind === "like") S.likesUsed = Math.max(0, S.likesUsed - 1);
     if (kind === "sup") S.supersUsed = Math.max(0, S.supersUsed - 1);
+    if (plan().rewind !== Infinity) S.rewindsUsed = (S.rewindsUsed || 0) + 1;
     S.restoredPid = pid; // 되돌린 카드는 덱 최상단으로
     S.lastSwipe = null; save(); vDiscover();
-    toast("↩ 마지막 카드를 맨 위로 되돌렸어요");
+    toast(plan().rewind === Infinity ? "↩ 마지막 카드를 맨 위로 되돌렸어요" : `↩ 되돌렸어요 (오늘 무료 ${rewindLeft()}회 남음)`);
   }
   function activateBoost() {
     S.boostUntil = Date.now() + 30 * 60000;
@@ -763,6 +816,7 @@
       const b = e.target.closest("[data-r]"); if (!b) return;
       m.remove(); blockUser(pid);
       const num = "R" + String(Date.now()).slice(-6);
+      (S.reports = S.reports || []).push({ num, reason: b.dataset.r, at: Date.now() }); save();
       const dlg = modal(`<div class="dialog"><div class="em">🛡️</div><h3>신고 접수 완료</h3>
         <p style="text-align:left">접수번호 <b>${num}</b><br><br>· 상대는 자동 차단됐어요<br>· 금전 피해가 있다면 <b>경찰 112</b> 또는 사이버범죄 신고(ecrm.police.go.kr)에 접수하세요<br>· 대화 캡처를 증거로 보관해두세요</p>
         <button class="btn-grad big" data-ok>확인</button></div>`, { center: true });
@@ -777,22 +831,32 @@
     save();
     const can = plan().seeLikes;
     const list = S.incoming.map(P).filter(Boolean);
+    // 무료 티어: 하루 1명 무료 공개 (막다른 골목 방지)
+    if (!can && list.length) {
+      if (!S.freeReveal || S.freeReveal.day !== todayStr() || !S.incoming.includes(S.freeReveal.pid)) {
+        S.freeReveal = { day: todayStr(), pid: list[0].id }; save();
+      }
+    }
+    const freePid = !can && S.freeReveal ? S.freeReveal.pid : null;
     $("#view").innerHTML = `<div class="sec"><div class="sec-h">받은 좋아요 ${list.length ? `<span style="color:var(--pink)">${list.length}</span>` : ""}</div>
-      <p class="sec-sub">${can ? "나를 좋아요한 사람들이에요. 탭해서 확인하고 바로 매치하세요." : "누가 나를 좋아하는지 PRISM+에서 바로 확인할 수 있어요."}</p>
+      <p class="sec-sub">${can ? "나를 좋아요한 사람들이에요. 탭해서 확인하고 바로 매치하세요." : "매일 1명은 무료로 공개! 나머지는 PRISM+에서 바로 확인해요."}</p>
       ${S.settings.privateMode ? `<p class="tiny" style="margin:4px 0 0">🕶️ 프라이빗 모드 중 — 새로운 노출·좋아요 유입이 멈춰 있어요.</p>` : ""}
       <p class="tiny" style="margin:4px 0 0">데모 안내: 가상 프로필의 반응이에요. 정식 버전에서는 실제 사용자만 표시됩니다.</p></div>
-      ${!can && list.length ? `<div class="likes-cta"><button class="btn-grad big" id="lk-up">💜 PRISM+로 전부 확인하기</button></div>` : ""}
-      ${list.length ? `<div class="likes-grid">${list.map((p) => `
-        <button class="lk-card ${can ? "" : "blur"}" data-pid="${p.id}">
+      ${!can && list.length > 1 ? `<div class="likes-cta"><button class="btn-grad big" id="lk-up">💜 PRISM+로 전부 확인하기</button></div>` : ""}
+      ${list.length ? `<div class="likes-grid">${list.map((p) => {
+        const revealed = can || p.id === freePid;
+        return `
+        <button class="lk-card ${revealed ? "" : "blur"}" data-pid="${p.id}" data-open="${revealed ? 1 : 0}">
+          ${!can && p.id === freePid ? `<span class="free-tag">오늘의 무료 공개</span>` : ""}
           <span class="ph" style="background:linear-gradient(150deg,${p.grad[0]},${p.grad[1]})">${p.emoji}</span>
           <span class="veil"></span><span class="nm">${esc(p.name)}, ${p.age}</span>
-          ${can ? "" : `<span class="lk-lock">🔒<small>PRISM+로 확인</small></span>`}
-        </button>`).join("")}</div>`
+          ${revealed ? "" : `<span class="lk-lock">🔒<small>PRISM+로 확인</small></span>`}
+        </button>`; }).join("")}</div>`
       : `<div class="empty"><div class="em">💌</div>아직 새로운 좋아요가 없어요.<br>둘러보기에서 먼저 좋아요를 보내보세요!</div>`}
       ${adSlot()}`;
     const up = $("#lk-up"); if (up) up.onclick = () => openPremium();
     $$(".lk-card").forEach((c) => c.onclick = () => {
-      if (!plan().seeLikes) { paywall("seeLikes"); return; }
+      if (c.dataset.open !== "1") { paywall("seeLikes"); return; }
       openProfile(c.dataset.pid, "likes");
     });
   }
@@ -831,6 +895,17 @@
   }
   const chatTimers = {}; // 방별 답장 타이머 (전역 1개면 다른 방 답장이 증발)
   const SCAM_RE = /계좌|송금|입금|비트코인|코인|투자|수익|대출|돈\s*빌|기프트\s*카드|문화상품권|리딩방/;
+  const OFFAPP_RE = /카톡|카카오톡|라인\s*아이디|텔레그램|위챗|디엠|인스타.{0,4}아이디/;
+  // 수발신 양방향 검사 — 실제 스캠은 '상대'가 요구하는 시나리오
+  function scamGuard(pid, t) {
+    const chat = S.chats[pid]; if (!chat) return;
+    if (SCAM_RE.test(t) && !chat.some((x) => x.who === "sys" && x.scam === 1)) {
+      chat.push({ who: "sys", scam: 1, t: "⚠️ 금전 요구·투자 권유는 100% 사기예요. 절대 송금하지 말고 신고해주세요.", at: Date.now() });
+    }
+    if (OFFAPP_RE.test(t) && !chat.some((x) => x.who === "sys" && x.scam === 2)) {
+      chat.push({ who: "sys", scam: 2, t: "💡 앱 밖 메신저로 빨리 옮기자는 상대는 주의하세요 — 사기의 첫 단계일 수 있어요.", at: Date.now() });
+    }
+  }
   function openChat(pid) {
     const p = P(pid); if (!p) return;
     const m = S.matches.find((x) => x.pid === pid); if (!m) return;
@@ -860,16 +935,10 @@
     const repliedAfter = (chat, i) => chat.slice(i + 1).some((x) => x.who === "you");
     paint();
     const input = $("#cr-in", o);
-    const scamGuard = (t) => {
-      // 로맨스 스캠 방어: 금전 관련 키워드 감지 시 1회 경고 (아이템/상품 언급과 무관하게 안전 우선)
-      if (SCAM_RE.test(t) && !S.chats[pid].some((x) => x.who === "sys" && x.scam)) {
-        S.chats[pid].push({ who: "sys", scam: true, t: "⚠️ 금전 요구·투자 권유는 100% 사기예요. 절대 송금하지 말고 신고해주세요.", at: Date.now() });
-      }
-    };
     const send = (text) => {
       const t = (text || input.value).trim(); if (!t) return;
       S.chats[pid].push({ who: "me", t, at: Date.now() });
-      scamGuard(t); save();
+      scamGuard(pid, t); save();
       input.value = ""; paint();
       $("#ice-row", o).style.display = "none";
       scheduleReply(pid, o, paint);
@@ -919,24 +988,25 @@
   function scheduleReply(pid, room, paint) {
     const p = P(pid); if (!p) return;
     clearTimeout(chatTimers[pid]);
+    const pushReply = () => {
+      const chat = S.chats[pid]; if (!chat) return;
+      const lastMe = chat.filter((x) => x.who === "me").slice(-1)[0];
+      const rt = pickReply(p, lastMe ? lastMe.t : "");
+      chat.push({ who: "you", t: rt, at: Date.now() });
+      scamGuard(pid, rt); // 수신 메시지도 검사
+      if (!room.isConnected) { // 방을 나갔으면 안읽음 적립
+        const m = S.matches.find((x) => x.pid === pid); if (m) m.unread = (m.unread || 0) + 1;
+        save(); badges(); return;
+      }
+      save(); paint();
+    };
     chatTimers[pid] = setTimeout(() => {
-      if (!room.isConnected) return;
+      if (!room.isConnected) { pushReply(); return; } // 일찍 나가도 답장은 도착 (소멸 버그 방지)
       const body = $("#cr-body", room);
       const ty = document.createElement("div");
       ty.className = "typing"; ty.innerHTML = "<i></i><i></i><i></i>";
       body.appendChild(ty); body.scrollTop = body.scrollHeight;
-      const chat = S.chats[pid];
-      const lastMe = chat.filter((x) => x.who === "me").slice(-1)[0];
-      setTimeout(() => {
-        ty.remove();
-        if (!room.isConnected) { // 방을 나갔으면 안읽음 처리
-          chat.push({ who: "you", t: pickReply(p, lastMe ? lastMe.t : ""), at: Date.now() });
-          const m = S.matches.find((x) => x.pid === pid); if (m) m.unread = (m.unread || 0) + 1;
-          save(); badges(); return;
-        }
-        chat.push({ who: "you", t: pickReply(p, lastMe ? lastMe.t : ""), at: Date.now() });
-        save(); paint();
-      }, 1100 + Math.random() * 1600);
+      setTimeout(() => { ty.remove(); pushReply(); }, 1100 + Math.random() * 1600);
     }, 500 + Math.random() * 900);
   }
   function maybeIncomingMessage() {
@@ -1013,7 +1083,7 @@
       </div>
       <div class="my-plan ${pl === "free" ? "free" : ""}">
         <b>${pl === "free" ? "무료 플랜 이용 중" : "🎉 " + plan().label + " 이용 중"}</b>
-        <p>이번 주 보낸 좋아요 <b>${S.stats.likesSent}</b> · 매치 <b>${S.stats.matches}</b>${pl === "free" ? " — PRISM+면 좋아요 무제한, 받은 좋아요 공개, 광고 제거." : " — 프리미엄 혜택 적용 중. 언제든 변경 가능."}</p>
+        <p>누적 — 보낸 좋아요 <b>${S.stats.likesSent}</b> · 매치 <b>${S.stats.matches}</b>${pl === "free" ? " — PRISM+면 좋아요 무제한, 받은 좋아요 공개, 광고 제거." : " — 프리미엄 혜택 적용 중. 언제든 변경 가능."}</p>
         <button class="btn-grad" id="my-premium" style="font-size:14px;padding:11px 18px">${pl === "free" ? "PRISM+ 시작하기 💜" : "플랜 관리"}</button>
       </div>
       <div class="menu">
@@ -1026,10 +1096,10 @@
       <div class="sec" style="padding:0 18px 8px"><b style="font-size:13px;color:var(--tx3)">프라이버시 · 안전</b></div>
       <div class="menu">
         <button class="menu-it" id="m-pin"><span class="mi-ic">🔐</span>앱 잠금 (PIN)<span class="mi-val">${hasPin() ? "사용 중" : "꺼짐"}</span></button>
-        ${hasPin() ? `<button class="menu-it" id="m-bglock"><span class="mi-ic">🫥</span>화면 이탈 시 즉시 잠금<span class="switch ${S.settings.bgLock ? "on" : ""}"></span></button>` : ""}
-        <button class="menu-it" id="m-disguise"><span class="mi-ic">🎭</span>위장 제목 항상 사용<span class="switch ${S.settings.disguise ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-dist"><span class="mi-ic">📍</span>거리 숨기기<span class="switch ${S.settings.hideDistance ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-private"><span class="mi-ic">🕶️</span>프라이빗 모드 (새 노출 중단)<span class="switch ${S.settings.privateMode ? "on" : ""}"></span></button>
+        ${hasPin() ? `<button class="menu-it" id="m-bglock" role="switch" aria-checked="${S.settings.bgLock}"><span class="mi-ic">🫥</span>화면 이탈 시 즉시 잠금<span class="switch ${S.settings.bgLock ? "on" : ""}"></span></button>` : ""}
+        <button class="menu-it" id="m-disguise" role="switch" aria-checked="${S.settings.disguise}"><span class="mi-ic">🎭</span>위장 제목 항상 사용<span class="switch ${S.settings.disguise ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-dist" role="switch" aria-checked="${S.settings.hideDistance}"><span class="mi-ic">📍</span>거리 숨기기<span class="switch ${S.settings.hideDistance ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-private" role="switch" aria-checked="${S.settings.privateMode}"><span class="mi-ic">🕶️</span>프라이빗 모드 (새 노출 중단)<span class="switch ${S.settings.privateMode ? "on" : ""}"></span></button>
         <button class="menu-it" id="m-safety"><span class="mi-ic">🛡️</span>안전 센터<span class="mi-arrow">›</span></button>
         <button class="menu-it" id="m-blocked"><span class="mi-ic">🚫</span>차단 목록<span class="mi-val">${S.blocked.length}명</span></button>
       </div>
@@ -1061,7 +1131,7 @@
     if (bg) bg.onclick = () => { S.settings.bgLock = !S.settings.bgLock; save(); vMy(); };
     $("#m-disguise").onclick = () => {
       S.settings.disguise = !S.settings.disguise; save(); applyDisguise(); vMy();
-      toast(S.settings.disguise ? "🎭 탭 제목·아이콘이 '메모'로 위장돼요" : "위장 제목을 해제했어요");
+      toast(S.settings.disguise ? "🎭 탭 제목·아이콘 위장 ON (방문 기록·홈 화면 아이콘은 위장되지 않아요)" : "위장 제목을 해제했어요", 3200);
     };
     $("#m-dist").onclick = () => { S.settings.hideDistance = !S.settings.hideDistance; save(); vMy(); };
     $("#m-private").onclick = () => {
@@ -1097,13 +1167,14 @@
       save(); m.remove(); vMy(); toast("저장했어요 ✓");
     };
   }
-  function pinSheet() {
+  function pinSheet(after) {
     if (hasPin()) {
-      confirmDlg("🔐", "앱 잠금 해제", "설정된 PIN 잠금을 해제할까요?", "해제", () => { S.settings.pin = null; S.settings.pinHash = null; save(); vMy(); toast("앱 잠금을 해제했어요"); });
+      confirmDlg("🔐", "앱 잠금 해제", "설정된 PIN 잠금을 해제할까요?", "해제", () => { S.settings.pin = null; S.settings.pinHash = null; save(); if (tab === "my") vMy(); toast("앱 잠금을 해제했어요"); });
       return;
     }
+    if (!(window.crypto && crypto.subtle)) { toast("보안 연결(HTTPS)에서만 PIN을 설정할 수 있어요"); return; }
     const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 4px">앱 잠금 설정</h3>
-      <p class="muted" style="font-size:13px;margin:0 0 14px">앱을 열 때마다 4자리 PIN을 입력해요. 누가 폰을 봐도 안심.</p>
+      <p class="muted" style="font-size:13px;margin:0 0 14px">앱 화면을 4자리 PIN으로 잠가요. 화면 잠금 방식이라, 기기 자체 잠금(지문·비밀번호)과 함께 쓰면 가장 안전해요.</p>
       <div class="ob-field"><label>PIN 4자리</label><input class="ob-input" id="p-1" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;letter-spacing:10px;font-size:22px"></div>
       <div class="ob-field"><label>PIN 확인</label><input class="ob-input" id="p-2" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;letter-spacing:10px;font-size:22px"></div>
       <p class="tiny">⚠️ PIN을 잊으면 데이터 초기화로만 해제할 수 있어요.</p>
@@ -1113,7 +1184,7 @@
       if (!/^\d{4}$/.test(a)) { toast("숫자 4자리를 입력해주세요"); return; }
       if (a !== b) { toast("PIN이 서로 달라요"); return; }
       S.settings.pinHash = await pinHash(a); S.settings.pin = null;
-      save(); m.remove(); vMy(); toast("🔐 앱 잠금이 설정됐어요 (해시 저장 · 5회 오류 시 30초 잠금)");
+      save(); m.remove(); if (tab === "my") vMy(); toast("🔐 앱 잠금이 설정됐어요 (해시 저장 · 5회 오류 시 30초 잠금)");
     };
   }
   function blockedSheet() {
@@ -1145,14 +1216,18 @@
           <div class="safe-it"><span>📞</span><span><b>경찰 <a href="tel:112">112</a></b> · 위급 상황 시 즉시 신고하세요. 전국 어디서나.</span></div>
           <div class="safe-it"><span>💜</span><span><b>청소년성소수자위기지원센터 띵동</b> · <a href="tel:029241224">02-924-1224</a> (전화·온라인 상담, 전국)</span></div>
           <div class="safe-it"><span>🤝</span><span><b>한국게이인권운동단체 친구사이</b> · 상담 및 커뮤니티 지원 (온라인)</span></div>
-          <div class="safe-it"><span>🧑‍⚕️</span><span><b>자살예방 상담전화 <a href="tel:1393">1393</a></b> · 24시간, 전국</span></div>
+          <div class="safe-it"><span>🧑‍⚕️</span><span><b>자살예방 상담전화 <a href="tel:1393">1393</a></b> · 24시간, 전국</span></div>\n          <div class="safe-it"><span>🌈</span><span><b>한국성적소수자문화인권센터</b> · 성인 퀴어 상담·자료 (온라인)</span></div>
         </div>
         <div class="sec"><div class="sec-h" style="font-size:17px">이 앱의 프라이버시 원칙</div></div>
         <div class="safe-list" style="margin-bottom:24px">
           <div class="safe-it"><span>🔒</span><span>모든 데이터는 <b>이 기기에만</b> 저장 — 서버 전송 0회</span></div>
           <div class="safe-it"><span>🚫</span><span>이 앱 화면에는 <b>외부 광고·추적 스크립트가 없어요</b> (앱 내 추천은 자체 하우스 배너)</span></div>
           <div class="safe-it"><span>🗑️</span><span>MY → 데이터 초기화로 <b>모든 흔적을 즉시 삭제</b>할 수 있어요</span></div>
-        </div></div>`;
+          <div class="safe-it"><span>⚠️</span><span><b>위장의 한계</b>: 브라우저 방문 기록·홈 화면 설치 아이콘은 위장되지 않아요. 공용 기기에서는 시크릿 모드를 권장해요.</span></div>
+        </div>
+        ${(S.reports || []).length ? `<div class="sec"><div class="sec-h" style="font-size:17px">내 신고 내역</div></div>
+        <div class="safe-list" style="margin-bottom:24px">${S.reports.map((r) => `<div class="safe-it"><span>🧾</span><span><b>${esc(r.num)}</b> · ${esc(r.reason)} · ${new Date(r.at).toLocaleDateString("ko-KR")} — 접수 완료</span></div>`).join("")}</div>` : ""}
+        </div>`;
     $("#overlay-root").appendChild(o);
     $(".ovl-close", o).onclick = () => o.remove();
   }
@@ -1162,7 +1237,7 @@
     const msgs = {
       likes: ["💜", "오늘의 좋아요를 다 썼어요", "PRISM+는 좋아요가 <b>무제한</b>이에요.<br>내일까지 기다리지 않아도 돼요."],
       super: ["⭐", "슈퍼라이크를 다 썼어요", "PRISM Black은 매일 <b>슈퍼라이크 5개</b>.<br>매칭 확률이 3배 올라가요."],
-      rewind: ["↩️", "실수로 넘겼나요?", "PRISM+의 <b>되돌리기</b>로<br>방금 지나친 인연을 다시 만나요."],
+      rewind: ["↩️", "오늘의 무료 되돌리기를 다 썼어요", "PRISM+는 되돌리기가 <b>무제한</b> —<br>지나친 인연을 언제든 다시 만나요."],
       boost: ["🚀", "부스트로 눈에 띄기", "PRISM+는 매달 <b>무료 부스트</b>.<br>30분간 노출이 수직 상승해요."],
       seeLikes: ["👀", "누가 나를 좋아할까요?", "PRISM+에서 받은 좋아요를<br><b>전부 공개</b>하고 바로 매치하세요."],
     };
@@ -1182,7 +1257,7 @@
     const cur = S.premium.plan;
     o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">프리미엄</span></div>
       <div class="ovl-body">
-        <div class="pm-hero"><div class="em">◈</div><h2><span class="prism-mark">PRISM</span> 프리미엄</h2>
+        <div class="pm-hero"><img src="favicon.svg" alt="" width="46" height="46" style="border-radius:12px"><h2><span class="prism-mark">PRISM</span> 프리미엄</h2>
         <p>기본 기능은 언제나 무료. 더 빠른 만남을 원할 때만.</p></div>
         <div class="plan-cards">
           <div class="plan hot"><span class="pl-badge">인기</span><h3>PRISM+</h3>
@@ -1219,10 +1294,17 @@
     });
   }
   function checkoutSheet(planKey, ovl) {
-    const info = planKey === "plus" ? ["PRISM+", "9,900"] : ["PRISM Black", "19,900"];
+    const mo = planKey === "plus" ? 9900 : 19900;
+    const yr = Math.round(mo * 12 * 0.83 / 100) * 100; // 연 결제 17% 할인
+    const info = planKey === "plus" ? ["PRISM+"] : ["PRISM Black"];
+    let period = "month";
     const m = modal(`<div class="sheet"><div class="grip"></div>
       <h3 style="margin:0 0 4px">결제 확인</h3>
-      <p class="muted" style="font-size:13px;margin:0 0 16px">${info[0]} 월간 구독 · 월 ${info[1]}원 · 언제든 해지 가능</p>
+      <p class="muted" style="font-size:13px;margin:0 0 12px">${info[0]} 구독 · 언제든 해지 가능</p>
+      <div class="seg" style="grid-template-columns:1fr 1fr;margin-bottom:14px">
+        <button class="chip on" data-period="month">월간 · ${won(mo)}/월</button>
+        <button class="chip" data-period="year">연간 · ${won(Math.round(yr / 12 / 100) * 100)}/월 <i style="font-style:normal;color:var(--amber)">17%↓</i></button>
+      </div>
       <div class="seg" style="margin-bottom:16px">
         <button class="chip on" data-pay>💳 카드 결제</button>
         <button class="chip" data-pay>🟡 카카오페이</button>
@@ -1231,8 +1313,9 @@
       <button class="btn-grad big" id="pay-go">데모 결제 완료하기</button>
       <p class="tiny" style="text-align:center;margin-top:10px">데모 버전 — 실제 결제가 발생하지 않습니다.</p></div>`);
     $$("[data-pay]", m).forEach((c) => c.onclick = () => { $$("[data-pay]", m).forEach((x) => x.classList.remove("on")); c.classList.add("on"); });
+    $$("[data-period]", m).forEach((c) => c.onclick = () => { $$("[data-period]", m).forEach((x) => x.classList.remove("on")); c.classList.add("on"); period = c.dataset.period; });
     $("#pay-go", m).onclick = () => {
-      S.premium = { plan: planKey, since: Date.now() }; save();
+      S.premium = { plan: planKey, since: Date.now(), period }; save();
       m.remove(); if (ovl) ovl.remove();
       paintTopbar(); go(tab);
       const dlg = modal(`<div class="dialog"><div class="em">🎉</div><h3>${info[0]} 시작!</h3><p>프리미엄 혜택이 바로 적용됐어요.<br>좋은 인연 만나시길 💜</p>
@@ -1303,7 +1386,7 @@
   function useItem(key, ovl) {
     if (key === "spotlight") {
       if (spotlightActive()) { toast("이미 스포트라이트가 켜져 있어요 ✨"); return; }
-      confirmDlg("✨", "스포트라이트 켜기", "3시간 동안 내 프로필이 상단에 고정 노출돼요.<br>좋아요가 도착하기 시작합니다!", "켜기", () => {
+      confirmDlg("✨", "스포트라이트 켜기", "3시간 동안 내 프로필이 상단에 고정 노출돼요.<br>노출이 늘어 좋아요 확률이 올라가요.", "켜기", () => {
         S.items.spotlight--; S.fx.spotlightUntil = Date.now() + 3 * 3600000;
         seedIncoming(2 + Math.floor(Math.random() * 2));
         save(); if (ovl) ovl.remove(); go("discover");
@@ -1361,8 +1444,8 @@
     const R = CD.RARITY[c.rarity];
     const m = modal(`<div class="gacha-stage">
       <div class="gacha-flip"><div class="gacha-inner">
-        <div class="gacha-back"><span class="prism-mark" style="font-size:64px">◈</span></div>
-        <div class="gacha-front"><div class="ccard r-${c.rarity}" style="--frame:${R.color}">
+        <div class="gacha-back"><img src="favicon.svg" alt="" width="72" height="72" style="border-radius:18px;opacity:.9"></div>
+        <div class="gacha-front"><div class="ccard r-${c.rarity}" style="--frame:${R.color};--fgrad:${R.frame}">
           ${c.rarity === "SSR" ? '<div class="holo"></div>' : ""}
           ${CD.charSVG(c, { animate: true, uid: "g" })}
           <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)}</small></div>
@@ -1402,14 +1485,14 @@
         const R = CD.RARITY[c.rarity];
         if (!cardOwned(c.id)) return `<div class="ccard locked"><div class="ccard-q">?</div><div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>???</b><small>미획득</small></div></div>`;
         const lv = cardMaxLv(c.id);
-        return `<button class="ccard r-${c.rarity} owned" data-cid="${c.id}" style="--frame:${R.color}">
+        return `<button class="ccard r-${c.rarity} owned" data-cid="${c.id}" style="--frame:${R.color};--fgrad:${R.frame}">
           ${c.rarity === "SSR" ? '<div class="holo"></div>' : ""}
           ${CD.charSVG(c, { uid: "t" })}
           <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity} ${"★".repeat(lv)}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)} · ${cardTotal(c.id)}장</small></div>
         </button>`;
       }).join("")}</div>
       ${!list.length ? `<div class="empty"><div class="em">🎴</div>이 조건의 카드가 아직 없어요.<br>뽑기로 컬렉션을 채워보세요!</div>` : ""}
-      <p class="tiny" style="padding:0 18px 16px;text-align:center">모든 캐릭터는 가상의 일러스트입니다 · 합성: 같은 카드 <b>같은 ★ 2장 → ★+1</b> (최대 ★5)</p>
+      <p class="tiny" style="padding:0 18px 16px;text-align:center">모든 캐릭터는 가상의 일러스트입니다 · 합성: 같은 카드 <b>같은 ★ 2장 → ★+1</b> (최대 ★5)<br>뽑기 확률: N 60% · R 27% · SR 10% · SSR 3% — 10회 내 SR 이상 확정(천장)</p>
       ${adSlot()}`;
     $("#g-pull").onclick = doGacha;
     $("#alb-filter").onclick = (e) => {
@@ -1438,7 +1521,7 @@
     }
     o.innerHTML = `<div class="ovl-top"><button class="ovl-close" aria-label="닫기">‹</button><span class="ovl-title">카드 상세</span></div>
       <div class="ovl-body" style="display:flex;flex-direction:column;align-items:center;padding:20px">
-        <div class="ccard big r-${c.rarity}" style="--frame:${R.color}">
+        <div class="ccard big r-${c.rarity}" style="--frame:${R.color};--fgrad:${R.frame}">
           ${c.rarity === "SSR" || maxLv >= 4 ? '<div class="holo"></div>' : ""}
           ${CD.charSVG(c, { animate: true, uid: "d" })}
           <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity} ${"★".repeat(maxLv)}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)}</small></div>
