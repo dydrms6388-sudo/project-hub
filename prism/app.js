@@ -272,7 +272,8 @@
   /* 화면 이탈 시 즉시 잠금 + 중립 커버 (태스크 스위처·탭 미리보기 노출 방지) */
   let privacyCover = null;
   function showCover() {
-    if (privacyCover || !S.user || !(hasPin() && S.settings.bgLock)) return;
+    if (privacyCover || !S.user) return;
+    if (!((hasPin() && S.settings.bgLock) || S.settings.disguise)) return; // 위장만 켠 유저도 커버
     privacyCover = document.createElement("div");
     privacyCover.style.cssText = "position:fixed;inset:0;background:#f4f5f7;z-index:9998;display:flex;align-items:center;justify-content:center";
     privacyCover.innerHTML = `<div style="text-align:center;color:#999;font-size:15px;font-weight:700">메모</div>`;
@@ -1091,7 +1092,7 @@
         <button class="menu-it" id="m-verify"><span class="mi-ic">✔︎</span>프로필 인증하기<span class="mi-val">${u.verified ? "인증됨 ✔︎" : "미인증"}</span></button>
         <button class="menu-it" id="m-shop"><span class="mi-ic">🛍️</span>아이템 상점<span class="mi-arrow">›</span></button>
         <button class="menu-it" id="m-install"><span class="mi-ic">📲</span>홈 화면에 앱 설치<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-font"><span class="mi-ic">🔠</span>글자 크기<span class="mi-val">${["보통", "크게", "아주 크게"][S.settings.fontScale]}</span></button>
+        <button class="menu-it" id="m-font"><span class="mi-ic">🔠</span>글자 크기<span class="mi-val">${["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]}</span></button>
       </div>
       <div class="sec" style="padding:0 18px 8px"><b style="font-size:13px;color:var(--tx3)">프라이버시 · 안전</b></div>
       <div class="menu">
@@ -1116,9 +1117,9 @@
     $("#m-shop").onclick = () => openShop();
     $("#m-install").onclick = installApp;
     $("#m-font").onclick = () => {
-      S.settings.fontScale = (S.settings.fontScale + 1) % 3;
+      S.settings.fontScale = (S.settings.fontScale + 1) % 4;
       save(); applyFontScale(); vMy();
-      toast("글자 크기: " + ["보통", "크게", "아주 크게"][S.settings.fontScale]);
+      toast("글자 크기: " + ["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]);
     };
     $("#m-verify").onclick = () => {
       if (u.verified) { toast("이미 인증된 프로필이에요 ✔︎"); return; }
@@ -1261,11 +1262,11 @@
         <p>기본 기능은 언제나 무료. 더 빠른 만남을 원할 때만.</p></div>
         <div class="plan-cards">
           <div class="plan hot"><span class="pl-badge">인기</span><h3>PRISM+</h3>
-            <div class="pl-price">월 9,900원 <small>· 연 결제 시 월 8,250원 (17%↓) · 언제든 해지</small></div>
+            <div class="pl-price">월 9,900원 <small>· 연 결제 시 월 8,200원 (17%↓) · 언제든 해지</small></div>
             <ul><li>좋아요 무제한</li><li>받은 좋아요 전체 공개 + 바로 매치</li><li>되돌리기 (마지막 카드 복구)</li><li>부스트 월 1회 (30분 상단 노출)</li><li>광고 제거 · 아이템 5% 할인</li></ul>
             ${cur === "plus" ? `<button class="btn-ghost" style="width:100%" data-cancel>이용 중 · 해지하기</button>` : `<button class="btn-grad big" data-buy="plus">PRISM+ 시작하기</button>`}</div>
           <div class="plan black"><span class="pl-badge">BLACK</span><h3>PRISM Black</h3>
-            <div class="pl-price">월 19,900원 <small>· 연 결제 시 월 16,580원 (17%↓) · 언제든 해지</small></div>
+            <div class="pl-price">월 19,900원 <small>· 연 결제 시 월 16,500원 (17%↓) · 언제든 해지</small></div>
             <ul><li>PRISM+ 모든 혜택 포함</li><li>슈퍼라이크 매일 5개 (매칭 확률 3배)</li><li>부스트 월 4회 — 단품 구매 대비 월 15,600원 상당</li><li>크러시 팩 무료 뽑기 매일 2회</li><li>아이템 15% 할인 · 읽음 확인</li></ul>
             ${cur === "black" ? `<button class="btn-ghost" style="width:100%" data-cancel>이용 중 · 해지하기</button>` : `<button class="btn-grad big" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#241a02" data-buy="black">Black 시작하기</button>`}</div>
         </div>
@@ -1412,16 +1413,28 @@
   const MILESTONES = [16, 32, 64, 96, 128];
   function ownedKinds() { return CD.CHARS.filter((c) => cardOwned(c.id)).length; }
   function rollGacha() {
-    // pity: 10회 연속 SR 미만이면 SR 이상 확정
+    // 천장 2단: 10회 내 SR+ 확정, 40회 내 SSR 확정
     let rarity;
-    if (S.gacha.pity >= 9) rarity = Math.random() < 0.25 ? "SSR" : "SR";
+    if ((S.gacha.ssrPity || 0) >= 39) rarity = "SSR";
+    else if (S.gacha.pity >= 9) rarity = Math.random() < 0.25 ? "SSR" : "SR";
     else {
       const r = Math.random() * 100;
       rarity = r < 3 ? "SSR" : r < 13 ? "SR" : r < 40 ? "R" : "N";
     }
     S.gacha.pity = (rarity === "SR" || rarity === "SSR") ? 0 : S.gacha.pity + 1;
+    S.gacha.ssrPity = rarity === "SSR" ? 0 : (S.gacha.ssrPity || 0) + 1;
     const pool = CD.CHARS.filter((c) => c.rarity === rarity);
     return pool[Math.floor(Math.random() * pool.length)];
+  }
+  /* 뽑기 1회 처리 (단챠·10연 공용) */
+  function pullOnce() {
+    const c = rollGacha();
+    const isNew = !cardOwned(c.id);
+    const copies = S.cards[c.id] || (S.cards[c.id] = {});
+    copies[1] = (copies[1] || 0) + 1;
+    let milestone = 0;
+    if (isNew && MILESTONES.includes(ownedKinds())) { milestone = ownedKinds(); S.items.gachaticket += milestone === 128 ? 10 : 2; }
+    return { c, isNew, milestone };
   }
   function doGacha() {
     const free = gachaFreeAvail();
@@ -1430,15 +1443,31 @@
       if (S.gacha.day !== todayStr()) { S.gacha.day = todayStr(); S.gacha.freeCount = 0; }
       S.gacha.freeCount = (S.gacha.freeCount || 0) + 1;
     } else S.items.gachaticket--;
-    const c = rollGacha();
-    const isNew = !cardOwned(c.id);
-    const copies = S.cards[c.id] || (S.cards[c.id] = {});
-    copies[1] = (copies[1] || 0) + 1;
-    // 컬렉션 마일스톤 보상
-    let milestone = 0;
-    if (isNew && MILESTONES.includes(ownedKinds())) { milestone = ownedKinds(); S.items.gachaticket += milestone === 128 ? 10 : 2; }
+    const r = pullOnce();
     save(); badges();
-    gachaReveal(c, isNew, milestone);
+    gachaReveal(r.c, r.isNew, r.milestone);
+  }
+  /* 10연챠 — 뽑기권 10장, 결과 요약 시트 */
+  function doGacha10() {
+    if (S.items.gachaticket < 10) { openShop("gachaticket"); return; }
+    S.items.gachaticket -= 10;
+    const results = [];
+    for (let i = 0; i < 10; i++) results.push(pullOnce());
+    save(); badges(); vibrate([30, 40, 30, 40, 60]);
+    const best = results.reduce((a, r) => (["N", "R", "SR", "SSR"].indexOf(r.c.rarity) > ["N", "R", "SR", "SSR"].indexOf(a.c.rarity) ? r : a), results[0]);
+    const m = modal(`<div class="sheet"><div class="grip"></div>
+      <h3 style="margin:0 0 4px">10연 뽑기 결과 ${results.some((r) => r.c.rarity === "SSR") ? "— ✨ SSR!" : results.some((r) => r.c.rarity === "SR") ? "— SR 등장!" : ""}</h3>
+      <p class="muted" style="font-size:12.5px;margin:0 0 14px">최고 등급: <b style="color:${CD.RARITY[best.c.rarity].color}">${best.c.rarity} ${esc(best.c.name)}</b> · NEW ${results.filter((r) => r.isNew).length}장</p>
+      <div class="g10-grid">${results.map((r) => {
+        const R = CD.RARITY[r.c.rarity];
+        return `<div class="ccard r-${r.c.rarity}" style="--frame:${R.color};--fgrad:${R.frame}">
+          ${r.c.rarity === "SSR" ? '<div class="holo"></div>' : ""}${CD.charSVG(r.c, { uid: "x" + Math.floor(Math.random() * 1e6) })}
+          <div class="ccard-info" style="padding:16px 7px 6px"><span class="ccard-r" style="color:${R.color}">${r.c.rarity}</span> <b style="font-size:10px;display:inline">${esc(r.c.name)}</b>${r.isNew ? '<small style="color:var(--teal)">NEW!</small>' : `<small>재료 +1</small>`}</div>
+        </div>`;
+      }).join("")}</div>
+      ${results.some((r) => r.milestone) ? `<p class="tiny" style="margin-top:10px">🎁 컬렉션 마일스톤 달성 — 뽑기권 보상 지급!</p>` : ""}
+      <button class="btn-grad big" style="margin-top:14px" data-g10ok>확인</button></div>`, { sticky: true });
+    $("[data-g10ok]", m).onclick = () => { m.remove(); if (tab === "cards") vCards(); };
   }
   function gachaReveal(c, isNew, milestone) {
     const R = CD.RARITY[c.rarity];
@@ -1477,8 +1506,12 @@
         <div class="gb-left"><b>컬렉션 ${owned}/128</b>
           <div class="gb-bar"><i style="width:${owned / 128 * 100}%"></i></div>
           <small>${lb || sb ? `버프: ${lb ? `좋아요 +${lb}/일` : ""}${lb && sb ? " · " : ""}${sb ? `슈퍼라이크 +${sb}/일` : ""}` : "카드를 합성해 ★을 올리면 좋아요 한도가 늘어나요"}</small></div>
-        <button class="btn-grad" id="g-pull">${free ? `무료 뽑기 ${gachaFreeLeft()}회 🎴` : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <button class="btn-grad" id="g-pull">${free ? `무료 뽑기 ${gachaFreeLeft()}회 🎴` : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
+          <button class="btn-ghost" id="g-pull10" style="font-size:12px;padding:9px 12px">10연챠 ${S.items.gachaticket >= 10 ? "" : "🛍️"}</button>
+        </div>
       </div>
+      <p class="tiny" style="padding:0 18px 8px">천장: SR+ 확정까지 <b>${Math.max(0, 10 - (S.gacha.pity || 0) - 1) + 1}회</b> · SSR 확정까지 <b>${Math.max(0, 40 - (S.gacha.ssrPity || 0))}회</b></p>
       <div class="fx-row" style="padding:0 16px 10px;margin:0" id="alb-filter">${FILTERS.map(([k, lb2]) =>
         `<button class="fx-chip ${albumFilter === k ? "on" : ""}" data-f="${k}" style="${k === albumFilter ? "border-color:var(--vio);color:var(--tx)" : ""}">${lb2}${k === "owned" ? ` ${owned}` : ""}</button>`).join("")}</div>
       <div class="ccard-grid">${list.map((c) => {
@@ -1495,6 +1528,7 @@
       <p class="tiny" style="padding:0 18px 16px;text-align:center">모든 캐릭터는 가상의 일러스트입니다 · 합성: 같은 카드 <b>같은 ★ 2장 → ★+1</b> (최대 ★5)<br>뽑기 확률: N 60% · R 27% · SR 10% · SSR 3% — 10회 내 SR 이상 확정(천장)</p>
       ${adSlot()}`;
     $("#g-pull").onclick = doGacha;
+    $("#g-pull10").onclick = doGacha10;
     $("#alb-filter").onclick = (e) => {
       const b = e.target.closest("[data-f]"); if (!b) return;
       albumFilter = b.dataset.f; vCards();
@@ -1556,7 +1590,7 @@
   }
   /* 글자 크기 (접근성) */
   function applyFontScale() {
-    document.documentElement.classList.remove("fs-1", "fs-2");
+    document.documentElement.classList.remove("fs-1", "fs-2", "fs-3");
     if (S.settings.fontScale) document.documentElement.classList.add("fs-" + S.settings.fontScale);
   }
 

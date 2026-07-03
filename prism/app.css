@@ -61,7 +61,7 @@ small{line-height:1.45}
 
 /* ── 온보딩 ── */
 .ob-top{display:flex;align-items:center;gap:12px;padding:calc(14px + var(--sat)) 18px 8px}
-.ob-back{font-size:26px;color:var(--tx2);width:36px;height:36px;border-radius:10px}
+.ob-back{font-size:26px;color:var(--tx2);width:44px;height:44px;border-radius:10px}
 .ob-bar{flex:1;height:6px;background:var(--card2);border-radius:99px;overflow:hidden}
 #ob-fill{height:100%;width:10%;background:var(--grad);border-radius:99px;transition:width .3s}
 #ob-body{flex:1;overflow-y:auto;padding:18px 24px calc(28px + var(--sab))}
@@ -173,7 +173,7 @@ textarea.ob-input{resize:none;min-height:96px}
 .chat-item:active{background:var(--card)}
 .avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px;flex:none;position:relative}
 .avatar.online::after{content:"";position:absolute;bottom:1px;right:1px;width:12px;height:12px;background:var(--green);border:2.5px solid var(--bg);border-radius:50%}
-.ci-mid{flex:1;min-width:0}
+.ci-mid{flex:1;min-width:0;overflow:hidden}
 .ci-nm{font-weight:800;font-size:15px;display:flex;gap:6px;align-items:center}
 .ci-last{color:var(--tx3);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;padding-right:8px}
 .ci-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:none}
@@ -232,7 +232,7 @@ textarea.ob-input{resize:none;min-height:96px}
 .my-head .avatar{width:72px;height:72px;font-size:34px}
 .my-head .mh-nm{font-size:20px;font-weight:900}
 .my-head .mh-sub{color:var(--tx3);font-size:13px;margin-top:2px}
-.my-plan{margin:0 16px 14px;border-radius:var(--r);padding:17px 18px;position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.my-plan{margin:0 16px 14px;border-radius:var(--r);padding:17px 18px;position:relative;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;align-items:flex-start}
 .my-plan.free{background:linear-gradient(135deg,rgba(139,92,246,.14),rgba(236,72,153,.14));border-color:rgba(139,92,246,.35)}
 .my-plan b{font-size:15.5px}
 .my-plan p{margin:4px 0 12px;font-size:12.5px;color:var(--tx2);line-height:1.5;word-break:keep-all}
@@ -454,9 +454,15 @@ textarea.ob-input{resize:none;min-height:96px}
 .tab.on .t-ic{opacity:1}
 html.fs-1 #frame{zoom:1.12}
 html.fs-2 #frame{zoom:1.3}
+html.fs-3 #frame{zoom:1.5}
 .ovl-close,.cr-back{min-width:44px;min-height:44px}
 .safe-it a{color:var(--teal);font-weight:700}
 :focus-visible{outline:2.5px solid var(--vio);outline-offset:2px;border-radius:6px}
 
 /* 접근성/모션 */
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.holo,.cv-anim .cv-body,.cv-anim .cv-eyes{animation:none!important}}
+
+/* 10연챠 결과 */
+.g10-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.g10-grid .ccard-info b{font-size:9px}
+.g10-grid .ccard-info small{font-size:8px;display:block}
