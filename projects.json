@@ -1,7 +1,37 @@
 {
-  "updatedAt": "2026-07-03T12:30:00.000Z",
+  "updatedAt": "2026-07-03T13:55:14.912Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "모기 예보 (모기 활동지수)",
+      "emoji": "🦟",
+      "domain": "생활/여름 날씨예보",
+      "desc": "우리 동네 오늘 밤 모기 활동지수를 실시간 예보로 확인하는 무료 도구. 기온(약 27℃ 정점)·습도·바람(약 1.5m/s↑ 억제)·현재강수·시간대(일몰 후 정점)에 곤충학 통설을 적용하고 최근 7일 강수로 번식 압력을 반영해 4단계(쾌적·관심·주의·불쾌)로 예보. 가장 무는 시간대 타임라인·7일 모기 예보·활동 강도별 방충 처방·물린 곳 케어(긁지마 15분 타이머)·국내 대표 모기 도감. 지수는 기상 기반 참고 추정(실채집 아님)·의료면책. 3D 모기떼 밤 씬(지수 따라 수·붉은기 증가)·framer·confetti·Web Audio 여름밤 합성음(모기 앵앵, 음소거 기본 OFF) 몰입4종. 수익화키트(AdSense·맥락형 쿠팡 포집기/모기장/모기향/물린데약·동적 sitemap/JSON-LD/OG·공유·스트릭 리텐션).",
+      "live": "https://dydrms-goyo.vercel.app/mosquito",
+      "github": "https://github.com/dydrms6388/dydrms-goyo",
+      "status": "live",
+      "date": "2026-07-03"
+    },
+    {
+      "name": "식중독 예보",
+      "emoji": "🦠",
+      "domain": "음식/건강",
+      "desc": "오늘 우리 동네 식중독 위험지수 + 김밥·도시락·회 실온 안전시간 계산 + 음식 타이머 + 증상 대처. 여름철 필수, 무료.",
+      "live": "https://naengpa.vercel.app/sikjungdok",
+      "github": "https://github.com/dydrms6388-sudo/naengpa",
+      "status": "live",
+      "date": "2026-07-03"
+    },
+    {
+      "name": "내차정비 — 자동차 소모품 교체주기",
+      "emoji": "🚗",
+      "domain": "ddayhub.vercel.app",
+      "desc": "엔진오일·타이어·브레이크·에어컨필터·배터리… 언제 갈았는지 헷갈리는 자동차 소모품 교체 시기를 한 곳에서. 주행거리·날짜만 넣으면 다음 교체 시기 자동 계산, 신호등으로 한눈에, 정비 건강 점수와 리포트 공유카드까지. 무료·가입 없이·기기 저장.",
+      "live": "https://ddayhub.vercel.app/car",
+      "github": "https://github.com/dydrms6388-sudo/ddayhub",
+      "status": "live",
+      "date": "2026-07-03"
+    },
     {
       "name": "전기요금 계산기 (누진세·에어컨)",
       "emoji": "⚡",
@@ -16,7 +46,7 @@
       "name": "열대야 꿀잠 예보",
       "emoji": "🌡",
       "domain": "dydrms-goyo.vercel.app",
-      "desc": "우리 동네 오늘 밤이 열대야인지 실시간 예보 — 열대야 지수·불쾌지수·에어컨 설정온도·취침예약·잠들기 좋은 시간·7일 열대야 예보. 냉방병 예방까지.",
+      "desc": "우리 동네 오늘 밤이 열대야인지 실시간 예보 — 열대야 지수·불쾌지수·에어컨 설정온도·취침예약·잠들기 좋은 시간·7일 열대야 예보. 냉방병 예방까지. ★신규 /carheat 찜통차 — 여름 주차 차량 실내온도·대시보드/핸들/시트 표면 화상위험·아이/반려 위험 도달시간을 실시간 외기온(Open-Meteo)+결정론 열모델(Null&Quinn 2005)로 예측, 방치 실시간 타이머·시간대별/7일 위험예보·냉각처방, 3D 히트씬·차량 여름용품 쿠팡.",
       "live": "https://dydrms-goyo.vercel.app/yeoldaeya",
       "github": "https://github.com/dydrms6388/dydrms-goyo",
       "status": "live",
