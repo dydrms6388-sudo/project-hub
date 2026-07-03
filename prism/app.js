@@ -1427,10 +1427,15 @@
       const r = Math.random() * 100;
       rarity = r < 3 ? "SSR" : r < 13 ? "SR" : r < 40 ? "R" : "N";
     }
+    const ceilingHit = (S.gacha.ssrPity || 0) >= 39;
     S.gacha.pity = (rarity === "SR" || rarity === "SSR") ? 0 : S.gacha.pity + 1;
     S.gacha.ssrPity = rarity === "SSR" ? 0 : (S.gacha.ssrPity || 0) + 1;
     const pk = pickupSSR();
-    if (rarity === "SSR" && pk && Math.random() < 0.5) return pk; // 픽업 50%
+    if (rarity === "SSR" && pk) {
+      // 픽업 확정 조건: 직전 픽뚫 보장 / SSR 천장 도달 / 50% 당첨
+      if (S.gacha.guarantee || ceilingHit || Math.random() < 0.5) { S.gacha.guarantee = false; return pk; }
+      S.gacha.guarantee = true; // 픽뚫 → 다음 SSR은 픽업 확정
+    }
     const pool = CD.CHARS.filter((c) => c.rarity === rarity);
     return pool[Math.floor(Math.random() * pool.length)];
   }
@@ -1445,7 +1450,7 @@
     }
     copies[1] = (copies[1] || 0) + 1;
     let milestone = 0;
-    if (isNew && MILESTONES.includes(ownedKinds())) { milestone = ownedKinds(); S.items.gachaticket += milestone === 128 ? 10 : 2; }
+    if (isNew && MILESTONES.includes(ownedKinds())) { milestone = ownedKinds(); S.items.gachaticket += milestone === 128 ? 12 : 3; }
     return { c, isNew, milestone };
   }
   function doGacha() {
@@ -1474,7 +1479,7 @@
         const R = CD.RARITY[r.c.rarity];
         return `<div class="ccard r-${r.c.rarity}" style="--frame:${R.color};--fgrad:${R.frame}">
           ${r.c.rarity === "SSR" ? '<div class="holo"></div>' : ""}${CD.charSVG(r.c, { uid: "x" + Math.floor(Math.random() * 1e6) })}
-          <div class="ccard-info" style="padding:16px 7px 6px"><span class="ccard-r" style="color:${R.color}">${r.c.rarity}</span> <b style="font-size:10px;display:inline">${esc(r.c.name)}</b>${r.isNew ? '<small style="color:var(--teal)">NEW!</small>' : `<small>재료 +1</small>`}</div>
+          <div class="ccard-info" style="padding:16px 7px 6px"><span class="ccard-r" style="color:${R.color}">${r.c.rarity}</span> <b style="font-size:10px;display:inline">${esc(r.c.name)}</b>${r.refund ? '<small style="color:var(--amber)">★5 — 권+1 환급</small>' : r.isNew ? '<small style="color:var(--teal)">NEW!</small>' : `<small>재료 +1</small>`}</div>
         </div>`;
       }).join("")}</div>
       ${results.some((r) => r.milestone) ? `<p class="tiny" style="margin-top:10px">🎁 컬렉션 마일스톤 달성 — 뽑기권 보상 지급!</p>` : ""}
@@ -1494,7 +1499,7 @@
       </div></div>
       <p class="gacha-line">"${esc(c.line)}"</p>
       <p class="gacha-note">${refund ? `👑 ★5 완성 카드 — 중복이 <b>뽑기권 +1</b>로 환급됐어요` : isNew ? `<b style="color:${R.color}">NEW!</b> 컬렉션 ${ownedKinds()}/128` : `중복! ★1 +1장 — 같은 레벨 2장을 모으면 합성할 수 있어요 (★1 ×${cardCopies(c.id)[1] || 0})`}
-      ${milestone ? `<br>🎁 컬렉션 ${milestone}종 달성 보상: 뽑기권 +${milestone === 128 ? 10 : 2}` : ""}</p>
+      ${milestone ? `<br>🎁 컬렉션 ${milestone}종 달성 보상: 뽑기권 +${milestone === 128 ? 12 : 3}` : ""}</p>
       <div class="match-btns">
         <button class="btn-grad big" data-again>${gachaFreeAvail() ? "무료로 한 번 더" : S.items.gachaticket > 0 ? `한 번 더 (뽑기권 ${S.items.gachaticket}장)` : "뽑기권 구매하기 🛍️"}</button>
         <button class="btn-ghost" data-close>앨범 보기</button>
@@ -1524,7 +1529,7 @@
         </div>
       </div>
       <p class="tiny" style="padding:0 18px 4px">천장: SR+ 확정까지 <b>${Math.max(0, 10 - (S.gacha.pity || 0) - 1) + 1}회</b> · SSR 확정까지 <b>${Math.max(0, 40 - (S.gacha.ssrPity || 0))}회</b></p>
-      ${(() => { const pk = pickupSSR(); return pk ? `<div class="pickup-row"><span class="pickup-tag">이번 주 픽업</span> <b style="color:${CD.RARITY.SSR.color}">SSR ${esc(pk.name)}</b> · ${pk.age}세 ${esc(pk.job)} — SSR 당첨 시 <b>50%</b> 확률로 이 카드! <button class="pickup-view" data-pkview="${pk.id}">미리보기</button></div>` : ""; })()}
+      ${(() => { const pk = pickupSSR(); return pk ? `<div class="pickup-row"><span class="pickup-tag">이번 주 픽업</span> <b style="color:${CD.RARITY.SSR.color}">SSR ${esc(pk.name)}</b> · ${pk.age}세 ${esc(pk.job)} — SSR 당첨 시 <b>${S.gacha.guarantee ? "100% (픽뚫 보장)" : "50%"}</b> 확률로 이 카드${S.gacha.guarantee ? "" : " · 빗나가면 다음 SSR 확정"} · 천장 SSR은 픽업 확정 <button class="pickup-view" data-pkview="${pk.id}">미리보기</button></div>` : ""; })()}
       <div class="fx-row" style="padding:0 16px 10px;margin:0" id="alb-filter">${FILTERS.map(([k, lb2]) =>
         `<button class="fx-chip ${albumFilter === k ? "on" : ""}" data-f="${k}" style="${k === albumFilter ? "border-color:var(--vio);color:var(--tx)" : ""}">${lb2}${k === "owned" ? ` ${owned}` : ""}</button>`).join("")}</div>
       <div class="ccard-grid">${list.map((c) => {

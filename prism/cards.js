@@ -41,7 +41,7 @@
   function hairSVG(style, color) {
     const hi = shade(color, 1.7);
     switch (style) {
-      case "crop": return `<path d="M58,92 C56,52 78,38 100,38 C122,38 144,52 142,92 C140,68 126,56 100,56 C74,56 60,68 58,92Z" fill="${color}"/>
+      case "crop": return `<path d="M58,94 C56,50 78,36 100,36 C122,36 144,50 142,94 C140,72 126,61 100,61 C74,61 60,72 58,94Z" fill="${color}"/>
         <path d="M68,54 L76,46 M84,50 L90,43 M100,48 L104,41 M116,50 L122,44" stroke="${color}" stroke-width="5" stroke-linecap="round"/>
         <path d="M74,52 C84,46 96,44 106,45" stroke="${hi}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>`;
       case "undercut": return `<path d="M58,94 C56,48 80,36 104,36 C130,36 144,56 142,88 C138,62 124,54 98,56 C74,58 62,72 58,94Z" fill="${color}"/>
@@ -53,7 +53,7 @@
         <path d="M89,40 C84,46 80,52 78,58 M111,40 C116,46 120,52 122,58" stroke="${hi}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>`;
       case "pomp": return `<path d="M58,90 C58,58 64,32 92,26 C120,20 146,38 143,90 C141,62 129,48 109,46 C91,44 74,50 66,64 C60,74 59,82 58,90Z" fill="${color}"/>
         <path d="M72,46 C82,36 96,32 110,34" stroke="${hi}" stroke-width="4" fill="none" stroke-linecap="round" opacity=".55"/>`;
-      case "buzz": default: return `<path d="M59,84 C59,52 79,40 100,40 C121,40 141,52 141,84 C137,64 121,54 100,54 C79,54 63,64 59,84Z" fill="${color}" opacity=".92"/>`;
+      case "buzz": default: return `<path d="M59,88 C59,50 79,38 100,38 C121,38 141,50 141,88 C137,66 121,57 100,57 C79,57 63,66 59,88Z" fill="${color}" opacity=".92"/>`;
     }
   }
   function eyesSVG(kind, shape) {
@@ -112,10 +112,11 @@
     "M60,96 C60,54 78,42 100,42 C122,42 140,54 140,96 C140,124 129,145 113,152 C107,154.8 103,155.5 100,155.5 C97,155.5 93,154.8 87,152 C71,145 60,124 60,96Z",
   ];
   function ageLinesSVG(age, skin) {
-    const c = shade(skin, 0.72);
+    const c = shade(skin, 0.66);
     let out = "";
-    if (age >= 36) out += `<path d="M87,117 Q84.5,125 88,131 M113,117 Q115.5,125 112,131" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".32"/>`;
-    if (age >= 44) out += `<path d="M72,104.5 Q75,107 78,105 M128,104.5 Q125,107 122,105" stroke="${c}" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".3"/>`;
+    if (age >= 36) out += `<path d="M87,116 Q84,125 88,132 M113,116 Q116,125 112,132" stroke="${c}" stroke-width="2.3" fill="none" stroke-linecap="round" opacity=".5"/>`;
+    if (age >= 44) out += `<path d="M72,104.5 Q75,107.5 78,105 M128,104.5 Q125,107.5 122,105" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".45"/>
+      <path d="M84,72 Q100,68 116,72" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".35"/>`;
     return out;
   }
 
@@ -198,7 +199,8 @@
         return `${base(skin)}${traps}${chest}${delts}${abs}
         <path d="M46,270 L58,256 Q100,246 142,256 L154,270 L46,270Z" fill="${c1}"/>
         <path d="M58,256 Q100,246 142,256" stroke="${shade(c1, 0.7)}" stroke-width="3" fill="none"/>
-        <path d="M138,258 L152,246 L158,254 L146,264Z" fill="${shade(c1, 0.85)}"/>`;
+        <path d="M134,258 L149,245 L156,253 L142,264Z" fill="${shade(c1, 0.85)}"/>
+        <path d="M138,258 L134,262" stroke="${shade(c1, 0.7)}" stroke-width="3" stroke-linecap="round"/>`;
       }
       case "kimono": return `${base(c2)}
         <path d="M100,244 L72,184 L52,206 L92,258Z" fill="${c1}" stroke="${shade(c1, 0.7)}" stroke-width="2"/>
@@ -307,9 +309,11 @@
         <g transform="translate(100,0) scale(${B},1) translate(-100,0)">
           ${outfitSVG(c.outfit[0], c.outfit[1], c.outfit[2] || c.outfit[1], skin, skinD)}
           ${(c.build === "muscular" || c.build === "bulky") && ["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
-            ? `<path d="M84,154 C77,162 69,169 61,175 C70,172 78,169 84,168Z M116,154 C123,162 131,169 139,175 C130,172 122,169 116,168Z" fill="${skinD}" opacity=".65"/>` : ""}
+            ? `<path d="M84,152 C74,160 62,168 50,176 M116,152 C126,160 138,168 150,176" stroke="${skinD}" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".7"/>` : ""}
           ${c.build === "bulky" && ["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
             ? `<path d="M54,248 Q100,262 146,248" stroke="${shade(skin, 0.78)}" stroke-width="2.6" fill="none" opacity=".55"/>` : ""}
+          ${c.build === "bulky" && !["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
+            ? `<path d="M60,214 C56,234 56,252 60,268 M140,214 C144,234 144,252 140,268 M66,240 Q100,250 134,240" stroke="rgba(0,0,0,.20)" stroke-width="2.6" fill="none" stroke-linecap="round"/>` : ""}
           <path d="M84,138 L84,174 C84,188 116,188 116,174 L116,138Z" fill="${skinD}"/>
           <path d="M87,152 Q100,158 113,152" stroke="${shade(skin, 0.68)}" stroke-width="2" fill="none" opacity=".6"/>
         </g>
@@ -328,7 +332,7 @@
            `<path d="M99,100 L98,116 M95,119 Q100,122 105,119" stroke="${shade(skin, 0.72)}" stroke-width="2.7" fill="none" stroke-linecap="round"/>`,
            `<path d="M99.5,99 L97.8,118 M94,121 Q100,124.5 106,121" stroke="${shade(skin, 0.72)}" stroke-width="3" fill="none" stroke-linecap="round"/>`][(c.face && c.face.nose) || 0]}
         ${ageLinesSVG(c.age || 27, skin)}
-        ${mouthSVG(c.mouth)}
+        ${c.stubble === 2 ? "" : mouthSVG(c.mouth)}
         ${c.rarity !== "N" && !c.stubble ? `<ellipse cx="73" cy="117" rx="6" ry="3.2" fill="#f87171" opacity=".16"/><ellipse cx="127" cy="117" rx="6" ry="3.2" fill="#f87171" opacity=".16"/>` : ""}
         ${accSVG(c.acc)}
       </g>
@@ -381,7 +385,7 @@
     SR: [["#c084fc", "#7c3aed"], ["#f97316", "#dc2626"], ["#22d3ee", "#4f46e5"], ["#f43f5e", "#7e22ce"]],
     SSR: [["#fbbf24", "#f472b6"], ["#e879f9", "#8b5cf6"], ["#f5f5f5", "#71717a"], ["#34d399", "#38bdf8"]],
   };
-  const EYES = ["open", "smile", "wink"], MOUTHS = ["smile", "grin", "smirk"], ACCS = ["none", "none", "earring", "none", "glasses", "none", "choker", "none"];
+  const EYES = ["open", "smile", "wink"], MOUTHS = ["smile", "grin", "smirk", "soft"], ACCS = ["none", "none", "earring", "none", "glasses", "none", "earring", "none"];
   // 등급 분포: 기존 16장(N6/R5/SR3/SSR2) + 생성 112장 = N56/R36/SR24/SSR12
   const GEN_RARITY = [].concat(Array(50).fill("N"), Array(31).fill("R"), Array(21).fill("SR"), Array(10).fill("SSR"));
   // 직업 순서 결정적 셔플 (모든 직업이 고르게 등장하도록 — 곱셈 계수와 배열 길이의 공약수 문제 회피)
@@ -400,9 +404,12 @@
       : MUSC_OUTFITS.includes(job[1]) ? ((i % 3) ? "muscular" : "bulky")
       : SLIM_OUTFITS.includes(job[1]) ? ((i % 3) ? "slim" : "fit")
       : ["slim", "fit", "fit", "fit", "muscular", "fit", "muscular", "slim", "bulky", "fit"][(i * 3) % 10];
+    // 파츠별 독립 해시 — 선형 모듈로 상관(i%3 붕괴) 방지
+    const H = (n, k) => { let x = ((n + 13) * 2654435761) ^ (k * 40503 + 977); x = ((x >>> 13) ^ x) * 1274126177; return (x >>> 8); };
+    const eyeRoll = H(i, 5) % 20; // wink 15% / open 40% / smile 45%
     CHARS.push({
       build,
-      face: { jaw: build === "bulky" ? 1 : (i * 5 + 1) % 3, eyeShape: build === "slim" && i % 2 ? 2 : (i * 11) % 3, brow: (i * 7 + 2) % 4, nose: (i * 13 + 1) % 3 },
+      face: { jaw: build === "bulky" ? 1 : H(i, 1) % 3, eyeShape: build === "slim" && i % 2 ? 2 : H(i, 2) % 3, brow: H(i, 3) % 4, nose: H(i, 4) % 3 },
       id: "c" + String(i + 17).padStart(3, "0"),
       name: NAMES[i % NAMES.length],
       job: job[0],
@@ -413,14 +420,43 @@
       hair: [job[1] === "swim" ? "buzz" : HAIR_STYLES[(i * 13) % 6], HAIR_COLORS[(i * 17) % 10]],
       outfit: [job[1], job[2], job[3] || job[2]],
       acc: job[5] || (NO_ACC.includes(job[1]) ? "none" : ACCS[(i * 19) % ACCS.length]),
-      eye: EYES[(i * 23) % 3],
-      mouth: MOUTHS[(i * 31) % 3],
+      eye: eyeRoll < 3 ? "wink" : eyeRoll < 11 ? "open" : "smile",
+      mouth: ["smile", "grin", "smirk", "soft"][H(i, 6) % 4],
       stubble: beardy && i % 2 ? 2 : (job[4] || (i % 5 === 0 ? 1 : 0)), // 2 = 풀비어드 (곰상)
       bg: job[1] === "swim" ? "waves" : job[1] === "kimono" ? "petals" : BGS[(i * 37) % 8],
       aura: auras[(i * 41) % auras.length],
       line: LINES[(i * 43) % LINES.length],
     });
   }
+  // ── 후처리 1: 완전 동일 외형(쌍둥이) 제거 — 충돌 시 눈썹→코 순서로 섭동
+  {
+    const sig = (c) => JSON.stringify([c.face, c.eye, c.mouth, c.skin, c.stubble, c.hair]);
+    const seen = new Set();
+    CHARS.forEach((c) => {
+      if (!c.face) return;
+      let guard = 0;
+      while (seen.has(sig(c)) && guard < 12) {
+        c.face.brow = (c.face.brow + 1) % 4;
+        if (++guard % 4 === 0) c.face.nose = (c.face.nose + 1) % 3;
+        if (guard % 7 === 0) c.face.jaw = (c.face.jaw + 1) % 3;
+      }
+      seen.add(sig(c));
+    });
+  }
+  // ── 후처리 2: 생성 SSR 나이 분산(20~40대) + 슬림 청년 공급 확보
+  {
+    const genSSR = CHARS.filter((c) => c.rarity === "SSR" && +c.id.slice(1) >= 17);
+    const ages = [23, 26, 29, 32, 35, 38, 41, 44, 47, 49];
+    genSSR.forEach((c, k) => {
+      if (c.outfit[0] !== "school") c.age = ages[k % ages.length];
+      if (k % 3 === 2 && !["ssireum", "fire"].includes(c.outfit[0])) { c.build = "slim"; c.face.eyeShape = 2; c.stubble = 0; }
+    });
+  }
+  // ── 후처리 3: 직업-나이 개연성 (사범·장인·지배인급은 30세 이상)
+  CHARS.forEach((c) => {
+    if (/사범|장인|지배인|천하장사|대표|오너/.test(c.job) && c.age < 30) c.age = Math.min(49, c.age + 13);
+  });
+
   // 기존 16장 나이·체형 부여
   const BASE_AGES = { c01: 26, c02: 23, c03: 29, c04: 31, c05: 27, c06: 28, c07: 33, c08: 30, c09: 27, c10: 34, c11: 32, c12: 36, c13: 29, c14: 38, c15: 24, c16: 26 };
   const BASE_BUILDS = { c01: "fit", c02: "slim", c03: "slim", c04: "muscular", c05: "fit", c06: "fit", c07: "bulky", c08: "muscular", c09: "fit", c10: "fit", c11: "fit", c12: "bulky", c13: "muscular", c14: "fit", c15: "slim", c16: "slim" };
