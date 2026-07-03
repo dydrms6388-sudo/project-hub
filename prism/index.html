@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0d14" />
+<title>PRISM (프리즘) — 나를 숨기지 않는 만남</title>
+<meta name="description" content="한국 게이 남성을 위한 안전한 데이팅 PWA. 프로필 스와이프·매칭·채팅·커뮤니티를 무료로, 아우팅 방지 설계(PIN 잠금·스텔스 모드)와 함께. 앱 설치 없이 브라우저에서 바로, 홈 화면에 추가하면 앱처럼." />
+<link rel="canonical" href="https://tomatoeggcat.com/prism/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="PRISM (프리즘) — 나를 숨기지 않는 만남" />
+<meta property="og:description" content="한국 게이 남성을 위한 안전한 데이팅 PWA. 스와이프·매칭·채팅·커뮤니티 무료, 아우팅 방지 설계." />
+<meta property="og:url" content="https://tomatoeggcat.com/prism/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="PRISM" />
+<link rel="stylesheet" href="app.css" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PRISM (프리즘)","description":"한국 게이 남성을 위한 안전한 데이팅 PWA. 프로필 스와이프, 매칭, 채팅, 커뮤니티. 아우팅 방지 설계(PIN 잠금·스텔스 모드).","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/prism/"}</script>
+</head>
+<body>
+<div id="ambient" aria-hidden="true"></div>
+<div id="frame">
+
+  <!-- PIN 잠금 -->
+  <section id="scr-lock" class="scr" hidden>
+    <div class="lock-wrap">
+      <div class="lock-logo">◈</div>
+      <h2>PIN 입력</h2>
+      <p class="muted">앱 잠금이 설정되어 있어요</p>
+      <div class="pin-dots" id="pin-dots"><i></i><i></i><i></i><i></i></div>
+      <div class="pin-pad" id="pin-pad"></div>
+    </div>
+  </section>
+
+  <!-- 웰컴 -->
+  <section id="scr-welcome" class="scr" hidden>
+    <div class="welcome">
+      <div class="w-logo"><span class="prism-mark">◈</span></div>
+      <h1 class="w-title">PRISM</h1>
+      <p class="w-tag">나를 숨기지 않는 만남</p>
+      <ul class="w-feats">
+        <li><span>🔐</span><div><b>아우팅 방지 설계</b><small>PIN 잠금 · 스텔스 모드 · 서버에 아무것도 남지 않는 로컬 저장</small></div></li>
+        <li><span>💜</span><div><b>취향 기반 매칭</b><small>관심사·거리·활동성으로 계산되는 궁합 점수</small></div></li>
+        <li><span>💬</span><div><b>부담 없는 첫 대화</b><small>매칭 즉시 아이스브레이커 질문 추천</small></div></li>
+        <li><span>🛡️</span><div><b>안전 센터</b><small>원터치 차단·신고, 퀴어 데이팅 안전 가이드</small></div></li>
+      </ul>
+      <button class="btn-grad big" id="btn-start">시작하기</button>
+      <p class="w-note">기본 무료 · 가입 없이 이 기기에서 바로 · 19세 이상</p>
+      <p class="w-demo">본 서비스는 데모 버전으로, 등장하는 프로필은 모두 가상 인물입니다.</p>
+    </div>
+  </section>
+
+  <!-- 온보딩 -->
+  <section id="scr-onboarding" class="scr" hidden>
+    <div class="ob-top">
+      <button class="ob-back" id="ob-back" aria-label="이전">‹</button>
+      <div class="ob-bar"><div id="ob-fill"></div></div>
+    </div>
+    <div id="ob-body"></div>
+  </section>
+
+  <!-- 메인 -->
+  <section id="scr-main" class="scr" hidden>
+    <header id="topbar">
+      <div class="tb-logo"><span class="prism-mark sm">◈</span> PRISM</div>
+      <div class="tb-right">
+        <button id="btn-stealth" class="tb-ic" title="스텔스 모드 (빠른 숨김)">👓</button>
+        <button id="btn-premium-badge" class="tb-premium">무료</button>
+      </div>
+    </header>
+    <main id="view"></main>
+    <nav id="tabbar">
+      <button data-tab="discover" class="tab on"><span class="t-ic">🃏</span><span class="t-lb">둘러보기</span></button>
+      <button data-tab="likes" class="tab"><span class="t-ic">💜</span><span class="t-lb">좋아요</span><i class="badge" id="badge-likes" hidden></i></button>
+      <button data-tab="chats" class="tab"><span class="t-ic">💬</span><span class="t-lb">채팅</span><i class="badge" id="badge-chats" hidden></i></button>
+      <button data-tab="community" class="tab"><span class="t-ic">🗳️</span><span class="t-lb">라운지</span></button>
+      <button data-tab="my" class="tab"><span class="t-ic">👤</span><span class="t-lb">MY</span></button>
+    </nav>
+  </section>
+
+  <!-- 오버레이 & 모달 루트 -->
+  <div id="overlay-root"></div>
+  <div id="modal-root"></div>
+  <div id="toast-root"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
