@@ -410,6 +410,14 @@ textarea.ob-input{resize:none;min-height:96px}
 .ev-box small{display:block;color:var(--tx3);font-size:11.5px}
 .ev-box .btn-grad{font-size:13px;padding:11px 14px}
 .ev-box .btn-grad[disabled]{filter:grayscale(.7) brightness(.6)}
+.fuse-box{width:100%;max-width:320px;margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.fuse-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.fuse-row:last-child{border-bottom:0}
+.fr-lv{color:var(--amber);font-size:14px;font-weight:800;min-width:64px}
+.fr-n{font-weight:800;font-size:14px;min-width:34px}
+.fr-btn{margin-left:auto;font-size:12px;padding:9px 12px;border-radius:10px}
+.fr-btn[disabled]{filter:grayscale(.7) brightness(.55)}
+.fr-max{margin-left:auto;font-size:12.5px;color:var(--amber);font-weight:800}
 
 /* 캐릭터 SVG 애니메이션 ("살아있는" 일러스트) */
 .cv-anim .cv-body{animation:breathe 3.4s ease-in-out infinite;transform-origin:50% 90%;transform-box:fill-box}

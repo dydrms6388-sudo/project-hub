@@ -39,6 +39,15 @@
   S.items = Object.assign({ teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 }, S.items || {});
   S.fx = Object.assign({ teleport: null, spotlightUntil: 0 }, S.fx || {});
   S.cards = S.cards || {};
+  // 카드 모델 v1 {n,lv} → v2 {레벨:장수} 마이그레이션
+  Object.keys(S.cards).forEach((id) => {
+    const c = S.cards[id];
+    if (c && typeof c.n === "number") {
+      const copies = {}; copies[c.lv || 1] = 1;
+      if (c.n > 1) copies[1] = (copies[1] || 0) + (c.n - 1);
+      S.cards[id] = copies;
+    }
+  });
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
   S.filters = Object.assign({ ageMin: 20, ageMax: 45, area: "all", looking: "all" }, S.filters || {});
@@ -68,11 +77,20 @@
   const teleportActive = () => S.fx.teleport && Date.now() < S.fx.teleport.until ? S.fx.teleport : null;
   const spotlightActive = () => Date.now() < S.fx.spotlightUntil;
 
-  /* ── 크러시 카드 버프 (게임 ↔ 매칭 루프 연결) ── */
+  /* ── 크러시 카드 버프 (게임 ↔ 매칭 루프 연결) ──
+     카드 보유 모델: S.cards[id] = { "1": n, "2": n, ... } (레벨별 장수) */
   const CD = window.PRISM_CARDS || { CHARS: [], RARITY: {}, charSVG: () => "" };
+  const MAX_CARD_LV = 5;
   const cardOf = (id) => CD.CHARS.find((c) => c.id === id);
-  const cardLikeBonus = () => Math.min(20, Object.values(S.cards).reduce((a, c) => a + (c.lv - 1) * 2, 0));
-  const cardSuperBonus = () => Math.min(2, Object.keys(S.cards).filter((id) => (cardOf(id) || {}).rarity === "SSR").length);
+  const cardCopies = (id) => S.cards[id] || {};
+  const cardTotal = (id) => Object.values(cardCopies(id)).reduce((a, b) => a + b, 0);
+  const cardMaxLv = (id) => {
+    const lvs = Object.keys(cardCopies(id)).filter((l) => cardCopies(id)[l] > 0).map(Number);
+    return lvs.length ? Math.max(...lvs) : 0;
+  };
+  const cardOwned = (id) => cardTotal(id) > 0;
+  const cardLikeBonus = () => Math.min(30, Object.keys(S.cards).reduce((a, id) => a + Math.max(0, cardMaxLv(id) - 1), 0));
+  const cardSuperBonus = () => Math.min(3, Object.keys(S.cards).filter((id) => cardOwned(id) && (cardOf(id) || {}).rarity === "SSR").length);
   const likeLimit = () => plan().likes === Infinity ? Infinity : plan().likes + cardLikeBonus();
   const superLimit = () => plan().supers + cardSuperBonus();
   const gachaFreeMax = () => (S.premium.plan === "black" ? 2 : 1); // Black: 매일 무료 뽑기 2회
@@ -1306,10 +1324,10 @@
     }
   }
 
-  /* ══ 크러시 카드 (수집 · 가챠 · 진화) ══ */
-  const EVOLVE_COST = { 2: 3, 3: 5 };
-  const MILESTONES = [4, 8, 12, 16];
-  function ownedKinds() { return Object.keys(S.cards).length; }
+  /* ══ 크러시 카드 (수집 · 가챠 · 합성) ══
+     합성 규칙: 같은 카드 + 같은 레벨 2장 → 다음 레벨 1장 (최대 ★5) */
+  const MILESTONES = [16, 32, 64, 96, 128];
+  function ownedKinds() { return CD.CHARS.filter((c) => cardOwned(c.id)).length; }
   function rollGacha() {
     // pity: 10회 연속 SR 미만이면 SR 이상 확정
     let rarity;
@@ -1330,13 +1348,12 @@
       S.gacha.freeCount = (S.gacha.freeCount || 0) + 1;
     } else S.items.gachaticket--;
     const c = rollGacha();
-    const before = S.cards[c.id];
-    const isNew = !before;
-    if (before) before.n++;
-    else S.cards[c.id] = { n: 1, lv: 1 };
+    const isNew = !cardOwned(c.id);
+    const copies = S.cards[c.id] || (S.cards[c.id] = {});
+    copies[1] = (copies[1] || 0) + 1;
     // 컬렉션 마일스톤 보상
     let milestone = 0;
-    if (isNew && MILESTONES.includes(ownedKinds())) { milestone = ownedKinds(); S.items.gachaticket++; }
+    if (isNew && MILESTONES.includes(ownedKinds())) { milestone = ownedKinds(); S.items.gachaticket += milestone === 128 ? 10 : 2; }
     save(); badges();
     gachaReveal(c, isNew, milestone);
   }
@@ -1348,12 +1365,12 @@
         <div class="gacha-front"><div class="ccard r-${c.rarity}" style="--frame:${R.color}">
           ${c.rarity === "SSR" ? '<div class="holo"></div>' : ""}
           ${CD.charSVG(c, { animate: true, uid: "g" })}
-          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>${esc(c.name)}</b><small>${esc(c.job)}</small></div>
+          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)}</small></div>
         </div></div>
       </div></div>
       <p class="gacha-line">"${esc(c.line)}"</p>
-      <p class="gacha-note">${isNew ? `<b style="color:${R.color}">NEW!</b> 컬렉션에 추가됐어요` : `중복 카드 — 진화 재료 +1 (보유 ${S.cards[c.id].n}장)`}
-      ${milestone ? `<br>🎁 컬렉션 ${milestone}종 달성 보상: 뽑기권 +1` : ""}</p>
+      <p class="gacha-note">${isNew ? `<b style="color:${R.color}">NEW!</b> 컬렉션 ${ownedKinds()}/128` : `중복! ★1 +1장 — 같은 레벨 2장을 모으면 합성할 수 있어요 (★1 ×${cardCopies(c.id)[1] || 0})`}
+      ${milestone ? `<br>🎁 컬렉션 ${milestone}종 달성 보상: 뽑기권 +${milestone === 128 ? 10 : 2}` : ""}</p>
       <div class="match-btns">
         <button class="btn-grad big" data-again>${gachaFreeAvail() ? "무료로 한 번 더" : S.items.gachaticket > 0 ? `한 번 더 (뽑기권 ${S.items.gachaticket}장)` : "뽑기권 구매하기 🛍️"}</button>
         <button class="btn-ghost" data-close>앨범 보기</button>
@@ -1363,67 +1380,86 @@
     $("[data-close]", m).onclick = () => { m.remove(); go("cards"); };
     vibrate(c.rarity === "SSR" ? [40, 60, 40, 60, 80] : c.rarity === "SR" ? [30, 50, 30] : 15);
   }
+  let albumFilter = "all";
   function vCards() {
     const owned = ownedKinds();
     const free = gachaFreeAvail();
     const lb = cardLikeBonus(), sb = cardSuperBonus();
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">크러시 카드</div>
-      <p class="sec-sub">일러스트 캐릭터를 모으고 진화시키면 <b>매칭 버프</b>가 쌓여요</p></div>
+    const FILTERS = [["all", "전체"], ["owned", "보유"], ["N", "N"], ["R", "R"], ["SR", "SR"], ["SSR", "SSR"]];
+    const list = CD.CHARS.filter((c) =>
+      albumFilter === "all" ? true : albumFilter === "owned" ? cardOwned(c.id) : c.rarity === albumFilter);
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">크러시 카드 도감</div>
+      <p class="sec-sub">128명의 일러스트 캐릭터 — 뽑고, 모으고, <b>같은 레벨끼리 합성</b>해서 매칭 버프를 키우세요</p></div>
       <div class="gacha-box">
-        <div class="gb-left"><b>컬렉션 ${owned}/16</b>
-          <div class="gb-bar"><i style="width:${owned / 16 * 100}%"></i></div>
-          <small>${lb || sb ? `버프: ${lb ? `좋아요 +${lb}/일` : ""}${lb && sb ? " · " : ""}${sb ? `슈퍼라이크 +${sb}/일` : ""}` : "카드를 진화시키면 좋아요 한도가 늘어나요"}</small></div>
-        <button class="btn-grad" id="g-pull">${free ? "오늘의 무료 뽑기 🎴" : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
+        <div class="gb-left"><b>컬렉션 ${owned}/128</b>
+          <div class="gb-bar"><i style="width:${owned / 128 * 100}%"></i></div>
+          <small>${lb || sb ? `버프: ${lb ? `좋아요 +${lb}/일` : ""}${lb && sb ? " · " : ""}${sb ? `슈퍼라이크 +${sb}/일` : ""}` : "카드를 합성해 ★을 올리면 좋아요 한도가 늘어나요"}</small></div>
+        <button class="btn-grad" id="g-pull">${free ? `무료 뽑기 ${gachaFreeLeft()}회 🎴` : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
       </div>
-      <div class="ccard-grid">${CD.CHARS.map((c) => {
-        const st = S.cards[c.id];
+      <div class="fx-row" style="padding:0 16px 10px;margin:0" id="alb-filter">${FILTERS.map(([k, lb2]) =>
+        `<button class="fx-chip ${albumFilter === k ? "on" : ""}" data-f="${k}" style="${k === albumFilter ? "border-color:var(--vio);color:var(--tx)" : ""}">${lb2}${k === "owned" ? ` ${owned}` : ""}</button>`).join("")}</div>
+      <div class="ccard-grid">${list.map((c) => {
         const R = CD.RARITY[c.rarity];
-        if (!st) return `<div class="ccard locked"><div class="ccard-q">?</div><div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>???</b><small>미획득</small></div></div>`;
+        if (!cardOwned(c.id)) return `<div class="ccard locked"><div class="ccard-q">?</div><div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>???</b><small>미획득</small></div></div>`;
+        const lv = cardMaxLv(c.id);
         return `<button class="ccard r-${c.rarity} owned" data-cid="${c.id}" style="--frame:${R.color}">
           ${c.rarity === "SSR" ? '<div class="holo"></div>' : ""}
           ${CD.charSVG(c, { uid: "t" })}
-          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>${esc(c.name)} ${"★".repeat(st.lv)}</b><small>${esc(c.job)} · ${st.n}장</small></div>
+          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity} ${"★".repeat(lv)}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)} · ${cardTotal(c.id)}장</small></div>
         </button>`;
       }).join("")}</div>
-      <p class="tiny" style="padding:0 18px 16px;text-align:center">모든 캐릭터는 가상의 일러스트입니다 · 같은 카드를 모으면 진화 (★2: 3장 소모 · ★3: 5장 소모)</p>
+      ${!list.length ? `<div class="empty"><div class="em">🎴</div>이 조건의 카드가 아직 없어요.<br>뽑기로 컬렉션을 채워보세요!</div>` : ""}
+      <p class="tiny" style="padding:0 18px 16px;text-align:center">모든 캐릭터는 가상의 일러스트입니다 · 합성: 같은 카드 <b>같은 ★ 2장 → ★+1</b> (최대 ★5)</p>
       ${adSlot()}`;
     $("#g-pull").onclick = doGacha;
+    $("#alb-filter").onclick = (e) => {
+      const b = e.target.closest("[data-f]"); if (!b) return;
+      albumFilter = b.dataset.f; vCards();
+    };
     $$(".ccard.owned").forEach((b) => b.onclick = () => cardDetail(b.dataset.cid));
   }
   function cardDetail(cid) {
-    const c = cardOf(cid); const st = S.cards[cid];
-    if (!c || !st) return;
+    const c = cardOf(cid);
+    if (!c || !cardOwned(cid)) return;
+    const copies = cardCopies(cid);
     const R = CD.RARITY[c.rarity];
-    const nextLv = st.lv + 1;
-    const cost = EVOLVE_COST[nextLv];
-    const canEvolve = cost && st.n > cost;
+    const maxLv = cardMaxLv(cid);
     const o = document.createElement("div");
     o.className = "ovl";
+    const fuseRows = [];
+    for (let lv = 1; lv <= MAX_CARD_LV; lv++) {
+      const n = copies[lv] || 0;
+      if (!n && lv > maxLv) continue;
+      const canFuse = n >= 2 && lv < MAX_CARD_LV;
+      fuseRows.push(`<div class="fuse-row">
+        <span class="fr-lv">${"★".repeat(lv)}</span><span class="fr-n">×${n}</span>
+        ${lv < MAX_CARD_LV ? `<button class="btn-grad fr-btn" data-fuse="${lv}" ${canFuse ? "" : "disabled"}>2장 합성 → ★${lv + 1}</button>` : `<span class="fr-max">👑 최대</span>`}
+      </div>`);
+    }
     o.innerHTML = `<div class="ovl-top"><button class="ovl-close" aria-label="닫기">‹</button><span class="ovl-title">카드 상세</span></div>
       <div class="ovl-body" style="display:flex;flex-direction:column;align-items:center;padding:20px">
-        <div class="ccard big r-${c.rarity} lv-${st.lv}" style="--frame:${R.color}">
-          ${c.rarity === "SSR" || st.lv >= 3 ? '<div class="holo"></div>' : ""}
+        <div class="ccard big r-${c.rarity}" style="--frame:${R.color}">
+          ${c.rarity === "SSR" || maxLv >= 4 ? '<div class="holo"></div>' : ""}
           ${CD.charSVG(c, { animate: true, uid: "d" })}
-          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity} ${"★".repeat(st.lv)}</span><b>${esc(c.name)}</b><small>${esc(c.job)}</small></div>
+          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity} ${"★".repeat(maxLv)}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)}</small></div>
         </div>
         <p class="gacha-line">"${esc(c.line)}"</p>
-        <div class="ev-box">
-          <div><b>보유 ${st.n}장</b><small>${cost ? `진화 재료 ${Math.max(0, st.n - 1)}/${cost}` : "최대 레벨"}</small></div>
-          ${cost ? `<button class="btn-grad" id="ev-go" ${canEvolve ? "" : "disabled"}>★${nextLv}로 진화 (${cost}장 소모)</button>` : `<span style="font-size:20px">👑</span>`}
-        </div>
-        <p class="tiny" style="margin-top:10px;text-align:center">진화 보상: 레벨당 <b>일일 좋아요 +2</b>${c.rarity === "SSR" ? " · SSR 보유: 슈퍼라이크 +1/일" : ""}</p>
+        <div class="fuse-box">${fuseRows.join("")}</div>
+        <p class="tiny" style="margin-top:10px;text-align:center">합성 규칙: <b>같은 카드, 같은 ★ 2장</b>만 합성 가능 · 최고 ★이 버프 결정 (★당 일일 좋아요 +1)${c.rarity === "SSR" ? " · SSR 보유: 슈퍼라이크 +1/일" : ""}</p>
       </div>`;
     $("#overlay-root").appendChild(o);
     $(".ovl-close", o).onclick = () => o.remove();
-    const ev = $("#ev-go", o);
-    if (ev) ev.onclick = () => {
-      if (!canEvolve) return;
-      st.n -= cost; st.lv = nextLv; save();
-      o.remove(); vibrate([30, 50, 30, 50]);
-      const dlg = modal(`<div class="dialog"><div class="em">🌟</div><h3>${esc(c.name)} ★${nextLv} 진화!</h3><p>일일 좋아요 한도가 +2 늘었어요.<br>현재 카드 버프: 좋아요 +${cardLikeBonus()}/일</p>
+    $$("[data-fuse]", o).forEach((b) => b.onclick = () => {
+      const lv = +b.dataset.fuse;
+      if ((copies[lv] || 0) < 2 || lv >= MAX_CARD_LV) return;
+      copies[lv] -= 2;
+      if (!copies[lv]) delete copies[lv];
+      copies[lv + 1] = (copies[lv + 1] || 0) + 1;
+      save(); o.remove(); vibrate([30, 50, 30, 50]);
+      const dlg = modal(`<div class="dialog"><div class="em">🌟</div><h3>${esc(c.name)} ★${lv + 1} 합성 성공!</h3><p>같은 카드 ★${lv} 2장이 ★${lv + 1} 1장이 됐어요.<br>현재 카드 버프: 좋아요 +${cardLikeBonus()}/일</p>
         <button class="btn-grad big" data-ok>멋져요!</button></div>`, { center: true });
       $("[data-ok]", dlg).onclick = () => { dlg.remove(); cardDetail(cid); };
-    };
+    });
   }
 
   /* ══ 위장 (제목 · 파비콘) ══ */

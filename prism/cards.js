@@ -137,9 +137,36 @@
         <path d="M80,216 Q100,226 120,216 M76,240 Q100,250 124,240" stroke="#4a4a52" stroke-width="2.2" fill="none" opacity=".9"/>
         <path d="M36,240 C44,212 58,194 78,186 M164,240 C156,212 142,194 122,186" stroke="#4a4a52" stroke-width="2.4" fill="none" opacity=".9"/>
         <path d="M100,194 L100,270" stroke="#3a3a40" stroke-width="2" opacity=".7"/>`;
+      case "suit": return `${base(c1)}<path d="M100,232 L80,186 L64,200 L92,244Z M100,232 L120,186 L136,200 L108,244Z" fill="${shade(c1, 0.7)}"/>
+        <path d="M100,230 L84,188 L100,196 L116,188Z" fill="#f1f5f9"/>
+        <path d="M95,208 L100,200 L105,208 L100,252Z" fill="${c2}"/>
+        <path d="M80,186 L64,200 M120,186 L136,200" stroke="${shade(c1, 1.5)}" stroke-width="2" opacity=".7"/>`;
+      case "hoodie": return `${base(c1)}<path d="M70,196 C78,182 122,182 130,196 C124,186 110,182 100,182 C90,182 76,186 70,196Z" fill="${shade(c1, 0.7)}"/>
+        <path d="M60,206 C70,192 84,184 100,184 C116,184 130,192 140,206 L134,214 C124,200 112,194 100,194 C88,194 76,200 66,214Z" fill="${shade(c1, 0.82)}"/>
+        <path d="M92,200 L91,226 M108,200 L109,226" stroke="#e2e8f0" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="91" cy="228" r="2.4" fill="#e2e8f0"/><circle cx="109" cy="228" r="2.4" fill="#e2e8f0"/>
+        <path d="M70,248 L130,248 L126,270 L74,270Z" fill="${shade(c1, 0.85)}" opacity=".8"/>`;
+      case "gi": return `${base("#f8fafc")}<path d="M100,240 L74,184 L58,202 L94,252Z" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+        <path d="M100,240 L126,184 L142,202 L106,252Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+        <path d="M100,238 L88,190 L100,198 L112,190Z" fill="${skin}" opacity=".95"/>
+        <path d="M58,252 L142,252 L142,262 L58,262Z" fill="${c1}"/><path d="M94,252 L88,270 M106,252 L112,270" stroke="${c1}" stroke-width="5"/>`;
       case "tee": default: return `${base(c1)}<path d="M82,182 C90,196 110,196 118,182 C113,192 108,196 100,196 C92,196 87,192 82,182Z" fill="${shade(c1, 0.72)}"/>
         <path d="M62,232 C66,214 74,200 86,192 M138,232 C134,214 126,200 114,192" stroke="${shade(c1, 0.72)}" stroke-width="2.6" fill="none" opacity=".85"/>
         <path d="M74,246 Q86,254 100,252 M126,246 Q114,254 100,252" stroke="${shade(c1, 0.78)}" stroke-width="2.2" fill="none" opacity=".6"/>`;
+    }
+  }
+
+  /* ── 배경 모티프 8종 (배경군 다양화) ── */
+  function bgSVG(kind) {
+    switch (kind) {
+      case "waves": return `<g stroke="#fff" stroke-width="2.5" fill="none" opacity=".22"><path d="M-10,70 Q20,58 50,70 T110,70 T170,70 T230,70"/><path d="M-10,100 Q20,88 50,100 T110,100 T170,100 T230,100"/><path d="M-10,130 Q20,118 50,130 T110,130 T170,130 T230,130"/></g>`;
+      case "city": return `<g fill="#000" opacity=".2"><rect x="6" y="96" width="18" height="90"/><rect x="28" y="72" width="22" height="120"/><rect x="54" y="110" width="14" height="80"/><rect x="134" y="86" width="20" height="100"/><rect x="158" y="60" width="24" height="130"/><rect x="186" y="104" width="12" height="86"/></g><g fill="#fde68a" opacity=".55"><rect x="33" y="82" width="4" height="4"/><rect x="41" y="94" width="4" height="4"/><rect x="163" y="72" width="4" height="4"/><rect x="171" y="88" width="4" height="4"/><rect x="163" y="104" width="4" height="4"/></g>`;
+      case "peaks": return `<g fill="#000" opacity=".18"><path d="M-10,190 L40,90 L70,150 L100,80 L140,190Z"/><path d="M90,190 L150,100 L210,190Z"/></g><g fill="#fff" opacity=".5"><path d="M40,90 L48,106 L32,106Z"/><path d="M100,80 L108,98 L92,98Z"/></g>`;
+      case "bokeh": return `<g fill="#fff"><circle cx="30" cy="60" r="12" opacity=".12"/><circle cx="168" cy="44" r="16" opacity=".1"/><circle cx="180" cy="130" r="9" opacity=".14"/><circle cx="22" cy="150" r="7" opacity=".16"/><circle cx="150" cy="200" r="13" opacity=".08"/><circle cx="52" cy="30" r="6" opacity=".2"/></g>`;
+      case "notes": return `<g fill="#fff" opacity=".3" font-size="20" font-family="serif"><text x="24" y="66">♪</text><text x="160" y="50">♫</text><text x="176" y="140">♪</text><text x="16" y="160">♬</text></g>`;
+      case "rays": return `<g stroke="#fff" opacity=".14" stroke-width="10"><path d="M100,-20 L30,300"/><path d="M100,-20 L100,300"/><path d="M100,-20 L170,300"/></g>`;
+      case "petals": return `<g fill="#ffd7e6" opacity=".55"><ellipse cx="30" cy="52" rx="5" ry="3" transform="rotate(30 30 52)"/><ellipse cx="166" cy="38" rx="5" ry="3" transform="rotate(-20 166 38)"/><ellipse cx="180" cy="120" rx="4.5" ry="2.8" transform="rotate(45 180 120)"/><ellipse cx="20" cy="140" rx="4.5" ry="2.8" transform="rotate(-40 20 140)"/><ellipse cx="148" cy="196" rx="5" ry="3" transform="rotate(15 148 196)"/></g>`;
+      case "stars": default: return `<g fill="#fff" opacity=".7"><circle cx="26" cy="50" r="2"/><circle cx="174" cy="80" r="1.6"/><circle cx="160" cy="32" r="2.2"/><circle cx="36" cy="148" r="1.5"/></g>`;
     }
   }
   function accSVG(acc) {
@@ -166,9 +193,7 @@
         </radialGradient>
       </defs>
       <rect width="200" height="270" fill="url(#aura-${idSuf})"/>
-      <g class="cv-sparks" fill="#fff" opacity=".7">
-        <circle cx="26" cy="50" r="2"/><circle cx="174" cy="80" r="1.6"/><circle cx="160" cy="32" r="2.2"/><circle cx="36" cy="148" r="1.5"/>
-      </g>
+      <g class="cv-sparks">${bgSVG(c.bg || "stars")}</g>
       <g class="cv-body">
         ${outfitSVG(c.outfit[0], c.outfit[1], c.outfit[2] || c.outfit[1], skin, skinD)}
         <path d="M84,138 L84,174 C84,188 116,188 116,174 L116,138Z" fill="${skinD}"/>
@@ -188,6 +213,72 @@
       <g class="cv-shine"><rect x="-70" y="0" width="46" height="270" fill="#fff" opacity=".14" transform="skewX(-18)"/></g>
     </svg>`;
   }
+
+  /* ══ 확장 로스터 생성 (c17~c128 · 총 128장) ══
+     직업군·나이군·배경군·외형을 결정적으로 조합 — 빌드마다 동일한 카드 도감 */
+  const NAMES = ["준서","민재","지호","태윤","서진","도현","건우","현서","지완","태민","유찬","승우","민혁","정우","시온","하진","예준","주원","지안","선우","은찬","강민","태양","다온","라온","시원","무영","찬영","세준","우진","한결","온유","강현","해성","도영","이안","서준","하율","지율","연우","시현","준영","태호","동하","루안","현빈","승현","지훈","민규","성진","윤재","경수","형준","재윤","호진","범준","석현","진우","규현","상윤","태검","백호","천둥","마루","바다","산들","노을","가온","새벽","여름","겨울","우람","힘찬","슬기","보검","한울","누리","아라","도담","벼리","믿음","기람","솔찬","윤슬비","담율","현담","무결","서강","한별","은결","도하","류진","백현","시우진","강토르","제이","카이","레오","노아","단","률","혁","검","웅","산하","도원","해린","무현","강율","은호수","별하","찬","결","훈","랑"];
+  const JOBS = [
+    ["경호원", "suit", "#1e293b", "#334155", 1], ["변호사", "suit", "#0f172a", "#7c3aed", 0], ["회계사", "suit", "#1e293b", "#0ea5e9", 0], ["아나운서", "suit", "#312e81", "#f43f5e", 0],
+    ["웹툰 작가", "hoodie", "#4338ca", "", 0], ["게임 개발자", "hoodie", "#0f766e", "", 0], ["프로게이머", "hoodie", "#b91c1c", "", 0], ["스트리머", "hoodie", "#7c3aed", "", 0], ["힙합 프로듀서", "hoodie", "#111827", "", 1],
+    ["태권도 사범", "gi", "#111", "", 0], ["유도 선수", "gi", "#1d4ed8", "", 1], ["검도 사범", "gi", "#312e81", "", 1], ["주짓수 코치", "gi", "#7c3aed", "", 1], ["합기도 사범", "gi", "#0f766e", "", 0],
+    ["응급구조사", "scrub", "#ef4444", "", 0], ["물리치료사", "scrub", "#0ea5e9", "", 0], ["한의사", "scrub", "#14b8a6", "", 0], ["치과의사", "scrub", "#38bdf8", "", 0], ["간호사", "scrub", "#22c55e", "", 0], ["약사", "scrub", "#f8fafc", "", 0],
+    ["헬스 트레이너", "tank", "#f43f5e", "", 1], ["크로스핏 코치", "tank", "#f97316", "", 1], ["클라이밍 강사", "tank", "#84cc16", "", 0], ["럭비 선수", "tank", "#166534", "", 1], ["배구 선수", "tank", "#2563eb", "", 0], ["서퍼", "tank", "#06b6d4", "", 0], ["인명구조원", "tank", "#ef4444", "", 0], ["복싱 코치", "tank", "#dc2626", "", 1],
+    ["파티시에", "chef", "#fdf2f8", "", 0], ["스시 셰프", "chef", "#f8fafc", "", 1], ["브런치 셰프", "chef", "#fffbeb", "", 0], ["정육 장인", "apron", "#7f1d1d", "#27272a", 1], ["도예가", "apron", "#78716c", "#292524", 0], ["플랜트 집사", "apron", "#166534", "#14532d", 0], ["조향사", "apron", "#6d28d9", "#1e1b4b", 0], ["수제맥주 브루어", "apron", "#b45309", "#292524", 1],
+    ["바리스타", "apron", "#57534e", "#1c1917", 0], ["소믈리에", "vest", "#450a0a", "", 0], ["재즈 피아니스트", "vest", "#1e1b4b", "", 0], ["마술사", "vest", "#111827", "", 0], ["호텔리어", "vest", "#0f172a", "", 0],
+    ["소방관", "fire", "#374151", "", 1], ["산악구조대", "fire", "#3f6212", "", 1], ["해양경찰", "pilot", "#0c4a6e", "", 0], ["항해사", "pilot", "#082f49", "", 1], ["승무원", "pilot", "#1e1b4b", "", 0], ["기관사", "pilot", "#27272a", "", 0], ["드론 조종사", "pilot", "#134e4a", "", 0],
+    ["국악인", "gi", "#7f1d1d", "", 0], ["발레 강사", "ballet", "#18181b", "", 0], ["현대무용수", "ballet", "#27272a", "", 0], ["배우", "stage", "#0b0b14", "", 0], ["뮤지컬 배우", "stage", "#1e1b4b", "", 0], ["인디 보컬", "stage", "#171717", "", 0],
+    ["건축가", "shirt", "#334155", "", 0], ["큐레이터", "shirt", "#7c3aed", "", 0], ["사서", "shirt", "#0f766e", "", 0], ["통역사", "shirt", "#1d4ed8", "", 0], ["천문학자", "shirt", "#312e81", "", 0], ["교사", "shirt", "#0369a1", "", 0], ["플로리스트", "shirt", "#db2777", "", 0], ["여행 가이드", "tee", "#f59e0b", "", 0], ["사진작가", "tee", "#374151", "", 1], ["반려견 훈련사", "tee", "#65a30d", "", 0], ["목수", "tee", "#92400e", "", 1], ["자동차 정비사", "tee", "#1f2937", "", 1],
+  ];
+  const LINES = [
+    "오늘 하루, 마지막 메시지는 당신이면 좋겠어요.", "운명은 안 믿는데, 당신 프로필은 두 번 봤어요.", "제 취미요? 방금 당신 생각하는 걸로 바뀌었어요.",
+    "우리 동네에 이런 사람이 있었다니.", "커피는 제가 살게요. 이야기는 당신이 들려줘요.", "당신 웃음소리, 벌써 궁금해지는데요.",
+    "주말 계획 비워둘게요. 채워줄래요?", "첫인상보다 두 번째가 더 좋은 사람이 될게요.", "지금 이 순간도 연습이 아니라 진심이에요.",
+    "밤하늘보다 당신 얘기가 더 길었으면.", "천천히 와요. 여기서 기다릴게요.", "당신의 하루 끝, 제가 맡아도 될까요?",
+    "좋아하는 노래 알려줘요. 플레이리스트에 넣게.", "비 오는 날엔 제가 우산이 될게요.", "당신이라면, 월요일도 나쁘지 않아요.",
+    "한 판 승부? 지는 쪽이 저녁 사기.", "근육은 거들 뿐, 마음이 진짜예요.", "제 스케줄에 당신 자리 하나 비워뒀어요.",
+    "오늘 운세: 당신을 만나면 대길.", "어색한 침묵도 당신과라면 편할 것 같아요.", "메뉴 고민은 그만, 저랑 다 먹으러 가요.",
+    "당신의 최애 공간, 저도 데려가줘요.", "손은 따뜻한 편이에요. 확인해볼래요?", "오래 볼 사람이니까, 천천히 알아가요.",
+    "제일 잘하는 요리로 초대할게요.", "산책 코스 추천해줘요. 같이 걷게.", "당신 앞에선 계산 없이 웃게 되네요.",
+    "다음 휴가지, 같이 정할래요?", "고민 많은 밤엔 제가 전화할게요.", "시작은 가볍게, 마음은 깊게.",
+    "오늘의 나를 만든 건 8할이 설렘이에요.", "당신을 만나러 가는 길이 제일 짧았으면.",
+  ];
+  const HAIR_STYLES = ["crop", "undercut", "curly", "mid", "pomp", "buzz"];
+  const HAIR_COLORS = ["#1f1f28", "#17120e", "#3d2b1f", "#4a3527", "#5b3a24", "#26201c", "#0e2a3a", "#241a12", "#3b3b45", "#5c4033"];
+  const BGS = ["stars", "waves", "city", "peaks", "bokeh", "notes", "rays", "petals"];
+  const AURAS = {
+    N: [["#64748b", "#334155"], ["#78716c", "#44403c"], ["#3b82f6", "#1e3a8a"], ["#10b981", "#065f46"], ["#f59e0b", "#92400e"], ["#8b5cf6", "#4c1d95"]],
+    R: [["#38bdf8", "#1d4ed8"], ["#2dd4bf", "#0f766e"], ["#f472b6", "#be185d"], ["#a78bfa", "#6d28d9"], ["#fb923c", "#c2410c"]],
+    SR: [["#c084fc", "#7c3aed"], ["#f97316", "#dc2626"], ["#22d3ee", "#4f46e5"], ["#f43f5e", "#7e22ce"]],
+    SSR: [["#fbbf24", "#f472b6"], ["#e879f9", "#8b5cf6"], ["#f5f5f5", "#71717a"], ["#34d399", "#38bdf8"]],
+  };
+  const EYES = ["open", "smile", "wink"], MOUTHS = ["smile", "grin", "smirk"], ACCS = ["none", "none", "earring", "none", "glasses", "none", "choker", "none"];
+  // 등급 분포: 기존 16장(N6/R5/SR3/SSR2) + 생성 112장 = N56/R36/SR24/SSR12
+  const GEN_RARITY = [].concat(Array(50).fill("N"), Array(31).fill("R"), Array(21).fill("SR"), Array(10).fill("SSR"));
+  for (let i = 0; i < 112; i++) {
+    const rarity = GEN_RARITY[(i * 53) % 112]; // 결정적 셔플
+    const job = JOBS[(i * 29) % JOBS.length];
+    const auras = AURAS[rarity];
+    CHARS.push({
+      id: "c" + String(i + 17).padStart(3, "0"),
+      name: NAMES[i % NAMES.length],
+      job: job[0],
+      age: 20 + ((i * 11) % 30), // 20~49세 (나이군)
+      rarity,
+      skin: (i * 7) % 4,
+      hair: [HAIR_STYLES[(i * 13) % 6], HAIR_COLORS[(i * 17) % 10]],
+      outfit: [job[1], job[2], job[3] || job[2]],
+      acc: job[1] === "gi" || job[1] === "fire" ? "none" : ACCS[(i * 19) % ACCS.length],
+      eye: EYES[(i * 23) % 3],
+      mouth: MOUTHS[(i * 31) % 3],
+      stubble: job[4] || (i % 5 === 0 ? 1 : 0),
+      bg: BGS[(i * 37) % 8],
+      aura: auras[(i * 41) % auras.length],
+      line: LINES[(i * 43) % LINES.length],
+    });
+  }
+  // 기존 16장 나이 부여
+  const BASE_AGES = { c01: 26, c02: 23, c03: 29, c04: 31, c05: 27, c06: 28, c07: 33, c08: 30, c09: 27, c10: 34, c11: 32, c12: 36, c13: 29, c14: 38, c15: 24, c16: 26 };
+  CHARS.forEach((c) => { if (BASE_AGES[c.id]) c.age = BASE_AGES[c.id]; });
 
   window.PRISM_CARDS = { CHARS, RARITY, charSVG };
 })();
