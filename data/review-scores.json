@@ -3,10 +3,10 @@
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 10,
+    "total": 15,
     "pass": 10,
     "reviewNeeded": 0,
-    "reviewing": 0,
+    "reviewing": 5,
     "avgOverall": 83
   },
   "projects": [
@@ -444,6 +444,151 @@
         }
       ],
       "reviewedAt": "2026-07-05"
+    },
+    {
+      "slug": "bmr-tdee-calc",
+      "name": "기초대사량 계산기 (BMR·TDEE)",
+      "source": "daily/2026-06-20-bmr-tdee",
+      "live": "https://bmr-tdee.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "bp-glucose-log",
+      "name": "혈압혈당일지",
+      "source": "daily/2026-06-21-bp-glucose-log",
+      "live": "https://bp-glucose-log.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "caffeine-tracker",
+      "name": "카페인 한도 추적",
+      "source": "daily/2026-06-22-caffeine-tracker",
+      "live": "https://dydrms-caffeine-tracker.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "capital-gains-tax",
+      "name": "양도세 미리계산",
+      "source": "daily/2026-06-21-capital-gains-tax",
+      "live": "https://capital-gains-tax-seven.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "car-insurance-rider",
+      "name": "특약고르미",
+      "source": "daily/2026-06-20-carinsurance-rider-survey",
+      "live": "https://carinsurance-rider-survey.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
     }
   ]
 }
