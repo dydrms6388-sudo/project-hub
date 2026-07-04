@@ -1,0 +1,70 @@
+name: Deploy to Vercel (production)
+
+# master에 푸시(=PR 머지)될 때마다 tomatoeggcat.com 프로덕션으로 자동 배포합니다.
+# Vercel의 GitHub 자동배포가 동작하지 않을 때를 대비한 안전장치이며,
+# Actions 탭에서 수동 실행(workflow_dispatch)도 가능합니다.
+#
+# ── 최초 1회 설정 (리포 → Settings → Secrets and variables → Actions → New repository secret) ──
+#   VERCEL_TOKEN       : vercel.com → Account Settings → Tokens → Create Token
+#   VERCEL_ORG_ID      : 아래 "값 얻는 법" 참고 (팀/계정 ID)
+#   VERCEL_PROJECT_ID  : 아래 "값 얻는 법" 참고 (프로젝트 ID)
+#
+#   값 얻는 법 (가장 쉬움): 로컬에서
+#     npx vercel link           # tomatoeggcat 프로젝트에 연결
+#     cat .vercel/project.json  # { "orgId": "...", "projectId": "..." } 출력 → 그대로 복사
+#   또는 Vercel 대시보드 → 프로젝트 → Settings → General 하단 Project ID,
+#        팀/계정 ID는 Team Settings 의 ID 값.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}   # Actions 탭에서 수동 배포 버튼
+
+# 동시에 여러 배포가 겹치지 않도록 (최신 커밋만 배포)
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # 시크릿이 없으면 조용히 스킵 (설정 전 빨간 X 방지)
+    if: ${{ github.repository == 'dydrms6388-sudo/project-hub' }}
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Guard — secrets present?
+        id: guard
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Vercel 시크릿(VERCEL_TOKEN/ORG_ID/PROJECT_ID)이 없어 배포를 건너뜁니다. 리포 Settings → Secrets에 등록하세요."
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node
+        if: steps.guard.outputs.ok == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        if: steps.guard.outputs.ok == 'true'
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project settings
+        if: steps.guard.outputs.ok == 'true'
+        run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy to production
+        if: steps.guard.outputs.ok == 'true'
+        run: |
+          url=$(vercel deploy --prod --token="${{ secrets.VERCEL_TOKEN }}" --yes)
+          echo "Deployed: $url"
+          echo "### ✅ Vercel 프로덕션 배포 완료" >> "$GITHUB_STEP_SUMMARY"
+          echo "$url" >> "$GITHUB_STEP_SUMMARY"
