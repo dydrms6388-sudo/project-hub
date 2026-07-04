@@ -1,0 +1,19 @@
+{
+  "name": "PRISM — 나를 숨기지 않는 만남",
+  "short_name": "PRISM",
+  "description": "한국 게이 남성을 위한 안전한 데이팅 앱. 스와이프·매칭·채팅·커뮤니티, 아우팅 방지 설계.",
+  "id": "/prism/",
+  "start_url": "/prism/",
+  "scope": "/prism/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0d14",
+  "theme_color": "#0b0d14",
+  "lang": "ko",
+  "categories": ["social", "lifestyle"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
