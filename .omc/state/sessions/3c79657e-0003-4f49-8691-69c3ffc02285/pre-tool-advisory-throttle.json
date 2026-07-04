@@ -1,13 +1,21 @@
 {
   "version": 1,
   "entries": {
+    "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
+      "last_emitted_at_ms": 1783200130427,
+      "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
+    },
+    "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
+      "last_emitted_at_ms": 1783200078130,
+      "message": "Read multiple files in parallel when possible for faster analysis."
+    },
+    "459c54e5f35d6a58dcd90d2aecc21fa6d1f35d241bc5b134c506f87dc7b6d67b": {
+      "last_emitted_at_ms": 1783200076437,
+      "message": "Combine searches in parallel when investigating multiple patterns."
+    },
     "1bb6914bc42b891c26d46c8ae2fd4f44071f59862e89dc550f4c82877b700216": {
       "last_emitted_at_ms": 1783198463066,
       "message": "The boulder never stops. Continue until all tasks complete."
-    },
-    "459c54e5f35d6a58dcd90d2aecc21fa6d1f35d241bc5b134c506f87dc7b6d67b": {
-      "last_emitted_at_ms": 1783198233502,
-      "message": "Combine searches in parallel when investigating multiple patterns."
     },
     "988797e57982e17c320efea006131087ea86b0ab6ccb6456157f50f681f73d98": {
       "last_emitted_at_ms": 1783198231959,
@@ -16,10 +24,6 @@
     "87556a3c4147a6fac4f69cc60c533e883a21dee237e1ffe571b0c2355dfbe2ee": {
       "last_emitted_at_ms": 1783198221461,
       "message": "Spawning agent: general-purpose (inherit) | Task: Review+redev capital-gains-tax"
-    },
-    "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
-      "last_emitted_at_ms": 1783198214614,
-      "message": "Read multiple files in parallel when possible for faster analysis."
     },
     "e88b8af20aadd653664493e36f5c988a379ec3d93229b565fef415e749f53787": {
       "last_emitted_at_ms": 1783198210588,
@@ -32,11 +36,7 @@
     "969c546b0c6e2a6a58589edadf716e9cff52e9cc6d51188e0b7d78da48973876": {
       "last_emitted_at_ms": 1783198187963,
       "message": "Spawning agent: general-purpose (inherit) | Task: Review+redev bmr-tdee-calc"
-    },
-    "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
-      "last_emitted_at_ms": 1783198134216,
-      "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
     }
   },
-  "updated_at": "2026-07-04T20:54:23.066Z"
+  "updated_at": "2026-07-04T21:22:10.427Z"
 }
