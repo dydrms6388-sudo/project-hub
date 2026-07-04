@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-04",
+  "updatedAt": "2026-07-05",
   "gate": 80,
   "maxLoops": 5,
-  "summary": { "total": 5, "pass": 5, "reviewNeeded": 0, "reviewing": 0, "avgOverall": 82 },
+  "summary": { "total": 10, "pass": 5, "reviewNeeded": 0, "reviewing": 5, "avgOverall": 82 },
   "projects": [
     {
       "slug": "korean-age",
@@ -136,6 +136,41 @@
       ],
       "history": [ {"loop":0,"overall":79}, {"loop":1,"overall":84} ],
       "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "amby-dating", "name": "Amby (앰비)", "source": "daily/2026-06-23-amby", "live": "https://dydrms-amby.vercel.app",
+      "status": "reviewing", "loops": 0,
+      "axes": { "functional": 0, "mobileUX": 0, "design": 0, "content": 0, "realValue": 0 },
+      "reviewerAvg": 0, "userScores": [0,0,0,0,0], "userAvg": 0, "overall": 0,
+      "findings": [], "changes": [], "history": [], "reviewedAt": null
+    },
+    {
+      "slug": "aura-lab", "name": "오라랩 (AuraLab)", "source": "daily/2026-06-22-aura", "live": "https://dydrms-auralab.vercel.app",
+      "status": "reviewing", "loops": 0,
+      "axes": { "functional": 0, "mobileUX": 0, "design": 0, "content": 0, "realValue": 0 },
+      "reviewerAvg": 0, "userScores": [0,0,0,0,0], "userAvg": 0, "overall": 0,
+      "findings": [], "changes": [], "history": [], "reviewedAt": null
+    },
+    {
+      "slug": "baby-name-maker", "name": "이름쏙 (작명)", "source": "daily/2026-06-22-baby-name", "live": "https://ireumssok.vercel.app",
+      "status": "reviewing", "loops": 0,
+      "axes": { "functional": 0, "mobileUX": 0, "design": 0, "content": 0, "realValue": 0 },
+      "reviewerAvg": 0, "userScores": [0,0,0,0,0], "userAvg": 0, "overall": 0,
+      "findings": [], "changes": [], "history": [], "reviewedAt": null
+    },
+    {
+      "slug": "balance-pick", "name": "밸런스픽 (BalancePick)", "source": "daily/2026-06-19-balancepick", "live": "https://balancepick.vercel.app",
+      "status": "reviewing", "loops": 0,
+      "axes": { "functional": 0, "mobileUX": 0, "design": 0, "content": 0, "realValue": 0 },
+      "reviewerAvg": 0, "userScores": [0,0,0,0,0], "userAvg": 0, "overall": 0,
+      "findings": [], "changes": [], "history": [], "reviewedAt": null
+    },
+    {
+      "slug": "batja-eight", "name": "받자 (Batja)", "source": "daily/2026-06-24-batja", "live": "https://batja-eight.vercel.app",
+      "status": "reviewing", "loops": 0,
+      "axes": { "functional": 0, "mobileUX": 0, "design": 0, "content": 0, "realValue": 0 },
+      "reviewerAvg": 0, "userScores": [0,0,0,0,0], "userAvg": 0, "overall": 0,
+      "findings": [], "changes": [], "history": [], "reviewedAt": null
     }
   ]
 }
