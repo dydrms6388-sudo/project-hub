@@ -445,6 +445,7 @@
   CHARS.forEach((c) => {
     if (/사범|장인|지배인|천하장사|대표|오너/.test(c.job) && c.age < 30) c.age = Math.min(49, c.age + 13);
     if (/강사/.test(c.job) && c.age < 25) c.age = 25 + (+c.id.slice(1) % 5);
+    if (/회계사|변호사|치과의사|한의사|약사|건축가|항해사|기관사|아나운서/.test(c.job) && c.age < 27) c.age = 27 + (+c.id.slice(1) % 8);
     // 노장 현역 → 직함 전환 (나이 분산 부작용 보정)
     if (/프로게이머/.test(c.job) && c.age > 38) c.job = "게임단 감독";
     else if (/선수$/.test(c.job) && c.age > 42) c.job = c.job.replace(/선수$/, "코치");

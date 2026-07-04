@@ -100,9 +100,9 @@ handsome korean young man in his early-mid 20s (24), k-pop idol, slim graceful b
 handsome korean young man in his early-mid 20s (26), ballet dancer, slim graceful build, elegant proportions, sharp V-line chin, intense sharp upturned eyes, softly sloped brows, refined short nose, jet black middle-parted hair, clean shaven, wearing black long-sleeve dance leotard, black choker, confident direct gaze, charming smirk, chest-up bust portrait facing viewer, face in upper half of frame, starry night sky background in silver white and smoke gray tones, mature masculine anime illustration, bara manga style, thick clean lineart, masterpiece, cinematic lighting, iridescent particle effects, ornate golden atmosphere, SFW --ar 20:27
 ```
 
-### c017 · 준서 (N) — 20세 항해사 · slim · 수염자국
+### c017 · 준서 (N) — 28세 항해사 · slim · 수염자국
 ```
-handsome korean young man in his early-mid 20s (20), ship navigator, slim graceful build, elegant proportions, strong square jaw, intense sharp upturned eyes, arched expressive brows, refined short nose, black short cropped hair, light stubble, wearing pilot uniform with epaulettes, confident direct gaze, subtle soft smile, chest-up bust portrait facing viewer, face in upper half of frame, starry night sky background in steel and dark slate tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
+handsome korean man in his late 20s to early 30s (28), youthful, ship navigator, slim graceful build, elegant proportions, strong square jaw, intense sharp upturned eyes, arched expressive brows, refined short nose, black short cropped hair, light stubble, wearing pilot uniform with epaulettes, confident direct gaze, subtle soft smile, chest-up bust portrait facing viewer, face in upper half of frame, starry night sky background in steel and dark slate tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
 ```
 
 ### c018 · 민재 (R) — 31세 물리치료사 · fit · 민면
@@ -225,9 +225,9 @@ handsome korean man in his late 20s to early 30s (33), youthful, diver, muscular
 handsome korean distinguished man in his mid-late 40s (44), crow's feet and faint forehead line, dignified, train engineer, fit athletic build, toned, oval face, intense sharp upturned eyes, softly sloped brows, straight defined nose, charcoal gray short cropped hair, clean shaven, wearing pilot uniform with epaulettes, confident direct gaze, bright confident grin, chest-up bust portrait facing viewer, face in upper half of frame, starry night sky background in steel and dark slate tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
 ```
 
-### c042 · 시원 (SR) — 25세 치과의사 · fit · 수염자국
+### c042 · 시원 (SR) — 29세 치과의사 · fit · 수염자국
 ```
-handsome korean young man in his early-mid 20s (25), dentist, fit athletic build, toned, strong square jaw, balanced almond eyes, straight thick brows, prominent strong nose, black-brown undercut hairstyle, light stubble, wearing medical scrubs, warm smiling eyes, gentle smile, chest-up bust portrait facing viewer, face in upper half of frame, floating music notes, concert glow background in orange and red tones, mature masculine anime illustration, bara manga style, thick clean lineart, highly detailed rendering, dramatic rim light, glowing particles, SFW --ar 20:27
+handsome korean man in his late 20s to early 30s (29), youthful, dentist, fit athletic build, toned, strong square jaw, balanced almond eyes, straight thick brows, prominent strong nose, black-brown undercut hairstyle, light stubble, wearing medical scrubs, warm smiling eyes, gentle smile, chest-up bust portrait facing viewer, face in upper half of frame, floating music notes, concert glow background in orange and red tones, mature masculine anime illustration, bara manga style, thick clean lineart, highly detailed rendering, dramatic rim light, glowing particles, SFW --ar 20:27
 ```
 
 ### c043 · 무영 (N) — 36세 태권도 사범 · muscular · 민면
@@ -250,9 +250,9 @@ handsome korean man in his late 20s to early 30s (28), youthful, streetball play
 handsome korean mature man (39), subtle smile lines, tour guide, slim graceful build, elegant proportions, sharp V-line chin, soft gentle round downturned eyes, softly sloped brows, refined short nose, brown buzz cut, clean shaven, wearing fitted t-shirt, playful wink, gentle smile, chest-up bust portrait facing viewer, face in upper half of frame, ocean waves and sea spray background in orange and red tones, mature masculine anime illustration, bara manga style, thick clean lineart, highly detailed rendering, dramatic rim light, glowing particles, SFW --ar 20:27
 ```
 
-### c047 · 한결 (N) — 20세 회계사 · slim · 수염자국
+### c047 · 한결 (N) — 34세 회계사 · slim · 수염자국
 ```
-handsome korean young man in his early-mid 20s (20), accountant, slim graceful build, elegant proportions, sharp V-line chin, soft gentle round downturned eyes, angular masculine brows, prominent strong nose, black short cropped hair, light stubble, wearing tailored suit with necktie, small gold earring, playful wink, charming smirk, chest-up bust portrait facing viewer, face in upper half of frame, dramatic god rays background in steel and dark slate tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
+handsome korean man in his late 20s to early 30s (34), youthful, accountant, slim graceful build, elegant proportions, sharp V-line chin, soft gentle round downturned eyes, angular masculine brows, prominent strong nose, black short cropped hair, light stubble, wearing tailored suit with necktie, small gold earring, playful wink, charming smirk, chest-up bust portrait facing viewer, face in upper half of frame, dramatic god rays background in steel and dark slate tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
 ```
 
 ### c048 · 온유 (R) — 31세 도예가 · fit · 민면
@@ -265,9 +265,9 @@ handsome korean man in his late 20s to early 30s (31), youthful, ceramic artist,
 handsome korean young man in his early-mid 20s (24), art college student, slim graceful build, elegant proportions, strong square jaw, balanced almond eyes, angular masculine brows, refined short nose, chestnut brown curly hair, clean shaven, wearing black gakuran school uniform with gold buttons, confident direct gaze, gentle smile, chest-up bust portrait facing viewer, face in upper half of frame, starry night sky background in amber and bronze tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
 ```
 
-### c050 · 해성 (R) — 23세 건축가 · fit · 민면
+### c050 · 해성 (R) — 29세 건축가 · fit · 민면
 ```
-handsome korean young man in his early-mid 20s (23), architect, fit athletic build, toned, oval face, balanced almond eyes, angular masculine brows, prominent strong nose, black middle-parted hair, clean shaven, wearing button-up shirt with rolled sleeves, confident direct gaze, charming smirk, chest-up bust portrait facing viewer, face in upper half of frame, floating music notes, concert glow background in vivid and deep violet tones, mature masculine anime illustration, bara manga style, thick clean lineart, polished cel shading, rim lighting, SFW --ar 20:27
+handsome korean man in his late 20s to early 30s (29), youthful, architect, fit athletic build, toned, oval face, balanced almond eyes, angular masculine brows, prominent strong nose, black middle-parted hair, clean shaven, wearing button-up shirt with rolled sleeves, confident direct gaze, charming smirk, chest-up bust portrait facing viewer, face in upper half of frame, floating music notes, concert glow background in vivid and deep violet tones, mature masculine anime illustration, bara manga style, thick clean lineart, polished cel shading, rim lighting, SFW --ar 20:27
 ```
 
 ### c051 · 도영 (N) — 34세 서퍼 · muscular · 민면
@@ -337,7 +337,7 @@ handsome korean distinguished man in his mid-late 40s (46), crow's feet and fain
 
 ### c064 · 지훈 (N) — 27세 씨름 선수 · bulky · 수염
 ```
-handsome korean man in his late 20s to early 30s (27), youthful, korean ssireum wrestler, big burly bear build, heavyset thick muscle, powerful frame, strong square jaw, soft gentle round downturned eyes, softly sloped brows, prominent strong nose, warm brown buzz cut, full well-groomed beard, wearing traditional korean ssireum satba sash worn diagonally across chest and around waist, athletic bare torso in traditional sport context, confident direct gaze, bright confident grin, chest-up bust portrait facing viewer, face in upper half of frame, snowy mountain peaks background in warm gray and umber tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
+handsome korean man in his late 20s to early 30s (27), youthful, korean ssireum wrestler, big burly bear build, heavyset thick muscle, powerful frame, strong square jaw, soft gentle round downturned eyes, softly sloped brows, prominent strong nose, warm brown buzz cut, full well-groomed beard, wearing traditional korean ssireum satba sash wrapped around waist, gripping stance, athletic bare torso in traditional sport context, confident direct gaze, bright confident grin, chest-up bust portrait facing viewer, face in upper half of frame, snowy mountain peaks background in warm gray and umber tones, mature masculine anime illustration, bara manga style, thick clean lineart, clean cel shading, SFW --ar 20:27
 ```
 
 ### c065 · 민규 (R) — 38세 국악인 · bulky · 민면
@@ -397,7 +397,7 @@ handsome korean man in his late 20s to early 30s (28), youthful, boxing coach, m
 
 ### c076 · 상윤 (SSR) — 41세 씨름 천하장사 · bulky · 수염
 ```
-handsome korean mature man (41), subtle smile lines, ssireum grand champion, big burly bear build, heavyset thick muscle, powerful frame, strong square jaw, intense sharp upturned eyes, straight thick brows, prominent strong nose, brown buzz cut, full well-groomed beard, wearing traditional korean ssireum satba sash worn diagonally across chest and around waist, athletic bare torso in traditional sport context, confident direct gaze, gentle smile, chest-up bust portrait facing viewer, face in upper half of frame, falling flower petals background in emerald and aqua tones, mature masculine anime illustration, bara manga style, thick clean lineart, masterpiece, cinematic lighting, iridescent particle effects, ornate golden atmosphere, SFW --ar 20:27
+handsome korean mature man (41), subtle smile lines, ssireum grand champion, big burly bear build, heavyset thick muscle, powerful frame, strong square jaw, intense sharp upturned eyes, straight thick brows, prominent strong nose, brown buzz cut, full well-groomed beard, wearing traditional korean ssireum satba sash wrapped around waist, gripping stance, athletic bare torso in traditional sport context, confident direct gaze, gentle smile, chest-up bust portrait facing viewer, face in upper half of frame, falling flower petals background in emerald and aqua tones, mature masculine anime illustration, bara manga style, thick clean lineart, masterpiece, cinematic lighting, iridescent particle effects, ornate golden atmosphere, SFW --ar 20:27
 ```
 
 ### c077 · 태검 (N) — 27세 발레 강사 · fit · 수염자국
