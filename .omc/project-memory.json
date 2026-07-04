@@ -9,7 +9,7 @@
     "runtime": null
   },
   "build": {
-    "buildCommand": null,
+    "buildCommand": "cd \"C:/Users/dydrm/projects/daily/2026-06-20-salary-net-pay\" && timeout 120 npx tsc --noEmit 2>&1 | head -30; echo \"EXIT:${PIPESTATUS[0]}\"",
     "testCommand": null,
     "lintCommand": null,
     "devCommand": null,

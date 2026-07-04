@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>품질 리뷰 대시보드 — 프로젝트별 만족도 | TomatoEggCat</title>
+<meta name="description" content="모든 프로젝트를 리뷰 루프로 개선한 결과를 프로젝트별 만족도(0~100)와 통과·검토필요 상태로 한 화면에 보여주는 운영 전용 대시보드입니다." />
+<meta name="robots" content="noindex" />
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding:22px 16px 80px}
+h1{font-size:24px;font-weight:900;margin:6px 0 2px;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:#9ca3af;font-size:13.5px;margin:0 0 18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 22px}
+.stat{background:#141414;border:1px solid #232323;border-radius:14px;padding:14px 12px;text-align:center}
+.stat b{display:block;font-size:26px;font-weight:900;line-height:1.1}
+.stat span{font-size:12px;color:#9ca3af}
+.stat.pass b{color:#34d399}.stat.rev b{color:#e0a44d}.stat.run b{color:#7aa2ff}.stat.avg b{color:#fff}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.filters button{background:#161616;border:1px solid #2a2a2a;color:#c4c9d2;border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer}
+.filters button.on{background:#10b981;color:#06281f;border-color:#10b981;font-weight:800}
+.card{background:#131313;border:1px solid #232323;border-radius:16px;padding:16px 16px 14px;margin:0 0 12px}
+.card .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card h2{font-size:16.5px;font-weight:800;margin:0;flex:1;min-width:150px}
+.score{font-size:30px;font-weight:900;line-height:1}
+.score.s-pass{color:#34d399}.score.s-rev{color:#e0a44d}.score.s-run{color:#6b7280}
+.pill{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.pill.pass{background:#0c3b2b;color:#34d399}.pill.rev{background:#3a2a10;color:#e0a44d}.pill.run{background:#16283f;color:#7aa2ff}
+.meta{color:#6b7280;font-size:12px;margin:8px 0 0;display:flex;gap:12px;flex-wrap:wrap}
+.meta a{color:#7aa2ff;text-decoration:none}
+.axes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0 0}
+.ax{font-size:11px;color:#9ca3af;text-align:center}
+.bar{height:6px;border-radius:4px;background:#242424;margin:4px 0 3px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px}
+.ax b{color:#e5e7eb;font-weight:700;font-size:12px}
+.detail{margin:14px 0 0;border-top:1px solid #202020;padding-top:12px;display:none}
+.detail.open{display:block}
+.detail h3{font-size:12px;color:#9ca3af;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.detail ul{margin:0 0 12px;padding-left:18px;font-size:13.5px;color:#c4c9d2}
+.detail li{margin:4px 0}
+.toggle{background:none;border:0;color:#7aa2ff;font-size:12.5px;cursor:pointer;padding:8px 0 0}
+.empty{color:#6b7280;text-align:center;padding:40px 0}
+@media (max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.axes{grid-template-columns:repeat(5,1fr);gap:4px}.ax{font-size:9.5px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔍 품질 리뷰 대시보드</h1>
+  <p class="sub">프로젝트별 유저 만족도(0~100)와 통과·검토필요 상태. 게이트 <b id="gateN">80</b>점 · 항목당 최대 <b id="maxN">5</b>루프. <span id="updated"></span></p>
+
+  <div class="stats" id="stats"></div>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">전체</button>
+    <button data-f="pass">통과</button>
+    <button data-f="review-needed">검토필요</button>
+    <button data-f="reviewing">진행중</button>
+  </div>
+  <div id="list"></div>
+</div>
+<script>
+const AXES = [["functional","기능"],["mobileUX","모바일"],["design","디자인"],["content","콘텐츠"],["realValue","실사용"]];
+function barColor(v){ return v>=80?"#34d399":v>=60?"#e0a44d":"#ef6b6b"; }
+function scoreCls(s){ return s==="pass"?"s-pass":s==="review-needed"?"s-rev":"s-run"; }
+function pill(s){ return s==="pass"?['pass','통과']:s==="review-needed"?['rev','검토필요']:['run','진행중']; }
+let DATA=null, filter="all";
+function render(){
+  const ps = DATA.projects.filter(p=> filter==="all"?true:p.status===filter);
+  const s = DATA.summary||{};
+  document.getElementById("gateN").textContent = DATA.gate??80;
+  document.getElementById("maxN").textContent = DATA.maxLoops??5;
+  document.getElementById("updated").textContent = DATA.updatedAt?("· 갱신 "+DATA.updatedAt):"";
+  document.getElementById("stats").innerHTML =
+    `<div class="stat avg"><b>${s.avgOverall??0}</b><span>평균 만족도</span></div>
+     <div class="stat pass"><b>${s.pass??0}</b><span>통과 (≥80)</span></div>
+     <div class="stat rev"><b>${s.reviewNeeded??0}</b><span>검토필요</span></div>
+     <div class="stat run"><b>${s.reviewing??0}</b><span>진행중</span></div>`;
+  const list = document.getElementById("list");
+  if(!ps.length){ list.innerHTML='<div class="empty">해당 상태의 프로젝트가 없습니다.</div>'; return; }
+  list.innerHTML = ps.sort((a,b)=>(b.overall||0)-(a.overall||0)).map((p,i)=>{
+    const [pc,pt]=pill(p.status);
+    const axes = AXES.map(([k,l])=>{const v=(p.axes&&p.axes[k])||0;return `<div class="ax">${l}<div class="bar"><i style="width:${v}%;background:${barColor(v)}"></i></div><b>${v}</b></div>`;}).join("");
+    const find = (p.findings&&p.findings.length)?`<h3>핵심 지적</h3><ul>${p.findings.map(f=>`<li>${f}</li>`).join("")}</ul>`:"";
+    const chg = (p.changes&&p.changes.length)?`<h3>재개발 반영</h3><ul>${p.changes.map(c=>`<li>${c}</li>`).join("")}</ul>`:"";
+    const hist = (p.history&&p.history.length)?`<h3>루프 추이</h3><ul>${p.history.map(h=>`<li>루프 ${h.loop}: ${h.overall}점</li>`).join("")}</ul>`:"";
+    return `<div class="card">
+      <div class="top">
+        <div class="score ${scoreCls(p.status)}">${p.overall||"–"}</div>
+        <h2>${p.name||p.slug}</h2>
+        <span class="pill ${pc}">${pt}</span>
+      </div>
+      <div class="meta"><span>리뷰 ${p.reviewerAvg||0} · 유저 ${p.userAvg||0}</span><span>루프 ${p.loops||0}/${DATA.maxLoops??5}</span>${p.live?`<a href="${p.live}" target="_blank" rel="noopener">라이브 ↗</a>`:""}</div>
+      <div class="axes">${axes}</div>
+      ${(find||chg||hist)?`<button class="toggle" onclick="this.nextElementSibling.classList.toggle('open')">상세 지적·변경 ▾</button><div class="detail">${find}${chg}${hist}</div>`:""}
+    </div>`;
+  }).join("");
+}
+document.getElementById("filters").addEventListener("click",e=>{
+  if(e.target.tagName!=="BUTTON")return;
+  filter=e.target.dataset.f;
+  [...document.querySelectorAll("#filters button")].forEach(b=>b.classList.toggle("on",b===e.target));
+  render();
+});
+fetch("/data/review-scores.json",{cache:"no-store"}).then(r=>r.json()).then(d=>{DATA=d;render();})
+  .catch(()=>{document.getElementById("list").innerHTML='<div class="empty">review-scores.json을 불러오지 못했습니다.</div>';});
+</script>
+</body>
+</html>

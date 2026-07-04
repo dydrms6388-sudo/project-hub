@@ -1,0 +1,141 @@
+{
+  "updatedAt": "2026-07-04",
+  "gate": 80,
+  "maxLoops": 5,
+  "summary": { "total": 5, "pass": 5, "reviewNeeded": 0, "reviewing": 0, "avgOverall": 82 },
+  "projects": [
+    {
+      "slug": "korean-age",
+      "name": "만 나이 계산기",
+      "source": "daily/2026-06-21-korean-age",
+      "live": "https://korean-age.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": { "functional": 84, "mobileUX": 80, "design": 88, "content": 85, "realValue": 90 },
+      "reviewerAvg": 85,
+      "userScores": [84,86,88,74,85],
+      "userAvg": 83,
+      "overall": 84,
+      "findings": [
+        "만나이/연나이/세는나이/개월·일 계산 정확, 생일 전·당일·후 경계 및 윤년(2/29) 처리 검증 통과.",
+        "별자리 경계 버그(발견→수정): starSignOf md>=1220 조건이 1222여야 함 → 12/20·12/21 출생이 사수자리 대신 염소자리로 잘못 표시되던 결함.",
+        "실사용 가치 높음: 운전/성년/음주(연나이)/정년/경로우대/국민연금(출생연도별 차등) D-day, 1000일 마일스톤, 탄생석·탄생화, 가족·친구 저장, 공유링크.",
+        "SEO/수익화 완비: force-static, FAQ+WebApplication JSON-LD, AdSlot·쿠팡·애드센스 유지.",
+        "모바일 접근성 약점: 소리토글·빠른입력 칩·삭제 ✕ 버튼이 py-1로 44px 미만 터치타겟(다음 루프 후보)."
+      ],
+      "changes": [
+        "별자리 경계 버그 수정: src/lib/zodiac.ts starSignOf md>=1220 → 1222 (12/20·12/21이 사수자리로 정확히 표시)."
+      ],
+      "history": [ {"loop":0,"overall":84}, {"loop":1,"overall":84} ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "water-tracker",
+      "name": "하루 물 마시기",
+      "source": "daily/2026-06-22-water-tracker",
+      "live": "https://dydrms-water-tracker.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": { "functional": 84, "mobileUX": 82, "design": 88, "content": 87, "realValue": 74 },
+      "reviewerAvg": 83,
+      "userScores": [84,80,87,78,79],
+      "userAvg": 82,
+      "overall": 82,
+      "findings": [
+        "권장량 계산 견고(33ml/kg + 활동·기후 보정, 1200~4500ml 클램프), 컵 기록/undo/reset/스트릭/7일 히스토리/음료 수분기여율 구현.",
+        "자정 초기화는 상호작용 시 ensureToday로만 처리 — 자정 넘겨 열어둔 화면은 자동 갱신 안 됨(경미).",
+        "리마인더/알림 기능 전무 — 메타 키워드 '물 알림'을 내세우지만 미구현. 물 앱 최다 요청 기능, realValue·리텐션 최대 공백.",
+        "하단 시트 모달에 safe-area-inset 미적용, 3D Canvas 저사양 부하 우려."
+      ],
+      "changes": [],
+      "history": [ {"loop":0,"overall":82} ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "salary-net-pay",
+      "name": "월급 실수령액 계산기",
+      "source": "daily/2026-06-20-salary-net-pay",
+      "live": "https://salary-net-pay.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": { "functional": 82, "mobileUX": 80, "design": 85, "content": 80, "realValue": 85 },
+      "reviewerAvg": 82,
+      "userScores": [80,80,86,74,82],
+      "userAvg": 80,
+      "overall": 81,
+      "findings": [
+        "핵심 정확성 결함(수정됨): 월 소득세를 연 결정세액÷12로 계산해 실제 급여명세서(간이세액표 원천징수)보다 과대 계상 → 헤드라인 실수령액이 경쟁 계산기보다 낮게 표시.",
+        "식대 비과세 30만 버튼이 한도(월 20만) 초과분까지 전액 비과세 처리(수정됨).",
+        "Pro 결제 링크가 죽은 Stripe 테스트 URL이며 클릭 시 무조건 로컬 언락(수정됨).",
+        "CoinScene WebGL 배경 상시 마운트 — 저사양 모바일 성능/배터리 부담(다음 루프 후보).",
+        "리텐션 요소(시나리오 비교·인상률 시뮬·백분위·딥링크 공유)는 강점."
+      ],
+      "changes": [
+        "소득세를 국세청 간이세액표 구간보간(가족수 정액감액)으로 교체 — 앵커점 실제표 일치(월 250만→41,630, 300만→84,850, 350만→127,220, 400만→219,880).",
+        "식대 비과세 월 20만원 한도(MEAL_NONTAX_CAP) 캡 + 입력 힌트 추가.",
+        "연말정산 예상(환급/추가납부) 기능 추가 — 월 원천징수 합계 vs 연 결정세액(자녀세액공제 반영) 차액 색상 칩.",
+        "죽은 Stripe 테스트 링크 제거 → PRO_LINK를 NEXT_PUBLIC_PRO_LINK 환경변수로 이전.",
+        "FAQ 갱신(간이세액표 방식·연말정산 항목). tsc 통과, AdSense/SEO/쿠팡 슬롯 보존."
+      ],
+      "history": [ {"loop":0,"overall":76}, {"loop":1,"overall":81} ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "albapay",
+      "name": "알바비 계산기",
+      "source": "daily/2026-06-20-albapay",
+      "live": "https://albapay.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": { "functional": 79, "mobileUX": 84, "design": 82, "content": 77, "realValue": 77 },
+      "reviewerAvg": 80,
+      "userScores": [81,80,79,72,83],
+      "userAvg": 79,
+      "overall": 80,
+      "findings": [
+        "주휴수당·야간 0.5배·연장 1.5배·최저임금 미달 경고·3.3%/4대보험 공제 등 핵심 계산 정확(도메인 신뢰도 양호).",
+        "듀얼모드(개인/그룹) 부재 — 사장님용 다중 알바생 총액/조건 비교 모드 없음(realValue 약점, 잔여 과제).",
+        "viewport-fit·safe-area-inset 미적용으로 iPhone 홈바/노치 겹침(수정됨).",
+        "canvas-confetti가 의존성에 있으나 import 안 된 데드 코드(수정됨).",
+        "실질 시급·일급·연봉 등 파생 지표 노출 부족(수정됨)."
+      ],
+      "changes": [
+        "결과 카드에 주급/월급/연봉 세그먼트 토글 추가(periodVal 전환).",
+        "pay.ts에 effectiveHourly(주휴 포함 실질 시급)·dailyGross·yearlyGross 계산 추가·노출.",
+        "viewportFit:'cover' + .safe-b(env(safe-area-inset-bottom))로 홈바 겹침 해소.",
+        "미사용 canvas-confetti를 공유 시 동적 import 축포로 연결.",
+        "'주급(주휴 포함)' Stat을 '1일 평균'으로 교체. tsc 통과, 광고/SEO/면책 보존."
+      ],
+      "history": [ {"loop":0,"overall":73}, {"loop":1,"overall":80} ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "split-bill-clear",
+      "name": "더치페이 정산",
+      "source": "daily/2026-06-21-split-bill-clear",
+      "live": "https://split-bill-clear.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": { "functional": 86, "mobileUX": 83, "design": 86, "content": 84, "realValue": 83 },
+      "reviewerAvg": 84,
+      "userScores": [82,82,85,82,83],
+      "userAvg": 83,
+      "overall": 84,
+      "findings": [
+        "불균등 분담(각자 다르게)이 types/settle엔 존재하나 UI에서 도달 불가 — 모든 지출이 mode:'equal' 하드코딩(수정됨). 안 마신 사람 제외 등 실사용에 치명적.",
+        "정수 minor-unit 연산으로 잔돈 드리프트 없음, 나머지 분배 정확, minimizeTransfers 그리디 최소송금 — 핵심 로직 견고.",
+        "다중통화·공유링크·자동저장·여행 아카이브·3D 히어로 등 완성도 높음, SEO/AdSense/쿠팡 정상.",
+        "삭제 ✕·송금 체크박스 일부 터치타겟 24px로 44px 미만(수정됨)."
+      ],
+      "changes": [
+        "ExpenseSection에 '똑같이 N빵/각자 다르게' 분할모드 토글 + custom(불균등) 모드 UI 신설.",
+        "참여자별 금액 직접입력 + 실시간 합계 검증(남음/초과/딱 맞아요), 합 불일치 시 제출 차단.",
+        "'균등 채우기' 버튼으로 equalShares 자동 프리필, custom map을 mode:'custom'으로 배선.",
+        "지출 리스트에 '각자 다르게' 배지, 분할모드/참여자 칩/커스텀 입력에 min-h-[44px].",
+        "node로 custom 정산 수학 검증(A5000/B10000/C15000 무드리프트). tsc 통과."
+      ],
+      "history": [ {"loop":0,"overall":79}, {"loop":1,"overall":84} ],
+      "reviewedAt": "2026-07-04"
+    }
+  ]
+}

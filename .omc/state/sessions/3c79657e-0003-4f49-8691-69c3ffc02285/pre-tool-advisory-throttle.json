@@ -1,14 +1,46 @@
 {
   "version": 1,
   "entries": {
+    "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
+      "last_emitted_at_ms": 1783177819285,
+      "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
+    },
+    "445ed27a3872b681d98190bae61ccb84954e1bc4e140df5370be958dee776b3a": {
+      "last_emitted_at_ms": 1783177786940,
+      "message": "Verify changes work after editing. Test functionality before marking complete."
+    },
     "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
-      "last_emitted_at_ms": 1783173231691,
+      "last_emitted_at_ms": 1783175660463,
       "message": "Read multiple files in parallel when possible for faster analysis."
     },
-    "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
-      "last_emitted_at_ms": 1783173057410,
-      "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
+    "459c54e5f35d6a58dcd90d2aecc21fa6d1f35d241bc5b134c506f87dc7b6d67b": {
+      "last_emitted_at_ms": 1783174974212,
+      "message": "Combine searches in parallel when investigating multiple patterns."
+    },
+    "526fdb2b6a5bf86724643d47cbb7de899598f03997ccf6db48806c07df8035f0": {
+      "last_emitted_at_ms": 1783174606129,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+redev water-tracker"
+    },
+    "c1afa24e5fea7e6449cb0c173d3bc76b32ead1a133ba7b9db28c1c6c30ec7fc9": {
+      "last_emitted_at_ms": 1783174593989,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+redev korean-age"
+    },
+    "69a3f1c29891d3765d3809367cda95d3aa40611aa43c4113652c6b3166e2b486": {
+      "last_emitted_at_ms": 1783174585055,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+redev split-bill-clear"
+    },
+    "15e1c41cf3c35598887dc5930101b0845a168250264537080ac12292f0004f81": {
+      "last_emitted_at_ms": 1783174572955,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+redev albapay"
+    },
+    "41dcbfa1cb19d9b05405f37fdf8126033b5f6f7308ba4ea5c50496c72a888b29": {
+      "last_emitted_at_ms": 1783174562237,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+redev salary-net-pay"
+    },
+    "1bb6914bc42b891c26d46c8ae2fd4f44071f59862e89dc550f4c82877b700216": {
+      "last_emitted_at_ms": 1783174425784,
+      "message": "The boulder never stops. Continue until all tasks complete."
     }
   },
-  "updated_at": "2026-07-04T13:53:51.691Z"
+  "updated_at": "2026-07-04T15:10:19.285Z"
 }
