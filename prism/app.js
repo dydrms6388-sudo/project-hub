@@ -71,7 +71,7 @@
     { key: "superlike", em: "⭐", name: "슈퍼라이크 팩", desc: "일일 한도와 무관하게 쓰는 슈퍼라이크 5개", packs: [{ n: 5, price: 4500 }] },
     { key: "boostticket", em: "🚀", name: "부스트 1회권", desc: "플랜과 무관하게 30분 부스트 — 무료 플랜도 OK", packs: [{ n: 1, price: 3900 }] },
     { key: "refill", em: "💜", name: "좋아요 리필", desc: "오늘의 좋아요 20개 즉시 충전", packs: [{ n: 1, price: 1900 }] },
-    { key: "gachaticket", em: "🎴", name: "크러시 팩 뽑기권", desc: "카드 1장 뽑기 · 확률 N 60% / R 27% / SR 10% / SSR 3% · 10회 내 SR+ 확정", packs: [{ n: 1, price: 1500 }, { n: 10, price: 12900 }] },
+    { key: "gachaticket", em: "🎴", name: "크러시 팩 뽑기권", desc: "카드 1장 · N60/R27/SR10/SSR3% · SR+ 10회·SSR 40회 천장 · SSR의 50%는 주간 픽업(픽뚫 시 다음 확정)", packs: [{ n: 1, price: 1500 }, { n: 10, price: 12900 }] },
   ];
   const itemDiscount = () => (S.premium.plan === "black" ? 0.15 : S.premium.plan === "plus" ? 0.05 : 0);
   const itemPrice = (base) => Math.round(base * (1 - itemDiscount()) / 100) * 100;
@@ -1529,7 +1529,7 @@
         </div>
       </div>
       <p class="tiny" style="padding:0 18px 4px">천장: SR+ 확정까지 <b>${Math.max(0, 10 - (S.gacha.pity || 0) - 1) + 1}회</b> · SSR 확정까지 <b>${Math.max(0, 40 - (S.gacha.ssrPity || 0))}회</b></p>
-      ${(() => { const pk = pickupSSR(); return pk ? `<div class="pickup-row"><span class="pickup-tag">이번 주 픽업</span> <b style="color:${CD.RARITY.SSR.color}">SSR ${esc(pk.name)}</b> · ${pk.age}세 ${esc(pk.job)} — SSR 당첨 시 <b>${S.gacha.guarantee ? "100% (픽뚫 보장)" : "50%"}</b> 확률로 이 카드${S.gacha.guarantee ? "" : " · 빗나가면 다음 SSR 확정"} · 천장 SSR은 픽업 확정 <button class="pickup-view" data-pkview="${pk.id}">미리보기</button></div>` : ""; })()}
+      ${(() => { const pk = pickupSSR(); return pk ? `<div class="pickup-row"><span class="pickup-tag">이번 주 픽업</span> <b style="color:${CD.RARITY.SSR.color}">SSR ${esc(pk.name)}</b> · ${pk.age}세 ${esc(pk.job)} — SSR 당첨 시 <b>${S.gacha.guarantee ? "100% (픽뚫 보장)" : "50%"}</b> 확률로 이 카드${S.gacha.guarantee ? "" : " · 빗나가면 다음 SSR 확정"} · 천장 SSR은 픽업 확정 · 보장은 픽업 변경 시 새 픽업에 적용 <button class="pickup-view" data-pkview="${pk.id}">미리보기</button></div>` : ""; })()}
       <div class="fx-row" style="padding:0 16px 10px;margin:0" id="alb-filter">${FILTERS.map(([k, lb2]) =>
         `<button class="fx-chip ${albumFilter === k ? "on" : ""}" data-f="${k}" style="${k === albumFilter ? "border-color:var(--vio);color:var(--tx)" : ""}">${lb2}${k === "owned" ? ` ${owned}` : ""}</button>`).join("")}</div>
       <div class="ccard-grid">${list.map((c) => {

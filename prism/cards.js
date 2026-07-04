@@ -53,7 +53,9 @@
         <path d="M89,40 C84,46 80,52 78,58 M111,40 C116,46 120,52 122,58" stroke="${hi}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>`;
       case "pomp": return `<path d="M58,90 C58,58 64,32 92,26 C120,20 146,38 143,90 C141,62 129,48 109,46 C91,44 74,50 66,64 C60,74 59,82 58,90Z" fill="${color}"/>
         <path d="M72,46 C82,36 96,32 110,34" stroke="${hi}" stroke-width="4" fill="none" stroke-linecap="round" opacity=".55"/>`;
-      case "buzz": default: return `<path d="M59,88 C59,50 79,38 100,38 C121,38 141,50 141,88 C137,66 121,57 100,57 C79,57 63,66 59,88Z" fill="${color}" opacity=".92"/>`;
+      case "buzz": default: return `<path d="M59,88 C59,50 79,38 100,38 C121,38 141,50 141,88 C137,66 121,57 100,57 C79,57 63,66 59,88Z" fill="${color}" opacity=".95"/>
+        <path d="M63,80 C64,66 74,58 88,56 M137,80 C136,66 126,58 112,56" stroke="${shade(color, 0.7)}" stroke-width="2.5" fill="none" opacity=".6"/>
+        <path d="M62,84 C68,64 82,56 100,56 C118,56 132,64 138,84" stroke="${color}" stroke-width="2.5" fill="none" opacity=".9"/>`;
     }
   }
   function eyesSVG(kind, shape) {
@@ -194,9 +196,11 @@
         return `${base(skin)}${traps}${chest}${delts}${abs}
         <path d="M30,262 Q54,250 74,252 M170,262 Q146,250 126,252" stroke="${shade(c1, 1.1)}" stroke-width="5" fill="none" opacity=".5"/>`;
       }
-      case "ssireum": { // 씨름 — 샅바
+      case "ssireum": { // 씨름 — 샅바 (어깨 대각 밴드 + 허리 밴드)
         const abs = `<path d="M100,236 L100,258 M88,244 Q100,249 112,244" stroke="${muscle}" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/>`;
         return `${base(skin)}${traps}${chest}${delts}${abs}
+        <path d="M104,186 L124,200 L64,270 L42,256Z" fill="${c1}" opacity=".92"/>
+        <path d="M108,190 L118,197" stroke="${shade(c1, 0.7)}" stroke-width="2.4"/>
         <path d="M46,270 L58,256 Q100,246 142,256 L154,270 L46,270Z" fill="${c1}"/>
         <path d="M58,256 Q100,246 142,256" stroke="${shade(c1, 0.7)}" stroke-width="3" fill="none"/>
         <path d="M134,258 L149,245 L156,253 L142,264Z" fill="${shade(c1, 0.85)}"/>
@@ -216,12 +220,12 @@
       case "soccer": return `${base(c1)}
         <path d="M100,196 L86,182 L78,192 L94,204Z M100,196 L114,182 L122,192 L106,204Z" fill="#fff"/>
         <path d="M66,196 L72,270 M134,196 L128,270" stroke="${shade(c1, 0.7)}" stroke-width="6" opacity=".8"/>
-        <text x="100" y="248" font-size="34" font-weight="800" fill="#fff" text-anchor="middle" font-family="sans-serif">10</text>`;
+        <text x="100" y="236" font-size="32" font-weight="800" fill="#fff" text-anchor="middle" font-family="sans-serif">10</text>`;
       case "basketball": return `${base(skin)}${traps}${chest}${delts}
         <path d="M58,272 C60,222 70,200 84,192 C94,204 106,204 116,192 C130,200 140,222 142,272Z" fill="${c1}"/>
         <path d="M84,192 C94,204 106,204 116,192" stroke="#fff" stroke-width="3" fill="none"/>
         <path d="M62,240 C64,220 70,204 82,194 M138,240 C136,220 130,204 118,194" stroke="#fff" stroke-width="3" fill="none" opacity=".85"/>
-        <text x="100" y="250" font-size="30" font-weight="800" fill="#fff" text-anchor="middle" font-family="sans-serif">23</text>`;
+        <text x="100" y="238" font-size="28" font-weight="800" fill="#fff" text-anchor="middle" font-family="sans-serif">23</text>`;
       case "badminton": return `${base("#f8fafc")}
         <path d="M100,196 L88,184 L80,194 L94,206Z M100,196 L112,184 L120,194 L106,206Z" fill="${c1}"/>
         <path d="M100,206 L100,236" stroke="#cbd5e1" stroke-width="2.5"/><circle cx="100" cy="214" r="2.2" fill="#cbd5e1"/><circle cx="100" cy="228" r="2.2" fill="#cbd5e1"/>
@@ -309,7 +313,7 @@
         <g transform="translate(100,0) scale(${B},1) translate(-100,0)">
           ${outfitSVG(c.outfit[0], c.outfit[1], c.outfit[2] || c.outfit[1], skin, skinD)}
           ${(c.build === "muscular" || c.build === "bulky") && ["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
-            ? `<path d="M84,152 C74,160 62,168 50,176 M116,152 C126,160 138,168 150,176" stroke="${skinD}" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".7"/>` : ""}
+            ? `<path d="M86,166 C78,174 69,180 60,186 M114,166 C122,174 131,180 140,186" stroke="${skinD}" stroke-width="3.2" fill="none" stroke-linecap="round" opacity=".65"/>` : ""}
           ${c.build === "bulky" && ["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
             ? `<path d="M54,248 Q100,262 146,248" stroke="${shade(skin, 0.78)}" stroke-width="2.6" fill="none" opacity=".55"/>` : ""}
           ${c.build === "bulky" && !["tank", "swim", "ssireum", "basketball"].includes(c.outfit[0])
@@ -417,7 +421,7 @@
       age: job[1] === "school" ? 20 + ((i * 11) % 6) : 20 + ((i * 11) % 30),
       rarity,
       skin: (i * 7) % 4,
-      hair: [job[1] === "swim" ? "buzz" : HAIR_STYLES[(i * 13) % 6], HAIR_COLORS[(i * 17) % 10]],
+      hair: [job[1] === "swim" ? ["buzz", "crop", "undercut"][i % 3] : HAIR_STYLES[(i * 13) % 6], HAIR_COLORS[(i * 17) % 10]],
       outfit: [job[1], job[2], job[3] || job[2]],
       acc: job[5] || (NO_ACC.includes(job[1]) ? "none" : ACCS[(i * 19) % ACCS.length]),
       eye: eyeRoll < 3 ? "wink" : eyeRoll < 11 ? "open" : "smile",
@@ -428,7 +432,35 @@
       line: LINES[(i * 43) % LINES.length],
     });
   }
-  // ── 후처리 1: 완전 동일 외형(쌍둥이) 제거 — 충돌 시 눈썹→코 순서로 섭동
+  // ── 후처리 2: 생성 SSR 나이 분산(20~40대) + 슬림 청년 공급 확보
+  {
+    const genSSR = CHARS.filter((c) => c.rarity === "SSR" && +c.id.slice(1) >= 17);
+    const ages = [23, 26, 29, 32, 35, 38, 41, 44, 47, 49];
+    genSSR.forEach((c, k) => {
+      if (c.outfit[0] !== "school") c.age = ages[k % ages.length];
+      if (k % 3 === 2 && !["ssireum", "fire"].includes(c.outfit[0])) { c.build = "slim"; c.face.eyeShape = 2; c.stubble = 0; }
+    });
+  }
+  // ── 후처리 3: 직업-나이 개연성 (양방향)
+  CHARS.forEach((c) => {
+    if (/사범|장인|지배인|천하장사|대표|오너/.test(c.job) && c.age < 30) c.age = Math.min(49, c.age + 13);
+    if (/강사/.test(c.job) && c.age < 25) c.age = 25 + (+c.id.slice(1) % 5);
+    // 노장 현역 → 직함 전환 (나이 분산 부작용 보정)
+    if (/프로게이머/.test(c.job) && c.age > 38) c.job = "게임단 감독";
+    else if (/선수$/.test(c.job) && c.age > 42) c.job = c.job.replace(/선수$/, "코치");
+  });
+
+  // 기존 16장 나이·체형 부여
+  const BASE_AGES = { c01: 26, c02: 23, c03: 29, c04: 31, c05: 27, c06: 28, c07: 33, c08: 30, c09: 27, c10: 34, c11: 32, c12: 36, c13: 29, c14: 38, c15: 24, c16: 26 };
+  const BASE_BUILDS = { c01: "fit", c02: "slim", c03: "slim", c04: "muscular", c05: "fit", c06: "fit", c07: "bulky", c08: "muscular", c09: "fit", c10: "fit", c11: "fit", c12: "bulky", c13: "muscular", c14: "fit", c15: "slim", c16: "slim" };
+  const BASE_FACES = { c01: [0,0,1,0], c02: [2,2,3,0], c03: [2,0,1,1], c04: [1,1,0,1], c05: [2,2,1,0], c06: [0,1,3,1], c07: [1,0,2,2], c08: [0,1,0,1], c09: [1,1,2,2], c10: [2,1,3,1], c11: [0,2,1,0], c12: [1,0,2,2], c13: [1,1,0,1], c14: [0,1,3,1], c15: [2,2,1,0], c16: [2,1,3,0] };
+  CHARS.forEach((c) => {
+    if (BASE_AGES[c.id]) c.age = BASE_AGES[c.id];
+    if (BASE_BUILDS[c.id]) c.build = BASE_BUILDS[c.id];
+    if (BASE_FACES[c.id]) { const f = BASE_FACES[c.id]; c.face = { jaw: f[0], eyeShape: f[1], brow: f[2], nose: f[3] }; }
+  });
+
+  // ── 후처리 4(최종): 완전 동일 외형(쌍둥이) 제거 — 충돌 시 눈썹→코 순서로 섭동
   {
     const sig = (c) => JSON.stringify([c.face, c.eye, c.mouth, c.skin, c.stubble, c.hair]);
     const seen = new Set();
@@ -443,29 +475,7 @@
       seen.add(sig(c));
     });
   }
-  // ── 후처리 2: 생성 SSR 나이 분산(20~40대) + 슬림 청년 공급 확보
-  {
-    const genSSR = CHARS.filter((c) => c.rarity === "SSR" && +c.id.slice(1) >= 17);
-    const ages = [23, 26, 29, 32, 35, 38, 41, 44, 47, 49];
-    genSSR.forEach((c, k) => {
-      if (c.outfit[0] !== "school") c.age = ages[k % ages.length];
-      if (k % 3 === 2 && !["ssireum", "fire"].includes(c.outfit[0])) { c.build = "slim"; c.face.eyeShape = 2; c.stubble = 0; }
-    });
-  }
-  // ── 후처리 3: 직업-나이 개연성 (사범·장인·지배인급은 30세 이상)
-  CHARS.forEach((c) => {
-    if (/사범|장인|지배인|천하장사|대표|오너/.test(c.job) && c.age < 30) c.age = Math.min(49, c.age + 13);
-  });
 
-  // 기존 16장 나이·체형 부여
-  const BASE_AGES = { c01: 26, c02: 23, c03: 29, c04: 31, c05: 27, c06: 28, c07: 33, c08: 30, c09: 27, c10: 34, c11: 32, c12: 36, c13: 29, c14: 38, c15: 24, c16: 26 };
-  const BASE_BUILDS = { c01: "fit", c02: "slim", c03: "slim", c04: "muscular", c05: "fit", c06: "fit", c07: "bulky", c08: "muscular", c09: "fit", c10: "fit", c11: "fit", c12: "bulky", c13: "muscular", c14: "fit", c15: "slim", c16: "slim" };
-  const BASE_FACES = { c01: [0,0,1,0], c02: [2,2,3,0], c03: [2,0,1,1], c04: [1,1,0,1], c05: [2,2,1,0], c06: [0,1,3,1], c07: [1,0,2,2], c08: [0,1,0,1], c09: [1,1,2,2], c10: [2,1,3,1], c11: [0,2,1,0], c12: [1,0,2,2], c13: [1,1,0,1], c14: [0,1,3,1], c15: [2,2,1,0], c16: [2,1,3,0] };
-  CHARS.forEach((c) => {
-    if (BASE_AGES[c.id]) c.age = BASE_AGES[c.id];
-    if (BASE_BUILDS[c.id]) c.build = BASE_BUILDS[c.id];
-    if (BASE_FACES[c.id]) { const f = BASE_FACES[c.id]; c.face = { jaw: f[0], eyeShape: f[1], brow: f[2], nose: f[3] }; }
-  });
 
   window.PRISM_CARDS = { CHARS, RARITY, charSVG };
 })();
