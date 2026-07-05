@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-04T21:22:14.855Z",
+  "updatedAt": "2026-07-04T23:56:08.537Z",
   "missions": [
     {
       "id": "session:3c79657e-0003-4f49-8691-69c3ffc02285:none",
@@ -7,15 +7,15 @@
       "name": "none",
       "objective": "Session mission",
       "createdAt": "2026-07-04T14:16:03.662Z",
-      "updatedAt": "2026-07-04T21:22:14.855Z",
-      "status": "running",
+      "updatedAt": "2026-07-04T23:56:08.537Z",
+      "status": "done",
       "workerCount": 15,
       "taskCounts": {
         "total": 15,
         "pending": 0,
         "blocked": 0,
-        "inProgress": 1,
-        "completed": 14,
+        "inProgress": 0,
+        "completed": 15,
         "failed": 0
       },
       "agents": [
@@ -153,11 +153,11 @@
           "name": "general-purpose:a64031b",
           "role": "general-purpose",
           "ownership": "a64031b5550e1b608",
-          "status": "running",
+          "status": "done",
           "currentStep": null,
-          "latestUpdate": null,
+          "latestUpdate": "completed",
           "completedSummary": null,
-          "updatedAt": "2026-07-04T20:50:25.320Z"
+          "updatedAt": "2026-07-04T23:56:08.537Z"
         },
         {
           "name": "general-purpose:adaff3d",
@@ -226,6 +226,14 @@
           "agent": "general-purpose:adaff3d",
           "detail": "completed",
           "sourceKey": "session-stop:adaff3d0d641362fe"
+        },
+        {
+          "id": "session-stop:a64031b5550e1b608:2026-07-04T23:56:08.537Z",
+          "at": "2026-07-04T23:56:08.537Z",
+          "kind": "completion",
+          "agent": "general-purpose:a64031b",
+          "detail": "completed",
+          "sourceKey": "session-stop:a64031b5550e1b608"
         }
       ]
     }
