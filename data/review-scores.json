@@ -3,10 +3,10 @@
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 15,
+    "total": 20,
     "pass": 15,
     "reviewNeeded": 0,
-    "reviewing": 0,
+    "reviewing": 5,
     "avgOverall": 83
   },
   "projects": [
@@ -643,6 +643,151 @@
         }
       ],
       "reviewedAt": "2026-07-05"
+    },
+    {
+      "slug": "chemi-code",
+      "name": "케미코드 (ChemiCode)",
+      "source": "daily/2026-06-23-dydrms-chemicode",
+      "live": "https://dydrms-chemicode.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "cheongyak-score-calc",
+      "name": "청약가점기",
+      "source": "daily/2026-06-21-cheongyak-score",
+      "live": "https://cheongyak-score.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "china-travel",
+      "name": "중국여행 마스터",
+      "source": "daily/2026-06-22-china-travel",
+      "live": "https://china-travel-master.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "chipnote",
+      "name": "칩노트",
+      "source": "daily/2026-06-27-chipnote",
+      "live": "https://chipnote.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
+    },
+    {
+      "slug": "chosung-fortune-card",
+      "name": "초성 운세 카드",
+      "source": "daily/2026-06-24-chosung-fortune-card",
+      "live": "https://chosung-fortune-card.vercel.app",
+      "status": "reviewing",
+      "loops": 0,
+      "axes": {
+        "functional": 0,
+        "mobileUX": 0,
+        "design": 0,
+        "content": 0,
+        "realValue": 0
+      },
+      "reviewerAvg": 0,
+      "userScores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "userAvg": 0,
+      "overall": 0,
+      "findings": [],
+      "changes": [],
+      "history": [],
+      "reviewedAt": null
     }
   ]
 }
