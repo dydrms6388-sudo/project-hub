@@ -4,10 +4,10 @@
   "maxLoops": 5,
   "summary": {
     "total": 20,
-    "pass": 15,
+    "pass": 20,
     "reviewNeeded": 0,
-    "reviewing": 5,
-    "avgOverall": 83
+    "reviewing": 0,
+    "avgOverall": 84
   },
   "projects": [
     {
@@ -649,145 +649,207 @@
       "name": "케미코드 (ChemiCode)",
       "source": "daily/2026-06-23-dydrms-chemicode",
       "live": "https://dydrms-chemicode.vercel.app",
-      "status": "reviewing",
-      "loops": 0,
+      "status": "pass",
+      "loops": 1,
       "axes": {
-        "functional": 0,
-        "mobileUX": 0,
-        "design": 0,
-        "content": 0,
-        "realValue": 0
+        "functional": 84,
+        "mobileUX": 83,
+        "design": 83,
+        "content": 88,
+        "realValue": 85
       },
-      "reviewerAvg": 0,
+      "reviewerAvg": 85,
       "userScores": [
-        0,
-        0,
-        0,
-        0,
-        0
+        84,
+        80,
+        83,
+        80,
+        86
       ],
-      "userAvg": 0,
-      "overall": 0,
-      "findings": [],
-      "changes": [],
-      "history": [],
-      "reviewedAt": null
+      "userAvg": 83,
+      "overall": 84,
+      "findings": [
+        "핵심 바이럴 루프 /chemi·/result가 client 전용이라 개인화 OG(점수·유형 카드) 미부착 — /api/og는 지원하는데 공유엔 기본 홈 OG만(최대 결함, 수정됨).",
+        "Quiz 답변배열 false 프리필로 back 후 유령 b극 답변 제출 가능·선택 하이라이트 없음(수정됨).",
+        "모드 pill·삭제 ✕ 44px 미만(수정됨), prefers-reduced-motion 미대응(수정됨).",
+        "초대받은 사람 본인 이름 입력 경로 없어 항상 '나' 표기(경미)."
+      ],
+      "changes": [
+        "/result·/chemi를 server page 분리+generateMetadata → 공유 시 유형/페어 점수 OG 실제 노출(computeChemi 대칭·OG route 값 일치).",
+        "Quiz 답변 boolean|null로 변경(유령답변 제거)+selected 하이라이트+aria-pressed.",
+        "퀴즈 선택지·이전·모드 pill·삭제 44px 적용.",
+        "globals.css prefers-reduced-motion(floaty·bar off)+confetti 가드. tsc 통과, AdSense/쿠팡/SEO 보존."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 79
+        },
+        {
+          "loop": 1,
+          "overall": 84
+        }
+      ],
+      "reviewedAt": "2026-07-05"
     },
     {
       "slug": "cheongyak-score-calc",
       "name": "청약가점기",
       "source": "daily/2026-06-21-cheongyak-score",
       "live": "https://cheongyak-score.vercel.app",
-      "status": "reviewing",
+      "status": "pass",
       "loops": 0,
       "axes": {
-        "functional": 0,
-        "mobileUX": 0,
-        "design": 0,
-        "content": 0,
-        "realValue": 0
+        "functional": 88,
+        "mobileUX": 82,
+        "design": 86,
+        "content": 88,
+        "realValue": 89
       },
-      "reviewerAvg": 0,
+      "reviewerAvg": 87,
       "userScores": [
-        0,
-        0,
-        0,
-        0,
-        0
+        84,
+        89,
+        83,
+        80,
+        86
       ],
-      "userAvg": 0,
-      "overall": 0,
-      "findings": [],
+      "userAvg": 84,
+      "overall": 86,
+      "findings": [
+        "점수표 정확: 무주택32·부양가족35·통장17·합계84 경계값 청약홈 공식표 일치(스크립트 검증), 만30세미만0·배우자통장50%합산 반영.",
+        "실단지 커트라인 매칭·1순위 자격체크·특공 4유형 자가진단·N년후 미래 시뮬·시나리오 저장·공유링크 OG.",
+        "경미: score.ts homelessZeroReason 삼항이 항상 manualUnder30(도달불가 분기, UI 미노출). 일부 40px 터치타겟·safe-area 명시 없음.",
+        "단지·커트라인이 실시간 아닌 교육용 스냅샷임을 곳곳 고지."
+      ],
       "changes": [],
-      "history": [],
-      "reviewedAt": null
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86
+        }
+      ],
+      "reviewedAt": "2026-07-05"
     },
     {
       "slug": "china-travel",
       "name": "중국여행 마스터",
       "source": "daily/2026-06-22-china-travel",
       "live": "https://china-travel-master.vercel.app",
-      "status": "reviewing",
+      "status": "pass",
       "loops": 0,
       "axes": {
-        "functional": 0,
-        "mobileUX": 0,
-        "design": 0,
-        "content": 0,
-        "realValue": 0
+        "functional": 88,
+        "mobileUX": 86,
+        "design": 85,
+        "content": 88,
+        "realValue": 86
       },
-      "reviewerAvg": 0,
+      "reviewerAvg": 87,
       "userScores": [
-        0,
-        0,
-        0,
-        0,
-        0
+        85,
+        86,
+        84,
+        82,
+        88
       ],
-      "userAvg": 0,
-      "overall": 0,
-      "findings": [],
+      "userAvg": 85,
+      "overall": 86,
+      "findings": [
+        "10도시·약245 POI 구조화 태그 규칙기반 일정엔진 정교(관심·예산·페이스·동행·체력·식성·이동·시즌 가중+자유입력 파싱), 유료 API 없이 차별화.",
+        "날짜인지: startDate로 요일·중국 공휴일(2026 춘절2-17·중추9-25 검증)·자금성 월요일 휴무 경고 자동 주입.",
+        "콘텐츠 최신성: 30일 무비자·전자입국신고서 2025-11-20·알리페이/위챗 해외카드·VPN/eSIM 정확+재확인 캐비어.",
+        "공유(URL+SSR OG)·PNG 저장·리롤·순서편집·예산 재계산·체크리스트 localStorage. tsc 클린.",
+        "경미: 테스트 부재, 리롤 커서 이름기반 동명 충돌 이론상 가능."
+      ],
       "changes": [],
-      "history": [],
-      "reviewedAt": null
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86
+        }
+      ],
+      "reviewedAt": "2026-07-05"
     },
     {
       "slug": "chipnote",
       "name": "칩노트",
       "source": "daily/2026-06-27-chipnote",
       "live": "https://chipnote.vercel.app",
-      "status": "reviewing",
+      "status": "pass",
       "loops": 0,
       "axes": {
-        "functional": 0,
-        "mobileUX": 0,
-        "design": 0,
-        "content": 0,
-        "realValue": 0
+        "functional": 88,
+        "mobileUX": 76,
+        "design": 86,
+        "content": 90,
+        "realValue": 82
       },
-      "reviewerAvg": 0,
+      "reviewerAvg": 84,
       "userScores": [
-        0,
-        0,
-        0,
-        0,
-        0
+        80,
+        86,
+        82,
+        85,
+        84
       ],
-      "userAvg": 0,
-      "overall": 0,
-      "findings": [],
+      "userAvg": 83,
+      "overall": 84,
+      "findings": [
+        "반도체 콘텐츠 블로그(48 아티클, 비교표·비유) + 용도별 NVMe SSD 랭킹/리뷰 허브(14 SSD DB). 결정론적 경쟁력 인덱스·KST 일일 로테이션·랭킹탭·검색·풍부한 JSON-LD.",
+        "mobileUX 결함(실재): SiteHeader가 .hide-scroll 쓰나 globals.css에 미정의 → 모바일 헤더 가로 스크롤바 노출+우측 링크군 ~360px 압박. 일부 .chip 44px 미만.",
+        "콘텐츠 강점(90): TLC/QLC·TBW·DRAM캐시·SLC캐싱 실전 정확, SSD DB 시세밴드 정직 면책.",
+        "monetization/SEO 온전(AdSense graceful·쿠팡 nofollow·canonical/OG/sitemap/feed). tsc 통과.",
+        "→ 폴리시 웨이브 대상: .hide-scroll CSS 추가."
+      ],
       "changes": [],
-      "history": [],
-      "reviewedAt": null
+      "history": [
+        {
+          "loop": 0,
+          "overall": 84
+        }
+      ],
+      "reviewedAt": "2026-07-05"
     },
     {
       "slug": "chosung-fortune-card",
       "name": "초성 운세 카드",
       "source": "daily/2026-06-24-chosung-fortune-card",
       "live": "https://chosung-fortune-card.vercel.app",
-      "status": "reviewing",
+      "status": "pass",
       "loops": 0,
       "axes": {
-        "functional": 0,
-        "mobileUX": 0,
-        "design": 0,
-        "content": 0,
-        "realValue": 0
+        "functional": 86,
+        "mobileUX": 84,
+        "design": 88,
+        "content": 85,
+        "realValue": 84
       },
-      "reviewerAvg": 0,
+      "reviewerAvg": 85,
       "userScores": [
-        0,
-        0,
-        0,
-        0,
-        0
+        88,
+        76,
+        85,
+        74,
+        87
       ],
-      "userAvg": 0,
-      "overall": 0,
-      "findings": [],
+      "userAvg": 82,
+      "overall": 84,
+      "findings": [
+        "결정론적 시드(FNV+mulberry32, 런타임 Math.random 미사용) SSR/CSR 일치·재현성. 연간고정 vs 일일변동 분리 재방문후크.",
+        "입력검증 견고(공백·10자·비한글·출생연도), Unicode 초성 추출 정확. tsc 통과.",
+        "공유 permalink로 URL만으로 결과 복원, localStorage 최근8 컬렉션, share→클립보드 폴백.",
+        "콘텐츠뱅크 충실(키워드28·4대운세 밴드×4변형·월별32·오늘의한마디38·초성풀이19·궁합). 반복/얄팍 낮음.",
+        "약점: 궁합 permalink 재계산 부재, notch safe-area 미적용, 재미용 운세 본질 설득력 한계(40대·전문가 페르소나)."
+      ],
       "changes": [],
-      "history": [],
-      "reviewedAt": null
+      "history": [
+        {
+          "loop": 0,
+          "overall": 84
+        }
+      ],
+      "reviewedAt": "2026-07-05"
     }
   ]
 }
