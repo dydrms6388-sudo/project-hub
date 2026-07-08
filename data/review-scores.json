@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-07-06",
+  "updatedAt": "2026-07-09",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
     "total": 24,
-    "pass": 20,
-    "reviewNeeded": 4,
+    "pass": 23,
+    "reviewNeeded": 1,
     "reviewing": 0,
-    "avgOverall": 81.7
+    "avgOverall": 83.1
   },
   "projects": [
     {
@@ -678,42 +678,52 @@
       "slug": "dynamic-qr-card",
       "name": "QR명함(dynamic)",
       "source": "daily/2026-06-24-dynamic-qr-card",
-      "live": "",
-      "status": "review-needed",
-      "loops": 1,
+      "live": "https://dynamic-qr-card.vercel.app",
+      "status": "pass",
+      "loops": 2,
       "axes": {
-        "functional": 82,
-        "mobileUX": 74,
-        "design": 70,
-        "content": 68,
-        "realValue": 58
+        "functional": 88,
+        "mobileUX": 80,
+        "design": 82,
+        "content": 80,
+        "realValue": 80
       },
-      "reviewerAvg": 70,
+      "reviewerAvg": 82,
       "userScores": [
-        62,
-        58,
-        55,
-        72,
-        48
+        82,
+        84,
+        76,
+        80,
+        80
       ],
-      "userAvg": 59,
-      "overall": 64.5,
+      "userAvg": 80.4,
+      "overall": 81.2,
       "findings": [
-        "동적QR DB 의존(5개한도/폴백)로 실사용 한계",
-        "미리보기 PNG 저해상도(SVG 권장 안내 없음)",
-        "명함 차별성/연락처 저장 부재"
+        "핵심 미해결 격차는 '명함 차별성/디자인'(realValue 58 최저축) — 인쇄용 명함 이미지 생성기로 해소.",
+        "정적QR 기본화·고해상도 PNG(1024)/SVG·.vcf 저장은 직전 루프에서 구현·검증됨.",
+        "실브라우저로 명함 렌더·QR 인코딩·템플릿 전환 동작 확인."
       ],
       "changes": [
-        "QR 미리보기 70vw->컨테이너 기준 사이징(오버플로우 해결)",
-        "canvas h-auto+aspectRatio로 모호성 제거"
+        "vCard 연락처 탭에 '인쇄용 명함 만들기' 추가: 4종 템플릿(미니멀/다크/컬러/클래식)으로 고해상도(1050×585) 명함 PNG 생성 — QR에 vCard 인코딩(스캔=폰 연락처 저장).",
+        "CardComposer 100% 클라이언트 렌더(오프스크린 캔버스 QR ECC H 합성) — 서버/DB/유료 API 불필요.",
+        "히어로·비교카드·FAQ 카피 갱신, 명함 QR/인쇄 명함 가치 전면 노출·FAQ 신설.",
+        "기존 정적QR 기본화·고해상도·.vcf 유지·검증, AdSense/쿠팡/SEO/PWA 슬롯 보존."
       ],
       "history": [
         {
           "loop": 0,
           "overall": 64.5
+        },
+        {
+          "loop": 1,
+          "overall": 64.5
+        },
+        {
+          "loop": 2,
+          "overall": 81.2
         }
       ],
-      "reviewedAt": "2026-07-06"
+      "reviewedAt": "2026-07-09"
     },
     {
       "slug": "fandom-bias-vote",
@@ -721,33 +731,35 @@
       "source": "daily/2026-06-23-fandom-bias-vote",
       "live": "https://fandom-bias-vote.vercel.app",
       "status": "review-needed",
-      "loops": 3,
+      "loops": 4,
       "axes": {
-        "functional": 78,
-        "mobileUX": 72,
-        "design": 70,
-        "content": 74,
-        "realValue": 62
+        "functional": 83,
+        "mobileUX": 81,
+        "design": 77,
+        "content": 79,
+        "realValue": 77
       },
-      "reviewerAvg": 71.2,
+      "reviewerAvg": 79.4,
       "userScores": [
+        85,
+        75,
         78,
-        68,
-        66,
-        72,
-        74
+        78,
+        84
       ],
-      "userAvg": 71.6,
-      "overall": 71.4,
+      "userAvg": 80,
+      "overall": 79.7,
       "findings": [
-        "자랑 PNG 전용 OG 컴포지션 부재(작은 인라인 캡처)",
-        "html-to-image 폰트/그라디언트 렌더 가드 없음",
-        "카카오/인앱 data-url 다운로드 폴백 없음",
-        "iOS 3D 게이팅 휴리스틱 누락"
+        "직전 4개 지적(전용 자랑카드/폰트·그라디언트 가드/인앱 다운로드 폴백/iOS 3D 게이팅)은 이미 구현·연결 완료 확인.",
+        "잔여 약점: design(77) — 시각 위계·마감이 게이트 문턱을 막는 마지막 요소.",
+        "본질이 캐주얼 팬투표라 realValue 상한 존재(취향 리포트로 보강했으나 문턱 근접)."
       ],
       "changes": [
-        "1위 3D 클리핑 수정(카메라 z8.6/fov33, 크라운 Float 0.3)",
-        "자랑카드 PNG 내보내기 추가(버튼 no-img 필터, 콘텍스트 라인)"
+        "덕질 취향 리포트 신설(/me): 로컬 투표기록 기반 취향유형·대세력 지수·스탯·공유 — realValue 핵심 보강.",
+        "투표 시 rank/sharePct/category 스냅샷 저장(recordMyVote) → 리포트·순위배지 데이터화.",
+        "취향 리포트 발견성 확보: 투표 후 토픽 페이지에 리포트 유도 카드 추가.",
+        "mobileUX 탭타깃 44px 이상으로 상향(투표·자랑·저장·리포트 CTA).",
+        "vote history에 실시간 순위 배지(👑 1위 등) 추가."
       ],
       "history": [
         {
@@ -765,9 +777,13 @@
         {
           "loop": 3,
           "overall": 71.4
+        },
+        {
+          "loop": 4,
+          "overall": 79.7
         }
       ],
-      "reviewedAt": "2026-07-06"
+      "reviewedAt": "2026-07-09"
     },
     {
       "slug": "korean-age",
@@ -820,34 +836,37 @@
       "name": "한글 타자연습 스피드",
       "source": "daily/2026-06-21-korean-typing-speed",
       "live": "https://korean-typing-speed.vercel.app",
-      "status": "review-needed",
-      "loops": 3,
+      "status": "pass",
+      "loops": 4,
       "axes": {
-        "functional": 86,
-        "mobileUX": 74,
-        "design": 82,
-        "content": 79,
-        "realValue": 78
+        "functional": 87,
+        "mobileUX": 83,
+        "design": 83,
+        "content": 80,
+        "realValue": 80
       },
-      "reviewerAvg": 79.8,
+      "reviewerAvg": 82.6,
       "userScores": [
-        76,
-        80,
-        83,
-        72,
-        78
+        84,
+        82,
+        82,
+        79,
+        83
       ],
-      "userAvg": 77.8,
-      "overall": 78.8,
+      "userAvg": 82,
+      "overall": 82.3,
       "findings": [
-        "textarea 오버레이 포커스 복구 안내 부재",
-        "추정치 순위 과도한 강조",
-        "참고 자판 탭 입력 미연결"
+        "정체 원인은 mobileUX(74) 구조적 약점 — 숨김 textarea OS키보드 vs 화면자판이 서로 충돌, 실입력 경로 불명확(해결됨).",
+        "textarea 오버레이 포커스 복구 안내 부재(이전 루프 반영).",
+        "추정치 순위 과도한 강조(이전 루프 반영).",
+        "참고 자판 탭 입력 미연결(이전 루프 반영)."
       ],
       "changes": [
-        ".type-window 오버플로우 수정(keep-all 제거)",
-        "viewport interactiveWidget=resizes-visual",
-        "보이는 두벌식 자판 추가(패널 밖, 균일키 사이즈)"
+        "모바일 입력 방식 토글 신설(📱 폰 자판 / ⌨️ 화면 자판) — 두 입력 경로 충돌 해소.",
+        "화면 자판 모드에서 inputMode=none+readOnly로 OS 키보드 억제 + 화면 자판을 실제 입력으로 승격.",
+        "화면 자판 터치 타깃 확대(48~60px)로 손가락 입력 편의 개선.",
+        "폰 자판 모드에선 화면 자판을 참고용으로 명확화, 포커스 복구 오버레이도 폰 자판 모드에서만 표시.",
+        "입력 방식 선택 localStorage 기억 + 모바일 FAQ에 두 입력 모드 설명 추가."
       ],
       "history": [
         {
@@ -865,43 +884,49 @@
         {
           "loop": 3,
           "overall": 78.8
+        },
+        {
+          "loop": 4,
+          "overall": 82.3
         }
       ],
-      "reviewedAt": "2026-07-06"
+      "reviewedAt": "2026-07-09"
     },
     {
       "slug": "personal-color-test",
       "name": "퍼스널컬러 진단(테스트모아)",
       "source": "daily/2026-06-20-personal-color-test",
-      "live": "https://personal-color-diag.vercel.app",
-      "status": "review-needed",
-      "loops": 3,
+      "live": "https://personal-color-test-ten.vercel.app",
+      "status": "pass",
+      "loops": 4,
       "axes": {
         "functional": 86,
-        "mobileUX": 82,
-        "design": 80,
-        "content": 78,
-        "realValue": 74
+        "mobileUX": 83,
+        "design": 82,
+        "content": 84,
+        "realValue": 82
       },
-      "reviewerAvg": 80,
+      "reviewerAvg": 83.4,
       "userScores": [
-        84,
-        76,
-        72,
-        68,
-        80
+        85,
+        82,
+        79,
+        78,
+        84
       ],
-      "userAvg": 76,
-      "overall": 78,
+      "userAvg": 81.6,
+      "overall": 82.5,
       "findings": [
-        "저장 PNG 브랜딩/URL(워터마크) 부재->회귀트래픽 낭비",
-        "html-to-image 구iOS 렌더 폴백 없음",
-        "캡처 범위 CTA 제외로 피드백 끊김"
+        "직전 3개 지적(워터마크·구iOS 폴백·캡처범위)은 이미 구현·정상 확인. 게이트를 막던 건 content(78)/realValue(74).",
+        "기존 기록 live URL 오류 교정: 실 도메인은 personal-color-test-ten.vercel.app (personal-color-diag는 404).",
+        "배포 보류: 프로젝트 Vercel 미연동(.vercel 없음) — 재연동 후 배포 필요."
       ],
       "changes": [
-        "OG 1200x630 사이즈 축소(텍스트 클리핑 해결)",
-        "html-to-image 결과카드 저장 버튼 추가",
-        "캡처범위 팔레트/특징/워터마크 URL 포함"
+        "결과 팔레트 색상 스와치에 한글 색이름 라벨 추가(어울리는 색/피하면 좋은 색).",
+        "시즌별 4축 스타일 팁 섹션 신설(메이크업·헤어·패션·포인트) — 헤어/패션 가이드 최초 도입.",
+        "결과 설명에 '피해야 할 색·이유' 문장 및 키워드 라인 보강.",
+        "신규 콘텐츠를 캡처 카드(cardRef) 내부에 배치해 저장 PNG 자체를 정보성으로 강화.",
+        "TResult 타입에 colorNames/avoidNames/tips 옵션 필드 추가(하위호환, 타 21개 테스트 무영향)."
       ],
       "history": [
         {
@@ -919,9 +944,14 @@
         {
           "loop": 3,
           "overall": 78
+        },
+        {
+          "loop": 4,
+          "overall": 82.5
         }
       ],
-      "reviewedAt": "2026-07-06"
+      "reviewedAt": "2026-07-09",
+      "deployPending": true
     },
     {
       "slug": "salary-net-pay",

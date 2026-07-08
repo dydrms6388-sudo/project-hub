@@ -1,0 +1,50 @@
+{
+  "updatedAt": "2026-07-09",
+  "note": "리뷰 루프에서 '무엇을 고쳤는지'를 시간순으로 기록. 최신이 위.",
+  "entries": [
+    {
+      "ts": "2026-07-09",
+      "slug": "_batch",
+      "kind": "ops",
+      "summary": "Phase A 배치1 완료: 4종 재개발, 3종 게이트 통과(korean-typing-speed·personal-color-test·dynamic-qr-card), fandom-bias-vote 79.7로 문턱 근접. 스코어보드 pass 20→23, 평균 81.7→83.1."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "dynamic-qr-card",
+      "kind": "redevelop",
+      "prev": 64.5,
+      "overall": 81.2,
+      "summary": "인쇄용 명함 이미지 생성기(4종 템플릿+vCard QR, 스캔=연락처 저장) 신설로 명함 차별성·실사용가치(58→80) 해소. 64.5→81.2 PASS, 배포 완료."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "personal-color-test",
+      "kind": "redevelop",
+      "prev": 78,
+      "overall": 82.5,
+      "summary": "결과 콘텐츠 심층화 — 색상 스와치 한글 색이름 + 시즌별 메이크업·헤어·패션·포인트 팁 신설로 content/realValue 보강. 78→82.5 PASS. 배포 보류(Vercel 미연동, live 도메인 personal-color-test-ten로 교정)."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "fandom-bias-vote",
+      "kind": "redevelop",
+      "prev": 71.4,
+      "overall": 79.7,
+      "summary": "덕질 취향 리포트(/me) 신설 — 로컬 투표기록 기반 취향유형·대세력 지수·공유로 실사용가치 보강, 탭타깃 44px 상향. 71.4→79.7, 게이트 문턱 근접(재개발 배포 완료, 1루프 여력)."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "korean-typing-speed",
+      "kind": "redevelop",
+      "prev": 78.8,
+      "overall": 82.3,
+      "summary": "모바일 입력방식 토글(폰/화면 자판) 신설로 OS키보드-화면자판 충돌 해소, 화면자판 실입력화+터치타깃 확대. 78.8→82.3 PASS, 배포 완료."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "_ops",
+      "kind": "ops",
+      "summary": "세션 재개: 절전방지(standby/hibernate AC=0) 적용, 기본 모델 opus 확정. Phase A 배치1 착수(80점 미만 4종: dynamic-qr-card·fandom-bias-vote·personal-color-test·korean-typing-speed)."
+    }
+  ]
+}
