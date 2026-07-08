@@ -4,6 +4,41 @@
   "entries": [
     {
       "ts": "2026-07-09",
+      "slug": "_batch3",
+      "kind": "ops",
+      "summary": "Phase A 배치3 완료: 미채점 4종 신규 리뷰 — loan-refi 82.6(재개발), naesin 86.9, supplement-combo 86.3, shift-work 85.5 전원 PASS. 스코어보드 28→32개 전원 통과. Vercel 빌드 큐 지연으로 naesin·supplement 배포는 재확인 대상."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "loan-refi-calc",
+      "kind": "redevelop",
+      "prev": null,
+      "overall": 82.6,
+      "summary": "월 상환액 미표시·금리 상승 손해 은폐 버그 수정 + 갈아타기 확인 FAQ + 저장/터치타깃. 재개발 82.6 PASS, 배포 완료."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "naesin-grade-sim",
+      "kind": "redevelop",
+      "overall": 86.9,
+      "summary": "내신 5/9등급 컷·이수단위 가중평균 정확성 검증 통과, safe-area+아이콘 버튼 44px 보완. 첫 리뷰 86.9 PASS(배포 큐 대기)."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "supplement-combo",
+      "kind": "redevelop",
+      "overall": 86.3,
+      "summary": "영양제 상호작용 의학정보 정확·정직 헷지 확인, safe-area(하단 CTA/바텀시트) 수정. 첫 리뷰 86.3 PASS(배포 큐 대기)."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "shift-work-calendar",
+      "kind": "review",
+      "overall": 85.5,
+      "summary": "교대패턴·수당엔진(근기법56조)·팀 스왑결재까지 실동작하는 고완성 앱. 첫 리뷰 85.5 PASS, 무변경 유지."
+    },
+    {
+      "ts": "2026-07-09",
       "slug": "_batch2",
       "kind": "ops",
       "summary": "Phase A 배치2 완료: 미채점 툴형 4종 신규 리뷰 — company-vs-average 86.3, gpa-converter 83.3, insurance-overlap 86.2 첫 리뷰 통과(+실버그 수정), dsr-limit-check 78.6→84.5 재개발 통과. 전부 라이브 배포. 스코어보드 24→28개 전원 PASS, 평균 83.4."

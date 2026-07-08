@@ -3,11 +3,11 @@
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 28,
-    "pass": 28,
+    "total": 32,
+    "pass": 32,
     "reviewNeeded": 0,
     "reviewing": 0,
-    "avgOverall": 83.4
+    "avgOverall": 83.7
   },
   "projects": [
     {
@@ -1268,6 +1268,176 @@
         {
           "loop": 0,
           "overall": 86.2
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "shift-work-calendar",
+      "name": "교대근무 달력",
+      "source": "daily/2026-06-21-shift-work-calendar",
+      "live": "https://shift-work-calendar.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 87,
+        "mobileUX": 80,
+        "design": 88,
+        "content": 88,
+        "realValue": 87
+      },
+      "reviewerAvg": 86,
+      "userScores": [
+        85,
+        86,
+        87,
+        84,
+        83
+      ],
+      "userAvg": 85,
+      "overall": 85.5,
+      "findings": [
+        "교대 패턴 엔진 탄탄: 9개 한국 실사용 프리셋 + 근로기준법 제56조 기반 야간/연장/휴일 가산, 209h 통상시급 환산, 조 offset 자동, 야간 겹침 다중윈도우 정확.",
+        "팀 모드 실동작: Neon DB 코드/토큰 인증, 교대요청 dedup, 관리자 승인 시 양측 overrides 상호 교환까지 완전 구현.",
+        "달력 셀 터치타깃이 360px에서 ~43px 경계선, safe-area-inset 미적용 — 모바일 여지(무변경 판단).",
+        "콘텐츠 깊이·디자인 완결성 높음(FAQ·가산표·법 인용·JSON-LD·글래스모피즘·3D·모션)."
+      ],
+      "changes": [],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 85.5
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "supplement-combo",
+      "name": "영양제 조합 점검",
+      "source": "daily/2026-06-21-supplement-combo-check",
+      "live": "https://supplement-combo-check.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 88,
+        "mobileUX": 84,
+        "design": 87,
+        "content": 90,
+        "realValue": 86
+      },
+      "reviewerAvg": 87,
+      "userScores": [
+        84,
+        88,
+        85,
+        86,
+        85
+      ],
+      "userAvg": 85.6,
+      "overall": 86.3,
+      "findings": [
+        "콘텐츠·도메인 정확성 매우 우수: 와파린+비타민K, 세인트존스워트 다약물 상호작용, 레보티록신 4h 분리, 철·칼슘 용량의존 경쟁 등 정확·정직 헷지(거짓 초록 금지 철학). YMYL 면책·임신 배너·철분 금기 완비.",
+        "기능: 5색 판정 엔진+충돌회피 복용표+UL 누적체크+영양제×약 교차매트릭스+알림/영양제함, 입력검증 견고.",
+        "모바일 약점(수정함): viewport-fit=cover·env(safe-area-inset) 미적용으로 sticky 하단 CTA·UL 바텀시트가 홈인디케이터와 겹칠 소지.",
+        "부정확한 의학정보 없음 — 정정 불필요."
+      ],
+      "changes": [
+        "layout viewport에 viewportFit:'cover' 추가.",
+        "Picker sticky 하단 CTA에 env(safe-area-inset-bottom) 적용.",
+        "UlModal 바텀시트에 safe-area 하단 패딩 적용. tsc/build 통과."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86.3
+        }
+      ],
+      "reviewedAt": "2026-07-09",
+      "deployPending": true
+    },
+    {
+      "slug": "naesin-grade-sim",
+      "name": "내신 등급 계산기",
+      "source": "daily/2026-06-22-naesin-grade-sim",
+      "live": "https://naesin-grade-sim.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 88,
+        "mobileUX": 84,
+        "design": 90,
+        "content": 87,
+        "realValue": 88
+      },
+      "reviewerAvg": 87.4,
+      "userScores": [
+        88,
+        85,
+        90,
+        82,
+        87
+      ],
+      "userAvg": 86.4,
+      "overall": 86.9,
+      "findings": [
+        "도메인 정확: 5등급제(10/34/66/90/100)·9등급제(4/11/23/40/60/77/89/96/100) 컷과 이수단위 가중평균 공식 모두 정확.",
+        "입력검증 견고(범위·NaN·석차>수강자 가드), 정규분포 추정 명시·경계 오차 면책. 대학 라인은 러프하나 전형/학과 변수 강한 면책.",
+        "디자인 완성도 높음(네온 글래스·도넛·3D 벨커브·컨페티·공유카드), 2모드/GPA/목표역산 재사용가치.",
+        "기존 모바일 safe-area·작은 아이콘 버튼 44px 미비 — 이번에 보완."
+      ],
+      "changes": [
+        "body에 env(safe-area-inset-*) 적용(노치 대응).",
+        "작은 아이콘 버튼(효과음 토글·기록/과목 삭제)에 .tap-target 44px + aria-label 추가. tsc/build 통과."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86.9
+        }
+      ],
+      "reviewedAt": "2026-07-09",
+      "deployPending": true
+    },
+    {
+      "slug": "loan-refi-calc",
+      "name": "대환대출 계산기",
+      "source": "daily/2026-06-20-loan-refi",
+      "live": "https://loan-refi.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 84,
+        "design": 84,
+        "content": 82,
+        "realValue": 82
+      },
+      "reviewerAvg": 82.8,
+      "userScores": [
+        84,
+        84,
+        84,
+        78,
+        82
+      ],
+      "userAvg": 82.4,
+      "overall": 82.6,
+      "findings": [
+        "월 상환액(firstPayment)을 계산하고도 화면에 전혀 표시하지 않음 — '지금 얼마→갈아탄 뒤 얼마'가 빠진 최대 결함(수정).",
+        "갈아탈 금리가 현재보다 높으면 outcome을 'nodiff'로 처리해 명백한 손해 시나리오를 숨김(수정).",
+        "YMYL 금융인데 콘텐츠 얄팍 — 중도상환수수료 구조·DSR 재심사·미반영 항목 안내 부재(보강).",
+        "입력값 저장 없음·터치타깃 일부 44px 미만(수정). 중도상환수수료 정액 계산은 보수적 추정임 명시."
+      ],
+      "changes": [
+        "월 상환액 before→after 비교 카드 추가(refi.ts monthlyBefore/After/Diff 필드).",
+        "금리 상승 케이스를 outcome='lose'로 정직 표시(정확히 동일할 때만 nodiff)+맥락 문구.",
+        "갈아타기 전 확인사항 FAQ 4문항 추가(수수료 구조·금리차 기준·DSR 재심사·미반영), 정액 수수료 보수적 추정 명시.",
+        "입력값 localStorage 저장/복원(기기 내), 상환방식/공유/입력 터치타깃 44px 상향. tsc/build 통과, prod 배포."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 82.6
         }
       ],
       "reviewedAt": "2026-07-09"
