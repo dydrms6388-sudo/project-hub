@@ -1,0 +1,7 @@
+{
+  "tool_name": "PowerShell",
+  "tool_input_preview": "{\"command\":\"$before = (Get-Process node -ErrorAction SilentlyContinue).Id\\nStart-Job -Name facrun -ScriptBlock { & cmd /c \\\"C:\\\\Users\\\\dydrm\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-dydrm\\\\64b98ac2-fd8...",
+  "error": "Exit code 143\nCommand timed out after 2m 0s\nlaunched; watching for new node (claude) process up to 75s...\r\nNO claude process detected in 75s\r\nlog bytes=0",
+  "timestamp": "2026-07-05T16:49:45.291Z",
+  "retry_count": 1
+}
