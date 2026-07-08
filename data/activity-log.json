@@ -4,6 +4,26 @@
   "entries": [
     {
       "ts": "2026-07-09",
+      "slug": "_milestone",
+      "kind": "ops",
+      "summary": "🎉 리뷰 스코어보드 24/24 전원 게이트 통과(review-needed 0), 평균 만족도 83.2. Phase A 배치1의 마지막 미달건(fandom-bias-vote)까지 정직하게 80 돌파."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "fandom-bias-vote",
+      "kind": "redevelop",
+      "prev": 79.7,
+      "overall": 80.7,
+      "summary": "최종 루프(5/5): 앰비언트 뎁스·포커스링·로딩 스켈레톤·엣지페이드로 design 77→80, 리포트 개인화 인사이트. 79.7→80.7 PASS(정직 통과), 배포 완료."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "_deploy-hub",
+      "kind": "deploy",
+      "summary": "허브(project-hub/dydrms-hub) 프로덕션 배포 — tomatoeggcat.com 별칭 갱신. 리뷰 대시보드(activity-log 활동피드 포함)·196 애드센스 랜딩 라이브 반영."
+    },
+    {
+      "ts": "2026-07-09",
       "slug": "_batch",
       "kind": "ops",
       "summary": "Phase A 배치1 완료: 4종 재개발, 3종 게이트 통과(korean-typing-speed·personal-color-test·dynamic-qr-card), fandom-bias-vote 79.7로 문턱 근접. 스코어보드 pass 20→23, 평균 81.7→83.1."
