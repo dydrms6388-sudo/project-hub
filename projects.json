@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-07-09T00:00:00.000Z",
+  "updatedAt": "2026-07-09T12:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "베개핏 (BaegaeFit)",
+      "emoji": "🛏️",
+      "domain": "생활/수면·건강",
+      "desc": "내 수면자세·체형·통증에 맞는 베개 높이(cm)와 매트리스 경도(1~10)를 처방해 주는 진단 도구. 5스텝 위저드(자세·체중/어깨·통증·더위·현재매트리스)→베개 높이 범위·매트리스 경도 게이지·소재 추천(경추/메모리폼/라텍스)·경고·팁·매칭점수. 열대야 쿨수면(침실 온·습도 쾌적도 신호등+여름침구 추천), 침구 교체주기 트래커(베개1~2년·매트리스7~10년·토퍼·이불·커버 구입일 등록→D-day 신호등, localStorage 리텐션), 잘 자는 가이드 7편 SSG(베개높이·매트리스경도·옆잠·허리매트리스·메모리폼vs라텍스·교체주기·열대야, FAQ/Article JSON-LD). 3D 밤하늘·달·떠다니는 베개(r3f)·framer·confetti·Web Audio 합성음(음소거 기본OFF) 몰입4종. 수익화키트(AdSense env 인라인·ads.txt·매트리스/경추베개 고AOV 쿠팡 파트너스 맥락 슬롯·동적 OG/sitemap/robots·공유). 무백엔드·무가입, 기기 저장. 수면 클러스터(수면주기계산·낮잠·진드기)와 '처방(무엇을 살지)' 축으로 분리·ddayhub/car·naengpa/bok dedup 회피. 의료 면책.",
+      "live": "https://dydrms-baegaefit.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-baegaefit",
+      "status": "live",
+      "date": "2026-07-09"
+    },
     {
       "name": "클라이밍각 (ClimbGak)",
       "emoji": "🧗",

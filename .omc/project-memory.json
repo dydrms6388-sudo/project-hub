@@ -9,7 +9,7 @@
     "runtime": null
   },
   "build": {
-    "buildCommand": "cd \"C:\\Users\\dydrm\\projects\\daily\\2026-06-23-insurance-overlap-check\" && npx tsc --noEmit && echo \"===BUILD===\" && npm run build 2>&1 | tail -35",
+    "buildCommand": "cd /c/Users/dydrm/projects/daily/2026-06-20-loan-refi && npm run build 2>&1 | tail -30; echo \"---BUILD exit ${PIPESTATUS[0]}---\"",
     "testCommand": null,
     "lintCommand": null,
     "devCommand": null,

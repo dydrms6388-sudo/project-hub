@@ -1,54 +1,38 @@
 {
   "version": 1,
   "entries": {
-    "445ed27a3872b681d98190bae61ccb84954e1bc4e140df5370be958dee776b3a": {
-      "last_emitted_at_ms": 1783532463657,
-      "message": "Verify changes work after editing. Test functionality before marking complete."
-    },
     "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
-      "last_emitted_at_ms": 1783532296348,
+      "last_emitted_at_ms": 1783535406457,
       "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
     },
+    "445ed27a3872b681d98190bae61ccb84954e1bc4e140df5370be958dee776b3a": {
+      "last_emitted_at_ms": 1783535340450,
+      "message": "Verify changes work after editing. Test functionality before marking complete."
+    },
     "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
-      "last_emitted_at_ms": 1783531920192,
+      "last_emitted_at_ms": 1783535192394,
       "message": "Read multiple files in parallel when possible for faster analysis."
     },
     "459c54e5f35d6a58dcd90d2aecc21fa6d1f35d241bc5b134c506f87dc7b6d67b": {
-      "last_emitted_at_ms": 1783531525160,
+      "last_emitted_at_ms": 1783533852781,
       "message": "Combine searches in parallel when investigating multiple patterns."
     },
-    "e0820ccaf867bd4cc55e3eba2e258e7acf2aa967cfa9f45b56c11dfe7ec1ff56": {
-      "last_emitted_at_ms": 1783531273930,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix insurance-overlap-check"
+    "e0c09757124732e87d771c8f1a35d2b16bdaef3cc8c7dba20e14f13e5df47dda": {
+      "last_emitted_at_ms": 1783533779231,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix shift-work-calendar"
     },
-    "7ed57a15189bd4cae999e6ead7a5219c0d1a73e4ee334fce8ea7a479a2041700": {
-      "last_emitted_at_ms": 1783531263218,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix dsr-limit-check"
+    "3fa4f9c1ef670d992c5208d56d553830992179d3e78400344b31a7f5456ad8a9": {
+      "last_emitted_at_ms": 1783533767915,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix supplement-combo"
     },
-    "89b02e3fbe635bc6aeabf5f2f113e528fce5d1431b0bbc47db8abfea450159dd": {
-      "last_emitted_at_ms": 1783531250645,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix gpa-converter-wes"
+    "65d201f489399f0a4f4f9967f10589d0409f8c2aafe66306d6a38ff781f0ede1": {
+      "last_emitted_at_ms": 1783533760002,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix naesin-grade-sim"
     },
-    "bae5c69afcba8e16eda4d71bd8be8b94557fc242f2a7c97f8e0b412fa6b9b529": {
-      "last_emitted_at_ms": 1783531239091,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix company-vs-average"
-    },
-    "f7e040c1781d7d2d041e9e6d32852203b6097ed33ba5ae8ab01d70b12f586904": {
-      "last_emitted_at_ms": 1783530493141,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Final polish fandom-bias-vote retry"
-    },
-    "b352230c28b417f563fbd724c9528c3559e276aae0e5086a0c0bbf78bab9420f": {
-      "last_emitted_at_ms": 1783530434411,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Final polish fandom-bias-vote"
-    },
-    "816c5ba1ff75462c64ac50adaec08ff52e111d8f408bd8606c9b91b9a8a4ffac": {
-      "last_emitted_at_ms": 1783528882942,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Redevelop korean-typing-speed"
-    },
-    "74c60d395b18f02577def927e3610ed0b8e7f0ce83958dbb4eacf0998ebb9651": {
-      "last_emitted_at_ms": 1783528870067,
-      "message": "Spawning agent: general-purpose (inherit) | Task: Redevelop personal-color-test"
+    "660f98468f90cf502f6ba7685c66c86e160087cc01b5d34ffd56196bbe6d3292": {
+      "last_emitted_at_ms": 1783533746491,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Review+fix loan-refi"
     }
   },
-  "updated_at": "2026-07-08T17:41:03.657Z"
+  "updated_at": "2026-07-08T18:30:06.457Z"
 }
