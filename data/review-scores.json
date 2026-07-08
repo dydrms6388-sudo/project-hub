@@ -3,11 +3,11 @@
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 24,
-    "pass": 24,
+    "total": 28,
+    "pass": 28,
     "reviewNeeded": 0,
     "reviewing": 0,
-    "avgOverall": 83.2
+    "avgOverall": 83.4
   },
   "projects": [
     {
@@ -1094,6 +1094,183 @@
         }
       ],
       "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "company-vs-average",
+      "name": "회사 vs 평균",
+      "source": "daily/2026-06-24-company-vs-average",
+      "live": "https://company-vs-average.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 85,
+        "design": 90,
+        "content": 87,
+        "realValue": 85
+      },
+      "reviewerAvg": 86.4,
+      "userScores": [
+        86,
+        86,
+        91,
+        80,
+        88
+      ],
+      "userAvg": 86.2,
+      "overall": 86.3,
+      "findings": [
+        "decodeAnswers가 size/industry enum·숫자범위를 검증하지 않아 조작·손상된 공유 링크에서 BENCHMARKS 인덱싱이 undefined→TypeError로 결과 페이지 크래시(에러 바운더리 없음).",
+        "결과 고정 액션바·Stepper sticky nav에 safe-area 미적용(노치 홈 인디케이터 가림), 슬라이더 썸 26px, YMYL 면책 부재.",
+        "핵심 로직·벤치마크(2024 경총·통계청)·콘텐츠·디자인은 이미 매우 우수 — 게이트 상회."
+      ],
+      "changes": [
+        "decodeAnswers에 enum 검증+15개 숫자필드 범위 클램프로 공유 링크 크래시 제거.",
+        "고정 액션바·sticky nav에 env(safe-area-inset-bottom) 패딩 추가.",
+        "슬라이더를 44px 터치영역+8px 트랙/28px 썸으로 재작성, focus-visible.",
+        "결과 산정 방식에 YMYL 면책 추가. tsc/build 통과, prod 배포."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86.3
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "gpa-converter",
+      "name": "학점 변환기 (WES)",
+      "source": "daily/2026-06-24-gpa-converter-wes",
+      "live": "https://gpa-converter-wes.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 78,
+        "design": 88,
+        "content": 84,
+        "realValue": 85
+      },
+      "reviewerAvg": 83.4,
+      "userScores": [
+        81,
+        83,
+        88,
+        81,
+        83
+      ],
+      "userAvg": 83.2,
+      "overall": 83.3,
+      "findings": [
+        "목표 역산 탭 버그: 누적 GPA가 목표보다 높을 때 requiredNext가 음수를 가능으로 표시(수정).",
+        "변환 탭 빈 평점/0학점 시 무피드백 무시 — 입력검증 부재(수정).",
+        "스케일 버튼(약 28px)·삭제 버튼 44px 미달(스케일 버튼 개선, 삭제 잔존).",
+        "변환 로직·3스케일·2방식·과목/학기 트래커·가이드/출처/면책·SEO/광고 슬롯은 견고."
+      ],
+      "changes": [
+        "requiredNext에 done(목표 달성) 상태+0 클램프로 음수 버그 제거, 달성 UI 추가.",
+        "ConvertTab 빈 입력·0학점 시 role=alert 에러 메시지.",
+        "스케일 버튼 min-h 40px+패딩 확대, 전환 시 에러 초기화. tsc/build 통과, prod 배포."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 83.3
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "dsr-limit-check",
+      "name": "DSR 한도 계산기",
+      "source": "daily/2026-06-20-dsr-limit-check",
+      "live": "https://dsr-limit-check.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 85,
+        "design": 86,
+        "content": 84,
+        "realValue": 82
+      },
+      "reviewerAvg": 84.4,
+      "userScores": [
+        84,
+        85,
+        86,
+        83,
+        85
+      ],
+      "userAvg": 84.6,
+      "overall": 84.5,
+      "findings": [
+        "스트레스 DSR을 flat +0.75%p(2024 1단계)로 고정 — 2026 3단계 전면시행(하한1.5%p·100%반영)과 불일치하는 YMYL 정확성 결함.",
+        "DSR 산정 제외 대출(전세자금·중도금·서민금융·소액) 안내 부재 → 전세대출 오입력 위험.",
+        "규제 기준일/근거 표기 없음, FAQ 규제 깊이 얄팍, 삭제 26px·소리토글 38px 터치 미달.",
+        "핵심 계산(원리금균등 PMT·원금균등·역산 한도)은 정확·가드 양호 — 강점."
+      ],
+      "changes": [
+        "스트레스 DSR 3단계 모델 재구현(미적용/하한1.5%p/직접입력, 기본 1.5%p, 적용금리 표기).",
+        "기존 대출 섹션에 DSR 제외 대출 안내 박스 추가.",
+        "FAQ 확장·정정(3단계 산식·제외 대출·은행40/2금융50 규제선·규제 기준일).",
+        "삭제·소리토글 44px 터치 확대. tsc/build 통과, prod 배포·라이브 검증."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 78.6
+        },
+        {
+          "loop": 1,
+          "overall": 84.5
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "insurance-overlap",
+      "name": "보험 중복 점검",
+      "source": "daily/2026-06-23-insurance-overlap-check",
+      "live": "https://insurance-overlap-check.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 86,
+        "design": 88,
+        "content": 88,
+        "realValue": 86
+      },
+      "reviewerAvg": 86.8,
+      "userScores": [
+        86,
+        86,
+        87,
+        84,
+        85
+      ],
+      "userAvg": 85.6,
+      "overall": 86.2,
+      "findings": [
+        "핵심 도메인 버그: 전체 보기에서 본인 실손+배우자/자녀 실손을 실손 2건 중복으로 오판(서로 다른 피보험자는 중복 아님) — 유효보장 해지 유도 YMYL 위험.",
+        "일배책/운전자/어린이+실손도 피보험자 무시 전체 합산 오탐, 미사용 변수 잔존.",
+        "모바일: viewport/safe-area 미설정, 삭제 44px 미달·aria-label 부재.",
+        "비례/정액 보상 구분 등 핵심 도메인 인사이트·면책·프라이버시·디자인은 이미 우수."
+      ],
+      "changes": [
+        "실손/일배책/운전자/어린이+실손 중복 판정을 피보험자별 그룹 기준으로 전면 재작성(가족 간 오탐 제거, 절감액도 피보험자별).",
+        "점수 집계 피보험자별 재산출, 미사용 변수 제거, 근거 문구 보강(동일 피보험자 기준).",
+        "layout viewport export(viewportFit cover·themeColor), 삭제 44px+aria-label, safe-area 하단 패딩·안내 문구. tsc/build 통과, prod 배포·라이브 검증."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86.2
+        }
+      ],
+      "reviewedAt": "2026-07-09"
     }
   ]
 }

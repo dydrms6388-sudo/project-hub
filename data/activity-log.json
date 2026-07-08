@@ -4,6 +4,41 @@
   "entries": [
     {
       "ts": "2026-07-09",
+      "slug": "_batch2",
+      "kind": "ops",
+      "summary": "Phase A 배치2 완료: 미채점 툴형 4종 신규 리뷰 — company-vs-average 86.3, gpa-converter 83.3, insurance-overlap 86.2 첫 리뷰 통과(+실버그 수정), dsr-limit-check 78.6→84.5 재개발 통과. 전부 라이브 배포. 스코어보드 24→28개 전원 PASS, 평균 83.4."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "dsr-limit-check",
+      "kind": "redevelop",
+      "prev": 78.6,
+      "overall": 84.5,
+      "summary": "스트레스 DSR을 2026 3단계 모델(하한1.5%p·100%반영)로 정정 + DSR 제외 대출 안내 + 규제 콘텐츠·터치타깃. YMYL 정확성 확보. 78.6→84.5 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "insurance-overlap",
+      "kind": "redevelop",
+      "overall": 86.2,
+      "summary": "전체 보기에서 서로 다른 피보험자를 실손 중복으로 오판하던 YMYL 버그를 피보험자별 판정으로 재작성(유효보장 해지 유도 위험 제거) + viewport/safe-area/44px. 첫 리뷰 86.2 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "company-vs-average",
+      "kind": "redevelop",
+      "overall": 86.3,
+      "summary": "조작·손상 공유 링크에서 결과 페이지가 크래시하던 버그(enum/범위 미검증)를 방어 + safe-area·44px 슬라이더·YMYL 면책. 첫 리뷰 86.3 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "gpa-converter",
+      "kind": "redevelop",
+      "overall": 83.3,
+      "summary": "목표 역산 음수 표시 버그 + 입력검증 공백 + 터치타깃 수정. 첫 리뷰 83.3 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
       "slug": "_milestone",
       "kind": "ops",
       "summary": "🎉 리뷰 스코어보드 24/24 전원 게이트 통과(review-needed 0), 평균 만족도 83.2. Phase A 배치1의 마지막 미달건(fandom-bias-vote)까지 정직하게 80 돌파."
