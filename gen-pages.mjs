@@ -157,7 +157,7 @@ for (const d of daily) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "홈", item: `${SITE}/` },
-      { "@type": "ListItem", position: 2, name: d.cat },
+      { "@type": "ListItem", position: 2, name: d.cat, item: `${SITE}/` },
       { "@type": "ListItem", position: 3, name: d.name, item: `${SITE}/${d.slug}/` },
     ],
   });
