@@ -4,6 +4,12 @@
   "entries": [
     {
       "ts": "2026-07-09",
+      "slug": "personal-color-test",
+      "kind": "deploy",
+      "summary": "미연동으로 보류됐던 배포 해소 — vercel 프로젝트 personal-color-test 연동 후 personal-color-test-ten.vercel.app 배포. 배치1 재개발분(색이름·스타일 팁) 라이브 반영."
+    },
+    {
+      "ts": "2026-07-09",
       "slug": "_batch3",
       "kind": "ops",
       "summary": "Phase A 배치3 완료: 미채점 4종 신규 리뷰 — loan-refi 82.6(재개발), naesin 86.9, supplement-combo 86.3, shift-work 85.5 전원 PASS. 스코어보드 28→32개 전원 통과. Vercel 빌드 큐 지연으로 naesin·supplement 배포는 재확인 대상."

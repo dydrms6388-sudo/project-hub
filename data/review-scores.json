@@ -923,7 +923,7 @@
       "findings": [
         "직전 3개 지적(워터마크·구iOS 폴백·캡처범위)은 이미 구현·정상 확인. 게이트를 막던 건 content(78)/realValue(74).",
         "기존 기록 live URL 오류 교정: 실 도메인은 personal-color-test-ten.vercel.app (personal-color-diag는 404).",
-        "배포 보류: 프로젝트 Vercel 미연동(.vercel 없음) — 재연동 후 배포 필요."
+        "배포 완료: vercel 프로젝트 personal-color-test에 연동 후 personal-color-test-ten.vercel.app로 배포(2026-07-09)."
       ],
       "changes": [
         "결과 팔레트 색상 스와치에 한글 색이름 라벨 추가(어울리는 색/피하면 좋은 색).",
@@ -954,8 +954,7 @@
           "overall": 82.5
         }
       ],
-      "reviewedAt": "2026-07-09",
-      "deployPending": true
+      "reviewedAt": "2026-07-09"
     },
     {
       "slug": "salary-net-pay",
