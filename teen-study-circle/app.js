@@ -13,6 +13,8 @@
   var MANUAL_MAX_MINUTES = 600; // input[type=number] 의 max 속성과 반드시 일치시켜야 함
   var GOAL_MIN_MINUTES = 10;
   var GOAL_MAX_MINUTES = 600; // input[type=number] 의 max 속성과 반드시 일치시켜야 함
+  var NICK_MIN_LEN = 2;
+  var NICK_MAX_LEN = 10; // 닉네임 입력의 HTML maxlength 속성과 반드시 일치시켜야 함(코드포인트 기준)
 
   /* ---------------- 유틸 ---------------- */
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -23,6 +25,15 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
+  // 문자열.length는 UTF-16 코드유닛 수를 센다. 이모지처럼 서로게이트 페어(surrogate
+  // pair)로 표현되는 코드포인트 1개는 length로는 2로 잡혀, "2자 이상" 같은 조건을
+  // 실제로는 1글자인 이모지 하나로 통과시킬 수 있다. Array.from(str)은 코드포인트
+  // 단위로 순회하므로 사람이 실제로 인지하는 글자 수에 훨씬 가깝다.
+  function codePointLength(str) { return Array.from(str || "").length; }
+  // HTML maxlength 속성은 UTF-16 코드유닛 기준으로 잘라내기 때문에, 서로게이트
+  // 페어로 이루어진 이모지 중간을 끊어 깨진 문자(예: 손상된 낱개 서로게이트)를
+  // 남길 수 있다. 코드포인트 단위로 잘라내면 항상 온전한 문자 단위로만 잘린다.
+  function truncateByCodePoints(str, max) { return Array.from(str || "").slice(0, max).join(""); }
   function fmtMin(min) {
     min = Math.round(min || 0);
     if (min < 60) return min + "분";
@@ -57,6 +68,16 @@
     return n;
   }
   function roomById(id) { return ROOMS.find(function (r) { return r.id === id; }); }
+  // 타이머에 저장된 roomId로 실제 표시/기록에 쓸 룸을 결정한다. tm.roomId가
+  // falsy일 때만 대체하던 이전 로직은, truthy이지만 ROOMS에 더 이상 존재하지
+  // 않는(예: 룸 목록 개편으로 삭제된) id가 그대로 addLog()에 전달돼 S.joinedRooms에
+  // 영구 고아 항목이 쌓이고 해당 로그가 어느 룸의 리더보드/피드에도 나타나지
+  // 않는 문제가 있었다. renderTimer()가 쓰던 'roomById(tm.roomId) || roomById(...)
+  // || ROOMS[0]' 검증 체인과 동일한 로직을 여기 한 곳으로 모아 양쪽이 항상
+  // 일관되게 유효한 룸으로 귀결되도록 한다.
+  function resolveTimerRoom(tm) {
+    return roomById(tm.roomId) || roomById(S.joinedRooms[0]) || ROOMS[0];
+  }
   function avatarSpan(emoji, grad, size, extraClass) {
     size = size || 38;
     return '<div class="avatar' + (extraClass ? " " + extraClass : "") + '" style="width:' + size + "px;height:" + size + "px;font-size:" + Math.round(size * 0.46) + "px;background:linear-gradient(135deg," + grad[0] + "," + grad[1] + ')">' + emoji + "</div>";
@@ -120,6 +141,32 @@
     if (max != null && v > max) return fallback;
     return v;
   }
+  // S.logs 배열 항목(공부시간 기록) 하나를 검증/정규화한다. goals/timer 같은
+  // 설정 필드는 sanitizeNumber()로 엄격히 범위를 강제하면서, 정작 누적 통계의
+  // 원천인 로그 각 항목의 minutes/date/roomId는 검증 없이 그대로 신뢰했다.
+  // minutes가 숫자가 아니면(예: 손상된 localStorage, 구버전 데이터의 병합)
+  // totalMinutesAll()의 't += l.minutes'가 문자열 연결로 빠져 fmtMin()이
+  // 'NaN시간 NaN분'을 출력하고, renderGoals()의 pct(=t/goal*100)가 NaN이 되어
+  // 목표바 width가 'NaN%'가 되는 등 크래시 없이 화면만 깨지는 문제가 있었다.
+  // 유효하지 않은 항목은 값을 함부로 보정하지 않고(로그 데이터는 사실 기록이므로
+  // 임의 보정이 오히려 왜곡) 통째로 버려 통계 계산에서 제외한다.
+  function normalizeLogEntry(l) {
+    if (!l || typeof l !== "object") return null;
+    var minutes = Number(l.minutes);
+    if (!isFinite(minutes)) return null;
+    minutes = Math.round(minutes);
+    if (minutes < MANUAL_MIN_MINUTES || minutes > MANUAL_MAX_MINUTES) return null;
+    if (typeof l.date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(l.date)) return null;
+    if (typeof l.roomId !== "string" || !roomById(l.roomId)) return null;
+    return {
+      id: (typeof l.id === "string" && l.id) ? l.id : uid(),
+      roomId: l.roomId,
+      date: l.date,
+      minutes: minutes,
+      method: (l.method === "timer" || l.method === "manual") ? l.method : "manual",
+      ts: (typeof l.ts === "number" && isFinite(l.ts) && l.ts > 0) ? l.ts : 0
+    };
+  }
   function load() {
     var parsed = null;
     try { parsed = JSON.parse(localStorage.getItem(LS_KEY) || "null"); } catch (e) { parsed = null; }
@@ -128,14 +175,29 @@
     // 배열/객체 필드가 어떤 이유로든 잘못된 타입이면 기본값으로 되돌려
     // renderHome() 등에서의 .forEach TypeError로 인한 흰 화면 크래시를 막는다.
     if (!Array.isArray(S.logs)) S.logs = [];
+    // 배열 타입 자체는 위에서 방어됐지만, 항목 각각의 minutes/date/roomId 값은
+    // 아직 검증되지 않았다. 비정상 항목은 통계 계산을 깨뜨리므로 걸러낸다.
+    S.logs = S.logs.map(normalizeLogEntry).filter(Boolean);
     if (!Array.isArray(S.joinedRooms)) S.joinedRooms = [];
     if (!Array.isArray(S.badgesEarned)) S.badgesEarned = [];
     if (!Array.isArray(S.goalHitDates)) S.goalHitDates = [];
     if (!S.profile || typeof S.profile !== "object" || Array.isArray(S.profile)) S.profile = DEFAULTS().profile;
     if (!Array.isArray(S.profile.subjects)) S.profile.subjects = [];
+    // 닉네임도 숫자 설정 필드와 동일한 원칙(HTML만으로는 범위를 강제할 수 없다)을
+    // 적용해, 손상되거나 구버전에서 병합된 비정상(비문자열/과도한 길이) 값을
+    // 코드포인트 기준으로 정규화한다.
+    if (typeof S.profile.nickname !== "string") S.profile.nickname = "";
+    S.profile.nickname = truncateByCodePoints(S.profile.nickname, NICK_MAX_LEN);
     if (!S.timer || typeof S.timer !== "object" || Array.isArray(S.timer)) S.timer = DEFAULTS().timer;
     if (!S.goals || typeof S.goals !== "object" || Array.isArray(S.goals)) S.goals = DEFAULTS().goals;
     if (!S.reactionsSent || typeof S.reactionsSent !== "object" || Array.isArray(S.reactionsSent)) S.reactionsSent = {};
+    // 각 리액션 항목을 { v, t } 레코드로 정규화한다(구버전의 순수 불리언 값 포함).
+    var normalizedReactions = {};
+    Object.keys(S.reactionsSent).forEach(function (k) {
+      var rec = normalizeReactionEntry(S.reactionsSent[k]);
+      if (rec) normalizedReactions[k] = rec;
+    });
+    S.reactionsSent = normalizedReactions;
     // 2차 안전망은 지금까지 최상위 필드의 "타입"만 방어했고, 중첩된 숫자 필드(목표
     // 분·타이머 분/초)의 값 범위는 검증하지 않았다. localStorage가 손상되거나 수동
     // 편집으로 goals.dailyMinutes가 0/음수/NaN이 되면 renderGoals()의
@@ -213,7 +275,21 @@
         newly.push(b);
       }
     });
-    if (newly.length) { save(); showBadgeToast(newly[0]); }
+    if (newly.length) {
+      if (save()) {
+        showBadgeToast(newly[0]);
+      } else {
+        // save()가 실패하면(용량 초과·프라이빗 모드 등) 이미 저장 실패 토스트가 떴다.
+        // 메모리 상의 badgesEarned만 앞서 나가 있으면 화면은 "획득"으로 보이지만
+        // 다음 새로고침에는 사라지므로, 방금 추가한 배지를 되돌려 메모리와 저장소
+        // 상태를 일치시키고 성공(배지 획득) 토스트도 띄우지 않는다.
+        newly.forEach(function (b) {
+          var idx = S.badgesEarned.indexOf(b.id);
+          if (idx > -1) S.badgesEarned.splice(idx, 1);
+        });
+        newly = [];
+      }
+    }
     return newly;
   }
   function checkGoalHit() {
@@ -221,19 +297,39 @@
     var today = todayStr();
     if (t >= S.goals.dailyMinutes && S.goalHitDates.indexOf(today) === -1) {
       S.goalHitDates.push(today);
-      save();
-      toast("오늘의 목표를 달성했어요! 🎯");
+      if (save()) {
+        toast("오늘의 목표를 달성했어요! 🎯");
+      } else {
+        // 저장 실패 시 메모리 상의 goalHitDates도 되돌려, "달성"으로 보였다가
+        // 새로고침 후 조용히 사라지는 상태/저장 불일치를 막는다.
+        var idx = S.goalHitDates.indexOf(today);
+        if (idx > -1) S.goalHitDates.splice(idx, 1);
+      }
     }
   }
   function addLog(roomId, minutes, method) {
     // 호출부에서 이미 검증하지만, 게이미피케이션 핵심 지표(오늘 공부시간·누적시간·
     // hour 배지·목표달성·리더보드)를 지키기 위한 마지막 방어선으로 여기서도 상한을 강제한다.
     minutes = Math.max(MANUAL_MIN_MINUTES, Math.min(MANUAL_MAX_MINUTES, Math.round(minutes)));
-    S.logs.push({ id: uid(), roomId: roomId, date: todayStr(), minutes: minutes, method: method, ts: Date.now() });
-    if (S.joinedRooms.indexOf(roomId) === -1) S.joinedRooms.push(roomId);
-    save();
+    var log = { id: uid(), roomId: roomId, date: todayStr(), minutes: minutes, method: method, ts: Date.now() };
+    S.logs.push(log);
+    var joinedRoomAdded = S.joinedRooms.indexOf(roomId) === -1;
+    if (joinedRoomAdded) S.joinedRooms.push(roomId);
+    if (!save()) {
+      // 저장 실패: 방금 추가한 로그/참여룸을 메모리에서도 되돌린다. save()가 이미
+      // '저장 실패' 토스트를 띄웠으므로, 호출부가 뒤이어 성공 토스트를 띄우지
+      // 않도록 실패를 알리는 false를 반환한다.
+      var idx = S.logs.indexOf(log);
+      if (idx > -1) S.logs.splice(idx, 1);
+      if (joinedRoomAdded) {
+        var ri = S.joinedRooms.indexOf(roomId);
+        if (ri > -1) S.joinedRooms.splice(ri, 1);
+      }
+      return false;
+    }
     checkGoalHit();
     checkAndAwardBadges();
+    return true;
   }
 
   /* ---------------- 토스트 ---------------- */
@@ -282,7 +378,16 @@
 
   /* ---------------- 모달 ---------------- */
   function openModal(html) {
-    $("#modal-root").innerHTML = '<div class="modal-back" data-action="close-modal"><div class="modal-card" onclick="event.stopPropagation()">' + html + "</div></div>";
+    // 모든 버튼 클릭은 document의 단일 위임 리스너가 e.target.closest("[data-action]")로
+    // 처리한다. 예전에는 모달 카드 바깥(배경)을 눌렀을 때만 닫히게 하려고 카드에
+    // onclick="event.stopPropagation()"을 걸었는데, 이는 버블링 자체를 막아버려서
+    // 카드 안의 모든 버튼(goal-save, modal-manual-submit, profile-save, confirm-reset,
+    // select-timer-room 등)이 document 리스너까지 이벤트를 전달하지 못해 전혀 동작하지
+    // 않는 문제가 있었다. closest()는 가장 가까운 data-action 조상에서 멈추므로,
+    // 카드 자체에 아무 동작도 없는 data-action="noop"을 부여하면 카드의 빈 영역을
+    // 눌러도(카드 자신이 가장 가까운 매치가 되어) 모달이 닫히지 않으면서, 카드 안의
+    // 버튼들은 각자의 data-action이 먼저 매치되어 정상적으로 document까지 전달된다.
+    $("#modal-root").innerHTML = '<div class="modal-back" data-action="close-modal"><div class="modal-card" data-action="noop">' + html + "</div></div>";
   }
   function closeModal() { $("#modal-root").innerHTML = ""; }
 
@@ -337,7 +442,12 @@
     var html = "";
     if (step === "nickname") {
       html = '<div class="ob-step"><h2>어떻게 불러드릴까요?</h2><p class="sub">실명 대신 별명을 사용해주세요. 학교명·연락처는 입력하지 않아요.</p>' +
-        '<input class="ob-input" id="ob-nickname" maxlength="10" placeholder="예: 새벽별지기" value="' + esc(S.profile.nickname) + '" />' +
+        // maxlength는 UTF-16 코드유닛 기준이라 이모지(서로게이트 페어)를 코드포인트
+        // 중간에서 잘라낼 수 있다. 실제 상한(10 코드포인트)은 아래 input 리스너에서
+        // truncateByCodePoints()로 강제하고, 여기 maxlength는 그보다 넉넉한 값(서로게이트
+        // 페어 10개 분량)을 둬 브라우저 네이티브 절단이 우리 로직보다 먼저 개입해
+        // 문자를 깨뜨리지 않도록 하는 안전 여유값일 뿐이다.
+        '<input class="ob-input" id="ob-nickname" maxlength="' + (NICK_MAX_LEN * 2) + '" placeholder="예: 새벽별지기" value="' + esc(S.profile.nickname) + '" />' +
         '<p class="ob-hint">2~10자, 별명만 입력하면 돼요</p></div>';
     } else if (step === "avatar") {
       var grad = AVATAR_GRADIENTS[S.profile.gradIdx % AVATAR_GRADIENTS.length];
@@ -368,7 +478,13 @@
     $("#ob-body").innerHTML = html;
     $("#ob-next").textContent = obIndex === OB_STEPS.length - 1 ? "완료" : "다음";
     var nickInput = $("#ob-nickname");
-    if (nickInput) nickInput.addEventListener("input", function () { S.profile.nickname = nickInput.value; });
+    if (nickInput) nickInput.addEventListener("input", function () {
+      // 코드포인트 기준으로 즉시 상한을 강제해, 네이티브 maxlength(UTF-16 코드유닛
+      // 기준)가 서로게이트 페어 이모지를 반쪽만 남기는 것을 방지한다.
+      var v = truncateByCodePoints(nickInput.value, NICK_MAX_LEN);
+      if (v !== nickInput.value) nickInput.value = v;
+      S.profile.nickname = v;
+    });
     var ageCk = $("#ob-age"); if (ageCk) ageCk.addEventListener("change", function () { S.profile.ageConfirmed = ageCk.checked; });
     var termsCk = $("#ob-terms"); if (termsCk) termsCk.addEventListener("change", function () { S.profile.termsAgreed = termsCk.checked; });
   }
@@ -376,8 +492,12 @@
   function obValidateCurrent() {
     var step = OB_STEPS[obIndex];
     if (step === "nickname") {
-      var v = (S.profile.nickname || "").trim();
-      if (v.length < 2) { toast("별명을 2자 이상 입력해주세요"); return false; }
+      // 하한(2자)만 재검증하고 상한(10자)은 HTML maxlength 속성에만 의존하던
+      // 비일관성을 없앤다. .length는 UTF-16 코드유닛 기준이라 서로게이트 페어
+      // 이모지 1개를 2자로 세어버리므로, 코드포인트 기준(codePointLength)으로
+      // 상/하한을 모두 명시적으로 강제한다.
+      var v = truncateByCodePoints((S.profile.nickname || "").trim(), NICK_MAX_LEN);
+      if (codePointLength(v) < NICK_MIN_LEN) { toast("별명을 " + NICK_MIN_LEN + "자 이상 입력해주세요"); return false; }
       S.profile.nickname = v;
     } else if (step === "subjects") {
       if (!S.profile.subjects.length) { toast("최소 1개 이상 골라주세요"); return false; }
@@ -557,13 +677,20 @@
       return { id: f.id, nick: f.nick, emoji: f.emoji, grad: f.grad, minutes: f.minutes, minsAgo: f.minsAgo, sample: true };
     });
     var today = todayStr();
-    S.logs.filter(function (l) { return l.roomId === roomId && l.date === today; }).forEach(function (l) {
-      entries.push({
-        id: l.id, nick: S.profile.nickname || "나", emoji: S.profile.avatarEmoji,
-        grad: AVATAR_GRADIENTS[S.profile.gradIdx % AVATAR_GRADIENTS.length],
-        minutes: l.minutes, minsAgo: Math.max(0, Math.round((Date.now() - l.ts) / 60000)), sample: false, mine: true
+    // leaderboardRows()는 S.joinedRooms에 이 룸이 남아있을 때만 '나' 행을 보여준다.
+    // 예전에는 여기서 참여 여부와 무관하게 오늘 기록만으로 내 항목을 넣어서, 룸을
+    // 나간 뒤에도 피드에는 '내 기록이에요'가 계속 보이는데 리더보드에서는 그 기록이
+    // 사라지는 모순이 있었다. 두 화면이 같은 기준(참여 중인지)을 쓰도록 맞춘다.
+    var joined = S.joinedRooms.indexOf(roomId) > -1;
+    if (joined) {
+      S.logs.filter(function (l) { return l.roomId === roomId && l.date === today; }).forEach(function (l) {
+        entries.push({
+          id: l.id, nick: S.profile.nickname || "나", emoji: S.profile.avatarEmoji,
+          grad: AVATAR_GRADIENTS[S.profile.gradIdx % AVATAR_GRADIENTS.length],
+          minutes: l.minutes, minsAgo: Math.max(0, Math.round((Date.now() - l.ts) / 60000)), sample: false, mine: true
+        });
       });
-    });
+    }
     entries.sort(function (a, b) { return a.minsAgo - b.minsAgo; });
     return entries;
   }
@@ -576,7 +703,7 @@
         ? '<div class="reaction-row"><span class="reaction-btn" style="opacity:.6">내 기록이에요</span></div>'
         : '<div class="reaction-row">' + REACTIONS.map(function (r) {
             var key = e.id + "|" + r.id;
-            var sent = !!S.reactionsSent[key];
+            var sent = !!(S.reactionsSent[key] && S.reactionsSent[key].v);
             var base = 1 + (hashStr(e.id + r.id) % 12);
             return '<button class="reaction-btn' + (sent ? " sent" : "") + '" data-action="send-reaction" data-entry="' + esc(e.id) + '" data-reaction="' + r.id + '">' +
               r.emoji + " " + r.label + ' <span class="cnt">' + (base + (sent ? 1 : 0)) + "</span></button>";
@@ -591,9 +718,12 @@
 
   function sendReaction(entryId, reactionId) {
     var key = entryId + "|" + reactionId;
-    S.reactionsSent[key] = !S.reactionsSent[key];
+    var wasSent = !!(S.reactionsSent[key] && S.reactionsSent[key].v);
+    // 값과 함께 변경 시각도 기록해, 멀티탭 병합 시 last-write-wins로 "취소"도
+    // "보냄"과 동등하게 최신 상태로 인정받을 수 있게 한다.
+    S.reactionsSent[key] = { v: !wasSent, t: Date.now() };
     save();
-    if (S.reactionsSent[key]) toast("응원을 보냈어요 👏");
+    if (S.reactionsSent[key].v) toast("응원을 보냈어요 👏");
     renderRoomOverlay();
   }
 
@@ -624,7 +754,7 @@
   function completeTimerPhase() {
     var tm = S.timer;
     if (tm.phase === "focus") {
-      var roomId = tm.roomId || (S.joinedRooms[0] || ROOMS[0].id);
+      var roomId = resolveTimerRoom(tm).id;
       addLog(roomId, tm.focusMin, "timer");
       var today = todayStr();
       if (tm.todayDate !== today) { tm.todayDate = today; tm.todayCount = 0; }
@@ -634,16 +764,17 @@
       tm.remainingSec = tm.breakMin * 60;
       tm.running = false; tm.startedAt = null;
       tm.updatedAt = Date.now();
-      save();
-      toast("포커스 완료! " + tm.breakMin + "분 쉬어가요 🌿");
+      // save()가 실패하면 addLog() 안에서 이미 '저장 실패' 토스트가 떴으므로,
+      // 여기서 '포커스 완료!' 성공 토스트까지 겹쳐 띄워 저장이 안 됐는데도
+      // 된 것처럼 보이게 하지 않는다.
+      if (save()) toast("포커스 완료! " + tm.breakMin + "분 쉬어가요 🌿");
       checkAndAwardBadges();
     } else {
       tm.phase = "focus";
       tm.remainingSec = tm.focusMin * 60;
       tm.running = false; tm.startedAt = null;
       tm.updatedAt = Date.now();
-      save();
-      toast("휴식 끝! 다음 포커스를 시작해볼까요? 🔥");
+      if (save()) toast("휴식 끝! 다음 포커스를 시작해볼까요? 🔥");
     }
     updateStreakBadge();
     if (currentTab === "timer") switchTab("timer");
@@ -695,7 +826,7 @@
 
   function renderTimer() {
     var tm = S.timer;
-    var room = roomById(tm.roomId) || roomById(S.joinedRooms[0]) || ROOMS[0];
+    var room = resolveTimerRoom(tm);
     var remain = timerDisplayRemaining();
     var total = (tm.phase === "focus" ? tm.focusMin : tm.breakMin) * 60;
     var pct = Math.max(0, Math.min(1, remain / total));
@@ -774,7 +905,6 @@
     var t = todayByRoomAndTotal().total;
     var goal = S.goals.dailyMinutes;
     var pct = Math.max(0, Math.min(100, Math.round((t / goal) * 100)));
-    var stats = currentStats();
     return '' +
       '<div class="sec"><h2>오늘의 목표</h2></div>' +
       '<div class="goal-card"><div class="goal-top"><b>일일 학습 목표</b><button class="btn-sm" data-action="open-goal-edit">수정</button></div>' +
@@ -782,7 +912,12 @@
       '<div class="goal-foot"><span>' + fmtMin(t) + " / " + fmtMin(goal) + "</span><span>" + pct + "%</span></div></div>" +
       '<div class="sec"><h2>배지 컬렉션</h2><p class="sec-sub">' + (S.badgesEarned ? S.badgesEarned.length : 0) + " / " + BADGES.length + "개 획득</p></div>" +
       '<div class="badge-grid">' + BADGES.map(function (b) {
-        var on = b.check(stats);
+        // 배지 타일의 획득 표시는 b.check(stats)로 실시간 재계산하지 않고
+        // S.badgesEarned에 실제로 들어있는지로만 판단한다. streak-3/7/30 같은
+        // 배지는 calcStreak()이 하루라도 거르면 0으로 떨어지므로, 이미 영구히
+        // 획득해 badgesEarned에 남아있는 배지가 하루 결석만으로 배지 화면에서
+        // 미획득으로 되돌아가 버리는(홈/MY의 '획득 배지' 개수와 모순되는) 문제를 막는다.
+        var on = S.badgesEarned && S.badgesEarned.indexOf(b.id) > -1;
         return '<div class="badge-item' + (on ? " on" : "") + '"><div class="b-ic">' + b.emoji + "</div><b>" + esc(b.name) + "</b><span>" + esc(b.desc) + "</span></div>";
       }).join("") + "</div>";
   }
@@ -795,7 +930,15 @@
   function saveGoal() {
     var v = parseBoundedInt($("#goal-input").value, GOAL_MIN_MINUTES, GOAL_MAX_MINUTES);
     if (v === null) { toast("목표 시간은 " + GOAL_MIN_MINUTES + "~" + GOAL_MAX_MINUTES + "분 사이로 설정해주세요"); return; }
-    S.goals.dailyMinutes = v; S.goals.updatedAt = Date.now(); save(); closeModal(); switchTab("goals"); toast("목표를 저장했어요");
+    S.goals.dailyMinutes = v; S.goals.updatedAt = Date.now();
+    save();
+    // 목표 시간을 낮춰서 오늘 이미 기록한 공부시간이 새 목표를 넘게 되는 경우가
+    // 있다. addLog()에서는 매번 checkGoalHit()을 호출해 목표 달성을 인식하지만,
+    // 목표 자체를 수정하는 이 경로에서는 지금까지 호출되지 않아 goalHitDates에
+    // 오늘 날짜가 추가되지 않고 goal-1/goal-10 배지도 못 받는 문제가 있었다.
+    checkGoalHit();
+    checkAndAwardBadges();
+    closeModal(); switchTab("goals"); toast("목표를 저장했어요");
   }
 
   /* ---------------- MY ---------------- */
@@ -839,7 +982,9 @@
     openModal('<h3>프로필 수정</h3>' +
       '<div class="avatar-preview" id="pe-preview" style="background:linear-gradient(135deg,' + grad[0] + "," + grad[1] + ')">' + S.profile.avatarEmoji + "</div>" +
       '<label class="ob-hint">별명</label>' +
-      '<input id="pe-nickname" class="ob-input" maxlength="10" value="' + esc(S.profile.nickname) + '" style="margin:6px 0 14px" />' +
+      // ob-nickname과 동일한 이유로 maxlength는 안전 여유값(코드포인트 상한의 2배)만
+      // 두고, 실제 상한은 아래 input 리스너에서 코드포인트 기준으로 강제한다.
+      '<input id="pe-nickname" class="ob-input" maxlength="' + (NICK_MAX_LEN * 2) + '" value="' + esc(S.profile.nickname) + '" style="margin:6px 0 14px" />' +
       '<label class="ob-hint">아바타</label>' +
       '<div class="avatar-grid" id="pe-avatar-grid" style="margin:6px 0 14px">' + AVATAR_EMOJIS.map(function (e) {
         return '<button class="av-opt' + (S.profile.avatarEmoji === e ? " on" : "") + '" style="background:linear-gradient(135deg,' + grad[0] + "," + grad[1] + ')" data-pe-emoji="' + e + '">' + e + "</button>";
@@ -887,9 +1032,19 @@
       $all("#pe-timeslot .chip").forEach(function (x) { x.classList.remove("on"); });
       b.classList.add("on");
     });
+    var peNickInput = $("#pe-nickname");
+    peNickInput.addEventListener("input", function () {
+      // 온보딩 닉네임 입력과 동일하게, 서로게이트 페어 이모지가 중간에서 잘리지
+      // 않도록 코드포인트 기준으로 즉시 상한을 강제한다.
+      var v = truncateByCodePoints(peNickInput.value, NICK_MAX_LEN);
+      if (v !== peNickInput.value) peNickInput.value = v;
+    });
     window.__tscProfileSave = function () {
-      var nick = $("#pe-nickname").value.trim();
-      if (nick.length < 2) { toast("별명을 2자 이상 입력해주세요"); return; }
+      // 온보딩(obValidateCurrent)과 마찬가지로 하한뿐 아니라 상한도 명시적으로
+      // 재검증한다. HTML maxlength는 키보드/붙여넣기를 완전히 막지 못하고, 이
+      // 코드가 없으면 상한 검증이 HTML 속성에만 의존하는 비일관성이 생긴다.
+      var nick = truncateByCodePoints($("#pe-nickname").value.trim(), NICK_MAX_LEN);
+      if (codePointLength(nick) < NICK_MIN_LEN) { toast("별명을 " + NICK_MIN_LEN + "자 이상 입력해주세요"); return; }
       if (!tempSubjects.length) { toast("관심 과목을 1개 이상 골라주세요"); return; }
       if (!tempSlot) { toast("공부 시간대를 골라주세요"); return; }
       S.profile.nickname = nick;
@@ -993,7 +1148,9 @@
         var roomId = $("#ml-room").value;
         var mins = parseBoundedInt($("#ml-minutes").value, MANUAL_MIN_MINUTES, MANUAL_MAX_MINUTES);
         if (mins === null) { toast("공부 시간은 " + MANUAL_MIN_MINUTES + "~" + MANUAL_MAX_MINUTES + "분 사이로 입력해주세요"); return; }
-        addLog(roomId, mins, "manual");
+        // addLog()가 false를 반환하면 저장이 실패한 것이므로(이미 실패 토스트가 떴다)
+        // 모달을 닫거나 '기록했어요!' 성공 토스트를 띄우지 않고 재시도할 수 있게 둔다.
+        if (!addLog(roomId, mins, "manual")) return;
         closeModal();
         switchTab(currentTab === "timer" ? "timer" : currentTab);
         updateStreakBadge();
@@ -1004,7 +1161,7 @@
         var r2 = $("#manual-room-select").value;
         var m2 = parseBoundedInt($("#manual-minutes-input").value, MANUAL_MIN_MINUTES, MANUAL_MAX_MINUTES);
         if (m2 === null) { toast("공부 시간은 " + MANUAL_MIN_MINUTES + "~" + MANUAL_MAX_MINUTES + "분 사이로 입력해주세요"); return; }
-        addLog(r2, m2, "manual");
+        if (!addLog(r2, m2, "manual")) return;
         updateStreakBadge();
         switchTab("timer");
         toast(fmtMin(m2) + " 기록했어요! 🎉");
@@ -1075,6 +1232,19 @@
   // 기록해둔 updatedAt(마지막 변경 시각)을 비교해 더 최근에 바뀐 쪽을 채택하는
   // last-write-wins 병합을 쓴다. 이렇게 하면 뒤늦게 save()를 호출한 탭이 이미 다른
   // 탭에서 더 최근에 바뀐 값을 조용히 롤백하지 못한다.
+  // reactionsSent 항목을 { v: boolean, t: number(ms) } 형태로 정규화한다.
+  // 이 필드를 도입하기 전(불리언만 저장하던 구버전) 데이터와도 호환되도록,
+  // 순수 불리언 값은 타임스탬프를 알 수 없으므로 t=0(가장 오래된 것으로 취급)으로
+  // 변환해, 타임스탬프가 있는 이후의 어떤 변경에도 항상 밀리게 한다.
+  function normalizeReactionEntry(raw) {
+    if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+      var t = Number(raw.t);
+      if (!isFinite(t) || t < 0) t = 0;
+      return { v: !!raw.v, t: t };
+    }
+    if (typeof raw === "boolean") return { v: raw, t: 0 };
+    return null;
+  }
   function mergeLwwObject(incomingObj, existingObj) {
     if (!incomingObj || typeof incomingObj !== "object") return false;
     var incomingTs = Number(incomingObj.updatedAt) || 0;
@@ -1087,7 +1257,12 @@
   function mergeExternalState(incoming) {
     if (!incoming || typeof incoming !== "object") return false;
     var changed = false;
-    if (Array.isArray(incoming.logs)) changed = mergeLogsArr(incoming.logs, S.logs) || changed;
+    if (Array.isArray(incoming.logs)) {
+      // load()에서와 마찬가지로, 다른 탭(혹은 구버전)이 저장한 손상/비정상 로그가
+      // 그대로 병합되면 totalMinutesAll() 등의 계산이 깨지므로 병합 전에 검증한다.
+      var validIncomingLogs = incoming.logs.map(normalizeLogEntry).filter(Boolean);
+      changed = mergeLogsArr(validIncomingLogs, S.logs) || changed;
+    }
     if (Array.isArray(incoming.joinedRooms)) changed = mergePrimitiveArr(incoming.joinedRooms, S.joinedRooms) || changed;
     if (Array.isArray(incoming.badgesEarned)) changed = mergePrimitiveArr(incoming.badgesEarned, S.badgesEarned) || changed;
     if (Array.isArray(incoming.goalHitDates)) changed = mergePrimitiveArr(incoming.goalHitDates, S.goalHitDates) || changed;
@@ -1100,11 +1275,21 @@
     if (incoming.goals && typeof incoming.goals === "object") changed = mergeLwwObject(incoming.goals, S.goals) || changed;
     if (incoming.timer && typeof incoming.timer === "object") changed = mergeLwwObject(incoming.timer, S.timer) || changed;
     if (incoming.profile && typeof incoming.profile === "object") changed = mergeLwwObject(incoming.profile, S.profile) || changed;
-    // reactionsSent는 켬/끔 토글 맵이라 union이 완벽하지는 않지만(둘 다 true인 쪽을
-    // 우선), "응원을 보냈다"는 사실 자체가 사라지는 것보다는 안전한 절충이다.
-    if (incoming.reactionsSent && typeof incoming.reactionsSent === "object") {
+    // reactionsSent는 각 항목이 { v: 보냈는지 여부, t: 마지막 변경 시각 } 형태의
+    // 켬/끔 레코드다. 예전에는 'incoming[k] && !S.reactionsSent[k]'라는 단방향 OR만
+    // 수행해, 탭A에서 리액션을 취소(false)한 직후 탭B가 저장한 예전 스냅샷(true)이
+    // 들어오면 탭A의 명시적 취소가 되살아나는 결함이 있었다. 항목별 타임스탬프를
+    // 비교해 더 최근에 바뀐 쪽만 채택하는 last-write-wins로 바꿔, "취소했다"는
+    // 사실도 "보냈다"는 사실과 동등하게 보존되도록 한다.
+    if (incoming.reactionsSent && typeof incoming.reactionsSent === "object" && !Array.isArray(incoming.reactionsSent)) {
       Object.keys(incoming.reactionsSent).forEach(function (k) {
-        if (incoming.reactionsSent[k] && !S.reactionsSent[k]) { S.reactionsSent[k] = true; changed = true; }
+        var inRec = normalizeReactionEntry(incoming.reactionsSent[k]);
+        if (!inRec) return;
+        var curRec = normalizeReactionEntry(S.reactionsSent[k]);
+        if (!curRec || inRec.t > curRec.t) {
+          S.reactionsSent[k] = inRec;
+          changed = true;
+        }
       });
     }
     return changed;
@@ -1147,6 +1332,26 @@
       });
     }
   }
+
+  // DOMContentLoaded 핸들러의 try/catch는 load()·최초 화면 렌더링 같은 동기 시작
+  // 경로만 보호한다. 앱이 정상적으로 뜬 뒤에 벌어지는 예외 — 예를 들어 단일 위임
+  // 클릭 핸들러 handleAction()이나 1초마다 도는 timerTick() setInterval 안에서
+  // (멀티탭 병합 후 손상된 데이터 등으로) 던져지는 예외 — 는 어디서도 잡히지 않아
+  // 사용자가 흰 화면/먹통 상태에서 복구할 방법이 없었다. window 레벨의 전역
+  // 핸들러를 달아, 시작 이후에 발생하는 예외도 동일한 초기화 복구 화면으로 안내한다.
+  var fatalErrorShown = false;
+  function handleFatalRuntimeError(err) {
+    if (fatalErrorShown) return; // 반복 실행되는 setInterval 등에서 같은 오류가 계속 던져져도 한 번만 처리
+    fatalErrorShown = true;
+    if (timerLoopHandle) { clearInterval(timerLoopHandle); timerLoopHandle = null; }
+    showFatalErrorScreen(err);
+  }
+  window.addEventListener("error", function (e) {
+    handleFatalRuntimeError(e && e.error ? e.error : e);
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    handleFatalRuntimeError(e && e.reason ? e.reason : e);
+  });
 
   /* ---------------- 초기화 ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
