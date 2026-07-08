@@ -9,7 +9,7 @@
     "runtime": null
   },
   "build": {
-    "buildCommand": null,
+    "buildCommand": "cd \"C:\\Users\\dydrm\\projects\\daily\\2026-06-23-insurance-overlap-check\" && npx tsc --noEmit && echo \"===BUILD===\" && npm run build 2>&1 | tail -35",
     "testCommand": null,
     "lintCommand": null,
     "devCommand": null,
@@ -2101,15 +2101,33 @@
   },
   "hotPaths": [
     {
+      "path": "data\\review-scores.json",
+      "accessCount": 10,
+      "lastAccessed": 1783531000307,
+      "type": "file"
+    },
+    {
+      "path": "data\\activity-log.json",
+      "accessCount": 10,
+      "lastAccessed": 1783531040207,
+      "type": "file"
+    },
+    {
+      "path": "review-dash\\index.html",
+      "accessCount": 4,
+      "lastAccessed": 1783528998259,
+      "type": "directory"
+    },
+    {
       "path": "REVIEW-LOOP.md",
       "accessCount": 1,
       "lastAccessed": 1783528114178,
       "type": "file"
     },
     {
-      "path": "data\\review-scores.json",
+      "path": "data\\review-queue.json",
       "accessCount": 1,
-      "lastAccessed": 1783528115125,
+      "lastAccessed": 1783528763718,
       "type": "file"
     }
   ],

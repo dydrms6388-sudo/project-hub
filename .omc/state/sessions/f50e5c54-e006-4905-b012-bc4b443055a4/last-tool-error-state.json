@@ -1,7 +1,7 @@
 {
-  "tool_name": "PowerShell",
-  "tool_input_preview": "{\"command\":\"Write-Output \\\"=== project-hub ===\\\"; git -C C:\\\\Users\\\\dydrm\\\\projects\\\\daily\\\\project-hub log --oneline -3; Write-Output \\\"=== factory-dash ===\\\"; git -C C:\\\\Users\\\\dydrm\\\\projects\\\\fact...",
-  "error": "Exit code 128\n=== project-hub ===\r\nca24bab add 하이볼각 (dydrms-highballgak)\n094f250 add dydrms-bakelab (베이크랩 홈베이킹 계량·틀변환)\nd556078 add dydrms-tennisgak (테니스각)\n=== factory-dash ===\r\nfactory-dash: not at that path",
-  "timestamp": "2026-07-08T16:11:30.470Z",
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/dydrm/projects/daily/project-hub\\\" && node -e '\\nconst fs=require(\\\"fs\\\");\\nconst path=\\\"./data/review-scores.json\\\";\\nconst s=JSON.parse(fs.readFileSync(path,\\\"utf8\\\"));\\nco...",
+  "error": "Exit code 1\n[eval]:30\r\n    \"목표 역산 탭 버그: 누적 GPA가 목표보다 높을 때 requiredNext가 음수를 충분히\r\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\nSyntaxError: Invalid or unexpected token\r\n    at makeContextifyScript (node:internal/vm:185:14)\r\n    at node:internal/process/execution:107:22\r\n    at [eval]-wrapper:6:24\r\n    at runScript (node:internal/process/execution:101:62)\r\n    at evalScript (node:internal/process/execution:133:3)\r\n    at node:internal/main/eval_string:51:3\r\n\r\nNode.js v20.18.3",
+  "timestamp": "2026-07-08T17:40:18.225Z",
   "retry_count": 1
 }
