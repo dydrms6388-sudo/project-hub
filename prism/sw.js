@@ -1,13 +1,16 @@
 /* PRISM service worker — 앱 셸 캐시 (오프라인에서도 열리는 앱) */
-const CACHE = "prism-v1";
+const CACHE = "prism-v2";
 const SHELL = [
   "./",
   "./index.html",
   "./app.css",
   "./app.js",
   "./data.js",
+  "./art-manifest.js",
+  "./cards.js",
   "./manifest.webmanifest",
   "./favicon.svg",
+  "./apple-touch-icon.png",
   "./icon-192.png",
   "./icon-512.png",
 ];

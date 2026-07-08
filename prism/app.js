@@ -8,7 +8,15 @@
   const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
   const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const rnd = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  const todayStr = () => new Date().toISOString().slice(0, 10);
+  // 이 앱은 한국(KST, UTC+9) 사용자 전용이므로 '오늘'/'이번 달' 경계는 항상 KST 자정 기준이어야 한다.
+  // new Date().toISOString()은 기기 시간대와 무관하게 UTC 자정을 경계로 삼기 때문에, 실제로는
+  // KST 자정이 아니라 오전 9시에 날짜가 바뀌는 버그가 생긴다. UTC 타임스탬프에 9시간을 더한 뒤
+  // ISO 문자열로 잘라내면(같은 트릭을 두 함수 모두에서 사용) 기기 시간대에 관계없이 KST 기준
+  // 날짜/월 문자열을 얻을 수 있다.
+  const KST_OFFSET_MS = 9 * 3600000;
+  const kstNow = () => new Date(Date.now() + KST_OFFSET_MS);
+  const todayStr = () => kstNow().toISOString().slice(0, 10);
+  const kstMonthStr = () => kstNow().toISOString().slice(0, 7);
   const vibrate = (ms) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
 
   /* ── 상태 ── */
@@ -51,9 +59,31 @@
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
   S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
-  if (S.filters.ageMax === 45) S.filters.ageMax = 50; // 구버전 기본값 승격
+  // 구버전 기본값(45) → 신버전 기본값(50) 승격은 반드시 '1회만' 실행해야 한다. 매 부팅마다
+  // 무조건 실행하면, 필터 시트의 나이 슬라이더(최댓값 50)에서 사용자가 정확히 45세를 직접
+  // 선택해도 옛 기본값과 구분이 안 돼 새로고침/재실행 때마다 조용히 50(무제한)으로 되돌아가
+  // 버린다. migV 플래그로 '이미 마이그레이션을 거친 저장 데이터'인지 구분해서, 마이그레이션
+  // 이후에는 사용자가 45세를 명시적으로 선택한 값을 그대로 존중한다.
+  if (!S.migV) {
+    if (S.filters.ageMax === 45) S.filters.ageMax = 50;
+    S.migV = 1;
+  }
   S.stats = Object.assign({ likesSent: 0, matches: 0 }, S.stats || {});
-  const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
+  let saveFailedAt = 0;
+  const save = () => {
+    try {
+      localStorage.setItem(LS, JSON.stringify(S));
+    } catch (e) {
+      // 저장 실패(저장공간 초과·프라이빗 모드 제한 등)를 조용히 삼키면 사용자는 좋아요·매칭·
+      // 설정 변경이 정상 반영된 줄 알지만 새로고침 시 소리없이 유실된다. 반드시 알려준다.
+      // (짧은 시간에 연속 실패해도 토스트가 도배되지 않도록 최소 간격만 둔다.)
+      const now = Date.now();
+      if (now - saveFailedAt > 8000) {
+        saveFailedAt = now;
+        try { toast("⚠️ 변경사항 저장에 실패했어요. 기기 저장 공간을 확인해주세요."); } catch (e2) {}
+      }
+    }
+  };
 
   const PLANS = {
     free:  { label: "무료",        likes: 20, supers: 1, seeLikes: false, rewind: 1,        boost: 0, ads: true,  read: false },
@@ -113,7 +143,11 @@
   }
   function seedIncoming(n) {
     if (S.settings.privateMode) return; // 프라이빗 모드: 새 노출 중단
-    const used = new Set([...S.incoming, ...S.matches.map((m) => m.pid), ...S.blocked]);
+    // 이미 좋아요를 보냈거나(liked) 명시적으로 패스한(passed) 상대는 반드시 제외해야 한다.
+    // 그렇지 않으면 dailyTick()/부스트/스포트라이트가 이들을 다시 '받은 좋아요'(S.incoming)에
+    // 새로 등장시켜, likeBackAndMatch()로 이미 소모한 좋아요를 한 번 더 소모하게 하거나
+    // 패스한 상대가 마치 새로 좋아요를 보낸 것처럼 재노출되는 버그가 생긴다.
+    const used = new Set([...S.incoming, ...S.matches.map((m) => m.pid), ...S.blocked, ...S.liked, ...S.passed]);
     const pool = D.profiles.filter((p) => !used.has(p.id));
     const pri = pool.filter((p) => p.likedYou);
     const rest = pool.filter((p) => !p.likedYou);
@@ -138,6 +172,10 @@
     if (tp) return zoneOf(areaOf(p)) === zoneOf(tp.region);
     return zoneOf(areaOf(p)) === zoneOf(myArea());
   };
+  // 실제 내 거주 권역 기준 판정 (텔레포트 중에도 목적지가 아닌 진짜 내 지역 기준).
+  // 필터 시트의 '내 권역' 칩 라벨(zoneOf(myArea()))이 항상 실제 내 지역으로 표시되므로,
+  // 그 필터의 동작도 반드시 같은 기준(myArea)을 써야 라벨과 결과가 일치한다.
+  const sameHomeArea = (p) => zoneOf(areaOf(p)) === zoneOf(myArea());
   function distLabel(p) {
     if (S.settings.hideDistance) return `📍 ${esc(p.region)}`;
     return sameArea(p) ? `📍 ${esc(p.region)} · ${p.distanceKm}km` : `📍 ${esc(p.region)} · 다른 지역`;
@@ -444,7 +482,7 @@
     const F = S.filters;
     deck = D.profiles.filter((p) => !gone.has(p.id))
       .filter((p) => p.age >= F.ageMin && (F.ageMax >= 50 || p.age <= F.ageMax)) // 50 = "50+" (상한 없음)
-      .filter((p) => F.area === "all" || (F.area === "mine" ? sameArea(p) : zoneOf(areaOf(p)) === F.area))
+      .filter((p) => F.area === "all" || (F.area === "mine" ? sameHomeArea(p) : zoneOf(areaOf(p)) === F.area))
       .filter((p) => F.looking === "all" || p.lookingFor === F.looking)
       .map((p) => ({ p, sc: compat(p) + Math.random() * 8 + (tp && groupOf(areaOf(p)) === groupOf(tp.region) ? 100 : 0) }))
       .sort((a, b) => b.sc - a.sc).map((x) => x.p);
@@ -680,6 +718,15 @@
     save(); vibrate([30, 60, 30]);
     matchModal(pid);
   }
+  /* '받은 좋아요' 화면에서 바로 매치 — 디스커버 덱과 동일하게 좋아요 한도를 소모해야 함
+     (한도 체크 없이 매칭시키면 무료 플랜의 하루 좋아요 상한이 완전히 무력화됨) */
+  function likeBackAndMatch(pid) {
+    if (!canAct("like")) return;
+    S.likesUsed++; S.stats.likesSent++;
+    if (!S.liked.includes(pid)) S.liked.push(pid);
+    save();
+    makeMatch(pid);
+  }
   function matchModal(pid) {
     const p = P(pid); if (!p) return;
     const u = S.user;
@@ -729,7 +776,7 @@
   }
   function boost() {
     if (Date.now() < S.boostUntil) { toast("이미 부스트가 진행 중이에요 🚀"); return; }
-    const mo = new Date().toISOString().slice(0, 7);
+    const mo = kstMonthStr();
     const used = S.boostMonth === mo ? (S.boostUsed || 0) : 0;
     const hasQuota = plan().boost > 0 && used < plan().boost;
     if (hasQuota) {
@@ -788,7 +835,7 @@
     if (lb) lb.onclick = () => { close(); swipeTop("like"); };
     const lp = $("[data-lpass]", o), lm = $("[data-lmatch]", o);
     if (lp) lp.onclick = () => { S.incoming = S.incoming.filter((x) => x !== pid); S.passed.push(pid); save(); close(); go("likes"); };
-    if (lm) lm.onclick = () => { close(); makeMatch(pid); };
+    if (lm) lm.onclick = () => { close(); likeBackAndMatch(pid); };
     $("[data-block]", o).onclick = () => confirmDlg("🚫", "차단하기", `${esc(p.name)}님을 차단하면 서로의 프로필이<br>더 이상 보이지 않아요.`, "차단", () => { blockUser(pid); close(); }, true);
     $("[data-report]", o).onclick = () => reportSheet(pid, close);
   }
@@ -833,8 +880,11 @@
     const can = plan().seeLikes;
     const list = S.incoming.map(P).filter(Boolean);
     // 무료 티어: 하루 1명 무료 공개 (막다른 골목 방지)
+    // 주의: 날짜가 바뀌기 전까지는 절대 재할당하지 않는다. 무료 공개 대상이
+    // 매치/패스 등으로 S.incoming에서 빠졌다고 해서 새로 뽑아주면, 무료 공개→매치를
+    // 반복해 하루 1명 제한을 우회할 수 있다.
     if (!can && list.length) {
-      if (!S.freeReveal || S.freeReveal.day !== todayStr() || !S.incoming.includes(S.freeReveal.pid)) {
+      if (!S.freeReveal || S.freeReveal.day !== todayStr()) {
         S.freeReveal = { day: todayStr(), pid: list[0].id }; save();
       }
     }
@@ -1590,7 +1640,7 @@
         </div>
         <p class="gacha-line">"${esc(c.line)}"</p>
         <div class="fuse-box">${fuseRows.join("")}</div>
-        <p class="tiny" style="margin-top:10px;text-align:center">합성 규칙: <b>같은 카드, 같은 ★ 2장</b>만 합성 가능 · 최고 ★이 버프 결정 (★당 일일 좋아요 +1)${c.rarity === "SSR" ? " · SSR 보유: 슈퍼라이크 +1/일" : ""}</p>
+        <p class="tiny" style="margin-top:10px;text-align:center">합성 규칙: <b>같은 카드, 같은 ★ 2장</b>만 합성 가능 · 최고 ★이 버프 결정 (★2부터 ★당 일일 좋아요 +1 · ★1은 보너스 없음)${c.rarity === "SSR" ? " · SSR 보유: 슈퍼라이크 +1/일" : ""}</p>
       </div>`;
     $("#overlay-root").appendChild(o);
     $(".ovl-close", o).onclick = () => o.remove();
