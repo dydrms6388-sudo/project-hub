@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-09T14:30:00.000Z",
+  "updatedAt": "2026-07-09T15:10:00.000Z",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -2540,6 +2540,16 @@
       "desc": "수영 처음 배우는 사람을 위한 종합 도우미. ①영법 진도 자가진단(5문항 룰엔진→물적응·뜨기·발차기·콤비·완주 6단계 중 내 위치+지금 할 드릴·흔한 실수·코치 팁) ②맞춤 장비 추천 진단(목적×장소×성별×시력→수영복·수경·수모·킥판·오리발 우선순위+도수수경/김서림방지 소모품) ③자유형·평영·배영·접영 4영법 가이드(호흡/팔/발/자세/실수) ④수영 일지(누적거리·연속기록 스트릭·거리 뱃지10·칼로리 MET계산 리텐션) ⑤칼로리·100m 페이스 계산기 ⑥용어사전16+입문 가이드7 SSG. 7월 수영 성수기 정조준. 몰입4종=r3f 3D 물결수면·레인·기포·킥판 씬·framer 탭/아코디언·canvas-confetti 뱃지달성·Web Audio 스플래시 합성음(음소거기본OFF). 무DB 전 클라이언트(일지·진단 localStorage). \"수영 입문·자유형 호흡·수경/수영복 추천·수영 일지·평영 발차기·수영 칼로리·성인 수영\" SEO+WebApplication/FAQPage JSON-LD·동적OG·sitemap/robots. 애드센스+쿠팡 수영용품(수경·수영복 중AOV + 반복소모품 김서림방지·귀마개 LTV) 수익화 레디. 비금융 라이프/스포츠 다각화.",
       "live": "https://dydrms-swimgak.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/dydrms-swimgak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "탈모각 (TalmoGak)",
+      "emoji": "🔍",
+      "domain": "건강·뷰티/모발",
+      "desc": "\"이거 탈모 맞아?\" 무가입·사진 없이 1분 자가진단으로 내 탈모 유형·진행도를 가늠하고, 병원에 가야 할 신호(원형 탈모·두피 진물·급성 탈모 red-flag)와 맞춤 관리 루틴까지 알려주는 무료 모발 건강 도구. 성별 분기 11문항 룰엔진→남성 Norwood/여성 Ludwig 참고 단계·원인 유형 가중치(안드로겐성·휴지기·원형·견인성·두피질환) 신호등 진단. 하루 정상 탈모량 계산기(50~100개 기준·부위별 관찰 합산·pull test 자가 가이드), 모발 일지 트래커(주차별 탈모량 추세 그래프·관리 5항목 체크·연속 기록 스트릭·셀프 사진 촬영 가이드, localStorage 서버 무전송 프라이버시). 근거기반 SEO 가이드 12편 SSG(탈모 자가진단·정상 탈모량·M자·여성/휴지기 탈모·탈모샴푸 화장품vs의약품 진실·속설 교정·미녹시딜 초기탈락·사진기록·모발이식·영양·20대 탈모, FAQ/Article JSON-LD). 3D 두피·모낭 밀도 씬(r3f, 진단 결과 반영)·framer 전환/카운트업·confetti·Web Audio 합성음(음소거 기본OFF) 몰입4종. 수익화키트(AdSense env 인라인·ads.txt·유형별 탈모샴푸/두피토닉/LED 헤어기기/모발영양제 쿠팡 파트너스 반복구매 LTV 슬롯·동적 OG/sitemap/robots·공유). YMYL 의료 면책 전면 병기(자가 참고용, 확진·치료는 피부과 전문의). colorfit /scalp(두피 타입 뷰티 매칭)와 '탈모 진행 진단' 축으로 분리.",
+      "live": "https://dydrms-talmogak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-talmogak",
       "status": "live",
       "date": "2026-07-09"
     }
