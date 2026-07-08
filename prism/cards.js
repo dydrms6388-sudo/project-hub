@@ -295,6 +295,11 @@
           <stop offset="0%" stop-color="#fff" stop-opacity=".28"/>
           <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
         </radialGradient>
+        <linearGradient id="face-${idSuf}" x1="0" y1="0" x2="0.9" y2="1">
+          <stop offset="0%" stop-color="#fff" stop-opacity=".16"/>
+          <stop offset="45%" stop-color="#fff" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#000" stop-opacity=".14"/>
+        </linearGradient>
         <linearGradient id="vig-${idSuf}" x1="0" y1="0" x2="0" y2="1">
           <stop offset=".55" stop-color="#000" stop-opacity="0"/>
           <stop offset="1" stop-color="#000" stop-opacity=".38"/>
@@ -322,6 +327,7 @@
           <path d="M87,152 Q100,158 113,152" stroke="${shade(skin, 0.68)}" stroke-width="2" fill="none" opacity=".6"/>
         </g>
         <path d="${HEADS[(c.face && c.face.jaw) || 0]}" fill="${skin}"/>
+        ${c.rarity === "SSR" || c.rarity === "SR" ? `<path d="${HEADS[(c.face && c.face.jaw) || 0]}" fill="url(#face-${idSuf})" opacity="${c.rarity === "SSR" ? ".9" : ".55"}"/>` : ""}
         <path d="M62,90 C62,64 74,50 92,46 C76,54 68,70 66,90 C65,106 68,124 76,136 C66,126 62,110 62,90Z" fill="${shade(skin, 0.88)}" opacity=".55"/>
         <path d="M124,52 C134,60 139,74 139,96 C139,114 134,130 124,140" stroke="#fff" stroke-width="3" fill="none" opacity=".28" stroke-linecap="round"/>
         <path d="M72,126 C78,144 122,144 128,126 C124,142 112,150 100,150 C88,150 76,142 72,126Z" fill="${shade(skin, 0.75)}" opacity=".3"/>
@@ -332,6 +338,8 @@
         ${hairSVG(c.hair[0], c.hair[1])}
         ${browsSVG(c.hair[1], (c.face && c.face.brow) || 0)}
         ${eyesSVG(c.eye, (c.face && c.face.eyeShape) || 0)}
+        ${c.rarity === "SSR" && c.eye !== "smile" ? `<g opacity=".85"><circle cx="82" cy="101.5" r="5.2" fill="none" stroke="${c.aura[0]}" stroke-width="1.3"/>${c.eye === "open" ? `<circle cx="120" cy="101.5" r="5.2" fill="none" stroke="${c.aura[0]}" stroke-width="1.3"/>` : ""}</g>` : ""}
+        ${c.rarity === "SSR" ? `<path d="M66,58 C80,46 104,42 126,50" stroke="#fff" stroke-width="3.6" fill="none" stroke-linecap="round" opacity=".3"/>` : ""}
         ${[`<path d="M99,101 L98.4,113 M96,116 Q100,118.5 104,116" stroke="${shade(skin, 0.72)}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
            `<path d="M99,100 L98,116 M95,119 Q100,122 105,119" stroke="${shade(skin, 0.72)}" stroke-width="2.7" fill="none" stroke-linecap="round"/>`,
            `<path d="M99.5,99 L97.8,118 M94,121 Q100,124.5 106,121" stroke="${shade(skin, 0.72)}" stroke-width="3" fill="none" stroke-linecap="round"/>`][(c.face && c.face.nose) || 0]}

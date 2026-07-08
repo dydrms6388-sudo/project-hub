@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1783161437453,
+  "lastScanned": 1783527013448,
   "projectRoot": "C:\\Users\\dydrm\\projects\\daily\\project-hub",
   "techStack": {
     "languages": [],
@@ -9,7 +9,7 @@
     "runtime": null
   },
   "build": {
-    "buildCommand": "until [ -s \"$TEMP/cc_tsc.log\" ] && grep -q \"EXIT:\" \"$TEMP/cc_tsc.log\"; do sleep 3; done; cat \"$TEMP/cc_tsc.log\" | head -40",
+    "buildCommand": "cd \"C:\\Users\\dydrm\\projects\\daily\\2026-06-23-insurance-overlap-check\" && npx tsc --noEmit && echo \"===BUILD===\" && npm run build 2>&1 | tail -35",
     "testCommand": null,
     "lintCommand": null,
     "devCommand": null,
@@ -38,7 +38,7 @@
       "path": "age",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436733,
+      "lastAccessed": 1783527013000,
       "keyFiles": [
         "index.html"
       ]
@@ -47,7 +47,7 @@
       "path": "ai-tarot",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436734,
+      "lastAccessed": 1783527013001,
       "keyFiles": [
         "index.html"
       ]
@@ -56,7 +56,7 @@
       "path": "ai-webnovel",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436735,
+      "lastAccessed": 1783527013003,
       "keyFiles": [
         "index.html"
       ]
@@ -65,7 +65,7 @@
       "path": "airfryer-time",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436735,
+      "lastAccessed": 1783527013004,
       "keyFiles": [
         "index.html"
       ]
@@ -74,7 +74,7 @@
       "path": "alba-pay",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436736,
+      "lastAccessed": 1783527013005,
       "keyFiles": [
         "index.html"
       ]
@@ -83,7 +83,7 @@
       "path": "amby-dating",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436736,
+      "lastAccessed": 1783527013006,
       "keyFiles": [
         "index.html"
       ]
@@ -92,7 +92,7 @@
       "path": "animal-face-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436737,
+      "lastAccessed": 1783527013007,
       "keyFiles": [
         "index.html"
       ]
@@ -101,7 +101,7 @@
       "path": "aura-lab",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436738,
+      "lastAccessed": 1783527013007,
       "keyFiles": [
         "index.html"
       ]
@@ -110,7 +110,7 @@
       "path": "aura-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436738,
+      "lastAccessed": 1783527013008,
       "keyFiles": [
         "index.html"
       ]
@@ -119,7 +119,7 @@
       "path": "auth-billing",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1783161436739,
+      "lastAccessed": 1783527013009,
       "keyFiles": [
         "env.example",
         "README.md"
@@ -129,7 +129,7 @@
       "path": "auth-hub",
       "purpose": null,
       "fileCount": 6,
-      "lastAccessed": 1783161436739,
+      "lastAccessed": 1783527013010,
       "keyFiles": [
         "next.config.mjs",
         "package.json",
@@ -141,7 +141,7 @@
       "path": "baby-name-maker",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436740,
+      "lastAccessed": 1783527013011,
       "keyFiles": [
         "index.html"
       ]
@@ -150,7 +150,7 @@
       "path": "baby-vaccine-schedule",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436740,
+      "lastAccessed": 1783527013012,
       "keyFiles": [
         "index.html"
       ]
@@ -159,7 +159,7 @@
       "path": "balance-pick",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436741,
+      "lastAccessed": 1783527013013,
       "keyFiles": [
         "index.html"
       ]
@@ -168,7 +168,7 @@
       "path": "batja-eight",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436742,
+      "lastAccessed": 1783527013013,
       "keyFiles": [
         "index.html"
       ]
@@ -177,7 +177,7 @@
       "path": "bmi",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436742,
+      "lastAccessed": 1783527013014,
       "keyFiles": [
         "index.html"
       ]
@@ -186,7 +186,7 @@
       "path": "bmr-tdee-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436743,
+      "lastAccessed": 1783527013015,
       "keyFiles": [
         "index.html"
       ]
@@ -195,7 +195,7 @@
       "path": "body-fat-check",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436744,
+      "lastAccessed": 1783527013016,
       "keyFiles": [
         "index.html"
       ]
@@ -204,7 +204,7 @@
       "path": "bp-glucose-log",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436745,
+      "lastAccessed": 1783527013017,
       "keyFiles": [
         "index.html"
       ]
@@ -213,7 +213,7 @@
       "path": "brain-power-game",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436746,
+      "lastAccessed": 1783527013018,
       "keyFiles": [
         "index.html"
       ]
@@ -222,7 +222,7 @@
       "path": "brain-reflex-age",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436747,
+      "lastAccessed": 1783527013018,
       "keyFiles": [
         "index.html"
       ]
@@ -231,7 +231,7 @@
       "path": "breath-coach",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436748,
+      "lastAccessed": 1783527013019,
       "keyFiles": [
         "index.html"
       ]
@@ -240,7 +240,7 @@
       "path": "caffeine-tracker",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436748,
+      "lastAccessed": 1783527013020,
       "keyFiles": [
         "index.html"
       ]
@@ -249,7 +249,7 @@
       "path": "calorie-burn-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436749,
+      "lastAccessed": 1783527013021,
       "keyFiles": [
         "index.html"
       ]
@@ -258,7 +258,7 @@
       "path": "capital-gains-tax",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436749,
+      "lastAccessed": 1783527013022,
       "keyFiles": [
         "index.html"
       ]
@@ -267,7 +267,7 @@
       "path": "car-insurance-rider",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436750,
+      "lastAccessed": 1783527013023,
       "keyFiles": [
         "index.html"
       ]
@@ -276,7 +276,7 @@
       "path": "car-maintenance-cycle",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436750,
+      "lastAccessed": 1783527013023,
       "keyFiles": [
         "index.html"
       ]
@@ -285,7 +285,7 @@
       "path": "chemi-code",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436751,
+      "lastAccessed": 1783527013024,
       "keyFiles": [
         "index.html"
       ]
@@ -294,7 +294,7 @@
       "path": "cheongyak-score-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436751,
+      "lastAccessed": 1783527013025,
       "keyFiles": [
         "index.html"
       ]
@@ -303,7 +303,7 @@
       "path": "china-travel",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436752,
+      "lastAccessed": 1783527013026,
       "keyFiles": [
         "index.html"
       ]
@@ -312,7 +312,7 @@
       "path": "chipnote",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436752,
+      "lastAccessed": 1783527013026,
       "keyFiles": [
         "index.html"
       ]
@@ -321,7 +321,7 @@
       "path": "chosung-fortune-card",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436753,
+      "lastAccessed": 1783527013027,
       "keyFiles": [
         "index.html"
       ]
@@ -330,7 +330,7 @@
       "path": "coding-test-prep",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436753,
+      "lastAccessed": 1783527013027,
       "keyFiles": [
         "index.html"
       ]
@@ -339,7 +339,7 @@
       "path": "color-palette",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436754,
+      "lastAccessed": 1783527013028,
       "keyFiles": [
         "index.html"
       ]
@@ -348,7 +348,7 @@
       "path": "company-vs-average",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436754,
+      "lastAccessed": 1783527013029,
       "keyFiles": [
         "index.html"
       ]
@@ -357,7 +357,7 @@
       "path": "couple-chemistry",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436754,
+      "lastAccessed": 1783527013029,
       "keyFiles": [
         "index.html"
       ]
@@ -366,7 +366,7 @@
       "path": "daily-quiz-pop",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436755,
+      "lastAccessed": 1783527013030,
       "keyFiles": [
         "index.html"
       ]
@@ -375,7 +375,7 @@
       "path": "daily-zodiac",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436755,
+      "lastAccessed": 1783527013031,
       "keyFiles": [
         "index.html"
       ]
@@ -383,8 +383,8 @@
     "data": {
       "path": "data",
       "purpose": "Data files",
-      "fileCount": 5,
-      "lastAccessed": 1783161436755,
+      "fileCount": 7,
+      "lastAccessed": 1783527013032,
       "keyFiles": [
         "classification.json",
         "landing-content.json",
@@ -397,7 +397,7 @@
       "path": "dday",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436756,
+      "lastAccessed": 1783527013033,
       "keyFiles": [
         "index.html"
       ]
@@ -406,7 +406,7 @@
       "path": "dday-hub",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436756,
+      "lastAccessed": 1783527013034,
       "keyFiles": [
         "index.html"
       ]
@@ -415,7 +415,7 @@
       "path": "dice-tower",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436759,
+      "lastAccessed": 1783527013035,
       "keyFiles": [
         "index.html"
       ]
@@ -424,7 +424,7 @@
       "path": "dog-personality-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436761,
+      "lastAccessed": 1783527013036,
       "keyFiles": [
         "index.html"
       ]
@@ -433,7 +433,7 @@
       "path": "driver-license-quiz",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436762,
+      "lastAccessed": 1783527013037,
       "keyFiles": [
         "index.html"
       ]
@@ -442,7 +442,7 @@
       "path": "dsr",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436762,
+      "lastAccessed": 1783527013037,
       "keyFiles": [
         "index.html"
       ]
@@ -451,7 +451,7 @@
       "path": "dsr-limit-check",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436763,
+      "lastAccessed": 1783527013038,
       "keyFiles": [
         "index.html"
       ]
@@ -460,7 +460,7 @@
       "path": "due-date-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436763,
+      "lastAccessed": 1783527013039,
       "keyFiles": [
         "index.html"
       ]
@@ -469,7 +469,7 @@
       "path": "dydrms-auralog",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436764,
+      "lastAccessed": 1783527013040,
       "keyFiles": [
         "index.html"
       ]
@@ -478,7 +478,7 @@
       "path": "dydrms-babjwo",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436764,
+      "lastAccessed": 1783527013041,
       "keyFiles": [
         "index.html"
       ]
@@ -487,7 +487,7 @@
       "path": "dydrms-bulkkot",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436765,
+      "lastAccessed": 1783527013042,
       "keyFiles": [
         "index.html"
       ]
@@ -496,7 +496,7 @@
       "path": "dydrms-byeolchik",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436765,
+      "lastAccessed": 1783527013042,
       "keyFiles": [
         "index.html"
       ]
@@ -505,7 +505,7 @@
       "path": "dydrms-cocktailgak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436766,
+      "lastAccessed": 1783527013043,
       "keyFiles": [
         "index.html"
       ]
@@ -514,7 +514,7 @@
       "path": "dydrms-colorfit",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436766,
+      "lastAccessed": 1783527013044,
       "keyFiles": [
         "index.html"
       ]
@@ -523,7 +523,7 @@
       "path": "dydrms-dasibom",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436767,
+      "lastAccessed": 1783527013045,
       "keyFiles": [
         "index.html"
       ]
@@ -532,7 +532,7 @@
       "path": "dydrms-dawatda",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436767,
+      "lastAccessed": 1783527013046,
       "keyFiles": [
         "index.html"
       ]
@@ -541,7 +541,7 @@
       "path": "dydrms-devnote",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436768,
+      "lastAccessed": 1783527013047,
       "keyFiles": [
         "index.html"
       ]
@@ -550,7 +550,7 @@
       "path": "dydrms-emailsign",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436768,
+      "lastAccessed": 1783527013047,
       "keyFiles": [
         "index.html"
       ]
@@ -559,7 +559,7 @@
       "path": "dydrms-engnote",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436769,
+      "lastAccessed": 1783527013048,
       "keyFiles": [
         "index.html"
       ]
@@ -568,7 +568,7 @@
       "path": "dydrms-gifgo",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436769,
+      "lastAccessed": 1783527013049,
       "keyFiles": [
         "index.html"
       ]
@@ -577,7 +577,7 @@
       "path": "dydrms-giftpick",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436770,
+      "lastAccessed": 1783527013050,
       "keyFiles": [
         "index.html"
       ]
@@ -586,7 +586,7 @@
       "path": "dydrms-goyo",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436770,
+      "lastAccessed": 1783527013051,
       "keyFiles": [
         "index.html"
       ]
@@ -595,7 +595,7 @@
       "path": "dydrms-haemong",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436770,
+      "lastAccessed": 1783527013051,
       "keyFiles": [
         "index.html"
       ]
@@ -604,7 +604,7 @@
       "path": "dydrms-hagwon",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436771,
+      "lastAccessed": 1783527013052,
       "keyFiles": [
         "index.html"
       ]
@@ -613,7 +613,7 @@
       "path": "dydrms-healthnote",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436771,
+      "lastAccessed": 1783527013053,
       "keyFiles": [
         "index.html"
       ]
@@ -622,7 +622,7 @@
       "path": "dydrms-honeysleep",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436771,
+      "lastAccessed": 1783527013053,
       "keyFiles": [
         "index.html"
       ]
@@ -631,7 +631,7 @@
       "path": "dydrms-jeomsim",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436772,
+      "lastAccessed": 1783527013054,
       "keyFiles": [
         "index.html"
       ]
@@ -640,7 +640,7 @@
       "path": "dydrms-jeonyeokgak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436772,
+      "lastAccessed": 1783527013055,
       "keyFiles": [
         "index.html"
       ]
@@ -649,7 +649,7 @@
       "path": "dydrms-jjuk",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436773,
+      "lastAccessed": 1783527013056,
       "keyFiles": [
         "index.html"
       ]
@@ -658,7 +658,7 @@
       "path": "dydrms-jpnote",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436773,
+      "lastAccessed": 1783527013057,
       "keyFiles": [
         "index.html"
       ]
@@ -667,7 +667,7 @@
       "path": "dydrms-keywordlab",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436773,
+      "lastAccessed": 1783527013058,
       "keyFiles": [
         "index.html"
       ]
@@ -676,7 +676,7 @@
       "path": "dydrms-kkulyeoncha",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436774,
+      "lastAccessed": 1783527013058,
       "keyFiles": [
         "index.html"
       ]
@@ -685,7 +685,7 @@
       "path": "dydrms-maeumcharge",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436774,
+      "lastAccessed": 1783527013059,
       "keyFiles": [
         "index.html"
       ]
@@ -694,7 +694,7 @@
       "path": "dydrms-malgeum",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436774,
+      "lastAccessed": 1783527013059,
       "keyFiles": [
         "index.html"
       ]
@@ -703,7 +703,7 @@
       "path": "dydrms-mallang",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436775,
+      "lastAccessed": 1783527013060,
       "keyFiles": [
         "index.html"
       ]
@@ -712,7 +712,7 @@
       "path": "dydrms-mammatime",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436775,
+      "lastAccessed": 1783527013061,
       "keyFiles": [
         "index.html"
       ]
@@ -721,7 +721,7 @@
       "path": "dydrms-mapscore",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436775,
+      "lastAccessed": 1783527013061,
       "keyFiles": [
         "index.html"
       ]
@@ -730,7 +730,7 @@
       "path": "dydrms-mbticard",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436776,
+      "lastAccessed": 1783527013062,
       "keyFiles": [
         "index.html"
       ]
@@ -739,7 +739,7 @@
       "path": "dydrms-menodiary",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436776,
+      "lastAccessed": 1783527013062,
       "keyFiles": [
         "index.html"
       ]
@@ -748,7 +748,7 @@
       "path": "dydrms-ohaeng",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436776,
+      "lastAccessed": 1783527013063,
       "keyFiles": [
         "index.html"
       ]
@@ -757,7 +757,7 @@
       "path": "dydrms-omul",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436777,
+      "lastAccessed": 1783527013063,
       "keyFiles": [
         "index.html"
       ]
@@ -766,7 +766,7 @@
       "path": "dydrms-ounwan",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436777,
+      "lastAccessed": 1783527013063,
       "keyFiles": [
         "index.html"
       ]
@@ -775,7 +775,7 @@
       "path": "dydrms-petsafe",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436778,
+      "lastAccessed": 1783527013064,
       "keyFiles": [
         "index.html"
       ]
@@ -784,7 +784,7 @@
       "path": "dydrms-pokecard",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436778,
+      "lastAccessed": 1783527013064,
       "keyFiles": [
         "index.html"
       ]
@@ -793,7 +793,7 @@
       "path": "dydrms-reboot",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436779,
+      "lastAccessed": 1783527013065,
       "keyFiles": [
         "index.html"
       ]
@@ -802,7 +802,7 @@
       "path": "dydrms-seonmulgak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436779,
+      "lastAccessed": 1783527013065,
       "keyFiles": [
         "index.html"
       ]
@@ -811,7 +811,7 @@
       "path": "dydrms-sizefit",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436779,
+      "lastAccessed": 1783527013066,
       "keyFiles": [
         "index.html"
       ]
@@ -820,7 +820,7 @@
       "path": "dydrms-skinsync",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436780,
+      "lastAccessed": 1783527013066,
       "keyFiles": [
         "index.html"
       ]
@@ -829,7 +829,7 @@
       "path": "dydrms-slowage",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436780,
+      "lastAccessed": 1783527013067,
       "keyFiles": [
         "index.html"
       ]
@@ -838,7 +838,7 @@
       "path": "dydrms-ssukssuk",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436781,
+      "lastAccessed": 1783527013068,
       "keyFiles": [
         "index.html"
       ]
@@ -847,7 +847,7 @@
       "path": "dydrms-tadak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436781,
+      "lastAccessed": 1783527013068,
       "keyFiles": [
         "index.html"
       ]
@@ -856,7 +856,7 @@
       "path": "dydrms-tonefit",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436781,
+      "lastAccessed": 1783527013069,
       "keyFiles": [
         "index.html"
       ]
@@ -865,7 +865,7 @@
       "path": "dydrms-vanity",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436782,
+      "lastAccessed": 1783527013070,
       "keyFiles": [
         "index.html"
       ]
@@ -874,7 +874,7 @@
       "path": "dydrms-vocapop",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436782,
+      "lastAccessed": 1783527013071,
       "keyFiles": [
         "index.html"
       ]
@@ -883,7 +883,7 @@
       "path": "dydrms-zhongnote",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436784,
+      "lastAccessed": 1783527013072,
       "keyFiles": [
         "index.html"
       ]
@@ -892,7 +892,7 @@
       "path": "dynamic-qr-card",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436784,
+      "lastAccessed": 1783527013072,
       "keyFiles": [
         "index.html"
       ]
@@ -901,7 +901,7 @@
       "path": "eggcat-predict",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436785,
+      "lastAccessed": 1783527013073,
       "keyFiles": [
         "index.html"
       ]
@@ -910,7 +910,7 @@
       "path": "electric-bill-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436785,
+      "lastAccessed": 1783527013074,
       "keyFiles": [
         "index.html"
       ]
@@ -919,7 +919,7 @@
       "path": "exam-dday-study",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436786,
+      "lastAccessed": 1783527013074,
       "keyFiles": [
         "index.html"
       ]
@@ -928,7 +928,7 @@
       "path": "factory-dash",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436786,
+      "lastAccessed": 1783527013075,
       "keyFiles": [
         "index.html"
       ]
@@ -937,7 +937,7 @@
       "path": "family-title-finder",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436786,
+      "lastAccessed": 1783527013076,
       "keyFiles": [
         "index.html"
       ]
@@ -946,7 +946,7 @@
       "path": "fandom-bias-vote",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436787,
+      "lastAccessed": 1783527013077,
       "keyFiles": [
         "index.html"
       ]
@@ -955,7 +955,7 @@
       "path": "fasting-timer",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436787,
+      "lastAccessed": 1783527013077,
       "keyFiles": [
         "index.html"
       ]
@@ -964,7 +964,7 @@
       "path": "fridge-recipe",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436788,
+      "lastAccessed": 1783527013078,
       "keyFiles": [
         "index.html"
       ]
@@ -973,7 +973,7 @@
       "path": "friend-chemistry",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436789,
+      "lastAccessed": 1783527013079,
       "keyFiles": [
         "index.html"
       ]
@@ -982,7 +982,7 @@
       "path": "gift-money",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436789,
+      "lastAccessed": 1783527013079,
       "keyFiles": [
         "index.html"
       ]
@@ -991,7 +991,7 @@
       "path": "gig-note-tax",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436790,
+      "lastAccessed": 1783527013080,
       "keyFiles": [
         "index.html"
       ]
@@ -1000,7 +1000,7 @@
       "path": "glass-mind-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436790,
+      "lastAccessed": 1783527013081,
       "keyFiles": [
         "index.html"
       ]
@@ -1009,7 +1009,7 @@
       "path": "gompanggak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436790,
+      "lastAccessed": 1783527013082,
       "keyFiles": [
         "index.html"
       ]
@@ -1018,7 +1018,7 @@
       "path": "gpa-calc-pro",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436791,
+      "lastAccessed": 1783527013083,
       "keyFiles": [
         "index.html"
       ]
@@ -1027,7 +1027,7 @@
       "path": "gpa-converter",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436792,
+      "lastAccessed": 1783527013084,
       "keyFiles": [
         "index.html"
       ]
@@ -1036,7 +1036,7 @@
       "path": "haengbok-lab",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436792,
+      "lastAccessed": 1783527013085,
       "keyFiles": [
         "index.html"
       ]
@@ -1045,7 +1045,7 @@
       "path": "hangul-wordle",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436792,
+      "lastAccessed": 1783527013086,
       "keyFiles": [
         "index.html"
       ]
@@ -1054,7 +1054,7 @@
       "path": "hanja-grade-master",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436793,
+      "lastAccessed": 1783527013088,
       "keyFiles": [
         "index.html"
       ]
@@ -1063,7 +1063,7 @@
       "path": "home-cafe-recipe",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436793,
+      "lastAccessed": 1783527013089,
       "keyFiles": [
         "index.html"
       ]
@@ -1072,7 +1072,7 @@
       "path": "home-workout-routine",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436794,
+      "lastAccessed": 1783527013090,
       "keyFiles": [
         "index.html"
       ]
@@ -1081,7 +1081,7 @@
       "path": "ideal-worldcup",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436794,
+      "lastAccessed": 1783527013091,
       "keyFiles": [
         "index.html"
       ]
@@ -1090,7 +1090,7 @@
       "path": "idiom-quiz",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436795,
+      "lastAccessed": 1783527013092,
       "keyFiles": [
         "index.html"
       ]
@@ -1099,7 +1099,7 @@
       "path": "idiom-quiz-game",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436796,
+      "lastAccessed": 1783527013093,
       "keyFiles": [
         "index.html"
       ]
@@ -1108,7 +1108,7 @@
       "path": "idol-worldcup",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436797,
+      "lastAccessed": 1783527013094,
       "keyFiles": [
         "index.html"
       ]
@@ -1117,7 +1117,7 @@
       "path": "income-tax-refund-bot",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436797,
+      "lastAccessed": 1783527013094,
       "keyFiles": [
         "index.html"
       ]
@@ -1126,7 +1126,7 @@
       "path": "insurance-overlap",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436797,
+      "lastAccessed": 1783527013095,
       "keyFiles": [
         "index.html"
       ]
@@ -1135,7 +1135,7 @@
       "path": "jaksim-habit",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436798,
+      "lastAccessed": 1783527013096,
       "keyFiles": [
         "index.html"
       ]
@@ -1144,7 +1144,7 @@
       "path": "jasoseo-doctor",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436799,
+      "lastAccessed": 1783527013098,
       "keyFiles": [
         "index.html"
       ]
@@ -1153,7 +1153,7 @@
       "path": "jecheolgak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436799,
+      "lastAccessed": 1783527013099,
       "keyFiles": [
         "index.html"
       ]
@@ -1162,7 +1162,7 @@
       "path": "jeongbigak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436799,
+      "lastAccessed": 1783527013099,
       "keyFiles": [
         "index.html"
       ]
@@ -1171,7 +1171,7 @@
       "path": "jeonse-loan",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436800,
+      "lastAccessed": 1783527013100,
       "keyFiles": [
         "index.html"
       ]
@@ -1180,7 +1180,7 @@
       "path": "jeonse-loan-limit",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436800,
+      "lastAccessed": 1783527013102,
       "keyFiles": [
         "index.html"
       ]
@@ -1189,7 +1189,7 @@
       "path": "jeonse-monthly-convert",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436801,
+      "lastAccessed": 1783527013103,
       "keyFiles": [
         "index.html"
       ]
@@ -1198,7 +1198,7 @@
       "path": "katalk-chemistry",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436801,
+      "lastAccessed": 1783527013104,
       "keyFiles": [
         "index.html"
       ]
@@ -1207,7 +1207,7 @@
       "path": "kkuljamgak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436801,
+      "lastAccessed": 1783527013105,
       "keyFiles": [
         "index.html"
       ]
@@ -1216,7 +1216,7 @@
       "path": "korean-age",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436801,
+      "lastAccessed": 1783527013105,
       "keyFiles": [
         "index.html"
       ]
@@ -1225,7 +1225,7 @@
       "path": "korean-history-timeline",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436802,
+      "lastAccessed": 1783527013106,
       "keyFiles": [
         "index.html"
       ]
@@ -1234,7 +1234,7 @@
       "path": "korean-typing-speed",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436802,
+      "lastAccessed": 1783527013107,
       "keyFiles": [
         "index.html"
       ]
@@ -1243,7 +1243,7 @@
       "path": "kpop-fan-feed",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436802,
+      "lastAccessed": 1783527013108,
       "keyFiles": [
         "index.html"
       ]
@@ -1252,7 +1252,7 @@
       "path": "lib",
       "purpose": "Library code",
       "fileCount": 1,
-      "lastAccessed": 1783161436803,
+      "lastAccessed": 1783527013109,
       "keyFiles": [
         "hub.mjs"
       ]
@@ -1261,7 +1261,7 @@
       "path": "lift-rank-1rm",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436803,
+      "lastAccessed": 1783527013110,
       "keyFiles": [
         "index.html"
       ]
@@ -1270,7 +1270,7 @@
       "path": "loan-refi-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436804,
+      "lastAccessed": 1783527013111,
       "keyFiles": [
         "index.html"
       ]
@@ -1279,7 +1279,7 @@
       "path": "love-story-board",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436804,
+      "lastAccessed": 1783527013112,
       "keyFiles": [
         "index.html"
       ]
@@ -1288,7 +1288,7 @@
       "path": "love-style-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436805,
+      "lastAccessed": 1783527013112,
       "keyFiles": [
         "index.html"
       ]
@@ -1297,7 +1297,7 @@
       "path": "lucky-item",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436805,
+      "lastAccessed": 1783527013113,
       "keyFiles": [
         "index.html"
       ]
@@ -1306,7 +1306,7 @@
       "path": "lunch-picker",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436806,
+      "lastAccessed": 1783527013114,
       "keyFiles": [
         "index.html"
       ]
@@ -1315,7 +1315,7 @@
       "path": "lunch-slot-machine",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436806,
+      "lastAccessed": 1783527013115,
       "keyFiles": [
         "index.html"
       ]
@@ -1324,7 +1324,7 @@
       "path": "manbo-steps",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436807,
+      "lastAccessed": 1783527013116,
       "keyFiles": [
         "index.html"
       ]
@@ -1333,7 +1333,7 @@
       "path": "marriage-odds-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436807,
+      "lastAccessed": 1783527013117,
       "keyFiles": [
         "index.html"
       ]
@@ -1342,7 +1342,7 @@
       "path": "mbti-match",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436807,
+      "lastAccessed": 1783527013117,
       "keyFiles": [
         "index.html"
       ]
@@ -1351,7 +1351,7 @@
       "path": "meeting-note-ai",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436808,
+      "lastAccessed": 1783527013118,
       "keyFiles": [
         "index.html"
       ]
@@ -1360,7 +1360,7 @@
       "path": "mind-weather",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436808,
+      "lastAccessed": 1783527013119,
       "keyFiles": [
         "index.html"
       ]
@@ -1369,7 +1369,7 @@
       "path": "mood-wave-focus",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436809,
+      "lastAccessed": 1783527013120,
       "keyFiles": [
         "index.html"
       ]
@@ -1378,7 +1378,7 @@
       "path": "mosquito-forecast",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436809,
+      "lastAccessed": 1783527013121,
       "keyFiles": [
         "index.html"
       ]
@@ -1387,7 +1387,7 @@
       "path": "moving-cost-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436809,
+      "lastAccessed": 1783527013122,
       "keyFiles": [
         "index.html"
       ]
@@ -1396,7 +1396,7 @@
       "path": "naengpa",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436810,
+      "lastAccessed": 1783527013123,
       "keyFiles": [
         "index.html"
       ]
@@ -1405,7 +1405,7 @@
       "path": "naesin-grade-sim",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436810,
+      "lastAccessed": 1783527013123,
       "keyFiles": [
         "index.html"
       ]
@@ -1414,7 +1414,7 @@
       "path": "name-score",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436810,
+      "lastAccessed": 1783527013124,
       "keyFiles": [
         "index.html"
       ]
@@ -1423,7 +1423,7 @@
       "path": "number-rush",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436811,
+      "lastAccessed": 1783527013125,
       "keyFiles": [
         "index.html"
       ]
@@ -1432,7 +1432,7 @@
       "path": "onsaemiro",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436811,
+      "lastAccessed": 1783527013126,
       "keyFiles": [
         "index.html"
       ]
@@ -1441,7 +1441,7 @@
       "path": "ovulation-calendar",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436812,
+      "lastAccessed": 1783527013126,
       "keyFiles": [
         "index.html"
       ]
@@ -1450,7 +1450,7 @@
       "path": "past-life-job",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436812,
+      "lastAccessed": 1783527013127,
       "keyFiles": [
         "index.html"
       ]
@@ -1459,7 +1459,7 @@
       "path": "personal-color-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436812,
+      "lastAccessed": 1783527013128,
       "keyFiles": [
         "index.html"
       ]
@@ -1468,7 +1468,7 @@
       "path": "pet-age-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436813,
+      "lastAccessed": 1783527013129,
       "keyFiles": [
         "index.html"
       ]
@@ -1477,7 +1477,7 @@
       "path": "pet-meal-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436813,
+      "lastAccessed": 1783527013129,
       "keyFiles": [
         "index.html"
       ]
@@ -1486,7 +1486,7 @@
       "path": "pet-vet-cost",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436814,
+      "lastAccessed": 1783527013130,
       "keyFiles": [
         "index.html"
       ]
@@ -1495,7 +1495,7 @@
       "path": "planet-weight-scale",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436814,
+      "lastAccessed": 1783527013131,
       "keyFiles": [
         "index.html"
       ]
@@ -1504,7 +1504,7 @@
       "path": "plant-watering",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436814,
+      "lastAccessed": 1783527013132,
       "keyFiles": [
         "index.html"
       ]
@@ -1513,7 +1513,7 @@
       "path": "power-nap-alarm",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436815,
+      "lastAccessed": 1783527013133,
       "keyFiles": [
         "index.html"
       ]
@@ -1522,7 +1522,7 @@
       "path": "ppallaegak",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436815,
+      "lastAccessed": 1783527013133,
       "keyFiles": [
         "index.html"
       ]
@@ -1531,7 +1531,7 @@
       "path": "prism",
       "purpose": null,
       "fileCount": 14,
-      "lastAccessed": 1783161436816,
+      "lastAccessed": 1783527013134,
       "keyFiles": [
         "app.css",
         "app.js",
@@ -1544,7 +1544,7 @@
       "path": "prism-dating",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436816,
+      "lastAccessed": 1783527013135,
       "keyFiles": [
         "index.html"
       ]
@@ -1553,7 +1553,7 @@
       "path": "protein-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436816,
+      "lastAccessed": 1783527013136,
       "keyFiles": [
         "index.html"
       ]
@@ -1562,7 +1562,7 @@
       "path": "psat-time-pacer",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436817,
+      "lastAccessed": 1783527013137,
       "keyFiles": [
         "index.html"
       ]
@@ -1571,7 +1571,7 @@
       "path": "pyeong",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436817,
+      "lastAccessed": 1783527013137,
       "keyFiles": [
         "index.html"
       ]
@@ -1580,7 +1580,7 @@
       "path": "pyeong-converter",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436818,
+      "lastAccessed": 1783527013138,
       "keyFiles": [
         "index.html"
       ]
@@ -1589,7 +1589,7 @@
       "path": "pyeong-converter-plus",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436818,
+      "lastAccessed": 1783527013139,
       "keyFiles": [
         "index.html"
       ]
@@ -1598,7 +1598,7 @@
       "path": "pyeong-electric",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436819,
+      "lastAccessed": 1783527013140,
       "keyFiles": [
         "index.html"
       ]
@@ -1607,7 +1607,16 @@
       "path": "refinance",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436819,
+      "lastAccessed": 1783527013141,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "review-dash": {
+      "path": "review-dash",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1783527013141,
       "keyFiles": [
         "index.html"
       ]
@@ -1616,7 +1625,7 @@
       "path": "running-pace-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436820,
+      "lastAccessed": 1783527013142,
       "keyFiles": [
         "index.html"
       ]
@@ -1625,7 +1634,7 @@
       "path": "salary",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436820,
+      "lastAccessed": 1783527013142,
       "keyFiles": [
         "index.html"
       ]
@@ -1634,7 +1643,7 @@
       "path": "salary-calc-2026",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436821,
+      "lastAccessed": 1783527013143,
       "keyFiles": [
         "index.html"
       ]
@@ -1643,7 +1652,7 @@
       "path": "salary-net-pay",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436821,
+      "lastAccessed": 1783527013144,
       "keyFiles": [
         "index.html"
       ]
@@ -1652,7 +1661,7 @@
       "path": "salary-rank",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436822,
+      "lastAccessed": 1783527013145,
       "keyFiles": [
         "index.html"
       ]
@@ -1661,7 +1670,7 @@
       "path": "scholarship-cut-calc",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436822,
+      "lastAccessed": 1783527013146,
       "keyFiles": [
         "index.html"
       ]
@@ -1670,7 +1679,7 @@
       "path": "seasonal-food",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436823,
+      "lastAccessed": 1783527013147,
       "keyFiles": [
         "index.html"
       ]
@@ -1679,7 +1688,7 @@
       "path": "shift-work-calendar",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436823,
+      "lastAccessed": 1783527013147,
       "keyFiles": [
         "index.html"
       ]
@@ -1688,7 +1697,7 @@
       "path": "signgosu",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436823,
+      "lastAccessed": 1783527013148,
       "keyFiles": [
         "index.html"
       ]
@@ -1697,7 +1706,7 @@
       "path": "sikjungdok-forecast",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436824,
+      "lastAccessed": 1783527013149,
       "keyFiles": [
         "index.html"
       ]
@@ -1706,7 +1715,7 @@
       "path": "skin-type-test",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436824,
+      "lastAccessed": 1783527013149,
       "keyFiles": [
         "index.html"
       ]
@@ -1715,7 +1724,7 @@
       "path": "slang-vending",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436824,
+      "lastAccessed": 1783527013150,
       "keyFiles": [
         "index.html"
       ]
@@ -1724,7 +1733,7 @@
       "path": "sleep-cycle-alarm",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436825,
+      "lastAccessed": 1783527013151,
       "keyFiles": [
         "index.html"
       ]
@@ -1733,7 +1742,7 @@
       "path": "sniffquest",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436825,
+      "lastAccessed": 1783527013152,
       "keyFiles": [
         "index.html"
       ]
@@ -1742,7 +1751,7 @@
       "path": "sniffquest-walk",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436825,
+      "lastAccessed": 1783527013153,
       "keyFiles": [
         "index.html"
       ]
@@ -1751,7 +1760,7 @@
       "path": "sober-up-time",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436826,
+      "lastAccessed": 1783527013153,
       "keyFiles": [
         "index.html"
       ]
@@ -1760,7 +1769,7 @@
       "path": "spelling-quiz",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436826,
+      "lastAccessed": 1783527013154,
       "keyFiles": [
         "index.html"
       ]
@@ -1769,7 +1778,7 @@
       "path": "split-bill",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436826,
+      "lastAccessed": 1783527013155,
       "keyFiles": [
         "index.html"
       ]
@@ -1778,7 +1787,7 @@
       "path": "ssogi-roulette",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436827,
+      "lastAccessed": 1783527013156,
       "keyFiles": [
         "index.html"
       ]
@@ -1787,7 +1796,7 @@
       "path": "stock-predict-battle",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436827,
+      "lastAccessed": 1783527013156,
       "keyFiles": [
         "index.html"
       ]
@@ -1796,7 +1805,7 @@
       "path": "subscription-reminder",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436828,
+      "lastAccessed": 1783527013157,
       "keyFiles": [
         "index.html"
       ]
@@ -1805,7 +1814,7 @@
       "path": "sugar-spike",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436828,
+      "lastAccessed": 1783527013158,
       "keyFiles": [
         "index.html"
       ]
@@ -1814,7 +1823,7 @@
       "path": "suneung-gradecut",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436829,
+      "lastAccessed": 1783527013159,
       "keyFiles": [
         "index.html"
       ]
@@ -1823,7 +1832,7 @@
       "path": "suneung-planner",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436829,
+      "lastAccessed": 1783527013159,
       "keyFiles": [
         "index.html"
       ]
@@ -1832,7 +1841,7 @@
       "path": "supplement-combo",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436830,
+      "lastAccessed": 1783527013160,
       "keyFiles": [
         "index.html"
       ]
@@ -1841,7 +1850,7 @@
       "path": "tax-refund-bot",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436830,
+      "lastAccessed": 1783527013160,
       "keyFiles": [
         "index.html"
       ]
@@ -1850,7 +1859,7 @@
       "path": "templates",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436831,
+      "lastAccessed": 1783527013161,
       "keyFiles": [
         "service.html"
       ]
@@ -1859,7 +1868,7 @@
       "path": "test-hub",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436831,
+      "lastAccessed": 1783527013161,
       "keyFiles": [
         "index.html"
       ]
@@ -1868,7 +1877,7 @@
       "path": "today-fortune",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436831,
+      "lastAccessed": 1783527013162,
       "keyFiles": [
         "index.html"
       ]
@@ -1877,7 +1886,7 @@
       "path": "toeic-planner",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436832,
+      "lastAccessed": 1783527013162,
       "keyFiles": [
         "index.html"
       ]
@@ -1886,7 +1895,7 @@
       "path": "tone-score",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436832,
+      "lastAccessed": 1783527013163,
       "keyFiles": [
         "index.html"
       ]
@@ -1895,7 +1904,7 @@
       "path": "travel-budget",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436832,
+      "lastAccessed": 1783527013164,
       "keyFiles": [
         "index.html"
       ]
@@ -1904,7 +1913,7 @@
       "path": "travel-packing",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436833,
+      "lastAccessed": 1783527013165,
       "keyFiles": [
         "index.html"
       ]
@@ -1913,7 +1922,7 @@
       "path": "travel-pin",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436833,
+      "lastAccessed": 1783527013165,
       "keyFiles": [
         "index.html"
       ]
@@ -1922,7 +1931,7 @@
       "path": "tripnote-tau",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436833,
+      "lastAccessed": 1783527013166,
       "keyFiles": [
         "index.html"
       ]
@@ -1931,7 +1940,7 @@
       "path": "ttingun",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436834,
+      "lastAccessed": 1783527013167,
       "keyFiles": [
         "index.html"
       ]
@@ -1940,7 +1949,7 @@
       "path": "ttotto-pet",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436834,
+      "lastAccessed": 1783527013167,
       "keyFiles": [
         "index.html"
       ]
@@ -1949,7 +1958,7 @@
       "path": "used-price-check",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436835,
+      "lastAccessed": 1783527013168,
       "keyFiles": [
         "index.html"
       ]
@@ -1958,7 +1967,7 @@
       "path": "voca-sprint",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436835,
+      "lastAccessed": 1783527013169,
       "keyFiles": [
         "index.html"
       ]
@@ -1967,7 +1976,7 @@
       "path": "vocal-routine",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436835,
+      "lastAccessed": 1783527013170,
       "keyFiles": [
         "index.html"
       ]
@@ -1976,7 +1985,7 @@
       "path": "water-intake",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436836,
+      "lastAccessed": 1783527013171,
       "keyFiles": [
         "index.html"
       ]
@@ -1985,7 +1994,7 @@
       "path": "water-tracker-2",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436836,
+      "lastAccessed": 1783527013171,
       "keyFiles": [
         "index.html"
       ]
@@ -1994,7 +2003,7 @@
       "path": "wedding-prep-dday",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436836,
+      "lastAccessed": 1783527013172,
       "keyFiles": [
         "index.html"
       ]
@@ -2003,7 +2012,7 @@
       "path": "weight-roadmap",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436837,
+      "lastAccessed": 1783527013173,
       "keyFiles": [
         "index.html"
       ]
@@ -2012,7 +2021,7 @@
       "path": "what-to-watch-roulette",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436837,
+      "lastAccessed": 1783527013174,
       "keyFiles": [
         "index.html"
       ]
@@ -2021,7 +2030,7 @@
       "path": "workout-ai-coach",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436837,
+      "lastAccessed": 1783527013174,
       "keyFiles": [
         "index.html"
       ]
@@ -2030,7 +2039,7 @@
       "path": "yangdo",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436838,
+      "lastAccessed": 1783527013175,
       "keyFiles": [
         "index.html"
       ]
@@ -2039,7 +2048,7 @@
       "path": "year-mosaic",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436838,
+      "lastAccessed": 1783527013176,
       "keyFiles": [
         "index.html"
       ]
@@ -2048,7 +2057,7 @@
       "path": "yeoldaeya",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436838,
+      "lastAccessed": 1783527013177,
       "keyFiles": [
         "index.html"
       ]
@@ -2057,7 +2066,7 @@
       "path": "yeolnayo",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1783161436839,
+      "lastAccessed": 1783527013178,
       "keyFiles": [
         "index.html"
       ]
@@ -2066,7 +2075,7 @@
       "path": "auth-billing\\types",
       "purpose": "Type definitions",
       "fileCount": 2,
-      "lastAccessed": 1783161436842,
+      "lastAccessed": 1783527013183,
       "keyFiles": [
         "auth.types.md",
         "billing.types.md"
@@ -2076,14 +2085,14 @@
       "path": "auth-hub\\node_modules",
       "purpose": "Dependencies",
       "fileCount": 0,
-      "lastAccessed": 1783161436842,
+      "lastAccessed": 1783527013185,
       "keyFiles": []
     },
     "auth-hub\\src": {
       "path": "auth-hub\\src",
       "purpose": "Source code",
       "fileCount": 2,
-      "lastAccessed": 1783161436843,
+      "lastAccessed": 1783527013185,
       "keyFiles": [
         "auth.ts",
         "middleware.ts"
@@ -2092,303 +2101,33 @@
   },
   "hotPaths": [
     {
-      "path": "gen-pages.mjs",
-      "accessCount": 9,
-      "lastAccessed": 1783005957231,
+      "path": "data\\review-scores.json",
+      "accessCount": 10,
+      "lastAccessed": 1783531000307,
       "type": "file"
     },
     {
-      "path": "CONTENT-STRATEGY.md",
-      "accessCount": 7,
-      "lastAccessed": 1783199857533,
+      "path": "data\\activity-log.json",
+      "accessCount": 10,
+      "lastAccessed": 1783531040207,
       "type": "file"
     },
     {
-      "path": "templates\\service.html",
-      "accessCount": 6,
-      "lastAccessed": 1783005983726,
-      "type": "file"
+      "path": "review-dash\\index.html",
+      "accessCount": 4,
+      "lastAccessed": 1783528998259,
+      "type": "directory"
     },
     {
-      "path": "lib\\hub.mjs",
-      "accessCount": 2,
-      "lastAccessed": 1782997545142,
-      "type": "file"
-    },
-    {
-      "path": "ADSENSE-READINESS.md",
-      "accessCount": 2,
-      "lastAccessed": 1783006455469,
-      "type": "file"
-    },
-    {
-      "path": "korean-age\\index.html",
+      "path": "REVIEW-LOOP.md",
       "accessCount": 1,
-      "lastAccessed": 1782996921461,
+      "lastAccessed": 1783528114178,
       "type": "file"
     },
     {
-      "path": "contact.html",
+      "path": "data\\review-queue.json",
       "accessCount": 1,
-      "lastAccessed": 1782996977163,
-      "type": "file"
-    },
-    {
-      "path": "privacy.html",
-      "accessCount": 1,
-      "lastAccessed": 1782996977477,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-00.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997346379,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-01.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997355701,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-02.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997364753,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-03.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997367589,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-04.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997374423,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-05.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997384914,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-06.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997392880,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-07.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997395434,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-08.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997402349,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-09.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997412509,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-10.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997417639,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-11.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997422065,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-12.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997430109,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_in\\chunk-13.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997437333,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-01.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997550026,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-00.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997565327,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-03.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997575905,
-      "type": "file"
-    },
-    {
-      "path": "about.html",
-      "accessCount": 1,
-      "lastAccessed": 1782997577870,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-02.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997579605,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-05.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997581489,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-04.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997603533,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-10.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997612540,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-06.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997614313,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-08.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997620336,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-07.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997621032,
-      "type": "file"
-    },
-    {
-      "path": "scripts\\merge-content.mjs",
-      "accessCount": 1,
-      "lastAccessed": 1782997631027,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-12.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997648427,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-09.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997649803,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-13.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997663772,
-      "type": "file"
-    },
-    {
-      "path": "data\\content\\_out\\chunk-11.json",
-      "accessCount": 1,
-      "lastAccessed": 1782997688592,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-00.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006107644,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-01.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006121269,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-02.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006135423,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-03.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006150326,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-04.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006158982,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-05.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006173940,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-06.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006187279,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-07.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006209234,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-08.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006213278,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-09.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006228396,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-10.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006258893,
-      "type": "file"
-    },
-    {
-      "path": "data\\content2\\_in\\chunk-11.json",
-      "accessCount": 1,
-      "lastAccessed": 1783006270739,
+      "lastAccessed": 1783528763718,
       "type": "file"
     }
   ],

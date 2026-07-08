@@ -59,6 +59,9 @@ h1{font-size:24px;font-weight:900;margin:6px 0 2px;background:linear-gradient(90
     <button data-f="reviewing">진행중</button>
   </div>
   <div id="list"></div>
+
+  <h2 style="font-size:15px;font-weight:800;margin:30px 0 10px;color:#c4c9d2">🛠️ 최근 활동 (무엇을 고쳤나)</h2>
+  <div id="activity"></div>
 </div>
 <script>
 const AXES = [["functional","기능"],["mobileUX","모바일"],["design","디자인"],["content","콘텐츠"],["realValue","실사용"]];
@@ -105,6 +108,18 @@ document.getElementById("filters").addEventListener("click",e=>{
 });
 fetch("/data/review-scores.json",{cache:"no-store"}).then(r=>r.json()).then(d=>{DATA=d;render();})
   .catch(()=>{document.getElementById("list").innerHTML='<div class="empty">review-scores.json을 불러오지 못했습니다.</div>';});
+
+const KIND=({redevelop:["#7aa2ff","재개발"],deploy:["#34d399","배포"],review:["#e0a44d","리뷰"],ops:["#9ca3af","운영"]});
+fetch("/data/activity-log.json",{cache:"no-store"}).then(r=>r.json()).then(a=>{
+  const el=document.getElementById("activity");
+  const ent=(a.entries||[]);
+  if(!ent.length){el.innerHTML='<div class="empty">활동 기록이 아직 없습니다.</div>';return;}
+  el.innerHTML=ent.map(e=>{
+    const [c,lab]=KIND[e.kind]||KIND.ops;
+    const delta=(typeof e.overall==="number"&&typeof e.prev==="number")?` <b style="color:${e.overall>=80?'#34d399':'#e0a44d'}">${e.prev}→${e.overall}</b>`:"";
+    return `<div class="card" style="padding:12px 14px;margin:0 0 8px"><div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap"><span class="pill" style="background:#1c1c1c;color:${c}">${lab}</span><b style="font-size:13.5px">${e.slug||""}</b>${delta}<span style="color:#6b7280;font-size:11.5px;margin-left:auto">${e.ts||""}</span></div><div style="color:#c4c9d2;font-size:13px;margin-top:6px">${e.summary||""}</div></div>`;
+  }).join("");
+}).catch(()=>{});
 </script>
 </body>
 </html>

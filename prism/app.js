@@ -52,6 +52,10 @@
     fx: { teleport: null, spotlightUntil: 0 }, // teleport: {region, until}
     cards: {}, // charId -> {n, lv}
     gacha: { day: "", freeUsed: false, pity: 0 },
+    roulette: { day: "" },
+    battle: { day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 },
+    balance: {},
+    streak: { last: "", n: 0 },
     joinedAt: Date.now(),
   });
   let S;
@@ -84,6 +88,10 @@
     }
   });
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
+  S.roulette = Object.assign({ day: "" }, S.roulette || {});
+  S.battle = Object.assign({ day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 }, S.battle || {});
+  S.balance = S.balance || {};
+  S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
   S.filters = Object.assign({ ageMin: 19, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
   // 구버전 기본값(45) → 신버전 기본값(50) 승격은 반드시 '1회만' 실행해야 한다. 매 부팅마다
@@ -547,7 +555,20 @@
 
   /* ══ 메인 ══ */
   let tab = "discover";
-  function enterMain() { show("scr-main"); paintTopbar(); go("discover"); maybeIncomingMessage(); }
+  function enterMain() { show("scr-main"); paintTopbar(); tickStreak(); go("discover"); maybeIncomingMessage(); }
+  /* 연속 출석 스트릭 — 3일마다 뽑기권 1, 7일마다 3장 */
+  function tickStreak() {
+    if (!S.user) return;
+    const t = todayStr();
+    if (S.streak.last === t) return;
+    const y = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    S.streak.n = S.streak.last === y ? S.streak.n + 1 : 1;
+    S.streak.last = t;
+    let bonus = 0;
+    if (S.streak.n > 1) { if (S.streak.n % 7 === 0) bonus = 3; else if (S.streak.n % 3 === 0) bonus = 1; }
+    if (bonus) { S.items.gachaticket += bonus; setTimeout(() => toast(`🔥 연속 출석 ${S.streak.n}일 — 크러시 팩 뽑기권 +${bonus}!`), 2200); }
+    save();
+  }
   function paintTopbar() {
     const b = $("#btn-premium-badge");
     b.textContent = plan().label;
@@ -559,7 +580,7 @@
     const bl = $("#badge-likes"), bc = $("#badge-chats"), bcd = $("#badge-cards");
     bl.hidden = !newLikes; bl.textContent = newLikes;
     bc.hidden = !unread; bc.textContent = unread;
-    if (bcd) { bcd.hidden = !gachaFreeAvail(); bcd.textContent = "!"; }
+    if (bcd) { bcd.hidden = !(gachaFreeAvail() || rouletteAvail()); bcd.textContent = "!"; }
   }
   function go(t) {
     tab = t;
@@ -1220,6 +1241,48 @@
   }
 
   /* ══ 커뮤니티 ══ */
+  /* 밸런스 게임 — 둘 중 하나만! */
+  const BQ = [
+    ["첫 데이트", "분위기 좋은 바에서 🍸", "한강 야경 산책 🌉"],
+    ["연락 스타일", "실시간 초스피드 답장 ⚡", "하루 한 번 정성 장문 ✍️"],
+    ["이상형 무드", "듬직한 곰 🐻", "샤프한 여우 🦊"],
+    ["여행 궁합", "계획 꽉꽉 J형 여행 🗓️", "발 닿는 대로 P형 여행 🎒"],
+    ["데이트 비용", "무조건 반반 ⚖️", "그때그때 번갈아 쏘기 🔄"],
+    ["동거한다면", "각자 방은 필수 🚪", "한 이불에서 다 같이 🛏️"],
+    ["고백", "먼저 고백하는 편 💌", "고백 받고 싶은 편 💘"],
+    ["운동", "같이 헬스장 가는 커플 💪", "운동은 각자, 밥만 같이 🍚"],
+    ["주말 데이트", "집에서 넷플릭스+배달 🛋️", "무조건 나가서 데이트 🌤️"],
+    ["애정표현", "스킨십으로 표현 🤗", "말로 다정하게 💬"],
+    ["질투", "적당한 질투는 애정 🔥", "쿨한 신뢰가 최고 🧊"],
+    ["둘만의 비밀", "친한 친구에겐 오픈 🌈", "우리 둘만 아는 사이 🤫"],
+    ["끌리는 포인트", "웃음 코드가 같은 사람 😂", "플레이리스트가 같은 사람 🎧"],
+    ["기념일", "100일 단위 다 챙기기 🎂", "생일·1주년만 크게 🎁"],
+    ["다퉜을 때", "그 자리에서 바로 풀기 🗣️", "하루 식히고 대화 🌙"],
+    ["반려동물", "강아지파 🐶", "고양이파 🐱"],
+    ["술 데이트", "소주에 삼겹살 🍖", "와인에 치즈 플레이트 🧀"],
+    ["모임 스타일", "시끌벅적 큰 모임 🪩", "소수 정예 홈파티 🏠"],
+  ];
+  let balPtr = null;
+  function bDist(qi) { // 시드 고정 분포 28~72%
+    let seed = qi * 3571 + 991;
+    seed = (seed * 9301 + 49297) % 233280;
+    return 28 + (seed % 45);
+  }
+  function balanceHTML() {
+    if (balPtr === null) balPtr = (dayOfYear() * 3) % BQ.length;
+    const qi = balPtr;
+    const [topic, A, B] = BQ[qi];
+    const voted = S.balance[qi] !== undefined;
+    const pctA = bDist(qi), pctB = 100 - pctA;
+    const answered = Object.keys(S.balance).length;
+    const opt = (label, i, pct) => `<button class="bal-opt ${voted ? (S.balance[qi] === i ? "mine" : "other") : ""}" data-b="${i}" ${voted ? "disabled" : ""}>
+      ${voted ? `<span class="bal-fill" style="height:${pct}%"></span>` : ""}
+      <span class="bal-tx">${esc(label)}</span>${voted ? `<b class="bal-pct">${pct}%${S.balance[qi] === i ? " · 나" : ""}</b>` : ""}</button>`;
+    return `<div class="dq-card bal-card"><div class="dq-tag">밸런스 게임 · 참여 ${answered}/${BQ.length}</div>
+      <h3>${esc(topic)} — 둘 중 하나만!</h3>
+      <div class="bal-row">${opt(A, 0, pctA)}<div class="bal-vs">VS</div>${opt(B, 1, pctB)}</div>
+      ${voted ? `<button class="btn-ghost bal-next" id="bal-next">다음 질문 ▶</button>` : `<div class="dq-total" style="border:0;padding-top:2px">고르면 다른 사람들의 선택이 보여요</div>`}</div>`;
+  }
   function vCommunity() {
     const qs = D.dailyQuestions;
     const idx = qs.length ? (dayOfYear() % qs.length) : 0;
@@ -1243,6 +1306,7 @@
             <span>${esc(op)}</span>${voted ? `<span class="pct">${pct}%</span>` : ""}</button>`;
         }).join("")}
         ${voted ? `<div class="dq-total">${total.toLocaleString()}명 참여 · 내일 새로운 질문이 올라와요</div>` : ""}</div>` : ""}
+      ${balanceHTML()}
       ${qs.length > 1 ? `<div class="sec" style="padding:2px 16px 0"><b style="font-size:13px;color:var(--tx3)">지난 질문 다시 보기</b></div>
       <div class="past-qs">${[1, 2, 3].map((d) => {
         const pi = ((idx - d) % qs.length + qs.length) % qs.length;
@@ -1260,6 +1324,11 @@
     $$(".dq-opt:not([disabled])").forEach((b) => b.onclick = () => {
       S.votes[idx] = +b.dataset.i; save(); vCommunity(); vibrate(10);
     });
+    $$(".bal-opt:not([disabled])").forEach((b) => b.onclick = () => {
+      S.balance[balPtr] = +b.dataset.b; save(); vCommunity(); vibrate(10);
+    });
+    const bn = $("#bal-next");
+    if (bn) bn.onclick = () => { balPtr = (balPtr + 1) % BQ.length; vCommunity(); };
   }
   // 오늘의 질문/주간 가챠 픽업이 좋아요·매칭 리셋(dailyTick, todayStr 기준)과 같은 순간에
   // 갱신되려면 dayOfYear()도 기기 로컬 타임존이 아니라 반드시 KST 자정 경계를 써야 한다.
@@ -1312,7 +1381,7 @@
       <div class="menu">
         <button class="menu-it" id="m-reset"><span class="mi-ic">🗑️</span><span style="color:var(--red)">데이터 초기화 (계정 삭제)</span></button>
       </div>
-      <p class="tiny" style="text-align:center;padding:0 20px 8px">PRISM 데모 v1.0 · 모든 데이터는 이 기기에만 저장 ·
+      <p class="tiny" style="text-align:center;padding:0 20px 8px">PRISM 데모 v2.0 · 모든 데이터는 이 기기에만 저장 ·
         <a href="/privacy.html" target="_blank" rel="noopener" style="color:var(--tx3)">개인정보</a> ·
         <a href="/terms.html" target="_blank" rel="noopener" style="color:var(--tx3)">약관</a> ·
         <a href="/contact.html" target="_blank" rel="noopener" style="color:var(--tx3)">문의</a></p>
@@ -1613,6 +1682,191 @@
     }
   }
 
+  /* ══ 데일리 룰렛 (매일 1회 무료 스핀) ══ */
+  const RL_PRIZES = [
+    { em: "🎴", label: "뽑기권 1장", key: "gachaticket", n: 1, w: 30 },
+    { em: "💜", label: "좋아요 리필 1개", key: "refill", n: 1, w: 12 },
+    { em: "🎴", label: "뽑기권 2장", key: "gachaticket", n: 2, w: 15 },
+    { em: "⭐", label: "슈퍼라이크 1개", key: "superlike", n: 1, w: 12 },
+    { em: "✨", label: "스포트라이트 1회", key: "spotlight", n: 1, w: 8 },
+    { em: "🎴", label: "뽑기권 1장", key: "gachaticket", n: 1, w: 15 },
+    { em: "🚀", label: "부스트 1회권", key: "boostticket", n: 1, w: 5 },
+    { em: "👑", label: "잭팟! 뽑기권 5장", key: "gachaticket", n: 5, w: 3 },
+  ];
+  const rouletteAvail = () => S.roulette.day !== todayStr();
+  function pickPrize() {
+    const total = RL_PRIZES.reduce((a, p) => a + p.w, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < RL_PRIZES.length; i++) { r -= RL_PRIZES[i].w; if (r < 0) return i; }
+    return 0;
+  }
+  function openRoulette() {
+    const avail = rouletteAvail();
+    const m = modal(`<div class="rl-stage">
+      <h3 style="margin:0">🎡 데일리 룰렛</h3>
+      <p class="muted" style="font-size:12.5px;margin:4px 0 12px">매일 1번, 공짜로 돌려요 — 꽝 없음!</p>
+      <div class="rl-wrap"><div class="rl-pin">▼</div>
+        <div class="rl-wheel" id="rl-wheel">${RL_PRIZES.map((p, i) =>
+          `<span class="rl-lb" style="transform:rotate(${i * 45 + 22.5}deg)"><i>${p.em}</i>${p.n > 1 ? `<small>×${p.n}</small>` : ""}</span>`).join("")}
+          <div class="rl-hub">🎡</div></div></div>
+      <button class="btn-grad big" id="rl-go" ${avail ? "" : "disabled"} style="margin-top:14px">${avail ? "돌리기!" : "오늘은 이미 돌렸어요 — 내일 또!"}</button>
+      <button class="btn-ghost" data-x style="margin-top:8px">닫기</button></div>`, { center: true, sticky: true });
+    $("[data-x]", m).onclick = () => m.remove();
+    $("#rl-go", m).onclick = () => {
+      if (!rouletteAvail()) return;
+      const btn = $("#rl-go", m); btn.disabled = true; btn.textContent = "두근두근...";
+      S.roulette.day = todayStr(); save(); // 스핀 시작 시점에 소진 (새로고침 재스핀 방지)
+      const idx = pickPrize();
+      const wheel = $("#rl-wheel", m);
+      const rot = 6 * 360 - (idx * 45 + 22.5);
+      wheel.style.transition = "transform 4.2s cubic-bezier(.12,.75,.1,1)";
+      wheel.style.transform = `rotate(${rot}deg)`;
+      let done = false;
+      const finish = () => {
+        if (done) return; done = true;
+        const p = RL_PRIZES[idx];
+        S.items[p.key] = (S.items[p.key] || 0) + p.n;
+        save(); badges(); vibrate(idx === 7 ? [40, 60, 40, 60, 80] : [30, 50, 30]);
+        const dlg = modal(`<div class="dialog"><div class="em">${p.em}</div><h3>${idx === 7 ? "👑 잭팟!!" : "축하해요!"}</h3>
+          <p><b>${esc(p.label)}</b> 획득!<br>보유 아이템에 바로 들어갔어요.</p>
+          <button class="btn-grad big" data-ok>받기</button></div>`, { center: true });
+        $("[data-ok]", dlg).onclick = () => { dlg.remove(); m.remove(); if (tab === "cards") vCards(); };
+      };
+      wheel.addEventListener("transitionend", finish, { once: true });
+      setTimeout(finish, 4800); // transitionend 유실 대비
+    };
+  }
+
+  /* ══ 매력 배틀 아레나 (모은 카드로 3판 2선승 상성 배틀) ══
+     상성 삼각: 💪파워 > 🧠두뇌 > ✨매력 > 💪파워 (우세 시 파워 ×1.25) */
+  const RPOW = { N: 10, R: 16, SR: 24, SSR: 34 };
+  const TYPE_KEYS = ["power", "brain", "charm"];
+  const TYPE_INFO = { power: ["💪", "파워"], brain: ["🧠", "두뇌"], charm: ["✨", "매력"] };
+  const BEATS = { power: "brain", brain: "charm", charm: "power" };
+  const typeOf = (c) => TYPE_KEYS[Array.from(String(c.id)).reduce((a, ch) => a + ch.charCodeAt(0), 0) % 3];
+  const cardPower = (id) => { const c = cardOf(id); return c && cardOwned(id) ? RPOW[c.rarity] + (cardMaxLv(id) - 1) * 6 : 0; };
+  const BATTLE_MAX = 5;
+  const battleLeft = () => S.battle.day === todayStr() ? Math.max(0, BATTLE_MAX - S.battle.plays) : BATTLE_MAX;
+  function battleSetup() {
+    const owned = CD.CHARS.filter((c) => cardOwned(c.id));
+    if (owned.length < 3) {
+      confirmDlg("⚔️", "카드가 3종 필요해요", `배틀에는 서로 다른 카드 3장이 필요해요.<br>지금 <b>${owned.length}종</b> 보유 중 — 뽑기로 채워볼까요?`, "뽑기하러 가기", () => { if (tab !== "cards") go("cards"); doGacha(); });
+      return;
+    }
+    if (battleLeft() <= 0) { toast("오늘의 배틀을 다 했어요 — 내일 5회가 충전돼요 ⚔️"); return; }
+    const picked = [];
+    const m = modal(`<div class="sheet"><div class="grip"></div>
+      <h3 style="margin:0 0 4px">⚔️ 출전 카드 3장 선택</h3>
+      <p class="muted" style="font-size:12.5px;margin:0 0 10px">등급·★이 높을수록 강해요 · 상성(💪>🧠>✨>💪)까지 맞으면 파워 ×1.25</p>
+      <div class="bt-pickgrid">${owned.map((c) => {
+        const tp = typeOf(c);
+        return `<button class="bt-pick" data-id="${c.id}">
+          <b style="color:${CD.RARITY[c.rarity].color}">${c.rarity}${"★".repeat(cardMaxLv(c.id))}</b>
+          <span>${esc(c.name)}</span>
+          <small>${TYPE_INFO[tp][0]}${TYPE_INFO[tp][1]} · 파워 ${cardPower(c.id)}</small></button>`;
+      }).join("")}</div>
+      <div class="row" style="display:flex;gap:9px;margin-top:12px">
+        <button class="btn-ghost" style="flex:1" id="bt-auto">자동 편성</button>
+        <button class="btn-grad" style="flex:2" id="bt-start" disabled>배틀 시작 (0/3)</button></div></div>`);
+    const sync = () => {
+      $$(".bt-pick", m).forEach((b) => b.classList.toggle("on", picked.includes(b.dataset.id)));
+      const st = $("#bt-start", m);
+      st.disabled = picked.length !== 3;
+      st.textContent = `배틀 시작 (${picked.length}/3)`;
+    };
+    m.addEventListener("click", (e) => {
+      const b = e.target.closest(".bt-pick"); if (!b) return;
+      const id = b.dataset.id;
+      if (picked.includes(id)) picked.splice(picked.indexOf(id), 1);
+      else if (picked.length < 3) picked.push(id);
+      else { toast("3장까지만 출전할 수 있어요"); return; }
+      sync();
+    });
+    $("#bt-auto", m).onclick = () => {
+      picked.length = 0;
+      owned.slice().sort((a, b) => cardPower(b.id) - cardPower(a.id)).slice(0, 3).forEach((c) => picked.push(c.id));
+      sync(); toast("가장 강한 3장으로 자동 편성!");
+    };
+    $("#bt-start", m).onclick = () => { if (picked.length === 3) { m.remove(); battleRun(picked.slice()); } };
+  }
+  function battleRun(teamIds) {
+    // 입장 시 횟수 차감 (중도 이탈 재도전 방지)
+    if (S.battle.day !== todayStr()) S.battle = Object.assign(S.battle, { day: todayStr(), plays: 0, winsToday: 0, rewarded: 0 });
+    S.battle.plays++; save();
+    const mine = teamIds.map(cardOf);
+    const myPow = teamIds.map(cardPower);
+    // 상대: 무작위 3인 (미보유 포함 — "쟤 갖고 싶다" 동기), 파워는 내 팀 ±20%
+    const pool = shuffle(CD.CHARS.slice()).slice(0, 3);
+    const enemy = pool.map((c, i) => ({ c, pow: Math.max(6, Math.round(myPow[i] * (0.8 + Math.random() * 0.4))) }));
+    let round = 0, myScore = 0, enScore = 0;
+    const o = document.createElement("div");
+    o.className = "ovl bt-ovl";
+    const slot = (c, pow, side, i, hidden) => {
+      const tp = typeOf(c);
+      return `<div class="bt-card ${hidden ? "fd" : ""}" id="bt-${side}${i}">
+        <div class="bt-face">${CD.charSVG(c, { uid: side + i })}
+          <b>${esc(c.name)}</b><small>${TYPE_INFO[tp][0]} ${pow}</small></div>
+        <div class="bt-back">?</div></div>`;
+    };
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">⚔️ 매력 배틀</span>
+        <span class="bt-score" id="bt-score">0 : 0</span></div>
+      <div class="ovl-body bt-body">
+        <div class="bt-row">${enemy.map((e, i) => slot(e.c, e.pow, "e", i, true)).join("")}</div>
+        <div class="bt-mid" id="bt-mid">상대 카드는 비공개! 라운드마다 공개돼요</div>
+        <div class="bt-row">${mine.map((c, i) => slot(c, myPow[i], "m", i, false)).join("")}</div>
+        <button class="btn-grad big" id="bt-go" style="margin:14px auto 0;max-width:340px;display:block">라운드 1 ▶</button>
+      </div>`;
+    $("#overlay-root").appendChild(o);
+    const finishBattle = () => {
+      const win = myScore > enScore, perfect = myScore === 3;
+      if (win) {
+        S.battle.winsToday++; S.battle.totalWins++; S.battle.streak++;
+        S.battle.best = Math.max(S.battle.best, S.battle.streak);
+      } else S.battle.streak = 0;
+      let reward = 0;
+      if (win && S.battle.rewarded < 3) { reward = perfect ? 2 : 1; S.battle.rewarded++; S.items.gachaticket += reward; }
+      save(); badges(); vibrate(win ? [40, 60, 40, 60, 80] : 40);
+      const dlg = modal(`<div class="dialog"><div class="em">${win ? (perfect ? "👑" : "🏆") : "💦"}</div>
+        <h3>${win ? (perfect ? "퍼펙트 승리!" : "승리!") : "아쉽게 패배..."}</h3>
+        <p>${myScore} : ${enScore}${win ? ` · 연승 <b>${S.battle.streak}</b>` : ""}<br>
+        ${reward ? `🎁 보상: 크러시 팩 뽑기권 <b>+${reward}</b>${perfect ? " (퍼펙트 보너스!)" : ""}` : win ? "오늘 보상 3회를 다 받았어요 — 내일 또!" : "카드를 합성해 ★을 올리면 강해져요"}</p>
+        <div class="row"><button class="btn-ghost" data-x>닫기</button>
+        ${battleLeft() > 0 ? `<button class="btn-grad" data-re>한 판 더 (${battleLeft()}회 남음)</button>` : ""}</div></div>`, { center: true, sticky: true });
+      $("[data-x]", dlg).onclick = () => { dlg.remove(); o.remove(); if (tab === "cards") vCards(); };
+      const re = $("[data-re]", dlg);
+      if (re) re.onclick = () => { dlg.remove(); o.remove(); battleSetup(); };
+    };
+    $(".ovl-close", o).onclick = () => confirmDlg("🏳️", "배틀 포기", "지금 나가면 이번 판은 패배로 기록돼요.", "포기하기", () => { S.battle.streak = 0; save(); o.remove(); if (tab === "cards") vCards(); }, true);
+    $("#bt-go", o).onclick = () => {
+      if (round >= 3) { finishBattle(); return; }
+      const i = round;
+      const mC = mine[i], eC = enemy[i].c;
+      const mT = typeOf(mC), eT = typeOf(eC);
+      const mAdv = BEATS[mT] === eT, eAdv = BEATS[eT] === mT;
+      const mEff = Math.round(myPow[i] * (mAdv ? 1.25 : 1) * (0.95 + Math.random() * 0.1));
+      const eEff = Math.round(enemy[i].pow * (eAdv ? 1.25 : 1) * (0.95 + Math.random() * 0.1));
+      const iWin = mEff === eEff ? Math.random() < 0.5 : mEff > eEff;
+      const eSlot = $("#bt-e" + i, o), mSlot = $("#bt-m" + i, o);
+      eSlot.classList.remove("fd"); // 상대 공개
+      eSlot.classList.add("act"); mSlot.classList.add("act");
+      setTimeout(() => {
+        if (iWin) { myScore++; mSlot.classList.add("win"); eSlot.classList.add("lose"); }
+        else { enScore++; eSlot.classList.add("win"); mSlot.classList.add("lose"); }
+        mSlot.classList.remove("act"); eSlot.classList.remove("act");
+        $("#bt-score", o).textContent = `${myScore} : ${enScore}`;
+        $("#bt-mid", o).innerHTML = `R${i + 1} — ${TYPE_INFO[mT][0]}<b>${mEff}</b> vs <b>${eEff}</b>${TYPE_INFO[eT][0]}
+          ${mAdv ? ' · <span style="color:var(--teal)">상성 우세 ×1.25!</span>' : eAdv ? ' · <span style="color:var(--red)">상성 열세...</span>' : ""}
+          → ${iWin ? "<b style='color:var(--teal)'>승리!</b>" : "<b style='color:var(--red)'>패배</b>"}`;
+        vibrate(iWin ? [20, 40] : 30);
+        round++;
+        const btn = $("#bt-go", o);
+        btn.textContent = round >= 3 ? "결과 보기 🏆" : `라운드 ${round + 1} ▶`;
+        btn.disabled = false;
+      }, 650);
+      $("#bt-go", o).disabled = true;
+    };
+  }
+
   /* ══ 크러시 카드 (수집 · 가챠 · 합성) ══
      합성 규칙: 같은 카드 + 같은 레벨 2장 → 다음 레벨 1장 (최대 ★5) */
   const MILESTONES = [16, 32, 64, 96, 128];
@@ -1724,6 +1978,11 @@
       albumFilter === "all" ? true : albumFilter === "owned" ? cardOwned(c.id) : c.rarity === albumFilter);
     $("#view").innerHTML = `<div class="sec"><div class="sec-h">크러시 카드 도감</div>
       <p class="sec-sub">128명의 일러스트 캐릭터 — 뽑고, 모으고, <b>같은 레벨끼리 합성</b>해서 매칭 버프를 키우세요</p></div>
+      <div class="game-row">
+        <button class="game-tile" id="g-roulette"><span class="gt-em">🎡</span><b>데일리 룰렛</b><small>${rouletteAvail() ? "오늘 무료 1회! 꽝 없음" : "내일 다시 돌려요"}</small>${rouletteAvail() ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile" id="g-battle"><span class="gt-em">⚔️</span><b>매력 배틀</b><small>오늘 ${battleLeft()}/${BATTLE_MAX}회${S.battle.streak ? ` · 🔥연승 ${S.battle.streak}` : ""}${S.battle.best ? ` · 최고 ${S.battle.best}` : ""}</small>${battleLeft() > 0 ? '<i class="gt-dot"></i>' : ""}</button>
+      </div>
+      <div class="streak-chip">🔥 연속 출석 <b>${S.streak.n || 1}일</b> — 3일마다 뽑기권 1장, 7일마다 3장이 쌓여요</div>
       <div class="gacha-box">
         <div class="gb-left"><b>컬렉션 ${owned}/128</b>
           <div class="gb-bar"><i style="width:${owned / 128 * 100}%"></i></div>
@@ -1752,6 +2011,8 @@
       ${adSlot()}`;
     $("#g-pull").onclick = doGacha;
     $("#g-pull10").onclick = doGacha10;
+    $("#g-roulette").onclick = openRoulette;
+    $("#g-battle").onclick = battleSetup;
     const pkv = $("[data-pkview]");
     if (pkv) pkv.onclick = () => {
       const pk = cardOf(pkv.dataset.pkview); if (!pk) return;

@@ -1,150 +1,15 @@
 {
-  "updatedAt": "2026-07-08",
+  "updatedAt": "2026-07-09",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 22,
-    "pass": 20,
+    "total": 30,
+    "pass": 28,
     "reviewNeeded": 2,
     "reviewing": 0,
-    "avgOverall": 80
+    "avgOverall": 80.8
   },
   "projects": [
-    {
-      "slug": "korean-age",
-      "name": "만 나이 계산기",
-      "source": "daily/2026-06-21-korean-age",
-      "live": "https://korean-age.vercel.app",
-      "status": "pass",
-      "loops": 1,
-      "axes": {
-        "functional": 84,
-        "mobileUX": 80,
-        "design": 88,
-        "content": 85,
-        "realValue": 90
-      },
-      "reviewerAvg": 85,
-      "userScores": [
-        84,
-        86,
-        88,
-        74,
-        85
-      ],
-      "userAvg": 83,
-      "overall": 84,
-      "findings": [
-        "만나이/연나이/세는나이/개월·일 계산 정확, 생일 전·당일·후 경계 및 윤년(2/29) 처리 검증 통과.",
-        "별자리 경계 버그(발견→수정): starSignOf md>=1220 조건이 1222여야 함 → 12/20·12/21 출생이 사수자리 대신 염소자리로 잘못 표시되던 결함.",
-        "실사용 가치 높음: 운전/성년/음주(연나이)/정년/경로우대/국민연금(출생연도별 차등) D-day, 1000일 마일스톤, 탄생석·탄생화, 가족·친구 저장, 공유링크.",
-        "SEO/수익화 완비: force-static, FAQ+WebApplication JSON-LD, AdSlot·쿠팡·애드센스 유지.",
-        "모바일 접근성 약점: 소리토글·빠른입력 칩·삭제 ✕ 버튼이 py-1로 44px 미만 터치타겟(다음 루프 후보)."
-      ],
-      "changes": [
-        "별자리 경계 버그 수정: src/lib/zodiac.ts starSignOf md>=1220 → 1222 (12/20·12/21이 사수자리로 정확히 표시)."
-      ],
-      "history": [
-        {
-          "loop": 0,
-          "overall": 84
-        },
-        {
-          "loop": 1,
-          "overall": 84
-        }
-      ],
-      "reviewedAt": "2026-07-04"
-    },
-    {
-      "slug": "water-tracker",
-      "name": "하루 물 마시기",
-      "source": "daily/2026-06-22-water-tracker",
-      "live": "https://dydrms-water-tracker.vercel.app",
-      "status": "pass",
-      "loops": 0,
-      "axes": {
-        "functional": 84,
-        "mobileUX": 82,
-        "design": 88,
-        "content": 87,
-        "realValue": 74
-      },
-      "reviewerAvg": 83,
-      "userScores": [
-        84,
-        80,
-        87,
-        78,
-        79
-      ],
-      "userAvg": 82,
-      "overall": 82,
-      "findings": [
-        "권장량 계산 견고(33ml/kg + 활동·기후 보정, 1200~4500ml 클램프), 컵 기록/undo/reset/스트릭/7일 히스토리/음료 수분기여율 구현.",
-        "자정 초기화는 상호작용 시 ensureToday로만 처리 — 자정 넘겨 열어둔 화면은 자동 갱신 안 됨(경미).",
-        "리마인더/알림 기능 전무 — 메타 키워드 '물 알림'을 내세우지만 미구현. 물 앱 최다 요청 기능, realValue·리텐션 최대 공백.",
-        "하단 시트 모달에 safe-area-inset 미적용, 3D Canvas 저사양 부하 우려."
-      ],
-      "changes": [],
-      "history": [
-        {
-          "loop": 0,
-          "overall": 82
-        }
-      ],
-      "reviewedAt": "2026-07-04"
-    },
-    {
-      "slug": "salary-net-pay",
-      "name": "월급 실수령액 계산기",
-      "source": "daily/2026-06-20-salary-net-pay",
-      "live": "https://salary-net-pay.vercel.app",
-      "status": "pass",
-      "loops": 1,
-      "axes": {
-        "functional": 82,
-        "mobileUX": 80,
-        "design": 85,
-        "content": 80,
-        "realValue": 85
-      },
-      "reviewerAvg": 82,
-      "userScores": [
-        80,
-        80,
-        86,
-        74,
-        82
-      ],
-      "userAvg": 80,
-      "overall": 81,
-      "findings": [
-        "핵심 정확성 결함(수정됨): 월 소득세를 연 결정세액÷12로 계산해 실제 급여명세서(간이세액표 원천징수)보다 과대 계상 → 헤드라인 실수령액이 경쟁 계산기보다 낮게 표시.",
-        "식대 비과세 30만 버튼이 한도(월 20만) 초과분까지 전액 비과세 처리(수정됨).",
-        "Pro 결제 링크가 죽은 Stripe 테스트 URL이며 클릭 시 무조건 로컬 언락(수정됨).",
-        "CoinScene WebGL 배경 상시 마운트 — 저사양 모바일 성능/배터리 부담(다음 루프 후보).",
-        "리텐션 요소(시나리오 비교·인상률 시뮬·백분위·딥링크 공유)는 강점."
-      ],
-      "changes": [
-        "소득세를 국세청 간이세액표 구간보간(가족수 정액감액)으로 교체 — 앵커점 실제표 일치(월 250만→41,630, 300만→84,850, 350만→127,220, 400만→219,880).",
-        "식대 비과세 월 20만원 한도(MEAL_NONTAX_CAP) 캡 + 입력 힌트 추가.",
-        "연말정산 예상(환급/추가납부) 기능 추가 — 월 원천징수 합계 vs 연 결정세액(자녀세액공제 반영) 차액 색상 칩.",
-        "죽은 Stripe 테스트 링크 제거 → PRO_LINK를 NEXT_PUBLIC_PRO_LINK 환경변수로 이전.",
-        "FAQ 갱신(간이세액표 방식·연말정산 항목). tsc 통과, AdSense/SEO/쿠팡 슬롯 보존."
-      ],
-      "history": [
-        {
-          "loop": 0,
-          "overall": 76
-        },
-        {
-          "loop": 1,
-          "overall": 81
-        }
-      ],
-      "reviewedAt": "2026-07-04"
-    },
     {
       "slug": "albapay",
       "name": "알바비 계산기",
@@ -191,55 +56,6 @@
         {
           "loop": 1,
           "overall": 80
-        }
-      ],
-      "reviewedAt": "2026-07-04"
-    },
-    {
-      "slug": "split-bill-clear",
-      "name": "더치페이 정산",
-      "source": "daily/2026-06-21-split-bill-clear",
-      "live": "https://split-bill-clear.vercel.app",
-      "status": "pass",
-      "loops": 1,
-      "axes": {
-        "functional": 86,
-        "mobileUX": 83,
-        "design": 86,
-        "content": 84,
-        "realValue": 83
-      },
-      "reviewerAvg": 84,
-      "userScores": [
-        82,
-        82,
-        85,
-        82,
-        83
-      ],
-      "userAvg": 83,
-      "overall": 84,
-      "findings": [
-        "불균등 분담(각자 다르게)이 types/settle엔 존재하나 UI에서 도달 불가 — 모든 지출이 mode:'equal' 하드코딩(수정됨). 안 마신 사람 제외 등 실사용에 치명적.",
-        "정수 minor-unit 연산으로 잔돈 드리프트 없음, 나머지 분배 정확, minimizeTransfers 그리디 최소송금 — 핵심 로직 견고.",
-        "다중통화·공유링크·자동저장·여행 아카이브·3D 히어로 등 완성도 높음, SEO/AdSense/쿠팡 정상.",
-        "삭제 ✕·송금 체크박스 일부 터치타겟 24px로 44px 미만(수정됨)."
-      ],
-      "changes": [
-        "ExpenseSection에 '똑같이 N빵/각자 다르게' 분할모드 토글 + custom(불균등) 모드 UI 신설.",
-        "참여자별 금액 직접입력 + 실시간 합계 검증(남음/초과/딱 맞아요), 합 불일치 시 제출 차단.",
-        "'균등 채우기' 버튼으로 equalShares 자동 프리필, custom map을 mode:'custom'으로 배선.",
-        "지출 리스트에 '각자 다르게' 배지, 분할모드/참여자 칩/커스텀 입력에 min-h-[44px].",
-        "node로 custom 정산 수학 검증(A5000/B10000/C15000 무드리프트). tsc 통과."
-      ],
-      "history": [
-        {
-          "loop": 0,
-          "overall": 79
-        },
-        {
-          "loop": 1,
-          "overall": 84
         }
       ],
       "reviewedAt": "2026-07-04"
@@ -698,38 +514,45 @@
       "source": "daily/2026-06-21-cheongyak-score",
       "live": "https://cheongyak-score.vercel.app",
       "status": "pass",
-      "loops": 0,
+      "loops": 2,
       "axes": {
-        "functional": 88,
+        "functional": 86,
         "mobileUX": 82,
-        "design": 86,
-        "content": 88,
-        "realValue": 89
+        "design": 78,
+        "content": 84,
+        "realValue": 80
       },
-      "reviewerAvg": 87,
+      "reviewerAvg": 82,
       "userScores": [
+        82,
         84,
-        89,
-        83,
-        80,
-        86
+        72,
+        76,
+        78
       ],
-      "userAvg": 84,
-      "overall": 86,
+      "userAvg": 78,
+      "overall": 80,
       "findings": [
-        "점수표 정확: 무주택32·부양가족35·통장17·합계84 경계값 청약홈 공식표 일치(스크립트 검증), 만30세미만0·배우자통장50%합산 반영.",
-        "실단지 커트라인 매칭·1순위 자격체크·특공 4유형 자가진단·N년후 미래 시뮬·시나리오 저장·공유링크 OG.",
-        "경미: score.ts homelessZeroReason 삼항이 항상 manualUnder30(도달불가 분기, UI 미노출). 일부 40px 터치타겟·safe-area 명시 없음.",
-        "단지·커트라인이 실시간 아닌 교육용 스냅샷임을 곳곳 고지."
+        "Listings 정적 스냅샷(시간경과 부정확)",
+        "cutoffStatus 60점 vs REGION_TIERS 불일치",
+        "모바일 툴팁 blur 닫힘"
       ],
-      "changes": [],
+      "changes": [
+        "30년 입력오해 FAQ/힌트/팁 재문안(제한 없음 명시)",
+        "카드 힌트 모바일 축약",
+        "청약단지 목록+가능성판정 기존구조 확인"
+      ],
       "history": [
         {
           "loop": 0,
           "overall": 86
+        },
+        {
+          "loop": 1,
+          "overall": 80
         }
       ],
-      "reviewedAt": "2026-07-05"
+      "reviewedAt": "2026-07-06"
     },
     {
       "slug": "china-travel",
@@ -852,6 +675,604 @@
       "reviewedAt": "2026-07-05"
     },
     {
+      "slug": "dynamic-qr-card",
+      "name": "QR명함(dynamic)",
+      "source": "daily/2026-06-24-dynamic-qr-card",
+      "live": "https://dynamic-qr-card.vercel.app",
+      "status": "pass",
+      "loops": 2,
+      "axes": {
+        "functional": 88,
+        "mobileUX": 80,
+        "design": 82,
+        "content": 80,
+        "realValue": 80
+      },
+      "reviewerAvg": 82,
+      "userScores": [
+        82,
+        84,
+        76,
+        80,
+        80
+      ],
+      "userAvg": 80.4,
+      "overall": 81.2,
+      "findings": [
+        "핵심 미해결 격차는 '명함 차별성/디자인'(realValue 58 최저축) — 인쇄용 명함 이미지 생성기로 해소.",
+        "정적QR 기본화·고해상도 PNG(1024)/SVG·.vcf 저장은 직전 루프에서 구현·검증됨.",
+        "실브라우저로 명함 렌더·QR 인코딩·템플릿 전환 동작 확인."
+      ],
+      "changes": [
+        "vCard 연락처 탭에 '인쇄용 명함 만들기' 추가: 4종 템플릿(미니멀/다크/컬러/클래식)으로 고해상도(1050×585) 명함 PNG 생성 — QR에 vCard 인코딩(스캔=폰 연락처 저장).",
+        "CardComposer 100% 클라이언트 렌더(오프스크린 캔버스 QR ECC H 합성) — 서버/DB/유료 API 불필요.",
+        "히어로·비교카드·FAQ 카피 갱신, 명함 QR/인쇄 명함 가치 전면 노출·FAQ 신설.",
+        "기존 정적QR 기본화·고해상도·.vcf 유지·검증, AdSense/쿠팡/SEO/PWA 슬롯 보존."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 64.5
+        },
+        {
+          "loop": 1,
+          "overall": 64.5
+        },
+        {
+          "loop": 2,
+          "overall": 81.2
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "fandom-bias-vote",
+      "name": "덕질월드컵(편애투표)",
+      "source": "daily/2026-06-23-fandom-bias-vote",
+      "live": "https://fandom-bias-vote.vercel.app",
+      "status": "pass",
+      "loops": 5,
+      "axes": {
+        "functional": 83,
+        "mobileUX": 82,
+        "design": 80,
+        "content": 81,
+        "realValue": 79
+      },
+      "reviewerAvg": 81,
+      "userScores": [
+        83,
+        80,
+        79,
+        79,
+        81
+      ],
+      "userAvg": 80.4,
+      "overall": 80.7,
+      "findings": [
+        "직전 4개 지적(전용 자랑카드/폰트·그라디언트 가드/인앱 다운로드 폴백/iOS 3D 게이팅)은 이미 구현·연결 완료 확인.",
+        "루프4 잔여 약점이던 design(77)을 앰비언트 뎁스·포커스링·로딩 스켈레톤·엣지페이드로 정직하게 +3(전면 재설계 아님).",
+        "본질이 캐주얼 팬투표라 realValue 상한 존재 — 리포트 개인화 인사이트로 보강해 게이트 통과(80.7). 최대 루프(5) 도달."
+      ],
+      "changes": [
+        "덕질 취향 리포트 신설(/me): 로컬 투표기록 기반 취향유형·대세력 지수·스탯·공유 (루프4).",
+        "mobileUX 탭타깃 44px 이상 상향, vote history 실시간 순위 배지 (루프4).",
+        "다크 캔버스 앰비언트 그라디언트 뎁스 + :focus-visible 포커스 링 시스템 (루프5).",
+        "스켈레톤 셰이머 시스템(시상대·/me 로딩) — 빈 div/하이드레이션 플래시 제거 (루프5).",
+        "가로 레일 엣지 페이드 마스크 + 리포트 등장 애니메이션 + 로컬 통계 기반 개인화 인사이트 한 줄 (루프5)."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 69.8
+        },
+        {
+          "loop": 1,
+          "overall": 61
+        },
+        {
+          "loop": 2,
+          "overall": 61
+        },
+        {
+          "loop": 3,
+          "overall": 71.4
+        },
+        {
+          "loop": 4,
+          "overall": 79.7
+        },
+        {
+          "loop": 5,
+          "overall": 80.7
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "korean-age",
+      "name": "만 나이 계산기",
+      "source": "daily/2026-06-21-korean-age",
+      "live": "https://korean-age.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 80,
+        "design": 88,
+        "content": 85,
+        "realValue": 90
+      },
+      "reviewerAvg": 85,
+      "userScores": [
+        84,
+        86,
+        88,
+        74,
+        85
+      ],
+      "userAvg": 83,
+      "overall": 84,
+      "findings": [
+        "만나이/연나이/세는나이/개월·일 계산 정확, 생일 전·당일·후 경계 및 윤년(2/29) 처리 검증 통과.",
+        "별자리 경계 버그(발견→수정): starSignOf md>=1220 조건이 1222여야 함 → 12/20·12/21 출생이 사수자리 대신 염소자리로 잘못 표시되던 결함.",
+        "실사용 가치 높음: 운전/성년/음주(연나이)/정년/경로우대/국민연금(출생연도별 차등) D-day, 1000일 마일스톤, 탄생석·탄생화, 가족·친구 저장, 공유링크.",
+        "SEO/수익화 완비: force-static, FAQ+WebApplication JSON-LD, AdSlot·쿠팡·애드센스 유지.",
+        "모바일 접근성 약점: 소리토글·빠른입력 칩·삭제 ✕ 버튼이 py-1로 44px 미만 터치타겟(다음 루프 후보)."
+      ],
+      "changes": [
+        "별자리 경계 버그 수정: src/lib/zodiac.ts starSignOf md>=1220 → 1222 (12/20·12/21이 사수자리로 정확히 표시)."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 84
+        },
+        {
+          "loop": 1,
+          "overall": 84
+        }
+      ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "korean-typing-speed",
+      "name": "한글 타자연습 스피드",
+      "source": "daily/2026-06-21-korean-typing-speed",
+      "live": "https://korean-typing-speed.vercel.app",
+      "status": "pass",
+      "loops": 4,
+      "axes": {
+        "functional": 87,
+        "mobileUX": 83,
+        "design": 83,
+        "content": 80,
+        "realValue": 80
+      },
+      "reviewerAvg": 82.6,
+      "userScores": [
+        84,
+        82,
+        82,
+        79,
+        83
+      ],
+      "userAvg": 82,
+      "overall": 82.3,
+      "findings": [
+        "정체 원인은 mobileUX(74) 구조적 약점 — 숨김 textarea OS키보드 vs 화면자판이 서로 충돌, 실입력 경로 불명확(해결됨).",
+        "textarea 오버레이 포커스 복구 안내 부재(이전 루프 반영).",
+        "추정치 순위 과도한 강조(이전 루프 반영).",
+        "참고 자판 탭 입력 미연결(이전 루프 반영)."
+      ],
+      "changes": [
+        "모바일 입력 방식 토글 신설(📱 폰 자판 / ⌨️ 화면 자판) — 두 입력 경로 충돌 해소.",
+        "화면 자판 모드에서 inputMode=none+readOnly로 OS 키보드 억제 + 화면 자판을 실제 입력으로 승격.",
+        "화면 자판 터치 타깃 확대(48~60px)로 손가락 입력 편의 개선.",
+        "폰 자판 모드에선 화면 자판을 참고용으로 명확화, 포커스 복구 오버레이도 폰 자판 모드에서만 표시.",
+        "입력 방식 선택 localStorage 기억 + 모바일 FAQ에 두 입력 모드 설명 추가."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 76
+        },
+        {
+          "loop": 1,
+          "overall": 57.6
+        },
+        {
+          "loop": 2,
+          "overall": 57.6
+        },
+        {
+          "loop": 3,
+          "overall": 78.8
+        },
+        {
+          "loop": 4,
+          "overall": 82.3
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "personal-color-test",
+      "name": "퍼스널컬러 진단(테스트모아)",
+      "source": "daily/2026-06-20-personal-color-test",
+      "live": "https://personal-color-test-ten.vercel.app",
+      "status": "pass",
+      "loops": 4,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 83,
+        "design": 82,
+        "content": 84,
+        "realValue": 82
+      },
+      "reviewerAvg": 83.4,
+      "userScores": [
+        85,
+        82,
+        79,
+        78,
+        84
+      ],
+      "userAvg": 81.6,
+      "overall": 82.5,
+      "findings": [
+        "직전 3개 지적(워터마크·구iOS 폴백·캡처범위)은 이미 구현·정상 확인. 게이트를 막던 건 content(78)/realValue(74).",
+        "기존 기록 live URL 오류 교정: 실 도메인은 personal-color-test-ten.vercel.app (personal-color-diag는 404).",
+        "배포 보류: 프로젝트 Vercel 미연동(.vercel 없음) — 재연동 후 배포 필요."
+      ],
+      "changes": [
+        "결과 팔레트 색상 스와치에 한글 색이름 라벨 추가(어울리는 색/피하면 좋은 색).",
+        "시즌별 4축 스타일 팁 섹션 신설(메이크업·헤어·패션·포인트) — 헤어/패션 가이드 최초 도입.",
+        "결과 설명에 '피해야 할 색·이유' 문장 및 키워드 라인 보강.",
+        "신규 콘텐츠를 캡처 카드(cardRef) 내부에 배치해 저장 PNG 자체를 정보성으로 강화.",
+        "TResult 타입에 colorNames/avoidNames/tips 옵션 필드 추가(하위호환, 타 21개 테스트 무영향)."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 68.1
+        },
+        {
+          "loop": 1,
+          "overall": 74
+        },
+        {
+          "loop": 2,
+          "overall": 74
+        },
+        {
+          "loop": 3,
+          "overall": 78
+        },
+        {
+          "loop": 4,
+          "overall": 82.5
+        }
+      ],
+      "reviewedAt": "2026-07-09",
+      "deployPending": true
+    },
+    {
+      "slug": "salary-net-pay",
+      "name": "월급 실수령액 계산기",
+      "source": "daily/2026-06-20-salary-net-pay",
+      "live": "https://salary-net-pay.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 80,
+        "design": 85,
+        "content": 80,
+        "realValue": 85
+      },
+      "reviewerAvg": 82,
+      "userScores": [
+        80,
+        80,
+        86,
+        74,
+        82
+      ],
+      "userAvg": 80,
+      "overall": 81,
+      "findings": [
+        "핵심 정확성 결함(수정됨): 월 소득세를 연 결정세액÷12로 계산해 실제 급여명세서(간이세액표 원천징수)보다 과대 계상 → 헤드라인 실수령액이 경쟁 계산기보다 낮게 표시.",
+        "식대 비과세 30만 버튼이 한도(월 20만) 초과분까지 전액 비과세 처리(수정됨).",
+        "Pro 결제 링크가 죽은 Stripe 테스트 URL이며 클릭 시 무조건 로컬 언락(수정됨).",
+        "CoinScene WebGL 배경 상시 마운트 — 저사양 모바일 성능/배터리 부담(다음 루프 후보).",
+        "리텐션 요소(시나리오 비교·인상률 시뮬·백분위·딥링크 공유)는 강점."
+      ],
+      "changes": [
+        "소득세를 국세청 간이세액표 구간보간(가족수 정액감액)으로 교체 — 앵커점 실제표 일치(월 250만→41,630, 300만→84,850, 350만→127,220, 400만→219,880).",
+        "식대 비과세 월 20만원 한도(MEAL_NONTAX_CAP) 캡 + 입력 힌트 추가.",
+        "연말정산 예상(환급/추가납부) 기능 추가 — 월 원천징수 합계 vs 연 결정세액(자녀세액공제 반영) 차액 색상 칩.",
+        "죽은 Stripe 테스트 링크 제거 → PRO_LINK를 NEXT_PUBLIC_PRO_LINK 환경변수로 이전.",
+        "FAQ 갱신(간이세액표 방식·연말정산 항목). tsc 통과, AdSense/SEO/쿠팡 슬롯 보존."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 76
+        },
+        {
+          "loop": 1,
+          "overall": 81
+        }
+      ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "split-bill-clear",
+      "name": "더치페이 정산",
+      "source": "daily/2026-06-21-split-bill-clear",
+      "live": "https://split-bill-clear.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 83,
+        "design": 86,
+        "content": 84,
+        "realValue": 83
+      },
+      "reviewerAvg": 84,
+      "userScores": [
+        82,
+        82,
+        85,
+        82,
+        83
+      ],
+      "userAvg": 83,
+      "overall": 84,
+      "findings": [
+        "불균등 분담(각자 다르게)이 types/settle엔 존재하나 UI에서 도달 불가 — 모든 지출이 mode:'equal' 하드코딩(수정됨). 안 마신 사람 제외 등 실사용에 치명적.",
+        "정수 minor-unit 연산으로 잔돈 드리프트 없음, 나머지 분배 정확, minimizeTransfers 그리디 최소송금 — 핵심 로직 견고.",
+        "다중통화·공유링크·자동저장·여행 아카이브·3D 히어로 등 완성도 높음, SEO/AdSense/쿠팡 정상.",
+        "삭제 ✕·송금 체크박스 일부 터치타겟 24px로 44px 미만(수정됨)."
+      ],
+      "changes": [
+        "ExpenseSection에 '똑같이 N빵/각자 다르게' 분할모드 토글 + custom(불균등) 모드 UI 신설.",
+        "참여자별 금액 직접입력 + 실시간 합계 검증(남음/초과/딱 맞아요), 합 불일치 시 제출 차단.",
+        "'균등 채우기' 버튼으로 equalShares 자동 프리필, custom map을 mode:'custom'으로 배선.",
+        "지출 리스트에 '각자 다르게' 배지, 분할모드/참여자 칩/커스텀 입력에 min-h-[44px].",
+        "node로 custom 정산 수학 검증(A5000/B10000/C15000 무드리프트). tsc 통과."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 79
+        },
+        {
+          "loop": 1,
+          "overall": 84
+        }
+      ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "water-tracker",
+      "name": "하루 물 마시기",
+      "source": "daily/2026-06-22-water-tracker",
+      "live": "https://dydrms-water-tracker.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 82,
+        "design": 88,
+        "content": 87,
+        "realValue": 74
+      },
+      "reviewerAvg": 83,
+      "userScores": [
+        84,
+        80,
+        87,
+        78,
+        79
+      ],
+      "userAvg": 82,
+      "overall": 82,
+      "findings": [
+        "권장량 계산 견고(33ml/kg + 활동·기후 보정, 1200~4500ml 클램프), 컵 기록/undo/reset/스트릭/7일 히스토리/음료 수분기여율 구현.",
+        "자정 초기화는 상호작용 시 ensureToday로만 처리 — 자정 넘겨 열어둔 화면은 자동 갱신 안 됨(경미).",
+        "리마인더/알림 기능 전무 — 메타 키워드 '물 알림'을 내세우지만 미구현. 물 앱 최다 요청 기능, realValue·리텐션 최대 공백.",
+        "하단 시트 모달에 safe-area-inset 미적용, 3D Canvas 저사양 부하 우려."
+      ],
+      "changes": [],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 82
+        }
+      ],
+      "reviewedAt": "2026-07-04"
+    },
+    {
+      "slug": "company-vs-average",
+      "name": "회사 vs 평균",
+      "source": "daily/2026-06-24-company-vs-average",
+      "live": "https://company-vs-average.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 85,
+        "design": 90,
+        "content": 87,
+        "realValue": 85
+      },
+      "reviewerAvg": 86.4,
+      "userScores": [
+        86,
+        86,
+        91,
+        80,
+        88
+      ],
+      "userAvg": 86.2,
+      "overall": 86.3,
+      "findings": [
+        "decodeAnswers가 size/industry enum·숫자범위를 검증하지 않아 조작·손상된 공유 링크에서 BENCHMARKS 인덱싱이 undefined→TypeError로 결과 페이지 크래시(에러 바운더리 없음).",
+        "결과 고정 액션바·Stepper sticky nav에 safe-area 미적용(노치 홈 인디케이터 가림), 슬라이더 썸 26px, YMYL 면책 부재.",
+        "핵심 로직·벤치마크(2024 경총·통계청)·콘텐츠·디자인은 이미 매우 우수 — 게이트 상회."
+      ],
+      "changes": [
+        "decodeAnswers에 enum 검증+15개 숫자필드 범위 클램프로 공유 링크 크래시 제거.",
+        "고정 액션바·sticky nav에 env(safe-area-inset-bottom) 패딩 추가.",
+        "슬라이더를 44px 터치영역+8px 트랙/28px 썸으로 재작성, focus-visible.",
+        "결과 산정 방식에 YMYL 면책 추가. tsc/build 통과, prod 배포."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86.3
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "gpa-converter",
+      "name": "학점 변환기 (WES)",
+      "source": "daily/2026-06-24-gpa-converter-wes",
+      "live": "https://gpa-converter-wes.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 78,
+        "design": 88,
+        "content": 84,
+        "realValue": 85
+      },
+      "reviewerAvg": 83.4,
+      "userScores": [
+        81,
+        83,
+        88,
+        81,
+        83
+      ],
+      "userAvg": 83.2,
+      "overall": 83.3,
+      "findings": [
+        "목표 역산 탭 버그: 누적 GPA가 목표보다 높을 때 requiredNext가 음수를 가능으로 표시(수정).",
+        "변환 탭 빈 평점/0학점 시 무피드백 무시 — 입력검증 부재(수정).",
+        "스케일 버튼(약 28px)·삭제 버튼 44px 미달(스케일 버튼 개선, 삭제 잔존).",
+        "변환 로직·3스케일·2방식·과목/학기 트래커·가이드/출처/면책·SEO/광고 슬롯은 견고."
+      ],
+      "changes": [
+        "requiredNext에 done(목표 달성) 상태+0 클램프로 음수 버그 제거, 달성 UI 추가.",
+        "ConvertTab 빈 입력·0학점 시 role=alert 에러 메시지.",
+        "스케일 버튼 min-h 40px+패딩 확대, 전환 시 에러 초기화. tsc/build 통과, prod 배포."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 83.3
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "dsr-limit-check",
+      "name": "DSR 한도 계산기",
+      "source": "daily/2026-06-20-dsr-limit-check",
+      "live": "https://dsr-limit-check.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 85,
+        "design": 86,
+        "content": 84,
+        "realValue": 82
+      },
+      "reviewerAvg": 84.4,
+      "userScores": [
+        84,
+        85,
+        86,
+        83,
+        85
+      ],
+      "userAvg": 84.6,
+      "overall": 84.5,
+      "findings": [
+        "스트레스 DSR을 flat +0.75%p(2024 1단계)로 고정 — 2026 3단계 전면시행(하한1.5%p·100%반영)과 불일치하는 YMYL 정확성 결함.",
+        "DSR 산정 제외 대출(전세자금·중도금·서민금융·소액) 안내 부재 → 전세대출 오입력 위험.",
+        "규제 기준일/근거 표기 없음, FAQ 규제 깊이 얄팍, 삭제 26px·소리토글 38px 터치 미달.",
+        "핵심 계산(원리금균등 PMT·원금균등·역산 한도)은 정확·가드 양호 — 강점."
+      ],
+      "changes": [
+        "스트레스 DSR 3단계 모델 재구현(미적용/하한1.5%p/직접입력, 기본 1.5%p, 적용금리 표기).",
+        "기존 대출 섹션에 DSR 제외 대출 안내 박스 추가.",
+        "FAQ 확장·정정(3단계 산식·제외 대출·은행40/2금융50 규제선·규제 기준일).",
+        "삭제·소리토글 44px 터치 확대. tsc/build 통과, prod 배포·라이브 검증."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 78.6
+        },
+        {
+          "loop": 1,
+          "overall": 84.5
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "insurance-overlap",
+      "name": "보험 중복 점검",
+      "source": "daily/2026-06-23-insurance-overlap-check",
+      "live": "https://insurance-overlap-check.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 86,
+        "design": 88,
+        "content": 88,
+        "realValue": 86
+      },
+      "reviewerAvg": 86.8,
+      "userScores": [
+        86,
+        86,
+        87,
+        84,
+        85
+      ],
+      "userAvg": 85.6,
+      "overall": 86.2,
+      "findings": [
+        "핵심 도메인 버그: 전체 보기에서 본인 실손+배우자/자녀 실손을 실손 2건 중복으로 오판(서로 다른 피보험자는 중복 아님) — 유효보장 해지 유도 YMYL 위험.",
+        "일배책/운전자/어린이+실손도 피보험자 무시 전체 합산 오탐, 미사용 변수 잔존.",
+        "모바일: viewport/safe-area 미설정, 삭제 44px 미달·aria-label 부재.",
+        "비례/정액 보상 구분 등 핵심 도메인 인사이트·면책·프라이버시·디자인은 이미 우수."
+      ],
+      "changes": [
+        "실손/일배책/운전자/어린이+실손 중복 판정을 피보험자별 그룹 기준으로 전면 재작성(가족 간 오탐 제거, 절감액도 피보험자별).",
+        "점수 집계 피보험자별 재산출, 미사용 변수 제거, 근거 문구 보강(동일 피보험자 기준).",
+        "layout viewport export(viewportFit cover·themeColor), 삭제 44px+aria-label, safe-area 하단 패딩·안내 문구. tsc/build 통과, prod 배포·라이브 검증."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 86.2
+        }
+      ],
+      "reviewedAt": "2026-07-09"
+    },
+    {
       "slug": "prism",
       "name": "PRISM (프리즘)",
       "source": "prism",
@@ -881,11 +1302,36 @@
         "localStorage 손상 데이터 방어(배열/객체 타입 검증), 라운지 날짜 라벨/dayOfYear KST 통일"
       ],
       "history": [
-        { "loop": 1, "overall": 45.5, "reviewerAvg": 53.8, "userAvg": 37.2 },
-        { "loop": 2, "overall": 40.5, "reviewerAvg": 49.6, "userAvg": 31.4 },
-        { "loop": 3, "overall": 42, "reviewerAvg": 48.8, "userAvg": 35.2 },
-        { "loop": 4, "overall": 38.2, "reviewerAvg": 47, "userAvg": 29.4 },
-        { "loop": 5, "overall": 48.2, "reviewerAvg": 60.2, "userAvg": 36.2 }
+        {
+          "loop": 1,
+          "overall": 45.5,
+          "reviewerAvg": 53.8,
+          "userAvg": 37.2
+        },
+        {
+          "loop": 2,
+          "overall": 40.5,
+          "reviewerAvg": 49.6,
+          "userAvg": 31.4
+        },
+        {
+          "loop": 3,
+          "overall": 42,
+          "reviewerAvg": 48.8,
+          "userAvg": 35.2
+        },
+        {
+          "loop": 4,
+          "overall": 38.2,
+          "reviewerAvg": 47,
+          "userAvg": 29.4
+        },
+        {
+          "loop": 5,
+          "overall": 48.2,
+          "reviewerAvg": 60.2,
+          "userAvg": 36.2
+        }
       ],
       "reviewedAt": "2026-07-08"
     },
@@ -920,11 +1366,36 @@
         "서비스워커 신규 추가(오프라인 앱 셸), 멀티탭 동시사용 시 기록 유실 방지 병합"
       ],
       "history": [
-        { "loop": 1, "overall": 38.1, "reviewerAvg": 43.8, "userAvg": 32.4 },
-        { "loop": 2, "overall": 41.8, "reviewerAvg": 44.8, "userAvg": 38.8 },
-        { "loop": 3, "overall": 44, "reviewerAvg": 52.6, "userAvg": 35.4 },
-        { "loop": 4, "overall": 38.9, "reviewerAvg": 48.2, "userAvg": 29.6 },
-        { "loop": 5, "overall": 39.2, "reviewerAvg": 46.4, "userAvg": 32 }
+        {
+          "loop": 1,
+          "overall": 38.1,
+          "reviewerAvg": 43.8,
+          "userAvg": 32.4
+        },
+        {
+          "loop": 2,
+          "overall": 41.8,
+          "reviewerAvg": 44.8,
+          "userAvg": 38.8
+        },
+        {
+          "loop": 3,
+          "overall": 44,
+          "reviewerAvg": 52.6,
+          "userAvg": 35.4
+        },
+        {
+          "loop": 4,
+          "overall": 38.9,
+          "reviewerAvg": 48.2,
+          "userAvg": 29.6
+        },
+        {
+          "loop": 5,
+          "overall": 39.2,
+          "reviewerAvg": 46.4,
+          "userAvg": 32
+        }
       ],
       "reviewedAt": "2026-07-08"
     }

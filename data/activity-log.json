@@ -1,0 +1,105 @@
+{
+  "updatedAt": "2026-07-09",
+  "note": "리뷰 루프에서 '무엇을 고쳤는지'를 시간순으로 기록. 최신이 위.",
+  "entries": [
+    {
+      "ts": "2026-07-09",
+      "slug": "_batch2",
+      "kind": "ops",
+      "summary": "Phase A 배치2 완료: 미채점 툴형 4종 신규 리뷰 — company-vs-average 86.3, gpa-converter 83.3, insurance-overlap 86.2 첫 리뷰 통과(+실버그 수정), dsr-limit-check 78.6→84.5 재개발 통과. 전부 라이브 배포. 스코어보드 24→28개 전원 PASS, 평균 83.4."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "dsr-limit-check",
+      "kind": "redevelop",
+      "prev": 78.6,
+      "overall": 84.5,
+      "summary": "스트레스 DSR을 2026 3단계 모델(하한1.5%p·100%반영)로 정정 + DSR 제외 대출 안내 + 규제 콘텐츠·터치타깃. YMYL 정확성 확보. 78.6→84.5 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "insurance-overlap",
+      "kind": "redevelop",
+      "overall": 86.2,
+      "summary": "전체 보기에서 서로 다른 피보험자를 실손 중복으로 오판하던 YMYL 버그를 피보험자별 판정으로 재작성(유효보장 해지 유도 위험 제거) + viewport/safe-area/44px. 첫 리뷰 86.2 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "company-vs-average",
+      "kind": "redevelop",
+      "overall": 86.3,
+      "summary": "조작·손상 공유 링크에서 결과 페이지가 크래시하던 버그(enum/범위 미검증)를 방어 + safe-area·44px 슬라이더·YMYL 면책. 첫 리뷰 86.3 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "gpa-converter",
+      "kind": "redevelop",
+      "overall": 83.3,
+      "summary": "목표 역산 음수 표시 버그 + 입력검증 공백 + 터치타깃 수정. 첫 리뷰 83.3 PASS, 배포."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "_milestone",
+      "kind": "ops",
+      "summary": "🎉 리뷰 스코어보드 24/24 전원 게이트 통과(review-needed 0), 평균 만족도 83.2. Phase A 배치1의 마지막 미달건(fandom-bias-vote)까지 정직하게 80 돌파."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "fandom-bias-vote",
+      "kind": "redevelop",
+      "prev": 79.7,
+      "overall": 80.7,
+      "summary": "최종 루프(5/5): 앰비언트 뎁스·포커스링·로딩 스켈레톤·엣지페이드로 design 77→80, 리포트 개인화 인사이트. 79.7→80.7 PASS(정직 통과), 배포 완료."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "_deploy-hub",
+      "kind": "deploy",
+      "summary": "허브(project-hub/dydrms-hub) 프로덕션 배포 — tomatoeggcat.com 별칭 갱신. 리뷰 대시보드(activity-log 활동피드 포함)·196 애드센스 랜딩 라이브 반영."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "_batch",
+      "kind": "ops",
+      "summary": "Phase A 배치1 완료: 4종 재개발, 3종 게이트 통과(korean-typing-speed·personal-color-test·dynamic-qr-card), fandom-bias-vote 79.7로 문턱 근접. 스코어보드 pass 20→23, 평균 81.7→83.1."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "dynamic-qr-card",
+      "kind": "redevelop",
+      "prev": 64.5,
+      "overall": 81.2,
+      "summary": "인쇄용 명함 이미지 생성기(4종 템플릿+vCard QR, 스캔=연락처 저장) 신설로 명함 차별성·실사용가치(58→80) 해소. 64.5→81.2 PASS, 배포 완료."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "personal-color-test",
+      "kind": "redevelop",
+      "prev": 78,
+      "overall": 82.5,
+      "summary": "결과 콘텐츠 심층화 — 색상 스와치 한글 색이름 + 시즌별 메이크업·헤어·패션·포인트 팁 신설로 content/realValue 보강. 78→82.5 PASS. 배포 보류(Vercel 미연동, live 도메인 personal-color-test-ten로 교정)."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "fandom-bias-vote",
+      "kind": "redevelop",
+      "prev": 71.4,
+      "overall": 79.7,
+      "summary": "덕질 취향 리포트(/me) 신설 — 로컬 투표기록 기반 취향유형·대세력 지수·공유로 실사용가치 보강, 탭타깃 44px 상향. 71.4→79.7, 게이트 문턱 근접(재개발 배포 완료, 1루프 여력)."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "korean-typing-speed",
+      "kind": "redevelop",
+      "prev": 78.8,
+      "overall": 82.3,
+      "summary": "모바일 입력방식 토글(폰/화면 자판) 신설로 OS키보드-화면자판 충돌 해소, 화면자판 실입력화+터치타깃 확대. 78.8→82.3 PASS, 배포 완료."
+    },
+    {
+      "ts": "2026-07-09",
+      "slug": "_ops",
+      "kind": "ops",
+      "summary": "세션 재개: 절전방지(standby/hibernate AC=0) 적용, 기본 모델 opus 확정. Phase A 배치1 착수(80점 미만 4종: dynamic-qr-card·fandom-bias-vote·personal-color-test·korean-typing-speed)."
+    }
+  ]
+}
