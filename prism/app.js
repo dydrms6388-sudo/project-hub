@@ -320,10 +320,41 @@
   function hideCover() { if (privacyCover) { privacyCover.remove(); privacyCover = null; } }
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) { showCover(); dailyTick(); return; }
+    // 백그라운드 복귀 시에도 반드시 dailyTick()을 호출해야 한다. 모바일 브라우저/설치형
+    // PWA는 백그라운드에서 JS 타이머(setInterval)를 완전히 정지시킬 수 있는데, 그 동안
+    // 날짜가 바뀌었다면 포그라운드 복귀 직후 이 호출이 없는 한 다음 setInterval 틱(최대
+    // 60초) 또는 우연한 재호출 전까지 좋아요/슈퍼라이크 일일 한도가 갱신되지 않는다.
+    dailyTick();
     if (hasPin() && S.settings.bgLock && S.user && !locked && !stealthEl) {
       renderLock(() => { hideCover(); show("scr-main"); });
       hideCover();
     } else hideCover();
+  });
+
+  /* 탭 간 동기화: save()는 항상 S 전체를 통째로 덮어쓰므로, 두 탭을 동시에 열어두고
+     각각 좋아요/매칭/설정을 바꾸면 나중에 save()하는 탭이 먼저 저장된 탭의 변경을
+     통째로 덮어써 조용히 유실시킬 수 있다. 'storage' 이벤트로 다른 탭의 저장을 감지해
+     이 탭의 메모리 상태(S)를 즉시 병합해두면, 이후 이 탭이 save()할 때 이미 최신
+     상태 위에 자신의 변경만 얹어 저장하므로 유실 창이 크게 줄어든다(완전한 동시 편집
+     충돌까지 해결하는 건 아니지만, 흔한 "탭 전환하며 번갈아 사용" 패턴은 안전해진다). */
+  window.addEventListener("storage", (e) => {
+    if (e.key !== LS) return;
+    if (e.newValue == null) { location.reload(); return; } // 다른 탭에서 계정 초기화됨
+    if (e.newValue === e.oldValue) return;
+    let fresh;
+    try { fresh = JSON.parse(e.newValue); } catch (err) { return; }
+    if (!fresh || typeof fresh !== "object") return;
+    Object.keys(S).forEach((k) => { delete S[k]; });
+    Object.assign(S, fresh);
+    // 화면을 새로 그려도 안전한 상태(잠금/위장/모달 없음)일 때만 즉시 반영한다.
+    // 그렇지 않으면 다음 save()에는 이미 최신 상태가 반영되고, 다음 go(tab) 호출 때
+    // 자연스럽게 화면도 맞춰진다.
+    const modalOpen = ($("#modal-root") && $("#modal-root").children.length) || ($("#overlay-root") && $("#overlay-root").children.length);
+    if (S.user && !locked && !stealthEl && !modalOpen && !document.hidden && !$("#scr-main").hidden) {
+      paintTopbar(); go(tab); badges();
+    } else {
+      badges();
+    }
   });
 
   /* ══ 온보딩 ══ */
@@ -476,6 +507,12 @@
 
   /* ══ 디스커버 ══ */
   let deck = [];
+  // 스와이프 커밋 락: flyOut/flyUp 애니메이션이 시작된 시점부터 act()가 실제로 상태를
+  // 반영할 때까지(setTimeout 240ms) 동일 카드에 대한 추가 스와이프(버튼 연타 또는
+  // 드래그)를 막는다. 이게 없으면 그 창 동안 상단 카드/버튼이 그대로 유지되어 두 번째
+  // 스와이프가 canAct()를 다시 통과하고, 이미 shift()된 다음 카드가 사용자가 보지도
+  // 못한 채 자동으로 좋아요/슈퍼라이크 소비되는 문제가 생긴다.
+  let swipeBusy = false;
   function buildDeck() {
     const gone = new Set([...S.liked, ...S.passed, ...S.blocked, ...S.matches.map((m) => m.pid)]);
     const tp = teleportActive();
@@ -611,6 +648,7 @@
     let sx = 0, sy = 0, dx = 0, dy = 0, dragging = false, moved = false;
     const stampL = $(".stamp.like", card), stampN = $(".stamp.nope", card);
     card.addEventListener("pointerdown", (e) => {
+      if (swipeBusy) return; // 이전 스와이프가 아직 커밋 중이면 새 드래그를 시작하지 않는다
       dragging = true; moved = false; sx = e.clientX; sy = e.clientY;
       card.setPointerCapture(e.pointerId); card.style.transition = "none";
     });
@@ -631,10 +669,11 @@
     };
     card.addEventListener("pointerup", () => {
       if (!dragging) return; dragging = false;
+      if (swipeBusy) { springBack(); dx = 0; dy = 0; return; } // 이미 다른 스와이프가 커밋 중
       const upSwipe = dy < -150 && Math.abs(dx) < 70;
-      if (upSwipe) { if (canAct("sup")) flyUp(card, () => act("sup")); else springBack(); }
-      else if (dx > 110) { if (canAct("like")) flyOut(card, 1, () => act("like")); else springBack(); }
-      else if (dx < -110) flyOut(card, -1, () => act("nope"));
+      if (upSwipe) { if (canAct("sup")) { swipeBusy = true; flyUp(card, () => act("sup")); } else springBack(); }
+      else if (dx > 110) { if (canAct("like")) { swipeBusy = true; flyOut(card, 1, () => act("like")); } else springBack(); }
+      else if (dx < -110) { swipeBusy = true; flyOut(card, -1, () => act("nope")); }
       else { springBack(); if (!moved) openProfile(card.dataset.pid, "deck"); }
       dx = 0; dy = 0;
     });
@@ -669,9 +708,11 @@
     setTimeout(after, 240);
   }
   function swipeTop(kind) {
+    if (swipeBusy) return; // 애니메이션/커밋이 진행 중이면 버튼 연타·재진입을 무시
     const d = $("#deck"); const card = d && d.lastElementChild;
     if (!card || !card.classList.contains("pcard")) return;
     if (kind !== "nope" && !canAct(kind)) return;
+    swipeBusy = true;
     if (kind === "sup") {
       const s = $(".stamp.sup", card); if (s) s.style.opacity = 1;
       flyUp(card, () => act("sup"));
@@ -684,16 +725,29 @@
     }
   }
   function act(kind) {
+    // 실제 상태 커밋 시점. 여기서 락을 푼다 — act()는 동기적으로 끝까지 실행되므로
+    // (매치 시 matchModal, 아니면 vDiscover가 새 카드/버튼을 그려 넣을 때까지) 이 시점
+    // 이전에는 어떤 입력 이벤트도 끼어들 수 없어 안전하다.
+    swipeBusy = false;
     const p = deck[0]; if (!p) return;
     if (kind === "nope") {
-      S.passed.push(p.id); S.lastSwipe = { pid: p.id, kind };
+      // '패스'도 S.incoming/S.seenIncoming을 정리해야 한다. 그렇지 않으면 방금 패스한
+      // 상대가 '받은 좋아요' 탭에 그대로 남아 '나도 좋아요(즉시 매치)'로 매칭될 수 있고,
+      // seenIncoming이 영원히 정리되지 않아 dailyTick()의 인박스 자동 보충 조건
+      // (!S.incoming.length && !S.seenIncoming.length)이 첫 패스 이후 다시는 참이 되지 않는다.
+      const wasIncoming = S.incoming.includes(p.id);
+      const wasSeen = S.seenIncoming.includes(p.id);
+      S.incoming = S.incoming.filter((x) => x !== p.id);
+      S.seenIncoming = S.seenIncoming.filter((x) => x !== p.id);
+      S.passed.push(p.id); S.lastSwipe = { pid: p.id, kind, wasIncoming, wasSeen };
       deck.shift(); save(); vDiscover(); return;
     }
     if (!canAct(kind)) { vDiscover(); return; }
+    let supItemUsed = false;
     if (kind === "like") { S.likesUsed++; S.stats.likesSent++; }
     else if (S.supersUsed < superLimit()) { S.supersUsed++; S.superliked.push(p.id); S.stats.likesSent++; }
-    else { S.items.superlike--; S.superliked.push(p.id); S.stats.likesSent++; toast(`⭐ 슈퍼라이크 팩 사용 (남은 ${S.items.superlike}개)`); }
-    S.liked.push(p.id); S.lastSwipe = { pid: p.id, kind };
+    else { S.items.superlike--; supItemUsed = true; S.superliked.push(p.id); S.stats.likesSent++; toast(`⭐ 슈퍼라이크 팩 사용 (남은 ${S.items.superlike}개)`); }
+    S.liked.push(p.id); S.lastSwipe = { pid: p.id, kind, supItemUsed };
     deck.shift();
     // 매칭 판정
     const boostOn = Date.now() < S.boostUntil;
@@ -756,14 +810,25 @@
     return h;
   }
   function rewind() {
+    if (swipeBusy) return; // 스와이프가 아직 커밋 중이면 어떤 기록을 되돌릴지 불확실하므로 무시
     if (rewindLeft() <= 0) { paywall("rewind"); return; }
     if (!S.lastSwipe) { toast("되돌릴 카드가 없어요"); return; }
-    const { pid, kind } = S.lastSwipe;
+    const { pid, kind, supItemUsed, wasIncoming, wasSeen } = S.lastSwipe;
     S.liked = S.liked.filter((x) => x !== pid);
     S.passed = S.passed.filter((x) => x !== pid);
     S.superliked = S.superliked.filter((x) => x !== pid);
     if (kind === "like") S.likesUsed = Math.max(0, S.likesUsed - 1);
-    if (kind === "sup") S.supersUsed = Math.max(0, S.supersUsed - 1);
+    if (kind === "sup") {
+      // 일일 한도를 넘겨 유료 아이템(S.items.superlike)으로 충전한 슈퍼라이크였다면
+      // 반드시 아이템 재고를 복구해야 한다. supersUsed를 대신 깎으면 아이템은 영구
+      // 소멸하면서 공짜 일일 한도만 부당하게 1회 더 생기는 상태 오류가 생긴다.
+      if (supItemUsed) S.items.superlike++;
+      else S.supersUsed = Math.max(0, S.supersUsed - 1);
+    }
+    if (kind === "nope") {
+      if (wasIncoming && !S.incoming.includes(pid)) S.incoming.push(pid);
+      if (wasSeen && !S.seenIncoming.includes(pid)) S.seenIncoming.push(pid);
+    }
     if (plan().rewind !== Infinity) S.rewindsUsed = (S.rewindsUsed || 0) + 1;
     S.restoredPid = pid; // 되돌린 카드는 덱 최상단으로
     S.lastSwipe = null; save(); vDiscover();
@@ -834,7 +899,14 @@
     if (nb) nb.onclick = () => { close(); swipeTop("nope"); };
     if (lb) lb.onclick = () => { close(); swipeTop("like"); };
     const lp = $("[data-lpass]", o), lm = $("[data-lmatch]", o);
-    if (lp) lp.onclick = () => { S.incoming = S.incoming.filter((x) => x !== pid); S.passed.push(pid); save(); close(); go("likes"); };
+    if (lp) lp.onclick = () => {
+      // S.incoming뿐 아니라 S.seenIncoming도 같이 정리해야 한다(정리는 원래 makeMatch뿐이었음).
+      // 그렇지 않으면 dailyTick()의 인박스 자동 보충 조건(!S.incoming.length && !S.seenIncoming.length)이
+      // 첫 '지나가기' 이후 영구히 거짓이 되어, 하루 중 '받은 좋아요'가 다시는 채워지지 않는다.
+      S.incoming = S.incoming.filter((x) => x !== pid);
+      S.seenIncoming = S.seenIncoming.filter((x) => x !== pid);
+      S.passed.push(pid); save(); close(); go("likes");
+    };
     if (lm) lm.onclick = () => { close(); likeBackAndMatch(pid); };
     $("[data-block]", o).onclick = () => confirmDlg("🚫", "차단하기", `${esc(p.name)}님을 차단하면 서로의 프로필이<br>더 이상 보이지 않아요.`, "차단", () => { blockUser(pid); close(); }, true);
     $("[data-report]", o).onclick = () => reportSheet(pid, close);
@@ -850,6 +922,10 @@
     $$(".chatroom").forEach((c) => c.remove());
     S.blocked.push(pid);
     S.incoming = S.incoming.filter((x) => x !== pid);
+    // S.seenIncoming도 같이 정리해야 한다 (act()의 'nope' 분기, makeMatch(), '지나가기'와 동일한 이유).
+    // 그렇지 않으면 dailyTick()의 인박스 자동 보충 조건(!S.incoming.length && !S.seenIncoming.length)이
+    // 차단(또는 이를 호출하는 신고) 이후 영구히 거짓이 되어, 하루 중 '받은 좋아요'가 다시는 채워지지 않는다.
+    S.seenIncoming = S.seenIncoming.filter((x) => x !== pid);
     S.matches = S.matches.filter((m) => m.pid !== pid);
     delete S.chats[pid];
     save(); toast("차단했어요. 안전 센터에서 관리할 수 있어요");
