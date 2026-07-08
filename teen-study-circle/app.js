@@ -15,6 +15,13 @@
   var GOAL_MAX_MINUTES = 600; // input[type=number] 의 max 속성과 반드시 일치시켜야 함
   var NICK_MIN_LEN = 2;
   var NICK_MAX_LEN = 10; // 닉네임 입력의 HTML maxlength 속성과 반드시 일치시켜야 함(코드포인트 기준)
+  // sendReaction()의 키는 entryId+'|'+reactionId이고, 샘플 피드 entryId는
+  // roomId-memberId-todayStr()로 매일 바뀐다(data.js). '내 기록' 항목의 entryId(로그
+  // id)도 feedEntriesForRoom()이 오늘 날짜 로그만 피드에 노출하므로, 결국 모든
+  // reactionsSent 항목은 하루만 지나면 어떤 화면에도 다시 표시될 일이 없는 죽은
+  // 레코드가 된다. 정리 로직이 없으면 사용할수록 localStorage에 무기한 누적되므로,
+  // 넉넉한 유예기간(타임존 경계·긴 세션 대비) 이후의 레코드는 주기적으로 걸러낸다.
+  var REACTION_RETENTION_MS = 3 * 24 * 60 * 60 * 1000; // 3일
 
   /* ---------------- 유틸 ---------------- */
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -198,6 +205,7 @@
       if (rec) normalizedReactions[k] = rec;
     });
     S.reactionsSent = normalizedReactions;
+    pruneStaleReactions();
     // 2차 안전망은 지금까지 최상위 필드의 "타입"만 방어했고, 중첩된 숫자 필드(목표
     // 분·타이머 분/초)의 값 범위는 검증하지 않았다. localStorage가 손상되거나 수동
     // 편집으로 goals.dailyMinutes가 0/음수/NaN이 되면 renderGoals()의
@@ -470,9 +478,16 @@
           return '<button class="chip' + (S.profile.timeSlot === t.id ? " on" : "") + '" data-action="pick-timeslot" data-slot="' + t.id + '">' + t.emoji + " " + esc(t.label) + "</button>";
         }).join("") + "</div></div>";
     } else if (step === "age") {
+      // 체크박스 자체는 18x18px로 작아 정확히 그 지점만 눌러야 토글되던 문제가
+      // 있었다(44px 접근성 기준 대비 약 40%). <label>로 체크박스와 안내 문구
+      // 전체를 감싸면, 네이티브 label-for-control 동작에 따라 카드 내 어디를
+      // 탭해도(체크박스 자체가 아니어도) 토글되어 실질 탭 영역이 카드 전체
+      // (padding 13x15 + 텍스트 영역)로 넓어진다. 내부의 "보호자 안내 자세히
+      // 보기" 버튼처럼 그 자체가 상호작용 요소(interactive content)인 경우는
+      // 클릭이 체크박스로 전달되지 않아 두 동작이 서로 간섭하지 않는다.
       html = '<div class="ob-step"><h2>마지막으로 확인할게요</h2><p class="sub">스터디서클은 만 14~19세 중고생을 위한 학습 앱이에요.</p>' +
-        '<div class="agree"><input type="checkbox" id="ob-age" ' + (S.profile.ageConfirmed ? "checked" : "") + ' /><span>저는 만 14~19세에 해당해요.</span></div>' +
-        '<div class="agree"><input type="checkbox" id="ob-terms" ' + (S.profile.termsAgreed ? "checked" : "") + ' /><span>이 앱에는 1:1 개인 메시지·사진 업로드·위치 매칭 기능이 없으며, 다른 참가자와는 정해진 문구의 리액션과 공개 피드로만 소통한다는 점을 이해했어요. (<button type="button" data-action="show-guardian" style="text-decoration:underline;color:var(--acc2)">보호자 안내 자세히 보기</button>)</span></div>' +
+        '<label class="agree"><input type="checkbox" id="ob-age" ' + (S.profile.ageConfirmed ? "checked" : "") + ' /><span>저는 만 14~19세에 해당해요.</span></label>' +
+        '<label class="agree"><input type="checkbox" id="ob-terms" ' + (S.profile.termsAgreed ? "checked" : "") + ' /><span>이 앱에는 1:1 개인 메시지·사진 업로드·위치 매칭 기능이 없으며, 다른 참가자와는 정해진 문구의 리액션과 공개 피드로만 소통한다는 점을 이해했어요. (<button type="button" data-action="show-guardian" style="text-decoration:underline;color:var(--acc2)">보호자 안내 자세히 보기</button>)</span></label>' +
         "</div>";
     }
     $("#ob-body").innerHTML = html;
@@ -512,15 +527,28 @@
   function obNext() {
     if (!obValidateCurrent()) return;
     S.profile.updatedAt = Date.now();
-    save();
     if (obIndex === OB_STEPS.length - 1) {
+      var prevOnboarded = S.onboarded;
+      var prevJoinedRooms = S.joinedRooms.slice();
       S.onboarded = true;
       S.joinedRooms = Array.from(new Set(S.joinedRooms.concat(S.profile.subjects)));
-      save();
+      if (!save()) {
+        // 저장 실패: 온보딩 완료 상태를 되돌려, 새로고침 후 다시 온보딩으로
+        // 돌아가는데도 화면만 메인으로 전환된 것처럼 보이는 상태/저장 불일치를 막는다.
+        S.onboarded = prevOnboarded;
+        S.joinedRooms = prevJoinedRooms;
+        return;
+      }
+      // 온보딩 마지막 단계에서 고른 관심 과목이 3개 이상이면 그 자리에서 바로
+      // 'rooms-3'(다과목러) 배지 조건을 만족할 수 있다. checkAndAwardBadges()가
+      // 호출되는 다른 액션(첫 기록, 목표 달성 등)이 일어나기 전까지 배지가
+      // 지급되지 않던 문제를 막기 위해, 다른 쓰기 경로와 동일하게 여기서도 재계산한다.
+      checkAndAwardBadges();
       toast("환영해요, " + S.profile.nickname + "님! 👋");
       goMain();
       return;
     }
+    save();
     obIndex++;
     renderObStep();
   }
@@ -612,9 +640,20 @@
   }
   function toggleJoin(roomId) {
     var idx = S.joinedRooms.indexOf(roomId);
-    if (idx > -1) { S.joinedRooms.splice(idx, 1); toast("룸에서 나갔어요"); }
-    else { S.joinedRooms.push(roomId); toast("룸에 참여했어요!"); }
-    save();
+    var wasJoined = idx > -1;
+    if (wasJoined) S.joinedRooms.splice(idx, 1);
+    else S.joinedRooms.push(roomId);
+    if (!save()) {
+      // 저장 실패: 참여/나가기 상태를 메모리에서도 원래대로 되돌린다. save()가 이미
+      // '저장 실패' 토스트를 띄웠으므로, 여기서 '룸에 참여했어요!' 같은 성공 토스트나
+      // 배지 재계산을 하지 않는다. 안 그러면 새로고침 후 조용히 원상복귀되는데도
+      // 화면은 성공한 것처럼 보이는 상태/저장 불일치가 생긴다.
+      if (wasJoined) S.joinedRooms.splice(idx, 0, roomId);
+      else { var ri = S.joinedRooms.indexOf(roomId); if (ri > -1) S.joinedRooms.splice(ri, 1); }
+      renderRoomOverlay();
+      return;
+    }
+    toast(wasJoined ? "룸에서 나갔어요" : "룸에 참여했어요!");
     checkAndAwardBadges();
     renderRoomOverlay();
   }
@@ -718,11 +757,20 @@
 
   function sendReaction(entryId, reactionId) {
     var key = entryId + "|" + reactionId;
-    var wasSent = !!(S.reactionsSent[key] && S.reactionsSent[key].v);
+    var prevRec = S.reactionsSent[key];
+    var wasSent = !!(prevRec && prevRec.v);
     // 값과 함께 변경 시각도 기록해, 멀티탭 병합 시 last-write-wins로 "취소"도
     // "보냄"과 동등하게 최신 상태로 인정받을 수 있게 한다.
     S.reactionsSent[key] = { v: !wasSent, t: Date.now() };
-    save();
+    if (!save()) {
+      // 저장 실패: 리액션 상태를 메모리에서도 원래대로 되돌린다(이전에 기록이 아예
+      // 없었으면 키 자체를 제거). save()가 이미 '저장 실패' 토스트를 띄웠으므로
+      // 여기서 '응원을 보냈어요' 성공 토스트를 겹쳐 띄우지 않는다.
+      if (prevRec) S.reactionsSent[key] = prevRec;
+      else delete S.reactionsSent[key];
+      renderRoomOverlay();
+      return;
+    }
     if (S.reactionsSent[key].v) toast("응원을 보냈어요 👏");
     renderRoomOverlay();
   }
@@ -791,37 +839,75 @@
     if (fg) fg.style.strokeDashoffset = (circumference * (1 - pct)).toFixed(1);
   }
 
+  // 아래 timerStart/timerPause/timerReset/timerSetPreset/pickTimerRoom은 모두 저장
+  // 실패(용량 초과·프라이빗 모드 등) 시, save()가 이미 '저장 실패' 토스트를 띄운
+  // 뒤에도 메모리 상의 타이머 상태를 그대로 화면에 반영하면 "시작/변경됨"으로
+  // 보였다가 새로고침하면 조용히 원래 상태로 되돌아가는 문제가 있었다. addLog()와
+  // 동일한 패턴으로, 저장에 실패하면 변경분을 메모리에서도 되돌린 뒤 화면을 갱신한다.
   function timerStart() {
     var tm = S.timer;
+    var prev = { roomId: tm.roomId, running: tm.running, startedAt: tm.startedAt, updatedAt: tm.updatedAt };
     if (!tm.roomId) tm.roomId = S.joinedRooms[0] || ROOMS[0].id;
     tm.running = true; tm.startedAt = Date.now();
     tm.updatedAt = Date.now();
-    save(); switchTab("timer");
+    if (!save()) {
+      tm.roomId = prev.roomId; tm.running = prev.running; tm.startedAt = prev.startedAt; tm.updatedAt = prev.updatedAt;
+      switchTab("timer");
+      return;
+    }
+    switchTab("timer");
   }
   function timerPause() {
     var tm = S.timer;
+    var prev = { remainingSec: tm.remainingSec, running: tm.running, startedAt: tm.startedAt, updatedAt: tm.updatedAt };
     tm.remainingSec = timerDisplayRemaining();
     tm.running = false; tm.startedAt = null;
     tm.updatedAt = Date.now();
-    save(); switchTab("timer");
+    if (!save()) {
+      tm.remainingSec = prev.remainingSec; tm.running = prev.running; tm.startedAt = prev.startedAt; tm.updatedAt = prev.updatedAt;
+      switchTab("timer");
+      return;
+    }
+    switchTab("timer");
   }
   function timerReset() {
     var tm = S.timer;
+    var prev = { remainingSec: tm.remainingSec, running: tm.running, startedAt: tm.startedAt, updatedAt: tm.updatedAt };
     tm.remainingSec = (tm.phase === "focus" ? tm.focusMin : tm.breakMin) * 60;
     tm.running = false; tm.startedAt = null;
     tm.updatedAt = Date.now();
-    save(); switchTab("timer");
+    if (!save()) {
+      tm.remainingSec = prev.remainingSec; tm.running = prev.running; tm.startedAt = prev.startedAt; tm.updatedAt = prev.updatedAt;
+      switchTab("timer");
+      return;
+    }
+    switchTab("timer");
   }
   function timerSetPreset(focusMin, breakMin) {
     var tm = S.timer;
+    var prev = { focusMin: tm.focusMin, breakMin: tm.breakMin, phase: tm.phase, remainingSec: tm.remainingSec, running: tm.running, startedAt: tm.startedAt, updatedAt: tm.updatedAt };
     tm.focusMin = focusMin; tm.breakMin = breakMin;
     tm.phase = "focus"; tm.remainingSec = focusMin * 60;
     tm.running = false; tm.startedAt = null;
     tm.updatedAt = Date.now();
-    save(); switchTab("timer");
+    if (!save()) {
+      tm.focusMin = prev.focusMin; tm.breakMin = prev.breakMin; tm.phase = prev.phase; tm.remainingSec = prev.remainingSec;
+      tm.running = prev.running; tm.startedAt = prev.startedAt; tm.updatedAt = prev.updatedAt;
+      switchTab("timer");
+      return;
+    }
+    switchTab("timer");
   }
   function pickTimerRoom(roomId) {
-    S.timer.roomId = roomId; S.timer.updatedAt = Date.now(); save(); closeModal(); switchTab("timer");
+    var tm = S.timer;
+    var prev = { roomId: tm.roomId, updatedAt: tm.updatedAt };
+    tm.roomId = roomId; tm.updatedAt = Date.now();
+    if (!save()) {
+      tm.roomId = prev.roomId; tm.updatedAt = prev.updatedAt;
+      closeModal(); switchTab("timer");
+      return;
+    }
+    closeModal(); switchTab("timer");
   }
 
   function renderTimer() {
@@ -930,8 +1016,14 @@
   function saveGoal() {
     var v = parseBoundedInt($("#goal-input").value, GOAL_MIN_MINUTES, GOAL_MAX_MINUTES);
     if (v === null) { toast("목표 시간은 " + GOAL_MIN_MINUTES + "~" + GOAL_MAX_MINUTES + "분 사이로 설정해주세요"); return; }
+    var prevMinutes = S.goals.dailyMinutes, prevUpdatedAt = S.goals.updatedAt;
     S.goals.dailyMinutes = v; S.goals.updatedAt = Date.now();
-    save();
+    if (!save()) {
+      // 저장 실패: 메모리 상의 목표 시간도 되돌린다. save()가 이미 '저장 실패' 토스트를
+      // 띄웠으므로, 여기서 '목표를 저장했어요' 성공 토스트나 모달 닫기를 하지 않는다.
+      S.goals.dailyMinutes = prevMinutes; S.goals.updatedAt = prevUpdatedAt;
+      return;
+    }
     // 목표 시간을 낮춰서 오늘 이미 기록한 공부시간이 새 목표를 넘게 되는 경우가
     // 있다. addLog()에서는 매번 checkGoalHit()을 호출해 목표 달성을 인식하지만,
     // 목표 자체를 수정하는 이 경로에서는 지금까지 호출되지 않아 goalHitDates에
@@ -1047,13 +1139,40 @@
       if (codePointLength(nick) < NICK_MIN_LEN) { toast("별명을 " + NICK_MIN_LEN + "자 이상 입력해주세요"); return; }
       if (!tempSubjects.length) { toast("관심 과목을 1개 이상 골라주세요"); return; }
       if (!tempSlot) { toast("공부 시간대를 골라주세요"); return; }
+      var prevProfile = {
+        nickname: S.profile.nickname, avatarEmoji: S.profile.avatarEmoji, gradIdx: S.profile.gradIdx,
+        subjects: S.profile.subjects.slice(), timeSlot: S.profile.timeSlot, updatedAt: S.profile.updatedAt
+      };
+      var prevJoinedRooms = S.joinedRooms.slice();
       S.profile.nickname = nick;
       S.profile.avatarEmoji = tempEmoji;
       S.profile.gradIdx = tempGradIdx;
       S.profile.subjects = tempSubjects;
       S.profile.timeSlot = tempSlot;
       S.profile.updatedAt = Date.now();
-      save();
+      // 온보딩(obNext)의 관심 과목 선택은 S.joinedRooms에 자동으로 병합돼 홈의 '내
+      // 스터디룸'/리더보드/rooms-3 배지 판정에 반영되는데, 동일한 관심 과목 chip UI를
+      // 쓰는 여기(프로필 수정)에서는 S.profile.subjects만 갱신하고 S.joinedRooms는
+      // 건드리지 않아 같은 UI가 화면에 따라 다르게 동작했다. 온보딩과 동일하게
+      // 새로 고른 과목을 참여 룸에도 병합한다(이미 나간 룸을 다시 강제로 넣지는
+      // 않되, 새로 추가된 과목만 합쳐지도록 concat + Set으로 중복만 제거).
+      S.joinedRooms = Array.from(new Set(S.joinedRooms.concat(tempSubjects)));
+      if (!save()) {
+        // 저장 실패: 프로필/참여룸 변경을 메모리에서도 되돌린다. save()가 이미
+        // '저장 실패' 토스트를 띄웠으므로, 여기서 '프로필을 저장했어요' 성공
+        // 토스트나 모달 닫기를 하지 않는다.
+        S.profile.nickname = prevProfile.nickname;
+        S.profile.avatarEmoji = prevProfile.avatarEmoji;
+        S.profile.gradIdx = prevProfile.gradIdx;
+        S.profile.subjects = prevProfile.subjects;
+        S.profile.timeSlot = prevProfile.timeSlot;
+        S.profile.updatedAt = prevProfile.updatedAt;
+        S.joinedRooms = prevJoinedRooms;
+        return;
+      }
+      // 새로 추가된 과목이 rooms-3(다과목러) 등 배지 조건을 그 자리에서 만족시킬
+      // 수 있으므로, joinedRooms 변경 직후 다른 쓰기 경로와 동일하게 재계산한다.
+      checkAndAwardBadges();
       closeModal();
       switchTab("my");
       toast("프로필을 저장했어요");
@@ -1244,6 +1363,20 @@
     }
     if (typeof raw === "boolean") return { v: raw, t: 0 };
     return null;
+  }
+  // REACTION_RETENTION_MS보다 오래된(=마지막으로 바뀐 지 오래된) 리액션 레코드를
+  // 지운다. 레코드가 가리키는 entryId(샘플 피드 항목 또는 오늘 날짜의 내 로그)는
+  // 하루만 지나도 어떤 화면의 피드에도 다시 나타나지 않으므로, 오래된 레코드는
+  // "취소된 상태" 정보로서의 가치도 없이 저장공간만 차지하는 죽은 데이터다.
+  // t=0(구버전 순수 불리언에서 변환된 레코드)도 자동으로 대상이 되어 함께 정리된다.
+  function pruneStaleReactions() {
+    var cutoff = Date.now() - REACTION_RETENTION_MS;
+    var kept = {};
+    Object.keys(S.reactionsSent).forEach(function (k) {
+      var rec = S.reactionsSent[k];
+      if (rec && rec.t >= cutoff) kept[k] = rec;
+    });
+    S.reactionsSent = kept;
   }
   function mergeLwwObject(incomingObj, existingObj) {
     if (!incomingObj || typeof incomingObj !== "object") return false;
