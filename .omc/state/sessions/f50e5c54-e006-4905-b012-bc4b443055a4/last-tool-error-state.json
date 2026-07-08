@@ -1,0 +1,7 @@
+{
+  "tool_name": "PowerShell",
+  "tool_input_preview": "{\"command\":\"Write-Output \\\"=== project-hub ===\\\"; git -C C:\\\\Users\\\\dydrm\\\\projects\\\\daily\\\\project-hub log --oneline -3; Write-Output \\\"=== factory-dash ===\\\"; git -C C:\\\\Users\\\\dydrm\\\\projects\\\\fact...",
+  "error": "Exit code 128\n=== project-hub ===\r\nca24bab add 하이볼각 (dydrms-highballgak)\n094f250 add dydrms-bakelab (베이크랩 홈베이킹 계량·틀변환)\nd556078 add dydrms-tennisgak (테니스각)\n=== factory-dash ===\r\nfactory-dash: not at that path",
+  "timestamp": "2026-07-08T16:11:30.470Z",
+  "retry_count": 1
+}
