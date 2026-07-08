@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0d14" />
+<title>스터디서클 — 또래와 함께 공부 습관 만들기</title>
+<meta name="description" content="만 14~19세 중고생을 위한 순수 학습 동기부여 PWA. 과목별 스터디룸에서 오늘 공부시간을 인증하고 스트릭·배지를 쌓아요. 1:1 메시지·사진 업로드·위치 매칭 없음, 프리셋 리액션과 공개 피드로만 소통합니다. 가입 없이 무료로 바로 사용." />
+<link rel="canonical" href="https://tomatoeggcat.com/teen-study-circle/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="스터디서클 — 또래와 함께 공부 습관 만들기" />
+<meta property="og:description" content="과목별 스터디룸에서 공부시간 인증·스트릭·배지를 쌓는 청소년 학습 동기부여 앱. 1:1 채팅·사진·위치 매칭 없음." />
+<meta property="og:url" content="https://tomatoeggcat.com/teen-study-circle/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="favicon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="스터디서클" />
+<link rel="stylesheet" href="app.css" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"스터디서클","description":"만 14~19세 중고생을 위한 학습 동기부여 PWA. 스터디룸 공부시간 인증, 스트릭, 배지, 프리셋 리액션. 1:1 메시지·사진 업로드·위치 매칭 없음.","applicationCategory":"EducationalApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/teen-study-circle/"}</script>
+</head>
+<body>
+<div id="frame">
+
+  <!-- 웰컴 -->
+  <section id="scr-welcome" class="scr" hidden>
+    <div class="welcome">
+      <div class="w-logo"><img src="favicon.svg" alt="스터디서클 로고" width="72" height="72" style="border-radius:20px;box-shadow:0 12px 36px rgba(79,140,255,.4)"></div>
+      <h1 class="w-title">스터디서클</h1>
+      <p class="w-tag">또래와 함께, 오늘의 공부를 인증해요</p>
+      <ul class="w-feats">
+        <li><span>📚</span><div><b>과목별 스터디룸</b><small>수능·내신·공시·자격증 등 목표별로 모여요</small></div></li>
+        <li><span>⏱️</span><div><b>공부시간 인증 + 스트릭</b><small>타이머 또는 직접 입력, 연속 기록을 쌓아요</small></div></li>
+        <li><span>🏆</span><div><b>리더보드 &amp; 배지</b><small>오늘 누적 공부시간 순위, 목표 달성 배지</small></div></li>
+        <li><span>👏</span><div><b>프리셋 리액션만 사용</b><small>정해진 문구로만 응원, 자유 채팅·DM 없음</small></div></li>
+      </ul>
+      <button class="btn-grad big" id="btn-start">시작하기</button>
+      <p class="w-guardian"><button class="btn-line" id="btn-guardian-from-welcome" style="margin-top:2px">🛡️ 보호자 안내 보기</button></p>
+      <div class="age-banner">만 14~19세 중고생을 위한 앱입니다. 실명·연락처·학교명을 요구하지 않고, 사진 업로드와 1:1 개인 메시지 기능이 없어요. 모든 기록은 이 기기(브라우저)에만 저장됩니다.</div>
+    </div>
+  </section>
+
+  <!-- 온보딩 -->
+  <section id="scr-onboarding" class="scr" hidden>
+    <div class="ob-top">
+      <button class="ob-back" id="ob-back" aria-label="이전">‹</button>
+      <div class="ob-bar"><div id="ob-fill"></div></div>
+    </div>
+    <div id="ob-body"></div>
+    <div class="ob-footer"><button class="btn-grad big" id="ob-next">다음</button></div>
+  </section>
+
+  <!-- 메인 -->
+  <section id="scr-main" class="scr" hidden>
+    <header id="topbar">
+      <div class="tb-logo"><img src="favicon.svg" alt="" width="22" height="22" style="border-radius:6px;vertical-align:-5px"> 스터디서클</div>
+      <div class="tb-right">
+        <div class="tb-streak" id="tb-streak">🔥 0일</div>
+        <button id="btn-guardian" class="tb-ic" title="보호자 안내">🛡️</button>
+      </div>
+    </header>
+    <main id="view"></main>
+    <nav id="tabbar">
+      <button data-tab="home" class="tab on"><span class="t-ic">🏠</span><span class="t-lb">홈</span></button>
+      <button data-tab="rooms" class="tab"><span class="t-ic">📚</span><span class="t-lb">룸</span></button>
+      <button data-tab="timer" class="tab"><span class="t-ic">⏱️</span><span class="t-lb">타이머</span></button>
+      <button data-tab="goals" class="tab"><span class="t-ic">🎯</span><span class="t-lb">목표</span></button>
+      <button data-tab="my" class="tab"><span class="t-ic">👤</span><span class="t-lb">MY</span></button>
+    </nav>
+  </section>
+
+  <!-- 오버레이 루트(룸 상세, 보호자 안내 등) -->
+  <div id="overlay-root"></div>
+  <div id="modal-root"></div>
+  <div id="toast-root" aria-live="polite"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
