@@ -1,7 +1,37 @@
 {
-  "updatedAt": "2026-07-09T00:00:00.000Z",
+  "updatedAt": "2026-07-09T12:00:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "웨딩노트 (WeddingNote)",
+      "emoji": "💍",
+      "domain": "생활/결혼",
+      "desc": "예식일만 넣으면 12개월 결혼 준비 로드맵이 즉시 생성! D-day 타임라인 체크리스트 자동생성·웨딩 예산 자동배분+지출 트래커·하객 손익 시뮬레이터·진행률 대시보드·공유 결과카드. 로그인 없이 무료.",
+      "live": "https://dydrms-weddingnote.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-weddingnote",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "연비각 (YeonbiGak)",
+      "emoji": "⛽",
+      "domain": "자동차/생활",
+      "desc": "주유할 때마다 기록만 남기면 내 차 실연비(km/L)와 월 유류비·km당 비용이 자동으로 계산되는 무료 연비 계산기·유류비 트래커. 만탱크(full-to-full) 계산법으로 구간별 실연비 자동 산출, 공인연비 대비 등급(연비왕~개선필요)·최고 실연비 신기록(컨페티), 월별 유류비 추이 차트·연간 예상, 다차량 프로필(휘발유·경유·LPG·전기차 전비). 빠른 계산 3종(실연비·여행 유류비 예측·월 유류비), 운전습관 연비 진단(급가속·공회전·에어컨·공기압 등 8항목→예상 손실%·월 절약 가능액 처방). 연비 가이드 5편 SSG(실연비 계산법·연비 높이는 법·여름 에어컨 연비·전기차 전비·기름값 절약, FAQ/Article JSON-LD). 3D 연비 게이지(바늘 애니·연료방울 r3f)·framer 전환·confetti·Web Audio 주유 합성음(음소거 기본OFF) 몰입4종. 수익화키트(AdSense env 인라인·ads.txt·자동차 반복구매 소모품 엔진오일/워셔액/연료첨가제·연비타이어/공기압게이지 쿠팡 파트너스 맥락 슬롯·동적 OG/sitemap/robots·공유). 무백엔드·무가입, 기기 저장. 자동차 클러스터(ddayhub/car 소모품 D-day·goyo 세차/차량온도)와 '연비·유류비' 축으로 분리. 참고용 계산 면책.",
+      "live": "https://dydrms-yeonbigak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-yeonbigak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "베개핏 (BaegaeFit)",
+      "emoji": "🛏️",
+      "domain": "생활/수면·건강",
+      "desc": "내 수면자세·체형·통증에 맞는 베개 높이(cm)와 매트리스 경도(1~10)를 처방해 주는 진단 도구. 5스텝 위저드(자세·체중/어깨·통증·더위·현재매트리스)→베개 높이 범위·매트리스 경도 게이지·소재 추천(경추/메모리폼/라텍스)·경고·팁·매칭점수. 열대야 쿨수면(침실 온·습도 쾌적도 신호등+여름침구 추천), 침구 교체주기 트래커(베개1~2년·매트리스7~10년·토퍼·이불·커버 구입일 등록→D-day 신호등, localStorage 리텐션), 잘 자는 가이드 7편 SSG(베개높이·매트리스경도·옆잠·허리매트리스·메모리폼vs라텍스·교체주기·열대야, FAQ/Article JSON-LD). 3D 밤하늘·달·떠다니는 베개(r3f)·framer·confetti·Web Audio 합성음(음소거 기본OFF) 몰입4종. 수익화키트(AdSense env 인라인·ads.txt·매트리스/경추베개 고AOV 쿠팡 파트너스 맥락 슬롯·동적 OG/sitemap/robots·공유). 무백엔드·무가입, 기기 저장. 수면 클러스터(수면주기계산·낮잠·진드기)와 '처방(무엇을 살지)' 축으로 분리·ddayhub/car·naengpa/bok dedup 회피. 의료 면책.",
+      "live": "https://dydrms-baegaefit.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-baegaefit",
+      "status": "live",
+      "date": "2026-07-09"
+    },
     {
       "name": "클라이밍각 (ClimbGak)",
       "emoji": "🧗",
@@ -2520,6 +2550,66 @@
       "desc": "수영 처음 배우는 사람을 위한 종합 도우미. ①영법 진도 자가진단(5문항 룰엔진→물적응·뜨기·발차기·콤비·완주 6단계 중 내 위치+지금 할 드릴·흔한 실수·코치 팁) ②맞춤 장비 추천 진단(목적×장소×성별×시력→수영복·수경·수모·킥판·오리발 우선순위+도수수경/김서림방지 소모품) ③자유형·평영·배영·접영 4영법 가이드(호흡/팔/발/자세/실수) ④수영 일지(누적거리·연속기록 스트릭·거리 뱃지10·칼로리 MET계산 리텐션) ⑤칼로리·100m 페이스 계산기 ⑥용어사전16+입문 가이드7 SSG. 7월 수영 성수기 정조준. 몰입4종=r3f 3D 물결수면·레인·기포·킥판 씬·framer 탭/아코디언·canvas-confetti 뱃지달성·Web Audio 스플래시 합성음(음소거기본OFF). 무DB 전 클라이언트(일지·진단 localStorage). \"수영 입문·자유형 호흡·수경/수영복 추천·수영 일지·평영 발차기·수영 칼로리·성인 수영\" SEO+WebApplication/FAQPage JSON-LD·동적OG·sitemap/robots. 애드센스+쿠팡 수영용품(수경·수영복 중AOV + 반복소모품 김서림방지·귀마개 LTV) 수익화 레디. 비금융 라이프/스포츠 다각화.",
       "live": "https://dydrms-swimgak.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/dydrms-swimgak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "탈모각 (TalmoGak)",
+      "emoji": "🔍",
+      "domain": "건강·뷰티/모발",
+      "desc": "\"이거 탈모 맞아?\" 무가입·사진 없이 1분 자가진단으로 내 탈모 유형·진행도를 가늠하고, 병원에 가야 할 신호(원형 탈모·두피 진물·급성 탈모 red-flag)와 맞춤 관리 루틴까지 알려주는 무료 모발 건강 도구. 성별 분기 11문항 룰엔진→남성 Norwood/여성 Ludwig 참고 단계·원인 유형 가중치(안드로겐성·휴지기·원형·견인성·두피질환) 신호등 진단. 하루 정상 탈모량 계산기(50~100개 기준·부위별 관찰 합산·pull test 자가 가이드), 모발 일지 트래커(주차별 탈모량 추세 그래프·관리 5항목 체크·연속 기록 스트릭·셀프 사진 촬영 가이드, localStorage 서버 무전송 프라이버시). 근거기반 SEO 가이드 12편 SSG(탈모 자가진단·정상 탈모량·M자·여성/휴지기 탈모·탈모샴푸 화장품vs의약품 진실·속설 교정·미녹시딜 초기탈락·사진기록·모발이식·영양·20대 탈모, FAQ/Article JSON-LD). 3D 두피·모낭 밀도 씬(r3f, 진단 결과 반영)·framer 전환/카운트업·confetti·Web Audio 합성음(음소거 기본OFF) 몰입4종. 수익화키트(AdSense env 인라인·ads.txt·유형별 탈모샴푸/두피토닉/LED 헤어기기/모발영양제 쿠팡 파트너스 반복구매 LTV 슬롯·동적 OG/sitemap/robots·공유). YMYL 의료 면책 전면 병기(자가 참고용, 확진·치료는 피부과 전문의). colorfit /scalp(두피 타입 뷰티 매칭)와 '탈모 진행 진단' 축으로 분리.",
+      "live": "https://dydrms-talmogak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-talmogak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "볼링각 (BowlingGak)",
+      "emoji": "🎳",
+      "domain": "취미/스포츠·볼링",
+      "desc": "핀만 탭하면 스트라이크·스페어 보너스까지 정확히 자동 계산되는 무료 볼링 점수 계산기. 종이 스코어시트 없이 10프레임을 폰으로 기록(퍼펙트 300·부분게임 지연계산 검증), 게임을 저장하면 에버리지·베스트·연속일 스트릭이 쌓이는 볼링 일지+최근 스코어 추세 차트(신기록 컨페티)로 다시 오게 만드는 리텐션. 실력 진단(에버리지→입문~프로급 5등급·다음 목표까지 몇 점·맞춤 연습 팁), 장비 추천 진단(빈도·목적·성별·체중·악력→체중 10%·16파운드 상한 룰로 볼링공 무게 추천+볼링화/손목아대/가방/소모품 쿠팡 파트너스 슬롯, 고AOV 마이볼+반복구매 클리너·테이프 LTV), 스페어/스플릿 공략(7-10 베드포스트·워시아웃·버킷 등 10종 핀 다이어그램+조준 팁), 볼링 용어사전 22종(검색·카테고리). 볼링 가이드 7편 SSG(점수 계산법·볼링공 무게·첫 마이볼·에버리지·스페어 기본기·초보 입문·장비 체크리스트, FAQ JSON-LD). 3D 레인·핀 10개·굴러가는 볼 씬(r3f, 스트라이크 핀 넘어짐 연출)·framer 전환/카운트업·canvas-confetti·Web Audio 합성음(볼 굴림·핀 크래시·스트라이크 치어, 음소거 기본OFF) 몰입4종. 수익화키트(AdSense env 인라인·ads.txt·쿠팡 맥락 슬롯·동적 OG/sitemap/robots·공유). 무백엔드·무가입, 기록은 기기에만 저장. 취미 로테이션(수영각→볼링각) 계보, dedup0 신규 버티컬. 장비·부상 판단은 참고용, 지공·통증은 프로샵/전문가 상담 면책.",
+      "live": "https://dydrms-bowlinggak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-bowlinggak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "이사각 (IsaGak)",
+      "emoji": "🚚",
+      "domain": "생활/이사",
+      "desc": "이사 날짜와 내 상황만 넣으면 지금 해야 할 일이 시기별로 자동 정리되는 무료 이사 준비 올인원. ①이사 플래너(이사일 D-day+집 유형·포장/반포장/일반·전세/월세/자가·반려동물/자동차/자녀전학/도시가스/에어컨 등 상황 선택→3~4주전·2주전·1주전·전날·당일·이사후 6단계 맞춤 체크리스트 33+항목 자동 생성, 진행률·완료 컨페티, 놓치면 손해 표시, localStorage 저장) ②포장이사 비용 추정(평수·방식·거리·층수/사다리차·에어컨 이전·성수기·손없는날 할증 반영→예상 견적 범위+반영요인+절약 팁, 2025~26 실거래 범위 기반) ③이사 후 행정처리 신호등(전입신고 14일·과태료 5만·확정일자 보증금보호·도시가스 전출입·자동차 30일·우편물 주거이전·전기수도 정산·대형폐기물·폐가전 무상수거 1599-0903, 기한/방법/불이익 단계별) ④평수별 이사 준비물·박스 개수 계산+쿠팡 소모품. 이사 가이드 5편 SSG(체크리스트·포장이사 비용·전입신고와 확정일자·행정처리·준비물, FAQ/WebApplication JSON-LD). 몰입4종=r3f 3D 이사트럭·떠다니는 박스 씬·framer 아코디언/전환·canvas-confetti 완료·Web Audio 체크/박스 합성음(음소거 기본OFF). 무백엔드·무가입, 모든 기록 기기에만 저장. 수익화키트(AdSense env 인라인·ads.txt·이사박스/에어캡/입주청소 쿠팡 파트너스 소모품 LTV+이사업체 견적 고단가 리드 확장·동적 OG/sitemap/robots·공유). 손없는날각(이사 길일)과 크로스링크·축 분리. 큐 전부 금융→비금융 생활 다각화, 오늘 스포츠·건강 로테이션 후 생활 신규 버티컬 dedup0. 비용·기한은 참고용, 실제 처리 전 정부24·지역 도시가스사 등 기관 확인 면책.",
+      "live": "https://dydrms-isagak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-isagak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "물놀이각",
+      "emoji": "🏖️",
+      "domain": "생활/여름·안전",
+      "desc": "계곡·해수욕장·워터파크 물놀이 올인원 — 장소×동행×활동 맞춤 준비물 자동생성, 안전 신호등 자가진단·이안류/익수 대처, 구명조끼·아쿠아슈즈 사이즈, 전국 물놀이 명소 도감 20곳, 물놀이 일지·뱃지.",
+      "live": "https://dydrms-mulnorigak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-mulnorigak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "카시트핏",
+      "emoji": "🚗",
+      "domain": "육아/안전",
+      "desc": "우리 아이 카시트 진단 올인원 — 체중·신장·나이로 맞는 단계(후향/전향/부스터) 1분 진단, 유형별 추천, 장착 안전 자가점검 신호등, 성장 트래커+전환 D-day, 카시트 법규·과태료·후향 가이드 8종. 도로교통법 만 6세 미만 의무 반영.",
+      "live": "https://dydrms-carseatfit.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-carseatfit",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "당구각",
+      "emoji": "🎱",
+      "domain": "취미/스포츠",
+      "desc": "당구 올인원 — 파이브앤하프 3쿠션 시스템 계산기(수구수-3쿠션=1쿠션, 당구대 궤도 도해), 4구·3쿠션 실시간 스코어보드(이닝·하이런·애버리지 자동), 실력 5문항 자가진단+다마수 환산, 애버리지 일지(승률·추이·뱃지), 시스템/용어 가이드 SSG. 몰입 4종(3D 당구대·모션·컨페티·합성음).",
+      "live": "https://dydrms-danggugak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-danggugak",
       "status": "live",
       "date": "2026-07-09"
     }
