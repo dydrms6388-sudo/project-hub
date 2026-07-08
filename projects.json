@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-07-09T12:00:00.000Z",
+  "updatedAt": "2026-07-09T14:30:00.000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "연비각 (YeonbiGak)",
+      "emoji": "⛽",
+      "domain": "자동차/생활",
+      "desc": "주유할 때마다 기록만 남기면 내 차 실연비(km/L)와 월 유류비·km당 비용이 자동으로 계산되는 무료 연비 계산기·유류비 트래커. 만탱크(full-to-full) 계산법으로 구간별 실연비 자동 산출, 공인연비 대비 등급(연비왕~개선필요)·최고 실연비 신기록(컨페티), 월별 유류비 추이 차트·연간 예상, 다차량 프로필(휘발유·경유·LPG·전기차 전비). 빠른 계산 3종(실연비·여행 유류비 예측·월 유류비), 운전습관 연비 진단(급가속·공회전·에어컨·공기압 등 8항목→예상 손실%·월 절약 가능액 처방). 연비 가이드 5편 SSG(실연비 계산법·연비 높이는 법·여름 에어컨 연비·전기차 전비·기름값 절약, FAQ/Article JSON-LD). 3D 연비 게이지(바늘 애니·연료방울 r3f)·framer 전환·confetti·Web Audio 주유 합성음(음소거 기본OFF) 몰입4종. 수익화키트(AdSense env 인라인·ads.txt·자동차 반복구매 소모품 엔진오일/워셔액/연료첨가제·연비타이어/공기압게이지 쿠팡 파트너스 맥락 슬롯·동적 OG/sitemap/robots·공유). 무백엔드·무가입, 기기 저장. 자동차 클러스터(ddayhub/car 소모품 D-day·goyo 세차/차량온도)와 '연비·유류비' 축으로 분리. 참고용 계산 면책.",
+      "live": "https://dydrms-yeonbigak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-yeonbigak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
     {
       "name": "베개핏 (BaegaeFit)",
       "emoji": "🛏️",
