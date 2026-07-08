@@ -9,6 +9,10 @@
 
   var LS_KEY = "tsc_state_v1";
   var S = null;
+  var MANUAL_MIN_MINUTES = 1;
+  var MANUAL_MAX_MINUTES = 600; // input[type=number] 의 max 속성과 반드시 일치시켜야 함
+  var GOAL_MIN_MINUTES = 10;
+  var GOAL_MAX_MINUTES = 600; // input[type=number] 의 max 속성과 반드시 일치시켜야 함
 
   /* ---------------- 유틸 ---------------- */
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -36,6 +40,22 @@
     if (h < 24) return h + "시간 전";
     return Math.floor(h / 24) + "일 전";
   }
+  // HTML의 min/max 속성은 checkValidity()를 호출하지 않는 한 키보드/붙여넣기 입력을
+  // 막지 못하므로, 사용자가 900000처럼 비정상적으로 큰(혹은 작은) 값을 입력해도
+  // 그대로 통과된다. 여기서 JS 단에서 명시적으로 범위를 강제한다.
+  // parseInt(raw,10)은 'e' 이후를 무시해(parseInt('1e5',10) === 1) input[type=number]가
+  // 유효한 값으로 허용하는 지수 표기('1e5' === 100000)를 완전히 다른 값으로 오인했다.
+  // Number()는 지수 표기·공백을 올바르게 파싱하므로, 사용자가 입력한 실제 값 기준으로
+  // 범위를 검증할 수 있다.
+  function parseBoundedInt(raw, min, max) {
+    var s = String(raw == null ? "" : raw).trim();
+    if (!s) return null;
+    var n = Number(s);
+    if (!isFinite(n)) return null;
+    n = Math.round(n);
+    if (n < min || n > max) return null;
+    return n;
+  }
   function roomById(id) { return ROOMS.find(function (r) { return r.id === id; }); }
   function avatarSpan(emoji, grad, size, extraClass) {
     size = size || 38;
@@ -53,15 +73,15 @@
   function DEFAULTS() {
     return {
       onboarded: false,
-      profile: { nickname: "", avatarEmoji: AVATAR_EMOJIS[0], gradIdx: 0, subjects: [], timeSlot: "", ageConfirmed: false, termsAgreed: false },
+      profile: { nickname: "", avatarEmoji: AVATAR_EMOJIS[0], gradIdx: 0, subjects: [], timeSlot: "", ageConfirmed: false, termsAgreed: false, updatedAt: 0 },
       joinedRooms: [],
       logs: [],
-      goals: { dailyMinutes: 60 },
+      goals: { dailyMinutes: 60, updatedAt: 0 },
       goalHitDates: [],
       badgesEarned: [],
       pomoCount: 0,
       reactionsSent: {},
-      timer: { focusMin: 25, breakMin: 5, phase: "focus", remainingSec: 25 * 60, running: false, startedAt: null, roomId: null, todayCount: 0, todayDate: "" }
+      timer: { focusMin: 25, breakMin: 5, phase: "focus", remainingSec: 25 * 60, running: false, startedAt: null, roomId: null, todayCount: 0, todayDate: "", updatedAt: 0 }
     };
   }
 
@@ -73,22 +93,83 @@
     Object.keys(keys).forEach(function (k) {
       if (incoming[k] === undefined) return;
       var b = base[k];
-      if (b && typeof b === "object" && !Array.isArray(b) && incoming[k] && typeof incoming[k] === "object" && !Array.isArray(incoming[k])) {
-        base[k] = deepMerge(b, incoming[k]);
+      var v = incoming[k];
+      if (Array.isArray(b)) {
+        // base 필드가 배열이면 incoming도 배열일 때만 채택. 타입이 다르면(손상된
+        // 데이터 등) base의 기본값(보통 빈 배열)을 유지해 렌더링 시 .forEach 등에서
+        // 크래시가 나지 않도록 한다.
+        if (Array.isArray(v)) base[k] = v;
+      } else if (b && typeof b === "object") {
+        if (v && typeof v === "object" && !Array.isArray(v)) {
+          base[k] = deepMerge(b, v);
+        }
+        // 그 외 타입 불일치는 base 기본값 유지
       } else {
-        base[k] = incoming[k];
+        base[k] = v;
       }
     });
     return base;
   }
 
+  // 숫자 하나만 방어하는 헬퍼. 값이 유한하지 않거나(NaN/Infinity/문자열 등) 범위를
+  // 벗어나면 fallback으로 되돌린다. min/max를 생략하면 해당 방향은 검사하지 않는다.
+  function sanitizeNumber(v, fallback, min, max) {
+    v = Number(v);
+    if (!isFinite(v)) return fallback;
+    if (min != null && v < min) return fallback;
+    if (max != null && v > max) return fallback;
+    return v;
+  }
   function load() {
     var parsed = null;
     try { parsed = JSON.parse(localStorage.getItem(LS_KEY) || "null"); } catch (e) { parsed = null; }
     S = deepMerge(DEFAULTS(), parsed || {});
+    // deepMerge가 방어하지 못하는 예상 밖의 손상 데이터에 대비한 2차 안전망.
+    // 배열/객체 필드가 어떤 이유로든 잘못된 타입이면 기본값으로 되돌려
+    // renderHome() 등에서의 .forEach TypeError로 인한 흰 화면 크래시를 막는다.
+    if (!Array.isArray(S.logs)) S.logs = [];
+    if (!Array.isArray(S.joinedRooms)) S.joinedRooms = [];
+    if (!Array.isArray(S.badgesEarned)) S.badgesEarned = [];
+    if (!Array.isArray(S.goalHitDates)) S.goalHitDates = [];
+    if (!S.profile || typeof S.profile !== "object" || Array.isArray(S.profile)) S.profile = DEFAULTS().profile;
+    if (!Array.isArray(S.profile.subjects)) S.profile.subjects = [];
+    if (!S.timer || typeof S.timer !== "object" || Array.isArray(S.timer)) S.timer = DEFAULTS().timer;
+    if (!S.goals || typeof S.goals !== "object" || Array.isArray(S.goals)) S.goals = DEFAULTS().goals;
+    if (!S.reactionsSent || typeof S.reactionsSent !== "object" || Array.isArray(S.reactionsSent)) S.reactionsSent = {};
+    // 2차 안전망은 지금까지 최상위 필드의 "타입"만 방어했고, 중첩된 숫자 필드(목표
+    // 분·타이머 분/초)의 값 범위는 검증하지 않았다. localStorage가 손상되거나 수동
+    // 편집으로 goals.dailyMinutes가 0/음수/NaN이 되면 renderGoals()의
+    // pct = Math.round(t/goal*100) 계산이 NaN/Infinity가 되어 목표바·타이머 링이
+    // 깨질 수 있으므로, 여기서 숫자 필드도 범위를 강제해 기본값으로 복구한다.
+    var D = DEFAULTS();
+    S.goals.dailyMinutes = sanitizeNumber(S.goals.dailyMinutes, D.goals.dailyMinutes, GOAL_MIN_MINUTES, GOAL_MAX_MINUTES);
+    S.goals.updatedAt = sanitizeNumber(S.goals.updatedAt, 0, 0, null);
+    S.timer.focusMin = sanitizeNumber(S.timer.focusMin, D.timer.focusMin, 1, 180);
+    S.timer.breakMin = sanitizeNumber(S.timer.breakMin, D.timer.breakMin, 1, 60);
+    S.timer.remainingSec = sanitizeNumber(S.timer.remainingSec, D.timer.remainingSec, 0, 180 * 60);
+    S.timer.todayCount = sanitizeNumber(S.timer.todayCount, 0, 0, null);
+    S.timer.updatedAt = sanitizeNumber(S.timer.updatedAt, 0, 0, null);
+    if (S.timer.phase !== "focus" && S.timer.phase !== "break") S.timer.phase = "focus";
+    if (typeof S.timer.todayDate !== "string") S.timer.todayDate = "";
+    S.timer.running = !!S.timer.running;
+    // running인데 startedAt이 숫자가 아니면 진행 시간 계산(Date.now()-startedAt)이
+    // NaN이 되므로, 그런 경우는 일시정지 상태로 되돌려 안전하게 만든다.
+    if (S.timer.running && typeof S.timer.startedAt !== "number") { S.timer.running = false; S.timer.startedAt = null; }
+    if (!S.timer.running) S.timer.startedAt = (typeof S.timer.startedAt === "number") ? S.timer.startedAt : null;
+    S.pomoCount = sanitizeNumber(S.pomoCount, 0, 0, null);
+    S.profile.updatedAt = sanitizeNumber(S.profile.updatedAt, 0, 0, null);
   }
   function save() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) {}
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(S));
+      return true;
+    } catch (e) {
+      // 사파리 프라이빗 모드, 저장공간 초과 등으로 setItem이 실패하면 사용자가
+      // 알아챌 수 있도록 토스트로 알린다. 이전에는 조용히 무시되어 방금 기록한
+      // 공부시간·스트릭·배지가 저장 안 된 채 유실될 수 있었다.
+      toast("⚠️ 저장에 실패했어요. 브라우저 저장공간을 확인해주세요.");
+      return false;
+    }
   }
 
   /* ---------------- 통계/스트릭/배지 ---------------- */
@@ -145,7 +226,9 @@
     }
   }
   function addLog(roomId, minutes, method) {
-    minutes = Math.max(1, Math.round(minutes));
+    // 호출부에서 이미 검증하지만, 게이미피케이션 핵심 지표(오늘 공부시간·누적시간·
+    // hour 배지·목표달성·리더보드)를 지키기 위한 마지막 방어선으로 여기서도 상한을 강제한다.
+    minutes = Math.max(MANUAL_MIN_MINUTES, Math.min(MANUAL_MAX_MINUTES, Math.round(minutes)));
     S.logs.push({ id: uid(), roomId: roomId, date: todayStr(), minutes: minutes, method: method, ts: Date.now() });
     if (S.joinedRooms.indexOf(roomId) === -1) S.joinedRooms.push(roomId);
     save();
@@ -154,23 +237,48 @@
   }
 
   /* ---------------- 토스트 ---------------- */
-  var toastTimer = null;
-  function toast(msg) {
-    var root = $("#toast-root");
-    root.innerHTML = '<div class="toast">' + esc(msg) + "</div>";
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { root.innerHTML = ""; }, 2200);
+  // addLog() 내부에서 checkGoalHit()→toast('목표 달성')과 checkAndAwardBadges()→
+  // showBadgeToast()가 먼저 실행된 뒤, 호출부(모달 제출 등)가 같은 동기 실행 흐름
+  // 안에서 곧바로 toast('45분 기록했어요!')를 또 호출하는 경우가 있다. 예전에는
+  // toast()가 #toast-root.innerHTML을 통째로 교체해 먼저 만든 토스트가 브라우저에
+  // 페인트되기도 전에 지워졌고, showBadgeToast()가 appendChild한 배지 토스트까지도
+  // 뒤이은 toast() 호출이 root.innerHTML을 덮어써 함께 사라졌다. 여기서는 일반
+  // 토스트(하단)와 배지 토스트(상단, CSS 위치가 달라 서로 가리지 않음)를 각각 자신의
+  // 큐로 관리해, 같은 종류끼리는 순서대로 하나씩, 서로 다른 종류는 동시에 보이도록 한다.
+  function makeToastQueue(buildEl, displayMs) {
+    var queue = [];
+    var showing = false;
+    function showNext() {
+      if (!queue.length) { showing = false; return; }
+      showing = true;
+      var item = queue.shift();
+      var root = $("#toast-root");
+      var el = buildEl(item);
+      root.appendChild(el);
+      setTimeout(function () {
+        if (el.parentNode) el.parentNode.removeChild(el);
+        showNext();
+      }, displayMs);
+    }
+    return function enqueue(item) {
+      queue.push(item);
+      if (!showing) showNext();
+    };
   }
-  var badgeToastTimer = null;
-  function showBadgeToast(badge) {
-    var root = $("#toast-root");
+  var enqueueToast = makeToastQueue(function (msg) {
+    var el = document.createElement("div");
+    el.className = "toast";
+    el.textContent = msg;
+    return el;
+  }, 2200);
+  var enqueueBadgeToast = makeToastQueue(function (badge) {
     var el = document.createElement("div");
     el.className = "badge-toast";
     el.innerHTML = "<span>" + badge.emoji + "</span><span>새 배지 획득! " + esc(badge.name) + "</span>";
-    root.appendChild(el);
-    clearTimeout(badgeToastTimer);
-    badgeToastTimer = setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 2800);
-  }
+    return el;
+  }, 2800);
+  function toast(msg) { enqueueToast(msg); }
+  function showBadgeToast(badge) { enqueueBadgeToast(badge); }
 
   /* ---------------- 모달 ---------------- */
   function openModal(html) {
@@ -283,6 +391,7 @@
 
   function obNext() {
     if (!obValidateCurrent()) return;
+    S.profile.updatedAt = Date.now();
     save();
     if (obIndex === OB_STEPS.length - 1) {
       S.onboarded = true;
@@ -524,6 +633,7 @@
       tm.phase = "break";
       tm.remainingSec = tm.breakMin * 60;
       tm.running = false; tm.startedAt = null;
+      tm.updatedAt = Date.now();
       save();
       toast("포커스 완료! " + tm.breakMin + "분 쉬어가요 🌿");
       checkAndAwardBadges();
@@ -531,6 +641,7 @@
       tm.phase = "focus";
       tm.remainingSec = tm.focusMin * 60;
       tm.running = false; tm.startedAt = null;
+      tm.updatedAt = Date.now();
       save();
       toast("휴식 끝! 다음 포커스를 시작해볼까요? 🔥");
     }
@@ -553,18 +664,21 @@
     var tm = S.timer;
     if (!tm.roomId) tm.roomId = S.joinedRooms[0] || ROOMS[0].id;
     tm.running = true; tm.startedAt = Date.now();
+    tm.updatedAt = Date.now();
     save(); switchTab("timer");
   }
   function timerPause() {
     var tm = S.timer;
     tm.remainingSec = timerDisplayRemaining();
     tm.running = false; tm.startedAt = null;
+    tm.updatedAt = Date.now();
     save(); switchTab("timer");
   }
   function timerReset() {
     var tm = S.timer;
     tm.remainingSec = (tm.phase === "focus" ? tm.focusMin : tm.breakMin) * 60;
     tm.running = false; tm.startedAt = null;
+    tm.updatedAt = Date.now();
     save(); switchTab("timer");
   }
   function timerSetPreset(focusMin, breakMin) {
@@ -572,10 +686,11 @@
     tm.focusMin = focusMin; tm.breakMin = breakMin;
     tm.phase = "focus"; tm.remainingSec = focusMin * 60;
     tm.running = false; tm.startedAt = null;
+    tm.updatedAt = Date.now();
     save(); switchTab("timer");
   }
   function pickTimerRoom(roomId) {
-    S.timer.roomId = roomId; save(); closeModal(); switchTab("timer");
+    S.timer.roomId = roomId; S.timer.updatedAt = Date.now(); save(); closeModal(); switchTab("timer");
   }
 
   function renderTimer() {
@@ -678,9 +793,9 @@
       '<button class="btn-grad big" data-action="goal-save">저장하기</button>');
   }
   function saveGoal() {
-    var v = parseInt($("#goal-input").value, 10);
-    if (!v || v < 10) { toast("10분 이상으로 설정해주세요"); return; }
-    S.goals.dailyMinutes = v; save(); closeModal(); switchTab("goals"); toast("목표를 저장했어요");
+    var v = parseBoundedInt($("#goal-input").value, GOAL_MIN_MINUTES, GOAL_MAX_MINUTES);
+    if (v === null) { toast("목표 시간은 " + GOAL_MIN_MINUTES + "~" + GOAL_MAX_MINUTES + "분 사이로 설정해주세요"); return; }
+    S.goals.dailyMinutes = v; S.goals.updatedAt = Date.now(); save(); closeModal(); switchTab("goals"); toast("목표를 저장했어요");
   }
 
   /* ---------------- MY ---------------- */
@@ -782,6 +897,7 @@
       S.profile.gradIdx = tempGradIdx;
       S.profile.subjects = tempSubjects;
       S.profile.timeSlot = tempSlot;
+      S.profile.updatedAt = Date.now();
       save();
       closeModal();
       switchTab("my");
@@ -796,7 +912,14 @@
       '<button class="btn-ghost" style="width:100%" data-action="close-modal">취소</button>');
   }
   function confirmReset() {
-    try { localStorage.removeItem(LS_KEY); } catch (e) {}
+    try {
+      localStorage.removeItem(LS_KEY);
+    } catch (e) {
+      // 삭제가 실패했는데도 reload만 하면 사용자는 '초기화됨'으로 오인하지만
+      // 실제로는 데이터가 남아있을 수 있다. 실패 시 reload하지 않고 명확히 알린다.
+      toast("⚠️ 초기화에 실패했어요. 브라우저 저장공간 설정을 확인한 뒤 다시 시도해주세요.");
+      return;
+    }
     location.reload();
   }
 
@@ -857,7 +980,7 @@
       case "close-modal": closeModal(); break;
       case "switch-tab":
         closeOverlay();
-        if (el.dataset.preroom) { S.timer.roomId = el.dataset.preroom; save(); }
+        if (el.dataset.preroom) { S.timer.roomId = el.dataset.preroom; S.timer.updatedAt = Date.now(); save(); }
         switchTab(el.dataset.tab);
         break;
       case "open-room": openRoom(el.dataset.room); break;
@@ -868,8 +991,8 @@
       case "open-manual-log": openManualLog(); break;
       case "modal-manual-submit": {
         var roomId = $("#ml-room").value;
-        var mins = parseInt($("#ml-minutes").value, 10);
-        if (!mins || mins < 1) { toast("공부 시간을 입력해주세요"); return; }
+        var mins = parseBoundedInt($("#ml-minutes").value, MANUAL_MIN_MINUTES, MANUAL_MAX_MINUTES);
+        if (mins === null) { toast("공부 시간은 " + MANUAL_MIN_MINUTES + "~" + MANUAL_MAX_MINUTES + "분 사이로 입력해주세요"); return; }
         addLog(roomId, mins, "manual");
         closeModal();
         switchTab(currentTab === "timer" ? "timer" : currentTab);
@@ -879,8 +1002,8 @@
       }
       case "manual-log-submit": {
         var r2 = $("#manual-room-select").value;
-        var m2 = parseInt($("#manual-minutes-input").value, 10);
-        if (!m2 || m2 < 1) { toast("공부 시간을 입력해주세요"); return; }
+        var m2 = parseBoundedInt($("#manual-minutes-input").value, MANUAL_MIN_MINUTES, MANUAL_MAX_MINUTES);
+        if (m2 === null) { toast("공부 시간은 " + MANUAL_MIN_MINUTES + "~" + MANUAL_MAX_MINUTES + "분 사이로 입력해주세요"); return; }
         addLog(r2, m2, "manual");
         updateStreakBadge();
         switchTab("timer");
@@ -900,16 +1023,17 @@
       case "profile-save": if (window.__tscProfileSave) window.__tscProfileSave(); break;
       case "open-reset-confirm": openResetConfirm(); break;
       case "confirm-reset": confirmReset(); break;
-      case "pick-emoji": S.profile.avatarEmoji = el.dataset.emoji; save(); renderObStep(); break;
-      case "pick-grad": S.profile.gradIdx = parseInt(el.dataset.idx, 10); save(); renderObStep(); break;
+      case "pick-emoji": S.profile.avatarEmoji = el.dataset.emoji; S.profile.updatedAt = Date.now(); save(); renderObStep(); break;
+      case "pick-grad": S.profile.gradIdx = parseInt(el.dataset.idx, 10); S.profile.updatedAt = Date.now(); save(); renderObStep(); break;
       case "toggle-subject": {
         var rid = el.dataset.room;
         var i = S.profile.subjects.indexOf(rid);
         if (i > -1) S.profile.subjects.splice(i, 1); else S.profile.subjects.push(rid);
+        S.profile.updatedAt = Date.now();
         save(); renderObStep();
         break;
       }
-      case "pick-timeslot": S.profile.timeSlot = el.dataset.slot; save(); renderObStep(); break;
+      case "pick-timeslot": S.profile.timeSlot = el.dataset.slot; S.profile.updatedAt = Date.now(); save(); renderObStep(); break;
     }
   }
 
@@ -919,17 +1043,136 @@
     handleAction(el.dataset.action, el);
   });
 
+  /* ---------------- 멀티탭 동기화 ---------------- */
+  // 이 앱은 여러 탭에서 동시에 열릴 수 있는데, localStorage는 탭 간 자동 동기화가 안 된다.
+  // 손을 대지 않으면 나중에 save()를 호출한 탭이 다른 탭에서 기록한 상태를 통째로
+  // 덮어써 조용히 유실된다(last-write-wins). 여기서는 다른 탭이 저장한 로그/참여룸/배지/
+  // 목표달성일을 id/값 기준으로 합치고(union), pomoCount/goals/timer/profile/reactionsSent도
+  // 각 필드 특성에 맞는 방식으로 합쳐 유실을 막는다.
+  function mergeExternalArrayField(key, idField) {
+    // idField가 있으면 객체 배열(id로 중복 판단), 없으면 원시값 배열(값 자체로 중복 판단)
+    return function (incomingArr, existingArr) {
+      var seen = {};
+      existingArr.forEach(function (item) {
+        seen[idField ? item[idField] : item] = true;
+      });
+      var added = false;
+      incomingArr.forEach(function (item) {
+        var k = idField ? item && item[idField] : item;
+        if (k == null || seen[k]) return;
+        seen[k] = true;
+        existingArr.push(item);
+        added = true;
+      });
+      return added;
+    };
+  }
+  var mergeLogsArr = mergeExternalArrayField("logs", "id");
+  var mergePrimitiveArr = mergeExternalArrayField("primitive", null);
+
+  // goals/timer/profile처럼 "현재 값"을 나타내는 객체 필드는 union이 불가능하다(예:
+  // 목표 분을 90→60으로 줄인 의도적 변경을 union이 뒤집으면 안 됨). 대신 각 객체에
+  // 기록해둔 updatedAt(마지막 변경 시각)을 비교해 더 최근에 바뀐 쪽을 채택하는
+  // last-write-wins 병합을 쓴다. 이렇게 하면 뒤늦게 save()를 호출한 탭이 이미 다른
+  // 탭에서 더 최근에 바뀐 값을 조용히 롤백하지 못한다.
+  function mergeLwwObject(incomingObj, existingObj) {
+    if (!incomingObj || typeof incomingObj !== "object") return false;
+    var incomingTs = Number(incomingObj.updatedAt) || 0;
+    var existingTs = Number(existingObj.updatedAt) || 0;
+    if (incomingTs <= existingTs) return false;
+    Object.keys(incomingObj).forEach(function (k) { existingObj[k] = incomingObj[k]; });
+    return true;
+  }
+
+  function mergeExternalState(incoming) {
+    if (!incoming || typeof incoming !== "object") return false;
+    var changed = false;
+    if (Array.isArray(incoming.logs)) changed = mergeLogsArr(incoming.logs, S.logs) || changed;
+    if (Array.isArray(incoming.joinedRooms)) changed = mergePrimitiveArr(incoming.joinedRooms, S.joinedRooms) || changed;
+    if (Array.isArray(incoming.badgesEarned)) changed = mergePrimitiveArr(incoming.badgesEarned, S.badgesEarned) || changed;
+    if (Array.isArray(incoming.goalHitDates)) changed = mergePrimitiveArr(incoming.goalHitDates, S.goalHitDates) || changed;
+    // pomoCount는 completeTimerPhase()에서만 증가하는 단조 증가 카운터이므로, 두 값 중
+    // 더 큰 쪽(=더 많이 완료된 쪽)을 취하면 항상 안전하다(둘 다 반영해도 유실이 없음).
+    if (typeof incoming.pomoCount === "number" && isFinite(incoming.pomoCount) && incoming.pomoCount > S.pomoCount) {
+      S.pomoCount = incoming.pomoCount;
+      changed = true;
+    }
+    if (incoming.goals && typeof incoming.goals === "object") changed = mergeLwwObject(incoming.goals, S.goals) || changed;
+    if (incoming.timer && typeof incoming.timer === "object") changed = mergeLwwObject(incoming.timer, S.timer) || changed;
+    if (incoming.profile && typeof incoming.profile === "object") changed = mergeLwwObject(incoming.profile, S.profile) || changed;
+    // reactionsSent는 켬/끔 토글 맵이라 union이 완벽하지는 않지만(둘 다 true인 쪽을
+    // 우선), "응원을 보냈다"는 사실 자체가 사라지는 것보다는 안전한 절충이다.
+    if (incoming.reactionsSent && typeof incoming.reactionsSent === "object") {
+      Object.keys(incoming.reactionsSent).forEach(function (k) {
+        if (incoming.reactionsSent[k] && !S.reactionsSent[k]) { S.reactionsSent[k] = true; changed = true; }
+      });
+    }
+    return changed;
+  }
+
+  window.addEventListener("storage", function (e) {
+    if (e.key !== LS_KEY || !S) return; // 로드 완료 전이면 무시
+    var incoming = null;
+    try { incoming = JSON.parse(e.newValue || "null"); } catch (err) { incoming = null; }
+    if (!incoming) return;
+    var changed = mergeExternalState(incoming);
+    if (!changed) return;
+    save();
+    checkGoalHit();
+    checkAndAwardBadges();
+    updateStreakBadge();
+    if (!$("#scr-main").hidden) switchTab(currentTab);
+    toast("다른 탭에서 기록한 공부시간을 동기화했어요");
+  });
+
+  /* ---------------- 치명적 오류 복구 화면 ---------------- */
+  // load()/초기 렌더링 과정에서 예상치 못한 예외가 발생하면(손상된 데이터 등) 흰 화면으로
+  // 멈추는 대신, 사용자가 데이터 초기화로 복구할 수 있는 최소한의 화면을 보여준다.
+  function showFatalErrorScreen(err) {
+    try { if (window.console && console.error) console.error("[스터디서클] 초기화 실패", err); } catch (e2) {}
+    var frame = document.getElementById("frame");
+    if (!frame) return;
+    frame.innerHTML =
+      '<div style="padding:40px 20px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;min-height:70vh">' +
+      '<div style="font-size:44px">😵</div>' +
+      "<h2 style=\"margin:0\">문제가 발생했어요</h2>" +
+      '<p style="opacity:.7;max-width:320px;line-height:1.6;font-size:14px">저장된 데이터를 불러오는 중 오류가 발생했어요. 아래 버튼으로 초기화하면 다시 사용할 수 있어요.<br>(이 기기에 저장된 기록이 모두 삭제돼요)</p>' +
+      '<button id="fatal-reset-btn" style="padding:13px 24px;border-radius:14px;border:0;background:#ef4444;color:#fff;font-weight:700;font-size:15px;cursor:pointer">데이터 초기화하고 다시 시작</button>' +
+      "</div>";
+    var btn = document.getElementById("fatal-reset-btn");
+    if (btn) {
+      btn.addEventListener("click", function () {
+        try { localStorage.removeItem(LS_KEY); } catch (e3) {}
+        location.reload();
+      });
+    }
+  }
+
   /* ---------------- 초기화 ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
-    load();
-    $("#btn-start").addEventListener("click", function () { S.onboarded ? goMain() : goOnboarding(); });
-    $("#btn-guardian-from-welcome").addEventListener("click", function () { showGuardian("welcome"); });
-    $("#btn-guardian").addEventListener("click", function () { showGuardian("main"); });
-    $("#ob-next").addEventListener("click", obNext);
-    $("#ob-back").addEventListener("click", obBack);
-    $all(".tab").forEach(function (t) { t.addEventListener("click", function () { closeOverlay(); switchTab(t.dataset.tab); }); });
+    try {
+      load();
+      $("#btn-start").addEventListener("click", function () { S.onboarded ? goMain() : goOnboarding(); });
+      $("#btn-guardian-from-welcome").addEventListener("click", function () { showGuardian("welcome"); });
+      $("#btn-guardian").addEventListener("click", function () { showGuardian("main"); });
+      $("#ob-next").addEventListener("click", obNext);
+      $("#ob-back").addEventListener("click", obBack);
+      $all(".tab").forEach(function (t) { t.addEventListener("click", function () { closeOverlay(); switchTab(t.dataset.tab); }); });
 
-    if (S.onboarded) { goMain(); } else { goWelcome(); }
-    ensureTimerLoop();
+      if (S.onboarded) { goMain(); } else { goWelcome(); }
+      ensureTimerLoop();
+    } catch (err) {
+      showFatalErrorScreen(err);
+    }
   });
+
+  // manifest.webmanifest는 이 앱을 PWA로 선언하지만, 서비스워커 등록이 빠져있으면
+  // 오프라인에서 앱 셸(HTML/CSS/JS) 자체를 다시 열 수 있다는 보장이 없다(localStorage에
+  // 저장된 학습 기록과는 별개 문제). sw.js를 등록해 앱 셸을 캐시하고, 오프라인에서도
+  // 흰 화면 대신 앱이 열리도록 한다.
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
 })();

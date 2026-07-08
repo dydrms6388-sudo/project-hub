@@ -18,6 +18,17 @@
   const todayStr = () => kstNow().toISOString().slice(0, 10);
   const kstMonthStr = () => kstNow().toISOString().slice(0, 7);
   const vibrate = (ms) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+  // 생일(월/일)까지 반영한 정확한 만 나이 계산. kstNow()는 기기 로컬 시각에 9시간을 더한
+  // Date 객체이므로, 로컬 getter(getFullYear 등)가 아니라 UTC getter를 써야 todayStr()와
+  // 같은 KST 기준 "오늘"을 얻는다(그렇지 않으면 다시 기기 타임존에 좌우되는 버그가 생긴다).
+  const calcAge = (y, m, d) => {
+    const n = kstNow();
+    const ny = n.getUTCFullYear(), nm = n.getUTCMonth() + 1, nd = n.getUTCDate();
+    let age = ny - y;
+    if (nm < m || (nm === m && nd < d)) age--; // 올해 생일이 아직 안 지났으면 -1
+    return age;
+  };
+  const daysInMonth = (y, m) => new Date(y, m, 0).getDate(); // 달력상의 말일 수 계산(순수 산술, KST 경계와 무관)
 
   /* ── 상태 ── */
   const DEFAULTS = () => ({
@@ -32,7 +43,10 @@
     votes: {},
     lastSwipe: null,
     settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 },
-    filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all" },
+    // ageMin 하한은 19여야 한다. 온보딩(obAge)이 만 19세 가입을 허용하는데 필터 기본값이
+    // 20이면, 결합된 buildDeck() 필터(p.age >= F.ageMin)에서 19세 프로필이 영구히 노출되지
+    // 않는다.
+    filters: { ageMin: 19, ageMax: 50, area: "all", looking: "all" },
     stats: { likesSent: 0, matches: 0 },
     items: { teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 },
     fx: { teleport: null, spotlightUntil: 0 }, // teleport: {region, until}
@@ -44,6 +58,19 @@
   try { S = Object.assign(DEFAULTS(), JSON.parse(localStorage.getItem(LS) || "null") || {}); }
   catch (e) { S = DEFAULTS(); }
   // 구버전 저장 데이터 마이그레이션
+  // liked/passed/blocked/superliked/incoming/seenIncoming/matches는 JSON.parse 이후 배열이라는
+  // 보장이 전혀 없다(저장 데이터 손상·구버전 스키마·수동 조작 등). 아래 items/fx/gacha/…처럼
+  // Object.assign으로 방어하지 않으면 이후 S.liked.push(...)/S.matches.map(...) 같은 배열
+  // 전용 호출에서 uncaught TypeError가 나 앱 전체가 죽는다. id 배열은 문자열만, matches는
+  // pid를 가진 객체만 남기고 나머지는 버려 항상 안전한 배열로 재보정한다.
+  const asIdArr = (a) => Array.isArray(a) ? a.filter((x) => typeof x === "string") : [];
+  S.liked = asIdArr(S.liked);
+  S.passed = asIdArr(S.passed);
+  S.blocked = asIdArr(S.blocked);
+  S.superliked = asIdArr(S.superliked);
+  S.incoming = asIdArr(S.incoming);
+  S.seenIncoming = asIdArr(S.seenIncoming);
+  S.matches = Array.isArray(S.matches) ? S.matches.filter((m) => m && typeof m === "object" && typeof m.pid === "string") : [];
   S.items = Object.assign({ teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 }, S.items || {});
   S.fx = Object.assign({ teleport: null, spotlightUntil: 0 }, S.fx || {});
   S.cards = S.cards || {};
@@ -58,7 +85,7 @@
   });
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
-  S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
+  S.filters = Object.assign({ ageMin: 19, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
   // 구버전 기본값(45) → 신버전 기본값(50) 승격은 반드시 '1회만' 실행해야 한다. 매 부팅마다
   // 무조건 실행하면, 필터 시트의 나이 슬라이더(최댓값 50)에서 사용자가 정확히 45세를 직접
   // 선택해도 옛 기본값과 구분이 안 돼 새로고침/재실행 때마다 조용히 50(무제한)으로 되돌아가
@@ -93,6 +120,15 @@
   const rewindLeft = () => plan().rewind === Infinity ? Infinity : Math.max(0, plan().rewind - (S.rewindsUsed || 0));
   const plan = () => PLANS[S.premium.plan] || PLANS.free;
   const P = (id) => D.profiles.find((p) => p.id === id);
+  // 나이는 가입 시점에 한 번 계산해 얼려두지 않고, 저장된 생년월일로 매번 다시 계산한다.
+  // 생일이 지났는지까지 반영해야 실제 만 나이와 최대 1살까지 어긋나는 걸 막을 수 있고,
+  // 오래 쓰는 계정도 생일이 지나면 자동으로 나이가 올라간다. 생년월일이 없는 구버전 저장
+  // 데이터는 가입 당시 계산해둔 age 필드로 폴백한다.
+  const userAge = () => {
+    const u = S.user; if (!u) return 0;
+    if (u.birthYear && u.birthMonth && u.birthDay) return calcAge(u.birthYear, u.birthMonth, u.birthDay);
+    return u.age || 0;
+  };
 
   /* ── 아이템 상점 (소모품 수익) ── */
   const SHOP = [
@@ -369,7 +405,7 @@
   };
   let ob = {};
   function startOnboarding() {
-    ob = { step: 0, birthYear: "", agree1: false, agree2: false, name: "", region: "서울", town: "",
+    ob = { step: 0, birthYear: "", birthMonth: "", birthDay: "", agree1: false, agree2: false, name: "", region: "서울", town: "",
       height: 175, mbti: "ENFP", lookingFor: LOOKING[0], tags: [], emoji: AV_EMOJIS[0], grad: AV_GRADS[0], intro: "" };
     show("scr-onboarding"); renderOb();
   }
@@ -385,13 +421,25 @@
   function obAge() {
     const years = []; const nowY = new Date().getFullYear();
     for (let y = nowY - 19; y >= nowY - 60; y--) years.push(y);
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+    // 선택된 연/월 기준 말일까지만 보여준다(예: 2월엔 30/31일이 나오지 않도록).
+    const maxDay = (ob.birthYear && ob.birthMonth) ? daysInMonth(+ob.birthYear, +ob.birthMonth) : 31;
+    const days = Array.from({ length: maxDay }, (_, i) => i + 1);
+    // 만 나이 계산까지 마쳐야(생일이 이미 지났는지까지 반영) 정확히 19세 이상만 통과시킬 수
+    // 있다. 연도만으로는(nowY - 19) 생일이 아직 안 지난 만 18세도 가입 가능해진다.
+    const validAge = ob.birthYear && ob.birthMonth && ob.birthDay && calcAge(+ob.birthYear, +ob.birthMonth, +ob.birthDay) >= 19;
     return `<h2 class="ob-h">환영해요 👋</h2><p class="ob-sub">PRISM은 19세 이상만 이용할 수 있어요.</p>
-      <div class="ob-field"><label>출생연도</label>
-        <select class="ob-input" id="f-year"><option value="">선택</option>${years.map((y) => `<option ${String(y) === String(ob.birthYear) ? "selected" : ""}>${y}</option>`).join("")}</select></div>
+      <div class="ob-field"><label>생년월일</label>
+        <div style="display:flex;gap:8px">
+          <select class="ob-input" id="f-year" style="flex:1.3;width:auto" aria-label="출생연도"><option value="">연도</option>${years.map((y) => `<option ${String(y) === String(ob.birthYear) ? "selected" : ""}>${y}</option>`).join("")}</select>
+          <select class="ob-input" id="f-month" style="flex:1;width:auto" aria-label="출생월"><option value="">월</option>${months.map((mo) => `<option ${String(mo) === String(ob.birthMonth) ? "selected" : ""}>${mo}</option>`).join("")}</select>
+          <select class="ob-input" id="f-day" style="flex:1;width:auto" aria-label="출생일"><option value="">일</option>${days.map((da) => `<option ${String(da) === String(ob.birthDay) ? "selected" : ""}>${da}</option>`).join("")}</select>
+        </div></div>
       <label class="agree"><input type="checkbox" id="f-a1" ${ob.agree1 ? "checked" : ""}><span>만 19세 이상이며, <a href="/terms.html" target="_blank" rel="noopener">이용약관</a>과 <a href="/privacy.html" target="_blank" rel="noopener">개인정보 처리방침</a>에 동의합니다.</span></label>
       <label class="agree"><input type="checkbox" id="f-a2" ${ob.agree2 ? "checked" : ""}><span>서로를 존중하는 커뮤니티 가이드라인(혐오·차별·괴롭힘 금지)에 동의합니다.</span></label>
       <p class="tiny">입력한 정보는 서버로 전송되지 않고 이 기기에만 저장됩니다. 아우팅 걱정 없이 사용하세요.</p>
-      ${obNextBtn(ob.birthYear && ob.agree1 && ob.agree2)}`;
+      ${ob.birthYear && ob.birthMonth && ob.birthDay && !validAge ? `<p class="tiny" style="color:var(--red)">만 19세 이상만 가입할 수 있어요.</p>` : ""}
+      ${obNextBtn(validAge && ob.agree1 && ob.agree2)}`;
   }
   function obName() {
     return `<h2 class="ob-h">뭐라고 불러드릴까요?</h2><p class="ob-sub">실명이 아니어도 괜찮아요. 프로필에 표시될 닉네임이에요.</p>
@@ -429,7 +477,20 @@
     const el = $("#ob-body");
     const re = () => renderOb();
     const on = (sel, ev, fn) => { const n = $(sel, el); if (n) n.addEventListener(ev, fn); };
-    on("#f-year", "change", (e) => { ob.birthYear = e.target.value; re(); });
+    on("#f-year", "change", (e) => {
+      ob.birthYear = e.target.value;
+      // 윤년 2/29 선택 후 평년으로 바꾸는 경우처럼 존재하지 않는 날짜가 될 수 있어 초기화한다.
+      if (ob.birthYear && ob.birthMonth && ob.birthDay && +ob.birthDay > daysInMonth(+ob.birthYear, +ob.birthMonth)) ob.birthDay = "";
+      re();
+    });
+    on("#f-month", "change", (e) => {
+      ob.birthMonth = e.target.value;
+      // 월이 바뀌어 그 달 말일보다 큰 일자가 선택돼 있으면(예: 31일 선택 후 2월로 변경)
+      // 존재하지 않는 날짜가 되므로 초기화한다.
+      if (ob.birthYear && ob.birthMonth && ob.birthDay && +ob.birthDay > daysInMonth(+ob.birthYear, +ob.birthMonth)) ob.birthDay = "";
+      re();
+    });
+    on("#f-day", "change", (e) => { ob.birthDay = e.target.value; re(); });
     on("#f-a1", "change", (e) => { ob.agree1 = e.target.checked; re(); });
     on("#f-a2", "change", (e) => { ob.agree2 = e.target.checked; re(); });
     on("#f-name", "input", (e) => { ob.name = e.target.value; $("#ob-next").disabled = !ob.name.trim(); });
@@ -455,8 +516,14 @@
     on("#ob-next", "click", () => {
       if (ob.step < 5) { ob.step++; renderOb(); }
       else {
-        const nowY = new Date().getFullYear();
-        S.user = { name: ob.name.trim().slice(0, 10), age: nowY - (+ob.birthYear), region: ob.region + (ob.town.trim() ? " " + ob.town.trim() : ""),
+        // 생일 경과 여부까지 반영한 만 나이를 계산해 저장한다. birthYear/Month/Day를 함께
+        // 저장해두는 이유는, 가입 시점에 계산한 숫자 하나만 얼려두면(구버전 방식) 생일이
+        // 지나도 나이가 올라가지 않고 실제 나이와 최대 1살까지 계속 어긋나기 때문이다.
+        // userAge()가 매번 이 값들로 다시 계산하므로 항상 정확하다.
+        S.user = { name: ob.name.trim().slice(0, 10),
+          birthYear: +ob.birthYear, birthMonth: +ob.birthMonth, birthDay: +ob.birthDay,
+          age: calcAge(+ob.birthYear, +ob.birthMonth, +ob.birthDay),
+          region: ob.region + (ob.town.trim() ? " " + ob.town.trim() : ""),
           height: ob.height, mbti: ob.mbti, lookingFor: ob.lookingFor, tags: ob.tags.slice(),
           emoji: ob.emoji, grad: ob.grad.slice(), intro: ob.intro.trim() };
         S.joinedAt = Date.now();
@@ -541,7 +608,7 @@
       spotlightActive() ? `✨ 스포트라이트 ${Math.ceil((S.fx.spotlightUntil - Date.now()) / 60000)}분` : "",
     ].filter(Boolean);
     const F = S.filters;
-    const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all";
+    const filterOn = F.ageMin > 19 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all";
     $("#view").innerHTML = `<div class="disc">
       <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ 필터${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
       <div class="deck" id="deck"></div>
@@ -570,8 +637,8 @@
       <p class="muted" style="font-size:13px;margin:0 0 16px">원하는 조건의 사람만 보여드려요. 필터는 전 플랜 무료.</p>
       <div class="ob-field"><label>나이 — <b id="fv-age">${F.ageMin}~${F.ageMax >= 50 ? "50+" : F.ageMax + "세"}</b></label>
         <div style="display:flex;gap:12px;align-items:center">
-          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최소</small><input type="range" id="f-amin" min="20" max="50" value="${F.ageMin}" style="accent-color:var(--vio)" aria-label="최소 나이"></span>
-          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최대</small><input type="range" id="f-amax" min="20" max="50" value="${F.ageMax}" style="accent-color:var(--vio)" aria-label="최대 나이 (50은 상한 없음)"></span>
+          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최소</small><input type="range" id="f-amin" min="19" max="50" value="${F.ageMin}" style="accent-color:var(--vio)" aria-label="최소 나이"></span>
+          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최대</small><input type="range" id="f-amax" min="19" max="50" value="${F.ageMax}" style="accent-color:var(--vio)" aria-label="최대 나이 (50은 상한 없음)"></span>
         </div></div>
       <div class="ob-field"><label>지역 (권역)</label><div class="chips">
         <button class="chip ${F.area === "all" ? "on" : ""}" data-area="all">전국</button>
@@ -596,7 +663,7 @@
       const lk = e.target.closest("[data-look]");
       if (lk) { $$("[data-look]", m).forEach((x) => x.classList.remove("on")); lk.classList.add("on"); }
     });
-    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 50, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
+    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 19, ageMax: 50, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
     $("#f-apply", m).onclick = () => {
       S.filters = { ageMin: +amin.value, ageMax: +amax.value,
         area: ($(".chip.on[data-area]", m) || {}).dataset ? $(".chip.on[data-area]", m).dataset.area : "all",
@@ -626,7 +693,7 @@
   function paintDeck() {
     const d = $("#deck"); if (!d) return;
     if (!deck.length) {
-      const filtered = S.filters.area !== "all" || S.filters.looking !== "all" || S.filters.ageMin > 20 || S.filters.ageMax < 50;
+      const filtered = S.filters.area !== "all" || S.filters.looking !== "all" || S.filters.ageMin > 19 || S.filters.ageMax < 50;
       d.innerHTML = `<div class="deck-empty"><div class="em">🌈</div><b>${filtered ? "조건에 맞는 프로필을 다 봤어요" : "오늘의 추천을 모두 봤어요"}</b>
         <p class="muted" style="margin:0;font-size:13.5px">${filtered ? "필터를 넓히면 더 많은 사람을 만날 수 있어요." : "내일 새로운 프로필이 도착해요.<br>받은 좋아요를 확인해보는 건 어때요?"}</p>
         ${filtered ? `<button class="btn-grad" id="de-filter">필터 넓히기 ⚙️</button>` : `<button class="btn-grad" id="de-likes">받은 좋아요 보기 💜</button>`}
@@ -1160,9 +1227,13 @@
     const voted = S.votes[idx] !== undefined;
     const dist = q ? voteDist(idx, q.options.length) : [];
     const total = dist.reduce((a, b) => a + b, 0) + (voted ? 1 : 0);
+    // 라벨도 dayOfYear()/dailyTick()과 같은 KST 자정 경계를 써야 한다. 기기 로컬 날짜(new
+    // Date().getDate())를 쓰면 비KST 기기에서 "오늘의 질문" 라벨이 실제 질문 인덱스가 바뀌는
+    // 시점과 다른 날짜를 표시할 수 있다.
+    const [, kMo, kDa] = todayStr().split("-").map(Number);
     $("#view").innerHTML = `<div class="sec"><div class="sec-h">라운지</div>
       <p class="sec-sub">만남 전에, 가볍게 서로를 알아가는 공간</p></div>
-      ${q ? `<div class="dq-card"><div class="dq-tag">오늘의 질문 · ${new Date().getMonth() + 1}/${new Date().getDate()}</div>
+      ${q ? `<div class="dq-card"><div class="dq-tag">오늘의 질문 · ${kMo}/${kDa}</div>
         <h3>${esc(q.q)}</h3>
         ${q.options.map((op, i) => {
           const n = dist[i] + (voted && S.votes[idx] === i ? 1 : 0);
@@ -1190,7 +1261,15 @@
       S.votes[idx] = +b.dataset.i; save(); vCommunity(); vibrate(10);
     });
   }
-  const dayOfYear = () => Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  // 오늘의 질문/주간 가챠 픽업이 좋아요·매칭 리셋(dailyTick, todayStr 기준)과 같은 순간에
+  // 갱신되려면 dayOfYear()도 기기 로컬 타임존이 아니라 반드시 KST 자정 경계를 써야 한다.
+  // new Date().getFullYear()/getDate()는 기기 로컬 타임존을 그대로 쓰므로, 비KST 기기(예:
+  // UTC-5)에서는 KST 자정이 지나도 아직 전날로 계산되어 리셋 시점이 어긋난다. todayStr()가
+  // 이미 KST 기준 "YYYY-MM-DD"를 만들어주므로 이를 그대로 파싱해 연중 일수를 구한다.
+  const dayOfYear = () => {
+    const [y, m, d] = todayStr().split("-").map(Number);
+    return Math.floor((Date.UTC(y, m - 1, d) - Date.UTC(y, 0, 1)) / 86400000) + 1;
+  };
   function voteDist(idx, n) {
     // 시드 고정 의사난수 분포 (데모)
     const out = []; let seed = idx * 7919 + n * 104729;
@@ -1205,7 +1284,7 @@
     $("#view").innerHTML = `
       <div class="my-head">
         <span class="avatar" style="background:linear-gradient(135deg,${u.grad[0]},${u.grad[1]})">${u.emoji}</span>
-        <div><div class="mh-nm">${esc(u.name)}, ${u.age}</div>
+        <div><div class="mh-nm">${esc(u.name)}, ${userAge()}</div>
         <div class="mh-sub">📍 ${esc(u.region)} · ${u.mbti} · ${esc(u.lookingFor)}</div></div>
       </div>
       <div class="my-plan ${pl === "free" ? "free" : ""}">
