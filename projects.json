@@ -3,6 +3,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "완경노트",
+      "emoji": "🌸",
+      "domain": "건강/갱년기 YMYL",
+      "desc": "갱년기, 혼자 앓지 말고 숫자로. 개정 쿠퍼만 지수(Modified Kupperman Menopausal Index)로 안면홍조·불면·신경질·우울·관절통 등 11개 갱년기 증상을 4단계로 체크하면 가중 점수(최대 51점)로 강도를 신호등 4단계(정상/경증/중등도/중증)로 알려주는 무료 자가진단. 증상 일지 트래커(localStorage·연속기록 스트릭·최근 14회 추이 SVG 차트·지난 대비 증감)로 좋아지는지 나빠지는지 흐름 추적, 증상 11종 도감(원인+관리팁), 식이·운동·수면·영양 관리 가이드, 병원 가야 할 레드플래그(폐경 후 출혈·흉통·심한 우울 등), FAQ. 몰입4종: 진단 강도에 따라 색이 변하는 react-three-fiber 3D 왜곡 구체+Sparkles(3D), framer-motion 진입·결과 모션·카운트(애니메이션), 결과시 canvas-confetti+글로우(효과), Web Audio 합성 tick/chime 앰비언트 음소거 토글 기본 OFF(사운드). 수익화키트: AdSense env 인라인·갱년기 영양제/칼슘·요가매트·냉감침구 맥락 쿠팡 파트너스·FAQ JSON-LD·WebApplication·동적 OG·sitemap·robots·웹공유. 무가입·무백엔드. 참고 척도 Blatt-Kupperman. 의료 면책 명시. 타깃 키워드: 갱년기 증상·갱년기 자가진단·쿠퍼만 지수·완경·갱년기 테스트·갱년기 영양제.",
+      "live": "https://dydrms-menopause.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-menopause",
+      "status": "live",
+      "date": "2026-07-10"
+    },
+    {
       "name": "카페인각 (CaffeineGak)",
       "emoji": "☕",
       "domain": "건강/카페인",
