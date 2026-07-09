@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-07-09T00:00:00.000Z",
+  "updatedAt": "2026-07-09",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "씨네로그 (CineLog)",
+      "emoji": "🎞️",
+      "domain": "엔터/미디어",
+      "desc": "왓챠·노션 없이 무가입으로 본 영화·드라마·애니·예능을 별점과 함께 기록하는 시청 기록장. 보고 싶은 작품은 위시리스트로 담고 다 보면 원탭으로 이동, 유형·장르·상태 필터와 검색으로 보관함 관리. 리텐션: 시청일 기준 연속 기록 스트릭·8종 뱃지·이번 달/올해 편수. 연간 결산: 올해 본 편수·추정 시청시간·평균 별점·유형 분포 바·장르 취향 Top·월별 시청량 차트, 1080x1080 결산 카드 이미지 공유(Web Share/다운로드). 몰입 4종: react-three-fiber 회전 필름릴+별 파티클 히어로(3D), framer-motion 카드 진입·별점 스프링·카운트업·바텀시트 모달(애니메이션), canvas-confetti 첫 기록·뱃지·완료 폭죽+시머 글로우(효과), Web Audio 합성 기록/별점/뱃지음 음소거 토글 기본 OFF(사운드). 수익화 키트: AdSlot·AdSense env 인라인, 홈시네마 맥락 쿠팡(빔프로젝터·사운드바·팝콘메이커 등), WebApplication 메타·동적 OG·sitemap·robots·웹공유. 무가입·무백엔드(localStorage). 타깃 키워드: 영화 기록·드라마 시청 기록·별점 기록장·왓챠 대신·연간 결산.",
+      "live": "https://dydrms-cinelog.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-cinelog",
+      "status": "live",
+      "date": "2026-07-09"
+    },
     {
       "name": "댕냥나이 (PetAge)",
       "emoji": "🐾",
