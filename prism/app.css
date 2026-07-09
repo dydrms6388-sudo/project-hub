@@ -534,3 +534,28 @@ html.fs-3 #frame{zoom:1.5}
 .bal-opt.mine .bal-pct{color:var(--vio);font-weight:900}
 .bal-opt.other .bal-fill{background:linear-gradient(180deg,rgba(148,163,184,.06),rgba(148,163,184,.18))}
 .bal-next{width:100%;margin-top:10px;font-size:13px;padding:10px}
+
+/* ══ v2.1 프로필 사진 · 게이 요소 ══ */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pg-item{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;border:1px solid var(--line2);background:var(--card2)}
+.pg-item img{width:100%;height:100%;object-fit:cover;display:block}
+.pg-item.priv img{filter:brightness(.7)}
+.pg-del{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(10,12,20,.78);color:#fff;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;font-weight:700}
+.pg-main{position:absolute;bottom:4px;left:4px;background:var(--vio);color:#fff;font-size:10px;font-weight:800;border-radius:6px;padding:2px 6px}
+.pg-star{position:absolute;bottom:4px;left:4px;width:24px;height:24px;border-radius:50%;background:rgba(10,12,20,.7);color:#fbbf24;font-size:14px;display:flex;align-items:center;justify-content:center}
+.pg-lock,.pg-unlock{position:absolute;bottom:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(10,12,20,.7);font-size:12px;display:flex;align-items:center;justify-content:center}
+.pg-add{aspect-ratio:3/4;border:1.5px dashed var(--line2);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--tx3);font-size:26px;background:var(--card)}
+.pg-add small{font-size:11px}
+.pg-add:active{border-color:var(--vio);color:var(--vio)}
+.edit-sheet{max-height:86vh;overflow-y:auto}
+.mh-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.mtag{font-size:10.5px;font-weight:700;border-radius:99px;padding:2.5px 8px}
+.mtag.st{background:rgba(139,92,246,.16);color:#c4b5fd}
+.mtag.lk{background:rgba(45,212,191,.14);color:#5eead4}
+.my-photos{display:flex;gap:8px;padding:0 18px 12px;overflow-x:auto}
+.myp{flex:0 0 84px;height:108px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line2)}
+.myp.priv{display:flex;align-items:center;justify-content:center;background:var(--card2);color:var(--tx3);font-size:11px;font-weight:700;text-align:center}
+/* 프로필 상세 사진 히어로 (사진 있을 때) */
+.pd-hero.hasphoto{background-size:cover !important;background-position:center !important}
+.pd-photos{display:flex;gap:8px;overflow-x:auto;padding:2px 0 2px}
+.pd-photos .pdp{flex:0 0 120px;height:150px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line2)}

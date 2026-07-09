@@ -24,7 +24,7 @@
     votes: {},
     lastSwipe: null,
     settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 },
-    filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all" },
+    filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" },
     stats: { likesSent: 0, matches: 0 },
     items: { teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 },
     fx: { teleport: null, spotlightUntil: 0 }, // teleport: {region, until}
@@ -58,10 +58,22 @@
   S.balance = S.balance || {};
   S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
-  S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
+  S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" }, S.filters || {});
   if (S.filters.ageMax === 45) S.filters.ageMax = 50; // 구버전 기본값 승격
   S.stats = Object.assign({ likesSent: 0, matches: 0 }, S.stats || {});
-  const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
+  // 프로필 신규 필드 마이그레이션 (사진/성향/스타일/찾는관계 다중/커밍아웃)
+  if (S.user) {
+    if (!Array.isArray(S.user.photos)) S.user.photos = [];
+    if (!Array.isArray(S.user.privatePhotos)) S.user.privatePhotos = [];
+    if (!Array.isArray(S.user.lookingList)) S.user.lookingList = S.user.lookingFor ? [S.user.lookingFor] : [];
+    if (!Array.isArray(S.user.styles)) S.user.styles = [];
+    if (typeof S.user.position !== "string") S.user.position = "";
+    if (typeof S.user.outLevel !== "string") S.user.outLevel = "";
+  }
+  const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {
+    // localStorage 초과(사진 과다) 시 안내
+    toast && toast("⚠️ 저장 공간이 가득 찼어요. 사진 수를 줄여주세요");
+  } };
 
   const PLANS = {
     free:  { label: "무료",        likes: 20, supers: 1, seeLikes: false, rewind: 1,        boost: 0, ads: true,  read: false },
@@ -298,7 +310,57 @@
 
   /* ══ 온보딩 ══ */
   const REGIONS = ["서울", "경기", "인천", "부산", "대구", "대전", "광주", "울산", "세종", "강원", "충청", "전라", "경상", "제주"];
-  const LOOKING = ["진지한 연애", "가볍게 친구부터", "천천히 알아가기", "동네 친구", "운동 메이트"];
+  const LOOKING = ["진지한 연애", "가볍게 친구부터", "천천히 알아가기", "동네 친구", "운동 메이트", "취미 메이트", "여행 메이트"];
+  /* ── 게이 데이팅 프로필 요소 ── */
+  const POSITIONS = ["탑", "바텀", "올라운더", "버서블", "미정 · 천천히"];       // 성향(포지션)
+  const STYLES = ["곰", "트윙크", "머슬", "늑대", "슬림", "탄탄", "댄디", "젠틀", "털보", "베어"]; // 스타일/체형(커뮤니티 표현)
+  const OUT_LEVELS = ["비공개 (조심스러워요)", "일부만 알아요", "완전히 오픈"];   // 커밍아웃 정도
+  const posShort = (p) => (p || "").split(" ")[0];
+  // 데모 프로필 파생(고정 시드) — 시연용 포지션/스타일
+  const demoHash = (id) => Array.from(String(id)).reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const posOf = (p) => p.position || POSITIONS[demoHash(p.id) % POSITIONS.length];
+  const stylesOf = (p) => p.styles || (() => { const h = demoHash(p.id + "s"); return [STYLES[h % STYLES.length], STYLES[(h >> 3) % STYLES.length]].filter((v, i, a) => a.indexOf(v) === i); })();
+
+  /* ── 사진 업로드: 캔버스 리사이즈 → dataURL (localStorage 절약) ── */
+  function downscaleFile(file, maxDim, cb) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width: w, height: h } = img;
+        if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+        const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+        cv.getContext("2d").drawImage(img, 0, 0, w, h);
+        try { cb(cv.toDataURL("image/jpeg", 0.82)); } catch (err) { cb(null); }
+      };
+      img.onerror = () => cb(null);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => cb(null);
+    reader.readAsDataURL(file);
+  }
+  function pickPhotos(multiple, onDone) {
+    const inp = document.createElement("input");
+    inp.type = "file"; inp.accept = "image/*"; inp.multiple = !!multiple;
+    inp.style.display = "none";
+    document.body.appendChild(inp);
+    inp.onchange = () => {
+      const files = Array.from(inp.files || []).slice(0, 6);
+      if (!files.length) { inp.remove(); return; }
+      const out = []; let done = 0;
+      files.forEach((f) => downscaleFile(f, 900, (url) => {
+        if (url) out.push(url); done++;
+        if (done === files.length) { inp.remove(); onDone(out); }
+      }));
+    };
+    inp.click();
+  }
+  // 아바타: 사진 있으면 대표사진, 없으면 이모지+그라데이션
+  const avStyle = (o) => (o && o.photos && o.photos[0])
+    ? `background-image:url('${o.photos[0]}');background-size:cover;background-position:center`
+    : `background:linear-gradient(135deg,${(o && o.grad && o.grad[0]) || "#8b5cf6"},${(o && o.grad && o.grad[1]) || "#ec4899"})`;
+  const avEm = (o) => (o && o.photos && o.photos[0]) ? "" : ((o && o.emoji) || "🙂");
   const MBTIS = ["ISTJ","ISFJ","INFJ","INTJ","ISTP","ISFP","INFP","INTP","ESTP","ESFP","ENFP","ENTP","ESTJ","ESFJ","ENFJ","ENTJ"];
   const AV_EMOJIS = ["😎","🦊","🐻","🐯","🌊","🔥","🌙","⚡","🎧","🎨","🏀","🌵","🍀","🦁","🐺","🚀"];
   const AV_GRADS = [["#8b5cf6","#ec4899"],["#2563eb","#2dd4bf"],["#f59e0b","#ef4444"],["#10b981","#3b82f6"],["#d946ef","#f43f5e"],["#0ea5e9","#8b5cf6"],["#f97316","#eab308"],["#14b8a6","#a3e635"]];
@@ -309,7 +371,8 @@
   let ob = {};
   function startOnboarding() {
     ob = { step: 0, birthYear: "", agree1: false, agree2: false, name: "", region: "서울", town: "",
-      height: 175, mbti: "ENFP", lookingFor: LOOKING[0], tags: [], emoji: AV_EMOJIS[0], grad: AV_GRADS[0], intro: "" };
+      height: 175, mbti: "ENFP", lookingList: [LOOKING[0]], position: "", styles: [], outLevel: "",
+      tags: [], emoji: AV_EMOJIS[0], grad: AV_GRADS[0], photos: [], privatePhotos: [], intro: "" };
     show("scr-onboarding"); renderOb();
   }
   function renderOb() {
@@ -340,12 +403,19 @@
       ${obNextBtn(ob.name.trim().length >= 1)}`;
   }
   function obBasic() {
-    return `<h2 class="ob-h">기본 정보</h2><p class="ob-sub">매칭 추천에 활용돼요.</p>
+    return `<h2 class="ob-h">기본 정보</h2><p class="ob-sub">매칭 추천에 활용돼요. 성향·스타일은 나중에 언제든 바꿀 수 있어요.</p>
       <div class="ob-field"><label>키 — <b id="f-height-v">${ob.height}</b>cm</label>
         <input type="range" id="f-height" min="150" max="200" value="${ob.height}" style="width:100%;accent-color:var(--vio)"></div>
       <div class="ob-field"><label>MBTI</label><select class="ob-input" id="f-mbti">${MBTIS.map((m) => `<option ${m === ob.mbti ? "selected" : ""}>${m}</option>`).join("")}</select></div>
-      <div class="ob-field"><label>찾고 있는 관계</label><div class="seg" id="f-looking">${LOOKING.map((l) => `<button class="chip ${l === ob.lookingFor ? "on" : ""}" data-v="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
-      ${obNextBtn(true)}`;
+      <div class="ob-field"><label>성향 (포지션) <small class="tiny" style="font-weight:400">· 선택 · 프로필에만 표시</small></label>
+        <div class="chips" id="f-pos">${POSITIONS.map((p) => `<button class="chip ${p === ob.position ? "on" : ""}" data-v="${esc(p)}">${esc(p)}</button>`).join("")}</div></div>
+      <div class="ob-field"><label>스타일 <small class="tiny" style="font-weight:400">· 나를 표현하는 태그 (여러 개)</small></label>
+        <div class="chips" id="f-styles">${STYLES.map((s) => `<button class="chip ${ob.styles.includes(s) ? "on" : ""}" data-v="${esc(s)}">${esc(s)}</button>`).join("")}</div></div>
+      <div class="ob-field"><label>찾고 있는 관계 <small class="tiny" style="font-weight:400">· 여러 개 선택 가능</small></label>
+        <div class="chips" id="f-looking">${LOOKING.map((l) => `<button class="chip ${ob.lookingList.includes(l) ? "on" : ""}" data-v="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
+      <div class="ob-field"><label>커밍아웃 상태 <small class="tiny" style="font-weight:400">· 선택 · 안전을 위해</small></label>
+        <div class="chips" id="f-out">${OUT_LEVELS.map((o) => `<button class="chip ${o === ob.outLevel ? "on" : ""}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>
+      ${obNextBtn(ob.lookingList.length >= 1)}`;
   }
   function obTags() {
     return `<h2 class="ob-h">관심사를 골라주세요</h2><p class="ob-sub">3~5개 · 겹치는 관심사가 많을수록 궁합 점수가 올라가요.</p>
@@ -353,9 +423,15 @@
       ${obNextBtn(ob.tags.length >= 3, `다음 (${ob.tags.length}/5)`)}`;
   }
   function obAvatar() {
-    return `<h2 class="ob-h">아바타 만들기</h2><p class="ob-sub">사진 대신 아바타로 시작해요. 신원 노출 걱정 없이.</p>
-      <div class="av-preview"><span class="avatar" style="width:88px;height:88px;font-size:42px;background:linear-gradient(135deg,${ob.grad[0]},${ob.grad[1]})">${ob.emoji}</span><small>미리보기</small></div>
-      <div class="ob-field"><label>이모지</label><div class="avatar-pick" id="f-emoji">${AV_EMOJIS.map((e) => `<button class="av-opt ${e === ob.emoji ? "on" : ""}" data-v="${e}" aria-label="아바타 이모지 ${e}">${e}</button>`).join("")}</div></div>
+    const av = ob.photos[0]
+      ? `<span class="avatar" style="width:88px;height:88px;background-image:url('${ob.photos[0]}');background-size:cover;background-position:center"></span>`
+      : `<span class="avatar" style="width:88px;height:88px;font-size:42px;background:linear-gradient(135deg,${ob.grad[0]},${ob.grad[1]})">${ob.emoji}</span>`;
+    return `<h2 class="ob-h">프로필 사진</h2><p class="ob-sub">실제 사진을 올리거나, 아바타로 시작해도 돼요. 사진은 서버로 전송되지 않고 이 기기에만 저장돼요.</p>
+      <div class="av-preview">${av}<small>${ob.photos.length ? "대표 사진" : "아바타 미리보기"}</small></div>
+      <div class="ob-field"><label>내 사진 <small class="tiny" style="font-weight:400">· 여러 장 (최대 6) · 첫 장이 대표</small></label>
+        <div class="photo-grid" id="f-photos">${ob.photos.map((u, i) => `<div class="pg-item"><img src="${u}" alt=""><button class="pg-del" data-pi="${i}" aria-label="삭제">×</button>${i === 0 ? '<span class="pg-main">대표</span>' : ""}</div>`).join("")}
+          ${ob.photos.length < 6 ? `<button class="pg-add" id="f-photo-add">＋<small>사진 추가</small></button>` : ""}</div></div>
+      <div class="ob-field"><label>또는 아바타 이모지</label><div class="avatar-pick" id="f-emoji">${AV_EMOJIS.map((e) => `<button class="av-opt ${e === ob.emoji ? "on" : ""}" data-v="${e}" aria-label="아바타 이모지 ${e}">${e}</button>`).join("")}</div></div>
       <div class="ob-field"><label>배경 색감</label><div class="avatar-pick" id="f-grad">${AV_GRADS.map((g, i) => `<button class="av-opt ${g === ob.grad ? "on" : ""}" data-i="${i}" style="background:linear-gradient(135deg,${g[0]},${g[1]})" aria-label="배경 색 ${i + 1}"></button>`).join("")}</div></div>
       ${obNextBtn(true)}`;
   }
@@ -376,7 +452,23 @@
     on("#f-region", "change", (e) => { ob.region = e.target.value; });
     on("#f-height", "input", (e) => { ob.height = +e.target.value; $("#f-height-v").textContent = ob.height; });
     on("#f-mbti", "change", (e) => { ob.mbti = e.target.value; });
-    on("#f-looking", "click", (e) => { const b = e.target.closest(".chip"); if (b) { ob.lookingFor = b.dataset.v; re(); } });
+    on("#f-pos", "click", (e) => { const b = e.target.closest(".chip"); if (b) { ob.position = ob.position === b.dataset.v ? "" : b.dataset.v; re(); } });
+    on("#f-out", "click", (e) => { const b = e.target.closest(".chip"); if (b) { ob.outLevel = ob.outLevel === b.dataset.v ? "" : b.dataset.v; re(); } });
+    on("#f-styles", "click", (e) => {
+      const b = e.target.closest(".chip"); if (!b) return; const v = b.dataset.v;
+      if (ob.styles.includes(v)) { ob.styles = ob.styles.filter((x) => x !== v); b.classList.remove("on"); }
+      else if (ob.styles.length < 4) { ob.styles.push(v); b.classList.add("on"); }
+      else toast("스타일은 4개까지 고를 수 있어요");
+    });
+    on("#f-looking", "click", (e) => {
+      const b = e.target.closest(".chip"); if (!b) return; const v = b.dataset.v;
+      if (ob.lookingList.includes(v)) { ob.lookingList = ob.lookingList.filter((x) => x !== v); b.classList.remove("on"); }
+      else if (ob.lookingList.length < 3) { ob.lookingList.push(v); b.classList.add("on"); }
+      else { toast("최대 3개까지 고를 수 있어요"); return; }
+      const nx = $("#ob-next", el); if (nx) nx.disabled = ob.lookingList.length < 1;
+    });
+    on("#f-photo-add", "click", () => pickPhotos(true, (arr) => { ob.photos = ob.photos.concat(arr).slice(0, 6); re(); }));
+    on("#f-photos", "click", (e) => { const d = e.target.closest(".pg-del"); if (d) { ob.photos.splice(+d.dataset.pi, 1); re(); } });
     on("#f-tags", "click", (e) => {
       // 전체 리렌더 없이 in-place 토글 (스크롤·포커스 유지)
       const b = e.target.closest(".chip"); if (!b) return;
@@ -396,8 +488,9 @@
       else {
         const nowY = new Date().getFullYear();
         S.user = { name: ob.name.trim().slice(0, 10), age: nowY - (+ob.birthYear), region: ob.region + (ob.town.trim() ? " " + ob.town.trim() : ""),
-          height: ob.height, mbti: ob.mbti, lookingFor: ob.lookingFor, tags: ob.tags.slice(),
-          emoji: ob.emoji, grad: ob.grad.slice(), intro: ob.intro.trim() };
+          height: ob.height, mbti: ob.mbti, lookingList: ob.lookingList.slice(), lookingFor: ob.lookingList[0] || LOOKING[0],
+          position: ob.position, styles: ob.styles.slice(), outLevel: ob.outLevel, tags: ob.tags.slice(),
+          emoji: ob.emoji, grad: ob.grad.slice(), photos: ob.photos.slice(), privatePhotos: ob.privatePhotos.slice(), intro: ob.intro.trim() };
         S.joinedAt = Date.now();
         seedIncoming(3); save();
         enterMain();
@@ -467,6 +560,7 @@
       .filter((p) => p.age >= F.ageMin && (F.ageMax >= 50 || p.age <= F.ageMax)) // 50 = "50+" (상한 없음)
       .filter((p) => F.area === "all" || (F.area === "mine" ? sameArea(p) : zoneOf(areaOf(p)) === F.area))
       .filter((p) => F.looking === "all" || p.lookingFor === F.looking)
+      .filter((p) => !F.position || F.position === "all" || posOf(p) === F.position)
       .map((p) => ({ p, sc: compat(p) + Math.random() * 8 + (tp && groupOf(areaOf(p)) === groupOf(tp.region) ? 100 : 0) }))
       .sort((a, b) => b.sc - a.sc).map((x) => x.p);
     // 되돌린 카드는 항상 맨 위로 (필터에 걸려도 복귀 보장)
@@ -487,7 +581,7 @@
       spotlightActive() ? `✨ 스포트라이트 ${Math.ceil((S.fx.spotlightUntil - Date.now()) / 60000)}분` : "",
     ].filter(Boolean);
     const F = S.filters;
-    const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all";
+    const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all" || (F.position && F.position !== "all");
     $("#view").innerHTML = `<div class="disc">
       <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ 필터${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
       <div class="deck" id="deck"></div>
@@ -524,6 +618,9 @@
         <button class="chip ${F.area === "mine" ? "on" : ""}" data-area="mine">내 권역 (${esc(zoneOf(myArea()) || "내 지역")})</button>
         ${ZONES.filter((z) => z !== zoneOf(myArea())).map((z) => `<button class="chip ${F.area === z ? "on" : ""}" data-area="${z}">${z}</button>`).join("")}</div>
         <p class="tiny" style="margin:6px 0 0">다른 권역도 무료로 탐색할 수 있어요 · 텔레포트는 해당 권역을 우선 노출해주는 아이템이에요</p></div>
+      <div class="ob-field"><label>성향 (포지션)</label><div class="chips" id="f-pos">
+        <button class="chip ${(F.position || "all") === "all" ? "on" : ""}" data-pos="all">전체</button>
+        ${POSITIONS.map((p) => `<button class="chip ${F.position === p ? "on" : ""}" data-pos="${esc(p)}">${esc(p)}</button>`).join("")}</div></div>
       <div class="ob-field"><label>찾는 관계</label><div class="chips" id="f-look">
         <button class="chip ${F.looking === "all" ? "on" : ""}" data-look="all">전체</button>
         ${LOOKING.map((l) => `<button class="chip ${F.looking === l ? "on" : ""}" data-look="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
@@ -541,12 +638,15 @@
       if (a) { $$("[data-area]", m).forEach((x) => x.classList.remove("on")); a.classList.add("on"); }
       const lk = e.target.closest("[data-look]");
       if (lk) { $$("[data-look]", m).forEach((x) => x.classList.remove("on")); lk.classList.add("on"); }
+      const ps = e.target.closest("[data-pos]");
+      if (ps) { $$("[data-pos]", m).forEach((x) => x.classList.remove("on")); ps.classList.add("on"); }
     });
-    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 50, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
+    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
     $("#f-apply", m).onclick = () => {
       S.filters = { ageMin: +amin.value, ageMax: +amax.value,
         area: ($(".chip.on[data-area]", m) || {}).dataset ? $(".chip.on[data-area]", m).dataset.area : "all",
-        looking: ($(".chip.on[data-look]", m) || {}).dataset ? $(".chip.on[data-look]", m).dataset.look : "all" };
+        looking: ($(".chip.on[data-look]", m) || {}).dataset ? $(".chip.on[data-look]", m).dataset.look : "all",
+        position: ($(".chip.on[data-pos]", m) || {}).dataset ? $(".chip.on[data-pos]", m).dataset.pos : "all" };
       save(); m.remove(); vDiscover();
     };
   }
@@ -709,7 +809,7 @@
     m.innerHTML = `${confettiHTML()}
       <h2>우리, 통했어요!</h2><p>${esc(p.name)}님과 서로 좋아요를 눌렀어요 🎉</p>
       <div class="match-avs">
-        <div class="avatar" style="background:linear-gradient(135deg,${u.grad[0]},${u.grad[1]})">${u.emoji}</div>
+        <div class="avatar" style="${avStyle(u)}">${avEm(u)}</div>
         <span class="heart">💜</span>
         <div class="avatar" style="background:linear-gradient(135deg,${p.grad[0]},${p.grad[1]})">${p.emoji}</div>
       </div>
@@ -781,7 +881,11 @@
             <div class="pd-fact"><small>직업</small>${esc(p.job)}</div>
             <div class="pd-fact"><small>키</small>${p.height}cm</div>
             <div class="pd-fact"><small>MBTI</small>${p.mbti}</div>
-            <div class="pd-fact"><small>찾는 관계</small>${esc(p.lookingFor)}</div></div></div>
+            <div class="pd-fact"><small>성향</small>${esc(posOf(p))}</div></div></div>
+          <div class="pd-sec"><h4>스타일</h4>
+            <div class="chips">${stylesOf(p).map((s) => `<span class="chip" style="cursor:default">${esc(s)}</span>`).join("")}</div></div>
+          <div class="pd-sec"><h4>찾는 관계</h4>
+            <div class="chips">${(p.lookingList || [p.lookingFor]).map((l) => `<span class="chip on" style="cursor:default">${esc(l)}</span>`).join("")}</div></div>
           <div class="pd-sec"><h4>관심사 ${sh.length ? `· <span style="color:var(--vio)">${sh.length}개 겹침</span>` : ""}</h4>
             <div class="chips">${p.tags.map((t) => `<span class="chip ${sh.includes(t) ? "on" : ""}" style="cursor:default">${esc(t)}</span>`).join("")}</div></div>
           <div class="pd-sec"><h4>프라이빗 앨범</h4>
@@ -1147,10 +1251,12 @@
     const pl = S.premium.plan;
     $("#view").innerHTML = `
       <div class="my-head">
-        <span class="avatar" style="background:linear-gradient(135deg,${u.grad[0]},${u.grad[1]})">${u.emoji}</span>
+        <span class="avatar" style="${avStyle(u)}">${avEm(u)}</span>
         <div><div class="mh-nm">${esc(u.name)}, ${u.age}</div>
-        <div class="mh-sub">📍 ${esc(u.region)} · ${u.mbti} · ${esc(u.lookingFor)}</div></div>
+        <div class="mh-sub">📍 ${esc(u.region)} · ${u.mbti}${u.position ? " · " + esc(posShort(u.position)) : ""}</div>
+        ${(u.styles && u.styles.length) || (u.lookingList && u.lookingList.length) ? `<div class="mh-tags">${(u.styles || []).map((s) => `<span class="mtag st">${esc(s)}</span>`).join("")}${(u.lookingList || []).slice(0, 2).map((l) => `<span class="mtag lk">${esc(l)}</span>`).join("")}</div>` : ""}</div>
       </div>
+      ${u.photos && u.photos.length ? `<div class="my-photos">${u.photos.map((ph) => `<div class="myp" style="background-image:url('${ph}')"></div>`).join("")}${u.privatePhotos && u.privatePhotos.length ? `<div class="myp priv"><span>🔒 비밀 ${u.privatePhotos.length}</span></div>` : ""}</div>` : ""}
       <div class="my-plan ${pl === "free" ? "free" : ""}">
         <b>${pl === "free" ? "무료 플랜 이용 중" : "🎉 " + plan().label + " 이용 중"}</b>
         <p>누적 — 보낸 좋아요 <b>${S.stats.likesSent}</b> · 매치 <b>${S.stats.matches}</b>${pl === "free" ? " — PRISM+면 좋아요 무제한, 받은 좋아요 공개, 광고 제거." : " — 프리미엄 혜택 적용 중. 언제든 변경 가능."}</p>
@@ -1216,26 +1322,74 @@
   }
   function editProfileSheet() {
     const u = S.user;
-    const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 14px">프로필 수정</h3>
-      <div class="ob-field"><label>닉네임</label><input class="ob-input" id="e-name" maxlength="10" value="${esc(u.name)}"></div>
-      <div class="ob-field"><label>자기소개</label><textarea class="ob-input" id="e-intro" maxlength="120">${esc(u.intro)}</textarea></div>
-      <div class="ob-field"><label>관심사 (3~5개)</label><div class="chips" id="e-tags">${masterTags().map((t) => `<button class="chip ${u.tags.includes(t) ? "on" : ""}" data-v="${esc(t)}">${esc(t)}</button>`).join("")}</div></div>
-      <button class="btn-grad big" id="e-save">저장</button></div>`);
-    const tags = u.tags.slice();
-    $("#e-tags", m).onclick = (e) => {
-      const b = e.target.closest(".chip"); if (!b) return;
-      const t = b.dataset.v;
-      if (tags.includes(t)) { tags.splice(tags.indexOf(t), 1); b.classList.remove("on"); }
-      else if (tags.length < 5) { tags.push(t); b.classList.add("on"); }
-      else toast("최대 5개까지 고를 수 있어요");
+    // 로컬 드래프트 (저장 눌러야 반영)
+    const d = { name: u.name, intro: u.intro || "", tags: u.tags.slice(),
+      photos: (u.photos || []).slice(), privatePhotos: (u.privatePhotos || []).slice(),
+      position: u.position || "", styles: (u.styles || []).slice(),
+      lookingList: (u.lookingList || (u.lookingFor ? [u.lookingFor] : [])).slice(), outLevel: u.outLevel || "" };
+    const m = modal(`<div class="sheet edit-sheet"><div class="grip"></div><h3 style="margin:0 0 14px">프로필 수정</h3><div id="edit-body"></div></div>`);
+    const body = $("#edit-body", m);
+    const chips = (arr, sel, active) => arr.map((v) => `<button class="chip ${active(v) ? "on" : ""}" data-${sel}="${esc(v)}">${esc(v)}</button>`).join("");
+    const render = () => {
+      body.innerHTML = `
+        <div class="ob-field"><label>프로필 사진 <small class="tiny" style="font-weight:400">· 여러 장 · 첫 장이 대표</small></label>
+          <div class="photo-grid" id="e-photos">${d.photos.map((ph, i) => `<div class="pg-item"><img src="${ph}" alt=""><button class="pg-del" data-del="${i}" aria-label="삭제">×</button>${i === 0 ? '<span class="pg-main">대표</span>' : `<button class="pg-star" data-main="${i}" aria-label="대표로">☆</button>`}<button class="pg-lock" data-hide="${i}" aria-label="비밀사진으로">🔒</button></div>`).join("")}
+            ${d.photos.length < 6 ? `<button class="pg-add" id="e-photo-add">＋<small>사진 추가</small></button>` : ""}</div></div>
+        <div class="ob-field"><label>🔒 비밀 사진 <small class="tiny" style="font-weight:400">· 매치된 상대에게만 공개</small></label>
+          <div class="photo-grid" id="e-priv">${d.privatePhotos.map((ph, i) => `<div class="pg-item priv"><img src="${ph}" alt=""><button class="pg-del" data-pdel="${i}" aria-label="삭제">×</button><button class="pg-unlock" data-show="${i}" aria-label="공개사진으로">🔓</button></div>`).join("")}
+            ${d.privatePhotos.length < 6 ? `<button class="pg-add" id="e-priv-add">＋<small>비밀 추가</small></button>` : ""}</div>
+          <p class="tiny" style="margin:4px 0 0">사진의 🔒를 누르면 비밀 사진으로, 🔓를 누르면 공개로 옮겨져요.</p></div>
+        <div class="ob-field"><label>닉네임</label><input class="ob-input" id="e-name" maxlength="10" value="${esc(d.name)}"></div>
+        <div class="ob-field"><label>자기소개</label><textarea class="ob-input" id="e-intro" maxlength="120">${esc(d.intro)}</textarea></div>
+        <div class="ob-field"><label>성향 (포지션)</label><div class="chips" id="e-pos">${chips(POSITIONS, "pos", (v) => d.position === v)}</div></div>
+        <div class="ob-field"><label>스타일 (최대 4)</label><div class="chips" id="e-styles">${chips(STYLES, "sty", (v) => d.styles.includes(v))}</div></div>
+        <div class="ob-field"><label>찾는 관계 (최대 3)</label><div class="chips" id="e-look">${chips(LOOKING, "look", (v) => d.lookingList.includes(v))}</div></div>
+        <div class="ob-field"><label>커밍아웃 상태</label><div class="chips" id="e-out">${chips(OUT_LEVELS, "out", (v) => d.outLevel === v)}</div></div>
+        <div class="ob-field"><label>관심사 (3~5개)</label><div class="chips" id="e-tags">${chips(masterTags(), "tag", (v) => d.tags.includes(v))}</div></div>
+        <button class="btn-grad big" id="e-save">저장</button>`;
+      bind();
     };
-    $("#e-save", m).onclick = () => {
-      const nm = $("#e-name", m).value.trim();
-      if (!nm) { toast("닉네임을 입력해주세요"); return; }
-      if (tags.length < 3) { toast("관심사를 3개 이상 골라주세요"); return; }
-      u.name = nm.slice(0, 10); u.intro = $("#e-intro", m).value.trim(); u.tags = tags;
-      save(); m.remove(); vMy(); toast("저장했어요 ✓");
+    const toggleIn = (arr, v, max) => {
+      const i = arr.indexOf(v);
+      if (i >= 0) arr.splice(i, 1);
+      else if (arr.length < max) arr.push(v);
+      else { toast(`최대 ${max}개까지 고를 수 있어요`); return false; }
+      return true;
     };
+    const bind = () => {
+      $("#e-photo-add", body) && ($("#e-photo-add", body).onclick = () => pickPhotos(true, (a) => { d.photos = d.photos.concat(a).slice(0, 6); render(); }));
+      $("#e-priv-add", body) && ($("#e-priv-add", body).onclick = () => pickPhotos(true, (a) => { d.privatePhotos = d.privatePhotos.concat(a).slice(0, 6); render(); }));
+      $("#e-photos", body).onclick = (e) => {
+        const del = e.target.closest("[data-del]"), mn = e.target.closest("[data-main]"), hd = e.target.closest("[data-hide]");
+        if (del) { d.photos.splice(+del.dataset.del, 1); render(); }
+        else if (mn) { const [x] = d.photos.splice(+mn.dataset.main, 1); d.photos.unshift(x); render(); }
+        else if (hd) { const [x] = d.photos.splice(+hd.dataset.hide, 1); d.privatePhotos.push(x); d.privatePhotos = d.privatePhotos.slice(0, 6); render(); }
+      };
+      $("#e-priv", body).onclick = (e) => {
+        const del = e.target.closest("[data-pdel]"), sh = e.target.closest("[data-show]");
+        if (del) { d.privatePhotos.splice(+del.dataset.pdel, 1); render(); }
+        else if (sh) { const [x] = d.privatePhotos.splice(+sh.dataset.show, 1); d.photos.push(x); d.photos = d.photos.slice(0, 6); render(); }
+      };
+      $("#e-pos", body).onclick = (e) => { const b = e.target.closest("[data-pos]"); if (b) { d.position = d.position === b.dataset.pos ? "" : b.dataset.pos; render(); } };
+      $("#e-out", body).onclick = (e) => { const b = e.target.closest("[data-out]"); if (b) { d.outLevel = d.outLevel === b.dataset.out ? "" : b.dataset.out; render(); } };
+      $("#e-styles", body).onclick = (e) => { const b = e.target.closest("[data-sty]"); if (b && toggleIn(d.styles, b.dataset.sty, 4)) render(); };
+      $("#e-look", body).onclick = (e) => { const b = e.target.closest("[data-look]"); if (b && toggleIn(d.lookingList, b.dataset.look, 3)) render(); };
+      $("#e-tags", body).onclick = (e) => { const b = e.target.closest("[data-tag]"); if (b && toggleIn(d.tags, b.dataset.tag, 5)) render(); };
+      $("#e-name", body).oninput = (e) => { d.name = e.target.value; };
+      $("#e-intro", body).oninput = (e) => { d.intro = e.target.value; };
+      $("#e-save", body).onclick = () => {
+        const nm = d.name.trim();
+        if (!nm) { toast("닉네임을 입력해주세요"); return; }
+        if (d.tags.length < 3) { toast("관심사를 3개 이상 골라주세요"); return; }
+        if (d.lookingList.length < 1) { toast("찾는 관계를 1개 이상 골라주세요"); return; }
+        u.name = nm.slice(0, 10); u.intro = d.intro.trim(); u.tags = d.tags.slice();
+        u.photos = d.photos.slice(); u.privatePhotos = d.privatePhotos.slice();
+        u.position = d.position; u.styles = d.styles.slice();
+        u.lookingList = d.lookingList.slice(); u.lookingFor = d.lookingList[0] || u.lookingFor; u.outLevel = d.outLevel;
+        save(); m.remove(); vMy(); toast("저장했어요 ✓");
+      };
+    };
+    render();
   }
   function pinSheet(after) {
     if (hasPin()) {
