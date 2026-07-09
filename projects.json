@@ -3,6 +3,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "카페인각 (CaffeineGak)",
+      "emoji": "☕",
+      "domain": "건강/카페인",
+      "desc": "지금 내 몸속에 카페인이 얼마나 남았을까? 마신 커피·에너지드링크·차를 톡 누르면 반감기(성인 평균 5시간) 기반으로 체내 카페인을 실시간 계산하고, '언제 자면 개운한지' 수면 안전시각까지 알려주는 무료 카페인 트래커. 28종 음료 원탭 로그+직접 mg 입력, 오늘 섭취량 vs 식약처 하루 한도(성인 400·임산부 300·청소년 체중×2.5mg) 신호등 게이지, 24시간 체내 카페인 추이 SVG 곡선(수면 임계선·안전시각 마커), 흡연/경구피임약/임신 등 개인 반감기 조정, 오늘의 기록·잔존량 추적. 몰입4종: 카페인 수준에 따라 액체가 차오르고 색이 변하는 react-three-fiber 3D 커피잔+분자 오브젝트(3D), 실시간 카운트업·게이지 전환(애니메이션), 기록·과다시 canvas-confetti+글로우(효과), Web Audio 합성 'sip/ding' 음소거 토글 기본 OFF(사운드). 수익화키트: AdSense env 인라인·디카페인/L테아닌/허브티 맥락 쿠팡·Pro(광고제거·무제한기록·취침알림)·FAQ JSON-LD·WebApplication·sitemap·robots·웹공유. 꿀잠 계산기(goyo/sleep) 크로스링크. 무가입·무백엔드(localStorage). 데이터 출처 식약처·FDA·EFSA. 타깃 키워드: 카페인 계산기·카페인 반감기·하루 카페인 권장량·몸속 카페인·카페인 수면.",
+      "live": "https://dydrms-caffeine.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-caffeine",
+      "status": "live",
+      "date": "2026-07-10"
+    },
+    {
       "name": "몽글태명",
       "emoji": "🍼",
       "domain": "출산·육아",
