@@ -1,7 +1,17 @@
 {
-  "updatedAt": "2026-07-09T00:37:08.869922Z",
+  "updatedAt": "2026-07-09T12:00:00.000000Z",
   "owner": "dydrms6388",
   "projects": [
+    {
+      "name": "텃밭각 (TeotbatGak)",
+      "emoji": "🌱",
+      "domain": "생활/가드닝",
+      "desc": "내 지역·재배장소(베란다·화분·노지)·햇빛 방향만 고르면 지금 심을 수 있는 작물을 추천하고 파종~수확 시기·재배법·물주기·화분 크기까지 알려주는 무설치 텃밭 플래너. 24종 작물 도감(SSG·HowTo JSON-LD, 상추·방울토마토·고추·오이·깻잎·바질 등 파종/수확 월·발아일·일조·물주기·병해충·팁), 작물별 12개월 파종·수확 캘린더(중부/남부 전환·이번 달 하이라이트), 증상 진단 룰엔진(과습 등 10대 원인 신호등+처방·예방)·손가락 2cm 물주기 판단기(가정 텃밭 실패 1위 과습 예방), 내 텃밭 성장 트래커(발아·수확 D-day·물주기 알림·성장일지·수확 뱃지). 초보 가이드 SSG(FAQPage JSON-LD). 몰입 4종(3D 화분새싹 r3f·framer 모션·수확 컨페티·잎버스트·Web Audio 합성음, 음소거 기본OFF). 수익화키트(AdSense env 인라인·ads.txt·씨앗/모종/상토/화분/식물LED 등 맥락 쿠팡 파트너스·동적 OG/sitemap 31/robots·공유). 무백엔드·무가입 로컬 저장. 물주기 알림앱(mulju-plant-care)과 파종·수확 캘린더 축으로 분리.",
+      "live": "https://dydrms-teotbatgak.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-teotbatgak",
+      "status": "live",
+      "date": "2026-07-09"
+    },
     {
       "name": "배드민턴각 (BadmintonGak)",
       "emoji": "🏸",
