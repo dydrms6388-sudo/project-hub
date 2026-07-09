@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-09T14:38:29.307051Z",
+  "updatedAt": "2026-07-09",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -2810,6 +2810,16 @@
       "desc": "홀랜드(RIASEC) 기반 무료 직업적성 테스트 — 36문항 5분, 무가입. 6유형·홀랜드코드·추천직업/전공·결과저장/공유",
       "live": "https://dydrms-jinro-compass.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/dydrms-jinro-compass",
+      "status": "live",
+      "date": "2026-07-09"
+    },
+    {
+      "name": "챙겨먹어",
+      "emoji": "💊",
+      "domain": "건강·복약관리",
+      "desc": "매일 먹는 약·영양제를 시간대별(아침·점심·저녁·자기전)로 등록하고 원탭 체크하는 무가입 복용 트래커. 연속 기록·캘린더 히트맵으로 \"오늘 먹었나?\"를 해결하고, 남은 개수를 켜두면 다 떨어지기 전 재구매를 알려줘 재방문·재구매 루프를 만든다. 성분별 복용 시간 가이드(철분 공복·칼슘/비타민D/오메가3 식후·마그네슘 취침전·유산균 항생제 2시간 등, NIH ODS·Mayo 근거)와 SSG 12종, 흡수 방해/시너지 요약. 성분 궁합 심화는 영양제 궁합 체커로 크로스링크(축 분리). 몰입4종: r3f 3D 떠다니는 캡슐·알약, framer 모션·카운트업, canvas-confetti 하루 완료 폭죽, Web Audio 합성 체크음(음소거 기본 OFF). 수익화키트: AdSense(env 인라인·ads.txt)·쿠팡 파트너스 영양제 재구매(고AOV·10~13% 반복구매 LTV) 재고소진 CTA·성분별 슬롯, WebApplication+FAQPage JSON-LD·동적 OG·sitemap/robots·웹 면책/개인정보. 무백엔드 localStorage(서버 전송 0). YMYL: 참고용·처방약/임신/수유 약사 상담 명시. 타깃: 영양제 먹는 시간·복약 알림·영양제 트래커·철분 공복·마그네슘 취침전. 비금융 다각화(큐 금융소진 발산).",
+      "live": "https://dydrms-yaktime.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-yaktime",
       "status": "live",
       "date": "2026-07-09"
     }
