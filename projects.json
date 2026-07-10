@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10T06:19:00.456Z",
+  "updatedAt": "2026-07-10T07:34:12.745Z",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -3010,6 +3010,16 @@
       "desc": "초등 1·2학년 받아쓰기를 급수별로 듣고(브라우저 음성) 쓰고 채점받는 무료 학습 도구. 급수24·176문항+오늘의 받아쓰기+스피드전(60초)+오답노트+도장/스트릭. 부모·교사용 문제 출제→불러주기·문제지 인쇄/PDF까지. 몰입4종(3D 한글블록·애니·컨페티·합성음)+SEO.",
       "live": "https://dydrms-badasseugi.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/dydrms-badasseugi",
+      "status": "live",
+      "date": "2026-07-10"
+    },
+    {
+      "name": "마음날씨",
+      "emoji": "🌤️",
+      "domain": "마음챙김/감정기록",
+      "desc": "오늘 내 마음을 '날씨'로 기록하는 가입 없는 무료 감정일기·무드트래커. 감정=날씨 10종(맑음·무지개·구름조금·산들바람·흐림·안개·눈·강풍·비·천둥번개)을 골라 강도·감정어휘·요인14개·한줄저널로 30초 체크인. 감정 캘린더(월 히트맵+연간 year-in-pixels)와 '올해의 마음날씨' 공유 이미지(캔버스 자동생성·저장/공유=바이럴 훅). 인사이트=맑음지수(valence×강도)·감정분포·나를 맑게/흐리게 하는 요인 상관(factor lift ±0.08 임계)·요일 패턴·스트릭, 전부 결정론 클라이언트 계산. 흐린 감정일 때 4-7-8 호흡 도구+마음날씨 예보+월간 마일스톤 축하로 재방문 유도. 근거 프레이밍(affect labeling UCLA 2007·expressive writing Pennebaker·gratitude Emmons·CBT 자기관찰)을 신뢰 카피로 노출, /guide SEO 랜딩(감정일기 쓰는법·감정단어 목록·FAQ). 몰입4종: react-three-fiber 감정별 날씨 오브(비 낙하·눈 부유·강풍 횡류·천둥 플래시), framer-motion 시트·count-up, canvas-confetti(밝은 감정 폭죽·불쾌 감정 차분한 빛번짐), Web Audio 날씨별 앰비언트(기본 OFF 음소거토글). 수익화키트: AdSense env 인라인(몰입구간 광고배제·인사이트/기록 탭만)·쿠팡 파트너스 셀프케어 굿즈(저널·수면·명상 컨텍스추얼)·JSON export·JSON-LD·동적 OG·sitemap·robots·웹공유. 무가입·무백엔드(localStorage), 비의료 디스클레이머. 타깃 키워드: 감정일기·무드트래커·기분일기·감정 캘린더·무료 감정일기·감정일기 쓰는법·감정단어 목록·오늘의 기분.",
+      "live": "https://dydrms-maeumnalssi.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-maeumnalssi",
       "status": "live",
       "date": "2026-07-10"
     }
