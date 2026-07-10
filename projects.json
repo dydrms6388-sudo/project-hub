@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10T07:34:12.745Z",
+  "updatedAt": "2026-07-10",
   "owner": "dydrms6388",
   "projects": [
     {
@@ -3020,6 +3020,16 @@
       "desc": "오늘 내 마음을 '날씨'로 기록하는 가입 없는 무료 감정일기·무드트래커. 감정=날씨 10종(맑음·무지개·구름조금·산들바람·흐림·안개·눈·강풍·비·천둥번개)을 골라 강도·감정어휘·요인14개·한줄저널로 30초 체크인. 감정 캘린더(월 히트맵+연간 year-in-pixels)와 '올해의 마음날씨' 공유 이미지(캔버스 자동생성·저장/공유=바이럴 훅). 인사이트=맑음지수(valence×강도)·감정분포·나를 맑게/흐리게 하는 요인 상관(factor lift ±0.08 임계)·요일 패턴·스트릭, 전부 결정론 클라이언트 계산. 흐린 감정일 때 4-7-8 호흡 도구+마음날씨 예보+월간 마일스톤 축하로 재방문 유도. 근거 프레이밍(affect labeling UCLA 2007·expressive writing Pennebaker·gratitude Emmons·CBT 자기관찰)을 신뢰 카피로 노출, /guide SEO 랜딩(감정일기 쓰는법·감정단어 목록·FAQ). 몰입4종: react-three-fiber 감정별 날씨 오브(비 낙하·눈 부유·강풍 횡류·천둥 플래시), framer-motion 시트·count-up, canvas-confetti(밝은 감정 폭죽·불쾌 감정 차분한 빛번짐), Web Audio 날씨별 앰비언트(기본 OFF 음소거토글). 수익화키트: AdSense env 인라인(몰입구간 광고배제·인사이트/기록 탭만)·쿠팡 파트너스 셀프케어 굿즈(저널·수면·명상 컨텍스추얼)·JSON export·JSON-LD·동적 OG·sitemap·robots·웹공유. 무가입·무백엔드(localStorage), 비의료 디스클레이머. 타깃 키워드: 감정일기·무드트래커·기분일기·감정 캘린더·무료 감정일기·감정일기 쓰는법·감정단어 목록·오늘의 기분.",
       "live": "https://dydrms-maeumnalssi.vercel.app",
       "github": "https://github.com/dydrms6388-sudo/dydrms-maeumnalssi",
+      "status": "live",
+      "date": "2026-07-10"
+    },
+    {
+      "name": "건반노트 (Geonbannote)",
+      "emoji": "🎹",
+      "domain": "음악/피아노",
+      "desc": "설치·회원가입 없이 웹에서 바로 치는 온라인 피아노 + 청음(귀) 훈련 게임. 음정·코드성질·단음·멜로디 4가지 청음 모드로 XP·레벨·연속 스트릭을 쌓고(재방문 훅), Web Audio 합성음으로 만든 진짜 피아노 소리로 연주(마우스·터치·컴퓨터 키보드 A S D F). 코드 사전(15종×12루트 구성음·건반 하이라이트·소리재생·해설), 스케일 10종(올라가기/내려가기), 메트로놈(탭템포·박자 표시등)까지 올인원. 계이름↔ABC 전환·라벨 토글·음량/음소거. 기록은 서버 전송 없이 내 브라우저에만 저장(프라이버시). 몰입4종: r3f 3D 떠다니는 건반/음표 오브, framer-motion 전환·레벨 게이지, canvas-confetti 정답·레벨업 연출, Web Audio 합성 피아노·효과음(음소거 토글). 수익화: femtech 아닌 음악 버티컬 애드센스 + 쿠팡 파트너스(디지털피아노·미디키보드·모니터링헤드폰·피아노교본 맥락). SEO: 온라인 피아노·가상 피아노·청음 훈련·피아노 코드·코드 사전·메트로놈·계이름·절대음감 정조준 + WebApplication/FAQPage JSON-LD·sitemap/robots·OG. 큐 금융소진→비금융 발산(음악 버티컬은 guitarlab 기타뿐이라 피아노=신규 갭).",
+      "live": "https://geonbannote.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/geonbannote",
       "status": "live",
       "date": "2026-07-10"
     }
