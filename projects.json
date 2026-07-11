@@ -3431,6 +3431,16 @@
       "github": "https://github.com/dydrms6388-sudo/dydrms-studyleague",
       "status": "live",
       "date": "2026-07-12"
+    },
+    {
+      "name": "자취생존",
+      "emoji": "🏠",
+      "domain": "생활·자취 (살림/예산)",
+      "desc": "처음 자취 시작한 사회초년생(자취 1~2년차 2030)의 한 달 살림·돈·고독을 한 번에 관리하는 자취 생존 트래커 + 또래 자취방. 혼자 살며 식비/공과금/살림 장만이 막막하고 '나만 헤매나' 불안한 초년생에게 또래 기준점 제공. 개인: 월 식비/배달비/공과금/교통비 기록+예산 대비, 살림 장만 체크리스트(냉장고·전자레인지·청소기·수납… 배지 수집), 자취 일기/스트릭(연속 자취일·최고기록 보존), 월말 정산 리포트. 그룹: 익명 자취방(4자리 코드·무가입) → '이번 달 또래 자취생 평균 식비/배달비/공과금' 비교, 절약 랭킹, 원탭 응원, 자취 꿀팁 피드(냄새/벌레/이웃 소음 대처). 리텐션: 매월 공과금·식비 갱신(주기) + 또래 소셜비교 + 살림 장만 배지 수집 + 스트릭. 몰입4종: react-three-fiber 원룸 인테리어 3D(살림 채울수록 방이 채워짐)+파티클(ssr:false·WebGL 실패시 ErrorBoundary 그라디언트), framer-motion 예산 게이지 채움·배지 reveal, canvas-confetti 살림 장만/월말 정산 연출, Web Audio 100% 합성 아늑한 로파이 앰비언트(음소거 토글 기본 OFF). SEO: 자취/자취 시작/자취 식비/자취 살림 장만/원룸 자취 꿀팁 롱테일 가이드(HowTo·FAQ JSON-LD)·동적 OG·sitemap/robots·BreadcrumbList. 수익화키트: AdSense(env 인라인·ads.txt·메타)·자취 가전/수납/청소용품/가스레인지 쿠팡 파트너스·개인정보/문의/소개. PWA(manifest.json+Service Worker+아이콘, 오프라인 지출·체크리스트·스트릭 조회). 무가입·무백엔드(개인 기록은 기기 로컬, 자취방은 격리스키마 DB 옵션)·무유료API. 기존 가계부/예산 앱은 범용이라 자취 특화(살림 장만 체크리스트+또래 자취 비용 비교+자취 꿀팁 방) 빈틈 정조준, dedup0(자취 0건) 신규 버티컬(생활·자취 축).",
+      "live": "https://dydrms-jachisurvival.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-jachisurvival",
+      "status": "live",
+      "date": "2026-07-12"
     }
   ],
   "updatedAt": "2026-07-12"
