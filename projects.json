@@ -3391,7 +3391,17 @@
       "github": "https://github.com/dydrms6388-sudo/dydrms-jeryegak",
       "status": "live",
       "date": "2026-07-11"
+    },
+    {
+      "name": "크루런",
+      "emoji": "🏃",
+      "domain": "운동·건강 (러닝/그룹 챌린지)",
+      "desc": "혼자 뛰는 직장인 러너를 위한 비대면 러닝크루 릴레이 — 익명 크루원들의 달린 거리를 합산해 서울→부산(422km)·제주 횡단(180km)·국토대장정(1,975km) 같은 목표 코스를 함께 채워가는 비동기 그룹 챌린지. 오프라인 크루 모임은 시간·장소 부담이 큰 1인 러너에게 '함께'의 동기를 제공. 개인: 오늘 달린 거리·페이스·시간 기록, 주간/누적 거리, 개인 러닝 스트릭(연속 달리기·끊기면 리셋·최고기록 보존), 목표 거리까지 진행률. 그룹: 가입 없이 4자리 초대코드로 크루 방 입장 → 내 거리가 크루 합산거리에 실시간 반영, '우리 크루 지금 대전 통과!' 구간 통과 알림, 크루 주간 랭킹·개인 기여도(%), 구간별 도시 마일스톤 배지 수집. 리텐션: 매주 갱신되는 주간 목표+크루 랭킹(주기적 새 동기), 구간 통과 도시 배지 수집, 누적거리 티어 성장(루키→페이스메이커→에이스→레전드), localStorage 진행 저장(무가입). 몰입4종: react-three-fiber 코스 지도 위 크루 진행 마커+구간 통과시 도시 폭죽 파티클(ssr:false·WebGL 실패시 ErrorBoundary 그라디언트), framer-motion 거리 채움 게이지·랭킹 카드 전환·배지 reveal, canvas-confetti 구간 통과 연출, Web Audio 100% 합성 고요한 새벽 풍경 앰비언트(음소거 토글 기본 OFF). SEO: 러닝크루/달리기 챌린지/비대면 러닝/거리 합산 릴레이 롱테일 가이드(HowTo·FAQ JSON-LD)·동적 OG·sitemap/robots·BreadcrumbList. 수익화키트: AdSense(env 인라인·ads.txt·메타)·러닝화/스마트워치/보틀/기능성 의류 쿠팡 파트너스·개인정보/문의/소개·YMYL 면책. PWA(manifest.json+Service Worker+아이콘, 오프라인에서도 내 기록·스트릭 조회). 무가입·무백엔드(개인 거리는 기기 로컬, 크루 방은 격리스키마 DB 옵션)·무유료API. 기존 만보왕(만보기)·러닝페이스(페이스 계산기)는 개인 기록 한정이라 익명 크루 거리 합산 릴레이·구간 통과·랭킹 빈틈 정조준, dedup0 신규 버티컬(운동·그룹 챌린지 축).",
+      "live": "https://dydrms-crewrun.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-crewrun",
+      "status": "live",
+      "date": "2026-07-12"
     }
   ],
-  "updatedAt": "2026-07-11"
+  "updatedAt": "2026-07-12"
 }
