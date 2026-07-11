@@ -3461,6 +3461,16 @@
       "github": "https://github.com/dydrms6388-sudo/dydrms-geumju",
       "status": "live",
       "date": "2026-07-12"
+    },
+    {
+      "name": "교정동행",
+      "emoji": "🦷",
+      "domain": "미용·의료 (치아교정 동행)",
+      "desc": "치아교정(투명교정·레진·설측)을 진행 중인 20~30대가 1~2년 장기전을 버티게 돕는 교정 동행 트래커 + 같은 개월차 익명 교정방. 매달 조정 통증·식사 제한·장치 착용 피로(투명교정 하루 22시간)가 누적되어 중도 포기가 잦은 교정 환자에게 진행 가시화와 또래 기준점을 제공. 개인: 교정 시작일 D-day·남은 예정일 카운트다운, 투명교정 일일 착용시간 스트릭(목표 22h·연속 달성·최고기록 보존), 매달 조정(visit) 기록·통증·식단 제한 일기, 칫솔질/세정 루틴 체크, 장치 교체 트래커. 그룹: 익명 교정방(4자리 코드·무가입, 같은 개월차 매칭) → 이번 주 착용시간 랭킹, '같은 개월차 평균 착용시간' 비교, 조정 후 익명 응원 피드, 원탭 응원. 리텐션: 매달 조정·장치 교체 갱신(주기) + 일일 착용 스트릭 + 마일스톤 배지(100일·반년·1년·장치 해제·보정기 시작 수집) + 개월차 소셜비교. 몰입4종: react-three-fiber 치아가 정렬되는 3D(착용 누적일수마다 한 칸씩 이동, ssr:false·WebGL 실패시 ErrorBoundary 그라디언트), framer-motion 착용 게이지·마일스톤 reveal, canvas-confetti 조정 통과·장치 해제 연출, Web Audio 100% 합성 차분한 앰비언트(음소거 토글 기본 OFF). SEO: 치아교정/투명교정/교정 D-day/교정 통증 대처/교정 식사/래티널 착용 시간 롱테일 가이드(HowTo·FAQ JSON-LD)·동적 OG·sitemap/robots·BreadcrumbList. 수익화키트: AdSense(env 인라인·ads.txt·메타)·교정 칫솔/치간칫솔/데탐콤/구강세정기/보정기 세정제 쿠팡 파트너스·개인정보/문의/소개. PWA(manifest.json+Service Worker+아이콘, 오프라인 착용시간·D-day·조정 기록 조회). 무가입·무백엔드(개인 기록은 기기 로컬, 교정방은 격리스키마 DB 옵션)·무유료API. 기존 이빨괜찮아(구강건강 콘텐츠)는 교정 진행 트래커·같은 개월차 또래 비교 빈틈 정조준, 의료 정보이므로 YMYL 면책 명시(진단 대체 아님), dedup0(교정 진행 트래커 0건) 신규 버티컬(미용·의료 축).",
+      "live": "https://dydrms-gyocorrect.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-gyocorrect",
+      "status": "live",
+      "date": "2026-07-12"
     }
   ],
   "updatedAt": "2026-07-12"
