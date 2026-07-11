@@ -3401,6 +3401,16 @@
       "github": "https://github.com/dydrms6388-sudo/dydrms-crewrun",
       "status": "live",
       "date": "2026-07-12"
+    },
+    {
+      "name": "통잠동네",
+      "emoji": "🍼",
+      "domain": "육아·가족 (신생아/수면)",
+      "desc": "밤중 수유로 못 자는 0~12개월 신생아 부모를 위한 아기 통잠(밤새 안 깨고 자기) 트래커 + 같은 월령 또래방. '우리 애만 안 자나' 불안을 또래 비교로 녹이고 수면교육 진행을 한눈에. 개인: 오늘 밤잠/낮잠 기록(취침·기상·깬 횟수 원탭 로그), 통잠 연속일 스트릭(끊기면 리셋·최장 기록 보존=손실회피), 통잠 진행 그래프, 하루 수면 총량 vs 월령 권장량, 성장 타임라인. 그룹: 같은 월령 부모 익명방(4자리 코드 입장·무가입) → '이 주령 또래 통잠 성공률 N%' 실시간 비교, 우리 아기 순위, 원탭 응원, 주령별 수면 팁 피드. 리텐션: 매일 수면 기록(주기 갱신) + 또래 소셜비교 + 통잠 마일스톤 배지(첫 통잠·3·7·30일) 수집 + 스트릭. 몰입4종: react-three-fiber 잔잔한 별빛/달빛 야경 + 통잠 성공시 별뿌리기 파티클(ssr:false·WebGL 실패시 ErrorBoundary 그라디언트), framer-motion 수면 게이지 채움·주령 카드 전환, canvas-confetti 마일스톤 연출, Web Audio 100% 합성 자장가 풍경 앰비언트+백색소음 옵션(음소거 토글 기본 OFF). SEO: 아기 통잠/신생아 수면/수면교육/백일 몸부림/월령 수면시간 롱테일 가이드(HowTo·FAQ JSON-LD·의료정보 YMYL 면책 명시)·동적 OG·sitemap/robots·BreadcrumbList. 수익화키트: AdSense(env 인라인·ads.txt·메타)·수면조끼/스와들/백색소음기/이유식용품 쿠팡 파트너스·개인정보/문의/소개. PWA(manifest.json+Service Worker+아이콘, 오프라인에서도 수면 기록·스트릭 조회·새벽 원탭 입력). 무가입·무백엔드(개인 기록은 기기 로컬, 또래방은 격리스키마 DB 옵션)·무유료API·의료진단 아님 명시. 기존 예방접종/이유식 앱과 달리 수면교육 진행 기록+같은 월령 또래 통잠률 비교 빈틈 정조준, dedup0 신규 버티컬(육아·신생아 수면 축).",
+      "live": "https://dydrms-tongjam.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-tongjam",
+      "status": "live",
+      "date": "2026-07-12"
     }
   ],
   "updatedAt": "2026-07-12"
