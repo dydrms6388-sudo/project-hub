@@ -7,7 +7,7 @@
     "pass": 32,
     "reviewNeeded": 3,
     "reviewing": 0,
-    "avgOverall": 82.3
+    "avgOverall": 82.4
   },
   "projects": [
     {
@@ -1445,13 +1445,13 @@
       "source": "daily/2026-07-11-nickfactory",
       "live": "https://dydrms-nickfactory.vercel.app",
       "axes": {
-        "functional": 72,
+        "functional": 75,
         "mobileUX": 58,
         "design": 74,
         "content": 64,
         "realValue": 60
       },
-      "reviewerAvg": 65.6,
+      "reviewerAvg": 66.2,
       "userScores": [
         62,
         58,
@@ -1460,22 +1460,28 @@
         64
       ],
       "userAvg": 59.6,
-      "overall": 62.6,
+      "overall": 62.9,
       "findings": [
-        "클립보드 복사가 navigator.clipboard only — 불안전 컨텍스트/구 Safari에서 조용히 실패(execCommand 폴백 없음, 복사됨 피드백 안 뜸).",
-        "터치타겟 44px 미만(Chip ~28px, 복사/공유 ~24px) + safe-area/viewportFit=cover 미적용 → iOS 노치/홈바 겹침.",
-        "이름 뱅크 얇음(PET 24개, GUILD_EN 16개 진부)·영어 핸들 제네릭 → 무료 생성기와 차별성 약함, 중복/사용가능 확인 없음.",
-        "blend 분기가 2음절 파편 생성 가능(이름 sanitize 없이 길이만 6 제한).",
-        "Scene3D 풀스크린 상시 렌더 — 로우엔드 모바일 배터리/GPU 소모, 디바이스별 비활성화 토글 없음."
+        "클립보드 복사 폴백 추가(됨): clipboard API → textarea+execCommand, onCopy/onShare 적용. 비보안/구Safari 조용한 실패 해소.",
+        "잔여: 터치타겟 44px 미만(Chip/복사·공유) + safe-area/viewportFit 미적용 → iOS 노치/홈바 겹침.",
+        "잔여: 이름 뱅크 얇음(PET 24·GUILD 16 진부)·영어 핸들 제네릭, 중복/사용가능 확인 없음.",
+        "잔여: blend 분기 2음절 파편 가능(sanitize 없음).",
+        "잔여: Scene3D 상시 풀스크린 렌더 — 로우엔드 배터리/GPU, 디바이스 토글 없음."
       ],
-      "changes": [],
+      "changes": [
+        "NickFactory.tsx copyText 헬퍼(clipboard→execCommand 폴백) 추가, onCopy/onShare에 적용(단일 수정 루프, 전면 재평가 아님)."
+      ],
       "method": "intake-screening(1 reviewer+user 통합)",
       "status": "review-needed",
-      "loops": 0,
+      "loops": 1,
       "history": [
         {
           "loop": 0,
           "overall": 62.6
+        },
+        {
+          "loop": 1,
+          "overall": 62.9
         }
       ],
       "reviewedAt": "2026-07-12"
