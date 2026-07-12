@@ -8,8 +8,27 @@
   const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
   const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const rnd = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  const todayStr = () => new Date().toISOString().slice(0, 10);
+  // 이 앱은 한국(KST, UTC+9) 사용자 전용이므로 '오늘'/'이번 달' 경계는 항상 KST 자정 기준이어야 한다.
+  // new Date().toISOString()은 기기 시간대와 무관하게 UTC 자정을 경계로 삼기 때문에, 실제로는
+  // KST 자정이 아니라 오전 9시에 날짜가 바뀌는 버그가 생긴다. UTC 타임스탬프에 9시간을 더한 뒤
+  // ISO 문자열로 잘라내면(같은 트릭을 두 함수 모두에서 사용) 기기 시간대에 관계없이 KST 기준
+  // 날짜/월 문자열을 얻을 수 있다.
+  const KST_OFFSET_MS = 9 * 3600000;
+  const kstNow = () => new Date(Date.now() + KST_OFFSET_MS);
+  const todayStr = () => kstNow().toISOString().slice(0, 10);
+  const kstMonthStr = () => kstNow().toISOString().slice(0, 7);
   const vibrate = (ms) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+  // 생일(월/일)까지 반영한 정확한 만 나이 계산. kstNow()는 기기 로컬 시각에 9시간을 더한
+  // Date 객체이므로, 로컬 getter(getFullYear 등)가 아니라 UTC getter를 써야 todayStr()와
+  // 같은 KST 기준 "오늘"을 얻는다(그렇지 않으면 다시 기기 타임존에 좌우되는 버그가 생긴다).
+  const calcAge = (y, m, d) => {
+    const n = kstNow();
+    const ny = n.getUTCFullYear(), nm = n.getUTCMonth() + 1, nd = n.getUTCDate();
+    let age = ny - y;
+    if (nm < m || (nm === m && nd < d)) age--; // 올해 생일이 아직 안 지났으면 -1
+    return age;
+  };
+  const daysInMonth = (y, m) => new Date(y, m, 0).getDate(); // 달력상의 말일 수 계산(순수 산술, KST 경계와 무관)
 
   /* ── 상태 ── */
   const DEFAULTS = () => ({
@@ -24,7 +43,10 @@
     votes: {},
     lastSwipe: null,
     settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 },
-    filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all" },
+    // ageMin 하한은 19여야 한다. 온보딩(obAge)이 만 19세 가입을 허용하는데 필터 기본값이
+    // 20이면, 결합된 buildDeck() 필터(p.age >= F.ageMin)에서 19세 프로필이 영구히 노출되지
+    // 않는다.
+    filters: { ageMin: 19, ageMax: 50, area: "all", looking: "all" },
     stats: { likesSent: 0, matches: 0 },
     items: { teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 },
     fx: { teleport: null, spotlightUntil: 0 }, // teleport: {region, until}
@@ -40,6 +62,19 @@
   try { S = Object.assign(DEFAULTS(), JSON.parse(localStorage.getItem(LS) || "null") || {}); }
   catch (e) { S = DEFAULTS(); }
   // 구버전 저장 데이터 마이그레이션
+  // liked/passed/blocked/superliked/incoming/seenIncoming/matches는 JSON.parse 이후 배열이라는
+  // 보장이 전혀 없다(저장 데이터 손상·구버전 스키마·수동 조작 등). 아래 items/fx/gacha/…처럼
+  // Object.assign으로 방어하지 않으면 이후 S.liked.push(...)/S.matches.map(...) 같은 배열
+  // 전용 호출에서 uncaught TypeError가 나 앱 전체가 죽는다. id 배열은 문자열만, matches는
+  // pid를 가진 객체만 남기고 나머지는 버려 항상 안전한 배열로 재보정한다.
+  const asIdArr = (a) => Array.isArray(a) ? a.filter((x) => typeof x === "string") : [];
+  S.liked = asIdArr(S.liked);
+  S.passed = asIdArr(S.passed);
+  S.blocked = asIdArr(S.blocked);
+  S.superliked = asIdArr(S.superliked);
+  S.incoming = asIdArr(S.incoming);
+  S.seenIncoming = asIdArr(S.seenIncoming);
+  S.matches = Array.isArray(S.matches) ? S.matches.filter((m) => m && typeof m === "object" && typeof m.pid === "string") : [];
   S.items = Object.assign({ teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 }, S.items || {});
   S.fx = Object.assign({ teleport: null, spotlightUntil: 0 }, S.fx || {});
   S.cards = S.cards || {};
@@ -58,10 +93,32 @@
   S.balance = S.balance || {};
   S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
-  S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
-  if (S.filters.ageMax === 45) S.filters.ageMax = 50; // 구버전 기본값 승격
+  S.filters = Object.assign({ ageMin: 19, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
+  // 구버전 기본값(45) → 신버전 기본값(50) 승격은 반드시 '1회만' 실행해야 한다. 매 부팅마다
+  // 무조건 실행하면, 필터 시트의 나이 슬라이더(최댓값 50)에서 사용자가 정확히 45세를 직접
+  // 선택해도 옛 기본값과 구분이 안 돼 새로고침/재실행 때마다 조용히 50(무제한)으로 되돌아가
+  // 버린다. migV 플래그로 '이미 마이그레이션을 거친 저장 데이터'인지 구분해서, 마이그레이션
+  // 이후에는 사용자가 45세를 명시적으로 선택한 값을 그대로 존중한다.
+  if (!S.migV) {
+    if (S.filters.ageMax === 45) S.filters.ageMax = 50;
+    S.migV = 1;
+  }
   S.stats = Object.assign({ likesSent: 0, matches: 0 }, S.stats || {});
-  const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
+  let saveFailedAt = 0;
+  const save = () => {
+    try {
+      localStorage.setItem(LS, JSON.stringify(S));
+    } catch (e) {
+      // 저장 실패(저장공간 초과·프라이빗 모드 제한 등)를 조용히 삼키면 사용자는 좋아요·매칭·
+      // 설정 변경이 정상 반영된 줄 알지만 새로고침 시 소리없이 유실된다. 반드시 알려준다.
+      // (짧은 시간에 연속 실패해도 토스트가 도배되지 않도록 최소 간격만 둔다.)
+      const now = Date.now();
+      if (now - saveFailedAt > 8000) {
+        saveFailedAt = now;
+        try { toast("⚠️ 변경사항 저장에 실패했어요. 기기 저장 공간을 확인해주세요."); } catch (e2) {}
+      }
+    }
+  };
 
   const PLANS = {
     free:  { label: "무료",        likes: 20, supers: 1, seeLikes: false, rewind: 1,        boost: 0, ads: true,  read: false },
@@ -71,6 +128,15 @@
   const rewindLeft = () => plan().rewind === Infinity ? Infinity : Math.max(0, plan().rewind - (S.rewindsUsed || 0));
   const plan = () => PLANS[S.premium.plan] || PLANS.free;
   const P = (id) => D.profiles.find((p) => p.id === id);
+  // 나이는 가입 시점에 한 번 계산해 얼려두지 않고, 저장된 생년월일로 매번 다시 계산한다.
+  // 생일이 지났는지까지 반영해야 실제 만 나이와 최대 1살까지 어긋나는 걸 막을 수 있고,
+  // 오래 쓰는 계정도 생일이 지나면 자동으로 나이가 올라간다. 생년월일이 없는 구버전 저장
+  // 데이터는 가입 당시 계산해둔 age 필드로 폴백한다.
+  const userAge = () => {
+    const u = S.user; if (!u) return 0;
+    if (u.birthYear && u.birthMonth && u.birthDay) return calcAge(u.birthYear, u.birthMonth, u.birthDay);
+    return u.age || 0;
+  };
 
   /* ── 아이템 상점 (소모품 수익) ── */
   const SHOP = [
@@ -121,7 +187,11 @@
   }
   function seedIncoming(n) {
     if (S.settings.privateMode) return; // 프라이빗 모드: 새 노출 중단
-    const used = new Set([...S.incoming, ...S.matches.map((m) => m.pid), ...S.blocked]);
+    // 이미 좋아요를 보냈거나(liked) 명시적으로 패스한(passed) 상대는 반드시 제외해야 한다.
+    // 그렇지 않으면 dailyTick()/부스트/스포트라이트가 이들을 다시 '받은 좋아요'(S.incoming)에
+    // 새로 등장시켜, likeBackAndMatch()로 이미 소모한 좋아요를 한 번 더 소모하게 하거나
+    // 패스한 상대가 마치 새로 좋아요를 보낸 것처럼 재노출되는 버그가 생긴다.
+    const used = new Set([...S.incoming, ...S.matches.map((m) => m.pid), ...S.blocked, ...S.liked, ...S.passed]);
     const pool = D.profiles.filter((p) => !used.has(p.id));
     const pri = pool.filter((p) => p.likedYou);
     const rest = pool.filter((p) => !p.likedYou);
@@ -146,6 +216,10 @@
     if (tp) return zoneOf(areaOf(p)) === zoneOf(tp.region);
     return zoneOf(areaOf(p)) === zoneOf(myArea());
   };
+  // 실제 내 거주 권역 기준 판정 (텔레포트 중에도 목적지가 아닌 진짜 내 지역 기준).
+  // 필터 시트의 '내 권역' 칩 라벨(zoneOf(myArea()))이 항상 실제 내 지역으로 표시되므로,
+  // 그 필터의 동작도 반드시 같은 기준(myArea)을 써야 라벨과 결과가 일치한다.
+  const sameHomeArea = (p) => zoneOf(areaOf(p)) === zoneOf(myArea());
   function distLabel(p) {
     if (S.settings.hideDistance) return `📍 ${esc(p.region)}`;
     return sameArea(p) ? `📍 ${esc(p.region)} · ${p.distanceKm}km` : `📍 ${esc(p.region)} · 다른 지역`;
@@ -290,10 +364,41 @@
   function hideCover() { if (privacyCover) { privacyCover.remove(); privacyCover = null; } }
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) { showCover(); dailyTick(); return; }
+    // 백그라운드 복귀 시에도 반드시 dailyTick()을 호출해야 한다. 모바일 브라우저/설치형
+    // PWA는 백그라운드에서 JS 타이머(setInterval)를 완전히 정지시킬 수 있는데, 그 동안
+    // 날짜가 바뀌었다면 포그라운드 복귀 직후 이 호출이 없는 한 다음 setInterval 틱(최대
+    // 60초) 또는 우연한 재호출 전까지 좋아요/슈퍼라이크 일일 한도가 갱신되지 않는다.
+    dailyTick();
     if (hasPin() && S.settings.bgLock && S.user && !locked && !stealthEl) {
       renderLock(() => { hideCover(); show("scr-main"); });
       hideCover();
     } else hideCover();
+  });
+
+  /* 탭 간 동기화: save()는 항상 S 전체를 통째로 덮어쓰므로, 두 탭을 동시에 열어두고
+     각각 좋아요/매칭/설정을 바꾸면 나중에 save()하는 탭이 먼저 저장된 탭의 변경을
+     통째로 덮어써 조용히 유실시킬 수 있다. 'storage' 이벤트로 다른 탭의 저장을 감지해
+     이 탭의 메모리 상태(S)를 즉시 병합해두면, 이후 이 탭이 save()할 때 이미 최신
+     상태 위에 자신의 변경만 얹어 저장하므로 유실 창이 크게 줄어든다(완전한 동시 편집
+     충돌까지 해결하는 건 아니지만, 흔한 "탭 전환하며 번갈아 사용" 패턴은 안전해진다). */
+  window.addEventListener("storage", (e) => {
+    if (e.key !== LS) return;
+    if (e.newValue == null) { location.reload(); return; } // 다른 탭에서 계정 초기화됨
+    if (e.newValue === e.oldValue) return;
+    let fresh;
+    try { fresh = JSON.parse(e.newValue); } catch (err) { return; }
+    if (!fresh || typeof fresh !== "object") return;
+    Object.keys(S).forEach((k) => { delete S[k]; });
+    Object.assign(S, fresh);
+    // 화면을 새로 그려도 안전한 상태(잠금/위장/모달 없음)일 때만 즉시 반영한다.
+    // 그렇지 않으면 다음 save()에는 이미 최신 상태가 반영되고, 다음 go(tab) 호출 때
+    // 자연스럽게 화면도 맞춰진다.
+    const modalOpen = ($("#modal-root") && $("#modal-root").children.length) || ($("#overlay-root") && $("#overlay-root").children.length);
+    if (S.user && !locked && !stealthEl && !modalOpen && !document.hidden && !$("#scr-main").hidden) {
+      paintTopbar(); go(tab); badges();
+    } else {
+      badges();
+    }
   });
 
   /* ══ 온보딩 ══ */
@@ -308,7 +413,7 @@
   };
   let ob = {};
   function startOnboarding() {
-    ob = { step: 0, birthYear: "", agree1: false, agree2: false, name: "", region: "서울", town: "",
+    ob = { step: 0, birthYear: "", birthMonth: "", birthDay: "", agree1: false, agree2: false, name: "", region: "서울", town: "",
       height: 175, mbti: "ENFP", lookingFor: LOOKING[0], tags: [], emoji: AV_EMOJIS[0], grad: AV_GRADS[0], intro: "" };
     show("scr-onboarding"); renderOb();
   }
@@ -324,13 +429,25 @@
   function obAge() {
     const years = []; const nowY = new Date().getFullYear();
     for (let y = nowY - 19; y >= nowY - 60; y--) years.push(y);
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+    // 선택된 연/월 기준 말일까지만 보여준다(예: 2월엔 30/31일이 나오지 않도록).
+    const maxDay = (ob.birthYear && ob.birthMonth) ? daysInMonth(+ob.birthYear, +ob.birthMonth) : 31;
+    const days = Array.from({ length: maxDay }, (_, i) => i + 1);
+    // 만 나이 계산까지 마쳐야(생일이 이미 지났는지까지 반영) 정확히 19세 이상만 통과시킬 수
+    // 있다. 연도만으로는(nowY - 19) 생일이 아직 안 지난 만 18세도 가입 가능해진다.
+    const validAge = ob.birthYear && ob.birthMonth && ob.birthDay && calcAge(+ob.birthYear, +ob.birthMonth, +ob.birthDay) >= 19;
     return `<h2 class="ob-h">환영해요 👋</h2><p class="ob-sub">PRISM은 19세 이상만 이용할 수 있어요.</p>
-      <div class="ob-field"><label>출생연도</label>
-        <select class="ob-input" id="f-year"><option value="">선택</option>${years.map((y) => `<option ${String(y) === String(ob.birthYear) ? "selected" : ""}>${y}</option>`).join("")}</select></div>
+      <div class="ob-field"><label>생년월일</label>
+        <div style="display:flex;gap:8px">
+          <select class="ob-input" id="f-year" style="flex:1.3;width:auto" aria-label="출생연도"><option value="">연도</option>${years.map((y) => `<option ${String(y) === String(ob.birthYear) ? "selected" : ""}>${y}</option>`).join("")}</select>
+          <select class="ob-input" id="f-month" style="flex:1;width:auto" aria-label="출생월"><option value="">월</option>${months.map((mo) => `<option ${String(mo) === String(ob.birthMonth) ? "selected" : ""}>${mo}</option>`).join("")}</select>
+          <select class="ob-input" id="f-day" style="flex:1;width:auto" aria-label="출생일"><option value="">일</option>${days.map((da) => `<option ${String(da) === String(ob.birthDay) ? "selected" : ""}>${da}</option>`).join("")}</select>
+        </div></div>
       <label class="agree"><input type="checkbox" id="f-a1" ${ob.agree1 ? "checked" : ""}><span>만 19세 이상이며, <a href="/terms.html" target="_blank" rel="noopener">이용약관</a>과 <a href="/privacy.html" target="_blank" rel="noopener">개인정보 처리방침</a>에 동의합니다.</span></label>
       <label class="agree"><input type="checkbox" id="f-a2" ${ob.agree2 ? "checked" : ""}><span>서로를 존중하는 커뮤니티 가이드라인(혐오·차별·괴롭힘 금지)에 동의합니다.</span></label>
       <p class="tiny">입력한 정보는 서버로 전송되지 않고 이 기기에만 저장됩니다. 아우팅 걱정 없이 사용하세요.</p>
-      ${obNextBtn(ob.birthYear && ob.agree1 && ob.agree2)}`;
+      ${ob.birthYear && ob.birthMonth && ob.birthDay && !validAge ? `<p class="tiny" style="color:var(--red)">만 19세 이상만 가입할 수 있어요.</p>` : ""}
+      ${obNextBtn(validAge && ob.agree1 && ob.agree2)}`;
   }
   function obName() {
     return `<h2 class="ob-h">뭐라고 불러드릴까요?</h2><p class="ob-sub">실명이 아니어도 괜찮아요. 프로필에 표시될 닉네임이에요.</p>
@@ -368,7 +485,20 @@
     const el = $("#ob-body");
     const re = () => renderOb();
     const on = (sel, ev, fn) => { const n = $(sel, el); if (n) n.addEventListener(ev, fn); };
-    on("#f-year", "change", (e) => { ob.birthYear = e.target.value; re(); });
+    on("#f-year", "change", (e) => {
+      ob.birthYear = e.target.value;
+      // 윤년 2/29 선택 후 평년으로 바꾸는 경우처럼 존재하지 않는 날짜가 될 수 있어 초기화한다.
+      if (ob.birthYear && ob.birthMonth && ob.birthDay && +ob.birthDay > daysInMonth(+ob.birthYear, +ob.birthMonth)) ob.birthDay = "";
+      re();
+    });
+    on("#f-month", "change", (e) => {
+      ob.birthMonth = e.target.value;
+      // 월이 바뀌어 그 달 말일보다 큰 일자가 선택돼 있으면(예: 31일 선택 후 2월로 변경)
+      // 존재하지 않는 날짜가 되므로 초기화한다.
+      if (ob.birthYear && ob.birthMonth && ob.birthDay && +ob.birthDay > daysInMonth(+ob.birthYear, +ob.birthMonth)) ob.birthDay = "";
+      re();
+    });
+    on("#f-day", "change", (e) => { ob.birthDay = e.target.value; re(); });
     on("#f-a1", "change", (e) => { ob.agree1 = e.target.checked; re(); });
     on("#f-a2", "change", (e) => { ob.agree2 = e.target.checked; re(); });
     on("#f-name", "input", (e) => { ob.name = e.target.value; $("#ob-next").disabled = !ob.name.trim(); });
@@ -394,8 +524,14 @@
     on("#ob-next", "click", () => {
       if (ob.step < 5) { ob.step++; renderOb(); }
       else {
-        const nowY = new Date().getFullYear();
-        S.user = { name: ob.name.trim().slice(0, 10), age: nowY - (+ob.birthYear), region: ob.region + (ob.town.trim() ? " " + ob.town.trim() : ""),
+        // 생일 경과 여부까지 반영한 만 나이를 계산해 저장한다. birthYear/Month/Day를 함께
+        // 저장해두는 이유는, 가입 시점에 계산한 숫자 하나만 얼려두면(구버전 방식) 생일이
+        // 지나도 나이가 올라가지 않고 실제 나이와 최대 1살까지 계속 어긋나기 때문이다.
+        // userAge()가 매번 이 값들로 다시 계산하므로 항상 정확하다.
+        S.user = { name: ob.name.trim().slice(0, 10),
+          birthYear: +ob.birthYear, birthMonth: +ob.birthMonth, birthDay: +ob.birthDay,
+          age: calcAge(+ob.birthYear, +ob.birthMonth, +ob.birthDay),
+          region: ob.region + (ob.town.trim() ? " " + ob.town.trim() : ""),
           height: ob.height, mbti: ob.mbti, lookingFor: ob.lookingFor, tags: ob.tags.slice(),
           emoji: ob.emoji, grad: ob.grad.slice(), intro: ob.intro.trim() };
         S.joinedAt = Date.now();
@@ -459,13 +595,19 @@
 
   /* ══ 디스커버 ══ */
   let deck = [];
+  // 스와이프 커밋 락: flyOut/flyUp 애니메이션이 시작된 시점부터 act()가 실제로 상태를
+  // 반영할 때까지(setTimeout 240ms) 동일 카드에 대한 추가 스와이프(버튼 연타 또는
+  // 드래그)를 막는다. 이게 없으면 그 창 동안 상단 카드/버튼이 그대로 유지되어 두 번째
+  // 스와이프가 canAct()를 다시 통과하고, 이미 shift()된 다음 카드가 사용자가 보지도
+  // 못한 채 자동으로 좋아요/슈퍼라이크 소비되는 문제가 생긴다.
+  let swipeBusy = false;
   function buildDeck() {
     const gone = new Set([...S.liked, ...S.passed, ...S.blocked, ...S.matches.map((m) => m.pid)]);
     const tp = teleportActive();
     const F = S.filters;
     deck = D.profiles.filter((p) => !gone.has(p.id))
       .filter((p) => p.age >= F.ageMin && (F.ageMax >= 50 || p.age <= F.ageMax)) // 50 = "50+" (상한 없음)
-      .filter((p) => F.area === "all" || (F.area === "mine" ? sameArea(p) : zoneOf(areaOf(p)) === F.area))
+      .filter((p) => F.area === "all" || (F.area === "mine" ? sameHomeArea(p) : zoneOf(areaOf(p)) === F.area))
       .filter((p) => F.looking === "all" || p.lookingFor === F.looking)
       .map((p) => ({ p, sc: compat(p) + Math.random() * 8 + (tp && groupOf(areaOf(p)) === groupOf(tp.region) ? 100 : 0) }))
       .sort((a, b) => b.sc - a.sc).map((x) => x.p);
@@ -487,7 +629,7 @@
       spotlightActive() ? `✨ 스포트라이트 ${Math.ceil((S.fx.spotlightUntil - Date.now()) / 60000)}분` : "",
     ].filter(Boolean);
     const F = S.filters;
-    const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all";
+    const filterOn = F.ageMin > 19 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all";
     $("#view").innerHTML = `<div class="disc">
       <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ 필터${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
       <div class="deck" id="deck"></div>
@@ -516,8 +658,8 @@
       <p class="muted" style="font-size:13px;margin:0 0 16px">원하는 조건의 사람만 보여드려요. 필터는 전 플랜 무료.</p>
       <div class="ob-field"><label>나이 — <b id="fv-age">${F.ageMin}~${F.ageMax >= 50 ? "50+" : F.ageMax + "세"}</b></label>
         <div style="display:flex;gap:12px;align-items:center">
-          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최소</small><input type="range" id="f-amin" min="20" max="50" value="${F.ageMin}" style="accent-color:var(--vio)" aria-label="최소 나이"></span>
-          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최대</small><input type="range" id="f-amax" min="20" max="50" value="${F.ageMax}" style="accent-color:var(--vio)" aria-label="최대 나이 (50은 상한 없음)"></span>
+          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최소</small><input type="range" id="f-amin" min="19" max="50" value="${F.ageMin}" style="accent-color:var(--vio)" aria-label="최소 나이"></span>
+          <span style="display:flex;flex-direction:column;flex:1;gap:2px"><small class="tiny">최대</small><input type="range" id="f-amax" min="19" max="50" value="${F.ageMax}" style="accent-color:var(--vio)" aria-label="최대 나이 (50은 상한 없음)"></span>
         </div></div>
       <div class="ob-field"><label>지역 (권역)</label><div class="chips">
         <button class="chip ${F.area === "all" ? "on" : ""}" data-area="all">전국</button>
@@ -542,7 +684,7 @@
       const lk = e.target.closest("[data-look]");
       if (lk) { $$("[data-look]", m).forEach((x) => x.classList.remove("on")); lk.classList.add("on"); }
     });
-    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 50, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
+    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 19, ageMax: 50, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
     $("#f-apply", m).onclick = () => {
       S.filters = { ageMin: +amin.value, ageMax: +amax.value,
         area: ($(".chip.on[data-area]", m) || {}).dataset ? $(".chip.on[data-area]", m).dataset.area : "all",
@@ -572,7 +714,7 @@
   function paintDeck() {
     const d = $("#deck"); if (!d) return;
     if (!deck.length) {
-      const filtered = S.filters.area !== "all" || S.filters.looking !== "all" || S.filters.ageMin > 20 || S.filters.ageMax < 50;
+      const filtered = S.filters.area !== "all" || S.filters.looking !== "all" || S.filters.ageMin > 19 || S.filters.ageMax < 50;
       d.innerHTML = `<div class="deck-empty"><div class="em">🌈</div><b>${filtered ? "조건에 맞는 프로필을 다 봤어요" : "오늘의 추천을 모두 봤어요"}</b>
         <p class="muted" style="margin:0;font-size:13.5px">${filtered ? "필터를 넓히면 더 많은 사람을 만날 수 있어요." : "내일 새로운 프로필이 도착해요.<br>받은 좋아요를 확인해보는 건 어때요?"}</p>
         ${filtered ? `<button class="btn-grad" id="de-filter">필터 넓히기 ⚙️</button>` : `<button class="btn-grad" id="de-likes">받은 좋아요 보기 💜</button>`}
@@ -594,6 +736,7 @@
     let sx = 0, sy = 0, dx = 0, dy = 0, dragging = false, moved = false;
     const stampL = $(".stamp.like", card), stampN = $(".stamp.nope", card);
     card.addEventListener("pointerdown", (e) => {
+      if (swipeBusy) return; // 이전 스와이프가 아직 커밋 중이면 새 드래그를 시작하지 않는다
       dragging = true; moved = false; sx = e.clientX; sy = e.clientY;
       card.setPointerCapture(e.pointerId); card.style.transition = "none";
     });
@@ -614,10 +757,11 @@
     };
     card.addEventListener("pointerup", () => {
       if (!dragging) return; dragging = false;
+      if (swipeBusy) { springBack(); dx = 0; dy = 0; return; } // 이미 다른 스와이프가 커밋 중
       const upSwipe = dy < -150 && Math.abs(dx) < 70;
-      if (upSwipe) { if (canAct("sup")) flyUp(card, () => act("sup")); else springBack(); }
-      else if (dx > 110) { if (canAct("like")) flyOut(card, 1, () => act("like")); else springBack(); }
-      else if (dx < -110) flyOut(card, -1, () => act("nope"));
+      if (upSwipe) { if (canAct("sup")) { swipeBusy = true; flyUp(card, () => act("sup")); } else springBack(); }
+      else if (dx > 110) { if (canAct("like")) { swipeBusy = true; flyOut(card, 1, () => act("like")); } else springBack(); }
+      else if (dx < -110) { swipeBusy = true; flyOut(card, -1, () => act("nope")); }
       else { springBack(); if (!moved) openProfile(card.dataset.pid, "deck"); }
       dx = 0; dy = 0;
     });
@@ -652,9 +796,11 @@
     setTimeout(after, 240);
   }
   function swipeTop(kind) {
+    if (swipeBusy) return; // 애니메이션/커밋이 진행 중이면 버튼 연타·재진입을 무시
     const d = $("#deck"); const card = d && d.lastElementChild;
     if (!card || !card.classList.contains("pcard")) return;
     if (kind !== "nope" && !canAct(kind)) return;
+    swipeBusy = true;
     if (kind === "sup") {
       const s = $(".stamp.sup", card); if (s) s.style.opacity = 1;
       flyUp(card, () => act("sup"));
@@ -667,16 +813,29 @@
     }
   }
   function act(kind) {
+    // 실제 상태 커밋 시점. 여기서 락을 푼다 — act()는 동기적으로 끝까지 실행되므로
+    // (매치 시 matchModal, 아니면 vDiscover가 새 카드/버튼을 그려 넣을 때까지) 이 시점
+    // 이전에는 어떤 입력 이벤트도 끼어들 수 없어 안전하다.
+    swipeBusy = false;
     const p = deck[0]; if (!p) return;
     if (kind === "nope") {
-      S.passed.push(p.id); S.lastSwipe = { pid: p.id, kind };
+      // '패스'도 S.incoming/S.seenIncoming을 정리해야 한다. 그렇지 않으면 방금 패스한
+      // 상대가 '받은 좋아요' 탭에 그대로 남아 '나도 좋아요(즉시 매치)'로 매칭될 수 있고,
+      // seenIncoming이 영원히 정리되지 않아 dailyTick()의 인박스 자동 보충 조건
+      // (!S.incoming.length && !S.seenIncoming.length)이 첫 패스 이후 다시는 참이 되지 않는다.
+      const wasIncoming = S.incoming.includes(p.id);
+      const wasSeen = S.seenIncoming.includes(p.id);
+      S.incoming = S.incoming.filter((x) => x !== p.id);
+      S.seenIncoming = S.seenIncoming.filter((x) => x !== p.id);
+      S.passed.push(p.id); S.lastSwipe = { pid: p.id, kind, wasIncoming, wasSeen };
       deck.shift(); save(); vDiscover(); return;
     }
     if (!canAct(kind)) { vDiscover(); return; }
+    let supItemUsed = false;
     if (kind === "like") { S.likesUsed++; S.stats.likesSent++; }
     else if (S.supersUsed < superLimit()) { S.supersUsed++; S.superliked.push(p.id); S.stats.likesSent++; }
-    else { S.items.superlike--; S.superliked.push(p.id); S.stats.likesSent++; toast(`⭐ 슈퍼라이크 팩 사용 (남은 ${S.items.superlike}개)`); }
-    S.liked.push(p.id); S.lastSwipe = { pid: p.id, kind };
+    else { S.items.superlike--; supItemUsed = true; S.superliked.push(p.id); S.stats.likesSent++; toast(`⭐ 슈퍼라이크 팩 사용 (남은 ${S.items.superlike}개)`); }
+    S.liked.push(p.id); S.lastSwipe = { pid: p.id, kind, supItemUsed };
     deck.shift();
     // 매칭 판정
     const boostOn = Date.now() < S.boostUntil;
@@ -700,6 +859,15 @@
     }
     save(); vibrate([30, 60, 30]);
     matchModal(pid);
+  }
+  /* '받은 좋아요' 화면에서 바로 매치 — 디스커버 덱과 동일하게 좋아요 한도를 소모해야 함
+     (한도 체크 없이 매칭시키면 무료 플랜의 하루 좋아요 상한이 완전히 무력화됨) */
+  function likeBackAndMatch(pid) {
+    if (!canAct("like")) return;
+    S.likesUsed++; S.stats.likesSent++;
+    if (!S.liked.includes(pid)) S.liked.push(pid);
+    save();
+    makeMatch(pid);
   }
   function matchModal(pid) {
     const p = P(pid); if (!p) return;
@@ -730,14 +898,25 @@
     return h;
   }
   function rewind() {
+    if (swipeBusy) return; // 스와이프가 아직 커밋 중이면 어떤 기록을 되돌릴지 불확실하므로 무시
     if (rewindLeft() <= 0) { paywall("rewind"); return; }
     if (!S.lastSwipe) { toast("되돌릴 카드가 없어요"); return; }
-    const { pid, kind } = S.lastSwipe;
+    const { pid, kind, supItemUsed, wasIncoming, wasSeen } = S.lastSwipe;
     S.liked = S.liked.filter((x) => x !== pid);
     S.passed = S.passed.filter((x) => x !== pid);
     S.superliked = S.superliked.filter((x) => x !== pid);
     if (kind === "like") S.likesUsed = Math.max(0, S.likesUsed - 1);
-    if (kind === "sup") S.supersUsed = Math.max(0, S.supersUsed - 1);
+    if (kind === "sup") {
+      // 일일 한도를 넘겨 유료 아이템(S.items.superlike)으로 충전한 슈퍼라이크였다면
+      // 반드시 아이템 재고를 복구해야 한다. supersUsed를 대신 깎으면 아이템은 영구
+      // 소멸하면서 공짜 일일 한도만 부당하게 1회 더 생기는 상태 오류가 생긴다.
+      if (supItemUsed) S.items.superlike++;
+      else S.supersUsed = Math.max(0, S.supersUsed - 1);
+    }
+    if (kind === "nope") {
+      if (wasIncoming && !S.incoming.includes(pid)) S.incoming.push(pid);
+      if (wasSeen && !S.seenIncoming.includes(pid)) S.seenIncoming.push(pid);
+    }
     if (plan().rewind !== Infinity) S.rewindsUsed = (S.rewindsUsed || 0) + 1;
     S.restoredPid = pid; // 되돌린 카드는 덱 최상단으로
     S.lastSwipe = null; save(); vDiscover();
@@ -750,7 +929,7 @@
   }
   function boost() {
     if (Date.now() < S.boostUntil) { toast("이미 부스트가 진행 중이에요 🚀"); return; }
-    const mo = new Date().toISOString().slice(0, 7);
+    const mo = kstMonthStr();
     const used = S.boostMonth === mo ? (S.boostUsed || 0) : 0;
     const hasQuota = plan().boost > 0 && used < plan().boost;
     if (hasQuota) {
@@ -808,8 +987,15 @@
     if (nb) nb.onclick = () => { close(); swipeTop("nope"); };
     if (lb) lb.onclick = () => { close(); swipeTop("like"); };
     const lp = $("[data-lpass]", o), lm = $("[data-lmatch]", o);
-    if (lp) lp.onclick = () => { S.incoming = S.incoming.filter((x) => x !== pid); S.passed.push(pid); save(); close(); go("likes"); };
-    if (lm) lm.onclick = () => { close(); makeMatch(pid); };
+    if (lp) lp.onclick = () => {
+      // S.incoming뿐 아니라 S.seenIncoming도 같이 정리해야 한다(정리는 원래 makeMatch뿐이었음).
+      // 그렇지 않으면 dailyTick()의 인박스 자동 보충 조건(!S.incoming.length && !S.seenIncoming.length)이
+      // 첫 '지나가기' 이후 영구히 거짓이 되어, 하루 중 '받은 좋아요'가 다시는 채워지지 않는다.
+      S.incoming = S.incoming.filter((x) => x !== pid);
+      S.seenIncoming = S.seenIncoming.filter((x) => x !== pid);
+      S.passed.push(pid); save(); close(); go("likes");
+    };
+    if (lm) lm.onclick = () => { close(); likeBackAndMatch(pid); };
     $("[data-block]", o).onclick = () => confirmDlg("🚫", "차단하기", `${esc(p.name)}님을 차단하면 서로의 프로필이<br>더 이상 보이지 않아요.`, "차단", () => { blockUser(pid); close(); }, true);
     $("[data-report]", o).onclick = () => reportSheet(pid, close);
   }
@@ -824,6 +1010,10 @@
     $$(".chatroom").forEach((c) => c.remove());
     S.blocked.push(pid);
     S.incoming = S.incoming.filter((x) => x !== pid);
+    // S.seenIncoming도 같이 정리해야 한다 (act()의 'nope' 분기, makeMatch(), '지나가기'와 동일한 이유).
+    // 그렇지 않으면 dailyTick()의 인박스 자동 보충 조건(!S.incoming.length && !S.seenIncoming.length)이
+    // 차단(또는 이를 호출하는 신고) 이후 영구히 거짓이 되어, 하루 중 '받은 좋아요'가 다시는 채워지지 않는다.
+    S.seenIncoming = S.seenIncoming.filter((x) => x !== pid);
     S.matches = S.matches.filter((m) => m.pid !== pid);
     delete S.chats[pid];
     save(); toast("차단했어요. 안전 센터에서 관리할 수 있어요");
@@ -854,8 +1044,11 @@
     const can = plan().seeLikes;
     const list = S.incoming.map(P).filter(Boolean);
     // 무료 티어: 하루 1명 무료 공개 (막다른 골목 방지)
+    // 주의: 날짜가 바뀌기 전까지는 절대 재할당하지 않는다. 무료 공개 대상이
+    // 매치/패스 등으로 S.incoming에서 빠졌다고 해서 새로 뽑아주면, 무료 공개→매치를
+    // 반복해 하루 1명 제한을 우회할 수 있다.
     if (!can && list.length) {
-      if (!S.freeReveal || S.freeReveal.day !== todayStr() || !S.incoming.includes(S.freeReveal.pid)) {
+      if (!S.freeReveal || S.freeReveal.day !== todayStr()) {
         S.freeReveal = { day: todayStr(), pid: list[0].id }; save();
       }
     }
@@ -1097,9 +1290,13 @@
     const voted = S.votes[idx] !== undefined;
     const dist = q ? voteDist(idx, q.options.length) : [];
     const total = dist.reduce((a, b) => a + b, 0) + (voted ? 1 : 0);
+    // 라벨도 dayOfYear()/dailyTick()과 같은 KST 자정 경계를 써야 한다. 기기 로컬 날짜(new
+    // Date().getDate())를 쓰면 비KST 기기에서 "오늘의 질문" 라벨이 실제 질문 인덱스가 바뀌는
+    // 시점과 다른 날짜를 표시할 수 있다.
+    const [, kMo, kDa] = todayStr().split("-").map(Number);
     $("#view").innerHTML = `<div class="sec"><div class="sec-h">라운지</div>
       <p class="sec-sub">만남 전에, 가볍게 서로를 알아가는 공간</p></div>
-      ${q ? `<div class="dq-card"><div class="dq-tag">오늘의 질문 · ${new Date().getMonth() + 1}/${new Date().getDate()}</div>
+      ${q ? `<div class="dq-card"><div class="dq-tag">오늘의 질문 · ${kMo}/${kDa}</div>
         <h3>${esc(q.q)}</h3>
         ${q.options.map((op, i) => {
           const n = dist[i] + (voted && S.votes[idx] === i ? 1 : 0);
@@ -1133,7 +1330,15 @@
     const bn = $("#bal-next");
     if (bn) bn.onclick = () => { balPtr = (balPtr + 1) % BQ.length; vCommunity(); };
   }
-  const dayOfYear = () => Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  // 오늘의 질문/주간 가챠 픽업이 좋아요·매칭 리셋(dailyTick, todayStr 기준)과 같은 순간에
+  // 갱신되려면 dayOfYear()도 기기 로컬 타임존이 아니라 반드시 KST 자정 경계를 써야 한다.
+  // new Date().getFullYear()/getDate()는 기기 로컬 타임존을 그대로 쓰므로, 비KST 기기(예:
+  // UTC-5)에서는 KST 자정이 지나도 아직 전날로 계산되어 리셋 시점이 어긋난다. todayStr()가
+  // 이미 KST 기준 "YYYY-MM-DD"를 만들어주므로 이를 그대로 파싱해 연중 일수를 구한다.
+  const dayOfYear = () => {
+    const [y, m, d] = todayStr().split("-").map(Number);
+    return Math.floor((Date.UTC(y, m - 1, d) - Date.UTC(y, 0, 1)) / 86400000) + 1;
+  };
   function voteDist(idx, n) {
     // 시드 고정 의사난수 분포 (데모)
     const out = []; let seed = idx * 7919 + n * 104729;
@@ -1148,7 +1353,7 @@
     $("#view").innerHTML = `
       <div class="my-head">
         <span class="avatar" style="background:linear-gradient(135deg,${u.grad[0]},${u.grad[1]})">${u.emoji}</span>
-        <div><div class="mh-nm">${esc(u.name)}, ${u.age}</div>
+        <div><div class="mh-nm">${esc(u.name)}, ${userAge()}</div>
         <div class="mh-sub">📍 ${esc(u.region)} · ${u.mbti} · ${esc(u.lookingFor)}</div></div>
       </div>
       <div class="my-plan ${pl === "free" ? "free" : ""}">
@@ -1851,7 +2056,7 @@
         </div>
         <p class="gacha-line">"${esc(c.line)}"</p>
         <div class="fuse-box">${fuseRows.join("")}</div>
-        <p class="tiny" style="margin-top:10px;text-align:center">합성 규칙: <b>같은 카드, 같은 ★ 2장</b>만 합성 가능 · 최고 ★이 버프 결정 (★당 일일 좋아요 +1)${c.rarity === "SSR" ? " · SSR 보유: 슈퍼라이크 +1/일" : ""}</p>
+        <p class="tiny" style="margin-top:10px;text-align:center">합성 규칙: <b>같은 카드, 같은 ★ 2장</b>만 합성 가능 · 최고 ★이 버프 결정 (★2부터 ★당 일일 좋아요 +1 · ★1은 보너스 없음)${c.rarity === "SSR" ? " · SSR 보유: 슈퍼라이크 +1/일" : ""}</p>
       </div>`;
     $("#overlay-root").appendChild(o);
     $(".ovl-close", o).onclick = () => o.remove();
