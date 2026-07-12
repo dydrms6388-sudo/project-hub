@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-07-09",
+  "updatedAt": "2026-07-12",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 32,
+    "total": 35,
     "pass": 32,
-    "reviewNeeded": 0,
+    "reviewNeeded": 3,
     "reviewing": 0,
-    "avgOverall": 83.7
+    "avgOverall": 82.3
   },
   "projects": [
     {
@@ -1438,6 +1438,129 @@
         }
       ],
       "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "dydrms-nickfactory",
+      "name": "닉네임공장",
+      "source": "daily/2026-07-11-nickfactory",
+      "live": "https://dydrms-nickfactory.vercel.app",
+      "axes": {
+        "functional": 72,
+        "mobileUX": 58,
+        "design": 74,
+        "content": 64,
+        "realValue": 60
+      },
+      "reviewerAvg": 65.6,
+      "userScores": [
+        62,
+        58,
+        66,
+        48,
+        64
+      ],
+      "userAvg": 59.6,
+      "overall": 62.6,
+      "findings": [
+        "클립보드 복사가 navigator.clipboard only — 불안전 컨텍스트/구 Safari에서 조용히 실패(execCommand 폴백 없음, 복사됨 피드백 안 뜸).",
+        "터치타겟 44px 미만(Chip ~28px, 복사/공유 ~24px) + safe-area/viewportFit=cover 미적용 → iOS 노치/홈바 겹침.",
+        "이름 뱅크 얇음(PET 24개, GUILD_EN 16개 진부)·영어 핸들 제네릭 → 무료 생성기와 차별성 약함, 중복/사용가능 확인 없음.",
+        "blend 분기가 2음절 파편 생성 가능(이름 sanitize 없이 길이만 6 제한).",
+        "Scene3D 풀스크린 상시 렌더 — 로우엔드 모바일 배터리/GPU 소모, 디바이스별 비활성화 토글 없음."
+      ],
+      "changes": [],
+      "method": "intake-screening(1 reviewer+user 통합)",
+      "status": "review-needed",
+      "loops": 0,
+      "history": [
+        {
+          "loop": 0,
+          "overall": 62.6
+        }
+      ],
+      "reviewedAt": "2026-07-12"
+    },
+    {
+      "slug": "dydrms-wonjunbi",
+      "name": "원준비",
+      "source": "daily/2026-07-11-wonjunbi",
+      "live": "https://dydrms-wonjunbi.vercel.app",
+      "axes": {
+        "functional": 72,
+        "mobileUX": 74,
+        "design": 78,
+        "content": 70,
+        "realValue": 68
+      },
+      "reviewerAvg": 72.4,
+      "userScores": [
+        64,
+        70,
+        76,
+        60,
+        66
+      ],
+      "userAvg": 67.2,
+      "overall": 69.8,
+      "findings": [
+        "todayStr()/streakOf()가 toISOString()(UTC) 사용 → KST 00:00~09:00에 오늘 체크리스트/평일 어긋남, 스트릭 디싱크.",
+        "streakOf() 더블 디크리먼트 버그(오늘 미완료 시 i===0 분기 + 루프 본문에서 -1 중복 → 어제 스킵, 스트릭 과소집계).",
+        "재고 ± 컨트롤이 <span onClick>를 <button> 안에 중첩(무효 HTML, 클릭/접근성 신뢰성 저하).",
+        "PWA manifest·SW 부재(매일 의식 앱인데 오프라인 불가), AdSlot data-ad-slot=auto 는 유효 AdSense 슬롯 아님.",
+        "localStorage-only·내보내기/동기화 없음 → 기기변경 시 다년 자녀 기록 전부 상실(리텐션 치명)."
+      ],
+      "changes": [],
+      "method": "intake-screening(1 reviewer+user 통합)",
+      "status": "review-needed",
+      "loops": 0,
+      "history": [
+        {
+          "loop": 0,
+          "overall": 69.8
+        }
+      ],
+      "reviewedAt": "2026-07-12"
+    },
+    {
+      "slug": "dydrms-passport-name",
+      "name": "여권네임",
+      "source": "daily/2026-07-11-passport-name",
+      "live": "https://dydrms-passport-name.vercel.app",
+      "axes": {
+        "functional": 74,
+        "mobileUX": 72,
+        "design": 78,
+        "content": 76,
+        "realValue": 70
+      },
+      "reviewerAvg": 74,
+      "userScores": [
+        68,
+        74,
+        76,
+        58,
+        64
+      ],
+      "userAvg": 68,
+      "overall": 71,
+      "findings": [
+        "복합 받침 로마자 표 JONG 오류(ㄺ=t→k, ㄻ=l→m, ㄼ=k→l, ㄽ=m→l, ㄿ=l→p, ㅄ=m→p) — 개정로마자법 위반. 이름엔 희귀하나 엔진 결함.",
+        "MRZ 라인이 장식용(P<KOR+성<<이름 44패드) — 체크디짓/2번째 라인 없음. 공식문서 도구에서 MRZ로 표시는 과대.",
+        "PWA manifest 부재(three.js/R3F 히어로 임에도) — 설치 불가/오프라인 셸 없음, 가족 보관함 리텐션 훅 약화.",
+        "장식용 3D 여권이 단일기능 변환기에 매 로딩 — 미드급 모바일 번들/퍼포먼스 비용, 레이지 게이트/정적 이미지 권장.",
+        "터치타겟 44px 미만(탭 ~34px, 성씨 칩)."
+      ],
+      "changes": [],
+      "method": "intake-screening(1 reviewer+user 통합)",
+      "status": "review-needed",
+      "loops": 0,
+      "history": [
+        {
+          "loop": 0,
+          "overall": 71
+        }
+      ],
+      "reviewedAt": "2026-07-12"
     }
   ]
 }
