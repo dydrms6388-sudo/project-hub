@@ -4,10 +4,10 @@
   "maxLoops": 5,
   "summary": {
     "total": 35,
-    "pass": 32,
-    "reviewNeeded": 3,
+    "pass": 34,
+    "reviewNeeded": 1,
     "reviewing": 0,
-    "avgOverall": 83.1
+    "avgOverall": 83.4
   },
   "projects": [
     {
@@ -1444,41 +1444,39 @@
       "name": "닉네임공장",
       "source": "daily/2026-07-11-nickfactory",
       "live": "https://dydrms-nickfactory.vercel.app",
+      "status": "review-needed",
+      "loops": 5,
       "axes": {
-        "functional": 80,
-        "mobileUX": 76,
-        "design": 77,
-        "content": 72,
-        "realValue": 72
+        "functional": 84,
+        "mobileUX": 80,
+        "design": 79,
+        "content": 76,
+        "realValue": 73
       },
-      "reviewerAvg": 75.4,
+      "reviewerAvg": 78.4,
       "userScores": [
+        80,
+        74,
+        78,
         76,
-        74,
-        74,
-        72,
-        75
+        78
       ],
-      "userAvg": 74.2,
-      "overall": 74.8,
+      "userAvg": 77.2,
+      "overall": 77.8,
       "findings": [
-        "터치타겟 44px 미만 해소: Chip/복사/공유/즐겨찾기하트/헤더/보관함 10곳 min-h[44px]. (mobileUX 58점 주원인)",
-        "safe-area/viewportFit cover + 본문 컨테이너 pt/pb env(safe-area-inset) → iOS 노치/홈바 겹침 해결.",
-        "3D 배경 게이트+토글: reduced-motion/save-data/저코어 기본 OFF + 헤더 토글(nf_bg3d 영속). 상시 풀스크린 렌더·배터리/GPU 과부하 해소.",
-        "이름뱅크 확충: PET 24→40, GUILD_CORE 16→24·MOD 18→26, EN_ADJ/NOUN 24→32.",
-        "blend 정제(sanitizeBlend): 한글 음열만·3자 제한 → 2음절 파편·어색 조합 방지.",
-        "PWA(manifest+icon.svg+sw.js+SW등록+viewport themeColor) 추가.",
-        "잔여: 실제 플랫폼 중복확인은 오프라인 불가(FAQ 안내). 결과 카드 모바일 밀집도는 스택 레이아웃으로 완화."
+        "PLATFORM_RULES(10개 플랫폼 한글지원/글자수/제약)를 SeoContent 섹션으로 렌더 + 각 결과 카드에 한글/영문별 '쓸 수 있는 곳' 문맥 힌트(KO_PLATFORMS/isKoName)로 승격 — 정적 참조를 기능적 가이드로. content/realValue 병목 직접 개선.",
+        "슬랭 뱅크 분리(GAME_SLANG_MOD/NOUN/MEANING) — 게이머 직업(class)과 슬랭(slang) 토글이 확실히 다른 결과(이전엔 동일 출력).",
+        "blend(넣고 싶은 단어) 보장 — 일반 경로 3구조 중 항상 포함. '내 단어 들어간 닉네임' 약속 이행(이전엔 확률로 누락).",
+        "배지(수집) 시스템 8종(첫뽑기/50뽑/100뽑/3일·7일연속/첫하트/보관함10개/탐험가) + 보관함 표시 + 헤더 🏆N/8 칩(발견성). 리텐션/성장 축.",
+        "히스토리 칩·삭제 44px 터치타겟 통일.",
+        "잔여(구조적 상한=루프 한계 도달): 백엔드 없는 그룹 투표/랭킹/공유 피드 부재 → realValue 상한(73). 조합형 생성의 간혹 어색한 조합·중복(네이밍 전문가 축 약점). 플랫폼 실제 중복조회 오프라인 불가. → 소셜/공유 고도화(owner-track 백엔드) 또는 생성 품질 고도화로 80 도달 가능."
       ],
       "changes": [
-        "NickFactory.tsx 터치타겟 44px(10곳)+safe-area+bg3D 게이트/토글",
-        "namegen.ts 뱅크 확충+sanitizeBlend",
-        "PWA manifest/icon/sw/SW등록/layout viewport",
-        "결과카드 모바일 밀집도 개선(태그/버튼 세로 스택, loop2 누적)"
+        "NickFactory.tsx PLATFORM_RULES 섹션 + 결과별 플랫폼 힌트(KO_PLATFORMS/isKoName) + 배지 시스템(BADGES/earned) + 헤더 배지칩 + 히스토리 칩 44px",
+        "namegen.ts 슬랭 뱅크 분리 + genGame class/slang/일반 3분기 + blend 보장",
+        "PWA·safe-area·3D게이트·뱅크확충·sanitizeBlend 유지"
       ],
-      "method": "intake-screening(1 reviewer+user 통합)",
-      "status": "review-needed",
-      "loops": 2,
+      "method": "loop3-5 5축/5페르소나 재평가",
       "history": [
         {
           "loop": 0,
@@ -1491,6 +1489,18 @@
         {
           "loop": 2,
           "overall": 74.8
+        },
+        {
+          "loop": 3,
+          "overall": 75.9
+        },
+        {
+          "loop": 4,
+          "overall": 76.0
+        },
+        {
+          "loop": 5,
+          "overall": 77.8
         }
       ],
       "reviewedAt": "2026-07-12"
@@ -1500,38 +1510,39 @@
       "name": "원준비",
       "source": "daily/2026-07-11-wonjunbi",
       "live": "https://dydrms-wonjunbi.vercel.app",
+      "status": "pass",
+      "loops": 5,
       "axes": {
-        "functional": 78,
-        "mobileUX": 79,
-        "design": 78,
-        "content": 72,
-        "realValue": 76
+        "functional": 84,
+        "mobileUX": 82,
+        "design": 79,
+        "content": 79,
+        "realValue": 80
       },
-      "reviewerAvg": 76.6,
+      "reviewerAvg": 80.8,
       "userScores": [
-        80,
-        80,
-        75,
-        74,
+        82,
+        81,
+        78,
+        84,
         78
       ],
-      "userAvg": 77.4,
-      "overall": 77,
+      "userAvg": 80.6,
+      "overall": 80.7,
       "findings": [
-        "ManageTab 재고 ± span onClick → button[aria-label]로 a11y 수정(TodayTab 한정이던 a11y 수정 manage로 확대).",
-        "데이터 백업/기기이전 추가: exportBackup/importBackup(JSON, 4키 묶음). 기기변경·분실 시 다년 자녀 기록 상실 방지.",
-        "PWA(manifest+icon.svg+sw.js+SW등록+viewport themeColor/cover) 추가 — 매일 쓰는 등원 체크리스트 오프라인/설치 가능.",
-        "잔여(owner-todo): AdSlot data-ad-slot=auto → 실제 AdSense unit ID 사장님 발급 필요(러너 불가).",
-        "잔여: 동기화(클라우드)는 백업 파일로 우회처리; 계정 기반 싱크는 별도 트랙."
+        "등원 준비 로컬 알림(Notifications API) 신설: notify.ts + WonjunbiApp 30초 폴링 effect(설정시간 경과+당일미완주+미발송→하루1회) + ManageTab ReminderCard(시간설정·권한요청·테스트). 매일 아침 리텐션 훅. 단 서버푸시 아님 → '앱 켜져 있을 때' 한계 UI 명시.",
+        "가이드 콘텐츠 심화: 지각방지·등원시간관리(거꾸로 계산·전날 세팅·출발 알람 2개) + 알림장·가정통신문 회신 템플릿 5종(결석/조퇴/지각/행사불참/소모품보충) 섹션(content).",
+        "TodayTab '내일 챙길 것 미리보기' 카드(전날 밤 미리 챙기기 유도·지각방지 연계), WeeklyTab '이번 달 성취 배지' 스트립(첫완료/월5회/월10회/누적30일/두아이 — 수집 리텐션).",
+        "백업 가져오기 confirm(덮어쓰기 경고) + ManageTab 행 flex-wrap(소형화면 빽빽함 완화).",
+        "잔여(owner-todo/한계): AdSlot data-ad-slot=auto → 실제 AdSense unit ID 사장님 발급 필요. 클라우드 싱크는 백업파일 우회. 알림은 앱 켜져 있을 때만(서비스워커 푸시는 owner-track)."
       ],
       "changes": [
-        "WonjunbiApp ManageTab 재고 ± button 전환",
-        "storage.ts exportBackup/importBackup + ManageTab 백업 섹션",
-        "PWA manifest/icon/sw/SW등록/layout viewport"
+        "src/lib/notify.ts 신규 + WonjunbiApp 알림 effect + ManageTab ReminderCard(loop3)",
+        "guide/page.tsx 지각방지 + 알림장 템플릿 섹션(loop3)",
+        "TodayTab 내일 미리보기 카드(loop4) + WeeklyTab 성취 배지 스트립·profileCount prop(loop5)",
+        "doImport confirm + ManageTab li flex-wrap(loop3). PWA(manifest+icon+sw+등록+viewport) 유지"
       ],
-      "method": "intake-screening(1 reviewer+user 통합)",
-      "status": "review-needed",
-      "loops": 2,
+      "method": "loop3-5 5축/5페르소나 재평가",
       "history": [
         {
           "loop": 0,
@@ -1544,6 +1555,18 @@
         {
           "loop": 2,
           "overall": 77
+        },
+        {
+          "loop": 3,
+          "overall": 79.4
+        },
+        {
+          "loop": 4,
+          "overall": 79.7
+        },
+        {
+          "loop": 5,
+          "overall": 80.7
         }
       ],
       "reviewedAt": "2026-07-12"
@@ -1553,41 +1576,37 @@
       "name": "여권네임",
       "source": "daily/2026-07-11-passport-name",
       "live": "https://dydrms-passport-name.vercel.app",
+      "status": "pass",
+      "loops": 3,
       "axes": {
-        "functional": 80,
-        "mobileUX": 78,
-        "design": 79,
-        "content": 80,
-        "realValue": 80
+        "functional": 83,
+        "mobileUX": 80,
+        "design": 81,
+        "content": 82,
+        "realValue": 82
       },
-      "reviewerAvg": 79.4,
+      "reviewerAvg": 81.6,
       "userScores": [
-        79,
-        82,
-        77,
-        75,
-        79
+        81,
+        84,
+        80,
+        81,
+        78
       ],
-      "userAvg": 78.4,
-      "overall": 78.9,
+      "userAvg": 80.8,
+      "overall": 81.2,
       "findings": [
-        "로마자 JONG[ㄼ] l→p 수정(대표음 ㅂ). 복합받침 대표음 주석 문서화.",
-        "MRZ 이름칸(1줄) 형식 명시 안내 — 과대 표시 해소.",
-        "터치타겟 44px(성씨 칩·보관함·예시 칩).",
-        "3D 성능 게이트(save-data/reduced/cores<4 또는 비가시→정적 폴백).",
-        "PWA(manifest+icon+sw+SW등록+viewport).",
-        "여권 만료 D-day 트래커: VaultEntry.expiry + ddayFrom + FamilyTab 배지/요약. 변환기 리텐션 천장 해소.",
-        "잔여(구조적): 영문 주소는 발음기반 휴리스틱(도로명주소 안내로 대조 권장), 실제 플랫폼 중복확인은 오프라인 불가."
+        "ADDR_UNIT_MAP에 '대로'→-daero 추가(길이 내림차순 정렬로 '로'보다 우선 매칭) → 세종대로·강남대로·올림픽대로 등 공식 영문표기로 정확 변환(이전 Sejongdae-ro). '로'/특별시/도/구/동/길/번길 오염 없음 검증.",
+        "성씨 수 카피는 이미 '90여 종/90+'로 정직(SURNAMES 94종=단성86+복성8). loop2 재평가의 '100종 과장' 지적은 이미 수정된 상태 — 정직 유지로 content 신뢰.",
+        "WarnBox '외교부 여권24'를 passport.go.kr 실링크(noopener noreferrer)로 보강 → 출처 근거 명확화.",
+        "잔여(정직 명시): 도로명+건물번호를 한 칸에 통째로 넣으면 행정단위 매칭 안 됨 → juso.go.kr 대조 권장 Tip으로 완화. MRZ 44자 truncate·플랫폼 중복조회 오프라인 불가 — 도구 범위 밖."
       ],
       "changes": [
-        "romanize.ts JONG[ㄼ] p 수정 + 복합받침 대표음 주석",
-        "page.tsx MRZ 정직 라벨, 터치타겟 44px, LazyPassport3D 성능게이트",
-        "PWA: manifest.json/icon.svg/sw.js/ServiceWorkerRegister/layout viewport",
-        "가족 보관함 여권 만료 D-day 트래커(loop2)"
+        "romanize.ts ADDR_UNIT_MAP에 {ko:'대로',en:'-daero'} 추가 — 공식 대로 분할",
+        "page.tsx WarnBox 외교부 여권24 passport.go.kr 실링크(noopener) 적용",
+        "직전 루프 반영(JONG[ㄼ]=p·MRZ 라벨·터치타겟44px·LazyPassport3D 게이트·PWA·D-day 트래커) 소스 확인·유지"
       ],
-      "method": "intake-screening(1 reviewer+user 통합)",
-      "status": "review-needed",
-      "loops": 2,
+      "method": "loop3 5축/5페르소나 재평가",
       "history": [
         {
           "loop": 0,
@@ -1600,6 +1619,10 @@
         {
           "loop": 2,
           "overall": 78.9
+        },
+        {
+          "loop": 3,
+          "overall": 81.2
         }
       ],
       "reviewedAt": "2026-07-12"
