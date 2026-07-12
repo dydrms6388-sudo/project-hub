@@ -1486,37 +1486,45 @@
       "source": "daily/2026-07-11-wonjunbi",
       "live": "https://dydrms-wonjunbi.vercel.app",
       "axes": {
-        "functional": 72,
-        "mobileUX": 74,
+        "functional": 74,
+        "mobileUX": 76,
         "design": 78,
         "content": 70,
         "realValue": 68
       },
-      "reviewerAvg": 72.4,
+      "reviewerAvg": 73.2,
       "userScores": [
-        64,
         70,
-        76,
-        60,
+        72,
+        68,
+        69,
         66
       ],
-      "userAvg": 67.2,
-      "overall": 69.8,
+      "userAvg": 69,
+      "overall": 71.1,
       "findings": [
-        "todayStr()/streakOf()가 toISOString()(UTC) 사용 → KST 00:00~09:00에 오늘 체크리스트/평일 어긋남, 스트릭 디싱크.",
-        "streakOf() 더블 디크리먼트 버그(오늘 미완료 시 i===0 분기 + 루프 본문에서 -1 중복 → 어제 스킵, 스트릭 과소집계).",
-        "재고 ± 컨트롤이 <span onClick>를 <button> 안에 중첩(무효 HTML, 클릭/접근성 신뢰성 저하).",
-        "PWA manifest·SW 부재(매일 의식 앱인데 오프라인 불가), AdSlot data-ad-slot=auto 는 유효 AdSense 슬롯 아님.",
-        "localStorage-only·내보내기/동기화 없음 → 기기변경 시 다년 자녀 기록 전부 상실(리텐션 치명)."
+        "오늘 날짜 UTC→로컬 수정(됨): KST 00:00~09:00 체크리스트/스트릭 하루 어긋남 해소.",
+        "TodayTab 행 중첩 인터랙션 수정(됨): button→div[role=button] onKeyDown, 재고 ± 진짜 button(+a11y).",
+        "잔여: ManageTab 재고 ± still span onClick (a11y 수정 TodayTab에만 한정).",
+        "잔여: PWA manifest/SW 부재 — 설치/오프라인 불가(매일 의식 앱).",
+        "잔여: localStorage-only — 내보내기/동기화 없어 기기변경 시 다년 자녀 기록 상실.",
+        "잔여: AdSlot data-ad-slot=auto — 실제 AdSense unit ID 필요(사장님 발급)."
       ],
-      "changes": [],
+      "changes": [
+        "storage.ts todayStr()를 toISOString(UTC) → 로컬 YYYY-MM-DD로 변경(오늘/스트릭 날짜 정렬 복구).",
+        "WonjunbiApp.tsx 체크리스트 행을 div[role=button]+onKeyDown(Enter/Space)로, 재고 ±를 button[aria-label]로 전환."
+      ],
       "method": "intake-screening(1 reviewer+user 통합)",
       "status": "review-needed",
-      "loops": 0,
+      "loops": 1,
       "history": [
         {
           "loop": 0,
           "overall": 69.8
+        },
+        {
+          "loop": 1,
+          "overall": 71.1
         }
       ],
       "reviewedAt": "2026-07-12"
