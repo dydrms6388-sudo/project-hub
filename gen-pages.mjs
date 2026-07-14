@@ -44,7 +44,11 @@ const BUILTIN_CATS = [
   { title: "💰 금융 · 세금", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 생활 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
 ];
-const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
+const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "blog"]);
+
+// 블로그(별도 Next.js 앱, blog/)를 /blog 로 rewrite 하려면 이 환경변수에 앱 도메인을 지정.
+// 예: BLOG_APP_ORIGIN=https://tomatoeggcat-blog.vercel.app  (미설정 시 rewrite 생략)
+const BLOG_APP_ORIGIN = (process.env.BLOG_APP_ORIGIN || "").replace(/\/$/, "");
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const slugify = live => { try { return new URL(live).host.replace(/\.vercel\.app$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase(); } catch { return null; } };
@@ -233,6 +237,8 @@ const urls = [];
 urls.push(`  <url><loc>${SITE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`);
 for (const b of BUILTINS) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
 for (const d of daily) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
+// 블로그 목록(개별 글은 blog 앱의 동적 sitemap 이 담당 — robots.txt 에서 함께 참조).
+urls.push(`  <url><loc>${SITE}/blog</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`);
 for (const p of ["about.html", "privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 writeFileSync("sitemap.xml", sitemap);
@@ -245,6 +251,11 @@ for (const d of daily.filter(d => APEX_SERVED.has(d.slug))) {
   rewrites.push({ source: `/${d.slug}/:path*`, destination: `${base}/${d.slug}/:path*` });
   // canonical→apex (프록시 응답에 Link 헤더 — 앱 코드 무수정으로 vercel.app를 apex에 통합)
   headers.push({ source: `/${d.slug}`, headers: [{ key: "Link", value: `<${SITE}/${d.slug}/>; rel="canonical"` }] });
+}
+// 블로그(별도 Next.js 앱) rewrite — BLOG_APP_ORIGIN 이 지정된 경우에만 추가.
+if (BLOG_APP_ORIGIN) {
+  rewrites.push({ source: "/blog", destination: `${BLOG_APP_ORIGIN}/blog` });
+  rewrites.push({ source: "/blog/:path*", destination: `${BLOG_APP_ORIGIN}/blog/:path*` });
 }
 // buildCommand: Vercel의 네이티브 Git 연동 배포도 매번 이 스크립트를 돌려 산출물을 재생성하게 한다
 // (GH Action 경로가 아니라 네이티브 경로로 배포돼도 stale/placeholder가 나가지 않도록). outputDirectory=루트.
