@@ -58,6 +58,46 @@ const CORE_SLUGS = new Set([
 ]);
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+// 본문에 포함된 마크다운 표(| a | b | 또는 헤더 없는 공백|공백 형태)를 HTML <table>로 변환.
+// 파이프가 없으면 기존 esc()와 동일하게 동작 → 표 없는 페이지엔 영향 없음.
+// 반환: { html, hasTable }. 비표 텍스트는 빈 줄 기준으로 <p>로 감싼다.
+const renderRich = (raw) => {
+  const src = String(raw ?? "");
+  if (!src.includes("|")) return { html: esc(src), hasTable: false };
+  const lines = src.split("\n");
+  const looksRow = l => l.includes("|") && /\S/.test(l);
+  const isSep = l => /^[\s|:\-]+$/.test(l) && l.includes("-"); // | --- | --- | 구분선
+  const out = []; let buf = []; let hasTable = false;
+  const flush = () => { if (buf.length) { out.push(`<p>${buf.map(esc).join(" ")}</p>`); buf = []; } };
+  let i = 0;
+  while (i < lines.length) {
+    if (looksRow(lines[i]) && i + 1 < lines.length && looksRow(lines[i + 1])) {
+      flush(); hasTable = true;
+      const block = [];
+      while (i < lines.length && looksRow(lines[i])) { block.push(lines[i]); i++; }
+      const rows = block.filter(l => !isSep(l))
+        .map(l => l.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(c => c.trim()));
+      if (rows.length) {
+        const head = rows[0], body = rows.slice(1);
+        out.push(`<table class="rt"><thead><tr>${head.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${body.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`);
+      }
+    } else {
+      if (!lines[i].trim()) flush(); else buf.push(lines[i].trim());
+      i++;
+    }
+  }
+  flush();
+  return { html: out.join("\n    "), hasTable };
+};
+// 리스트 항목/문단 내 표 대응: 표 있으면 표 HTML, 없으면 esc.
+const richInline = (x) => { const r = renderRich(x); return r.hasTable ? r.html : esc(x); };
+// JSON-LD 등 순수 텍스트용: 마크다운 표 구분선 제거 + 파이프를 읽기 쉬운 구분자로.
+const plainText = (raw) => String(raw ?? "")
+  .split("\n")
+  .filter(l => !(/^[\s|:\-]+$/.test(l) && l.includes("-"))) // | --- | 구분선 제거
+  .map(l => l.includes("|") ? l.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(c => c.trim()).filter(Boolean).join(" · ") : l)
+  .join(" ").replace(/\s{2,}/g, " ").trim();
 const slugify = live => { try { return new URL(live).host.replace(/\.vercel\.app$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase(); } catch { return null; } };
 
 // Phase 2: apex에서 앱이 직접 서빙되는 slug → 정적 랜딩 생성 스킵(vercel.json rewrite가 처리). sitemap엔 동일 apex URL 유지.
@@ -145,16 +185,20 @@ for (const d of daily) {
   const note = (c.note && c.note.trim()) ? c.note.trim() : disclaimerFor(d.cat, d.domain, d.name);
 
   const secUl = (title, items) => items.length
-    ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${esc(x)}</li>`).join("\n        ")}\n    </ul>` : "";
+    ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
   const bgHtml = background
-    ? `<h2>알아두면 좋은 배경지식</h2>\n    ${background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("\n    ")}` : "";
-  const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${esc(s)}</li>`).join("\n        ")}\n    </ol>`;
+    ? `<h2>알아두면 좋은 배경지식</h2>\n    ${background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => p.includes("|") ? renderRich(p).html : `<p>${esc(p)}</p>`).join("\n    ")}` : "";
+  const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${richInline(s)}</li>`).join("\n        ")}\n    </ol>`;
   const scenHtml = secUl("이럴 때 유용해요", scenarios);
   const tipsHtml = secUl("활용 팁", tips);
   const cautHtml = cautions.length
-    ? `<h2>주의사항</h2>\n    <ul class="cautions">\n        ${cautions.map(x => `<li>${esc(x)}</li>`).join("\n        ")}\n    </ul>` : "";
+    ? `<h2>주의사항</h2>\n    <ul class="cautions">\n        ${cautions.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
   const faqHtml = faq.length
-    ? `<h2>자주 묻는 질문</h2>\n    ${faq.map(f => `<div class="qa"><p class="q">Q. ${esc(f.q)}</p><p class="a">${esc(f.a)}</p></div>`).join("\n    ")}`
+    ? `<h2>자주 묻는 질문</h2>\n    ${faq.map(f => {
+        const a = String(f.a).includes("|") ? renderRich(f.a) : null;
+        const aHtml = a && a.hasTable ? `<div class="a">${a.html}</div>` : `<p class="a">${esc(f.a)}</p>`;
+        return `<div class="qa"><p class="q">Q. ${esc(f.q)}</p>${aHtml}</div>`;
+      }).join("\n    ")}`
     : "";
   const noteHtml = note ? `<p class="disclaimer">${esc(note)}</p>` : "";
 
@@ -178,7 +222,7 @@ for (const d of daily) {
   }];
   if (faq.length) graph.push({
     "@type": "FAQPage",
-    mainEntity: faq.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    mainEntity: faq.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: plainText(f.a) } })),
   });
   graph.push({
     "@type": "BreadcrumbList",
