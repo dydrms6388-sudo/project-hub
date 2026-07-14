@@ -30,6 +30,33 @@ const BUILTIN_CATS = [
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
 
+// ── 애드센스 집중 전략: 실질 콘텐츠를 갖춘 핵심 도구만 검색 색인 ──
+// 여기 없는 도구는 <meta robots noindex,follow> + sitemap 제외(기능은 그대로 동작).
+// 얇은 도구에 콘텐츠를 채우면 이 목록에 slug를 추가해 하나씩 색인 해제(=색인 허용)한다.
+// 내장 9개(salary/dsr/jeonse-loan/yangdo/refinance/age/dday/bmi/pyeong)는 자체 리치 페이지라 전부 포함.
+const CORE_SLUGS = new Set([
+  // 내장(builtin) — 이미 리치 페이지
+  "salary", "dsr", "jeonse-loan", "yangdo", "refinance", "age", "dday", "bmi", "pyeong",
+  // 금융·부동산
+  "cheongyak-score-calc",
+  // 생활·계산기
+  "moving-cost-calc", "gift-money",
+  // 건강·운동
+  "manbo-steps", "weight-roadmap", "body-fat-check",
+  // 교육·학습
+  "suneung-gradecut", "toeic-planner", "hanja-grade-master",
+  // 취업·생산성
+  "jasoseo-doctor", "shift-work-calendar",
+  // 반려·식물
+  "pet-age-calc", "plant-watering",
+  // 연애·관계
+  "mbti-match",
+  // 운세·심리
+  "today-fortune",
+  // 뷰티·패션
+  "personal-color-test",
+]);
+
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const slugify = live => { try { return new URL(live).host.replace(/\.vercel\.app$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase(); } catch { return null; } };
 
@@ -140,7 +167,7 @@ for (const d of daily) {
     ${cautHtml}
     ${faqHtml}
     ${noteHtml}
-    <p class="cat-note">카테고리: ${esc(d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
+    <p class="cat-note">카테고리: ${esc(d.cat)} · 회원가입·설치 없이 브라우저에서 바로 실행 · 완전 무료 · 한국어 지원</p>`;
 
   // JSON-LD: SoftwareApplication + FAQPage(있을 때) + BreadcrumbList
   const graph = [{
@@ -163,6 +190,11 @@ for (const d of daily) {
   });
   const jsonld = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 
+  // 핵심 도구만 색인 허용, 나머지는 noindex(링크는 계속 크롤 → follow)
+  const robotsMeta = CORE_SLUGS.has(d.slug)
+    ? `<meta name="robots" content="index,follow,max-image-preview:large" />`
+    : `<meta name="robots" content="noindex,follow" />`;
+
   const title = `${d.name} — ${d.cat} 무료 도구 | TomatoEggCat`;
   const html = tpl
     .replaceAll("%%TITLE%%", esc(title))
@@ -176,7 +208,8 @@ for (const d of daily) {
     .replaceAll("%%JSONLD%%", jsonld)
     .replaceAll("%%BODY%%", body)
     .replaceAll("%%RELATED%%", relHtml)
-    .replaceAll("%%VERIFY%%", VERIFY_META);
+    .replaceAll("%%VERIFY%%", VERIFY_META)
+    .replaceAll("%%ROBOTS%%", robotsMeta);
 
   mkdirSync(d.slug, { recursive: true });
   writeFileSync(`${d.slug}/index.html`, html);
@@ -213,10 +246,11 @@ const indexHtml = renderHub({ site: SITE, adsense: ADSENSE, verifyMeta: VERIFY_M
 writeFileSync("index.html", indexHtml);
 
 // ── sitemap.xml ──
+// 애드센스 집중 전략: 핵심 도구(CORE_SLUGS)만 sitemap에 포함. noindex 도구는 제외.
 const urls = [];
 urls.push(`  <url><loc>${SITE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`);
-for (const b of BUILTINS) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
-for (const d of daily) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
+for (const b of BUILTINS) if (CORE_SLUGS.has(b.slug)) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
+for (const d of daily) if (CORE_SLUGS.has(d.slug)) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
 for (const p of ["about.html", "privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 writeFileSync("sitemap.xml", sitemap);
