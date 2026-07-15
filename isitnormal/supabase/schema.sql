@@ -50,9 +50,11 @@ create table if not exists surveys (
   quality_scan_passed boolean not null default false,
   -- 어뷰징
   is_surge_held boolean not null default false,         -- V2 급등 자동 홀드
+  submitter_hash text,                                  -- UGC 작성자 익명 해시(1일 3건 rate limit용, V5)
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
+create index if not exists idx_surveys_submitter on surveys(submitter_hash, created_at);
 create index if not exists idx_surveys_category on surveys(category_id);
 create index if not exists idx_surveys_status on surveys(status);
 create index if not exists idx_surveys_indexed on surveys(is_indexed) where is_indexed = true;
@@ -119,8 +121,9 @@ create table if not exists reports (
 
 create table if not exists takedown_requests (
   id            uuid primary key default gen_random_uuid(),
-  target        target_type not null,
-  target_id     uuid not null,
+  target_ref    text not null,                -- 요청자가 지목한 URL/설명 (uuid를 모를 수 있음)
+  target        target_type,                  -- 분류되면 채움
+  target_id     uuid,
   contact       text not null,                -- 요청자 회신처
   reason        text not null,
   created_at    timestamptz not null default now(),
@@ -138,6 +141,17 @@ create table if not exists notify_optin (
   survey_id   uuid references surveys(id) on delete cascade,  -- null이면 주간 통계 구독
   confirmed   boolean not null default false,
   created_at  timestamptz not null default now()
+);
+
+-- =========================================================================
+-- 6b. 문의 (contact — 실동작)
+-- =========================================================================
+create table if not exists contact_messages (
+  id          uuid primary key default gen_random_uuid(),
+  email       text,                          -- 선택 (회신 원할 때만)
+  message     text not null,
+  created_at  timestamptz not null default now(),
+  handled     boolean not null default false
 );
 
 -- =========================================================================
@@ -197,6 +211,7 @@ alter table takedown_requests enable row level security;
 alter table notify_optin      enable row level security;
 alter table short_links       enable row level security;
 alter table events            enable row level security;
+alter table contact_messages  enable row level security;
 
 -- 읽기 공개: 카테고리
 create policy cat_read on categories for select to anon using (true);
@@ -229,6 +244,7 @@ create policy comment_insert on comments
 create policy report_insert   on reports           for insert to anon with check (true);
 create policy takedown_insert on takedown_requests for insert to anon with check (true);
 create policy notify_insert   on notify_optin      for insert to anon with check (true);
+create policy contact_insert  on contact_messages  for insert to anon with check (true);
 
 -- 짧은 링크: 서버(서비스롤)만 생성/조회. 익명 직접 접근 없음 → 정책 미부여(기본 거부).
 --   /s/{shortId} 열람은 서버 라우트가 서비스롤로 조회해 렌더한다.

@@ -102,9 +102,15 @@ export default async function SurveyPage({
         </section>
       )}
 
-      <p className="border-t border-black/5 pt-4 text-xs leading-relaxed text-ink/40">
-        {UGC_DISCLAIMER}
-      </p>
+      <div className="border-t border-black/5 pt-4">
+        <p className="text-xs leading-relaxed text-ink/40">{UGC_DISCLAIMER}</p>
+        <Link
+          href={`/report?slug=${s.slug}`}
+          className="mt-2 inline-block text-xs text-ink/40 underline underline-offset-2 hover:text-ink/60"
+        >
+          이 설문 신고하기
+        </Link>
+      </div>
     </div>
   );
 }

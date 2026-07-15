@@ -17,3 +17,9 @@ export const UGC_DISCLAIMER =
 
 /** robots Disallow 경로 (U1) */
 export const ROBOTS_DISALLOW = ["/s/", "/api/", "/pending/", "/vote/"];
+
+/**
+ * UGC 작성 개방 플래그. 기본 false — 투표 트래픽이 생긴 뒤 켠다.
+ * 트래픽 0에서 글쓰기를 열면 빈 목록이 품질 신호를 깎는다(P5 주의).
+ */
+export const UGC_ENABLED = process.env.NEXT_PUBLIC_UGC_ENABLED === "1";

@@ -8,7 +8,14 @@ import { CATEGORIES } from "@/content/categories";
  * 시드/UGC 설문 페이지는 승격 전까지 noindex → sitemap 제외.
  * (승격 잡이 n>=30·7일 통과분을 별도로 추가한다.)
  */
-const STATIC_PAGES = ["/about", "/privacy", "/terms", "/disclaimer", "/community-guidelines"];
+const STATIC_PAGES = [
+  "/about",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/disclaimer",
+  "/community-guidelines",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const home = { url: `${SITE_URL}/`, changeFrequency: "daily" as const, priority: 1 };
