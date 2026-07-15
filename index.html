@@ -71,7 +71,16 @@
     .topnav{display:flex; align-items:center; gap:4px}
     .topnav a{color:var(--tx2); font-size:13px; font-weight:600; text-decoration:none; padding:8px 10px; border-radius:9px; white-space:nowrap; transition:color .14s, background .14s}
     .topnav a:hover{color:var(--tx); background:var(--panel)}
-    @media (max-width:520px){ .topnav a{padding:6px 6px; font-size:12px} .topnav a:nth-of-type(2), .topnav .nav-hide-m{display:none} }
+    .menu-m{display:none; position:relative}
+    .menu-m summary{list-style:none; cursor:pointer; width:34px; height:34px; border-radius:10px;
+      border:1px solid var(--line2); color:var(--tx2); display:flex; align-items:center; justify-content:center; font-size:16px}
+    .menu-m summary::-webkit-details-marker{display:none}
+    .menu-m[open] summary{color:var(--acc); border-color:var(--acc-ln)}
+    .menu-drop{position:absolute; right:0; top:calc(100% + 8px); z-index:40; min-width:170px;
+      background:var(--panel); border:1px solid var(--line2); border-radius:12px; padding:6px; box-shadow:var(--shadow); display:flex; flex-direction:column}
+    .menu-drop a{padding:10px 12px; border-radius:8px; color:var(--tx); font-size:13.5px; font-weight:600; text-decoration:none}
+    .menu-drop a:hover{background:var(--panel2); color:var(--acc)}
+    @media (max-width:520px){ .topnav > a{display:none} .menu-m{display:block} }
     .toggle{
       width:34px; height:34px; flex:0 0 auto; border-radius:10px; cursor:pointer;
       background:transparent; border:1px solid var(--line2); color:var(--tx2);
@@ -169,19 +178,18 @@
     html[data-theme="light"] .chip.is-on .n{color:rgba(255,255,255,.8)}
 
     /* ── 카테고리 섹션 ── */
-    .cat{margin-top:34px; scroll-margin-top:70px}
+    .cat{margin-top:34px; scroll-margin-top:70px; --cc:var(--acc)}
     .cat h2{
       display:flex; align-items:center; gap:9px; font-size:15px; font-weight:800;
       letter-spacing:-.01em; color:var(--tx); margin:0 0 15px;
     }
-    .cat h2 .dot{width:8px; height:8px; border-radius:3px; background:linear-gradient(135deg,var(--acc),var(--acc2)); flex:0 0 auto}
+    .cat h2 .dot{width:9px; height:9px; border-radius:3px; background:var(--cc); flex:0 0 auto}
     .cat h2 .tag{font-size:10.5px; font-weight:700; letter-spacing:.01em; color:var(--tx3);
       background:var(--panel2); border:1px solid var(--line2); padding:2px 8px; border-radius:999px}
     .picks h2 .tag{color:var(--warm); background:var(--warm-dim); border-color:var(--warm-ln)}
     .cat h2 .c-n{margin-left:auto; font-size:11.5px; font-weight:700; color:var(--tx2);
       background:var(--panel2); border:1px solid var(--line2); padding:2px 9px; border-radius:999px}
     .cat-desc{margin:-8px 0 15px; color:var(--tx2); font-size:13px; line-height:1.55; max-width:640px; word-break:keep-all}
-    .picks h2 .dot{background:linear-gradient(135deg,var(--warm),var(--acc))}
 
     .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:13px}
 
@@ -199,8 +207,10 @@
     .tool:hover{transform:translateY(-3px); background:var(--panel2); box-shadow:var(--shadow); border-color:transparent}
     .tool:hover::after{opacity:1}
     .tool:focus-visible{outline:2px solid var(--acc); outline-offset:2px}
-    .tool .te{font-size:26px; line-height:1; flex:0 0 auto; margin-top:1px;
-      filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+    .tool .te{width:46px; height:46px; flex:0 0 auto; border-radius:13px; font-size:23px; line-height:1;
+      display:flex; align-items:center; justify-content:center;
+      background:color-mix(in srgb, var(--cc) 13%, var(--panel2));
+      border:1px solid color-mix(in srgb, var(--cc) 26%, var(--line))}
     .tool .tb{min-width:0; flex:1}
     .tool .tn{display:block; font-weight:700; color:var(--tx); font-size:15px; letter-spacing:-.01em;
       overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
@@ -264,8 +274,17 @@
       <nav class="topnav" aria-label="사이트 메뉴">
         <a href="/about.html">소개</a>
         <a href="/contact.html">문의</a>
-        <a href="/terms.html" class="nav-hide-m">이용약관</a>
+        <a href="/terms.html">이용약관</a>
         <a href="/privacy.html">개인정보처리방침</a>
+        <details class="menu-m">
+          <summary aria-label="메뉴 열기">☰</summary>
+          <div class="menu-drop">
+            <a href="/about.html">소개</a>
+            <a href="/contact.html">문의</a>
+            <a href="/terms.html">이용약관</a>
+            <a href="/privacy.html">개인정보처리방침</a>
+          </div>
+        </details>
         <button class="toggle" id="theme" type="button" aria-label="라이트/다크 테마 전환" title="테마 전환">
           <span class="ti ti-sun" aria-hidden="true">☀️</span>
           <span class="ti ti-moon" aria-hidden="true">🌙</span>
@@ -322,7 +341,7 @@
 
     <main>
 
-    <section class="cat picks" data-cat data-id="featured" aria-label="주요 도구">
+    <section class="cat picks" data-cat data-id="featured" aria-label="주요 도구" style="--cc:#f5b642">
       <h2><span class="dot"></span>주요 도구 <span class="tag">가장 많이 찾는</span></h2>
       <p class="cat-desc">사람들이 가장 많이 찾는 대표 도구입니다. 전체 목록은 아래 카테고리에서 확인하세요.</p>
       <div class="grid">
@@ -338,7 +357,7 @@
       </div>
     </section>
 
-    <section class="cat" data-cat data-id="c0-필수-금융">
+    <section class="cat" data-cat data-id="c0-필수-금융" style="--cc:#34d399">
       <h2><span class="dot"></span>필수 금융 <span class="tag">실생활 필수</span> <span class="c-n">4개</span></h2>
       <p class="cat-desc">연봉 실수령부터 대출 한도·양도세까지, 돈 계산을 한 번에</p>
       <div class="grid">
@@ -349,7 +368,7 @@
       </div>
     </section>
 
-    <section class="cat" data-cat data-id="c1-기본-계산기">
+    <section class="cat" data-cat data-id="c1-기본-계산기" style="--cc:#38bdf8">
       <h2><span class="dot"></span>기본 계산기 <span class="tag">기본</span> <span class="c-n">3개</span></h2>
       <p class="cat-desc">만 나이·D-day·BMI·평수 변환 등 매일 찾는 기본 계산기</p>
       <div class="grid">
@@ -359,7 +378,7 @@
       </div>
     </section>
 
-    <section class="cat" data-cat data-id="c2-건강-운동">
+    <section class="cat" data-cat data-id="c2-건강-운동" style="--cc:#fb7185">
       <h2><span class="dot"></span>건강·운동 <span class="c-n">90개</span></h2>
       <p class="cat-desc">BMI·체지방·칼로리·걸음 수를 기록하며 몸 상태를 관리</p>
       <div class="grid">
@@ -457,7 +476,7 @@
       <button class="more-btn" type="button" data-more>84개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c3-생활-도구">
+    <section class="cat" data-cat data-id="c3-생활-도구" style="--cc:#7aa2ff">
       <h2><span class="dot"></span>생활 도구 <span class="c-n">75개</span></h2>
       <p class="cat-desc">이사비용·경조사비·단위 변환처럼 자잘하지만 자주 쓰는 계산</p>
       <div class="grid">
@@ -540,7 +559,7 @@
       <button class="more-btn" type="button" data-more>69개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c4-교육-학습">
+    <section class="cat" data-cat data-id="c4-교육-학습" style="--cc:#f5b642">
       <h2><span class="dot"></span>교육·학습 <span class="c-n">42개</span></h2>
       <p class="cat-desc">입시 등급컷·토익 플래너·자격증·한자까지 공부에 필요한 도우미</p>
       <div class="grid">
@@ -590,7 +609,7 @@
       <button class="more-btn" type="button" data-more>36개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c5-엔터-바이럴">
+    <section class="cat" data-cat data-id="c5-엔터-바이럴" style="--cc:#a78bfa">
       <h2><span class="dot"></span>엔터·바이럴 <span class="c-n">34개</span></h2>
       <p class="cat-desc">밸런스 게임·이상형 월드컵·팬덤 투표로 가볍게 즐기는 놀이</p>
       <div class="grid">
@@ -632,7 +651,7 @@
       <button class="more-btn" type="button" data-more>28개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c6-운세-심리">
+    <section class="cat" data-cat data-id="c6-운세-심리" style="--cc:#c084fc">
       <h2><span class="dot"></span>운세·심리 <span class="c-n">22개</span></h2>
       <p class="cat-desc">오늘의 운세·사주·타로·성격 테스트로 나를 들여다보기</p>
       <div class="grid">
@@ -662,7 +681,7 @@
       <button class="more-btn" type="button" data-more>16개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c7-금융-부동산">
+    <section class="cat" data-cat data-id="c7-금융-부동산" style="--cc:#2dd4bf">
       <h2><span class="dot"></span>금융·부동산 <span class="c-n">16개</span></h2>
       <p class="cat-desc">전세·청약·대출을 앞두고 한도와 조건을 미리 따져 봅니다</p>
       <div class="grid">
@@ -686,7 +705,7 @@
       <button class="more-btn" type="button" data-more>10개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c8-취업-생산성">
+    <section class="cat" data-cat data-id="c8-취업-생산성" style="--cc:#22d3aa">
       <h2><span class="dot"></span>취업·생산성 <span class="c-n">13개</span></h2>
       <p class="cat-desc">자소서·교대근무·업무 정리까지 일과 커리어를 돕는 도구</p>
       <div class="grid">
@@ -707,7 +726,7 @@
       <button class="more-btn" type="button" data-more>7개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c9-연애-관계">
+    <section class="cat" data-cat data-id="c9-연애-관계" style="--cc:#fb7bb0">
       <h2><span class="dot"></span>연애·관계 <span class="c-n">13개</span></h2>
       <p class="cat-desc">궁합·썸·결혼 가능성까지 관계를 재미있게 풀어 봅니다</p>
       <div class="grid">
@@ -728,7 +747,7 @@
       <button class="more-btn" type="button" data-more>7개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c10-반려-식물">
+    <section class="cat" data-cat data-id="c10-반려-식물" style="--cc:#4ade80">
       <h2><span class="dot"></span>반려·식물 <span class="c-n">11개</span></h2>
       <p class="cat-desc">반려동물 나이 환산, 식물 물주기 알림 등 돌봄 도우미</p>
       <div class="grid">
@@ -747,7 +766,7 @@
       <button class="more-btn" type="button" data-more>5개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c11-여행-문화">
+    <section class="cat" data-cat data-id="c11-여행-문화" style="--cc:#38d0e0">
       <h2><span class="dot"></span>여행·문화 <span class="c-n">7개</span></h2>
       <p class="cat-desc">여행 경비·짐싸기·일정 등 떠나기 전 준비를 한곳에서</p>
       <div class="grid">
@@ -762,7 +781,7 @@
       <button class="more-btn" type="button" data-more>1개 더보기 <span aria-hidden="true">▾</span></button>
     </section>
 
-    <section class="cat" data-cat data-id="c12-뷰티-패션">
+    <section class="cat" data-cat data-id="c12-뷰티-패션" style="--cc:#f59fc4">
       <h2><span class="dot"></span>뷰티·패션 <span class="c-n">7개</span></h2>
       <p class="cat-desc">퍼스널컬러·피부 타입 진단으로 나에게 맞는 스타일 찾기</p>
       <div class="grid">
