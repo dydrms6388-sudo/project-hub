@@ -3,20 +3,11 @@ import { SITE_URL } from "@/site.config";
 import { CATEGORIES } from "@/content/categories";
 
 /**
- * sitemap = 색인 대상만 (F3: URL 수 == 색인 대상 수).
- * v1 색인 대상 = 홈 + 카테고리 허브 12 + 고정 정보 페이지.
- * 시드/UGC 설문 페이지는 승격 전까지 noindex → sitemap 제외.
- * (승격 잡이 n>=30·7일 통과분을 별도로 추가한다.)
+ * sitemap = 밀도 있는 색인 대상만 (F3/F6/A4).
+ * v1 색인 대상 = 홈(고유 본문 1,200자+) + 카테고리 허브 12(각 1,200자+).
+ * 정보/약관 페이지는 필수라 footer로 노출·접근되지만 1,200자 미만이라 sitemap에서 제외한다
+ * (sitemap에 1,200자 미만이 1개라도 있으면 실패). 시드/UGC 설문은 승격 전까지 noindex → 제외.
  */
-const STATIC_PAGES = [
-  "/about",
-  "/contact",
-  "/privacy",
-  "/terms",
-  "/disclaimer",
-  "/community-guidelines",
-];
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const home = { url: `${SITE_URL}/`, changeFrequency: "daily" as const, priority: 1 };
   const hubs = CATEGORIES.map((c) => ({
@@ -24,10 +15,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
-  const statics = STATIC_PAGES.map((p) => ({
-    url: `${SITE_URL}${p}`,
-    changeFrequency: "yearly" as const,
-    priority: 0.3,
-  }));
-  return [home, ...hubs, ...statics];
+  return [home, ...hubs];
 }

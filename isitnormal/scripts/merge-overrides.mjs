@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 const SCRATCH =
   "/tmp/claude-0/-home-user-project-hub/5730e78e-9858-531d-809d-5814ef9f5351/scratchpad";
-const OUT = new URL("../content/overrides.json", import.meta.url);
+const OUT = new URL("../content/overrides.ts", import.meta.url);
 
 const readJson = (p) => {
   try {
@@ -23,7 +23,12 @@ const commentary = {
 };
 const introAppend = readJson(`${SCRATCH}/ext-hubs.json`);
 
-writeFileSync(OUT, JSON.stringify({ commentary, introAppend }, null, 2) + "\n");
+const header =
+  "/**\n * 콘텐츠 심화 오버레이 (scripts/merge-overrides.mjs 산출).\n" +
+  " * JSON 대신 .ts 로 저장 — Next 번들러와 node --experimental-strip-types 양쪽에서 임포트 가능.\n */\n" +
+  "export interface Overrides { commentary: Record<string, string>; introAppend: Record<string, string>; }\n" +
+  "const overrides: Overrides = ";
+writeFileSync(OUT, header + JSON.stringify({ commentary, introAppend }, null, 2) + ";\nexport default overrides;\n");
 console.log(
   `merged: ${Object.keys(commentary).length} commentaries, ${Object.keys(introAppend).length} intro appends`,
 );

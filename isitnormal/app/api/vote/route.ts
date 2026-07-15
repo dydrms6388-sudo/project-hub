@@ -101,12 +101,14 @@ export async function POST(req: NextRequest) {
     .maybeSingle();
   if (!option) return withCookie({ ok: false, error: "bad_option" }, 400);
 
-  // 이미 투표했는지 (V1: survey당 voter_hash unique → 24h 재투표 금지 충족)
+  // 이미 투표했는지 — 시크릿창에도 안정적인 ip_hash+fingerprint로 판정(E2 방어).
+  // voter_hash(세션 포함)는 기록용으로만 저장한다.
   const { data: existing } = await admin
     .from("votes")
     .select("id")
     .eq("survey_id", survey.id)
-    .eq("voter_hash", vHash)
+    .eq("ip_hash", ipHash)
+    .eq("fingerprint", fingerprint)
     .maybeSingle();
 
   let alreadyVoted = Boolean(existing);

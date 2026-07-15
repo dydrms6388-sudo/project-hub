@@ -6,10 +6,10 @@
  * 12개 허브의 intro 오프닝 스타일을 의도적으로 다르게 써서 구조 유사도(F8/A3)를 낮췄다.
  */
 import type { CategoryHub } from "./schema";
-import overrides from "./overrides.json";
+import overrides from "./overrides";
 
 /** 허브 intro 추가 문단 오버레이 (scripts/merge-overrides.mjs 산출). 있으면 뒤에 이어붙인다. */
-const INTRO_APPEND = (overrides as { introAppend: Record<string, string> }).introAppend;
+const INTRO_APPEND = overrides.introAppend;
 
 const RAW_HUBS: CategoryHub[] = [
   {

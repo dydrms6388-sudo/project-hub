@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 
 const LEGAL = [
   ["소개", "/about"],
+  ["내 설문 만들기", "/submit"],
   ["문의", "/contact"],
   ["개인정보", "/privacy"],
   ["이용약관", "/terms"],

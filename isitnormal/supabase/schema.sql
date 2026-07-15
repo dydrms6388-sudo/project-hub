@@ -87,8 +87,9 @@ create table if not exists votes (
   region       text,   -- 광역 단위만
   created_at   timestamptz not null default now()
 );
--- 한 voter_hash는 설문당 1표 (V1). 24시간 재투표 금지는 앱에서 last-vote 검사로 강제.
-create unique index if not exists uq_vote_once on votes(survey_id, voter_hash);
+-- 설문당 1표 (V1). 중복 방지 키는 시크릿창에도 안정적인 ip_hash+fingerprint 조합.
+-- (session은 시크릿창마다 새로 발급되므로 dedup 키에서 제외 — 오히려 우회 통로가 된다.)
+create unique index if not exists uq_vote_once on votes(survey_id, ip_hash, fingerprint);
 create index if not exists idx_votes_survey on votes(survey_id);
 create index if not exists idx_votes_ip_time on votes(ip_hash, created_at);
 
