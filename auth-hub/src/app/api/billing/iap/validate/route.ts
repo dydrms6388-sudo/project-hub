@@ -67,6 +67,14 @@ export async function POST(req: Request) {
     }
 
     // SUBSCRIPTION
+    // 만료된 구독 영수증으로 ACTIVE(PRO) 를 부여하지 않는다 — 이미 만료된 영수증이
+    // 무기한 PRO 로 이어지는 것을 막는다(검증된 만료시각 기준).
+    if (result.expiresAt && result.expiresAt.getTime() <= Date.now()) {
+      return NextResponse.json(
+        { error: "subscription_expired", expiresAt: result.expiresAt },
+        { status: 402 }
+      );
+    }
     await upsertSubscription({
       userId: user.id,
       provider,
