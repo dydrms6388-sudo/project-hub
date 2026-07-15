@@ -15,7 +15,7 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"DSR이 뭔가요?","acceptedAnswer":{"@type":"Answer","text":"DSR(총부채원리금상환비율)은 연소득 대비 1년에 갚는 모든 대출 원리금의 비율입니다. 은행권은 보통 40%, 2금융권은 50%를 한도로 봅니다. DSR이 낮을수록 추가 대출 여력이 큽니다."}},
 {"@type":"Question","name":"추가 대출 한도는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"연소득에 DSR 한도(예: 40%)를 곱한 연간 한도에서 기존 대출의 연 원리금을 뺀 남은 상환여력을, 입력한 신규 대출 금리·기간으로 원리금균등 상환 공식에 대입해 받을 수 있는 최대 원금을 역산합니다."}},
-{"@type":"Question","name":"스트레스 DSR은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"금리 상승 위험을 반영해 심사 시 가산금리를 더하는 제도입니다. 토글을 켜면 신규 대출 한도 산정에만 +0.75%p를 가산해 더 보수적인 한도를 보여줍니다."}}
+{"@type":"Question","name":"스트레스 DSR은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"금리 상승 위험을 반영해 심사 시 가산금리를 더하는 제도입니다. 2025년 7월 3단계 시행으로 스트레스 금리는 1.5%p입니다. 토글을 켜면 신규 대출 한도 산정에만 +1.5%p를 가산해 더 보수적인 한도를 보여줍니다."}}
 ]}
 </script>
 <style>
@@ -83,7 +83,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   - currentDsr(): (총 연 원리금 / 연소득) × 100
   - additionalCapacity(): 연소득×DSR한도 - 기존원리금 = 신규 상환여력 → 원리금균등 역산으로 최대 원금
   - dsrGrade(): DSR 구간별 등급
-  - BULLET_NOTIONAL_YEARS=5, 스트레스 가산 +0.75%p(한도 산정에만)
+  - BULLET_NOTIONAL_YEARS=5, 스트레스 가산 +1.5%p(3단계, 한도 산정에만)
   원본 함수 시그니처/상수/공식을 변형 없이 그대로 옮김.
 -->
 
@@ -122,7 +122,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
       <input type="number" id="newTerm" value="30" min="1" />
     </div>
   </div>
-  <label class="switch"><input type="checkbox" id="stress" /> 스트레스 DSR 가산(+0.75%p) 반영 — 더 보수적으로</label>
+  <label class="switch"><input type="checkbox" id="stress" /> 스트레스 DSR 가산(+1.5%p) 반영 — 더 보수적으로</label>
 
   <button id="calc">DSR · 한도 계산하기</button>
 
@@ -169,7 +169,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   <p>이 도구는 「연소득 × DSR한도」에서 기존 연 원리금을 뺀 <b>남은 상환여력</b>을 구한 뒤, 입력한 신규 대출 금리·기간으로 원리금균등 상환액을 거꾸로 풀어 <b>받을 수 있는 최대 신규 원금</b>을 역산합니다.</p>
 
   <h2>스트레스 DSR</h2>
-  <p>금리 상승 위험에 대비해 심사 시 실제 금리에 가산금리를 더해 상환 부담을 더 크게 평가하는 제도입니다. 토글을 켜면 신규 대출 한도 산정에만 <b>+0.75%p</b>를 가산해 더 보수적인 한도를 보여줍니다. (현재 DSR 표시값에는 가산하지 않습니다.)</p>
+  <p>금리 상승 위험에 대비해 심사 시 실제 금리에 가산금리를 더해 상환 부담을 더 크게 평가하는 제도입니다. 2025년 7월 3단계가 시행돼 전 금융권·전 대출에 스트레스 금리 1.5%p가 적용됩니다(비수도권 주담대에 한시 적용되던 0.75%p도 2025년 말 종료). 토글을 켜면 신규 대출 한도 산정에만 <b>+1.5%p</b>를 가산해 더 보수적인 한도를 보여줍니다. (현재 DSR 표시값에는 가산하지 않습니다.)</p>
 
   <h2>자주 묻는 질문</h2>
   <div class="faq"><b>Q. 이 결과가 실제 대출 한도인가요?</b><p>아니요. 금융사별 기준·우대금리·담보·LTV·스트레스DSR 세부 적용 등으로 달라지는 참고용 추정치입니다. 정확한 한도는 금융사 상담으로 확인하세요.</p></div>
@@ -384,7 +384,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
       dsrLimit: dsrLimit,
       newRate: newRate,
       newTermYears: newTerm,
-      stressAddon: stress ? 0.75 : 0
+      stressAddon: stress ? 1.5 : 0
     });
     var g = dsrGrade(dsr);
 
@@ -392,7 +392,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
     $('grade').style.color = g.tone;
     $('dsrBig').textContent = dsr.toFixed(1) + '%';
     $('dsrBig').style.color = g.tone;
-    $('dsrSub').textContent = 'DSR ' + dsrLimit + '% 기준' + (stress ? ' · 스트레스 +0.75%p 반영' : '');
+    $('dsrSub').textContent = 'DSR ' + dsrLimit + '% 기준' + (stress ? ' · 스트레스 +1.5%p 반영' : '');
     $('usedAnnual').textContent = won(cap.usedAnnual);
     $('room').textContent = cap.remainingRatioRoom.toFixed(1) + '%p';
     $('budget').textContent = won(cap.annualBudgetForNew);
