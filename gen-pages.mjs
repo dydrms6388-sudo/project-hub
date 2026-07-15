@@ -11,7 +11,7 @@
 //   매 배포마다 이 스크립트를 재실행해 최신·정합 상태로 만든다.
 //   즉 "커밋된 HTML ≠ 프로덕션 HTML"일 수 있고, placeholder 잔재는 배포 시 제거된다.
 //   내장 9종(salary/dsr/jeonse-loan/yangdo/refinance/age/dday/bmi/pyeong)만 손으로 관리하는 실앱이다.
-import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
 import { renderHub } from "./lib/hub.mjs";
 
@@ -271,6 +271,21 @@ for (const b of BUILTINS) {
   if (h !== before) { writeFileSync(f, h); patched++; }
 }
 
+// ── 고아/스테일 페이지 정리: 재생성 대상이 아닌 디렉터리(예: 옛 슬러그 orphan)에
+//    남아 있는 placeholder(REPLACE_) 소유확인 메타를 전 슬러그 디렉터리에서 제거한다.
+//    실제 코드가 든 메타(content!=REPLACE_)는 건드리지 않으므로 재생성된 페이지엔 무영향. ──
+const PLACEHOLDER_VERIFY = /\s*<meta name="(?:google|naver)-site-verification" content="REPLACE_[^"]*"[^>]*>/g;
+let swept = 0;
+for (const entry of readdirSync(".", { withFileTypes: true })) {
+  if (!entry.isDirectory()) continue;
+  const f = `${entry.name}/index.html`;
+  if (!existsSync(f)) continue;
+  const h = readFileSync(f, "utf8");
+  const cleaned = h.replace(PLACEHOLDER_VERIFY, "");
+  if (cleaned !== h) { writeFileSync(f, cleaned); swept++; }
+}
+
+console.log(`orphan placeholder-verify metas swept: ${swept}`);
 console.log(`landing pages: ${landingCount}`);
 console.log(`removed stale slug dirs: ${removed}`);
 console.log(`builtin pages patched(verify): ${patched}`);
