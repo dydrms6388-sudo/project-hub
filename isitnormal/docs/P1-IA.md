@@ -15,8 +15,9 @@
 - 따라서 **독립 Next.js App Router + TS + Tailwind + Supabase** 앱을 `isitnormal/` 에 두고,
   자체 Vercel 프로젝트로 배포한 뒤 허브에서 rewrite 프록시한다(auth-hub와 동일 패턴).
 - 도메인: tomatoeggcat.com은 "Low Value Content"로 이미 거절된 전례가 있으므로,
-  isitnormal은 **별도 서브도메인/도메인**으로 심사받는다(예: `isitnormal.*`).
-  이 결정으로 기존 거절 이력과 색인 오염을 분리한다.
+  isitnormal은 **완전 별도 도메인**으로 심사받는다(서브도메인 아님 — 사용자 확정).
+  거절 이력·색인 오염을 도메인 레벨에서 완전 격리한다. 도메인 문자열의 단일 진실원천은
+  `site.config.ts`(`SITE_URL`)이며, 실제 등록 도메인은 배포 시 env로 주입한다.
 
 ## 1. 서비스 정체 — 엔진
 
