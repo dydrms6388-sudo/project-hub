@@ -20,6 +20,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
   },
   robots: { index: true, follow: true },
+  alternates: { canonical: SITE_URL },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NAVER_SITE_VERIFICATION
+      ? { "naver-site-verification": process.env.NAVER_SITE_VERIFICATION }
+      : {},
+  },
 };
 
 const LEGAL = [
