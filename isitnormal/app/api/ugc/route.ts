@@ -69,6 +69,15 @@ export async function POST(req: NextRequest) {
     Object.keys(CATEGORY_BY_SLUG).indexOf(categorySlug) + 1; // schema 고정 id 1..12
   const slug = `u-${makeShortId(7)}`;
 
+  // V2: 신규 항목 급등 감지 → 자동 홀드 후 검토
+  const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+  const { count: recentPending } = await admin
+    .from("surveys")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "pending")
+    .gte("created_at", hourAgo);
+  const surge = (recentPending ?? 0) >= 15;
+
   const { data: survey, error } = await admin
     .from("surveys")
     .insert({
@@ -79,6 +88,7 @@ export async function POST(req: NextRequest) {
       vote_kind: "binary",
       origin: "user",
       status: "pending", // 승인 전엔 익명 SELECT 불가 (E3)
+      is_surge_held: surge,
       submitter_hash: submitterHash,
     })
     .select("id")

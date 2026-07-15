@@ -25,6 +25,10 @@ export async function POST(req: NextRequest) {
       .eq("id", id);
     return NextResponse.json({ ok: !error });
   }
+  if (kind === "comment" && ["approved", "rejected", "held"].includes(action)) {
+    const { error } = await admin.from("comments").update({ status: action }).eq("id", id);
+    return NextResponse.json({ ok: !error });
+  }
   if (kind === "report" && action === "handle") {
     const { error } = await admin.from("reports").update({ handled: true }).eq("id", id);
     return NextResponse.json({ ok: !error });

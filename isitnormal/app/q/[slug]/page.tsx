@@ -5,6 +5,8 @@ import VoteCard from "@/components/VoteCard";
 import { getSurveyBySlug, getCategory, getRelated, ALL_SURVEYS } from "@/lib/surveys";
 import { getSurveyExtras } from "@/lib/promotion-data";
 import { getStatsBySlug } from "@/lib/stats";
+import { getComments } from "@/lib/comments";
+import CommentBox from "@/components/CommentBox";
 import { UGC_DISCLAIMER } from "@/site.config";
 import { breadcrumbLd, articleLd, ldJson, abs } from "@/lib/jsonld";
 
@@ -47,6 +49,7 @@ export default async function SurveyPage({
   const related = getRelated(s.slug);
   const { isIndexed, promotionCommentary } = await getSurveyExtras(slug);
   const stats = isIndexed ? await getStatsBySlug(slug) : null;
+  const comments = await getComments(slug);
   const topOption =
     stats?.showStats && stats.options.length
       ? [...stats.options].sort((a, b) => b.votes - a.votes)[0]
@@ -106,6 +109,12 @@ export default async function SurveyPage({
           )}
         </section>
       )}
+
+      {/* 한 줄 의견 (참여 계단 2단계) */}
+      <section>
+        <h2 className="mb-3 text-sm font-bold text-ink">한 줄 의견</h2>
+        <CommentBox slug={s.slug} initial={comments} />
+      </section>
 
       <div className="ad-slot" aria-hidden="true">
         광고 영역 (승인 후 노출)
