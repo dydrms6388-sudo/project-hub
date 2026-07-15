@@ -53,6 +53,19 @@ jobs:
         with:
           node-version: 20
 
+      # projects.json → 랜딩/허브/sitemap 재생성.
+      # 커밋된 정적 산출물이 projects.json과 어긋나(stale) 배포되는 것을 막고,
+      # 템플릿/설정(소유확인 메타 등) 변경이 항상 최신으로 반영되게 한다.
+      # ⚠️ 이 스텝이 실패하면(projects.json 파손·템플릿 오류 등) 배포 전체가 중단된다
+      #    — projects.json 정합성이 이제 배포의 전제조건이다.
+      # 소유확인 코드는 시크릿으로 주입될 때만 메타에 실린다(미설정 시 메타 생략).
+      - name: Generate static pages (sync with projects.json)
+        if: steps.guard.outputs.ok == 'true'
+        env:
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
+        run: node gen-pages.mjs
+
       - name: Install Vercel CLI
         if: steps.guard.outputs.ok == 'true'
         run: npm install -g vercel@latest

@@ -1,4 +1,6 @@
 {
+  "buildCommand": "node gen-pages.mjs",
+  "outputDirectory": ".",
   "rewrites": [
     {
       "source": "/dalian-weekend",
