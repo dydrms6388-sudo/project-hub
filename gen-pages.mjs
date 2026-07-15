@@ -285,7 +285,16 @@ for (const entry of readdirSync(".", { withFileTypes: true })) {
   if (cleaned !== h) { writeFileSync(f, cleaned); swept++; }
 }
 
-console.log(`orphan placeholder-verify metas swept: ${swept}`);
+// ── 회귀 가드(경고성·비차단): 재생성/스윕 후에도 placeholder 잔재가 남았는지 전 페이지 스캔.
+//    새 손수 페이지가 '광고 영역'을 넣거나 스윕이 놓친 케이스를 배포 로그에서 바로 드러낸다. ──
+const JUNK = /REPLACE_(?:GOOGLE|NAVER)_CODE|광고 영역/;
+let junkPages = 0;
+const scanJunk = (f) => { if (existsSync(f) && JUNK.test(readFileSync(f, "utf8"))) { junkPages++; if (junkPages <= 8) console.warn(`  ⚠️ placeholder 잔재: ${f}`); } };
+for (const entry of readdirSync(".", { withFileTypes: true })) { if (entry.isDirectory()) scanJunk(`${entry.name}/index.html`); }
+scanJunk("index.html");
+if (junkPages) console.warn(`⚠️ 경고: placeholder(REPLACE_/광고 영역) 잔재 ${junkPages}개 페이지 — 배포 전 확인 필요.`);
+
+console.log(`placeholder-verify metas swept (all dirs): ${swept}`);
 console.log(`landing pages: ${landingCount}`);
 console.log(`removed stale slug dirs: ${removed}`);
 console.log(`builtin pages patched(verify): ${patched}`);
