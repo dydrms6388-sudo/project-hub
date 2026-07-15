@@ -19,7 +19,22 @@ export default function ShareButton({ slug, stats, selectedKey }: Props) {
 
   const onShare = async () => {
     track("share_click", { slug, meta: { hasStats: Boolean(stats?.showStats), selectedKey } });
-    const url = typeof window !== "undefined" ? `${window.location.origin}/q/${slug}` : "";
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    let url = `${origin}/q/${slug}`;
+    // 투표한 사용자면 /s/{shortId} 짧은링크 생성(카드 OG + 결과 프레이밍). 실패 시 /q/ 폴백.
+    if (selectedKey) {
+      try {
+        const res = await fetch("/api/share", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ slug, optionKey: selectedKey }),
+        });
+        const d = await res.json();
+        if (d?.ok && d?.url) url = `${origin}${d.url}`;
+      } catch {
+        /* 폴백 유지 */
+      }
+    }
     try {
       if (navigator.share) {
         await navigator.share({ title: "정상인가요", url });

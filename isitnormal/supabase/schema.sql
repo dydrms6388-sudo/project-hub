@@ -144,12 +144,13 @@ create table if not exists notify_optin (
 -- 7. 공유 짧은 링크 (/s/{shortId}, 90일 만료)
 -- =========================================================================
 create table if not exists short_links (
-  short_id    text primary key,             -- base62 등, 무한조합 색인 차단 위해 서버조회 전용
-  survey_id   uuid not null references surveys(id) on delete cascade,
-  option_id   uuid references survey_options(id),  -- 공유자가 선택한 답(결과 미리보기용)
+  short_id    text primary key,             -- base62, 무한조합 색인 차단 위해 서버조회 전용 (U4)
+  slug        text not null,                -- 공유 대상 설문
+  opt_key     text not null,                -- 공유자가 선택한 답(결과 미리보기 프레이밍용)
   created_at  timestamptz not null default now(),
   expires_at  timestamptz not null default (now() + interval '90 days')  -- U5
 );
+create index if not exists idx_short_links_expires on short_links(expires_at);
 
 -- =========================================================================
 -- 8. 계측 이벤트 (K값 추적)
