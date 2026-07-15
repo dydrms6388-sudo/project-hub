@@ -286,7 +286,7 @@ const dailyByCat = Object.entries(byCat).sort((a, b) => b[1].length - a[1].lengt
     return { slug: d.slug, emoji: d.emoji, name: d.name, desc: String(intro).replace(/\s+/g, " ").slice(0, 70), domain: d.domain };
   }) }));
 const total = BUILTINS.length + daily.length;
-const indexHtml = renderHub({ site: SITE, adsense: ADSENSE, verifyMeta: VERIFY_META, total, builtinCats, dailyByCat });
+const indexHtml = renderHub({ site: SITE, adsense: ADSENSE, verifyMeta: VERIFY_META, total, builtinCats, dailyByCat, coreSlugs: [...CORE_SLUGS] });
 writeFileSync("index.html", indexHtml);
 
 // ── sitemap.xml ──

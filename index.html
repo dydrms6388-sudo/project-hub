@@ -149,6 +149,7 @@
     .cat h2 .tag{font-size:10.5px; font-weight:800; letter-spacing:.02em; color:var(--warm);
       background:var(--warm-dim); border:1px solid var(--warm-ln); padding:2px 8px; border-radius:999px}
     .cat h2 .c-n{margin-left:auto; font-size:12px; font-weight:700; color:var(--tx3)}
+    .cat-desc{margin:-8px 0 15px; color:var(--tx2); font-size:13px; line-height:1.55; max-width:640px}
     .picks h2 .dot{background:linear-gradient(135deg,var(--warm),var(--acc))}
 
     .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:13px}
@@ -260,20 +261,25 @@
 
     <main>
 
-    <section class="cat picks" data-cat data-id="featured" aria-label="추천 도구">
-      <h2><span class="dot"></span>추천 도구 <span class="tag">인기</span></h2>
+    <section class="cat picks" data-cat data-id="featured" aria-label="주요 도구">
+      <h2><span class="dot"></span>주요 도구 <span class="tag">가장 많이 찾는</span></h2>
+      <p class="cat-desc">가장 수요가 많은 대표 도구를 카테고리별로 모았습니다. 아래에서 주제별 전체 목록을 볼 수 있어요.</p>
       <div class="grid">
         <a class="tool feat" href="/salary/" data-k="연봉 실수령액 급여 세후 월급"><span class="te">💵</span><span class="tb"><span class="tn">연봉 실수령액 계산기</span><span class="td">4대보험·세금 떼고 실제 월급·연봉 실수령</span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="tool feat" href="/dsr/" data-k="dsr 대출 한도 총부채"><span class="te">📊</span><span class="tb"><span class="tn">DSR 계산기</span><span class="td">총부채원리금상환비율·대출 가능 한도 판정</span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="tool feat" href="/jeonse-loan/" data-k="전세 대출 한도 자금 버팀목"><span class="te">🏠</span><span class="tb"><span class="tn">전세대출 한도 계산기</span><span class="td">버팀목·청년·신생아·시중은행 한도 비교</span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="tool feat" href="/yangdo/" data-k="양도세 양도소득세 부동산 세금"><span class="te">🧾</span><span class="tb"><span class="tn">양도소득세 계산기</span><span class="td">보유기간·장특공 반영 양도세 추정</span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="tool feat" href="/refinance/" data-k="대출 갈아타기 대환 금리 이자"><span class="te">🔁</span><span class="tb"><span class="tn">대출 갈아타기 계산기</span><span class="td">대환 시 월 상환액·총이자 절감액 계산</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool feat" href="/age/" data-k="만나이 나이 계산 띠 생일"><span class="te">🎂</span><span class="tb"><span class="tn">만나이 계산기</span><span class="td">만 나이·연 나이·띠·다음 생일 D-day</span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="tool feat" href="/manbo-steps/" data-k="만보왕 Manbo 건강운동"><span class="te">👟</span><span class="tb"><span class="tn">만보왕 Manbo</span><span class="td">오늘 걸은 걸음 수 하나만 넣으면 소모 칼로리, 이동 거리, 걷기 시간, 지방 연소 추정량을 한 화면에 보여 주는 </span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="tool feat" href="/moving-cost-calc/" data-k="이사미리 생활/이사"><span class="te">🚚</span><span class="tb"><span class="tn">이사미리</span><span class="td">이사 업체에 정식 견적을 부르기 전, 대략적인 비용 범위를 먼저 그려 보는 계산 도구입니다. 거주 평수(짐의 양),</span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="tool feat" href="/suneung-gradecut/" data-k="등급컷 변환기 교육·입시"><span class="te">🎓</span><span class="tb"><span class="tn">등급컷 변환기</span><span class="td">수능이나 6월·9월 모의평가가 끝난 날, 가채점한 원점수만 넣으면 예상 등급·백분위·추정 표준점수를 한 화면에서 바</span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="tool feat" href="/personal-color-test/" data-k="컬러무드 퍼스널컬러 뷰티/바이럴 진단"><span class="te">🎨</span><span class="tb"><span class="tn">컬러무드 퍼스널컬러</span><span class="td">12가지 유형 퍼스널 컬러 자가진단 도구입니다. 사진 없이 12개 문항에 보기 중 하나를 고르는 버튼(택1)으로 답</span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="tool feat" href="/today-fortune/" data-k="오늘의 운세 운세/재미"><span class="te">🔮</span><span class="tb"><span class="tn">오늘의 운세</span><span class="td">십이지(띠)를 기준으로 오늘의 총운과 애정·금전·직장·건강 다섯 분야를 각각 0~100점으로 매긴 점수와 풀이 글로</span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="tool feat" href="/cheongyak-score-calc/" data-k="청약가점기 부동산/청약"><span class="te">🏠</span><span class="tb"><span class="tn">청약가점기</span><span class="td">민영주택 가점제의 공식 84점 배점표를 그대로 담아, 무주택 기간·부양가족 수·청약통장 가입기간 세 항목만 넣으면 </span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="tool feat" href="/jasoseo-doctor/" data-k="자소서 닥터 취업/자기소개서"><span class="te">📝</span><span class="tb"><span class="tn">자소서 닥터</span><span class="td">완성한 자기소개서를 붙여넣으면 문장마다 진부·구조미흡·맞춤법 태그를 달고, 화면 상단에 STAR(상황·과제·행동·결</span></span><span class="go" aria-hidden="true">→</span></a>
       </div>
     </section>
 
     <section class="cat" data-cat data-id="c0-금융-세금">
       <h2><span class="dot"></span>금융 · 세금 <span class="tag">실생활 필수</span> <span class="c-n">5</span></h2>
+      <p class="cat-desc">연봉·대출·세금 실수령까지, 돈과 관련된 계산을 빠르게</p>
       <div class="grid">
         <a class="tool" href="/salary/" data-k="연봉 실수령액 급여 세후 월급"><span class="te">💵</span><span class="tb"><span class="tn">연봉 실수령액 계산기</span><span class="td">4대보험·세금 떼고 실제 월급·연봉 실수령</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dsr/" data-k="dsr 대출 한도 총부채"><span class="te">📊</span><span class="tb"><span class="tn">DSR 계산기</span><span class="td">총부채원리금상환비율·대출 가능 한도 판정</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -285,6 +291,7 @@
 
     <section class="cat" data-cat data-id="c1-생활-계산기">
       <h2><span class="dot"></span>생활 계산기 <span class="tag">기본</span> <span class="c-n">4</span></h2>
+      <p class="cat-desc">만나이·D-day·평수 변환 등 매일 쓰는 기본 계산 도구</p>
       <div class="grid">
         <a class="tool" href="/age/" data-k="만나이 나이 계산 띠 생일"><span class="te">🎂</span><span class="tb"><span class="tn">만나이 계산기</span><span class="td">만 나이·연 나이·띠·다음 생일 D-day</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dday/" data-k="디데이 dday 날짜 계산"><span class="te">📅</span><span class="tb"><span class="tn">D-day 계산기</span><span class="td">남은 날·지난 날·날짜 사이 일수</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -295,6 +302,7 @@
 
     <section class="cat" data-cat data-id="c2-건강-운동">
       <h2><span class="dot"></span>건강·운동 <span class="c-n">91</span></h2>
+      <p class="cat-desc">BMI·체지방·칼로리·운동 기록으로 챙기는 건강 관리</p>
       <div class="grid">
         <a class="tool" href="/dydrms-wonjunbi/" data-k="원준비 육아/어린이집"><span class="te">🎒</span><span class="tb"><span class="tn">원준비</span><span class="td">오늘 뭐 챙겨 보내지? 어린이집·유치원 등원 준비물을 아이 연령(만0세반~만5세반)만 고르면 자동으로 만들어주고, </span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-bloom/" data-k="블룸 건강·여성 웰니스 (생리주기·PMS 트래커, 프라이버시 우선)"><span class="te">🌸</span><span class="tb"><span class="tn">블룸</span><span class="td">다음 생리·배란·가임기를 예측하고 PMS 증상을 기록하는 무료 생리주기 트래커. 가입도 로그인도 없고, 모든 생리·</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -392,6 +400,7 @@
 
     <section class="cat" data-cat data-id="c3-생활-계산기">
       <h2><span class="dot"></span>생활·계산기 <span class="c-n">76</span></h2>
+      <p class="cat-desc">이사비용·경조사비·단위 변환 등 실생활 계산 모음</p>
       <div class="grid">
         <a class="tool" href="/dydrms-bucketjar/" data-k="꿈단지 (BucketJar) 생활/자기계발 (버킷리스트·목표관리)"><span class="te">🫙</span><span class="tb"><span class="tn">꿈단지 (BucketJar)</span><span class="td">죽기 전에 하고 싶은 것을 담는 무가입·무료 버킷리스트 앱. 여행·모험·성장·사랑·취미·건강·커리어·일상·기부·인생</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-chonsu/" data-k="촌수각 생활/가족 (촌수·호칭 계산기)"><span class="te">🧭</span><span class="tb"><span class="tn">촌수각</span><span class="td">고모의 남편·누나의 남편·아내의 언니·남편의 남동생… 헷갈리는 가족 호칭과 촌수를 한 번에 정리하는 무료 도구. 나</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -474,6 +483,7 @@
 
     <section class="cat" data-cat data-id="c4-교육-학습">
       <h2><span class="dot"></span>교육·학습 <span class="c-n">43</span></h2>
+      <p class="cat-desc">입시·자격증·어학·한자까지 공부를 돕는 도우미</p>
       <div class="grid">
         <a class="tool" href="/dydrms-hansa/" data-k="한국사 능력고사 교육/한국사 (한능검 대비)"><span class="te">📜</span><span class="tb"><span class="tn">한국사 능력고사</span><span class="td">회원가입 없이 바로 푸는 한국사능력검정시험(한능검) 대비 무료 웹앱. 선사~현대 6개 시대 90문항 문제은행(통설·</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/hakjeomgak/" data-k="학점각 교육/대학생"><span class="te">🎓</span><span class="tb"><span class="tn">학점각</span><span class="td">대학 학점(GPA) 계산기 — 4.5·4.3·4.0 만점, P/F·재수강 반영, 목표 시뮬·취업용 환산·장학금 커트</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -523,6 +533,7 @@
 
     <section class="cat" data-cat data-id="c5-엔터-바이럴">
       <h2><span class="dot"></span>엔터·바이럴 <span class="c-n">35</span></h2>
+      <p class="cat-desc">밸런스 게임·이상형 월드컵·팬덤까지 가볍게 즐기는 놀이</p>
       <div class="grid">
         <a class="tool" href="/dydrms-nickfactory/" data-k="닉네임공장 (NickFactory) 엔터/생활 유틸 (닉네임·이름 생성)"><span class="te">🏭</span><span class="tb"><span class="tn">닉네임공장 (NickFactory)</span><span class="td">게임 닉네임·판타지/무협 캐릭터 이름(뜻 포함)·길드클랜명·유튜브 채널명·필명·펫 이름·영문 핸들·커플 세트 이름을</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-cinelog/" data-k="씨네로그 (CineLog) 엔터/미디어"><span class="te">🎞️</span><span class="tb"><span class="tn">씨네로그 (CineLog)</span><span class="td">왓챠·노션 없이 무가입으로 본 영화·드라마·애니·예능을 별점과 함께 기록하는 시청 기록장. 보고 싶은 작품은 위시리</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -564,6 +575,7 @@
 
     <section class="cat" data-cat data-id="c6-운세-심리">
       <h2><span class="dot"></span>운세·심리 <span class="c-n">23</span></h2>
+      <p class="cat-desc">오늘의 운세·사주·타로·성격 테스트로 보는 나</p>
       <div class="grid">
         <a class="tool" href="/ttingun/" data-k="띵운 엔터/바이럴 (이름 운세·테스트)"><span class="te">✨</span><span class="tb"><span class="tn">띵운</span><span class="td">이름을 입력하면 오늘 하루의 운세를 고유한 캐릭터 카드 형태로 보여주는 서비스입니다. 훈민정음 오행을 기반으로 이름</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-haemong/" data-k="꿈해몽소 운세·콘텐츠 (꿈해몽)"><span class="te">🌙</span><span class="tb"><span class="tn">꿈해몽소</span><span class="td">아침에 일어나 꿈 내용이 머릿속에 맴돌 때, 그 꿈이 무슨 의미인지 궁금해진 적이 있을 것입니다. 꿈해몽소는 꿈에 </span></span><span class="go" aria-hidden="true">→</span></a>
@@ -593,6 +605,7 @@
 
     <section class="cat" data-cat data-id="c7-금융-부동산">
       <h2><span class="dot"></span>금융·부동산 <span class="c-n">17</span></h2>
+      <p class="cat-desc">전세·청약·대출 한도 등 부동산·금융 판단을 돕는 계산기</p>
       <div class="grid">
         <a class="tool" href="/pyeong-converter-plus/" data-k="평수변환플러스 부동산생활"><span class="te">📐</span><span class="tb"><span class="tn">평수변환플러스</span><span class="td">제곱미터와 평을 정확한 법정 상수(1평=400/121㎡)로 즉시 변환하고, 입력한 면적을 3D 방으로 시각화해 가구</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/salary-rank/" data-k="연봉상위 (SalaryRank) 금융/커뮤니티"><span class="te">💰</span><span class="tb"><span class="tn">연봉상위 (SalaryRank)</span><span class="td">세전 연봉을 입력하면 국세청 근로소득 통계를 바탕으로 내 연봉이 전체 근로소득자 중 상위 몇 퍼센트에 해당하는지 확</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -616,6 +629,7 @@
 
     <section class="cat" data-cat data-id="c8-취업-생산성">
       <h2><span class="dot"></span>취업·생산성 <span class="c-n">14</span></h2>
+      <p class="cat-desc">자소서·근무·업무 정리까지 일과 커리어를 돕는 도구</p>
       <div class="grid">
         <a class="tool" href="/dydrms-donggle/" data-k="동글계획표 생산성·계획 (생활계획표 메이커)"><span class="te">🕒</span><span class="tb"><span class="tn">동글계획표</span><span class="td">동그란 24시간 시계 위에 하루를 그리는 원형 생활계획표 메이커. 방학·시험기간·직장인·수험생·다이어트·주말 템플릿</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-jipjungsup/" data-k="집중숲 생산성·공부"><span class="te">🌲</span><span class="tb"><span class="tn">집중숲</span><span class="td">집중하면 숲이 자란다 — 뽀모도로 공부 집중 타이머. 완료할 때마다 3D 나무를 심어 숲을 키우고, 과목별 기록·연</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -636,6 +650,7 @@
 
     <section class="cat" data-cat data-id="c9-연애-관계">
       <h2><span class="dot"></span>연애·관계 <span class="c-n">13</span></h2>
+      <p class="cat-desc">궁합·썸·결혼까지 관계를 재미있게 들여다보기</p>
       <div class="grid">
         <a class="tool" href="/dydrms-weddingnote/" data-k="웨딩노트 (WeddingNote) 생활/결혼"><span class="te">💍</span><span class="tb"><span class="tn">웨딩노트 (WeddingNote)</span><span class="td">예식일만 넣으면 12개월 결혼 준비 로드맵이 즉시 생성! D-day 타임라인 체크리스트 자동생성·웨딩 예산 자동배분</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-giftpick/" data-k="뭐사주지 생활/선물·관계"><span class="te">🎁</span><span class="tb"><span class="tn">뭐사주지</span><span class="td">관계·상황·예산·취향 네 가지 조건만 고르면 90여 종 큐레이션에서 가장 잘 맞는 선물 여섯 개를 점수 순으로, 왜</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -655,6 +670,7 @@
 
     <section class="cat" data-cat data-id="c10-반려-식물">
       <h2><span class="dot"></span>반려·식물 <span class="c-n">11</span></h2>
+      <p class="cat-desc">반려동물 나이·식물 물주기 등 돌봄에 필요한 계산과 알림</p>
       <div class="grid">
         <a class="tool" href="/dydrms-sikjipsa/" data-k="식집사 (SikJipsa) 생활/반려식물"><span class="te">🌿</span><span class="tb"><span class="tn">식집사 (SikJipsa)</span><span class="td">식물 자꾸 죽이는 초보 식집사를 위한 반려식물 케어 올인원. 우리집 화분마다 종·계절·놓인 자리(빛)·화분 크기를 </span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-eohang/" data-k="어항각 (EohangGak) 취미/반려(물생활)"><span class="te">🐟</span><span class="tb"><span class="tn">어항각 (EohangGak)</span><span class="td">초보 물생활러를 위한 담수 어항 관리 올인원. 물잡기(질소순환) 단계별 D-day 트래커로 &quot;입수해도 되는 날&quot;을 </span></span><span class="go" aria-hidden="true">→</span></a>
@@ -672,6 +688,7 @@
 
     <section class="cat" data-cat data-id="c11-여행-문화">
       <h2><span class="dot"></span>여행·문화 <span class="c-n">7</span></h2>
+      <p class="cat-desc">여행 경비·짐싸기·일정까지 떠나기 전 준비</p>
       <div class="grid">
         <a class="tool" href="/dydrms-passport-name/" data-k="여권네임 여행/유틸"><span class="te">🪪</span><span class="tb"><span class="tn">여권네임</span><span class="td">한글 이름을 여권 영문 표기(로마자)로 1초에 변환. 국립국어원 로마자 표기법 엔진 + 성씨 관용표기 100종(이→</span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/tripnote-tau/" data-k="트립노트 여행/콘텐츠"><span class="te">🧭</span><span class="tb"><span class="tn">트립노트</span><span class="td">해외여행을 준비하는 과정에서 흩어진 정보를 한 곳에서 찾을 수 있는 실용 여행 블로그입니다. 항공권 예약 요령, 환</span></span><span class="go" aria-hidden="true">→</span></a>
@@ -685,6 +702,7 @@
 
     <section class="cat" data-cat data-id="c12-뷰티-패션">
       <h2><span class="dot"></span>뷰티·패션 <span class="c-n">7</span></h2>
+      <p class="cat-desc">퍼스널컬러·피부 타입 등 나에게 맞는 스타일 찾기</p>
       <div class="grid">
         <a class="tool" href="/dydrms-suntimer/" data-k="선크림 타이머 뷰티/자외선케어"><span class="te">☀️</span><span class="tb"><span class="tn">선크림 타이머</span><span class="td">선크림 언제 다시 바르지? 활동·내수성·자외선 지수에 맞춘 덧바르기 타이머 + 부위별 필요 도포량(2mg/cm²) </span></span><span class="go" aria-hidden="true">→</span></a>
         <a class="tool" href="/dydrms-skinlayer/" data-k="스킨레이어 (성분 궁합 체커) 뷰티/스킨케어"><span class="te">🧴</span><span class="tb"><span class="tn">스킨레이어 (성분 궁합 체커)</span><span class="td">레티놀·비타민C·AHA·BHA·나이아신아마이드… 같이 발라도 되는지 화장품 성분 궁합을 색상 매트릭스로 한눈에 체크</span></span><span class="go" aria-hidden="true">→</span></a>
