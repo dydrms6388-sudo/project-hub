@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/dydrm/projects/daily/project-hub\\\" && ls -la && echo \\\"---DATA---\\\" && ls -la data/ 2>/dev/null && echo \\\"---ROADMAP---\\\" && find . -maxdepth 2 -name \\\"roadmap.json\\\" 2>/dev/...",
-  "error": "Exit code 2\ntotal 533\ndrwxr-xr-x 1 dydrm 197609      0 Jun 25 11:49 .\ndrwxr-xr-x 1 dydrm 197609      0 Jun 25 16:04 ..\ndrwxr-xr-x 1 dydrm 197609      0 Jun 25 14:50 .claude\ndrwxr-xr-x 1 dydrm 197609      0 Jun 25 16:53 .git\n-rw-r--r-- 1 dydrm 197609     32 Jun 18 09:08 .gitignore\n-rw-r--r-- 1 dydrm 197609     33 Jun 21 23:33 .indexnow_key\ndrwxr-xr-x 1 dydrm 197609      0 Jun 25 16:55 .omc\ndrwxr-xr-x 1 dydrm 197609      0 Jun 21 22:10 .vercel\n-rw-r--r-- 1 dydrm 197609     33 Jun 21 23:33 1c15da4f...",
-  "timestamp": "2026-06-25T07:57:15.197Z",
-  "retry_count": 1
-}

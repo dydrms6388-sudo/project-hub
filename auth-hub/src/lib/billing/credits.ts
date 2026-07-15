@@ -41,18 +41,42 @@ export async function applyCreditDelta(params: {
       }
     }
 
-    // 행 잠금을 위해 현재 잔액을 조회(Postgres: SELECT ... FOR UPDATE 효과를 위해 update 사용)
-    const user = await tx.user.findUnique({
+    // 잔액을 "원자적 조건부 갱신"으로 변경한다 — read-modify-write 가 아니라 단일 UPDATE.
+    // 차감(delta<0): creditBalance >= -delta 인 경우에만 감소. 동시 요청이 같은 잔액을 읽고
+    //   모두 통과해 음수로 만드는 이중지불(double-spend)을 DB 행 잠금으로 차단한다.
+    // 충전(delta>=0): 조건 없이 증가.
+    if (delta < 0) {
+      const res = await tx.user.updateMany({
+        where: { id: userId, creditBalance: { gte: -delta } },
+        data: { creditBalance: { increment: delta } },
+      });
+      if (res.count === 0) {
+        // 갱신 0건 = 사용자 없음 또는 잔액 부족. 구분해서 응답.
+        const u = await tx.user.findUnique({
+          where: { id: userId },
+          select: { creditBalance: true },
+        });
+        if (!u) throw new Error(`User not found: ${userId}`);
+        throw new InsufficientCreditsError(-delta, u.creditBalance);
+      }
+    } else {
+      const res = await tx.user.updateMany({
+        where: { id: userId },
+        data: { creditBalance: { increment: delta } },
+      });
+      if (res.count === 0) throw new Error(`User not found: ${userId}`);
+    }
+
+    // 갱신된 권위 잔액을 조회(같은 트랜잭션의 자기 쓰기가 반영됨).
+    const after = await tx.user.findUnique({
       where: { id: userId },
       select: { creditBalance: true },
     });
-    if (!user) throw new Error(`User not found: ${userId}`);
+    if (!after) throw new Error(`User not found: ${userId}`);
+    const balanceAfter = after.creditBalance;
 
-    const balanceAfter = user.creditBalance + delta;
-    if (balanceAfter < 0) {
-      throw new InsufficientCreditsError(-delta, user.creditBalance);
-    }
-
+    // 원장 기록. 동일 idempotencyKey 가 경합해 이 지점에 도달하면 unique 제약(P2002)으로
+    // 이 트랜잭션이 롤백되어(방금의 증감 포함) 이중 적용이 원천 차단된다.
     await tx.creditLedger.create({
       data: {
         userId,
@@ -63,11 +87,6 @@ export async function applyCreditDelta(params: {
         service,
         purchaseId,
       },
-    });
-
-    await tx.user.update({
-      where: { id: userId },
-      data: { creditBalance: balanceAfter },
     });
 
     return { balance: balanceAfter, applied: true };

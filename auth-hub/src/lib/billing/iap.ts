@@ -100,8 +100,11 @@ async function verifyApple(
   }
 
   const lines = data.latest_receipt_info ?? data.receipt?.in_app ?? [];
-  const line =
-    lines.find((l) => l.product_id === productIdHint) ?? lines[lines.length - 1];
+  // productIdHint 가 주어지면 반드시 그 상품이 영수증에 존재해야 한다.
+  // (마지막 라인으로 폴백하면 다른 상품 영수증으로 엉뚱한 엔타이틀먼트를 받게 되므로 금지.)
+  const line = productIdHint
+    ? lines.find((l) => l.product_id === productIdHint)
+    : lines[lines.length - 1];
   if (!line) {
     return {
       valid: false,

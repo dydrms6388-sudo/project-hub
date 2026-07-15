@@ -22,7 +22,15 @@ export async function POST(req: Request) {
     idempotencyKey?: string;
   };
 
-  if (!amount || amount <= 0 || !service) {
+  // 정수·양수·상한 검증(0.5/NaN/Infinity/과대값 차단 — Int 컬럼·과금 안전).
+  if (
+    typeof amount !== "number" ||
+    !Number.isInteger(amount) ||
+    amount <= 0 ||
+    amount > 1_000_000 ||
+    !service ||
+    typeof service !== "string"
+  ) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
 

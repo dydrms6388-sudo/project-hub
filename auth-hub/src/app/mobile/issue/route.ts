@@ -23,9 +23,12 @@ function isAllowedRedirect(redirect: string): boolean {
       .split(",")
       .map((s) => s.trim().toLowerCase())
       .filter(Boolean);
-    // 스킴(예: "nyangstat:") 단위 화이트리스트. 미설정 시 https 만 허용(개발 편의).
+    // 스킴(예: "nyangstat:") 단위 화이트리스트.
+    // 화이트리스트 미설정 시 "닫힘(deny-all)"으로 동작한다 — 미설정 상태에서 임의 https URL 을
+    // 허용하면 30일 계정 베어러 토큰을 임의 사이트로 유출하는 오픈 리다이렉트가 된다.
+    // (배포 전 ALLOWED_MOBILE_SCHEMES 를 반드시 설정할 것.)
     const scheme = u.protocol.replace(":", "").toLowerCase();
-    if (allowed.length === 0) return scheme === "https";
+    if (allowed.length === 0) return false;
     return allowed.includes(scheme);
   } catch {
     return false;

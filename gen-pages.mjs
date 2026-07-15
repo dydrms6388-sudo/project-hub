@@ -3,13 +3,29 @@
 //       node gen-pages.mjs --ping    (생성 + IndexNow 제출)
 // 정적 사이트(빌드 없음). 실행은 project-hub 루트에서.
 // slug = slug-map.json(대표명) 우선, 없으면 live 서브도메인. 허브 UI = lib/hub.mjs.
-import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from "node:fs";
+//
+// ⚠️ 생성 산출물(손으로 고치지 말 것 — 배포 때 이 스크립트가 덮어씀):
+//   index.html, sitemap.xml, vercel.json, 그리고 각 /<slug>/index.html(내장 9종 제외).
+//   커밋된 산출물이 projects.json/템플릿과 어긋나(stale) 있을 수 있으며,
+//   배포 파이프라인(.github/workflows/deploy.yml + vercel.json buildCommand)이
+//   매 배포마다 이 스크립트를 재실행해 최신·정합 상태로 만든다.
+//   즉 "커밋된 HTML ≠ 프로덕션 HTML"일 수 있고, placeholder 잔재는 배포 시 제거된다.
+//   내장 9종(salary/dsr/jeonse-loan/yangdo/refinance/age/dday/bmi/pyeong)만 손으로 관리하는 실앱이다.
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
 import { renderHub } from "./lib/hub.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
-const VERIFY_META = `<meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}" />\n  <meta name="naver-site-verification" content="${NAVER_SITE_VERIFICATION}" />`;
+// 소유확인 메타는 "실제 코드가 설정된 경우에만" 방출한다.
+// 미설정 상태의 REPLACE_* 플레이스홀더를 프로덕션에 그대로 싣지 않기 위함
+// (가짜 코드는 Search Console 검증을 조용히 실패시키고 페이지에 무의미한 메타만 남긴다).
+// 값은 신뢰 소스(소유자 env)이나 방어적으로 영숫자/_/-만 허용해 속성 탈출·주입을 차단한다.
+const realVerify = (v) => !!v && !/^REPLACE_/.test(v) && /^[A-Za-z0-9_-]+$/.test(v);
+const VERIFY_META = [
+  realVerify(GOOGLE_SITE_VERIFICATION) ? `<meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}" />` : "",
+  realVerify(NAVER_SITE_VERIFICATION) ? `<meta name="naver-site-verification" content="${NAVER_SITE_VERIFICATION}" />` : "",
+].filter(Boolean).join("\n  ");
 const SLUG_MAP = JSON.parse(readFileSync("slug-map.json", "utf8"));
 
 // ── 내장 도구 9개(현 index.html과 동일) ──
@@ -230,24 +246,55 @@ for (const d of daily.filter(d => APEX_SERVED.has(d.slug))) {
   // canonical→apex (프록시 응답에 Link 헤더 — 앱 코드 무수정으로 vercel.app를 apex에 통합)
   headers.push({ source: `/${d.slug}`, headers: [{ key: "Link", value: `<${SITE}/${d.slug}/>; rel="canonical"` }] });
 }
-writeFileSync("vercel.json", JSON.stringify({ rewrites, headers }, null, 2) + "\n");
+// buildCommand: Vercel의 네이티브 Git 연동 배포도 매번 이 스크립트를 돌려 산출물을 재생성하게 한다
+// (GH Action 경로가 아니라 네이티브 경로로 배포돼도 stale/placeholder가 나가지 않도록). outputDirectory=루트.
+writeFileSync("vercel.json", JSON.stringify({ buildCommand: "node gen-pages.mjs", outputDirectory: ".", rewrites, headers }, null, 2) + "\n");
 
 // ── 내장 9개 정적 페이지에 verification 메타 주입(멱등) ──
+// 기존 google/naver 소유확인 메타는 항상 걷어낸 뒤(플레이스홀더 잔재 제거),
+// 실제 코드가 있을 때만(VERIFY_META 비어있지 않을 때) 다시 주입한다.
+const STALE_VERIFY = /\s*<meta name="(?:google|naver)-site-verification"[^>]*>/g;
 let patched = 0;
 for (const b of BUILTINS) {
   const f = `${b.slug}/index.html`;
   if (!existsSync(f)) continue;
   let h = readFileSync(f, "utf8");
-  if (h.includes("google-site-verification")) continue;
-  if (h.includes('name="theme-color"')) {
-    h = h.replace(/(<meta name="theme-color"[^>]*>)/, `$1\n${VERIFY_META}`);
-  } else {
-    h = h.replace(/<\/title>/, `</title>\n${VERIFY_META}`);
+  const before = h;
+  h = h.replace(STALE_VERIFY, "");
+  if (VERIFY_META) {
+    if (h.includes('name="theme-color"')) {
+      h = h.replace(/(<meta name="theme-color"[^>]*>)/, `$1\n${VERIFY_META}`);
+    } else {
+      h = h.replace(/<\/title>/, `</title>\n${VERIFY_META}`);
+    }
   }
-  writeFileSync(f, h);
-  patched++;
+  if (h !== before) { writeFileSync(f, h); patched++; }
 }
 
+// ── 고아/스테일 페이지 정리: 재생성 대상이 아닌 디렉터리(예: 옛 슬러그 orphan)에
+//    남아 있는 placeholder(REPLACE_) 소유확인 메타를 전 슬러그 디렉터리에서 제거한다.
+//    실제 코드가 든 메타(content!=REPLACE_)는 건드리지 않으므로 재생성된 페이지엔 무영향. ──
+const PLACEHOLDER_VERIFY = /\s*<meta name="(?:google|naver)-site-verification" content="REPLACE_[^"]*"[^>]*>/g;
+let swept = 0;
+for (const entry of readdirSync(".", { withFileTypes: true })) {
+  if (!entry.isDirectory()) continue;
+  const f = `${entry.name}/index.html`;
+  if (!existsSync(f)) continue;
+  const h = readFileSync(f, "utf8");
+  const cleaned = h.replace(PLACEHOLDER_VERIFY, "");
+  if (cleaned !== h) { writeFileSync(f, cleaned); swept++; }
+}
+
+// ── 회귀 가드(경고성·비차단): 재생성/스윕 후에도 placeholder 잔재가 남았는지 전 페이지 스캔.
+//    새 손수 페이지가 '광고 영역'을 넣거나 스윕이 놓친 케이스를 배포 로그에서 바로 드러낸다. ──
+const JUNK = /REPLACE_(?:GOOGLE|NAVER)_CODE|광고 영역/;
+let junkPages = 0;
+const scanJunk = (f) => { if (existsSync(f) && JUNK.test(readFileSync(f, "utf8"))) { junkPages++; if (junkPages <= 8) console.warn(`  ⚠️ placeholder 잔재: ${f}`); } };
+for (const entry of readdirSync(".", { withFileTypes: true })) { if (entry.isDirectory()) scanJunk(`${entry.name}/index.html`); }
+scanJunk("index.html");
+if (junkPages) console.warn(`⚠️ 경고: placeholder(REPLACE_/광고 영역) 잔재 ${junkPages}개 페이지 — 배포 전 확인 필요.`);
+
+console.log(`placeholder-verify metas swept (all dirs): ${swept}`);
 console.log(`landing pages: ${landingCount}`);
 console.log(`removed stale slug dirs: ${removed}`);
 console.log(`builtin pages patched(verify): ${patched}`);
