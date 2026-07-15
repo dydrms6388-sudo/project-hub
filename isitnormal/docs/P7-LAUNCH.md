@@ -77,3 +77,16 @@ UGC 개방: 투표 트래픽 확인 후 `NEXT_PUBLIC_UGC_ENABLED=1`.
 | 통계 집계 | `lib/stats.ts` + `supabase/schema.sql`(get_survey_stats RPC) |
 | 검증 스크립트 | `scripts/verify.ts` (`npx tsx scripts/verify.ts`) |
 | 콘텐츠 스키마/오버레이 | `content/schema.ts` + `scripts/merge-overrides.mjs` |
+| 승격 파이프라인 | `lib/promote-run.ts` + `supabase/promote.ts` + `app/api/cron/promote` + `lib/promotion-data.ts` |
+| 관리자 대시보드 | `app/admin/*` + `lib/admin.ts` + `lib/admin-stats.ts` + `app/api/admin/*` |
+| 댓글(한 줄 의견) | `app/api/comment` + `lib/comments.ts` + `components/CommentBox.tsx` |
+| 알림 opt-in | `app/api/notify` + `components/NotifyOptin.tsx` |
+| UGC 설문 렌더 리졸버 | `lib/surveys.ts`(resolveSurvey) |
+
+## 7. 운영 파이프라인 (배포 후 자동)
+
+- **승격 잡**: Vercel Cron이 매일 03:00 `/api/cron/promote` 호출(`CRON_SECRET` 보호).
+  n≥30·7일·밀도(고유 800/총 1,200) 통과분만 `is_indexed=true` → 설문 페이지 index 전환 + sitemap 편입.
+  승격 페이지엔 실측 결과 요약 + `promotion_commentary`(운영자 작성 고유 해설) 노출.
+- **관리자**(`/admin`, `ADMIN_TOKEN`): UGC 승인/반려, 삭제요청 48h SLA 큐, 신고·문의, K값·봇 추정.
+- **어뷰징**: 투표 dedup(ip+fp), rate limit(투표50·작성3·댓글20/일), UGC 급등 자동 홀드(V2).
