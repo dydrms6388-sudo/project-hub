@@ -1,7 +1,0 @@
-{
-  "tool_name": "PowerShell",
-  "tool_input_preview": "{\"command\":\"$dirs = @(\\n  \\\"C:\\\\Users\\\\dydrm\\\\projects\\\\daily\\\\2026-06-23-jeommechu\\\",\\n  \\\"C:\\\\Users\\\\dydrm\\\\projects\\\\daily\\\\2026-06-24-glass-mind\\\",\\n  \\\"C:\\\\Users\\\\dydrm\\\\projects\\\\daily\\\\2026-06-...",
-  "error": "Exit code 1\nAt line:11 char:28\r\n+   else { Write-Output \"=== $d: no vercel.json ===\" }\r\n+                            ~~~\r\nVariable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to delimit\r\n the name.\r\n    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException\r\n    + FullyQualifiedErrorId : InvalidVariableReferenceWithDrive",
-  "timestamp": "2026-06-25T06:43:03.739Z",
-  "retry_count": 1
-}
