@@ -44,6 +44,7 @@ create table if not exists surveys (
   status        survey_status not null default 'pending',
   -- 색인 3층 자산
   editor_commentary text not null default '',           -- 편집자 해설(3층, 고유 텍스트)
+  promotion_commentary text not null default '',        -- 승격 시 추가되는 실측 결과 해설(고유). 800자 고유 게이트 충족용
   -- 승격 게이트 결과(애플리케이션이 계산해 기록; sitemap 생성이 이 플래그를 신뢰)
   is_indexed    boolean not null default false,
   promoted_at   timestamptz,
@@ -295,6 +296,24 @@ $$;
 revoke all on function get_survey_stats_by_slug(text) from public;
 grant execute on function get_survey_stats_by_slug(text) to anon;
 -- 소비 측 규칙: show_stats=false이면 votes를 %로 렌더하지 말고 "집계 중"으로 표기.
+
+-- 봇 투표 비율 추정 (V4, 관리자 대시보드용). 같은 ip_hash가 비정상적으로 많은 표를
+-- 던진 비율. service_role(관리 API)만 실행.
+create or replace function get_bot_ratio()
+returns numeric
+language sql
+security definer
+set search_path = public
+as $$
+  with per_ip as (select ip_hash, count(*) c from votes group by ip_hash),
+       tot as (select count(*)::numeric n from votes)
+  select coalesce(
+    (select sum(c) from per_ip where c > 20)::numeric / nullif((select n from tot), 0),
+    0
+  );
+$$;
+revoke all on function get_bot_ratio() from public;
+grant execute on function get_bot_ratio() to service_role;
 
 -- =========================================================================
 -- 12. 씨드 카테고리 (12) — 운영자 데이터. 실제 시드 설문은 P2에서 투입.

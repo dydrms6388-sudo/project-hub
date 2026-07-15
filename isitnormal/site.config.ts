@@ -16,7 +16,7 @@ export const UGC_DISCLAIMER =
   "이용자 작성 콘텐츠이며 운영자는 진위를 보증하지 않습니다.";
 
 /** robots Disallow 경로 (U1) */
-export const ROBOTS_DISALLOW = ["/s/", "/api/", "/pending/", "/vote/"];
+export const ROBOTS_DISALLOW = ["/s/", "/api/", "/pending/", "/vote/", "/admin"];
 
 /**
  * UGC 작성 개방 플래그. 기본 false — 투표 트래픽이 생긴 뒤 켠다.

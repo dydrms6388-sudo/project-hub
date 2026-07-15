@@ -29,6 +29,21 @@ export function faqLd(faq: { q: string; a: string }[]) {
   };
 }
 
+/**
+ * 승격(색인)된 설문에만 Article 부여 (미승인/미승격이면 호출하지 않는다).
+ * Review/AggregateRating 은 절대 쓰지 않는다 — 구조화 데이터 스팸(규칙).
+ */
+export function articleLd(a: { title: string; description: string; path: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: a.title,
+    description: a.description,
+    mainEntityOfPage: abs(a.path),
+    publisher: { "@type": "Organization", name: SITE_NAME },
+  };
+}
+
 export function siteLd() {
   return {
     "@context": "https://schema.org",

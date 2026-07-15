@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import StatsResult from "./StatsResult";
 import ShareButton from "./ShareButton";
+import NotifyOptin from "./NotifyOptin";
 import { track } from "@/lib/track";
 import { getFingerprint } from "@/lib/fingerprint";
 import type { SurveyStats } from "@/lib/types";
@@ -104,6 +105,7 @@ export default function VoteCard({ slug, options }: Props) {
       <div className="space-y-4">
         <StatsResult options={options} stats={stats} selectedKey={selected} />
         <ShareButton slug={slug} stats={stats} selectedKey={selected} />
+        <NotifyOptin slug={slug} />
       </div>
     );
   }

@@ -32,6 +32,15 @@ export async function getServerSupabase() {
 }
 
 /**
+ * 쿠키 없는 anon 클라이언트 — 공개 읽기 전용(is_indexed 등). sitemap 등 쿠키 컨텍스트가
+ * 없는 곳에서 사용. RLS는 그대로 적용된다(승인분만 조회).
+ */
+export function getAnonSupabase() {
+  if (!URL || !ANON) return null;
+  return createClient(URL, ANON, { auth: { persistSession: false } });
+}
+
+/**
  * 서비스롤 클라이언트 — 서버 전용 특권 작업(모더레이션, 짧은링크 생성, 승인 등).
  * RLS를 우회하므로 절대 클라이언트로 노출 금지. env 없으면 null.
  */
