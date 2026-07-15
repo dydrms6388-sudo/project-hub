@@ -61,8 +61,10 @@ create index if not exists idx_surveys_indexed on surveys(is_indexed) where is_i
 create table if not exists survey_options (
   id          uuid primary key default gen_random_uuid(),
   survey_id   uuid not null references surveys(id) on delete cascade,
+  opt_key     text not null default 'a',   -- 'a'|'b'|'c'|'d' — 시드 콘텐츠의 option key와 일치
   label       text not null,
-  sort        smallint not null default 0
+  sort        smallint not null default 0,
+  unique (survey_id, opt_key)
 );
 create index if not exists idx_options_survey on survey_options(survey_id);
 
@@ -240,7 +242,7 @@ create policy event_insert on events for insert to anon with check (true);
 -- 11. 통계 RPC — n<30이면 null 통계 반환("집계 중"). PII 없음. (V3)
 -- =========================================================================
 create or replace function get_survey_stats(p_survey_id uuid)
-returns table(option_id uuid, label text, votes bigint, n bigint, show_stats boolean)
+returns table(option_id uuid, opt_key text, label text, votes bigint, n bigint, show_stats boolean)
 language sql
 security definer
 set search_path = public
@@ -249,16 +251,31 @@ as $$
     select count(*)::bigint as n from votes where survey_id = p_survey_id
   )
   select
-    o.id, o.label,
+    o.id, o.opt_key, o.label,
     (select count(*) from votes v where v.option_id = o.id)::bigint as votes,
     t.n,
     (t.n >= 30) as show_stats
   from survey_options o, total t
   where o.survey_id = p_survey_id
-    and exists (select 1 from surveys s where s.id = p_survey_id and s.status = 'approved');
+    and exists (select 1 from surveys s where s.id = p_survey_id and s.status = 'approved')
+  order by o.sort;
 $$;
 revoke all on function get_survey_stats(uuid) from public;
 grant execute on function get_survey_stats(uuid) to anon;
+
+-- slug 편의 래퍼 — 앱은 slug만 알고 uuid를 모른다.
+create or replace function get_survey_stats_by_slug(p_slug text)
+returns table(option_id uuid, opt_key text, label text, votes bigint, n bigint, show_stats boolean)
+language sql
+security definer
+set search_path = public
+as $$
+  select * from get_survey_stats(
+    (select id from surveys where slug = p_slug and status = 'approved')
+  );
+$$;
+revoke all on function get_survey_stats_by_slug(text) from public;
+grant execute on function get_survey_stats_by_slug(text) to anon;
 -- 소비 측 규칙: show_stats=false이면 votes를 %로 렌더하지 말고 "집계 중"으로 표기.
 
 -- =========================================================================

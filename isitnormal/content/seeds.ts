@@ -10,7 +10,7 @@
  */
 import type { SeedSurvey, SeedOption } from "./schema";
 import type { CategorySlug } from "./categories";
-import overrides from "./overrides.json" with { type: "json" };
+import overrides from "./overrides.json";
 
 /** 심화 해설 오버레이 (scripts/merge-overrides.mjs 산출). 있으면 base 해설을 대체한다. */
 const COMMENTARY_OVERRIDE = (overrides as { commentary: Record<string, string> }).commentary;
