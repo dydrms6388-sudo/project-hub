@@ -8,6 +8,7 @@ import { SEEDS } from "@/content/seeds";
 import { HUBS } from "@/content/hubs";
 import type { SeedSurvey } from "@/content/schema";
 import type { CategoryHub } from "@/content/schema";
+import { getAnonSupabase } from "@/lib/supabase/server";
 
 export { CATEGORIES };
 
@@ -41,3 +42,60 @@ export function getFeatured(limit = 8): SeedSurvey[] {
 }
 
 export const ALL_SURVEYS = SEEDS;
+
+/** 렌더에 필요한 통합 설문 형태 (시드 또는 승인된 UGC). */
+export interface ResolvedSurvey {
+  slug: string;
+  categorySlug: CategorySlug;
+  title: string;
+  body: string;
+  options: { key: string; label: string }[];
+  editorCommentary: string;
+  related: string[];
+  origin: "operator" | "user";
+}
+
+/**
+ * slug → 설문. 시드는 로컬(동기), 시드가 아니면 승인된 UGC를 Supabase에서 조회.
+ * UGC 개방 시 사용자 설문 페이지가 정상 렌더되도록 한다. 미존재/미승인이면 null.
+ */
+export async function resolveSurvey(slug: string): Promise<ResolvedSurvey | null> {
+  const seed = getSurveyBySlug(slug);
+  if (seed) {
+    return {
+      slug: seed.slug,
+      categorySlug: seed.categorySlug,
+      title: seed.title,
+      body: seed.body,
+      options: seed.options.map((o) => ({ key: o.key, label: o.label })),
+      editorCommentary: seed.editorCommentary,
+      related: seed.related ?? [],
+      origin: "operator",
+    };
+  }
+  const sb = getAnonSupabase();
+  if (!sb) return null;
+  const { data: s } = await sb
+    .from("surveys")
+    .select("id, slug, title, body, editor_commentary, category_id, origin")
+    .eq("slug", slug)
+    .eq("status", "approved")
+    .maybeSingle();
+  if (!s) return null;
+  const { data: opts } = await sb
+    .from("survey_options")
+    .select("opt_key, label, sort")
+    .eq("survey_id", s.id)
+    .order("sort");
+  const cat = CATEGORIES[(s.category_id as number) - 1];
+  return {
+    slug: s.slug,
+    categorySlug: (cat?.slug ?? "living") as CategorySlug,
+    title: s.title,
+    body: s.body,
+    options: (opts ?? []).map((o) => ({ key: o.opt_key as string, label: o.label as string })),
+    editorCommentary: s.editor_commentary ?? "",
+    related: [],
+    origin: (s.origin as "operator" | "user") ?? "user",
+  };
+}

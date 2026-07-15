@@ -53,7 +53,14 @@ export function siteLd() {
   };
 }
 
-/** 여러 LD 객체를 하나의 script 문자열로. 페이지에서 dangerouslySetInnerHTML에 사용. */
+/**
+ * 여러 LD 객체를 하나의 script 문자열로. dangerouslySetInnerHTML에 사용.
+ * `<`/`>`/`&`를 이스케이프해 </script> 브레이크아웃(XSS)을 차단한다 — UGC 제목이 색인 페이지에
+ * 들어와도 안전하도록.
+ */
 export function ldJson(...data: object[]): string {
-  return JSON.stringify(data.length === 1 ? data[0] : data);
+  return JSON.stringify(data.length === 1 ? data[0] : data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
 }

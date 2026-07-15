@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import VoteCard from "@/components/VoteCard";
-import { getSurveyBySlug, getCategory, getRelated, ALL_SURVEYS } from "@/lib/surveys";
+import { resolveSurvey, getCategory, getRelated, ALL_SURVEYS } from "@/lib/surveys";
 import { getSurveyExtras } from "@/lib/promotion-data";
 import { getStatsBySlug } from "@/lib/stats";
 import { getComments } from "@/lib/comments";
@@ -23,7 +23,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const s = getSurveyBySlug(slug);
+  const s = await resolveSurvey(slug);
   if (!s) return {};
   const desc = s.body.slice(0, 150);
   const { isIndexed } = await getSurveyExtras(slug);
@@ -43,7 +43,7 @@ export default async function SurveyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const s = getSurveyBySlug(slug);
+  const s = await resolveSurvey(slug);
   if (!s) notFound();
   const cat = getCategory(s.categorySlug)!;
   const related = getRelated(s.slug);
@@ -85,7 +85,9 @@ export default async function SurveyPage({
         </span>
         <h1 className="mt-3 text-xl font-extrabold leading-snug text-ink">{s.title}</h1>
         <p className="mt-3 text-[15px] leading-relaxed text-ink/70">{s.body}</p>
-        <p className="mt-2 text-xs text-ink/40">작성 · @운영자</p>
+        <p className="mt-2 text-xs text-ink/40">
+          작성 · {s.origin === "operator" ? "@운영자" : "익명 이용자"}
+        </p>
       </header>
 
       <VoteCard slug={s.slug} options={s.options} />
