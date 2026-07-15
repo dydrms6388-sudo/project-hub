@@ -25,7 +25,7 @@ const BUILTINS = [
   { slug: "pyeong", emoji: "📐", name: "평수 변환기", desc: "평 ↔ ㎡ 실시간 변환", k: "평수 평 제곱미터 면적 변환", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
-  { title: "💰 금융 · 세금", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
+  { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
@@ -118,7 +118,7 @@ const CATEGORY_RULES = [
   ["뷰티·패션", /뷰티|퍼스널컬러|피부|컬러|패션/i],
   ["투자·크립토", /투자|크립토|코인|주식/i],
 ];
-const getCategory = d => { for (const [c, re] of CATEGORY_RULES) if (re.test(d || "")) return c; return "생활·계산기"; };
+const getCategory = d => { for (const [c, re] of CATEGORY_RULES) if (re.test(d || "")) return c; return "생활 도구"; };
 
 // ── 데이터 ──
 const raw = JSON.parse(readFileSync("projects.json", "utf8"));
