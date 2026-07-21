@@ -3531,7 +3531,18 @@
       "status": "live",
       "slug": "dydrms-bibeon",
       "date": "2026-07-21"
+    },
+    {
+      "name": "모스전신소",
+      "emoji": "📡",
+      "domain": "교육·유틸/통신 (모스부호)",
+      "desc": "글자를 모스부호로 즉시 바꾸고 소리와 불빛으로 듣는 무료 모스부호 변환기. ①양방향 변환(글자↔모스, 영문·숫자·구두점 + 한글 국문모스 SKATS 자모분해) ②Web Audio 실제 신호음 재생(WPM·파른스워스 속도·음높이·볼륨 조절, 음소거 기본 ON) ③화면 조명 신호(점·선에 맞춰 반짝임) ④모스부호 표 도감(알파벳·숫자·기호·프로사인·한글 국문모스 전체, 클릭하면 소리) ⑤듣고/보고 맞히기 연습 퀴즈(연속정답·최고기록·누적 localStorage 리텐션) ⑥응급·SOS 신호 재생+프로사인 레퍼런스 ⑦사랑해 등 비밀메시지 링크 공유(?m= 인코딩). 국제 모스부호(ITU)·국문모스(SKATS 1888) 정확성 검증. 몰입4종: react-three-fiber 3D 신호 오브(신호에 맞춰 발광·point light, ssr:false), framer-motion 탭/모션, canvas-confetti 정답·공유 연출, Web Audio 오실레이터 합성 신호음. 수익화키트: AdSense(ca-pub-5567719201265106 env 인라인·ads.txt)·쿠팡 파트너스(모스각인 커플링·무전기·전신키·HAM교재)·WebApplication/FAQPage/HowTo JSON-LD·OG·sitemap/robots·공유. 무백엔드·무가입·100% 클라이언트. 큐 전부 금융→비금융 발산 선정, 모스/점자 허브353개 무충돌 dedup 확인.",
+      "live": "https://dydrms-morse.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-morse",
+      "status": "live",
+      "slug": "dydrms-morse",
+      "date": "2026-07-21"
     }
   ],
-  "updatedAt": "2026-07-21"
+  "updatedAt": "2026-07-21T14:08:32Z"
 }
