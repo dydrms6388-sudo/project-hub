@@ -3,11 +3,11 @@
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 50,
-    "pass": 49,
-    "reviewNeeded": 1,
+    "total": 55,
+    "pass": 50,
+    "reviewNeeded": 5,
     "reviewing": 0,
-    "avgOverall": 82.8
+    "avgOverall": 81.9
   },
   "projects": [
     {
@@ -2324,6 +2324,258 @@
       ],
       "reviewedAt": "2026-07-22",
       "method": "source+panel"
+    },
+    {
+      "slug": "aura-test",
+      "name": "오라 — 성격·연애 테스트를 3D 오라로",
+      "source": "daily/2026-06-22-aura",
+      "live": "https://dydrms-aura.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 91,
+        "mobileUX": 82,
+        "design": 86,
+        "content": 85,
+        "realValue": 85
+      },
+      "reviewerAvg": 85.8,
+      "userScores": [
+        82,
+        52,
+        76,
+        36,
+        86
+      ],
+      "userAvg": 66,
+      "overall": 75.9,
+      "findings": [
+        "PWA 오프라인 미지원(SW 없음, 수정됨)",
+        "합성 통계(가짜 참여자수/비율)를 실측처럼 표시(수정됨-추정치 라벨)",
+        "랜딩(8문항/38종)과 실앱(9즉석+20+퀴즈+운세) 불일치",
+        "pick 그리드 터치타깃<44px(수정됨)",
+        "데일리 시드 로컬 TZ 의존(수정됨-KST)"
+      ],
+      "changes": [
+        "public/sw.js + ServiceWorkerRegister로 PWA 오프라인 지원",
+        "ResultView/RarityReport/OG에서 합성 수치에 추정치/예상 라벨 추가",
+        "InstantMode 셀 min-h-[44px], 라벨 break-keep로 좁은 화면 잘림 해소",
+        "fortune.ts todayISO() KST(UTC+9) 정규화, modes.ts daily-aura/fortune KST 기준"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 73
+        },
+        {
+          "loop": 1,
+          "overall": 75.9
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "color-palette",
+      "name": "컬러무드",
+      "source": "daily/2026-06-22-color-palette",
+      "live": "https://dydrms-colormood.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 83,
+        "design": 85,
+        "content": 76,
+        "realValue": 68
+      },
+      "reviewerAvg": 78.8,
+      "userScores": [
+        66,
+        75,
+        62,
+        59,
+        52
+      ],
+      "userAvg": 63,
+      "overall": 70.9,
+      "findings": [
+        "공유 링크 2~4색 무시(수정됨->>=2 채택+패드)",
+        "퍼스널 컬러 단일 휴리스틱을 진단처럼 과장(수정됨-참고용 추정)",
+        "PWA 전무(수정됨)",
+        "스와치 라벨 8~9px(수정됨->11px)",
+        "비인터랙티브 WebGL 캔버스 매 로드(수정됨-reduced-motion/옵션)"
+      ],
+      "changes": [
+        "Studio initial 채택 조건 >=5 -> >=2, padPaletteDiverse로 보강",
+        "public/sw.js+manifest+RegisterSW, theme-color/apple-touch-icon 추가",
+        "colors.ts/Studio/page FAQ 퍼스널컬러를 참고용 추정+비의료 면책으로 완화",
+        "이미지/퍼스널 그리드 11px+swatch h-11(44px)",
+        "Scene3D prefers-reduced-motion 시 null+기본 off 토글"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 66.2
+        },
+        {
+          "loop": 1,
+          "overall": 70.9
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "couple-chemistry",
+      "name": "썸타이밍궁합",
+      "source": "daily/2026-06-22-couple-chemistry-test",
+      "live": "https://couple-chemistry-test.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 83,
+        "design": 84,
+        "content": 83,
+        "realValue": 66
+      },
+      "reviewerAvg": 80.4,
+      "userScores": [
+        67,
+        44,
+        63,
+        31,
+        55
+      ],
+      "userAvg": 52,
+      "overall": 66.2,
+      "findings": [
+        "점수 분포 좁고 편향(52~83, 수정됨->18+rng*78/bias±14)",
+        "공유 URL에 이름+생년월일 평문 노출(수정됨-마스킹+seed)",
+        "PWA 부재(수정됨)",
+        "배포 메타 5가지/8가지 불일치(소스는 8가지 정상)"
+      ],
+      "changes": [
+        "chemistry.ts base 30+rng*65->18+rng*78, clamp/bias 확대, GRADES 재분할(반전~운명 궁합)",
+        "encodeShare/decodeShare/maskName로 ?c=에서 PII 제거(레거시 호환 유지)",
+        "public/sw.js+manifest+ServiceWorkerRegister"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 62.2
+        },
+        {
+          "loop": 1,
+          "overall": 66.2
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dice-tower",
+      "name": "다이스타워",
+      "source": "daily/2026-06-18-dicetower",
+      "live": "https://dicetower.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 82,
+        "design": 80,
+        "content": 74,
+        "realValue": 70
+      },
+      "reviewerAvg": 78.4,
+      "userScores": [
+        65,
+        74,
+        61,
+        51,
+        58
+      ],
+      "userAvg": 62,
+      "overall": 70.2,
+      "findings": [
+        "PWA 완전 부재(수정됨)",
+        "랜딩 d100 지원/히스토리 새로고침 삭제 사실오류(프로젝트허브 랜딩)",
+        "d10 3D 기하학 오류(길쭉한 d8, 수정됨-오각쌍뿔)",
+        "터치타깃 36/24/16px(수정됨->44px)",
+        "단일 d20에만 크리티컬/펌블(수정됨-다면체 nat max/min)",
+        "해결: 랜딩 d100 지원/히스토리 삭제 사실오류 정정(랜딩은 landing-content.json 미포함이라 직접 수정)"
+      ],
+      "changes": [
+        "public/sw.js+manifest+RegisterSW",
+        "page.tsx 삭제/Info 컨트롤 44px hit area",
+        "Dice3D d10Geometry() 오각쌍뿔 BufferGeometry(값은 유지)",
+        "dice.ts critDice/fumbleDice 인덱스+page 하이라이트",
+        "LOOP1 보강: project-hub/dice-tower 랜딩 사실오류 정정(d100 미지원 명시, 히스토리 최근 30회 저장으로 수정)"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 66.4
+        },
+        {
+          "loop": 1,
+          "overall": 70.2
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "driver-license-quiz",
+      "name": "운전면허 학과시험 퀴즈 (면허패스)",
+      "source": "daily/2026-06-21-driver-license-quiz",
+      "live": "https://driver-license-quiz.vercel.app",
+      "status": "pass",
+      "loops": 2,
+      "axes": {
+        "functional": 88,
+        "mobileUX": 84,
+        "design": 82,
+        "content": 86,
+        "realValue": 84
+      },
+      "reviewerAvg": 84.8,
+      "userScores": [
+        86,
+        82,
+        79,
+        56,
+        92
+      ],
+      "userAvg": 79,
+      "overall": 81.9,
+      "findings": [
+        "문제은행 60문항으로 얇음(수정됨->150, 추가 확장 예정)",
+        "PWA 미지원(수정됨)",
+        "1종/2종 구분 없음(수정됨-토글+합격선)",
+        "오답노트 SRS 정렬 없음(수정됨)",
+        "일부 오타(어린도임/겨울청/주행저환)",
+        "LOOP2 해결: 문제은행 부족(241문항으로 확충)·오타(수정)"
+      ],
+      "changes": [
+        "questions.ts 60->150문항 확충(8카테고리 분배, 정확성 검증)",
+        "public/sw.js+manifest+RegisterSW, theme-color/appleWebApp",
+        "QuizApp licenseType 토글+passThreshold(1종70/2종60)",
+        "wrong 모드 miss desc/lastWrong asc SRS 정렬",
+        "LOOP2: questions.ts 150->241문항 추가 확충(8카테고리 균형, 정확성 검증), 오타 10건 수정(어린이/겨울철/주행저항/경적/후사경에/울린다/비켜양보 등)"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 66.3
+        },
+        {
+          "loop": 1,
+          "overall": 77.6
+        },
+        {
+          "loop": 2,
+          "overall": 81.9
+        }
+      ],
+      "reviewedAt": "2026-07-22"
     }
   ]
 }
