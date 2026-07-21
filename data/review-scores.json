@@ -3,11 +3,11 @@
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 45,
+    "total": 50,
     "pass": 44,
-    "reviewNeeded": 1,
+    "reviewNeeded": 6,
     "reviewing": 0,
-    "avgOverall": 83
+    "avgOverall": 82
   },
   "projects": [
     {
@@ -2074,6 +2074,211 @@
         }
       ],
       "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "salary-calc-2026",
+      "name": "월급 실수령액 계산기",
+      "source": "daily/2026-06-18-salary-calc",
+      "live": "https://salary-calc-2026.vercel.app",
+      "axes": {
+        "functional": 70,
+        "mobileUX": 62,
+        "design": 74,
+        "content": 64,
+        "realValue": 52
+      },
+      "reviewerAvg": 64.4,
+      "userScores": [
+        52,
+        61,
+        58,
+        42,
+        64
+      ],
+      "userAvg": 55,
+      "overall": 59.7,
+      "loops": 0,
+      "status": "review-needed",
+      "findings": [
+        "국민연금/건강보험 보수월액 기준을 taxableMonthly(월급-비과세식대 20만)로 잡아 비과세를 4대보험 베이스에서도 깎아 공제액 약간 과소 산출",
+        "저장/지속성 전무 — localStorage 입력 저장·결과 복사/공유 없음, 매번 재입력",
+        "viewport-fit=cover + safe-area 누락",
+        "OG/Twitter 이미지 누락",
+        "터치타겟 py-2.5(~40px) 44px 미달, 세율 출처 표기 부족"
+      ],
+      "changes": [],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 59.7
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "mbti-match",
+      "name": "MBTI 궁합 테스트",
+      "source": "daily/2026-06-21-mbti-match",
+      "live": "https://dydrms-mbti-match.vercel.app",
+      "axes": {
+        "functional": 82,
+        "mobileUX": 58,
+        "design": 74,
+        "content": 86,
+        "realValue": 72
+      },
+      "reviewerAvg": 74,
+      "userScores": [
+        78,
+        58,
+        82,
+        52,
+        74
+      ],
+      "userAvg": 68.8,
+      "overall": 71.4,
+      "loops": 0,
+      "status": "review-needed",
+      "findings": [
+        "viewport-fit=cover + safe-area 미적용",
+        "OG 이미지 누락 — 공유 중심 앱 치명",
+        "터치타겟 <44px (TypePicker ~34px, 매트릭스 셀 24px)",
+        "빈 AdSlot 박스가 시각 깨짐",
+        "점수는 가짜 아님(골든페어+가중치) — 양호"
+      ],
+      "changes": [],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 71.4
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "split-bill",
+      "name": "엔빵클리어 (더치페이 정산)",
+      "source": "daily/2026-06-21-split-bill-clear",
+      "live": "https://split-bill-clear.vercel.app",
+      "axes": {
+        "functional": 86,
+        "mobileUX": 66,
+        "design": 76,
+        "content": 74,
+        "realValue": 78
+      },
+      "reviewerAvg": 76,
+      "userScores": [
+        78,
+        86,
+        82,
+        88,
+        74
+      ],
+      "userAvg": 81.6,
+      "overall": 78.8,
+      "loops": 0,
+      "status": "review-needed",
+      "findings": [
+        "viewport-fit=cover + safe-area 누락",
+        "터치타겟 <44px (송금완료 체크 24px, 헤더 버튼 36px, ✕ 제거 버튼 작음) 불일치",
+        "AI 여행 수필 라벨이 템플릿 기반임에도 AI로 과대 표기",
+        "PWA/오프라인 미지원",
+        "정수 minor-unit 연산·greedy 정산·검증 양호"
+      ],
+      "changes": [],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 78.8
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "travel-budget",
+      "name": "여행 경비 예산 계획기",
+      "source": "daily/2026-06-22-travel-budget-planner",
+      "live": "https://travel-budget-planner-rose.vercel.app",
+      "axes": {
+        "functional": 84,
+        "mobileUX": 66,
+        "design": 82,
+        "content": 88,
+        "realValue": 76
+      },
+      "reviewerAvg": 79.2,
+      "userScores": [
+        78,
+        82,
+        86,
+        68,
+        80
+      ],
+      "userAvg": 78.8,
+      "overall": 79,
+      "loops": 0,
+      "status": "review-needed",
+      "findings": [
+        "viewport-fit=cover + safe-area 누락",
+        "터치타겟 <44px (+/- 24~28px, 칩 ~28px)",
+        "프라하 통화 CZK인데 EUR로 잘못 지정",
+        "제휴/쿠팡 링크 href=\"#\" 데드 플레이스홀더",
+        "그룹/공동 모드 없음(텍스트 공유만)"
+      ],
+      "changes": [],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 79
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "home-workout-routine",
+      "name": "홈트레이닝 루틴",
+      "source": "daily/2026-06-21-home-workout",
+      "live": "https://home-workout-two.vercel.app",
+      "axes": {
+        "functional": 72,
+        "mobileUX": 58,
+        "design": 74,
+        "content": 78,
+        "realValue": 76
+      },
+      "reviewerAvg": 71.6,
+      "userScores": [
+        78,
+        82,
+        80,
+        72,
+        84
+      ],
+      "userAvg": 79.2,
+      "overall": 75.4,
+      "loops": 0,
+      "status": "review-needed",
+      "findings": [
+        "viewport export 자체 없음 — WorkoutPlayer 노치/홈바 충돌",
+        "루틴 dedup 버그: 작은 풀에서 같은 동작 반복 사이클",
+        "Settings.weight 저장만 되고 칼로리식(70kg 하드코딩)에 미사용 = 데드 설정",
+        "터치타겟 <44px (레벨/시간 칩, 사운드 토글)",
+        "히어로 “장비 없이”가 덤벨/의자 동작과 모순"
+      ],
+      "changes": [],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 75.4
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
     }
   ]
 }
