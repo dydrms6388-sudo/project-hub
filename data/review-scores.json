@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-07-12",
+  "updatedAt": "2026-07-21",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 35,
-    "pass": 34,
+    "total": 39,
+    "pass": 38,
     "reviewNeeded": 1,
     "reviewing": 0,
-    "avgOverall": 83.4
+    "avgOverall": 83.2
   },
   "projects": [
     {
@@ -1496,7 +1496,7 @@
         },
         {
           "loop": 4,
-          "overall": 76.0
+          "overall": 76
         },
         {
           "loop": 5,
@@ -1626,6 +1626,166 @@
         }
       ],
       "reviewedAt": "2026-07-12"
+    },
+    {
+      "slug": "airfryer-time",
+      "name": "에어프라이어 시간표",
+      "source": "daily/naengpa-airfryer",
+      "live": "https://naengpa.vercel.app/airfryer",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 83,
+        "design": 80,
+        "content": 88,
+        "realValue": 82
+      },
+      "reviewerAvg": 83.6,
+      "userScores": [
+        83
+      ],
+      "userAvg": 83,
+      "overall": 83.3,
+      "findings": [
+        "65종 음식 온도/시간/뒤집기 + 기기 세기 보정 + 원탭 타이머 + 오븐 변환으로 기능 충실",
+        "예열·오일·호일 주의·아크릴아마이드/벤조피렌 안전·‘안 맞는 음식’ 가이드 등 콘텐츠 깊이·정확성 우수",
+        "개인화(기기 세기 저장)는 있으나 그룹·소셜 레이어 없음",
+        "시각 디자인/마이크로인터랙션은 텍스트 fetch 기반 추정(직접 화면 확인 미진)"
+      ],
+      "strengths": [
+        "안전·건강 주의와 ‘안 맞는 음식’ 콘텐츠가 실사용 가치를 크게 높임"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 83.3
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "body-fat-check",
+      "name": "바디스캔 (체지방 종합진단)",
+      "source": "daily/body-fat-diagnosis",
+      "live": "https://body-fat-diagnosis.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 81,
+        "design": 80,
+        "content": 87,
+        "realValue": 82
+      },
+      "reviewerAvg": 82.8,
+      "userScores": [
+        82
+      ],
+      "userAvg": 82,
+      "overall": 82.4,
+      "findings": [
+        "US Navy식 + 인바디 OCR + 해석지 + 추이 차트 + WHtR로 기능 풍부",
+        "3~5% 오차·해군식 한계·DEXA 권장 등 정직한 면책과 YMYL 대응 양호",
+        "측정 간격·조건 가이드 등 도메인 정확성 우수",
+        "추이 기반 개인 리텐션, 그룹 레이어 없음 / 디자인은 텍스트 추정"
+      ],
+      "strengths": [
+        "단백질 식품표·측정 가이드 등 부록 콘텐츠가 다이어트 맥락에서 실용적"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 82.4
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "brain-reflex-age",
+      "name": "촉 (Chok) — 두뇌 반응속도 게임",
+      "source": "daily/chok-reflex",
+      "live": "https://chok-reflex.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 84,
+        "design": 82,
+        "content": 81,
+        "realValue": 83
+      },
+      "reviewerAvg": 83.2,
+      "userScores": [
+        82
+      ],
+      "userAvg": 82,
+      "overall": 82.6,
+      "findings": [
+        "51게임/6카테고리 + 두뇌나이 + 데일리게임 + 컬렉션(0/51)으로 ‘최소 50개’ 피드백 충분히 반영",
+        "메타 title/description은 ‘23종’으로 표기되나 본문 카탈로그는 51종 — 수치 불일치(수정 권장)",
+        "5가지 인지능력 설명·비의학 면책 등 콘텐츠 양호",
+        "데일리+컬렉션 리텐션 강함, 그룹/랭킹 레이어 없음 / 디자인 텍스트 추정"
+      ],
+      "strengths": [
+        "카테고리별 난이도(★)와 데일리 게임으로 재방문 동기 설계 양호"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 82.6
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "calorie-burn-calc",
+      "name": "칼로리킬러 (운동 칼로리 계산기)",
+      "source": "daily/dydrms-calorie-killer",
+      "live": "https://dydrms-calorie-killer.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 83,
+        "mobileUX": 81,
+        "design": 79,
+        "content": 81,
+        "realValue": 82
+      },
+      "reviewerAvg": 81.2,
+      "userScores": [
+        81
+      ],
+      "userAvg": 81,
+      "overall": 81.1,
+      "findings": [
+        "MET 70종 + 음식 환산 + BMR/TDEE 계산 + 내 정보 저장으로 기능 충실",
+        "주간 대시보드·연속기록·뱃지로 리텐션 메커니즘 다수 보유(명시됨)",
+        "개인 저장 기반, 그룹/소셜 레이어 없음",
+        "본문 일부 영역이 fetch에 잘림—대시보드/뱃지 UI는 직접 확인 미진 / 디자인 텍스트 추정"
+      ],
+      "strengths": [
+        "운동→음식 환산으로 동기부여 포인트가 명확"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 81.1
+        }
+      ],
+      "reviewedAt": "2026-07-21"
     }
   ]
 }
