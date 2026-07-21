@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-07-21",
+  "updatedAt": "2026-07-22",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 40,
-    "pass": 39,
+    "total": 45,
+    "pass": 44,
     "reviewNeeded": 1,
     "reviewing": 0,
-    "avgOverall": 83.2
+    "avgOverall": 83
   },
   "projects": [
     {
@@ -1826,6 +1826,254 @@
         }
       ],
       "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "dday-hub",
+      "name": "디데이허브 — 디데이 계산기 & D-day 모음",
+      "source": "daily/2026-06-20-ddayhub",
+      "live": "https://ddayhub.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 82,
+        "design": 84,
+        "content": 80,
+        "realValue": 74
+      },
+      "reviewerAvg": 81,
+      "userScores": [
+        82,
+        80,
+        83,
+        79,
+        76
+      ],
+      "userAvg": 80,
+      "overall": 80.5,
+      "findings": [
+        "목록 카드 고정/공유/삭제 버튼 ~24px·이모지선택 40px — 44px 터치타겟 미달(수정됨).",
+        "viewport-fit/safe-area-inset 미적용 — 노치/홈바 겹침(수정됨).",
+        "편집·연반복(매년 기념일) 기능 부재 → 리텐션 약함(연반복 추가됨).",
+        "수능일이 2029까지 하드코딩, 사용안하는 PRESETS 중복(잔여 과제)."
+      ],
+      "changes": [
+        "layout viewport-fit:cover + main.safe 토스트에 env(safe-area-inset) 적용(노치/홈바 겹침 해소).",
+        "고정/공유/삭제 버튼 min-h-44, 이모지버튼 h-11 w-11(44px 터치타겟).",
+        "연반복(annual) 디데이 추가 — effectiveDate()로 지난 기념일 자동 롤포워드, 폼 토글+카드 매년 배지(하위호환)."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 68.4
+        },
+        {
+          "loop": 1,
+          "overall": 80.5
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "daily-quiz-pop",
+      "name": "퀴즈팝 — 매일 새로운 상식 퀴즈 10문제",
+      "source": "daily/2026-06-22-quizpop",
+      "live": "https://dydrms-quizpop.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 82,
+        "design": 89,
+        "content": 72,
+        "realValue": 82
+      },
+      "reviewerAvg": 82,
+      "userScores": [
+        82,
+        76,
+        86,
+        72,
+        80
+      ],
+      "userAvg": 79,
+      "overall": 80.5,
+      "findings": [
+        "연습모드 재도전 시 QuizGame key(catLabel+questions[0].id) 충돌로 상태/finishedRef 잔류 — HIGH(수정됨).",
+        "\"전국 추정 상위 N%\"가 근거 없는 로지스틱 곡선 — 신뢰 훼손(문구 \"예상 상위\"로 정직화).",
+        "safe-area 미적용·소리토글 36px(수정됨).",
+        "3D WebGL 배경이 모바일서 상시 렌더(배터리/GPU) — lite/절감(수정됨).",
+        "문제 난이도 편향적 쉬움(잔여 콘텐츠 과제)."
+      ],
+      "changes": [
+        "연습 재도전 리마운트 — key를 playToken 기반으로 매 시작 고유화(finishedRef 자동 리셋).",
+        "percentile \"전국 추정\"→\"예상 상위/예상 순위\" + 표본기반 명시.",
+        "safe-area(viewport-fit:cover + safe-pt/pb) + 소리토글 h-11(44px).",
+        "3D 배경 모바일 lite(dpr 1.2·파티클 90) + prefers-reduced-motion 시 스킵."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 70.1
+        },
+        {
+          "loop": 1,
+          "overall": 80.5
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dydrms-giftpick",
+      "name": "뭐사주지 — 1분 선물 추천",
+      "source": "daily/2026-06-25-giftpick",
+      "live": "https://dydrms-giftpick.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 89,
+        "mobileUX": 84,
+        "design": 83,
+        "content": 85,
+        "realValue": 76
+      },
+      "reviewerAvg": 83,
+      "userScores": [
+        74,
+        82,
+        80,
+        70,
+        85
+      ],
+      "userAvg": 78,
+      "overall": 80.8,
+      "findings": [
+        "매칭률/신뢰도가 거짓 고점수 — match 하한 58%, confidence=best.match 그대로(신뢰 훼손, 수정됨).",
+        "AltCard 열면 닫기 불가·찜 버튼 opened일 때만 노출(수정됨).",
+        "safe-area 미적용(하단 찜 FAB 홈바 겹침, 수정됨).",
+        "결과 로딩 1.35s·컨페티 130개(모바일 무거움, 경량화)."
+      ],
+      "changes": [
+        "match=clamp(40,99,40+ratio*59)로 하한 40%, 필터시 0매치 제외, confidence=best.score/이론만점 정직 비율.",
+        "AltCard 토글(열기/닫기) + 찜 버튼 헤더 상시 노출(stopPropagation).",
+        "safe-area(main pb env + Shortlist FAB calc) + viewport-fit:cover.",
+        "로딩 1350→850ms, 컨페티 130→70, 카탈로그 주석 실개수(70+)로 정정."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 70.1
+        },
+        {
+          "loop": 1,
+          "overall": 80.8
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dydrms-byeolchik",
+      "name": "모임벌칙뽑기 — 벌칙 룰렛 & 미션카드",
+      "source": "daily/2026-06-25-byeolchik",
+      "live": "https://dydrms-byeolchik.vercel.app",
+      "status": "pass",
+      "loops": 2,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 82,
+        "design": 82,
+        "content": 85,
+        "realValue": 83
+      },
+      "reviewerAvg": 84,
+      "userScores": [
+        86,
+        79,
+        81,
+        80,
+        82
+      ],
+      "userAvg": 82,
+      "overall": 82.6,
+      "findings": [
+        "safe-area 전혀 없음 — 노치/홈인디케이터 겹침, HIGH(수정됨).",
+        "탭/강도/상황칩 터치타겟 30~34px(수정됨).",
+        "점수판 안내문 \"룰렛·지명 자동집계\"가 실제(지명만)와 불일치(정정됨).",
+        "pickNextIndex avoid 후 편향 복구 — 공정하지 않음(수정됨).",
+        "빈 점수판 자기설명 부재·강도 차별화 약함(온보딩/강도 강화)."
+      ],
+      "changes": [
+        "L1: viewport-fit:cover + main calc(env safe-area) + 탭/강도/칩 터치타겟 ≥40px.",
+        "L1: 점수판 안내문 \"지목 모드 자동 집계\"로 정정 + pickNextIndex do/while 공정 재추첨.",
+        "L2: 빈 점수판 온보딩 카드(\"지목 모드로 가기\" CTA) + 강도 🌶 카운트·레벨별 컬러테마 + 첫화면 밀도 정리."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 73.3
+        },
+        {
+          "loop": 1,
+          "overall": 79.8
+        },
+        {
+          "loop": 2,
+          "overall": 82.6
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dog-personality-test",
+      "name": "강아지 성격유형 테스트",
+      "source": "daily/2026-06-23-dog-personality-test",
+      "live": "https://dydrms-dogtest.vercel.app",
+      "status": "pass",
+      "loops": 2,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 80,
+        "design": 79,
+        "content": 85,
+        "realValue": 77
+      },
+      "reviewerAvg": 81,
+      "userScores": [
+        83,
+        79,
+        80,
+        74,
+        82
+      ],
+      "userAvg": 80,
+      "overall": 80.1,
+      "findings": [
+        "결과 프로필바가 실제 점수가 아닌 scoreFromCode(±4 고정) — 같은 유형 동일 바, HIGH(수정됨).",
+        "진행률 텍스트(step/len)와 바((step+1)/len) 불일치(수정됨).",
+        "bestFriend 매핑 비대칭/단방향(대칭화됨).",
+        "3D 씬이 모든 스테이지 상시 렌더(모바일 과부하, 절감됨).",
+        "\"전문가 자문\" 근거 없음·OG 이미지 부재로 공유 썸네일 空白(정직화+OG 추가)."
+      ],
+      "changes": [
+        "L1: ResultCard에 실제 scores prop 전달(바 실점수화), /r/[id]는 저장 scores 렌더.",
+        "L1: 진행률 (step+1)/len 통일 + bestFriend 4쌍 대칭 + 3D 인트로만/reduced-motion 스킵/dpr1.2 + safe-area.",
+        "L2: opengraph-image.tsx·twitter-image.tsx(next/og) 추가 + \"재미·참고용\" 디스클레이머로 정직화 + 공유페이지 폴백바 회색처리(\"상세 점수 미제공\")."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 68.4
+        },
+        {
+          "loop": 1,
+          "overall": 77.6
+        },
+        {
+          "loop": 2,
+          "overall": 80.1
+        }
+      ],
+      "reviewedAt": "2026-07-22"
     }
   ]
 }
