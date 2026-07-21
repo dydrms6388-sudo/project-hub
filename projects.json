@@ -2,6 +2,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "다다른 (틀린그림찾기)",
+      "emoji": "🔍",
+      "domain": "게임·두뇌/관찰력",
+      "desc": "설치·회원가입 없이 브라우저에서 바로 즐기는 무료 틀린그림찾기(다른그림찾기) 게임. 그림을 서버가 아닌 브라우저에서 시드 기반 절차 생성(seeded PRNG)하므로 사실상 무한 레벨—외워서 푸는 기존 사이트와 달리 매일·매 판이 새롭다. 두 그림 A·B에서 다른 곳을 탭하면 초록 링, 헛짚으면 +4초 페널티. 7개 테마(바닷속·우주·꽃정원·밤의 도시·놀이공원·겨울왕국·동물농장) 이모지+도형을 배치하고 remove/add/recolor/scale/rotate/swap/fade 7종 변형으로 차이를 만든다. 난이도 3단계(쉬움3~어려움9개)·레벨업마다 차이 증가·레벨당 힌트3. 리텐션: 오늘의 도전(날짜 시드 결정론=전원 동일 그림, 최고기록·연속출석 스트릭)+무한 모드+클리어 수 통계 전부 localStorage 무서버, 시드 링크 공유(Web Share/클립보드)로 같은 그림 도전 바이럴. 몰입4종: react-three-fiber 3D 부유 오브 배경(dynamic ssr:false)·framer-motion 화면 전환/스프링(AnimatePresence popLayout=mode:wait 프리즈 회피)·canvas-confetti 정답/클리어 폭죽·Web Audio 100% 합성 효과음(탭·정답·오답·힌트·승리 팡파레, 음소거 기본 OFF·첫 상호작용 후 재생). 수익화키트: AdSense(env 인라인·ads.txt)·Game JSON-LD·OG·sitemap/robots·틀린그림찾기 가이드/FAQ SEO 콘텐츠 섹션. 무가입·무백엔드·무유료API(전 클라이언트, 정답판정·오답페널티·힌트·레벨클리어·데일리 브라우저 검증 완료). 스도쿠·2048·지뢰찾기·오목·네모로직 등 기존 게임 축과 별개인 관찰력/스팟더디퍼런스 전용축(허브 grep 0건 최초·유일, 꿈해몽=haemong과 무관). 타깃 키워드: 틀린그림찾기·틀린그림찾기 게임·틀린그림찾기 무료·다른그림찾기·숨은그림찾기·두뇌게임·눈운동·관찰력 게임.",
+      "live": "https://dydrms-spotdiff.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-spotdiff",
+      "status": "live",
+      "date": "2026-07-22"
+    },
+    {
       "name": "오목마스터 (Omok)",
       "emoji": "⚫",
       "domain": "게임·두뇌 전략",
@@ -3694,5 +3704,5 @@
       "date": "2026-07-22"
     }
   ],
-  "updatedAt": "2026-07-21T23:00:11.101Z"
+  "updatedAt": "2026-07-22"
 }
