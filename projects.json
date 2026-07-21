@@ -2,6 +2,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "별보러가자 (StarGazer)",
+      "emoji": "🌌",
+      "domain": "교육·취미/천문 관측",
+      "desc": "별 보러 가기 전 딱 한 번 확인하는 무료 밤하늘 관측 도구. 오늘의 달 위상(실제 태양-달 각도로 그린 명암경계)·밝은면%·월출월몰, 일몰~시민·항해·천문박명 시간표와 암흑 지속시간, 달·박명 기반 '오늘 밤 관측 조건' 점수(구름 미반영 정직 표기), 도시 20곳/현위치. 2026~27 천문현상 D-day 캘린더(유성우 8종·개기월식·슈퍼문·행성 충/이각을 IMO·AMS·KASI·NASA 교차검증한 정확한 극대일·ZHR·달간섭·관측팁, 카테고리 필터·별점·위시리스트·공유), 월별 달 위상 달력(일자별 정확한 위상 SVG·보름/삭/슈퍼문/이벤트 마커), 관측 일지(localStorage 기록·연속 스트릭·6뱃지·통계), 관측 가이드 SSG 4편(유성우 관측법·달 위상 원리·광공해 관측지·입문 장비, FAQ JSON-LD). 결정론적 천문 엔진(무API·전 클라이언트 계산)이라 오프라인·프라이버시 안전. 몰입4종: react-three-fiber 3D 회전 별필드+위상 조명 달+유성(ErrorBoundary 폴백)·framer-motion 탭/카운트업/스프링·canvas-confetti(관측 기록)·Web Audio 합성 밤바람 앰비언트+효과음(음소거 기본 OFF·prefers-reduced-motion 대응). 수익화키트: AdSense env 인라인·ads.txt·천체망원경/쌍안경 고AOV+캠핑/방한/키즈완구 맥락 쿠팡 파트너스·WebApplication+FAQPage JSON-LD·동적 OG/sitemap/robots·웹공유·개인정보/소개 페이지. 별자리 운세·점성술이 아닌 실제 천문 데이터 기반(AdSense 안전). 유성우 시간·오늘 달 모양·슈퍼문/개기월식 2026·천체관측 명소·망원경 추천 SEO 정조준, 이벤트성 스파이크(페르세우스·쌍둥이자리·정월대보름 개기월식·크리스마스 슈퍼문)+상시 달 위상 검색. cosmoscale(다른 행성 몸무게 토이)·daljigi(음력변환)·goyo(환경예보)와 별개인 천문 관측 캘린더 전용 축.",
+      "live": "https://dydrms-stargazer.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-stargazer",
+      "status": "live",
+      "date": "2026-07-22"
+    },
+    {
       "name": "머지퍼즐 2048 (Merge2048)",
       "emoji": "🧩",
       "domain": "게임·두뇌 퍼즐",
@@ -3614,5 +3624,5 @@
       "date": "2026-07-22"
     }
   ],
-  "updatedAt": "2026-07-21T18:10:11.000Z"
+  "updatedAt": "2026-07-22T04:00:00.000Z"
 }
