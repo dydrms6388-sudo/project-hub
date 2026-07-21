@@ -3,8 +3,8 @@
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 39,
-    "pass": 38,
+    "total": 40,
+    "pass": 39,
     "reviewNeeded": 1,
     "reviewing": 0,
     "avgOverall": 83.2
@@ -1783,6 +1783,46 @@
         {
           "loop": 0,
           "overall": 81.1
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "water-intake",
+      "name": "하루 물 마시기 (체중 맞춤 수분 트래커)",
+      "source": "daily/dydrms-water-tracker",
+      "live": "https://dydrms-water-tracker.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 83,
+        "design": 82,
+        "content": 88,
+        "realValue": 83
+      },
+      "reviewerAvg": 84,
+      "userScores": [
+        83
+      ],
+      "userAvg": 83,
+      "overall": 83.5,
+      "findings": [
+        "체중·활동량 맞춤 권장량 + 컵 단위 탭 기록 + 음료별 수분 기여율(커피 80% 등)로 기능 충실",
+        "체중별 권장량 표·시간대별 루틴·탈수 신호·과음수(저나트륨혈증)·질환자 주의 등 콘텐츠 깊이·정확성 우수, 정직한 의학 면책",
+        "스트릭·배지·7일 기록 등 리텐션 메커니즘 다수",
+        "3D 물잔 시각화 언급(직접 렌더 확인 미진) / 개인 중심, 그룹 레이어 없음 / 디자인 일부 텍스트 추정"
+      ],
+      "strengths": [
+        "음료별 수분 기여율 반영과 과음수 경고가 일반 워터트래커 대비 차별점"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 리뷰어 5축 + 만족도 추정). 시각 디자인·3D 렌더는 텍스트 fetch 기반 추정."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 83.5
         }
       ],
       "reviewedAt": "2026-07-21"
