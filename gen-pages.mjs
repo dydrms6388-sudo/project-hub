@@ -132,6 +132,8 @@ for (const d of daily) {
   const tips = Array.isArray(c.tips) ? c.tips.filter(Boolean) : [];
   const faq = Array.isArray(c.faq) ? c.faq.filter(f => f && f.q && f.a) : [];
   const note = (c.note && c.note.trim()) ? c.note.trim() : disclaimerFor(d.cat, d.domain, d.name);
+  // CTA 문구: landing-content.json 의 cta 가 있으면 사용, 없으면 기본값(도구형 랜딩 호환)
+  const ctaText = (c.cta && c.cta.trim()) ? c.cta.trim() : "바로 실행하기 →";
 
   const secUl = (title, items) => items.length
     ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${esc(x)}</li>`).join("\n        ")}\n    </ul>` : "";
@@ -158,8 +160,18 @@ for (const d of daily) {
     ${noteHtml}
     <p class="cat-note">카테고리: ${esc(d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
 
-  // JSON-LD: SoftwareApplication + FAQPage(있을 때) + BreadcrumbList
-  const graph = [{
+  // JSON-LD: 본문 타입에 따라 Article(콘텐츠 글·가이드) 또는 SoftwareApplication(도구) + FAQPage(있을 때) + BreadcrumbList
+  // landing-content.json 에 "type": "article" 을 주면 Article 스키마로(offers/price 노출 회피), 기본은 도구용 그대로.
+  const isArticle = c.type === "article";
+  const graph = [isArticle ? {
+    "@type": "Article",
+    headline: d.name,
+    description: metaDesc,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/${d.slug}/` },
+    ...(c.datePublished ? { datePublished: c.datePublished } : {}),
+    author: { "@type": "Organization", name: "TomatoEggCat" },
+    publisher: { "@type": "Organization", name: "TomatoEggCat", url: SITE },
+  } : {
     "@type": "SoftwareApplication",
     name: d.name, description: metaDesc, applicationCategory: "WebApplication",
     operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
@@ -188,6 +200,7 @@ for (const d of daily) {
     .replaceAll("%%NAME%%", esc(d.name))
     .replaceAll("%%EMOJI%%", d.emoji)
     .replaceAll("%%LIVE%%", esc(d.live))
+    .replaceAll("%%CTA%%", esc(ctaText))
     .replaceAll("%%CATEGORY%%", esc(d.cat))
     .replaceAll("%%JSONLD%%", jsonld)
     .replaceAll("%%BODY%%", body)
