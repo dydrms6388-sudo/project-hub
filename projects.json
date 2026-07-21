@@ -2,6 +2,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "지뢰박사 (Minesweeper)",
+      "emoji": "💣",
+      "domain": "게임·두뇌 퍼즐",
+      "desc": "설치 없이 브라우저에서 바로 즐기는 무료 온라인 지뢰찾기 게임. 클래식 규격 3난이도(초급 9×9·10, 중급 16×16·40, 고급 30×16·99)+첫 클릭 안전 보장(첫 수와 주변은 지뢰 배치 제외)·플러드필 자동열림·코딩(chording)·깃발/물음표·중간버튼/우클릭. 리텐션: 매일 자정(KST) 리셋 오늘의 지뢰밭(전원 동일 시드 결정론 보드+안전 오프닝 자동공개·시간 경쟁·연속 도전 스트릭), 난이도별 최고기록·승률·연속승리·최다연승·연속방문 통계(전부 localStorage 무서버). 모바일 퍼스트: 탭=열기·길게누르기=깃발·깃발모드 토글·숫자 탭 코딩, 색약 모드·prefers-reduced-motion 접근성. 결과 공유(Web Share/클립보드) 바이럴. 몰입4종: react-three-fiber 3D 떠다니는 지뢰/링 배경(WebGL 실패시 ErrorBoundary 그라디언트 폴백), framer-motion 보드/모달 스프링(AnimatePresence mode=wait 회피=keyed 진입), canvas-confetti 클리어 폭죽, Web Audio 100% 합성 효과음(파기/플러드/깃발/폭발/승리 팡파레, 음소거 기본 OFF). 수익화키트: AdSense(env 인라인·ads.txt·몰입구간 광고배제)·게임/두뇌퍼즐 도서 쿠팡 파트너스 맥락 제휴·WebApplication+FAQPage JSON-LD·동적 OG 1200×630(Noto KR 페치)·sitemap/robots·완전정복 가이드 SSG·개인정보/문의. 무가입·무백엔드·무유료API(전 클라이언트, 첫클릭안전/플러드필/코딩/오늘의지뢰밭 브라우저 검증 완료). 스도쿠·2048 클래식 게임 포트 축과 별개인 지뢰찾기 전용축(허브 grep 0건 최초·유일). 큐 전부 금융→비금융 발산 선정. 타깃 키워드: 지뢰찾기·지뢰찾기 게임·무료 지뢰찾기·지뢰찾기 온라인·minesweeper·윈도우 지뢰찾기.",
+      "live": "https://dydrms-minesweeper.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-minesweeper",
+      "status": "live",
+      "date": "2026-07-22"
+    },
+    {
       "name": "별보러가자 (StarGazer)",
       "emoji": "🌌",
       "domain": "교육·취미/천문 관측",
@@ -3624,5 +3634,5 @@
       "date": "2026-07-22"
     }
   ],
-  "updatedAt": "2026-07-22T04:00:00.000Z"
+  "updatedAt": "2026-07-21T19:35:12.150387Z"
 }
