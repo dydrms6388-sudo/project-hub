@@ -99,7 +99,8 @@ const daily = [];
 const seen = new Set();
 for (const p of projects) {
   if (!p.live || !/^https?:\/\//.test(p.live)) continue;
-  let s = SLUG_MAP[p.live] || slugify(p.live);
+  // slug 우선순위: projects.json 의 slug > slug-map > live 호스트 추론
+  let s = p.slug || SLUG_MAP[p.live] || slugify(p.live);
   if (!s) continue;
   if (RESERVED.has(s)) s = s + "-app";
   while (seen.has(s)) s = s + "-x";
