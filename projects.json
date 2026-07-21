@@ -3520,7 +3520,18 @@
       "slug": "claude-vs-chatgpt",
       "status": "live",
       "date": "2026-07-21"
+    },
+    {
+      "name": "비번 대장간",
+      "emoji": "🔨",
+      "domain": "보안/유틸",
+      "desc": "강력한 비밀번호를 브라우저에서 바로 '벼려내는' 무료 비밀번호 생성기. ① 랜덤 비밀번호(길이 6~48·대소문자/숫자/기호 토글·헷갈리는 글자 제외) ② 외우기 쉬운 패스프레이즈(한글/영어 단어 조합·구분자·숫자) ③ 약한 패턴 자동 회피 PIN(4·6·8자리) ④ 비밀번호 강도 검사(엔트로피 비트·오프라인/온라인 크래킹 예상시간·흔한 비번/연속·반복/생일 패턴 경고). 모든 생성·검사는 crypto.getRandomValues로 100% 브라우저 안에서만 처리되어 서버 전송·저장이 전혀 없음. 몰입 4종: react-three-fiber 3D 대장간(강도에 따라 검붉게→백열로 달궈지는 쇠막대·모루·불꽃 파티클), framer-motion 전환·강도바 스프링, canvas-confetti 강력 비번 완성 불꽃, Web Audio 합성 망치질·팡파레(음소거 기본 OFF). 수익화: AdSense(ca-pub-5567719201265106)·동적 sitemap/robots·WebApplication/FAQPage JSON-LD·공유. 오늘의 보안 팁(매일 교체)·보안 체크리스트 12·가이드·FAQ로 SEO(비밀번호 생성기·안전한 비밀번호 만들기·랜덤 비밀번호·강도 검사) 정조준. 무가입·무백엔드.",
+      "live": "https://dydrms-bibeon.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-bibeon",
+      "status": "live",
+      "slug": "dydrms-bibeon",
+      "date": "2026-07-21"
     }
   ],
-  "updatedAt": "2026-07-12"
+  "updatedAt": "2026-07-21"
 }
