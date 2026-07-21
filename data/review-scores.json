@@ -4,10 +4,10 @@
   "maxLoops": 5,
   "summary": {
     "total": 50,
-    "pass": 44,
-    "reviewNeeded": 6,
+    "pass": 49,
+    "reviewNeeded": 1,
     "reviewing": 0,
-    "avgOverall": 82
+    "avgOverall": 82.8
   },
   "projects": [
     {
@@ -2081,24 +2081,24 @@
       "source": "daily/2026-06-18-salary-calc",
       "live": "https://salary-calc-2026.vercel.app",
       "axes": {
-        "functional": 70,
-        "mobileUX": 62,
-        "design": 74,
-        "content": 64,
-        "realValue": 52
+        "functional": 84,
+        "mobileUX": 81,
+        "design": 79,
+        "content": 81,
+        "realValue": 79
       },
-      "reviewerAvg": 64.4,
+      "reviewerAvg": 80.8,
       "userScores": [
-        52,
-        61,
-        58,
-        42,
-        64
+        76,
+        87,
+        77,
+        76,
+        85
       ],
-      "userAvg": 55,
-      "overall": 59.7,
-      "loops": 0,
-      "status": "review-needed",
+      "userAvg": 80.2,
+      "overall": 80.5,
+      "loops": 2,
+      "status": "pass",
       "findings": [
         "국민연금/건강보험 보수월액 기준을 taxableMonthly(월급-비과세식대 20만)로 잡아 비과세를 4대보험 베이스에서도 깎아 공제액 약간 과소 산출",
         "저장/지속성 전무 — localStorage 입력 저장·결과 복사/공유 없음, 매번 재입력",
@@ -2106,11 +2106,21 @@
         "OG/Twitter 이미지 누락",
         "터치타겟 py-2.5(~40px) 44px 미달, 세율 출처 표기 부족"
       ],
-      "changes": [],
+      "changes": [
+        "4대보험 보수월액을 전액 월급 기준으로 정정(비과세 중복 차감 제거) — 공제액 과소 산출 해소",
+        "localStorage 입력 저장 + 결과 복사 추가",
+        "viewport-fit=cover + safe-area, OG 이미지, 44px 터치타겟, 세율 출처 표기",
+        "[L2] 공제 항목 한 줄 설명 + 연봉 비교(인상·이직 ±%) 섹션 추가"
+      ],
       "history": [
         {
           "loop": 0,
           "overall": 59.7
+        },
+        {
+          "loop": 2,
+          "overall": 80.5,
+          "note": "L1 선행 수정 + 재평가"
         }
       ],
       "reviewedAt": "2026-07-22",
@@ -2122,24 +2132,24 @@
       "source": "daily/2026-06-21-mbti-match",
       "live": "https://dydrms-mbti-match.vercel.app",
       "axes": {
-        "functional": 82,
-        "mobileUX": 58,
-        "design": 74,
-        "content": 86,
-        "realValue": 72
+        "functional": 83,
+        "mobileUX": 80,
+        "design": 79,
+        "content": 87,
+        "realValue": 76
       },
-      "reviewerAvg": 74,
+      "reviewerAvg": 81,
       "userScores": [
-        78,
-        58,
+        90,
+        70,
         82,
-        52,
-        74
+        68,
+        85
       ],
-      "userAvg": 68.8,
-      "overall": 71.4,
-      "loops": 0,
-      "status": "review-needed",
+      "userAvg": 79,
+      "overall": 80,
+      "loops": 2,
+      "status": "pass",
       "findings": [
         "viewport-fit=cover + safe-area 미적용",
         "OG 이미지 누락 — 공유 중심 앱 치명",
@@ -2147,11 +2157,20 @@
         "빈 AdSlot 박스가 시각 깨짐",
         "점수는 가짜 아님(골든페어+가중치) — 양호"
       ],
-      "changes": [],
+      "changes": [
+        "OG 이미지 추가(공유 중심 앱) + viewport safe-area",
+        "TypePicker 선택 컨트롤 44px + 빈 광고박스 숨김",
+        "[L2] 관계(연애/친구/직장/가족) 선택·BEST3/WORST3 버튼 44px 터치타겟"
+      ],
       "history": [
         {
           "loop": 0,
           "overall": 71.4
+        },
+        {
+          "loop": 2,
+          "overall": 80,
+          "note": "L1 선행 수정 + 재평가"
         }
       ],
       "reviewedAt": "2026-07-22",
@@ -2163,24 +2182,24 @@
       "source": "daily/2026-06-21-split-bill-clear",
       "live": "https://split-bill-clear.vercel.app",
       "axes": {
-        "functional": 86,
-        "mobileUX": 66,
-        "design": 76,
-        "content": 74,
-        "realValue": 78
+        "functional": 87,
+        "mobileUX": 80,
+        "design": 78,
+        "content": 77,
+        "realValue": 82
       },
-      "reviewerAvg": 76,
+      "reviewerAvg": 80.8,
       "userScores": [
-        78,
+        84,
         86,
+        78,
         82,
-        88,
-        74
+        85
       ],
-      "userAvg": 81.6,
-      "overall": 78.8,
-      "loops": 0,
-      "status": "review-needed",
+      "userAvg": 83,
+      "overall": 81.9,
+      "loops": 1,
+      "status": "pass",
       "findings": [
         "viewport-fit=cover + safe-area 누락",
         "터치타겟 <44px (송금완료 체크 24px, 헤더 버튼 36px, ✕ 제거 버튼 작음) 불일치",
@@ -2188,11 +2207,20 @@
         "PWA/오프라인 미지원",
         "정수 minor-unit 연산·greedy 정산·검증 양호"
       ],
-      "changes": [],
+      "changes": [
+        "송금완료 체크·헤더·삭제 버튼 44px 통일 + safe-area",
+        "AI 여행 수필 라벨을 템플릿 기반으로 정정(과대 표기 해소)",
+        "[L1완료] PWA(manifest+SW+아이콘) 추가 — 오프라인 정산 지원"
+      ],
       "history": [
         {
           "loop": 0,
           "overall": 78.8
+        },
+        {
+          "loop": 1,
+          "overall": 81.9,
+          "note": "L1 선행 수정 + 재평가"
         }
       ],
       "reviewedAt": "2026-07-22",
@@ -2204,24 +2232,24 @@
       "source": "daily/2026-06-22-travel-budget-planner",
       "live": "https://travel-budget-planner-rose.vercel.app",
       "axes": {
-        "functional": 84,
-        "mobileUX": 66,
-        "design": 82,
+        "functional": 85,
+        "mobileUX": 80,
+        "design": 83,
         "content": 88,
-        "realValue": 76
+        "realValue": 83
       },
-      "reviewerAvg": 79.2,
+      "reviewerAvg": 83.8,
       "userScores": [
-        78,
-        82,
         86,
-        68,
-        80
+        84,
+        84,
+        82,
+        86
       ],
-      "userAvg": 78.8,
-      "overall": 79,
-      "loops": 0,
-      "status": "review-needed",
+      "userAvg": 84.4,
+      "overall": 84.1,
+      "loops": 1,
+      "status": "pass",
       "findings": [
         "viewport-fit=cover + safe-area 누락",
         "터치타겟 <44px (+/- 24~28px, 칩 ~28px)",
@@ -2229,11 +2257,19 @@
         "제휴/쿠팡 링크 href=\"#\" 데드 플레이스홀더",
         "그룹/공동 모드 없음(텍스트 공유만)"
       ],
-      "changes": [],
+      "changes": [
+        "프라하 통화 CZK로 정정(EUR 오지정 수정) + 44px 터치타겟·safe-area",
+        "[L1완료] 예산 플랜 딥링크(?plan=) 공유 — 일행이 같은 견적 열람(그룹/공동 레이어)"
+      ],
       "history": [
         {
           "loop": 0,
           "overall": 79
+        },
+        {
+          "loop": 1,
+          "overall": 84.1,
+          "note": "L1 선행 수정 + 재평가"
         }
       ],
       "reviewedAt": "2026-07-22",
@@ -2245,24 +2281,24 @@
       "source": "daily/2026-06-21-home-workout",
       "live": "https://home-workout-two.vercel.app",
       "axes": {
-        "functional": 72,
-        "mobileUX": 58,
-        "design": 74,
-        "content": 78,
-        "realValue": 76
+        "functional": 82,
+        "mobileUX": 79,
+        "design": 78,
+        "content": 81,
+        "realValue": 83
       },
-      "reviewerAvg": 71.6,
+      "reviewerAvg": 80.6,
       "userScores": [
-        78,
         82,
-        80,
-        72,
+        78,
+        78,
+        76,
         84
       ],
-      "userAvg": 79.2,
-      "overall": 75.4,
-      "loops": 0,
-      "status": "review-needed",
+      "userAvg": 79.6,
+      "overall": 80.1,
+      "loops": 1,
+      "status": "pass",
       "findings": [
         "viewport export 자체 없음 — WorkoutPlayer 노치/홈바 충돌",
         "루틴 dedup 버그: 작은 풀에서 같은 동작 반복 사이클",
@@ -2270,11 +2306,20 @@
         "터치타겟 <44px (레벨/시간 칩, 사운드 토글)",
         "히어로 “장비 없이”가 덤벨/의자 동작과 모순"
       ],
-      "changes": [],
+      "changes": [
+        "루틴 dedup 버그 수정(작은 풀에서 같은 동작 반복 방지)",
+        "체중 설정→칼로리식 연동(70kg 하드코딩 제거, 데드 설정 해소)",
+        "WorkoutPlayer 노치/홈바 safe-area + 44px 터치타겟 + 히어로 문구 정정(장비 모순 해소)"
+      ],
       "history": [
         {
           "loop": 0,
           "overall": 75.4
+        },
+        {
+          "loop": 1,
+          "overall": 80.1,
+          "note": "L1 선행 수정 + 재평가"
         }
       ],
       "reviewedAt": "2026-07-22",
