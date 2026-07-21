@@ -2,6 +2,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "오목마스터 (Omok)",
+      "emoji": "⚫",
+      "domain": "게임·두뇌 전략",
+      "desc": "설치 없이 브라우저에서 바로 두는 무료 온라인 오목 게임. 3단계 AI 컴퓨터(패턴 휴리스틱 평가+즉승/즉방 단락+어려움 1수 예측)와 대결하거나 친구와 2인 로컬 대전. 자유룰 기본+렌주룰 토글(흑 금수 삼삼·사사·장목 판정, 금수 자리 ✕ 표시, 5목 동시완성 예외 처리). 판 크기 13/15/19로, 무르기·힌트(AI 평가 재사용)·마지막 수 표시·승리 라인 하이라이트. 리텐션: 승/패/승률·현재연승·최고연승·난이도별 전적 통계(전부 localStorage 무서버), 결과 공유(Web Share/클립보드) 바이럴. 몰입4종: react-three-fiber 3D 부유 오목돌 배경(WebGL 실패시 ErrorBoundary 그라디언트 폴백)·framer-motion 착수 스프링/결과 모달·canvas-confetti 승리 폭죽·Web Audio 100% 합성 효과음(착수/힌트/승리/패배, 음소거 기본 OFF). 수익화키트: AdSense(env 인라인·ads.txt)·원목 오목판/바둑돌/보드게임 쿠팡 파트너스 맥락 제휴·Game+FAQPage JSON-LD·OG 1200×630·sitemap/robots·오목 규칙/두는법/렌주룰 금수 SEO 콘텐츠 섹션. 무가입·무백엔드·무유료API(전 클라이언트, 착수→AI응답→턴순환 브라우저 검증 완료, 엔진 유닛테스트 13/13). 스도쿠·2048·지뢰찾기 그리드 로직 축과 별개인 보드 전략 vs AI 전용축(허브 grep 0건 최초·유일). 타깃 키워드: 오목·오목 게임·무료 오목·온라인 오목·오목 AI·컴퓨터 오목·오목 두는법·오목 규칙·렌주룰·오목 금수.",
+      "live": "https://dydrms-omok.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-omok",
+      "status": "live",
+      "date": "2026-07-22"
+    },
+    {
       "name": "지뢰박사 (Minesweeper)",
       "emoji": "💣",
       "domain": "게임·두뇌 퍼즐",
@@ -3634,5 +3644,5 @@
       "date": "2026-07-22"
     }
   ],
-  "updatedAt": "2026-07-21T19:35:12.150387Z"
+  "updatedAt": "2026-07-22T12:00:00.000Z"
 }
