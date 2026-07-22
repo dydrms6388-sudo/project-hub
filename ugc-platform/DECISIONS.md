@@ -2,6 +2,24 @@
 
 Running log of design decisions. Newest phase last.
 
+## Phase 4 — 판결소 실통합 (current)
+
+- **D4.1 판결소는 워크스페이스 앱** (`apps/pangyeolso`, port 3001). INTEGRATION.md의
+  판결소 프리셋 config를 그대로 사용 — 가이드가 실제로 동작함을 앱으로 증명(도그푸딩).
+- **D4.2 스토어는 env 스위치.** `SUPABASE_URL`+`SUPABASE_SERVICE_ROLE_KEY` 존재 시
+  `SupabaseStore`, 아니면 `MemoryStore`. 목록/집계 헬퍼는 인메모리 경로만 구현되어
+  있고 Supabase 모드의 목록 쿼리는 실DB 연결 시 구현(파일에 명시). 실배포 결정
+  (Supabase 프로젝트·도메인·시드)은 소유자 몫으로 남김.
+- **D4.3 투표 = engage(kind: vote, body: 'A'|'B').** 별도 투표 테이블 없이 기존
+  엔게이지먼트로 집계. **IP당 사연 1회**는 `bumpCounter(vote:<contentId>:<ipHash>)`
+  재사용 — 새 인프라 0. 부수 효과: 투표가 reactions를 올려 contentScore 재계산 →
+  표를 받은 사연이 noindex→sitemap으로 승격(E2E로 확인).
+- **D4.4 재미용 고지 상시 노출** (판결 게이지 하단 + 푸터) — 리포 정책(CLAUDE.md의
+  AI/알고리즘 출력 고지 규칙) 준수. 광고는 미부착.
+- **Verification.** typecheck 무오류, `next build` 6라우트, **Playwright E2E 9/9**
+  (공개→JSON-LD→A투표 반영→중복투표 무시→사이트맵 승격→검수 대기→승인→홈 노출).
+
+
 ## Phase 3 — engage + 신고 + 관리 대시보드 (current)
 
 - **D3.1 Review resolution lives in core, not the app.** `reviewApprove` /

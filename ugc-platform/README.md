@@ -23,7 +23,8 @@ ugc-platform/
       └─ README.md         # per-app integration guide
 ```
 
-`apps/demo` is a runnable Next.js E2E demo of the engine (see its README).
+`apps/demo` is a runnable Next.js E2E demo of the engine; `apps/pangyeolso` (판결소)
+is the first real consumer app — 사연 제출 → 대중 A/B 판결 (see each README).
 
 ## Develop
 
