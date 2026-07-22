@@ -68,7 +68,9 @@ a{color:var(--acc)}
 .crumb .sep{color:var(--sep);margin:0 2px}
 .crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
-.emoji{font-size:46px}
+.emoji{font-size:46px;display:flex;justify-content:center}
+.ic{width:24px;height:24px;display:block}
+.emoji .ic{width:56px;height:56px;color:var(--acc2)}
 h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
@@ -103,6 +105,8 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
 .rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
+.rel .rel-ic{display:inline-flex;flex:0 0 auto;color:var(--acc2)}
+.rel .rel-ic .ic{width:20px;height:20px}
 footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
 footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
@@ -112,7 +116,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 <div class="wrap">
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">건강·운동</span> <span class="sep">›</span> <span class="c-cur">턱편해</span></nav>
   <div class="hero">
-    <div class="emoji" aria-hidden="true">😮‍💨</div>
+    <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></div>
     <h1>턱편해</h1>
     <p class="lead">턱관절 장애(TMD) 자가진단(Fonseca 10문항)·재활운동 타이머(Rocabado 6×6)·통증일지·이악물기 습관 트래커.</p>
     <a class="cta" href="https://dydrms-teokease.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
@@ -139,12 +143,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <div class="coupang-slot" data-subid="dydrms-teokease" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/dydrms-wonjunbi/"><span aria-hidden="true">🎒</span> 원준비</a>
-      <a class="rel" href="/dydrms-bloom/"><span aria-hidden="true">🌸</span> 블룸</a>
-      <a class="rel" href="/dydrms-dariease/"><span aria-hidden="true">🦵</span> 다리편해</a>
-      <a class="rel" href="/dydrms-chabunhae/"><span aria-hidden="true">🧠</span> 차분해</a>
-      <a class="rel" href="/dydrms-vitality/"><span aria-hidden="true">💪</span> 활력노트</a>
-      <a class="rel" href="/dydrms-binyeom/"><span aria-hidden="true">🌬️</span> 코편안 (비염노트)</a></div>
+    <div class="rel-grid"><a class="rel" href="/dydrms-wonjunbi/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 원준비</a>
+      <a class="rel" href="/dydrms-bloom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 블룸</a>
+      <a class="rel" href="/dydrms-dariease/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 다리편해</a>
+      <a class="rel" href="/dydrms-chabunhae/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 차분해</a>
+      <a class="rel" href="/dydrms-vitality/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 활력노트</a>
+      <a class="rel" href="/dydrms-binyeom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 코편안 (비염노트)</a></div>
   </section>
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>

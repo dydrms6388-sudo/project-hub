@@ -14,6 +14,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
 import { renderHub } from "./lib/hub.mjs";
+import { iconFor } from "./lib/icons.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
@@ -209,7 +210,7 @@ for (const d of daily) {
   if (APEX_SERVED.has(d.slug)) { if (existsSync(`${d.slug}/index.html`)) rmSync(d.slug, { recursive: true, force: true }); continue; }
   let related = daily.filter(x => x.cat === d.cat && x.slug !== d.slug).slice(0, 6);
   if (related.length < 4) related = related.concat(daily.filter(x => x.slug !== d.slug && !related.includes(x)).slice(0, 6 - related.length));
-  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span aria-hidden="true">${r.emoji}</span> ${esc(r.name)}</a>`).join("\n      ");
+  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span class="rel-ic" aria-hidden="true">${iconFor(r.cat)}</span> ${esc(r.name)}</a>`).join("\n      ");
 
   // ── 사용자용 콘텐츠 조립(고유 콘텐츠 우선, 없으면 정제된 폴백) ──
   const c = CONTENT[d.slug] || {};
@@ -322,6 +323,7 @@ for (const d of daily) {
     .replaceAll("%%SLUG%%", d.slug)
     .replaceAll("%%NAME%%", esc(d.name))
     .replaceAll("%%EMOJI%%", d.emoji)
+    .replaceAll("%%HEROICON%%", iconFor(d.cat))
     .replaceAll("%%LIVE%%", esc(d.live))
     .replaceAll("%%CTA%%", esc(ctaText))
     .replaceAll("%%CATEGORY%%", esc(d.cat))
