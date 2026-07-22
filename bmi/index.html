@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<!--theme-sync--><script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script><!--/theme-sync-->
+<meta name="robots" content="index,follow,max-image-preview:large" />
 <title>BMI 계산기 — 체질량지수·표준체중·비만도 (대한비만학회 기준) | TomatoEggCat</title>
 <meta name="description" content="키와 몸무게를 넣으면 BMI(체질량지수), 비만도 단계, 표준체중, 적정 체중 범위를 즉시 계산합니다. 대한비만학회 한국인 기준을 적용했습니다." />
 <link rel="canonical" href="https://tomatoeggcat.com/bmi/" />
@@ -12,37 +15,58 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"BMI는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"몸무게(kg)를 키(m)의 제곱으로 나눕니다. 예를 들어 키 170cm, 몸무게 65kg이면 65 ÷ (1.7 × 1.7) = 22.5입니다."}},
-{"@type":"Question","name":"한국 기준 비만은 BMI 몇부터인가요?","acceptedAnswer":{"@type":"Answer","text":"대한비만학회 기준 BMI 25 이상이 비만입니다. WHO 국제 기준(30 이상)보다 낮아, 아시아인 체형 특성을 반영한 값입니다."}}
+{"@type":"Question","name":"한국 기준 비만은 BMI 몇부터인가요?","acceptedAnswer":{"@type":"Answer","text":"대한비만학회 기준 BMI 25 이상이 비만입니다. WHO 국제 기준(30 이상)보다 낮아, 아시아인 체형 특성을 반영한 값입니다."}},
+{"@type":"Question","name":"표준체중은 어떻게 구하나요?","acceptedAnswer":{"@type":"Answer","text":"가장 건강한 BMI로 보는 22를 기준으로 키(m)²×22로 계산합니다. 키 170cm이면 1.7²×22 ≈ 63.6kg입니다."}},
+{"@type":"Question","name":"BMI는 정상인데 뱃살이 많으면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"'마른 비만'일 수 있습니다. BMI는 지방 분포를 반영하지 못하므로 허리둘레(남 90·여 85cm 이상)와 허리/키 비율(0.5 이상)로 복부비만을 함께 확인하세요."}}
 ]}
 </script>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+:root{color-scheme:light dark;--x0a0a0a:#0a0a0a;--x0f0f0f:#0f0f0f;--x141414:#141414;--x171717:#171717;--x1f1f1f:#1f1f1f;--x222:#222;--x262626:#262626;--x2a2a2a:#2a2a2a;--x333:#333;--x1f2937:#1f2937;--xededed:#ededed;--xd4d4d4:#d4d4d4;--xb9b9b9:#b9b9b9;--x9ca3af:#9ca3af;--x6b7280:#6b7280;--xcbd5e1:#cbd5e1;--x10b981:#10b981;--x34d399:#34d399;--x6ee7b7:#6ee7b7;--xa7f3d0:#a7f3d0;--x7aa2ff:#7aa2ff;--xcdd6ff:#cdd6ff;--x7dd3fc:#7dd3fc;--x3b82f6:#3b82f6;--xfca5a5:#fca5a5;--xf87171:#f87171;--xfda4af:#fda4af;--xef4444:#ef4444;--xfcd34d:#fcd34d;--xfbbf24:#fbbf24;--xf59e0b:#f59e0b;--x3f1d1d:#3f1d1d;--x3d341f:#3d341f;--x1f1a0f:#1f1a0f;--x1f3d2e:#1f3d2e;--x0f1f17:#0f1f17;--x0c2a22:#0c2a22;--x06281f:#06281f;--x101512:#101512;--x1e2a24:#1e2a24;--xaeb6bf:#aeb6bf;--xd6dbe2:#d6dbe2;--x8b8f98:#8b8f98}
+:root[data-theme=light]{--x0a0a0a:#f7f8fa;--x0f0f0f:#ffffff;--x141414:#ffffff;--x171717:#f3f4f6;--x1f1f1f:#eef0f3;--x222:#eef0f3;--x262626:#e5e7eb;--x2a2a2a:#e5e7eb;--x333:#d7dbe0;--x1f2937:#eef1f5;--xededed:#1f2937;--xd4d4d4:#374151;--xb9b9b9:#4b5563;--x9ca3af:#6b7280;--x6b7280:#7b8494;--xcbd5e1:#475569;--x10b981:#059669;--x34d399:#059669;--x6ee7b7:#047857;--xa7f3d0:#065f46;--x7aa2ff:#2563eb;--xcdd6ff:#3b5bdb;--x7dd3fc:#0284c7;--x3b82f6:#2563eb;--xfca5a5:#dc2626;--xf87171:#dc2626;--xfda4af:#e11d48;--xef4444:#dc2626;--xfcd34d:#b45309;--xfbbf24:#b45309;--xf59e0b:#b45309;--x3f1d1d:#fee2e2;--x3d341f:#fef3c7;--x1f1a0f:#fef3c7;--x1f3d2e:#dcfce7;--x0f1f17:#dcfce7;--x0c2a22:#d1fae5;--x06281f:#ffffff;--x101512:#f0faf5;--x1e2a24:#cdefdd;--xaeb6bf:#3f5a4e;--xd6dbe2:#134e34;--x8b8f98:#5c6b63}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){--x0a0a0a:#f7f8fa;--x0f0f0f:#ffffff;--x141414:#ffffff;--x171717:#f3f4f6;--x1f1f1f:#eef0f3;--x222:#eef0f3;--x262626:#e5e7eb;--x2a2a2a:#e5e7eb;--x333:#d7dbe0;--x1f2937:#eef1f5;--xededed:#1f2937;--xd4d4d4:#374151;--xb9b9b9:#4b5563;--x9ca3af:#6b7280;--x6b7280:#7b8494;--xcbd5e1:#475569;--x10b981:#059669;--x34d399:#059669;--x6ee7b7:#047857;--xa7f3d0:#065f46;--x7aa2ff:#2563eb;--xcdd6ff:#3b5bdb;--x7dd3fc:#0284c7;--x3b82f6:#2563eb;--xfca5a5:#dc2626;--xf87171:#dc2626;--xfda4af:#e11d48;--xef4444:#dc2626;--xfcd34d:#b45309;--xfbbf24:#b45309;--xf59e0b:#b45309;--x3f1d1d:#fee2e2;--x3d341f:#fef3c7;--x1f1a0f:#fef3c7;--x1f3d2e:#dcfce7;--x0f1f17:#dcfce7;--x0c2a22:#d1fae5;--x06281f:#ffffff;--x101512:#f0faf5;--x1e2a24:#cdefdd;--xaeb6bf:#3f5a4e;--xd6dbe2:#134e34;--x8b8f98:#5c6b63}}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--x0a0a0a);color:var(--xededed);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
-.nav{font-size:13px;color:#6b7280;margin-bottom:18px}.nav a{color:#7aa2ff;text-decoration:none}
-h1{font-size:26px;font-weight:800;margin:0 0 6px}.lead{color:#9ca3af;margin:0 0 22px;font-size:15px}
-.card{border:1px solid #262626;background:#171717;border-radius:18px;padding:20px;margin-bottom:18px}
-label{display:block;font-size:13px;color:#9ca3af;margin:0 0 6px}
-input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px}
+.nav{font-size:13px;color:var(--x6b7280);margin-bottom:18px}.nav a{color:var(--x7aa2ff);text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px}.lead{color:var(--x9ca3af);margin:0 0 22px;font-size:15px}
+.card{border:1px solid var(--x262626);background:var(--x171717);border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;color:var(--x9ca3af);margin:0 0 6px}
+input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--x333);background:var(--x0f0f0f);color:var(--xededed);font-size:16px}
 .row{display:flex;gap:12px}.row>div{flex:1}
-button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:12px;background:#10b981;color:#06281f;font-size:16px;font-weight:700;cursor:pointer}
+button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:12px;background:var(--x10b981);color:var(--x06281f);font-size:16px;font-weight:700;cursor:pointer}
 .out{display:none;margin-top:18px}
 .big{font-size:44px;font-weight:800;text-align:center;margin:4px 0}
 .bigsub{text-align:center;font-size:16px;font-weight:700;margin-bottom:14px}
-.bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#3b82f6 0 18%,#10b981 18% 35%,#f59e0b 35% 55%,#ef4444 55% 100%);position:relative;margin:8px 0 4px}
+.bar{height:12px;border-radius:999px;background:linear-gradient(90deg,var(--x3b82f6) 0 18%,var(--x10b981) 18% 35%,var(--xf59e0b) 35% 55%,var(--xef4444) 55% 100%);position:relative;margin:8px 0 4px}
 .mk{position:absolute;top:-4px;width:4px;height:20px;background:#fff;border-radius:2px;transform:translateX(-50%)}
-.scale{display:flex;justify-content:space-between;font-size:11px;color:#6b7280}
+.scale{display:flex;justify-content:space-between;font-size:11px;color:var(--x6b7280)}
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.fact{background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:12px}
-.fact .k{font-size:12px;color:#6b7280}.fact .v{font-size:17px;font-weight:700;margin-top:2px}
-h2{font-size:18px;margin:28px 0 8px}.prose p{color:#d4d4d4;font-size:14.5px}
+.fact{background:var(--x0f0f0f);border:1px solid var(--x262626);border-radius:12px;padding:12px}
+.fact .k{font-size:12px;color:var(--x6b7280)}.fact .v{font-size:17px;font-weight:700;margin-top:2px}
+h2{font-size:18px;margin:28px 0 8px}.prose p{color:var(--xd4d4d4);font-size:14.5px}
 table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
-td,th{border:1px solid #262626;padding:8px 10px;text-align:left}th{color:#9ca3af;font-weight:600}
-.faq{border-top:1px solid #262626;padding:14px 0}.faq b{display:block;margin-bottom:4px}.faq p{margin:0;color:#b9b9b9;font-size:14px}
-.note{font-size:12px;color:#6b7280;margin-top:8px}
-footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
-.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.more a{font-size:13px;background:#1f2937;color:#cdd6ff;padding:7px 12px;border-radius:999px;text-decoration:none}
+td,th{border:1px solid var(--x262626);padding:8px 10px;text-align:left}th{color:var(--x9ca3af);font-weight:600}
+.faq{border-top:1px solid var(--x262626);padding:14px 0}.faq b{display:block;margin-bottom:4px}.faq p{margin:0;color:var(--xb9b9b9);font-size:14px}
+.note{font-size:12px;color:var(--x6b7280);margin-top:8px}
+footer{margin-top:36px;text-align:center;color:var(--x6b7280);font-size:12px;border-top:1px solid var(--x1f1f1f);padding-top:20px}footer a{color:var(--x7aa2ff);margin:0 6px;text-decoration:none}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.more a{font-size:13px;background:var(--x1f2937);color:var(--xcdd6ff);padding:7px 12px;border-radius:999px;text-decoration:none}
 </style>
+<!--og-eeat-->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="BMI 계산기 | TomatoEggCat" />
+<meta property="og:description" content="체질량지수·비만도·표준체중" />
+<meta property="og:url" content="https://tomatoeggcat.com/bmi/" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/bmi.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BMI 계산기 | TomatoEggCat" />
+<meta name="twitter:description" content="체질량지수·비만도·표준체중" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/bmi.png" />
+<!--/og-eeat-->
+<script type="application/ld+json" data-eeat="1">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BMI 계산기","description":"체질량지수·비만도·표준체중","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/bmi/","inLanguage":"ko-KR","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}}</script>
 </head>
 <body>
 <div class="wrap">
@@ -85,16 +109,38 @@ footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top
     <tr><td>3단계 비만(고도비만)</td><td>35 이상</td></tr>
   </table>
   <p class="note">대한비만학회 기준. WHO 국제 기준(비만 30 이상)보다 낮게 설정돼 있어 한국·아시아인은 더 일찍 관리가 필요합니다.</p>
+
+  <h2>표준체중과 적정 체중 범위</h2>
+  <p>표준체중은 가장 건강하다고 보는 BMI 22를 기준으로 <b>키(m)² × 22</b>로 구합니다. 키 170cm이면 1.7² × 22 ≈ <b>63.6kg</b>이 표준체중입니다. 정상 범위(BMI 18.5~22.9)로 환산하면 키 170cm 기준 약 <b>53.5~66.2kg</b>이 됩니다. 이 계산기는 입력한 키에 맞춰 표준체중과 정상 체중 범위, 정상까지 남은 무게를 함께 보여주므로 감량·증량 목표를 잡을 때 바로 참고할 수 있습니다.</p>
+
+  <h2>키·몸무게별 BMI 조견표</h2>
+  <table>
+    <tr><th>구분</th><th>55kg</th><th>65kg</th><th>75kg</th><th>85kg</th></tr>
+    <tr><td>160cm</td><td>21.5</td><td>25.4</td><td>29.3</td><td>33.2</td></tr>
+    <tr><td>170cm</td><td>19.0</td><td>22.5</td><td>26.0</td><td>29.4</td></tr>
+    <tr><td>180cm</td><td>17.0</td><td>20.1</td><td>23.1</td><td>26.2</td></tr>
+  </table>
+  <p class="note">같은 몸무게라도 키가 클수록 BMI는 낮아집니다. 위 값은 한국 기준(23 이상 과체중·25 이상 비만)으로 읽으면 됩니다.</p>
+
+  <h2>BMI로 알 수 없는 것</h2>
+  <p>BMI는 키와 몸무게만 쓰기 때문에 근육과 지방을 구분하지 못하고, 지방이 어디에 쌓였는지(내장지방·피하지방)도 알려주지 않습니다. 그래서 근육량이 많은 사람은 실제보다 높게, 체중은 정상이어도 뱃살이 많은 ‘마른 비만’은 낮게 나올 수 있습니다. 정확한 평가에는 허리둘레(남 90cm·여 85cm 이상이면 복부비만), 허리/키 비율(0.5 미만 권장), 체지방률을 함께 보는 것이 좋습니다. 모든 계산은 브라우저 안에서 처리되어 입력값이 외부로 전송되지 않고, 설치·회원가입 없이 무료로 씁니다.</p>
+
   <h2>자주 묻는 질문</h2>
   <div class="faq"><b>Q. 근육이 많아도 BMI가 높게 나와요.</b><p>BMI는 체지방과 근육을 구분하지 못합니다. 운동량이 많다면 체지방률·허리둘레를 함께 보세요.</p></div>
   <div class="faq"><b>Q. 어린이·노인도 같은 기준인가요?</b><p>성장기 어린이·청소년은 연령별 백분위, 노인은 별도 평가가 필요해 이 기준과 다릅니다.</p></div>
+  <div class="faq"><b>Q. 표준체중은 어떻게 구하나요?</b><p>가장 건강한 BMI로 보는 22를 기준으로 키(m)²×22로 계산합니다. 키 170cm이면 1.7²×22 ≈ 63.6kg입니다.</p></div>
+  <div class="faq"><b>Q. BMI는 정상인데 뱃살이 많아요.</b><p>‘마른 비만’일 수 있습니다. BMI는 지방 분포를 반영하지 못하므로 허리둘레(남 90·여 85cm 이상)와 허리/키 비율(0.5 이상)로 복부비만을 함께 확인하세요.</p></div>
+  <div class="faq"><b>Q. 임산부나 운동선수도 이 기준을 쓰나요?</b><p>아니요. 임신 중에는 체중 증가가 자연스러워 BMI 기준을 그대로 적용하지 않고, 근육량이 많은 운동선수도 BMI가 높게 나올 수 있어 체지방률 등 다른 지표를 함께 봐야 합니다.</p></div>
 </div>
 
 <div class="coupang-slot" data-subid="bmi" style="margin:24px 0"></div>
 
 <h2>다른 도구</h2>
 <div class="more"><a href="/age/">만나이 계산기</a><a href="/dday/">D-day 계산기</a><a href="/pyeong/">평수 변환기</a><a href="/">전체 도구 보기</a></div>
-
+<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 2026년 7월 · 2026년 고시 요율·법령 기준</p>
+  <p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: <a href="https://general.kosso.or.kr" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">대한비만학회</a> · <a href="https://www.who.int" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">WHO</a></p>
+</div>
 <footer>🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/><a href="/privacy.html">개인정보처리방침</a>·<a href="/terms.html">이용약관</a>·<a href="/contact.html">문의</a></footer>
 </div>
 

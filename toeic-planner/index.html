@@ -1,64 +1,114 @@
 <!doctype html>
+<!-- ⚠ 자동 생성 파일: gen-pages.mjs가 배포 때마다 재생성합니다. 직접 수정 금지 —
+     내용은 templates/service.html 또는 data/landing-content.json에서 고치세요. -->
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
-<meta name="google-site-verification" content="REPLACE_GOOGLE_CODE" />
-  <meta name="naver-site-verification" content="REPLACE_NAVER_CODE" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+
+<meta name="robots" content="index,follow,max-image-preview:large" />
 <title>토익 역산 플래너 — 교육·학습 무료 도구 | TomatoEggCat</title>
-<meta name="description" content="현재 토익 점수와 목표 점수, 시험 날짜를 입력하면 남은 기간 안에 필요한 파트별 정답 수와 하루 학습량을 자동으로 계산해줍니다. 취업 지원 조건이나 졸업 요건을 충족하기 위해 점수를 올려야 하는 분들이 막연한 계획 대신 수치 기반으로 공부를 시작할 때 유용합니다. LC·RC·" />
+<meta name="description" content="현재 토익 점수와 목표 점수, 시험 날짜를 넣으면 목표 지점에서 거꾸로 계산합니다. 남은 기간 동안 매일 무엇을 얼마나 해야 하는지 숫자로 계산해내는 역방향 학습 플래너입니다. 목표 총점을 LC·RC 두 섹션으로 나눈 뒤 파트별 목표 정답 수를 추정하고, 그 목표와 현재 실력의" />
 <link rel="canonical" href="https://tomatoeggcat.com/toeic-planner/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TomatoEggCat" />
 <meta property="og:title" content="토익 역산 플래너 — 교육·학습 무료 도구 | TomatoEggCat" />
-<meta property="og:description" content="현재 토익 점수와 목표 점수, 시험 날짜를 입력하면 남은 기간 안에 필요한 파트별 정답 수와 하루 학습량을 자동으로 계산해줍니다. 취업 지원 조건이나 졸업 요건을 충족하기 위해 점수를 올려야 하는 분들이 막연한 계획 대신 수치 기반으로 공부를 시작할 때 유용합니다. LC·RC·" />
+<meta property="og:description" content="현재 토익 점수와 목표 점수, 시험 날짜를 넣으면 목표 지점에서 거꾸로 계산합니다. 남은 기간 동안 매일 무엇을 얼마나 해야 하는지 숫자로 계산해내는 역방향 학습 플래너입니다. 목표 총점을 LC·RC 두 섹션으로 나눈 뒤 파트별 목표 정답 수를 추정하고, 그 목표와 현재 실력의" />
 <meta property="og:url" content="https://tomatoeggcat.com/toeic-planner/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/toeic-planner.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="토익 역산 플래너 — 교육·학습 무료 도구 | TomatoEggCat" />
-<meta name="twitter:description" content="현재 토익 점수와 목표 점수, 시험 날짜를 입력하면 남은 기간 안에 필요한 파트별 정답 수와 하루 학습량을 자동으로 계산해줍니다. 취업 지원 조건이나 졸업 요건을 충족하기 위해 점수를 올려야 하는 분들이 막연한 계획 대신 수치 기반으로 공부를 시작할 때 유용합니다. LC·RC·" />
+<meta name="twitter:description" content="현재 토익 점수와 목표 점수, 시험 날짜를 넣으면 목표 지점에서 거꾸로 계산합니다. 남은 기간 동안 매일 무엇을 얼마나 해야 하는지 숫자로 계산해내는 역방향 학습 플래너입니다. 목표 총점을 LC·RC 두 섹션으로 나눈 뒤 파트별 목표 정답 수를 추정하고, 그 목표와 현재 실력의" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/toeic-planner.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"토익 역산 플래너","description":"현재 토익 점수와 목표 점수, 시험 날짜를 입력하면 남은 기간 안에 필요한 파트별 정답 수와 하루 학습량을 자동으로 계산해줍니다. 취업 지원 조건이나 졸업 요건을 충족하기 위해 점수를 올려야 하는 분들이 막연한 계획 대신 수치 기반으로 공부를 시작할 때 유용합니다. LC·RC·","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/toeic-planner/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"현재 점수가 없는 초시라면 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"공식 샘플 문제를 한 세트 풀어보고 체감 정답률을 바탕으로 예상 점수를 입력하면 됩니다. 처음이라면 300~400점대를 기준으로 시작하고, 첫 모의고사 후 수정하면 됩니다."}},{"@type":"Question","name":"파트별 정답 수는 어떻게 나오나요?","acceptedAnswer":{"@type":"Answer","text":"목표 총점에서 LC와 RC 점수를 배분하고, 토익 환산 테이블 평균을 참고해 각 파트에서 몇 문제를 맞혀야 하는지 추정한 값입니다. 회차 난이도에 따라 실제 필요 정답 수는 달라질 수 있습니다."}},{"@type":"Question","name":"토익스피킹·라이팅 계획도 세울 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 LC와 RC로 구성된 토익 정기시험 기준으로 설계되어 있습니다. 스피킹과 라이팅은 평가 방식이 달라 별도 학습 전략이 필요합니다."}},{"@type":"Question","name":"공부 기록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"기록은 사용 중인 브라우저의 로컬 저장소에 보관됩니다. 같은 브라우저에서는 유지되지만 다른 기기에서는 별도 동기화가 필요합니다."}},{"@type":"Question","name":"목표 점수를 중간에 바꾸면 계획이 다시 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"점수나 시험일을 수정하면 남은 기간과 일일 학습량이 즉시 재산출됩니다. 계획 조정이 필요할 때 언제든 다시 입력할 수 있습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"교육·학습","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"토익 역산 플래너","item":"https://tomatoeggcat.com/toeic-planner/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"토익 역산 플래너","description":"현재 토익 점수와 목표 점수, 시험 날짜를 넣으면 목표 지점에서 거꾸로 계산합니다. 남은 기간 동안 매일 무엇을 얼마나 해야 하는지 숫자로 계산해내는 역방향 학습 플래너입니다. 목표 총점을 LC·RC 두 섹션으로 나눈 뒤 파트별 목표 정답 수를 추정하고, 그 목표와 현재 실력의","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/toeic-planner/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"현재 점수가 없는 초시생은 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"공식 샘플 문제나 시중 모의고사를 한 세트 풀어 체감 정답률로 예상 점수를 넣으면 됩니다. 감이 없으면 300~400점대로 시작한 뒤 첫 모의고사 결과로 수정하세요. 파트별 정답 수까지 입력하면 개인화 정확도가 올라가고, 초반 예상치가 다소 어긋나도 이후 기록으로 계획이 다시 잡힙니다."}},{"@type":"Question","name":"파트별 정답 수는 어떤 원리로 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"목표 총점을 LC·RC 두 섹션으로 나눈 뒤, 공식 환산이 섹션 단위로만 이뤄지므로 파트별 목표는 섹션 목표를 파트별 배점 기여도로 나눈 추정 배분입니다(예: RC 300점이면 파트5:6:7을 대략 3:1.5:5.5로 배분). 그렇게 나온 파트별 목표와 현재 실력(입력한 파트별 정답 수 또는 점수대 평균)의 격차를 남은 D-day로 나눠 하루 분량을 뽑습니다."}},{"@type":"Question","name":"궤도 점검 때 모의고사를 파트별로 채점해 넣을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 총점만이 아니라 파트별 정답 수를 입력할 수 있어, 예컨대 목표에서는 파트3가 병목이었는데 실제로는 파트7에서 정체가 나타나면 도구가 약점 이동을 감지해 하루 분량을 파트7 쪽으로 다시 배분합니다. 실측 검증이 총점이 아니라 파트 단위까지 닿습니다."}},{"@type":"Question","name":"토익 스피킹·라이팅 계획도 세울 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 도구는 LC와 RC로 구성된 토익 정기시험(990점 만점) 기준으로 설계되어 있습니다. 스피킹·라이팅은 시험 구조와 채점 방식이 완전히 달라 별도의 학습 전략이 필요합니다."}},{"@type":"Question","name":"목표 점수나 시험일을 중간에 바꾸면 계획이 다시 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 현재 점수·목표 점수·시험일·하루 가용 시간 중 무엇이든 수정하면 남은 D-day, 파트별 정답 수, 하루 분량, 달성 가능성 지표가 즉시 다시 산출됩니다. 상황이 바뀔 때마다 다시 입력해 계획을 최신 상태로 유지하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"교육·학습","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"토익 역산 플래너","item":"https://tomatoeggcat.com/toeic-planner/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji";line-height:1.6}
+a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--acc2);outline-offset:2px;border-radius:4px}
+/* 광고/제휴 슬롯 높이 예약 → 콘텐츠 밀림(CLS) 방지 */
+.coupang-slot{min-height:184px}
+@media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
-.emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+.emoji{font-size:46px;display:flex;justify-content:center}
+.ic{width:24px;height:24px;display:block}
+.emoji .ic{width:56px;height:56px;color:var(--acc2)}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
-.ad{margin:30px 0 0;min-height:90px;display:flex;align-items:center;justify-content:center;border:1px dashed #232323;border-radius:14px;color:#2f2f2f;font-size:12px}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
+.about .edbox .ed-src a:hover{text-decoration:underline}
+.about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+.rel .rel-ic{display:inline-flex;flex:0 0 auto;color:var(--acc2)}
+.rel .rel-ic .ic{width:20px;height:20px}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>
@@ -66,61 +116,67 @@ footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
 <div class="wrap">
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">교육·학습</span> <span class="sep">›</span> <span class="c-cur">토익 역산 플래너</span></nav>
   <div class="hero">
-    <div class="emoji">🎧</div>
+    <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M7 9.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5V9.5"/></svg></div>
     <h1>토익 역산 플래너</h1>
-    <p class="lead">현재 토익 점수와 목표 점수, 시험 날짜를 입력하면 남은 기간 안에 필요한 파트별 정답 수와 하루 학습량을 자동으로 계산해줍니다.</p>
+    <p class="lead">현재 토익 점수와 목표 점수, 시험 날짜를 넣으면 목표 지점에서 거꾸로 계산합니다.</p>
     <a class="cta" href="https://toeic-target-planner.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <div class="ad">광고 영역</div>
   <section class="about"><h2>토익 역산 플래너 소개</h2>
-    <p>현재 토익 점수와 목표 점수, 시험 날짜를 입력하면 남은 기간 안에 필요한 파트별 정답 수와 하루 학습량을 자동으로 계산해줍니다. 취업 지원 조건이나 졸업 요건을 충족하기 위해 점수를 올려야 하는 분들이 막연한 계획 대신 수치 기반으로 공부를 시작할 때 유용합니다. LC·RC·어휘를 각각 얼마씩 해야 하는지 구체적인 숫자로 확인할 수 있습니다.</p>
+    <p>현재 토익 점수와 목표 점수, 시험 날짜를 넣으면 목표 지점에서 거꾸로 계산합니다. 남은 기간 동안 매일 무엇을 얼마나 해야 하는지 숫자로 계산해내는 역방향 학습 플래너입니다. 목표 총점을 LC·RC 두 섹션으로 나눈 뒤 파트별 목표 정답 수를 추정하고, 그 목표와 현재 실력의 격차를 남은 D-day로 나눠 하루 권장 분량(LC·RC·어휘)을 뽑습니다. '하루 2시간 공부' 같은 막연한 계획을 '오늘 파트5 15문항, LC 받아쓰기 30분'처럼 실행 가능한 분량으로 바꾸는 것이 핵심이며, 설치나 회원가입 없이 무료로 쓸 수 있고 입력값은 브라우저 안에서만 처리되어 외부로 나가지 않습니다.</p>
     <h2>알아두면 좋은 배경지식</h2>
-    <p>토익(TOEIC)은 LC(듣기) 495점, RC(읽기) 495점으로 구성된 990점 만점의 시험으로, 파트별 정답 수와 난이도에 따라 환산 점수가 달라집니다. 단순히 '하루 2시간 공부'라는 계획보다 '파트5 문법을 오늘 10문제 더 풀어야 한다'는 구체적 지표가 실천 확률을 높입니다. 점수대별로 효과적인 공략법이 달라지는데, 500점대는 기초 어휘와 파트1·2 반복이 우선이고, 700점 이상은 파트7 독해 속도와 파트3·4 세부 내용 파악이 관건입니다. 역산 방식은 목표에서 거꾸로 오늘 해야 할 분량을 도출하므로 시간이 촉박할수록 우선순위가 선명해집니다.</p>
+    <p>토익 정기시험은 LC(듣기) 495점, RC(읽기) 495점을 합쳐 990점 만점이고 점수는 5점 단위로 매겨집니다. 문항은 LC 100개(파트1 사진묘사 6, 파트2 질의응답 25, 파트3 대화 39, 파트4 담화 30), RC 100개(파트5 단문 빈칸 30, 파트6 장문 빈칸 16, 파트7 독해 54)로 총 200문항을 2시간에 풉니다.</p>
+    <p>핵심은 정답 수와 점수가 정비례하지 않는다는 점입니다. ETS는 회차마다 원점수를 보정한 환산표를 적용하는데, 이 표는 공개되지 않아 시중에 도는 '환산 점수표'는 응시자 데이터로 역추정한 비공식 대응 관계입니다. 이 역추정은 표본이 특정 점수대에 몰릴수록 고득점·저득점 양 끝 구간의 오차가 커지는 한계가 있습니다. 그래서 같은 LC 90개 정답이라도 쉬운 회차에서는 400점 안팎, 어려운 회차에서는 430~445점까지 벌어지곤 합니다(이 대응 자체가 섹션 단위 공식 환산을 파트로 임의 배분한 추정 예시입니다). 이 도구가 파트별 목표를 단일 값이 아니라 ±범위로 제시하는 이유가 여기에 있습니다.</p>
+    <p>배분 원리는 이렇습니다. 공식 환산은 LC/RC 섹션 단위로만 이뤄지므로, 파트별 목표 정답 수는 섹션 목표를 파트별 배점 기여도로 나눈 도구의 추정 배분입니다. 예를 들어 RC 목표를 300점으로 잡으면 파트5:파트6:파트7을 대략 3 : 1.5 : 5.5의 기여도로 두는데, 문항 수(30·16·54)와 파트별 난이도를 함께 반영한 값입니다. 이 목표가 RC에서 약 78개 정답을 요구한다면 그 비율대로 파트5 약 23개, 파트6 약 12개, 파트7 약 43개처럼 목표 정답 수를 나눠 배정합니다.</p>
+    <p>점수대마다 병목이 달라 하루 학습량 배분도 달라집니다. 500점대는 기초 어휘와 파트1·2 반복, 600점대는 파트5 문법과 파트3 대화 흐름, 700점대는 파트7 독해 속도와 파트3·4 세부 청취, 800점대 이상은 파트7 이중지문·추론과 파트4 고난도 담화가 승부처입니다. 도구는 병목 파트에 학습 시간을 먼저 몰아주는데, 예컨대 600점대에서는 RC 학습 시간의 약 40%를 파트5 문법에 우선 할당하고, 700점대에서는 RC 시간의 절반가량을 파트7 독해에 배정하는 식입니다. 같은 시간을 써도 점수가 잘 오르는 지점부터 손대게 하려는 설계입니다.</p>
+    <p>국내에서는 성적을 여러 곳에서 요구합니다. 도구는 대표 점수를 목표 프리셋으로 제공하는데, 국가공무원 7급 채용의 영어 대체 기준인 700점, 다수 대기업·공기업 지원 자격선인 800점 안팎, 항공·통번역 등 상위 직군이 요구하는 900점 등이 그 예입니다. 성적 유효기간은 응시일로부터 2년이라, 목표 시험일을 넣으면 그 성적이 필요한 시점까지 유효한지 따져 계획 시작일을 자동으로 잡습니다.</p>
     <h2>이렇게 사용하세요</h2>
     <ol>
-        <li>현재 토익 점수(없다면 예상 점수)와 목표 점수를 입력합니다.</li>
-        <li>목표 시험일을 선택해 남은 D-day를 확인합니다.</li>
-        <li>파트별 권장 정답 수와 하루 권장 학습량(LC·RC·단어)을 확인합니다.</li>
-        <li>공부 타이머로 오늘 학습 시간을 기록합니다.</li>
-        <li>모의고사 점수를 주기적으로 입력해 목표 달성 가능성을 점검합니다.</li>
-        <li>히트맵으로 학습 스트릭을 확인하며 꾸준함을 유지합니다.</li>
+        <li>현재 토익 점수를 입력합니다. 응시 이력이 없으면 예상 점수를 넣고 첫 모의고사 뒤에 보정하면 됩니다.</li>
+        <li>최근 모의고사의 파트별 정답 수를 입력하면 그 값으로, 없으면 해당 점수대 평균 정답률로 파트별 격차를 계산합니다. 여기에 목표 점수·목표 시험일·하루 가용 시간을 함께 지정하면 남은 D-day와 달성 가능성(가능·도전적·무리)이 표시됩니다.</li>
+        <li>파트별 권장 정답 수(±범위)와 하루 권장 분량(LC·RC·어휘)이 입력한 하루 가용 시간 안에 들어오도록 D-day에 맞춰 배분됩니다. 가용 시간을 줄이면 그만큼 분량이 다시 짜이고, 프리뷰 연습·실전 모의고사도 분량에 포함됩니다.</li>
+        <li>공부 타이머로 오늘 실제 학습 시간을 기록하고, 모의고사 점수를 파트별로 채점해 입력하면 목표 궤도에 올라 있는지 점검할 수 있습니다. 시험 3주 전이 되면 75분 RC 실전 세트(파트5~7)가 하루 배분에 자동으로 추가됩니다.</li>
+        <li>히트맵으로 학습 스트릭(연속 기록)을 보며 꾸준함을 유지하고, 점수·시험일·가용 시간이 바뀌면 계획을 다시 계산합니다.</li>
     </ol>
     <h2>이럴 때 유용해요</h2>
     <ul>
-        <li>입사 지원 마감 전 6주 안에 700점을 달성해야 할 때, 남은 일수 기준으로 LC와 RC를 각각 얼마나 올려야 하는지 수치로 파악하고 싶을 때.</li>
-        <li>이전에 응시한 점수가 있고 다음 시험일을 이미 접수해둔 상태에서 하루 투자 가능한 시간에 맞춰 현실적인 분량을 잡고 싶을 때.</li>
-        <li>처음 토익에 도전하는데 어디서부터 시작해야 할지 감을 잡기 어려울 때 파트별 우선순위를 확인하고 싶을 때.</li>
+        <li>입사 지원 마감을 6주 앞두고 700점을 만들어야 할 때. 현재 550점(LC 320·RC 230)을 42일 뒤 700점으로 올린다고 하면, 도구는 LC·RC를 각각 어느 속도로 끌어올려야 하는지와 파트별 목표 정답 수를 보여줍니다. 하루 가용 시간을 90분으로 잡으면 실제 출력은 예를 들면 이렇습니다: LC 받아쓰기 25분+파트3 대화 15문항(약 20분), RC 파트5 20문항(약 20분)+파트7 2지문(약 15분), 어휘 40개(약 10분) — 예상 소요 시간 합이 정확히 90분에 들어오도록 짠 배분이며 주 1회는 실전 모의고사로 대체됩니다. 3주차 중간 점검선은 '모의고사 620점 이상, LC 350·RC 270'으로 제시돼 궤도 이탈을 숫자로 확인할 수 있습니다. 다만 42일에 150점은 상승폭이 커서 도구가 '도전적'으로 표시하는 구간이라, 매일 계획을 지켰을 때를 전제로 합니다.</li>
+        <li>이미 다음 시험을 접수해두고 퇴근 후 하루 1~2시간만 낼 수 있는 직장인이 무리 없는 일일 분량을 잡고 실현 가능성을 미리 가늠할 때. 하루 가용 시간을 90분으로 넣으면 도구가 그 안에 들어오는 분량으로 재배분하고, 목표가 시간 대비 벅차면 '무리'로 표시해 목표 점수나 시험일 조정을 권합니다.</li>
+        <li>처음 토익에 도전해 어디서부터 손대야 할지 막막할 때. 현재 점수대 기준으로 병목 파트(먼저 잡아야 할 파트) 우선순위를 확인하고 학습 순서를 잡을 때 유용합니다. 예컨대 현재 LC 320점(섹션 공식 환산을 파트로 임의 배분한 추정 예시로 약 파트3 32/39 수준)에서 400점대로 올리려면 파트3·4 세부 청취에서 약 10문항을 더 맞혀야 하고, 이는 D-42 기준 하루 파트3 대화 6세트에 해당한다는 식으로 입력에서 산출까지 흐름을 보여줍니다.</li>
     </ul>
     <h2>활용 팁</h2>
     <ul>
-        <li>LC 파트2·3은 선택지를 미리 읽는 프리뷰 훈련이 정답률에 큰 영향을 줍니다. 음원이 나오기 전 5초 동안 보기를 파악하는 습관을 들이세요.</li>
-        <li>RC 파트5는 문법 유형별로 오답 노트를 만들면 같은 유형의 실수를 반복하지 않게 됩니다. 오답을 분류해두는 것만으로도 반복 학습 효율이 올라갑니다.</li>
-        <li>시험 3주 전부터는 실제 시험과 같은 환경(시간 제한, 마킹 포함)에서 모의고사를 풀어보는 것이 실전 감각 유지에 중요합니다.</li>
-        <li>단어는 문맥 없이 외우면 금방 잊히므로 자주 나오는 비즈니스 표현을 문장 단위로 익히는 방식이 파트7 독해에도 도움이 됩니다.</li>
+        <li>역산 결과의 하루 파트7 분량이 버거워 보이면 먼저 모의고사에서 파트7 한 세트 소요 시간을 재보세요. 이 도구의 타이머는 단순 시간측정이 아니라, 나온 하루 분량이 지금 실력에서 몇 분짜리 과제인지 실측해 계획의 실현 가능성을 다시 계산하는 입력값으로만 쓰입니다.</li>
+        <li>디렉션·문항 간 여유 시간을 활용해 다음 문항을 미리 읽는 프리뷰는 파트3·4 정답률을 크게 좌우합니다(선지가 인쇄되지 않는 파트2는 선독이 불가능해, 질문 첫 단어의 의문사 청취에 집중하는 별개 전략으로 다룹니다). 이 도구는 프리뷰를 파트3·4 배분과 별도 항목으로 잡아 하루 체크리스트에 넣어주니 빠뜨리지 말고 습관으로 굳히세요.</li>
+        <li>어휘 하루치는 목표 점수대의 빈출 어휘 수를 남은 D-day로 나눠 산출됩니다. 예를 들어 700점대 빈출 어휘 약 1,600개(시중 빈출 어휘 리스트 기준)를 40일에 나누면 하루 40개입니다. 뜻만 단독으로 외우면 금방 잊히니, 자주 붙어 다니는 표현 덩어리(연어, collocation)로 익히면 파트5 어휘 문제와 파트7 독해에 함께 효과가 있습니다.</li>
+        <li>파트7은 시간 관리가 관건이라 시험 3주 전부터 75분 RC 실전 세트(파트5~7)가 하루 배분에 자동으로 들어갑니다. 마킹 시간까지 포함해 실제 시험처럼 풀고 그 결과를 모의고사 점수로 입력하면, 남은 계획이 실측 속도 기준으로 다시 잡힙니다.</li>
     </ul>
     <h2>주의사항</h2>
     <ul class="cautions">
-        <li>파트별 정답 수 추정은 평균적인 토익 시험 난이도를 기반으로 한 참고 수치이며, 실제 시험 회차마다 난이도 편차가 있어 결과와 다를 수 있습니다.</li>
-        <li>합격 가능성 지표는 현재 점수·목표 점수·남은 기간을 조합한 통계적 추정이므로, 실제 성취는 개인의 학습 밀도와 방식에 따라 크게 달라집니다.</li>
-        <li>공부량이 과도하게 잡히더라도 무리하게 따라가기보다 학습 시간을 조정하거나 목표 시험일을 재검토하는 것이 장기 지속에 유리합니다.</li>
+        <li>달성 가능성(가능·도전적·무리)은 현재-목표 점수 격차를 남은 일수와 하루 가용 시간으로 나눈 '하루 필요 점수 상승 밀도'로 판정합니다. 대략 하루 환산 2점 이하면 '가능', 2~3점이면 '도전적', 3점을 넘으면 '무리'로 표시하는 식입니다. 출발점을 잡아주는 추정일 뿐 보장이 아닙니다.</li>
+        <li>점수 상승은 선형이 아닙니다. 초반에는 기초를 메우며 빠르게 오르다가 700점 이후 정체 구간이 오기 쉬워, 남은 날수로 균등 분할한 하루 목표가 실제 체감 난이도와 다를 수 있습니다. 후반부일수록 목표를 여유 있게 잡으세요.</li>
+        <li>학습 스트릭·모의고사 점수 이력·타이머 기록은 회원가입 없이 사용 중인 브라우저 안에만 저장되고 외부 서버로 전송되지 않습니다. 그만큼 프라이버시는 안전하지만, 시험 직전 기기를 바꾸거나 브라우저 데이터를 지우면 그동안 쌓은 궤도 데이터가 사라지니 중요한 시점에는 미리 따로 메모해두세요.</li>
     </ul>
     <h2>자주 묻는 질문</h2>
-    <div class="qa"><p class="q">Q. 현재 점수가 없는 초시라면 어떻게 입력하나요?</p><p class="a">공식 샘플 문제를 한 세트 풀어보고 체감 정답률을 바탕으로 예상 점수를 입력하면 됩니다. 처음이라면 300~400점대를 기준으로 시작하고, 첫 모의고사 후 수정하면 됩니다.</p></div>
-    <div class="qa"><p class="q">Q. 파트별 정답 수는 어떻게 나오나요?</p><p class="a">목표 총점에서 LC와 RC 점수를 배분하고, 토익 환산 테이블 평균을 참고해 각 파트에서 몇 문제를 맞혀야 하는지 추정한 값입니다. 회차 난이도에 따라 실제 필요 정답 수는 달라질 수 있습니다.</p></div>
-    <div class="qa"><p class="q">Q. 토익스피킹·라이팅 계획도 세울 수 있나요?</p><p class="a">이 도구는 LC와 RC로 구성된 토익 정기시험 기준으로 설계되어 있습니다. 스피킹과 라이팅은 평가 방식이 달라 별도 학습 전략이 필요합니다.</p></div>
-    <div class="qa"><p class="q">Q. 공부 기록은 어디에 저장되나요?</p><p class="a">기록은 사용 중인 브라우저의 로컬 저장소에 보관됩니다. 같은 브라우저에서는 유지되지만 다른 기기에서는 별도 동기화가 필요합니다.</p></div>
-    <div class="qa"><p class="q">Q. 목표 점수를 중간에 바꾸면 계획이 다시 계산되나요?</p><p class="a">점수나 시험일을 수정하면 남은 기간과 일일 학습량이 즉시 재산출됩니다. 계획 조정이 필요할 때 언제든 다시 입력할 수 있습니다.</p></div>
-    
-    <p class="cat-note">카테고리: 교육·학습 · 설치·가입 없이 브라우저에서 무료로 바로 사용</p></section>
+    <div class="qa"><p class="q">Q. 현재 점수가 없는 초시생은 어떻게 입력하나요?</p><p class="a">공식 샘플 문제나 시중 모의고사를 한 세트 풀어 체감 정답률로 예상 점수를 넣으면 됩니다. 감이 없으면 300~400점대로 시작한 뒤 첫 모의고사 결과로 수정하세요. 파트별 정답 수까지 입력하면 개인화 정확도가 올라가고, 초반 예상치가 다소 어긋나도 이후 기록으로 계획이 다시 잡힙니다.</p></div>
+    <div class="qa"><p class="q">Q. 파트별 정답 수는 어떤 원리로 계산되나요?</p><p class="a">목표 총점을 LC·RC 두 섹션으로 나눈 뒤, 공식 환산이 섹션 단위로만 이뤄지므로 파트별 목표는 섹션 목표를 파트별 배점 기여도로 나눈 추정 배분입니다(예: RC 300점이면 파트5:6:7을 대략 3:1.5:5.5로 배분). 그렇게 나온 파트별 목표와 현재 실력(입력한 파트별 정답 수 또는 점수대 평균)의 격차를 남은 D-day로 나눠 하루 분량을 뽑습니다.</p></div>
+    <div class="qa"><p class="q">Q. 궤도 점검 때 모의고사를 파트별로 채점해 넣을 수 있나요?</p><p class="a">네. 총점만이 아니라 파트별 정답 수를 입력할 수 있어, 예컨대 목표에서는 파트3가 병목이었는데 실제로는 파트7에서 정체가 나타나면 도구가 약점 이동을 감지해 하루 분량을 파트7 쪽으로 다시 배분합니다. 실측 검증이 총점이 아니라 파트 단위까지 닿습니다.</p></div>
+    <div class="qa"><p class="q">Q. 토익 스피킹·라이팅 계획도 세울 수 있나요?</p><p class="a">아니요. 이 도구는 LC와 RC로 구성된 토익 정기시험(990점 만점) 기준으로 설계되어 있습니다. 스피킹·라이팅은 시험 구조와 채점 방식이 완전히 달라 별도의 학습 전략이 필요합니다.</p></div>
+    <div class="qa"><p class="q">Q. 목표 점수나 시험일을 중간에 바꾸면 계획이 다시 계산되나요?</p><p class="a">네. 현재 점수·목표 점수·시험일·하루 가용 시간 중 무엇이든 수정하면 남은 D-day, 파트별 정답 수, 하루 분량, 달성 가능성 지표가 즉시 다시 산출됩니다. 상황이 바뀔 때마다 다시 입력해 계획을 최신 상태로 유지하세요.</p></div>
+    <p class="disclaimer">이 도구가 제시하는 파트별 정답 수(±범위)와 학습량은 비공식 환산 대응 관계를 바탕으로 한 참고 추정치이며, 실제 점수는 회차 난이도와 개인 학습에 따라 달라집니다. 토익 문항 개발과 채점은 ETS가, 국내 정기시험 시행은 독점 시행처인 YBM이 맡습니다. 응시 일정과 성적 인정 기준은 ETS·YBM 및 지원처의 공식 안내를 확인하세요.</p>
+    <div class="edbox">
+      <p class="ed-by">✍️ 작성·검토: <strong>TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 2026년 7월</p>
+      <p class="ed-src">참고 자료: <a href="https://www.ybmnet.co.kr" target="_blank" rel="noopener nofollow">YBM 토익위원회</a> · <a href="https://www.ets.org" target="_blank" rel="noopener nofollow">ETS TOEIC</a></p>
+    </div>
+    <p class="cat-note">카테고리: 교육·학습 · 회원가입·설치 없이 브라우저에서 바로 실행 · 완전 무료 · 한국어 지원</p></section>
   <div class="coupang-slot" data-subid="toeic-planner" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/dydrms-hansa/"><span>📜</span> 한국사 능력고사</a>
-      <a class="rel" href="/hakjeomgak/"><span>🎓</span> 학점각</a>
-      <a class="rel" href="/dydrms-driving-test/"><span>🚦</span> 운전면허 필기고사</a>
-      <a class="rel" href="/dydrms-choseong/"><span>🎯</span> 초성 챌린지</a>
-      <a class="rel" href="/dydrms-geuljagak/"><span>✍️</span> 글자각</a>
-      <a class="rel" href="/tone-score/"><span>🎙</span> 성조 스코어 (중국어노트)</a></div>
+    <div class="rel-grid"><a class="rel" href="/dydrms-spotdiff/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M7 9.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5V9.5"/></svg></span> 다다른 (틀린그림찾기)</a>
+      <a class="rel" href="/dydrms-omok/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M7 9.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5V9.5"/></svg></span> 오목마스터 (Omok)</a>
+      <a class="rel" href="/dydrms-minesweeper/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M7 9.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5V9.5"/></svg></span> 지뢰박사 (Minesweeper)</a>
+      <a class="rel" href="/dydrms-stargazer/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M7 9.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5V9.5"/></svg></span> 별보러가자 (StarGazer)</a>
+      <a class="rel" href="/dydrms-2048/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M7 9.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5V9.5"/></svg></span> 머지퍼즐 2048 (Merge2048)</a>
+      <a class="rel" href="/dydrms-hansa/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M7 9.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5V9.5"/></svg></span> 한국사 능력고사</a></div>
   </section>
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>

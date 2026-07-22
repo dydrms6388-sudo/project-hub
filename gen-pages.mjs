@@ -14,9 +14,30 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
 import { renderHub } from "./lib/hub.mjs";
+import { iconFor } from "./lib/icons.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
+// 콘텐츠 최종 점검 시점(E-E-A-T 신호). 배포 시각(new Date)을 쓰면 매 빌드마다
+// dateModified가 흔들려 신뢰도 신호가 오히려 약해지므로 편집 검토 기준월을 고정한다.
+// 개별 문서에서 landing-content.json 의 "reviewed"(YYYY-MM)로 덮어쓸 수 있다.
+const REVIEW_DATE = "2026-07";
+const REVIEW_LABEL = (ym) => { const [y, m] = String(ym).split("-"); return `${y}년 ${Number(m)}월`; };
+const PUBLISHER = { "@type": "Organization", name: "TomatoEggCat", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/og/logo.png` } };
+// OG 이미지 경로 결정: 해당 slug 전용 카드가 있으면 사용, 없으면 기본 카드.
+const ogImageFor = (slug) => existsSync(`og/${slug}.png`) ? `${SITE}/og/${slug}.png` : `${SITE}/og/default.png`;
+// 내장(정적) 9개 도구의 공식 참고 출처(E-E-A-T). 모두 실도달 검증된 공공기관 도메인.
+const BUILTIN_SOURCES = {
+  salary: [{ label: "국세청", url: "https://www.nts.go.kr" }, { label: "국민연금공단", url: "https://www.nps.or.kr" }, { label: "국민건강보험공단", url: "https://www.nhis.or.kr" }],
+  dsr: [{ label: "금융위원회", url: "https://www.fsc.go.kr" }, { label: "전국은행연합회", url: "https://www.kfb.or.kr" }],
+  "jeonse-loan": [{ label: "주택도시기금", url: "https://nhuf.molit.go.kr" }],
+  yangdo: [{ label: "국세청", url: "https://www.nts.go.kr" }, { label: "국가법령정보센터", url: "https://www.law.go.kr" }],
+  refinance: [{ label: "금융감독원", url: "https://www.fss.or.kr" }, { label: "금융위원회", url: "https://www.fsc.go.kr" }],
+  age: [{ label: "법제처(만 나이 통일)", url: "https://www.moleg.go.kr" }],
+  dday: [],
+  bmi: [{ label: "대한비만학회", url: "https://general.kosso.or.kr" }, { label: "WHO", url: "https://www.who.int" }],
+  pyeong: [{ label: "국가법령정보센터(법정계량단위)", url: "https://www.law.go.kr" }],
+};
 // 소유확인 메타는 "실제 코드가 설정된 경우에만" 방출한다.
 // 미설정 상태의 REPLACE_* 플레이스홀더를 프로덕션에 그대로 싣지 않기 위함
 // (가짜 코드는 Search Console 검증을 조용히 실패시키고 페이지에 무의미한 메타만 남긴다).
@@ -59,15 +80,90 @@ const BUILTINS = [
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
-  { title: "💰 금융 · 세금", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
-  { title: "🔢 생활 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
+  { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
+  { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
 
+// ── 애드센스 집중 전략: 실질 콘텐츠를 갖춘 핵심 도구만 검색 색인 ──
+// 여기 없는 도구는 <meta robots noindex,follow> + sitemap 제외(기능은 그대로 동작).
+// 얇은 도구에 콘텐츠를 채우면 이 목록에 slug를 추가해 하나씩 색인 해제(=색인 허용)한다.
+// 내장 9개(salary/dsr/jeonse-loan/yangdo/refinance/age/dday/bmi/pyeong)는 자체 리치 페이지라 전부 포함.
+const CORE_SLUGS = new Set([
+  // 내장(builtin) — 이미 리치 페이지
+  "salary", "dsr", "jeonse-loan", "yangdo", "refinance", "age", "dday", "bmi", "pyeong",
+  // 금융·부동산
+  "cheongyak-score-calc",
+  // 생활·계산기
+  "moving-cost-calc", "gift-money",
+  // 건강·운동
+  "manbo-steps", "weight-roadmap", "body-fat-check",
+  // 교육·학습
+  "suneung-gradecut", "toeic-planner", "hanja-grade-master",
+  // 취업·생산성
+  "jasoseo-doctor", "shift-work-calendar",
+  // 반려·식물
+  "pet-age-calc", "plant-watering",
+  // 연애·관계
+  "mbti-match",
+  // 운세·심리
+  "today-fortune",
+  // 뷰티·패션
+  "personal-color-test",
+  // ── 2차 색인 확대(batch3): 5-에이전트 재작성 루프로 86~89점 달성한 비생물학 도구 ──
+  "salary-rank",            // 금융·부동산
+  "dydrms-sizefit",         // 생활·계산기
+  "travel-budget", "china-travel", // 여행·문화
+  "dydrms-giftpick", "dydrms-seonmulgak", "love-story-board", // 연애·관계
+  "ttingun", "dydrms-haemong",      // 운세·심리
+  "dydrms-dasibom", "dydrms-pokecard", // 엔터·바이럴
+  "dydrms-engnote", "chipnote", "dydrms-hagwon", // 교육·학습
+]);
+
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+// 본문에 포함된 마크다운 표(| a | b | 또는 헤더 없는 공백|공백 형태)를 HTML <table>로 변환.
+// 파이프가 없으면 기존 esc()와 동일하게 동작 → 표 없는 페이지엔 영향 없음.
+// 반환: { html, hasTable }. 비표 텍스트는 빈 줄 기준으로 <p>로 감싼다.
+const renderRich = (raw) => {
+  const src = String(raw ?? "");
+  if (!src.includes("|")) return { html: esc(src), hasTable: false };
+  const lines = src.split("\n");
+  const looksRow = l => l.includes("|") && /\S/.test(l);
+  const isSep = l => /^[\s|:\-]+$/.test(l) && l.includes("-"); // | --- | --- | 구분선
+  const out = []; let buf = []; let hasTable = false;
+  const flush = () => { if (buf.length) { out.push(`<p>${buf.map(esc).join(" ")}</p>`); buf = []; } };
+  let i = 0;
+  while (i < lines.length) {
+    if (looksRow(lines[i]) && i + 1 < lines.length && looksRow(lines[i + 1])) {
+      flush(); hasTable = true;
+      const block = [];
+      while (i < lines.length && looksRow(lines[i])) { block.push(lines[i]); i++; }
+      const rows = block.filter(l => !isSep(l))
+        .map(l => l.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(c => c.trim()));
+      if (rows.length) {
+        const head = rows[0], body = rows.slice(1);
+        out.push(`<table class="rt"><thead><tr>${head.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${body.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`);
+      }
+    } else {
+      if (!lines[i].trim()) flush(); else buf.push(lines[i].trim());
+      i++;
+    }
+  }
+  flush();
+  return { html: out.join("\n    "), hasTable };
+};
+// 리스트 항목/문단 내 표 대응: 표 있으면 표 HTML, 없으면 esc.
+const richInline = (x) => { const r = renderRich(x); return r.hasTable ? r.html : esc(x); };
+// JSON-LD 등 순수 텍스트용: 마크다운 표 구분선 제거 + 파이프를 읽기 쉬운 구분자로.
+const plainText = (raw) => String(raw ?? "")
+  .split("\n")
+  .filter(l => !(/^[\s|:\-]+$/.test(l) && l.includes("-"))) // | --- | 구분선 제거
+  .map(l => l.includes("|") ? l.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(c => c.trim()).filter(Boolean).join(" · ") : l)
+  .join(" ").replace(/\s{2,}/g, " ").trim();
 const slugify = live => { try { return new URL(live).host.replace(/\.vercel\.app$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase(); } catch { return null; } };
 
 // Phase 2: apex에서 앱이 직접 서빙되는 slug → 정적 랜딩 생성 스킵(vercel.json rewrite가 처리). sitemap엔 동일 apex URL 유지.
@@ -88,7 +184,7 @@ const CATEGORY_RULES = [
   ["뷰티·패션", /뷰티|퍼스널컬러|피부|컬러|패션/i],
   ["투자·크립토", /투자|크립토|코인|주식/i],
 ];
-const getCategory = d => { for (const [c, re] of CATEGORY_RULES) if (re.test(d || "")) return c; return "생활·계산기"; };
+const getCategory = d => { for (const [c, re] of CATEGORY_RULES) if (re.test(d || "")) return c; return "생활 도구"; };
 
 // ── 데이터 ──
 const raw = JSON.parse(readFileSync("projects.json", "utf8"));
@@ -135,7 +231,7 @@ for (const d of daily) {
   if (APEX_SERVED.has(d.slug)) { if (existsSync(`${d.slug}/index.html`)) rmSync(d.slug, { recursive: true, force: true }); continue; }
   let related = daily.filter(x => x.cat === d.cat && x.slug !== d.slug).slice(0, 6);
   if (related.length < 4) related = related.concat(daily.filter(x => x.slug !== d.slug && !related.includes(x)).slice(0, 6 - related.length));
-  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span>${r.emoji}</span> ${esc(r.name)}</a>`).join("\n      ");
+  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span class="rel-ic" aria-hidden="true">${iconFor(r.cat)}</span> ${esc(r.name)}</a>`).join("\n      ");
 
   // ── 사용자용 콘텐츠 조립(고유 콘텐츠 우선, 없으면 정제된 폴백) ──
   const c = CONTENT[d.slug] || {};
@@ -158,18 +254,34 @@ for (const d of daily) {
   const ctaText = (c.cta && c.cta.trim()) ? c.cta.trim() : "바로 실행하기 →";
 
   const secUl = (title, items) => items.length
-    ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${esc(x)}</li>`).join("\n        ")}\n    </ul>` : "";
+    ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
   const bgHtml = background
-    ? `<h2>알아두면 좋은 배경지식</h2>\n    ${background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("\n    ")}` : "";
-  const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${esc(s)}</li>`).join("\n        ")}\n    </ol>`;
+    ? `<h2>알아두면 좋은 배경지식</h2>\n    ${background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => p.includes("|") ? renderRich(p).html : `<p>${esc(p)}</p>`).join("\n    ")}` : "";
+  const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${richInline(s)}</li>`).join("\n        ")}\n    </ol>`;
   const scenHtml = secUl("이럴 때 유용해요", scenarios);
   const tipsHtml = secUl("활용 팁", tips);
   const cautHtml = cautions.length
-    ? `<h2>주의사항</h2>\n    <ul class="cautions">\n        ${cautions.map(x => `<li>${esc(x)}</li>`).join("\n        ")}\n    </ul>` : "";
+    ? `<h2>주의사항</h2>\n    <ul class="cautions">\n        ${cautions.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
   const faqHtml = faq.length
-    ? `<h2>자주 묻는 질문</h2>\n    ${faq.map(f => `<div class="qa"><p class="q">Q. ${esc(f.q)}</p><p class="a">${esc(f.a)}</p></div>`).join("\n    ")}`
+    ? `<h2>자주 묻는 질문</h2>\n    ${faq.map(f => {
+        const a = String(f.a).includes("|") ? renderRich(f.a) : null;
+        const aHtml = a && a.hasTable ? `<div class="a">${a.html}</div>` : `<p class="a">${esc(f.a)}</p>`;
+        return `<div class="qa"><p class="q">Q. ${esc(f.q)}</p>${aHtml}</div>`;
+      }).join("\n    ")}`
     : "";
   const noteHtml = note ? `<p class="disclaimer">${esc(note)}</p>` : "";
+
+  // E-E-A-T: 작성·검토 주체 + 최종 점검 시점 + (있으면) 공식 출처. 신뢰도(특히 YMYL) 신호.
+  const reviewed = (c.reviewed && /^\d{4}-\d{2}$/.test(c.reviewed)) ? c.reviewed : REVIEW_DATE;
+  const dateModified = `${reviewed}-01`;
+  const sources = Array.isArray(c.sources) ? c.sources.filter(s => s && s.label && /^https?:\/\//.test(s.url || "")) : [];
+  const srcHtml = sources.length
+    ? `<p class="ed-src">참고 자료: ${sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener nofollow">${esc(s.label)}</a>`).join(" · ")}</p>`
+    : "";
+  const edHtml = `<div class="edbox">
+      <p class="ed-by">✍️ 작성·검토: <strong>TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(reviewed)}</p>
+      ${srcHtml}
+    </div>`;
 
   const body = `<h2>${esc(d.name)} 소개</h2>
     <p>${esc(intro)}</p>
@@ -180,7 +292,8 @@ for (const d of daily) {
     ${cautHtml}
     ${faqHtml}
     ${noteHtml}
-    <p class="cat-note">카테고리: ${esc(d.cat)} · 설치·가입 없이 브라우저에서 무료로 바로 사용</p>`;
+    ${edHtml}
+    <p class="cat-note">카테고리: ${esc(d.cat)} · 회원가입·설치 없이 브라우저에서 바로 실행 · 완전 무료 · 한국어 지원</p>`;
 
   // JSON-LD: 본문 타입에 따라 Article(콘텐츠 글·가이드) 또는 SoftwareApplication(도구) + FAQPage(있을 때) + BreadcrumbList
   // landing-content.json 에 "type": "article" 을 주면 Article 스키마로(offers/price 노출 회피), 기본은 도구용 그대로.
@@ -190,18 +303,23 @@ for (const d of daily) {
     headline: d.name,
     description: metaDesc,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/${d.slug}/` },
-    ...(c.datePublished ? { datePublished: c.datePublished } : {}),
-    author: { "@type": "Organization", name: "TomatoEggCat" },
-    publisher: { "@type": "Organization", name: "TomatoEggCat", url: SITE },
+    datePublished: c.datePublished || dateModified,
+    dateModified,
+    author: PUBLISHER,
+    publisher: PUBLISHER,
   } : {
     "@type": "SoftwareApplication",
     name: d.name, description: metaDesc, applicationCategory: "WebApplication",
     operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
     url: `${SITE}/${d.slug}/`,
+    datePublished: c.datePublished || dateModified,
+    dateModified,
+    author: PUBLISHER,
+    publisher: PUBLISHER,
   }];
   if (faq.length) graph.push({
     "@type": "FAQPage",
-    mainEntity: faq.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    mainEntity: faq.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: plainText(f.a) } })),
   });
   graph.push({
     "@type": "BreadcrumbList",
@@ -213,6 +331,11 @@ for (const d of daily) {
   });
   const jsonld = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 
+  // 핵심 도구만 색인 허용, 나머지는 noindex(링크는 계속 크롤 → follow)
+  const robotsMeta = CORE_SLUGS.has(d.slug)
+    ? `<meta name="robots" content="index,follow,max-image-preview:large" />`
+    : `<meta name="robots" content="noindex,follow" />`;
+
   const title = `${d.name} — ${d.cat} 무료 도구 | TomatoEggCat`;
   const html = tpl
     .replaceAll("%%TITLE%%", esc(title))
@@ -221,13 +344,16 @@ for (const d of daily) {
     .replaceAll("%%SLUG%%", d.slug)
     .replaceAll("%%NAME%%", esc(d.name))
     .replaceAll("%%EMOJI%%", d.emoji)
+    .replaceAll("%%HEROICON%%", iconFor(d.cat))
     .replaceAll("%%LIVE%%", esc(d.live))
     .replaceAll("%%CTA%%", esc(ctaText))
     .replaceAll("%%CATEGORY%%", esc(d.cat))
     .replaceAll("%%JSONLD%%", jsonld)
     .replaceAll("%%BODY%%", body)
     .replaceAll("%%RELATED%%", relHtml)
-    .replaceAll("%%VERIFY%%", VERIFY_META);
+    .replaceAll("%%VERIFY%%", VERIFY_META)
+    .replaceAll("%%ROBOTS%%", robotsMeta)
+    .replaceAll("%%OGIMG%%", ogImageFor(d.slug));
 
   mkdirSync(d.slug, { recursive: true });
   writeFileSync(`${d.slug}/index.html`, html);
@@ -260,14 +386,15 @@ const dailyByCat = Object.entries(byCat).sort((a, b) => b[1].length - a[1].lengt
     return { slug: d.slug, emoji: d.emoji, name: d.name, desc: String(intro).replace(/\s+/g, " ").slice(0, 70), domain: d.domain };
   }) }));
 const total = BUILTINS.length + daily.length;
-const indexHtml = renderHub({ site: SITE, adsense: ADSENSE, verifyMeta: VERIFY_META, total, builtinCats, dailyByCat });
+const indexHtml = renderHub({ site: SITE, adsense: ADSENSE, verifyMeta: VERIFY_META, total, builtinCats, dailyByCat, coreSlugs: [...CORE_SLUGS] });
 writeFileSync("index.html", indexHtml);
 
 // ── sitemap.xml ──
+// 애드센스 집중 전략: 핵심 도구(CORE_SLUGS)만 sitemap에 포함. noindex 도구는 제외.
 const urls = [];
 urls.push(`  <url><loc>${SITE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`);
-for (const b of BUILTINS) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
-for (const d of daily) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
+for (const b of BUILTINS) if (CORE_SLUGS.has(b.slug)) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
+for (const d of daily) if (CORE_SLUGS.has(d.slug)) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
 for (const p of ["about.html", "privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 writeFileSync("sitemap.xml", sitemap);
@@ -295,6 +422,28 @@ for (const b of BUILTINS) {
   if (!existsSync(f)) continue;
   let h = readFileSync(f, "utf8");
   const before = h;
+
+  // robots(멱등): 집중 색인 전략을 내장에도 적용. CORE만 색인, 나머지(master 신규 앱 포함)는 noindex.
+  h = h.replace(/\s*<meta name="robots"[^>]*>/gi, "");
+  const bRobots = CORE_SLUGS.has(b.slug)
+    ? `<meta name="robots" content="index,follow,max-image-preview:large" />`
+    : `<meta name="robots" content="noindex,follow" />`;
+  if (/<meta name="viewport"[^>]*>/i.test(h)) h = h.replace(/(<meta name="viewport"[^>]*>)/i, `$1\n${bRobots}`);
+  else h = h.replace(/<\/title>/i, `</title>\n${bRobots}`);
+
+  // 테마 대응(멱등): 내가 CSS 변수로 테마화한 색인 대상(CORE) 내장에만 적용.
+  // 단색 theme-color를 라이트/다크 쌍으로 정규화 + 홈 저장 테마 읽기(무쓰기) 동기화 스크립트.
+  // master가 추가한 비색인 앱은 고유 디자인을 그대로 두기 위해 건드리지 않는다.
+  h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
+  if (CORE_SLUGS.has(b.slug)) {
+    h = h.replace(/\s*<meta name="theme-color"[^>]*>/gi, "");
+    const themeBlock = `<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<!--theme-sync--><script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script><!--/theme-sync-->`;
+    if (/<meta name="viewport"[^>]*>/i.test(h)) h = h.replace(/(<meta name="viewport"[^>]*>)/i, `$1\n${themeBlock}`);
+    else h = h.replace(/<\/title>/i, `</title>\n${themeBlock}`);
+  }
+
   h = h.replace(STALE_VERIFY, "");
   if (VERIFY_META) {
     if (h.includes('name="theme-color"')) {
@@ -303,6 +452,58 @@ for (const b of BUILTINS) {
       h = h.replace(/<\/title>/, `</title>\n${VERIFY_META}`);
     }
   }
+
+  // ── E-E-A-T/OG 주입(멱등): 기존 주입 블록은 항상 제거(정리), 추가는 색인 대상(CORE)에만 ──
+  // master가 추가한 비색인 바이럴/뉴스 앱(고유 디자인·OG 보유)에는 편집·출처·OG를 덧대지 않는다.
+  const dm = `${REVIEW_DATE}-01`;
+  h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
+  h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
+  h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
+
+  if (CORE_SLUGS.has(b.slug)) {
+    // 1) 편집·검토 + 공식 출처 가시 블록
+    const bsrc = (BUILTIN_SOURCES[b.slug] || []).filter(s => s && s.label && /^https?:\/\//.test(s.url || ""));
+    const bsrcHtml = bsrc.length
+      ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
+      : "";
+    const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>
+  ${bsrcHtml}
+</div>\n`;
+    if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);
+
+    // 1.5) OG/Twitter 카드
+    const ogImg = ogImageFor(b.slug);
+    const ogBlock = `<!--og-eeat-->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="${esc(b.name)} | TomatoEggCat" />
+<meta property="og:description" content="${esc(b.desc)}" />
+<meta property="og:url" content="${SITE}/${b.slug}/" />
+<meta property="og:image" content="${ogImg}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${esc(b.name)} | TomatoEggCat" />
+<meta name="twitter:description" content="${esc(b.desc)}" />
+<meta name="twitter:image" content="${ogImg}" />
+<!--/og-eeat-->`;
+    h = h.replace(/<\/head>/i, `${ogBlock}\n</head>`);
+
+    // 2) JSON-LD(SoftwareApplication + publisher/dateModified)
+    const appCat = ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"].includes(b.slug) ? "FinanceApplication"
+      : b.slug === "bmi" ? "HealthApplication" : "UtilitiesApplication";
+    const ld = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: b.name, description: b.desc, applicationCategory: appCat,
+      operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
+      url: `${SITE}/${b.slug}/`, inLanguage: "ko-KR",
+      datePublished: dm, dateModified: dm, author: PUBLISHER, publisher: PUBLISHER,
+    }).replace(/</g, "\\u003c");
+    h = h.replace(/<\/head>/i, `<script type="application/ld+json" data-eeat="1">${ld}</script>\n</head>`);
+  }
+
   if (h !== before) { writeFileSync(f, h); patched++; }
 }
 
