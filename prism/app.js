@@ -35,6 +35,7 @@
     wc: { day: "", champ: "" },
     battle: { day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 },
     balance: {},
+    lounge: { day: "", posts: {}, liked: {} },
     streak: { last: "", n: 0 },
     joinedAt: Date.now(),
   });
@@ -62,6 +63,8 @@
   S.rightNowUntil = S.rightNowUntil || 0;
   S.battle = Object.assign({ day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 }, S.battle || {});
   S.balance = S.balance || {};
+  S.lounge = Object.assign({ day: "", posts: {}, liked: {} }, S.lounge || {});
+  S.lounge.posts = S.lounge.posts || {}; S.lounge.liked = S.lounge.liked || {};
   S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
   S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0, lang: "ko" }, S.settings || {});
   S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" }, S.filters || {});
@@ -86,6 +89,12 @@
   const I18N_EN = {
     // 탭 · 상단
     "둘러보기": "Discover", "좋아요": "Likes", "채팅": "Chats", "라운지": "Lounge", "카드": "Cards",
+    // 라운지 피드
+    "가볍게 글을 남기고 공감으로 시작해보세요": "Leave a short post and start with a like",
+    "지금 무슨 생각해요? (120자)": "What's on your mind? (120 chars)",
+    "올리기": "Post", "오늘 첫 글을 올리면 뽑기권 +1": "First post today earns +1 gacha ticket",
+    "라운지 참여하고 글쓰기": "Join this lounge to post",
+    "아직 글이 없어요. 첫 글의 주인공이 되어보세요!": "No posts yet. Be the first!",
     "아이템 상점": "Item Shop", "프리미엄": "Premium", "프로필": "Profile", "무료": "Free",
     // 웰컴
     "나를 숨기지 않는 만남 — 게이·바이·퀴어 남성 모두 환영": "Dating without hiding — all gay, bi & queer men welcome",
@@ -255,6 +264,99 @@
   const myTopics = () => (S.user && Array.isArray(S.user.topics) ? S.user.topics : []);
   const sharedTopics = (p) => { const mine = myTopics(); return demoTopics(p).filter((t) => mine.includes(t)); };
   const topicMembers = (name) => D.profiles.filter((p) => !S.blocked.includes(p.id) && demoTopics(p).includes(name));
+
+  /* ── 라운지 피드 (주제 방 짧은 글 + 공감) ── */
+  const LOUNGE_TXT = {
+    "운동": ["오운완 💪 오늘은 어깨 조졌습니다. 내일 팔 못 들 예정", "강남 쪽 짐메이트 구해요! 혼자 하니까 자꾸 째게 됨", "3대 400 드디어 찍었어요 🎉 소소하지만 축하해주세요", "주말 아침 한강 러닝 크루 하실 분? 뛰고 브런치까지", "헬스장에서 눈인사만 3주째인 분이 있는데... 용기가 안 나요", "클라이밍 입문했는데 완전 빠졌어요. 양재 쪽 같이 가실 분!"],
+    "전시·문화": ["이번 주말 리움 새 전시 보러 갈 사람? 혼자 가기 아쉬움", "연극 한 편 보고 수다 떠는 모임 어때요. 대학로 자주 감", "필름카메라 들고 서촌 산책 — 사진 취미인 분 반가워요 📷", "국립현대미술관 야간개장 다녀왔는데 분위기 미쳤음", "좋아하는 전시 같이 볼 사람 있다는 게 얼마나 큰 행운인지", "인상파전 예매 성공! 같이 갈 분 댓글 주세요"],
+    "반려동물": ["저희 집 고양이가 오늘도 절 무시합니다. 그래도 사랑해 🐈", "강아지 산책 친구 구해요! 저녁 8시 보라매공원", "유기묘 임보 시작했어요. 조언 주실 집사님들 계신가요", "반려견 동반 카페 리스트 공유해요. 성수 쪽 3곳 발견", "우리 애 발바닥 냄새는 왜 고소할까요... 저만 그런가요", "펫로스 겪은 분들, 서로 위로해요. 혼자 견디지 마세요"],
+    "여행": ["다음 달 치앙마이 한 달 살기 갑니다 ✈️ 팁 주실 분!", "제주 게스트하우스에서 만난 인연, 아직도 연락해요", "혼자 여행 좋아하는데 가끔은 둘이 가고 싶더라구요", "방콕 프라이드 다녀온 후기 — 진짜 인생 경험이었음", "주말 당일치기 강릉 어때요? 바다 보면서 커피 한 잔", "여권 갱신하다가 설레는 사람 저뿐인가요 ㅋㅋ"],
+    "게임": ["롤 듀오 구합니다. 실력보다 멘탈이 좋으신 분 🎮", "스팀 여름 세일 뭐 샀는지 공유해요. 전 또 안 할 게임 삼", "보드게임 카페 정모 어때요? 4인 이상이면 재밌는 거 많음", "젤다 이제 시작했는데 퇴근이 기다려지는 삶", "발로란트 같이 하실 분! 짜증 안 내는 사람만 ㅎㅎ", "닌텐도 스위치2 산 사람? 후기 궁금해요"],
+    "맛집·요리": ["을지로 노포에서 혼술 하다가 문득 — 같이 올 사람 있었으면", "주말에 바스크 치즈케이크 구웠어요 🧀 성공적", "와인 입문하고 싶은데 뭐부터 마셔야 하나요?", "이태원 브런치 맛집 리스트 최근 업데이트본 공유합니다", "요리 해주는 거 좋아하는 사람입니다. 먹어줄 사람 구함 ㅋㅋ", "김치찌개 하나로 사람 홀리는 법 알려드림 (진지함)"],
+    "영화·드라마": ["어제 심야영화 혼자 봤는데 옆자리 비어있는 게 아쉽더라", "왕가위 영화 좋아하는 사람 손 🙋 화양연화 재개봉 가자", "넷플 신작 정주행 하실 분, 각자 보고 수다 떠는 것도 좋아요", "퀴어 영화 추천 받아요. 해피엔딩인 걸로만...", "OST 플레이리스트 교환해요. 제 최애는 콜미바이유어네임", "영화관 팝콘은 왜 항상 반도 못 먹고 남을까요"],
+    "동네모임": ["종로 쪽 사시는 분들, 평일 저녁 가볍게 산책 모임 어때요", "동네 단골 카페 사장님이 절 알아보기 시작함... 정착했다", "이사 왔는데 아는 사람이 없어요. 동네 친구 환영합니다 🏘️", "합정 근처 조용한 술집 아는 분? 시끄러운 데 지쳤어요", "주말 아침 동네 청소 플로깅 하는데 은근 힐링됩니다", "근처 살면 부담 없이 커피 한 잔 — 그게 제일 좋은 시작"],
+  };
+  const fmtAgo = (min) => min < 60 ? `${min}분 전` : `${Math.floor(min / 60)}시간 전`;
+  // 데모 글: 주제·날짜 시드 고정 (하루마다 새 글 로테이션)
+  function demoLoungePosts(topic) {
+    const pool = LOUNGE_TXT[topic] || [];
+    const mem = topicMembers(topic);
+    if (!pool.length || !mem.length) return [];
+    const day = dayOfYear();
+    const out = [];
+    const n = Math.min(pool.length, 4);
+    for (let i = 0; i < n; i++) {
+      const ti = (day + i * 3 + topic.length) % pool.length;
+      const seed = demoHash(topic + ":" + day + ":" + i);
+      out.push({
+        key: `${topic}:${day}:${i}`, p: mem[seed % mem.length],
+        text: pool[ti], ago: 12 + (seed % 400), likes: 2 + (seed % 15),
+      });
+    }
+    return out;
+  }
+  function openLounge(topic) {
+    const joined = myTopics().includes(topic);
+    const myPosts = (S.lounge.posts[topic] || []).slice().reverse();
+    const demo = demoLoungePosts(topic);
+    const post = (av, name, sub, text, key, likes, mine) => {
+      const liked = !!S.lounge.liked[key];
+      return `<div class="lg-post ${mine ? "mine" : ""}">
+        <div class="lg-head">${av}<div class="lg-who"><b>${esc(name)}</b><small>${sub}</small></div></div>
+        <p class="lg-text">${esc(text)}</p>
+        <button class="lg-like ${liked ? "on" : ""}" data-lkey="${esc(key)}" ${mine ? "disabled" : ""}>❤️ ${likes + (liked ? 1 : 0)}</button></div>`;
+    };
+    const feed = [
+      ...myPosts.map((mp) => post(`<span class="avatar lg-av" style="${avStyle(S.user)}">${avEm(S.user)}</span>`, `${S.user.nick} (나)`, fmtAgo(Math.max(1, Math.round((Date.now() - mp.ts) / 60000))), mp.text, "me:" + mp.id, mp.likes || 0, true)),
+      ...demo.map((d) => post(`<span class="avatar lg-av" style="background:linear-gradient(135deg,${d.p.grad[0]},${d.p.grad[1]})" data-pid="${d.p.id}">${d.p.emoji}</span>`, `${d.p.name}, ${d.p.age}`, fmtAgo(d.ago), d.text, d.key, d.likes, false)),
+    ].join("");
+    const m = modal(`<div class="sheet lg-sheet"><div class="grip"></div>
+      <h3 style="margin:0 0 2px">${TOPIC_EM(topic)} ${esc(topic)} ${t("라운지")}</h3>
+      <p class="tiny" style="margin:0 0 10px">${topicMembers(topic).length}명 참여 · ${t("가볍게 글을 남기고 공감으로 시작해보세요")}</p>
+      ${joined ? `<div class="lg-write"><input id="lg-input" maxlength="120" placeholder="${t("지금 무슨 생각해요? (120자)")}"><button class="btn-grad" id="lg-send">${t("올리기")}</button></div>
+        ${S.lounge.day !== todayStr() ? `<p class="tiny" style="margin:4px 2px 10px">✨ ${t("오늘 첫 글을 올리면 뽑기권 +1")}</p>` : ""}` :
+        `<button class="btn-grad big" id="lg-join" style="margin-bottom:12px">${t("라운지 참여하고 글쓰기")}</button>`}
+      <div class="lg-feed">${feed || `<p class="tiny">${t("아직 글이 없어요. 첫 글의 주인공이 되어보세요!")}</p>`}</div></div>`);
+    $$(".lg-like:not([disabled])", m).forEach((b) => b.onclick = () => {
+      const k = b.dataset.lkey;
+      S.lounge.liked[k] = !S.lounge.liked[k]; save(); vibrate(8);
+      const base = +b.textContent.replace(/[^0-9]/g, "") - (S.lounge.liked[k] ? 0 : 1);
+      b.classList.toggle("on", !!S.lounge.liked[k]);
+      b.innerHTML = `❤️ ${base + (S.lounge.liked[k] ? 1 : 0)}`;
+    });
+    $$(".lg-av[data-pid]", m).forEach((a) => a.onclick = () => { m.remove(); openProfile(a.dataset.pid, "likes"); });
+    const jb = $("#lg-join", m);
+    if (jb) jb.onclick = () => {
+      S.user.topics = Array.isArray(S.user.topics) ? S.user.topics : [];
+      if (!S.user.topics.includes(topic)) S.user.topics.push(topic);
+      save(); toast(`${TOPIC_EM(topic)} ${topic} 라운지 참여!`); m.remove(); openLounge(topic);
+      if (tab === "community") vCommunity();
+    };
+    const sb = $("#lg-send", m);
+    if (sb) sb.onclick = () => {
+      const inp = $("#lg-input", m);
+      const txt = (inp.value || "").trim();
+      if (txt.length < 2) { toast("2자 이상 적어주세요"); return; }
+      S.lounge.posts[topic] = S.lounge.posts[topic] || [];
+      S.lounge.posts[topic].push({ id: Date.now(), text: txt.slice(0, 120), ts: Date.now(), likes: 0 });
+      let firstToday = false;
+      if (S.lounge.day !== todayStr()) { S.lounge.day = todayStr(); S.items.gachaticket += 1; firstToday = true; }
+      save(); vibrate(12);
+      toast(firstToday ? "📝 글 등록! 오늘 첫 글 보너스 — 뽑기권 +1 🎟️" : "📝 글이 등록됐어요");
+      // 데모: 잠시 후 라운지 멤버가 공감해줘요
+      const mem = topicMembers(topic);
+      if (mem.length) {
+        const who = mem[demoHash(topic + Date.now()) % mem.length];
+        setTimeout(() => {
+          const arr = S.lounge.posts[topic] || [];
+          if (arr.length) { arr[arr.length - 1].likes = (arr[arr.length - 1].likes || 0) + 1; save(); }
+          toast(`${who.emoji} <b>${esc(who.name)}</b>님이 회원님의 글에 공감했어요 ❤️`);
+          if (document.body.contains(m)) { m.remove(); openLounge(topic); }
+        }, 2600);
+      }
+      m.remove(); openLounge(topic);
+    };
+  }
   /* ── 프로필 완성도 (가중 100점) ── */
   function profileScore() {
     const u = S.user; if (!u) return { pct: 0, items: [] };
@@ -1477,13 +1579,14 @@
           <span>1위 — ${esc(pq.options[win])} (${Math.round(pd[win] / pt * 100)}%)</span></div>`;
       }).join("")}</div>` : ""}
       <div class="sec" style="padding:2px 16px 0"><div class="sec-h" style="font-size:16px">🏳️‍🌈 주제별 라운지</div>
-        <p class="sec-sub" style="margin:2px 0 0">관심 주제 방에 참여하면 <b>같은 주제를 좋아하는 사람과 궁합이 올라가요</b> (+최대 9점).</p></div>
+        <p class="sec-sub" style="margin:2px 0 0">방을 누르면 <b>피드</b>가 열려요. 참여하면 글쓰기 + <b>같은 주제 궁합 가산</b> (+최대 9점).</p></div>
       <div class="topic-grid">${TOPICS.map(([name, em]) => {
         const joined = myTopics().includes(name);
         const n = topicMembers(name).length;
+        const np = demoLoungePosts(name).length + ((S.lounge.posts[name] || []).length);
         return `<button class="topic-room ${joined ? "on" : ""}" data-topic="${esc(name)}">
           <span class="tr-em">${em}</span><b>${esc(name)}</b>
-          <small>${n}명 참여${joined ? " · 참여 중" : ""}</small>
+          <small>${n}명 참여 · 글 ${np}${joined ? " · 참여 중" : ""}</small>
           <span class="tr-join">${joined ? "나가기" : "참여"}</span></button>`;
       }).join("")}</div>
       ${myTopics().length ? (() => {
@@ -1505,12 +1608,16 @@
     });
     const bn = $("#bal-next");
     if (bn) bn.onclick = () => { balPtr = (balPtr + 1) % BQ.length; vCommunity(); };
-    $$(".topic-room").forEach((b) => b.onclick = () => {
+    $$(".topic-room").forEach((b) => b.onclick = (e) => {
       const name = b.dataset.topic;
-      S.user.topics = Array.isArray(S.user.topics) ? S.user.topics : [];
-      if (S.user.topics.includes(name)) { S.user.topics = S.user.topics.filter((x) => x !== name); toast(`${TOPIC_EM(name)} ${name} 라운지에서 나왔어요`); }
-      else { S.user.topics.push(name); toast(`${TOPIC_EM(name)} ${name} 라운지 참여! 같은 주제 친구와 궁합이 올라가요`); vibrate(10); }
-      save(); vCommunity();
+      if (e.target.closest(".tr-join")) { // 참여/나가기 버튼
+        S.user.topics = Array.isArray(S.user.topics) ? S.user.topics : [];
+        if (S.user.topics.includes(name)) { S.user.topics = S.user.topics.filter((x) => x !== name); toast(`${TOPIC_EM(name)} ${name} 라운지에서 나왔어요`); }
+        else { S.user.topics.push(name); toast(`${TOPIC_EM(name)} ${name} 라운지 참여! 같은 주제 친구와 궁합이 올라가요`); vibrate(10); }
+        save(); vCommunity();
+        return;
+      }
+      openLounge(name); // 타일 클릭 → 피드 열기
     });
     $$(".tm-item").forEach((b) => b.onclick = () => openProfile(b.dataset.pid, "likes"));
   }

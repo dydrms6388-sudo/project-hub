@@ -633,3 +633,23 @@ html.fs-3 #frame{zoom:1.5}
 .rn-chip.live{background:linear-gradient(90deg,rgba(245,158,11,.22),rgba(244,63,94,.18));border-color:var(--amber);color:var(--amber);font-weight:800;animation:rnPulse 2s infinite}
 @keyframes rnPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.35)}50%{box-shadow:0 0 10px 2px rgba(245,158,11,.25)}}
 .dg-rn{position:absolute;bottom:6px;left:6px;font-size:12px;font-style:normal;background:rgba(245,158,11,.85);color:#241a02;border-radius:99px;padding:1px 5px;font-weight:900}
+
+/* ══ v2.9 라운지 피드 ══ */
+.lg-sheet{max-height:82vh;overflow-y:auto}
+.lg-write{display:flex;gap:8px;margin:2px 0 6px}
+.lg-write input{flex:1;background:var(--bg2);border:1px solid var(--line2);border-radius:12px;padding:11px 12px;color:var(--tx);font-size:13.5px;font-family:inherit}
+.lg-write input:focus{outline:none;border-color:var(--vio)}
+.lg-write .btn-grad{padding:0 16px;border-radius:12px;font-size:13.5px}
+.lg-feed{display:flex;flex-direction:column;gap:9px;padding-bottom:8px}
+.lg-post{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px 9px}
+.lg-post.mine{border-color:rgba(139,92,246,.45);background:linear-gradient(180deg,rgba(139,92,246,.08),transparent)}
+.lg-head{display:flex;align-items:center;gap:9px}
+.lg-av{width:34px;height:34px;font-size:16px;flex:none;cursor:pointer}
+.lg-who{display:flex;flex-direction:column;line-height:1.25}
+.lg-who b{font-size:12.5px;color:var(--tx)}
+.lg-who small{font-size:10.5px;color:var(--tx3)}
+.lg-text{margin:8px 1px 8px;font-size:13.5px;color:var(--tx2);line-height:1.5;word-break:break-word}
+.lg-like{background:var(--bg2);border:1px solid var(--line2);border-radius:99px;padding:4px 11px;font-size:12px;color:var(--tx3);font-weight:700;transition:transform .12s}
+.lg-like:active{transform:scale(.92)}
+.lg-like.on{background:rgba(244,63,94,.16);border-color:rgba(244,63,94,.5);color:#fda4af}
+.lg-like[disabled]{opacity:.85}
