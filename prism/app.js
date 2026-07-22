@@ -69,6 +69,7 @@
     if (!Array.isArray(S.user.styles)) S.user.styles = [];
     if (typeof S.user.position !== "string") S.user.position = "";
     if (typeof S.user.outLevel !== "string") S.user.outLevel = "";
+    if (!Array.isArray(S.user.topics)) S.user.topics = [];
   }
   const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {
     // localStorage 초과(사진 과다) 시 안내
@@ -174,9 +175,25 @@
     if (sameArea(p)) { sc += 6; if (p.distanceKm < 5) sc += 6; else if (p.distanceKm < 15) sc += 3; }
     else sc -= 8; // 타 권역 감산
     if (p.lookingFor === S.user.lookingFor) sc += 6;
+    sc += Math.min(9, sharedTopics(p).length * 5); // 같은 라운지 참여 가산
     return Math.max(31, Math.min(99, sc));
   }
   const sharedTags = (p) => (S.user ? p.tags.filter((t) => S.user.tags.includes(t)) : []);
+  /* ── 주제별 라운지 (관심 주제 방 · 커뮤니티 ↔ 매칭 연결) ── */
+  const TOPICS = [["운동", "💪"], ["전시·문화", "🎨"], ["반려동물", "🐾"], ["여행", "✈️"], ["게임", "🎮"], ["맛집·요리", "🍜"], ["영화·드라마", "🎬"], ["동네모임", "🏘️"]];
+  const TOPIC_EM = (name) => (TOPICS.find((t) => t[0] === name) || ["", "🏳️‍🌈"])[1];
+  const TAG2TOPIC = { 러닝: "운동", 헬스: "운동", 등산: "운동", 클라이밍: "운동", 전시: "전시·문화", 미술: "전시·문화", 사진: "전시·문화", 공연: "전시·문화", 반려동물: "반려동물", 강아지: "반려동물", 고양이: "반려동물", 여행: "여행", 캠핑: "여행", 게임: "게임", 보드게임: "게임", 맛집탐방: "맛집·요리", 베이킹: "맛집·요리", 요리: "맛집·요리", 와인: "맛집·요리", 커피: "맛집·요리", 카페투어: "맛집·요리", 영화: "영화·드라마", 음악: "영화·드라마", 넷플릭스: "영화·드라마" };
+  // 데모 프로필의 주제 파생(태그 기반 + id 시드 보장)
+  const demoTopics = (p) => {
+    if (p.topics) return p.topics;
+    const set = new Set();
+    (p.tags || []).forEach((t) => { if (TAG2TOPIC[t]) set.add(TAG2TOPIC[t]); });
+    if (!set.size) set.add(TOPICS[demoHash(p.id) % TOPICS.length][0]);
+    return Array.from(set).slice(0, 3);
+  };
+  const myTopics = () => (S.user && Array.isArray(S.user.topics) ? S.user.topics : []);
+  const sharedTopics = (p) => { const mine = myTopics(); return demoTopics(p).filter((t) => mine.includes(t)); };
+  const topicMembers = (name) => D.profiles.filter((p) => !S.blocked.includes(p.id) && demoTopics(p).includes(name));
 
   /* ── 토스트/모달 ── */
   function toast(msg, ms) {
@@ -489,7 +506,7 @@
         const nowY = new Date().getFullYear();
         S.user = { name: ob.name.trim().slice(0, 10), age: nowY - (+ob.birthYear), region: ob.region + (ob.town.trim() ? " " + ob.town.trim() : ""),
           height: ob.height, mbti: ob.mbti, lookingList: ob.lookingList.slice(), lookingFor: ob.lookingList[0] || LOOKING[0],
-          position: ob.position, styles: ob.styles.slice(), outLevel: ob.outLevel, tags: ob.tags.slice(),
+          position: ob.position, styles: ob.styles.slice(), outLevel: ob.outLevel, topics: [], tags: ob.tags.slice(),
           emoji: ob.emoji, grad: ob.grad.slice(), photos: ob.photos.slice(), privatePhotos: ob.privatePhotos.slice(), intro: ob.intro.trim() };
         S.joinedAt = Date.now();
         seedIncoming(3); save();
@@ -886,6 +903,8 @@
             <div class="chips">${stylesOf(p).map((s) => `<span class="chip" style="cursor:default">${esc(s)}</span>`).join("")}</div></div>
           <div class="pd-sec"><h4>찾는 관계</h4>
             <div class="chips">${(p.lookingList || [p.lookingFor]).map((l) => `<span class="chip on" style="cursor:default">${esc(l)}</span>`).join("")}</div></div>
+          ${(() => { const st = sharedTopics(p); return `<div class="pd-sec"><h4>주제 라운지 ${st.length ? `· <span style="color:var(--vio)">${st.length}개 함께</span>` : ""}</h4>
+            <div class="chips">${demoTopics(p).map((t) => `<span class="chip ${st.includes(t) ? "on" : ""}" style="cursor:default">${TOPIC_EM(t)} ${esc(t)}</span>`).join("")}</div></div>`; })()}
           <div class="pd-sec"><h4>관심사 ${sh.length ? `· <span style="color:var(--vio)">${sh.length}개 겹침</span>` : ""}</h4>
             <div class="chips">${p.tags.map((t) => `<span class="chip ${sh.includes(t) ? "on" : ""}" style="cursor:default">${esc(t)}</span>`).join("")}</div></div>
           <div class="pd-sec"><h4>프라이빗 앨범</h4>
@@ -1224,8 +1243,25 @@
         return `<div class="past-q"><small>${d}일 전 · ${pt.toLocaleString()}명 참여</small><b>${esc(pq.q)}</b>
           <span>1위 — ${esc(pq.options[win])} (${Math.round(pd[win] / pt * 100)}%)</span></div>`;
       }).join("")}</div>` : ""}
-      <div class="lounge-note">🏳️‍🌈 <b>주제별 라운지</b>(운동·전시·반려동물·동네 모임)는 정식 버전에서 열릴 예정이에요. 오늘의 질문에 참여하며 기다려주세요!</div>
-      <div class="sec" style="padding-top:0"><div class="sec-h" style="font-size:16px">🛡️ 오늘의 안전 팁</div></div>
+      <div class="sec" style="padding:2px 16px 0"><div class="sec-h" style="font-size:16px">🏳️‍🌈 주제별 라운지</div>
+        <p class="sec-sub" style="margin:2px 0 0">관심 주제 방에 참여하면 <b>같은 주제를 좋아하는 사람과 궁합이 올라가요</b> (+최대 9점).</p></div>
+      <div class="topic-grid">${TOPICS.map(([name, em]) => {
+        const joined = myTopics().includes(name);
+        const n = topicMembers(name).length;
+        return `<button class="topic-room ${joined ? "on" : ""}" data-topic="${esc(name)}">
+          <span class="tr-em">${em}</span><b>${esc(name)}</b>
+          <small>${n}명 참여${joined ? " · 참여 중" : ""}</small>
+          <span class="tr-join">${joined ? "나가기" : "참여"}</span></button>`;
+      }).join("")}</div>
+      ${myTopics().length ? (() => {
+        const feat = myTopics()[dayOfYear() % myTopics().length];
+        const mem = shuffle(topicMembers(feat).slice()).slice(0, 4);
+        return `<div class="sec" style="padding:8px 16px 0"><b style="font-size:13px;color:var(--tx3)">${TOPIC_EM(feat)} ${esc(feat)} 라운지 · 이번 주 멤버</b></div>
+        <div class="topic-mem">${mem.length ? mem.map((p) => `<button class="tm-item" data-pid="${p.id}">
+          <span class="avatar" style="width:46px;height:46px;font-size:20px;background:linear-gradient(135deg,${p.grad[0]},${p.grad[1]})">${p.emoji}</span>
+          <small>${esc(p.name)}, ${p.age}</small></button>`).join("") : `<p class="tiny" style="padding:6px 2px">아직 이 방에 표시할 멤버가 없어요.</p>`}</div>`;
+      })() : `<p class="tiny" style="padding:6px 18px 2px">아직 참여한 주제가 없어요. 위에서 관심 주제를 눌러 참여해보세요!</p>`}
+      <div class="sec" style="padding-top:6px"><div class="sec-h" style="font-size:16px">🛡️ 오늘의 안전 팁</div></div>
       <div class="safe-list">${shuffle((D.safetyTips || []).slice()).slice(0, 2).map((t) => `<div class="safe-it"><span>💡</span>${esc(t)}</div>`).join("")}</div>
       ${adSlot()}`;
     $$(".dq-opt:not([disabled])").forEach((b) => b.onclick = () => {
@@ -1236,6 +1272,14 @@
     });
     const bn = $("#bal-next");
     if (bn) bn.onclick = () => { balPtr = (balPtr + 1) % BQ.length; vCommunity(); };
+    $$(".topic-room").forEach((b) => b.onclick = () => {
+      const name = b.dataset.topic;
+      S.user.topics = Array.isArray(S.user.topics) ? S.user.topics : [];
+      if (S.user.topics.includes(name)) { S.user.topics = S.user.topics.filter((x) => x !== name); toast(`${TOPIC_EM(name)} ${name} 라운지에서 나왔어요`); }
+      else { S.user.topics.push(name); toast(`${TOPIC_EM(name)} ${name} 라운지 참여! 같은 주제 친구와 궁합이 올라가요`); vibrate(10); }
+      save(); vCommunity();
+    });
+    $$(".tm-item").forEach((b) => b.onclick = () => openProfile(b.dataset.pid, "likes"));
   }
   const dayOfYear = () => Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
   function voteDist(idx, n) {

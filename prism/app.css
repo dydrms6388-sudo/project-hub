@@ -559,3 +559,16 @@ html.fs-3 #frame{zoom:1.5}
 .pd-hero.hasphoto{background-size:cover !important;background-position:center !important}
 .pd-photos{display:flex;gap:8px;overflow-x:auto;padding:2px 0 2px}
 .pd-photos .pdp{flex:0 0 120px;height:150px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line2)}
+
+/* ══ v2.2 주제별 라운지 ══ */
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:8px 16px 4px}
+.topic-room{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:11px 12px;text-align:left;transition:border-color .13s,background .13s}
+.topic-room .tr-em{font-size:22px;line-height:1.2}
+.topic-room b{font-size:13.5px;color:var(--tx)}
+.topic-room small{font-size:10.5px;color:var(--tx3)}
+.topic-room .tr-join{position:absolute;top:10px;right:10px;font-size:11px;font-weight:800;color:var(--vio);background:rgba(139,92,246,.12);border-radius:99px;padding:3px 9px}
+.topic-room.on{border-color:var(--vio);background:rgba(139,92,246,.10)}
+.topic-room.on .tr-join{color:#fff;background:var(--vio)}
+.topic-mem{display:flex;gap:12px;overflow-x:auto;padding:8px 16px 4px}
+.tm-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto}
+.tm-item small{font-size:11px;color:var(--tx2);font-weight:700}
