@@ -1,0 +1,100 @@
+name: Daily news cards (수집 → 카드 렌더 → 배포 → SNS)
+
+# 매일 KST 07:00 (UTC 22:00) 언론사 공식 RSS에서 헤드라인(제목·출처·링크만)을 수집해
+# data/news-cards.json 갱신 + SNS용 PNG 카드 렌더 → master 커밋 → Vercel 배포 →
+# META_* 시크릿이 있으면 Instagram/Facebook 자동 게시 (없으면 게시만 스킵).
+#
+# ⚠️ GITHUB_TOKEN 푸시는 다른 워크플로(deploy.yml)를 트리거하지 않으므로
+#    이 워크플로가 직접 Vercel 배포까지 수행한다 (concurrency 그룹으로 직렬화).
+#
+# SNS 활성화(선택): 리포 Settings → Secrets → Actions 에 아래 3개 등록 (SOCIAL-SETUP.md)
+#   META_ACCESS_TOKEN / META_PAGE_ID / META_IG_USER_ID
+
+on:
+  schedule:
+    - cron: "0 22 * * *"   # 07:00 KST
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'dydrms6388-sudo/project-hub' }}
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch news headlines (RSS)
+        run: node scripts/fetch-news.mjs
+
+      - name: Install card renderer deps
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
+          npm i --no-save @napi-rs/canvas
+
+      - name: Render PNG cards
+        run: node scripts/render-news-cards.mjs
+
+      - name: Commit & push data + images
+        run: |
+          git config user.name "news-cards-bot"
+          git config user.email "actions@github.com"
+          git add data/ news-cards/img/
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 커밋 스킵"; exit 0
+          fi
+          git commit -m "chore(news-cards): $(date -u -d '+9 hours' +%F) 헤드라인 갱신 [skip ci]"
+          git pull --rebase origin master
+          git push origin master
+
+      # ── Vercel 배포 (deploy.yml 과 동일한 가드/절차) ──
+      - name: Guard — Vercel secrets present?
+        id: guard
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Vercel 시크릿 미설정 — 배포·SNS 게시 스킵 (데이터 커밋만 완료)"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate static pages
+        if: steps.guard.outputs.ok == 'true'
+        env:
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+          NAVER_SITE_VERIFICATION: ${{ secrets.NAVER_SITE_VERIFICATION }}
+        run: node gen-pages.mjs
+
+      - name: Deploy to Vercel production
+        if: steps.guard.outputs.ok == 'true'
+        run: |
+          npm install -g vercel@latest
+          vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+          url=$(vercel deploy --prod --token="${{ secrets.VERCEL_TOKEN }}" --yes)
+          echo "Deployed: $url"
+
+      # SNS 게시는 Vercel 시크릿 가드와 무관하게 실행한다:
+      # 배포가 네이티브 Vercel Git 연동으로 이뤄지는 경우에도 post-social.mjs 가
+      # 공개 이미지 URL 200 폴링으로 배포 완료를 기다리고, META_* 미설정이면 스스로 스킵한다.
+      - name: Post to Instagram / Facebook
+        env:
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+        run: node scripts/post-social.mjs

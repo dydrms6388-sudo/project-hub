@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>잘잘못 판독기 — 말다툼 대화 넣으면 과실 비율 판정서 발급 | TomatoEggCat</title>
+<meta name="description" content="카톡 말다툼 대화를 붙여넣으면 비난어·사과어·과거 소환·극단 발언 같은 발화 패턴을 분석해 과실 비율 51:49 판정서를 즉시 발급합니다. 서버 전송 없이 브라우저에서만 처리되는 재미용 말다툼 판독기. 판정 사유 4줄과 화해 멘트까지 카드 한 장으로." />
+<link rel="canonical" href="https://tomatoeggcat.com/fight-judge/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="잘잘못 판독기 — 말다툼 대화 넣으면 과실 비율 판정서 발급" />
+<meta property="og:description" content="말다툼 대화를 붙여넣으면 과실 비율 판정서를 발급해 드려요. 내가 잘못한 거야? 카드 한 장으로 정리." />
+<meta property="og:url" content="https://tomatoeggcat.com/fight-judge/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="잘잘못 판독기 — 말다툼 과실 비율 판정서" />
+<meta name="twitter:description" content="말다툼 대화를 붙여넣으면 과실 비율 판정서를 발급해 드려요. 재미용." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"잘잘못 판독기","description":"말다툼 대화를 붙여넣으면 발화 패턴(비난어·사과어·공감어·과거 소환·극단 발언)을 분석해 과실 비율 판정서를 발급하는 재미용 도구. 대화는 서버로 전송되지 않고 브라우저에서만 처리됩니다.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/fight-judge/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"붙여넣은 대화가 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 잘잘못 판독기는 100% 클라이언트 사이드로 동작합니다. 붙여넣은 대화는 지금 보고 있는 브라우저 안에서만 분석되고, 어떤 서버에도 전송·저장되지 않습니다. 다만 결과 공유 링크(?r=)에는 입력한 대화 텍스트가 인코딩되어 담기므로, 공유 전에 실명 대신 이니셜로 바꾸는 것을 권장합니다."}},
+{"@type":"Question","name":"과실 비율은 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"AI가 아니라 결정론적 규칙 엔진입니다. 화자별로 비난어(네가·항상·맨날·때문에), 명령·단정 어조, 사과어(미안·잘못), 공감어(그랬구나·이해), 질문 비율, 연속 발화(말 끊기), ㅋ·이모티콘 완충재, 과거 소환(저번에도), 극단 발언(헤어져·끝) 9개 지표를 세어 가중 합산하고, 그 차이를 과실 비율로 환산합니다. 같은 대화를 넣으면 항상 같은 결과가 나옵니다."}},
+{"@type":"Question","name":"진짜 누가 잘못했는지 판단해 주는 건가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 이 판정서는 오직 텍스트에 드러난 발화 패턴만 세는 재미용 콘텐츠로, 실제 갈등의 맥락·사실관계·감정은 전혀 알지 못합니다. 실제 관계 조언이나 심리 상담, 법적 판단이 아니며 그렇게 사용해서도 안 됩니다. 최소 35:65로 비율을 제한하는 것도 어느 한쪽을 일방적으로 단정하지 않기 위해서입니다."}},
+{"@type":"Question","name":"카톡 대화는 어떤 형식으로 붙여넣나요?","acceptedAnswer":{"@type":"Answer","text":"기본은 한 줄에 '이름: 내용' 형식입니다. 카카오톡 PC 내보내기의 '[이름] [오후 3:24] 내용' 형식과 모바일 내보내기의 '2026년 7월 22일 오후 3:24, 이름 : 내용' 형식도 자동으로 인식합니다. 날짜 구분선이나 입장 알림 같은 시스템 줄은 알아서 건너뛰고, 화자가 감지되면 칩에서 내 이름만 골라주면 됩니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"엔터·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"잘잘못 판독기","item":"https://tomatoeggcat.com/fight-judge/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#e879f9;--acc2:#f0abfc;--accD:#701a75}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#e879f9,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 8px;font-size:15px}
+.safenote{font-size:12.5px;color:#86efac;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:9px 12px;margin:0 0 18px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;font-weight:700;color:#9ca3af;margin:0 0 8px}
+textarea{width:100%;min-height:190px;resize:vertical;background:#0f0f0f;border:1px solid #333;border-radius:12px;color:#ededed;font-size:14px;line-height:1.55;padding:12px;font-family:inherit}
+textarea:focus{outline:none;border-color:var(--acc)}
+.hint{font-size:12px;color:#6b7280;margin:6px 0 0}
+.rowbtns{display:flex;gap:8px;margin:10px 0 0}
+.rowbtns button{width:auto;flex:0 0 auto;padding:9px 14px;font-size:13px;min-height:44px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{width:auto;padding:9px 16px;font-size:14px;font-weight:700;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:44px}
+.chip.on{background:rgba(232,121,249,.16);border-color:var(--acc);color:#f5d0fe}
+.chipEmpty{font-size:13px;color:#6b7280;margin-top:8px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#3b0764;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#231523;color:#f0abfc;border:1px solid #4a2b4a;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+#goBtn{margin-top:16px}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#4a044e,#701a75);border-bottom:1px solid #86198f}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#f5d0fe;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.result{display:none;margin-top:8px}
+#cardView{background:linear-gradient(165deg,#4a044e 0%,#86198f 48%,#c026d3 100%);border-radius:20px;padding:26px 22px;position:relative;overflow:hidden}
+#cardView:before{content:"";position:absolute;top:-60px;right:-40px;width:190px;height:190px;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 70%);pointer-events:none}
+.docLabel{font-size:12px;font-weight:700;letter-spacing:.42em;color:#f5d0fe;text-align:center;margin:0 0 4px}
+.docTitle{font-size:30px;font-weight:900;color:#fff;text-align:center;letter-spacing:.3em;margin:0 0 12px}
+.caseName{font-size:13px;color:#fbcfe8;text-align:center;margin:0 0 18px;padding-bottom:14px;border-bottom:1px dashed rgba(255,255,255,.35)}
+.ratioRow{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 0 6px}
+.ratioSide{text-align:center;min-width:92px}
+.ratioSide b{display:block;font-size:52px;line-height:1;font-weight:900;color:#fff;font-variant-numeric:tabular-nums}
+.ratioSide span{display:block;font-size:13px;font-weight:700;color:#f5d0fe;margin-top:6px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ratioColon{font-size:36px;font-weight:900;color:rgba(255,255,255,.7)}
+.verdictLine{text-align:center;font-size:14px;font-weight:700;color:#fff;margin:0 0 16px}
+.reasons{background:rgba(0,0,0,.25);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+.reasons p{margin:0 0 6px;font-size:13px;color:#fce7f3;word-break:keep-all}
+.reasons p:last-child{margin:0}
+.advices p{margin:0 0 4px;font-size:12.5px;color:#f5d0fe}
+.advices b{color:#fff}
+.wm{margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.25);display:flex;justify-content:space-between;font-size:11px;color:#f0abfc}
+.funOnly{font-size:12px;color:#fbcfe8}
+.shareGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.shareGrid button{font-size:14px;padding:12px}
+.disc{font-size:12px;color:#9ca3af;background:#131313;border:1px solid #262626;border-radius:10px;padding:10px 12px;margin-top:14px}
+.adbox{margin:22px 0}
+.about h2{font-size:19px;margin:28px 0 10px;color:#f5d0fe}
+.about p,.about li{font-size:14.5px;color:#c9c9c9}
+.about ol,.about ul{padding-left:22px}
+.faq dt{font-weight:800;margin-top:14px;color:#ededed}
+.faq dd{margin:4px 0 0;color:#9ca3af;font-size:14px}
+.related{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.related a{font-size:13px;font-weight:700;text-decoration:none;color:#e5e5e5;background:#161616;border:1px solid #2b2b2b;border-radius:999px;padding:9px 14px}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(8px);background:#262626;color:#fff;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:400px){.ratioSide b{font-size:42px}.shareGrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="inbound" id="inbound"><span>⚖️ 누군가의 판정서가 도착했어요. 당신의 말다툼도 판정받아 보실래요?</span><button id="tryBtn" type="button">나도 해보기 →</button></div>
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 엔터·바이럴 › 잘잘못 판독기</div>
+
+<h1>⚖️ 잘잘못 판독기</h1>
+<p class="lead">말다툼 대화를 붙여넣으면 발화 패턴을 분석해 <b>과실 비율 판정서</b>를 발급해 드립니다. "내가 잘못한 거야?" — 카드 한 장으로 정리하세요.</p>
+<p class="safenote">🔒 붙여넣은 대화는 <b>서버로 전송되지 않고</b> 이 브라우저 안에서만 처리됩니다. 공유 링크에는 대화가 담기니 <b>실명 대신 이니셜</b>(예: ㄱ, J)로 바꿔 넣는 것을 권장해요.</p>
+
+<div class="card" id="inputCard">
+  <label for="chatIn">말다툼 대화 붙여넣기 <span style="font-weight:400;color:#6b7280">— 한 줄에 「이름: 내용」 형식 (카톡 내보내기 형식 자동 인식)</span></label>
+  <textarea id="chatIn" placeholder="지수: 어제 왜 연락 안 했어?&#10;민수: 미안 회식이 늦게 끝나서…&#10;지수: 넌 항상 그런 식이야. 저번에도 그랬잖아&#10;민수: 항상은 아니지 않아? 나도 노력하고 있어" spellcheck="false"></textarea>
+  <p class="hint">최대 2,000자까지 공유 링크에 담깁니다. 날짜 줄·입장 알림은 자동으로 건너뜁니다.</p>
+  <div class="rowbtns">
+    <button class="ghost" id="exBtn" type="button">예시 대화 넣기</button>
+    <button class="ghost" id="clrBtn" type="button">지우기</button>
+  </div>
+  <label style="margin-top:16px">내 이름 선택 <span style="font-weight:400;color:#6b7280">— 대화에서 감지된 화자</span></label>
+  <div class="chips" id="speakerChips"><p class="chipEmpty">대화를 붙여넣으면 화자가 여기에 나타나요.</p></div>
+  <button id="goBtn" type="button">⚖️ 판정서 발급받기</button>
+</div>
+
+<div class="result" id="result">
+  <div id="cardView">
+    <p class="docLabel">TOMATOEGGCAT 가정법원 (재미용)</p>
+    <p class="docTitle">판 정 서</p>
+    <p class="caseName" id="caseName"></p>
+    <div class="ratioRow">
+      <div class="ratioSide"><b id="ratioA">50</b><span id="nameA">나</span></div>
+      <div class="ratioColon">:</div>
+      <div class="ratioSide"><b id="ratioB">50</b><span id="nameB">상대</span></div>
+    </div>
+    <p class="verdictLine" id="verdictLine"></p>
+    <div class="reasons" id="reasonList"></div>
+    <div class="advices" id="adviceList"></div>
+    <div class="wm"><span class="funOnly">※ 발화 패턴만 본 재미용 판정 · 실제 조언 아님</span><span>tomatoeggcat.com/fight-judge</span></div>
+  </div>
+  <div class="shareGrid">
+    <button id="saveBtn" type="button">🖼️ 이미지로 저장</button>
+    <button class="ghost" id="copyLink" type="button">🔗 링크 복사</button>
+    <button class="ghost" id="copyText" type="button">📋 텍스트 복사</button>
+    <button class="ghost" id="xShare" type="button">𝕏 트위터 공유</button>
+    <button class="ghost" id="webShare" type="button">📤 공유하기</button>
+    <button class="ghost" id="remixBtn" type="button">🔁 다시 하기 / 대화 바꾸기</button>
+  </div>
+  <p class="disc">⚠️ 이 판정서는 텍스트에 드러난 <b>발화 패턴(단어 빈도)</b>만 세어 만든 <b>100% 재미용</b> 콘텐츠입니다. 실제 갈등의 맥락과 사실관계를 알지 못하며, 관계 조언·심리 상담·법적 판단이 아닙니다. 판정은 사람을 평가하지 않고 오직 말하기 습관에 대해서만 이루어집니다.</p>
+  <div class="adbox">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<div class="about">
+  <h2>잘잘못 판독기란?</h2>
+  <p>연인·친구·가족과 카톡으로 말다툼을 하고 나면 꼭 남는 질문이 있습니다. "이거 내가 잘못한 거야?" 커뮤니티에 대화 캡처를 올리고 배심원단을 소집하는 대신, 잘잘못 판독기는 그 대화를 브라우저 안에서 바로 분석해 <b>과실 비율 판정서</b>를 발급합니다. 엔진은 AI가 아니라 결정론적 규칙 사전입니다. 화자별로 비난어("네가", "항상", "맨날", "때문에"), 명령·단정 어조, 사과어("미안", "잘못"), 공감어("그랬구나", "이해"), 질문 비율, 연속 발화로 말 끊기, ㅋㅋ·이모티콘 완충재, 과거 소환("저번에도"), 극단 발언("헤어져", "끝") 아홉 가지 지표를 세어 가중 합산하고, 그 차이를 과실 비율로 환산합니다. 어느 한쪽을 일방적으로 단정하지 않도록 비율은 최소 35:65로 제한되고, 판정 사유에는 실제 발화가 인용되며, 마지막엔 양쪽 모두에게 화해 멘트를 한 줄씩 제안합니다. 같은 대화를 넣으면 언제나 같은 판정이 나오고, 결과 링크를 열면 상대도 똑같은 판정서를 보게 됩니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>말다툼 대화를 한 줄에 「이름: 내용」 형식으로 붙여넣습니다. 카톡 내보내기 형식(<code>[이름] [오후 3:24] 내용</code>)도 그대로 인식됩니다.</li>
+    <li>감지된 화자 칩에서 <b>내 이름</b>을 선택합니다. (실명 대신 이니셜 권장)</li>
+    <li>「판정서 발급받기」를 누르면 과실 비율·판정 사유 4줄·화해 멘트가 담긴 판정서가 발급됩니다.</li>
+    <li>이미지로 저장하거나 링크를 복사해 당사자(?)에게 송달하세요. 「다시 하기」로 대화를 고쳐 재심도 가능합니다.</li>
+  </ol>
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>말다툼 후 "내가 잘못한 거야?"를 커뮤니티 대신 판정서로 셀프 정리하고 싶을 때</li>
+    <li>서로 네 탓 공방 중일 때, 웃으면서 화해 타이밍을 만들 카드가 필요할 때</li>
+    <li>내 말하기 습관(비난어·과거 소환·ㅋㅋ 완충재 부족)을 숫자로 구경하고 싶을 때</li>
+    <li>단톡방에 올려 배심원단 놀이를 하고 싶을 때</li>
+  </ul>
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>Q. 붙여넣은 대화가 서버로 전송되나요?</dt>
+    <dd>아니요. 100% 클라이언트 사이드로 동작해 대화는 지금 보고 있는 브라우저 안에서만 분석되고 어떤 서버에도 전송·저장되지 않습니다. 다만 결과 공유 링크(?r=)에는 입력한 대화가 인코딩되어 담기므로, 공유 전에 실명 대신 이니셜로 바꾸는 것을 권장합니다.</dd>
+    <dt>Q. 과실 비율은 어떻게 계산하나요?</dt>
+    <dd>AI가 아니라 결정론적 규칙 엔진입니다. 화자별로 비난어·명령어·사과어·공감어·질문 비율·연속 발화·완충재·과거 소환·극단 발언 9개 지표를 세어 가중 합산하고 차이를 비율로 환산합니다. 같은 대화는 항상 같은 결과가 나옵니다.</dd>
+    <dt>Q. 진짜 누가 잘못했는지 판단해 주는 건가요?</dt>
+    <dd>아닙니다. 텍스트에 드러난 발화 패턴만 세는 재미용 콘텐츠로, 실제 갈등의 맥락·사실관계·감정은 전혀 알지 못합니다. 실제 관계 조언·심리 상담·법적 판단이 아니며, 최소 35:65 제한도 한쪽을 일방적으로 단정하지 않기 위한 장치입니다.</dd>
+    <dt>Q. 카톡 대화는 어떤 형식으로 붙여넣나요?</dt>
+    <dd>기본은 「이름: 내용」 한 줄 형식입니다. PC 내보내기 「[이름] [오후 3:24] 내용」, 모바일 내보내기 「2026년 7월 22일 오후 3:24, 이름 : 내용」 형식도 자동 인식하고, 날짜 구분선·입장 알림 같은 시스템 줄은 건너뜁니다.</dd>
+  </dl>
+  <p style="font-size:13px;color:#6b7280">※ 잘잘못 판독기의 모든 결과는 <b>재미용</b>입니다. 의료·법률·금융·심리 상담이 아니며 실제 관계에 대한 조언으로 사용될 수 없습니다. 판정은 사람이 아닌 발화 패턴에 대해서만 이루어지며, 인신 비하 표현을 출력하지 않습니다.</p>
+  <div class="related">
+    <a href="/roast-edit/">🌶️ 사이다첨삭</a>
+    <a href="/first-impress/">🪞 첫인상 프로파일러</a>
+    <a href="/office-translate/">🏢 직장인 번역기</a>
+    <a href="/tone-lab/">🎭 말투연구소</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div>© TomatoEggCat</div>
+</footer>
+</div>
+<div id="toast"></div>
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+
+<script>
+/*ENGINE*/
+// ---------- 파서 ----------
+function parseChat(text){
+  var lines=String(text||"").split(/\r?\n/), msgs=[], last=null;
+  var reKakaoPC=/^\s*\[([^\[\]]{1,20})\]\s*\[[^\]]{1,20}\]\s*(.*)$/;
+  var reKakaoMo=/^\s*\d{4}년\s*\d{1,2}월\s*\d{1,2}일\s*(?:오전|오후)?\s*[\d:]+\s*,\s*([^:：]{1,15})\s*[:：]\s*(.*)$/;
+  var reGeneric=/^\s*\[?([^:：\[\]]{1,12})\]?\s*[:：]\s*(.*)$/;
+  var reDateHdr=/^\s*-*\s*\d{4}년\s*\d{1,2}월\s*\d{1,2}일/;
+  var reSystem=/(님이 들어왔습니다|님이 나갔습니다|님을 초대했습니다|저장한 날짜|채팅방$)/;
+  for(var i=0;i<lines.length;i++){
+    var ln=lines[i]; if(!ln.trim())continue;
+    if(reSystem.test(ln))continue;
+    var m=ln.match(reKakaoPC)||ln.match(reKakaoMo);
+    if(!m){
+      if(reDateHdr.test(ln))continue; // 날짜 구분선
+      m=ln.match(reGeneric);
+      if(m&&(/오전|오후/.test(m[1])||/^\d[\d\s./:-]*$/.test(m[1].trim())))m=null; // 시간표기 오인 방지
+    }
+    if(m){
+      var name=m[1].trim(), body=(m[2]||"").trim();
+      if(!name){continue;}
+      last={name:name,text:body};
+      msgs.push(last);
+    }else if(last){ last.text=(last.text+" "+ln.trim()).trim(); } // 이어지는 줄
+  }
+  return msgs;
+}
+function speakersOf(msgs){
+  var map={},order=[];
+  msgs.forEach(function(m){ if(!(m.name in map)){map[m.name]=0;order.push(m.name);} map[m.name]++; });
+  return order.map(function(n){return {name:n,count:map[n]};});
+}
+// ---------- 지표 사전 ----------
+var RX={
+  blame:/네가|니가|너\s*때문|때문에|항상|맨날|허구한\s*날|너는\s|넌\s|어이가\s*없/g,
+  cmd:/해라(?![는니])|하라고|했잖아|라니까|당연히|무조건|됐고|됐거든|알아서\s*해|말이\s*(돼|되냐)/g,
+  apo:/미안|잘못했|잘못한\s*것\s*같|사과할게|내\s*탓|반성/g,
+  emp:/그랬구나|이해해|이해가\s*(돼|가)|그럴\s*수\s*있|고마워|속상했겠|네\s*말이\s*맞|니\s*말이\s*맞/g,
+  soft:/[ㅋㅎ~]|\^\^|😂|🤣|😅|🙏/g,
+  past:/저번에|지난번|그때도|전에도|예전에|늘\s*그랬/g,
+  ext:/헤어져|헤어지자|끝내자|끝이야|그만하자|그만\s*만나|다신|연락하지\s*마|차단할/g
+};
+function cnt(s,rx){ var m=String(s).match(rx); return m?m.length:0; }
+// ---------- 분석 ----------
+function analyze(msgs,meName){
+  var sp=speakersOf(msgs);
+  if(sp.length<2) return {error:"화자가 2명 이상 필요해요. 「이름: 내용」 형식을 확인해 주세요."};
+  var me=meName&&sp.some(function(s){return s.name===meName;})?meName:sp[0].name;
+  var others=sp.filter(function(s){return s.name!==me;}).sort(function(a,b){return b.count-a.count;});
+  var op=others[0].name;
+  function blank(n){return {name:n,msgs:0,blame:0,cmd:0,apo:0,emp:0,soft:0,past:0,ext:0,q:0,streak:0,quotes:{}};}
+  var S={}; S[me]=blank(me); S[op]=blank(op);
+  var run=0,runName=null;
+  msgs.forEach(function(m){
+    if(!(m.name in S))return;
+    var s=S[m.name]; s.msgs++;
+    ["blame","cmd","apo","emp","soft","past","ext"].forEach(function(k){
+      var c=cnt(m.text,RX[k]);
+      if(c){ s[k]+=c; if(!s.quotes[k])s.quotes[k]=m.text; }
+    });
+    if(/\?/.test(m.text)){ s.q++; if(!s.quotes.q)s.quotes.q=m.text; }
+    if(m.name===runName){ run++; if(run>=3){s.streak++; if(!s.quotes.streak)s.quotes.streak=m.text;} }
+    else{ run=1; runName=m.name; }
+  });
+  if(S[me].msgs===0||S[op].msgs===0) return {error:"두 화자 모두의 발화가 필요해요."};
+  function score(s){
+    var n=Math.max(1,s.msgs);
+    return 3*(s.blame/n)+2*(s.cmd/n)+3*(s.past/n)+4*(s.ext/n)+1.5*(s.streak/n)
+         -2.5*(s.apo/n)-2*(s.emp/n)-0.4*Math.min(s.soft/n,2)-0.3*(s.q/n);
+  }
+  var d=score(S[me])-score(S[op]);
+  var mine=Math.round(50+d*12);
+  mine=Math.max(35,Math.min(65,mine));
+  var ratio=[mine,100-mine];
+  // 판정 사유 (실제 발화 인용, 발화 패턴에 대해서만)
+  function q(t){ t=String(t).trim(); return t.length>26?t.slice(0,26)+"…":t; }
+  var NEG=[["ext",4,"극단 발언(관계 종료 카드) 중과실"],["past",3,"과거 소환(종결 사건 재심 청구) 감점"],
+           ["blame",3,"상대 지목형 비난 표현 감점"],["cmd",2,"단정·명령형 어조 감점"]];
+  var POS=[["apo","선제 사과 — 정상 참작 가점"],["emp","공감 표현 — 정상 참작 가점"]];
+  var cand=[];
+  [S[me],S[op]].forEach(function(s){
+    NEG.forEach(function(nv){ var k=nv[0]; if(s[k]>0)cand.push({w:nv[1]*s[k]/s.msgs,line:"「"+q(s.quotes[k])+"」 — "+s.name+" 측, "+nv[2]}); });
+    if(s.streak>0)cand.push({w:1.5*s.streak/s.msgs,line:s.name+" 측, 연속 발화 "+(s.streak+2)+"회 — 상대 발언 기회 침해 감점"});
+  });
+  cand.sort(function(a,b){return b.w-a.w;});
+  var reasons=cand.slice(0,3).map(function(c){return c.line;});
+  var pos=null;
+  [S[me],S[op]].forEach(function(s){ POS.forEach(function(pv){ if(!pos&&s[pv[0]]>0)pos={line:"「"+q(s.quotes[pv[0]])+"」 — "+s.name+" 측, "+pv[1]}; }); });
+  if(pos)reasons.push(pos.line);
+  while(reasons.length<4)reasons.push(reasons.length===3?"쌍방 모두 서면(텍스트) 공방 장기화 — 통화·대면 회부 권고":"양측 발화에서 특기할 가감 사유 없음 — 기본 과실 적용");
+  reasons=reasons.slice(0,4);
+  // 화해 멘트 (각 1줄)
+  function advice(s,other){
+    if(s.ext>0)return "「헤어져」는 카드가 아니라 폭탄이에요. 진심이 아니면 다신 꺼내지 않기.";
+    if(s.apo===0&&score(s)>score(other))return "「미안해」 세 글자가 이 판정을 뒤집습니다. 먼저 보내보세요.";
+    if(s.blame>0)return "「네가 항상~」 대신 「나는 ~해서 속상했어」로 문장을 바꿔보세요.";
+    if(s.past>0)return "이번 사건은 이번 사건만. 지난 일은 별건으로 분리 심리하세요.";
+    if(s.emp===0)return "맞고 틀림보다 「그랬구나」 한 마디가 먼저 도착해야 합니다.";
+    return "오늘 안에 짧게라도 통화 한 번 — 텍스트보다 목소리가 세 배 빠릅니다.";
+  }
+  // 사건명 (유머, 자동 생성 — 해시로 결정론)
+  var h=0,txt=msgs.map(function(m){return m.name+m.text;}).join("|");
+  for(var i=0;i<txt.length;i++){h=(h*31+txt.charCodeAt(i))>>>0;}
+  var both=function(k){return S[me][k]+S[op][k];};
+  var title=both("ext")>0?"이별 카드 남용 사건":both("past")>1?"지난 일 재심 청구 사건":both("blame")>2?"「네가 먼저」 공방 사건":both("cmd")>1?"통보형 어조 분쟁 사건":both("soft")===0?"ㅋㅋ 완충재 전량 미탑재 사건":["말끝 흐림 분쟁 사건","읽씹 추정 손해 사건","답장 온도차 사건","말투 과실 비율 사건"][h%4];
+  var caseNo="사건 제2026-"+String(h%9000+1000)+"호 · "+title;
+  var verdict=ratio[0]===ratio[1]?"쌍방 과실 — 국물도 없이 반반":(ratio[0]>ratio[1]?me:op)+" 측 과실이 근소하게 무겁다고 판정한다";
+  if(Math.abs(ratio[0]-ratio[1])>=20)verdict=(ratio[0]>ratio[1]?me:op)+" 측 과실이 무겁다고 판정한다 (그래도 화해 권고)";
+  return {me:me,op:op,ratio:ratio,reasons:reasons,advice:{me:advice(S[me],S[op]),op:advice(S[op],S[me])},caseNo:caseNo,verdict:verdict};
+}
+/*/ENGINE*/
+
+// ---------- UI ----------
+var $=function(id){return document.getElementById(id);};
+var curRes=null,pickedMe=null;
+function toast(t){var el=$("toast");el.textContent=t;el.classList.add("show");clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove("show");},2200);}
+var EXAMPLE="지수: 어제 왜 연락 안 했어? 기다렸잖아\n민수: 미안 회식이 늦게 끝나서 폰을 못 봤어\n지수: 넌 항상 그런 식이야. 저번에도 그랬잖아\n민수: 항상은 아니지 않아? 나도 노력하고 있는데\n지수: 노력? 그게 노력이면 말이 돼?\n지수: 됐어 알아서 해\n민수: 그렇게 말하니까 나도 속상하다 ㅠ 진짜 미안해\n민수: 다음부턴 중간에 꼭 연락할게 ㅎㅎ 화 풀어";
+
+function refreshChips(){
+  var msgs=parseChat($("chatIn").value);
+  var sp=speakersOf(msgs);
+  var box=$("speakerChips");
+  box.innerHTML="";
+  if(!sp.length){box.innerHTML='<p class="chipEmpty">대화를 붙여넣으면 화자가 여기에 나타나요.</p>';return;}
+  if(pickedMe&&!sp.some(function(s){return s.name===pickedMe;}))pickedMe=null;
+  if(!pickedMe)pickedMe=sp[0].name;
+  sp.forEach(function(s){
+    var b=document.createElement("button");
+    b.type="button";b.className="chip"+(s.name===pickedMe?" on":"");
+    b.textContent=s.name+" ("+s.count+")";
+    b.addEventListener("click",function(){pickedMe=s.name;refreshChips();});
+    box.appendChild(b);
+  });
+}
+$("chatIn").addEventListener("input",function(){clearTimeout(this._t);var self=this;this._t=setTimeout(refreshChips,250);});
+$("exBtn").addEventListener("click",function(){$("chatIn").value=EXAMPLE;pickedMe="지수";refreshChips();toast("예시 대화를 넣었어요");});
+$("clrBtn").addEventListener("click",function(){$("chatIn").value="";pickedMe=null;refreshChips();});
+
+function render(res){
+  curRes=res;
+  $("caseName").textContent=res.caseNo;
+  $("ratioA").textContent=res.ratio[0];$("ratioB").textContent=res.ratio[1];
+  $("nameA").textContent=res.me;$("nameB").textContent=res.op;
+  $("verdictLine").textContent="주문: "+res.verdict+".";
+  $("reasonList").innerHTML=res.reasons.map(function(r,i){return "<p>"+(i+1)+". "+escHtml(r)+"</p>";}).join("");
+  $("adviceList").innerHTML="<p><b>"+escHtml(res.me)+"</b>에게: "+escHtml(res.advice.me)+"</p><p><b>"+escHtml(res.op)+"</b>에게: "+escHtml(res.advice.op)+"</p>";
+  $("result").style.display="block";
+  $("result").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function escHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+
+// ?r= 인코딩 (한글 안전, URL-safe base64)
+function encState(st){return btoa(unescape(encodeURIComponent(JSON.stringify(st)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+function decState(s){try{s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))));}catch(e){return null;}}
+function pushUrl(){
+  var t=$("chatIn").value.slice(0,2000);
+  var payload=encState({t:t,me:pickedMe});
+  history.replaceState(null,"",location.pathname+"?r="+encodeURIComponent(payload));
+}
+function curUrl(){return location.href;}
+
+$("goBtn").addEventListener("click",function(){
+  var text=$("chatIn").value.trim();
+  if(!text){toast("대화를 먼저 붙여넣어 주세요");return;}
+  var msgs=parseChat(text.slice(0,2000));
+  var res=analyze(msgs,pickedMe);
+  if(res.error){toast(res.error);return;}
+  pickedMe=res.me;
+  pushUrl();
+  render(res);
+});
+$("remixBtn").addEventListener("click",function(){
+  $("inputCard").scrollIntoView({behavior:"smooth",block:"start"});
+  $("chatIn").focus();
+  toast("대화를 고쳐서 재심을 청구해 보세요");
+});
+$("tryBtn").addEventListener("click",function(){
+  $("inbound").classList.remove("show");
+  $("inputCard").scrollIntoView({behavior:"smooth",block:"start"});
+  $("chatIn").focus();
+});
+
+// 공유
+function shareText(){
+  if(!curRes)return "";
+  return "⚖️ 잘잘못 판독기 판정 결과\n"+curRes.me+" "+curRes.ratio[0]+" : "+curRes.ratio[1]+" "+curRes.op+" — "+curRes.verdict+"\n"+curUrl();
+}
+$("copyLink").addEventListener("click",function(){navigator.clipboard.writeText(curUrl()).then(function(){toast("링크를 복사했어요");},function(){toast("복사 실패, 주소창에서 복사해 주세요");});});
+$("copyText").addEventListener("click",function(){navigator.clipboard.writeText(shareText()).then(function(){toast("텍스트를 복사했어요");},function(){toast("복사 실패");});});
+$("xShare").addEventListener("click",function(){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText()),"_blank");});
+$("webShare").addEventListener("click",function(){
+  if(navigator.share){navigator.share({title:"잘잘못 판독기",text:shareText().split("\n").slice(0,2).join(" "),url:curUrl()}).catch(function(){});}
+  else{navigator.clipboard.writeText(shareText()).then(function(){toast("공유 텍스트를 복사했어요");},function(){toast("공유를 지원하지 않는 환경이에요");});}
+});
+
+// 캔버스 판정서 (1080x1350)
+function wrapText(ctx,text,x,y,maxW,lh,maxLines){
+  var chars=String(text).split(""),line="",lines=0;
+  for(var i=0;i<chars.length;i++){
+    var test=line+chars[i];
+    if(ctx.measureText(test).width>maxW&&line){
+      ctx.fillText(line,x,y);y+=lh;line=chars[i];lines++;
+      if(maxLines&&lines>=maxLines-1){
+        while(ctx.measureText(line+"…").width>maxW)line=line.slice(0,-1);
+        for(i++;i<chars.length;i++){var t2=line+chars[i];if(ctx.measureText(t2+"…").width>maxW)break;line=t2;}
+        ctx.fillText(line+(i<chars.length?"…":""),x,y);return y+lh;
+      }
+    }else line=test;
+  }
+  if(line)ctx.fillText(line,x,y);
+  return y+lh;
+}
+$("saveBtn").addEventListener("click",function(){
+  if(!curRes)return;
+  var cv=$("cv"),ctx=cv.getContext("2d"),W=1080,H=1350;
+  // 판결문st 종이 배경
+  ctx.fillStyle="#f7f2e7";ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="#3b0764";ctx.lineWidth=6;ctx.strokeRect(36,36,W-72,H-72);
+  ctx.lineWidth=2;ctx.strokeRect(52,52,W-104,H-104);
+  var ink="#2a2140";
+  ctx.textAlign="center";
+  ctx.fillStyle="#86198f";ctx.font="700 30px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("T O M A T O E G G C A T   가 정 법 원  (재미용)",W/2,140);
+  ctx.fillStyle=ink;ctx.font="900 110px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("판  정  서",W/2,280);
+  ctx.font="500 34px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";ctx.fillStyle="#57534e";
+  ctx.fillText(curRes.caseNo,W/2,350);
+  ctx.strokeStyle="#c7bfae";ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(110,395);ctx.lineTo(W-110,395);ctx.stroke();
+  // 과실 비율
+  ctx.fillStyle="#86198f";ctx.font="700 32px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("과 실 비 율",W/2,470);
+  ctx.fillStyle=ink;ctx.font="900 190px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText(curRes.ratio[0]+" : "+curRes.ratio[1],W/2,660);
+  ctx.font="700 40px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";ctx.fillStyle="#57534e";
+  var nm=function(s){s=String(s);return s.length>6?s.slice(0,6)+"…":s;};
+  ctx.fillText(nm(curRes.me),W/2-260,730);ctx.fillText(nm(curRes.op),W/2+260,730);
+  ctx.font="500 33px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";ctx.fillStyle=ink;
+  wrapText(ctx,"주문: "+curRes.verdict+".",W/2,800,W-240,44,2);
+  // 주요 사유 2줄
+  ctx.textAlign="left";
+  ctx.fillStyle="#86198f";ctx.font="700 30px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("주요 판정 사유",120,910);
+  ctx.fillStyle=ink;ctx.font="500 30px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  var y=960;
+  curRes.reasons.slice(0,2).forEach(function(r,i){ y=wrapText(ctx,(i+1)+". "+r,120,y,W-240,42,2)+14; });
+  // 재미용 스탬프
+  ctx.save();ctx.translate(W-220,H-290);ctx.rotate(-0.18);
+  ctx.strokeStyle="rgba(190,18,60,.85)";ctx.lineWidth=7;
+  ctx.beginPath();ctx.arc(0,0,92,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle="rgba(190,18,60,.85)";ctx.font="900 46px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";ctx.textAlign="center";
+  ctx.fillText("재미용",0,-8);ctx.font="700 26px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";ctx.fillText("법적효력 0%",0,34);
+  ctx.restore();
+  ctx.textAlign="center";ctx.fillStyle="#78716c";ctx.font="500 26px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("본 판정은 발화 패턴만 본 재미용이며 실제 조언·법적 판단이 아닙니다",W/2,H-160);
+  ctx.fillStyle="#86198f";ctx.font="700 30px 'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("tomatoeggcat.com/fight-judge",W/2,H-105);
+  var a=document.createElement("a");
+  a.download="fight-judge-"+curRes.ratio[0]+"-"+curRes.ratio[1]+".png";
+  a.href=cv.toDataURL("image/png");a.click();
+  toast("판정서 이미지를 저장했어요");
+});
+
+// ?r= 로드 → 결과 즉시 재현 + 나도 해보기 CTA
+(function(){
+  var p=new URLSearchParams(location.search).get("r");
+  if(!p)return;
+  var st=decState(p);
+  if(!st||!st.t)return;
+  $("chatIn").value=st.t;
+  pickedMe=st.me||null;
+  refreshChips();
+  var res=analyze(parseChat(st.t),pickedMe);
+  if(!res.error){pickedMe=res.me;render(res);$("inbound").classList.add("show");window.scrollTo(0,0);}
+})();
+</script>
+</body>
+</html>

@@ -60,10 +60,31 @@ const BUILTINS = [
   { slug: "dday", emoji: "📅", name: "D-day 계산기", desc: "남은 날·지난 날·날짜 사이 일수", k: "디데이 dday 날짜 계산", prio: "0.8" },
   { slug: "bmi", emoji: "⚖️", name: "BMI 계산기", desc: "체질량지수·비만도·표준체중", k: "bmi 비만도 체질량 표준체중", prio: "0.8" },
   { slug: "pyeong", emoji: "📐", name: "평수 변환기", desc: "평 ↔ ㎡ 실시간 변환", k: "평수 평 제곱미터 면적 변환", prio: "0.8" },
+  // ── VIRAL 자립형 앱(정적·클라이언트) — 손수 관리. 상세는 CLAUDE.md/STATUS.md ──
+  { slug: "taste-dna", emoji: "🧬", name: "취향DNA", desc: "좋아하는 것 5개로 알아보는 128종 취향 유형", k: "취향 성향 테스트 유형 취향분석 mbti", prio: "0.7" },
+  { slug: "future-letter", emoji: "✉️", name: "미래편지", desc: "1년 뒤 내가 오늘의 나에게 보내는 편지", k: "미래편지 목표 다짐 편지 자기계발", prio: "0.7" },
+  { slug: "first-impress", emoji: "🪞", name: "첫인상 프로파일러", desc: "자기소개 3줄로 보는 내 첫인상 리포트", k: "첫인상 프로필 소개팅 바이오 심리", prio: "0.7" },
+  { slug: "tone-lab", emoji: "🎭", name: "말투연구소", desc: "아무 문장이나 부장님·사극·MZ·츤데레 말투로 변환", k: "말투 변환 부장님 사극 MZ 츤데레", prio: "0.7" },
+  { slug: "roast-edit", emoji: "🌶️", name: "사이다첨삭", desc: "내 문장을 독설로, 그리고 칭찬으로 평가서 발급", k: "독설 첨삭 평가 문장 리뷰 사이다", prio: "0.7" },
+  { slug: "dark-history", emoji: "📼", name: "흑역사 판독기", desc: "옛날에 쓴 글의 시대·감성·오글 지수 판독", k: "흑역사 싸이월드 감성 오글 판독", prio: "0.7" },
+  { slug: "excuse-factory", emoji: "🙈", name: "핑계공장", desc: "상황만 고르면 신뢰도별 핑계 3종 즉시 제조", k: "핑계 약속 취소 지각 회식 거절", prio: "0.7" },
+  { slug: "apology-maker", emoji: "📄", name: "공식사과문 생성기", desc: "사소한 잘못도 연예인급 공식 사과문으로", k: "사과문 공식입장 패러디 밈", prio: "0.7" },
+  { slug: "nag-menu", emoji: "🍱", name: "잔소리 메뉴판", desc: "명절·모임 잔소리에 가격표를 붙이는 밈 카드", k: "잔소리 명절 메뉴판 가격표 밈", prio: "0.7" },
+  { slug: "fight-judge", emoji: "⚖️", name: "잘잘못 판독기", desc: "말다툼 대화 넣으면 과실 비율 판정서 발급", k: "잘잘못 과실 판정 말다툼 카톡", prio: "0.7" },
+  { slug: "meme-exam", emoji: "📝", name: "밈력고사", desc: "대한민국 밈 수능 20문항, 나의 밈력 등급", k: "밈 신조어 유행어 테스트 등급", prio: "0.7" },
+  { slug: "year-book", emoji: "📖", name: "추억연감", desc: "그 해의 유행어·노래·화제작 회고 카드", k: "추억 년도 유행어 히트곡 회고", prio: "0.7" },
+  { slug: "pay-timer", emoji: "⏱️", name: "월급 초시계", desc: "초당 수입 실시간 카운터·회의 비용 계산", k: "월급 초당 수입 회의 비용 타이머", prio: "0.7" },
+  { slug: "office-translate", emoji: "🏢", name: "직장인 번역기", desc: "회사어 ↔ 진심 양방향 통역 + 빡침 게이지", k: "직장인 번역 회사어 속마음 넵", prio: "0.7" },
+  { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
+  { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
+  { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
+  { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
+  { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
+  { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
 
@@ -402,14 +423,26 @@ for (const b of BUILTINS) {
   let h = readFileSync(f, "utf8");
   const before = h;
 
-  // 테마 대응(멱등): 단색 theme-color를 라이트/다크 쌍으로 정규화 + 홈 저장 테마 읽기(무쓰기) 동기화 스크립트.
-  h = h.replace(/\s*<meta name="theme-color"[^>]*>/gi, "");
+  // robots(멱등): 집중 색인 전략을 내장에도 적용. CORE만 색인, 나머지(master 신규 앱 포함)는 noindex.
+  h = h.replace(/\s*<meta name="robots"[^>]*>/gi, "");
+  const bRobots = CORE_SLUGS.has(b.slug)
+    ? `<meta name="robots" content="index,follow,max-image-preview:large" />`
+    : `<meta name="robots" content="noindex,follow" />`;
+  if (/<meta name="viewport"[^>]*>/i.test(h)) h = h.replace(/(<meta name="viewport"[^>]*>)/i, `$1\n${bRobots}`);
+  else h = h.replace(/<\/title>/i, `</title>\n${bRobots}`);
+
+  // 테마 대응(멱등): 내가 CSS 변수로 테마화한 색인 대상(CORE) 내장에만 적용.
+  // 단색 theme-color를 라이트/다크 쌍으로 정규화 + 홈 저장 테마 읽기(무쓰기) 동기화 스크립트.
+  // master가 추가한 비색인 앱은 고유 디자인을 그대로 두기 위해 건드리지 않는다.
   h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
-  const themeBlock = `<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+  if (CORE_SLUGS.has(b.slug)) {
+    h = h.replace(/\s*<meta name="theme-color"[^>]*>/gi, "");
+    const themeBlock = `<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
 <!--theme-sync--><script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script><!--/theme-sync-->`;
-  if (/<meta name="viewport"[^>]*>/i.test(h)) h = h.replace(/(<meta name="viewport"[^>]*>)/i, `$1\n${themeBlock}`);
-  else h = h.replace(/<\/title>/i, `</title>\n${themeBlock}`);
+    if (/<meta name="viewport"[^>]*>/i.test(h)) h = h.replace(/(<meta name="viewport"[^>]*>)/i, `$1\n${themeBlock}`);
+    else h = h.replace(/<\/title>/i, `</title>\n${themeBlock}`);
+  }
 
   h = h.replace(STALE_VERIFY, "");
   if (VERIFY_META) {
@@ -420,24 +453,28 @@ for (const b of BUILTINS) {
     }
   }
 
-  // ── E-E-A-T 주입(멱등): 편집·검토 + 최종 점검 + 공식 출처 가시 블록 & publisher/dateModified JSON-LD ──
+  // ── E-E-A-T/OG 주입(멱등): 기존 주입 블록은 항상 제거(정리), 추가는 색인 대상(CORE)에만 ──
+  // master가 추가한 비색인 바이럴/뉴스 앱(고유 디자인·OG 보유)에는 편집·출처·OG를 덧대지 않는다.
   const dm = `${REVIEW_DATE}-01`;
-  // 1) 가시 블록 — 매 빌드 최신 상태로 유지하기 위해 기존 블록을 걷어내고 다시 삽입
   h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
-  const bsrc = (BUILTIN_SOURCES[b.slug] || []).filter(s => s && s.label && /^https?:\/\//.test(s.url || ""));
-  const bsrcHtml = bsrc.length
-    ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
-    : "";
-  const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
+  h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
+  h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
+
+  if (CORE_SLUGS.has(b.slug)) {
+    // 1) 편집·검토 + 공식 출처 가시 블록
+    const bsrc = (BUILTIN_SOURCES[b.slug] || []).filter(s => s && s.label && /^https?:\/\//.test(s.url || ""));
+    const bsrcHtml = bsrc.length
+      ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
+      : "";
+    const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
   <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>
   ${bsrcHtml}
 </div>\n`;
-  if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);
+    if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);
 
-  // 1.5) OG/Twitter 카드(멱등): 마커 블록 제거 후 재삽입. 내장 페이지엔 원래 OG 태그가 없어 공유 카드가 빈약했음.
-  h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
-  const ogImg = ogImageFor(b.slug);
-  const ogBlock = `<!--og-eeat-->
+    // 1.5) OG/Twitter 카드
+    const ogImg = ogImageFor(b.slug);
+    const ogBlock = `<!--og-eeat-->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TomatoEggCat" />
 <meta property="og:title" content="${esc(b.name)} | TomatoEggCat" />
@@ -451,21 +488,21 @@ for (const b of BUILTINS) {
 <meta name="twitter:description" content="${esc(b.desc)}" />
 <meta name="twitter:image" content="${ogImg}" />
 <!--/og-eeat-->`;
-  h = h.replace(/<\/head>/i, `${ogBlock}\n</head>`);
+    h = h.replace(/<\/head>/i, `${ogBlock}\n</head>`);
 
-  // 2) JSON-LD(멱등): 기존 주입 블록 제거 후 SoftwareApplication+publisher+dateModified 재삽입
-  h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
-  const appCat = ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"].includes(b.slug) ? "FinanceApplication"
-    : b.slug === "bmi" ? "HealthApplication" : "UtilitiesApplication";
-  const ld = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: b.name, description: b.desc, applicationCategory: appCat,
-    operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
-    url: `${SITE}/${b.slug}/`, inLanguage: "ko-KR",
-    datePublished: dm, dateModified: dm, author: PUBLISHER, publisher: PUBLISHER,
-  }).replace(/</g, "\\u003c");
-  h = h.replace(/<\/head>/i, `<script type="application/ld+json" data-eeat="1">${ld}</script>\n</head>`);
+    // 2) JSON-LD(SoftwareApplication + publisher/dateModified)
+    const appCat = ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"].includes(b.slug) ? "FinanceApplication"
+      : b.slug === "bmi" ? "HealthApplication" : "UtilitiesApplication";
+    const ld = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: b.name, description: b.desc, applicationCategory: appCat,
+      operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
+      url: `${SITE}/${b.slug}/`, inLanguage: "ko-KR",
+      datePublished: dm, dateModified: dm, author: PUBLISHER, publisher: PUBLISHER,
+    }).replace(/</g, "\\u003c");
+    h = h.replace(/<\/head>/i, `<script type="application/ld+json" data-eeat="1">${ld}</script>\n</head>`);
+  }
 
   if (h !== before) { writeFileSync(f, h); patched++; }
 }

@@ -1,0 +1,68 @@
+# VIRAL 앱 진행 보드 (정적 스택 적응판)
+
+원문 설계(`VIRAL-10` Next.js/Supabase 멀티에이전트 프롬프트)를 이 저장소의 실제
+스택(**정적 HTML + `gen-pages.mjs`**)에 맞게 적응해 진행. 백엔드/유료 키가 필요한
+부분은 소유자 승인 전까지 보류(사유는 CLAUDE.md 참고).
+
+## 카니벌라이제이션 판정 (원문 10종 vs 기존 앱)
+| 원문 slug | 판정 | 사유 |
+|---|---|---|
+| **tone-lab** | **채택(2차)** | tone-score(중국어 성조)·말선물(인사말)과 무충돌. 룰기반 변환 파이프라인 |
+| chat-xray | 제외 | `katalk-chemistry` 와 충돌 |
+| daily-debate | 제외 | `밸런스픽`(A/B 선택+투표)과 충돌 + 매일 자동발행은 백엔드 필요 |
+| **taste-dna** | **채택** | 충돌 없음. 완전 클라이언트 결정형 가능 |
+| reality-check | 제외 | `isitnormal`/`company-vs-average` 와 충돌 |
+| **dark-history** | **채택(2차)** | 충돌 없음. 시대 렉시콘 분류기로 결정형 가능 |
+| **first-impress** | **채택** | 충돌 없음. 키워드 엔진으로 결정형 가능 |
+| nickname-lab | 제외 | `dydrms-nickfactory`(별명공장)와 충돌 |
+| **roast-edit** | **채택(2차)** | `자소서닥터`(실용 첨삭)와 각도 차별화: 재미용 독설/칭찬 리액션 카드. 자소서 포지셔닝 금지 |
+| **future-letter** | **채택** | 충돌 없음. 템플릿 편지 엔진으로 양질 가능 |
+
+## 앱 상태
+| slug | 개념 | 엔진 | 바이럴 루프 | 빌드 | 상태 |
+|---|---|---|---|---|---|
+| taste-dna | 취향DNA 128유형 | 결정형 해시+칩 | ✅ | ✅ | 완료 (1차) |
+| future-letter | 1년 뒤 나의 편지 | 템플릿 슬롯 | ✅ | ✅ | 완료 (1차) |
+| first-impress | 첫인상 리포트 | 키워드 렉시콘 | ✅ | ✅ | 완료 (1차) |
+| tone-lab | 말투 5종 변환 | 룰 파이프라인 | ✅ | ✅ | 완료 (2차) |
+| roast-edit | 독설/칭찬 평가서 | 텍스트 메트릭 | ✅ | ✅ | 완료 (2차) |
+| dark-history | 흑역사 시대 판독 | 시대 렉시콘 | ✅ | ✅ | 완료 (2차) |
+
+## 1·2차 라인업 — 6/10 구현, 4 제외(충돌·백엔드 필요)
+6앱 상호 크로스링크 완료, `node gen-pages.mjs` 경고 0 (내장 9→15),
+전 앱 JSON-LD 유효. PR #10 머지 완료.
+
+## 3차 확장 10종 (자체 기획 — 원문 외 신규 컨셉, 충돌 검증 완료)
+| slug | 이름 | 엔진 | 비고 |
+|---|---|---|---|
+| excuse-factory | 핑계공장 | 상황×상대 문장뱅크+신뢰도 | 충돌 없음 |
+| apology-maker | 공식사과문 생성기 | 공문서 밈 템플릿 조립 | 충돌 없음 |
+| nag-menu | 잔소리 메뉴판 | 잔소리 뱅크+가격표 | 충돌 없음 |
+| fight-judge | 잘잘못 판독기 | 화자 분리+발화 메트릭 | 썸톡(호감도)과 각도 상이 |
+| meme-exam | 밈력고사 | 30문항 은행+수능 등급제 | slang-vending(사전)과 상이 |
+| year-book | 추억연감 | 1995~2024 연도 데이터뱅크 | dark-history(글 판독)와 상이 |
+| pay-timer | 월급 초시계 | 실시간 수입 카운터 | salary(실수령)와 상이 |
+| office-translate | 직장인 번역기 | 양방향 렉시콘+빡침 게이지 | tone-lab(말투팩)과 상이 |
+| haengsi | N행시 자판기 | 음절/초성 매칭 문장뱅크 | 충돌 없음 |
+| quit-letter | 밈 사직서 생성기 | 기안문 템플릿+반려 스탬프 | 충돌 없음 |
+
+제외된 교체 전 후보: 테토에겐(오라 플랫폼에 기존재), 답장온도계(썸톡과 중복).
+
+## 4차 — 뉴스 카드뉴스 자동화 파이프라인 (PR #12)
+| 구성 | 파일 | 상태 |
+|---|---|---|
+| RSS 수집(제목·출처·링크만) | `scripts/fetch-news.mjs` | ✅ 14/14 피드 검증 |
+| SNS PNG 카드 렌더 | `scripts/render-news-cards.mjs` | ✅ 실렌더 검증(1080²) |
+| IG/FB 자동 게시 | `scripts/post-social.mjs` | ✅ 코드 완성 — **시크릿 등록 시 활성화** |
+| 일일 cron + 배포 | `.github/workflows/news-cards.yml` | ✅ KST 07:00 |
+| 브리핑 페이지 | `/news-cards/` (builtin) | ✅ |
+| 활성화 가이드 | `SOCIAL-SETUP.md` | ✅ |
+
+저작권 설계: Google News RSS 는 약관상 비상업 한정이라 **미사용**. 언론사 공식
+RSS에서 **제목·출처·원문 링크만** 수집(본문·이미지 미수집), 카드·캡션에 출처 표기.
+SNS 게시 활성화 = 소유자가 `META_ACCESS_TOKEN`/`META_PAGE_ID`/`META_IG_USER_ID`
+3개 시크릿 등록(가이드 참고) — 이것만 사람 손이 필요.
+
+## 소유자 결정 필요 (과금/키)
+- 서버사이드 AI 프록시 도입(진짜 AI 결과 품질) → Supabase/AI 키·비용 승인 필요.
+- 그 경우에만 tone-lab/roast-edit/first-impress 등의 AI 버전, daily-debate cron 가능.

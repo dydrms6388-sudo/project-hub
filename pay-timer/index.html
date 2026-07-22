@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>월급 초시계 — 지금 이 순간에도 나는 벌고 있다 | TomatoEggCat</title>
+<meta name="description" content="월급이나 연봉을 넣으면 초당·분당·시간당 수입이 실시간으로 올라가는 월급 초시계. 오늘 출근 후 번 돈을 치킨·아메리카노·택시 기본요금으로 환산하고, 회의 비용 계산기와 '이 글 읽는 동안 번 돈' 타이머까지. 캡처해서 공유하기 좋은 재미용 세전 계산기." />
+<link rel="canonical" href="https://tomatoeggcat.com/pay-timer/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="월급 초시계 — 지금 이 순간에도 나는 벌고 있다" />
+<meta property="og:description" content="월급을 넣으면 초당 수입이 실시간으로 올라갑니다. 이 회의 30분이면 얼마? 오늘 번 돈은 치킨 몇 마리? 재미용 세전 계산기." />
+<meta property="og:url" content="https://tomatoeggcat.com/pay-timer/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="월급 초시계 — 지금 이 순간에도 나는 벌고 있다" />
+<meta name="twitter:description" content="월급을 넣으면 초당 수입이 실시간으로 올라갑니다. 오늘 번 돈은 치킨 몇 마리?" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"월급 초시계","description":"월급 또는 연봉과 주당 근무시간을 넣으면 초당·분당·시간당 수입과 오늘 출근 후 번 돈을 실시간 카운터로 보여주는 재미용 세전 계산기. 회의 비용 스톱워치와 페이지 체류 수입 타이머 포함.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/pay-timer/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"초당 수입은 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"연봉을 넣으면 12로 나눠 월급으로 바꾼 뒤, 월평균 근무시간(주당 근무시간 × 365 ÷ 84, 주 40시간이면 약 173.8시간)으로 나눠 시급을 구합니다. 시급을 60으로 나누면 분당, 3600으로 나누면 초당 수입입니다. 오늘 번 돈은 설정한 출근 시각부터 하루 근무시간(주당 시간 ÷ 5)까지의 경과 시간에 초당 수입을 곱해 계산하며, 근무시간이 끝나면 카운터도 멈춥니다."}},
+{"@type":"Question","name":"실수령액 기준인가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 모든 숫자는 세금·4대보험을 떼기 전 세전 금액 기준입니다. 실제 통장에 찍히는 돈은 이보다 적으며, 초과근무수당·상여금·주휴수당 같은 요소도 반영하지 않습니다. 급여 협상이나 재무 판단의 근거가 아니라 순전히 재미로 보는 숫자입니다."}},
+{"@type":"Question","name":"회의 비용 계산기는 뭘 보여주나요?","acceptedAnswer":{"@type":"Answer","text":"참석자 수와 참석자 평균 시급(내 시급이 기본값으로 들어가며 수정 가능)을 넣고 스톱워치를 켜면, 회의가 흘러가는 동안 인건비가 얼마나 쌓이는지 초 단위로 보여줍니다. 분당 비용 = 참석자 수 × 평균 시급 ÷ 60. '이 회의 30분 = 얼마' 같은 캡처용 숫자를 만드는 기능이고, 실제 회계 비용 산정 도구는 아닙니다."}},
+{"@type":"Question","name":"결과 링크를 공유하면 상대에게 뭐가 보이나요?","acceptedAnswer":{"@type":"Answer","text":"링크 복사를 누르면 주소 뒤에 ?r= 형태로 입력 설정(급여·근무시간·출근 시각)이 담깁니다. 링크를 연 사람은 같은 설정의 카운터가 그 사람의 현재 시각 기준으로 실시간 재생되는 화면을 보게 되고, '나도 해보기' 버튼으로 자기 월급을 넣어볼 수 있습니다. 이미지 저장 카드와 텍스트 복사는 캡처 시점의 스냅샷 수치를 담습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"엔터·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"월급 초시계","item":"https://tomatoeggcat.com/pay-timer/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#a3e635;--acc2:#bef264;--accdim:#1d2b0a}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#a3e635,#4ade80);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;font-weight:700;color:#9ca3af;margin:14px 0 6px}
+label:first-child{margin-top:0}
+input[type=number],input[type=time]{width:100%;padding:12px 14px;font-size:16px;background:#0f0f0f;color:#ededed;border:1px solid #333;border-radius:12px;min-height:48px}
+input:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:flex;gap:8px}
+.seg button,.chips button{flex:1;padding:11px 10px;font-size:14px;font-weight:700;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:12px;cursor:pointer;min-height:44px;transition:.12s}
+.seg button.on,.chips button.on{background:rgba(163,230,53,.14);border-color:var(--acc);color:var(--acc2)}
+.chips{display:flex;gap:8px}
+.hint{font-size:12px;color:#6b7280;margin-top:4px}
+.cta{display:block;width:100%;margin-top:20px;padding:15px;border:0;border-radius:999px;background:var(--acc);color:#14200a;font-size:17px;font-weight:800;cursor:pointer;min-height:52px}
+.cta:active{transform:scale(.99)}
+button.ghost{background:#171f0d;color:var(--acc2);border:1px solid #33470f;font-weight:700;border-radius:12px;padding:12px;cursor:pointer;min-height:48px;font-size:14px}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#1d2b0a,#2c4212);border-bottom:1px solid #3f5f1a}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#d9f99d;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px;border:0;border-radius:999px;background:var(--acc);color:#14200a;font-weight:800;cursor:pointer;min-height:44px}
+.result{display:none;margin-top:8px}
+.tabs{display:flex;gap:6px;margin-bottom:14px}
+.tabs button{flex:1;padding:10px 6px;font-size:13px;font-weight:700;background:#111;color:#9ca3af;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;min-height:44px}
+.tabs button.on{background:var(--accdim);border-color:var(--acc);color:var(--acc2)}
+.pane{display:none}
+.pane.on{display:block}
+#liveCard{background:linear-gradient(160deg,#101a06 0%,#1d2f09 55%,#2c4212 100%);border:1px solid #3f5f1a;border-radius:20px;padding:22px 20px;position:relative;overflow:hidden}
+#liveCard:before{content:"";position:absolute;top:-70px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(163,230,53,.25),transparent 70%);pointer-events:none}
+.liveLab{font-size:12px;font-weight:700;letter-spacing:.18em;color:#a3e635;margin:0 0 4px}
+.liveState{font-size:13px;color:#d9f99d;margin:0 0 10px}
+.won{font-size:44px;line-height:1.1;font-weight:900;color:#fff;margin:0 0 4px;font-variant-numeric:tabular-nums;word-break:keep-all}
+.won small{font-size:22px;color:var(--acc2)}
+.perline{font-size:13px;color:#bef264;margin:0 0 16px;font-variant-numeric:tabular-nums}
+.convs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.conv{background:rgba(255,255,255,.07);border-radius:14px;padding:10px 6px;text-align:center}
+.conv .e{font-size:22px;display:block}
+.conv b{font-size:16px;color:#fff;font-variant-numeric:tabular-nums}
+.conv i{display:block;font-style:normal;font-size:11px;color:#d9f99d}
+.wm{margin-top:14px;font-size:11px;color:rgba(217,249,157,.7);text-align:right}
+.rateGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.rate{background:#101010;border:1px solid #262626;border-radius:12px;padding:10px 6px;text-align:center}
+.rate b{display:block;font-size:14px;color:var(--acc2);font-variant-numeric:tabular-nums}
+.rate span{font-size:11px;color:#6b7280}
+.bigNum{font-size:38px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;margin:8px 0 2px}
+.subNum{font-size:13px;color:#9ca3af;font-variant-numeric:tabular-nums}
+.mrow{display:flex;gap:10px;margin-top:14px}
+.mrow button{flex:1}
+button.go{background:var(--acc);color:#14200a;border:0;border-radius:12px;font-weight:800;font-size:15px;min-height:48px;cursor:pointer}
+.shareRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.shareRow button{width:100%}
+.remixRow{margin-top:10px}
+.remixRow button{width:100%}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#232;color:#d9f99d;border:1px solid var(--acc);padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+.toast.show{opacity:1}
+.about h2{font-size:19px;margin:34px 0 10px;color:#e5e7eb}
+.about p,.about li{font-size:14.5px;color:#b9bec7}
+.about details{border:1px solid #262626;border-radius:12px;padding:12px 16px;margin-bottom:10px;background:#121212}
+.about summary{cursor:pointer;font-weight:700;font-size:14.5px;color:#ddd}
+.disc{font-size:13px;color:#8b8f98;background:#141414;border:1px dashed #333;border-radius:12px;padding:12px 14px;margin-top:18px}
+.rel{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 10px}
+.rel a{font-size:13.5px;font-weight:700;color:#c9c9c9;text-decoration:none;background:#141414;border:1px solid #2a2a2a;border-radius:999px;padding:9px 14px;min-height:40px;display:inline-flex;align-items:center}
+.rel a:hover{border-color:var(--acc);color:var(--acc2)}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#7aa2ff;text-decoration:none;margin-right:12px}
+@media (max-width:400px){.won{font-size:36px}.rateGrid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>친구의 월급 초시계가 돌아가는 중… 내 초당 수입은?</span>
+  <button type="button" onclick="goRemix(true)">나도 해보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 엔터·바이럴 › 월급 초시계</nav>
+
+<header>
+  <h1>⏱️ 월급 초시계</h1>
+  <p class="lead">지금 이 순간에도 나는 벌고 있다 — 월급을 넣으면 초당 수입이 실시간으로 올라갑니다. (세전·재미용)</p>
+</header>
+
+<section class="card" id="inputCard">
+  <label>급여 기준</label>
+  <div class="seg" id="segMode">
+    <button type="button" data-v="m" class="on">월급</button>
+    <button type="button" data-v="y">연봉</button>
+  </div>
+  <label for="amt">금액 (만원)</label>
+  <input type="number" id="amt" min="1" max="999999" step="1" inputmode="numeric" placeholder="예: 300" />
+  <p class="hint" id="amtHint">월급 300 = 월 300만원 (세전)</p>
+  <div class="row2">
+    <div>
+      <label for="wk">주당 근무시간</label>
+      <input type="number" id="wk" min="1" max="100" step="1" value="40" inputmode="numeric" />
+    </div>
+    <div>
+      <label for="st">출근 시각</label>
+      <input type="time" id="st" value="09:00" />
+    </div>
+  </div>
+  <label>근무 형태</label>
+  <div class="chips" id="chipType">
+    <button type="button" data-v="96" class="on">9-6 사무직</button>
+    <button type="button" data-v="sh">교대 근무</button>
+    <button type="button" data-v="fr">자율 출퇴근</button>
+  </div>
+  <button type="button" class="cta" id="startBtn">▶ 초시계 시작하기</button>
+</section>
+
+<section class="result" id="result">
+  <div class="tabs" id="tabs">
+    <button type="button" data-p="p0" class="on">⏱️ 오늘 번 돈</button>
+    <button type="button" data-p="p1">💸 회의 비용</button>
+    <button type="button" data-p="p2">📖 체류 수입</button>
+  </div>
+
+  <div class="pane on" id="p0">
+    <div id="liveCard">
+      <p class="liveLab">PAY TIMER · 오늘 출근 후 번 돈</p>
+      <p class="liveState" id="liveState">근무 중</p>
+      <p class="won"><span id="todayWon">0</span><small> 원</small></p>
+      <p class="perline" id="perLine"></p>
+      <div class="convs">
+        <div class="conv"><span class="e">🍗</span><b id="cvChicken">0</b><i>치킨 (2만원)</i></div>
+        <div class="conv"><span class="e">☕</span><b id="cvCoffee">0</b><i>아메리카노 (4,500원)</i></div>
+        <div class="conv"><span class="e">🚕</span><b id="cvTaxi">0</b><i>택시 기본요금 (4,800원)</i></div>
+      </div>
+      <p class="wm">tomatoeggcat.com/pay-timer</p>
+    </div>
+    <div class="rateGrid">
+      <div class="rate"><b id="rSec">-</b><span>초당</span></div>
+      <div class="rate"><b id="rMin">-</b><span>분당</span></div>
+      <div class="rate"><b id="rHour">-</b><span>시간당</span></div>
+      <div class="rate"><b id="rDay">-</b><span>하루</span></div>
+    </div>
+  </div>
+
+  <div class="pane" id="p1">
+    <div class="card" style="margin-bottom:0">
+      <div class="row2">
+        <div>
+          <label for="mtN">참석자 수</label>
+          <input type="number" id="mtN" min="1" max="500" step="1" value="5" inputmode="numeric" />
+        </div>
+        <div>
+          <label for="mtH">평균 시급 (원)</label>
+          <input type="number" id="mtH" min="1" step="100" inputmode="numeric" />
+        </div>
+      </div>
+      <p class="hint">평균 시급 기본값 = 내 시급. 분당 비용 = 참석자 × 시급 ÷ 60</p>
+      <p class="bigNum"><span id="mtWon">0</span>원</p>
+      <p class="subNum">경과 <span id="mtTime">00:00</span> · 분당 <span id="mtPerMin">-</span>원씩 증발 중</p>
+      <div class="mrow">
+        <button type="button" class="go" id="mtToggle">▶ 회의 시작</button>
+        <button type="button" class="ghost" id="mtReset">리셋</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane" id="p2">
+    <div class="card" style="margin-bottom:0">
+      <p style="margin:0;font-size:14px;color:#9ca3af">이 페이지를 열어두고 멍때린 시간에도 (근무시간이라면) 당신은 벌고 있었습니다.</p>
+      <p class="bigNum"><span id="stayWon">0</span>원</p>
+      <p class="subNum">이 글 읽는 동안 <span id="stayTime">0초</span> 경과 · 초당 <span id="stayPerSec">-</span>원</p>
+    </div>
+  </div>
+
+  <div class="shareRow">
+    <button type="button" class="ghost" id="btnSave">🖼️ 이미지로 저장</button>
+    <button type="button" class="ghost" id="btnLink">🔗 링크 복사</button>
+    <button type="button" class="ghost" id="btnText">📋 텍스트 복사</button>
+    <button type="button" class="ghost" id="btnX">𝕏 에 공유</button>
+  </div>
+  <div class="remixRow">
+    <button type="button" class="ghost" id="btnShare" style="display:none">📲 공유하기 (navigator.share)</button>
+  </div>
+  <div class="remixRow">
+    <button type="button" class="ghost" id="btnRemix">🔁 다시 하기 / 조건 바꾸기</button>
+  </div>
+
+  <div style="margin-top:22px">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</section>
+
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+<div class="toast" id="toast">복사됐어요</div>
+
+<section class="about">
+  <h2>월급 초시계란?</h2>
+  <p>월급 초시계는 내 급여를 '지금 이 순간 벌리고 있는 돈'으로 번역해 주는 재미용 카운터입니다. 월급이나 연봉(만원 단위)과 주당 근무시간을 넣으면 시급·분당·초당 수입을 계산하고, 설정한 출근 시각부터 오늘 하루 근무시간 안에서만 숫자가 실시간으로 올라갑니다. 퇴근 시간이 지나면 카운터도 같이 멈추기 때문에 "오늘 8시간 만에 얼마"라는 문장이 그대로 완성됩니다. 여기에 오늘 번 돈을 치킨 몇 마리, 아메리카노 몇 잔, 택시 기본요금 몇 번인지로 환산해 주는 재미 지표, 참석자 수만 넣으면 회의가 흘러가는 동안 인건비가 쌓이는 걸 보여주는 회의 비용 스톱워치, 그리고 이 페이지를 읽는 동안 번 돈을 세는 체류 타이머까지 세 가지 모드를 담았습니다. 모든 계산은 브라우저 안에서만 이루어지고 어떤 정보도 서버로 전송하지 않으며, 숫자는 전부 세금을 떼기 전 세전 기준의 어림값입니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>월급 또는 연봉을 만원 단위로 입력하고 주당 근무시간(기본 40)과 출근 시각을 맞춥니다.</li>
+    <li>'초시계 시작하기'를 누르면 오늘 출근 후 번 돈이 실시간으로 올라갑니다.</li>
+    <li>탭을 바꿔 회의 비용 스톱워치나 체류 수입 타이머를 돌려 봅니다.</li>
+    <li>'이미지로 저장'으로 지금 순간의 스냅샷 카드를 받고, 링크·텍스트 복사로 공유합니다.</li>
+  </ol>
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>월요일 오전, 출근한 보람을 숫자로 확인하고 싶을 때</li>
+    <li>"이 회의 30분 = 12,400원" 같은 캡처 밈이 필요할 때</li>
+    <li>연봉 협상 전에 내 시급·분당 단가 감각을 잡고 싶을 때 (참고용)</li>
+    <li>점심값·커피값이 내 노동 몇 분어치인지 궁금할 때</li>
+  </ul>
+  <h2>자주 묻는 질문</h2>
+  <details><summary>초당 수입은 어떻게 계산하나요?</summary><p>연봉을 넣으면 12로 나눠 월급으로 바꾼 뒤, 월평균 근무시간(주당 근무시간 × 365 ÷ 84, 주 40시간이면 약 173.8시간)으로 나눠 시급을 구합니다. 시급을 60으로 나누면 분당, 3600으로 나누면 초당 수입입니다. 오늘 번 돈은 설정한 출근 시각부터 하루 근무시간(주당 시간 ÷ 5)까지의 경과 시간에 초당 수입을 곱해 계산하며, 근무시간이 끝나면 카운터도 멈춥니다.</p></details>
+  <details><summary>실수령액 기준인가요?</summary><p>아니요. 모든 숫자는 세금·4대보험을 떼기 전 세전 금액 기준입니다. 실제 통장에 찍히는 돈은 이보다 적으며, 초과근무수당·상여금·주휴수당 같은 요소도 반영하지 않습니다. 급여 협상이나 재무 판단의 근거가 아니라 순전히 재미로 보는 숫자입니다.</p></details>
+  <details><summary>회의 비용 계산기는 뭘 보여주나요?</summary><p>참석자 수와 참석자 평균 시급(내 시급이 기본값으로 들어가며 수정 가능)을 넣고 스톱워치를 켜면, 회의가 흘러가는 동안 인건비가 얼마나 쌓이는지 초 단위로 보여줍니다. 분당 비용 = 참석자 수 × 평균 시급 ÷ 60. '이 회의 30분 = 얼마' 같은 캡처용 숫자를 만드는 기능이고, 실제 회계 비용 산정 도구는 아닙니다.</p></details>
+  <details><summary>결과 링크를 공유하면 상대에게 뭐가 보이나요?</summary><p>링크 복사를 누르면 주소 뒤에 ?r= 형태로 입력 설정(급여·근무시간·출근 시각)이 담깁니다. 링크를 연 사람은 같은 설정의 카운터가 그 사람의 현재 시각 기준으로 실시간 재생되는 화면을 보게 되고, '나도 해보기' 버튼으로 자기 월급을 넣어볼 수 있습니다. 이미지 저장 카드와 텍스트 복사는 캡처 시점의 스냅샷 수치를 담습니다.</p></details>
+  <p class="disc">⚠️ 이 도구의 모든 결과는 <b>재미용</b>입니다. 세전 기준 어림 계산이며 실수령액이 아닙니다. 의료·법률·금융 자문이 아니고, 급여 협상·회계·노무 판단의 근거로 사용할 수 없습니다. 치킨(20,000원)·아메리카노(4,500원)·택시 기본요금(4,800원)은 임의의 참고 시세입니다. 입력값은 저장·전송되지 않습니다.</p>
+</section>
+
+<div class="rel">
+  <a href="/quit-letter/">📨 밈 사직서</a>
+  <a href="/office-translate/">🏢 직장인 번역기</a>
+  <a href="/excuse-factory/">🙈 핑계공장</a>
+  <a href="/future-letter/">✉️ 미래편지</a>
+  <a href="/">🍅 전체 도구</a>
+</div>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div>© TomatoEggCat</div>
+</footer>
+</div>
+
+<script>
+"use strict";
+/* ---------- constants ---------- */
+var P_CHICKEN = 20000, P_COFFEE = 4500, P_TAXI = 4800;
+var $ = function(id){ return document.getElementById(id); };
+
+/* ---------- state ---------- */
+var state = { m:"m", a:300, w:40, t:"96", s:"09:00" };
+var rates = null;           // computed rates
+var running = false;
+var stayStart = Date.now(); // page dwell timer
+var meet = { on:false, acc:0, t0:0 };
+
+/* ---------- engine ---------- */
+function computeRates(st){
+  var monthly = st.m === "y" ? st.a * 10000 / 12 : st.a * 10000; // KRW per month, pre-tax
+  var monthHours = st.w * 365 / 84;      // weekly hours -> avg hours per month (365/7/12)
+  var hourly = monthly / monthHours;
+  var dailyHours = st.w / 5;             // one workday
+  return {
+    monthly: monthly,
+    hourly: hourly,
+    perMin: hourly / 60,
+    perSec: hourly / 3600,
+    perDay: hourly * dailyHours,
+    dailyHours: dailyHours
+  };
+}
+function todaySnapshot(now){
+  // returns {sec worked so far today, won earned, phase}
+  var p = state.s.split(":");
+  var start = new Date(now); start.setHours(+p[0], +p[1], 0, 0);
+  var el = (now - start.getTime()) / 1000;
+  var cap = rates.dailyHours * 3600;
+  var phase = el < 0 ? "before" : (el >= cap ? "done" : "work");
+  var sec = Math.max(0, Math.min(el, cap));
+  return { sec: sec, won: sec * rates.perSec, phase: phase };
+}
+function fmt(n){ return Math.round(n).toLocaleString("ko-KR"); }
+function fmt1(n){ return (Math.round(n*10)/10).toLocaleString("ko-KR",{minimumFractionDigits:1,maximumFractionDigits:1}); }
+function hm(sec){
+  var h = Math.floor(sec/3600), m = Math.floor(sec%3600/60);
+  return h > 0 ? h + "시간 " + m + "분" : m + "분 " + Math.floor(sec%60) + "초";
+}
+function mmss(sec){
+  var m = Math.floor(sec/60), s = Math.floor(sec%60);
+  return (m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+}
+
+/* ---------- URL state (viral #1) ---------- */
+function encodeState(){
+  var json = JSON.stringify(state);
+  return btoa(unescape(encodeURIComponent(json))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function decodeState(r){
+  try{
+    var b64 = r.replace(/-/g,"+").replace(/_/g,"/");
+    while(b64.length % 4) b64 += "=";
+    var o = JSON.parse(decodeURIComponent(escape(atob(b64))));
+    if(!o || typeof o.a !== "number" || o.a <= 0) return null;
+    return {
+      m: o.m === "y" ? "y" : "m",
+      a: Math.min(999999, Math.max(1, Math.round(o.a))),
+      w: Math.min(100, Math.max(1, Math.round(+o.w || 40))),
+      t: (o.t === "sh" || o.t === "fr") ? o.t : "96",
+      s: /^\d{2}:\d{2}$/.test(o.s) ? o.s : "09:00"
+    };
+  }catch(e){ return null; }
+}
+function pushUrl(){
+  history.replaceState(null, "", location.pathname + "?r=" + encodeURIComponent(encodeState()));
+}
+function resultUrl(){
+  return "https://tomatoeggcat.com/pay-timer/?r=" + encodeURIComponent(encodeState());
+}
+
+/* ---------- UI wiring ---------- */
+function segWire(id, key, after){
+  var box = $(id);
+  Array.prototype.forEach.call(box.querySelectorAll("button"), function(b){
+    b.addEventListener("click", function(){
+      Array.prototype.forEach.call(box.querySelectorAll("button"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      state[key] = b.getAttribute("data-v");
+      if(after) after();
+    });
+  });
+}
+function setSeg(id, v){
+  Array.prototype.forEach.call($(id).querySelectorAll("button"), function(b){
+    b.classList.toggle("on", b.getAttribute("data-v") === v);
+  });
+}
+segWire("segMode", "m", function(){
+  $("amtHint").textContent = state.m === "y" ? "연봉 3600 = 연 3,600만원 (세전)" : "월급 300 = 월 300만원 (세전)";
+});
+segWire("chipType", "t", function(){
+  // work-type chips adjust the default start time
+  if(state.t === "96") $("st").value = "09:00";
+  else if(state.t === "sh") $("st").value = "06:00";
+  else $("st").value = "10:00";
+});
+Array.prototype.forEach.call($("tabs").querySelectorAll("button"), function(b){
+  b.addEventListener("click", function(){
+    Array.prototype.forEach.call($("tabs").querySelectorAll("button"), function(x){ x.classList.remove("on"); });
+    b.classList.add("on");
+    ["p0","p1","p2"].forEach(function(p){ $(p).classList.toggle("on", p === b.getAttribute("data-p")); });
+  });
+});
+
+function readInputs(){
+  var a = parseFloat($("amt").value);
+  if(!a || a <= 0){ $("amt").focus(); toast("금액을 입력해 주세요"); return false; }
+  state.a = Math.min(999999, Math.max(1, Math.round(a)));
+  state.w = Math.min(100, Math.max(1, Math.round(parseFloat($("wk").value) || 40)));
+  state.s = $("st").value || "09:00";
+  return true;
+}
+function fillInputs(){
+  $("amt").value = state.a;
+  $("wk").value = state.w;
+  $("st").value = state.s;
+  setSeg("segMode", state.m);
+  setSeg("chipType", state.t);
+  $("amtHint").textContent = state.m === "y" ? "연봉 3600 = 연 3,600만원 (세전)" : "월급 300 = 월 300만원 (세전)";
+}
+
+function startTimer(fromShare){
+  rates = computeRates(state);
+  running = true;
+  stayStart = Date.now();
+  $("result").style.display = "block";
+  $("rSec").textContent = fmt1(rates.perSec) + "원";
+  $("rMin").textContent = fmt(rates.perMin) + "원";
+  $("rHour").textContent = fmt(rates.hourly) + "원";
+  $("rDay").textContent = fmt(rates.perDay) + "원";
+  $("perLine").textContent = "초당 +" + fmt1(rates.perSec) + "원 · 시급 " + fmt(rates.hourly) + "원 (세전)";
+  if($("mtH").value === "") $("mtH").value = Math.round(rates.hourly);
+  if(navigator.share) $("btnShare").style.display = "block";
+  if(!fromShare){
+    pushUrl();
+    $("result").scrollIntoView({behavior:"smooth"});
+  }
+  tick();
+}
+$("startBtn").addEventListener("click", function(){
+  if(readInputs()) startTimer(false);
+});
+
+/* ---------- live loop ---------- */
+function tick(){
+  if(!running) return;
+  var now = Date.now();
+  var snap = todaySnapshot(now);
+  $("todayWon").textContent = fmt(snap.won);
+  $("cvChicken").textContent = (snap.won / P_CHICKEN).toFixed(2) + "마리";
+  $("cvCoffee").textContent = (snap.won / P_COFFEE).toFixed(1) + "잔";
+  $("cvTaxi").textContent = (snap.won / P_TAXI).toFixed(1) + "번";
+  $("liveState").textContent =
+    snap.phase === "before" ? "아직 출근 전 · " + state.s + " 부터 카운트 시작" :
+    snap.phase === "done"   ? "퇴근! 오늘 " + hm(rates.dailyHours*3600) + " 근무 완료" :
+    "근무 중 · " + hm(snap.sec) + " 째 벌어들이는 중";
+  // meeting
+  var msec = meet.acc + (meet.on ? (now - meet.t0)/1000 : 0);
+  var n = Math.max(1, Math.round(parseFloat($("mtN").value) || 1));
+  var h = Math.max(1, parseFloat($("mtH").value) || rates.hourly);
+  $("mtWon").textContent = fmt(msec * n * h / 3600);
+  $("mtTime").textContent = mmss(msec);
+  $("mtPerMin").textContent = fmt(n * h / 60);
+  // dwell
+  var ssec = (now - stayStart)/1000;
+  $("stayWon").textContent = fmt(ssec * rates.perSec);
+  $("stayTime").textContent = ssec >= 60 ? hm(ssec) : Math.floor(ssec) + "초";
+  $("stayPerSec").textContent = fmt1(rates.perSec);
+  setTimeout(tick, 200);
+}
+
+/* ---------- meeting stopwatch ---------- */
+$("mtToggle").addEventListener("click", function(){
+  if(meet.on){ meet.acc += (Date.now() - meet.t0)/1000; meet.on = false; this.textContent = "▶ 재개"; }
+  else { meet.t0 = Date.now(); meet.on = true; this.textContent = "⏸ 정지"; }
+});
+$("mtReset").addEventListener("click", function(){
+  meet.on = false; meet.acc = 0; $("mtToggle").textContent = "▶ 회의 시작";
+});
+
+/* ---------- shared-inbound + remix (viral #2, #5) ---------- */
+function goRemix(reset){
+  $("inbound").classList.remove("show");
+  fillInputs(); // prefill previous choices
+  $("inputCard").scrollIntoView({behavior:"smooth"});
+  if(reset) $("amt").focus();
+}
+$("btnRemix").addEventListener("click", function(){ goRemix(false); });
+
+/* ---------- share actions (viral #4) ---------- */
+function toast(msg){
+  var t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(function(){ t.classList.remove("show"); }, 1800);
+}
+function copyText(txt, msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast(msg); }, function(){ fallbackCopy(txt, msg); });
+  } else fallbackCopy(txt, msg);
+}
+function fallbackCopy(txt, msg){
+  var ta = document.createElement("textarea");
+  ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사 실패 — 길게 눌러 복사해 주세요"); }
+  document.body.removeChild(ta);
+}
+function snapshotText(){
+  var snap = todaySnapshot(Date.now());
+  return "⏱️ 월급 초시계\n오늘 " + hm(snap.sec) + " 만에 ₩" + fmt(snap.won) +
+    " (초당 +" + fmt1(rates.perSec) + "원, 세전) = 🍗×" + (snap.won/P_CHICKEN).toFixed(1) +
+    " ☕×" + (snap.won/P_COFFEE).toFixed(1) + "\n" + resultUrl();
+}
+$("btnLink").addEventListener("click", function(){ pushUrl(); copyText(resultUrl(), "링크 복사 완료!"); });
+$("btnText").addEventListener("click", function(){ copyText(snapshotText(), "텍스트 복사 완료!"); });
+$("btnX").addEventListener("click", function(){
+  var snap = todaySnapshot(Date.now());
+  var msg = "오늘 " + hm(snap.sec) + " 만에 ₩" + fmt(snap.won) + " 벌었다 (세전, 재미용) ⏱️";
+  window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(msg) + "&url=" + encodeURIComponent(resultUrl()), "_blank", "noopener");
+});
+$("btnShare").addEventListener("click", function(){
+  navigator.share({ title:"월급 초시계", text:snapshotText(), url:resultUrl() }).catch(function(){});
+});
+
+/* ---------- canvas card (viral #3) — snapshot at capture time ---------- */
+$("btnSave").addEventListener("click", function(){
+  var snap = todaySnapshot(Date.now());
+  var c = $("cv"), x = c.getContext("2d"), W = 1080, H = 1350;
+  var g = x.createLinearGradient(0, 0, W, H);
+  g.addColorStop(0, "#0c1405"); g.addColorStop(.55, "#1d2f09"); g.addColorStop(1, "#324c14");
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  // glow
+  var rg = x.createRadialGradient(W-120, 140, 10, W-120, 140, 420);
+  rg.addColorStop(0, "rgba(163,230,53,.30)"); rg.addColorStop(1, "rgba(163,230,53,0)");
+  x.fillStyle = rg; x.fillRect(0, 0, W, H);
+  x.textAlign = "center";
+  x.fillStyle = "#a3e635"; x.font = "700 40px sans-serif";
+  x.fillText("⏱ P A Y   T I M E R", W/2, 150);
+  x.fillStyle = "#d9f99d"; x.font = "600 44px sans-serif";
+  x.fillText("월급 초시계 · 오늘 출근 후 번 돈", W/2, 230);
+  x.fillStyle = "#ffffff"; x.font = "900 130px sans-serif";
+  x.fillText("₩ " + fmt(snap.won), W/2, 440);
+  x.fillStyle = "#bef264"; x.font = "600 46px sans-serif";
+  x.fillText("오늘 " + hm(snap.sec) + " 만에 벌었다", W/2, 530);
+  x.font = "500 38px sans-serif"; x.fillStyle = "#9db87a";
+  x.fillText("초당 +" + fmt1(rates.perSec) + "원 · 시급 " + fmt(rates.hourly) + "원 (세전)", W/2, 600);
+  // conversion tiles
+  var tiles = [
+    ["🍗", (snap.won/P_CHICKEN).toFixed(2) + "마리", "치킨"],
+    ["☕", (snap.won/P_COFFEE).toFixed(1) + "잔", "아메리카노"],
+    ["🚕", (snap.won/P_TAXI).toFixed(1) + "번", "택시 기본요금"]
+  ];
+  var tw = 300, th = 300, gap = 30, x0 = (W - tw*3 - gap*2)/2, y0 = 690;
+  tiles.forEach(function(t, i){
+    var tx = x0 + i*(tw+gap);
+    x.fillStyle = "rgba(255,255,255,.09)";
+    if(x.roundRect){ x.beginPath(); x.roundRect(tx, y0, tw, th, 30); x.fill(); }
+    else x.fillRect(tx, y0, tw, th);
+    x.font = "90px sans-serif"; x.fillStyle = "#fff";
+    x.fillText(t[0], tx+tw/2, y0+120);
+    x.font = "800 52px sans-serif"; x.fillText(t[1], tx+tw/2, y0+205);
+    x.font = "500 32px sans-serif"; x.fillStyle = "#d9f99d"; x.fillText(t[2], tx+tw/2, y0+258);
+  });
+  x.fillStyle = "#8aa860"; x.font = "500 34px sans-serif";
+  x.fillText("※ 세전 기준 · 실수령액 아님 · 재미용", W/2, 1120);
+  x.fillStyle = "#d9f99d"; x.font = "700 40px sans-serif";
+  x.fillText("tomatoeggcat.com/pay-timer", W/2, 1250);
+  var a = document.createElement("a");
+  a.download = "pay-timer-" + Date.now() + ".png";
+  a.href = c.toDataURL("image/png");
+  a.click();
+  toast("이미지 저장!");
+});
+
+/* ---------- boot: replay shared state ---------- */
+(function(){
+  var r = new URLSearchParams(location.search).get("r");
+  if(r){
+    var st = decodeState(r);
+    if(st){
+      state = st;
+      fillInputs();
+      $("inbound").classList.add("show");
+      startTimer(true); // reproduce the shared counter immediately
+      return;
+    }
+  }
+  fillInputs();
+})();
+window.goRemix = goRemix;
+</script>
+</body>
+</html>
