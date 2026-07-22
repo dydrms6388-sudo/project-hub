@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'dydrms6388-sudo/project-hub' }}
     env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
@@ -67,7 +68,7 @@ jobs:
       - name: Guard — Vercel secrets present?
         id: guard
         run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
             echo "ok=false" >> "$GITHUB_OUTPUT"
             echo "::warning::Vercel 시크릿 미설정 — 배포·SNS 게시 스킵 (데이터 커밋만 완료)"
           else
@@ -85,8 +86,8 @@ jobs:
         if: steps.guard.outputs.ok == 'true'
         run: |
           npm install -g vercel@latest
-          vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
-          url=$(vercel deploy --prod --token="${{ secrets.VERCEL_TOKEN }}" --yes)
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          url=$(vercel deploy --prod --token="$VERCEL_TOKEN" --yes)
           echo "Deployed: $url"
 
       # SNS 게시는 Vercel 시크릿 가드와 무관하게 실행한다:

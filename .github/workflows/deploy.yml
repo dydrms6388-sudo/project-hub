@@ -36,6 +36,7 @@ jobs:
     # 시크릿이 없으면 조용히 스킵 (설정 전 빨간 X 방지)
     if: ${{ github.repository == 'dydrms6388-sudo/project-hub' }}
     env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
@@ -45,7 +46,7 @@ jobs:
       - name: Guard — secrets present?
         id: guard
         run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
             echo "ok=false" >> "$GITHUB_OUTPUT"
             echo "::warning::Vercel 시크릿(VERCEL_TOKEN/ORG_ID/PROJECT_ID)이 없어 배포를 건너뜁니다. 리포 Settings → Secrets에 등록하세요."
           else
@@ -77,12 +78,12 @@ jobs:
 
       - name: Pull Vercel project settings
         if: steps.guard.outputs.ok == 'true'
-        run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
       - name: Deploy to production
         if: steps.guard.outputs.ok == 'true'
         run: |
-          url=$(vercel deploy --prod --token="${{ secrets.VERCEL_TOKEN }}" --yes)
+          url=$(vercel deploy --prod --token="$VERCEL_TOKEN" --yes)
           echo "Deployed: $url"
           echo "### ✅ Vercel 프로덕션 배포 완료" >> "$GITHUB_STEP_SUMMARY"
           echo "$url" >> "$GITHUB_STEP_SUMMARY"
