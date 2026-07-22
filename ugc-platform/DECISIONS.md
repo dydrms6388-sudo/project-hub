@@ -23,6 +23,14 @@ Running log of design decisions. Newest phase last.
 - **D3.5 Approve's scoring text comes from the stored submission**, never from the
   form (`submissionBody()` helper) — a tampered hidden field must not influence
   contentScore.
+- **D3.6 PII 차단의 2단계 정책화.** 고신뢰 PII(전화·주민번호·카드·이메일, LLM 판정)는
+  변함없이 무조건 차단. **저신뢰 휴리스틱(주소·실명+소속)은 `forbiddenCategories`에
+  "pii"가 있을 때만 차단** — 주소가 콘텐츠의 일부인 서비스(동네백서)가 config로 정책을
+  완화할 수 있게. 기존 테스트 20종은 전부 그대로 차단(테스트 config가 pii를 forbidden에
+  포함). INTEGRATION.md의 동네백서 프리셋이 이 동작에 의존한다.
+- **D3.7 INTEGRATION.md 추가** — 5개 앱 프리셋 config, 어댑터 주입, LLM chat 연결,
+  라우트 패턴, 콜드스타트 시드 원칙(관리자 명의+사람 검수, 가짜 유저 금지), 앱당
+  체크리스트. Phase 4의 "통합 가이드 문서화" 파트를 선행 완료.
 - **Verification.** typecheck clean; **49/49 vitest** (6 new: approve/reject/
   double-approve guard/not-found/engage promotion + reaction preservation/report
   auto-hide); `next build` clean (6 routes); **Playwright E2E 7/7**: 스팸성 글

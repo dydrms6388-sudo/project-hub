@@ -71,8 +71,15 @@ export async function moderate(
 
   const hitsForbidden = [...categories].some((c) => forbidden.has(c));
 
+  // High-confidence PII (전화/주민번호 등) already hard-blocked in the rules pass
+  // above. What reaches here is the low-confidence tier (주소/실명+소속 휴리스틱)
+  // — that one is policy: it blocks only when "pii" is in forbiddenCategories,
+  // so address-centric services (e.g. 동네백서) can opt out via config. An LLM
+  // pii verdict is treated as high-confidence and always blocks.
+  const llmPii = Boolean(llm?.pii);
+
   let decision: ModerationResult["decision"];
-  if (pii || hitsForbidden || qualityScore <= moderation.blockThreshold) {
+  if (llmPii || hitsForbidden || qualityScore <= moderation.blockThreshold) {
     decision = "block";
   } else if (qualityScore >= moderation.autoPublishThreshold) {
     decision = "publish";
