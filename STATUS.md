@@ -48,6 +48,21 @@
 
 제외된 교체 전 후보: 테토에겐(오라 플랫폼에 기존재), 답장온도계(썸톡과 중복).
 
+## 4차 — 뉴스 카드뉴스 자동화 파이프라인 (PR #12)
+| 구성 | 파일 | 상태 |
+|---|---|---|
+| RSS 수집(제목·출처·링크만) | `scripts/fetch-news.mjs` | ✅ 14/14 피드 검증 |
+| SNS PNG 카드 렌더 | `scripts/render-news-cards.mjs` | ✅ 실렌더 검증(1080²) |
+| IG/FB 자동 게시 | `scripts/post-social.mjs` | ✅ 코드 완성 — **시크릿 등록 시 활성화** |
+| 일일 cron + 배포 | `.github/workflows/news-cards.yml` | ✅ KST 07:00 |
+| 브리핑 페이지 | `/news-cards/` (builtin) | ✅ |
+| 활성화 가이드 | `SOCIAL-SETUP.md` | ✅ |
+
+저작권 설계: Google News RSS 는 약관상 비상업 한정이라 **미사용**. 언론사 공식
+RSS에서 **제목·출처·원문 링크만** 수집(본문·이미지 미수집), 카드·캡션에 출처 표기.
+SNS 게시 활성화 = 소유자가 `META_ACCESS_TOKEN`/`META_PAGE_ID`/`META_IG_USER_ID`
+3개 시크릿 등록(가이드 참고) — 이것만 사람 손이 필요.
+
 ## 소유자 결정 필요 (과금/키)
 - 서버사이드 AI 프록시 도입(진짜 AI 결과 품질) → Supabase/AI 키·비용 승인 필요.
 - 그 경우에만 tone-lab/roast-edit/first-impress 등의 AI 버전, daily-debate cron 가능.
