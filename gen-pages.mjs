@@ -17,6 +17,24 @@ import { renderHub } from "./lib/hub.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
+// 콘텐츠 최종 점검 시점(E-E-A-T 신호). 배포 시각(new Date)을 쓰면 매 빌드마다
+// dateModified가 흔들려 신뢰도 신호가 오히려 약해지므로 편집 검토 기준월을 고정한다.
+// 개별 문서에서 landing-content.json 의 "reviewed"(YYYY-MM)로 덮어쓸 수 있다.
+const REVIEW_DATE = "2026-07";
+const REVIEW_LABEL = (ym) => { const [y, m] = String(ym).split("-"); return `${y}년 ${Number(m)}월`; };
+const PUBLISHER = { "@type": "Organization", name: "TomatoEggCat", url: SITE };
+// 내장(정적) 9개 도구의 공식 참고 출처(E-E-A-T). 모두 실도달 검증된 공공기관 도메인.
+const BUILTIN_SOURCES = {
+  salary: [{ label: "국세청", url: "https://www.nts.go.kr" }, { label: "국민연금공단", url: "https://www.nps.or.kr" }, { label: "국민건강보험공단", url: "https://www.nhis.or.kr" }],
+  dsr: [{ label: "금융위원회", url: "https://www.fsc.go.kr" }, { label: "전국은행연합회", url: "https://www.kfb.or.kr" }],
+  "jeonse-loan": [{ label: "주택도시기금", url: "https://nhuf.molit.go.kr" }],
+  yangdo: [{ label: "국세청", url: "https://www.nts.go.kr" }, { label: "국가법령정보센터", url: "https://www.law.go.kr" }],
+  refinance: [{ label: "금융감독원", url: "https://www.fss.or.kr" }, { label: "금융위원회", url: "https://www.fsc.go.kr" }],
+  age: [{ label: "법제처(만 나이 통일)", url: "https://www.moleg.go.kr" }],
+  dday: [],
+  bmi: [{ label: "대한비만학회", url: "https://general.kosso.or.kr" }, { label: "WHO", url: "https://www.who.int" }],
+  pyeong: [{ label: "국가법령정보센터(법정계량단위)", url: "https://www.law.go.kr" }],
+};
 // 소유확인 메타는 "실제 코드가 설정된 경우에만" 방출한다.
 // 미설정 상태의 REPLACE_* 플레이스홀더를 프로덕션에 그대로 싣지 않기 위함
 // (가짜 코드는 Search Console 검증을 조용히 실패시키고 페이지에 무의미한 메타만 남긴다).
@@ -229,6 +247,18 @@ for (const d of daily) {
     : "";
   const noteHtml = note ? `<p class="disclaimer">${esc(note)}</p>` : "";
 
+  // E-E-A-T: 작성·검토 주체 + 최종 점검 시점 + (있으면) 공식 출처. 신뢰도(특히 YMYL) 신호.
+  const reviewed = (c.reviewed && /^\d{4}-\d{2}$/.test(c.reviewed)) ? c.reviewed : REVIEW_DATE;
+  const dateModified = `${reviewed}-01`;
+  const sources = Array.isArray(c.sources) ? c.sources.filter(s => s && s.label && /^https?:\/\//.test(s.url || "")) : [];
+  const srcHtml = sources.length
+    ? `<p class="ed-src">참고 자료: ${sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener nofollow">${esc(s.label)}</a>`).join(" · ")}</p>`
+    : "";
+  const edHtml = `<div class="edbox">
+      <p class="ed-by">✍️ 작성·검토: <strong>TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(reviewed)}</p>
+      ${srcHtml}
+    </div>`;
+
   const body = `<h2>${esc(d.name)} 소개</h2>
     <p>${esc(intro)}</p>
     ${bgHtml}
@@ -238,6 +268,7 @@ for (const d of daily) {
     ${cautHtml}
     ${faqHtml}
     ${noteHtml}
+    ${edHtml}
     <p class="cat-note">카테고리: ${esc(d.cat)} · 회원가입·설치 없이 브라우저에서 바로 실행 · 완전 무료 · 한국어 지원</p>`;
 
   // JSON-LD: 본문 타입에 따라 Article(콘텐츠 글·가이드) 또는 SoftwareApplication(도구) + FAQPage(있을 때) + BreadcrumbList
@@ -248,14 +279,19 @@ for (const d of daily) {
     headline: d.name,
     description: metaDesc,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/${d.slug}/` },
-    ...(c.datePublished ? { datePublished: c.datePublished } : {}),
-    author: { "@type": "Organization", name: "TomatoEggCat" },
-    publisher: { "@type": "Organization", name: "TomatoEggCat", url: SITE },
+    datePublished: c.datePublished || dateModified,
+    dateModified,
+    author: PUBLISHER,
+    publisher: PUBLISHER,
   } : {
     "@type": "SoftwareApplication",
     name: d.name, description: metaDesc, applicationCategory: "WebApplication",
     operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
     url: `${SITE}/${d.slug}/`,
+    datePublished: c.datePublished || dateModified,
+    dateModified,
+    author: PUBLISHER,
+    publisher: PUBLISHER,
   }];
   if (faq.length) graph.push({
     "@type": "FAQPage",
@@ -368,6 +404,35 @@ for (const b of BUILTINS) {
       h = h.replace(/<\/title>/, `</title>\n${VERIFY_META}`);
     }
   }
+
+  // ── E-E-A-T 주입(멱등): 편집·검토 + 최종 점검 + 공식 출처 가시 블록 & publisher/dateModified JSON-LD ──
+  const dm = `${REVIEW_DATE}-01`;
+  // 1) 가시 블록 — 매 빌드 최신 상태로 유지하기 위해 기존 블록을 걷어내고 다시 삽입
+  h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
+  const bsrc = (BUILTIN_SOURCES[b.slug] || []).filter(s => s && s.label && /^https?:\/\//.test(s.url || ""));
+  const bsrcHtml = bsrc.length
+    ? `<p style="margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:#7aa2ff;text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
+    : "";
+  const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px">
+  <p style="margin:0;color:#aeb6bf;font-size:13px">✍️ 작성·검토: <strong style="color:#d6dbe2">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>
+  ${bsrcHtml}
+</div>\n`;
+  if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);
+
+  // 2) JSON-LD(멱등): 기존 주입 블록 제거 후 SoftwareApplication+publisher+dateModified 재삽입
+  h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
+  const appCat = ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"].includes(b.slug) ? "FinanceApplication"
+    : b.slug === "bmi" ? "HealthApplication" : "UtilitiesApplication";
+  const ld = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: b.name, description: b.desc, applicationCategory: appCat,
+    operatingSystem: "Web", offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
+    url: `${SITE}/${b.slug}/`, inLanguage: "ko-KR",
+    datePublished: dm, dateModified: dm, author: PUBLISHER, publisher: PUBLISHER,
+  }).replace(/</g, "\\u003c");
+  h = h.replace(/<\/head>/i, `<script type="application/ld+json" data-eeat="1">${ld}</script>\n</head>`);
+
   if (h !== before) { writeFileSync(f, h); patched++; }
 }
 

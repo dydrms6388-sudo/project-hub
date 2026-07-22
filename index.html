@@ -109,6 +109,18 @@
     .nowrap{white-space:nowrap}
 
     /* ── 사이트 소개 ── */
+    .guides{margin:38px 0 6px}
+    .guides>h2{font-size:clamp(18px,3.4vw,22px); font-weight:800; color:var(--tx); margin:0 0 6px; text-align:center}
+    .guides-sub{color:var(--tx2); font-size:14px; text-align:center; margin:0 auto 20px; max-width:560px}
+    .guide-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px}
+    .guide{border:1px solid var(--line); border-radius:15px; background:var(--panel); padding:18px 18px 16px}
+    .guide h3{display:flex; align-items:center; gap:9px; font-size:16px; font-weight:800; color:var(--tx); margin:0 0 8px}
+    .guide h3 .g-e{font-size:20px}
+    .guide>p{color:var(--tx2); font-size:13.5px; line-height:1.7; margin:0 0 13px}
+    .g-tools{display:flex; flex-wrap:wrap; gap:8px}
+    .g-tool{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--tx); text-decoration:none; padding:7px 12px; border-radius:999px; background:var(--panel2); border:1px solid var(--line); transition:border-color .14s, transform .14s}
+    .g-tool span{font-size:15px}
+    .g-tool:hover{border-color:var(--acc); transform:translateY(-1px)}
     .site-intro{max-width:760px; margin:26px auto 6px; padding:22px 22px; border:1px solid var(--line); border-radius:16px; background:var(--panel)}
     .site-intro h2{font-size:clamp(17px,3vw,20px); font-weight:800; color:var(--tx); margin:0 0 14px}
     .site-intro p{color:var(--tx2); font-size:14.5px; line-height:1.75; margin:0 0 12px}
@@ -836,6 +848,66 @@
 
       <div class="coupang-slot" data-subid="home" style="margin:28px 0 0"></div>
 
+    <section class="guides" aria-label="상황별 추천 도구 모음">
+      <h2>어떤 상황이신가요? 목적별 추천</h2>
+      <p class="guides-sub">비슷한 목적의 도구를 묶어 정리했습니다. 하나씩 따라가면 준비가 한결 수월해집니다.</p>
+      <div class="guide-grid">
+      <article class="guide">
+        <h3><span class="g-e">💼</span>이직·연봉 협상을 준비한다면</h3>
+        <p>제안받은 연봉이 실제로 통장에 얼마 들어오는지부터, 내 소득의 위치와 대출 여력, 지원 서류까지 순서대로 점검하세요.</p>
+        <div class="g-tools">
+          <a class="g-tool" href="/salary/"><span>💵</span>연봉 실수령액 계산기</a>
+          <a class="g-tool" href="/salary-rank/"><span>💰</span>연봉상위 (SalaryRank)</a>
+          <a class="g-tool" href="/dsr/"><span>📊</span>DSR 계산기</a>
+          <a class="g-tool" href="/jasoseo-doctor/"><span>📝</span>자소서 닥터</a>
+        </div>
+      </article>
+
+      <article class="guide">
+        <h3><span class="g-e">🏠</span>내 집 마련·전월세를 알아본다면</h3>
+        <p>청약 가점을 먼저 확인하고, 전세대출 한도와 이사 비용, 매도 시 양도세까지 미리 가늠하면 자금 계획이 또렷해집니다.</p>
+        <div class="g-tools">
+          <a class="g-tool" href="/cheongyak-score-calc/"><span>🏠</span>청약가점기</a>
+          <a class="g-tool" href="/jeonse-loan/"><span>🏠</span>전세대출 한도 계산기</a>
+          <a class="g-tool" href="/moving-cost-calc/"><span>🚚</span>이사미리</a>
+          <a class="g-tool" href="/yangdo/"><span>🧾</span>양도소득세 계산기</a>
+        </div>
+      </article>
+
+      <article class="guide">
+        <h3><span class="g-e">🏃</span>건강 습관을 새로 시작한다면</h3>
+        <p>BMI와 체지방으로 현재 상태를 파악하고, 목표 체중까지의 경로와 하루 걸음 목표로 실천 계획을 세워 보세요.</p>
+        <div class="g-tools">
+          <a class="g-tool" href="/bmi/"><span>⚖️</span>BMI 계산기</a>
+          <a class="g-tool" href="/body-fat-check/"><span>🩻</span>바디스캔</a>
+          <a class="g-tool" href="/weight-roadmap/"><span>🟢</span>감량로드맵</a>
+          <a class="g-tool" href="/manbo-steps/"><span>👟</span>만보왕 Manbo</a>
+        </div>
+      </article>
+
+      <article class="guide">
+        <h3><span class="g-e">📚</span>시험·자기계발을 계획한다면</h3>
+        <p>수능 등급컷과 토익 목표 플랜, 한자 급수, 교대 근무 일정까지 학습·일정 관리를 한 번에 정리할 수 있습니다.</p>
+        <div class="g-tools">
+          <a class="g-tool" href="/suneung-gradecut/"><span>🎓</span>등급컷 변환기</a>
+          <a class="g-tool" href="/toeic-planner/"><span>🎧</span>토익 역산 플래너</a>
+          <a class="g-tool" href="/hanja-grade-master/"><span>🀄</span>한자급수마스터</a>
+          <a class="g-tool" href="/shift-work-calendar/"><span>🗓️</span>교대근무달력</a>
+        </div>
+      </article>
+
+      <article class="guide">
+        <h3><span class="g-e">🎉</span>가볍게 즐기고 싶다면</h3>
+        <p>MBTI 궁합과 오늘의 운세, 퍼스널 컬러, 우리 연애 이야기까지 부담 없이 즐기는 재미 도구를 모았습니다.</p>
+        <div class="g-tools">
+          <a class="g-tool" href="/mbti-match/"><span>💞</span>MBTI 궁합표</a>
+          <a class="g-tool" href="/today-fortune/"><span>🔮</span>오늘의 운세</a>
+          <a class="g-tool" href="/personal-color-test/"><span>🎨</span>컬러무드 퍼스널컬러</a>
+          <a class="g-tool" href="/love-story-board/"><span>💗</span>연애썰</a>
+        </div>
+      </article>
+      </div>
+    </section>
       <section class="site-intro" aria-label="사이트 소개">
         <h2>TomatoEggCat은 어떤 사이트인가요?</h2>
         <ul class="intro-points">
