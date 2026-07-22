@@ -2,6 +2,50 @@
 
 Phase 진행 중 내린 결정을 누적 기록한다. (최신이 위)
 
+## Phase 2 (품질 게이트 + 렌더)
+
+### 대상 플랫폼 확장
+- 소유자 지시로 게시 대상 = **TikTok / Facebook / Instagram / Threads / X** 5종.
+- `Platform` 타입 확장(`ig|fb|tiktok|threads|x`) + `config/platforms.ts` 에 플랫폼별
+  렌더 규격(카드/릴 dims)·캡션·해시태그 한도·톤 정의. 마이그레이션 platform CHECK 도 5종으로.
+- 카드 dims: ig/fb/threads 1080×1350, tiktok 1080×1920(포토모드), x 1600×900(가로).
+- 릴은 마스터 1080×1920 1편을 릴 지원 플랫폼(모두)에 공유(X 는 세로영상 허용) → 렌더 1회로 다중 게시.
+
+### M3 품질 게이트
+- 6-페르소나(scroller/expert/editor/designer/algo/risk) 적대적 패널. 각 페르소나 0~100 +
+  "팔로우?" 이진 판정. 가중합 총점 ≥ 80 **및** follow NO ≤ 2 통과.
+- 배치 10건 단위 Claude 호출(토큰 절감) + 키 없을 때 결정론적 목업 패널.
+- 통과=`approved`, 탈락/심사누락=`rejected`(폐기 아님, 보관). 심사 누락은 안전하게 rejected.
+
+### M4 렌더러 — 이 환경에서 실동작 확인
+- **카드**: HTML(파라메트릭 템플릿 엔진, cardTemplate id→레이아웃 variant 0~4 + 팔레트/타이포)
+  → Playwright(Chromium) → PNG. 플랫폼 dims 그대로 풀해상도.
+  - 대표 플랫폼(ig)은 전체 캐러셀(슬라이드 전부), 나머지 카드 플랫폼은 커버 1장.
+- **릴**: 애니메이션 HTML(Ken Burns + 자막 번인 + 진행바 + 상하 220px 세이프존)
+  → Playwright 녹화(webm) → **ffmpeg MP4 인코딩(H.264 High/yuv420p/30fps/CRF23/AAC128k)**.
+  실측 산출물: `1080x1920, h264, 30fps, aac stereo` — **스펙 준수 확인**.
+- **한글 폰트**: Chromium 에 한글 폰트가 없어(Unifont/WQY 만) 반드시 임베드 필요 →
+  Pretendard/NanumMyeongjo(명조=GowunBatang 대체)/JetBrainsMono woff2 를 jsdelivr 에서
+  받아 `assets/fonts/` 에 번들, data URI @font-face 로 주입.
+- **Chromium 실행**: 사전설치 브라우저(빌드 1194) ↔ npm playwright(1.61) 버전 불일치 →
+  `executablePath` 를 `/opt/pw-browsers/chromium-*/chrome-linux/chrome` 로 명시 해석
+  (env 가이드: `playwright install` 금지 준수).
+
+### 미디어 파이프라인 — 키-옵셔널 추상화 (핵심 결정)
+- 소유자가 유료 API를 아직 안 정함 → **추상화 레이어 + 무료 폴백**으로 Phase 2 를 오늘 실행 가능하게:
+  - **이미지 배경**: 기본 = 라이선스 안전한 **자체 절차적 CSS 배경**(팔레트 결정론 생성, 외부 이미지 0).
+    선택적 fal.ai(`FAL_KEY`) 대표컷은 인터페이스만(없으면 CSS). "웹에서 긁은 이미지 금지" 준수.
+  - **TTS**: `TtsProvider` 인터페이스(ElevenLabs 구현 + Supertone/Google 스텁). 키 없으면 무음 →
+    ffmpeg 가 무음 AAC 트랙 mux. `ELEVENLABS_API_KEY` 넣으면 실제 나레이션.
+  - **ffmpeg**: `@ffmpeg-installer/ffmpeg`(npm 레지스트리 호스팅, github egress 불필요)로 풀빌드
+    H.264/AAC 확보. 없으면 Playwright 번들 ffmpeg(VP8/webm)로 폴백(프로덕션은 풀빌드 필요 경고).
+- ⚠️ 실제 유료 제공자 선택(ElevenLabs vs Supertone vs Google, fal.ai 도입)은 여전히 **소유자 결정**.
+  키만 넣으면 코드 변경 없이 승격됨.
+
+### 렌더 병렬/성능
+- 렌더 워커 병렬도 = **CPU 코어수-1**(프롬프트 제약). 초안당 소요시간 측정 → 300건/일 창(06:30~09:00)
+  처리 가능성 자동 판정 리포트(phase2-demo). 이 환경 측정치는 참고용, 8코어+ VPS 재측정 권장.
+
 ## Phase 0~1 (스캐폴딩 + 수집/생성)
 
 ### 저장 위치

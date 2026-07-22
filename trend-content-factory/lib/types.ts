@@ -1,8 +1,10 @@
 // 파이프라인 전역 도메인 타입.
 
-export type Platform = 'ig' | 'fb';
+export type Platform = 'ig' | 'fb' | 'tiktok' | 'threads' | 'x';
 export type Format = 'card' | 'reel' | 'mixed';
 export type RiskFlag = 'medical' | 'legal' | 'financial' | 'none';
+
+export const ALL_PLATFORMS: Platform[] = ['ig', 'fb', 'tiktok', 'threads', 'x'];
 
 export type TrendSourceType =
   | 'google_trends_rss'
@@ -83,4 +85,46 @@ export type DraftRecord = Draft & {
   status: DraftStatus;
   /** 목업 생성기로 만든 초안이면 true (실제 Claude 아님) */
   mock: boolean;
+};
+
+// ── M3 품질 게이트 ──
+
+export type PersonaKey = 'scroller' | 'expert' | 'editor' | 'designer' | 'algo' | 'risk';
+
+export type PersonaVerdict = {
+  persona: PersonaKey;
+  score: number; // 0~100 (persona별 배점 합이 100 되도록 정규화 전 원점수)
+  follow: boolean; // "이 계정을 팔로우할 것인가?" YES=true
+  note: string;
+};
+
+export type ReviewRecord = {
+  id: string;
+  draft_id: string;
+  vertical: string;
+  total_score: number; // 0~100
+  persona_scores: Record<PersonaKey, number>;
+  follow_no_count: number;
+  passed: boolean;
+  reasons: string[];
+  mock: boolean;
+  created_at: string;
+};
+
+// ── M4 렌더러 ──
+
+export type AssetKind = 'card_png' | 'reel_mp4';
+
+export type AssetRecord = {
+  id: string;
+  draft_id: string;
+  vertical: string;
+  platform: Platform;
+  kind: AssetKind;
+  storage_path: string;
+  width: number;
+  height: number;
+  duration_ms: number;
+  meta: Record<string, unknown>;
+  created_at: string;
 };

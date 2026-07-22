@@ -21,7 +21,7 @@ create table if not exists public.verticals (
 create table if not exists public.accounts (
   id                uuid primary key default gen_random_uuid(),
   vertical_slug     text not null references public.verticals(slug),
-  platform          text not null check (platform in ('ig','fb')),
+  platform          text not null check (platform in ('ig','fb','tiktok','threads','x')),
   ig_user_id        text,
   fb_page_id        text,
   vault_secret_id   text,                       -- Supabase Vault secret id (토큰 원문 아님)
@@ -86,6 +86,7 @@ create index if not exists idx_reviews_draft on public.reviews (draft_id);
 create table if not exists public.assets (
   id          uuid primary key default gen_random_uuid(),
   draft_id    uuid not null references public.drafts(id) on delete cascade,
+  platform    text not null default 'ig' check (platform in ('ig','fb','tiktok','threads','x')),
   kind        text not null check (kind in ('card_png','reel_mp4')),
   storage_path text not null,
   width       int,
@@ -102,7 +103,7 @@ create table if not exists public.publish_queue (
   vertical     text not null,
   account_id   uuid references public.accounts(id) on delete set null,
   asset_id     uuid references public.assets(id) on delete set null,
-  platform     text not null check (platform in ('ig','fb')),
+  platform     text not null check (platform in ('ig','fb','tiktok','threads','x')),
   scheduled_at timestamptz not null default now(),
   state        text not null default 'queued'
                check (state in ('queued','reserved','uploading','published','failed','throttled')),
@@ -117,7 +118,7 @@ create table if not exists public.posts (
   id            uuid primary key default gen_random_uuid(),
   account_id    uuid references public.accounts(id) on delete set null,
   draft_id      uuid references public.drafts(id) on delete set null,
-  platform      text not null check (platform in ('ig','fb')),
+  platform      text not null check (platform in ('ig','fb','tiktok','threads','x')),
   external_id   text,                 -- IG/FB media id
   permalink     text,
   published_at  timestamptz not null default now()

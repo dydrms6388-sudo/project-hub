@@ -14,12 +14,19 @@
     "ingest:dry": "tsx workers/ingest/index.ts --dry-run",
     "compose": "tsx workers/compose/index.ts",
     "compose:dry": "tsx workers/compose/index.ts --dry-run",
-    "phase1:demo": "tsx scripts/phase1-demo.ts"
+    "review": "tsx workers/review/index.ts",
+    "review:dry": "tsx workers/review/index.ts --dry-run",
+    "render": "tsx workers/render/index.ts",
+    "render:dry": "tsx workers/render/index.ts --dry-run",
+    "phase1:demo": "tsx scripts/phase1-demo.ts",
+    "phase2:demo": "tsx scripts/phase2-demo.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@supabase/supabase-js": "^2.45.4",
     "fast-xml-parser": "^4.5.0",
+    "playwright": "^1.61.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { DraftRecord, TrendItem } from './types.js';
+import type { AssetRecord, DraftRecord, DraftStatus, ReviewRecord, TrendItem } from './types.js';
 import { hasSupabase } from './env.js';
 import { supabase } from './supabase.js';
 import { makeLogger } from './logger.js';
@@ -20,7 +20,10 @@ export interface Store {
   /** 최근 N일 내 사용된 트렌드/초안 제목 (novelty·중복 판정용) */
   recentTitles(vertical: string, days: number): Promise<string[]>;
   saveDrafts(drafts: DraftRecord[]): Promise<void>;
-  loadDrafts(): Promise<DraftRecord[]>;
+  loadDrafts(status?: DraftStatus): Promise<DraftRecord[]>;
+  updateDraftStatus(ids: string[], status: DraftStatus): Promise<void>;
+  saveReviews(reviews: ReviewRecord[]): Promise<void>;
+  saveAssets(assets: AssetRecord[]): Promise<void>;
 }
 
 // ── JSON 파일 스토어 (dry-run 기본) ──
@@ -29,6 +32,8 @@ class JsonStore implements Store {
   readonly kind = 'json' as const;
   private trendsPath = path.join(OUTPUT_DIR, 'trends.json');
   private draftsPath = path.join(OUTPUT_DIR, 'drafts.json');
+  private reviewsPath = path.join(OUTPUT_DIR, 'reviews.json');
+  private assetsPath = path.join(OUTPUT_DIR, 'assets.json');
 
   private async readArray<T>(p: string): Promise<T[]> {
     try {
@@ -69,8 +74,28 @@ class JsonStore implements Store {
     log.info(`JSON 스토어: 초안 ${drafts.length}건 저장 (누적 ${existing.length + drafts.length})`);
   }
 
-  async loadDrafts(): Promise<DraftRecord[]> {
-    return this.readArray<DraftRecord>(this.draftsPath);
+  async loadDrafts(status?: DraftStatus): Promise<DraftRecord[]> {
+    const all = await this.readArray<DraftRecord>(this.draftsPath);
+    return status ? all.filter((d) => d.status === status) : all;
+  }
+
+  async updateDraftStatus(ids: string[], status: DraftStatus): Promise<void> {
+    const idSet = new Set(ids);
+    const all = await this.readArray<DraftRecord>(this.draftsPath);
+    for (const d of all) if (idSet.has(d.id)) d.status = status;
+    await this.writeArray(this.draftsPath, all);
+  }
+
+  async saveReviews(reviews: ReviewRecord[]): Promise<void> {
+    const existing = await this.readArray<ReviewRecord>(this.reviewsPath);
+    await this.writeArray(this.reviewsPath, [...existing, ...reviews]);
+    log.info(`JSON 스토어: 심사 ${reviews.length}건 저장`);
+  }
+
+  async saveAssets(assets: AssetRecord[]): Promise<void> {
+    const existing = await this.readArray<AssetRecord>(this.assetsPath);
+    await this.writeArray(this.assetsPath, [...existing, ...assets]);
+    log.info(`JSON 스토어: 에셋 ${assets.length}건 저장`);
   }
 }
 
@@ -109,10 +134,51 @@ class SupabaseStore implements Store {
     if (error) throw new Error(`drafts insert 실패: ${error.message}`);
   }
 
-  async loadDrafts(): Promise<DraftRecord[]> {
-    const { data, error } = await supabase().from('drafts').select('*');
+  async loadDrafts(status?: DraftStatus): Promise<DraftRecord[]> {
+    let q = supabase().from('drafts').select('*');
+    if (status) q = q.eq('status', status);
+    const { data, error } = await q;
     if (error) throw new Error(`drafts select 실패: ${error.message}`);
     return (data ?? []) as DraftRecord[];
+  }
+
+  async updateDraftStatus(ids: string[], status: DraftStatus): Promise<void> {
+    if (ids.length === 0) return;
+    const { error } = await supabase().from('drafts').update({ status }).in('id', ids);
+    if (error) throw new Error(`drafts update 실패: ${error.message}`);
+  }
+
+  async saveReviews(reviews: ReviewRecord[]): Promise<void> {
+    if (reviews.length === 0) return;
+    // DB reviews 테이블 컬럼에 맞춰 매핑 (vertical/mock 은 meta 밖 컬럼 없음 → 생략).
+    const rows = reviews.map((r) => ({
+      id: r.id,
+      draft_id: r.draft_id,
+      total_score: r.total_score,
+      persona_scores: r.persona_scores,
+      follow_no_count: r.follow_no_count,
+      passed: r.passed,
+      reasons: r.reasons,
+    }));
+    const { error } = await supabase().from('reviews').insert(rows);
+    if (error) throw new Error(`reviews insert 실패: ${error.message}`);
+  }
+
+  async saveAssets(assets: AssetRecord[]): Promise<void> {
+    if (assets.length === 0) return;
+    const rows = assets.map((a) => ({
+      id: a.id,
+      draft_id: a.draft_id,
+      platform: a.platform,
+      kind: a.kind,
+      storage_path: a.storage_path,
+      width: a.width,
+      height: a.height,
+      duration_ms: a.duration_ms,
+      meta: a.meta,
+    }));
+    const { error } = await supabase().from('assets').insert(rows);
+    if (error) throw new Error(`assets insert 실패: ${error.message}`);
   }
 }
 
