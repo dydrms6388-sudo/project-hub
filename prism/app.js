@@ -31,6 +31,7 @@
     cards: {}, // charId -> {n, lv}
     gacha: { day: "", freeUsed: false, pity: 0 },
     roulette: { day: "" },
+    wc: { day: "", champ: "" },
     battle: { day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 },
     balance: {},
     streak: { last: "", n: 0 },
@@ -54,6 +55,7 @@
   });
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
   S.roulette = Object.assign({ day: "" }, S.roulette || {});
+  S.wc = Object.assign({ day: "", champ: "" }, S.wc || {});
   S.battle = Object.assign({ day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 }, S.battle || {});
   S.balance = S.balance || {};
   S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
@@ -621,7 +623,7 @@
     const bl = $("#badge-likes"), bc = $("#badge-chats"), bcd = $("#badge-cards");
     bl.hidden = !newLikes; bl.textContent = newLikes;
     bc.hidden = !unread; bc.textContent = unread;
-    if (bcd) { bcd.hidden = !(gachaFreeAvail() || rouletteAvail()); bcd.textContent = "!"; }
+    if (bcd) { bcd.hidden = !(gachaFreeAvail() || rouletteAvail() || wcAvail()); bcd.textContent = "!"; }
   }
   function go(t) {
     tab = t;
@@ -1818,6 +1820,65 @@
     };
   }
 
+  /* ══ 이상형 월드컵 (8강 토너먼트로 '오늘의 최애' 선정) ══ */
+  const wcAvail = () => S.wc.day !== todayStr();
+  function openWorldcup() {
+    // 참가자 8명: 보유 카드 우선, 부족분은 랜덤으로 채움
+    const owned = shuffle(CD.CHARS.filter((c) => cardOwned(c.id)).slice());
+    const rest = shuffle(CD.CHARS.filter((c) => !cardOwned(c.id)).slice());
+    const pool = owned.concat(rest).slice(0, 8);
+    if (pool.length < 2) { toast("카드가 부족해요 — 먼저 뽑기를 해보세요 🎴"); return; }
+    let round = pool.slice(), roundName = pool.length >= 8 ? "8강" : pool.length >= 4 ? "4강" : "결승";
+    let queue = round.slice(), winners = [], idx = 0;
+    const o = document.createElement("div");
+    o.className = "ovl wc-ovl";
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">👑 이상형 월드컵</span><span class="wc-round" id="wc-round">${roundName}</span></div>
+      <div class="ovl-body wc-body"><p class="wc-q" id="wc-q">더 취향인 쪽을 골라요</p><div class="wc-pair" id="wc-pair"></div></div>`;
+    $("#overlay-root").appendChild(o);
+    const cardHtml = (c) => { const R = CD.RARITY[c.rarity]; return `<button class="wc-card r-${c.rarity}" data-id="${c.id}" style="--frame:${R.color};--fgrad:${R.frame}">
+      ${c.rarity === "SSR" ? '<div class="holo"></div>' : ""}${CD.charSVG(c, { uid: "wc" + Math.floor(Math.random() * 1e6) })}
+      <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)}</small></div></button>`; };
+    const paintPair = () => {
+      const a = queue[idx], b = queue[idx + 1];
+      $("#wc-round", o).textContent = roundName + ` · ${Math.floor(idx / 2) + 1}/${Math.floor(queue.length / 2)}`;
+      $("#wc-pair", o).innerHTML = cardHtml(a) + `<div class="wc-vs">VS</div>` + cardHtml(b);
+      $$(".wc-card", o).forEach((btn) => btn.onclick = () => {
+        winners.push(queue.find((c) => c.id === btn.dataset.id));
+        btn.classList.add("wc-pick"); vibrate(12);
+        setTimeout(next, 260);
+      });
+    };
+    const next = () => {
+      idx += 2;
+      if (idx < queue.length - (queue.length % 2)) { paintPair(); return; }
+      // 홀수면 남은 1명 부전승
+      if (queue.length % 2) winners.push(queue[queue.length - 1]);
+      if (winners.length === 1) { finishWC(winners[0]); return; }
+      queue = winners; winners = []; idx = 0;
+      roundName = queue.length >= 4 ? "4강" : queue.length >= 2 ? "결승" : "우승";
+      paintPair();
+    };
+    const finishWC = (champ) => {
+      const first = wcAvail();
+      S.wc = { day: todayStr(), champ: champ.id };
+      let reward = 0;
+      if (first) { reward = 1; S.items.gachaticket += 1; }
+      save(); badges(); vibrate([40, 60, 40, 60, 80]);
+      const R = CD.RARITY[champ.rarity];
+      $("#wc-pair", o).innerHTML = "";
+      $("#wc-q", o).textContent = "";
+      const dlg = modal(`<div class="dialog wc-win"><div class="em">👑</div><h3>오늘의 최애!</h3>
+        <div class="ccard big r-${champ.rarity}" style="--frame:${R.color};--fgrad:${R.frame};width:150px;margin:6px auto 10px">${champ.rarity === "SSR" ? '<div class="holo"></div>' : ""}${CD.charSVG(champ, { animate: true, uid: "wcw" })}
+          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${champ.rarity}</span><b>${esc(champ.name)}</b><small>${champ.age}세 · ${esc(champ.job)}</small></div></div>
+        <p style="font-size:12.5px">"${esc(champ.line)}"</p>
+        <p style="font-size:12.5px;margin:6px 0 0">${reward ? `🎁 완주 보상: 크러시 팩 뽑기권 <b>+1</b>` : "오늘 보상은 이미 받았어요 — 재미로 다시 즐겨요!"}</p>
+        <button class="btn-grad big" data-ok style="margin-top:10px">좋아요!</button></div>`, { center: true, sticky: true });
+      $("[data-ok]", dlg).onclick = () => { dlg.remove(); o.remove(); if (tab === "cards") vCards(); };
+    };
+    $(".ovl-close", o).onclick = () => o.remove();
+    paintPair();
+  }
+
   /* ══ 매력 배틀 아레나 (모은 카드로 3판 2선승 상성 배틀) ══
      상성 삼각: 💪파워 > 🧠두뇌 > ✨매력 > 💪파워 (우세 시 파워 ×1.25) */
   const RPOW = { N: 10, R: 16, SR: 24, SSR: 34 };
@@ -2062,6 +2123,7 @@
       <div class="game-row">
         <button class="game-tile" id="g-roulette"><span class="gt-em">🎡</span><b>데일리 룰렛</b><small>${rouletteAvail() ? "오늘 무료 1회! 꽝 없음" : "내일 다시 돌려요"}</small>${rouletteAvail() ? '<i class="gt-dot"></i>' : ""}</button>
         <button class="game-tile" id="g-battle"><span class="gt-em">⚔️</span><b>매력 배틀</b><small>오늘 ${battleLeft()}/${BATTLE_MAX}회${S.battle.streak ? ` · 🔥연승 ${S.battle.streak}` : ""}${S.battle.best ? ` · 최고 ${S.battle.best}` : ""}</small>${battleLeft() > 0 ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile wide" id="g-worldcup"><span class="gt-em">👑</span><b>이상형 월드컵</b><small>${wcAvail() ? "오늘의 최애를 뽑아요 — 완주 시 뽑기권 +1" : `오늘의 최애: ${esc((cardOf(S.wc.champ) || {}).name || "완료")} · 다시 즐기기`}</small>${wcAvail() ? '<i class="gt-dot"></i>' : ""}</button>
       </div>
       <div class="streak-chip">🔥 연속 출석 <b>${S.streak.n || 1}일</b> — 3일마다 뽑기권 1장, 7일마다 3장이 쌓여요</div>
       <div class="gacha-box">
@@ -2092,6 +2154,7 @@
       ${adSlot()}`;
     $("#g-pull").onclick = doGacha;
     $("#g-pull10").onclick = doGacha10;
+    $("#g-worldcup").onclick = openWorldcup;
     $("#g-roulette").onclick = openRoulette;
     $("#g-battle").onclick = battleSetup;
     const pkv = $("[data-pkview]");
