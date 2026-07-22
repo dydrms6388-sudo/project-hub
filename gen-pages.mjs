@@ -209,7 +209,7 @@ for (const d of daily) {
   if (APEX_SERVED.has(d.slug)) { if (existsSync(`${d.slug}/index.html`)) rmSync(d.slug, { recursive: true, force: true }); continue; }
   let related = daily.filter(x => x.cat === d.cat && x.slug !== d.slug).slice(0, 6);
   if (related.length < 4) related = related.concat(daily.filter(x => x.slug !== d.slug && !related.includes(x)).slice(0, 6 - related.length));
-  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span>${r.emoji}</span> ${esc(r.name)}</a>`).join("\n      ");
+  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span aria-hidden="true">${r.emoji}</span> ${esc(r.name)}</a>`).join("\n      ");
 
   // ── 사용자용 콘텐츠 조립(고유 콘텐츠 우선, 없으면 정제된 폴백) ──
   const c = CONTENT[d.slug] || {};
@@ -399,6 +399,16 @@ for (const b of BUILTINS) {
   if (!existsSync(f)) continue;
   let h = readFileSync(f, "utf8");
   const before = h;
+
+  // 테마 대응(멱등): 단색 theme-color를 라이트/다크 쌍으로 정규화 + 홈 저장 테마 읽기(무쓰기) 동기화 스크립트.
+  h = h.replace(/\s*<meta name="theme-color"[^>]*>/gi, "");
+  h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
+  const themeBlock = `<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<!--theme-sync--><script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script><!--/theme-sync-->`;
+  if (/<meta name="viewport"[^>]*>/i.test(h)) h = h.replace(/(<meta name="viewport"[^>]*>)/i, `$1\n${themeBlock}`);
+  else h = h.replace(/<\/title>/i, `</title>\n${themeBlock}`);
+
   h = h.replace(STALE_VERIFY, "");
   if (VERIFY_META) {
     if (h.includes('name="theme-color"')) {
@@ -414,10 +424,10 @@ for (const b of BUILTINS) {
   h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
   const bsrc = (BUILTIN_SOURCES[b.slug] || []).filter(s => s && s.label && /^https?:\/\//.test(s.url || ""));
   const bsrcHtml = bsrc.length
-    ? `<p style="margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:#7aa2ff;text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
+    ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
     : "";
-  const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px">
-  <p style="margin:0;color:#aeb6bf;font-size:13px">✍️ 작성·검토: <strong style="color:#d6dbe2">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>
+  const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>
   ${bsrcHtml}
 </div>\n`;
   if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);

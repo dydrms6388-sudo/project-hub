@@ -55,7 +55,11 @@
   --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
 }}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji";line-height:1.6}
+a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--acc2);outline-offset:2px;border-radius:4px}
+/* 광고/제휴 슬롯 높이 예약 → 콘텐츠 밀림(CLS) 방지 */
+.coupang-slot{min-height:184px}
+@media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
 .crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
@@ -108,7 +112,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 <div class="wrap">
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">여행·문화</span> <span class="sep">›</span> <span class="c-cur">중국여행 마스터</span></nav>
   <div class="hero">
-    <div class="emoji">🏮</div>
+    <div class="emoji" aria-hidden="true">🏮</div>
     <h1>중국여행 마스터</h1>
     <p class="lead">중국여행 마스터는 도시와 일정 길이를 고르면 미리 정리된 코스·맛집·명소 데이터를 불러와 오전·오후·저녁 3분할 동선으로 자동 배치합니다.</p>
     <a class="cta" href="https://china-travel-master.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
@@ -162,12 +166,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <div class="coupang-slot" data-subid="china-travel" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/dydrms-passport-name/"><span>🪪</span> 여권네임</a>
-      <a class="rel" href="/tripnote-tau/"><span>🧭</span> 트립노트</a>
-      <a class="rel" href="/dalian-weekend/"><span>🌊</span> 다롄 위켄드 (Dalian Weekend)</a>
-      <a class="rel" href="/travel-budget/"><span>✈️</span> 여행경비플래너</a>
-      <a class="rel" href="/travel-packing/"><span>🧳</span> 여행 짐싸기 체크리스트</a>
-      <a class="rel" href="/travel-pin/"><span>📍</span> 여행핀 (Travel Pin)</a></div>
+    <div class="rel-grid"><a class="rel" href="/dydrms-passport-name/"><span aria-hidden="true">🪪</span> 여권네임</a>
+      <a class="rel" href="/tripnote-tau/"><span aria-hidden="true">🧭</span> 트립노트</a>
+      <a class="rel" href="/dalian-weekend/"><span aria-hidden="true">🌊</span> 다롄 위켄드 (Dalian Weekend)</a>
+      <a class="rel" href="/travel-budget/"><span aria-hidden="true">✈️</span> 여행경비플래너</a>
+      <a class="rel" href="/travel-packing/"><span aria-hidden="true">🧳</span> 여행 짐싸기 체크리스트</a>
+      <a class="rel" href="/travel-pin/"><span aria-hidden="true">📍</span> 여행핀 (Travel Pin)</a></div>
   </section>
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>

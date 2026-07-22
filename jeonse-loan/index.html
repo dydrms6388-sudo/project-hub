@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<!--theme-sync--><script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script><!--/theme-sync-->
 <title>전세자금대출 한도 계산기 — 보증금·소득·지역으로 대출 한도·자격 즉시 추정 | TomatoEggCat</title>
 <meta name="description" content="전세 보증금·부부합산 소득·순자산·지역·나이를 넣으면 버팀목·청년·신생아 특례·시중은행 전세대출의 예상 한도와 자격, 예상 금리·월 이자를 즉시 추정합니다. 2026 상반기 기준(주택도시기금·HF·HUG)." />
 <link rel="canonical" href="https://tomatoeggcat.com/jeonse-loan/" />
@@ -17,64 +19,68 @@
 ]}
 </script>
 <style>
-:root{color-scheme:dark}
+:root{color-scheme:light dark;--x0a0a0a:#0a0a0a;--x0f0f0f:#0f0f0f;--x141414:#141414;--x171717:#171717;--x1f1f1f:#1f1f1f;--x222:#222;--x262626:#262626;--x2a2a2a:#2a2a2a;--x333:#333;--x1f2937:#1f2937;--xededed:#ededed;--xd4d4d4:#d4d4d4;--xb9b9b9:#b9b9b9;--x9ca3af:#9ca3af;--x6b7280:#6b7280;--xcbd5e1:#cbd5e1;--x10b981:#10b981;--x34d399:#34d399;--x6ee7b7:#6ee7b7;--xa7f3d0:#a7f3d0;--x7aa2ff:#7aa2ff;--xcdd6ff:#cdd6ff;--x7dd3fc:#7dd3fc;--x3b82f6:#3b82f6;--xfca5a5:#fca5a5;--xf87171:#f87171;--xfda4af:#fda4af;--xef4444:#ef4444;--xfcd34d:#fcd34d;--xfbbf24:#fbbf24;--xf59e0b:#f59e0b;--x3f1d1d:#3f1d1d;--x3d341f:#3d341f;--x1f1a0f:#1f1a0f;--x1f3d2e:#1f3d2e;--x0f1f17:#0f1f17;--x0c2a22:#0c2a22;--x06281f:#06281f;--x101512:#101512;--x1e2a24:#1e2a24;--xaeb6bf:#aeb6bf;--xd6dbe2:#d6dbe2;--x8b8f98:#8b8f98}
+:root[data-theme=light]{--x0a0a0a:#f7f8fa;--x0f0f0f:#ffffff;--x141414:#ffffff;--x171717:#f3f4f6;--x1f1f1f:#eef0f3;--x222:#eef0f3;--x262626:#e5e7eb;--x2a2a2a:#e5e7eb;--x333:#d7dbe0;--x1f2937:#eef1f5;--xededed:#1f2937;--xd4d4d4:#374151;--xb9b9b9:#4b5563;--x9ca3af:#6b7280;--x6b7280:#7b8494;--xcbd5e1:#475569;--x10b981:#059669;--x34d399:#059669;--x6ee7b7:#047857;--xa7f3d0:#065f46;--x7aa2ff:#2563eb;--xcdd6ff:#3b5bdb;--x7dd3fc:#0284c7;--x3b82f6:#2563eb;--xfca5a5:#dc2626;--xf87171:#dc2626;--xfda4af:#e11d48;--xef4444:#dc2626;--xfcd34d:#b45309;--xfbbf24:#b45309;--xf59e0b:#b45309;--x3f1d1d:#fee2e2;--x3d341f:#fef3c7;--x1f1a0f:#fef3c7;--x1f3d2e:#dcfce7;--x0f1f17:#dcfce7;--x0c2a22:#d1fae5;--x06281f:#ffffff;--x101512:#f0faf5;--x1e2a24:#cdefdd;--xaeb6bf:#3f5a4e;--xd6dbe2:#134e34;--x8b8f98:#5c6b63}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){--x0a0a0a:#f7f8fa;--x0f0f0f:#ffffff;--x141414:#ffffff;--x171717:#f3f4f6;--x1f1f1f:#eef0f3;--x222:#eef0f3;--x262626:#e5e7eb;--x2a2a2a:#e5e7eb;--x333:#d7dbe0;--x1f2937:#eef1f5;--xededed:#1f2937;--xd4d4d4:#374151;--xb9b9b9:#4b5563;--x9ca3af:#6b7280;--x6b7280:#7b8494;--xcbd5e1:#475569;--x10b981:#059669;--x34d399:#059669;--x6ee7b7:#047857;--xa7f3d0:#065f46;--x7aa2ff:#2563eb;--xcdd6ff:#3b5bdb;--x7dd3fc:#0284c7;--x3b82f6:#2563eb;--xfca5a5:#dc2626;--xf87171:#dc2626;--xfda4af:#e11d48;--xef4444:#dc2626;--xfcd34d:#b45309;--xfbbf24:#b45309;--xf59e0b:#b45309;--x3f1d1d:#fee2e2;--x3d341f:#fef3c7;--x1f1a0f:#fef3c7;--x1f3d2e:#dcfce7;--x0f1f17:#dcfce7;--x0c2a22:#d1fae5;--x06281f:#ffffff;--x101512:#f0faf5;--x1e2a24:#cdefdd;--xaeb6bf:#3f5a4e;--xd6dbe2:#134e34;--x8b8f98:#5c6b63}}
+
+
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--x0a0a0a);color:var(--xededed);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
-a{color:#34d399}
-.nav{font-size:13px;color:#6b7280;margin-bottom:18px}
-.nav a{color:#7aa2ff;text-decoration:none}
+a{color:var(--x34d399)}
+.nav{font-size:13px;color:var(--x6b7280);margin-bottom:18px}
+.nav a{color:var(--x7aa2ff);text-decoration:none}
 h1{font-size:26px;font-weight:800;margin:0 0 6px}
-.lead{color:#9ca3af;margin:0 0 22px;font-size:15px}
-.card{border:1px solid #262626;background:#171717;border-radius:18px;padding:20px;margin-bottom:18px}
-label{display:block;font-size:13px;color:#9ca3af;margin-bottom:6px}
-input[type=number],input[type=text],select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px}
+.lead{color:var(--x9ca3af);margin:0 0 22px;font-size:15px}
+.card{border:1px solid var(--x262626);background:var(--x171717);border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;color:var(--x9ca3af);margin-bottom:6px}
+input[type=number],input[type=text],select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--x333);background:var(--x0f0f0f);color:var(--xededed);font-size:16px}
 .row{display:flex;gap:12px}.row>div{flex:1}
 .seg{display:flex;gap:8px;margin-top:2px}
-.seg button{flex:1;margin:0;padding:11px;border:1px solid #333;border-radius:12px;background:#0f0f0f;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer}
-.seg button.on{border-color:#10b981;background:rgba(16,185,129,.15);color:#6ee7b7}
+.seg button{flex:1;margin:0;padding:11px;border:1px solid var(--x333);border-radius:12px;background:var(--x0f0f0f);color:var(--x9ca3af);font-size:14px;font-weight:600;cursor:pointer}
+.seg button.on{border-color:var(--x10b981);background:rgba(16,185,129,.15);color:var(--x6ee7b7)}
 .chk{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-.chk button{padding:10px 14px;border:1px solid #333;border-radius:12px;background:#0f0f0f;color:#9ca3af;font-size:13px;font-weight:600;cursor:pointer;margin:0;width:auto}
-.chk button.on{border-color:#10b981;background:rgba(16,185,129,.15);color:#6ee7b7}
-button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:12px;background:#10b981;color:#06281f;font-size:16px;font-weight:700;cursor:pointer}
+.chk button{padding:10px 14px;border:1px solid var(--x333);border-radius:12px;background:var(--x0f0f0f);color:var(--x9ca3af);font-size:13px;font-weight:600;cursor:pointer;margin:0;width:auto}
+.chk button.on{border-color:var(--x10b981);background:rgba(16,185,129,.15);color:var(--x6ee7b7)}
+button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:12px;background:var(--x10b981);color:var(--x06281f);font-size:16px;font-weight:700;cursor:pointer}
 .field{margin-bottom:14px}
 .out{display:none;margin-top:18px}
-.big{font-size:38px;font-weight:800;color:#6ee7b7;text-align:center;margin:4px 0}
-.bigsub{text-align:center;color:#9ca3af;font-size:14px;margin-bottom:16px}
+.big{font-size:38px;font-weight:800;color:var(--x6ee7b7);text-align:center;margin:4px 0}
+.bigsub{text-align:center;color:var(--x9ca3af);font-size:14px;margin-bottom:16px}
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.fact{background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:12px}
-.fact .k{font-size:12px;color:#6b7280}.fact .v{font-size:18px;font-weight:700;margin-top:2px}
+.fact{background:var(--x0f0f0f);border:1px solid var(--x262626);border-radius:12px;padding:12px}
+.fact .k{font-size:12px;color:var(--x6b7280)}.fact .v{font-size:18px;font-weight:700;margin-top:2px}
 .prods{display:grid;gap:10px}
-.prod{border:1px solid #262626;background:#0f0f0f;border-radius:14px;padding:14px}
+.prod{border:1px solid var(--x262626);background:var(--x0f0f0f);border-radius:14px;padding:14px}
 .prod.hl{border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.06)}
 .prod.bad{opacity:.62}
 .prod .ph{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.prod .pn{font-weight:700;color:#ededed}
-.prod .pt{font-size:11px;color:#6b7280;margin-top:1px}
+.prod .pn{font-weight:700;color:var(--xededed)}
+.prod .pt{font-size:11px;color:var(--x6b7280);margin-top:1px}
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
-.badge.ok{background:rgba(16,185,129,.15);color:#6ee7b7}
-.badge.no{background:rgba(244,63,94,.15);color:#fda4af}
-.tag-rec{font-size:10px;font-weight:800;background:#fbbf24;color:#000;padding:2px 7px;border-radius:999px;margin-left:6px}
+.badge.ok{background:rgba(16,185,129,.15);color:var(--x6ee7b7)}
+.badge.no{background:rgba(244,63,94,.15);color:var(--xfda4af)}
+.tag-rec{font-size:10px;font-weight:800;background:var(--xfbbf24);color:#000;padding:2px 7px;border-radius:999px;margin-left:6px}
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;text-align:center}
 .pcell{background:rgba(255,255,255,.04);border-radius:10px;padding:8px 4px}
-.pcell .pk{font-size:10px;color:#6b7280}
+.pcell .pk{font-size:10px;color:var(--x6b7280)}
 .pcell .pv{font-size:14px;font-weight:700;margin-top:2px}
-.pv.amber{color:#fcd34d}
+.pv.amber{color:var(--xfcd34d)}
 .reasons{margin:10px 0 0;padding-left:2px;list-style:none}
 .reasons li{font-size:12px;color:rgba(253,164,175,.8);margin-bottom:3px}
 .dsr{border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.07);border-radius:14px;padding:14px;margin-top:14px}
-.dsr .dt{font-size:13px;font-weight:700;color:#7dd3fc}
-.dsr p{margin:6px 0 0;font-size:13px;color:#cbd5e1}
-.disc{font-size:12px;color:#6b7280;margin-top:14px;line-height:1.55}
+.dsr .dt{font-size:13px;font-weight:700;color:var(--x7dd3fc)}
+.dsr p{margin:6px 0 0;font-size:13px;color:var(--xcbd5e1)}
+.disc{font-size:12px;color:var(--x6b7280);margin-top:14px;line-height:1.55}
 h2{font-size:18px;margin:28px 0 8px}
-.prose p{color:#d4d4d4;font-size:14.5px}
-.faq{border-top:1px solid #262626;padding:14px 0}
+.prose p{color:var(--xd4d4d4);font-size:14.5px}
+.faq{border-top:1px solid var(--x262626);padding:14px 0}
 .faq b{display:block;margin-bottom:4px}
-.faq p{margin:0;color:#b9b9b9;font-size:14px}
-footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
-footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+.faq p{margin:0;color:var(--xb9b9b9);font-size:14px}
+footer{margin-top:36px;text-align:center;color:var(--x6b7280);font-size:12px;border-top:1px solid var(--x1f1f1f);padding-top:20px}
+footer a{color:var(--x7aa2ff);margin:0 6px;text-decoration:none}
 .more{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.more a{font-size:13px;background:#1f2937;color:#cdd6ff;padding:7px 12px;border-radius:999px;text-decoration:none}
+.more a{font-size:13px;background:var(--x1f2937);color:var(--xcdd6ff);padding:7px 12px;border-radius:999px;text-decoration:none}
 </style>
 <!--og-eeat-->
 <meta property="og:type" content="website" />
@@ -179,9 +185,9 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   <a href="/yangdo/">양도소득세 계산기</a>
   <a href="/">전체 도구 보기</a>
 </div>
-<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px">
-  <p style="margin:0;color:#aeb6bf;font-size:13px">✍️ 작성·검토: <strong style="color:#d6dbe2">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 2026년 7월 · 2026년 고시 요율·법령 기준</p>
-  <p style="margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7">참고 자료: <a href="https://nhuf.molit.go.kr" target="_blank" rel="noopener nofollow" style="color:#7aa2ff;text-decoration:none">주택도시기금</a></p>
+<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 2026년 7월 · 2026년 고시 요율·법령 기준</p>
+  <p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: <a href="https://nhuf.molit.go.kr" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">주택도시기금</a></p>
 </div>
 <footer>
   🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/>
