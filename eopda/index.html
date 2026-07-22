@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0e0c09" />
+<title>없다 — 사라진 것들의 아카이브 (데모) | TomatoEggCat</title>
+<meta name="description" content="없어진 가게, 철거된 건물, 사라진 골목을 여러 사람의 기억으로 복원해 지도에 남기는 아카이브의 프런트엔드 데모. 기억이 쌓일수록 그 장소의 상상도가 점점 선명해집니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/eopda/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="없다 — 사라진 것들의 아카이브" />
+<meta property="og:description" content="아무도 동네 분식집을 찍어두지 않았다. 그래서 사진 대신 기억으로 그립니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/eopda/" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"없다 (데모)","description":"사라진 장소를 기억으로 복원해 지도에 남기는 아카이브의 프런트엔드 데모","applicationCategory":"EntertainmentApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/eopda/","inLanguage":"ko-KR","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"상상도는 실제 사진인가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 모든 그림은 '기억으로 그린 상상도'이며 이미지 위에 그 사실이 항상 표기됩니다. 사진처럼 보이는 사실적 스타일은 쓰지 않고 회화적인 톤으로만 그립니다."}},
+{"@type":"Question","name":"이 지도는 실제 지역인가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 데모의 지도는 가상의 동네 '온기동'입니다. 실제 장소·실제 업소가 아니며, 등장하는 가게들도 모두 예시로 만든 가상의 장소입니다. 실서비스에서는 실제 지도와 검수 절차가 함께 도입됩니다."}},
+{"@type":"Question","name":"기억은 어떻게 남기나요?","acceptedAnswer":{"@type":"Answer","text":"장소를 열고 '기억 보태기'를 누르면 간판 색, 냄새, 함께 간 사람, 마지막 방문 같은 감각 질문이 하나씩 나옵니다. 두 개 이상 답하면 제출할 수 있고, 기억이 쌓일수록 상상도가 다시 그려집니다."}},
+{"@type":"Question","name":"내가 등록한 내용은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"이 데모는 서버가 없어 내가 등록한 장소와 기억은 이 브라우저에만 저장됩니다. 실명·연락처 같은 개인정보는 등록 단계에서 자동 차단됩니다."}}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TomatoEggCat","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"없다","item":"https://tomatoeggcat.com/eopda/"}]}
+</script>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#0e0c09;--panel:#161310;--line:#2b2620;--ink:#ece5d8;--dim:#9a917f;--faint:#5f584a;--accent:#d9a05b;--red:#c96f5e}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Batang","Apple SD Gothic Neo",serif;line-height:1.7}
+.wrap{max-width:560px;margin:0 auto;padding:28px 20px 60px}
+.nav{font-size:13px;color:var(--faint);margin-bottom:28px;font-family:-apple-system,sans-serif}
+.nav a{color:var(--dim);text-decoration:none}
+h1{font-size:40px;font-weight:700;margin:0 0 4px;letter-spacing:.05em}
+.lead{color:var(--dim);margin:0 0 18px;font-size:15px}
+.demo{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:22px}
+.mapcard{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:14px;margin-bottom:8px}
+.maphead{display:flex;justify-content:space-between;align-items:baseline;padding:2px 6px 10px}
+.maphead b{font-size:16px}
+.maphead span{font-size:12px;color:var(--faint);font-family:-apple-system,sans-serif}
+#map{width:100%;border-radius:12px;display:block;background:#1a1712;cursor:crosshair}
+.pin{cursor:pointer}
+.maplegend{font-size:11.5px;color:var(--faint);font-family:-apple-system,sans-serif;padding:8px 6px 0}
+.addhint{font-size:12.5px;color:var(--dim);font-family:-apple-system,sans-serif;text-align:center;margin:10px 0 24px}
+#sheet{display:none;border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:20px;margin-bottom:24px}
+.ph .cat{font-size:12px;color:var(--faint);font-family:-apple-system,sans-serif}
+.ph h3{font-size:24px;margin:2px 0 2px}
+.ph .meta{font-size:12.5px;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:12px}
+#art{width:100%;border-radius:12px;display:block;border:1px solid var(--line)}
+.artcap{font-size:11.5px;color:var(--faint);font-family:-apple-system,sans-serif;text-align:center;margin-top:6px}
+.vers{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.vers button{background:none;border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:4px 12px;font-size:12px;cursor:pointer;font-family:-apple-system,sans-serif}
+.vers button.on{border-color:var(--accent);color:var(--accent)}
+.mems{margin-top:16px}
+.mem{border-top:1px solid var(--line);padding:12px 2px;font-size:14.5px;color:#cfc6b4}
+.mem small{display:block;color:var(--faint);font-size:11px;font-family:-apple-system,sans-serif;margin-top:4px}
+.sheetacts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.sheetacts button{background:#0f0d0a;border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:12px 8px;font-size:14px;cursor:pointer;font-family:-apple-system,sans-serif}
+.sheetacts button.main{background:var(--accent);border-color:var(--accent);color:#231605;font-weight:700}
+.close{width:100%;background:none;border:0;color:var(--faint);font-size:12.5px;font-family:-apple-system,sans-serif;cursor:pointer;margin-top:10px;text-decoration:underline}
+/* 기억/등록 플로우 */
+#flow{display:none;border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:22px;margin-bottom:24px}
+#flow h3{margin:0 0 4px;font-size:20px}
+.fsub{font-size:12.5px;color:var(--faint);font-family:-apple-system,sans-serif;margin-bottom:16px}
+.q{display:none}
+.q.on{display:block}
+.q label{display:block;font-size:16px;margin-bottom:10px}
+.q input,.q textarea,.q select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:15px;padding:12px;font-family:inherit;outline:none}
+.q input:focus,.q textarea:focus{border-color:var(--accent)}
+.q textarea{height:76px;resize:none}
+.qnav{display:flex;justify-content:space-between;margin-top:14px}
+.qnav button{background:#0f0d0a;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:-apple-system,sans-serif}
+.qnav button.next{background:var(--accent);border-color:var(--accent);color:#231605;font-weight:700}
+.qdots{text-align:center;font-size:11px;color:var(--faint);font-family:-apple-system,sans-serif;margin-top:12px}
+.fwarn{font-size:12.5px;color:var(--red);min-height:18px;margin-top:8px;font-family:-apple-system,sans-serif}
+.consent{font-size:12.5px;color:var(--dim);font-family:-apple-system,sans-serif;margin-top:10px;display:flex;gap:8px;align-items:flex-start}
+.about{margin-top:50px;font-size:14.5px;color:#c2bbaa;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",sans-serif}
+.about h2{font-family:"Gowun Batang",serif;color:var(--ink);font-size:18px;margin:28px 0 8px}
+.about p{margin:0 0 10px}
+.about ol{padding-left:20px;margin:0 0 10px}
+.faq{border-top:1px solid var(--line);padding:14px 0}
+.faq b{display:block;margin-bottom:4px;color:var(--ink)}
+.faq p{margin:0;color:var(--dim);font-size:13.5px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 12px;border-radius:999px;text-decoration:none;font-family:-apple-system,sans-serif}
+footer{margin-top:40px;text-align:center;color:var(--faint);font-size:12px;border-top:1px solid var(--line);padding-top:20px;font-family:-apple-system,sans-serif}
+footer a{color:var(--dim);margin:0 6px;text-decoration:none}
+#cv{display:none}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#231605;padding:10px 18px;border-radius:999px;font-size:13.5px;font-family:-apple-system,sans-serif;transition:transform .3s;z-index:20}
+.toast.show{transform:translateX(-50%)}
+.inbound{display:none;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--dim);font-family:-apple-system,sans-serif}
+.inbound.show{display:block}
+.inbound b{color:var(--ink)}
+.inbound button{margin-top:10px;background:var(--accent);color:#231605;border:0;border-radius:10px;padding:9px 15px;font-size:13.5px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 없다</div>
+
+<h1>없다</h1>
+<p class="lead">없어진 가게, 철거된 골목, 사라진 동네.<br />사진이 없어서 — 기억으로 그립니다.</p>
+
+<div class="demo">🧪 <b>프런트엔드 데모</b> — 이 지도는 가상의 동네 <b>‘온기동’</b>이며 등장하는 장소는 전부 예시용 가상 장소입니다(실제 업소 아님). 내가 보탠 기억은 이 브라우저에만 저장됩니다. 실제 지도·AI 상상도·커뮤니티 검수는 백엔드 승인 후 구현되고, 이 데모의 상상도는 기억 내용으로 즉석에서 그리는 절차적 일러스트입니다.</div>
+
+<div class="inbound" id="inbound">
+  <span id="intext"></span>
+  <br /><button id="meToo">나도 기억 남기러 가기</button>
+</div>
+
+<div class="mapcard">
+  <div class="maphead"><b>온기동 — 사라진 장소 지도</b><span id="mapcount"></span></div>
+  <svg id="map" viewBox="0 0 400 300" role="img" aria-label="가상 동네 온기동 지도"></svg>
+  <div class="maplegend">● 핀이 흐릴수록 오래전에 사라진 곳 · 빈 곳을 누르면 새 장소 등록</div>
+</div>
+<div class="addhint">기억나는 사라진 곳이 있나요? 지도의 빈 자리를 눌러 남겨주세요.</div>
+
+<div id="sheet">
+  <div class="ph">
+    <div class="cat" id="pcat"></div>
+    <h3 id="pname"></h3>
+    <div class="meta" id="pmeta"></div>
+  </div>
+  <canvas id="art" width="640" height="420"></canvas>
+  <div class="artcap">※ 실제 사진이 아니라 <b>기억으로 그린 상상도</b>입니다 (데모: 절차적 일러스트)</div>
+  <div class="vers" id="vers"></div>
+  <div class="mems" id="mems"></div>
+  <div class="sheetacts">
+    <button class="main" id="addMem">🕯️ 기억 보태기</button>
+    <button id="shareCard">🖼️ 카드 저장</button>
+    <button id="shareLink">🔗 링크 복사</button>
+    <button id="shareEtc">📤 공유하기</button>
+  </div>
+  <button class="close" id="closeSheet">지도로 돌아가기</button>
+</div>
+
+<div id="flow">
+  <h3 id="ftitle"></h3>
+  <div class="fsub" id="fsub"></div>
+  <div id="qs"></div>
+  <div class="fwarn" id="fwarn"></div>
+  <div class="qnav">
+    <button id="qprev">이전</button>
+    <button class="next" id="qnext">다음</button>
+  </div>
+  <div class="qdots" id="qdots"></div>
+</div>
+
+<div class="about">
+  <h2>없다란?</h2>
+  <p>한국은 물리적 공간이 가장 빨리 사라지는 나라입니다. 재개발과 폐업으로 "거기 있던 그 집"은 계속 없어지는데, 그걸 담아둘 곳이 없습니다. 사진도 대개 없습니다 — 아무도 동네 분식집을 찍어두지 않으니까요. 그래서 이 아카이브의 재료는 사진이 아니라 기억입니다. 사라진 장소를 지도에 등록하고, 여러 사람이 저마다의 기억 조각을 보태면, 그 기억들을 모아 장소의 상상도를 그립니다. 기억이 쌓일수록 상상도는 다시 그려지고 점점 선명해집니다. 그 변천 과정 자체가 이 아카이브의 시그니처입니다. 지금 보시는 데모는 가상의 동네 '온기동'을 무대로 그 구조 전체 — 지도, 감각 질문으로 기억을 받는 과정, 기억 수에 따라 다시 그려지는 상상도와 버전 타임라인 — 를 체험할 수 있게 만든 것입니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>지도의 핀을 눌러 사라진 장소의 상상도와 사람들의 기억을 읽어보세요.</li>
+    <li>'기억 보태기'를 누르면 간판 색·냄새·함께 간 사람 같은 감각 질문이 하나씩 나옵니다. 두 개 이상 답하면 제출됩니다.</li>
+    <li>기억이 쌓이면 상상도가 다시 그려집니다. 버전 버튼으로 변천을 넘겨보세요.</li>
+    <li>지도의 빈 곳을 누르면 새로운 사라진 장소를 등록할 수 있습니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>상상도는 실제 모습인가요?</b><p>아니요. 기억을 재료로 그린 상상이며, 모든 이미지에 그 사실을 표기합니다. 사실적 사진풍은 의도적으로 쓰지 않습니다.</p></div>
+  <div class="faq"><b>실제 우리 동네 장소를 등록하고 싶어요.</b><p>실제 지도 기반 등록·검수·신고 절차는 실서비스에서 열립니다. 이 데모는 가상 동네라 실제 장소·업소 이름 등록을 권하지 않으며, 아직 영업 중인 곳은 실서비스에서도 등록할 수 없습니다.</p></div>
+  <div class="faq"><b>개인정보는요?</b><p>실명·전화번호·이메일 같은 정보는 제출 단계에서 자동 차단됩니다. 이 데모의 모든 입력은 내 브라우저에만 저장됩니다.</p></div>
+  <div class="faq"><b>왜 '없다'인가요?</b><p>검색해도, 지도를 켜도, 가보아도 이제는 없으니까요. 없다는 사실만 남은 곳들을 위한 이름입니다.</p></div>
+  <div class="more">
+    <a href="/sai/">🚶 사이</a>
+    <a href="/year-book/">📖 추억연감</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<canvas id="cv" width="1080" height="1350"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1900)}
+
+/* ---------- 데이터 ---------- */
+const LS="eopda.v1";
+function store(){try{return JSON.parse(localStorage.getItem(LS))||{places:{},mems:{}}}catch(e){return{places:{},mems:{}}}}
+function save(s){try{localStorage.setItem(LS,JSON.stringify(s))}catch(e){}}
+
+/* 시드: 가상 동네 '온기동'의 예시 장소 (운영자 등록 · 데모) */
+const SEED_PLACES=[
+ {id:"s1",n:"온기분식",c:"분식집",y:2011,px:150,py:150,seed:11},
+ {id:"s2",n:"학다방",c:"다방",y:1999,px:255,py:98,seed:22},
+ {id:"s3",n:"온기극장",c:"단관 극장",y:2004,px:320,py:170,seed:33},
+ {id:"s4",n:"형제철물",c:"철물점",y:2017,px:96,py:210,seed:44},
+ {id:"s5",n:"버드나무 평상",c:"골목 쉼터",y:2020,px:210,py:236,seed:55},
+ {id:"s6",n:"온기서점",c:"헌책방",y:2014,px:78,py:92,seed:66},
+];
+const SEED_MEMS={
+ s1:[{b:"간판이 주황색이었고, 떡볶이 국물에서 멸치 냄새가 진하게 났다. 학교 끝나면 무조건 여기였다.",who:"운영자 등록(데모)"},
+     {b:"할머니가 계란을 하나씩 더 얹어주셨다. 마지막으로 간 건 이사 가기 전날 저녁.",who:"운영자 등록(데모)"},
+     {b:"파란 플라스틱 의자가 삐걱거렸다. 친구랑 컵볶이 하나로 한 시간을 버텼다.",who:"운영자 등록(데모)"}],
+ s2:[{b:"들어가면 원두 볶는 냄새랑 담배 냄새가 반반이었다. 벽지가 짙은 초록색.",who:"운영자 등록(데모)"},
+     {b:"아버지가 맞선을 본 곳이라고 했다. 나는 계란 동동 띄운 쌍화차만 기억난다.",who:"운영자 등록(데모)"}],
+ s3:[{b:"빨간 글씨 간판. 매표소 유리에 늘 성에가 껴 있었다. 엄마랑 마지막으로 본 게 뭐였는지 아직도 생각 안 남.",who:"운영자 등록(데모)"},
+     {b:"의자가 푹 꺼져서 다들 방석을 들고 다녔다. 팝콘 대신 오징어 냄새.",who:"운영자 등록(데모)"},
+     {b:"간판 불이 반쯤 나가서 '온기극' 이었다. 그게 더 좋았다.",who:"운영자 등록(데모)"}],
+ s4:[{b:"쇠 냄새, 기름 냄새. 아저씨가 못 몇 개는 그냥 주머니에 넣어주셨다.",who:"운영자 등록(데모)"}],
+ s5:[{b:"여름밤이면 동네 어른들이 다 나와 있었다. 수박 냄새. 버드나무 잎 스치는 소리.",who:"운영자 등록(데모)"},
+     {b:"평상 다리에 누가 이름을 새겨놨었다. 재개발 공고문이 붙은 날 사라졌다.",who:"운영자 등록(데모)"}],
+ s6:[{b:"노란 백열등, 오래된 종이 냄새. 주인 아저씨는 책 제목만 대면 위치를 다 알았다.",who:"운영자 등록(데모)"},
+     {b:"시험 끝난 날 만화책을 무더기로 빌렸다. 갈색 나무 문이 닫힐 때 종이 딸랑거렸다.",who:"운영자 등록(데모)"}],
+};
+function allPlaces(){
+ const st=store();
+ const seeds=SEED_PLACES.map(p=>({id:p.id,n:p.n,c:p.c,y:p.y,px:p.px,py:p.py,seed:p.seed,seedPlace:true}));
+ const mine=Object.values(st.places);
+ return[...seeds,...mine];
+}
+function placeMems(id){
+ const st=store();
+ return[...(SEED_MEMS[id]||[]),...((st.mems[id])||[])];
+}
+
+/* ---------- 지도 (가상 동네 SVG) ---------- */
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e}
+function drawMap(){
+ const svg=$("map");svg.innerHTML="";
+ // 바탕
+ svg.appendChild(el("rect",{x:0,y:0,width:400,height:300,fill:"#1a1712"}));
+ // 개천
+ const river=el("path",{d:"M -10 250 C 80 235, 150 265, 240 250 S 380 225, 410 240 L 410 300 L -10 300 Z",fill:"#22303a",opacity:.55});
+ svg.appendChild(river);
+ // 블록(동네 덩어리)
+ [[20,30,110,70],[150,22,90,60],[260,30,110,55],[24,120,80,60],[125,110,105,70],[250,105,120,80],[40,205,120,30],[190,205,90,28]].forEach(([x,y,w,h])=>{
+  svg.appendChild(el("rect",{x,y,width:w,height:h,rx:8,fill:"#232019",stroke:"#2e2a21","stroke-width":1}));
+ });
+ // 길
+ [["M 0 100 L 400 92"],["M 135 0 L 128 300"],["M 245 0 L 252 300"],["M 0 195 L 400 200"]].forEach(([d])=>{
+  svg.appendChild(el("path",{d,stroke:"#3a3427","stroke-width":7,fill:"none","stroke-linecap":"round",opacity:.8}));
+ });
+ // 라벨
+ const lbl=el("text",{x:14,y:22,fill:"#5f584a","font-size":11,"font-family":"sans-serif"});lbl.textContent="가상 동네 · 온기동 (데모)";svg.appendChild(lbl);
+ // 핀
+ const now=new Date().getFullYear();
+ allPlaces().forEach(p=>{
+  const age=Math.min(1,(now-p.y)/30);
+  const g=el("g",{class:"pin",transform:`translate(${p.px},${p.py})`});
+  g.appendChild(el("circle",{r:11,fill:"transparent"}));
+  g.appendChild(el("circle",{r:6,fill:"#d9a05b",opacity:(1-age*0.65).toFixed(2),stroke:"#0e0c09","stroke-width":1.5}));
+  g.appendChild(el("circle",{r:2,fill:"#0e0c09",opacity:.6}));
+  const t=el("text",{y:-11,"text-anchor":"middle",fill:"#9a917f","font-size":9,"font-family":"sans-serif",opacity:.9});
+  t.textContent=p.n;g.appendChild(t);
+  g.addEventListener("click",e=>{e.stopPropagation();openPlace(p.id)});
+  svg.appendChild(g);
+ });
+ $("mapcount").textContent="사라진 장소 "+allPlaces().length+"곳";
+ // 빈 곳 클릭 → 등록
+ svg.onclick=e=>{
+  const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
+  const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+  startRegister(Math.round(p.x),Math.round(p.y));
+ };
+}
+
+/* ---------- 상상도 (절차적 회화풍 렌더) ----------
+   절대 규칙: 사진풍 금지·회화 톤 고정·워터마크 필수. 기억 수/내용이 파라미터가 된다. */
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const COLORWORDS={"빨간":"#a84f3d","빨강":"#a84f3d","주황":"#c07a3a","노란":"#c2a33c","노랑":"#c2a33c","초록":"#5d7a4a","파란":"#4a6a8a","파랑":"#4a6a8a","보라":"#6d5a80","분홍":"#b07686","하얀":"#cfc8b8","흰":"#cfc8b8","검은":"#3a3733","검정":"#3a3733","갈색":"#7a5b3d","금색":"#b08d4a","은색":"#9aA0a3"};
+function paintPlace(cv,place,mems,version){
+ const x=cv.getContext("2d"),W=cv.width,H=cv.height;
+ const upto=Math.min(mems.length,version);
+ const used=mems.slice(0,upto);
+ const rng=mulberry(hashStr(place.id+":"+(place.seed||0))+upto*7919);
+ const R=(a,b)=>a+rng()*(b-a);
+ // 기억 텍스트에서 시각 요소 추출: 간판색
+ let sign=null;
+ for(const m of used){for(const w in COLORWORDS){if(m.b.includes(w)){sign=COLORWORDS[w];break}}if(sign)break}
+ sign=sign||"#8a6a45";
+ // 하늘: 사라진 연도가 오래될수록 세피아
+ const now=new Date().getFullYear();
+ const age=Math.min(1,(now-place.y)/30);
+ const sky=x.createLinearGradient(0,0,0,H*0.62);
+ sky.addColorStop(0,`rgb(${60+age*30},${52+age*18},${40+age*6})`);
+ sky.addColorStop(1,`rgb(${38+age*22},${34+age*12},${28+age*4})`);
+ x.fillStyle=sky;x.fillRect(0,0,W,H);
+ // 붓터치 구름
+ for(let i=0;i<14;i++){
+  x.fillStyle=`rgba(${90+R(0,40)|0},${78+R(0,26)|0},${58+R(0,14)|0},${R(0.03,0.09)})`;
+  x.beginPath();x.ellipse(R(0,W),R(10,H*0.4),R(40,130),R(8,26),R(-0.2,0.2),0,7);x.fill();
+ }
+ // 땅
+ x.fillStyle="#2a251c";x.fillRect(0,H*0.72,W,H*0.28);
+ x.fillStyle="rgba(20,17,12,.5)";x.fillRect(0,H*0.72,W,6);
+ // 옆 건물 실루엣
+ for(const side of[[-1,0.06],[1,0.94]]){
+  x.fillStyle=`rgba(30,26,20,${0.85})`;
+  const bw=R(90,130),bx=side[1]*W-(side[0]>0?bw:0);
+  x.fillRect(bx,H*0.30+R(-14,14),bw,H*0.42);
+ }
+ // 본 건물
+ const bw=R(240,300),bh=R(180,220),bx=(W-bw)/2+R(-16,16),by=H*0.72-bh;
+ x.fillStyle="#463b2c";x.fillRect(bx,by,bw,bh);
+ // 벽 붓터치
+ for(let i=0;i<26;i++){
+  x.fillStyle=`rgba(${70+R(-14,20)|0},${58+R(-10,16)|0},${42+R(-8,10)|0},${R(0.08,0.2)})`;
+  x.fillRect(bx+R(0,bw-30),by+R(0,bh-14),R(16,44),R(4,10));
+ }
+ // 지붕/차양
+ x.fillStyle="#372d20";x.fillRect(bx-10,by-14,bw+20,18);
+ // 간판 (기억 속 색)
+ const sw=bw*R(0.62,0.8),sh=R(34,44),sx=bx+(bw-sw)/2,sy=by+R(10,20);
+ x.fillStyle=sign;x.fillRect(sx,sy,sw,sh);
+ x.strokeStyle="rgba(20,16,10,.6)";x.lineWidth=3;x.strokeRect(sx,sy,sw,sh);
+ x.fillStyle="rgba(240,232,214,.92)";
+ x.font=`700 ${Math.min(26,sh-12)}px 'Gowun Batang',serif`;
+ x.textAlign="center";x.textBaseline="middle";
+ x.fillText(place.n,sx+sw/2,sy+sh/2+1,sw-20);
+ // 창/문: 기억이 많을수록 불 켜진 창이 늘어난다 (선명해짐)
+ const cols=3+Math.min(3,Math.floor(upto/2)),rows=2;
+ const gw=bw*0.7,gx=bx+(bw-gw)/2,gy=sy+sh+18;
+ for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+  const wx=gx+c*(gw/cols)+6,wy=gy+r*44,ww=gw/cols-12,wh=30;
+  const lit=rng()<Math.min(0.85,0.2+upto*0.09);
+  x.fillStyle=lit?`rgba(216,172,90,${R(0.5,0.85)})`:"rgba(28,24,18,.9)";
+  x.fillRect(wx,wy,ww,wh);
+  x.strokeStyle="rgba(20,16,10,.5)";x.lineWidth=2;x.strokeRect(wx,wy,ww,wh);
+ }
+ // 문
+ x.fillStyle="#2c2418";x.fillRect(bx+bw/2-24,by+bh-64,48,64);
+ x.strokeStyle="rgba(216,172,90,.35)";x.strokeRect(bx+bw/2-24,by+bh-64,48,64);
+ // 전신주 + 전선
+ x.strokeStyle="rgba(26,22,16,.9)";x.lineWidth=5;
+ x.beginPath();x.moveTo(W*0.12,H*0.72);x.lineTo(W*0.12,H*0.24);x.stroke();
+ x.lineWidth=1.5;
+ for(let i=0;i<3;i++){x.beginPath();x.moveTo(W*0.12,H*(0.27+i*0.03));x.quadraticCurveTo(W*0.55,H*(0.33+i*0.03),W+10,H*(0.25+i*0.03));x.stroke()}
+ // 사람 실루엣: 기억을 남긴 사람 수만큼
+ for(let i=0;i<Math.min(6,upto);i++){
+  const px=bx+R(-60,bw+40),ph=R(26,40);
+  x.fillStyle=`rgba(24,20,14,${R(0.6,0.9)})`;
+  x.beginPath();x.ellipse(px,H*0.72-ph,ph*0.22,ph*0.5,0,0,7);x.fill();
+  x.beginPath();x.arc(px,H*0.72-ph*1.62,ph*0.16,0,7);x.fill();
+ }
+ // 필름 그레인 + 비네트 (회화 톤 고정)
+ for(let i=0;i<900;i++){
+  x.fillStyle=`rgba(${R(180,255)|0},${R(170,230)|0},${R(140,200)|0},${R(0.008,0.03)})`;
+  x.fillRect(R(0,W),R(0,H),1.2,1.2);
+ }
+ const vg=x.createRadialGradient(W/2,H/2,H*0.35,W/2,H/2,H*0.85);
+ vg.addColorStop(0,"rgba(0,0,0,0)");vg.addColorStop(1,"rgba(10,8,5,.55)");
+ x.fillStyle=vg;x.fillRect(0,0,W,H);
+ // 워터마크 (절대 규칙: 모든 노출 지점에 상상도 표기)
+ x.textAlign="left";x.textBaseline="alphabetic";
+ x.fillStyle="rgba(236,229,216,.75)";x.font="600 13px sans-serif";
+ x.fillText("기억으로 그린 상상도 · 데모",12,H-12);
+ x.textAlign="right";
+ x.fillText("tomatoeggcat.com/eopda",W-12,H-12);
+}
+
+/* ---------- 장소 시트 ---------- */
+let curId=null,curVer=0;
+function versionsOf(n){
+ // 렌더 갱신 트리거: 기억 1 → 3 → 7 → 15 (기획서 재생성 정책 축소판)
+ const marks=[1,3,7,15].filter(m=>m<=n);
+ return marks.length?marks:[Math.min(1,n)];
+}
+function openPlace(id){
+ const p=allPlaces().find(q=>q.id===id);
+ if(!p)return;
+ curId=id;
+ const mems=placeMems(id);
+ const vers=versionsOf(mems.length);
+ curVer=vers[vers.length-1]||0;
+ $("pcat").textContent=(p.c||"장소")+(p.seedPlace?" · 운영자 등록(데모 예시)":" · 내가 등록");
+ $("pname").textContent=p.n;
+ $("pmeta").textContent=`${p.y}년쯤 사라짐 · ${mems.length}명이 기억하는 곳`;
+ // 버전 타임라인
+ const vv=$("vers");vv.innerHTML="";
+ vers.forEach((m,i)=>{
+  const b=document.createElement("button");
+  b.textContent="v"+(i+1)+" · 기억 "+m+"개";
+  if(m===curVer)b.classList.add("on");
+  b.addEventListener("click",()=>{curVer=m;[...vv.children].forEach(c=>c.classList.remove("on"));b.classList.add("on");paintPlace($("art"),p,mems,curVer)});
+  vv.appendChild(b);
+ });
+ paintPlace($("art"),p,mems,curVer);
+ const mm=$("mems");mm.innerHTML="";
+ mems.forEach(m=>{
+  const d=document.createElement("div");d.className="mem";
+  d.textContent="“"+m.b+"”";
+  const s=document.createElement("small");s.textContent=m.who||"익명";d.appendChild(s);
+  mm.appendChild(d);
+ });
+ $("sheet").style.display="block";
+ $("sheet").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("closeSheet").addEventListener("click",()=>{$("sheet").style.display="none"});
+
+/* ---------- 기억/등록 플로우 ---------- */
+const PII=[/01[016789][ -]?\d{3,4}[ -]?\d{4}/,/\d{6}[ -]?[1-4]\d{6}/,/[\w.]+@[\w.]+\.\w{2}/,/https?:\/\/|www\./i];
+const BADW=/씨발|시발|병신|새끼|지랄|좆|썅/;
+function checkBody(t){
+ for(const r of PII)if(r.test(t))return"연락처·이메일·링크 같은 개인정보는 남길 수 없어요.";
+ if(BADW.test(t))return"비방·욕설은 기억으로 받지 않아요.";
+ return null;
+}
+let flow=null;
+const MEM_QS=[
+ {k:"sign",q:"간판은 무슨 색이었나요? 글씨체나 불빛도 좋아요.",ph:"예: 주황색 바탕에 흰 글씨, 밤엔 반만 켜졌다"},
+ {k:"smell",q:"들어서면 무슨 냄새가 났나요?",ph:"예: 기름 냄새, 오래된 종이 냄새"},
+ {k:"who",q:"누구랑 갔나요? 그 사람은 뭘 시켰나요?",ph:"예: 엄마랑. 엄마는 늘 쌍화차"},
+ {k:"last",q:"마지막으로 간 게 언제인가요? 그날 기억나는 것 하나만.",ph:"예: 이사 전날 저녁, 비가 왔다"},
+];
+function startMemory(placeId){
+ flow={type:"mem",placeId,step:0,ans:{}};
+ $("ftitle").textContent="기억 보태기";
+ $("fsub").textContent="네 가지 감각 질문 중 두 개 이상 답하면 제출돼요. 생각 안 나면 '다음'으로 건너뛰세요.";
+ renderStep();
+ $("flow").style.display="block";
+ $("flow").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function startRegister(px,py){
+ flow={type:"reg",px,py,step:0,ans:{}};
+ $("ftitle").textContent="사라진 장소 등록";
+ $("fsub").textContent="데모 규칙: 가상 동네이니 실제 업소명 대신 기억 속 이름으로 적어주세요. 아직 영업 중인 곳은 등록할 수 없어요.";
+ renderStep();
+ $("flow").style.display="block";
+ $("flow").scrollIntoView({behavior:"smooth",block:"start"});
+}
+const REG_QS=[
+ {k:"name",q:"그곳의 이름은 무엇이었나요?",ph:"예: 골목 끝 만화방",input:true},
+ {k:"cat",q:"어떤 곳이었나요?",ph:"예: 만화방, 목욕탕, 문방구",input:true},
+ {k:"year",q:"언제쯤 사라졌나요? (연도)",ph:"예: 2013",input:true},
+ ...MEM_QS.slice(0,2),
+];
+function flowQs(){return flow.type==="mem"?MEM_QS:REG_QS}
+function renderStep(){
+ const qs=flowQs(),cur=qs[flow.step];
+ const box=$("qs");box.innerHTML="";
+ const d=document.createElement("div");d.className="q on";
+ const l=document.createElement("label");l.textContent=cur.q;d.appendChild(l);
+ const inp=document.createElement(cur.input?"input":"textarea");
+ inp.placeholder=cur.ph;inp.id="finput";inp.value=flow.ans[cur.k]||"";
+ d.appendChild(inp);box.appendChild(d);
+ $("qdots").textContent=(flow.step+1)+" / "+qs.length+" · 한 화면에 하나씩";
+ $("qprev").style.visibility=flow.step===0?"hidden":"visible";
+ $("qnext").textContent=flow.step===qs.length-1?"제출":"다음";
+ $("fwarn").textContent="";
+ inp.focus();
+}
+$("qprev").addEventListener("click",()=>{saveStep();if(flow.step>0){flow.step--;renderStep()}});
+$("qnext").addEventListener("click",()=>{
+ saveStep();
+ const qs=flowQs();
+ if(flow.step<qs.length-1){flow.step++;renderStep();return}
+ submitFlow();
+});
+function saveStep(){
+ const cur=flowQs()[flow.step];
+ flow.ans[cur.k]=($("finput")?.value||"").trim();
+}
+function submitFlow(){
+ const a=flow.ans;
+ if(flow.type==="mem"){
+  const answered=MEM_QS.filter(q=>a[q.k]);
+  if(answered.length<2){$("fwarn").textContent="두 개 이상 답해야 기억이 돼요. 짧아도 괜찮아요.";return}
+  const body=answered.map(q=>a[q.k]).join(" · ");
+  const err=checkBody(body);
+  if(err){$("fwarn").textContent=err;return}
+  const st=store();
+  st.mems[flow.placeId]=st.mems[flow.placeId]||[];
+  st.mems[flow.placeId].push({b:body,who:"나의 기억 (이 브라우저에만 저장)"});
+  save(st);
+  $("flow").style.display="none";
+  openPlace(flow.placeId);
+  toast("기억이 보태졌어요 — 상상도가 다시 그려집니다");
+ }else{
+  if(!a.name||!a.cat||!/^(19|20)\d{2}$/.test(a.year||"")){$("fwarn").textContent="이름·종류·사라진 연도(예: 2013)를 채워주세요.";return}
+  const y=+a.year,now=new Date().getFullYear();
+  if(y>now){$("fwarn").textContent="아직 오지 않은 연도예요.";return}
+  const senses=[a.sign,a.smell].filter(Boolean);
+  if(!senses.length){$("fwarn").textContent="감각 질문 중 하나는 답해주세요. 그게 첫 기억이 돼요.";return}
+  const body=senses.join(" · ");
+  const err=checkBody(a.name+" "+a.cat+" "+body);
+  if(err){$("fwarn").textContent=err;return}
+  const st=store();
+  const id="u"+Date.now();
+  st.places[id]={id,n:a.name.slice(0,20),c:a.cat.slice(0,12),y,px:flow.px,py:flow.py,seed:hashStr(id)%997};
+  st.mems[id]=[{b:body,who:"나의 기억 (이 브라우저에만 저장)"}];
+  save(st);
+  $("flow").style.display="none";
+  drawMap();openPlace(id);
+  toast("온기동 지도에 새 자리가 생겼어요");
+ }
+}
+$("addMem").addEventListener("click",()=>{if(curId)startMemory(curId)});
+
+/* ---------- 공유 ---------- */
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const dec=s=>JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/")))));
+function curPlace(){return allPlaces().find(q=>q.id===curId)}
+function shareUrl(){
+ const p=curPlace(),m=placeMems(curId);
+ return location.origin+location.pathname+"?r="+enc({n:p.n,c:p.c,y:p.y,m:m.length,q:(m[0]?.b||"").slice(0,40)});
+}
+$("shareLink").addEventListener("click",async()=>{
+ if(!curId)return;
+ try{await navigator.clipboard.writeText(shareUrl());toast("링크를 복사했어요")}catch(e){prompt("복사해 주세요",shareUrl())}
+});
+$("shareEtc").addEventListener("click",async()=>{
+ if(!curId)return;
+ const p=curPlace();
+ if(navigator.share){try{await navigator.share({title:"없다 — "+p.n,text:`${p.n} — ${placeMems(curId).length}명이 기억하는 곳`,url:shareUrl()})}catch(e){}}
+ else $("shareLink").click();
+});
+$("shareCard").addEventListener("click",async()=>{
+ if(!curId)return;
+ try{await document.fonts.ready}catch(e){}
+ const p=curPlace(),mems=placeMems(curId);
+ const cv=$("cv"),x=cv.getContext("2d"),W=1080,H=1350;
+ x.fillStyle="#0e0c09";x.fillRect(0,0,W,H);
+ // 상상도를 카드에 크게
+ const art=document.createElement("canvas");art.width=960;art.height=630;
+ paintPlace(art,p,mems,curVer||mems.length);
+ x.drawImage(art,60,150,960,630);
+ x.textAlign="center";
+ x.fillStyle="#9a917f";x.font="400 30px 'Gowun Batang',serif";
+ x.fillText("사라진 것들의 아카이브",W/2,90);
+ x.fillStyle="#ece5d8";x.font="700 64px 'Gowun Batang',serif";
+ x.fillText(p.n,W/2,880);
+ x.fillStyle="#9a917f";x.font="400 32px 'Gowun Batang',serif";
+ x.fillText(`${p.y}년쯤 사라짐 · ${mems.length}명이 기억하는 곳`,W/2,940);
+ if(mems[0]){
+  x.fillStyle="#cfc6b4";x.font="400 30px 'Gowun Batang',serif";
+  const q="“"+mems[0].b.slice(0,38)+(mems[0].b.length>38?"…":"")+"”";
+  x.fillText(q,W/2,1030,W-140);
+ }
+ x.fillStyle="#5f584a";x.font="400 24px sans-serif";
+ x.fillText("기억으로 그린 상상도 · 데모 (가상 동네 온기동)",W/2,H-120);
+ x.fillStyle="#9a917f";x.font="600 28px sans-serif";
+ x.fillText("tomatoeggcat.com/eopda",W/2,H-64);
+ cv.toBlob(b=>{
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b);
+  a.download=`eopda-${p.id||"place"}.png`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  toast("기억 카드를 저장했어요");
+ },"image/png");
+});
+
+/* ---------- 인바운드 ---------- */
+(function(){
+ const p=new URLSearchParams(location.search).get("r");
+ if(!p)return;
+ try{
+  const st=dec(p);
+  if(!st||typeof st.n!=="string")return;
+  $("intext").innerHTML=`누군가 기억하는 곳 — <b>${st.n.slice(0,20)}</b> (${st.c?String(st.c).slice(0,12)+", ":""}${+st.y||"?"}년쯤 사라짐, ${+st.m||1}명의 기억)${st.q?`<br />“${String(st.q).slice(0,40)}…”`:""}`;
+  $("inbound").classList.add("show");
+ }catch(e){/* 잘못된 링크는 무시 */}
+})();
+$("meToo").addEventListener("click",()=>{
+ history.replaceState(null,"",location.pathname);
+ $("inbound").classList.remove("show");
+ document.querySelector(".mapcard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* ---------- 초기화 ---------- */
+drawMap();
+</script>
+</body>
+</html>

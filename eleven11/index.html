@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#050507" />
+<title>11시 11분 — 하루 1분만 열리는 글쓰기 (데모) | TomatoEggCat</title>
+<meta name="description" content="매일 밤 11시 11분, 정확히 60초 동안만 열리는 익명 글쓰기 공간의 프런트엔드 데모. 1분이 지나면 그날의 글이 한 장의 이미지로 굳습니다. 111자, 수정도 삭제도 없이." />
+<link rel="canonical" href="https://tomatoeggcat.com/eleven11/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="11시 11분 — 하루 1분만 열리는 글쓰기" />
+<meta property="og:description" content="매일 밤 23:11, 60초 동안만. 놓치면 오늘의 문은 영영 닫힙니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/eleven11/" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"11시 11분 (데모)","description":"하루 1분만 열리는 익명 글쓰기 공간의 프런트엔드 데모","applicationCategory":"EntertainmentApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/eleven11/","inLanguage":"ko-KR","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"왜 하루에 1분만 열리나요?","acceptedAnswer":{"@type":"Answer","text":"무한 스크롤의 정반대를 실험하는 공간이기 때문입니다. 모두가 같은 60초에만 쓸 수 있고, 그 순간이 지나면 그날의 기록은 한 장의 이미지로 굳어 다시는 늘어나지 않습니다."}},
+{"@type":"Question","name":"글을 수정하거나 지울 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"없습니다. 1인 1개, 111자 이내, 제출하면 끝입니다. 제출 전에 이 사실을 한 번 더 확인받습니다."}},
+{"@type":"Question","name":"이 페이지는 실서비스인가요?","acceptedAnswer":{"@type":"Answer","text":"프런트엔드 데모입니다. 서버가 없어 글은 이 브라우저에만 저장되고, 다른 사람의 글은 데모용 예시 아카이브로 보여집니다. 실서비스의 서버 시간 검증·웹푸시·전체 조판은 백엔드 도입 후 열립니다."}},
+{"@type":"Question","name":"11시 11분을 놓치지 않으려면?","acceptedAnswer":{"@type":"Answer","text":"페이지의 '캘린더에 넣기' 버튼으로 매일 23:05 알림 일정(.ics)을 받아둘 수 있습니다. 웹푸시 알림은 실서비스에서 제공 예정입니다."}}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TomatoEggCat","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"11시 11분","item":"https://tomatoeggcat.com/eleven11/"}]}
+</script>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#050507;--panel:#0d0d12;--line:#1e1e26;--ink:#ecebe6;--dim:#8b8b96;--faint:#4e4e5a;--accent:#f0e14a}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Batang","Apple SD Gothic Neo",serif;line-height:1.7}
+.wrap{max-width:560px;margin:0 auto;padding:28px 20px 60px}
+.nav{font-size:13px;color:var(--faint);margin-bottom:30px;font-family:-apple-system,sans-serif}
+.nav a{color:var(--dim);text-decoration:none}
+.demo{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--dim);font-family:-apple-system,sans-serif;margin-bottom:26px}
+h1{font-size:40px;font-weight:700;margin:0 0 4px;letter-spacing:.04em}
+.lead{color:var(--dim);margin:0 0 30px;font-size:15px}
+.gate{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:34px 22px;text-align:center;margin-bottom:24px}
+.clock{font-size:64px;font-weight:700;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.clock.open{color:var(--accent)}
+.gatemsg{color:var(--dim);font-size:14.5px;margin-top:10px}
+.gatemsg b{color:var(--accent)}
+.sub{color:var(--faint);font-size:12.5px;margin-top:14px;font-family:-apple-system,sans-serif}
+.compose{display:none;margin-top:22px;text-align:left}
+.compose textarea{width:100%;height:120px;background:var(--bg);border:1px solid var(--line);border-radius:12px;color:var(--ink);font-size:17px;padding:14px;font-family:inherit;resize:none;outline:none;line-height:1.8}
+.compose textarea:focus{border-color:var(--accent)}
+.cnt{display:flex;justify-content:space-between;font-size:12.5px;color:var(--faint);margin-top:6px;font-family:-apple-system,sans-serif}
+.cnt .left{font-variant-numeric:tabular-nums}
+.submit{width:100%;margin-top:12px;background:var(--accent);color:#141304;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.05em}
+.submit:disabled{background:#25252e;color:var(--faint);cursor:default}
+.fwarn{font-size:12.5px;color:#d98d8d;min-height:18px;margin-top:6px;font-family:-apple-system,sans-serif}
+.practice{background:none;border:1px dashed var(--line);color:var(--dim);border-radius:10px;padding:10px 16px;font-size:13px;cursor:pointer;font-family:-apple-system,sans-serif;margin-top:16px}
+.ics{background:none;border:0;color:var(--faint);font-size:12.5px;cursor:pointer;font-family:-apple-system,sans-serif;text-decoration:underline;margin-top:10px}
+.done{display:none;margin-top:20px;font-size:15px;color:var(--dim)}
+.done b{color:var(--ink)}
+h2{font-size:19px;margin:40px 0 12px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px}
+.cal .dow{font-size:11px;color:var(--faint);text-align:center;font-family:-apple-system,sans-serif;padding:4px 0}
+.cal button{aspect-ratio:1;border:1px solid var(--line);background:var(--panel);border-radius:9px;color:var(--faint);font-size:12px;cursor:default;font-family:-apple-system,sans-serif;padding:0;position:relative}
+.cal button.has{cursor:pointer;color:var(--ink);border-color:#33333f}
+.cal button.has::after{content:"";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.cal button.today{outline:1px solid var(--accent)}
+.calnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:-apple-system,sans-serif;font-size:14px;color:var(--dim)}
+.calnav button{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:4px 12px;cursor:pointer}
+.rand{width:100%;background:none;border:1px dashed var(--line);color:var(--dim);border-radius:10px;padding:11px;font-size:13.5px;cursor:pointer;font-family:-apple-system,sans-serif;margin-top:6px}
+#day{display:none;margin-top:22px}
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.dayhead .d{font-size:17px}
+.dayhead .n{font-size:12.5px;color:var(--faint);font-family:-apple-system,sans-serif}
+.sheet{border:1px solid var(--line);background:#0a0a0f;border-radius:14px;padding:26px 20px;margin-bottom:12px}
+.sheet .line{margin:0 0 18px;color:var(--ink)}
+.sheet .line:last-child{margin:0}
+.sheet .line small{display:block;color:var(--faint);font-size:11px;font-family:-apple-system,sans-serif;margin-top:4px}
+.dayacts{display:flex;gap:10px}
+.dayacts button{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:11px;font-size:13.5px;cursor:pointer;font-family:-apple-system,sans-serif}
+.about{margin-top:52px;font-size:14.5px;color:#b9b9c2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",sans-serif}
+.about h2{font-family:"Gowun Batang",serif;color:var(--ink);font-size:18px;margin:28px 0 8px}
+.about p{margin:0 0 10px}
+.about ol{padding-left:20px;margin:0 0 10px}
+.faq{border-top:1px solid var(--line);padding:14px 0}
+.faq b{display:block;margin-bottom:4px;color:var(--ink)}
+.faq p{margin:0;color:var(--dim);font-size:13.5px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 12px;border-radius:999px;text-decoration:none;font-family:-apple-system,sans-serif}
+footer{margin-top:40px;text-align:center;color:var(--faint);font-size:12px;border-top:1px solid var(--line);padding-top:20px;font-family:-apple-system,sans-serif}
+footer a{color:var(--dim);margin:0 6px;text-decoration:none}
+canvas{display:none}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#141304;padding:10px 18px;border-radius:999px;font-size:13.5px;font-family:-apple-system,sans-serif;transition:transform .3s;z-index:20}
+.toast.show{transform:translateX(-50%)}
+.inbound{display:none;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel);border-radius:12px;padding:14px 16px;margin-bottom:22px;font-size:14px;color:var(--dim);font-family:-apple-system,sans-serif}
+.inbound.show{display:block}
+.inbound .q{font-family:"Gowun Batang",serif;color:var(--ink);font-size:17px;margin:8px 0}
+.inbound button{margin-top:8px;background:var(--accent);color:#141304;border:0;border-radius:10px;padding:9px 15px;font-size:13.5px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 11시 11분</div>
+
+<h1>11시 11분</h1>
+<p class="lead">매일 밤 23:11, 정확히 60초 동안만 열리는 곳.<br />1분이 지나면 그날의 글은 한 장으로 굳습니다.</p>
+
+<div class="demo">🧪 <b>프런트엔드 데모</b> — 서버가 없어 내 글은 이 브라우저에만 저장되고, 과거 아카이브는 예시 데이터입니다. 실서비스의 서버 시간 강제·전체 조판·웹푸시는 백엔드 승인 후 구현됩니다. 시간은 기기 시계 기준 KST 환산입니다.</div>
+
+<div class="inbound" id="inbound">
+  누군가 그날 남긴 111자를 보고 있어요.
+  <div class="q" id="inq"></div>
+  <div id="ind" style="font-size:12px;color:var(--faint)"></div>
+  <button id="meToo">나도 오늘 밤 11시 11분에 쓰러 가기</button>
+</div>
+
+<div class="gate">
+  <div class="clock" id="clock">--:--:--</div>
+  <div class="gatemsg" id="gatemsg">다음 문이 열리기까지</div>
+  <div class="compose" id="compose">
+    <textarea id="txt" maxlength="111" placeholder="111자. 수정도 삭제도 없습니다."></textarea>
+    <div class="cnt"><span id="chars">0 / 111</span><span class="left" id="left">60초</span></div>
+    <div class="fwarn" id="fwarn"></div>
+    <button class="submit" id="submit">이대로 굳히기 (되돌릴 수 없음)</button>
+  </div>
+  <div class="done" id="done"></div>
+  <div class="sub" id="sub">글자수 111자 · 1인 1개 · 수정/삭제 불가 · 완전 익명</div>
+  <button class="practice" id="practice">🕯️ 연습 모드 — 지금 60초 체험하기</button>
+  <br /><button class="ics" id="ics">📅 캘린더에 넣기 (매일 23:05 알림 .ics)</button>
+</div>
+
+<h2>아카이브</h2>
+<div class="calnav"><button id="pm">‹</button><span id="mon"></span><button id="nm">›</button></div>
+<div class="cal" id="cal"></div>
+<button class="rand" id="rand">✦ 아무 날이나 펼쳐보기</button>
+
+<div id="day">
+  <div class="dayhead"><span class="d" id="dayd"></span><span class="n" id="dayn"></span></div>
+  <div class="sheet" id="sheet"></div>
+  <div class="dayacts">
+    <button id="dayimg">🖼️ 이 날을 이미지로</button>
+    <button id="daylink">🔗 링크 복사</button>
+  </div>
+</div>
+
+<div class="about">
+  <h2>11시 11분이란?</h2>
+  <p>피드는 끝이 없고, 알림은 온종일 울립니다. 11시 11분은 그 정반대를 실험합니다. 이 공간의 문은 매일 밤 23시 11분 0초에 열려 23시 11분 59초에 닫힙니다. 그 60초 안에 도착한 사람만 111자 이내의 글 하나를 남길 수 있고, 수정도 삭제도 없습니다. 1분이 지나면 그날 쓰인 글 전체가 한 장의 이미지로 조판되어 영구 보관됩니다. 일곱 명이 왔다면 "이날 여기 일곱 명이 있었다"가 되고, 그 밀도 자체가 그날의 기록이 됩니다. 놓친 날의 문은 다시 열리지 않습니다 — 그래서 지난 글은 읽을 수만 있습니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>캘린더 버튼으로 매일 23:05 알림을 받아두거나, 밤 11시 11분에 직접 찾아옵니다.</li>
+    <li>문이 열린 60초 동안 111자 이내로 씁니다. 카운트다운이 끝나면 입력창은 사라집니다.</li>
+    <li>지나간 날짜는 아카이브 달력에서 펼쳐 읽고, 이미지로 저장하거나 링크로 공유합니다.</li>
+    <li>처음이라면 연습 모드로 60초의 감각을 미리 체험해 보세요. 연습 글은 조판되지 않습니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>왜 하루에 1분만 열리나요?</b><p>무한 스크롤의 반대편을 실험하기 위해서입니다. 전원이 같은 60초를 공유할 때만 생기는 밀도가 있습니다.</p></div>
+  <div class="faq"><b>수정이나 삭제는 정말 안 되나요?</b><p>네. 제출 버튼에 적힌 그대로, 굳히면 끝입니다. 그래서 제출 전 딱 한 번 더 물어봅니다.</p></div>
+  <div class="faq"><b>이 페이지는 실서비스인가요?</b><p>프런트엔드 데모입니다. 내 글은 이 브라우저에만 저장되며, 다른 참여자의 글·전체 조판·서버 시간 검증·웹푸시는 백엔드 도입 후 열립니다.</p></div>
+  <div class="faq"><b>부적절한 글은 어떻게 하나요?</b><p>제출 순간 욕설·연락처·링크·광고를 규칙 기반으로 즉시 차단합니다. 실서비스에서는 마감 후 2차 검수를 거쳐 위반 글을 조판에서 제외합니다.</p></div>
+  <div class="more">
+    <a href="/sai/">🚶 사이</a>
+    <a href="/future-letter/">✉️ 미래편지</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<canvas id="cv" width="1080" height="1350"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const LS="eleven11.v1";
+function store(){try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return{}}}
+function save(s){try{localStorage.setItem(LS,JSON.stringify(s))}catch(e){}}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1900)}
+
+/* ---------- KST 시계 ---------- */
+function kstNow(){
+ // 기기 시계 기준 KST(UTC+9). 서버 시간 검증은 실서비스 몫 — 데모 배너에 명시.
+ return new Date(Date.now()+9*3600*1000);
+}
+const kd=d=>d.toISOString().slice(0,10);          // KST 보정된 Date → YYYY-MM-DD
+const todayKey=()=>kd(kstNow());
+function gateState(){
+ const n=kstNow();
+ const h=n.getUTCHours(),m=n.getUTCMinutes(),s=n.getUTCSeconds();
+ if(h===23&&m===11)return{open:true,leftSec:59-s};
+ // 다음 23:11까지 남은 초
+ const t=new Date(n);t.setUTCHours(23,11,0,0);
+ if(n>=t)t.setUTCDate(t.getUTCDate()+1);
+ return{open:false,until:Math.floor((t-n)/1000)};
+}
+
+/* ---------- 시드 아카이브 (데모 예시 표기) ---------- */
+const SEED={};
+(function(){
+ const lines=[
+  ["오늘 처음으로 아무에게도 화내지 않았다. 나한테도.","버스 맨 뒷자리에서 울었는데 아무도 몰랐다. 그게 고마웠다.","내일 면접. 떨어져도 밥은 맛있었으면 좋겠다.","엄마가 김치를 부쳤다. 나는 아직 못 받은 척했다. 하루 더 설레고 싶어서."],
+  ["퇴사서를 서랍에 넣고 잠갔다. 열쇠는 아직 내가 갖고 있다.","별거 아닌 하루였는데 별거였다.","좋아한다고 말할 뻔했다. 11시 11분이라 참았다. 12시엔 말할지도."],
+  ["세탁기 돌아가는 소리만 듣고 있다. 이게 평화인가.","오늘 최선을 다하지 않았다. 그래도 잤으면 좋겠다, 푹.","할머니 목소리를 녹음해뒀다. 재생은 아직 못 하겠다.","서른이 됐다. 아무 일도 일어나지 않았다. 다행이다.","비 오는 날 우산을 안 샀다. 뛰었다. 오랜만에."],
+ ];
+ const base=new Date(Date.now()+9*3600*1000);
+ for(let i=1;i<=3;i++){
+  const d=new Date(base);d.setUTCDate(d.getUTCDate()-i);
+  SEED[kd(d)]=lines[i-1];
+ }
+})();
+
+/* ---------- 상태 ---------- */
+let practice=false,practiceLeft=0,practiceTimer=null,shownDay=null;
+
+/* ---------- 시계 루프 ---------- */
+function fmt(sec){
+ const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;
+ return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function tick(){
+ const g=gateState(),st=store();
+ const wrote=st.entries&&st.entries[todayKey()];
+ if(practice){
+  $("clock").textContent="00:00:"+String(practiceLeft).padStart(2,"0");
+  $("clock").classList.add("open");
+  $("gatemsg").innerHTML="<b>연습 중</b> — 이 글은 조판되지 않아요";
+  $("compose").style.display="block";$("done").style.display="none";
+  $("left").textContent=practiceLeft+"초";
+  return;
+ }
+ if(g.open&&!wrote){
+  $("clock").textContent="00:00:"+String(g.leftSec).padStart(2,"0");
+  $("clock").classList.add("open");
+  $("gatemsg").innerHTML="<b>문이 열렸습니다.</b> 지금뿐이에요.";
+  $("compose").style.display="block";$("done").style.display="none";
+  $("left").textContent=g.leftSec+"초";
+ }else{
+  $("clock").classList.remove("open");
+  $("compose").style.display="none";
+  if(wrote){
+   $("clock").textContent=fmt(g.open?0:g.until);
+   $("done").style.display="block";
+   $("done").innerHTML="오늘의 글을 굳혔습니다. <b>내일 밤 11시 11분</b>에 다시.";
+   $("gatemsg").textContent=g.open?"문이 닫히는 중":"다음 문이 열리기까지";
+  }else{
+   $("clock").textContent=fmt(g.until??0);
+   $("done").style.display="none";
+   $("gatemsg").textContent="다음 문이 열리기까지";
+  }
+ }
+}
+setInterval(tick,250);
+
+/* ---------- 작성/제출 ---------- */
+$("txt").addEventListener("input",()=>{$("chars").textContent=$("txt").value.length+" / 111"});
+// 규칙 기반 즉시 차단: 욕설/연락처/링크/광고 (실서비스는 마감 후 LLM 2차 검수 추가)
+const BAD=[/씨발|시발|병신|새끼|지랄|좆|썅/,/01[016789][ -]?\d{3,4}[ -]?\d{4}/,/https?:\/\/|www\.|\.com|\.kr|\.net/i,/카톡|카카오톡\s*아이디|텔레그램|오픈채팅/,/팝니다|삽니다|대출|도박|홍보/];
+function checkText(t){
+ if(!t.trim())return"아무것도 쓰지 않았어요.";
+ for(const r of BAD)if(r.test(t))return"욕설·연락처·링크·광고는 남길 수 없어요.";
+ return null;
+}
+$("submit").addEventListener("click",()=>{
+ const t=$("txt").value.slice(0,111);
+ const err=checkText(t);
+ if(err){$("fwarn").textContent=err;return}
+ $("fwarn").textContent="";
+ if(!confirm("정말 굳힐까요? 수정도 삭제도 할 수 없습니다."))return;
+ if(practice){
+  clearInterval(practiceTimer);practice=false;
+  $("txt").value="";$("chars").textContent="0 / 111";
+  toast("연습 끝 — 진짜 문은 밤 11시 11분에 열려요");
+  tick();return;
+ }
+ const g=gateState();
+ if(!g.open){toast("문이 닫혔어요. 내일 밤에.");tick();return}
+ const st=store();st.entries=st.entries||{};
+ st.entries[todayKey()]={t,at:Date.now()};
+ save(st);
+ $("txt").value="";$("chars").textContent="0 / 111";
+ buildCal();tick();
+ toast("굳었습니다. 내일 밤 11시 11분에.");
+});
+
+/* ---------- 연습 모드 ---------- */
+$("practice").addEventListener("click",()=>{
+ if(practice)return;
+ practice=true;practiceLeft=60;
+ $("txt").value="";$("chars").textContent="0 / 111";$("fwarn").textContent="";
+ practiceTimer=setInterval(()=>{
+  practiceLeft--;
+  if(practiceLeft<=0){
+   clearInterval(practiceTimer);practice=false;
+   toast("60초가 지났습니다. 이런 식으로 문이 닫혀요.");
+   tick();
+  }
+ },1000);
+ tick();$("txt").focus();
+});
+
+/* ---------- .ics ---------- */
+$("ics").addEventListener("click",()=>{
+ const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//tomatoeggcat//eleven11//KO","BEGIN:VEVENT","UID:eleven11-daily@tomatoeggcat.com","DTSTART;TZID=Asia/Seoul:20260101T230500","RRULE:FREQ=DAILY","SUMMARY:11시 11분 — 6분 뒤 문이 열립니다","DESCRIPTION:https://tomatoeggcat.com/eleven11/","BEGIN:VALARM","TRIGGER:PT0S","ACTION:DISPLAY","DESCRIPTION:11시 11분","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));
+ a.download="eleven11.ics";
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+ toast("캘린더 파일을 받았어요");
+});
+
+/* ---------- 아카이브 ---------- */
+let calY,calM; // KST 기준
+function dayEntries(key){
+ const st=store();
+ const mine=st.entries&&st.entries[key]?[{t:st.entries[key].t,mine:true}]:[];
+ const seed=(SEED[key]||[]).map(t=>({t,mine:false}));
+ return[...seed,...mine];
+}
+function buildCal(){
+ const el=$("cal");el.innerHTML="";
+ ["일","월","화","수","목","금","토"].forEach(d=>{const s=document.createElement("div");s.className="dow";s.textContent=d;el.appendChild(s)});
+ $("mon").textContent=calY+"년 "+(calM+1)+"월";
+ const first=new Date(Date.UTC(calY,calM,1)),start=first.getUTCDay();
+ const days=new Date(Date.UTC(calY,calM+1,0)).getUTCDate();
+ for(let i=0;i<start;i++){const b=document.createElement("button");b.disabled=true;b.style.visibility="hidden";el.appendChild(b)}
+ const tk=todayKey();
+ for(let d=1;d<=days;d++){
+  const key=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+  const b=document.createElement("button");
+  b.textContent=d;
+  const has=dayEntries(key).length>0;
+  if(has){b.classList.add("has");b.addEventListener("click",()=>showDay(key))}
+  if(key===tk)b.classList.add("today");
+  el.appendChild(b);
+ }
+}
+function showDay(key){
+ const list=dayEntries(key);
+ if(!list.length)return;
+ shownDay=key;
+ $("day").style.display="block";
+ const[y,m,d]=key.split("-");
+ $("dayd").textContent=`${y}년 ${+m}월 ${+d}일`;
+ $("dayn").textContent=`이날 여기 있었던 사람 ${list.length}명`+(SEED[key]?" · 예시 데이터 포함(데모)":"");
+ const sh=$("sheet");sh.innerHTML="";
+ list.forEach(e=>{
+  const p=document.createElement("p");p.className="line";
+  p.textContent=e.t;
+  if(e.mine){const s=document.createElement("small");s.textContent="내가 남긴 글 (이 브라우저에만 저장됨)";p.appendChild(s)}
+  sh.appendChild(p);
+ });
+ $("day").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("pm").addEventListener("click",()=>{calM--;if(calM<0){calM=11;calY--}buildCal()});
+$("nm").addEventListener("click",()=>{calM++;if(calM>11){calM=0;calY++}buildCal()});
+$("rand").addEventListener("click",()=>{
+ const st=store();
+ const keys=[...new Set([...Object.keys(SEED),...Object.keys(st.entries||{})])];
+ if(!keys.length)return;
+ const k=keys[Math.floor(Math.random()*keys.length)];
+ const[y,m]=k.split("-");calY=+y;calM=+m-1;buildCal();showDay(k);
+});
+
+/* ---------- 조판 이미지 ---------- */
+$("dayimg").addEventListener("click",async()=>{
+ if(!shownDay)return;
+ try{await document.fonts.ready}catch(e){}
+ const list=dayEntries(shownDay);
+ const cv=$("cv"),x=cv.getContext("2d"),W=1080,H=1350;
+ x.fillStyle="#050507";x.fillRect(0,0,W,H);
+ x.textAlign="center";
+ const[y,m,d]=shownDay.split("-");
+ x.fillStyle="#4e4e5a";x.font="400 34px 'Gowun Batang',serif";
+ x.fillText(`${y}년 ${+m}월 ${+d}일 밤 11시 11분`,W/2,110);
+ // 글 수에 따라 크기 변형: 적을수록 크게, 많을수록 촘촘하게
+ const n=list.length;
+ const fs=n<=3?46:n<=6?38:n<=12?30:24;
+ const lh=fs*1.75,maxw=W-160;
+ x.font=`400 ${fs}px 'Gowun Batang',serif`;
+ const blocks=[];
+ for(const e of list){
+  const words=e.t.split("");let line="",lines=[];
+  for(const ch of words){
+   if(x.measureText(line+ch).width>maxw){lines.push(line);line=ch}
+   else line+=ch;
+  }
+  if(line)lines.push(line);
+  blocks.push(lines);
+ }
+ const totalH=blocks.reduce((a,b)=>a+b.length*lh+lh*0.7,0);
+ let yy=Math.max(200,(H-140-totalH)/2+140);
+ x.fillStyle="#ecebe6";
+ for(const b of blocks){
+  for(const ln of b){x.fillText(ln,W/2,yy);yy+=lh}
+  yy+=lh*0.7;
+ }
+ x.fillStyle="#4e4e5a";x.font="400 26px 'Gowun Batang',serif";
+ x.fillText(`이날 여기 있었던 사람 ${n}명`,W/2,H-110);
+ x.fillStyle="#8b8b96";x.font="600 28px -apple-system,sans-serif";
+ x.fillText("tomatoeggcat.com/eleven11",W/2,H-60);
+ cv.toBlob(b=>{
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b);
+  a.download=`eleven11-${shownDay}.png`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  toast("이 날을 저장했어요");
+ },"image/png");
+});
+
+/* ---------- 공유 링크 (?r=) ---------- */
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const dec=s=>JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/")))));
+$("daylink").addEventListener("click",async()=>{
+ if(!shownDay)return;
+ const st=store();
+ const mine=st.entries&&st.entries[shownDay];
+ const url=location.origin+location.pathname+"?r="+enc(mine?{d:shownDay,t:mine.t}:{d:shownDay});
+ try{await navigator.clipboard.writeText(url);toast("링크를 복사했어요")}catch(e){prompt("복사해 주세요",url)}
+});
+(function inbound(){
+ const p=new URLSearchParams(location.search).get("r");
+ if(!p)return;
+ try{
+  const st=dec(p);
+  if(!st||typeof st.d!=="string")return;
+  const[y,m,d]=st.d.split("-");
+  if(!y||!m||!d)return;
+  $("inbound").classList.add("show");
+  $("inq").textContent=typeof st.t==="string"?"“"+st.t.slice(0,111)+"”":"";
+  $("ind").textContent=`${y}년 ${+m}월 ${+d}일 밤 11시 11분의 기록`;
+ }catch(e){/* 잘못된 링크는 무시 */}
+})();
+$("meToo").addEventListener("click",()=>{
+ history.replaceState(null,"",location.pathname);
+ $("inbound").classList.remove("show");
+ window.scrollTo({top:0,behavior:"smooth"});
+});
+
+/* ---------- 초기화 ---------- */
+(function init(){
+ const n=kstNow();calY=n.getUTCFullYear();calM=n.getUTCMonth();
+ buildCal();tick();
+})();
+</script>
+</body>
+</html>

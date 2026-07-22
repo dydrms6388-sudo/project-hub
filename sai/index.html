@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0b0c10" />
+<title>사이 — 두 단어 사이를 걷는 의미 산책 | TomatoEggCat</title>
+<meta name="description" content="사랑과 미움 사이엔 무엇이 있을까? 한국어 단어 3만 개의 실제 임베딩 벡터 공간을 한 걸음씩 보간하며 두 단어 사이의 중간 단어를 찾아내는 의미 산책. 링크 하나로 같은 길을 그대로 재현합니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/sai/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="사이 — 두 단어 사이를 걷는 의미 산책" />
+<meta property="og:description" content="사랑과 미움 사이엔 고백, 질투, 애정, 증오가 있었다. 단어 두 개를 넣으면 그 사이를 한 걸음씩 걸어갑니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/sai/" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/sai.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="사이 — 두 단어 사이를 걷는 의미 산책" />
+<meta name="twitter:description" content="단어 두 개를 넣으면 그 사이를 한 걸음씩 걸어갑니다." />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/sai.png" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사이 — 의미 산책","description":"두 단어 사이의 의미 공간을 벡터 보간으로 걸어보는 웹 장난감","applicationCategory":"EntertainmentApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/sai/","inLanguage":"ko-KR","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"중간 단어는 AI가 지어내는 건가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 한국어 단어 약 3만 개를 미리 벡터 좌표(fastText 공개 임베딩)로 변환해 두고, 두 단어 좌표 사이를 구면 보간(slerp)한 지점에서 실제로 가장 가까운 단어를 찾습니다. 생성이 아니라 탐색입니다."}},
+{"@type":"Question","name":"같은 단어를 넣으면 항상 같은 결과가 나오나요?","acceptedAnswer":{"@type":"Answer","text":"네. 계산이 결정적이라 같은 두 단어와 같은 걸음 수는 언제나 같은 길이 나옵니다. 그래서 공유 링크를 열면 누구나 같은 결과를 그대로 재현할 수 있습니다."}},
+{"@type":"Question","name":"어떤 단어는 왜 검색되지 않나요?","acceptedAnswer":{"@type":"Answer","text":"자주 쓰이는 한국어 일반 명사·형용사 중심으로 약 3만 개만 사전에 담았습니다. 고유명사·실존 인물·비하 표현은 의도적으로 제외했습니다. 입력창에 몇 글자를 치면 사전에 있는 단어가 자동으로 추천됩니다."}},
+{"@type":"Question","name":"입력한 단어가 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 단어 사전과 벡터를 처음에 한 번 내려받은 뒤 모든 계산이 브라우저 안에서만 일어납니다. 입력·결과는 어디에도 저장되지 않습니다."}}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TomatoEggCat","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"사이","item":"https://tomatoeggcat.com/sai/"}]}
+</script>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#0b0c10;--panel:#111319;--line:#23262f;--ink:#e9e6dd;--dim:#8a8f9c;--faint:#565b66;--accent:#e8c66a;--accent2:#9ab8e8}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Batang","Apple SD Gothic Neo","Noto Serif KR",serif;line-height:1.7}
+.wrap{max-width:560px;margin:0 auto;padding:28px 20px 60px}
+.nav{font-size:13px;color:var(--faint);margin-bottom:34px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.nav a{color:var(--dim);text-decoration:none}
+h1{font-size:44px;font-weight:700;margin:0 0 4px;letter-spacing:.06em}
+.lead{color:var(--dim);margin:0 0 8px;font-size:15.5px}
+.sub{color:var(--faint);font-size:13px;margin:0 0 30px}
+.inbound{display:none;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel);border-radius:12px;padding:14px 16px;margin-bottom:22px;font-size:14px;color:var(--dim)}
+.inbound.show{display:block}
+.inbound button{margin-top:10px;background:var(--accent);color:#161307;border:0;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.io{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:22px;margin-bottom:26px}
+.pair{display:flex;align-items:center;gap:12px}
+.field{flex:1;position:relative}
+.field input{width:100%;background:var(--bg);border:0;border-bottom:1px solid var(--line);color:var(--ink);font-size:24px;padding:8px 2px 10px;text-align:center;font-family:inherit;border-radius:0;outline:none;transition:border-color .2s}
+.field input:focus{border-bottom-color:var(--accent)}
+.field label{display:block;text-align:center;font-size:12px;color:var(--faint);margin-bottom:6px;font-family:-apple-system,sans-serif;letter-spacing:.08em}
+.between{color:var(--faint);font-size:20px;padding-top:16px}
+.sugg{position:absolute;left:0;right:0;top:100%;z-index:5;background:#161822;border:1px solid var(--line);border-radius:0 0 12px 12px;overflow:hidden;display:none}
+.sugg.show{display:block}
+.sugg button{display:block;width:100%;background:none;border:0;color:var(--ink);font-size:16px;padding:9px 12px;cursor:pointer;font-family:inherit;text-align:center}
+.sugg button:hover{background:#1e212d}
+.warn{font-size:12.5px;color:#d98d8d;text-align:center;min-height:18px;margin-top:6px;font-family:-apple-system,sans-serif}
+.opts{display:flex;justify-content:center;gap:8px;margin:18px 0 6px}
+.opts button{background:none;border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:-apple-system,sans-serif}
+.opts button.on{border-color:var(--accent);color:var(--accent)}
+.go{width:100%;margin-top:16px;background:var(--ink);color:#14151a;border:0;border-radius:12px;padding:15px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.05em}
+.go:disabled{background:#2a2d36;color:var(--faint);cursor:default}
+.dice{width:100%;margin-top:10px;background:none;border:0;color:var(--faint);font-size:13px;cursor:pointer;font-family:-apple-system,sans-serif;padding:6px}
+.dice:hover{color:var(--dim)}
+#result{display:none}
+.walkhead{text-align:center;color:var(--dim);font-size:14px;margin:34px 0 6px;font-family:-apple-system,sans-serif}
+.walk{position:relative;padding:10px 0 4px;margin:0 0 8px}
+.walk::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(var(--accent) 0%,var(--line) 18%,var(--line) 82%,var(--accent2) 100%)}
+.stop{position:relative;text-align:center;padding:20px 0;opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.stop.in{opacity:1;transform:none}
+.stop .w{position:relative;display:inline-block;background:var(--bg);padding:2px 18px;font-size:30px;letter-spacing:.04em}
+.stop .m{font-size:11px;color:var(--faint);margin-top:2px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.stop.end .w{font-size:36px;font-weight:700}
+.stop.a .w{color:var(--accent)}
+.stop.b .w{color:var(--accent2)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:26px 0 8px}
+.acts button{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:13px 8px;font-size:14px;cursor:pointer;font-family:-apple-system,sans-serif}
+.acts button.main{grid-column:1/-1;background:var(--accent);border-color:var(--accent);color:#161307;font-weight:700;font-size:15px}
+.remix{width:100%;margin-top:6px;background:none;border:1px dashed var(--line);color:var(--dim);border-radius:12px;padding:12px;font-size:14px;cursor:pointer;font-family:-apple-system,sans-serif}
+.note{font-size:12px;color:var(--faint);text-align:center;margin-top:14px;font-family:-apple-system,sans-serif}
+.ad{margin:26px 0 0;text-align:center}
+.load{font-size:12.5px;color:var(--faint);text-align:center;margin-top:12px;font-family:-apple-system,sans-serif}
+.about{margin-top:52px;font-size:14.5px;color:#b9bdc7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",sans-serif}
+.about h2{font-size:18px;color:var(--ink);margin:30px 0 8px;font-family:"Gowun Batang",serif}
+.about p{margin:0 0 10px}
+.about ol{padding-left:20px;margin:0 0 10px}
+.faq{border-top:1px solid var(--line);padding:14px 0}
+.faq b{display:block;margin-bottom:4px;color:var(--ink)}
+.faq p{margin:0;color:var(--dim);font-size:13.5px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 12px;border-radius:999px;text-decoration:none;font-family:-apple-system,sans-serif}
+footer{margin-top:40px;text-align:center;color:var(--faint);font-size:12px;border-top:1px solid var(--line);padding-top:20px;font-family:-apple-system,sans-serif}
+footer a{color:var(--dim);margin:0 6px;text-decoration:none}
+canvas{display:none}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#14151a;padding:10px 18px;border-radius:999px;font-size:13.5px;font-family:-apple-system,sans-serif;transition:transform .3s;z-index:20}
+.toast.show{transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 사이</div>
+
+<h1>사이</h1>
+<p class="lead">단어 두 개를 넣으면, 그 사이를 한 걸음씩 걸어갑니다.</p>
+<p class="sub">사랑과 미움 사이엔 무엇이 있을까 — 실제 단어 벡터 공간 위의 산책</p>
+
+<div class="inbound" id="inbound">
+  누군가 걸어간 길을 보고 있어요. 나의 두 단어로도 걸어보세요.
+  <br /><button id="meToo">나도 걸어보기</button>
+</div>
+
+<div class="io" id="io">
+  <div class="pair">
+    <div class="field">
+      <label>여기서</label>
+      <input id="wa" autocomplete="off" spellcheck="false" placeholder="사랑" />
+      <div class="sugg" id="sa"></div>
+    </div>
+    <div class="between">⇢</div>
+    <div class="field">
+      <label>저기까지</label>
+      <input id="wb" autocomplete="off" spellcheck="false" placeholder="미움" />
+      <div class="sugg" id="sb"></div>
+    </div>
+  </div>
+  <div class="warn" id="warn"></div>
+  <div class="opts" id="opts">
+    <button data-n="4">잠깐 4걸음</button>
+    <button data-n="6" class="on">보통 6걸음</button>
+    <button data-n="8">깊이 8걸음</button>
+  </div>
+  <button class="go" id="go" disabled>사전 여는 중…</button>
+  <button class="dice" id="dice">🎲 아무 단어나 골라줘</button>
+  <div class="load" id="load"></div>
+</div>
+
+<div id="result">
+  <div class="walkhead" id="walkhead"></div>
+  <div class="walk" id="walk"></div>
+  <div class="acts">
+    <button class="main" id="saveImg">🖼️ 산책 카드 저장</button>
+    <button id="copyLink">🔗 링크 복사</button>
+    <button id="copyText">📝 글로 복사</button>
+    <button id="shareX">𝕏 공유</button>
+    <button id="shareEtc">📤 공유하기</button>
+  </div>
+  <button class="remix" id="remix">↺ 단어를 바꿔 다시 걷기</button>
+  <p class="note">한국어 단어 3만 개의 실제 임베딩 좌표를 보간해 찾은 최근접 단어입니다. 의미 해석은 재미로만 봐 주세요.</p>
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<div class="about">
+  <h2>사이란?</h2>
+  <p>‘사이’는 두 단어 사이의 의미 공간을 실제로 걸어보는 장난감입니다. 컴퓨터는 단어를 숫자 좌표(임베딩 벡터)로 기억하는데, 이 좌표 위에서는 ‘사랑’과 ‘미움’ 같은 두 단어 사이에도 길이 있습니다. 사이는 한국어에서 자주 쓰이는 단어 약 3만 개를 공개 임베딩 데이터(fastText)로 좌표화해 두고, 당신이 고른 두 단어의 좌표 사이를 구면 보간(slerp)으로 여섯 걸음쯤 나눈 뒤, 각 지점에서 <b>실제로 가장 가까운 단어</b>를 찾아 보여줍니다. 인공지능이 그럴듯한 단어를 지어내는 게 아니라, 진짜 벡터 공간을 더듬어 찾은 탐색 결과라는 점이 이 장난감의 전부입니다. 그래서 같은 두 단어는 언제나 같은 길이 되고, 링크 하나로 누구에게든 같은 산책을 보여줄 수 있습니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>출발 단어와 도착 단어를 하나씩 넣습니다. 몇 글자만 쳐도 사전에 있는 단어가 추천됩니다.</li>
+    <li>걸음 수(4·6·8)를 고르고 ‘걷기 시작’을 누르면 중간 단어들이 한 걸음씩 나타납니다.</li>
+    <li>결과가 마음에 들면 산책 카드를 저장하거나, 링크를 복사해 친구에게 같은 길을 보여주세요.</li>
+    <li>‘단어를 바꿔 다시 걷기’로 출발점만 바꿔가며 이어 걸을 수 있습니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>중간 단어는 AI가 지어내는 건가요?</b><p>아니요. 미리 좌표화해 둔 3만 개 단어 중에서 보간 지점에 실제로 가장 가까운 단어를 찾습니다. 생성이 아니라 탐색이라, 같은 입력은 항상 같은 결과가 나옵니다.</p></div>
+  <div class="faq"><b>어떤 단어는 왜 검색되지 않나요?</b><p>일반 명사·형용사 중심으로 사전을 꾸렸고 고유명사·실존 인물·비하 표현은 의도적으로 뺐습니다. 추천 목록에 뜨는 단어만 사용할 수 있습니다.</p></div>
+  <div class="faq"><b>입력한 단어가 서버로 전송되나요?</b><p>아니요. 사전 데이터를 처음 한 번 내려받은 뒤에는 모든 계산이 브라우저 안에서만 일어나며, 입력과 결과는 어디에도 저장되지 않습니다.</p></div>
+  <div class="faq"><b>결과에 이상하거나 불편한 단어가 나오면요?</b><p>통계 데이터 기반이라 뜻밖의 단어가 낄 수 있습니다. 진단·평가가 아닌 재미용 결과로만 봐 주시고, 문제 단어는 문의 페이지로 알려주시면 사전에서 제외하겠습니다.</p></div>
+  <div class="more">
+    <a href="/tone-lab/">🎭 말투연구소</a>
+    <a href="/haengsi/">✍️ N행시 자판기</a>
+    <a href="/taste-dna/">🧬 취향DNA</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<canvas id="cv" width="1080" height="1440"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+let WORDS=[],DIM=128,N=0,VEC=null,IDX=new Map(),steps=6,last=null;
+
+/* ---------- 데이터 로드 ---------- */
+async function loadIndex(){
+ try{
+  const wp=fetch("./data/words.json").then(r=>{if(!r.ok)throw 0;return r.json()});
+  const vr=await fetch("./data/vecs.bin");
+  if(!vr.ok)throw 0;
+  const total=+vr.headers.get("content-length")||0;
+  const reader=vr.body.getReader();
+  const chunks=[];let got=0;
+  for(;;){
+   const {done,value}=await reader.read();
+   if(done)break;
+   chunks.push(value);got+=value.length;
+   if(total)$("load").textContent=`단어 사전 내려받는 중 ${Math.round(got/total*100)}% (최초 1회)`;
+  }
+  const buf=new Uint8Array(got);let o=0;
+  for(const c of chunks){buf.set(c,o);o+=c.length}
+  const meta=await wp;
+  WORDS=meta.words;DIM=meta.dim;N=meta.n;
+  const q=new Int8Array(buf.buffer,0,N*DIM);
+  VEC=new Float32Array(N*DIM);
+  for(let i=0;i<N;i++){
+   let s=0;const off=i*DIM;
+   for(let d=0;d<DIM;d++){const v=q[off+d];s+=v*v}
+   const inv=s>0?1/Math.sqrt(s):0;
+   for(let d=0;d<DIM;d++)VEC[off+d]=q[off+d]*inv;
+  }
+  WORDS.forEach((w,i)=>{if(!IDX.has(w))IDX.set(w,i)});
+  $("load").textContent="";
+  $("go").disabled=false;$("go").textContent="걷기 시작";
+  const p=new URLSearchParams(location.search).get("r");
+  if(p)runFromParam(p);
+ }catch(e){
+  $("load").textContent="사전을 불러오지 못했어요. 새로고침해 주세요.";
+ }
+}
+
+/* ---------- 벡터 연산 ---------- */
+function row(i){return VEC.subarray(i*DIM,(i+1)*DIM)}
+function dot(a,b){let s=0;for(let d=0;d<DIM;d++)s+=a[d]*b[d];return s}
+function slerp(a,b,t){
+ const d=Math.max(-1,Math.min(1,dot(a,b)));
+ const th=Math.acos(d);
+ const out=new Float32Array(DIM);
+ if(th<1e-5){out.set(a);return out}
+ const sa=Math.sin((1-t)*th)/Math.sin(th),sb=Math.sin(t*th)/Math.sin(th);
+ let n=0;
+ for(let i=0;i<DIM;i++){const v=sa*a[i]+sb*b[i];out[i]=v;n+=v*v}
+ n=1/Math.sqrt(n);
+ for(let i=0;i<DIM;i++)out[i]*=n;
+ return out;
+}
+function topK(v,k){
+ const idx=new Int32Array(k).fill(-1),sc=new Float32Array(k).fill(-2);
+ for(let i=0;i<N;i++){
+  const s=dot(v,row(i));
+  if(s>sc[k-1]){
+   let j=k-1;
+   while(j>0&&sc[j-1]<s){sc[j]=sc[j-1];idx[j]=idx[j-1];j--}
+   sc[j]=s;idx[j]=i;
+  }
+ }
+ return Array.from(idx).map((i,j)=>({i,s:sc[j]})).filter(x=>x.i>=0);
+}
+const related=(x,y)=>x.includes(y)||y.includes(x);
+
+/* ---------- 산책 ---------- */
+function walkBetween(ia,ib,n){
+ const a=row(ia),b=row(ib),A=WORDS[ia],B=WORDS[ib];
+ const picked=[],out=[];
+ for(let s=1;s<=n;s++){
+  const t=s/(n+1),v=slerp(a,b,t);
+  const cands=topK(v,16);
+  let chosen=null;
+  for(const relax of [false,true]){
+   for(const c of cands){
+    if(c.i===ia||c.i===ib)continue;
+    if(picked.includes(c.i))continue;
+    const w=WORDS[c.i];
+    if(related(w,A)||related(w,B))continue;
+    // 끝점에 지나치게 붙은 지점은 스킵(재샘플 규칙)
+    if(!relax&&(dot(row(c.i),a)>0.94||dot(row(c.i),b)>0.94))continue;
+    if(!relax&&picked.some(p=>related(w,WORDS[p])))continue;
+    chosen=c;break;
+   }
+   if(chosen)break;
+  }
+  if(!chosen)continue;
+  picked.push(chosen.i);
+  out.push({w:WORDS[chosen.i],t,sa:dot(row(chosen.i),a),sb:dot(row(chosen.i),b)});
+ }
+ return out;
+}
+
+/* ---------- URL 상태 ---------- */
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const dec=s=>JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/")))));
+
+/* ---------- 렌더 ---------- */
+function render(A,B,n,fromShare){
+ const mids=walkBetween(IDX.get(A),IDX.get(B),n);
+ last={a:A,b:B,n,mids};
+ $("walkhead").textContent=`${A} ⇢ ${B} · ${n}걸음`;
+ const el=$("walk");el.innerHTML="";
+ const stops=[{w:A,cls:"end a"},...mids.map(m=>({w:m.w,m,cls:""})),{w:B,cls:"end b"}];
+ stops.forEach((s,i)=>{
+  const d=document.createElement("div");
+  d.className="stop "+s.cls;
+  let meta="";
+  if(s.m)meta=`<div class="m">${Math.round(s.m.t*100)}% · ${A} ${s.m.sa.toFixed(2)} ─ ${s.m.sb.toFixed(2)} ${B}</div>`;
+  d.innerHTML=`<span class="w"></span>${meta}`;
+  d.querySelector(".w").textContent=s.w;
+  el.appendChild(d);
+  setTimeout(()=>d.classList.add("in"),200+i*380);
+ });
+ $("result").style.display="block";
+ if(!fromShare)history.replaceState(null,"",location.pathname+"?r="+enc({a:A,b:B,n}));
+ $("result").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function runFromParam(p){
+ try{
+  const st=dec(p);
+  if(!st||typeof st.a!=="string"||typeof st.b!=="string")return;
+  const n=[4,6,8].includes(st.n)?st.n:6;
+  if(!IDX.has(st.a)||!IDX.has(st.b)||st.a===st.b)return;
+  $("wa").value=st.a;$("wb").value=st.b;setSteps(n);
+  $("inbound").classList.add("show");
+  render(st.a,st.b,n,true);
+ }catch(e){/* 잘못된 링크는 무시 */}
+}
+
+/* ---------- 자동완성 ---------- */
+function attachSugg(input,box){
+ input.addEventListener("input",()=>{
+  const q=input.value.trim();
+  box.innerHTML="";
+  if(!q||!WORDS.length){box.classList.remove("show");return}
+  const hits=[];
+  for(let i=0;i<WORDS.length&&hits.length<7;i++)
+   if(WORDS[i].startsWith(q))hits.push(WORDS[i]);
+  if(!hits.length||(hits.length===1&&hits[0]===q)){box.classList.remove("show");return}
+  hits.forEach(w=>{
+   const b=document.createElement("button");
+   b.type="button";b.textContent=w;
+   b.addEventListener("mousedown",e=>{e.preventDefault();input.value=w;box.classList.remove("show");$("warn").textContent=""});
+   box.appendChild(b);
+  });
+  box.classList.add("show");
+ });
+ input.addEventListener("blur",()=>setTimeout(()=>box.classList.remove("show"),150));
+}
+attachSugg($("wa"),$("sa"));
+attachSugg($("wb"),$("sb"));
+
+/* ---------- 입력 처리 ---------- */
+function setSteps(n){
+ steps=n;
+ document.querySelectorAll("#opts button").forEach(b=>b.classList.toggle("on",+b.dataset.n===n));
+}
+$("opts").addEventListener("click",e=>{
+ const b=e.target.closest("button");if(b)setSteps(+b.dataset.n);
+});
+$("go").addEventListener("click",()=>{
+ const A=$("wa").value.trim(),B=$("wb").value.trim();
+ if(!A||!B){$("warn").textContent="두 단어를 모두 넣어주세요.";return}
+ if(A===B){$("warn").textContent="서로 다른 두 단어여야 걸을 수 있어요.";return}
+ const miss=[A,B].filter(w=>!IDX.has(w));
+ if(miss.length){$("warn").textContent=`'${miss[0]}'는 사전에 없어요. 몇 글자를 치면 뜨는 추천 단어에서 골라주세요.`;return}
+ $("warn").textContent="";
+ $("inbound").classList.remove("show");
+ render(A,B,steps,false);
+});
+const POOL=["사랑","미움","여름","겨울","커피","새벽","바다","도시","어른","아이","기쁨","슬픔","전쟁","평화","고양이","우주","월요일","주말","라면","다이어트","월급","퇴사","첫사랑","군대","시골","서울","꿈","현실","청춘","노년","혼자","함께"];
+$("dice").addEventListener("click",()=>{
+ if(!WORDS.length)return;
+ const ok=POOL.filter(w=>IDX.has(w));
+ const i=Math.floor(Math.random()*ok.length);
+ let j=Math.floor(Math.random()*ok.length);
+ if(j===i)j=(j+1)%ok.length;
+ $("wa").value=ok[i];$("wb").value=ok[j];$("warn").textContent="";
+});
+
+/* ---------- 공유 ---------- */
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+const shareUrl=()=>location.origin+location.pathname+"?r="+enc({a:last.a,b:last.b,n:last.n});
+const shareText=()=>`${last.a}에서 ${last.b}까지 걸어보니,\n${[last.a,...last.mids.map(m=>m.w),last.b].join(" — ")}\n\n두 단어 사이 의미 산책 '사이'\n${shareUrl()}`;
+async function copy(s,msg){try{await navigator.clipboard.writeText(s);toast(msg)}catch(e){prompt("복사해 주세요",s)}}
+$("copyLink").addEventListener("click",()=>{if(last)copy(shareUrl(),"링크를 복사했어요")});
+$("copyText").addEventListener("click",()=>{if(last)copy(shareText(),"글을 복사했어요")});
+$("shareX").addEventListener("click",()=>{if(last)window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText()),"_blank")});
+$("shareEtc").addEventListener("click",async()=>{
+ if(!last)return;
+ if(navigator.share){try{await navigator.share({title:"사이 — 의미 산책",text:shareText(),url:shareUrl()})}catch(e){}}
+ else copy(shareUrl(),"링크를 복사했어요");
+});
+$("remix").addEventListener("click",()=>{
+ $("io").scrollIntoView({behavior:"smooth",block:"start"});
+ $("wa").focus();
+});
+$("meToo").addEventListener("click",()=>{
+ $("inbound").classList.remove("show");
+ $("result").style.display="none";
+ $("wa").value="";$("wb").value="";last=null;
+ history.replaceState(null,"",location.pathname);
+ $("io").scrollIntoView({behavior:"smooth",block:"start"});
+ $("wa").focus();
+});
+
+/* ---------- 카드 이미지 ---------- */
+$("saveImg").addEventListener("click",async()=>{
+ if(!last)return;
+ try{await document.fonts.ready}catch(e){}
+ const cv=$("cv"),x=cv.getContext("2d"),W=1080,H=1440;
+ x.fillStyle="#0b0c10";x.fillRect(0,0,W,H);
+ x.textAlign="center";
+ x.fillStyle="#565b66";x.font="400 30px 'Gowun Batang',serif";
+ x.fillText("두 단어 사이 의미 산책",W/2,120);
+ const chain=[{w:last.a,c:"#e8c66a",big:1},...last.mids.map(m=>({w:m.w,c:"#e9e6dd"})),{w:last.b,c:"#9ab8e8",big:1}];
+ const top=240,bot=H-210,gap=(bot-top)/(chain.length-1);
+ x.strokeStyle="#23262f";x.lineWidth=2;
+ x.beginPath();x.moveTo(W/2,top);x.lineTo(W/2,bot);x.stroke();
+ chain.forEach((c,i)=>{
+  const y=top+gap*i;
+  x.font=(c.big?"700 84px":"400 62px")+" 'Gowun Batang',serif";
+  const wpx=x.measureText(c.w).width;
+  x.fillStyle="#0b0c10";x.fillRect(W/2-wpx/2-26,y-46,wpx+52,92);
+  x.fillStyle=c.c;x.textBaseline="middle";x.fillText(c.w,W/2,y);
+ });
+ x.textBaseline="alphabetic";
+ x.fillStyle="#565b66";x.font="400 28px 'Gowun Batang',serif";
+ x.fillText(`${last.a} ⇢ ${last.b} · ${last.n}걸음`,W/2,H-120);
+ x.fillStyle="#8a8f9c";x.font="600 30px -apple-system,sans-serif";
+ x.fillText("tomatoeggcat.com/sai",W/2,H-64);
+ cv.toBlob(b=>{
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b);
+  // 한글 파일명은 일부 브라우저가 'download'로 뭉개므로 ASCII로 고정
+  a.download=`sai-walk-${IDX.get(last.a)}-${IDX.get(last.b)}.png`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  toast("산책 카드를 저장했어요");
+ },"image/png");
+});
+
+loadIndex();
+</script>
+</body>
+</html>
