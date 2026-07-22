@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="noindex,follow" />
 <title>합격 D-DAY — 교육·학습 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="합격 D-DAY — 교육·학습 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="시험일과 총 목표 공부량을 등록하면 오늘부터 시험 전날까지 하루에 얼마나 공부해야 하는지 자동으로 계산해줍니다. 공무원, 자격증, 대학 시험 등 종류와 상관없이 날짜와 분량만 넣으면 됩니다. 계획은 세우는데 오래 지속하기 어려운 분들을 위해 타이머와 연속 기록이 함께 제공됩니다" />
 <meta property="og:url" content="https://tomatoeggcat.com/exam-dday-study/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="합격 D-DAY — 교육·학습 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="시험일과 총 목표 공부량을 등록하면 오늘부터 시험 전날까지 하루에 얼마나 공부해야 하는지 자동으로 계산해줍니다. 공무원, 자격증, 대학 시험 등 종류와 상관없이 날짜와 분량만 넣으면 됩니다. 계획은 세우는데 오래 지속하기 어려운 분들을 위해 타이머와 연속 기록이 함께 제공됩니다" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/default.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"합격 D-DAY","description":"시험일과 총 목표 공부량을 등록하면 오늘부터 시험 전날까지 하루에 얼마나 공부해야 하는지 자동으로 계산해줍니다. 공무원, 자격증, 대학 시험 등 종류와 상관없이 날짜와 분량만 넣으면 됩니다. 계획은 세우는데 오래 지속하기 어려운 분들을 위해 타이머와 연속 기록이 함께 제공됩니다","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/exam-dday-study/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"여러 시험을 동시에 관리할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"시험을 여러 개 등록해 각각의 D-day와 학습 현황을 별도로 관리할 수 있습니다. 시험마다 독립적인 계획과 기록이 쌓입니다."}},{"@type":"Question","name":"하루 권장 시간이 너무 많게 나오면 어떻게 조정하나요?","acceptedAnswer":{"@type":"Answer","text":"총 목표 시간을 낮추거나, 하루 실제 공부 가능 시간을 입력란에 직접 수정하면 나머지 일정이 재배분됩니다. 무리한 계획은 오히려 중단으로 이어지기 쉽습니다."}},{"@type":"Question","name":"시험일이 지나면 데이터가 삭제되나요?","acceptedAnswer":{"@type":"Answer","text":"시험일이 지나도 브라우저 데이터가 남아있는 한 기록은 유지됩니다. 새 시험을 등록하거나 직접 삭제하기 전까지는 이전 기록을 확인할 수 있습니다."}},{"@type":"Question","name":"공부 기록을 다른 기기에서도 이어갈 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"현재 기록은 해당 기기의 브라우저에만 저장됩니다. 다른 기기에서 이어가려면 내보내기·동기화 기능이 제공되는 경우에만 가능합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"교육·학습","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"합격 D-DAY","item":"https://tomatoeggcat.com/exam-dday-study/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"합격 D-DAY","description":"시험일과 총 목표 공부량을 등록하면 오늘부터 시험 전날까지 하루에 얼마나 공부해야 하는지 자동으로 계산해줍니다. 공무원, 자격증, 대학 시험 등 종류와 상관없이 날짜와 분량만 넣으면 됩니다. 계획은 세우는데 오래 지속하기 어려운 분들을 위해 타이머와 연속 기록이 함께 제공됩니다","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/exam-dday-study/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"여러 시험을 동시에 관리할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"시험을 여러 개 등록해 각각의 D-day와 학습 현황을 별도로 관리할 수 있습니다. 시험마다 독립적인 계획과 기록이 쌓입니다."}},{"@type":"Question","name":"하루 권장 시간이 너무 많게 나오면 어떻게 조정하나요?","acceptedAnswer":{"@type":"Answer","text":"총 목표 시간을 낮추거나, 하루 실제 공부 가능 시간을 입력란에 직접 수정하면 나머지 일정이 재배분됩니다. 무리한 계획은 오히려 중단으로 이어지기 쉽습니다."}},{"@type":"Question","name":"시험일이 지나면 데이터가 삭제되나요?","acceptedAnswer":{"@type":"Answer","text":"시험일이 지나도 브라우저 데이터가 남아있는 한 기록은 유지됩니다. 새 시험을 등록하거나 직접 삭제하기 전까지는 이전 기록을 확인할 수 있습니다."}},{"@type":"Question","name":"공부 기록을 다른 기기에서도 이어갈 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"현재 기록은 해당 기기의 브라우저에만 저장됩니다. 다른 기기에서 이어가려면 내보내기·동기화 기능이 제공되는 경우에만 가능합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"교육·학습","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"합격 D-DAY","item":"https://tomatoeggcat.com/exam-dday-study/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>

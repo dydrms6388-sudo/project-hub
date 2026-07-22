@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <title>펫나이 (PetAge) — 반려·식물 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="펫나이 (PetAge) — 반려·식물 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="펫나이는 강아지·고양이의 생년월일과 다 자랐을 때의 체중대를 넣으면 사람 나이로 환산한 값과 지금의 생애 단계(어린 강아지·성견·노령 등)를 보여 주는 도구입니다. '나이 × 7' 같은 단순 곱셈 대신, 나이를 비선형 곡선으로 환산하는 것이 핵심입니다. 생후 1~2년의 빠른 성" />
 <meta property="og:url" content="https://tomatoeggcat.com/pet-age-calc/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/pet-age-calc.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="펫나이 (PetAge) — 반려·식물 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="펫나이는 강아지·고양이의 생년월일과 다 자랐을 때의 체중대를 넣으면 사람 나이로 환산한 값과 지금의 생애 단계(어린 강아지·성견·노령 등)를 보여 주는 도구입니다. '나이 × 7' 같은 단순 곱셈 대신, 나이를 비선형 곡선으로 환산하는 것이 핵심입니다. 생후 1~2년의 빠른 성" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/pet-age-calc.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"펫나이 (PetAge)","description":"펫나이는 강아지·고양이의 생년월일과 다 자랐을 때의 체중대를 넣으면 사람 나이로 환산한 값과 지금의 생애 단계(어린 강아지·성견·노령 등)를 보여 주는 도구입니다. '나이 × 7' 같은 단순 곱셈 대신, 나이를 비선형 곡선으로 환산하는 것이 핵심입니다. 생후 1~2년의 빠른 성","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/pet-age-calc/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"'개 나이 × 7'이 왜 정확하지 않나요?","acceptedAnswer":{"@type":"Answer","text":"오차가 서로 반대 방향으로 두 번 생기기 때문입니다. 강아지는 생후 1~2년에 사람으로 치면 성인이 될 만큼 빠르게 자라는데, ×7은 이 시기를 크게 과소평가합니다(1살 개는 7세가 아니라 사람 15세 안팎). 반대로 노령기에는 노화가 완만해지는데도 매년 7씩 더해 실제보다 나이를 부풀립니다. 여기에 견종 크기에 따른 노화 속도 차이까지 전혀 담지 못합니다. 결국 견종·나이대에 따라 실제 나이를 실제보다 많게도, 적게도 어림잡게 됩니다."}},{"@type":"Question","name":"강아지 크기 구간별로 사람 나이가 어떻게 다른가요?","acceptedAnswer":{"@type":"Answer","text":"다 자랐을 때 체중으로 소형(10kg 미만)·중형(10~25kg)·대형(25~40kg)·초대형(40kg 이상)을 나눕니다. 아래는 개념 예시가 아니라 펫나이가 실제로 출력하는 환산값입니다(반올림 근사). 실제 나이 · 소형 · 중형 · 대형 · 초대형 1세 · 15 · 15 · 14 · 12 5세 · 36 · 37 · 40 · 45 10세 · 56 · 60 · 66 · 79 15세 · 76 · 83 · 93 · 114* * 각 구간의 평균 수명(소형 15·중형 13·대형 11·초대형 9년)으로 배경에서 설명한 래브라도 곡선의 x축을 다시 척도해 얻은 근사값입니다. 같은 실제 나이라도 초대형견을 수명 9년, 소형견을 15년으로 곡선에 대입하면 x축이 약 1.7배 눌려, 노령 구간에서 사람 나이 차이가 30세 이상 벌어집니다. 초대형견 15세(114)는 초대형견 평균 수명이 8~10년이라 이 연령까지 생존하는 개체가 드문 외삽값이니 참고만 하세요. 참고로 대형견 만 6세는 사람 약 45세로 단순 ×7(42세)보다 오히려 더 나이 든 값이 나옵니다."}},{"@type":"Question","name":"고양이도 크기별로 환산이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"아니요, 고양이는 크기 구분 없이 단일 기준표를 씁니다. 집고양이는 품종을 가리지 않고 대개 3~7kg에 모여 체구·노화 편차가 개만큼 크지 않고, AAHA/AAFP의 고양이 생애 단계 가이드라인도 품종이 아닌 단일 연령 기준으로 단계를 나누기 때문입니다(개의 래브라도 곡선처럼 널리 인용되는 근거입니다). 대략 첫해 15세, 두 살 24세, 이후 매년 약 4세씩 더하는 방식입니다(2세=24세, 5세=36세, 7세=44세, 10세=56세, 15세=76세). 다만 메인쿤 같은 대형 품종은 성장이 느린 편이라, 어린 나이대에서는 표값보다 한두 살 젊게 보세요."}},{"@type":"Question","name":"어린 강아지·성견·노령은 몇 살부터 나뉘나요?","acceptedAnswer":{"@type":"Answer","text":"생애 단계 경계도 몸집이 클수록 앞당겨집니다. 아래는 펫나이가 실제로 판정에 쓰는 기준이며, 구간별 기준 수명을 함께 표기했습니다. 구간 · 성견 진입 · 노령 진입 · 기준 수명 소형견 · 약 1세 · 8~10세 · 약 15년 중형견 · 약 1세 · 7~8세 · 약 13년 대형견 · 1.5~2세 · 6~7세 · 약 11년 초대형견 · 1.5~2세 · 5~6세 · 약 9년 고양이 · 약 1세 · 11세 이후 · 약 15년 같은 만 7세라도 소형견은 아직 성견, 초대형견은 이미 노령으로 판정되는 이유입니다. 결과의 '기대수명 대비 %'는 실제 나이를 이 기준 수명으로 나눈 값입니다."}},{"@type":"Question","name":"하루 권장 사료량은 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"사료량은 나이 계산의 부가 기능입니다(별도 상세 급여 설계 도구가 아닙니다). 먼저 체중으로 휴식기 에너지요구량(RER = 70 × 체중(kg)^0.75)을 구한 뒤, 활동량 유지계수(저활동 1.4·보통 1.8·활발 2.0)를 곱하고, 이와 별개로 중성화 토글을 켜면 여기서 약 10~20%를 낮춰 하루 필요 열량을 냅니다. 예를 들어 중성화한 5kg 보통 활동견이면 RER ≈ 234kcal, 계수 약 1.6을 곱해 약 374kcal, 사료가 400kcal/100g이면 약 94g/일입니다. 사료 열량과 개체 상태에 따라 달라지니 출발점으로만 쓰고, 상세한 식이 설계는 사료 포장지 급여표와 수의사 지침을 우선하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"반려·식물","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"펫나이 (PetAge)","item":"https://tomatoeggcat.com/pet-age-calc/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"펫나이 (PetAge)","description":"펫나이는 강아지·고양이의 생년월일과 다 자랐을 때의 체중대를 넣으면 사람 나이로 환산한 값과 지금의 생애 단계(어린 강아지·성견·노령 등)를 보여 주는 도구입니다. '나이 × 7' 같은 단순 곱셈 대신, 나이를 비선형 곡선으로 환산하는 것이 핵심입니다. 생후 1~2년의 빠른 성","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/pet-age-calc/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"'개 나이 × 7'이 왜 정확하지 않나요?","acceptedAnswer":{"@type":"Answer","text":"오차가 서로 반대 방향으로 두 번 생기기 때문입니다. 강아지는 생후 1~2년에 사람으로 치면 성인이 될 만큼 빠르게 자라는데, ×7은 이 시기를 크게 과소평가합니다(1살 개는 7세가 아니라 사람 15세 안팎). 반대로 노령기에는 노화가 완만해지는데도 매년 7씩 더해 실제보다 나이를 부풀립니다. 여기에 견종 크기에 따른 노화 속도 차이까지 전혀 담지 못합니다. 결국 견종·나이대에 따라 실제 나이를 실제보다 많게도, 적게도 어림잡게 됩니다."}},{"@type":"Question","name":"강아지 크기 구간별로 사람 나이가 어떻게 다른가요?","acceptedAnswer":{"@type":"Answer","text":"다 자랐을 때 체중으로 소형(10kg 미만)·중형(10~25kg)·대형(25~40kg)·초대형(40kg 이상)을 나눕니다. 아래는 개념 예시가 아니라 펫나이가 실제로 출력하는 환산값입니다(반올림 근사). 실제 나이 · 소형 · 중형 · 대형 · 초대형 1세 · 15 · 15 · 14 · 12 5세 · 36 · 37 · 40 · 45 10세 · 56 · 60 · 66 · 79 15세 · 76 · 83 · 93 · 114* * 각 구간의 평균 수명(소형 15·중형 13·대형 11·초대형 9년)으로 배경에서 설명한 래브라도 곡선의 x축을 다시 척도해 얻은 근사값입니다. 같은 실제 나이라도 초대형견을 수명 9년, 소형견을 15년으로 곡선에 대입하면 x축이 약 1.7배 눌려, 노령 구간에서 사람 나이 차이가 30세 이상 벌어집니다. 초대형견 15세(114)는 초대형견 평균 수명이 8~10년이라 이 연령까지 생존하는 개체가 드문 외삽값이니 참고만 하세요. 참고로 대형견 만 6세는 사람 약 45세로 단순 ×7(42세)보다 오히려 더 나이 든 값이 나옵니다."}},{"@type":"Question","name":"고양이도 크기별로 환산이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"아니요, 고양이는 크기 구분 없이 단일 기준표를 씁니다. 집고양이는 품종을 가리지 않고 대개 3~7kg에 모여 체구·노화 편차가 개만큼 크지 않고, AAHA/AAFP의 고양이 생애 단계 가이드라인도 품종이 아닌 단일 연령 기준으로 단계를 나누기 때문입니다(개의 래브라도 곡선처럼 널리 인용되는 근거입니다). 대략 첫해 15세, 두 살 24세, 이후 매년 약 4세씩 더하는 방식입니다(2세=24세, 5세=36세, 7세=44세, 10세=56세, 15세=76세). 다만 메인쿤 같은 대형 품종은 성장이 느린 편이라, 어린 나이대에서는 표값보다 한두 살 젊게 보세요."}},{"@type":"Question","name":"어린 강아지·성견·노령은 몇 살부터 나뉘나요?","acceptedAnswer":{"@type":"Answer","text":"생애 단계 경계도 몸집이 클수록 앞당겨집니다. 아래는 펫나이가 실제로 판정에 쓰는 기준이며, 구간별 기준 수명을 함께 표기했습니다. 구간 · 성견 진입 · 노령 진입 · 기준 수명 소형견 · 약 1세 · 8~10세 · 약 15년 중형견 · 약 1세 · 7~8세 · 약 13년 대형견 · 1.5~2세 · 6~7세 · 약 11년 초대형견 · 1.5~2세 · 5~6세 · 약 9년 고양이 · 약 1세 · 11세 이후 · 약 15년 같은 만 7세라도 소형견은 아직 성견, 초대형견은 이미 노령으로 판정되는 이유입니다. 결과의 '기대수명 대비 %'는 실제 나이를 이 기준 수명으로 나눈 값입니다."}},{"@type":"Question","name":"하루 권장 사료량은 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"사료량은 나이 계산의 부가 기능입니다(별도 상세 급여 설계 도구가 아닙니다). 먼저 체중으로 휴식기 에너지요구량(RER = 70 × 체중(kg)^0.75)을 구한 뒤, 활동량 유지계수(저활동 1.4·보통 1.8·활발 2.0)를 곱하고, 이와 별개로 중성화 토글을 켜면 여기서 약 10~20%를 낮춰 하루 필요 열량을 냅니다. 예를 들어 중성화한 5kg 보통 활동견이면 RER ≈ 234kcal, 계수 약 1.6을 곱해 약 374kcal, 사료가 400kcal/100g이면 약 94g/일입니다. 사료 열량과 개체 상태에 따라 달라지니 출발점으로만 쓰고, 상세한 식이 설계는 사료 포장지 급여표와 수의사 지침을 우선하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"반려·식물","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"펫나이 (PetAge)","item":"https://tomatoeggcat.com/pet-age-calc/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>

@@ -22,7 +22,9 @@ const ADSENSE = "ca-pub-5567719201265106";
 // 개별 문서에서 landing-content.json 의 "reviewed"(YYYY-MM)로 덮어쓸 수 있다.
 const REVIEW_DATE = "2026-07";
 const REVIEW_LABEL = (ym) => { const [y, m] = String(ym).split("-"); return `${y}년 ${Number(m)}월`; };
-const PUBLISHER = { "@type": "Organization", name: "TomatoEggCat", url: SITE };
+const PUBLISHER = { "@type": "Organization", name: "TomatoEggCat", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/og/logo.png` } };
+// OG 이미지 경로 결정: 해당 slug 전용 카드가 있으면 사용, 없으면 기본 카드.
+const ogImageFor = (slug) => existsSync(`og/${slug}.png`) ? `${SITE}/og/${slug}.png` : `${SITE}/og/default.png`;
 // 내장(정적) 9개 도구의 공식 참고 출처(E-E-A-T). 모두 실도달 검증된 공공기관 도메인.
 const BUILTIN_SOURCES = {
   salary: [{ label: "국세청", url: "https://www.nts.go.kr" }, { label: "국민연금공단", url: "https://www.nps.or.kr" }, { label: "국민건강보험공단", url: "https://www.nhis.or.kr" }],
@@ -327,7 +329,8 @@ for (const d of daily) {
     .replaceAll("%%BODY%%", body)
     .replaceAll("%%RELATED%%", relHtml)
     .replaceAll("%%VERIFY%%", VERIFY_META)
-    .replaceAll("%%ROBOTS%%", robotsMeta);
+    .replaceAll("%%ROBOTS%%", robotsMeta)
+    .replaceAll("%%OGIMG%%", ogImageFor(d.slug));
 
   mkdirSync(d.slug, { recursive: true });
   writeFileSync(`${d.slug}/index.html`, html);
@@ -418,6 +421,25 @@ for (const b of BUILTINS) {
   ${bsrcHtml}
 </div>\n`;
   if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);
+
+  // 1.5) OG/Twitter 카드(멱등): 마커 블록 제거 후 재삽입. 내장 페이지엔 원래 OG 태그가 없어 공유 카드가 빈약했음.
+  h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
+  const ogImg = ogImageFor(b.slug);
+  const ogBlock = `<!--og-eeat-->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="${esc(b.name)} | TomatoEggCat" />
+<meta property="og:description" content="${esc(b.desc)}" />
+<meta property="og:url" content="${SITE}/${b.slug}/" />
+<meta property="og:image" content="${ogImg}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${esc(b.name)} | TomatoEggCat" />
+<meta name="twitter:description" content="${esc(b.desc)}" />
+<meta name="twitter:image" content="${ogImg}" />
+<!--/og-eeat-->`;
+  h = h.replace(/<\/head>/i, `${ogBlock}\n</head>`);
 
   // 2) JSON-LD(멱등): 기존 주입 블록 제거 후 SoftwareApplication+publisher+dateModified 재삽입
   h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");

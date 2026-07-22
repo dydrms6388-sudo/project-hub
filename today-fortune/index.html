@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <title>오늘의 운세 — 운세·심리 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="오늘의 운세 — 운세·심리 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="십이지(띠)를 기준으로 오늘의 총운과 애정·금전·직장·건강 다섯 분야를 각각 0~100점으로 매긴 점수와 풀이 글로 보여 주는 일일 운세 도구입니다. 점수는 그날 날짜(YYYYMMDD)와 선택한 띠 인덱스를 정해진 규칙으로 결합해 0~100 구간으로 환산하기 때문에, 무작위가" />
 <meta property="og:url" content="https://tomatoeggcat.com/today-fortune/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/today-fortune.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="오늘의 운세 — 운세·심리 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="십이지(띠)를 기준으로 오늘의 총운과 애정·금전·직장·건강 다섯 분야를 각각 0~100점으로 매긴 점수와 풀이 글로 보여 주는 일일 운세 도구입니다. 점수는 그날 날짜(YYYYMMDD)와 선택한 띠 인덱스를 정해진 규칙으로 결합해 0~100 구간으로 환산하기 때문에, 무작위가" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/today-fortune.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"오늘의 운세","description":"십이지(띠)를 기준으로 오늘의 총운과 애정·금전·직장·건강 다섯 분야를 각각 0~100점으로 매긴 점수와 풀이 글로 보여 주는 일일 운세 도구입니다. 점수는 그날 날짜(YYYYMMDD)와 선택한 띠 인덱스를 정해진 규칙으로 결합해 0~100 구간으로 환산하기 때문에, 무작위가","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/today-fortune/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"새로고침하면 운세가 달라지나요? 어떻게 계산되는 건가요?","acceptedAnswer":{"@type":"Answer","text":"달라지지 않습니다. 이 도구는 그날 날짜를 YYYYMMDD 형태의 정수로 바꾸고(예: 2026년 7월 14일이면 20260714) 여기에 띠 인덱스(0~11)와 분야별 고유 값을 더해, 정해진 해시 규칙으로 섞은 다음 0~100 구간으로 정규화합니다. 무작위 난수가 아니라 '날짜+띠'가 같으면 결과도 같은 고정 방식이라, 같은 날 같은 띠는 새로고침을 몇 번 하든 동일하게 나오고 날짜가 바뀌면 새 운세로 갱신됩니다. 어제와 오늘 같은 띠를 조회했을 때 어제 값이 그대로 재현되는지로 무작위가 아님을 직접 확인할 수 있습니다. 점수가 매일 출렁이는 것도 정상인데, 여기에는 오행 상생·상극이 반영됩니다. 예컨대 불 기운이 강한 날 목(木)띠는 목생화로 상생이라 총운에 가점이, 금(金)띠는 화극금으로 상극이라 감점이 붙는 식입니다. 총운은 다섯 분야를 종합한 값이라 한 분야가 크게 오르내리면 총운도 함께 흔들리니, 절대 점수보다 주간 그래프의 상대적 흐름을 보는 편이 유용합니다."}},{"@type":"Question","name":"제 띠가 헷갈립니다. 띠는 언제 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"먼저 태어난 서기 연도를 12로 나눈 나머지로 확인하세요(단계 안내의 대응표 참고). 다만 띠가 바뀌는 기점에는 두 견해가 있습니다. 전통 명리학(사주)은 입춘(양력 2월 4일 무렵)을, 대중적으로는 음력 설을 기준으로 봅니다. 음력 설은 해마다 1월 하순에서 2월 중순 사이로 옮겨 다녀서, 그 사이에 태어난 사람은 기준에 따라 띠가 한 해 어긋날 수 있습니다. 실제로 2023년 음력 설은 양력 1월 22일이었는데, 2023년 1월 1일~21일에 태어났다면 음력 설 기준으로는 아직 임인년(호랑이띠)이고 양력 새해로 착각하면 계묘년(토끼띠)이 됩니다. 반대로 입춘(2월 4일)을 쓰는 사주에서는 1월 22일~2월 3일생도 여전히 호랑이띠로 봅니다. 이 도구는 널리 통용되는 음력 설 기준을 따르되, 사주 기준으로 보고 싶다면 이 차이를 감안하세요."}},{"@type":"Question","name":"특정 띠가 유리하거나, 주말과 평일 점수 경향이 다르지는 않나요?","acceptedAnswer":{"@type":"Answer","text":"구조적으로 특정 띠에 유리하게 치우치지 않습니다. 점수는 날짜와 띠 인덱스를 고르게 섞어 0~100으로 정규화하므로, 긴 기간 평균을 내면 열두 띠의 총운 평균은 거의 비슷하게 수렴합니다. 그해 오행(2026년은 화)에 따른 상생·상극 가감이 있어 특정 해에는 어떤 띠가 조금 유리해 보일 수 있지만, 이는 해마다 바뀌므로 한 띠가 계속 유리한 것은 아닙니다. 주말과 평일도 마찬가지로, 계산은 요일이 아니라 날짜 숫자에 기반하기 때문에 '주말이라 더 좋다' 같은 경향은 없습니다. 요일별로 높고 낮음이 갈리는 것은 그날 날짜 숫자와 띠의 조합이 만든 결과일 뿐입니다."}},{"@type":"Question","name":"제 정보가 외부로 전송되나요? 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"운세 계산은 기기 안 브라우저에서만 처리되며 외부 서버로 데이터가 나가지 않습니다. 선택한 띠 정도만 브라우저 로컬 저장소에 남아 다음 방문 때 편하게 이어서 볼 수 있게 해 줍니다. 설치나 앱 다운로드, 회원가입 없이 오늘·내일·주간 운세를 모두 무료로 볼 수 있으며 별도 결제도 없습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"운세·심리","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"오늘의 운세","item":"https://tomatoeggcat.com/today-fortune/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"오늘의 운세","description":"십이지(띠)를 기준으로 오늘의 총운과 애정·금전·직장·건강 다섯 분야를 각각 0~100점으로 매긴 점수와 풀이 글로 보여 주는 일일 운세 도구입니다. 점수는 그날 날짜(YYYYMMDD)와 선택한 띠 인덱스를 정해진 규칙으로 결합해 0~100 구간으로 환산하기 때문에, 무작위가","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/today-fortune/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"새로고침하면 운세가 달라지나요? 어떻게 계산되는 건가요?","acceptedAnswer":{"@type":"Answer","text":"달라지지 않습니다. 이 도구는 그날 날짜를 YYYYMMDD 형태의 정수로 바꾸고(예: 2026년 7월 14일이면 20260714) 여기에 띠 인덱스(0~11)와 분야별 고유 값을 더해, 정해진 해시 규칙으로 섞은 다음 0~100 구간으로 정규화합니다. 무작위 난수가 아니라 '날짜+띠'가 같으면 결과도 같은 고정 방식이라, 같은 날 같은 띠는 새로고침을 몇 번 하든 동일하게 나오고 날짜가 바뀌면 새 운세로 갱신됩니다. 어제와 오늘 같은 띠를 조회했을 때 어제 값이 그대로 재현되는지로 무작위가 아님을 직접 확인할 수 있습니다. 점수가 매일 출렁이는 것도 정상인데, 여기에는 오행 상생·상극이 반영됩니다. 예컨대 불 기운이 강한 날 목(木)띠는 목생화로 상생이라 총운에 가점이, 금(金)띠는 화극금으로 상극이라 감점이 붙는 식입니다. 총운은 다섯 분야를 종합한 값이라 한 분야가 크게 오르내리면 총운도 함께 흔들리니, 절대 점수보다 주간 그래프의 상대적 흐름을 보는 편이 유용합니다."}},{"@type":"Question","name":"제 띠가 헷갈립니다. 띠는 언제 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"먼저 태어난 서기 연도를 12로 나눈 나머지로 확인하세요(단계 안내의 대응표 참고). 다만 띠가 바뀌는 기점에는 두 견해가 있습니다. 전통 명리학(사주)은 입춘(양력 2월 4일 무렵)을, 대중적으로는 음력 설을 기준으로 봅니다. 음력 설은 해마다 1월 하순에서 2월 중순 사이로 옮겨 다녀서, 그 사이에 태어난 사람은 기준에 따라 띠가 한 해 어긋날 수 있습니다. 실제로 2023년 음력 설은 양력 1월 22일이었는데, 2023년 1월 1일~21일에 태어났다면 음력 설 기준으로는 아직 임인년(호랑이띠)이고 양력 새해로 착각하면 계묘년(토끼띠)이 됩니다. 반대로 입춘(2월 4일)을 쓰는 사주에서는 1월 22일~2월 3일생도 여전히 호랑이띠로 봅니다. 이 도구는 널리 통용되는 음력 설 기준을 따르되, 사주 기준으로 보고 싶다면 이 차이를 감안하세요."}},{"@type":"Question","name":"특정 띠가 유리하거나, 주말과 평일 점수 경향이 다르지는 않나요?","acceptedAnswer":{"@type":"Answer","text":"구조적으로 특정 띠에 유리하게 치우치지 않습니다. 점수는 날짜와 띠 인덱스를 고르게 섞어 0~100으로 정규화하므로, 긴 기간 평균을 내면 열두 띠의 총운 평균은 거의 비슷하게 수렴합니다. 그해 오행(2026년은 화)에 따른 상생·상극 가감이 있어 특정 해에는 어떤 띠가 조금 유리해 보일 수 있지만, 이는 해마다 바뀌므로 한 띠가 계속 유리한 것은 아닙니다. 주말과 평일도 마찬가지로, 계산은 요일이 아니라 날짜 숫자에 기반하기 때문에 '주말이라 더 좋다' 같은 경향은 없습니다. 요일별로 높고 낮음이 갈리는 것은 그날 날짜 숫자와 띠의 조합이 만든 결과일 뿐입니다."}},{"@type":"Question","name":"제 정보가 외부로 전송되나요? 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"운세 계산은 기기 안 브라우저에서만 처리되며 외부 서버로 데이터가 나가지 않습니다. 선택한 띠 정도만 브라우저 로컬 저장소에 남아 다음 방문 때 편하게 이어서 볼 수 있게 해 줍니다. 설치나 앱 다운로드, 회원가입 없이 오늘·내일·주간 운세를 모두 무료로 볼 수 있으며 별도 결제도 없습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"운세·심리","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"오늘의 운세","item":"https://tomatoeggcat.com/today-fortune/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>

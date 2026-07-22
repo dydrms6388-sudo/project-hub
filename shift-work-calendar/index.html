@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <title>교대근무달력 — 취업·생산성 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="교대근무달력 — 취업·생산성 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="교대근무자는 달력을 펼치면 '오늘이 주간인지 야간인지 비번인지'부터 확인해야 합니다. 이 도구는 주야비·3조2교대·4조3교대 같은 순환 패턴을 한 번만 설정하면, 그 순서를 시작 날짜부터 하루씩 이어 붙여 몇 달 치 근무표를 자동으로 펼쳐줍니다. 요일에 고정되지 않고 패턴을 따" />
 <meta property="og:url" content="https://tomatoeggcat.com/shift-work-calendar/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/shift-work-calendar.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="교대근무달력 — 취업·생산성 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="교대근무자는 달력을 펼치면 '오늘이 주간인지 야간인지 비번인지'부터 확인해야 합니다. 이 도구는 주야비·3조2교대·4조3교대 같은 순환 패턴을 한 번만 설정하면, 그 순서를 시작 날짜부터 하루씩 이어 붙여 몇 달 치 근무표를 자동으로 펼쳐줍니다. 요일에 고정되지 않고 패턴을 따" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/shift-work-calendar.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"교대근무달력","description":"교대근무자는 달력을 펼치면 '오늘이 주간인지 야간인지 비번인지'부터 확인해야 합니다. 이 도구는 주야비·3조2교대·4조3교대 같은 순환 패턴을 한 번만 설정하면, 그 순서를 시작 날짜부터 하루씩 이어 붙여 몇 달 치 근무표를 자동으로 펼쳐줍니다. 요일에 고정되지 않고 패턴을 따","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/shift-work-calendar/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"야간수당은 어떤 시간에 붙나요?","acceptedAnswer":{"@type":"Answer","text":"오후 10시부터 다음 날 오전 6시 사이에 실제로 일한 시간에 통상임금의 50%가 더 붙습니다. 이 구간과 겹치는 분만 계산하므로, 밤 9시에 시작해 새벽 2시에 끝나는 근무라면 오후 10시~새벽 2시인 4시간분만 대상이고, 새벽에 시작해 아침 7시에 끝나면 오전 6시~7시 한 시간은 빠집니다. 휴게시간이 이 구간에 걸쳐 있으면 그만큼도 제외됩니다."}},{"@type":"Question","name":"야간에 연장근무까지 하면 수당이 어떻게 붙나요?","acceptedAnswer":{"@type":"Answer","text":"연장과 야간은 중복 적용이라, 8시간을 넘긴 연장이 밤 10시 이후까지 이어지면 그 시간엔 연장 50%와 야간 50%가 함께 붙어 기본임금 포함 통상임금의 2배가 됩니다. 이 도구는 입력한 조별 근무시간이 8시간을 넘으면 초과분을 자동으로 연장으로 잡고, 그 연장이 야간 구간과 겹치는지까지 날짜별로 계산해 항목을 나눠 보여줍니다."}},{"@type":"Question","name":"휴일 근무 8시간 초과분과 '휴일 야간'이 겹칠 때는요?","acceptedAnswer":{"@type":"Answer","text":"휴일근로는 8시간 이내분에 50%, 8시간 초과분에 100%가 더 붙어 초과분은 기본임금 포함 통상임금의 2배가 됩니다. 단, 5인 미만 사업장은 이 휴일 가산 의무 자체가 없습니다. 교대제에서 흔한 '휴일 야간'처럼 휴일근로가 밤 10시 이후에 걸리면 휴일 가산에 야간 가산 50%가 더해져 함께 계산됩니다."}},{"@type":"Question","name":"3조2교대와 4조3교대는 뭐가 다른가요?","acceptedAnswer":{"@type":"Answer","text":"3조2교대는 세 개 조가 주간·야간 두 교대를 도는 방식으로 한 교대가 대개 12시간이라, 주 근로시간이 52시간에 가까워지는 장시간 근무가 이슈가 됩니다. 4조3교대는 네 개 조가 주간·오후·야간 세 교대를 순환하며 항상 네 개 조 중 한 개 조가 순번에 따라 휴무가 되는 구조로, 한 교대가 8시간이라 상대적으로 근로시간이 짧습니다. 특정 조가 늘 쉬는 게 아니라 휴무 순번이 조마다 돌아간다는 점이 핵심입니다."}},{"@type":"Question","name":"통상시급을 모르면 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"월 고정급을 209로 나누면 법정 기준의 통상시급이 나옵니다. 209시간은 주 40시간 근로에 주휴 8시간을 더해 월 단위로 환산한 값입니다. 다만 상여금이나 고정수당이 통상임금에 포함되는지에 따라 실제 시급이 달라지므로, 정확히 하려면 근로계약서나 취업규칙을 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"취업·생산성","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"교대근무달력","item":"https://tomatoeggcat.com/shift-work-calendar/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"교대근무달력","description":"교대근무자는 달력을 펼치면 '오늘이 주간인지 야간인지 비번인지'부터 확인해야 합니다. 이 도구는 주야비·3조2교대·4조3교대 같은 순환 패턴을 한 번만 설정하면, 그 순서를 시작 날짜부터 하루씩 이어 붙여 몇 달 치 근무표를 자동으로 펼쳐줍니다. 요일에 고정되지 않고 패턴을 따","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/shift-work-calendar/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"야간수당은 어떤 시간에 붙나요?","acceptedAnswer":{"@type":"Answer","text":"오후 10시부터 다음 날 오전 6시 사이에 실제로 일한 시간에 통상임금의 50%가 더 붙습니다. 이 구간과 겹치는 분만 계산하므로, 밤 9시에 시작해 새벽 2시에 끝나는 근무라면 오후 10시~새벽 2시인 4시간분만 대상이고, 새벽에 시작해 아침 7시에 끝나면 오전 6시~7시 한 시간은 빠집니다. 휴게시간이 이 구간에 걸쳐 있으면 그만큼도 제외됩니다."}},{"@type":"Question","name":"야간에 연장근무까지 하면 수당이 어떻게 붙나요?","acceptedAnswer":{"@type":"Answer","text":"연장과 야간은 중복 적용이라, 8시간을 넘긴 연장이 밤 10시 이후까지 이어지면 그 시간엔 연장 50%와 야간 50%가 함께 붙어 기본임금 포함 통상임금의 2배가 됩니다. 이 도구는 입력한 조별 근무시간이 8시간을 넘으면 초과분을 자동으로 연장으로 잡고, 그 연장이 야간 구간과 겹치는지까지 날짜별로 계산해 항목을 나눠 보여줍니다."}},{"@type":"Question","name":"휴일 근무 8시간 초과분과 '휴일 야간'이 겹칠 때는요?","acceptedAnswer":{"@type":"Answer","text":"휴일근로는 8시간 이내분에 50%, 8시간 초과분에 100%가 더 붙어 초과분은 기본임금 포함 통상임금의 2배가 됩니다. 단, 5인 미만 사업장은 이 휴일 가산 의무 자체가 없습니다. 교대제에서 흔한 '휴일 야간'처럼 휴일근로가 밤 10시 이후에 걸리면 휴일 가산에 야간 가산 50%가 더해져 함께 계산됩니다."}},{"@type":"Question","name":"3조2교대와 4조3교대는 뭐가 다른가요?","acceptedAnswer":{"@type":"Answer","text":"3조2교대는 세 개 조가 주간·야간 두 교대를 도는 방식으로 한 교대가 대개 12시간이라, 주 근로시간이 52시간에 가까워지는 장시간 근무가 이슈가 됩니다. 4조3교대는 네 개 조가 주간·오후·야간 세 교대를 순환하며 항상 네 개 조 중 한 개 조가 순번에 따라 휴무가 되는 구조로, 한 교대가 8시간이라 상대적으로 근로시간이 짧습니다. 특정 조가 늘 쉬는 게 아니라 휴무 순번이 조마다 돌아간다는 점이 핵심입니다."}},{"@type":"Question","name":"통상시급을 모르면 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"월 고정급을 209로 나누면 법정 기준의 통상시급이 나옵니다. 209시간은 주 40시간 근로에 주휴 8시간을 더해 월 단위로 환산한 값입니다. 다만 상여금이나 고정수당이 통상임금에 포함되는지에 따라 실제 시급이 달라지므로, 정확히 하려면 근로계약서나 취업규칙을 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"취업·생산성","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"교대근무달력","item":"https://tomatoeggcat.com/shift-work-calendar/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>

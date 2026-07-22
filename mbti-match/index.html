@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <title>MBTI 궁합표 — 연애·관계 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="MBTI 궁합표 — 연애·관계 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="내 MBTI와 상대의 MBTI만 고르면 두 유형의 궁합을 100점 만점 점수와 찰떡·무난·상극 등급, 그리고 관계 해석으로 풀어 주는 도구입니다. 계산은 E/I(에너지 방향)·S/N(정보 인식)·T/F(의사결정)·J/P(생활방식) 네 축이 서로 같은지 다른지를 비교하는 데서 출" />
 <meta property="og:url" content="https://tomatoeggcat.com/mbti-match/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/mbti-match.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="MBTI 궁합표 — 연애·관계 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="내 MBTI와 상대의 MBTI만 고르면 두 유형의 궁합을 100점 만점 점수와 찰떡·무난·상극 등급, 그리고 관계 해석으로 풀어 주는 도구입니다. 계산은 E/I(에너지 방향)·S/N(정보 인식)·T/F(의사결정)·J/P(생활방식) 네 축이 서로 같은지 다른지를 비교하는 데서 출" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/mbti-match.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"MBTI 궁합표","description":"내 MBTI와 상대의 MBTI만 고르면 두 유형의 궁합을 100점 만점 점수와 찰떡·무난·상극 등급, 그리고 관계 해석으로 풀어 주는 도구입니다. 계산은 E/I(에너지 방향)·S/N(정보 인식)·T/F(의사결정)·J/P(생활방식) 네 축이 서로 같은지 다른지를 비교하는 데서 출","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/mbti-match/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"궁합 점수는 어떻게 매겨지나요?","acceptedAnswer":{"@type":"Answer","text":"100점에서 시작해 네 축이 어긋날 때마다 정해진 점수를 뺍니다. S/N 불일치 -20, T/F 불일치 -15, E/I 불일치 -8, J/P 불일치 -7점이고, 대화 소재(S/N)와 갈등·위로 방식(T/F)이 매일 부딪히는 지점이라 이 둘의 감점을 크게, 약속·생활 리듬처럼 조율이 쉬운 E/I·J/P는 작게 뒀습니다. 네 축이 모두 같으면 100점, 모두 다르면 50점이 바닥입니다. 감점 조합이 정해져 있어 실제로 나올 수 있는 점수는 100·93·92·85·80·78·77·73·72·70·65·58·57·50점뿐입니다. 등급 컷은 80점 이상 찰떡, 60~79점 무난, 59점 이하 상극입니다."}},{"@type":"Question","name":"결과가 실제로 어떻게 나오는지 예시를 볼 수 있을까요?","acceptedAnswer":{"@type":"Answer","text":"등급 컷 근처와 극단값을 함께 보면 이렇습니다. ① INFJ × INFJ → 100점·찰떡(네 축 모두 같음): 감점이 하나도 없는 극단값으로, 편하지만 둘 다 미루는 성향이면 마감·연락 시점을 정해 두는 게 처방입니다. ② INFP × ENFJ → 85점·찰떡: S/N·T/F가 같아 대화·위로 코드가 맞고 E/I·J/P만 달라 서로를 채웁니다. 외향인 쪽이 약속을 주도하면 매끄럽습니다. ③ ISTJ × INTJ → 80점·찰떡 경계: S/N만 어긋난 최소 감점 조합으로, 한쪽은 검증된 사실을 한쪽은 큰 그림을 보니 'S가 근거를 대고 N이 방향을 잡는' 역할 분담이 그대로 처방이 됩니다. ④ ESTJ × ENFJ → 65점·무난: S/N·T/F가 둘 다 달라 소재도 위로도 어긋나기 쉬운데, 대화 전에 '지금 필요한 게 해결책인지 공감인지'를 한마디 물어 주면 절반은 풀립니다. ⑤ ENFP × ISTJ → 50점·상극(네 축 모두 다름): 충전 방식부터 일상 리듬까지 전부 반대인 바닥 점수로, 차이를 '틀림'이 아니라 분업 지점으로 정해 두는 의식적 배려가 필요합니다. 이렇게 점수·등급과 4축 해석, 그리고 응용할 행동 힌트가 한 화면에 함께 뜹니다."}},{"@type":"Question","name":"4축이 각각 어떤 마찰을 만들고 어떻게 조율하면 되나요?","acceptedAnswer":{"@type":"Answer","text":"E/I가 다르면 데이트나 모임 뒤 한쪽은 더 놀고 싶고 한쪽은 방전됩니다 → '두 시간만 함께, 이후엔 각자 충전'처럼 총량을 미리 정하세요. S/N이 다르면 N의 '이런 거 해보면 어떨까'에 S가 '현실성 없다'고 받아 대화가 끊깁니다 → N이 아이디어를 던지면 S가 실행 계획으로 받는 역할을 나눠 보세요. T/F가 다르면 고민을 꺼냈을 때 T의 해결책이 F에겐 차갑게 느껴집니다 → '해결책이 필요해, 공감이 먼저야'를 먼저 알려 주세요. J/P가 다르면 계획파와 즉흥파가 여행 방식에서 부딪힙니다 → 큰 뼈대는 J가 잡고 세부 여백은 P에게 맡기면 둘 다 편합니다."}},{"@type":"Question","name":"유형군으로 묶어 보면 어떤 조합이 왜 잘 맞나요?","acceptedAnswer":{"@type":"Answer","text":"16유형은 흔히 공유하는 축으로 네 그룹으로 묶습니다. 분석가(NT: INTJ·INTP·ENTJ·ENTP), 외교관(NF: INFJ·INFP·ENFJ·ENFP), 관리자(SJ: ISTJ·ISFJ·ESTJ·ESFJ), 탐험가(SP: ISTP·ISFP·ESTP·ESFP)입니다. 이 도구에서 S/N 감점(-20)이 가장 크기 때문에, 같은 N을 쓰는 분석가·외교관끼리 또는 같은 S를 쓰는 관리자·탐험가끼리는 그 큰 감점을 피해 점수가 높게 시작합니다. 반대로 N그룹과 S그룹이 만나면 무조건 -20을 안고 출발해 높은 등급을 넘기 어렵습니다. 그래서 'NF는 NT·NF와, SJ는 SP·SJ와 잘 맞는다'는 흔한 통념이 이 점수 구조에서도 그대로 재현됩니다. 다만 나머지 세 축이 겹치는 정도에 따라 같은 그룹 안에서도 점수 차가 납니다."}},{"@type":"Question","name":"모든 조합이 준비돼 있나요? 내 유형이 헷갈리면요?","acceptedAnswer":{"@type":"Answer","text":"같은 유형끼리(예: INFJ+INFJ)를 포함해 16×16, 즉 256가지 쌍 전부에 점수와 해석이 들어 있습니다(순서를 무시하면 서로 다른 조합은 136가지이며, 누구를 먼저 넣든 결과는 같습니다). 두 지표 사이를 오가는 경계형이라 내 유형이 헷갈린다면, 후보가 되는 두세 유형을 각각 넣어 결과를 비교하고 해석이 가장 잘 들어맞는 조합을 골라 참고하세요. 정식 유형은 별도의 성격 검사로 확인하는 것을 권합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"연애·관계","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"MBTI 궁합표","item":"https://tomatoeggcat.com/mbti-match/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"MBTI 궁합표","description":"내 MBTI와 상대의 MBTI만 고르면 두 유형의 궁합을 100점 만점 점수와 찰떡·무난·상극 등급, 그리고 관계 해석으로 풀어 주는 도구입니다. 계산은 E/I(에너지 방향)·S/N(정보 인식)·T/F(의사결정)·J/P(생활방식) 네 축이 서로 같은지 다른지를 비교하는 데서 출","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/mbti-match/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"궁합 점수는 어떻게 매겨지나요?","acceptedAnswer":{"@type":"Answer","text":"100점에서 시작해 네 축이 어긋날 때마다 정해진 점수를 뺍니다. S/N 불일치 -20, T/F 불일치 -15, E/I 불일치 -8, J/P 불일치 -7점이고, 대화 소재(S/N)와 갈등·위로 방식(T/F)이 매일 부딪히는 지점이라 이 둘의 감점을 크게, 약속·생활 리듬처럼 조율이 쉬운 E/I·J/P는 작게 뒀습니다. 네 축이 모두 같으면 100점, 모두 다르면 50점이 바닥입니다. 감점 조합이 정해져 있어 실제로 나올 수 있는 점수는 100·93·92·85·80·78·77·73·72·70·65·58·57·50점뿐입니다. 등급 컷은 80점 이상 찰떡, 60~79점 무난, 59점 이하 상극입니다."}},{"@type":"Question","name":"결과가 실제로 어떻게 나오는지 예시를 볼 수 있을까요?","acceptedAnswer":{"@type":"Answer","text":"등급 컷 근처와 극단값을 함께 보면 이렇습니다. ① INFJ × INFJ → 100점·찰떡(네 축 모두 같음): 감점이 하나도 없는 극단값으로, 편하지만 둘 다 미루는 성향이면 마감·연락 시점을 정해 두는 게 처방입니다. ② INFP × ENFJ → 85점·찰떡: S/N·T/F가 같아 대화·위로 코드가 맞고 E/I·J/P만 달라 서로를 채웁니다. 외향인 쪽이 약속을 주도하면 매끄럽습니다. ③ ISTJ × INTJ → 80점·찰떡 경계: S/N만 어긋난 최소 감점 조합으로, 한쪽은 검증된 사실을 한쪽은 큰 그림을 보니 'S가 근거를 대고 N이 방향을 잡는' 역할 분담이 그대로 처방이 됩니다. ④ ESTJ × ENFJ → 65점·무난: S/N·T/F가 둘 다 달라 소재도 위로도 어긋나기 쉬운데, 대화 전에 '지금 필요한 게 해결책인지 공감인지'를 한마디 물어 주면 절반은 풀립니다. ⑤ ENFP × ISTJ → 50점·상극(네 축 모두 다름): 충전 방식부터 일상 리듬까지 전부 반대인 바닥 점수로, 차이를 '틀림'이 아니라 분업 지점으로 정해 두는 의식적 배려가 필요합니다. 이렇게 점수·등급과 4축 해석, 그리고 응용할 행동 힌트가 한 화면에 함께 뜹니다."}},{"@type":"Question","name":"4축이 각각 어떤 마찰을 만들고 어떻게 조율하면 되나요?","acceptedAnswer":{"@type":"Answer","text":"E/I가 다르면 데이트나 모임 뒤 한쪽은 더 놀고 싶고 한쪽은 방전됩니다 → '두 시간만 함께, 이후엔 각자 충전'처럼 총량을 미리 정하세요. S/N이 다르면 N의 '이런 거 해보면 어떨까'에 S가 '현실성 없다'고 받아 대화가 끊깁니다 → N이 아이디어를 던지면 S가 실행 계획으로 받는 역할을 나눠 보세요. T/F가 다르면 고민을 꺼냈을 때 T의 해결책이 F에겐 차갑게 느껴집니다 → '해결책이 필요해, 공감이 먼저야'를 먼저 알려 주세요. J/P가 다르면 계획파와 즉흥파가 여행 방식에서 부딪힙니다 → 큰 뼈대는 J가 잡고 세부 여백은 P에게 맡기면 둘 다 편합니다."}},{"@type":"Question","name":"유형군으로 묶어 보면 어떤 조합이 왜 잘 맞나요?","acceptedAnswer":{"@type":"Answer","text":"16유형은 흔히 공유하는 축으로 네 그룹으로 묶습니다. 분석가(NT: INTJ·INTP·ENTJ·ENTP), 외교관(NF: INFJ·INFP·ENFJ·ENFP), 관리자(SJ: ISTJ·ISFJ·ESTJ·ESFJ), 탐험가(SP: ISTP·ISFP·ESTP·ESFP)입니다. 이 도구에서 S/N 감점(-20)이 가장 크기 때문에, 같은 N을 쓰는 분석가·외교관끼리 또는 같은 S를 쓰는 관리자·탐험가끼리는 그 큰 감점을 피해 점수가 높게 시작합니다. 반대로 N그룹과 S그룹이 만나면 무조건 -20을 안고 출발해 높은 등급을 넘기 어렵습니다. 그래서 'NF는 NT·NF와, SJ는 SP·SJ와 잘 맞는다'는 흔한 통념이 이 점수 구조에서도 그대로 재현됩니다. 다만 나머지 세 축이 겹치는 정도에 따라 같은 그룹 안에서도 점수 차가 납니다."}},{"@type":"Question","name":"모든 조합이 준비돼 있나요? 내 유형이 헷갈리면요?","acceptedAnswer":{"@type":"Answer","text":"같은 유형끼리(예: INFJ+INFJ)를 포함해 16×16, 즉 256가지 쌍 전부에 점수와 해석이 들어 있습니다(순서를 무시하면 서로 다른 조합은 136가지이며, 누구를 먼저 넣든 결과는 같습니다). 두 지표 사이를 오가는 경계형이라 내 유형이 헷갈린다면, 후보가 되는 두세 유형을 각각 넣어 결과를 비교하고 해석이 가장 잘 들어맞는 조합을 골라 참고하세요. 정식 유형은 별도의 성격 검사로 확인하는 것을 권합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"연애·관계","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"MBTI 궁합표","item":"https://tomatoeggcat.com/mbti-match/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>

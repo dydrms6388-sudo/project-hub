@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <title>띵운 — 운세·심리 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="띵운 — 운세·심리 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="이름을 입력하면 각 글자의 초성을 훈민정음 발음오행(정음오행)인 목·화·토·금·수로 바꿉니다. 그중 가장 많이 나온 기운을 그 이름의 주 성향으로 삼아 캐릭터 카드 한 장으로 보여 주는 서비스입니다. 성향은 이름에서 나와 늘 같지만, 오늘의 운세를 이루는 4축 지표와 카드 등급" />
 <meta property="og:url" content="https://tomatoeggcat.com/ttingun/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/ttingun.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="띵운 — 운세·심리 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="이름을 입력하면 각 글자의 초성을 훈민정음 발음오행(정음오행)인 목·화·토·금·수로 바꿉니다. 그중 가장 많이 나온 기운을 그 이름의 주 성향으로 삼아 캐릭터 카드 한 장으로 보여 주는 서비스입니다. 성향은 이름에서 나와 늘 같지만, 오늘의 운세를 이루는 4축 지표와 카드 등급" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/ttingun.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"띵운","description":"이름을 입력하면 각 글자의 초성을 훈민정음 발음오행(정음오행)인 목·화·토·금·수로 바꿉니다. 그중 가장 많이 나온 기운을 그 이름의 주 성향으로 삼아 캐릭터 카드 한 장으로 보여 주는 서비스입니다. 성향은 이름에서 나와 늘 같지만, 오늘의 운세를 이루는 4축 지표와 카드 등급","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/ttingun/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"같은 이름이면 결과가 늘 같나요?","acceptedAnswer":{"@type":"Answer","text":"이름에서 나오는 성향 분석과 5축 이름 풀이는 고정입니다. 반면 오늘의 운세 4축과 카드 등급은 '날짜+이름' 시드로 계산돼 매일 달라집니다. 같은 날 여러 번 눌러도 같은 카드가 유지되고, 자정이 지나면 새 카드가 나옵니다."}},{"@type":"Question","name":"외자 이름이나 성은 어떻게 처리되나요? 영문·한자·공백을 넣으면요?","acceptedAnswer":{"@type":"Answer","text":"입력한 글자를 그대로 씁니다. 성까지 넣으면 성의 초성도 함께 세니, 이름만 보고 싶으면 이름만 넣으세요. 외자처럼 초성이 하나면 그 오행이 곧 주 성향이고 보조도 같은 오행이며 상생 흐름은 계산하지 않습니다. 예로 '찬'은 초성 ㅊ 하나라 주·보조 모두 금이고, 궁합·5축도 그 금 하나로 매겨집니다. 한글이 아닌 영문·한자·숫자·공백은 초성이 없어 계산에서 빠지므로, 되도록 한글 이름으로 넣어야 정상적으로 풀립니다."}},{"@type":"Question","name":"초성만 보나요? 된소리나 겹받침은 어떻게 처리하나요?","acceptedAnswer":{"@type":"Answer","text":"네, 각 글자의 초성만 씁니다. 받침은 겹받침을 포함해 계산에 넣지 않습니다. 된소리 ㄲ·ㄸ·ㅃ·ㅆ·ㅉ는 기본 자음의 오행을 그대로 따릅니다. 예로 '까비'는 ㄲ·ㅂ이라 목·토가 되고(ㄲ은 ㄱ과 같은 목), 받침 유무는 결과에 영향이 없습니다. 초성 ㅇ은 음가 없는 첫 이응이라 후음으로 보아 수로 셉니다."}},{"@type":"Question","name":"다른 성명학 앱과 제 오행이 다르게 나오는데요?","acceptedAnswer":{"@type":"Answer","text":"오행 배치가 유파마다 다르기 때문입니다. 띵운은 훈민정음 해례본 원 배치(순음 토·후음 수)를 따르는 발음오행 방식만 씁니다. 다른 앱은 순음을 수·후음을 토로 뒤집어 보는 유파이거나, 발음이 아니라 이름 획수를 따지는 수리오행 방식일 수 있어 같은 이름도 오행이 갈립니다."}},{"@type":"Question","name":"사주나 타로 같은 다른 운세 도구와 뭐가 다른가요?","acceptedAnswer":{"@type":"Answer","text":"사주는 생년월일시, 타로는 뽑은 카드, MBTI형 테스트는 문항 응답을 근거로 삼습니다. 띵운은 그 어느 것도 묻지 않고 오직 이름 초성만으로, 그것도 훈민정음 발음오행 한 가지 방식으로 풀어냅니다. 생년월일 없이 이름만으로 오행 성향과 궁합을 보고 싶을 때 쓰는 도구라고 보면 됩니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"운세·심리","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"띵운","item":"https://tomatoeggcat.com/ttingun/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"띵운","description":"이름을 입력하면 각 글자의 초성을 훈민정음 발음오행(정음오행)인 목·화·토·금·수로 바꿉니다. 그중 가장 많이 나온 기운을 그 이름의 주 성향으로 삼아 캐릭터 카드 한 장으로 보여 주는 서비스입니다. 성향은 이름에서 나와 늘 같지만, 오늘의 운세를 이루는 4축 지표와 카드 등급","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/ttingun/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"같은 이름이면 결과가 늘 같나요?","acceptedAnswer":{"@type":"Answer","text":"이름에서 나오는 성향 분석과 5축 이름 풀이는 고정입니다. 반면 오늘의 운세 4축과 카드 등급은 '날짜+이름' 시드로 계산돼 매일 달라집니다. 같은 날 여러 번 눌러도 같은 카드가 유지되고, 자정이 지나면 새 카드가 나옵니다."}},{"@type":"Question","name":"외자 이름이나 성은 어떻게 처리되나요? 영문·한자·공백을 넣으면요?","acceptedAnswer":{"@type":"Answer","text":"입력한 글자를 그대로 씁니다. 성까지 넣으면 성의 초성도 함께 세니, 이름만 보고 싶으면 이름만 넣으세요. 외자처럼 초성이 하나면 그 오행이 곧 주 성향이고 보조도 같은 오행이며 상생 흐름은 계산하지 않습니다. 예로 '찬'은 초성 ㅊ 하나라 주·보조 모두 금이고, 궁합·5축도 그 금 하나로 매겨집니다. 한글이 아닌 영문·한자·숫자·공백은 초성이 없어 계산에서 빠지므로, 되도록 한글 이름으로 넣어야 정상적으로 풀립니다."}},{"@type":"Question","name":"초성만 보나요? 된소리나 겹받침은 어떻게 처리하나요?","acceptedAnswer":{"@type":"Answer","text":"네, 각 글자의 초성만 씁니다. 받침은 겹받침을 포함해 계산에 넣지 않습니다. 된소리 ㄲ·ㄸ·ㅃ·ㅆ·ㅉ는 기본 자음의 오행을 그대로 따릅니다. 예로 '까비'는 ㄲ·ㅂ이라 목·토가 되고(ㄲ은 ㄱ과 같은 목), 받침 유무는 결과에 영향이 없습니다. 초성 ㅇ은 음가 없는 첫 이응이라 후음으로 보아 수로 셉니다."}},{"@type":"Question","name":"다른 성명학 앱과 제 오행이 다르게 나오는데요?","acceptedAnswer":{"@type":"Answer","text":"오행 배치가 유파마다 다르기 때문입니다. 띵운은 훈민정음 해례본 원 배치(순음 토·후음 수)를 따르는 발음오행 방식만 씁니다. 다른 앱은 순음을 수·후음을 토로 뒤집어 보는 유파이거나, 발음이 아니라 이름 획수를 따지는 수리오행 방식일 수 있어 같은 이름도 오행이 갈립니다."}},{"@type":"Question","name":"사주나 타로 같은 다른 운세 도구와 뭐가 다른가요?","acceptedAnswer":{"@type":"Answer","text":"사주는 생년월일시, 타로는 뽑은 카드, MBTI형 테스트는 문항 응답을 근거로 삼습니다. 띵운은 그 어느 것도 묻지 않고 오직 이름 초성만으로, 그것도 훈민정음 발음오행 한 가지 방식으로 풀어냅니다. 생년월일 없이 이름만으로 오행 성향과 궁합을 보고 싶을 때 쓰는 도구라고 보면 됩니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"운세·심리","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"띵운","item":"https://tomatoeggcat.com/ttingun/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>

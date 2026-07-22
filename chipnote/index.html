@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <title>칩노트 — 교육·학습 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="칩노트 — 교육·학습 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="HBM, EUV, GAA, 파운드리처럼 뉴스에 매일 등장하지만 무심코 지나쳤던 반도체 용어를 풀어 주는 교양 블로그입니다. 칩노트의 핵심은 낱개 용어 사전이 아니라 '엮어 읽기'입니다. 한 개념을 읽으면 본문에 걸린 링크와 글 하단 추천을 따라 다음 개념으로 이어지도록 큐레이션" />
 <meta property="og:url" content="https://tomatoeggcat.com/chipnote/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/chipnote.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="칩노트 — 교육·학습 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="HBM, EUV, GAA, 파운드리처럼 뉴스에 매일 등장하지만 무심코 지나쳤던 반도체 용어를 풀어 주는 교양 블로그입니다. 칩노트의 핵심은 낱개 용어 사전이 아니라 '엮어 읽기'입니다. 한 개념을 읽으면 본문에 걸린 링크와 글 하단 추천을 따라 다음 개념으로 이어지도록 큐레이션" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/chipnote.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"칩노트","description":"HBM, EUV, GAA, 파운드리처럼 뉴스에 매일 등장하지만 무심코 지나쳤던 반도체 용어를 풀어 주는 교양 블로그입니다. 칩노트의 핵심은 낱개 용어 사전이 아니라 '엮어 읽기'입니다. 한 개념을 읽으면 본문에 걸린 링크와 글 하단 추천을 따라 다음 개념으로 이어지도록 큐레이션","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/chipnote/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"반도체를 전혀 모르는 사람도 읽을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 용어마다 괄호 풀이가 병기되고 입문·심화 난이도 태그가 붙어 있어, 입문 태그 글부터 고르면 사전 지식 없이 읽을 수 있습니다. 'NPU'처럼 낯선 말이 나오면 상단 검색창에 그 단어만 넣어도 관련 글이 모입니다."}},{"@type":"Question","name":"삼성·TSMC·인텔의 '2nm'는 왜 서로 다른가요?","acceptedAnswer":{"@type":"Answer","text":"노드 숫자는 실제 치수가 아니라 세대를 가리키는 명칭이라, 같은 '2nm'라도 각 사가 내세우는 기준이 다릅니다. 회사 · 2nm급 세대·구조 · 앞세우는 지표 삼성 · SF2 (GAA/MBCFET, 3nm부터 GAA 최초 적용) · 나노시트 구조·성능/전력 TSMC · N2 (나노시트 GAA) · 트랜지스터 밀도·SRAM 스케일링 인텔 · 18A (RibbonFET+후면전력 PowerVia) · 성능/와트·전력공급 효율 그래서 숫자만으로 직접 비교하기보다 각 사가 공개한 밀도·SRAM 지표를 함께 봐야 오해가 없습니다."}},{"@type":"Question","name":"필자의 사실 확인은 어떻게 이뤄지나요?","acceptedAnswer":{"@type":"Answer","text":"필자는 반도체 업계 경력과 전공 지식을 갖췄으며, 프로필은 '필자 소개' 페이지에서 확인할 수 있습니다. 근거 자료는 유형을 밝혀 인용합니다 — 산업 통계는 산업통상자원부 '수출입 동향', 기업 수치는 TSMC·삼성 등의 분기 실적 발표와 보도자료, 기술 근거는 IEDM·VLSI Symposium 같은 학회 논문을 씁니다. 발행 전 이 자료들로 사실 확인을 거칩니다."}},{"@type":"Question","name":"내용이 최신 동향을 반영하나요?","acceptedAnswer":{"@type":"Answer","text":"산업 변화가 빨라 구체적인 수치나 로드맵은 기업 공식 발표·산업 보고서와 함께 확인하길 권합니다. 각 글에 작성일이 표기돼 언제 기준인지 바로 알 수 있고, 큰 변화가 생기면 해당 글을 갱신합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"교육·학습","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"칩노트","item":"https://tomatoeggcat.com/chipnote/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"칩노트","description":"HBM, EUV, GAA, 파운드리처럼 뉴스에 매일 등장하지만 무심코 지나쳤던 반도체 용어를 풀어 주는 교양 블로그입니다. 칩노트의 핵심은 낱개 용어 사전이 아니라 '엮어 읽기'입니다. 한 개념을 읽으면 본문에 걸린 링크와 글 하단 추천을 따라 다음 개념으로 이어지도록 큐레이션","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/chipnote/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"반도체를 전혀 모르는 사람도 읽을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 용어마다 괄호 풀이가 병기되고 입문·심화 난이도 태그가 붙어 있어, 입문 태그 글부터 고르면 사전 지식 없이 읽을 수 있습니다. 'NPU'처럼 낯선 말이 나오면 상단 검색창에 그 단어만 넣어도 관련 글이 모입니다."}},{"@type":"Question","name":"삼성·TSMC·인텔의 '2nm'는 왜 서로 다른가요?","acceptedAnswer":{"@type":"Answer","text":"노드 숫자는 실제 치수가 아니라 세대를 가리키는 명칭이라, 같은 '2nm'라도 각 사가 내세우는 기준이 다릅니다. 회사 · 2nm급 세대·구조 · 앞세우는 지표 삼성 · SF2 (GAA/MBCFET, 3nm부터 GAA 최초 적용) · 나노시트 구조·성능/전력 TSMC · N2 (나노시트 GAA) · 트랜지스터 밀도·SRAM 스케일링 인텔 · 18A (RibbonFET+후면전력 PowerVia) · 성능/와트·전력공급 효율 그래서 숫자만으로 직접 비교하기보다 각 사가 공개한 밀도·SRAM 지표를 함께 봐야 오해가 없습니다."}},{"@type":"Question","name":"필자의 사실 확인은 어떻게 이뤄지나요?","acceptedAnswer":{"@type":"Answer","text":"필자는 반도체 업계 경력과 전공 지식을 갖췄으며, 프로필은 '필자 소개' 페이지에서 확인할 수 있습니다. 근거 자료는 유형을 밝혀 인용합니다 — 산업 통계는 산업통상자원부 '수출입 동향', 기업 수치는 TSMC·삼성 등의 분기 실적 발표와 보도자료, 기술 근거는 IEDM·VLSI Symposium 같은 학회 논문을 씁니다. 발행 전 이 자료들로 사실 확인을 거칩니다."}},{"@type":"Question","name":"내용이 최신 동향을 반영하나요?","acceptedAnswer":{"@type":"Answer","text":"산업 변화가 빨라 구체적인 수치나 로드맵은 기업 공식 발표·산업 보고서와 함께 확인하길 권합니다. 각 글에 작성일이 표기돼 언제 기준인지 바로 알 수 있고, 큰 변화가 생기면 해당 글을 갱신합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"교육·학습","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"칩노트","item":"https://tomatoeggcat.com/chipnote/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>

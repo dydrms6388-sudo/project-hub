@@ -5,7 +5,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <title>꿈해몽소 — 운세·심리 무료 도구 | TomatoEggCat</title>
@@ -16,61 +18,89 @@
 <meta property="og:title" content="꿈해몽소 — 운세·심리 무료 도구 | TomatoEggCat" />
 <meta property="og:description" content="꿈해몽소는 꿈에 나온 상징을 검색창에 적는 도구입니다. 한국에서 자주 검색되는 대표 상징 133개를 정리한 사전에서 해당 항목을 찾아 전통적 의미와 길흉 점수를 풀어줍니다. 핵심은 상징을 하나만 보는 게 아니라 여러 개를 함께 입력하면 각 상징의 길흉 점수를 조합해 꿈 전체의" />
 <meta property="og:url" content="https://tomatoeggcat.com/dydrms-haemong/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/dydrms-haemong.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="꿈해몽소 — 운세·심리 무료 도구 | TomatoEggCat" />
 <meta name="twitter:description" content="꿈해몽소는 꿈에 나온 상징을 검색창에 적는 도구입니다. 한국에서 자주 검색되는 대표 상징 133개를 정리한 사전에서 해당 항목을 찾아 전통적 의미와 길흉 점수를 풀어줍니다. 핵심은 상징을 하나만 보는 게 아니라 여러 개를 함께 입력하면 각 상징의 길흉 점수를 조합해 꿈 전체의" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/dydrms-haemong.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"꿈해몽소","description":"꿈해몽소는 꿈에 나온 상징을 검색창에 적는 도구입니다. 한국에서 자주 검색되는 대표 상징 133개를 정리한 사전에서 해당 항목을 찾아 전통적 의미와 길흉 점수를 풀어줍니다. 핵심은 상징을 하나만 보는 게 아니라 여러 개를 함께 입력하면 각 상징의 길흉 점수를 조합해 꿈 전체의","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/dydrms-haemong/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"길몽지수는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"길몽지수는 0~100 척도의 참고 지표입니다. 사전은 상징마다 -5(대표 흉몽)에서 +5(대표 길몽)까지의 길흉 원점수를 매겨두는데, 이를 화면에서는 0~100으로 환산해 개별 점수로 보여줍니다(예: 원점수 +4는 90점). 여러 상징을 넣으면 인상이 강한 상징에 더 무게를 준 가중평균으로 합쳐 하나의 길몽지수를 냅니다. 길몽과 흉몽 상징이 함께 나오면 서로 상쇄되도록 지수를 50 쪽으로 끌어당기는 감쇠 규칙이 적용됩니다. 대략 70 이상이면 길몽 경향, 40 이하면 흉몽 경향, 그 사이는 중립으로 보면 됩니다. 어디까지나 꿈의 전체 결을 한눈에 보기 위한 지표이지 절대 기준은 아닙니다."}},{"@type":"Question","name":"복합 해몽은 상징 하나만 검색할 때와 무엇이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"단일 검색은 상징을 하나씩 따로 풀어줍니다. 돼지만 검색하면 '재물', 물만 검색하면 '감정·정화'로 각각 표시되죠. 복합 해몽은 이 둘을 한 꿈으로 묶어 다시 읽습니다. 실제 예로 '돼지+물(맑은 물)'을 입력하면 돼지 개별 90점, 물 70점이 잡히고, 인상이 강한 돼지에 가중을 줘 길몽지수 82가 나옵니다. 종합 문장은 '맑은 물이 재물운을 씻어 키우는, 재물·기회의 결이 강한 꿈'처럼 두 상징이 하나의 맥락으로 재해석됩니다. 만약 물이 흐린 물이었다면 물의 점수가 내려가 지수도 낮아지고 '재물을 두고 근심이 섞인 꿈'으로 결이 바뀝니다."}},{"@type":"Question","name":"상징이 133개뿐인데 제 꿈에 맞는 항목이 있을까요?","acceptedAnswer":{"@type":"Answer","text":"한국 포털 자동완성과 검색 로그에서 자주 오르는 상징을 추려 133개로 구성했고 주기적으로 갱신합니다. 크게 동물(돼지·용·구렁이·개), 재물·사물(돈·똥·불·신발), 신체(이빨 빠짐·머리카락·피·손톱), 자연(물·산·비·해와 달), 인물(조상·연예인·아기·죽은 사람) 등으로 묶여 있어, 자기 꿈 소재가 어느 갈래에 드는지 먼저 떠올리면 항목을 찾기 쉽습니다. 흔한 꿈은 대부분 잡히지만 세세한 소재는 빠질 수 있는데, 그럴 땐 뜻이 가장 가까운 상징(예: 특정 동물이 없으면 비슷한 동물)을 골라 참고하세요."}},{"@type":"Question","name":"행운 번호는 어떻게 뽑히나요?","acceptedAnswer":{"@type":"Answer","text":"행운 번호는 입력한 상징마다 사전에 지정된 번호를 조합해 1~45 중 6개로 뽑아주는 재미 기능입니다. 상징을 여러 개 넣으면 각 상징의 지정 번호를 섞어 하나의 세트를 만듭니다. 다만 이는 상징을 숫자로 바꾼 놀이일 뿐, 복권 당첨과는 통계적으로 아무 관련이 없습니다."}},{"@type":"Question","name":"꿈해몽 결과가 실제 일어날 일을 맞히나요? 돼지꿈을 꾸면 복권을 사야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 꿈해몽소는 전통 상징 해석을 정리한 문화·오락 콘텐츠로, 미래를 내다보는 기능이 아닙니다. 돼지·용·똥이 재물을 뜻한다는 것도 오래 전해온 상징 통념일 뿐, 복권 당첨과는 통계적으로 무관합니다. 재미와 자기 이해를 위한 참고 자료로 받아들이고, 복권 구매는 스스로 판단하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"운세·심리","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"꿈해몽소","item":"https://tomatoeggcat.com/dydrms-haemong/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"꿈해몽소","description":"꿈해몽소는 꿈에 나온 상징을 검색창에 적는 도구입니다. 한국에서 자주 검색되는 대표 상징 133개를 정리한 사전에서 해당 항목을 찾아 전통적 의미와 길흉 점수를 풀어줍니다. 핵심은 상징을 하나만 보는 게 아니라 여러 개를 함께 입력하면 각 상징의 길흉 점수를 조합해 꿈 전체의","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/dydrms-haemong/","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"길몽지수는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"길몽지수는 0~100 척도의 참고 지표입니다. 사전은 상징마다 -5(대표 흉몽)에서 +5(대표 길몽)까지의 길흉 원점수를 매겨두는데, 이를 화면에서는 0~100으로 환산해 개별 점수로 보여줍니다(예: 원점수 +4는 90점). 여러 상징을 넣으면 인상이 강한 상징에 더 무게를 준 가중평균으로 합쳐 하나의 길몽지수를 냅니다. 길몽과 흉몽 상징이 함께 나오면 서로 상쇄되도록 지수를 50 쪽으로 끌어당기는 감쇠 규칙이 적용됩니다. 대략 70 이상이면 길몽 경향, 40 이하면 흉몽 경향, 그 사이는 중립으로 보면 됩니다. 어디까지나 꿈의 전체 결을 한눈에 보기 위한 지표이지 절대 기준은 아닙니다."}},{"@type":"Question","name":"복합 해몽은 상징 하나만 검색할 때와 무엇이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"단일 검색은 상징을 하나씩 따로 풀어줍니다. 돼지만 검색하면 '재물', 물만 검색하면 '감정·정화'로 각각 표시되죠. 복합 해몽은 이 둘을 한 꿈으로 묶어 다시 읽습니다. 실제 예로 '돼지+물(맑은 물)'을 입력하면 돼지 개별 90점, 물 70점이 잡히고, 인상이 강한 돼지에 가중을 줘 길몽지수 82가 나옵니다. 종합 문장은 '맑은 물이 재물운을 씻어 키우는, 재물·기회의 결이 강한 꿈'처럼 두 상징이 하나의 맥락으로 재해석됩니다. 만약 물이 흐린 물이었다면 물의 점수가 내려가 지수도 낮아지고 '재물을 두고 근심이 섞인 꿈'으로 결이 바뀝니다."}},{"@type":"Question","name":"상징이 133개뿐인데 제 꿈에 맞는 항목이 있을까요?","acceptedAnswer":{"@type":"Answer","text":"한국 포털 자동완성과 검색 로그에서 자주 오르는 상징을 추려 133개로 구성했고 주기적으로 갱신합니다. 크게 동물(돼지·용·구렁이·개), 재물·사물(돈·똥·불·신발), 신체(이빨 빠짐·머리카락·피·손톱), 자연(물·산·비·해와 달), 인물(조상·연예인·아기·죽은 사람) 등으로 묶여 있어, 자기 꿈 소재가 어느 갈래에 드는지 먼저 떠올리면 항목을 찾기 쉽습니다. 흔한 꿈은 대부분 잡히지만 세세한 소재는 빠질 수 있는데, 그럴 땐 뜻이 가장 가까운 상징(예: 특정 동물이 없으면 비슷한 동물)을 골라 참고하세요."}},{"@type":"Question","name":"행운 번호는 어떻게 뽑히나요?","acceptedAnswer":{"@type":"Answer","text":"행운 번호는 입력한 상징마다 사전에 지정된 번호를 조합해 1~45 중 6개로 뽑아주는 재미 기능입니다. 상징을 여러 개 넣으면 각 상징의 지정 번호를 섞어 하나의 세트를 만듭니다. 다만 이는 상징을 숫자로 바꾼 놀이일 뿐, 복권 당첨과는 통계적으로 아무 관련이 없습니다."}},{"@type":"Question","name":"꿈해몽 결과가 실제 일어날 일을 맞히나요? 돼지꿈을 꾸면 복권을 사야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 꿈해몽소는 전통 상징 해석을 정리한 문화·오락 콘텐츠로, 미래를 내다보는 기능이 아닙니다. 돼지·용·똥이 재물을 뜻한다는 것도 오래 전해온 상징 통념일 뿐, 복권 당첨과는 통계적으로 무관합니다. 재미와 자기 이해를 위한 참고 자료로 받아들이고, 복권 구매는 스스로 판단하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":2,"name":"운세·심리","item":"https://tomatoeggcat.com/"},{"@type":"ListItem","position":3,"name":"꿈해몽소","item":"https://tomatoeggcat.com/dydrms-haemong/"}]}]}</script>
 <style>
-:root{color-scheme:dark}
+:root{
+  color-scheme:light dark;
+  --bg:#0a0a0a;--tx:#ededed;--txs:#e5e7eb;--tx2:#c4c9d2;--tx3:#b8bec8;
+  --muted:#6b7280;--muted2:#9ca3af;--acc:#34d399;--acc2:#10b981;--cta-tx:#06281f;
+  --link:#7aa2ff;--panel:#131313;--panel2:#161616;--panel3:#111;
+  --line:#232323;--line2:#2a2a2a;--line3:#1c1c1c;--sep:#3a3f4a;
+  --ed-bg:#101512;--ed-line:#1e2a24;--ed-by:#aeb6bf;--ed-strong:#d6dbe2;--ed-src:#8b8f98;
+  --disc:#8b8f98;--warn:#e0a44d;--h1a:#ffffff;--h1b:#9ee7c8;--rel-tx:#e5e7eb;--rel-h:#d4d4d4;
+}
+:root[data-theme=light]{
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme=dark]){
+  --bg:#f7f8fa;--tx:#1f2937;--txs:#111827;--tx2:#374151;--tx3:#4b5563;
+  --muted:#6b7280;--muted2:#6b7280;--acc:#059669;--acc2:#10b981;--cta-tx:#ffffff;
+  --link:#2563eb;--panel:#ffffff;--panel2:#f3f4f6;--panel3:#f9fafb;
+  --line:#e5e7eb;--line2:#e5e7eb;--line3:#eceef1;--sep:#cbd2da;
+  --ed-bg:#f0faf5;--ed-line:#cdefdd;--ed-by:#3f5a4e;--ed-strong:#134e34;--ed-src:#5c6b63;
+  --disc:#6b7280;--warn:#b45309;--h1a:#065f46;--h1b:#0f9d6b;--rel-tx:#1f2937;--rel-h:#374151;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
-a{color:#34d399}
-.crumb{font-size:13px;color:#6b7280;margin:18px 0 0;line-height:1.7}
-.crumb a{color:#7aa2ff;text-decoration:none}
+a{color:var(--acc)}
+.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.crumb .sep{color:#3a3f4a;margin:0 2px}
-.crumb .c-cur{color:#9ca3af}
+.crumb .sep{color:var(--sep);margin:0 2px}
+.crumb .c-cur{color:var(--muted2)}
 .hero{text-align:center;padding:34px 0 8px}
 .emoji{font-size:46px}
-h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,#fff,#9ee7c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9ca3af;margin:12px auto 0;max-width:560px;font-size:15px}
-.cta{display:inline-block;margin-top:22px;background:#10b981;color:#06281f;font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
+h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90deg,var(--h1a),var(--h1b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted2);margin:12px auto 0;max-width:560px;font-size:15px}
+.cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:#e5e7eb;margin:26px 0 10px}
-.about p{color:#c4c9d2;font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:#c4c9d2;font-size:14.5px}
+.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
+.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
-.about .qa .q{color:#e5e7eb;font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:#b8bec8;margin:0;font-size:14.5px}
+.about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
+.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
-.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:#e0a44d;font-size:13px}
-.about .disclaimer{color:#8b8f98;font-size:13px;background:#131313;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin:18px 0 0}
-.about .edbox{margin:22px 0 0;padding:13px 15px;background:#101512;border:1px solid #1e2a24;border-radius:11px}
-.about .edbox .ed-by{margin:0;color:#aeb6bf;font-size:13px}
-.about .edbox .ed-by strong{color:#d6dbe2;font-weight:700}
-.about .edbox .ed-src{margin:7px 0 0;color:#8b8f98;font-size:12.5px;line-height:1.7}
-.about .edbox .ed-src a{color:#7aa2ff;text-decoration:none}
+.about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
+.about .disclaimer{color:var(--disc);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:18px 0 0}
+.about .edbox{margin:22px 0 0;padding:13px 15px;background:var(--ed-bg);border:1px solid var(--ed-line);border-radius:11px}
+.about .edbox .ed-by{margin:0;color:var(--ed-by);font-size:13px}
+.about .edbox .ed-by strong{color:var(--ed-strong);font-weight:700}
+.about .edbox .ed-src{margin:7px 0 0;color:var(--ed-src);font-size:12.5px;line-height:1.7}
+.about .edbox .ed-src a{color:var(--link);text-decoration:none}
 .about .edbox .ed-src a:hover{text-decoration:underline}
 .about .rt{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}
-.about .rt th,.about .rt td{border:1px solid #2a2a2a;padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
-.about .rt thead th{background:#161616;color:#e5e7eb;font-weight:700}
-.about .rt td{color:#b8bec8}
-.about .rt tbody tr:nth-child(even){background:#111}
-.cat-note{color:#6b7280;font-size:13px;margin-top:14px}
+.about .rt th,.about .rt td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top;white-space:nowrap}
+.about .rt thead th{background:var(--panel2);color:var(--txs);font-weight:700}
+.about .rt td{color:var(--tx3)}
+.about .rt tbody tr:nth-child(even){background:var(--panel3)}
+.cat-note{color:var(--muted);font-size:13px;margin-top:14px}
 .related{margin:38px 0 0}
-.related h2{font-size:15px;font-weight:800;color:#d4d4d4;margin:0 0 14px}
+.related h2{font-size:15px;font-weight:800;color:var(--rel-h);margin:0 0 14px}
 .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #232323;background:#161616;border-radius:12px;padding:11px 13px;color:#e5e7eb;font-size:14px;transition:border-color .14s,transform .14s}
-.rel:hover{border-color:#10b981;transform:translateY(-1px)}
+.rel{display:flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:11px 13px;color:var(--rel-tx);font-size:14px;transition:border-color .14s,transform .14s}
+.rel:hover{border-color:var(--acc2);transform:translateY(-1px)}
 .rel span{font-size:18px}
-footer{margin-top:44px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c1c1c;padding-top:22px}
-footer a{color:#7aa2ff;margin:0 7px;text-decoration:none}
+footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line3);padding-top:22px}
+footer a{color:var(--link);margin:0 7px;text-decoration:none}
 @media (max-width:520px){.rel-grid{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>
