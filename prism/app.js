@@ -114,7 +114,7 @@
   const cardOwned = (id) => cardTotal(id) > 0;
   const cardLikeBonus = () => Math.min(30, Object.keys(S.cards).reduce((a, id) => a + Math.max(0, cardMaxLv(id) - 1), 0));
   const cardSuperBonus = () => Math.min(3, Object.keys(S.cards).filter((id) => cardOwned(id) && (cardOf(id) || {}).rarity === "SSR").length);
-  const likeLimit = () => plan().likes === Infinity ? Infinity : plan().likes + cardLikeBonus();
+  const likeLimit = () => plan().likes === Infinity ? Infinity : plan().likes + cardLikeBonus() + profileBonusLikes();
   const superLimit = () => plan().supers + cardSuperBonus();
   const gachaFreeMax = () => (S.premium.plan === "black" ? 2 : 1); // Black: 매일 무료 뽑기 2회
   const gachaFreeLeft = () => S.gacha.day !== todayStr() ? gachaFreeMax() : Math.max(0, gachaFreeMax() - (S.gacha.freeCount || 0));
@@ -194,6 +194,31 @@
   const myTopics = () => (S.user && Array.isArray(S.user.topics) ? S.user.topics : []);
   const sharedTopics = (p) => { const mine = myTopics(); return demoTopics(p).filter((t) => mine.includes(t)); };
   const topicMembers = (name) => D.profiles.filter((p) => !S.blocked.includes(p.id) && demoTopics(p).includes(name));
+  /* ── 프로필 완성도 (가중 100점) ── */
+  function profileScore() {
+    const u = S.user; if (!u) return { pct: 0, items: [] };
+    const items = [
+      { label: "사진 등록", done: (u.photos || []).length > 0, w: 22, go: "edit" },
+      { label: "사진 2장 이상", done: (u.photos || []).length >= 2, w: 10, go: "edit" },
+      { label: "자기소개 20자+", done: (u.intro || "").trim().length >= 20, w: 15, go: "edit" },
+      { label: "관심사 3개+", done: (u.tags || []).length >= 3, w: 10, go: "edit" },
+      { label: "성향 선택", done: !!u.position, w: 8, go: "edit" },
+      { label: "스타일 태그", done: (u.styles || []).length > 0, w: 8, go: "edit" },
+      { label: "찾는 관계", done: (u.lookingList || []).length > 0, w: 7, go: "edit" },
+      { label: "관심 주제 참여", done: (u.topics || []).length > 0, w: 8, go: "community" },
+      { label: "프로필 인증", done: !!u.verified, w: 12, go: "verify" },
+    ];
+    const pct = items.filter((i) => i.done).reduce((a, i) => a + i.w, 0);
+    return { pct, items };
+  }
+  const profileBonusLikes = () => profileScore().pct >= 80 ? 5 : 0; // 완성 보너스: 일일 좋아요 +5
+  // 최초 100% 달성 시 1회 보상
+  function checkProfileComplete() {
+    if (profileScore().pct >= 100 && !S.profileComplete100) {
+      S.profileComplete100 = true; S.items.gachaticket += 3; save();
+      setTimeout(() => toast("🏆 프로필 100% 완성! 크러시 팩 뽑기권 +3 보너스"), 400);
+    }
+  }
 
   /* ── 토스트/모달 ── */
   function toast(msg, ms) {
@@ -1293,14 +1318,25 @@
   function vMy() {
     const u = S.user;
     const pl = S.premium.plan;
+    checkProfileComplete();
+    const ps = profileScore();
+    const missing = ps.items.filter((i) => !i.done);
     $("#view").innerHTML = `
       <div class="my-head">
         <span class="avatar" style="${avStyle(u)}">${avEm(u)}</span>
-        <div><div class="mh-nm">${esc(u.name)}, ${u.age}</div>
+        <div><div class="mh-nm">${esc(u.name)}, ${u.age} ${u.verified ? '<span class="vbadge" title="인증된 프로필">✔︎ 인증</span>' : ""}</div>
         <div class="mh-sub">📍 ${esc(u.region)} · ${u.mbti}${u.position ? " · " + esc(posShort(u.position)) : ""}</div>
         ${(u.styles && u.styles.length) || (u.lookingList && u.lookingList.length) ? `<div class="mh-tags">${(u.styles || []).map((s) => `<span class="mtag st">${esc(s)}</span>`).join("")}${(u.lookingList || []).slice(0, 2).map((l) => `<span class="mtag lk">${esc(l)}</span>`).join("")}</div>` : ""}</div>
       </div>
       ${u.photos && u.photos.length ? `<div class="my-photos">${u.photos.map((ph) => `<div class="myp" style="background-image:url('${ph}')"></div>`).join("")}${u.privatePhotos && u.privatePhotos.length ? `<div class="myp priv"><span>🔒 비밀 ${u.privatePhotos.length}</span></div>` : ""}</div>` : ""}
+      <div class="pcompl ${ps.pct >= 100 ? "done" : ""}">
+        <div class="pc-top"><b>프로필 완성도</b><span class="pc-pct">${ps.pct}%</span></div>
+        <div class="pc-bar"><i style="width:${ps.pct}%"></i></div>
+        ${ps.pct >= 100
+          ? `<p class="pc-msg">🏆 완벽해요! 완성 보너스로 <b>매일 좋아요 +5</b> 적용 중이에요.</p>`
+          : `<p class="pc-msg">${ps.pct >= 80 ? "완성 보너스(<b>좋아요 +5/일</b>) 적용 중 · " : ""}채우면 추천에 더 잘 노출돼요:</p>
+             <div class="pc-todo">${missing.slice(0, 4).map((m) => `<button class="pc-chip" data-go="${m.go}">＋ ${esc(m.label)}</button>`).join("")}</div>`}
+      </div>
       <div class="my-plan ${pl === "free" ? "free" : ""}">
         <b>${pl === "free" ? "무료 플랜 이용 중" : "🎉 " + plan().label + " 이용 중"}</b>
         <p>누적 — 보낸 좋아요 <b>${S.stats.likesSent}</b> · 매치 <b>${S.stats.matches}</b>${pl === "free" ? " — PRISM+면 좋아요 무제한, 받은 좋아요 공개, 광고 제거." : " — 프리미엄 혜택 적용 중. 언제든 변경 가능."}</p>
@@ -1332,6 +1368,12 @@
         <a href="/contact.html" target="_blank" rel="noopener" style="color:var(--tx3)">문의</a></p>
       ${adSlot()}`;
     $("#my-premium").onclick = () => openPremium();
+    $$(".pc-chip").forEach((b) => b.onclick = () => {
+      const g = b.dataset.go;
+      if (g === "edit") editProfileSheet();
+      else if (g === "community") go("community");
+      else if (g === "verify") $("#m-verify").click();
+    });
     $("#m-edit").onclick = editProfileSheet;
     $("#m-shop").onclick = () => openShop();
     $("#m-install").onclick = installApp;
