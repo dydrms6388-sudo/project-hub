@@ -36,6 +36,13 @@ export {
   type PiiKind,
 } from "./moderate/index.js";
 export {
+  HeuristicClassifier,
+  LlmClassifier,
+  llmClassificationSchema,
+  extractJsonArray,
+  type LlmClassifierDeps,
+} from "./moderate/classifier.js";
+export {
   publish,
   resolveUrl,
   renderTemplate,
@@ -73,8 +80,14 @@ export type {
 } from "./ports.js";
 export { UGC_TABLES, type UgcTableName } from "./db/tables.js";
 
-// Adapters (dev/test)
+// Adapters
 export { MemoryStore } from "./adapters/memory.js";
+export { SupabaseStore } from "./adapters/supabase.js";
+export {
+  InMemorySimilarityIndex,
+  cosineSimilarity,
+  type Embedder,
+} from "./adapters/similarity.js";
 export type {
   UgcStatus,
   UgcSubmission,

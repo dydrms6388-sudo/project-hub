@@ -2,6 +2,41 @@
 
 Running log of design decisions. Newest phase last.
 
+## Phase 1 — submit + moderate 실구현, 어댑터, 20종 테스트 (current)
+
+- **D1.1 Provider-agnostic LLM classifier.** `LlmClassifier` takes an injected
+  `chat(prompt) => string`; the package imports no AI SDK and holds no key. Batches
+  up to 10 texts per call (spec: "LLM 분류기 배치 10건"), parses the JSON array,
+  validates each item with Zod, and **falls back to `HeuristicClassifier`** per-item
+  on any parse/validation failure or model error. Consumers wire their own model
+  (recommend the latest Claude model).
+- **D1.2 Offline heuristic classifier.** `HeuristicClassifier` runs with no network
+  (lexicons for hate/spam/adult + URL-flood + repetition + PII). Doubles as the
+  default `ClassifierPort` and the LLM fallback, so moderation degrades gracefully.
+- **D1.3 Supabase adapter is type-only + optional peer dep.** `SupabaseStore`
+  implements `UgcStore` + `DashboardPort` via `import type { SupabaseClient }`, so
+  core stays runtime-dependency-free (only `zod`). Consumers pass a **service-role**
+  client. `bumpCounter` calls the `ugc_bump_counter` RPC for atomicity. Dashboard
+  reads group in app code for now — **Phase 3 should move aggregation into SQL
+  views/RPCs** (flagged in-file). Adapter is type-checked here but exercised against
+  a live DB only by the consumer's integration tests (Phase 2).
+- **D1.4 `recordModeration` carries `app_slug`.** The `ugc_moderations.app_slug`
+  column is NOT NULL; the port signature now takes `(appSlug, submissionId, result)`
+  rather than doing an extra lookup. Callers pass `config.appSlug`.
+- **D1.5 Review queue persisted.** `intake()` now writes queued items to
+  `ugc_moderation_queue` via `enqueueForReview` (idempotent upsert on
+  `submission_id`); `resolveQueueItem` marks admin resolution.
+- **D1.6 Embedding dedup via injected embedder.** `InMemorySimilarityIndex`
+  implements `SimilarityPort` with cosine similarity over an injected `embed(text)`;
+  no embedding SDK in-package. Production vectors live in pgvector (Phase 2).
+- **D1.7 PII precision fix.** Dropped ambiguous single-char affiliation tokens
+  (과/부/국/처 …) that false-matched ordinary words (국물, 근처) and made a job title
+  **mandatory** in the name+affiliation heuristic. Clean-prose false positives → 0.
+- **Verification.** `typecheck` clean; **43 vitest cases green**, including all **20
+  PII cases blocking**, clean prose not flagged, spam (도배/링크폭탄) never
+  auto-publishing, dedup, and the batched classifier (order/fallback/unknown-category).
+
+
 ## Phase 0 — workspace + scaffolding + schema (current)
 
 ### Placement

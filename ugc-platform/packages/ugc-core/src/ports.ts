@@ -23,7 +23,11 @@ export interface UgcStore {
     },
   ): Promise<UgcSubmission>;
 
-  recordModeration(submissionId: string, result: ModerationResult): Promise<void>;
+  recordModeration(
+    appSlug: string,
+    submissionId: string,
+    result: ModerationResult,
+  ): Promise<void>;
 
   /** Persist a published record and return it (slug/url resolved by caller). */
   upsertContent(row: Omit<PublishedContent, "reactions">): Promise<PublishedContent>;
@@ -40,6 +44,17 @@ export interface UgcStore {
   insertReport(row: Omit<Report, "id" | "createdAt">): Promise<Report>;
 
   countReports(appSlug: string, contentId: string): Promise<number>;
+
+  /** Push an inconclusive submission onto the human-review queue. */
+  enqueueForReview(row: {
+    appSlug: string;
+    submissionId: string;
+    qualityScore: number;
+    categories: string[];
+  }): Promise<void>;
+
+  /** Mark a queued item resolved (admin acted on it). */
+  resolveQueueItem(appSlug: string, submissionId: string, resolvedBy: string): Promise<void>;
 
   /**
    * Atomically increment and read a rolling counter for rate limiting.

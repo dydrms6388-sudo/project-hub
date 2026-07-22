@@ -75,9 +75,11 @@ That's the whole integration — no new tables, no forked pipeline.
 
 - **Phase 0 (done)** — workspace, package scaffolding, `ugc_` schema, rules-based
   moderation + PII gate, slug/score, in-memory adapter, smoke tests.
-- **Phase 1** — Supabase adapter, LLM classifier + batching, embedding dedup,
-  20-case PII test set.
-- **Phase 2** — publish + SEO wired into a demo Next.js app (E2E).
+- **Phase 1 (done)** — `SupabaseStore` (UgcStore + DashboardPort), provider-agnostic
+  `LlmClassifier` + `HeuristicClassifier` (batched, with fallback), embedding dedup
+  (`InMemorySimilarityIndex`), review-queue persistence, and a 43-case test suite
+  (20 PII cases all blocked).
+- **Phase 2** — publish + SEO wired into a demo Next.js app (E2E), pgvector dedup.
 - **Phase 3** — engage + reports + admin dashboard UI.
 - **Phase 4** — integrate 판결소, then document rollout to the other four apps.
 

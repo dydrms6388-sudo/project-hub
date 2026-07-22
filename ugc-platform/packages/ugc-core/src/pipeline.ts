@@ -98,17 +98,23 @@ export function createUgc(config: UgcConfig, deps: UgcDeps): Ugc {
       const { submission } = submitted;
 
       if (moderation.decision === "block") {
-        await deps.store.recordModeration(submission.id, moderation);
+        await deps.store.recordModeration(config.appSlug, submission.id, moderation);
         await deps.store.setContentStatus(config.appSlug, submission.id, "blocked");
         return { stage: "blocked", submission, moderation };
       }
       if (moderation.decision === "queue") {
-        await deps.store.recordModeration(submission.id, moderation);
+        await deps.store.recordModeration(config.appSlug, submission.id, moderation);
         await deps.store.setContentStatus(config.appSlug, submission.id, "queued");
+        await deps.store.enqueueForReview({
+          appSlug: config.appSlug,
+          submissionId: submission.id,
+          qualityScore: moderation.qualityScore,
+          categories: moderation.categories,
+        });
         return { stage: "queued", submission, moderation };
       }
 
-      await deps.store.recordModeration(submission.id, moderation);
+      await deps.store.recordModeration(config.appSlug, submission.id, moderation);
       const content = await api.publish({ submission, text: input.text });
       return { stage: "published", submission, moderation, content };
     },
