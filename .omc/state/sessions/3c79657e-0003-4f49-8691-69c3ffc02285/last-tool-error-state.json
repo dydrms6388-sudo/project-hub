@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"C:\\\\Users\\\\dydrm\\\\projects\\\\daily\\\\2026-06-23-dydrms-chemicode\\\" && npx tsc --noEmit 2>&1 | head -30; echo \\\"EXIT: ${PIPESTATUS[0]}\\\"\"}",
-  "error": "Exit code 143\nCommand timed out after 2m 0s",
-  "timestamp": "2026-07-05T05:13:00.511Z",
-  "retry_count": 1
-}

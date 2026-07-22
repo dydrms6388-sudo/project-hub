@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-soft text-ink antialiased;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
+    "Malgun Gothic", "맑은 고딕", system-ui, sans-serif;
+}
+
+/* 광고 슬롯 자리 확보 — CLS 방지 (승인 전 코드 삽입 금지, 자리만) */
+.ad-slot {
+  @apply mx-auto my-6 flex items-center justify-center overflow-hidden rounded-lg bg-white/60 text-xs text-ink/30;
+  min-height: 100px;
+}

@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-07-09",
+  "updatedAt": "2026-07-22",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 32,
-    "pass": 32,
-    "reviewNeeded": 0,
+    "total": 55,
+    "pass": 50,
+    "reviewNeeded": 5,
     "reviewing": 0,
-    "avgOverall": 83.7
+    "avgOverall": 81.9
   },
   "projects": [
     {
@@ -1438,6 +1438,1144 @@
         }
       ],
       "reviewedAt": "2026-07-09"
+    },
+    {
+      "slug": "dydrms-nickfactory",
+      "name": "닉네임공장",
+      "source": "daily/2026-07-11-nickfactory",
+      "live": "https://dydrms-nickfactory.vercel.app",
+      "status": "review-needed",
+      "loops": 5,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 80,
+        "design": 79,
+        "content": 76,
+        "realValue": 73
+      },
+      "reviewerAvg": 78.4,
+      "userScores": [
+        80,
+        74,
+        78,
+        76,
+        78
+      ],
+      "userAvg": 77.2,
+      "overall": 77.8,
+      "findings": [
+        "PLATFORM_RULES(10개 플랫폼 한글지원/글자수/제약)를 SeoContent 섹션으로 렌더 + 각 결과 카드에 한글/영문별 '쓸 수 있는 곳' 문맥 힌트(KO_PLATFORMS/isKoName)로 승격 — 정적 참조를 기능적 가이드로. content/realValue 병목 직접 개선.",
+        "슬랭 뱅크 분리(GAME_SLANG_MOD/NOUN/MEANING) — 게이머 직업(class)과 슬랭(slang) 토글이 확실히 다른 결과(이전엔 동일 출력).",
+        "blend(넣고 싶은 단어) 보장 — 일반 경로 3구조 중 항상 포함. '내 단어 들어간 닉네임' 약속 이행(이전엔 확률로 누락).",
+        "배지(수집) 시스템 8종(첫뽑기/50뽑/100뽑/3일·7일연속/첫하트/보관함10개/탐험가) + 보관함 표시 + 헤더 🏆N/8 칩(발견성). 리텐션/성장 축.",
+        "히스토리 칩·삭제 44px 터치타겟 통일.",
+        "잔여(구조적 상한=루프 한계 도달): 백엔드 없는 그룹 투표/랭킹/공유 피드 부재 → realValue 상한(73). 조합형 생성의 간혹 어색한 조합·중복(네이밍 전문가 축 약점). 플랫폼 실제 중복조회 오프라인 불가. → 소셜/공유 고도화(owner-track 백엔드) 또는 생성 품질 고도화로 80 도달 가능."
+      ],
+      "changes": [
+        "NickFactory.tsx PLATFORM_RULES 섹션 + 결과별 플랫폼 힌트(KO_PLATFORMS/isKoName) + 배지 시스템(BADGES/earned) + 헤더 배지칩 + 히스토리 칩 44px",
+        "namegen.ts 슬랭 뱅크 분리 + genGame class/slang/일반 3분기 + blend 보장",
+        "PWA·safe-area·3D게이트·뱅크확충·sanitizeBlend 유지"
+      ],
+      "method": "loop3-5 5축/5페르소나 재평가",
+      "history": [
+        {
+          "loop": 0,
+          "overall": 62.6
+        },
+        {
+          "loop": 1,
+          "overall": 62.9
+        },
+        {
+          "loop": 2,
+          "overall": 74.8
+        },
+        {
+          "loop": 3,
+          "overall": 75.9
+        },
+        {
+          "loop": 4,
+          "overall": 76
+        },
+        {
+          "loop": 5,
+          "overall": 77.8
+        }
+      ],
+      "reviewedAt": "2026-07-12"
+    },
+    {
+      "slug": "dydrms-wonjunbi",
+      "name": "원준비",
+      "source": "daily/2026-07-11-wonjunbi",
+      "live": "https://dydrms-wonjunbi.vercel.app",
+      "status": "pass",
+      "loops": 5,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 82,
+        "design": 79,
+        "content": 79,
+        "realValue": 80
+      },
+      "reviewerAvg": 80.8,
+      "userScores": [
+        82,
+        81,
+        78,
+        84,
+        78
+      ],
+      "userAvg": 80.6,
+      "overall": 80.7,
+      "findings": [
+        "등원 준비 로컬 알림(Notifications API) 신설: notify.ts + WonjunbiApp 30초 폴링 effect(설정시간 경과+당일미완주+미발송→하루1회) + ManageTab ReminderCard(시간설정·권한요청·테스트). 매일 아침 리텐션 훅. 단 서버푸시 아님 → '앱 켜져 있을 때' 한계 UI 명시.",
+        "가이드 콘텐츠 심화: 지각방지·등원시간관리(거꾸로 계산·전날 세팅·출발 알람 2개) + 알림장·가정통신문 회신 템플릿 5종(결석/조퇴/지각/행사불참/소모품보충) 섹션(content).",
+        "TodayTab '내일 챙길 것 미리보기' 카드(전날 밤 미리 챙기기 유도·지각방지 연계), WeeklyTab '이번 달 성취 배지' 스트립(첫완료/월5회/월10회/누적30일/두아이 — 수집 리텐션).",
+        "백업 가져오기 confirm(덮어쓰기 경고) + ManageTab 행 flex-wrap(소형화면 빽빽함 완화).",
+        "잔여(owner-todo/한계): AdSlot data-ad-slot=auto → 실제 AdSense unit ID 사장님 발급 필요. 클라우드 싱크는 백업파일 우회. 알림은 앱 켜져 있을 때만(서비스워커 푸시는 owner-track)."
+      ],
+      "changes": [
+        "src/lib/notify.ts 신규 + WonjunbiApp 알림 effect + ManageTab ReminderCard(loop3)",
+        "guide/page.tsx 지각방지 + 알림장 템플릿 섹션(loop3)",
+        "TodayTab 내일 미리보기 카드(loop4) + WeeklyTab 성취 배지 스트립·profileCount prop(loop5)",
+        "doImport confirm + ManageTab li flex-wrap(loop3). PWA(manifest+icon+sw+등록+viewport) 유지"
+      ],
+      "method": "loop3-5 5축/5페르소나 재평가",
+      "history": [
+        {
+          "loop": 0,
+          "overall": 69.8
+        },
+        {
+          "loop": 1,
+          "overall": 71.1
+        },
+        {
+          "loop": 2,
+          "overall": 77
+        },
+        {
+          "loop": 3,
+          "overall": 79.4
+        },
+        {
+          "loop": 4,
+          "overall": 79.7
+        },
+        {
+          "loop": 5,
+          "overall": 80.7
+        }
+      ],
+      "reviewedAt": "2026-07-12"
+    },
+    {
+      "slug": "dydrms-passport-name",
+      "name": "여권네임",
+      "source": "daily/2026-07-11-passport-name",
+      "live": "https://dydrms-passport-name.vercel.app",
+      "status": "pass",
+      "loops": 3,
+      "axes": {
+        "functional": 83,
+        "mobileUX": 80,
+        "design": 81,
+        "content": 82,
+        "realValue": 82
+      },
+      "reviewerAvg": 81.6,
+      "userScores": [
+        81,
+        84,
+        80,
+        81,
+        78
+      ],
+      "userAvg": 80.8,
+      "overall": 81.2,
+      "findings": [
+        "ADDR_UNIT_MAP에 '대로'→-daero 추가(길이 내림차순 정렬로 '로'보다 우선 매칭) → 세종대로·강남대로·올림픽대로 등 공식 영문표기로 정확 변환(이전 Sejongdae-ro). '로'/특별시/도/구/동/길/번길 오염 없음 검증.",
+        "성씨 수 카피는 이미 '90여 종/90+'로 정직(SURNAMES 94종=단성86+복성8). loop2 재평가의 '100종 과장' 지적은 이미 수정된 상태 — 정직 유지로 content 신뢰.",
+        "WarnBox '외교부 여권24'를 passport.go.kr 실링크(noopener noreferrer)로 보강 → 출처 근거 명확화.",
+        "잔여(정직 명시): 도로명+건물번호를 한 칸에 통째로 넣으면 행정단위 매칭 안 됨 → juso.go.kr 대조 권장 Tip으로 완화. MRZ 44자 truncate·플랫폼 중복조회 오프라인 불가 — 도구 범위 밖."
+      ],
+      "changes": [
+        "romanize.ts ADDR_UNIT_MAP에 {ko:'대로',en:'-daero'} 추가 — 공식 대로 분할",
+        "page.tsx WarnBox 외교부 여권24 passport.go.kr 실링크(noopener) 적용",
+        "직전 루프 반영(JONG[ㄼ]=p·MRZ 라벨·터치타겟44px·LazyPassport3D 게이트·PWA·D-day 트래커) 소스 확인·유지"
+      ],
+      "method": "loop3 5축/5페르소나 재평가",
+      "history": [
+        {
+          "loop": 0,
+          "overall": 71
+        },
+        {
+          "loop": 1,
+          "overall": 77.1
+        },
+        {
+          "loop": 2,
+          "overall": 78.9
+        },
+        {
+          "loop": 3,
+          "overall": 81.2
+        }
+      ],
+      "reviewedAt": "2026-07-12"
+    },
+    {
+      "slug": "airfryer-time",
+      "name": "에어프라이어 시간표",
+      "source": "daily/naengpa-airfryer",
+      "live": "https://naengpa.vercel.app/airfryer",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 83,
+        "design": 80,
+        "content": 88,
+        "realValue": 82
+      },
+      "reviewerAvg": 83.6,
+      "userScores": [
+        83
+      ],
+      "userAvg": 83,
+      "overall": 83.3,
+      "findings": [
+        "65종 음식 온도/시간/뒤집기 + 기기 세기 보정 + 원탭 타이머 + 오븐 변환으로 기능 충실",
+        "예열·오일·호일 주의·아크릴아마이드/벤조피렌 안전·‘안 맞는 음식’ 가이드 등 콘텐츠 깊이·정확성 우수",
+        "개인화(기기 세기 저장)는 있으나 그룹·소셜 레이어 없음",
+        "시각 디자인/마이크로인터랙션은 텍스트 fetch 기반 추정(직접 화면 확인 미진)"
+      ],
+      "strengths": [
+        "안전·건강 주의와 ‘안 맞는 음식’ 콘텐츠가 실사용 가치를 크게 높임"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 83.3
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "body-fat-check",
+      "name": "바디스캔 (체지방 종합진단)",
+      "source": "daily/body-fat-diagnosis",
+      "live": "https://body-fat-diagnosis.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 81,
+        "design": 80,
+        "content": 87,
+        "realValue": 82
+      },
+      "reviewerAvg": 82.8,
+      "userScores": [
+        82
+      ],
+      "userAvg": 82,
+      "overall": 82.4,
+      "findings": [
+        "US Navy식 + 인바디 OCR + 해석지 + 추이 차트 + WHtR로 기능 풍부",
+        "3~5% 오차·해군식 한계·DEXA 권장 등 정직한 면책과 YMYL 대응 양호",
+        "측정 간격·조건 가이드 등 도메인 정확성 우수",
+        "추이 기반 개인 리텐션, 그룹 레이어 없음 / 디자인은 텍스트 추정"
+      ],
+      "strengths": [
+        "단백질 식품표·측정 가이드 등 부록 콘텐츠가 다이어트 맥락에서 실용적"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 82.4
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "brain-reflex-age",
+      "name": "촉 (Chok) — 두뇌 반응속도 게임",
+      "source": "daily/chok-reflex",
+      "live": "https://chok-reflex.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 84,
+        "design": 82,
+        "content": 81,
+        "realValue": 83
+      },
+      "reviewerAvg": 83.2,
+      "userScores": [
+        82
+      ],
+      "userAvg": 82,
+      "overall": 82.6,
+      "findings": [
+        "51게임/6카테고리 + 두뇌나이 + 데일리게임 + 컬렉션(0/51)으로 ‘최소 50개’ 피드백 충분히 반영",
+        "메타 title/description은 ‘23종’으로 표기되나 본문 카탈로그는 51종 — 수치 불일치(수정 권장)",
+        "5가지 인지능력 설명·비의학 면책 등 콘텐츠 양호",
+        "데일리+컬렉션 리텐션 강함, 그룹/랭킹 레이어 없음 / 디자인 텍스트 추정"
+      ],
+      "strengths": [
+        "카테고리별 난이도(★)와 데일리 게임으로 재방문 동기 설계 양호"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 82.6
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "calorie-burn-calc",
+      "name": "칼로리킬러 (운동 칼로리 계산기)",
+      "source": "daily/dydrms-calorie-killer",
+      "live": "https://dydrms-calorie-killer.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 83,
+        "mobileUX": 81,
+        "design": 79,
+        "content": 81,
+        "realValue": 82
+      },
+      "reviewerAvg": 81.2,
+      "userScores": [
+        81
+      ],
+      "userAvg": 81,
+      "overall": 81.1,
+      "findings": [
+        "MET 70종 + 음식 환산 + BMR/TDEE 계산 + 내 정보 저장으로 기능 충실",
+        "주간 대시보드·연속기록·뱃지로 리텐션 메커니즘 다수 보유(명시됨)",
+        "개인 저장 기반, 그룹/소셜 레이어 없음",
+        "본문 일부 영역이 fetch에 잘림—대시보드/뱃지 UI는 직접 확인 미진 / 디자인 텍스트 추정"
+      ],
+      "strengths": [
+        "운동→음식 환산으로 동기부여 포인트가 명확"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 전문가 리뷰어 5축 + 만족도 추정 1종). 시각 디자인·일부 UI는 텍스트 fetch 기반 추정—보더라인(80 근방)·재개발 대상은 추후 5+5 정밀 리뷰 권장."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 81.1
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "water-intake",
+      "name": "하루 물 마시기 (체중 맞춤 수분 트래커)",
+      "source": "daily/dydrms-water-tracker",
+      "live": "https://dydrms-water-tracker.vercel.app",
+      "status": "pass",
+      "loops": 0,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 83,
+        "design": 82,
+        "content": 88,
+        "realValue": 83
+      },
+      "reviewerAvg": 84,
+      "userScores": [
+        83
+      ],
+      "userAvg": 83,
+      "overall": 83.5,
+      "findings": [
+        "체중·활동량 맞춤 권장량 + 컵 단위 탭 기록 + 음료별 수분 기여율(커피 80% 등)로 기능 충실",
+        "체중별 권장량 표·시간대별 루틴·탈수 신호·과음수(저나트륨혈증)·질환자 주의 등 콘텐츠 깊이·정확성 우수, 정직한 의학 면책",
+        "스트릭·배지·7일 기록 등 리텐션 메커니즘 다수",
+        "3D 물잔 시각화 언급(직접 렌더 확인 미진) / 개인 중심, 그룹 레이어 없음 / 디자인 일부 텍스트 추정"
+      ],
+      "strengths": [
+        "음료별 수분 기여율 반영과 과음수 경고가 일반 워터트래커 대비 차별점"
+      ],
+      "changes": [
+        "린 인테이크 채점(단일 리뷰어 5축 + 만족도 추정). 시각 디자인·3D 렌더는 텍스트 fetch 기반 추정."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 83.5
+        }
+      ],
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "slug": "dday-hub",
+      "name": "디데이허브 — 디데이 계산기 & D-day 모음",
+      "source": "daily/2026-06-20-ddayhub",
+      "live": "https://ddayhub.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 85,
+        "mobileUX": 82,
+        "design": 84,
+        "content": 80,
+        "realValue": 74
+      },
+      "reviewerAvg": 81,
+      "userScores": [
+        82,
+        80,
+        83,
+        79,
+        76
+      ],
+      "userAvg": 80,
+      "overall": 80.5,
+      "findings": [
+        "목록 카드 고정/공유/삭제 버튼 ~24px·이모지선택 40px — 44px 터치타겟 미달(수정됨).",
+        "viewport-fit/safe-area-inset 미적용 — 노치/홈바 겹침(수정됨).",
+        "편집·연반복(매년 기념일) 기능 부재 → 리텐션 약함(연반복 추가됨).",
+        "수능일이 2029까지 하드코딩, 사용안하는 PRESETS 중복(잔여 과제)."
+      ],
+      "changes": [
+        "layout viewport-fit:cover + main.safe 토스트에 env(safe-area-inset) 적용(노치/홈바 겹침 해소).",
+        "고정/공유/삭제 버튼 min-h-44, 이모지버튼 h-11 w-11(44px 터치타겟).",
+        "연반복(annual) 디데이 추가 — effectiveDate()로 지난 기념일 자동 롤포워드, 폼 토글+카드 매년 배지(하위호환)."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 68.4
+        },
+        {
+          "loop": 1,
+          "overall": 80.5
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "daily-quiz-pop",
+      "name": "퀴즈팝 — 매일 새로운 상식 퀴즈 10문제",
+      "source": "daily/2026-06-22-quizpop",
+      "live": "https://dydrms-quizpop.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 82,
+        "design": 89,
+        "content": 72,
+        "realValue": 82
+      },
+      "reviewerAvg": 82,
+      "userScores": [
+        82,
+        76,
+        86,
+        72,
+        80
+      ],
+      "userAvg": 79,
+      "overall": 80.5,
+      "findings": [
+        "연습모드 재도전 시 QuizGame key(catLabel+questions[0].id) 충돌로 상태/finishedRef 잔류 — HIGH(수정됨).",
+        "\"전국 추정 상위 N%\"가 근거 없는 로지스틱 곡선 — 신뢰 훼손(문구 \"예상 상위\"로 정직화).",
+        "safe-area 미적용·소리토글 36px(수정됨).",
+        "3D WebGL 배경이 모바일서 상시 렌더(배터리/GPU) — lite/절감(수정됨).",
+        "문제 난이도 편향적 쉬움(잔여 콘텐츠 과제)."
+      ],
+      "changes": [
+        "연습 재도전 리마운트 — key를 playToken 기반으로 매 시작 고유화(finishedRef 자동 리셋).",
+        "percentile \"전국 추정\"→\"예상 상위/예상 순위\" + 표본기반 명시.",
+        "safe-area(viewport-fit:cover + safe-pt/pb) + 소리토글 h-11(44px).",
+        "3D 배경 모바일 lite(dpr 1.2·파티클 90) + prefers-reduced-motion 시 스킵."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 70.1
+        },
+        {
+          "loop": 1,
+          "overall": 80.5
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dydrms-giftpick",
+      "name": "뭐사주지 — 1분 선물 추천",
+      "source": "daily/2026-06-25-giftpick",
+      "live": "https://dydrms-giftpick.vercel.app",
+      "status": "pass",
+      "loops": 1,
+      "axes": {
+        "functional": 89,
+        "mobileUX": 84,
+        "design": 83,
+        "content": 85,
+        "realValue": 76
+      },
+      "reviewerAvg": 83,
+      "userScores": [
+        74,
+        82,
+        80,
+        70,
+        85
+      ],
+      "userAvg": 78,
+      "overall": 80.8,
+      "findings": [
+        "매칭률/신뢰도가 거짓 고점수 — match 하한 58%, confidence=best.match 그대로(신뢰 훼손, 수정됨).",
+        "AltCard 열면 닫기 불가·찜 버튼 opened일 때만 노출(수정됨).",
+        "safe-area 미적용(하단 찜 FAB 홈바 겹침, 수정됨).",
+        "결과 로딩 1.35s·컨페티 130개(모바일 무거움, 경량화)."
+      ],
+      "changes": [
+        "match=clamp(40,99,40+ratio*59)로 하한 40%, 필터시 0매치 제외, confidence=best.score/이론만점 정직 비율.",
+        "AltCard 토글(열기/닫기) + 찜 버튼 헤더 상시 노출(stopPropagation).",
+        "safe-area(main pb env + Shortlist FAB calc) + viewport-fit:cover.",
+        "로딩 1350→850ms, 컨페티 130→70, 카탈로그 주석 실개수(70+)로 정정."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 70.1
+        },
+        {
+          "loop": 1,
+          "overall": 80.8
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dydrms-byeolchik",
+      "name": "모임벌칙뽑기 — 벌칙 룰렛 & 미션카드",
+      "source": "daily/2026-06-25-byeolchik",
+      "live": "https://dydrms-byeolchik.vercel.app",
+      "status": "pass",
+      "loops": 2,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 82,
+        "design": 82,
+        "content": 85,
+        "realValue": 83
+      },
+      "reviewerAvg": 84,
+      "userScores": [
+        86,
+        79,
+        81,
+        80,
+        82
+      ],
+      "userAvg": 82,
+      "overall": 82.6,
+      "findings": [
+        "safe-area 전혀 없음 — 노치/홈인디케이터 겹침, HIGH(수정됨).",
+        "탭/강도/상황칩 터치타겟 30~34px(수정됨).",
+        "점수판 안내문 \"룰렛·지명 자동집계\"가 실제(지명만)와 불일치(정정됨).",
+        "pickNextIndex avoid 후 편향 복구 — 공정하지 않음(수정됨).",
+        "빈 점수판 자기설명 부재·강도 차별화 약함(온보딩/강도 강화)."
+      ],
+      "changes": [
+        "L1: viewport-fit:cover + main calc(env safe-area) + 탭/강도/칩 터치타겟 ≥40px.",
+        "L1: 점수판 안내문 \"지목 모드 자동 집계\"로 정정 + pickNextIndex do/while 공정 재추첨.",
+        "L2: 빈 점수판 온보딩 카드(\"지목 모드로 가기\" CTA) + 강도 🌶 카운트·레벨별 컬러테마 + 첫화면 밀도 정리."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 73.3
+        },
+        {
+          "loop": 1,
+          "overall": 79.8
+        },
+        {
+          "loop": 2,
+          "overall": 82.6
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dog-personality-test",
+      "name": "강아지 성격유형 테스트",
+      "source": "daily/2026-06-23-dog-personality-test",
+      "live": "https://dydrms-dogtest.vercel.app",
+      "status": "pass",
+      "loops": 2,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 80,
+        "design": 79,
+        "content": 85,
+        "realValue": 77
+      },
+      "reviewerAvg": 81,
+      "userScores": [
+        83,
+        79,
+        80,
+        74,
+        82
+      ],
+      "userAvg": 80,
+      "overall": 80.1,
+      "findings": [
+        "결과 프로필바가 실제 점수가 아닌 scoreFromCode(±4 고정) — 같은 유형 동일 바, HIGH(수정됨).",
+        "진행률 텍스트(step/len)와 바((step+1)/len) 불일치(수정됨).",
+        "bestFriend 매핑 비대칭/단방향(대칭화됨).",
+        "3D 씬이 모든 스테이지 상시 렌더(모바일 과부하, 절감됨).",
+        "\"전문가 자문\" 근거 없음·OG 이미지 부재로 공유 썸네일 空白(정직화+OG 추가)."
+      ],
+      "changes": [
+        "L1: ResultCard에 실제 scores prop 전달(바 실점수화), /r/[id]는 저장 scores 렌더.",
+        "L1: 진행률 (step+1)/len 통일 + bestFriend 4쌍 대칭 + 3D 인트로만/reduced-motion 스킵/dpr1.2 + safe-area.",
+        "L2: opengraph-image.tsx·twitter-image.tsx(next/og) 추가 + \"재미·참고용\" 디스클레이머로 정직화 + 공유페이지 폴백바 회색처리(\"상세 점수 미제공\")."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 68.4
+        },
+        {
+          "loop": 1,
+          "overall": 77.6
+        },
+        {
+          "loop": 2,
+          "overall": 80.1
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "salary-calc-2026",
+      "name": "월급 실수령액 계산기",
+      "source": "daily/2026-06-18-salary-calc",
+      "live": "https://salary-calc-2026.vercel.app",
+      "axes": {
+        "functional": 84,
+        "mobileUX": 81,
+        "design": 79,
+        "content": 81,
+        "realValue": 79
+      },
+      "reviewerAvg": 80.8,
+      "userScores": [
+        76,
+        87,
+        77,
+        76,
+        85
+      ],
+      "userAvg": 80.2,
+      "overall": 80.5,
+      "loops": 2,
+      "status": "pass",
+      "findings": [
+        "국민연금/건강보험 보수월액 기준을 taxableMonthly(월급-비과세식대 20만)로 잡아 비과세를 4대보험 베이스에서도 깎아 공제액 약간 과소 산출",
+        "저장/지속성 전무 — localStorage 입력 저장·결과 복사/공유 없음, 매번 재입력",
+        "viewport-fit=cover + safe-area 누락",
+        "OG/Twitter 이미지 누락",
+        "터치타겟 py-2.5(~40px) 44px 미달, 세율 출처 표기 부족"
+      ],
+      "changes": [
+        "4대보험 보수월액을 전액 월급 기준으로 정정(비과세 중복 차감 제거) — 공제액 과소 산출 해소",
+        "localStorage 입력 저장 + 결과 복사 추가",
+        "viewport-fit=cover + safe-area, OG 이미지, 44px 터치타겟, 세율 출처 표기",
+        "[L2] 공제 항목 한 줄 설명 + 연봉 비교(인상·이직 ±%) 섹션 추가"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 59.7
+        },
+        {
+          "loop": 2,
+          "overall": 80.5,
+          "note": "L1 선행 수정 + 재평가"
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "mbti-match",
+      "name": "MBTI 궁합 테스트",
+      "source": "daily/2026-06-21-mbti-match",
+      "live": "https://dydrms-mbti-match.vercel.app",
+      "axes": {
+        "functional": 83,
+        "mobileUX": 80,
+        "design": 79,
+        "content": 87,
+        "realValue": 76
+      },
+      "reviewerAvg": 81,
+      "userScores": [
+        90,
+        70,
+        82,
+        68,
+        85
+      ],
+      "userAvg": 79,
+      "overall": 80,
+      "loops": 2,
+      "status": "pass",
+      "findings": [
+        "viewport-fit=cover + safe-area 미적용",
+        "OG 이미지 누락 — 공유 중심 앱 치명",
+        "터치타겟 <44px (TypePicker ~34px, 매트릭스 셀 24px)",
+        "빈 AdSlot 박스가 시각 깨짐",
+        "점수는 가짜 아님(골든페어+가중치) — 양호"
+      ],
+      "changes": [
+        "OG 이미지 추가(공유 중심 앱) + viewport safe-area",
+        "TypePicker 선택 컨트롤 44px + 빈 광고박스 숨김",
+        "[L2] 관계(연애/친구/직장/가족) 선택·BEST3/WORST3 버튼 44px 터치타겟"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 71.4
+        },
+        {
+          "loop": 2,
+          "overall": 80,
+          "note": "L1 선행 수정 + 재평가"
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "split-bill",
+      "name": "엔빵클리어 (더치페이 정산)",
+      "source": "daily/2026-06-21-split-bill-clear",
+      "live": "https://split-bill-clear.vercel.app",
+      "axes": {
+        "functional": 87,
+        "mobileUX": 80,
+        "design": 78,
+        "content": 77,
+        "realValue": 82
+      },
+      "reviewerAvg": 80.8,
+      "userScores": [
+        84,
+        86,
+        78,
+        82,
+        85
+      ],
+      "userAvg": 83,
+      "overall": 81.9,
+      "loops": 1,
+      "status": "pass",
+      "findings": [
+        "viewport-fit=cover + safe-area 누락",
+        "터치타겟 <44px (송금완료 체크 24px, 헤더 버튼 36px, ✕ 제거 버튼 작음) 불일치",
+        "AI 여행 수필 라벨이 템플릿 기반임에도 AI로 과대 표기",
+        "PWA/오프라인 미지원",
+        "정수 minor-unit 연산·greedy 정산·검증 양호"
+      ],
+      "changes": [
+        "송금완료 체크·헤더·삭제 버튼 44px 통일 + safe-area",
+        "AI 여행 수필 라벨을 템플릿 기반으로 정정(과대 표기 해소)",
+        "[L1완료] PWA(manifest+SW+아이콘) 추가 — 오프라인 정산 지원"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 78.8
+        },
+        {
+          "loop": 1,
+          "overall": 81.9,
+          "note": "L1 선행 수정 + 재평가"
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "travel-budget",
+      "name": "여행 경비 예산 계획기",
+      "source": "daily/2026-06-22-travel-budget-planner",
+      "live": "https://travel-budget-planner-rose.vercel.app",
+      "axes": {
+        "functional": 85,
+        "mobileUX": 80,
+        "design": 83,
+        "content": 88,
+        "realValue": 83
+      },
+      "reviewerAvg": 83.8,
+      "userScores": [
+        86,
+        84,
+        84,
+        82,
+        86
+      ],
+      "userAvg": 84.4,
+      "overall": 84.1,
+      "loops": 1,
+      "status": "pass",
+      "findings": [
+        "viewport-fit=cover + safe-area 누락",
+        "터치타겟 <44px (+/- 24~28px, 칩 ~28px)",
+        "프라하 통화 CZK인데 EUR로 잘못 지정",
+        "제휴/쿠팡 링크 href=\"#\" 데드 플레이스홀더",
+        "그룹/공동 모드 없음(텍스트 공유만)"
+      ],
+      "changes": [
+        "프라하 통화 CZK로 정정(EUR 오지정 수정) + 44px 터치타겟·safe-area",
+        "[L1완료] 예산 플랜 딥링크(?plan=) 공유 — 일행이 같은 견적 열람(그룹/공동 레이어)"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 79
+        },
+        {
+          "loop": 1,
+          "overall": 84.1,
+          "note": "L1 선행 수정 + 재평가"
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "home-workout-routine",
+      "name": "홈트레이닝 루틴",
+      "source": "daily/2026-06-21-home-workout",
+      "live": "https://home-workout-two.vercel.app",
+      "axes": {
+        "functional": 82,
+        "mobileUX": 79,
+        "design": 78,
+        "content": 81,
+        "realValue": 83
+      },
+      "reviewerAvg": 80.6,
+      "userScores": [
+        82,
+        78,
+        78,
+        76,
+        84
+      ],
+      "userAvg": 79.6,
+      "overall": 80.1,
+      "loops": 1,
+      "status": "pass",
+      "findings": [
+        "viewport export 자체 없음 — WorkoutPlayer 노치/홈바 충돌",
+        "루틴 dedup 버그: 작은 풀에서 같은 동작 반복 사이클",
+        "Settings.weight 저장만 되고 칼로리식(70kg 하드코딩)에 미사용 = 데드 설정",
+        "터치타겟 <44px (레벨/시간 칩, 사운드 토글)",
+        "히어로 “장비 없이”가 덤벨/의자 동작과 모순"
+      ],
+      "changes": [
+        "루틴 dedup 버그 수정(작은 풀에서 같은 동작 반복 방지)",
+        "체중 설정→칼로리식 연동(70kg 하드코딩 제거, 데드 설정 해소)",
+        "WorkoutPlayer 노치/홈바 safe-area + 44px 터치타겟 + 히어로 문구 정정(장비 모순 해소)"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 75.4
+        },
+        {
+          "loop": 1,
+          "overall": 80.1,
+          "note": "L1 선행 수정 + 재평가"
+        }
+      ],
+      "reviewedAt": "2026-07-22",
+      "method": "source+panel"
+    },
+    {
+      "slug": "aura-test",
+      "name": "오라 — 성격·연애 테스트를 3D 오라로",
+      "source": "daily/2026-06-22-aura",
+      "live": "https://dydrms-aura.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 91,
+        "mobileUX": 82,
+        "design": 86,
+        "content": 85,
+        "realValue": 85
+      },
+      "reviewerAvg": 85.8,
+      "userScores": [
+        82,
+        52,
+        76,
+        36,
+        86
+      ],
+      "userAvg": 66,
+      "overall": 75.9,
+      "findings": [
+        "PWA 오프라인 미지원(SW 없음, 수정됨)",
+        "합성 통계(가짜 참여자수/비율)를 실측처럼 표시(수정됨-추정치 라벨)",
+        "랜딩(8문항/38종)과 실앱(9즉석+20+퀴즈+운세) 불일치",
+        "pick 그리드 터치타깃<44px(수정됨)",
+        "데일리 시드 로컬 TZ 의존(수정됨-KST)"
+      ],
+      "changes": [
+        "public/sw.js + ServiceWorkerRegister로 PWA 오프라인 지원",
+        "ResultView/RarityReport/OG에서 합성 수치에 추정치/예상 라벨 추가",
+        "InstantMode 셀 min-h-[44px], 라벨 break-keep로 좁은 화면 잘림 해소",
+        "fortune.ts todayISO() KST(UTC+9) 정규화, modes.ts daily-aura/fortune KST 기준"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 73
+        },
+        {
+          "loop": 1,
+          "overall": 75.9
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "color-palette",
+      "name": "컬러무드",
+      "source": "daily/2026-06-22-color-palette",
+      "live": "https://dydrms-colormood.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 83,
+        "design": 85,
+        "content": 76,
+        "realValue": 68
+      },
+      "reviewerAvg": 78.8,
+      "userScores": [
+        66,
+        75,
+        62,
+        59,
+        52
+      ],
+      "userAvg": 63,
+      "overall": 70.9,
+      "findings": [
+        "공유 링크 2~4색 무시(수정됨->>=2 채택+패드)",
+        "퍼스널 컬러 단일 휴리스틱을 진단처럼 과장(수정됨-참고용 추정)",
+        "PWA 전무(수정됨)",
+        "스와치 라벨 8~9px(수정됨->11px)",
+        "비인터랙티브 WebGL 캔버스 매 로드(수정됨-reduced-motion/옵션)"
+      ],
+      "changes": [
+        "Studio initial 채택 조건 >=5 -> >=2, padPaletteDiverse로 보강",
+        "public/sw.js+manifest+RegisterSW, theme-color/apple-touch-icon 추가",
+        "colors.ts/Studio/page FAQ 퍼스널컬러를 참고용 추정+비의료 면책으로 완화",
+        "이미지/퍼스널 그리드 11px+swatch h-11(44px)",
+        "Scene3D prefers-reduced-motion 시 null+기본 off 토글"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 66.2
+        },
+        {
+          "loop": 1,
+          "overall": 70.9
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "couple-chemistry",
+      "name": "썸타이밍궁합",
+      "source": "daily/2026-06-22-couple-chemistry-test",
+      "live": "https://couple-chemistry-test.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 83,
+        "design": 84,
+        "content": 83,
+        "realValue": 66
+      },
+      "reviewerAvg": 80.4,
+      "userScores": [
+        67,
+        44,
+        63,
+        31,
+        55
+      ],
+      "userAvg": 52,
+      "overall": 66.2,
+      "findings": [
+        "점수 분포 좁고 편향(52~83, 수정됨->18+rng*78/bias±14)",
+        "공유 URL에 이름+생년월일 평문 노출(수정됨-마스킹+seed)",
+        "PWA 부재(수정됨)",
+        "배포 메타 5가지/8가지 불일치(소스는 8가지 정상)"
+      ],
+      "changes": [
+        "chemistry.ts base 30+rng*65->18+rng*78, clamp/bias 확대, GRADES 재분할(반전~운명 궁합)",
+        "encodeShare/decodeShare/maskName로 ?c=에서 PII 제거(레거시 호환 유지)",
+        "public/sw.js+manifest+ServiceWorkerRegister"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 62.2
+        },
+        {
+          "loop": 1,
+          "overall": 66.2
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "dice-tower",
+      "name": "다이스타워",
+      "source": "daily/2026-06-18-dicetower",
+      "live": "https://dicetower.vercel.app",
+      "status": "review-needed",
+      "loops": 1,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 82,
+        "design": 80,
+        "content": 74,
+        "realValue": 70
+      },
+      "reviewerAvg": 78.4,
+      "userScores": [
+        65,
+        74,
+        61,
+        51,
+        58
+      ],
+      "userAvg": 62,
+      "overall": 70.2,
+      "findings": [
+        "PWA 완전 부재(수정됨)",
+        "랜딩 d100 지원/히스토리 새로고침 삭제 사실오류(프로젝트허브 랜딩)",
+        "d10 3D 기하학 오류(길쭉한 d8, 수정됨-오각쌍뿔)",
+        "터치타깃 36/24/16px(수정됨->44px)",
+        "단일 d20에만 크리티컬/펌블(수정됨-다면체 nat max/min)",
+        "해결: 랜딩 d100 지원/히스토리 삭제 사실오류 정정(랜딩은 landing-content.json 미포함이라 직접 수정)"
+      ],
+      "changes": [
+        "public/sw.js+manifest+RegisterSW",
+        "page.tsx 삭제/Info 컨트롤 44px hit area",
+        "Dice3D d10Geometry() 오각쌍뿔 BufferGeometry(값은 유지)",
+        "dice.ts critDice/fumbleDice 인덱스+page 하이라이트",
+        "LOOP1 보강: project-hub/dice-tower 랜딩 사실오류 정정(d100 미지원 명시, 히스토리 최근 30회 저장으로 수정)"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 66.4
+        },
+        {
+          "loop": 1,
+          "overall": 70.2
+        }
+      ],
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "driver-license-quiz",
+      "name": "운전면허 학과시험 퀴즈 (면허패스)",
+      "source": "daily/2026-06-21-driver-license-quiz",
+      "live": "https://driver-license-quiz.vercel.app",
+      "status": "pass",
+      "loops": 2,
+      "axes": {
+        "functional": 88,
+        "mobileUX": 84,
+        "design": 82,
+        "content": 86,
+        "realValue": 84
+      },
+      "reviewerAvg": 84.8,
+      "userScores": [
+        86,
+        82,
+        79,
+        56,
+        92
+      ],
+      "userAvg": 79,
+      "overall": 81.9,
+      "findings": [
+        "문제은행 60문항으로 얇음(수정됨->150, 추가 확장 예정)",
+        "PWA 미지원(수정됨)",
+        "1종/2종 구분 없음(수정됨-토글+합격선)",
+        "오답노트 SRS 정렬 없음(수정됨)",
+        "일부 오타(어린도임/겨울청/주행저환)",
+        "LOOP2 해결: 문제은행 부족(241문항으로 확충)·오타(수정)"
+      ],
+      "changes": [
+        "questions.ts 60->150문항 확충(8카테고리 분배, 정확성 검증)",
+        "public/sw.js+manifest+RegisterSW, theme-color/appleWebApp",
+        "QuizApp licenseType 토글+passThreshold(1종70/2종60)",
+        "wrong 모드 miss desc/lastWrong asc SRS 정렬",
+        "LOOP2: questions.ts 150->241문항 추가 확충(8카테고리 균형, 정확성 검증), 오타 10건 수정(어린이/겨울철/주행저항/경적/후사경에/울린다/비켜양보 등)"
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 66.3
+        },
+        {
+          "loop": 1,
+          "overall": 77.6
+        },
+        {
+          "loop": 2,
+          "overall": 81.9
+        }
+      ],
+      "reviewedAt": "2026-07-22"
     }
   ]
 }

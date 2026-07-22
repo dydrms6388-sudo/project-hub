@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd C:/Users/dydrm/projects/daily/2026-06-20-factory-dash && find . -maxdepth 2 -iname \\\"AGENT-TASKS.md\\\" 2>/dev/null; echo \\\"---all md/dirs---\\\"; ls *.md docs/*.md 2>/dev/null\",\"descriptio...",
-  "error": "Exit code 2\n---all md/dirs---\nAGENTS.md\nCLAUDE.md\nFACTORY-LOOP.md\nFEEDBACK-LOOP.md\nREADME.md",
-  "timestamp": "2026-06-27T16:40:08.564Z",
-  "retry_count": 1
-}

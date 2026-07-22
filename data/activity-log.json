@@ -1,7 +1,53 @@
 {
-  "updatedAt": "2026-07-09",
+  "updatedAt": "2026-07-22",
   "note": "리뷰 루프에서 '무엇을 고쳤는지'를 시간순으로 기록. 최신이 위.",
   "entries": [
+    {
+      "ts": "2026-07-22",
+      "slug": "_intake-wave",
+      "kind": "ops",
+      "summary": "리뷰루프 intake 웨이브(미채점 5종 신규 리뷰) — dday-hub 68.4→80.5 · quizpop 70.1→80.5 · giftpick 70.1→80.8 · byeolchik 73.3→82.6 · dog 68.4→80.1 전원 PASS(dog·byeolchik은 L2 루프). 5종 공통 safe-area·터치타겟 보정 + 앱별 기능결함(프로필바 가짜값/연습 리마운트/신뢰도 거짓고점 등) redev. 로컬 커밋만(배포는 드립크론)."
+    },
+    {
+      "ts": "2026-07-22",
+      "slug": "dday-hub",
+      "kind": "redevelop",
+      "prev": 68.4,
+      "overall": 80.5,
+      "summary": "디데이허브 redev: 3건 수정 — 68.4→80.5 (루프 1) PASS"
+    },
+    {
+      "ts": "2026-07-22",
+      "slug": "daily-quiz-pop",
+      "kind": "redevelop",
+      "prev": 70.1,
+      "overall": 80.5,
+      "summary": "퀴즈팝 redev: 4건 수정 — 70.1→80.5 (루프 1) PASS"
+    },
+    {
+      "ts": "2026-07-22",
+      "slug": "dydrms-giftpick",
+      "kind": "redevelop",
+      "prev": 70.1,
+      "overall": 80.8,
+      "summary": "뭐사주지 redev: 4건 수정 — 70.1→80.8 (루프 1) PASS"
+    },
+    {
+      "ts": "2026-07-22",
+      "slug": "dydrms-byeolchik",
+      "kind": "redevelop",
+      "prev": 73.3,
+      "overall": 82.6,
+      "summary": "모임벌칙뽑기 redev: 3건 수정 — 73.3→82.6 (루프 2) PASS"
+    },
+    {
+      "ts": "2026-07-22",
+      "slug": "dog-personality-test",
+      "kind": "redevelop",
+      "prev": 68.4,
+      "overall": 80.1,
+      "summary": "강아지 성격유형 테스트 redev: 3건 수정 — 68.4→80.1 (루프 2) PASS"
+    },
     {
       "ts": "2026-07-09",
       "slug": "personal-color-test",
