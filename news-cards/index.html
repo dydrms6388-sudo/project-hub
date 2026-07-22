@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>오늘의 카드뉴스 — 매일 아침 자동 갱신되는 헤드라인 브리핑 | TomatoEggCat</title>
+<meta name="description" content="국내 언론사 공식 RSS에서 매일 아침 7시에 자동 수집한 헤드라인(제목·출처·원문 링크만)을 큰 타이포 카드로 보여주는 데일리 브리핑. 카드를 1080×1080 PNG로 저장해 SNS에 올리고, 날짜별 아카이브로 지난 브리핑도 넘겨보세요. 기사 본문·이미지는 게재하지 않습니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/news-cards/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="오늘의 카드뉴스 — 매일 아침 자동 갱신되는 헤드라인 브리핑" />
+<meta property="og:description" content="언론사 공식 RSS에서 매일 아침 자동 수집한 헤드라인을 큰 타이포 카드로. 카드 PNG 저장·텍스트 브리핑 복사·날짜별 아카이브 지원." />
+<meta property="og:url" content="https://tomatoeggcat.com/news-cards/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="오늘의 카드뉴스 — 매일 아침 자동 갱신되는 헤드라인 브리핑" />
+<meta name="twitter:description" content="언론사 공식 RSS 헤드라인을 큰 타이포 카드로 보여주는 데일리 브리핑. 카드 PNG 저장과 아카이브 지원." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"오늘의 카드뉴스","description":"국내 언론사 공식 RSS에서 매일 아침 자동 수집한 헤드라인(제목·출처·원문 링크만)을 큰 타이포 카드로 보여주고, 각 카드를 1080×1080 PNG로 저장할 수 있는 데일리 브리핑 페이지.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/news-cards/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"뉴스는 언제, 어떻게 갱신되나요?","acceptedAnswer":{"@type":"Answer","text":"매일 아침 7시(한국 시간) 무렵 GitHub Actions 크론 작업이 국내 언론사들이 공개 배포하는 공식 RSS 피드를 읽어 기사 제목·출처·원문 링크·발행 시각만 추출해 정적 JSON 파일로 저장합니다. 이 페이지는 그 JSON을 불러와 카드로 보여줄 뿐이며, 사람이 손으로 고르거나 편집하지 않습니다. 헤더의 '업데이트' 시각이 마지막 수집 시각입니다."}},
+{"@type":"Question","name":"기사 출처 정책은 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"언론사가 구독·재배포를 위해 스스로 공개한 공식 RSS 피드만 수집원으로 사용합니다. 모든 카드에는 언론사 이름이 출처로 표기되고, '원문 보기' 링크는 해당 언론사 사이트의 기사 원문으로 새 창에서 연결됩니다. 특정 언론사를 우대하거나 제외하는 편집 개입은 없으며, 피드에 올라온 최신 순서를 그대로 따릅니다."}},
+{"@type":"Question","name":"저작권 문제는 없나요?","acceptedAnswer":{"@type":"Answer","text":"기사 본문, 사진, 이미지는 일절 수집하거나 게재하지 않습니다. 저작권법상 보호 대상인 기사 콘텐츠 대신 제목·출처·원문 링크만 표시해 원문으로 트래픽을 돌려보내는 링크 큐레이션 방식입니다. 모든 기사의 저작권은 각 언론사에 있으며, 내용 전문은 반드시 원문 링크에서 확인해야 합니다. 언론사의 요청이 있으면 해당 피드는 수집원에서 제외합니다."}},
+{"@type":"Question","name":"저장한 카드 PNG는 어디에 써도 되나요?","acceptedAnswer":{"@type":"Answer","text":"개인 SNS·커뮤니티에 브리핑을 공유하는 용도로 만들었습니다. 카드에는 제목과 출처 표기만 담기며 기사 본문은 포함되지 않습니다. 게시할 때 카드 하단의 출처 표기와 워터마크를 지우지 말고, 가능하면 기사 원문 링크를 함께 올려 주세요. 카드를 상업적 홍보물로 재가공하거나 출처를 가린 채 사용하는 것은 삼가야 합니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"뉴스","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"오늘의 카드뉴스","item":"https://tomatoeggcat.com/news-cards/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#f43f5e;--acc2:#fb7185;--bg:#0a0a0a;--sf:#161616;--bd:#232323;--tx:#ededed;--mut:#9ca3af}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:#7aa2ff}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#f43f5e,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--mut);margin:0 0 18px;font-size:15px}
+.brief{border:1px solid var(--bd);background:var(--sf);border-radius:18px;padding:18px 18px 16px;margin-bottom:16px}
+.dateRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dateBig{font-size:22px;font-weight:900;letter-spacing:-.01em}
+.badge{font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;background:rgba(244,63,94,.14);color:var(--acc2);border:1px solid rgba(244,63,94,.35)}
+.badge.off{background:rgba(245,158,11,.12);color:#fbbf24;border-color:rgba(245,158,11,.4)}
+.meta{font-size:12.5px;color:var(--mut);margin-top:4px}
+.dnav{display:flex;gap:8px;margin-top:12px}
+.dnav button{flex:0 0 auto;width:auto;min-height:44px;padding:9px 16px;font-size:14px;font-weight:700;background:#1c1c1c;color:#d4d4d8;border:1px solid #333;border-radius:12px;cursor:pointer}
+.dnav button:disabled{opacity:.35;cursor:not-allowed}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;-webkit-overflow-scrolling:touch}
+.tabs button{flex:0 0 auto;width:auto;min-height:44px;padding:9px 16px;font-size:14.5px;font-weight:700;background:#141414;color:#c9c9c9;border:1px solid #303030;border-radius:999px;cursor:pointer;transition:.12s}
+.tabs button.on{background:rgba(244,63,94,.16);border-color:var(--acc);color:#fecdd3}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+.ncard{border:1px solid var(--bd);background:var(--sf);border-radius:16px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px}
+.chipRow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.catChip{font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:999px;letter-spacing:.02em}
+.hTitle{font-size:19px;line-height:1.42;font-weight:800;margin:0;word-break:keep-all;overflow-wrap:anywhere;flex:1}
+.srcRow{font-size:12.5px;color:var(--mut)}
+.srcRow b{color:#d4d4d8;font-weight:700}
+.cardActs{display:flex;gap:8px;align-items:center}
+.cardActs a{flex:1;text-align:center;font-size:13.5px;font-weight:700;color:#fecdd3;background:#1f1215;border:1px solid #47252c;border-radius:10px;padding:10px 8px;min-height:44px;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.cardActs button{flex:1;width:auto;min-height:44px;padding:10px 8px;font-size:13.5px;font-weight:800;background:var(--acc);color:#2a060d;border:0;border-radius:10px;cursor:pointer}
+.toolRow{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.toolRow button{flex:1 1 150px;width:auto;min-height:48px;padding:12px 10px;font-size:14.5px;font-weight:800;border-radius:12px;border:0;cursor:pointer;background:#241318;color:#fda4af;border:1px solid #4c222b}
+.toolRow button.prime{background:var(--acc);color:#2a060d;border:0}
+.notice{margin:20px 0;padding:16px 18px;border-radius:14px;background:#1a1206;border:1px solid #4a3410;color:#fcd34d;font-size:14px;line-height:1.7}
+.notice b{color:#fde68a}
+.adbox{margin:22px 0;min-height:90px}
+.about{margin-top:34px;font-size:14.5px;color:#c9c9c9}
+.about h2{font-size:18px;margin:26px 0 8px;color:#f5f5f5}
+.about h3{font-size:15px;margin:16px 0 4px;color:#fda4af}
+.about p{margin:8px 0}
+.about ol,.about ul{margin:8px 0;padding-left:22px}
+.about li{margin:4px 0}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#d4d4d8;background:#161616;border:1px solid #2c2c2c;border-radius:999px;padding:10px 15px;min-height:44px;display:inline-flex;align-items:center}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#8b8b8b;text-decoration:none;margin-right:12px}
+.empty{padding:30px 10px;text-align:center;color:var(--mut);font-size:14.5px}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#262626;color:#fff;font-size:14px;font-weight:700;padding:11px 20px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;border:1px solid #3a3a3a;max-width:88vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="nav"><a href="/">홈</a> › 뉴스 › <strong style="color:#d4d4d8">오늘의 카드뉴스</strong></nav>
+
+<h1>🗞️ 오늘의 카드뉴스</h1>
+<p class="lead">언론사 공식 RSS에서 매일 아침 자동 수집한 헤드라인 브리핑. 마음에 드는 카드는 PNG로 저장해 SNS에 올려 보세요.</p>
+
+<section class="brief" id="briefHead">
+  <div class="dateRow">
+    <span class="dateBig" id="dateBig">…</span>
+    <span class="badge">매일 아침 7시 자동 갱신</span>
+    <span class="badge off" id="offBadge" style="display:none">오프라인 스냅샷</span>
+  </div>
+  <div class="meta" id="updMeta"></div>
+  <div class="dnav">
+    <button id="prevDay" type="button">← 이전 날짜</button>
+    <button id="nextDay" type="button">다음 날짜 →</button>
+  </div>
+</section>
+
+<div class="tabs" id="tabs" role="tablist"></div>
+
+<div class="grid" id="grid"></div>
+<div class="empty" id="emptyMsg" style="display:none">표시할 헤드라인이 없습니다. 잠시 후 다시 확인해 주세요.</div>
+
+<div class="toolRow">
+  <button class="prime" id="saveAll" type="button">📥 오늘 카드 전체 저장</button>
+  <button id="copyLink" type="button">🔗 링크 복사</button>
+  <button id="copyText" type="button">📋 텍스트 브리핑 복사</button>
+  <button id="shareBtn" type="button">📣 공유하기</button>
+</div>
+
+<div class="notice" id="noticeBox">
+  <b>저작권 안내</b><br />
+  <span id="noticeText"></span><br />
+  기사 본문·이미지는 수집·게재하지 않습니다. 전문은 각 카드의 원문 링크에서 확인하세요.
+</div>
+
+<div class="adbox">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section class="about">
+  <h2>오늘의 카드뉴스 소개</h2>
+  <p>오늘의 카드뉴스는 국내 언론사들이 공개 배포하는 <b>공식 RSS 피드</b>에서 매일 아침 7시(한국 시간) 무렵 헤드라인을 자동 수집해 보여주는 데일리 브리핑 페이지입니다. 수집 파이프라인은 GitHub Actions 크론 작업으로 돌아가며, 기사에서 가져오는 정보는 <b>제목·출처(언론사명)·원문 링크·발행 시각</b> 네 가지뿐입니다. 기사 본문이나 사진은 어떤 형태로도 저장하거나 게재하지 않고, 내용이 궁금하면 카드의 '원문 보기' 링크로 해당 언론사 사이트에 이동해 읽는 구조입니다. 사람이 기사를 고르거나 순서를 바꾸는 편집 개입 없이 피드의 최신 순서를 그대로 따르며, 주요·경제·IT과학·문화연예 네 갈래로만 나눠 정리합니다. 큰 타이포그래피 카드 형식이라 아침에 30초만 훑어도 오늘 흐름이 잡히고, 각 카드는 1080×1080 정사각 PNG로 저장해 인스타그램·X 같은 SNS에 바로 올릴 수 있습니다. 날짜별 아카이브가 남아 있어 지난 날짜의 브리핑도 이전/다음 버튼으로 넘겨볼 수 있습니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>상단 카테고리 탭(주요·경제·IT과학·문화연예)을 눌러 관심 분야 헤드라인을 봅니다.</li>
+    <li>흥미로운 기사는 카드의 <b>'원문 보기 →'</b>를 눌러 언론사 원문을 새 창으로 읽습니다.</li>
+    <li>공유하고 싶은 카드는 <b>'PNG 저장'</b>을 눌러 1080×1080 이미지로 내려받습니다.</li>
+    <li><b>'오늘 카드 전체 저장'</b>은 주요 카테고리 상위 5개를 한 번에 순차 저장합니다.</li>
+    <li><b>'텍스트 브리핑 복사'</b>로 카테고리별 톱3 제목을 복사해 단톡방·커뮤니티에 붙여넣으세요.</li>
+    <li>'← 이전 날짜'로 지난 브리핑을 아카이브에서 다시 볼 수 있습니다.</li>
+  </ol>
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>출근길에 오늘 헤드라인만 빠르게 훑고 싶을 때</li>
+    <li>단톡방·커뮤니티에 아침 뉴스 요약을 공유하는 습관이 있을 때</li>
+    <li>SNS 계정에 올릴 깔끔한 헤드라인 카드 이미지가 필요할 때</li>
+    <li>특정 날짜에 어떤 뉴스가 있었는지 아카이브로 되짚어 볼 때</li>
+  </ul>
+  <h2>자주 묻는 질문</h2>
+  <h3>Q. 뉴스는 언제, 어떻게 갱신되나요?</h3>
+  <p>매일 아침 7시(한국 시간) 무렵 GitHub Actions 크론 작업이 언론사 공식 RSS 피드를 읽어 제목·출처·원문 링크·발행 시각만 추출해 정적 JSON 파일로 저장합니다. 이 페이지는 그 JSON을 불러와 카드로 보여줄 뿐이며, 사람이 손으로 고르거나 편집하지 않습니다. 헤더의 '업데이트' 시각이 마지막 수집 시각입니다.</p>
+  <h3>Q. 기사 출처 정책은 어떻게 되나요?</h3>
+  <p>언론사가 구독·재배포를 위해 스스로 공개한 공식 RSS 피드만 수집원으로 사용합니다. 모든 카드에 언론사 이름이 출처로 표기되고, '원문 보기' 링크는 해당 언론사 사이트의 기사 원문으로 새 창에서 연결됩니다. 특정 언론사를 우대하거나 제외하는 편집 개입은 없습니다.</p>
+  <h3>Q. 저작권 문제는 없나요?</h3>
+  <p>기사 본문·사진·이미지는 일절 수집하거나 게재하지 않습니다. 제목·출처·원문 링크만 표시해 원문으로 트래픽을 돌려보내는 링크 큐레이션 방식이며, 모든 기사의 저작권은 각 언론사에 있습니다. 언론사의 요청이 있으면 해당 피드는 수집원에서 제외합니다.</p>
+  <h3>Q. 저장한 카드 PNG는 어디에 써도 되나요?</h3>
+  <p>개인 SNS·커뮤니티 공유용입니다. 카드에는 제목과 출처 표기만 담깁니다. 게시할 때 카드 하단의 출처 표기와 워터마크를 지우지 말고, 가능하면 원문 링크를 함께 올려 주세요. 출처를 가리거나 상업 홍보물로 재가공하는 사용은 삼가야 합니다.</p>
+  <p style="color:#8b8b8b;font-size:13px">※ 이 페이지는 헤드라인 큐레이션(정보·재미용)이며 어떤 기사에 대한 사실 확인·평가·논평을 제공하지 않습니다. 의료·법률·금융·투자 판단의 근거로 사용하지 마세요.</p>
+</section>
+
+<div class="rel">
+  <a href="/year-book/">📖 추억연감</a>
+  <a href="/meme-exam/">📝 밈력고사</a>
+  <a href="/dark-history/">📼 흑역사 판독기</a>
+  <a href="/">🍅 전체 도구</a>
+</div>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+/*FALLBACK_START*/
+const FALLBACK = {
+ "updated": "2026-07-22T05:37:07.176Z",
+ "date": "2026-07-22",
+ "notice": "기사 제목·출처·원문 링크만 제공합니다. 모든 기사의 저작권은 각 언론사에 있으며, 본문은 원문 링크에서 확인하세요.",
+ "categories": [
+  {
+   "key": "top",
+   "name": "주요",
+   "emoji": "🗞️",
+   "items": [
+    {
+     "t": "대통령 세종집무실 설계 착수…2029년 8월 입주 목표",
+     "src": "연합뉴스TV",
+     "link": "https://www.yonhapnewstv.co.kr/news/AKR20260722143628I7m",
+     "ts": "2026-07-22T05:36:29.000Z"
+    },
+    {
+     "t": "[사건현장] 구속 피한 전 형사과장…국수본 윗선 향하는 수사",
+     "src": "연합뉴스TV",
+     "link": "https://www.yonhapnewstv.co.kr/news/MYH20260722143542fET",
+     "ts": "2026-07-22T05:35:45.000Z"
+    },
+    {
+     "t": "CCTV 확인하니 투표 못한 유권자 최대 91명",
+     "src": "동아일보",
+     "link": "https://www.donga.com/news/Politics/article/all/20260722/134343853/1",
+     "ts": "2026-07-22T05:35:31.000Z"
+    },
+    {
+     "t": "“옆집에서 시체 썩는 냄새가”…경찰 출동하게 만든 악취의 정체",
+     "src": "동아일보",
+     "link": "https://www.donga.com/news/Inter/article/all/20260722/134343154/2",
+     "ts": "2026-07-22T05:35:01.000Z"
+    },
+    {
+     "t": "청와대 \"이 대통령, 근저당 이자 안 받기로…증여세는 규정 따라 처리\"",
+     "src": "SBS뉴스",
+     "link": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008669395&plink=RSSLINK&cooper=RSSREADER",
+     "ts": "2026-07-22T05:35:00.000Z"
+    },
+    {
+     "t": "하계 휴가철 기간에 하루 614만 명 이동…버스·철도 운행 횟수 늘린다",
+     "src": "동아일보",
+     "link": "https://www.donga.com/news/Economy/article/all/20260722/134343759/1",
+     "ts": "2026-07-22T05:33:00.000Z"
+    },
+    {
+     "t": "'무주반딧불이 가요제'…8월 7일까지 참가자 모집",
+     "src": "연합뉴스TV",
+     "link": "https://www.yonhapnewstv.co.kr/news/AKR20260722142946AUJ",
+     "ts": "2026-07-22T05:29:46.000Z"
+    },
+    {
+     "t": "장애인콜택시 기다리다 병원진료도 출근도 놓쳤다···비수도권은 ‘1시간 이상 대기’ 위험 1.4배",
+     "src": "경향신문",
+     "link": "https://www.khan.co.kr/article/202607221429011/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "ts": "2026-07-22T05:29:01.000Z"
+    }
+   ]
+  },
+  {
+   "key": "econ",
+   "name": "경제",
+   "emoji": "💰",
+   "items": [
+    {
+     "t": "“오픈AI가 스스로 해킹했다” 충격…팔로알토 등 사이버보안株 주목",
+     "src": "매일경제",
+     "link": "https://www.mk.co.kr/news/stock/12104330",
+     "ts": "2026-07-22T05:34:50.000Z"
+    },
+    {
+     "t": "하계 휴가철 기간에 하루 614만 명 이동…버스·철도 운행 횟수 늘린다",
+     "src": "동아일보",
+     "link": "https://www.donga.com/news/Economy/article/all/20260722/134343759/1",
+     "ts": "2026-07-22T05:33:00.000Z"
+    },
+    {
+     "t": "‘유기농은 사용감이 아쉽다?’…소중한습관, 시험 데이터로 편견 깼다",
+     "src": "동아일보",
+     "link": "https://www.donga.com/news/Economy/article/all/20260722/134337823/1",
+     "ts": "2026-07-22T05:30:00.000Z"
+    },
+    {
+     "t": "영림원소프트랩-다쏘시스템코리아, 설계·생산·경영 데이터 통합 추진",
+     "src": "동아일보",
+     "link": "https://www.donga.com/news/Economy/article/all/20260722/134342340/1",
+     "ts": "2026-07-22T05:29:00.000Z"
+    },
+    {
+     "t": "AI·반도체 인재 양성 본격화···순천향대·한국기술교육대 맞손",
+     "src": "경향신문",
+     "link": "https://www.khan.co.kr/article/202607221427011/?utm_source=khan_rss&utm_medium=rss&utm_campaign=economy_news",
+     "ts": "2026-07-22T05:27:01.000Z"
+    },
+    {
+     "t": "한양증권, 500만원 한도 연8% 특판RP",
+     "src": "매일경제",
+     "link": "https://www.mk.co.kr/news/stock/12104298",
+     "ts": "2026-07-22T05:01:14.000Z"
+    },
+    {
+     "t": "이 대통령 “국가 상징·전통 반영” 주문한 세종집무실 공개···‘세종 퇴임식’ 가능할까",
+     "src": "경향신문",
+     "link": "https://www.khan.co.kr/article/202607221400011/?utm_source=khan_rss&utm_medium=rss&utm_campaign=economy_news",
+     "ts": "2026-07-22T05:00:01.000Z"
+    },
+    {
+     "t": "‘대통령 세종집무실’ 설계 본격 착수···2029년 8월 입주 목표",
+     "src": "경향신문",
+     "link": "https://www.khan.co.kr/article/202607221400001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=economy_news",
+     "ts": "2026-07-22T05:00:00.000Z"
+    }
+   ]
+  },
+  {
+   "key": "tech",
+   "name": "IT·과학",
+   "emoji": "🔬",
+   "items": [
+    {
+     "t": "KDI “AI, 10년간 생산성 최대 3.5% 높이지만 일자리 25만6000개↓”",
+     "src": "동아사이언스",
+     "link": "https://www.donga.com/news/Economy/article/all/20260722/134343638/1",
+     "ts": "2026-07-22T05:25:00.000Z"
+    },
+    {
+     "t": "엔비디아, '베라 루빈' 시스템 공급 개시…AI 데이터센터 성능 극대화",
+     "src": "전자신문",
+     "link": "https://www.etnews.com/20260722000262",
+     "ts": "2026-07-22T05:18:20.000Z"
+    },
+    {
+     "t": "업비트·빗썸 유튜브 구독자 35만명 육박…콘텐츠 경쟁도 2강 체제",
+     "src": "전자신문",
+     "link": "https://www.etnews.com/20260722000256",
+     "ts": "2026-07-22T05:15:34.000Z"
+    },
+    {
+     "t": "日도 주목한 무신사…'제조'서 '브랜드'로 진화한 K패션 생태계",
+     "src": "전자신문",
+     "link": "https://www.etnews.com/20260722000252",
+     "ts": "2026-07-22T05:12:26.000Z"
+    },
+    {
+     "t": "\"바이오 지금이 바닥…하반기에 반등할 것\" 전문가 진단",
+     "src": "한국경제IT",
+     "link": "https://www.hankyung.com/article/202607228785i",
+     "ts": "2026-07-22T05:05:26.000Z"
+    },
+    {
+     "t": "‘임대용 아이폰’ 나온다…9월 신제품 가격 인상 유력",
+     "src": "동아사이언스",
+     "link": "https://www.donga.com/news/Economy/article/all/20260722/134343392/1",
+     "ts": "2026-07-22T04:56:00.000Z"
+    },
+    {
+     "t": "“부모와 연 끊으세요”…상담실까지 번진 ‘가족 절연’ 논쟁",
+     "src": "동아사이언스",
+     "link": "https://www.donga.com/news/Inter/article/all/20260722/134342762/2",
+     "ts": "2026-07-22T04:52:00.000Z"
+    },
+    {
+     "t": "\"삼성 32%·애플 25%·화웨이 24%\"…'초박빙' 승부 펼쳐진다",
+     "src": "한국경제IT",
+     "link": "https://www.hankyung.com/article/202607229000g",
+     "ts": "2026-07-22T02:25:40.000Z"
+    }
+   ]
+  },
+  {
+   "key": "life",
+   "name": "문화·연예",
+   "emoji": "🎬",
+   "items": [
+    {
+     "t": "AI 시대 ‘생각하는 글쓰기’ 주목…국립국어원, 전국 논증적 글쓰기 대회 개최",
+     "src": "동아문화",
+     "link": "https://www.donga.com/news/Culture/article/all/20260722/134341626/1",
+     "ts": "2026-07-22T05:31:00.000Z"
+    },
+    {
+     "t": "\"믿기지 않았다\"...아이들 슈화, 첫 주연작으로 토론토국제영화제 초청",
+     "src": "SBS연예",
+     "link": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008669257&plink=RSSLINK&cooper=RSSREADER",
+     "ts": "2026-07-22T04:41:00.000Z"
+    },
+    {
+     "t": "정은지, 8월 11일 미니 5집 'Summer, I' 발매…6년 만에 미니앨범 컴백",
+     "src": "SBS연예",
+     "link": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008669255&plink=RSSLINK&cooper=RSSREADER",
+     "ts": "2026-07-22T04:40:00.000Z"
+    },
+    {
+     "t": "팝스타 샤키라, 한국어 어떻게 하나 했더니…댄서 카니와 '절친 모먼트'",
+     "src": "SBS연예",
+     "link": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008669252&plink=RSSLINK&cooper=RSSREADER",
+     "ts": "2026-07-22T04:40:00.000Z"
+    },
+    {
+     "t": "서울, 도쿄·런던 제치고 2년 연속 ‘대학생 최고의 도시’ 1위",
+     "src": "동아문화",
+     "link": "https://www.donga.com/news/Society/article/all/20260722/134342939/1",
+     "ts": "2026-07-22T03:29:30.000Z"
+    },
+    {
+     "t": "아이들 슈화, 첫 주연 작으로 토론토영화제 입성 “큰 영광”",
+     "src": "동아문화",
+     "link": "https://www.donga.com/news/Entertainment/article/all/20260722/134342811/1",
+     "ts": "2026-07-22T02:56:41.000Z"
+    },
+    {
+     "t": "민지 복귀? 4인조 뉴진스? 특별 영상 공개···소송 중인 다니엘은 “빛은 다시 온다”",
+     "src": "경향문화",
+     "link": "https://www.khan.co.kr/article/202607221023001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=culture_news",
+     "ts": "2026-07-22T01:23:00.000Z"
+    },
+    {
+     "t": "경매 나왔던 삼성 창업주 이병철 글씨 ‘공수래공수거’ 1억원에 낙찰",
+     "src": "경향문화",
+     "link": "https://www.khan.co.kr/article/202607220737001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=culture_news",
+     "ts": "2026-07-21T22:37:00.000Z"
+    }
+   ]
+  }
+ ]
+};
+/*FALLBACK_END*/
+
+const $=id=>document.getElementById(id);
+const SLUG="news-cards";
+const CAT_COLORS={top:"#f43f5e",econ:"#f59e0b",tech:"#38bdf8",life:"#a78bfa"};
+let DATA=null, ARCHIVE=null, curTab=0, OFFLINE=false;
+
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._h);toast._h=setTimeout(()=>t.classList.remove("show"),2200);}
+
+function validDate(s){return typeof s==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(s);}
+function fmtDateKo(d){
+ if(!validDate(d))return d||"";
+ const [y,m,dd]=d.split("-").map(Number);
+ const day=["일","월","화","수","목","금","토"][new Date(y,m-1,dd).getDay()];
+ return y+"년 "+m+"월 "+dd+"일 ("+day+")";
+}
+function fmtTime(ts){
+ const d=new Date(ts);
+ if(isNaN(d))return "";
+ return d.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
+}
+function okShape(j){return j&&typeof j==="object"&&Array.isArray(j.categories);}
+
+async function fetchJson(url){
+ const r=await fetch(url,{cache:"no-store"});
+ if(!r.ok)throw new Error("HTTP "+r.status);
+ return r.json();
+}
+
+async function loadAll(){
+ const qd=new URLSearchParams(location.search).get("d");
+ const wantDate=validDate(qd)?qd:null;
+ let data=null;
+ try{
+  if(wantDate){
+   try{data=await fetchJson("/data/news-archive/"+wantDate+".json");}catch(e){data=null;}
+  }
+  if(!okShape(data)){data=await fetchJson("/data/news-cards.json");}
+ }catch(e){data=null;}
+ if(!okShape(data)){data=FALLBACK;OFFLINE=true;}
+ DATA=data;
+ try{
+  const idx=await fetchJson("/data/news-archive/index.json");
+  ARCHIVE=Array.isArray(idx)?idx.filter(validDate).sort():[DATA.date];
+ }catch(e){ARCHIVE=[DATA.date].filter(validDate);}
+ render();
+}
+
+function cats(){return (DATA.categories||[]).filter(c=>c&&Array.isArray(c.items)&&c.items.length>0);}
+
+function render(){
+ $("dateBig").textContent=fmtDateKo(DATA.date);
+ $("offBadge").style.display=OFFLINE?"":"none";
+ const upd=DATA.updated?new Date(DATA.updated):null;
+ $("updMeta").textContent=(upd&&!isNaN(upd))?("업데이트 "+upd.toLocaleString("ko-KR",{month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"})+(OFFLINE?" · 내장 스냅샷 표시 중":"")):"";
+ $("noticeText").textContent=String(DATA.notice||"모든 기사의 저작권은 각 언론사에 있습니다.");
+ renderNav();renderTabs();renderGrid();
+}
+
+function renderNav(){
+ const i=ARCHIVE.indexOf(DATA.date);
+ const prev=i>0?ARCHIVE[i-1]:null;
+ const next=(i>=0&&i<ARCHIVE.length-1)?ARCHIVE[i+1]:null;
+ const pb=$("prevDay"),nb=$("nextDay");
+ pb.disabled=!prev;nb.disabled=!next;
+ pb.onclick=()=>{if(prev)location.href=location.pathname+"?d="+prev;};
+ nb.onclick=()=>{if(next)location.href=location.pathname+"?d="+next;};
+}
+
+function renderTabs(){
+ const cs=cats(),box=$("tabs");box.textContent="";
+ if(curTab>=cs.length)curTab=0;
+ cs.forEach((c,i)=>{
+  const b=document.createElement("button");
+  b.type="button";b.setAttribute("role","tab");
+  b.textContent=(c.emoji?c.emoji+" ":"")+c.name+" "+c.items.length;
+  if(i===curTab)b.classList.add("on");
+  b.addEventListener("click",()=>{curTab=i;renderTabs();renderGrid();});
+  box.appendChild(b);
+ });
+}
+
+function renderGrid(){
+ const cs=cats(),grid=$("grid");grid.textContent="";
+ if(!cs.length){$("emptyMsg").style.display="";return;}
+ $("emptyMsg").style.display="none";
+ const cat=cs[curTab];
+ const color=CAT_COLORS[cat.key]||"#f43f5e";
+ cat.items.forEach((it,i)=>{
+  const card=document.createElement("article");card.className="ncard";
+  const row=document.createElement("div");row.className="chipRow";
+  const chip=document.createElement("span");chip.className="catChip";
+  chip.textContent=(cat.emoji?cat.emoji+" ":"")+cat.name;
+  chip.style.background=color+"26";chip.style.color=color;chip.style.border="1px solid "+color+"55";
+  const tm=document.createElement("span");tm.className="srcRow";tm.textContent=fmtTime(it.ts);
+  row.appendChild(chip);row.appendChild(tm);
+  const h=document.createElement("h2");h.className="hTitle";h.textContent=String(it.t||"");
+  const src=document.createElement("div");src.className="srcRow";
+  const bb=document.createElement("b");bb.textContent=String(it.src||"");src.appendChild(bb);
+  const acts=document.createElement("div");acts.className="cardActs";
+  const link=String(it.link||"");
+  if(/^https?:\/\//.test(link)){
+   const a=document.createElement("a");
+   a.href=link;a.target="_blank";a.rel="noopener nofollow";
+   a.textContent="원문 보기 →";acts.appendChild(a);
+  }
+  const dl=document.createElement("button");dl.type="button";dl.textContent="PNG 저장";
+  dl.addEventListener("click",()=>{downloadCard(it,cat,i);toast("카드 이미지를 저장했어요");});
+  acts.appendChild(dl);
+  card.appendChild(row);card.appendChild(h);card.appendChild(src);card.appendChild(acts);
+  grid.appendChild(card);
+ });
+}
+
+/* ---------- canvas 카드 (1080x1080) ---------- */
+/*WRAP_START*/
+function wrapLines(ctx,text,maxw){
+ const lines=[];let line="";
+ for(const ch of String(text)){
+  const test=line+ch;
+  if(ctx.measureText(test).width>maxw&&line){lines.push(line);line=(ch===" "?"":ch);}
+  else line=test;
+ }
+ if(line)lines.push(line);
+ return lines;
+}
+/*WRAP_END*/
+
+function rr(x,px,py,w,h,r){x.beginPath();x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+h,r);x.arcTo(px+w,py+h,px,py+h,r);x.arcTo(px,py+h,px,py,r);x.arcTo(px,py,px+w,py,r);x.closePath();}
+
+function drawCard(it,cat){
+ const W=1080,H=1080,M=72;
+ const cv=document.createElement("canvas");cv.width=W;cv.height=H;
+ const x=cv.getContext("2d");
+ const color=CAT_COLORS[cat.key]||"#f43f5e";
+ const FF='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+ /* 배경 */
+ const g=x.createLinearGradient(0,0,W,H);
+ g.addColorStop(0,"#141114");g.addColorStop(1,"#0a0a0a");
+ x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.fillStyle=color+"14";x.beginPath();x.arc(W-90,H-150,260,0,7);x.fill();
+ /* 상단 브랜드 바 */
+ const bg=x.createLinearGradient(0,0,W,0);
+ bg.addColorStop(0,"#f43f5e");bg.addColorStop(1,"#fb923c");
+ x.fillStyle=bg;x.fillRect(0,0,W,108);
+ x.fillStyle="#fff";x.font="800 40px "+FF;x.textBaseline="middle";
+ x.fillText("🗞️ 오늘의 카드뉴스 · "+String(DATA.date||""),M,56);
+ /* 카테고리 칩 */
+ x.font="800 34px "+FF;
+ const chipT=(cat.emoji?cat.emoji+" ":"")+cat.name;
+ const cw=x.measureText(chipT).width+56;
+ rr(x,M,176,cw,66,33);x.fillStyle=color+"33";x.fill();
+ x.strokeStyle=color;x.lineWidth=3;rr(x,M,176,cw,66,33);x.stroke();
+ x.fillStyle=color;x.fillText(chipT,M+28,176+34);
+ /* 제목 — 자동 폰트 크기 + 자동 줄바꿈 */
+ const maxw=W-M*2,areaTop=330,areaH=520;
+ let size=84,lines=[];
+ for(const s of [84,74,64,56,48,42]){
+  size=s;x.font="900 "+s+"px "+FF;
+  lines=wrapLines(x,String(it.t||""),maxw);
+  if(lines.length*s*1.38<=areaH)break;
+ }
+ x.font="900 "+size+"px "+FF;x.fillStyle="#ffffff";x.textBaseline="alphabetic";
+ const lh=size*1.38;let yy=areaTop+size;
+ for(const ln of lines){x.fillText(ln,M,yy);yy+=lh;}
+ /* 하단 출처 + 워터마크 */
+ x.strokeStyle="#2c2c2c";x.lineWidth=2;
+ x.beginPath();x.moveTo(M,918);x.lineTo(W-M,918);x.stroke();
+ x.font="600 32px "+FF;x.fillStyle="#d4d4d8";
+ const srcLines=wrapLines(x,"출처: "+String(it.src||"")+" — 원문은 링크로",maxw);
+ x.fillText(srcLines[0]||"",M,972);
+ x.font="500 27px "+FF;x.fillStyle="#8b8b8b";
+ x.fillText(fmtDateKo(DATA.date)+" 기준 · 기사 본문은 게재하지 않습니다",M,1016);
+ x.font="800 30px "+FF;x.fillStyle="#fb7185";x.textAlign="right";
+ x.fillText("tomatoeggcat.com/"+SLUG,W-M,1016);
+ x.textAlign="left";
+ return cv;
+}
+
+function downloadCard(it,cat,i){
+ const cv=drawCard(it,cat);
+ const a=document.createElement("a");
+ a.download="news-card-"+String(DATA.date||"today")+"-"+cat.key+"-"+(i+1)+".png";
+ a.href=cv.toDataURL("image/png");
+ document.body.appendChild(a);a.click();a.remove();
+}
+
+$("saveAll").addEventListener("click",async()=>{
+ const cs=cats();
+ const main=cs.find(c=>c.key==="top")||cs[0];
+ if(!main){toast("저장할 카드가 없어요");return;}
+ const top5=main.items.slice(0,5);
+ toast("카드 "+top5.length+"장을 순서대로 저장합니다…");
+ for(let i=0;i<top5.length;i++){
+  downloadCard(top5[i],main,i);
+  await new Promise(r=>setTimeout(r,500));
+ }
+ toast("전체 저장 완료! 다운로드 폴더를 확인하세요");
+});
+
+/* ---------- 공유 ---------- */
+function pageUrl(){
+ const base=/^https?:$/.test(location.protocol)
+  ?location.origin+location.pathname
+  :"https://tomatoeggcat.com/"+SLUG+"/";
+ return validDate(DATA.date)?base+"?d="+DATA.date:base;
+}
+async function copy(txt,msg){
+ try{await navigator.clipboard.writeText(txt);toast(msg);}
+ catch(e){
+  const ta=document.createElement("textarea");ta.value=txt;
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");toast(msg);}catch(_){toast("복사에 실패했어요");}
+  ta.remove();
+ }
+}
+function briefText(){
+ const L=["🗞️ 오늘의 카드뉴스 · "+fmtDateKo(DATA.date),""];
+ for(const c of cats()){
+  L.push((c.emoji?c.emoji+" ":"")+"["+c.name+"]");
+  for(const it of c.items.slice(0,3))L.push("· "+it.t+" ("+it.src+")");
+  L.push("");
+ }
+ L.push("전체 보기 → "+pageUrl());
+ return L.join("\n");
+}
+$("copyLink").addEventListener("click",()=>copy(pageUrl(),"링크를 복사했어요"));
+$("copyText").addEventListener("click",()=>copy(briefText(),"텍스트 브리핑을 복사했어요"));
+$("shareBtn").addEventListener("click",async()=>{
+ const url=pageUrl();
+ if(navigator.share){
+  try{await navigator.share({title:"오늘의 카드뉴스 "+String(DATA.date||""),text:"매일 아침 자동 갱신되는 헤드라인 브리핑",url});}catch(e){}
+ }else{
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("🗞️ 오늘의 카드뉴스 "+String(DATA.date||""))+"&url="+encodeURIComponent(url),"_blank","noopener");
+ }
+});
+
+loadAll();
+</script>
+</body>
+</html>
