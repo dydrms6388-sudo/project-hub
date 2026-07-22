@@ -2,6 +2,46 @@
 
 Phase 진행 중 내린 결정을 누적 기록한다. (최신이 위)
 
+## Phase 3 (게시 스케줄러 — 테스트 계정)
+
+### 스코프
+- 프롬프트 지시대로 **테스트 계정 1개 검증까지**. 20계정 확장·크론 활성화는 소유자 승인 후(Phase 5).
+- 실게시는 계정 토큰/앱 심사가 있어야 가능 → 이 환경에선 **시뮬레이션 모드**로 전체 안전장치를
+  검증(가상 시계로 하루 압축 재생). 실제 어댑터는 토큰만 있으면 그대로 동작.
+
+### 게시 상태머신 + 체크리스트 (HARD CONSTRAINTS 반영)
+- 상태: `queued → (checklist) → uploading → published | throttled | failed`.
+- 게시 전 체크리스트(하나라도 실패 → **throttled 이연**, 단 dedup 은 failed):
+  1. `content_publishing_limit` 등 **사용률 ≥ 0.6 → 이연** (HARD #1: 실측 × 0.6 초과 금지)
+  2. 워밍업 일일 한도(1주 3 / 2주 6 / 3주 10 / 4주+ 15) (HARD #5)
+  3. 최근 게시 간격 **≥ 40분(±12분 지터)** (체크리스트 3)
+  4. 캡션 중복도 **< 0.85** (동일 계정 30일) — 초과 시 **failed**(재시도 무의미) (체크리스트 4)
+- **중요 설계 수정**: 백프레셔 이연(페이싱/워밍업/레이트리밋 대기)은 "실패"가 아니므로 `attempts`
+  카운터를 **올리지 않는다**. 실제 게시 오류(retryable)만 attempts++ → 한도(5) 초과 시 failed.
+  (초기 구현은 대기까지 attempts 로 세어 대기 잡이 조기 failed 되는 버그 → 데모에서 발견·수정.)
+
+### 레이트리밋 거버너 (HARD #3)
+- 응답 헤더(`X-App-Usage`/`X-Business-Use-Case-Usage`) 사용률 → `rate_limit_log` 기록.
+- **80% 초과 → 60분 쿨다운, 95% 초과 → 24시간 중단**(계정 state=cooldown/disabled + cooldown_until).
+- 시뮬레이션 실측: 게시마다 사용률 12%↑ → 7건째 84%에서 쿨다운, 8건째 96%에서 24h 중단 확인.
+
+### 플랫폼 어댑터 (5종, 공통 인터페이스 `PlatformPublisher`)
+- **IG/FB**: Meta Graph v21 — 컨테이너 생성 → `status_code=FINISHED` 폴링(지수백오프,최대5분) →
+  `media_publish`. 릴 `media_type=REELS`. 미디어는 **공개 URL**(Storage) 필요.
+- **TikTok**: Content Posting API(PULL_FROM_URL) init → status 폴링. **Threads**: 컨테이너→publish.
+- **X**: 미디어 업로드(v1.1 chunked) → 트윗(v2). 사용자 컨텍스트 토큰 필요.
+- **SimPublisher**: 네트워크 없이 사용률 램프업 → 거버너/상태머신 검증용.
+- 각 플랫폼 API·심사가 상이(Meta/TikTok/Threads/X 별도) → 실연동은 소유자 계정·토큰 준비 후.
+
+### 토큰/시크릿
+- 토큰 원문은 **env(테스트) 또는 Supabase Vault(실서비스) 참조만**. 코드/DB/커밋에 하드코딩 0.
+- Meta long-lived 토큰: 50일 주기 갱신(`fb_exchange_token`) + 만료 7일 전 알림 헬퍼(`tokens.ts`).
+  실제 갱신 크론은 pg_cron/워커가 이 헬퍼 호출.
+
+### 캡션 플랫폼 분기
+- 같은 소재를 플랫폼별 한도/톤으로 재조립(`captions.ts`): 해시태그 수·글자수(X 280 등)·CTA 포함 여부.
+  결정론적(LLM 불필요) — 계정 간 캡션 중복 방지 제약과 함께 플랫폼별로 달라진다.
+
 ## Phase 2 (품질 게이트 + 렌더)
 
 ### 대상 플랫폼 확장

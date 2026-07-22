@@ -18,8 +18,11 @@
     "review:dry": "tsx workers/review/index.ts --dry-run",
     "render": "tsx workers/render/index.ts",
     "render:dry": "tsx workers/render/index.ts --dry-run",
+    "publish": "tsx workers/publish/index.ts",
+    "publish:sim": "tsx workers/publish/index.ts --dry-run --sim",
     "phase1:demo": "tsx scripts/phase1-demo.ts",
-    "phase2:demo": "tsx scripts/phase2-demo.ts"
+    "phase2:demo": "tsx scripts/phase2-demo.ts",
+    "phase3:demo": "tsx scripts/phase3-demo.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",

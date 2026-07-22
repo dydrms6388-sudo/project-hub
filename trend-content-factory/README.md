@@ -13,7 +13,7 @@
 | 0 | 스캐폴딩, 타입, 20 버티컬, Supabase 마이그레이션 | ✅ 완료 |
 | 1 | M1 수집기, M2 소재 생성기 (드라이런) | ✅ 완료 |
 | 2 | M3 품질 게이트, M4 렌더러 (PNG/MP4 실렌더) | ✅ 완료 |
-| 3 | M5 게시 스케줄러 (테스트 계정 1개) | ⬜ 예정 (소유자 승인 게이트) |
+| 3 | M5 게시 스케줄러 + 레이트리밋 거버너 (시뮬레이션 검증) | ✅ 완료 (실계정 연동은 승인/심사 후) |
 | 4 | M6 피드백, M7 대시보드 | ⬜ 예정 |
 | 5 | 5플랫폼 × 20계정 전체 확장 | ⬜ 소유자 승인 후 |
 
@@ -35,11 +35,16 @@ npm run phase1:demo
 # Phase 2 데모: 심사 → 렌더(실제 PNG/MP4) → output/preview + 타이밍 리포트
 npm run phase2:demo
 
+# Phase 3 데모: 게시 스케줄러 시뮬레이션(가상 시계) — 페이싱/워밍업/거버너/dedup 검증
+npm run phase3:demo
+
 # 개별 워커 (dry-run: 로컬 JSON 스토어)
 npm run ingest:dry            # 트렌드 수집 → output/trends.json
 npm run compose:dry           # 소재 생성 → output/drafts.json
 npm run review:dry            # 6-페르소나 심사 → draft를 approved/rejected로
 npm run render:dry            # approved → 플랫폼별 PNG/MP4 → output/preview
+npm run publish:sim           # 게시 스케줄러 (시뮬레이션, 네트워크 없음)
+# npm run publish             # 실게시 (PUBLISH_TEST_* + 토큰 필요)
 ```
 
 키 없이 dry-run 하면 스토어는 `output/*.json`, 소재 생성/심사는 목업으로 폴백한다.
@@ -56,6 +61,28 @@ npm run render:dry            # approved → 플랫폼별 PNG/MP4 → output/pre
 
 **이 환경 실측(20건, 3코어)**: 카드 ~1.3s/장, 릴 ~25s/편(20s 실시간 녹화 포함), 초안당 ~12s.
 → 300건/일 순차 ~1.0h, 병렬 보정 ~0.34h로 렌더 창(06:30~09:00) 내 처리 가능. 프로덕션 8코어+ VPS 재측정 권장.
+
+### 게시 스케줄러 (M5)
+
+`queued → uploading → published | throttled | failed` 상태머신. 게시 전 체크리스트:
+`content_publishing_limit`(실측 × 0.6) → 워밍업 한도(1주3/2주6/3주10/4주+15) → 40분 페이싱(±12분 지터)
+→ 캡션 중복도(<0.85). 응답 헤더 사용률을 `rate_limit_log` 에 기록하고 **80%→60분 쿨다운/95%→24h 중단**.
+플랫폼 어댑터 5종(IG/FB=Meta Graph, TikTok, Threads, X) + 시뮬레이션 어댑터. 시뮬레이션 검증에서
+페이싱·워밍업·거버너 쿨다운/중단·dedup·job_failures 가 모두 동작 확인됨(`npm run phase3:demo`).
+
+#### 실계정 연동 절차 (런북)
+
+1. **플랫폼 앱/권한 심사** (각 2~4주): Meta `instagram_business_content_publish`(IG 비즈니스 + FB 페이지),
+   TikTok Content Posting API, Threads API, X API(tweet.write/media.write).
+2. **미디어 호스팅**: Graph/TikTok 등은 공개 URL 에서 미디어를 pull → 렌더 산출물을 Supabase Storage
+   공개 URL 로 업로드 후 그 URL 을 게시 잡의 `storage_path` 로.
+3. **테스트 계정 1개** 연결: `.env.local` 에 `PUBLISH_TEST_*`(플랫폼/버티컬/external_id/토큰) 설정 →
+   `npm run publish`. 성공/거버너 동작 확인.
+4. **토큰 갱신**: Meta long-lived 50일 주기 자동 갱신 크론(`lib/publish/tokens.ts`) + 만료 7일 전 알림.
+5. 소유자 승인 후에만 20계정 확장(Phase 5). 워밍업 스케줄로 저노출 신규 계정 쿼터 소진 방지.
+
+> 장애 대응: 게시 실패는 `job_failures` + 텔레그램. 사용률 급증 시 거버너가 자동 쿨다운/중단.
+> 특정 계정만 멈추려면 `accounts.state='paused'`. 큐 정리는 `publish_queue` 에서 상태 필터.
 
 ## 구조
 
@@ -76,6 +103,8 @@ lib/
   failures.ts              job_failures + 텔레그램 (조용한 실패 금지)
   media/                   ffmpeg(H.264/AAC) / tts(교체가능) / background(절차적 CSS)
   render/                  fonts(임베드) / cardTemplate / reelTemplate
+  publish/                 M5 게시: governor/warmup/pacing/captions/tokens/scheduler/store
+    adapters/              ig·fb(meta)/tiktok/threads/x 실어댑터 + sim(시뮬레이션)
 prompts/
   compose.ts               M2 소재 생성 프롬프트 (JSON 강제)
   review.ts                M3 6-페르소나 심사 프롬프트 (배치)
@@ -84,6 +113,7 @@ workers/
   compose/                 M2 소재 생성기 (Claude/Mock 컴포저)
   review/                  M3 품질 게이트 (Claude/Mock 패널, 배치 10)
   render/                  M4 렌더러 (Playwright 카드 PNG + ffmpeg 릴 MP4)
+  publish/                 M5 게시 스케줄러 (상태머신 + 거버너, real/sim)
 assets/fonts/              번들 한글 폰트 (Pretendard/NanumMyeongjo/JetBrainsMono)
 scripts/                   phase1-demo, phase2-demo
 supabase/migrations/       DB 스키마 (RLS service_role 전용)
