@@ -79,6 +79,10 @@ const BUILTINS = [
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
   { slug: "sai", emoji: "🚶", name: "사이", desc: "두 단어 사이를 한 걸음씩 걷는 의미 산책", k: "사이 단어 의미 임베딩 벡터 산책 시", prio: "0.7" },
+  // ── 실험실: 백엔드 필요 컨셉의 프런트엔드 데모(STATUS.md 5차) — 손수 관리 ──
+  { slug: "eopda", emoji: "🕯️", name: "없다 (데모)", desc: "사라진 장소를 기억으로 복원하는 아카이브 데모", k: "사라진 가게 추억 동네 재개발 기억 아카이브", prio: "0.6" },
+  { slug: "turing-salon", emoji: "🥂", name: "튜링 살롱 (데모)", desc: "6인 익명 단톡방, 누가 AI인지 가려내는 게임 데모", k: "AI 판별 튜링 테스트 채팅 게임", prio: "0.6" },
+  { slug: "eleven11", emoji: "🌒", name: "11시 11분 (데모)", desc: "하루 1분만 열리는 글쓰기 공간 데모", k: "글쓰기 익명 1분 밤 기록 아카이브", prio: "0.6" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
@@ -86,6 +90,7 @@ const BUILTIN_CATS = [
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history", "sai"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
+  { title: "🧪 실험실", tag: "프런트 데모", slugs: ["eopda", "turing-salon", "eleven11"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
 
