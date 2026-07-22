@@ -55,6 +55,14 @@ const CORE_SLUGS = new Set([
   "today-fortune",
   // 뷰티·패션
   "personal-color-test",
+  // ── 2차 색인 확대(batch3): 5-에이전트 재작성 루프로 86~89점 달성한 비생물학 도구 ──
+  "salary-rank",            // 금융·부동산
+  "dydrms-sizefit",         // 생활·계산기
+  "travel-budget", "china-travel", // 여행·문화
+  "dydrms-giftpick", "dydrms-seonmulgak", "love-story-board", // 연애·관계
+  "ttingun", "dydrms-haemong",      // 운세·심리
+  "dydrms-dasibom", "dydrms-pokecard", // 엔터·바이럴
+  "dydrms-engnote", "chipnote", "dydrms-hagwon", // 교육·학습
 ]);
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
