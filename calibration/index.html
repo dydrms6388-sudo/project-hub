@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>캘리 — 예측을 확률로 기록하고 채점하는 캘리브레이션 트레이너 | TomatoEggCat</title>
+<meta name="description" content="당신이 70% 확신한다고 말할 때 실제로 몇 번 맞나요? 예측을 확률과 함께 기록하고 기한이 오면 채점해, 브라이어 점수와 캘리브레이션 곡선으로 자기 확신의 정확도를 측정하는 개인 도구. 이미 결과가 나온 연습 문제 20개로 첫날부터 내 곡선을 볼 수 있습니다. 데이터는 브라우저에만 저장됩니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/calibration/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="캘리 — 당신의 70%는 진짜 70%인가요?" />
+<meta property="og:description" content="예측을 확률과 함께 기록하고 채점해 자기 확신의 정확도를 재는 캘리브레이션 트레이너. 대부분은 자기가 과신한다는 걸 처음 숫자로 봅니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/calibration/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="캘리 — 당신의 70%는 진짜 70%인가요?" />
+<meta name="twitter:description" content="예측을 확률로 기록하고 채점해 자기 확신의 정확도를 재는 도구." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"캘리","description":"확률 예측을 기록하고 기한 도래 시 채점해 브라이어 점수·Murphy 분해·캘리브레이션 곡선으로 개인의 확신 정확도를 측정하는 도구. 결과가 이미 확정된 연습 문제 20개로 첫날부터 곡선을 볼 수 있으며, 데이터는 브라우저에만 저장됩니다.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/calibration/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"캘리브레이션이 뭔가요?","acceptedAnswer":{"@type":"Answer","text":"자기 확신의 정확도입니다. '70% 확신'이라고 말한 일들이 실제로 10번 중 7번쯤 일어나면 캘리브레이션이 좋은 것이고, 9번 일어나면 과소신, 5번만 일어나면 과신입니다. 예측 실력은 방향을 맞히는 것보다 자기 확신을 정확히 매기는 데서 갈립니다."}},
+{"@type":"Question","name":"브라이어 점수는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"판정된 각 예측에 대해 (예측 확률 - 실제 결과)²을 평균한 값입니다. 실제 결과는 참이면 1, 거짓이면 0. 낮을수록 좋고, 모든 예측에 50%를 매기면 0.25가 나옵니다. 여기에 Murphy 분해를 적용해 신뢰도(reliability)·분별력(resolution)·불확실성(uncertainty) 세 성분으로 나눠 보여 줍니다."}},
+{"@type":"Question","name":"왜 연습 문제 20개를 먼저 풀게 하나요?","acceptedAnswer":{"@type":"Answer","text":"실제 예측은 결과가 나오기까지 몇 주에서 몇 달이 걸려서, 그냥 시작하면 오랫동안 빈 화면만 보게 됩니다. 그래서 이미 결과가 확정된 사실 기반 문제 20개에 확률을 매기게 해 즉시 채점하고, 첫날부터 자신의 캘리브레이션 곡선을 볼 수 있게 했습니다. 연습 세트는 통계에서 제외하는 토글이 있습니다."}},
+{"@type":"Question","name":"등록한 예측을 수정할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"확률은 등록 후 수정할 수 없습니다. 수정을 허용하면 결과가 보이기 시작할 때 확률을 슬쩍 고치는 반칙이 가능해져 데이터가 의미를 잃기 때문입니다. 생각이 바뀌면 새 예측으로 등록하세요. 무효 판정 남용도 감지해 무효율이 20%를 넘으면 경고를 표시합니다."}},
+{"@type":"Question","name":"데이터는 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"모든 예측과 판정은 사용자의 브라우저(localStorage)에만 저장되고 서버로 전송되지 않습니다. 공유 기능을 쓰면 예측 내용 없이 곡선·점수 같은 통계 숫자만 링크에 담깁니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"기록·실험실","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"캘리","item":"https://tomatoeggcat.com/calibration/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#7aa2ff;--ink:#ededed}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0b0e;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #232733;background:#12141a;border-radius:18px;padding:20px;margin-bottom:18px}
+h3{font-size:16px;margin:0 0 10px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#0b1226;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#1b1e28;color:#ccd3e8;border:1px solid #313749;font-weight:700}
+button.sm{width:auto;padding:8px 14px;font-size:13.5px;min-height:36px;border-radius:9px}
+button:disabled{opacity:.4;cursor:not-allowed}
+label{display:block;font-size:13px;color:#98a0b6;font-weight:700;margin:14px 0 6px}
+input[type=text],select,input[type=date]{width:100%;padding:12px;border-radius:10px;border:1px solid #313749;background:#0d0f14;color:#ededed;font-size:15px;font-family:inherit}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.hint{font-size:12px;color:#6f7689;margin-top:4px}
+.warn{font-size:12.5px;color:#fbbf24;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:10px;padding:9px 12px;margin-top:8px;display:none}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:#131c33;border-bottom:1px solid #27407a}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#bcd0ff;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.probRow{display:flex;align-items:center;gap:14px}
+.probVal{font-size:26px;font-weight:900;color:var(--acc);min-width:74px;text-align:right;font-variant-numeric:tabular-nums}
+/* 연습 세트 */
+.pq{border-top:1px solid #232733;padding:14px 0}
+.pq:first-child{border-top:0;padding-top:0}
+.pq .qt{font-size:14.5px;font-weight:700;margin:0 0 8px}
+.pq .qn{color:#6f7689;font-weight:600;margin-right:6px}
+/* 통계 */
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{background:#0d0f14;border:1px solid #232733;border-radius:12px;padding:10px 6px;text-align:center}
+.stat .v{font-size:20px;font-weight:900;color:var(--acc);font-variant-numeric:tabular-nums}
+.stat .k{font-size:10.5px;color:#98a0b6;margin-top:2px}
+#curveCv{width:100%;border-radius:12px;background:#0d0f14;display:block}
+.toggleRow{display:flex;align-items:center;gap:8px;font-size:13px;color:#98a0b6;margin-top:10px}
+.toggleRow input{accent-color:var(--acc)}
+.catTable{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:12px}
+.catTable th,.catTable td{text-align:left;padding:7px 4px;border-top:1px solid #232733;color:#ccd3e8}
+.catTable th{color:#6f7689;font-size:12px;border-top:0}
+.catTable td.num{text-align:right;font-variant-numeric:tabular-nums}
+/* 예측 목록 */
+.pred{border-top:1px solid #232733;padding:12px 0}
+.pred:first-child{border-top:0;padding-top:0}
+.pred .st{font-size:14.5px;font-weight:700;margin:0 0 3px}
+.pred .meta{font-size:12px;color:#6f7689}
+.pred .meta b{color:var(--acc)}
+.pred .due{color:#fbbf24}
+.pred .acts{display:flex;gap:8px;margin-top:8px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:6px}
+.b-t{background:rgba(74,222,128,.13);color:#4ade80}
+.b-f{background:rgba(248,113,113,.13);color:#f87171}
+.b-v{background:rgba(148,163,184,.13);color:#94a3b8}
+.b-p{background:rgba(122,162,255,.13);color:#7aa2ff}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.share button{font-size:14px;padding:13px 8px}
+.save{margin-top:14px;background:#fff;color:#0b1226}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#131c33;color:#bcd0ff;padding:11px 20px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50;border:1px solid #27407a}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ad{margin:24px 0}
+h2{font-size:19px;margin:30px 0 10px}
+.about p{color:#d0d0d0;font-size:14.5px}
+.about ol,.about ul{color:#d0d0d0;font-size:14.5px;padding-left:20px}
+.about li{margin-bottom:6px}
+.faq{border-top:1px solid #232733;padding:13px 0}
+.faq b{display:block;margin-bottom:4px;color:#ededed}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.disc{font-size:12.5px;color:#6b7280;background:#121318;border:1px solid #222430;border-radius:12px;padding:12px 14px;margin-top:14px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:#1b1e28;color:#cdd6ff;padding:8px 13px;border-radius:999px;text-decoration:none}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1e2026;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:430px){.statgrid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>친구가 자신의 <b>캘리브레이션 성적표</b>를 공유했어요. 당신의 70%는 진짜 70%인가요?</span>
+  <button id="meToo">나도 측정하기 →</button>
+</div>
+
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 기록·실험실 › 캘리</div>
+<h1>🎯 캘리</h1>
+<p class="lead">당신이 <b>"70% 확신"</b>이라고 말할 때, 실제로 몇 번 맞나요? 예측을 확률로 기록하고 채점해서 <b>자기 확신의 정확도</b>를 측정합니다.</p>
+
+<!-- 공유 유입 뷰 -->
+<div class="card" id="sharedCard" style="display:none">
+  <h3>👀 친구의 캘리브레이션 성적표</h3>
+  <div class="statgrid" id="shStats"></div>
+  <canvas id="shCurveCv" height="300"></canvas>
+  <p class="hint" style="margin-top:8px">파란 곡선이 대각선(완벽한 캘리브레이션)에 가까울수록 정확한 확신. 예측 내용은 공유되지 않아요.</p>
+</div>
+
+<!-- 온보딩 연습 세트 -->
+<div class="card" id="practiceCard" style="display:none">
+  <h3>🧪 연습 세트 — 첫날부터 내 곡선 보기</h3>
+  <p class="hint" style="margin-bottom:12px">결과가 이미 확정된 사실 20개입니다. 각 문장이 <b>참일 확률</b>을 직감으로 매겨 보세요. 다 매기면 즉시 채점되어 첫 캘리브레이션 곡선이 나옵니다.</p>
+  <div id="pqHost"></div>
+  <button id="pqSubmit" style="margin-top:14px" disabled>채점하고 내 곡선 보기 →</button>
+</div>
+
+<!-- 대시보드 -->
+<div id="dash" style="display:none">
+  <div class="card">
+    <h3>📈 나의 캘리브레이션</h3>
+    <div class="statgrid" id="statGrid"></div>
+    <canvas id="curveCv" height="300"></canvas>
+    <p class="hint" style="margin-top:8px">가로: 내가 매긴 확률 · 세로: 실제 적중률. 대각선이 완벽한 캘리브레이션. 점 위 숫자는 표본수 n, n&lt;5는 흐리게(해석 주의).</p>
+    <div class="toggleRow"><input type="checkbox" id="incPractice" checked><label for="incPractice" style="margin:0;font-weight:600">연습 세트 포함</label></div>
+    <table class="catTable" id="catTable"></table>
+    <button class="save" id="saveBtn">📸 성적표 카드 저장</button>
+    <div class="share">
+      <button class="ghost" id="copyLink">🔗 통계 링크 복사</button>
+      <button class="ghost" id="copyText">📋 텍스트 복사</button>
+      <button class="ghost" id="shareX">𝕏 공유</button>
+      <button class="ghost" id="shareEtc">📤 공유하기</button>
+    </div>
+  </div>
+
+  <!-- 새 예측 -->
+  <div class="card">
+    <h3>✍️ 새 예측 등록</h3>
+    <label>명제 — 나중에 참/거짓을 판정할 수 있는 문장으로</label>
+    <input type="text" id="fSt" maxlength="120" placeholder="예: 8월 말까지 내 몸무게가 70kg 아래로 내려간다">
+    <div class="warn" id="vagueWarn"></div>
+    <label>이 명제가 참일 확률 — <span style="color:#6f7689;font-weight:600">0%/100%는 등록 불가</span></label>
+    <div class="probRow"><input type="range" id="fProb" min="1" max="99" value="60"><span class="probVal" id="probVal">60%</span></div>
+    <div class="grid2">
+      <div><label>판정 기한</label><input type="date" id="fDue"></div>
+      <div><label>카테고리</label><select id="fCat"><option>시장</option><option>기술</option><option selected>개인</option><option>사회</option><option>기타</option></select></div>
+    </div>
+    <button id="addBtn" style="margin-top:16px">🎯 예측 등록 (등록 후 확률 수정 불가)</button>
+  </div>
+
+  <!-- 판정 대기 -->
+  <div class="card" id="dueCard" style="display:none">
+    <h3>⏰ 판정할 시간 <span class="badge b-p" id="dueCount"></span></h3>
+    <div id="dueList"></div>
+  </div>
+
+  <!-- 진행 중 / 지난 예측 -->
+  <div class="card" id="listCard" style="display:none">
+    <h3>🗂️ 내 예측</h3>
+    <div id="predList"></div>
+  </div>
+
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<div class="about">
+  <h2>캘리란?</h2>
+  <p>예측 실력은 방향을 맞히는 게 아니라 <b>자기 확신을 정확히 매기는 것</b>에서 갈립니다. "오를 것 같다"는 누구나 말하지만, "70% 확률로 오른다"고 말하고 그 70%들이 실제로 10번 중 7번 맞는 사람은 드뭅니다. 캘리는 그 근육을 재는 도구입니다. 예측을 명제·확률·판정 기한과 함께 기록하고, 기한이 오면 참/거짓을 판정합니다. 판정이 쌓이면 <b>브라이어 점수</b>(예측 확률과 실제 결과의 평균 제곱 오차)와 Murphy 분해(신뢰도·분별력·불확실성), 그리고 이 도구의 얼굴인 <b>캘리브레이션 곡선</b>이 그려집니다 — 가로축은 내가 매긴 확률, 세로축은 실제 적중률. 곡선이 대각선 아래로 처지면 과신, 위로 뜨면 과소신입니다. 대부분은 자기가 과신한다는 걸 여기서 처음 숫자로 봅니다. 실제 예측은 결과까지 시간이 걸리므로, 이미 결과가 확정된 <b>연습 문제 20개</b>로 첫날부터 곡선을 볼 수 있게 했습니다. 모든 데이터는 브라우저에만 저장됩니다.</p>
+
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>먼저 연습 세트 20문항에 직감으로 확률을 매기고 즉시 채점받아 <b>첫 곡선</b>을 확인합니다.</li>
+    <li>판정 가능한 명제로 실제 예측을 등록합니다. "곧", "많이" 같은 애매어는 피하세요.</li>
+    <li>기한이 되면 <b>⏰ 판정할 시간</b>에 뜬 예측을 참/거짓/무효로 판정합니다.</li>
+    <li>곡선과 브라이어 점수가 갱신됩니다. 과신 구간(대각선 아래 점)을 확인하세요.</li>
+    <li>성적표 카드를 저장하거나 통계만 담긴 링크로 공유합니다. 예측 내용은 공유되지 않아요.</li>
+  </ol>
+
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>투자·트레이딩 판단 전에 자기 확신이 얼마나 부풀려져 있는지 알고 싶을 때</li>
+    <li>업무 일정 추정("금요일까지 끝난다: 80%")의 실제 적중률을 재고 싶을 때</li>
+    <li>스포츠·선거·제품 출시 같은 이벤트 예측 습관을 데이터로 만들고 싶을 때</li>
+    <li>"내가 맞다니까"를 자주 말하는 자신 혹은 친구와 내기 전에</li>
+  </ul>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>캘리브레이션이 뭔가요?</b><p>자기 확신의 정확도예요. "70% 확신"이라 말한 일들이 실제로 10번 중 7번쯤 일어나면 좋은 캘리브레이션, 5번만 일어나면 과신입니다.</p></div>
+  <div class="faq"><b>브라이어 점수는 어떻게 계산하나요?</b><p>판정된 각 예측의 (확률 − 결과)²을 평균합니다(참=1, 거짓=0). 낮을수록 좋고, 전부 50%로 찍으면 0.25입니다. Murphy 분해로 신뢰도·분별력·불확실성 성분도 보여 드려요.</p></div>
+  <div class="faq"><b>등록한 확률을 수정할 수 있나요?</b><p>불가능합니다. 수정을 허용하면 결과가 보일 때 확률을 고치는 반칙이 가능해져요. 생각이 바뀌면 새 예측으로 등록하세요. 무효율이 20%를 넘으면 경고도 표시됩니다.</p></div>
+  <div class="faq"><b>표본이 적으면 곡선을 믿어도 되나요?</b><p>구간별 표본수 n을 함께 표시하고 n&lt;5인 점은 흐리게 처리합니다. 흐린 점은 아직 우연일 수 있으니 판정을 더 쌓은 뒤 해석하세요.</p></div>
+  <div class="faq"><b>데이터는 어디에 저장되나요?</b><p>브라우저(localStorage)에만 저장되고 서버로 전송되지 않아요. 공유 링크에는 예측 내용 없이 통계 숫자만 담깁니다.</p></div>
+
+  <p class="disc">본 도구는 <b>재미·자기계발용</b>이며 투자·의료·법률 등 어떤 전문적 판단의 근거도 되지 않습니다. 연습 세트의 정답은 등재 시점의 공개 사실 기준입니다. 모든 데이터는 사용자의 브라우저에만 저장되며, 브라우저 데이터를 지우면 함께 삭제됩니다.</p>
+
+  <div class="more">
+    <a href="/todays-color/">🎨 오늘의 색</a>
+    <a href="/gyebo/">📜 물건 계보</a>
+    <a href="/eggcat-predict/">🔮 에그캣 예측</a>
+    <a href="/dday/">📅 D-day 계산기</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- 연습 세트: 결과가 확정된 사실 20개 (o: 참=1) ---------- */
+const PRACTICE=[
+ ["에펠탑의 높이는 300m가 넘는다",1],
+ ["세종대왕은 조선의 4번째 왕이다",1],
+ ["지구에서 달까지의 평균 거리는 30만 km보다 멀다",1],
+ ["대한민국 헌법 제1조에는 '민주공화국'이라는 표현이 들어 있다",1],
+ ["치타는 시속 100km 이상으로 달릴 수 있다",1],
+ ["태양계 행성 중 목성보다 큰 행성이 있다",0],
+ ["서울 지하철 1호선은 1980년 이후에 개통됐다",0],
+ ["물 분자(H₂O) 하나에는 산소 원자가 2개 있다",0],
+ ["하계 올림픽은 2년마다 열린다",0],
+ ["한글의 기본 자모는 모두 24자다",1],
+ ["백두산의 높이는 3,000m가 넘는다",0],
+ ["모나리자는 루브르 박물관에 있다",1],
+ ["성인 인간의 뼈는 300개가 넘는다",0],
+ ["광복절은 8월 15일이다",1],
+ ["표준 피아노의 건반은 88개다",1],
+ ["지구 대기에서 가장 많은 기체는 산소다",0],
+ ["제주도는 대한민국에서 가장 큰 섬이다",1],
+ ["베토벤이 완성한 교향곡은 모두 10곡이다",0],
+ ["마라톤의 정식 거리는 42.195km다",1],
+ ["대한민국 국회의원의 임기는 5년이다",0]
+];
+const VAGUE=/곧|많이|조금|대충|언젠가|금방|꽤|약간|어느 정도|잘 될|잘될|좋아질|나아질/;
+
+/* ---------- 지표 수학 ---------- */
+/*CALIB-MATH-START*/
+// pairs: [{p:0..1, o:0|1}] — 판정된 예측만
+function brier(pairs){
+ if(!pairs.length)return null;
+ return pairs.reduce((s,x)=>s+(x.p-x.o)*(x.p-x.o),0)/pairs.length;
+}
+// Murphy 분해: 동일 확률값 그룹 기준 → BS = REL - RES + UNC 항등식이 정확히 성립
+function murphy(pairs){
+ const N=pairs.length;
+ if(!N)return null;
+ const ybar=pairs.reduce((s,x)=>s+x.o,0)/N;
+ const groups={};
+ pairs.forEach(x=>{(groups[x.p]=groups[x.p]||[]).push(x.o);});
+ let rel=0,res=0;
+ for(const k in groups){
+  const g=groups[k],n=g.length,yk=g.reduce((a,b)=>a+b,0)/n,fk=+k;
+  rel+=n*(fk-yk)*(fk-yk);
+  res+=n*(yk-ybar)*(yk-ybar);
+ }
+ return {rel:rel/N,res:res/N,unc:ybar*(1-ybar),ybar};
+}
+// 곡선용 10구간 버킷: [{lo,hi,n,fbar,ybar}]
+function buckets(pairs){
+ const B=[];
+ for(let i=0;i<10;i++)B.push({lo:i/10,hi:(i+1)/10,n:0,fs:0,os:0});
+ pairs.forEach(x=>{
+  const bi=Math.min(9,Math.floor(x.p*10));
+  B[bi].n++;B[bi].fs+=x.p;B[bi].os+=x.o;
+ });
+ return B.map(b=>({lo:b.lo,hi:b.hi,n:b.n,fbar:b.n?b.fs/b.n:null,ybar:b.n?b.os/b.n:null}));
+}
+/*CALIB-MATH-END*/
+
+/* ---------- 저장소 ---------- */
+const $=id=>document.getElementById(id);
+const LSK="tec-calibration";
+function load(){try{return JSON.parse(localStorage.getItem(LSK))||{preds:[],practiceDone:false};}catch(e){return{preds:[],practiceDone:false};}}
+function save(st){try{localStorage.setItem(LSK,JSON.stringify(st));}catch(e){toast("저장 공간이 부족해요");}}
+let DB=load();
+function todayStr(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1800);}
+function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+/* ---------- 연습 세트 UI ---------- */
+function renderPractice(){
+ $("practiceCard").style.display="block";
+ $("pqHost").innerHTML=PRACTICE.map((q,i)=>`<div class="pq"><p class="qt"><span class="qn">${i+1}.</span>${q[0]}</p>
+  <div class="probRow"><input type="range" class="pqR" data-i="${i}" min="1" max="99" value="50"><span class="probVal pqV" id="pqV${i}">50%</span></div></div>`).join("");
+ const touched=new Set();
+ $("pqHost").addEventListener("input",e=>{
+  const r=e.target.closest(".pqR");if(!r)return;
+  $("pqV"+r.dataset.i).textContent=r.value+"%";
+  touched.add(r.dataset.i);
+  $("pqSubmit").disabled=touched.size<PRACTICE.length;
+  $("pqSubmit").textContent=touched.size<PRACTICE.length?`채점하고 내 곡선 보기 (${touched.size}/20 답변)`:"채점하고 내 곡선 보기 →";
+ });
+}
+$("pqSubmit").addEventListener("click",()=>{
+ const now=todayStr();
+ document.querySelectorAll(".pqR").forEach(r=>{
+  const i=+r.dataset.i;
+  DB.preds.push({id:"pr"+i,st:PRACTICE[i][0],p:+r.value/100,cat:"연습",created:now,due:now,outcome:PRACTICE[i][1],resolvedAt:now,practice:true});
+ });
+ DB.practiceDone=true;
+ save(DB);
+ $("practiceCard").style.display="none";
+ renderDash();
+ toast("채점 완료! 당신의 첫 캘리브레이션 곡선입니다");
+ $("dash").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* ---------- 새 예측 ---------- */
+$("fProb").addEventListener("input",()=>$("probVal").textContent=$("fProb").value+"%");
+$("fSt").addEventListener("input",()=>{
+ const v=$("fSt").value,w=$("vagueWarn");
+ const m=v.match(VAGUE);
+ if(m){w.style.display="block";w.textContent=`⚠️ "${m[0]}" 같은 애매어가 있어요. 숫자·날짜·구체적 기준으로 바꾸면 판정 시비가 없어집니다. (예: "많이 오른다" → "10% 이상 오른다")`;}
+ else if(v.length>0&&v.length<8){w.style.display="block";w.textContent="⚠️ 너무 짧아요. 나중에 참/거짓을 판정할 수 있는 완전한 문장으로 적어 주세요.";}
+ else w.style.display="none";
+});
+$("addBtn").addEventListener("click",()=>{
+ const st=$("fSt").value.trim(),due=$("fDue").value;
+ if(st.length<8){toast("판정 가능한 완전한 문장으로 적어 주세요");return;}
+ if(!due){toast("판정 기한을 정해 주세요");return;}
+ if(due<todayStr()){toast("기한이 과거예요");return;}
+ DB.preds.push({id:"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),st,p:+$("fProb").value/100,cat:$("fCat").value,created:todayStr(),due,outcome:null,resolvedAt:null,practice:false});
+ save(DB);
+ $("fSt").value="";$("vagueWarn").style.display="none";
+ renderDash();
+ toast("예측이 기록됐어요. 확률은 이제 수정할 수 없습니다");
+});
+
+/* ---------- 판정 ---------- */
+function resolve(id,outcome){
+ const p=DB.preds.find(x=>x.id===id);if(!p||p.outcome!==null)return;
+ p.outcome=outcome;p.resolvedAt=todayStr();
+ save(DB);renderDash();
+ toast(outcome===1?"참으로 판정했어요":outcome===0?"거짓으로 판정했어요":"무효 처리했어요");
+}
+
+/* ---------- 통계 & 렌더 ---------- */
+function scoredPairs(){
+ const inc=$("incPractice").checked;
+ return DB.preds.filter(x=>(x.outcome===0||x.outcome===1)&&(inc||!x.practice)).map(x=>({p:x.p,o:x.outcome,cat:x.cat}));
+}
+function renderDash(){
+ $("dash").style.display="block";
+ const pairs=scoredPairs();
+ const bs=brier(pairs),mu=murphy(pairs);
+ const over=pairs.length?pairs.reduce((s,x)=>s+x.p,0)/pairs.length-pairs.reduce((s,x)=>s+x.o,0)/pairs.length:0;
+ const resolved=DB.preds.filter(x=>x.outcome!==null&&!x.practice);
+ const voidRate=resolved.length?resolved.filter(x=>x.outcome===-1).length/resolved.length:0;
+ $("statGrid").innerHTML=[
+  [bs===null?"—":bs.toFixed(3),"브라이어 (낮을수록 좋음)"],
+  [pairs.length,"판정된 예측"],
+  [(over>0?"+":"")+(over*100).toFixed(1)+"%p",over>0.02?"과신 경향":over<-0.02?"과소신 경향":"확신 편향"],
+  [mu===null?"—":mu.rel.toFixed(3),"신뢰도 REL (낮을수록 좋음)"]
+ ].map(s=>`<div class="stat"><div class="v">${s[0]}</div><div class="k">${s[1]}</div></div>`).join("")
+ +(voidRate>0.2?`<div class="stat" style="grid-column:1/-1;border-color:rgba(251,191,36,.4)"><div class="v" style="color:#fbbf24">⚠️ 무효율 ${(voidRate*100).toFixed(0)}%</div><div class="k">무효가 20%를 넘으면 판정을 피하는 습관일 수 있어요</div></div>`:"");
+ drawCurve($("curveCv"),buckets(pairs));
+ // 카테고리별
+ const byCat={};
+ pairs.forEach(x=>{(byCat[x.cat]=byCat[x.cat]||[]).push(x);});
+ const rows=Object.entries(byCat).filter(([,v])=>v.length>=3).map(([c,v])=>`<tr><td>${esc(c)}</td><td class="num">${v.length}</td><td class="num">${brier(v).toFixed(3)}</td></tr>`);
+ $("catTable").innerHTML=rows.length?`<tr><th>카테고리</th><th style="text-align:right">판정 수</th><th style="text-align:right">브라이어</th></tr>`+rows.join(""):"";
+ // 판정 대기
+ const due=DB.preds.filter(x=>x.outcome===null&&x.due<=todayStr());
+ $("dueCard").style.display=due.length?"block":"none";
+ $("dueCount").textContent=due.length+"건";
+ $("dueList").innerHTML=due.map(x=>{
+  const overdue=daysBetween(x.due,todayStr());
+  return `<div class="pred"><p class="st">${esc(x.st)}</p>
+  <p class="meta">내 확률 <b>${Math.round(x.p*100)}%</b> · 기한 ${x.due}${overdue>=7?` · <span class="due">${overdue}일 지남${overdue>=30?" — 판정이 없으면 데이터가 죽어요":""}</span>`:""}</p>
+  <div class="acts"><button class="sm" data-act="1" data-id="${x.id}">✅ 참</button><button class="sm ghost" data-act="0" data-id="${x.id}">❌ 거짓</button><button class="sm ghost" data-act="-1" data-id="${x.id}">⊘ 무효</button></div></div>`;
+ }).join("");
+ // 목록
+ const rest=DB.preds.filter(x=>!x.practice&&!(x.outcome===null&&x.due<=todayStr())).sort((a,b)=>(a.outcome===null?0:1)-(b.outcome===null?0:1)||(a.due<b.due?-1:1));
+ $("listCard").style.display=rest.length?"block":"none";
+ $("predList").innerHTML=rest.slice(0,30).map(x=>{
+  const b=x.outcome===1?'<span class="badge b-t">참</span>':x.outcome===0?'<span class="badge b-f">거짓</span>':x.outcome===-1?'<span class="badge b-v">무효</span>':'<span class="badge b-p">진행 중</span>';
+  return `<div class="pred"><p class="st">${esc(x.st)}${b}</p><p class="meta">내 확률 <b>${Math.round(x.p*100)}%</b> · ${esc(x.cat)} · 기한 ${x.due}</p></div>`;
+ }).join("");
+}
+function daysBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400e3);}
+$("dueList").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-id]");if(!b)return;
+ resolve(b.dataset.id,+b.dataset.act);
+});
+$("incPractice").addEventListener("change",renderDash);
+
+/* ---------- 곡선 차트 (canvas) ---------- */
+function drawCurve(cv,B,scale){
+ const dpr=scale||2;
+ const cw=cv.clientWidth||640,chh=300;
+ cv.width=cw*dpr;cv.height=chh*dpr;
+ const x=cv.getContext("2d");x.scale(dpr,dpr);
+ x.clearRect(0,0,cw,chh);
+ const L=44,R=14,T=14,Bm=34,W=cw-L-R,H=chh-T-Bm;
+ // grid + 축
+ x.strokeStyle="#232733";x.lineWidth=1;x.fillStyle="#6f7689";x.font="10px sans-serif";x.textAlign="center";
+ for(let i=0;i<=10;i+=2){
+  const px=L+W*i/10,py=T+H-H*i/10;
+  x.beginPath();x.moveTo(px,T);x.lineTo(px,T+H);x.stroke();
+  x.beginPath();x.moveTo(L,py);x.lineTo(L+W,py);x.stroke();
+  x.fillText(i*10+"%",px,T+H+16);
+  x.textAlign="right";x.fillText(i*10+"%",L-6,py+3);x.textAlign="center";
+ }
+ x.fillText("내가 매긴 확률",L+W/2,T+H+30);
+ // 대각선
+ x.strokeStyle="#3a4157";x.setLineDash([5,4]);x.lineWidth=1.5;
+ x.beginPath();x.moveTo(L,T+H);x.lineTo(L+W,T);x.stroke();x.setLineDash([]);
+ // 곡선
+ const pts=B.filter(b=>b.n>0);
+ if(pts.length){
+  x.strokeStyle="#7aa2ff";x.lineWidth=2.5;x.beginPath();
+  pts.forEach((b,i)=>{
+   const px=L+W*b.fbar,py=T+H-H*b.ybar;
+   if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
+  });
+  x.stroke();
+  pts.forEach(b=>{
+   const px=L+W*b.fbar,py=T+H-H*b.ybar,dim=b.n<5;
+   x.globalAlpha=dim?0.35:1;
+   x.fillStyle="#7aa2ff";x.beginPath();x.arc(px,py,Math.min(11,4+Math.sqrt(b.n)),0,7);x.fill();
+   x.fillStyle="#e5ecff";x.font="700 10px sans-serif";x.fillText("n"+b.n,px,py-12);
+   x.globalAlpha=1;
+  });
+ }else{
+  x.fillStyle="#6f7689";x.font="13px sans-serif";x.fillText("판정된 예측이 쌓이면 곡선이 그려집니다",L+W/2,T+H/2);
+ }
+}
+window.addEventListener("resize",()=>{if($("dash").style.display!=="none")renderDash();});
+
+/* ---------- 공유 (통계만) ---------- */
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+function dec(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))));}
+function statPayload(){
+ const pairs=scoredPairs(),bs=brier(pairs),mu=murphy(pairs);
+ return {v:1,n:pairs.length,bs:bs===null?null:+bs.toFixed(4),rel:mu?+mu.rel.toFixed(4):null,
+  b:buckets(pairs).map(b=>b.n?[+b.fbar.toFixed(3),+b.ybar.toFixed(3),b.n]:0)};
+}
+function curUrl(){return location.origin+location.pathname+"?r="+enc(statPayload());}
+function shareText(){
+ const s=statPayload();
+ return `[캘리] 내 캘리브레이션 성적표\n판정 ${s.n}건 · 브라이어 ${s.bs===null?"—":s.bs.toFixed(3)} (50% 찍기=0.250)\n${curUrl()}`;
+}
+$("copyLink").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(curUrl());toast("통계 링크를 복사했어요 (예측 내용 미포함)");}catch(e){toast("복사 실패, 길게 눌러 복사하세요");}});
+$("copyText").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(shareText());toast("텍스트를 복사했어요");}catch(e){toast("복사 실패");}});
+$("shareX").addEventListener("click",()=>{
+ const s=statPayload();
+ const u=`https://twitter.com/intent/tweet?text=${encodeURIComponent(`내 캘리브레이션 성적표 🎯 판정 ${s.n}건, 브라이어 ${s.bs===null?"—":s.bs.toFixed(3)}`)}&url=${encodeURIComponent(curUrl())}`;
+ window.open(u,"_blank","noopener");
+});
+$("shareEtc").addEventListener("click",async()=>{
+ if(navigator.share){try{await navigator.share({title:"캘리",text:shareText().split("\n").slice(0,2).join(" "),url:curUrl()});}catch(e){}}
+ else{try{await navigator.clipboard.writeText(shareText());toast("공유 텍스트를 복사했어요");}catch(e){toast("공유를 지원하지 않아요");}}
+});
+
+/* ---------- 성적표 카드 PNG ---------- */
+$("saveBtn").addEventListener("click",()=>{
+ const s=statPayload();
+ const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+ const x=cv.getContext("2d");
+ x.fillStyle="#0d0f14";x.fillRect(0,0,W,H);
+ const PAD=88;
+ x.fillStyle="#6f7689";x.font="700 30px sans-serif";x.fillText("C A L I B R A T I O N",PAD,140);
+ x.fillStyle="#ffffff";x.font="900 72px sans-serif";x.fillText("나의 확신 성적표",PAD,250);
+ // 지표
+ const stats=[[s.bs===null?"—":s.bs.toFixed(3),"브라이어 점수"],[String(s.n),"판정된 예측"],[s.rel===null?"—":s.rel.toFixed(3),"신뢰도 REL"]];
+ const bw=(W-PAD*2-40)/3;
+ stats.forEach((st,i)=>{
+  const bx=PAD+i*(bw+20);
+  x.fillStyle="rgba(122,162,255,.09)";rrct(x,bx,320,bw,150,18);x.fill();
+  x.strokeStyle="rgba(122,162,255,.35)";x.lineWidth=2;rrct(x,bx,320,bw,150,18);x.stroke();
+  x.fillStyle="#7aa2ff";x.font="900 52px sans-serif";x.textAlign="center";x.fillText(st[0],bx+bw/2,398);
+  x.fillStyle="#98a0b6";x.font="600 24px sans-serif";x.fillText(st[1],bx+bw/2,444);
+  x.textAlign="left";
+ });
+ // 곡선
+ const cL=PAD+50,cT=560,cW=W-PAD*2-70,cH=520;
+ x.strokeStyle="#232733";x.lineWidth=2;
+ x.strokeRect(cL,cT,cW,cH);
+ x.strokeStyle="#3a4157";x.setLineDash([8,7]);x.beginPath();x.moveTo(cL,cT+cH);x.lineTo(cL+cW,cT);x.stroke();x.setLineDash([]);
+ const pts=(s.b||[]).map((b,i)=>b?{f:b[0],y:b[1],n:b[2]}:null).filter(Boolean);
+ if(pts.length){
+  x.strokeStyle="#7aa2ff";x.lineWidth=6;x.beginPath();
+  pts.forEach((b,i)=>{const px=cL+cW*b.f,py=cT+cH-cH*b.y;if(i===0)x.moveTo(px,py);else x.lineTo(px,py);});
+  x.stroke();
+  pts.forEach(b=>{
+   const px=cL+cW*b.f,py=cT+cH-cH*b.y;
+   x.globalAlpha=b.n<5?0.4:1;
+   x.fillStyle="#7aa2ff";x.beginPath();x.arc(px,py,14,0,7);x.fill();
+   x.globalAlpha=1;
+  });
+ }
+ x.fillStyle="#6f7689";x.font="600 26px sans-serif";x.textAlign="center";
+ x.fillText("내가 매긴 확률 →",cL+cW/2,cT+cH+50);
+ x.save();x.translate(cL-46,cT+cH/2);x.rotate(-Math.PI/2);x.fillText("실제 적중률 →",0,0);x.restore();
+ x.fillText("점선 = 완벽한 캘리브레이션",cL+cW/2,cT-20);
+ x.textAlign="left";
+ x.fillStyle="rgba(255,255,255,.45)";x.font="600 28px sans-serif";x.fillText("tomatoeggcat.com/calibration",PAD,H-64);
+ const a=document.createElement("a");a.href=cv.toDataURL("image/png");a.download=`캘리_성적표.png`;a.click();
+ toast("성적표 카드를 저장했어요");
+});
+function rrct(x,px,py,w,h,r){x.beginPath();x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+h,r);x.arcTo(px+w,py+h,px,py+h,r);x.arcTo(px,py+h,px,py,r);x.arcTo(px,py,px+w,py,r);x.closePath();}
+
+/* ---------- 인바운드 ---------- */
+$("meToo").addEventListener("click",()=>{
+ $("sharedCard").style.display="none";
+ history.replaceState(null,"",location.pathname);
+ $("inbound").classList.remove("show");
+ (DB.practiceDone?$("dash"):$("practiceCard")).scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* ---------- 초기 로드 ---------- */
+(function init(){
+ $("fDue").min=todayStr();
+ const p=new URLSearchParams(location.search).get("r");
+ if(p){
+  try{
+   const st=dec(p);
+   if(st&&st.v===1&&Array.isArray(st.b)){
+    $("sharedCard").style.display="block";
+    $("inbound").classList.add("show");
+    $("shStats").innerHTML=[[st.bs===null?"—":(+st.bs).toFixed(3),"브라이어"],[st.n,"판정된 예측"],[st.rel===null?"—":(+st.rel).toFixed(3),"신뢰도 REL"],["50%=0.250","기준선"]]
+     .map(s=>`<div class="stat"><div class="v">${s[0]}</div><div class="k">${s[1]}</div></div>`).join("");
+    const B=st.b.map((b,i)=>b?{lo:i/10,hi:(i+1)/10,n:b[2],fbar:b[0],ybar:b[1]}:{lo:i/10,hi:(i+1)/10,n:0,fbar:null,ybar:null});
+    requestAnimationFrame(()=>drawCurve($("shCurveCv"),B));
+   }
+  }catch(e){/* 잘못된 링크는 무시 */}
+ }
+ if(DB.practiceDone){renderDash();}
+ else renderPractice();
+})();
+</script>
+</body>
+</html>
