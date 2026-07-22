@@ -296,7 +296,7 @@ textarea.ob-input{resize:none;min-height:96px}
 .compare tr:last-child td{border-bottom:0}
 
 /* ── 모달/시트 ── */
-.modal-back{position:absolute;inset:0;background:rgba(4,6,10,.72);backdrop-filter:blur(4px);z-index:80;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.modal-back{position:absolute;inset:0;background:rgba(4,6,10,.72);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
 .modal-back.center{align-items:center;padding:24px}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .sheet{width:100%;background:var(--bg2);border-radius:26px 26px 0 0;padding:22px 22px calc(26px + var(--sab));animation:slideup .28s cubic-bezier(.2,.8,.25,1);max-height:86%;overflow-y:auto}
@@ -534,3 +534,122 @@ html.fs-3 #frame{zoom:1.5}
 .bal-opt.mine .bal-pct{color:var(--vio);font-weight:900}
 .bal-opt.other .bal-fill{background:linear-gradient(180deg,rgba(148,163,184,.06),rgba(148,163,184,.18))}
 .bal-next{width:100%;margin-top:10px;font-size:13px;padding:10px}
+
+/* ══ v2.1 프로필 사진 · 게이 요소 ══ */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pg-item{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;border:1px solid var(--line2);background:var(--card2)}
+.pg-item img{width:100%;height:100%;object-fit:cover;display:block}
+.pg-item.priv img{filter:brightness(.7)}
+.pg-del{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(10,12,20,.78);color:#fff;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;font-weight:700}
+.pg-main{position:absolute;bottom:4px;left:4px;background:var(--vio);color:#fff;font-size:10px;font-weight:800;border-radius:6px;padding:2px 6px}
+.pg-star{position:absolute;bottom:4px;left:4px;width:24px;height:24px;border-radius:50%;background:rgba(10,12,20,.7);color:#fbbf24;font-size:14px;display:flex;align-items:center;justify-content:center}
+.pg-lock,.pg-unlock{position:absolute;bottom:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(10,12,20,.7);font-size:12px;display:flex;align-items:center;justify-content:center}
+.pg-add{aspect-ratio:3/4;border:1.5px dashed var(--line2);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--tx3);font-size:26px;background:var(--card)}
+.pg-add small{font-size:11px}
+.pg-add:active{border-color:var(--vio);color:var(--vio)}
+.edit-sheet{max-height:86vh;overflow-y:auto}
+.mh-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.mtag{font-size:10.5px;font-weight:700;border-radius:99px;padding:2.5px 8px}
+.mtag.st{background:rgba(139,92,246,.16);color:#c4b5fd}
+.mtag.lk{background:rgba(45,212,191,.14);color:#5eead4}
+.my-photos{display:flex;gap:8px;padding:0 18px 12px;overflow-x:auto}
+.myp{flex:0 0 84px;height:108px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line2)}
+.myp.priv{display:flex;align-items:center;justify-content:center;background:var(--card2);color:var(--tx3);font-size:11px;font-weight:700;text-align:center}
+/* 프로필 상세 사진 히어로 (사진 있을 때) */
+.pd-hero.hasphoto{background-size:cover !important;background-position:center !important}
+.pd-photos{display:flex;gap:8px;overflow-x:auto;padding:2px 0 2px}
+.pd-photos .pdp{flex:0 0 120px;height:150px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line2)}
+
+/* ══ v2.2 주제별 라운지 ══ */
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:8px 16px 4px}
+.topic-room{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:11px 12px;text-align:left;transition:border-color .13s,background .13s}
+.topic-room .tr-em{font-size:22px;line-height:1.2}
+.topic-room b{font-size:13.5px;color:var(--tx)}
+.topic-room small{font-size:10.5px;color:var(--tx3)}
+.topic-room .tr-join{position:absolute;top:10px;right:10px;font-size:11px;font-weight:800;color:var(--vio);background:rgba(139,92,246,.12);border-radius:99px;padding:3px 9px}
+.topic-room.on{border-color:var(--vio);background:rgba(139,92,246,.10)}
+.topic-room.on .tr-join{color:#fff;background:var(--vio)}
+.topic-mem{display:flex;gap:12px;overflow-x:auto;padding:8px 16px 4px}
+.tm-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto}
+.tm-item small{font-size:11px;color:var(--tx2);font-weight:700}
+
+/* ══ v2.3 프로필 완성도 · 인증 뱃지 ══ */
+.vbadge{display:inline-block;font-size:11px;font-weight:800;color:#03211c;background:linear-gradient(90deg,#2dd4bf,#34d399);border-radius:99px;padding:2px 8px;vertical-align:2px}
+.pcompl{margin:0 16px 12px;background:var(--card);border:1px solid var(--line2);border-radius:16px;padding:14px 16px}
+.pcompl.done{border-color:rgba(45,212,191,.5);background:linear-gradient(120deg,rgba(45,212,191,.08),rgba(52,211,153,.06))}
+.pc-top{display:flex;justify-content:space-between;align-items:baseline}
+.pc-top b{font-size:14.5px;color:var(--tx)}
+.pc-pct{font-size:17px;font-weight:900;color:var(--vio)}
+.pcompl.done .pc-pct{color:var(--teal)}
+.pc-bar{height:8px;border-radius:99px;background:var(--card2);overflow:hidden;margin:9px 0 8px}
+.pc-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#8b5cf6,#ec4899);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.pcompl.done .pc-bar i{background:linear-gradient(90deg,#2dd4bf,#34d399)}
+.pc-msg{font-size:12px;color:var(--tx3);margin:0 0 8px;line-height:1.5}
+.pc-msg b{color:var(--tx2)}
+.pc-todo{display:flex;flex-wrap:wrap;gap:7px}
+.pc-chip{font-size:11.5px;font-weight:700;color:var(--vio);background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:99px;padding:5px 11px}
+.pc-chip:active{background:rgba(139,92,246,.24)}
+
+/* ══ v2.4 데이트 코스 추천 ══ */
+.dc-dialog{max-width:340px}
+.dc-steps{display:flex;flex-direction:column;gap:9px;text-align:left;margin:2px 0 4px}
+.dc-step{display:flex;gap:11px;align-items:flex-start;background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:11px 12px}
+.dc-step .dc-em{font-size:21px;line-height:1.1;flex:0 0 auto}
+.dc-step b{font-size:13.5px;color:var(--tx);display:block;line-height:1.4}
+.dc-step small{font-size:11.5px;color:var(--tx3);display:block;margin-top:2px}
+.match-btns .btn-line{width:100%}
+
+/* ══ v2.5 이상형 월드컵 ══ */
+.game-tile.wide{grid-column:1/-1}
+.wc-round{margin-left:auto;font-size:12px;font-weight:800;color:var(--amber)}
+.wc-ovl{background:radial-gradient(120% 80% at 50% 0%,#2a1020,var(--bg) 62%)}
+.wc-body{display:flex;flex-direction:column;align-items:center;padding:14px}
+.wc-q{font-size:15px;font-weight:800;color:var(--tx);margin:2px 0 14px}
+.wc-pair{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;width:100%;max-width:420px}
+.wc-vs{font-weight:900;font-size:15px;color:var(--tx3)}
+.wc-card{position:relative;border-radius:14px;overflow:hidden;border:2px solid var(--frame,var(--line2));background:var(--card);transition:transform .18s,box-shadow .2s}
+.wc-card svg,.wc-card img{width:100%;display:block;aspect-ratio:3/3.4;object-fit:cover}
+.wc-card:active{transform:scale(.97)}
+.wc-card.wc-pick{box-shadow:0 0 26px var(--frame);transform:scale(1.04)}
+.wc-card .ccard-info{padding:8px 8px 9px}
+.wc-card .ccard-info b{font-size:12.5px}
+.wc-card .ccard-info small{font-size:10px;display:block;color:var(--tx3)}
+.wc-win .ccard.big{margin:6px auto 10px}
+
+/* ══ v2.7 그리드 뷰 + 탭(👋) ══ */
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dg-card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-align:left;transition:transform .1s}
+.dg-card:active{transform:scale(.97)}
+.dg-ph{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:44px}
+.dg-on{position:absolute;top:7px;left:7px;width:10px;height:10px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399}
+.dg-liked{position:absolute;top:5px;right:6px;font-size:13px;font-style:normal}
+.dg-nm{font-size:12.5px;font-weight:800;color:var(--tx);padding:6px 8px 0;line-height:1.3}
+.dg-meta{font-size:10.5px;color:var(--tx3);padding:0 8px 8px}
+.dg-tap{position:absolute;bottom:34px;right:6px;font-size:13px;font-weight:800;background:rgba(10,12,20,.72);border:1px solid var(--line2);border-radius:99px;padding:4px 8px;backdrop-filter:blur(4px)}
+.dg-tap.on{background:rgba(139,92,246,.28);border-color:var(--vio)}
+
+/* ══ v2.8 지금 만나요(Right Now) ══ */
+.rn-chip{border:1px solid var(--line2);color:var(--tx3)}
+.rn-chip.live{background:linear-gradient(90deg,rgba(245,158,11,.22),rgba(244,63,94,.18));border-color:var(--amber);color:var(--amber);font-weight:800;animation:rnPulse 2s infinite}
+@keyframes rnPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.35)}50%{box-shadow:0 0 10px 2px rgba(245,158,11,.25)}}
+.dg-rn{position:absolute;bottom:6px;left:6px;font-size:12px;font-style:normal;background:rgba(245,158,11,.85);color:#241a02;border-radius:99px;padding:1px 5px;font-weight:900}
+
+/* ══ v2.9 라운지 피드 ══ */
+.lg-sheet{max-height:82vh;overflow-y:auto}
+.lg-write{display:flex;gap:8px;margin:2px 0 6px}
+.lg-write input{flex:1;background:var(--bg2);border:1px solid var(--line2);border-radius:12px;padding:11px 12px;color:var(--tx);font-size:13.5px;font-family:inherit}
+.lg-write input:focus{outline:none;border-color:var(--vio)}
+.lg-write .btn-grad{padding:0 16px;border-radius:12px;font-size:13.5px}
+.lg-feed{display:flex;flex-direction:column;gap:9px;padding-bottom:8px}
+.lg-post{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px 9px}
+.lg-post.mine{border-color:rgba(139,92,246,.45);background:linear-gradient(180deg,rgba(139,92,246,.08),transparent)}
+.lg-head{display:flex;align-items:center;gap:9px}
+.lg-av{width:34px;height:34px;font-size:16px;flex:none;cursor:pointer}
+.lg-who{display:flex;flex-direction:column;line-height:1.25}
+.lg-who b{font-size:12.5px;color:var(--tx)}
+.lg-who small{font-size:10.5px;color:var(--tx3)}
+.lg-text{margin:8px 1px 8px;font-size:13.5px;color:var(--tx2);line-height:1.5;word-break:break-word}
+.lg-like{background:var(--bg2);border:1px solid var(--line2);border-radius:99px;padding:4px 11px;font-size:12px;color:var(--tx3);font-weight:700;transition:transform .12s}
+.lg-like:active{transform:scale(.92)}
+.lg-like.on{background:rgba(244,63,94,.16);border-color:rgba(244,63,94,.5);color:#fda4af}
+.lg-like[disabled]{opacity:.85}
