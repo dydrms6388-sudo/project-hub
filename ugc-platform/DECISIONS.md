@@ -2,6 +2,34 @@
 
 Running log of design decisions. Newest phase last.
 
+## Phase 3 — engage + 신고 + 관리 대시보드 (current)
+
+- **D3.1 Review resolution lives in core, not the app.** `reviewApprove` /
+  `reviewReject` on the factory (src/review/): approve re-uses the exact publish
+  path as auto-publish, then resolves the queue item; reject blocks + resolves.
+  Both refuse non-`queued` submissions, so a stale admin tab can't double-publish
+  or resurrect blocked content. Required a new `getSubmission` on `UgcStore`.
+- **D3.2 Submission status follows content status.** Publishing (auto or via
+  approve) now sets the submission row to `published` — previously it stayed
+  `pending`/`queued`, which broke the double-approve guard and skewed dailyStats.
+- **D3.3 engage() persists what it computes.** It recomputed contentScore and
+  called `seo.index()` but never wrote the new score/indexed flag; now it upserts.
+  Corollary fix: `MemoryStore.upsertContent` preserves the reaction count instead
+  of resetting it to 0 on re-upsert.
+- **D3.4 Admin dashboard is a demo page over `loadDashboard()`.** `/admin` renders
+  검수 큐(승인/반려) · 신고 큐 · 일별 통계 · 차단 사유 Top via the DashboardPort in
+  one call, `robots: noindex`. **No auth — demo only**; real integrations must put
+  these actions behind admin authentication (flagged in-code).
+- **D3.5 Approve's scoring text comes from the stored submission**, never from the
+  form (`submissionBody()` helper) — a tampered hidden field must not influence
+  contentScore.
+- **Verification.** typecheck clean; **49/49 vitest** (6 new: approve/reject/
+  double-approve guard/not-found/engage promotion + reaction preservation/report
+  auto-hide); `next build` clean (6 routes); **Playwright E2E 7/7**: 스팸성 글
+  queued → /admin 승인 → 홈 노출 → 공감 +1 영속 → 신고 3회 → 404(auto-hide) →
+  신고 큐에 hidden 표시.
+
+
 ## Phase 2 — publish + SEO, 데모 앱 E2E (current)
 
 - **D2.1 Demo app is a real workspace app** (`apps/demo`, Next.js 15 App Router,

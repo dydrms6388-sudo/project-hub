@@ -49,10 +49,24 @@ export async function engage(
     const nextReactions = content.reactions + 1;
     const nextScore = contentScore({ text, reactions: nextReactions });
     const shouldIndex = nextScore >= config.seo.minContentScore;
-    if (shouldIndex && !content.indexed) {
-      promoted = true;
-      if (deps.seo) await deps.seo.index(content.url);
-    }
+    promoted = shouldIndex && !content.indexed;
+
+    // Persist the recomputed score (and the index promotion, if any).
+    const nowIso = deps.nowIso ?? (() => new Date().toISOString());
+    await deps.store.upsertContent({
+      id: content.id,
+      appSlug: content.appSlug,
+      slug: content.slug,
+      content: content.content,
+      contentScore: nextScore,
+      indexed: content.indexed || shouldIndex,
+      url: content.url,
+      status: content.status,
+      publishedAt: content.publishedAt,
+      updatedAt: nowIso(),
+    });
+
+    if (promoted && deps.seo) await deps.seo.index(content.url);
   }
 
   return { engagement, promoted };

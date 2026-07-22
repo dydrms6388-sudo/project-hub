@@ -20,6 +20,12 @@ import { moderate, type ModerateOptions } from "./moderate/index.js";
 import { publish, type PublishInput } from "./publish/index.js";
 import { engage, type EngageInput } from "./engage/index.js";
 import { report, takedown, type ReportInput } from "./report/index.js";
+import {
+  approveQueued,
+  rejectQueued,
+  type ApproveResult,
+  type RejectResult,
+} from "./review/index.js";
 import { loadDashboard, type DashboardPort, type DashboardSnapshot } from "./dashboard/index.js";
 
 export interface UgcDeps {
@@ -45,6 +51,14 @@ export interface Ugc {
   ): ReturnType<typeof engage>;
   report(input: ReportInput): ReturnType<typeof report>;
   takedown(input: { contentId: string; url: string }): Promise<void>;
+  /** Admin: publish a queued submission and resolve its queue item. */
+  reviewApprove(input: {
+    submissionId: string;
+    text: string;
+    resolvedBy: string;
+  }): Promise<ApproveResult>;
+  /** Admin: block a queued submission and resolve its queue item. */
+  reviewReject(input: { submissionId: string; resolvedBy: string }): Promise<RejectResult>;
   loadDashboard(): Promise<DashboardSnapshot>;
   /** Convenience: submit → moderate → (publish | queue | block) in one call. */
   intake(input: SubmitInput & { text: string }): Promise<IntakeResult>;
@@ -85,6 +99,11 @@ export function createUgc(config: UgcConfig, deps: UgcDeps): Ugc {
 
     takedown: (input) => takedown(input, config, { store: deps.store, seo: deps.seo }),
 
+    reviewApprove: (input) =>
+      approveQueued(input, config, { store: deps.store, seo: deps.seo, nowIso }),
+
+    reviewReject: (input) => rejectQueued(input, config, { store: deps.store }),
+
     loadDashboard: () => {
       if (!deps.dashboard) throw new Error("[ugc-core] no dashboard port configured");
       return loadDashboard(config.appSlug, deps.dashboard);
@@ -116,6 +135,7 @@ export function createUgc(config: UgcConfig, deps: UgcDeps): Ugc {
 
       await deps.store.recordModeration(config.appSlug, submission.id, moderation);
       const content = await api.publish({ submission, text: input.text });
+      await deps.store.setContentStatus(config.appSlug, submission.id, "published");
       return { stage: "published", submission, moderation, content };
     },
   };

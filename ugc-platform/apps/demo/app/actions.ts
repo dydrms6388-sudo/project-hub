@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { shortHash } from "@ggu/ugc-core";
-import { ugc } from "./ugc";
+import { bodyText, getContentById, submissionBody, ugc } from "./ugc";
 
 export interface ActionState {
   ok: boolean;
@@ -73,4 +73,58 @@ export async function submitAction(
     default:
       return { ok: false, message: "알 수 없는 오류" };
   }
+}
+
+// ── engage: 공감(reaction) ────────────────────────────────────────────────────
+export async function reactAction(formData: FormData): Promise<void> {
+  const contentId = String(formData.get("contentId") ?? "");
+  const content = getContentById(contentId);
+  if (!content || content.status !== "published") return;
+
+  await ugc.engage(
+    { contentId, kind: "reaction", authorId: null },
+    content,
+    bodyText(content),
+  );
+  revalidatePath(content.url);
+  revalidatePath("/");
+}
+
+// ── report: 신고 (3회 누적 시 자동 비공개) ────────────────────────────────────
+export async function reportAction(formData: FormData): Promise<void> {
+  const contentId = String(formData.get("contentId") ?? "");
+  const reason = String(formData.get("reason") ?? "미기재");
+  const content = getContentById(contentId);
+  if (!content || content.status !== "published") return;
+
+  const h = await headers();
+  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() || "0.0.0.0";
+
+  await ugc.report({
+    contentId,
+    reason,
+    reporterId: shortHash(ip, 12),
+    url: content.url,
+  });
+  revalidatePath(content.url);
+  revalidatePath("/");
+  revalidatePath("/admin");
+}
+
+// ── admin: 검수 큐 승인/반려 ─────────────────────────────────────────────────
+// 데모라 인증이 없다. 실서비스 통합 시 이 두 액션은 반드시 관리자 인증 뒤에 두어야 한다.
+export async function approveAction(formData: FormData): Promise<void> {
+  const submissionId = String(formData.get("submissionId") ?? "");
+  // Scoring text comes from the stored submission, never from the form.
+  const text = submissionBody(submissionId);
+  await ugc.reviewApprove({ submissionId, text, resolvedBy: "demo-admin" });
+  revalidatePath("/admin");
+  revalidatePath("/");
+}
+
+export async function rejectAction(formData: FormData): Promise<void> {
+  const submissionId = String(formData.get("submissionId") ?? "");
+  await ugc.reviewReject({ submissionId, resolvedBy: "demo-admin" });
+  revalidatePath("/admin");
+  revalidatePath("/");
 }

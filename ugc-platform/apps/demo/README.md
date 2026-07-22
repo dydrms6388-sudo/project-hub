@@ -38,7 +38,19 @@ the port design.
 > This is a demo. The in-memory store is per-process and non-persistent; a page
 > reload keeps data only while the dev/prod server process is alive.
 
+## Admin (`/admin`)
+
+검수 대기 큐(승인/반려) · 신고 큐 · 일별 통계 · 차단 사유 Top — all rendered from a
+single `ugc.loadDashboard()` call. Approving publishes through the same path as
+auto-publish; rejecting blocks. **No authentication — this is a demo.** Real
+integrations must gate these actions behind admin auth.
+
+Case pages carry a 👍 공감 button (a reaction re-scores the content and can promote
+a `noindex` page into the sitemap) and a 🚩 신고 form (3 reports auto-hide → 404).
+
 ## Verified
 
-`next build` succeeds (5 routes); a Playwright run drives the real browser through
-clean-publish → case page (JSON-LD) → PII-block → sitemap pickup (6/6 checks).
+`next build` succeeds (6 routes). Playwright drives the real browser through two
+suites: clean-publish → case page (JSON-LD) → PII-block → sitemap pickup (6/6),
+and queued → admin approve → reaction persist → 3 reports auto-hide → admin report
+queue (7/7).

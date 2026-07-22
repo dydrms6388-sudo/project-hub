@@ -65,6 +65,7 @@ export const ugc: Ugc =
     store: store as UgcStore,
     classifier: new HeuristicClassifier(),
     seo,
+    dashboard: store, // MemoryStore implements DashboardPort too
   }));
 
 // ── Read helpers (demo reads the MemoryStore directly; a Supabase build would
@@ -82,4 +83,19 @@ export function listIndexed(): PublishedContent[] {
 export function getPublishedBySlug(slug: string): PublishedContent | null {
   const c = [...store.content.values()].find((x) => x.slug === slug);
   return c && c.status === "published" ? c : null;
+}
+
+export function getContentById(id: string): PublishedContent | null {
+  return store.content.get(id) ?? null;
+}
+
+/** The primary text field of a demo post (used for re-scoring on engage). */
+export function bodyText(c: PublishedContent): string {
+  return String((c.content as { body?: string }).body ?? "");
+}
+
+/** Body text of a raw submission (used when approving from the review queue). */
+export function submissionBody(submissionId: string): string {
+  const s = store.submissions.get(submissionId);
+  return String(((s?.content ?? {}) as { body?: string }).body ?? "");
 }

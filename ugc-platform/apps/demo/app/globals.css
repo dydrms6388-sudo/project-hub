@@ -52,3 +52,26 @@ button:disabled { opacity: .6; cursor: default; }
 .case .meta { display: flex; gap: 10px; align-items: center; color: var(--muted);
   font-size: .82rem; margin-bottom: 16px; }
 .case .body p { line-height: 1.7; margin: 0 0 12px; }
+
+.engage-bar { display: flex; gap: 12px; align-items: center; margin-top: 20px;
+  padding-top: 16px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.btn-react { background: rgba(46,160,67,.15); color: var(--ok); }
+.report-form { display: flex; gap: 8px; align-items: center; }
+.report-form input { padding: 8px 10px; background: var(--bg); color: var(--fg);
+  border: 1px solid var(--line); border-radius: 8px; font: inherit; width: 160px; }
+.btn-report { background: rgba(248,81,73,.12); color: var(--no); }
+
+.queue-item { flex-direction: column; align-items: stretch !important; gap: 10px; }
+.queue-main { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.excerpt { flex: 1; min-width: 200px; font-size: .88rem; color: var(--fg);
+  overflow-wrap: anywhere; }
+.queue-actions { display: flex; gap: 8px; }
+.btn-approve { background: rgba(46,160,67,.2); color: var(--ok); padding: 6px 14px; }
+.btn-reject { background: rgba(248,81,73,.15); color: var(--no); padding: 6px 14px; }
+
+.stats { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.stats th, .stats td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.stats th { color: var(--muted); font-weight: 600; }
+
+.site-header { display: flex; justify-content: space-between; align-items: center; }
+.site-nav a { color: var(--muted); font-size: .9rem; }

@@ -62,6 +62,13 @@ export {
   type ReportOutcome,
 } from "./report/index.js";
 export {
+  approveQueued,
+  rejectQueued,
+  type ApproveResult,
+  type RejectResult,
+  type ReviewDeps,
+} from "./review/index.js";
+export {
   loadDashboard,
   type DashboardPort,
   type DashboardSnapshot,

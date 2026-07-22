@@ -71,7 +71,9 @@ export class MemoryStore implements UgcStore, DashboardPort {
   }
 
   async upsertContent(row: Omit<PublishedContent, "reactions">): Promise<PublishedContent> {
-    const record: PublishedContent = { ...row, reactions: 0 };
+    // Preserve the reaction count on re-upsert (engage bumps it separately).
+    const prev = this.content.get(row.id);
+    const record: PublishedContent = { ...row, reactions: prev?.reactions ?? 0 };
     this.content.set(record.id, record);
     return record;
   }
@@ -81,6 +83,11 @@ export class MemoryStore implements UgcStore, DashboardPort {
     if (c && c.appSlug === appSlug) c.status = status;
     const s = this.submissions.get(contentId);
     if (s && s.appSlug === appSlug) s.status = status;
+  }
+
+  async getSubmission(appSlug: string, submissionId: string): Promise<UgcSubmission | null> {
+    const s = this.submissions.get(submissionId);
+    return s && s.appSlug === appSlug ? s : null;
   }
 
   async getContentBySlug(appSlug: string, slug: string): Promise<PublishedContent | null> {

@@ -20,6 +20,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <a href="/" className="brand">
             @ggu/ugc-core <span>데모</span>
           </a>
+          <nav className="site-nav">
+            <a href="/admin">관리</a>
+          </nav>
         </header>
         <main className="container">{children}</main>
         <footer className="site-footer">

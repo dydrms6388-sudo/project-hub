@@ -145,6 +145,17 @@ export class SupabaseStore implements UgcStore, DashboardPort {
       .eq("id", contentId);
   }
 
+  async getSubmission(appSlug: string, submissionId: string): Promise<UgcSubmission | null> {
+    const { data, error } = await this.db
+      .from(UGC_TABLES.submissions)
+      .select()
+      .eq("app_slug", appSlug)
+      .eq("id", submissionId)
+      .maybeSingle();
+    if (error) fail("getSubmission", error);
+    return data ? submissionFromRow(data as Row) : null;
+  }
+
   async getContentBySlug(appSlug: string, slug: string): Promise<PublishedContent | null> {
     const { data, error } = await this.db
       .from(UGC_TABLES.content)

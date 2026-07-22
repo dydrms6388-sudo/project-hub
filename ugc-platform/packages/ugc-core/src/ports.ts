@@ -36,6 +36,8 @@ export interface UgcStore {
 
   getContentBySlug(appSlug: string, slug: string): Promise<PublishedContent | null>;
 
+  getSubmission(appSlug: string, submissionId: string): Promise<UgcSubmission | null>;
+
   /** True if a near-duplicate already exists (dedup gate, Phase 1). */
   slugExists(appSlug: string, slug: string): Promise<boolean>;
 

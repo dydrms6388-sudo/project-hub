@@ -79,9 +79,12 @@ That's the whole integration — no new tables, no forked pipeline.
   `LlmClassifier` + `HeuristicClassifier` (batched, with fallback), embedding dedup
   (`InMemorySimilarityIndex`), review-queue persistence, and a 43-case test suite
   (20 PII cases all blocked).
-- **Phase 2** — publish + SEO wired into a demo Next.js app (E2E), pgvector dedup.
-- **Phase 3** — engage + reports + admin dashboard UI.
+- **Phase 2 (done)** — publish + SEO wired into `apps/demo` (Next.js App Router),
+  browser-verified E2E.
+- **Phase 3 (done)** — engage/report wired end-to-end, `reviewApprove`/`reviewReject`
+  queue resolution in core, `/admin` dashboard page over `loadDashboard()`.
 - **Phase 4** — integrate 판결소, then document rollout to the other four apps.
+  (Also pending: pgvector dedup, cold-start seed scripts.)
 
 ## Test / typecheck
 

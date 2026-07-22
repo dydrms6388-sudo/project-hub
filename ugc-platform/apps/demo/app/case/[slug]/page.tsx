@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { reactAction, reportAction } from "../../actions";
 import { getPublishedBySlug, SITE_URL } from "../../ugc";
 
 export const dynamic = "force-dynamic";
@@ -79,6 +80,23 @@ export default async function CasePage({ params }: { params: Promise<Params> }) 
           <p key={i}>{line}</p>
         ))}
       </div>
+
+      <div className="engage-bar">
+        <form action={reactAction}>
+          <input type="hidden" name="contentId" value={item.id} />
+          <button type="submit" className="btn-react">
+            👍 공감 {item.reactions > 0 ? item.reactions : ""}
+          </button>
+        </form>
+        <form action={reportAction} className="report-form">
+          <input type="hidden" name="contentId" value={item.id} />
+          <input name="reason" placeholder="신고 사유" required maxLength={200} />
+          <button type="submit" className="btn-report">
+            🚩 신고
+          </button>
+        </form>
+      </div>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
