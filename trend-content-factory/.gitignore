@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+output/*.json
+output/.work/
+output/preview/*
+!output/preview/.gitkeep
+*.log
+.DS_Store
+dist/
+.turbo/

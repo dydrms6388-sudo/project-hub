@@ -1,0 +1,44 @@
+{
+  "name": "trend-content-factory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "무인 트렌드 콘텐츠 파이프라인 — 수집 → 생성 → 심사 → 렌더 → 게시 → 피드백 (Phase 0~1: 수집/생성)",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "ingest": "tsx workers/ingest/index.ts",
+    "ingest:dry": "tsx workers/ingest/index.ts --dry-run",
+    "compose": "tsx workers/compose/index.ts",
+    "compose:dry": "tsx workers/compose/index.ts --dry-run",
+    "review": "tsx workers/review/index.ts",
+    "review:dry": "tsx workers/review/index.ts --dry-run",
+    "render": "tsx workers/render/index.ts",
+    "render:dry": "tsx workers/render/index.ts --dry-run",
+    "publish": "tsx workers/publish/index.ts",
+    "publish:sim": "tsx workers/publish/index.ts --dry-run --sim",
+    "phase1:demo": "tsx scripts/phase1-demo.ts",
+    "phase2:demo": "tsx scripts/phase2-demo.ts",
+    "phase3:demo": "tsx scripts/phase3-demo.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "fast-xml-parser": "^4.5.0",
+    "playwright": "^1.61.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/node": "^22.7.5",
+    "eslint": "^9.13.0",
+    "globals": "^15.11.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.9.0"
+  }
+}
