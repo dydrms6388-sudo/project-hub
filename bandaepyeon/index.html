@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>반대편 — 당신이 절대 고르지 않을 영화를 주 1회 추천 | TomatoEggCat</title>
+<meta name="description" content="취향 알고리즘을 정확히 거꾸로 돌립니다. 좋아하는 영화 5편을 고르면 취향 벡터에서 가장 먼, 그러나 평가가 검증된 좋은 영화 한 편을 주 1회 추천합니다. 무작위가 아니라 의도적으로 먼 곳의 좋은 것 — 그리고 당신과 그 영화 사이를 이어 줄 다리 한 편까지. 추천 피로에 지친 사람들을 위한 역방향 추천기." />
+<link rel="canonical" href="https://tomatoeggcat.com/bandaepyeon/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="반대편 — 당신이 절대 고르지 않을 영화를 추천합니다" />
+<meta property="og:description" content="좋아하는 영화 5편을 고르면, 취향에서 가장 먼 좋은 영화 한 편과 건너갈 다리를 드립니다. 주 1회, 딱 하나." />
+<meta property="og:url" content="https://tomatoeggcat.com/bandaepyeon/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="반대편 — 당신이 절대 고르지 않을 영화를 추천합니다" />
+<meta name="twitter:description" content="취향 벡터에서 가장 먼 좋은 영화 한 편, 주 1회 딱 하나." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"반대편","description":"좋아하는 영화 5편으로 취향 벡터를 만들고, 그 벡터에서 가장 멀지만 평가가 검증된 좋은 영화 한 편을 주 1회 추천하는 역방향 추천기. 중간 지점의 다리 작품과 벡터 계산 근거 설명을 함께 제공합니다.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/bandaepyeon/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"무작위 추천과 뭐가 다른가요?","acceptedAnswer":{"@type":"Answer","text":"무작위가 아닙니다. 좋아한다고 고른 5편의 성향(액션·로맨스·유머·긴장·SF·예술성·사실성·잔잔함·어두움·대중성 10개 축)을 평균해 취향 벡터를 만들고, 수록작 중 그 벡터와 코사인 거리가 가장 먼 작품들만 후보로 삼습니다. 수록작 자체가 평단·관객 평가가 검증된 작품만으로 큐레이션되어 있어서, 결과는 '먼 것'이지 '나쁜 것'이 아닙니다."}},
+{"@type":"Question","name":"왜 주 1회 하나만 추천하나요?","acceptedAnswer":{"@type":"Answer","text":"절제가 이 서비스의 컨셉이기 때문입니다. 목록도 피드도 무한스크롤도 없습니다. 반대편의 작품은 소화하는 데 시간이 걸리므로, 일주일에 한 편이면 충분합니다. 추천은 매주 월요일 0시(KST)에 바뀌며, 같은 취향 조합이면 같은 주에는 누구에게나 같은 작품이 나옵니다."}},
+{"@type":"Question","name":"다리(bridge)가 뭔가요?","acceptedAnswer":{"@type":"Answer","text":"당신의 취향과 추천작 벡터의 중간 지점에서 가장 가까운 작품입니다. '당신과 이것 사이에 이게 있습니다'라는 안내로, 반대편으로 한 번에 건너가기 어려울 때 징검다리로 먼저 볼 수 있습니다. 중간 지점에 충분히 가까운 작품이 없으면 그 사실 자체를 보여 드립니다."}},
+{"@type":"Question","name":"추천 이유는 AI가 지어내나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 설명은 벡터 계산 결과에서만 만들어집니다. 당신의 취향이 몰려 있는 축, 추천작이 뻗어 있는 축, 두 벡터가 공유하는 축을 계산해 그 사실만 문장으로 조립합니다. 작품 감상이나 평을 지어내지 않으므로 환각이 없습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"취향·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"반대편","item":"https://tomatoeggcat.com/bandaepyeon/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#5eead4;--ink:#ededed}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0c0c;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #22302d;background:#111716;border-radius:18px;padding:20px;margin-bottom:18px}
+.count{font-size:14px;color:#9ca3af;margin:0 0 12px}
+.count b{color:var(--acc);font-variant-numeric:tabular-nums}
+input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid #2c3b38;background:#0d1211;color:#ededed;font-size:15px;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;max-height:340px;overflow-y:auto;padding-bottom:4px}
+.chip{padding:9px 13px;font-size:13.5px;font-weight:600;background:#0d1211;color:#c9c9c9;border:1px solid #2c3b38;border-radius:999px;cursor:pointer;min-height:40px;transition:.12s}
+.chip small{color:#6b7280;font-weight:500}
+.chip.on{background:rgba(94,234,212,.13);border-color:var(--acc);color:#a7f3e5}
+.chip:disabled{opacity:.34;cursor:not-allowed}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#062621;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#1a2321;color:#c6d5d1;border:1px solid #2c3b38;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:#12302a;border-bottom:1px solid #1f5548}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#a7f3e5;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.result{display:none;margin-top:8px}
+#cardView{background:linear-gradient(165deg,#0f2420,#0b1513);border:1px solid #1f5548;border-radius:20px;padding:24px 22px;position:relative}
+.cvLabel{font-size:11px;font-weight:700;letter-spacing:.24em;color:#5f7a74;margin:0 0 4px}
+.wk{font-size:12.5px;color:#5f7a74;margin:0 0 16px}
+.opTitle{font-size:32px;font-weight:900;margin:0 0 4px;word-break:keep-all;color:#fff}
+.opMeta{font-size:14px;color:#8fb3ab;margin:0 0 16px}
+/* 거리 시각화 */
+.distLine{position:relative;height:60px;margin:6px 0 4px}
+.distLine .tr{position:absolute;top:29px;left:8px;right:8px;height:2px;background:#2c3b38}
+.distLine .dot{position:absolute;top:18px;width:24px;height:24px;border-radius:50%}
+.distLine .me{left:8px;background:#7aa2ff;box-shadow:0 0 18px rgba(122,162,255,.6)}
+.distLine .op{right:8px;background:var(--acc);box-shadow:0 0 18px rgba(94,234,212,.6)}
+.distLine .br{top:22px;width:16px;height:16px;background:#f0dfb2;left:50%;transform:translateX(-50%)}
+.distLine span{position:absolute;top:48px;font-size:11px;color:#8fb3ab;transform:translateX(-50%)}
+.distPct{text-align:center;font-size:15px;color:#a7f3e5;font-weight:800;margin:0 0 14px}
+.why{background:#0d1512;border:1px solid #22302d;border-radius:14px;padding:14px 16px;font-size:14.5px;color:#d5e3df;margin:0 0 14px}
+.bridge{background:#171610;border:1px solid #3c362b;border-radius:14px;padding:14px 16px;margin:0 0 6px}
+.bridge .bl{font-size:11px;font-weight:700;letter-spacing:.18em;color:#a8935f;margin:0 0 5px}
+.bridge .bt{font-size:17px;font-weight:800;margin:0}
+.bridge .bd{font-size:13px;color:#b3ac97;margin:3px 0 0}
+.wm{text-align:right;font-size:11px;color:#41544f;margin-top:12px}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.share button{font-size:14px;padding:13px 8px}
+.save{margin-top:14px;background:#fff;color:#062621}
+.remix{margin-top:10px}
+.hist{margin-top:4px}
+.hist .hrow{display:flex;justify-content:space-between;font-size:13.5px;color:#c6d5d1;border-top:1px solid #22302d;padding:9px 2px}
+.hist .hrow small{color:#5f7a74}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#12302a;color:#a7f3e5;padding:11px 20px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50;border:1px solid #1f5548}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ad{margin:24px 0}
+h2{font-size:19px;margin:30px 0 10px}
+.about p{color:#d0d0d0;font-size:14.5px}
+.about ol,.about ul{color:#d0d0d0;font-size:14.5px;padding-left:20px}
+.about li{margin-bottom:6px}
+.faq{border-top:1px solid #22302d;padding:13px 0}
+.faq b{display:block;margin-bottom:4px;color:#ededed}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.disc{font-size:12.5px;color:#6b7280;background:#121514;border:1px solid #212724;border-radius:12px;padding:12px 14px;margin-top:14px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:#1a2321;color:#cdd6ff;padding:8px 13px;border-radius:999px;text-decoration:none}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1c211f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+@media(max-width:400px){.opTitle{font-size:27px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>친구가 자신의 <b>반대편</b> 영화를 공유했어요. 당신의 반대편은 뭘까요?</span>
+  <button id="meToo">나도 해보기 →</button>
+</div>
+
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 취향·바이럴 › 반대편</div>
+<h1>🧭 반대편</h1>
+<p class="lead">취향 알고리즘을 정확히 거꾸로. <b>당신이 절대 고르지 않을 좋은 영화</b>를 주 1회, 딱 한 편 추천합니다. 무작위가 아니라 <b>의도적으로 먼 곳의 좋은 것</b>입니다.</p>
+
+<div class="card" id="inputCard">
+  <p class="count"><b id="selCount">0</b> / 5 선택 · 좋아하는 영화를 5편 골라 주세요 (전부 평가 검증작만 수록)</p>
+  <input type="text" id="filterIn" placeholder="🔍 제목 검색…">
+  <div class="chips" id="chipHost"></div>
+  <button id="goBtn" style="margin-top:14px" disabled>이번 주 나의 반대편 →</button>
+</div>
+
+<div class="result" id="result">
+  <div id="cardView">
+    <p class="cvLabel">THE OPPOSITE — 이번 주의 반대편</p>
+    <p class="wk" id="wkTxt"></p>
+    <h2 class="opTitle" id="opTitle" style="margin:0 0 4px">—</h2>
+    <p class="opMeta" id="opMeta"></p>
+    <div class="distLine">
+      <div class="tr"></div>
+      <div class="dot me"></div><span style="left:20px">나의 취향</span>
+      <div class="dot br" id="brDot" style="display:none"></div><span id="brLbl" style="left:50%;display:none">다리</span>
+      <div class="dot op"></div><span style="right:-8px;left:auto;transform:none">반대편</span>
+    </div>
+    <p class="distPct" id="distPct"></p>
+    <div class="why" id="whyTxt"></div>
+    <div class="bridge" id="bridgeBox">
+      <p class="bl">BRIDGE — 건너갈 다리</p>
+      <p class="bt" id="brTitle">—</p>
+      <p class="bd" id="brDesc"></p>
+    </div>
+    <p class="wm">tomatoeggcat.com/bandaepyeon</p>
+  </div>
+
+  <button class="save" id="saveBtn">📸 반대편 카드 저장</button>
+  <div class="share">
+    <button class="ghost" id="copyLink">🔗 링크 복사</button>
+    <button class="ghost" id="copyText">📋 텍스트 복사</button>
+    <button class="ghost" id="shareX">𝕏 공유</button>
+    <button class="ghost" id="shareEtc">📤 공유하기</button>
+  </div>
+  <button class="ghost remix" id="remixBtn">🔁 취향 다시 고르기</button>
+
+  <div class="card hist" id="histCard" style="display:none;margin-top:18px">
+    <p class="count" style="margin-bottom:6px">🗺️ 나로부터 멀어진 궤적 — 지난 반대편들</p>
+    <div id="histList"></div>
+  </div>
+
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<div class="about">
+  <h2>반대편이란?</h2>
+  <p>모든 추천 알고리즘은 "당신이 좋아할 만한 것"을 가져다줍니다. 그 결과 우리는 각자 자기 취향의 감옥에 갇혔죠. 반대편은 그 방향을 정확히 거꾸로 돌립니다. 좋아하는 영화 5편을 고르면 액션·로맨스·유머·긴장·SF·예술성·사실성·잔잔함·어두움·대중성이라는 <b>10개 축의 취향 벡터</b>가 만들어지고, 수록된 작품 중 그 벡터와 <b>코사인 거리가 가장 먼</b> 작품들에서 이번 주의 반대편 한 편이 정해집니다. 핵심은 무작위가 아니라는 것 — 수록작 자체가 평단과 관객의 평가가 검증된 작품만으로 큐레이션되어 있어서, "먼 것"이 "나쁜 것"이 되지 않습니다. 추천은 주 1회, 매주 월요일 0시에 바뀝니다. 목록도 피드도 없이 딱 한 편. 그리고 시그니처인 <b>다리(bridge)</b> — 당신과 반대편 작품의 중간 지점에 있는 작품을 함께 드려서, 한 번에 건너가기 어려우면 징검다리부터 밟을 수 있게 합니다. 왜 이 작품이 당신의 반대편인지는 벡터 계산 결과의 사실만으로 설명합니다. 지어낸 감상은 없습니다.</p>
+
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>수록작 중에서 좋아하는 영화를 <b>정확히 5편</b> 고릅니다. (검색으로 빨리 찾기)</li>
+    <li><b>이번 주 나의 반대편 →</b>을 누르면 취향 벡터에서 가장 먼 좋은 작품 한 편이 나옵니다.</li>
+    <li>왜 반대편인지 설명과, 중간 지점의 <b>다리 작품</b>을 확인합니다.</li>
+    <li>카드를 저장하거나 링크로 공유해 친구의 반대편과 비교해 보세요.</li>
+    <li>다음 주 월요일, 같은 취향으로 새 반대편이 나옵니다. 지난 추천들은 궤적으로 쌓여요.</li>
+  </ol>
+
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>뭘 봐도 다 비슷하게 느껴지는 추천 피로에 지쳤을 때</li>
+    <li>"내 인생 영화만 5편" 골라 놓고 친구와 반대편을 비교하며 놀 때</li>
+    <li>영화 모임·데이트에서 평소라면 절대 안 고를 작품에 도전할 때</li>
+    <li>취향의 지도에서 내가 어디에 몰려 있는지 확인하고 싶을 때</li>
+  </ul>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>무작위 추천과 뭐가 다른가요?</b><p>무작위는 그냥 아무거나지만, 반대편은 취향 벡터와의 코사인 거리를 계산해 "가장 먼 구간"에서만 뽑습니다. 그리고 수록작이 전부 평가 검증작이라 결과가 "멀지만 좋은 것"이 됩니다. 이 구분이 이 서비스의 전부예요.</p></div>
+  <div class="faq"><b>왜 주 1회 하나만 주나요?</b><p>절제가 컨셉입니다. 반대편 작품은 소화에 시간이 걸리니 일주일에 한 편이면 충분해요. 추천은 매주 월요일 0시(KST)에 바뀌고, 같은 5편을 고르면 같은 주엔 누구나 같은 결과를 봅니다.</p></div>
+  <div class="faq"><b>다리(bridge)가 뭔가요?</b><p>당신의 취향 벡터와 반대편 작품 벡터의 중간 지점에서 가장 가까운 작품이에요. "당신과 이것 사이엔 이게 있습니다"라는 징검다리죠. 중간에 마땅한 작품이 없으면 없다는 사실 자체를 보여 드립니다.</p></div>
+  <div class="faq"><b>설명은 AI가 지어내나요?</b><p>아니요. 당신이 몰려 있는 축, 추천작이 뻗어 있는 축, 둘이 공유하는 축을 계산해 그 사실만 문장으로 조립합니다. 작품 감상을 지어내지 않으므로 환각이 없습니다.</p></div>
+
+  <p class="disc">본 결과는 <b>재미용</b> 콘텐츠입니다. 수록작(72편)과 성향 축 값은 운영자가 편집한 것으로 절대적 평가가 아니며, 취향 분석은 심리 검사가 아닙니다. 선택 데이터는 서버로 전송되지 않고 브라우저에만 저장됩니다.</p>
+
+  <div class="more">
+    <a href="/taste-dna/">🧬 취향DNA</a>
+    <a href="/todays-color/">🎨 오늘의 색</a>
+    <a href="/what-to-watch-roulette/">🎬 뭐 볼지 룰렛</a>
+    <a href="/year-book/">📖 추억연감</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- 카탈로그: 평가 검증작 72편, 10축 성향 벡터 ----------
+ 축: 0액션·스릴 1로맨스 2유머 3긴장·공포 4SF·판타지 5예술·실험 6사실적 7잔잔함 8어두움 9대중성 */
+const AXN=["액션·스릴","로맨스","유머","긴장·공포","SF·판타지","예술·실험","사실적","잔잔함","어두움","대중성"];
+const CAT=[
+ {t:"올드보이",y:2003,g:"스릴러",v:[3,0,0,2,0,2,0,0,3,2]},
+ {t:"기생충",y:2019,g:"드라마",v:[1,0,1,2,0,2,1,0,3,3]},
+ {t:"라라랜드",y:2016,g:"뮤지컬",v:[0,3,1,0,0,1,0,1,0,3]},
+ {t:"어바웃 타임",y:2013,g:"로맨스",v:[0,3,2,0,1,0,0,2,0,3]},
+ {t:"인터스텔라",y:2014,g:"SF",v:[1,1,0,0,3,0,1,0,1,3]},
+ {t:"매드맥스: 분노의 도로",y:2015,g:"액션",v:[3,0,0,1,2,1,0,0,2,3]},
+ {t:"노인을 위한 나라는 없다",y:2007,g:"스릴러",v:[2,0,0,3,0,2,1,1,3,1]},
+ {t:"그랜드 부다페스트 호텔",y:2014,g:"코미디",v:[0,1,3,0,0,3,0,1,0,2]},
+ {t:"문라이트",y:2016,g:"드라마",v:[0,2,0,0,0,3,1,3,2,1]},
+ {t:"겟 아웃",y:2017,g:"공포",v:[1,0,1,3,0,1,0,0,2,2]},
+ {t:"컨택트",y:2016,g:"SF",v:[0,1,0,0,3,2,0,2,1,2]},
+ {t:"화양연화",y:2000,g:"로맨스",v:[0,3,0,0,0,3,0,3,1,1]},
+ {t:"서치",y:2018,g:"스릴러",v:[1,0,0,2,0,1,1,0,1,2]},
+ {t:"인사이드 아웃",y:2015,g:"애니메이션",v:[0,1,2,0,2,0,0,1,0,3]},
+ {t:"센과 치히로의 행방불명",y:2001,g:"애니메이션",v:[0,0,1,0,3,2,0,2,0,3]},
+ {t:"어벤져스: 엔드게임",y:2019,g:"액션",v:[3,0,1,0,3,0,0,0,0,3]},
+ {t:"쇼생크 탈출",y:1994,g:"드라마",v:[0,0,0,1,0,0,1,2,1,3]},
+ {t:"대부",y:1972,g:"범죄",v:[1,0,0,1,0,1,1,1,3,3]},
+ {t:"12명의 성난 사람들",y:1957,g:"드라마",v:[0,0,0,1,0,1,2,2,1,1]},
+ {t:"시민 케인",y:1941,g:"드라마",v:[0,0,0,0,0,3,1,2,1,1]},
+ {t:"2001 스페이스 오디세이",y:1968,g:"SF",v:[0,0,0,0,3,3,0,2,1,1]},
+ {t:"블레이드 러너 2049",y:2017,g:"SF",v:[1,1,0,0,3,2,0,2,2,2]},
+ {t:"존 윅",y:2014,g:"액션",v:[3,0,0,1,0,0,0,0,2,2]},
+ {t:"미션 임파서블: 폴아웃",y:2018,g:"액션",v:[3,0,1,1,0,0,0,0,0,3]},
+ {t:"극한직업",y:2019,g:"코미디",v:[2,0,3,0,0,0,0,0,0,3]},
+ {t:"웰컴 투 동막골",y:2005,g:"코미디",v:[0,0,2,0,0,1,1,2,0,2]},
+ {t:"리틀 포레스트",y:2018,g:"드라마",v:[0,0,1,0,0,1,2,3,0,2]},
+ {t:"카모메 식당",y:2006,g:"드라마",v:[0,0,1,0,0,1,1,3,0,1]},
+ {t:"패터슨",y:2016,g:"드라마",v:[0,1,1,0,0,3,1,3,0,1]},
+ {t:"콜 미 바이 유어 네임",y:2017,g:"로맨스",v:[0,3,0,0,0,2,0,3,0,2]},
+ {t:"비포 선라이즈",y:1995,g:"로맨스",v:[0,3,0,0,0,1,1,3,0,2]},
+ {t:"이터널 선샤인",y:2004,g:"로맨스",v:[0,3,0,0,2,2,0,1,1,2]},
+ {t:"노트북",y:2004,g:"로맨스",v:[0,3,0,0,0,0,0,1,0,3]},
+ {t:"곡성",y:2016,g:"공포",v:[1,0,0,3,1,2,0,0,3,2]},
+ {t:"유전",y:2018,g:"공포",v:[0,0,0,3,1,2,0,0,3,1]},
+ {t:"콰이어트 플레이스",y:2018,g:"공포",v:[1,0,0,3,1,0,0,0,1,3]},
+ {t:"링",y:1998,g:"공포",v:[0,0,0,3,1,0,0,0,2,2]},
+ {t:"검은 사제들",y:2015,g:"공포",v:[1,0,0,2,1,0,0,0,2,3]},
+ {t:"다크 나이트",y:2008,g:"액션",v:[3,0,0,2,1,1,0,0,3,3]},
+ {t:"시네마 천국",y:1988,g:"드라마",v:[0,2,1,0,0,1,0,2,0,3]},
+ {t:"포레스트 검프",y:1994,g:"드라마",v:[0,1,1,0,0,0,1,1,0,3]},
+ {t:"트루먼 쇼",y:1998,g:"드라마",v:[0,1,2,0,1,1,0,1,0,3]},
+ {t:"죽은 시인의 사회",y:1989,g:"드라마",v:[0,0,0,0,0,0,1,2,1,3]},
+ {t:"위플래쉬",y:2014,g:"드라마",v:[1,0,0,1,0,1,0,0,2,3]},
+ {t:"보헤미안 랩소디",y:2018,g:"음악",v:[0,1,1,0,0,0,2,0,0,3]},
+ {t:"원스",y:2007,g:"음악",v:[0,3,0,0,0,1,1,3,0,2]},
+ {t:"사운드 오브 뮤직",y:1965,g:"뮤지컬",v:[0,1,1,0,0,0,0,1,0,3]},
+ {t:"알라딘",y:2019,g:"뮤지컬",v:[1,2,2,0,2,0,0,0,0,3]},
+ {t:"겨울왕국",y:2013,g:"애니메이션",v:[0,1,2,0,3,0,0,0,0,3]},
+ {t:"토이 스토리 3",y:2010,g:"애니메이션",v:[1,0,2,0,1,0,0,1,0,3]},
+ {t:"월-E",y:2008,g:"애니메이션",v:[0,2,1,0,3,1,0,2,0,3]},
+ {t:"너의 이름은.",y:2016,g:"애니메이션",v:[0,3,1,0,2,1,0,1,0,3]},
+ {t:"이웃집 토토로",y:1988,g:"애니메이션",v:[0,0,1,0,2,1,0,3,0,3]},
+ {t:"소울",y:2020,g:"애니메이션",v:[0,0,1,0,2,1,0,2,0,3]},
+ {t:"매트릭스",y:1999,g:"SF",v:[3,0,0,1,3,1,0,0,1,3]},
+ {t:"인셉션",y:2010,g:"SF",v:[2,0,0,1,3,1,0,0,1,3]},
+ {t:"그래비티",y:2013,g:"SF",v:[2,0,0,2,3,1,0,0,1,3]},
+ {t:"마션",y:2015,g:"SF",v:[1,0,2,0,3,0,1,0,0,3]},
+ {t:"살인의 추억",y:2003,g:"스릴러",v:[1,0,0,2,0,2,2,0,3,2]},
+ {t:"추격자",y:2008,g:"스릴러",v:[2,0,0,3,0,1,1,0,3,2]},
+ {t:"헤어질 결심",y:2022,g:"로맨스",v:[0,3,0,1,0,3,0,2,2,1]},
+ {t:"벌새",y:2018,g:"드라마",v:[0,0,0,0,0,3,2,3,1,0]},
+ {t:"우리들",y:2016,g:"드라마",v:[0,0,0,0,0,2,2,3,1,0]},
+ {t:"어느 가족",y:2018,g:"드라마",v:[0,0,0,0,0,2,3,2,2,1]},
+ {t:"그을린 사랑",y:2010,g:"드라마",v:[0,1,0,2,0,3,1,1,3,0]},
+ {t:"로마",y:2018,g:"드라마",v:[0,0,0,0,0,3,3,3,1,0]},
+ {t:"노매드랜드",y:2020,g:"드라마",v:[0,0,0,0,0,3,3,3,1,0]},
+ {t:"아메리칸 셰프",y:2014,g:"코미디",v:[0,1,2,0,0,0,1,2,0,2]},
+ {t:"인턴",y:2015,g:"코미디",v:[0,1,2,0,0,0,0,2,0,3]},
+ {t:"어바웃 어 보이",y:2002,g:"코미디",v:[0,2,2,0,0,0,0,2,0,2]},
+ {t:"킹스맨: 시크릿 에이전트",y:2015,g:"액션",v:[3,0,2,0,1,0,0,0,1,3]},
+ {t:"아가씨",y:2016,g:"스릴러",v:[1,2,1,1,0,3,0,0,2,2]}
+];
+
+/* ---------- 해시 & 벡터 수학 ---------- */
+function hash(str){let h1=0xdeadbeef,h2=0x41c6ce57;
+ for(let i=0;i<str.length;i++){const ch=str.charCodeAt(i);
+  h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
+ h1=Math.imul(h1^(h1>>>16),2246822507);h1^=Math.imul(h2^(h2>>>13),3266489909);
+ h2=Math.imul(h2^(h2>>>16),2246822507);h2^=Math.imul(h1^(h1>>>13),3266489909);
+ return 4294967296*(2097151&h2)+(h1>>>0);}
+function dot(a,b){let s=0;for(let i=0;i<a.length;i++)s+=a[i]*b[i];return s;}
+function norm(a){return Math.sqrt(dot(a,a))||1;}
+function cosSim(a,b){return dot(a,b)/(norm(a)*norm(b));}
+function cosDist(a,b){return 1-cosSim(a,b);}
+
+/* 이번 주 월요일(KST) 키 */
+function weekKey(){
+ const d=new Date(Date.now()+9*3600e3);
+ const wd=(d.getUTCDay()+6)%7; // 월=0
+ const mon=new Date(d.getTime()-wd*86400e3);
+ return mon.toISOString().slice(0,10);
+}
+
+/* ---------- 추천 계산 (전부 결정론) ---------- */
+function computeOpposite(picks,wk){
+ const taste=new Array(10).fill(0);
+ picks.forEach(i=>{for(let k=0;k<10;k++)taste[k]+=CAT[i].v[k];});
+ for(let k=0;k<10;k++)taste[k]/=picks.length;
+ // 후보: 거리 내림차순 상위 15% (미선택작)
+ const scored=CAT.map((c,i)=>({i,d:cosDist(taste,c.v)})).filter(x=>!picks.includes(x.i)).sort((a,b)=>b.d-a.d);
+ const pool=scored.slice(0,Math.max(5,Math.round(scored.length*0.15)));
+ const pick=pool[hash(picks.slice().sort((a,b)=>a-b).join(",")+"|"+wk)%pool.length];
+ // 다리: 취향·반대편 중간 방향에서 최근접 (둘 다 제외)
+ const tU=taste.map(v=>v/norm(taste)),oU=CAT[pick.i].v.map(v=>v/norm(CAT[pick.i].v));
+ const mid=tU.map((v,k)=>v+oU[k]);
+ let bridge=null,bs=-1;
+ CAT.forEach((c,i)=>{
+  if(i===pick.i||picks.includes(i))return;
+  const s=cosSim(mid,c.v);
+  if(s>bs){bs=s;bridge={i,s};}
+ });
+ if(bridge&&bridge.s<0.62)bridge=null; // 중간에 마땅한 작품이 없으면 그 사실을 보여준다
+ return {taste,pick:pick.i,dist:pick.d,bridge};
+}
+
+/* 설명: 벡터 사실만 서술 (환각 없음) */
+function explain(res){
+ const t=res.taste,o=CAT[res.pick].v;
+ const myTop=[...t.keys()].sort((a,b)=>t[b]-t[a]).slice(0,2);
+ const opTop=[...o.keys()].filter(k=>!myTop.includes(k)).sort((a,b)=>o[b]-o[a]).slice(0,2);
+ let shared=null,best=-1;
+ for(let k=0;k<10;k++){const m=Math.min(t[k],o[k]);if(m>best&&m>=0.8){best=m;shared=k;}}
+ let s=`당신의 취향은 <b>${AXN[myTop[0]]}·${AXN[myTop[1]]}</b> 쪽에 몰려 있습니다. `+
+  `이 작품은 <b>${AXN[opTop[0]]}${o[opTop[1]]>=2?"·"+AXN[opTop[1]]:""}</b> 쪽 끝에 있습니다.`;
+ s+=shared!==null?` 두 벡터가 공유하는 축은 <b>${AXN[shared]}</b> 하나뿐입니다 — 건너갈 때 그 축을 붙잡으세요.`:
+  ` 공유하는 축이 사실상 없습니다. 그래서 더 가치 있는 반대편입니다.`;
+ return s;
+}
+
+/* ---------- UI ---------- */
+const $=id=>document.getElementById(id);
+let sel=[];
+function renderChips(filter){
+ const f=(filter||"").trim();
+ $("chipHost").innerHTML=CAT.map((c,i)=>{
+  if(f&&!c.t.includes(f))return"";
+  return `<button type="button" class="chip${sel.includes(i)?" on":""}" data-id="${i}" ${!sel.includes(i)&&sel.length>=5?"disabled":""}>${c.t} <small>${c.y}</small></button>`;
+ }).join("");
+}
+$("filterIn").addEventListener("input",()=>renderChips($("filterIn").value));
+$("chipHost").addEventListener("click",e=>{
+ const b=e.target.closest(".chip");if(!b)return;
+ const id=+b.dataset.id,at=sel.indexOf(id);
+ if(at>=0)sel.splice(at,1);else{if(sel.length>=5)return;sel.push(id);}
+ $("selCount").textContent=sel.length;
+ $("goBtn").disabled=sel.length!==5;
+ renderChips($("filterIn").value);
+});
+$("goBtn").addEventListener("click",()=>{
+ if(sel.length!==5)return;
+ runAndRender(sel.slice(),weekKey(),true);
+ savePrefs();
+});
+
+let current=null; // {picks,wk,res}
+function runAndRender(picks,wk,pushUrl){
+ const res=computeOpposite(picks,wk);
+ current={picks,wk,res};
+ const op=CAT[res.pick];
+ const[y,m,d]=wk.split("-");
+ $("wkTxt").textContent=`${y}년 ${+m}월 ${+d}일 주 · 매주 월요일 0시에 바뀝니다`;
+ $("opTitle").textContent=op.t;
+ $("opMeta").textContent=`${op.g} · ${op.y} · 좋아한 5편: ${picks.map(i=>CAT[i].t).join(", ")}`;
+ $("distPct").textContent=`취향 거리 ${(res.dist*100).toFixed(0)}% — 코사인 거리 기준, 멀수록 반대편`;
+ $("whyTxt").innerHTML=explain(res);
+ if(res.bridge){
+  const br=CAT[res.bridge.i];
+  $("bridgeBox").style.display="block";$("brDot").style.display="block";$("brLbl").style.display="block";
+  $("brTitle").textContent=`${br.t} (${br.y})`;
+  $("brDesc").textContent=`당신과 "${op.t}" 사이의 중간 지점에서 가장 가까운 작품. 한 번에 건너가기 어렵다면 이 다리부터.`;
+ }else{
+  $("bridgeBox").style.display="block";$("brDot").style.display="none";$("brLbl").style.display="none";
+  $("brTitle").textContent="이번엔 다리가 없습니다";
+  $("brDesc").textContent="당신과 이 작품 사이 중간 지점에 마땅한 작품이 없어요. 맨몸으로 건너가야 하는, 진짜 반대편입니다.";
+ }
+ $("result").style.display="block";
+ renderHist();
+ if(pushUrl){
+  history.replaceState(null,"",location.pathname+"?r="+enc({v:1,p:picks,w:wk}));
+  $("result").scrollIntoView({behavior:"smooth",block:"start"});
+ }
+}
+
+/* ---------- 궤적 (localStorage) ---------- */
+function savePrefs(){
+ let st={};try{st=JSON.parse(localStorage.getItem("tec-bandaepyeon"))||{};}catch(e){}
+ st.picks=current.picks;
+ st.hist=st.hist||[];
+ if(!st.hist.some(h=>h.w===current.wk))st.hist.unshift({w:current.wk,i:current.res.pick,d:current.res.dist});
+ st.hist=st.hist.slice(0,26);
+ try{localStorage.setItem("tec-bandaepyeon",JSON.stringify(st));}catch(e){}
+}
+function renderHist(){
+ let st={};try{st=JSON.parse(localStorage.getItem("tec-bandaepyeon"))||{};}catch(e){}
+ const h=(st.hist||[]).filter(x=>CAT[x.i]);
+ if(h.length<2){$("histCard").style.display="none";return;}
+ $("histCard").style.display="block";
+ $("histList").innerHTML=h.map(x=>`<div class="hrow"><span>${CAT[x.i].t}</span><small>${x.w} · 거리 ${(x.d*100).toFixed(0)}%</small></div>`).join("");
+}
+
+/* ---------- 인코딩/공유 ---------- */
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+function dec(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))));}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1800);}
+function curUrl(){return location.origin+location.pathname+"?r="+enc({v:1,p:current.picks,w:current.wk});}
+function shareText(){const op=CAT[current.res.pick];return `[반대편] 이번 주 나의 반대편 영화는 "${op.t}" (${op.y})\n취향 거리 ${(current.res.dist*100).toFixed(0)}% — 내가 절대 안 고를 좋은 영화\n${curUrl()}`;}
+$("copyLink").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(curUrl());toast("링크를 복사했어요");}catch(e){toast("복사 실패, 길게 눌러 복사하세요");}});
+$("copyText").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(shareText());toast("텍스트를 복사했어요");}catch(e){toast("복사 실패");}});
+$("shareX").addEventListener("click",()=>{
+ const op=CAT[current.res.pick];
+ const u=`https://twitter.com/intent/tweet?text=${encodeURIComponent(`이번 주 나의 반대편은 "${op.t}" 🧭 취향 거리 ${(current.res.dist*100).toFixed(0)}%`)}&url=${encodeURIComponent(curUrl())}`;
+ window.open(u,"_blank","noopener");
+});
+$("shareEtc").addEventListener("click",async()=>{
+ if(navigator.share){try{await navigator.share({title:"반대편",text:shareText().split("\n").slice(0,2).join(" "),url:curUrl()});}catch(e){}}
+ else{try{await navigator.clipboard.writeText(shareText());toast("공유 텍스트를 복사했어요");}catch(e){toast("공유를 지원하지 않아요");}}
+});
+
+/* ---------- 카드 PNG ---------- */
+$("saveBtn").addEventListener("click",()=>{
+ const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+ const x=cv.getContext("2d");
+ const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#0f2420");g.addColorStop(1,"#0a1210");
+ x.fillStyle=g;x.fillRect(0,0,W,H);
+ const PAD=88,op=CAT[current.res.pick];
+ x.fillStyle="#5f7a74";x.font="700 30px sans-serif";x.fillText("T H E   O P P O S I T E",PAD,140);
+ x.textAlign="right";x.fillText(current.wk.replaceAll("-","."),W-PAD,140);x.textAlign="left";
+ x.fillStyle="#8fb3ab";x.font="400 34px sans-serif";x.fillText("이번 주, 내가 절대 고르지 않을 좋은 영화",PAD,220);
+ x.fillStyle="#ffffff";x.font="900 84px sans-serif";
+ let ty=wrapT(x,op.t,PAD,330,W-PAD*2,94);
+ x.fillStyle="#8fb3ab";x.font="400 36px sans-serif";x.fillText(`${op.g} · ${op.y}`,PAD,ty+64);
+ // 거리 라인
+ const ly=ty+220,lx0=PAD+30,lx1=W-PAD-30;
+ x.strokeStyle="#2c3b38";x.lineWidth=4;x.beginPath();x.moveTo(lx0,ly);x.lineTo(lx1,ly);x.stroke();
+ x.fillStyle="#7aa2ff";x.beginPath();x.arc(lx0,ly,22,0,7);x.fill();
+ x.fillStyle="#5eead4";x.beginPath();x.arc(lx1,ly,22,0,7);x.fill();
+ if(current.res.bridge){x.fillStyle="#f0dfb2";x.beginPath();x.arc((lx0+lx1)/2,ly,14,0,7);x.fill();}
+ x.fillStyle="#8fb3ab";x.font="600 26px sans-serif";
+ x.fillText("나의 취향",lx0-30,ly+60);
+ x.textAlign="right";x.fillText("반대편",lx1+30,ly+60);x.textAlign="left";
+ if(current.res.bridge){x.textAlign="center";x.fillText("다리: "+CAT[current.res.bridge.i].t,(lx0+lx1)/2,ly-44);x.textAlign="left";}
+ x.fillStyle="#a7f3e5";x.font="900 66px sans-serif";x.textAlign="center";
+ x.fillText(`취향 거리 ${(current.res.dist*100).toFixed(0)}%`,W/2,ly+170);
+ x.textAlign="left";
+ // 설명 (태그 제거 후 감싸기)
+ const plain=explain(current.res).replace(/<[^>]+>/g,"");
+ x.fillStyle="#d5e3df";x.font="400 32px sans-serif";
+ wrapT(x,plain,PAD,ly+270,W-PAD*2,48);
+ x.fillStyle="rgba(255,255,255,.45)";x.font="600 28px sans-serif";x.fillText("tomatoeggcat.com/bandaepyeon",PAD,H-64);
+ const a=document.createElement("a");a.href=cv.toDataURL("image/png");a.download=`반대편_${op.t}.png`;a.click();
+ toast("카드를 저장했어요");
+});
+function wrapT(x,text,px,py,maxw,lh){
+ let line="",yy=py;
+ for(const c of text){const t=line+c;
+  if(x.measureText(t).width>maxw&&line){x.fillText(line,px,yy);line=c;yy+=lh;}
+  else line=t;}
+ x.fillText(line,px,yy);return yy;
+}
+
+/* ---------- 리믹스 / 인바운드 ---------- */
+$("remixBtn").addEventListener("click",()=>{$("inputCard").scrollIntoView({behavior:"smooth",block:"start"});});
+$("meToo").addEventListener("click",()=>{
+ sel=[];$("selCount").textContent="0";$("goBtn").disabled=true;renderChips("");
+ $("result").style.display="none";
+ history.replaceState(null,"",location.pathname);
+ $("inbound").classList.remove("show");
+ $("inputCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* ---------- 초기 로드 ---------- */
+(function init(){
+ renderChips("");
+ const p=new URLSearchParams(location.search).get("r");
+ if(p){
+  try{
+   const st=dec(p);
+   if(st&&st.v===1&&Array.isArray(st.p)&&st.p.length===5&&st.p.every(n=>Number.isInteger(n)&&n>=0&&n<CAT.length)&&/^\d{4}-\d{2}-\d{2}$/.test(st.w||"")){
+    sel=st.p.slice();$("selCount").textContent="5";renderChips("");
+    runAndRender(st.p.slice(),st.w,false);
+    $("inbound").classList.add("show");
+    return;
+   }
+  }catch(e){/* 잘못된 링크는 무시 */}
+ }
+ // 재방문: 저장된 취향으로 이번 주 결과 바로
+ try{
+  const st=JSON.parse(localStorage.getItem("tec-bandaepyeon"));
+  if(st&&Array.isArray(st.picks)&&st.picks.length===5&&st.picks.every(n=>Number.isInteger(n)&&n>=0&&n<CAT.length)){
+   sel=st.picks.slice();$("selCount").textContent="5";renderChips("");
+   runAndRender(st.picks.slice(),weekKey(),true);
+   savePrefs();
+  }
+ }catch(e){}
+})();
+</script>
+</body>
+</html>
