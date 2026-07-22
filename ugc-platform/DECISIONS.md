@@ -2,6 +2,32 @@
 
 Running log of design decisions. Newest phase last.
 
+## Phase 2 — publish + SEO, 데모 앱 E2E (current)
+
+- **D2.1 Demo app is a real workspace app** (`apps/demo`, Next.js 15 App Router,
+  React 19). It consumes `@ggu/ugc-core` as **built ESM** from `dist/`; the demo's
+  `predev`/`prebuild` scripts build the package first, so no `transpilePackages`
+  entry is needed.
+- **D2.2 In-memory store by default, zero services.** The demo wires `MemoryStore`
+  + `HeuristicClassifier` so it runs standalone. Swapping to `SupabaseStore` is a
+  one-line change in `app/ugc.ts` — proving the port design. Singletons live on
+  `globalThis` to survive dev HMR.
+- **D2.3 SEO surfaces are generated from live store state.** `sitemap.ts` lists only
+  `indexed` content (mirrors the publish gate); `generateMetadata` emits canonical +
+  `robots noindex` for below-`minContentScore` pages; case pages carry Article +
+  BreadcrumbList JSON-LD. A `SeoSink` calls `revalidatePath` on publish so the
+  sitemap/home update live. (Static per-result OG images remain out of scope — same
+  server-side limitation noted in the main site's CLAUDE.md.)
+- **D2.4 Submit path uses the anti-abuse signals end-to-end.** The server action
+  passes a honeypot field + form fill-time (`startedAt`); fills faster than 3s are
+  treated as bots — which the Playwright E2E had to wait out (a real signal, not a
+  bug).
+- **Verification.** `next build` clean (5 routes). GET routes smoke-tested
+  (`/`, `/robots.txt`, `/sitemap.xml`). **Playwright browser E2E 6/6**: clean post →
+  published → `/case/<slug>` 200 + JSON-LD → PII post blocked → sitemap lists the
+  published case. Romanized slug confirmed (동네 맛집 후기 → `dongne-matjip-hugi-…`).
+
+
 ## Phase 1 — submit + moderate 실구현, 어댑터, 20종 테스트 (current)
 
 - **D1.1 Provider-agnostic LLM classifier.** `LlmClassifier` takes an injected

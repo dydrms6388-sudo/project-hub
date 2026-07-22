@@ -23,7 +23,7 @@ ugc-platform/
       └─ README.md         # per-app integration guide
 ```
 
-`apps/*` is reserved for demo/consumer services added in later phases.
+`apps/demo` is a runnable Next.js E2E demo of the engine (see its README).
 
 ## Develop
 
@@ -39,6 +39,7 @@ pipeline runs against an in-memory store adapter.
 
 ## Status
 
-**Phase 0 complete** — workspace + package scaffolding + `ugc_` schema
-migration. See `DECISIONS.md` for what's implemented vs. deferred and
-`packages/ugc-core/README.md` for the roadmap and integration steps.
+**Phases 0–2 complete** — package scaffolding + `ugc_` schema (P0); submit/moderate
+implementation, Supabase adapter, batched LLM classifier, embedding dedup, 43-case
+test suite (P1); and a runnable Next.js E2E demo (P2). See `DECISIONS.md` for the
+full log and `packages/ugc-core/README.md` for the roadmap and integration steps.
