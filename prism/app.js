@@ -212,6 +212,48 @@
     return { pct, items };
   }
   const profileBonusLikes = () => profileScore().pct >= 80 ? 5 : 0; // 완성 보너스: 일일 좋아요 +5
+
+  /* ── 데이트 코스 추천 (공통 주제·지역 기반) ── */
+  const DATE_SPOTS = {
+    "운동": ["한강공원에서 같이 러닝하고 스트레칭", "클라이밍장 원데이 클래스 도전", "올림픽공원 자전거 라이딩"],
+    "전시·문화": ["요즘 화제인 전시 함께 관람", "독립서점·소품샵 구경", "소극장 공연 관람"],
+    "반려동물": ["애견 동반 카페에서 힐링", "반려동물 소품샵 구경 후 산책", "펫 프렌들리 공원 나들이"],
+    "여행": ["근교로 당일치기 드라이브", "안 가본 동네 골목 투어", "루프탑에서 도시 전망 감상"],
+    "게임": ["보드게임 카페에서 한판 승부", "방탈출 협동전", "레트로 오락실 대결"],
+    "맛집·요리": ["줄 서는 맛집 도장깨기", "둘이 쿠킹 클래스 참여", "야시장 먹방 투어"],
+    "영화·드라마": ["심야 영화 한 편 관람", "감성 카페에서 인생영화 토크", "브런치 후 드라마 정주행 수다"],
+    "동네모임": ["동네 카페 탐방", "골목 산책 후 포차 한잔", "플리마켓 구경"],
+  };
+  const DATE_FINALE = ["근처 조용한 바에서 한 잔", "야경 좋은 곳에서 산책 마무리", "디저트 카페에서 도란도란", "강변 벤치에서 야식 나눔"];
+  function dateCourse(p, salt) {
+    const seed = demoHash(p.id + "date" + (salt || 0));
+    const topics = sharedTopics(p).length ? sharedTopics(p) : demoTopics(p);
+    const topic = topics[seed % topics.length];
+    const spots = DATE_SPOTS[topic] || DATE_SPOTS["동네모임"];
+    const region = (p.region || "").split(" ")[0] || "우리 동네";
+    return {
+      topic, shared: sharedTopics(p).length,
+      steps: [
+        { em: "📍", t: `${esc(region)} 근처에서 만나 가볍게 인사`, s: "부담 없이 카페에서 첫 대화" },
+        { em: TOPIC_EM(topic), t: esc(spots[seed % spots.length]), s: `${esc(topic)} 취향이 통하는 코스` },
+        { em: "🌙", t: esc(DATE_FINALE[(seed >> 3) % DATE_FINALE.length]), s: "여운 남기는 마무리" },
+      ],
+    };
+  }
+  function dateCourseModal(pid, salt, withChat) {
+    const p = P(pid); if (!p) return;
+    salt = salt || 0;
+    const c = dateCourse(p, salt);
+    const m = modal(`<div class="dialog dc-dialog"><div class="em">💡</div>
+      <h3>${esc(p.name)}님과 이런 데이트 어때요?</h3>
+      <p style="font-size:12.5px;margin:0 0 12px">${c.shared ? `공통 관심 <b style="color:var(--vio)">${TOPIC_EM(c.topic)} ${esc(c.topic)}</b> 기반 추천` : `${TOPIC_EM(c.topic)} ${esc(c.topic)} 테마 추천`} · 데모 아이디어예요</p>
+      <div class="dc-steps">${c.steps.map((s, i) => `<div class="dc-step"><span class="dc-em">${s.em}</span><div><b>${i + 1}. ${s.t}</b><small>${s.s}</small></div></div>`).join("")}</div>
+      ${withChat ? `<button class="btn-grad big" data-chat style="margin-bottom:8px">💬 이 얘기로 대화 시작</button>` : ""}
+      <div class="row"><button class="btn-ghost" data-x>닫기</button><button class="btn-grad" data-again>다른 코스</button></div></div>`, { center: true });
+    $("[data-x]", m).onclick = () => m.remove();
+    $("[data-again]", m).onclick = () => { m.remove(); dateCourseModal(pid, salt + 1, withChat); };
+    const ch = $("[data-chat]", m); if (ch) ch.onclick = () => { m.remove(); openChat(pid); };
+  }
   // 최초 100% 달성 시 1회 보상
   function checkProfileComplete() {
     if (profileScore().pct >= 100 && !S.profileComplete100) {
@@ -857,10 +899,12 @@
       </div>
       <div class="match-btns">
         <button class="btn-grad big" data-chat>바로 메시지 보내기 💬</button>
+        <button class="btn-line" data-course>💡 데이트 코스 추천 보기</button>
         <button class="btn-ghost" data-keep>계속 둘러보기</button>
       </div>`;
     $("#modal-root").appendChild(m);
     $("[data-chat]", m).onclick = () => { m.remove(); openChat(pid); };
+    $("[data-course]", m).onclick = () => { m.remove(); dateCourseModal(pid, 0, true); };
     $("[data-keep]", m).onclick = () => { m.remove(); vDiscover(); badges(); };
   }
   function confettiHTML() {
@@ -1122,10 +1166,12 @@
     $(".cr-back", o).onclick = () => { o.remove(); if (tab === "chats") go("chats"); badges(); };
     $(".cr-menu", o).onclick = () => {
       const sheet = modal(`<div class="sheet"><div class="grip"></div>
+        <button class="btn-line" style="margin-bottom:8px" data-course>💡 데이트 코스 추천</button>
         <button class="btn-line" style="margin-bottom:8px" data-prof>프로필 보기</button>
         <button class="btn-line" style="margin-bottom:8px" data-unmatch>매치 해제</button>
         <button class="btn-line" style="margin-bottom:8px;color:var(--red)" data-block>차단하기</button>
         <button class="btn-line" style="color:var(--red)" data-report>신고하기</button></div>`);
+      $("[data-course]", sheet).onclick = () => { sheet.remove(); dateCourseModal(pid); };
       $("[data-prof]", sheet).onclick = () => { sheet.remove(); openProfile(pid, "chat"); };
       $("[data-unmatch]", sheet).onclick = () => {
         sheet.remove();

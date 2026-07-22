@@ -296,7 +296,7 @@ textarea.ob-input{resize:none;min-height:96px}
 .compare tr:last-child td{border-bottom:0}
 
 /* ── 모달/시트 ── */
-.modal-back{position:absolute;inset:0;background:rgba(4,6,10,.72);backdrop-filter:blur(4px);z-index:80;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.modal-back{position:absolute;inset:0;background:rgba(4,6,10,.72);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
 .modal-back.center{align-items:center;padding:24px}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .sheet{width:100%;background:var(--bg2);border-radius:26px 26px 0 0;padding:22px 22px calc(26px + var(--sab));animation:slideup .28s cubic-bezier(.2,.8,.25,1);max-height:86%;overflow-y:auto}
@@ -589,3 +589,12 @@ html.fs-3 #frame{zoom:1.5}
 .pc-todo{display:flex;flex-wrap:wrap;gap:7px}
 .pc-chip{font-size:11.5px;font-weight:700;color:var(--vio);background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:99px;padding:5px 11px}
 .pc-chip:active{background:rgba(139,92,246,.24)}
+
+/* ══ v2.4 데이트 코스 추천 ══ */
+.dc-dialog{max-width:340px}
+.dc-steps{display:flex;flex-direction:column;gap:9px;text-align:left;margin:2px 0 4px}
+.dc-step{display:flex;gap:11px;align-items:flex-start;background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:11px 12px}
+.dc-step .dc-em{font-size:21px;line-height:1.1;flex:0 0 auto}
+.dc-step b{font-size:13.5px;color:var(--tx);display:block;line-height:1.4}
+.dc-step small{font-size:11.5px;color:var(--tx3);display:block;margin-top:2px}
+.match-btns .btn-line{width:100%}
