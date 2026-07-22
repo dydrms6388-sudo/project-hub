@@ -46,11 +46,22 @@ const BUILTINS = [
   { slug: "tone-lab", emoji: "🎭", name: "말투연구소", desc: "아무 문장이나 부장님·사극·MZ·츤데레 말투로 변환", k: "말투 변환 부장님 사극 MZ 츤데레", prio: "0.7" },
   { slug: "roast-edit", emoji: "🌶️", name: "사이다첨삭", desc: "내 문장을 독설로, 그리고 칭찬으로 평가서 발급", k: "독설 첨삭 평가 문장 리뷰 사이다", prio: "0.7" },
   { slug: "dark-history", emoji: "📼", name: "흑역사 판독기", desc: "옛날에 쓴 글의 시대·감성·오글 지수 판독", k: "흑역사 싸이월드 감성 오글 판독", prio: "0.7" },
+  { slug: "excuse-factory", emoji: "🙈", name: "핑계공장", desc: "상황만 고르면 신뢰도별 핑계 3종 즉시 제조", k: "핑계 약속 취소 지각 회식 거절", prio: "0.7" },
+  { slug: "apology-maker", emoji: "📄", name: "공식사과문 생성기", desc: "사소한 잘못도 연예인급 공식 사과문으로", k: "사과문 공식입장 패러디 밈", prio: "0.7" },
+  { slug: "nag-menu", emoji: "🍱", name: "잔소리 메뉴판", desc: "명절·모임 잔소리에 가격표를 붙이는 밈 카드", k: "잔소리 명절 메뉴판 가격표 밈", prio: "0.7" },
+  { slug: "fight-judge", emoji: "⚖️", name: "잘잘못 판독기", desc: "말다툼 대화 넣으면 과실 비율 판정서 발급", k: "잘잘못 과실 판정 말다툼 카톡", prio: "0.7" },
+  { slug: "meme-exam", emoji: "📝", name: "밈력고사", desc: "대한민국 밈 수능 20문항, 나의 밈력 등급", k: "밈 신조어 유행어 테스트 등급", prio: "0.7" },
+  { slug: "year-book", emoji: "📖", name: "추억연감", desc: "그 해의 유행어·노래·화제작 회고 카드", k: "추억 년도 유행어 히트곡 회고", prio: "0.7" },
+  { slug: "pay-timer", emoji: "⏱️", name: "월급 초시계", desc: "초당 수입 실시간 카운터·회의 비용 계산", k: "월급 초당 수입 회의 비용 타이머", prio: "0.7" },
+  { slug: "office-translate", emoji: "🏢", name: "직장인 번역기", desc: "회사어 ↔ 진심 양방향 통역 + 빡침 게이지", k: "직장인 번역 회사어 속마음 넵", prio: "0.7" },
+  { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
+  { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 금융 · 세금", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 생활 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
+  { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
 
