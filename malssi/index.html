@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>말씨 지도 — 20문항으로 그리는 나의 사투리 히트맵 | TomatoEggCat</title>
+<meta name="description" content="부추를 뭐라고 부르세요? 어휘·말끝·감탄사 20문항에 답하면 당신 말씨의 지역 무게중심을 확률 히트맵 지도로 그려 드립니다. 정답도 순위도 없는 재미용 사투리 좌표 테스트. 판정 카드 저장·공유 가능." />
+<link rel="canonical" href="https://tomatoeggcat.com/malssi/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="말씨 지도 — 20문항으로 그리는 나의 사투리 히트맵" />
+<meta property="og:description" content="어휘·말끝 20문항으로 알아보는 내 말씨의 지역 무게중심. 확률 히트맵 판정 카드를 받아 친구와 비교해 보세요." />
+<meta property="og:url" content="https://tomatoeggcat.com/malssi/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="말씨 지도 — 20문항으로 그리는 나의 사투리 히트맵" />
+<meta name="twitter:description" content="정답도 순위도 없는 사투리 좌표 테스트. 내 말씨의 무게중심은 어느 지역일까?" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"말씨 지도","description":"어휘·말끝·감탄사 20문항으로 사용자의 말씨가 어느 지역 방언권에 가까운지 확률 분포 히트맵으로 보여 주는 재미용 사투리 좌표 테스트.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/malssi/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"판정은 어떻게 이루어지나요?","acceptedAnswer":{"@type":"Answer","text":"각 문항의 보기에는 공개된 방언 연구에서 지역 변별력이 보고된 어휘·어미가 담겨 있고, 보기마다 8개 권역(수도권·강원·충청·전북·전남·경북·경남·제주)별 상대 가중치가 매겨져 있습니다. 선택한 답들의 가중치를 곱해(나이브 베이즈 방식) 권역별 확률 분포를 계산하고, 최상위 1곳을 단정하는 대신 분포 전체를 히트맵 지도로 보여 줍니다. 모든 계산은 브라우저 안에서만 이루어집니다."}},
+{"@type":"Question","name":"정답이나 지역 순위가 있나요?","acceptedAnswer":{"@type":"Answer","text":"없습니다. 이 테스트의 어떤 답도 틀린 말이 아니며, 지역 간 우열·순위·비교 지표를 일부러 만들지 않았습니다. 결과는 '당신 말씨의 무게중심이 어느 권역 쪽에 있는가'라는 확률일 뿐이고, '표준어권에 가깝습니다'도 똑같이 정당한 결과입니다. 확신도가 낮으면 낮다고 그대로 표시합니다."}},
+{"@type":"Question","name":"내 답이 어딘가에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 페이지는 서버 없이 동작하는 정적 앱이라 응답·결과가 어디에도 전송되거나 수집되지 않습니다. 공유 링크의 ?r= 값에 당신의 답이 부호화되어 담길 뿐이며, 링크를 연 사람의 브라우저가 같은 계산을 재현해 같은 결과를 보여 주는 방식입니다."}},
+{"@type":"Question","name":"결과를 저장하거나 공유할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. '이미지로 저장'을 누르면 히트맵 지도와 상위 3개 권역, 가장 결정적이었던 답이 담긴 세로형 PNG 판정 카드가 다운로드됩니다. '링크 복사'는 내 결과가 그대로 열리는 주소를, '텍스트 복사'는 커뮤니티에 붙여넣기 좋은 요약을 복사하며 X(트위터)·스레드·기기 공유 버튼도 있습니다. 링크로 들어온 친구는 '나도 해보기'로 바로 참여할 수 있습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"엔터·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"말씨 지도","item":"https://tomatoeggcat.com/malssi/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#fb923c;--acc2:#fdba74;--accD:#431407}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#fb923c,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #232323;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#431407;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#221711;color:var(--acc2);border:1px solid #4d3423;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#3b1a08,#7c2d12);border-bottom:1px solid #9a3412}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#fed7aa;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.quizHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 4px}
+.quizHead h2{font-size:18px;margin:0}
+.rules{font-size:13px;color:#9ca3af;margin:0 0 14px}
+.qcard{border:1px solid #232323;background:#141414;border-radius:14px;padding:16px;margin-bottom:12px}
+.qtop{display:flex;gap:8px;align-items:baseline;margin-bottom:10px}
+.qnum{font-weight:900;color:var(--acc);font-size:15px;flex-shrink:0}
+.qtext{font-size:15px;font-weight:700}
+.tags{margin-left:auto;flex-shrink:0;display:flex;gap:4px}
+.tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#1f1f1f;color:#9ca3af;border:1px solid #2c2c2c;white-space:nowrap}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{width:100%;text-align:left;padding:11px 13px;min-height:44px;border-radius:10px;background:#0f0f0f;border:1px solid #2c2c2c;color:#d4d4d4;font-size:14px;font-weight:600;cursor:pointer;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
+.opt.on{background:rgba(251,146,60,.14);border-color:var(--acc);color:#ffedd5}
+.opt.mute{color:#8b8f98;font-weight:500}
+.sticky{position:sticky;bottom:0;z-index:10;background:linear-gradient(180deg,transparent,#0a0a0a 30%);padding:18px 0 10px}
+.sticky .cnt{text-align:center;font-size:13px;color:#9ca3af;margin-bottom:8px}
+.sticky .cnt b{color:var(--acc2)}
+.result{display:none;margin-top:8px}
+#cardView{background:linear-gradient(165deg,#2a1005 0%,#5c2510 55%,#7c2d12 100%);border:1px solid #9a3412;border-radius:20px;padding:22px 20px;position:relative;overflow:hidden}
+#cardView:before{content:"";position:absolute;top:-70px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(251,146,60,.28),transparent 70%);pointer-events:none}
+.rptTop{font-size:11px;letter-spacing:.22em;color:#fdba74;font-weight:700;margin:0 0 2px}
+.rptTitle{font-size:22px;font-weight:900;color:#fff;margin:0 0 12px}
+.mapWrapRow{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.mapBox{flex:0 0 auto}
+.mapBox svg{display:block}
+.topBox{flex:1;min-width:200px}
+.topRegion{font-size:13px;color:#fed7aa;margin:0 0 2px}
+.topName{font-size:30px;font-weight:900;color:#fff;line-height:1.25;margin:0 0 4px}
+.confLine{font-size:12.5px;color:#fdba74;margin:0 0 12px}
+.dist{display:flex;flex-direction:column;gap:7px;margin:0 0 6px}
+.drow{display:grid;grid-template-columns:88px 1fr 44px;gap:8px;align-items:center;font-size:12px;font-weight:700;color:#ffedd5}
+.drow .bar{height:10px;background:rgba(255,255,255,.15);border-radius:999px;overflow:hidden}
+.drow .bar i{display:block;height:100%;background:linear-gradient(90deg,#fb923c,#fbbf24);border-radius:999px}
+.decis{background:rgba(0,0,0,.28);border:1px solid rgba(253,186,116,.3);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#fff7ed;margin-top:14px}
+.decis b{color:#fdba74}
+.verdict{background:rgba(0,0,0,.28);border:1px solid rgba(253,186,116,.3);border-radius:12px;padding:12px 14px;font-size:14px;color:#fff7ed;font-weight:700;margin-top:10px}
+.wm{margin-top:14px;font-size:11px;color:#fdba74;text-align:right;opacity:.85}
+.shareRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
+.shareRow button{font-size:14px;padding:12px}
+.fair{font-size:12.5px;color:#9ca3af;margin-top:14px}
+.about h2{font-size:19px;margin:34px 0 10px}
+.about h3{font-size:15.5px;margin:18px 0 6px}
+.about p,.about li{font-size:14.5px;color:#c9c9c9}
+.about details{border:1px solid #232323;border-radius:12px;padding:12px 14px;margin:12px 0;background:#131313}
+.about summary{cursor:pointer;font-size:14px;font-weight:700;color:#d4d4d4}
+.about .srcItem{font-size:13px;color:#9ca3af;margin:8px 0 0}
+.disc{font-size:13px;color:#9ca3af;border:1px dashed #333;border-radius:12px;padding:12px 14px;margin-top:16px}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#d4d4d4;background:#151515;border:1px solid #2a2a2a;border-radius:999px;padding:9px 14px;min-height:44px;display:inline-flex;align-items:center}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+.hide{display:none !important}
+@media(max-width:430px){.topName{font-size:24px}.shareRow{grid-template-columns:1fr}.mapWrapRow{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="inbound" id="inbound"><span>친구의 말씨 판정 카드가 도착했어요. 당신 말씨의 무게중심도 그려 볼까요?</span><button id="inboundBtn" type="button">나도 해보기 →</button></div>
+
+<nav class="nav"><a href="/">홈</a> › 엔터·바이럴 › 말씨 지도</nav>
+
+<header>
+<h1>🗣️ 말씨 지도</h1>
+<p class="lead">부추를 뭐라고 부르세요? 어휘·말끝·감탄사 20문항에 답하면 당신 말씨의 지역 무게중심을 확률 히트맵으로 그려 드립니다. 정답도, 순위도, 우열도 없습니다 — 어떤 답도 틀린 말이 아니에요.</p>
+</header>
+
+<section class="card" id="quizSec">
+<div class="quizHead"><h2>어휘·말투 20문항</h2></div>
+<p class="rules">평소에 <b>입에서 먼저 나오는 말</b>을 고르세요 · 쓰는 말이 없으면 맨 아래 보기를 · 정답 없음 · 약 2분</p>
+<div id="qList"></div>
+<div class="sticky">
+<div class="cnt"><b id="ansCnt">0</b> / 20 문항 응답</div>
+<button id="submitBtn" type="button" disabled>내 말씨 지도 그리기</button>
+</div>
+</section>
+
+<section class="result" id="resultSec">
+<div id="cardView">
+<p class="rptTop">TOMATOEGGCAT 말씨 판정 카드</p>
+<p class="rptTitle">나의 사투리 히트맵</p>
+<div class="mapWrapRow">
+<div class="mapBox" id="mapBox"></div>
+<div class="topBox">
+<p class="topRegion">말씨의 무게중심</p>
+<p class="topName" id="rTop"></p>
+<p class="confLine" id="rConf"></p>
+<div class="dist" id="rDist"></div>
+</div>
+</div>
+<div class="decis" id="rDecis"></div>
+<div class="verdict" id="rVerdict"></div>
+<div class="wm">tomatoeggcat.com/malssi</div>
+</div>
+
+<div class="shareRow">
+<button id="saveBtn" type="button">🖼 이미지로 저장</button>
+<button id="linkBtn" type="button" class="ghost">🔗 링크 복사</button>
+<button id="txtBtn" type="button" class="ghost">📋 텍스트 복사</button>
+<button id="xBtn" type="button" class="ghost">𝕏 에 공유</button>
+<button id="thBtn" type="button" class="ghost">@ 스레드 공유</button>
+<button id="natBtn" type="button" class="ghost">📤 공유하기</button>
+</div>
+<div class="shareRow">
+<button id="remixBtn" type="button" class="ghost">✏️ 답 고쳐서 다시 그리기</button>
+<button id="resetBtn" type="button">🔄 처음부터 다시</button>
+</div>
+
+<p class="fair">이 판정에는 정답·순위·우열이 없습니다. 확률은 당신 답과 방언 연구 통설을 겹쳐 본 근사치이며, 표본이 아닌 문항 가중치 기반이라 실제와 다를 수 있습니다.</p>
+
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</section>
+
+<section class="about">
+<h2>말씨 지도 소개</h2>
+<p>말씨 지도는 "부추를 뭐라고 부르세요?" 같은 어휘 질문과 "밥 먹었어?를 당신 말투로 하면?" 같은 말끝 질문 20개로, 당신의 말씨가 여덟 개 방언권(수도권·강원·충청·전북·전남광주·경북대구·경남부산울산·제주) 중 어디에 무게중심을 두는지 그려 보는 재미용 테스트입니다. 문항의 보기는 공개된 방언 연구에서 지역 변별력이 보고된 항목(부추/정구지/솔/소풀/세우리, 벼/나락, ~했어/~했나/~했슈 등)을 바탕으로 골랐고, 보기마다 권역별 상대 가중치를 매겨 나이브 베이즈 방식으로 확률 분포를 계산합니다. 결과는 한 지역을 단정하는 대신 17개 시도 타일 지도 위 히트맵으로 분포 전체를 보여 주며, 확신도가 낮으면 낮다고 그대로 말합니다. 서울에서 나고 자랐어도 부모님의 말씨가 답에 배어 나오는 것, 그게 이 테스트의 재미입니다. 모든 계산은 브라우저 안에서만 이루어지고 응답은 어디에도 전송·수집되지 않습니다.</p>
+<h3>이렇게 사용하세요</h3>
+<ol>
+<li>20개 문항에서 평소 입에 먼저 붙는 말을 고릅니다. 쓰는 말이 없으면 '이 중엔 없어요'를 고르면 됩니다.</li>
+<li>'내 말씨 지도 그리기'를 누르면 히트맵 지도와 권역별 확률, 가장 결정적이었던 답이 나옵니다.</li>
+<li>'이미지로 저장'으로 판정 카드를 받고, 링크·텍스트 복사로 친구에게 공유합니다.</li>
+<li>'답 고쳐서 다시 그리기'로 이전 답을 그대로 불러와 몇 개만 바꿔 재판정할 수 있습니다.</li>
+</ol>
+<h3>이럴 때 유용해요</h3>
+<ul>
+<li>고향이 다른 친구·연인·동료와 서로의 판정 카드를 비교하고 싶을 때</li>
+<li>"넌 말투에 사투리가 남아 있다"는 말을 검증(?)해 보고 싶을 때</li>
+<li>부모님 말씨가 내 말에 얼마나 배어 있는지 궁금할 때</li>
+<li>단톡방에서 지역별 어휘 차이("정구지가 뭐야?")로 수다 떨고 싶을 때</li>
+</ul>
+<details>
+<summary>문항 근거 보기 — 어떤 연구를 참고했나요?</summary>
+<p class="srcItem">문항의 어휘·어미 항목은 한국정신문화연구원(현 한국학중앙연구원) 「한국방언자료집」, 국립국어원 지역어 조사 보고서 및 방언 개론서들에서 지역 변별력이 널리 보고된 항목을 바탕으로 골랐습니다. 대표적으로 부추(정구지·솔·소풀·세우리), 벼(나락), 가위(가시개·가새), 옥수수(강냉이·옥시기), 의문어미 ~나/~노(동남), ~유/~슈(충청), ~언/~수다(제주), 부사 퍼뜩·싸게·어여·혼저 등이 그렇습니다.</p>
+<p class="srcItem">다만 각 보기의 권역별 가중치는 연구의 실측 분포가 아니라 통설을 단순화한 근사치이며, 방언 경계는 행정구역과 정확히 일치하지 않습니다. 그래서 이 테스트는 학술 판정이 아닌 재미용이고, 결과도 단정이 아닌 확률 분포로만 보여 줍니다.</p>
+</details>
+<h3>자주 묻는 질문</h3>
+<p><b>Q. 판정은 어떻게 이루어지나요?</b><br />보기마다 8개 권역별 상대 가중치가 매겨져 있고, 당신이 고른 답들의 가중치를 곱해(나이브 베이즈) 권역별 확률을 계산합니다. 최상위 1곳을 단정하지 않고 분포 전체를 히트맵으로 보여 줍니다.</p>
+<p><b>Q. 정답이나 지역 순위가 있나요?</b><br />없습니다. 어떤 답도 틀린 말이 아니며 지역 간 우열·순위 지표를 일부러 만들지 않았습니다. '표준어권에 가깝습니다'도 똑같이 정당한 결과입니다.</p>
+<p><b>Q. 내 답이 어딘가에 저장되나요?</b><br />아니요. 서버 없이 동작하는 정적 앱이라 응답이 어디에도 전송·수집되지 않습니다. 공유 링크의 ?r= 값에 답이 부호화되어 담기고, 링크를 연 브라우저가 같은 계산을 재현할 뿐입니다.</p>
+<p><b>Q. 결과가 실제 고향과 다르게 나와요.</b><br />자연스러운 일입니다. 이사·미디어·부모님 말씨의 영향으로 개인의 어휘는 여러 권역이 섞이기 마련이고, 표준어형을 주로 고르면 확신도가 낮은 수도권·표준어권 판정이 나옵니다. 이 테스트는 출신지 판별기가 아니라 말씨의 경향을 보는 놀이입니다.</p>
+<p class="disc">⚠️ 말씨 지도는 순전히 <b>재미용</b> 콘텐츠입니다. 판정은 어떤 학술적·행정적 사실 확인도 아니며, 특정 지역 말씨의 우열이나 '교정'을 뜻하지 않습니다. 모든 방언은 동등한 한국어입니다. 문항 근거는 널리 알려진 방언 연구의 통설을 단순화한 것으로 실제 분포와 다를 수 있습니다.</p>
+</section>
+
+<div class="rel">
+<a href="/saturigak/">🗺️ 사투리각</a>
+<a href="/meme-exam/">📝 밈력고사</a>
+<a href="/taste-dna/">🧬 취향DNA</a>
+<a href="/tone-lab/">🎭 말투연구소</a>
+<a href="/">🍅 전체 도구</a>
+</div>
+
+<footer>
+<a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+<div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<script>
+/*ENGINE-START*/
+// 권역 인덱스: 0수도권 1강원 2충청 3전북 4전남·광주 5경북·대구 6경남·부산·울산 7제주
+var REGIONS=["수도권","강원","충청","전북","전남·광주","경북·대구","경남·부산·울산","제주"];
+var REGIONS_SHORT=["수도권","강원","충청","전북","전남","경북","경남","제주"];
+// 사전확률: 인구 비례를 의도적으로 평탄화(수도권 쏠림 방지). 합=1.
+var PRIOR=[0.24,0.07,0.13,0.08,0.11,0.12,0.17,0.08];
+var FLOOR=0.05; // 가중치 스무딩(0 확률 방지)
+
+// 문항 은행. o[].w = 권역별 상대 가중치(위 인덱스 순). 첫 보기는 항상 표준어형.
+// 항목 선정 근거(src): 한국방언자료집·국립국어원 지역어 조사 등에서 변별력이 보고된 통설 항목.
+// 가중치는 실측 분포가 아닌 통설 단순화 근사치(재미용) — about 섹션에 명시.
+var BANK=[
+{k:"부추",cat:"어휘",q:"전 부칠 때 넣는 향 나는 초록 채소, 뭐라고 부르세요?",src:"부추/정구지/솔/소풀/세우리 — 대표적 지역 변별 어휘",o:[
+ {t:"부추",w:[1,.95,.7,.75,.7,.3,.25,.5]},
+ {t:"정구지",w:[.12,.25,.4,.08,.05,1,.95,.05]},
+ {t:"솔",w:[.03,.03,.08,.3,.9,.03,.1,.08]},
+ {t:"소풀",w:[.03,.03,.03,.05,.1,.08,.55,.08]},
+ {t:"세우리",w:[.02,.02,.02,.02,.03,.02,.02,.95]}]},
+{k:"옥수수",cat:"어휘",q:"여름에 쪄 먹는 노란 알갱이 작물은?",src:"옥수수/강냉이/옥시기 — 강원·경상권 변이형",o:[
+ {t:"옥수수",w:[1,.55,.85,.85,.85,.5,.5,.6]},
+ {t:"강냉이",w:[.3,.9,.5,.4,.4,.85,.85,.3]},
+ {t:"옥시기 · 옥수깽이",w:[.03,.85,.15,.05,.05,.1,.05,.03]}]},
+{k:"가위",cat:"어휘",q:"종이 자르는 도구, 입에서 먼저 나오는 말은?",src:"가위/가시개/가새 — 동남·서남 변이형",o:[
+ {t:"가위",w:[1,.9,.8,.75,.65,.45,.35,.45]},
+ {t:"가시개",w:[.03,.08,.06,.08,.08,.95,.95,.25]},
+ {t:"가새",w:[.06,.06,.45,.8,.9,.08,.08,.35]}]},
+{k:"밥 인사",cat:"말끝",q:"친구에게 밥 먹었는지 물을 때, 당신 말투는?",src:"의문어미 ~어/~나/~냐/~슈/~언 — 어미 변별 항목",o:[
+ {t:"밥 먹었어?",w:[1,.95,.6,.5,.45,.3,.28,.4]},
+ {t:"밥 뭇나? · 밥 먹었나?",w:[.12,.3,.1,.06,.06,1,1,.08]},
+ {t:"밥 먹었냐?",w:[.4,.25,.7,.95,.85,.15,.18,.15]},
+ {t:"밥 먹었슈?",w:[.03,.05,.95,.15,.06,.02,.02,.02]},
+ {t:"밥 먹언?",w:[.02,.02,.02,.02,.02,.02,.02,.95]}]},
+{k:"빨리",cat:"어휘",q:"'빨리 와!'를 당신 말로 하면?",src:"부사 퍼뜩(동남)·싸게(서남)·어여(중부)·혼저(제주)",o:[
+ {t:"빨리 와",w:[1,.9,.8,.7,.7,.6,.6,.6]},
+ {t:"퍼뜩 온나",w:[.15,.3,.15,.08,.08,.95,.95,.1]},
+ {t:"싸게 와",w:[.04,.04,.3,.95,.9,.04,.08,.15]},
+ {t:"어여 와",w:[.3,.4,.9,.35,.15,.08,.06,.04]},
+ {t:"혼저 오라",w:[.02,.02,.02,.02,.02,.02,.02,.95]}]},
+{k:"아주",cat:"어휘",q:"'아주 맛있다'를 강조할 때 먼저 나오는 말은?",src:"정도부사 억수로(경남)·겁나(서남)·하영(제주)",o:[
+ {t:"진짜 · 되게 맛있다",w:[1,.9,.8,.7,.6,.65,.6,.6]},
+ {t:"억수로 맛있다",w:[.12,.08,.08,.04,.05,.6,1,.05]},
+ {t:"겁나 맛있다",w:[.35,.12,.4,.95,.9,.08,.15,.1]},
+ {t:"허벌나게 맛있다",w:[.04,.02,.08,.55,.9,.02,.04,.04]},
+ {t:"하영 맛있다",w:[.02,.02,.02,.02,.02,.02,.02,.9]}]},
+{k:"할아버지",cat:"어휘",q:"할아버지를 부를 때 집에서 쓰는 말은?",src:"할배(동남·강원)·하르방(제주) — 친족어 변이",o:[
+ {t:"할아버지",w:[1,.9,.85,.85,.8,.5,.45,.4]},
+ {t:"할배",w:[.18,.55,.12,.08,.08,1,1,.08]},
+ {t:"할아부지 · 할부지",w:[.18,.2,.6,.7,.7,.3,.3,.1]},
+ {t:"하르방",w:[.02,.02,.02,.02,.02,.02,.02,.97]}]},
+{k:"벼",cat:"어휘",q:"가을 논에 익어 가는 곡식, 뭐라고 부르세요?",src:"벼/나락 — 남부·중부를 가르는 고전적 등어선",o:[
+ {t:"벼",w:[1,.95,.65,.45,.4,.45,.4,.4]},
+ {t:"나락",w:[.12,.3,.6,.95,.95,.95,.95,.55]}]},
+{k:"뭐 먹어",cat:"말끝",q:"친구가 뭘 먹고 있는지 물을 때?",src:"의문어미 ~노(동남 의문사 의문문)·~엄시니(제주)",o:[
+ {t:"뭐 먹어?",w:[1,.9,.7,.6,.6,.35,.3,.5]},
+ {t:"뭐 먹노?",w:[.04,.08,.04,.02,.02,.95,.95,.04]},
+ {t:"뭐 먹냐?",w:[.45,.3,.8,.9,.85,.15,.18,.15]},
+ {t:"뭐 먹니?",w:[.7,.6,.35,.25,.25,.15,.15,.15]},
+ {t:"뭐 먹엄시니?",w:[.02,.02,.02,.02,.02,.02,.02,.93]}]},
+{k:"동의 구하기",cat:"말끝",q:"'그렇지?' 하고 동의를 구할 때?",src:"확인 의문 ~그쟈(동남)·잉(서남)·그쥬(충청)",o:[
+ {t:"그치? · 그렇지?",w:[1,.9,.8,.7,.7,.5,.5,.5]},
+ {t:"안 그렇나? · 그쟈?",w:[.08,.12,.08,.04,.04,.9,.95,.08]},
+ {t:"잉? · 안 그냐?",w:[.06,.04,.35,.95,.9,.04,.08,.08]},
+ {t:"그쥬?",w:[.04,.08,.95,.25,.08,.02,.02,.02]},
+ {t:"안 그능교? · 그렇지예?",w:[.02,.03,.02,.02,.02,.95,.3,.02]},
+ {t:"기? · 게메",w:[.02,.02,.02,.02,.02,.02,.02,.9]}]},
+{k:"괜찮다",cat:"어휘",q:"'괜찮아'가 입에서 나올 때 가장 가까운 것은?",src:"개안타(동남)·갠찮여(충청)·괜찮수다(제주)",o:[
+ {t:"괜찮아",w:[1,.9,.8,.75,.7,.5,.5,.5]},
+ {t:"개안타 · 괘안타",w:[.08,.12,.04,.02,.02,1,1,.04]},
+ {t:"갠찮여 · 괜찮유",w:[.08,.08,.9,.55,.4,.04,.04,.04]},
+ {t:"괜찬허다 · 괜찬해야",w:[.04,.04,.25,.85,.85,.02,.04,.08]},
+ {t:"괜찮수다",w:[.02,.02,.02,.02,.02,.02,.02,.9]}]},
+{k:"엄마",cat:"어휘",q:"어른이 되어 어머니를 부를 때 먼저 나오는 말은?",src:"어무이(동남)·엄니(서남·충청)·어멍(제주) — 친족어",o:[
+ {t:"엄마 · 어머니",w:[1,.9,.8,.75,.7,.6,.6,.6]},
+ {t:"어무이 · 어무니",w:[.08,.3,.15,.12,.12,.9,.85,.08]},
+ {t:"엄니",w:[.08,.08,.6,.9,.9,.08,.08,.08]},
+ {t:"어멍",w:[.02,.02,.02,.02,.02,.02,.02,.95]}]},
+{k:"감자",cat:"어휘",q:"찐 감자의 그 '감자', 뭐라고 부르세요?",src:"제주 지실/지슬 — 감자·고구마 명칭 교차의 대표 사례",o:[
+ {t:"감자",w:[1,1,.95,.95,.9,.95,.95,.35]},
+ {t:"지실 · 지슬",w:[.02,.02,.02,.02,.02,.02,.02,.9]},
+ {t:"북감자",w:[.02,.03,.03,.08,.2,.03,.03,.45]}]},
+{k:"전",cat:"어휘",q:"명절에 기름 두르고 부치는 음식을 통틀어 뭐라고 하나요?",src:"전/부침개/찌짐 — 지짐(동남) 계열 변이",o:[
+ {t:"전",w:[1,.9,.8,.7,.6,.5,.5,.55]},
+ {t:"부침개",w:[.7,.8,.6,.5,.4,.45,.45,.3]},
+ {t:"지짐이 · 찌짐",w:[.08,.3,.15,.08,.12,.9,.9,.15]}]},
+{k:"놀람",cat:"감탄",q:"깜짝 놀랐을 때 튀어나오는 말은?",src:"워메(서남)·엄마야(동남)·메께라(제주) — 감탄사 변이",o:[
+ {t:"어머!",w:[.95,.9,.7,.6,.55,.4,.4,.4]},
+ {t:"엄마야!",w:[.55,.7,.5,.4,.4,.9,.9,.3]},
+ {t:"오매! · 워메!",w:[.04,.04,.25,.95,.95,.04,.04,.08]},
+ {t:"메께라!",w:[.01,.01,.01,.01,.01,.01,.01,.9]}]},
+{k:"~하잖아",cat:"말끝",q:"'아까 말했잖아'의 말끝, 당신은?",src:"~다 아이가(동남)·~잖유(충청)·~당께(서남)·~쭈(제주)",o:[
+ {t:"말했잖아",w:[1,.85,.6,.5,.5,.4,.4,.4]},
+ {t:"말했다 아이가",w:[.04,.08,.04,.02,.02,.95,.95,.04]},
+ {t:"말했잖소 · 말했드래요",w:[.03,.9,.05,.02,.02,.05,.04,.02]},
+ {t:"말했잖여 · 말했잖유",w:[.08,.08,.9,.45,.25,.04,.04,.02]},
+ {t:"말했당께",w:[.02,.02,.15,.9,.85,.02,.04,.04]},
+ {t:"말해서('말햄쭈')",w:[.01,.01,.01,.01,.01,.01,.01,.9]}]},
+{k:"맞장구",cat:"어휘",q:"상대 말이 맞을 때 치는 맞장구는?",src:"하모(경남)·기여(충청)·그라제(서남) — 응답사 변이",o:[
+ {t:"맞아",w:[1,.9,.8,.7,.7,.6,.6,.6]},
+ {t:"하모 · 하무",w:[.03,.04,.03,.02,.04,.4,.95,.04]},
+ {t:"기여 · 겨",w:[.04,.04,.9,.65,.35,.02,.02,.08]},
+ {t:"그라제 · 그르제",w:[.02,.02,.08,.8,.9,.04,.08,.04]},
+ {t:"맞수다",w:[.02,.02,.02,.02,.02,.02,.02,.9]}]},
+{k:"~하니까",cat:"말끝",q:"'바쁘니까 나중에 전화할게'의 '~니까'는?",src:"연결어미 ~께(중서부)·~응께(서남)·~카이(동남)·~난(제주)",o:[
+ {t:"바쁘니까",w:[1,.9,.7,.6,.5,.4,.4,.5]},
+ {t:"바쁘니께",w:[.04,.08,.85,.7,.55,.04,.04,.04]},
+ {t:"바쁭께 · 바쁘닝께",w:[.02,.02,.12,.9,.9,.02,.04,.04]},
+ {t:"바쁘다 카이 · 바쁘이까네",w:[.03,.04,.03,.02,.02,.9,.9,.03]},
+ {t:"바쁘난",w:[.01,.01,.01,.01,.01,.01,.01,.9]}]},
+{k:"감사 인사",cat:"말끝",q:"어른께 고마움을 전할 때 가장 가까운 말은?",src:"~심더(동남)·~유(충청)·~라잉(서남)·~수다(제주)",o:[
+ {t:"고맙습니다",w:[1,.9,.8,.75,.75,.6,.6,.5]},
+ {t:"고맙심더 · 고맙데이",w:[.04,.04,.04,.02,.02,.9,.95,.03]},
+ {t:"고마워유",w:[.04,.06,.9,.25,.12,.02,.02,.02]},
+ {t:"고맙구먼 · 고마워라(잉)",w:[.02,.02,.1,.8,.85,.02,.04,.04]},
+ {t:"고맙니더 · 고맙시더",w:[.02,.02,.02,.02,.02,.92,.3,.02]},
+ {t:"고맙수다",w:[.01,.01,.01,.01,.01,.01,.01,.92]}]},
+{k:"주변 평가",cat:"자기보고",q:"처음 만난 사람이 당신 말투를 들으면 뭐라고 하나요?",src:"자기보고 억양 문항 — 판정 보조용",o:[
+ {t:"거의 표준어 같다고 한다",w:[.95,.55,.45,.3,.28,.12,.12,.2]},
+ {t:"억양이 좀 있다고 한다",w:[.3,.6,.6,.7,.7,.8,.8,.7]},
+ {t:"딱 들어도 사투리라고 한다",w:[.05,.2,.3,.55,.6,.95,.95,.8]}]}
+];
+
+// 17개 시도 타일 카르토그램(열,행,권역 인덱스)
+var TILES=[
+ {n:"경기",c:1,r:0,g:0},{n:"강원",c:2,r:0,g:1},
+ {n:"인천",c:0,r:1,g:0},{n:"서울",c:1,r:1,g:0},{n:"충북",c:2,r:1,g:2},
+ {n:"충남",c:0,r:2,g:2},{n:"세종",c:1,r:2,g:2},{n:"경북",c:2,r:2,g:5},
+ {n:"전북",c:0,r:3,g:3},{n:"대전",c:1,r:3,g:2},{n:"대구",c:2,r:3,g:5},
+ {n:"광주",c:0,r:4,g:4},{n:"경남",c:1,r:4,g:6},{n:"울산",c:2,r:4,g:6},
+ {n:"전남",c:0,r:5,g:4},{n:"부산",c:1,r:5,g:6},
+ {n:"제주",c:0,r:6,g:7}
+];
+
+// answers[qi]: 보기 인덱스, o.length = "이 중엔 없어요/모르겠어요"(정보 없음), -1 = 무응답
+function judge(answers){
+  var lg=PRIOR.map(function(p){return Math.log(p);});
+  for(var qi=0;qi<BANK.length;qi++){
+    var ai=answers[qi];var q=BANK[qi];
+    if(ai<0||ai>=q.o.length)continue; // 모름/무응답 → 정보 없음
+    var w=q.o[ai].w;
+    for(var r=0;r<8;r++)lg[r]+=Math.log(w[r]+FLOOR);
+  }
+  var mx=Math.max.apply(null,lg);
+  var ex=lg.map(function(v){return Math.exp(v-mx);});
+  var sum=ex.reduce(function(a,b){return a+b;},0);
+  var probs=ex.map(function(v){return v/sum;});
+  var order=probs.map(function(p,i){return i;}).sort(function(a,b){return probs[b]-probs[a];});
+  var top=order[0];
+  // 결정적 답: 상위 권역 대비 나머지 평균의 로그비 기여가 큰 답 2개
+  var decisive=[];
+  for(var qj=0;qj<BANK.length;qj++){
+    var aj=answers[qj];var qq=BANK[qj];
+    if(aj<0||aj>=qq.o.length)continue;
+    var ww=qq.o[aj].w;var others=0;
+    for(var r2=0;r2<8;r2++)if(r2!==top)others+=ww[r2]+FLOOR;
+    var contrib=Math.log((ww[top]+FLOOR)/(others/7));
+    if(contrib>0.15)decisive.push({q:qq.k,a:qq.o[aj].t,c:contrib});
+  }
+  decisive.sort(function(a,b){return b.c-a.c;});
+  // 표준어형(첫 보기) 선택 수 — 표준어권 판정 근거
+  var stdCnt=0,answered=0;
+  for(var qk=0;qk<BANK.length;qk++){
+    if(answers[qk]<0)continue;
+    if(answers[qk]<BANK[qk].o.length)answered++;
+    if(answers[qk]===0)stdCnt++;
+  }
+  return{probs:probs,order:order,top:top,decisive:decisive.slice(0,2),stdCnt:stdCnt,answered:answered};
+}
+function confLevel(p1){return p1>=0.35?2:(p1>=0.22?1:0);}
+function confText(p1){
+  var lv=confLevel(p1);
+  if(lv===2)return "확신도 높음 — 분포가 뚜렷하게 한쪽으로 기울어요";
+  if(lv===1)return "확신도 보통 — 경향은 있지만 단정할 정도는 아니에요";
+  return "확신도 낮음 — 여러 권역 특징이 섞여 있거나 표준어형에 가까워요";
+}
+function verdictOf(res){
+  var t=res.top,p1=res.probs[t];
+  if(res.stdCnt>=15)return "당신의 말씨는 표준어권에 가깝습니다. 그래도 몇몇 답에는 "+REGIONS[t]+" 쪽 흔적이 살짝 남아 있네요. 물론 이것도 완전히 정당한 결과입니다.";
+  if(confLevel(p1)===0)return "무게중심을 한 곳으로 말하기 어려운, 여러 권역이 섞인 말씨입니다. 이사·미디어·가족의 말씨가 겹치면 자연스럽게 이렇게 나옵니다.";
+  return "당신 말씨의 무게중심은 "+REGIONS[t]+" 언저리에 있습니다. 단정이 아니라 확률이에요 — 지도의 색 번짐이 당신 말의 이력서입니다.";
+}
+/*ENGINE-END*/
+
+(function(){
+if(typeof document==="undefined")return; // node 검증용 가드
+var $=function(id){return document.getElementById(id);};
+var N=BANK.length;
+var state={answers:new Array(N).fill(-1)};
+var lastResult=null;
+
+function encodeR(){
+  var json=JSON.stringify({v:1,a:state.answers});
+  return btoa(unescape(encodeURIComponent(json))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function decodeR(str){
+  try{
+    var b=str.replace(/-/g,"+").replace(/_/g,"/");while(b.length%4)b+="=";
+    var o=JSON.parse(decodeURIComponent(escape(atob(b))));
+    if(o&&o.v===1&&Array.isArray(o.a)&&o.a.length===N&&o.a.every(function(v){return typeof v==="number"&&v>=-1&&v<=6;}))return o;
+  }catch(e){}
+  return null;
+}
+function resultUrl(){return location.origin+location.pathname+"?r="+encodeR();}
+
+function renderQuestions(){
+  var box=$("qList");box.innerHTML="";
+  BANK.forEach(function(q,qi){
+    var card=document.createElement("div");card.className="qcard";
+    var top=document.createElement("div");top.className="qtop";
+    top.innerHTML='<span class="qnum">'+(qi+1)+'.</span><span class="qtext"></span><span class="tags"><span class="tag">'+q.cat+'</span></span>';
+    top.querySelector(".qtext").textContent=q.q;
+    card.appendChild(top);
+    var opts=document.createElement("div");opts.className="opts";
+    var labels=q.o.map(function(o){return o.t;}).concat(["이 중엔 없어요 · 모르겠어요"]);
+    labels.forEach(function(txt,ci){
+      var b=document.createElement("button");b.type="button";
+      b.className="opt"+(ci===q.o.length?" mute":"")+(state.answers[qi]===ci?" on":"");
+      b.textContent=txt;
+      b.addEventListener("click",function(){
+        state.answers[qi]=ci;
+        opts.querySelectorAll(".opt").forEach(function(o,k){o.classList.toggle("on",k===ci);});
+        updateCnt();
+      });
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);box.appendChild(card);
+  });
+}
+function updateCnt(){
+  var n=state.answers.filter(function(a){return a>=0;}).length;
+  $("ansCnt").textContent=n;
+  var btn=$("submitBtn");
+  btn.disabled=n<N;
+  btn.textContent=n<N?(N-n)+"문항 남음":"내 말씨 지도 그리기";
+}
+
+/* ---------- 타일 히트맵(SVG) ---------- */
+function heatColor(p,maxP){
+  var a=0.08+0.85*(maxP>0?p/maxP:0);
+  return "rgba(251,146,60,"+a.toFixed(3)+")";
+}
+function renderMap(probs){
+  var cell=52,gap=5,pad=2;
+  var W=3*cell+2*gap+pad*2,H=7*cell+6*gap+pad*2+10;
+  var maxP=Math.max.apply(null,probs);
+  var s='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="권역별 확률 히트맵 타일 지도">';
+  TILES.forEach(function(t){
+    var x=pad+t.c*(cell+gap),y=pad+t.r*(cell+gap);
+    if(t.n==="제주")y+=10; // 섬 분리감
+    s+='<rect x="'+x+'" y="'+y+'" width="'+cell+'" height="'+cell+'" rx="9" fill="'+heatColor(probs[t.g],maxP)+'" stroke="rgba(253,186,116,.35)" stroke-width="1"/>';
+    s+='<text x="'+(x+cell/2)+'" y="'+(y+cell/2+4)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#fff7ed">'+t.n+'</text>';
+  });
+  s+='</svg>';
+  $("mapBox").innerHTML=s;
+}
+
+function showResult(pushUrl){
+  var res=judge(state.answers);lastResult=res;
+  renderMap(res.probs);
+  var t=res.top;
+  $("rTop").textContent=(res.stdCnt>=15?"표준어권 ("+REGIONS_SHORT[t]+" 흔적)":REGIONS[t]);
+  $("rConf").textContent=confText(res.probs[t]);
+  var db=$("rDist");db.innerHTML="";
+  res.order.slice(0,3).forEach(function(ri){
+    var pct=Math.round(res.probs[ri]*100);
+    var row=document.createElement("div");row.className="drow";
+    row.innerHTML='<span>'+REGIONS_SHORT[ri]+'</span><span class="bar"><i style="width:'+pct+'%"></i></span><span>'+pct+'%</span>';
+    db.appendChild(row);
+  });
+  var dc=$("rDecis");
+  if(res.decisive.length){
+    dc.style.display="block";
+    dc.innerHTML="가장 결정적이었던 답: "+res.decisive.map(function(d){return "<b>"+d.q+" → "+d.a+"</b>";}).join(" · ");
+  }else{
+    dc.style.display="block";
+    dc.innerHTML="결정적인 답 없음 — 답들이 고르게 퍼져 있어요. 그것도 하나의 말씨입니다.";
+  }
+  $("rVerdict").textContent=verdictOf(res);
+  $("quizSec").classList.add("hide");
+  $("resultSec").style.display="block";
+  if(pushUrl)history.replaceState(null,"",location.pathname+"?r="+encodeURIComponent(encodeR()));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function backToQuiz(prefill){
+  if(!prefill)state.answers=new Array(N).fill(-1);
+  renderQuestions();
+  $("quizSec").classList.remove("hide");
+  $("resultSec").style.display="none";
+  updateCnt();
+  history.replaceState(null,"",location.pathname);
+  document.querySelector(".quizHead").scrollIntoView({behavior:"smooth"});
+}
+
+/* ---------- 캔버스 판정 카드 ---------- */
+function wrapText(ctx,text,x,y,maxW,lh){
+  var words=text.split(" ");var line="";
+  words.forEach(function(w){
+    var test=line?line+" "+w:w;
+    if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line,x,y);y+=lh;line=w;}
+    else line=test;
+  });
+  if(line)ctx.fillText(line,x,y);
+  return y;
+}
+function roundRect(x,px,py,w,h,rr){
+  x.beginPath();x.moveTo(px+rr,py);x.arcTo(px+w,py,px+w,py+h,rr);x.arcTo(px+w,py+h,px,py+h,rr);x.arcTo(px,py+h,px,py,rr);x.arcTo(px,py,px+w,py,rr);x.closePath();
+}
+function drawCard(){
+  var res=lastResult;if(!res)return null;
+  var W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+  var x=cv.getContext("2d");
+  var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#2a1005");g.addColorStop(.55,"#5c2510");g.addColorStop(1,"#7c2d12");
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.strokeStyle="rgba(253,186,116,.5)";x.lineWidth=6;x.strokeRect(28,28,W-56,H-56);
+  x.strokeStyle="rgba(253,186,116,.25)";x.lineWidth=2;x.strokeRect(44,44,W-88,H-88);
+  var F='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.textAlign="center";
+  x.fillStyle="#fdba74";x.font="700 30px "+F;x.fillText("T O M A T O E G G C A T   말 씨   판 정   카 드",W/2,116);
+  x.fillStyle="#ffffff";x.font="900 80px "+F;x.fillText("나의 사투리 히트맵",W/2,212);
+  x.strokeStyle="rgba(253,186,116,.35)";x.beginPath();x.moveTo(90,250);x.lineTo(W-90,250);x.stroke();
+  // 타일 지도(좌)
+  var cell=104,gap=10,ox=110,oy=300;
+  var maxP=Math.max.apply(null,res.probs);
+  TILES.forEach(function(t){
+    var px=ox+t.c*(cell+gap),py=oy+t.r*(cell+gap);
+    if(t.n==="제주")py+=18;
+    x.fillStyle=heatColor(res.probs[t.g],maxP);
+    roundRect(x,px,py,cell,cell,16);x.fill();
+    x.strokeStyle="rgba(253,186,116,.35)";x.lineWidth=2;roundRect(x,px,py,cell,cell,16);x.stroke();
+    x.fillStyle="#fff7ed";x.font="700 26px "+F;x.fillText(t.n,px+cell/2,py+cell/2+9);
+  });
+  // 우측: 무게중심 + 상위 3
+  var rx=560,t=res.top;
+  x.textAlign="left";
+  x.fillStyle="#fed7aa";x.font="700 30px "+F;x.fillText("말씨의 무게중심",rx,350);
+  x.fillStyle="#ffffff";x.font="900 58px "+F;
+  wrapText(x,res.stdCnt>=15?"표준어권":REGIONS[t],rx,418,W-rx-90,64);
+  x.fillStyle="#fdba74";x.font="600 26px "+F;
+  wrapText(x,confText(res.probs[t]),rx,510,W-rx-90,34);
+  var by=620,bw=340;
+  res.order.slice(0,3).forEach(function(ri){
+    var pct=Math.round(res.probs[ri]*100);
+    x.fillStyle="#ffedd5";x.font="700 28px "+F;x.fillText(REGIONS_SHORT[ri],rx,by+8);
+    x.fillStyle="rgba(255,255,255,.16)";roundRect(x,rx,by+20,bw,24,12);x.fill();
+    var grad=x.createLinearGradient(rx,0,rx+bw,0);grad.addColorStop(0,"#fb923c");grad.addColorStop(1,"#fbbf24");
+    x.fillStyle=grad;
+    roundRect(x,rx,by+20,Math.max(24,bw*pct/100),24,12);x.fill();
+    x.fillStyle="#ffffff";x.font="800 26px "+F;x.fillText(pct+"%",rx+bw+18,by+42);
+    by+=92;
+  });
+  // 결정적 답
+  x.fillStyle="rgba(0,0,0,.3)";roundRect(x,90,1010,W-180,130,20);x.fill();
+  x.strokeStyle="rgba(253,186,116,.4)";x.lineWidth=2;roundRect(x,90,1010,W-180,130,20);x.stroke();
+  x.fillStyle="#fdba74";x.font="700 26px "+F;x.fillText("가장 결정적이었던 답",120,1054);
+  x.fillStyle="#fff7ed";x.font="700 30px "+F;
+  var dtext=res.decisive.length?res.decisive.map(function(d){return d.q+" → "+d.a;}).join("  ·  "):"답들이 고르게 퍼진, 섞인 말씨";
+  wrapText(x,dtext,120,1098,W-240,40);
+  // 판정
+  x.fillStyle="#ffedd5";x.font="600 27px "+F;
+  wrapText(x,verdictOf(res),90,1198,W-180,38);
+  // 워터마크
+  x.textAlign="right";x.fillStyle="rgba(255,237,213,.85)";x.font="700 28px "+F;
+  x.fillText("tomatoeggcat.com/malssi",W-70,H-70);
+  return cv;
+}
+
+/* ---------- 공유 ---------- */
+function shareText(){
+  var res=lastResult,t=res.top;
+  var head=res.stdCnt>=15?"표준어권":REGIONS[t];
+  var pct=Math.round(res.probs[t]*100);
+  var dec=res.decisive.length?"\n결정적이었던 답: "+res.decisive.map(function(d){return d.q+"→"+d.a;}).join(", "):"";
+  return "🗣️ 말씨 지도 — 내 말씨의 무게중심: "+head+" ("+pct+"%)"+dec+"\n정답도 순위도 없는 사투리 히트맵, 나도 해보기 → "+resultUrl();
+}
+function flash(btn,msg){var t=btn.textContent;btn.textContent=msg;setTimeout(function(){btn.textContent=t;},1400);}
+function copy(str,btn){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(str).then(function(){flash(btn,"✅ 복사 완료");},function(){fallbackCopy(str,btn);});}
+  else fallbackCopy(str,btn);
+}
+function fallbackCopy(str,btn){
+  var ta=document.createElement("textarea");ta.value=str;document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");flash(btn,"✅ 복사 완료");}catch(e){flash(btn,"복사 실패");}
+  document.body.removeChild(ta);
+}
+
+/* ---------- 이벤트 ---------- */
+$("submitBtn").addEventListener("click",function(){
+  if(state.answers.some(function(a){return a<0;}))return;
+  showResult(true);
+});
+$("saveBtn").addEventListener("click",function(){
+  var cv=drawCard();if(!cv)return;
+  var top=lastResult.stdCnt>=15?"standard":REGIONS_SHORT[lastResult.top];
+  var a=document.createElement("a");
+  a.download="malssi-"+top+".png";
+  a.href=cv.toDataURL("image/png");a.click();
+});
+$("linkBtn").addEventListener("click",function(){copy(resultUrl(),this);});
+$("txtBtn").addEventListener("click",function(){copy(shareText(),this);});
+$("xBtn").addEventListener("click",function(){
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText()),"_blank","noopener");
+});
+$("thBtn").addEventListener("click",function(){
+  window.open("https://www.threads.net/intent/post?text="+encodeURIComponent(shareText()),"_blank","noopener");
+});
+$("natBtn").addEventListener("click",function(){
+  if(navigator.share){navigator.share({title:"말씨 지도",text:shareText(),url:resultUrl()}).catch(function(){});}
+  else copy(resultUrl(),this);
+});
+$("remixBtn").addEventListener("click",function(){backToQuiz(true);});   // 리믹스: 이전 답 프리필
+$("resetBtn").addEventListener("click",function(){backToQuiz(false);});
+$("inboundBtn").addEventListener("click",function(){
+  $("inbound").classList.remove("show");
+  backToQuiz(false);
+});
+
+/* ---------- 초기화 ---------- */
+var rParam=new URLSearchParams(location.search).get("r");
+var shared=rParam?decodeR(rParam):null;
+if(shared&&shared.a.every(function(v){return v>=0;})){
+  state.answers=shared.a.slice();
+  renderQuestions();
+  showResult(false);
+  $("inbound").classList.add("show");
+}else{
+  renderQuestions();
+  updateCnt();
+}
+})();
+</script>
+</body>
+</html>
