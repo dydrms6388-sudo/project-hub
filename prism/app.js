@@ -23,7 +23,7 @@
     chats: {},   // pid -> [{who,t,at}]
     votes: {},
     lastSwipe: null,
-    settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 },
+    settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0, lang: "ko" },
     filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" },
     stats: { likesSent: 0, matches: 0 },
     items: { teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 },
@@ -59,7 +59,7 @@
   S.battle = Object.assign({ day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 }, S.battle || {});
   S.balance = S.balance || {};
   S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
-  S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
+  S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0, lang: "ko" }, S.settings || {});
   S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" }, S.filters || {});
   if (S.filters.ageMax === 45) S.filters.ageMax = 50; // 구버전 기본값 승격
   S.stats = Object.assign({ likesSent: 0, matches: 0 }, S.stats || {});
@@ -77,6 +77,59 @@
     // localStorage 초과(사진 과다) 시 안내
     toast && toast("⚠️ 저장 공간이 가득 찼어요. 사진 수를 줄여주세요");
   } };
+
+  /* ══ 다국어 (i18n) — 한국어 원문 → 영어 사전, 미번역 문자열은 한국어 폴백 ══ */
+  const I18N_EN = {
+    // 탭 · 상단
+    "둘러보기": "Discover", "좋아요": "Likes", "채팅": "Chats", "라운지": "Lounge", "카드": "Cards",
+    "아이템 상점": "Item Shop", "프리미엄": "Premium", "프로필": "Profile", "무료": "Free",
+    // 웰컴
+    "나를 숨기지 않는 만남 — 게이·바이·퀴어 남성 모두 환영": "Dating without hiding — all gay, bi & queer men welcome",
+    "시작하기": "Get Started",
+    "기본 무료 · 가입 없이 이 기기에서 바로 · 19세 이상": "Free · No sign-up, runs on this device · 19+",
+    "본 서비스는 데모 버전으로, 등장하는 프로필은 모두 가상 인물입니다.": "This is a demo — all profiles are fictional.",
+    // 디스커버
+    "필터": "Filter", "패스": "Pass", "슈퍼": "Super", "되돌리기": "Rewind", "부스트": "Boost",
+    "오늘 좋아요": "Likes today", "슈퍼라이크": "Super Likes", "무제한": "Unlimited",
+    "탐색 필터": "Discovery Filters", "적용하기": "Apply", "초기화": "Reset",
+    // 섹션 헤더
+    "받은 좋아요": "Likes You", "크러시 카드 도감": "Crush Card Collection",
+    "만남 전에, 가볍게 서로를 알아가는 공간": "A light space to get to know each other first",
+    "매치된 사람들과의 대화": "Conversations with your matches",
+    // 게임
+    "데일리 룰렛": "Daily Roulette", "매력 배틀": "Charm Battle", "이상형 월드컵": "Ideal-Type World Cup",
+    "무료 뽑기": "Free pull", "10연챠": "10-Pull",
+    // MY 메뉴
+    "프로필 수정": "Edit Profile", "프로필 인증하기": "Verify Profile", "홈 화면에 앱 설치": "Install App",
+    "글자 크기": "Font Size", "앱 잠금 (PIN)": "App Lock (PIN)", "화면 이탈 시 즉시 잠금": "Lock instantly on leave",
+    "위장 제목 항상 사용": "Always disguise title", "거리 숨기기": "Hide distance",
+    "프라이빗 모드 (새 노출 중단)": "Private mode (pause exposure)", "안전 센터": "Safety Center",
+    "차단 목록": "Blocked Users", "데이터 초기화 (계정 삭제)": "Reset Data (delete account)",
+    "언어": "Language", "프라이버시 · 안전": "Privacy · Safety",
+    "무료 플랜 이용 중": "On the Free plan", "플랜 관리": "Manage Plan",
+    "프로필 완성도": "Profile Completion",
+    "인증됨 ✔︎": "Verified ✔︎", "미인증": "Not verified", "사용 중": "On", "꺼짐": "Off",
+    // 공용 버튼
+    "닫기": "Close", "확인": "OK", "취소": "Cancel", "저장": "Save", "다음": "Next", "다음에": "Later",
+  };
+  const curLang = () => (S.settings && S.settings.lang) || "ko";
+  const t = (s) => curLang() === "en" ? (I18N_EN[s] || s) : s;
+  /* 정적 화면(웰컴·탭바) 텍스트 재도색 */
+  function paintStatic() {
+    const TAB_LB = { discover: "둘러보기", likes: "좋아요", chats: "채팅", community: "라운지", cards: "카드", my: "MY" };
+    $$("#tabbar .tab").forEach((b) => { const lb = $(".t-lb", b); if (lb) lb.textContent = t(TAB_LB[b.dataset.tab] || lb.textContent); });
+    const wt = $(".w-tag"); if (wt) wt.textContent = t("나를 숨기지 않는 만남 — 게이·바이·퀴어 남성 모두 환영");
+    const bs = $("#btn-start"); if (bs) bs.textContent = t("시작하기");
+    const wn = $(".w-note"); if (wn) wn.textContent = t("기본 무료 · 가입 없이 이 기기에서 바로 · 19세 이상");
+    const wd = $(".w-demo"); if (wd) wd.textContent = t("본 서비스는 데모 버전으로, 등장하는 프로필은 모두 가상 인물입니다.");
+    if (curLang() === "en") {
+      const FE = [["Anti-outing by design", "PIN lock · stealth mode · everything stays on this device"],
+        ["Taste-based matching", "Compatibility scored by interests, distance & activity"],
+        ["Easy first conversations", "Icebreaker prompts the moment you match"],
+        ["Safety Center", "One-tap block & report, queer dating safety guide"]];
+      $$(".w-feats li").forEach((li, i) => { if (FE[i]) { const b = $("b", li), s = $("small", li); if (b) b.textContent = FE[i][0]; if (s) s.textContent = FE[i][1]; } });
+    }
+  }
 
   const PLANS = {
     free:  { label: "무료",        likes: 20, supers: 1, seeLikes: false, rewind: 1,        boost: 0, ads: true,  read: false },
@@ -614,7 +667,7 @@
   }
   function paintTopbar() {
     const b = $("#btn-premium-badge");
-    b.textContent = plan().label;
+    b.textContent = t(plan().label);
     b.className = "tb-premium" + (S.premium.plan === "plus" ? " plus" : S.premium.plan === "black" ? " black" : "");
   }
   function badges() {
@@ -669,18 +722,18 @@
     const F = S.filters;
     const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all" || (F.position && F.position !== "all");
     $("#view").innerHTML = `<div class="disc">
-      <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ 필터${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
+      <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ ${t("필터")}${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
       <div class="deck" id="deck"></div>
       <div class="actions">
-        <div class="act-w"><button class="act md rew" id="a-rew" aria-label="마지막 카드 되돌리기">↩${rewindLeft() > 0 ? "" : '<span class="lock">🔒</span>'}</button><small>되돌리기</small></div>
-        <div class="act-w"><button class="act lg nope" id="a-nope" aria-label="패스">✕</button><small>패스</small></div>
-        <div class="act-w"><button class="act md sup" id="a-sup" aria-label="슈퍼라이크 보내기">⭐</button><small>슈퍼</small></div>
-        <div class="act-w"><button class="act lg like" id="a-like" aria-label="좋아요 보내기">💜</button><small>좋아요</small></div>
-        <div class="act-w"><button class="act md boost" id="a-boost" aria-label="부스트 사용">🚀${plan().boost || S.items.boostticket ? "" : '<span class="lock">🔒</span>'}</button><small>부스트</small></div>
+        <div class="act-w"><button class="act md rew" id="a-rew" aria-label="마지막 카드 되돌리기">↩${rewindLeft() > 0 ? "" : '<span class="lock">🔒</span>'}</button><small>${t("되돌리기")}</small></div>
+        <div class="act-w"><button class="act lg nope" id="a-nope" aria-label="패스">✕</button><small>${t("패스")}</small></div>
+        <div class="act-w"><button class="act md sup" id="a-sup" aria-label="슈퍼라이크 보내기">⭐</button><small>${t("슈퍼")}</small></div>
+        <div class="act-w"><button class="act lg like" id="a-like" aria-label="좋아요 보내기">💜</button><small>${t("좋아요")}</small></div>
+        <div class="act-w"><button class="act md boost" id="a-boost" aria-label="부스트 사용">🚀${plan().boost || S.items.boostticket ? "" : '<span class="lock">🔒</span>'}</button><small>${t("부스트")}</small></div>
       </div>
       <div class="quota">${likeLimit() === Infinity
-        ? `<span>💜 좋아요 <b>무제한</b></span>` : `<span>오늘 좋아요 <b>${Math.max(0, likeLimit() - S.likesUsed)}</b>/${likeLimit()}${cardLikeBonus() ? ` <i class="buff" title="카드 버프">+${cardLikeBonus()}🎴</i>` : ""}</span>`}
-        <span>⭐ 슈퍼라이크 <b>${Math.max(0, superLimit() - S.supersUsed)}</b>/${superLimit()}${S.items.superlike ? ` <i class="buff">+${S.items.superlike}📦</i>` : ""}</span></div>
+        ? `<span>💜 ${t("좋아요")} <b>${t("무제한")}</b></span>` : `<span>${t("오늘 좋아요")} <b>${Math.max(0, likeLimit() - S.likesUsed)}</b>/${likeLimit()}${cardLikeBonus() ? ` <i class="buff" title="카드 버프">+${cardLikeBonus()}🎴</i>` : ""}</span>`}
+        <span>⭐ ${t("슈퍼라이크")} <b>${Math.max(0, superLimit() - S.supersUsed)}</b>/${superLimit()}${S.items.superlike ? ` <i class="buff">+${S.items.superlike}📦</i>` : ""}</span></div>
       ${adSlot()}</div>`;
     paintDeck();
     $("#a-nope").onclick = () => swipeTop("nope");
@@ -692,7 +745,7 @@
   }
   function filterSheet() {
     const F = S.filters;
-    const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 4px">탐색 필터</h3>
+    const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 4px">${t("탐색 필터")}</h3>
       <p class="muted" style="font-size:13px;margin:0 0 16px">원하는 조건의 사람만 보여드려요. 필터는 전 플랜 무료.</p>
       <div class="ob-field"><label>나이 — <b id="fv-age">${F.ageMin}~${F.ageMax >= 50 ? "50+" : F.ageMax + "세"}</b></label>
         <div style="display:flex;gap:12px;align-items:center">
@@ -711,8 +764,8 @@
         <button class="chip ${F.looking === "all" ? "on" : ""}" data-look="all">전체</button>
         ${LOOKING.map((l) => `<button class="chip ${F.looking === l ? "on" : ""}" data-look="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
       <div class="row" style="display:flex;gap:9px">
-        <button class="btn-ghost" style="flex:1" id="f-reset">초기화</button>
-        <button class="btn-grad" style="flex:2" id="f-apply">적용하기</button></div></div>`);
+        <button class="btn-ghost" style="flex:1" id="f-reset">${t("초기화")}</button>
+        <button class="btn-grad" style="flex:2" id="f-apply">${t("적용하기")}</button></div></div>`);
     const amin = $("#f-amin", m), amax = $("#f-amax", m);
     const sync = () => {
       if (+amin.value > +amax.value) amax.value = amin.value;
@@ -958,7 +1011,7 @@
     const sh = sharedTags(p);
     const o = document.createElement("div");
     o.className = "ovl";
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">프로필</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">${t("프로필")}</span></div>
       <div class="ovl-body">
         <div class="pd-hero" style="background:linear-gradient(150deg,${p.grad[0]},${p.grad[1]})"><span class="em">${p.emoji}</span><div class="veil"></div></div>
         <div class="pd-body">
@@ -1054,7 +1107,7 @@
       }
     }
     const freePid = !can && S.freeReveal ? S.freeReveal.pid : null;
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">받은 좋아요 ${list.length ? `<span style="color:var(--pink)">${list.length}</span>` : ""}</div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("받은 좋아요")} ${list.length ? `<span style="color:var(--pink)">${list.length}</span>` : ""}</div>
       <p class="sec-sub">${can ? "나를 좋아요한 사람들이에요. 탭해서 확인하고 바로 매치하세요." : "매일 1명은 무료로 공개! 나머지는 PRISM+에서 바로 확인해요."}</p>
       ${S.settings.privateMode ? `<p class="tiny" style="margin:4px 0 0">🕶️ 프라이빗 모드 중 — 새로운 노출·좋아요 유입이 멈춰 있어요.</p>` : ""}
       <p class="tiny" style="margin:4px 0 0">데모 안내: 가상 프로필의 반응이에요. 정식 버전에서는 실제 사용자만 표시됩니다.</p></div>
@@ -1082,8 +1135,8 @@
     const ms = S.matches.slice().sort((a, b) => lastMsgAt(b) - lastMsgAt(a));
     const fresh = ms.filter((m) => !(S.chats[m.pid] || []).some((x) => x.who !== "sys"));
     const convs = ms.filter((m) => (S.chats[m.pid] || []).some((x) => x.who !== "sys"));
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">채팅</div>
-      <p class="sec-sub">매치된 사람들과의 대화</p></div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("채팅")}</div>
+      <p class="sec-sub">${t("매치된 사람들과의 대화")}</p></div>
       ${fresh.length ? `<div style="padding:0 16px 4px"><h4 class="tiny" style="margin:0 0 8px;letter-spacing:.5px">새로운 매치 ✨</h4></div>
       <div class="new-matches">${fresh.map((m) => { const p = P(m.pid); return p ? `
         <button class="nm-item unread" data-pid="${p.id}">
@@ -1293,8 +1346,8 @@
     const voted = S.votes[idx] !== undefined;
     const dist = q ? voteDist(idx, q.options.length) : [];
     const total = dist.reduce((a, b) => a + b, 0) + (voted ? 1 : 0);
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">라운지</div>
-      <p class="sec-sub">만남 전에, 가볍게 서로를 알아가는 공간</p></div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("라운지")}</div>
+      <p class="sec-sub">${t("만남 전에, 가볍게 서로를 알아가는 공간")}</p></div>
       ${q ? `<div class="dq-card"><div class="dq-tag">오늘의 질문 · ${new Date().getMonth() + 1}/${new Date().getDate()}</div>
         <h3>${esc(q.q)}</h3>
         ${q.options.map((op, i) => {
@@ -1378,7 +1431,7 @@
       </div>
       ${u.photos && u.photos.length ? `<div class="my-photos">${u.photos.map((ph) => `<div class="myp" style="background-image:url('${ph}')"></div>`).join("")}${u.privatePhotos && u.privatePhotos.length ? `<div class="myp priv"><span>🔒 비밀 ${u.privatePhotos.length}</span></div>` : ""}</div>` : ""}
       <div class="pcompl ${ps.pct >= 100 ? "done" : ""}">
-        <div class="pc-top"><b>프로필 완성도</b><span class="pc-pct">${ps.pct}%</span></div>
+        <div class="pc-top"><b>${t("프로필 완성도")}</b><span class="pc-pct">${ps.pct}%</span></div>
         <div class="pc-bar"><i style="width:${ps.pct}%"></i></div>
         ${ps.pct >= 100
           ? `<p class="pc-msg">🏆 완벽해요! 완성 보너스로 <b>매일 좋아요 +5</b> 적용 중이에요.</p>`
@@ -1386,29 +1439,30 @@
              <div class="pc-todo">${missing.slice(0, 4).map((m) => `<button class="pc-chip" data-go="${m.go}">＋ ${esc(m.label)}</button>`).join("")}</div>`}
       </div>
       <div class="my-plan ${pl === "free" ? "free" : ""}">
-        <b>${pl === "free" ? "무료 플랜 이용 중" : "🎉 " + plan().label + " 이용 중"}</b>
+        <b>${pl === "free" ? t("무료 플랜 이용 중") : "🎉 " + plan().label}</b>
         <p>누적 — 보낸 좋아요 <b>${S.stats.likesSent}</b> · 매치 <b>${S.stats.matches}</b>${pl === "free" ? " — PRISM+면 좋아요 무제한, 받은 좋아요 공개, 광고 제거." : " — 프리미엄 혜택 적용 중. 언제든 변경 가능."}</p>
-        <button class="btn-grad" id="my-premium" style="font-size:14px;padding:11px 18px">${pl === "free" ? "PRISM+ 시작하기 💜" : "플랜 관리"}</button>
+        <button class="btn-grad" id="my-premium" style="font-size:14px;padding:11px 18px">${pl === "free" ? "PRISM+ 💜" : t("플랜 관리")}</button>
       </div>
       <div class="menu">
-        <button class="menu-it" id="m-edit"><span class="mi-ic">✏️</span>프로필 수정<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-verify"><span class="mi-ic">✔︎</span>프로필 인증하기<span class="mi-val">${u.verified ? "인증됨 ✔︎" : "미인증"}</span></button>
-        <button class="menu-it" id="m-shop"><span class="mi-ic">🛍️</span>아이템 상점<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-install"><span class="mi-ic">📲</span>홈 화면에 앱 설치<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-font"><span class="mi-ic">🔠</span>글자 크기<span class="mi-val">${["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]}</span></button>
+        <button class="menu-it" id="m-edit"><span class="mi-ic">✏️</span>${t("프로필 수정")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-verify"><span class="mi-ic">✔︎</span>${t("프로필 인증하기")}<span class="mi-val">${u.verified ? t("인증됨 ✔︎") : t("미인증")}</span></button>
+        <button class="menu-it" id="m-shop"><span class="mi-ic">🛍️</span>${t("아이템 상점")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-install"><span class="mi-ic">📲</span>${t("홈 화면에 앱 설치")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-font"><span class="mi-ic">🔠</span>${t("글자 크기")}<span class="mi-val">${["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]}</span></button>
+        <button class="menu-it" id="m-lang"><span class="mi-ic">🌐</span>${t("언어")}<span class="mi-val">${curLang() === "en" ? "English" : "한국어"}</span></button>
       </div>
-      <div class="sec" style="padding:0 18px 8px"><b style="font-size:13px;color:var(--tx3)">프라이버시 · 안전</b></div>
+      <div class="sec" style="padding:0 18px 8px"><b style="font-size:13px;color:var(--tx3)">${t("프라이버시 · 안전")}</b></div>
       <div class="menu">
-        <button class="menu-it" id="m-pin"><span class="mi-ic">🔐</span>앱 잠금 (PIN)<span class="mi-val">${hasPin() ? "사용 중" : "꺼짐"}</span></button>
-        ${hasPin() ? `<button class="menu-it" id="m-bglock" role="switch" aria-checked="${S.settings.bgLock}"><span class="mi-ic">🫥</span>화면 이탈 시 즉시 잠금<span class="switch ${S.settings.bgLock ? "on" : ""}"></span></button>` : ""}
-        <button class="menu-it" id="m-disguise" role="switch" aria-checked="${S.settings.disguise}"><span class="mi-ic">🎭</span>위장 제목 항상 사용<span class="switch ${S.settings.disguise ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-dist" role="switch" aria-checked="${S.settings.hideDistance}"><span class="mi-ic">📍</span>거리 숨기기<span class="switch ${S.settings.hideDistance ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-private" role="switch" aria-checked="${S.settings.privateMode}"><span class="mi-ic">🕶️</span>프라이빗 모드 (새 노출 중단)<span class="switch ${S.settings.privateMode ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-safety"><span class="mi-ic">🛡️</span>안전 센터<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-blocked"><span class="mi-ic">🚫</span>차단 목록<span class="mi-val">${S.blocked.length}명</span></button>
+        <button class="menu-it" id="m-pin"><span class="mi-ic">🔐</span>${t("앱 잠금 (PIN)")}<span class="mi-val">${hasPin() ? t("사용 중") : t("꺼짐")}</span></button>
+        ${hasPin() ? `<button class="menu-it" id="m-bglock" role="switch" aria-checked="${S.settings.bgLock}"><span class="mi-ic">🫥</span>${t("화면 이탈 시 즉시 잠금")}<span class="switch ${S.settings.bgLock ? "on" : ""}"></span></button>` : ""}
+        <button class="menu-it" id="m-disguise" role="switch" aria-checked="${S.settings.disguise}"><span class="mi-ic">🎭</span>${t("위장 제목 항상 사용")}<span class="switch ${S.settings.disguise ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-dist" role="switch" aria-checked="${S.settings.hideDistance}"><span class="mi-ic">📍</span>${t("거리 숨기기")}<span class="switch ${S.settings.hideDistance ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-private" role="switch" aria-checked="${S.settings.privateMode}"><span class="mi-ic">🕶️</span>${t("프라이빗 모드 (새 노출 중단)")}<span class="switch ${S.settings.privateMode ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-safety"><span class="mi-ic">🛡️</span>${t("안전 센터")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-blocked"><span class="mi-ic">🚫</span>${t("차단 목록")}<span class="mi-val">${S.blocked.length}명</span></button>
       </div>
       <div class="menu">
-        <button class="menu-it" id="m-reset"><span class="mi-ic">🗑️</span><span style="color:var(--red)">데이터 초기화 (계정 삭제)</span></button>
+        <button class="menu-it" id="m-reset"><span class="mi-ic">🗑️</span><span style="color:var(--red)">${t("데이터 초기화 (계정 삭제)")}</span></button>
       </div>
       <p class="tiny" style="text-align:center;padding:0 20px 8px">PRISM 데모 v2.0 · 모든 데이터는 이 기기에만 저장 ·
         <a href="/privacy.html" target="_blank" rel="noopener" style="color:var(--tx3)">개인정보</a> ·
@@ -1429,6 +1483,11 @@
       S.settings.fontScale = (S.settings.fontScale + 1) % 4;
       save(); applyFontScale(); vMy();
       toast("글자 크기: " + ["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]);
+    };
+    $("#m-lang").onclick = () => {
+      S.settings.lang = curLang() === "ko" ? "en" : "ko";
+      save(); paintStatic(); paintTopbar(); vMy();
+      toast(curLang() === "en" ? "Language: English — main UI translated (demo content stays Korean)" : "언어: 한국어");
     };
     $("#m-verify").onclick = () => {
       if (u.verified) { toast("이미 인증된 프로필이에요 ✔︎"); return; }
@@ -1564,7 +1623,7 @@
   function openSafety() {
     const o = document.createElement("div");
     o.className = "ovl";
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">🛡️ 안전 센터</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">🛡️ ${t("안전 센터")}</span></div>
       <div class="ovl-body">
         <div class="sec"><div class="sec-h" style="font-size:17px">퀴어 데이팅 안전 가이드</div>
         <p class="sec-sub">모든 안전 기능은 무료예요. 언제나.</p></div>
@@ -1613,7 +1672,7 @@
     const o = document.createElement("div");
     o.className = "ovl";
     const cur = S.premium.plan;
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">프리미엄</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">${t("프리미엄")}</span></div>
       <div class="ovl-body">
         <div class="pm-hero"><img src="favicon.svg" alt="" width="46" height="46" style="border-radius:12px"><h2><span class="prism-mark">PRISM</span> 프리미엄</h2>
         <p>기본 기능은 언제나 무료. 더 빠른 만남을 원할 때만.</p></div>
@@ -1689,7 +1748,7 @@
     o.className = "ovl";
     const disc = itemDiscount();
     const inv = SHOP.filter((it) => S.items[it.key] > 0 || (it.key === "superlike" && S.items.superlike > 0));
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close" aria-label="닫기">‹</button><span class="ovl-title">🛍️ 아이템 상점</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close" aria-label="닫기">‹</button><span class="ovl-title">🛍️ ${t("아이템 상점")}</span></div>
       <div class="ovl-body">
         <div class="pm-hero" style="padding-top:18px"><h2 style="font-size:20px">필요할 때, 필요한 만큼만</h2>
         <p>구독 없이 골라 쓰는 소모품${disc ? ` · <b style="color:var(--amber)">${plan().label} ${disc * 100}% 할인 적용 중</b>` : ""}</p></div>
@@ -2118,12 +2177,12 @@
     const FILTERS = [["all", "전체"], ["owned", "보유"], ["N", "N"], ["R", "R"], ["SR", "SR"], ["SSR", "SSR"]];
     const list = CD.CHARS.filter((c) =>
       albumFilter === "all" ? true : albumFilter === "owned" ? cardOwned(c.id) : c.rarity === albumFilter);
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">크러시 카드 도감</div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("크러시 카드 도감")}</div>
       <p class="sec-sub">128명의 일러스트 캐릭터 — 뽑고, 모으고, <b>같은 레벨끼리 합성</b>해서 매칭 버프를 키우세요</p></div>
       <div class="game-row">
-        <button class="game-tile" id="g-roulette"><span class="gt-em">🎡</span><b>데일리 룰렛</b><small>${rouletteAvail() ? "오늘 무료 1회! 꽝 없음" : "내일 다시 돌려요"}</small>${rouletteAvail() ? '<i class="gt-dot"></i>' : ""}</button>
-        <button class="game-tile" id="g-battle"><span class="gt-em">⚔️</span><b>매력 배틀</b><small>오늘 ${battleLeft()}/${BATTLE_MAX}회${S.battle.streak ? ` · 🔥연승 ${S.battle.streak}` : ""}${S.battle.best ? ` · 최고 ${S.battle.best}` : ""}</small>${battleLeft() > 0 ? '<i class="gt-dot"></i>' : ""}</button>
-        <button class="game-tile wide" id="g-worldcup"><span class="gt-em">👑</span><b>이상형 월드컵</b><small>${wcAvail() ? "오늘의 최애를 뽑아요 — 완주 시 뽑기권 +1" : `오늘의 최애: ${esc((cardOf(S.wc.champ) || {}).name || "완료")} · 다시 즐기기`}</small>${wcAvail() ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile" id="g-roulette"><span class="gt-em">🎡</span><b>${t("데일리 룰렛")}</b><small>${rouletteAvail() ? "오늘 무료 1회! 꽝 없음" : "내일 다시 돌려요"}</small>${rouletteAvail() ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile" id="g-battle"><span class="gt-em">⚔️</span><b>${t("매력 배틀")}</b><small>오늘 ${battleLeft()}/${BATTLE_MAX}회${S.battle.streak ? ` · 🔥연승 ${S.battle.streak}` : ""}${S.battle.best ? ` · 최고 ${S.battle.best}` : ""}</small>${battleLeft() > 0 ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile wide" id="g-worldcup"><span class="gt-em">👑</span><b>${t("이상형 월드컵")}</b><small>${wcAvail() ? "오늘의 최애를 뽑아요 — 완주 시 뽑기권 +1" : `오늘의 최애: ${esc((cardOf(S.wc.champ) || {}).name || "완료")} · 다시 즐기기`}</small>${wcAvail() ? '<i class="gt-dot"></i>' : ""}</button>
       </div>
       <div class="streak-chip">🔥 연속 출석 <b>${S.streak.n || 1}일</b> — 3일마다 뽑기권 1장, 7일마다 3장이 쌓여요</div>
       <div class="gacha-box">
@@ -2131,8 +2190,8 @@
           <div class="gb-bar"><i style="width:${owned / 128 * 100}%"></i></div>
           <small>${lb || sb ? `버프: ${lb ? `좋아요 +${lb}/일` : ""}${lb && sb ? " · " : ""}${sb ? `슈퍼라이크 +${sb}/일` : ""}` : "카드를 합성해 ★을 올리면 좋아요 한도가 늘어나요"}</small></div>
         <div style="display:flex;flex-direction:column;gap:7px">
-          <button class="btn-grad" id="g-pull">${free ? `무료 뽑기 ${gachaFreeLeft()}회 🎴` : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
-          <button class="btn-ghost" id="g-pull10" style="font-size:12px;padding:9px 12px">10연챠 ${S.items.gachaticket >= 10 ? "" : "🛍️"}</button>
+          <button class="btn-grad" id="g-pull">${free ? `${t("무료 뽑기")} ${gachaFreeLeft()}회 🎴` : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
+          <button class="btn-ghost" id="g-pull10" style="font-size:12px;padding:9px 12px">${t("10연챠")} ${S.items.gachaticket >= 10 ? "" : "🛍️"}</button>
         </div>
       </div>
       <p class="tiny" style="padding:0 18px 4px">천장: SR+ 확정까지 <b>${Math.max(0, 10 - (S.gacha.pity || 0) - 1) + 1}회</b> · SSR 확정까지 <b>${Math.max(0, 40 - (S.gacha.ssrPity || 0))}회</b></p>
@@ -2294,6 +2353,7 @@
     dailyTick();
     applyFontScale();
     applyDisguise();
+    paintStatic();
     // 구버전 평문 PIN → 해시 마이그레이션
     if (S.settings.pin && !S.settings.pinHash) {
       pinHash(S.settings.pin).then((h) => { S.settings.pinHash = h; S.settings.pin = null; save(); });
