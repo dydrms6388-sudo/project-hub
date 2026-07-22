@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>말투연구소 — 아무 문장이나 부장님·사극·MZ·츤데레 말투로 변환 | TomatoEggCat</title>
+<meta name="description" content="문장 1~3줄만 넣으면 부장님체·사극체·MZ체·츤데레체·정중공지체 5가지 말투로 동시에 변환해 드립니다. 서버 없이 브라우저에서 규칙 기반으로 즉시 변환, 결과 링크 공유와 PNG 카드 저장까지 되는 재미용 말투 변환기." />
+<link rel="canonical" href="https://tomatoeggcat.com/tone-lab/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="말투연구소 — 아무 문장이나 부장님·사극·MZ·츤데레 말투로 변환" />
+<meta property="og:description" content="같은 문장이 부장님체·사극체·MZ체·츤데레체·정중공지체로 어떻게 달라질까? 5가지 말투 동시 변환, 링크로 결과 공유." />
+<meta property="og:url" content="https://tomatoeggcat.com/tone-lab/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="말투연구소 — 아무 문장이나 부장님·사극·MZ·츤데레 말투로 변환" />
+<meta name="twitter:description" content="같은 문장이 5가지 말투로 어떻게 달라질까? 부장님체·사극체·MZ체·츤데레체·정중공지체 동시 변환." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"말투연구소","description":"입력한 문장을 부장님체·사극체·MZ체·츤데레체·정중공지체 5가지 말투로 동시에 변환해 주는 규칙 기반 재미용 말투 변환기.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/tone-lab/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"말투 변환은 어떤 원리로 되나요? AI인가요?","acceptedAnswer":{"@type":"Answer","text":"AI가 아니라 100% 규칙 기반입니다. 말투팩마다 종결어미 변환 규칙표(예: '~해주세요'를 '~하여 주시기 바랍니다'로), 어휘 치환 사전(예: 밥을 수라로), 접두·접미 문구 삽입 규칙이 순서대로 적용됩니다. 문장을 마침표·물음표 단위로 나눈 뒤 각 문장에 규칙을 적용하고, 입력 문장의 고정 해시값으로 삽입 문구의 변형을 골라서 같은 문장은 언제나 같은 결과가 나옵니다."}},
+{"@type":"Question","name":"입력한 문장이 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 변환은 전부 브라우저 안의 자바스크립트로만 이루어지며, 입력한 문장을 서버나 외부 API로 보내지 않고 어디에도 저장하지 않습니다. 결과 공유 링크의 ?r= 뒤에 붙는 문자열도 서버가 아니라 주소 자체에 결과 상태를 인코딩해 담은 것이라서, 링크를 받은 사람의 브라우저가 그 자리에서 같은 변환을 다시 계산합니다."}},
+{"@type":"Question","name":"결과를 실제 업무 메일이나 공지에 그대로 써도 되나요?","acceptedAnswer":{"@type":"Answer","text":"권장하지 않습니다. 말투연구소는 어디까지나 재미용 장난감이라 문법이 어색하거나 과장된 표현이 일부러 섞여 나옵니다. 특히 부장님체와 정중공지체가 그럴듯해 보여도 실제 격식 문서 기준으로는 군더더기가 많으니, 캡처해서 웃고 공유하는 용도로만 사용해 주세요."}},
+{"@type":"Question","name":"말투팩이 더 추가되나요?","acceptedAnswer":{"@type":"Answer","text":"네, 추가할 예정입니다. 지금은 부장님체·사극체·MZ체·츤데레체·정중공지체 5종이 기본이고, 반응이 좋은 말투(할머니체, 오글오글 소설체, 군대 선임체 등)를 규칙표로 만들어 순차적으로 붙일 계획입니다. 원하는 말투가 있다면 문의 페이지로 제안해 주세요."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"엔터·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"말투연구소","item":"https://tomatoeggcat.com/tone-lab/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#f472b6;--acc2:#f9a8d4}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#f472b6,#fbcfe8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:14px;font-weight:700;color:#d4d4d8;margin-bottom:8px}
+textarea{width:100%;min-height:96px;resize:vertical;padding:13px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font:inherit;font-size:15px}
+textarea:focus{outline:none;border-color:var(--acc)}
+.cnt{font-size:12px;color:#6b7280;text-align:right;margin:4px 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{width:auto;padding:9px 13px;font-size:13px;font-weight:600;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:44px}
+.chip:active{border-color:var(--acc)}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#3f0d24;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#2a1420;color:#f9a8d4;border:1px solid #542138;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#4c0d2b,#701a43);border-bottom:1px solid #9d2f60}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#fbcfe8;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.result{display:none;margin-top:8px}
+.result.show{display:block}
+.hint{font-size:13px;color:#9ca3af;margin:0 0 12px}
+/* tone cards */
+.tcard{border:1px solid #262626;background:#161616;border-radius:16px;padding:16px 16px 14px;margin-bottom:12px;cursor:pointer;position:relative;transition:.15s}
+.tcard .th{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.tcard .tn{font-size:15px;font-weight:800;color:#e5e5e5;flex:1}
+.tcard .tcopy{width:auto;min-height:34px;padding:6px 13px;font-size:12px;font-weight:700;border-radius:999px;background:#242424;color:#d4d4d8;border:1px solid #3a3a3a}
+.tcard .tt{font-size:15px;color:#d4d4d8;white-space:pre-wrap;word-break:keep-all;margin:0}
+.tcard .wm{display:none}
+.tcard .orig{display:none}
+.tcard.sel{background:linear-gradient(150deg,#831843 0%,#be185d 55%,#db2777 100%);border-color:#f472b6;box-shadow:0 6px 28px rgba(244,114,182,.22)}
+.tcard.sel .tn{color:#fff}
+.tcard.sel .tt{color:#fff;font-size:16px;font-weight:600}
+.tcard.sel .tcopy{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.3)}
+.tcard.sel .orig{display:block;font-size:12px;color:#fbcfe8;margin:0 0 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tcard.sel .wm{display:block;text-align:right;font-size:11px;font-weight:700;color:rgba(255,255,255,.75);margin-top:12px;letter-spacing:.02em}
+.selbadge{display:none;position:absolute;top:-9px;right:14px;font-size:11px;font-weight:800;background:var(--acc);color:#3f0d24;border-radius:999px;padding:2px 10px}
+.tcard.sel .selbadge{display:block}
+.shareRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.shareRow button{font-size:14px;padding:12px}
+.full{grid-column:1/-1}
+.remix{margin-top:10px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#262626;color:#f5f5f5;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:50;border:1px solid #3f3f3f}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.about h2{font-size:19px;margin:34px 0 10px;color:#f4f4f5}
+.about h3{font-size:15px;margin:18px 0 4px;color:#f9a8d4}
+.about p,.about li{font-size:14px;color:#a1a1aa}
+.about ol,.about ul{padding-left:20px}
+.disc{font-size:13px;color:#8b8b93;border:1px dashed #3a3a3a;border-radius:12px;padding:12px 14px;margin-top:22px}
+.rel{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 0}
+.rel a{font-size:13px;color:#7aa2ff;text-decoration:none;border:1px solid #262c3d;background:#10141f;border-radius:999px;padding:8px 14px}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid #1f1f1f;font-size:12px;color:#6b7280}
+footer a{color:#8b95a8;text-decoration:none;margin-right:10px}
+.adbox{margin:22px 0}
+@media(max-width:400px){.shareRow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>🎭 친구가 변환한 말투 결과예요. 내 문장도 바꿔볼까요?</span>
+  <button id="ctaMe" type="button">나도 해보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 엔터·바이럴 › 말투연구소</nav>
+
+<header>
+  <div style="font-size:40px">🎭</div>
+  <h1>말투연구소</h1>
+  <p class="lead">아무 문장이나 넣어 보세요. 부장님체·사극체·MZ체·츤데레체·정중공지체 — 5가지 말투로 동시에 바꿔 드립니다.</p>
+</header>
+
+<section class="card" id="inputCard">
+  <label for="txt">변환할 문장 (1~3줄, 최대 200자)</label>
+  <textarea id="txt" maxlength="200" placeholder="예) 오늘 회식 못 갈 것 같아요"></textarea>
+  <div class="cnt"><span id="cnt">0</span>/200</div>
+  <div class="chips" id="chips">
+    <button type="button" class="chip">오늘 회식 못 갈 것 같아요</button>
+    <button type="button" class="chip">내일까지 이거 해주세요</button>
+    <button type="button" class="chip">밥 먹었어?</button>
+  </div>
+  <button id="go" type="button">🎭 5가지 말투로 변환하기</button>
+</section>
+
+<section class="result" id="result">
+  <p class="hint">카드를 탭하면 그 말투가 <b>대표 카드</b>가 됩니다. 대표 카드가 이미지 저장·공유에 쓰여요.</p>
+  <div id="cards"></div>
+
+  <div class="card">
+    <div class="shareRow">
+      <button id="btnImg" class="full" type="button">🖼️ 대표 카드 이미지로 저장</button>
+      <button id="btnLink" class="ghost" type="button">🔗 링크 복사</button>
+      <button id="btnText" class="ghost" type="button">📋 텍스트 복사</button>
+      <button id="btnX" class="ghost" type="button">𝕏 에 공유</button>
+      <button id="btnShare" class="ghost" type="button">📤 공유하기</button>
+    </div>
+    <button id="btnRemix" class="ghost remix" type="button">✏️ 다시 하기 / 문장 바꾸기</button>
+  </div>
+
+  <div class="adbox">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</section>
+
+<section class="about">
+  <h2>말투연구소 소개</h2>
+  <p>말투연구소는 똑같은 문장이 화자에 따라 얼마나 다르게 들리는지를 실험하는 재미용 변환기입니다. "오늘 회식 못 갈 것 같아요" 한 줄이 부장님 입을 거치면 "다름이 아니라 금일 회식 못 갈 것 같습니다. 이상입니다. 수고하세요."가 되고, 사극 배우가 말하면 "어허, 금일 연회 못 갈 것 같사옵니다."가 됩니다. 다섯 개의 말투팩(부장님체·사극체·MZ체·츤데레체·정중공지체)이 각자의 종결어미 규칙표와 어휘 사전, 삽입 문구를 갖고 있어서, 버튼 한 번에 다섯 가지 버전을 나란히 보여 줍니다. 서버도 AI도 쓰지 않는 순수 브라우저 계산이라 입력한 문장이 밖으로 나가지 않고, 같은 문장은 언제나 같은 결과가 나오기 때문에 결과 링크를 받은 친구도 정확히 동일한 카드를 보게 됩니다. 단톡방에서 "이 문장 부장님 말투로 바꿨더니…" 하고 캡처를 던지기 위해 태어난 도구입니다.</p>
+
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>입력창에 바꾸고 싶은 문장을 1~3줄(최대 200자) 적거나, 예시 칩을 눌러 채웁니다.</li>
+    <li>"5가지 말투로 변환하기"를 누르면 다섯 개의 말투 카드가 한 번에 나옵니다.</li>
+    <li>마음에 드는 카드를 탭해 대표 카드로 지정하세요. 각 카드의 "복사" 버튼으로 그 말투 텍스트만 복사할 수도 있습니다.</li>
+    <li>"이미지로 저장"으로 대표 카드를 PNG로 내려받거나, 링크·텍스트 복사와 X 공유로 결과를 퍼뜨리세요.</li>
+    <li>"다시 하기 / 문장 바꾸기"를 누르면 방금 쓴 문장이 그대로 남아 있어 한 글자만 고쳐 재변환할 수 있습니다.</li>
+  </ol>
+
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>단톡방에 아무 말이나 던지기 전에 부장님체로 바꿔서 "결재 부탁드립니다" 개그를 칠 때</li>
+    <li>친구의 시답잖은 카톡을 사극체로 변환해 "그리 아시오."로 되돌려줄 때</li>
+    <li>회식 불참, 마감 연장 같은 곤란한 말을 정중공지체로 포장해 웃음으로 무마할 때</li>
+    <li>츤데레체 고백 문장을 만들어 SNS 프로필이나 스토리에 올릴 때</li>
+    <li>같은 문장의 5가지 버전을 나란히 캡처해 "말투 차이 실화냐" 밈을 만들 때</li>
+  </ul>
+
+  <h2>자주 묻는 질문</h2>
+  <h3>Q. 말투 변환은 어떤 원리로 되나요? AI인가요?</h3>
+  <p>AI가 아니라 100% 규칙 기반입니다. 말투팩마다 종결어미 변환 규칙표(예: "~해주세요" → "~하여 주시기 바랍니다"), 어휘 치환 사전(예: 밥 → 수라), 접두·접미 문구 삽입 규칙이 순서대로 적용됩니다. 문장을 마침표·물음표 단위로 나눈 뒤 각 문장에 규칙을 적용하고, 입력 문장의 고정 해시값으로 삽입 문구의 변형을 골라서 같은 문장은 언제나 같은 결과가 나옵니다.</p>
+  <h3>Q. 입력한 문장이 서버로 전송되나요?</h3>
+  <p>아니요. 변환은 전부 브라우저 안의 자바스크립트로만 이루어지며, 입력한 문장을 서버나 외부 API로 보내지 않고 어디에도 저장하지 않습니다. 결과 공유 링크의 ?r= 뒤에 붙는 문자열도 서버가 아니라 주소 자체에 결과 상태를 인코딩해 담은 것이라서, 링크를 받은 사람의 브라우저가 그 자리에서 같은 변환을 다시 계산합니다.</p>
+  <h3>Q. 결과를 실제 업무 메일이나 공지에 그대로 써도 되나요?</h3>
+  <p>권장하지 않습니다. 말투연구소는 어디까지나 재미용 장난감이라 문법이 어색하거나 과장된 표현이 일부러 섞여 나옵니다. 특히 부장님체와 정중공지체가 그럴듯해 보여도 실제 격식 문서 기준으로는 군더더기가 많으니, 캡처해서 웃고 공유하는 용도로만 사용해 주세요.</p>
+  <h3>Q. 말투팩이 더 추가되나요?</h3>
+  <p>네, 추가할 예정입니다. 지금은 부장님체·사극체·MZ체·츤데레체·정중공지체 5종이 기본이고, 반응이 좋은 말투(할머니체, 오글오글 소설체, 군대 선임체 등)를 규칙표로 만들어 순차적으로 붙일 계획입니다. 원하는 말투가 있다면 문의 페이지로 제안해 주세요.</p>
+
+  <p class="disc">⚠️ 말투연구소의 변환 결과는 <b>재미용</b>입니다. 규칙 기반 장난감이 만든 문장이므로 문법·격식이 정확하지 않을 수 있으며, 의료·법률·금융 등 어떤 전문적 판단이나 실제 격식 문서의 근거로도 사용할 수 없습니다.</p>
+
+  <div class="rel">
+    <a href="/taste-dna/">🧬 취향DNA</a>
+    <a href="/future-letter/">✉️ 미래편지</a>
+    <a href="/first-impress/">🪞 첫인상 프로파일러</a>
+    <a href="/roast-edit/">🌶️ 사이다첨삭</a>
+    <a href="/dark-history/">📼 흑역사 판독기</a>
+    <a href="/">🍅 도구 전체 보기</a>
+  </div>
+</section>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div style="margin-top:6px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/*ENGINE-START*/
+function tlHash(str){var h=5381;for(var i=0;i<str.length;i++){h=((h<<5)+h+str.charCodeAt(i))|0;}return Math.abs(h);}
+function tlPick(h,salt,arr){return arr[(h+salt*7)%arr.length];}
+function tlSplit(text){
+  return text.split(/\n+/)
+    .flatMap(function(l){return l.match(/[^.!?…]+[.!?…]*/g)||[];})
+    .map(function(s){return s.trim();})
+    .filter(Boolean).slice(0,6);
+}
+/* 종결부 잘라내기(폴백 전용): "먹었어"→"먹었", "갈래"→"갈래(불변)" */
+function tlStem(core){
+  return core.replace(/(어|아|야|지|니|냐|나|요|죠|음|함|셈)$/,'');
+}
+function tlParse(s){
+  var punct=(s.match(/[.!?…~ㅋㅎ!?\s]+$/)||[''])[0];
+  var core=s.slice(0,s.length-punct.length).trim();
+  var isQ=punct.indexOf('?')>=0||/(까|냐|니|나요|가요|음\?)$/.test(core);
+  return {core:core,isQ:isQ};
+}
+function tlApply(core,rules){
+  for(var i=0;i<rules.length;i++){
+    if(rules[i][0].test(core)) return core.replace(rules[i][0],rules[i][1]);
+  }
+  return null;
+}
+var TL_PACKS=[
+{
+  id:'boss',name:'부장님체',emoji:'👔',
+  vocab:[[/진짜/g,'정말'],[/너무/g,'상당히'],[/밥(?=\s|은|을|이|도|$)/g,'식사'],[/오늘/g,'금일'],[/내일/g,'명일'],[/지금/g,'현시점에'],[/빨리/g,'조속히'],[/이거/g,'해당 건'],[/미안한데/g,'송구하오나'],[/괜찮아/g,'무방해']],
+  end:[
+    [/해\s?(줘|주라|주세요|줄래)$/,'하여 주시기 바랍니다'],
+    [/(줘|주세요|주라)$/,'주시기 바랍니다'],
+    [/할게(요)?$/,'하도록 하겠습니다'],
+    [/할래(요)?$|하고 싶(어|은데)(요)?$/,'하고자 합니다'],
+    [/래(요)?$/,'까 합니다'],
+    [/같아(요)?$|같은데(요)?$/,'같습니다'],
+    [/했어(요)?$|했다$/,'하였습니다'],
+    [/었어(요)?$/,'었습니다'],
+    [/(이에요|예요|에요|이야|야)$/,'입니다'],
+    [/어요$/,'습니다'],
+    [/(하자|가자)$/,'$1고 제안드립니다']
+  ],
+  qEnd:[
+    [/먹었(어|니|냐)$/,'드셨는지요'],
+    [/했(어|니|냐)$/,'하셨는지요'],
+    [/(을|ㄹ)까(요)?$/,'면 좋을지 의견 부탁드립니다']
+  ],
+  qFall:function(core){return tlStem(core)+'는지 확인 부탁드립니다';},
+  sFall:function(core){return core+'라는 점 참고 부탁드립니다';},
+  openers:['다름이 아니라 ','바쁘신 와중에 죄송하지만 ','업무에 참고하시라고 말씀드리자면 '],
+  closers:['이상입니다. 수고하세요.','확인 후 회신 부탁드립니다. 수고하세요.','늘 애써 주셔서 감사합니다. 수고하세요.']
+},
+{
+  id:'sageuk',name:'사극체',emoji:'📜',
+  vocab:[[/밥(?=\s|은|을|이|도|$)/g,'수라'],[/아침밥|점심|저녁밥/g,'끼니'],[/오늘/g,'금일'],[/내일/g,'명일'],[/나는|난/g,'소인은'],[/내가/g,'소인이'],[/너는|넌/g,'그대는'],[/네가|니가/g,'그대가'],[/정말|진짜/g,'참으로'],[/너무/g,'심히'],[/왜/g,'어찌하여'],[/회식/g,'연회'],[/회사/g,'관아'],[/친구/g,'벗'],[/미안/g,'송구'],[/고마워/g,'고맙소']],
+  end:[
+    [/해\s?(줘|주라|주세요|줄래)$/,'해 주시오'],
+    [/(줘|주세요|주라)$/,'주시오'],
+    [/할게(요)?$/,'하겠나이다'],
+    [/같아(요)?$|같은데(요)?$/,'같사옵니다'],
+    [/했어(요)?$|했다$/,'하였사옵니다'],
+    [/었어(요)?$/,'었사옵니다'],
+    [/(이에요|예요|에요|이야|야)$/,'이옵니다'],
+    [/래(요)?$/,'려 하옵니다'],
+    [/(어|아)요$/,'옵니다'],
+    [/(하자|가자)$/,'$1꾸나']
+  ],
+  qEnd:[
+    [/먹었(어|니|냐)$/,'드셨소'],
+    [/(어|니|냐|나|까|요)$/,'느냐']
+  ],
+  qFall:function(core){return tlStem(core)+'느냐'; },
+  sFall:function(core){return core+' 하오';},
+  openers:['어허, ','듣거라. ','통촉하여 주시오소서. '],
+  closers:['그리 아시오.','이만 총총.','부디 성심을 다하시오.']
+},
+{
+  id:'mz',name:'MZ체',emoji:'🧢',
+  vocab:[[/진짜|정말/g,'ㄹㅇ'],[/인정/g,'ㅇㅈ'],[/너무|완전/g,'개'],[/미안/g,'ㅈㅅ'],[/감사/g,'ㄱㅅ'],[/축하/g,'ㅊㅋ'],[/그냥/g,'걍'],[/좀(?=\s|$)/g,'쫌'],[/열심히/g,'빡세게']],
+  end:[
+    [/것 같아(요)?$/,'듯'],
+    [/같아(요)?$|같은데(요)?$/,'같음'],
+    [/해\s?(줘|주라|주세요|줄래)$/,'해주셈'],
+    [/(줘|주세요|주라)$/,'주셈'],
+    [/할게(요)?$/,'하겠음'],
+    [/했어(요)?$|했다$/,'했음'],
+    [/었어(요)?$/,'었음'],
+    [/(이에요|예요|에요|이야|야)$/,'임'],
+    [/래(요)?$/,'래'],
+    [/(어|아)요$/,'음'],
+    [/(하자|가자)$/,'$1 ㄱㄱ']
+  ],
+  qEnd:[
+    [/(었|았)(어|니|냐)$/,'$1음'],
+    [/(어|니|냐|나|요)$/,'?']
+  ],
+  qFall:function(core){return tlStem(core)+'음';},
+  sFall:function(core){return core+' 임';},
+  openers:['아 ㅋㅋ ','실화냐 ','아니 근데 '],
+  closers:['암튼 그럼 20000 👋','이거 나만 불편함? ㅋㅋ 💀','알빠노는 아니고… 암튼 ㅂㅂ ✌️'],
+  deco:function(sent,h,idx){return sent+((h+idx)%2===0?' ㅋㅋ':' ㅋㅋㅋ');}
+},
+{
+  id:'tsun',name:'츤데레체',emoji:'😤',
+  vocab:[[/정말|진짜/g,'뭐, 그럭저럭'],[/고마워/g,'딱히 고맙진 않아']],
+  end:[
+    [/해\s?(줘|주라|주세요|줄래)$/,'해 주면 되잖아'],
+    [/(줘|주세요|주라)$/,'줘. 두 번 말 안 해'],
+    [/할게(요)?$/,'할게. 어쩌다 보니 하는 거야'],
+    [/것 같아(요)?$/,'것 같긴 한데'],
+    [/같아(요)?$/,'같긴 한데'],
+    [/했어(요)?$/,'했거든'],
+    [/었어(요)?$/,'었거든'],
+    [/(이에요|예요|에요)$/,'이거든'],
+    [/래(요)?$/,'래. 안 말릴 거지만'],
+    [/(어|아)요$/,'$1']
+  ],
+  qEnd:[],
+  qFall:function(core){return tlStem(core)+'는지 궁금한 건 아니거든';},
+  sFall:function(core){return core+'…라는 건 아니고, 뭐 그렇다고';},
+  openers:['뭐, 딱히 네가 신경 쓰여서 그런 건 아닌데. ','착각하지 마. 그냥 지나가다 말하는 거야. ','흥, 별일도 아니지만. '],
+  closers:['…그, 그래도 걱정은 되니까. 몸 조심해.','…딱히 널 위해서 하는 말은 아니거든?','…별로 안 기다렸으니까 신경 쓰지 마.']
+},
+{
+  id:'notice',name:'정중공지체',emoji:'📋',
+  vocab:[[/밥(?=\s|은|을|이|도|$)/g,'식사'],[/오늘/g,'금일'],[/내일/g,'익일'],[/이거/g,'해당 건'],[/빨리/g,'기한 내'],[/진짜|정말/g,'']],
+  end:[
+    [/것 같아(요)?$/,'것으로 예상됩니다'],
+    [/해\s?(줘|주라|주세요|줄래)$/,'하여 주시기 바랍니다'],
+    [/(줘|주세요|주라)$/,'주시기 바랍니다'],
+    [/할게(요)?$/,'할 예정임을 알려드립니다'],
+    [/같아(요)?$/,'것으로 판단됩니다'],
+    [/했어(요)?$|했다$/,'하였음을 알려드립니다'],
+    [/었어(요)?$/,'었음을 알려드립니다'],
+    [/(이에요|예요|에요|이야|야)$/,'임을 안내드립니다'],
+    [/래(요)?$/,' 예정임을 알려드립니다'],
+    [/(어|아)요$/,'는 점 양지 바랍니다']
+  ],
+  qEnd:[],
+  noQ:true,
+  qFall:function(core){return tlStem(core)+'는지 여부를 회신하여 주시기 바랍니다';},
+  sFall:function(core){return core+' 건에 대하여 협조를 부탁드립니다';},
+  openers:['[안내] 아래 내용을 확인하여 주시기 바랍니다.','[공지] 관련 사항을 안내드리오니 참고 바랍니다.','[전달] 하기 내용 숙지 부탁드립니다.'],
+  closers:['- 시행: 안내 즉시\n감사합니다.','- 문의: 담당자 앞\n감사합니다.','- 기타: 변동 시 재공지 예정\n감사합니다.'],
+  layout:'list'
+}
+];
+function tlSentence(sent,pack){
+  var p=tlParse(sent);
+  var core=p.core;
+  if(!core) return null;
+  pack.vocab.forEach(function(v){core=core.replace(v[0],v[1]);});
+  core=core.replace(/\s{2,}/g,' ').trim();
+  var out=null;
+  if(p.isQ && pack.qEnd.length) out=tlApply(core,pack.qEnd);
+  if(out===null && !p.isQ) out=tlApply(core,pack.end);
+  if(out===null) out=p.isQ?pack.qFall(core):pack.sFall(core);
+  var tail=(p.isQ&&!pack.noQ)?'?':'.';
+  if(/[.!?…]$/.test(out)) tail='';
+  return out+tail;
+}
+function tlTransform(text,pack){
+  var h=tlHash(text);
+  var sents=tlSplit(text);
+  var parts=[];
+  for(var i=0;i<sents.length;i++){
+    var s=tlSentence(sents[i],pack);
+    if(!s) continue;
+    if(pack.deco) s=pack.deco(s.replace(/\.$/,''),h,i);
+    parts.push(s);
+  }
+  if(!parts.length) return '';
+  var op=tlPick(h,TL_PACKS.indexOf(pack),pack.openers);
+  var cl=tlPick(h,TL_PACKS.indexOf(pack)+3,pack.closers);
+  if(pack.layout==='list'){
+    var body=parts.map(function(s,i){return (i+1)+'. '+s;}).join('\n');
+    return op+'\n'+body+'\n'+cl;
+  }
+  return op+parts.join(' ')+' '+cl;
+}
+function tlAll(text){
+  return TL_PACKS.map(function(p){return {id:p.id,name:p.name,emoji:p.emoji,out:tlTransform(text,p)};});
+}
+/*ENGINE-END*/
+
+/* ---------- app ---------- */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var state=null; /* {t:text, p:selectedPackIndex} */
+var results=null;
+
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function dec(s){try{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))));}catch(e){return null;}}
+function shareUrl(){return location.origin+location.pathname+'?r='+enc(state);}
+
+function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(t._tm);t._tm=setTimeout(function(){t.classList.remove('on');},1800);}
+function copy(text,msg){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});}
+  else fallbackCopy(text,msg);
+}
+function fallbackCopy(text,msg){var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(msg);}catch(e){toast('복사에 실패했어요');}document.body.removeChild(ta);}
+
+function render(){
+  results=tlAll(state.t);
+  var box=$('cards');box.innerHTML='';
+  results.forEach(function(r,i){
+    var d=document.createElement('div');
+    d.className='tcard'+(i===state.p?' sel':'');
+    d.setAttribute('role','button');d.setAttribute('tabindex','0');
+    var h=document.createElement('div');h.className='th';
+    var tn=document.createElement('div');tn.className='tn';tn.textContent=r.emoji+' '+r.name;
+    var cp=document.createElement('button');cp.type='button';cp.className='tcopy';cp.textContent='복사';
+    cp.addEventListener('click',function(ev){ev.stopPropagation();copy(r.out,r.name+' 텍스트 복사 완료');});
+    h.appendChild(tn);h.appendChild(cp);
+    var badge=document.createElement('span');badge.className='selbadge';badge.textContent='대표 카드';
+    var og=document.createElement('p');og.className='orig';og.textContent='원문 · "'+state.t.replace(/\n/g,' ')+'"';
+    var tt=document.createElement('p');tt.className='tt';tt.textContent=r.out;
+    var wm=document.createElement('div');wm.className='wm';wm.textContent='tomatoeggcat.com/tone-lab';
+    d.appendChild(badge);d.appendChild(h);d.appendChild(og);d.appendChild(tt);d.appendChild(wm);
+    d.addEventListener('click',function(){state.p=i;syncUrl();render();});
+    d.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();state.p=i;syncUrl();render();}});
+    box.appendChild(d);
+  });
+  $('result').classList.add('show');
+}
+function syncUrl(){history.replaceState(null,'',location.pathname+'?r='+enc(state));}
+
+function run(){
+  var t=$('txt').value.trim();
+  if(!t){toast('문장을 먼저 입력해 주세요');$('txt').focus();return;}
+  if(t.length>200)t=t.slice(0,200);
+  state={t:t,p:(state&&state.t===t)?state.p:0};
+  syncUrl();
+  render();
+  $('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* --- canvas card --- */
+function wrapText(ctx,text,maxW){
+  var lines=[];
+  text.split('\n').forEach(function(raw){
+    var cur='';
+    raw.split('').forEach(function(ch){
+      if(ctx.measureText(cur+ch).width>maxW&&cur){lines.push(cur);cur=ch===' '?'':ch;}
+      else cur+=ch;
+    });
+    lines.push(cur);
+  });
+  return lines;
+}
+function drawCard(){
+  var r=results[state.p];
+  var W=1080,H=1350;
+  var cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  var ctx=cv.getContext('2d');
+  var g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,'#831843');g.addColorStop(.55,'#be185d');g.addColorStop(1,'#ec4899');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,.10)';
+  ctx.beginPath();ctx.arc(W-90,120,220,0,7);ctx.fill();
+  var F='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  ctx.fillStyle='rgba(255,255,255,.85)';
+  ctx.font='700 34px '+F;
+  ctx.fillText('🎭 말투연구소',72,110);
+  ctx.font='900 78px '+F;
+  ctx.fillStyle='#fff';
+  ctx.fillText(r.emoji+' '+r.name,72,225);
+  ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(72,272);ctx.lineTo(W-72,272);ctx.stroke();
+  ctx.font='500 32px '+F;ctx.fillStyle='rgba(255,255,255,.8)';
+  var orig=state.t.replace(/\n/g,' ');
+  if(orig.length>34)orig=orig.slice(0,33)+'…';
+  ctx.fillText('원문 · "'+orig+'"',72,340);
+  ctx.font='700 46px '+F;ctx.fillStyle='#fff';
+  var lines=wrapText(ctx,r.out,W-144).slice(0,14);
+  var y=430;
+  lines.forEach(function(l){ctx.fillText(l,72,y);y+=68;});
+  ctx.font='700 30px '+F;ctx.fillStyle='rgba(255,255,255,.75)';
+  var wm='tomatoeggcat.com/tone-lab';
+  ctx.fillText(wm,W-72-ctx.measureText(wm).width,H-64);
+  ctx.font='500 28px '+F;
+  ctx.fillText('나도 해보기 → tomatoeggcat.com/tone-lab',72,H-120);
+  var a=document.createElement('a');
+  a.download='tone-lab-'+r.id+'.png';
+  a.href=cv.toDataURL('image/png');
+  a.click();
+  toast('이미지를 저장했어요');
+}
+
+/* --- events --- */
+$('go').addEventListener('click',run);
+$('txt').addEventListener('input',function(){$('cnt').textContent=this.value.length;});
+Array.prototype.forEach.call(document.querySelectorAll('#chips .chip'),function(c){
+  c.addEventListener('click',function(){var ta=$('txt');ta.value=c.textContent;ta.dispatchEvent(new Event('input'));ta.focus();});
+});
+$('btnImg').addEventListener('click',function(){if(results)drawCard();});
+$('btnLink').addEventListener('click',function(){copy(shareUrl(),'결과 링크를 복사했어요');});
+$('btnText').addEventListener('click',function(){
+  var r=results[state.p];
+  var first=r.out.split('\n')[0];
+  copy('🎭 말투연구소 — "'+state.t.replace(/\n/g,' ')+'"\n'+r.emoji+' '+r.name+': '+first+'\n'+shareUrl(),'커뮤니티용 텍스트를 복사했어요');
+});
+$('btnX').addEventListener('click',function(){
+  var r=results[state.p];
+  var msg='이 문장 '+r.name+'로 바꿨더니… 🎭\n"'+r.out.split('\n')[0].slice(0,60)+'"';
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(msg)+'&url='+encodeURIComponent(shareUrl()),'_blank');
+});
+$('btnShare').addEventListener('click',function(){
+  if(navigator.share){navigator.share({title:'말투연구소',text:'같은 문장, 5가지 말투 🎭',url:shareUrl()}).catch(function(){});}
+  else copy(shareUrl(),'공유 링크를 복사했어요');
+});
+$('btnRemix').addEventListener('click',function(){
+  $('txt').value=state.t;
+  $('txt').dispatchEvent(new Event('input'));
+  $('inputCard').scrollIntoView({behavior:'smooth',block:'start'});
+  $('txt').focus();
+});
+$('ctaMe').addEventListener('click',function(){
+  $('inputCard').scrollIntoView({behavior:'smooth',block:'start'});
+  $('txt').focus();
+});
+
+/* --- inbound ?r= --- */
+(function(){
+  var m=location.search.match(/[?&]r=([^&]+)/);
+  if(!m)return;
+  var s=dec(decodeURIComponent(m[1]));
+  if(!s||typeof s.t!=='string'||!s.t.trim())return;
+  state={t:s.t.slice(0,200),p:(typeof s.p==='number'&&s.p>=0&&s.p<TL_PACKS.length)?s.p:0};
+  $('txt').value=state.t;
+  $('txt').dispatchEvent(new Event('input'));
+  render();
+  $('inbound').classList.add('show');
+})();
+})();
+</script>
+</body>
+</html>

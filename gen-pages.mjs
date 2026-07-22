@@ -39,10 +39,18 @@ const BUILTINS = [
   { slug: "dday", emoji: "📅", name: "D-day 계산기", desc: "남은 날·지난 날·날짜 사이 일수", k: "디데이 dday 날짜 계산", prio: "0.8" },
   { slug: "bmi", emoji: "⚖️", name: "BMI 계산기", desc: "체질량지수·비만도·표준체중", k: "bmi 비만도 체질량 표준체중", prio: "0.8" },
   { slug: "pyeong", emoji: "📐", name: "평수 변환기", desc: "평 ↔ ㎡ 실시간 변환", k: "평수 평 제곱미터 면적 변환", prio: "0.8" },
+  // ── VIRAL 자립형 앱(정적·클라이언트) — 손수 관리. 상세는 CLAUDE.md/STATUS.md ──
+  { slug: "taste-dna", emoji: "🧬", name: "취향DNA", desc: "좋아하는 것 5개로 알아보는 128종 취향 유형", k: "취향 성향 테스트 유형 취향분석 mbti", prio: "0.7" },
+  { slug: "future-letter", emoji: "✉️", name: "미래편지", desc: "1년 뒤 내가 오늘의 나에게 보내는 편지", k: "미래편지 목표 다짐 편지 자기계발", prio: "0.7" },
+  { slug: "first-impress", emoji: "🪞", name: "첫인상 프로파일러", desc: "자기소개 3줄로 보는 내 첫인상 리포트", k: "첫인상 프로필 소개팅 바이오 심리", prio: "0.7" },
+  { slug: "tone-lab", emoji: "🎭", name: "말투연구소", desc: "아무 문장이나 부장님·사극·MZ·츤데레 말투로 변환", k: "말투 변환 부장님 사극 MZ 츤데레", prio: "0.7" },
+  { slug: "roast-edit", emoji: "🌶️", name: "사이다첨삭", desc: "내 문장을 독설로, 그리고 칭찬으로 평가서 발급", k: "독설 첨삭 평가 문장 리뷰 사이다", prio: "0.7" },
+  { slug: "dark-history", emoji: "📼", name: "흑역사 판독기", desc: "옛날에 쓴 글의 시대·감성·오글 지수 판독", k: "흑역사 싸이월드 감성 오글 판독", prio: "0.7" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 금융 · 세금", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 생활 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
+  { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
 

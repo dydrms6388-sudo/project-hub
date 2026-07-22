@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>취향DNA — 좋아하는 것 5개로 알아보는 내 취향 유형 | TomatoEggCat</title>
+<meta name="description" content="좋아하는 것 5개만 고르면 128종 취향 유형 중 하나로 명명해 드립니다. 7가지 취향 축(감성·자극·마이너·즉흥·혼자·트렌디·낭만)을 분석해 나만의 취향DNA 카드와 희귀도를 즉시 생성. 캡처해서 공유하기 좋은 재미용 취향 테스트." />
+<link rel="canonical" href="https://tomatoeggcat.com/taste-dna/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="취향DNA — 좋아하는 것 5개로 알아보는 내 취향 유형" />
+<meta property="og:description" content="좋아하는 것 5개를 고르면 128종 중 하나의 취향 유형으로 명명해 드려요. 나만의 취향DNA 카드를 만들어 보세요." />
+<meta property="og:url" content="https://tomatoeggcat.com/taste-dna/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="취향DNA — 좋아하는 것 5개로 알아보는 내 취향 유형" />
+<meta name="twitter:description" content="좋아하는 것 5개를 고르면 128종 중 하나의 취향 유형으로 명명해 드려요." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"취향DNA","description":"좋아하는 것 5개를 고르면 7가지 취향 축을 분석해 128종 취향 유형 중 하나로 명명해 주는 재미용 취향 테스트.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/taste-dna/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"취향DNA는 어떻게 유형을 정하나요?","acceptedAnswer":{"@type":"Answer","text":"고른 5개 항목에는 각각 감성↔이성, 자극↔안정, 대중↔마이너, 즉흥↔계획, 혼자↔함께, 클래식↔트렌디, 현실↔낭만 7가지 축에 대한 성향값이 담겨 있습니다. 5개의 성향값을 축별로 합산하고, 선택 조합에서 만든 고정 해시로 미세하게 보정해 각 축의 위치(게이지)와 방향(0/1)을 정합니다. 7개 축의 방향을 이어 붙이면 2의 7제곱인 128가지 유형 중 하나가 결정됩니다."}},
+{"@type":"Question","name":"같은 항목을 고르면 항상 같은 결과가 나오나요?","acceptedAnswer":{"@type":"Answer","text":"네. 계산은 100% 결정론적입니다. 서버도 난수도 쓰지 않고, 오직 고른 5개 항목만으로 결과를 만들기 때문에 같은 조합을 고르면 언제나 똑같은 유형·게이지·희귀도가 나옵니다. 그래서 결과 링크(주소 뒤 ?r=)를 열면 친구도 당신과 완전히 동일한 카드를 보게 됩니다."}},
+{"@type":"Question","name":"128개 유형은 무슨 기준으로 이름이 붙나요?","acceptedAnswer":{"@type":"Answer","text":"유형 이름은 손으로 128개를 쓴 게 아니라 축의 방향에서 조합해 만듭니다. 앞부분 3개 축이 8가지 수식어(예: 심야·도시·빈티지)를, 뒷부분 4개 축이 16가지 페르소나(예: 몽상가·기획자·큐레이터)를 결정해 8×16=128개의 서로 다른 이름이 나옵니다. 그래서 모든 유형 이름이 겹치지 않으면서도 자연스럽게 읽힙니다."}},
+{"@type":"Question","name":"결과를 저장하거나 공유할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 결과 화면의 '이미지로 저장' 버튼을 누르면 카드가 세로 PNG 이미지로 다운로드돼 SNS에 바로 올릴 수 있습니다. '링크 복사'는 내 결과가 그대로 열리는 주소를, '텍스트 복사'는 커뮤니티에 붙여넣기 좋은 3줄 요약을 복사하며, X(트위터) 공유 버튼도 있습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"엔터·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"취향DNA","item":"https://tomatoeggcat.com/taste-dna/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#a78bfa;--acc2:#c4b5fd}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#a78bfa,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+.count{font-size:14px;color:#9ca3af;margin:0 0 12px}
+.count b{color:var(--acc2);font-variant-numeric:tabular-nums}
+.catlab{font-size:12px;font-weight:700;color:#6b7280;letter-spacing:.04em;margin:16px 0 8px}
+.catlab:first-child{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 13px;font-size:14px;font-weight:600;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:40px;transition:.12s}
+.chip.on{background:rgba(167,139,250,.16);border-color:var(--acc);color:#ddd6fe}
+.chip:disabled{opacity:.34;cursor:not-allowed}
+.acts{display:flex;gap:10px;margin-top:18px}
+.acts button{flex:1}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#1a1033;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#1f1a2e;color:#c4b5fd;border:1px solid #3b3357;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#2a1d4d,#3b2a63);border-bottom:1px solid #4c3d7a}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#e9d5ff;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.result{display:none;margin-top:8px}
+/* result card */
+#cardView{background:linear-gradient(160deg,#4c1d95 0%,#6d28d9 42%,#a855f7 100%);border-radius:20px;padding:24px 22px;position:relative;overflow:hidden}
+#cardView:before{content:"";position:absolute;top:-60px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.25),transparent 70%);pointer-events:none}
+.dnaLabel{font-size:12px;font-weight:700;letter-spacing:.2em;color:#e9d5ff;margin:0 0 6px}
+.typeName{font-size:34px;line-height:1.15;font-weight:900;color:#fff;margin:0 0 8px;word-break:keep-all}
+.tagline{font-size:15px;color:#f3e8ff;margin:0 0 14px}
+.keys{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.keys span{font-size:12px;font-weight:700;background:rgba(255,255,255,.16);color:#fff;padding:4px 10px;border-radius:999px}
+.gauges{display:flex;flex-direction:column;gap:9px}
+.gauge{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:8px;font-size:11px;font-weight:700}
+.gauge .pl{color:#ddd6fe;text-align:right}
+.gauge .pr{color:#ddd6fe;text-align:left}
+.gauge .pl.hot,.gauge .pr.hot{color:#fff}
+.track{height:9px;background:rgba(255,255,255,.18);border-radius:999px;position:relative}
+.track i{position:absolute;top:50%;width:13px;height:13px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(124,58,237,.55)}
+.rare{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.22)}
+.rare .rk{font-size:12px;color:#e9d5ff;font-weight:700}
+.rare .rv{font-size:22px;font-weight:900;color:#fff}
+.wm{position:absolute;bottom:12px;right:16px;font-size:11px;color:rgba(255,255,255,.55);font-weight:600}
+.rare{margin-bottom:6px}
+/* match lists */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.mbox{background:#0f0f0f;border:1px solid #262626;border-radius:14px;padding:14px}
+.mbox h4{margin:0 0 8px;font-size:14px}
+.mbox.good h4{color:#86efac}.mbox.bad h4{color:#fca5a5}
+.mbox ul{margin:0;padding-left:16px}
+.mbox li{font-size:13px;color:#cbd5e1;margin-bottom:5px}
+.desc{background:#0f0f0f;border:1px solid #262626;border-radius:14px;padding:14px 16px;margin-top:14px;font-size:14.5px;color:#dcdcdc}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.share button{font-size:14px;padding:13px 8px}
+.save{margin-top:10px;background:#fff;color:#4c1d95}
+.remix{margin-top:10px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#2a1d4d;color:#e9d5ff;padding:11px 20px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50;border:1px solid #4c3d7a}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ad{margin:24px 0}
+h2{font-size:19px;margin:30px 0 10px}
+.about p{color:#d0d0d0;font-size:14.5px}
+.about ol,.about ul{color:#d0d0d0;font-size:14.5px;padding-left:20px}
+.about li{margin-bottom:6px}
+.faq{border-top:1px solid #262626;padding:13px 0}
+.faq b{display:block;margin-bottom:4px;color:#ededed}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.disc{font-size:12.5px;color:#6b7280;background:#141414;border:1px solid #232323;border-radius:12px;padding:12px 14px;margin-top:14px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:#1f1a2e;color:#cdd6ff;padding:8px 13px;border-radius:999px;text-decoration:none}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+@media(max-width:400px){.typeName{font-size:29px}.mgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>친구가 자신의 <b>취향DNA</b>를 공유했어요. 당신의 유형은?</span>
+  <button id="meToo">나도 해보기 →</button>
+</div>
+
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 엔터·바이럴 › 취향DNA</div>
+<h1>🧬 취향DNA</h1>
+<p class="lead">좋아하는 것 <b>딱 5개</b>만 고르면, <b>128종 취향 유형</b> 중 하나로 이름을 붙여 드려요. 캡처해서 올리기 좋은 나만의 취향 카드까지.</p>
+
+<div class="card" id="inputCard">
+  <p class="count"><b id="selCount">0</b> / 5 선택 &nbsp;·&nbsp; 마음에 드는 것을 5개 골라주세요</p>
+  <div id="chipHost"></div>
+  <div class="acts">
+    <button class="ghost" id="randomBtn">🎲 랜덤으로</button>
+    <button id="goBtn" disabled>취향DNA 분석 →</button>
+  </div>
+</div>
+
+<div class="result" id="result">
+  <div id="cardView">
+    <p class="dnaLabel">TASTE DNA</p>
+    <h2 class="typeName" id="rName" style="margin:0 0 8px">—</h2>
+    <p class="tagline" id="rTag"></p>
+    <div class="keys" id="rKeys"></div>
+    <div class="gauges" id="rGauges"></div>
+    <div class="rare"><span class="rk">희귀도 RARITY</span><span class="rv" id="rRare">—</span></div>
+    <div class="wm">tomatoeggcat.com/taste-dna</div>
+  </div>
+
+  <div class="desc" id="rDesc"></div>
+
+  <div class="mgrid">
+    <div class="mbox good"><h4>💜 이런 사람과 잘 맞아요</h4><ul id="rGood"></ul></div>
+    <div class="mbox bad"><h4>🥀 이런 사람과는 삐걱</h4><ul id="rBad"></ul></div>
+  </div>
+
+  <button class="save" id="saveBtn">📸 이미지로 저장</button>
+  <div class="share">
+    <button class="ghost" id="copyLink">🔗 링크 복사</button>
+    <button class="ghost" id="copyText">📋 텍스트 복사</button>
+    <button class="ghost" id="shareX">𝕏 공유</button>
+    <button class="ghost" id="shareEtc">📤 공유하기</button>
+  </div>
+  <button class="ghost remix" id="remixBtn">🔁 다시 하기 / 조건 바꾸기</button>
+
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<div class="about">
+  <h2>취향DNA란?</h2>
+  <p>취향DNA는 "당신이 무엇을 좋아하는가"만으로 성격 유형을 만들어 보는 아주 가벼운 취향 실험입니다. 흔한 심리 테스트는 "당신은 어떤 사람인가요?"라고 길게 묻지만, 사실 사람의 결은 좋아하는 음악 한 곡, 즐겨 가는 카페, 여행하는 방식처럼 사소한 취향에서 더 솔직하게 드러나곤 하죠. 그래서 이 도구는 질문 대신 <b>좋아하는 것 5개</b>만 받습니다. 음악·영화·음식·여행·취미·색·무드에 걸친 40개의 선택지 중에서 마음이 가는 다섯 개를 고르면, 각 선택에 숨어 있는 성향값을 감성↔이성, 자극↔안정, 대중↔마이너, 즉흥↔계획, 혼자↔함께, 클래식↔트렌디, 현실↔낭만이라는 7개의 축으로 환산합니다. 7개 축의 방향을 이어 붙이면 2의 7제곱, 즉 <b>128가지 유형</b> 중 하나가 나오고, 유형마다 고유한 이름과 한 줄 태그라인, 어울리는 사람과 안 어울리는 사람, 그리고 희귀도까지 붙습니다. 결과는 캡처해 SNS에 올리기 좋은 카드 형태라, 친구들과 "너는 무슨 유형 나왔어?"를 나누기에 딱 좋습니다.</p>
+
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>음악부터 무드까지 카테고리별로 흩어진 선택지를 살펴봅니다.</li>
+    <li>가장 "나답다" 싶은 항목을 <b>정확히 5개</b> 골라 눌러요. (6개째부터는 잠깁니다)</li>
+    <li>고르기 귀찮다면 <b>🎲 랜덤으로</b> 버튼으로 아무거나 5개를 채워도 됩니다.</li>
+    <li><b>취향DNA 분석 →</b>을 누르면 즉시 유형 카드가 만들어집니다.</li>
+    <li><b>이미지로 저장</b>으로 카드를 PNG로 내려받거나, 링크·텍스트·X로 공유하세요.</li>
+    <li>결과가 애매하면 <b>다시 하기</b>로 항목 하나만 바꿔 결과가 어떻게 달라지는지 보세요.</li>
+  </ol>
+
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>단톡방이나 스토리에 올릴 가벼운 밈·놀이거리가 필요할 때</li>
+    <li>소개팅·모임에서 어색함을 깨는 취향 이야깃거리가 필요할 때</li>
+    <li>친구와 "우리 취향 얼마나 다를까?"를 눈으로 확인하고 싶을 때</li>
+    <li>내 취향을 한 단어로 정리해 프로필·인사에 써먹고 싶을 때</li>
+    <li>연인·친구와 잘 맞는 부분/삐걱대는 부분을 웃으며 짚어 보고 싶을 때</li>
+  </ul>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>취향DNA는 어떻게 유형을 정하나요?</b><p>고른 5개 항목에는 각각 7개 축에 대한 성향값이 담겨 있어요. 이 값을 축별로 합산하고, 선택 조합에서 만든 고정 해시로 미세 보정해 각 축의 위치(게이지)와 방향(0/1)을 정합니다. 7개 축 방향을 이어 붙이면 128가지 중 하나가 결정돼요.</p></div>
+  <div class="faq"><b>같은 항목을 고르면 항상 같은 결과가 나오나요?</b><p>네, 계산은 100% 결정론적입니다. 서버도 난수도 없이 오직 고른 5개만으로 결과를 만들기 때문에, 같은 조합이면 언제나 똑같은 유형·게이지·희귀도가 나와요. 그래서 결과 링크를 열면 친구도 완전히 같은 카드를 봅니다.</p></div>
+  <div class="faq"><b>128개 유형은 무슨 기준으로 이름이 붙나요?</b><p>이름은 손으로 128개를 쓴 게 아니라 축에서 조합합니다. 앞 3개 축이 8가지 수식어(심야·도시·빈티지 등)를, 뒤 4개 축이 16가지 페르소나(몽상가·기획자·큐레이터 등)를 정해 8×16=128개의 겹치지 않는 이름이 나와요.</p></div>
+  <div class="faq"><b>결과를 저장하거나 공유할 수 있나요?</b><p>네. '이미지로 저장'으로 카드를 세로 PNG로 내려받아 SNS에 바로 올릴 수 있고, '링크 복사'는 내 결과가 그대로 열리는 주소를, '텍스트 복사'는 3줄 요약을 복사합니다. X(트위터) 공유 버튼도 있어요.</p></div>
+
+  <p class="disc">본 결과는 <b>재미용</b>으로 제공되는 취향 놀이이며, 심리 검사·의학·법률·재무 등 어떤 전문적 조언도 아닙니다. 유형·궁합·희귀도는 선택한 항목을 규칙에 따라 계산한 가벼운 콘텐츠일 뿐이니 재미로만 즐겨 주세요.</p>
+
+  <div class="more">
+    <a href="/future-letter/">✉️ 미래편지</a>
+    <a href="/first-impress/">🪞 첫인상 프로파일러</a>
+    <a href="/tone-lab/">🎭 말투연구소</a>
+    <a href="/roast-edit/">🌶️ 사이다첨삭</a>
+    <a href="/dark-history/">📼 흑역사 판독기</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- 7 축 메타 ---------- */
+// 각 축: L 은 bit 0, R 은 bit 1. 양수 delta 는 R 쪽으로 민다.
+const AX = [
+ {L:"감성",R:"이성", cl:"느낌으로 사는", cr:"논리로 사는",
+  dl:"마음이 먼저 움직이는", dr:"머리로 먼저 판단하는",
+  sl:"내 감정을 먼저 알아채 주는 사람", sr:"차분하게 정리해서 말해 주는 사람"},
+ {L:"자극",R:"안정", cl:"짜릿함을 좇는", cr:"평온을 지키는",
+  dl:"새로운 자극에서 살아나는", dr:"익숙한 안정에서 편안해지는",
+  sl:"새로운 걸 같이 저질러 줄 사람", sr:"곁에서 페이스를 맞춰 주는 사람"},
+ {L:"대중",R:"마이너", cl:"모두의 취향을 아는", cr:"나만의 취향을 파는",
+  dl:"많은 사람이 좋아하는 것에 자연스레 끌리는", dr:"남들이 잘 모르는 걸 발굴하는",
+  sl:"요즘 뜨는 걸 같이 즐기는 사람", sr:"숨은 취향을 알아봐 주는 사람"},
+ {L:"즉흥",R:"계획", cl:"순간에 반응하는", cr:"판을 짜는",
+  dl:"끌리면 일단 움직이는", dr:"계획이 서야 마음이 놓이는",
+  sl:"즉흥 제안에 '콜'을 외쳐 줄 사람", sr:"약속을 미리 정해 지켜 주는 사람"},
+ {L:"혼자",R:"함께", cl:"혼자서 깊어지는", cr:"함께라 빛나는",
+  dl:"혼자만의 시간에 충전되는", dr:"사람들과 어울릴 때 살아나는",
+  sl:"내 혼자 시간을 존중해 주는 사람", sr:"자주 불러내 함께 노는 사람"},
+ {L:"클래식",R:"트렌디", cl:"변치 않는 걸 아끼는", cr:"지금을 즐기는",
+  dl:"오래된 클래식을 아끼는", dr:"지금 유행하는 흐름을 잘 타는",
+  sl:"오래된 취향을 알아봐 주는 사람", sr:"새 유행을 같이 파는 사람"},
+ {L:"현실",R:"낭만", cl:"두 발로 딛고 서는", cr:"낭만을 좇는",
+  dl:"현실 감각이 단단한", dr:"상상과 낭만을 즐기는",
+  sl:"현실적인 조언을 해 주는 사람", sr:"엉뚱한 상상에 맞장구쳐 주는 사람"}
+];
+
+/* ---------- 이름 조합: 앞3축→수식어(8), 뒤4축→페르소나(16) ---------- */
+const PREFIX = ["심야","몽환","포근","빈티지","도시","실험","정석","고독"]; // idx = b0b1b2
+const CORE = ["방랑자","몽상가","탐험러","예술가","무드메이커","로맨티스트","인싸러","축제러",
+              "장인","수집가","기획자","크리에이터","리더","큐레이터","전략가","드리머"]; // idx=b3b4b5b6
+
+/* ---------- 선택지 40개 (deltas: [감성/이성,자극/안정,대중/마이너,즉흥/계획,혼자/함께,클래식/트렌디,현실/낭만]) ---------- */
+const CHIPS = [
+ {c:"음악",t:"발라드",d:[-1,0,-1,0,0,0,1]},
+ {c:"음악",t:"힙합",d:[0,-1,0,0,1,1,-1]},
+ {c:"음악",t:"인디음악",d:[-1,0,1,0,-1,1,0]},
+ {c:"음악",t:"클래식음악",d:[1,1,0,0,-1,-1,0]},
+ {c:"음악",t:"K-POP",d:[0,-1,-1,0,1,1,0]},
+ {c:"음악",t:"재즈·LP",d:[0,0,1,0,-1,-1,1]},
+ {c:"영화·영상",t:"로맨스영화",d:[-1,0,0,0,1,0,1]},
+ {c:"영화·영상",t:"SF·판타지",d:[0,-1,1,0,0,0,1]},
+ {c:"영화·영상",t:"다큐멘터리",d:[1,1,0,0,-1,0,-1]},
+ {c:"영화·영상",t:"공포·스릴러",d:[0,-1,1,0,0,0,0]},
+ {c:"영화·영상",t:"넷플릭스 정주행",d:[0,1,-1,0,-1,1,0]},
+ {c:"영화·영상",t:"예술영화",d:[-1,0,1,0,0,-1,1]},
+ {c:"음식",t:"매운 음식",d:[0,-1,0,-1,0,0,0]},
+ {c:"음식",t:"디저트·베이킹",d:[-1,0,0,1,0,0,1]},
+ {c:"음식",t:"길거리 음식",d:[0,0,-1,-1,1,0,0]},
+ {c:"음식",t:"오마카세",d:[1,0,1,1,0,0,0]},
+ {c:"음식",t:"집밥·한식",d:[0,1,0,0,1,-1,-1]},
+ {c:"음식",t:"비건·건강식",d:[1,0,0,1,0,1,0]},
+ {c:"여행",t:"즉흥 배낭여행",d:[0,-1,0,-1,-1,0,0]},
+ {c:"여행",t:"계획적 패키지",d:[0,1,0,1,1,0,0]},
+ {c:"여행",t:"도시 여행",d:[0,-1,-1,0,0,1,0]},
+ {c:"여행",t:"자연·캠핑",d:[0,1,0,0,-1,-1,1]},
+ {c:"여행",t:"한 달 살기",d:[0,0,1,-1,0,0,1]},
+ {c:"여행",t:"호캉스",d:[0,1,-1,1,0,0,0]},
+ {c:"취미",t:"독서",d:[1,0,0,0,-1,-1,1]},
+ {c:"취미",t:"게임",d:[0,-1,0,-1,0,1,0]},
+ {c:"취미",t:"운동·헬스",d:[1,1,0,1,0,0,-1]},
+ {c:"취미",t:"그림·드로잉",d:[-1,0,1,0,-1,0,1]},
+ {c:"취미",t:"사진 찍기",d:[-1,0,0,0,0,1,1]},
+ {c:"취미",t:"수집(굿즈)",d:[0,0,1,1,-1,-1,0]},
+ {c:"색·분위기",t:"파스텔톤",d:[-1,1,0,0,0,0,1]},
+ {c:"색·분위기",t:"모노톤·블랙",d:[1,0,1,0,0,1,0]},
+ {c:"색·분위기",t:"네온·비비드",d:[0,-1,0,0,1,1,0]},
+ {c:"색·분위기",t:"우드·내추럴",d:[0,1,0,0,0,-1,-1]},
+ {c:"색·분위기",t:"빈티지·레트로",d:[0,0,1,0,0,-1,1]},
+ {c:"무드",t:"비 오는 날",d:[-1,0,0,0,-1,0,1]},
+ {c:"무드",t:"새벽 감성",d:[-1,0,1,0,-1,0,0]},
+ {c:"무드",t:"북적이는 축제",d:[0,-1,-1,-1,1,0,0]},
+ {c:"무드",t:"조용한 카페",d:[0,1,0,0,-1,-1,0]},
+ {c:"무드",t:"미니멀 라이프",d:[1,1,1,1,0,0,0]}
+];
+
+/* ---------- 해시 (cyrb53) ---------- */
+function hash(str){let h1=0xdeadbeef,h2=0x41c6ce57;
+ for(let i=0;i<str.length;i++){const ch=str.charCodeAt(i);
+  h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
+ h1=Math.imul(h1^(h1>>>16),2246822507);h1^=Math.imul(h2^(h2>>>13),3266489909);
+ h2=Math.imul(h2^(h2>>>16),2246822507);h2^=Math.imul(h1^(h1>>>13),3266489909);
+ return 4294967296*(2097151&h2)+(h1>>>0);}
+
+/* ---------- 핵심 계산 ---------- */
+function compute(ids){
+ const s=[0,0,0,0,0,0,0];
+ ids.forEach(id=>{const d=CHIPS[id].d;for(let i=0;i<7;i++)s[i]+=d[i];});
+ const h=hash([...ids].sort((a,b)=>a-b).join(","));
+ const gauge=[],bits=[];
+ for(let i=0;i<7;i++){
+  const nudge=(((h>>>(i*3))&7)-3.5); // -3.5 ~ 3.5
+  let g=50+s[i]*11+nudge;
+  g=Math.max(6,Math.min(94,g));
+  gauge.push(g);
+  bits.push(g>=50?1:0);
+ }
+ const prefIdx=(bits[0]<<2)|(bits[1]<<1)|bits[2];
+ const coreIdx=(bits[3]<<3)|(bits[4]<<2)|(bits[5]<<1)|bits[6];
+ const name=PREFIX[prefIdx]+CORE[coreIdx];
+ // 태그라인
+ const tag=`${AX[0]["c"+(bits[0]?"r":"l")]}, ${AX[6]["c"+(bits[6]?"r":"l")]} ${CORE[coreIdx]}`;
+ // 설명 (4문장)
+ const C=(i)=>AX[i]["d"+(bits[i]?"r":"l")];
+ const desc=`${name}는 ${C(0)} 사람이에요. ${cap(AX[1]["c"+(bits[1]?"r":"l")])} 동시에 ${AX[3]["c"+(bits[3]?"r":"l")]} 편이라, 무엇을 고르든 색깔이 분명하게 드러나죠. ${cap(C(4))} 성향이고, ${C(6)} 마음도 함께 지녔어요. ${cap(AX[5]["c"+(bits[5]?"r":"l")])} 감각까지 더해져, '취향 하나는 확실하다'는 말을 자주 듣는 유형입니다.`;
+ // 궁합
+ const good=[AX[0]["s"+(bits[0]?"r":"l")],AX[4]["s"+(bits[4]?"r":"l")],AX[3]["s"+(bits[3]?"r":"l")]];
+ const bad=[AX[1]["s"+(bits[1]?"l":"r")],AX[5]["s"+(bits[5]?"l":"r")],AX[6]["s"+(bits[6]?"l":"r")]];
+ // 키워드 (편차 큰 3축)
+ const order=[0,1,2,3,4,5,6].sort((a,b)=>Math.abs(gauge[b]-50)-Math.abs(gauge[a]-50));
+ const keys=order.slice(0,3).map(i=>"#"+AX[i][bits[i]?"R":"L"]);
+ // 희귀도
+ const rare=((h%3170)/100+0.3).toFixed(1);
+ return {ids,bits,gauge,name,tag,desc,good,bad,keys,rare};
+}
+function cap(x){return x?x.charAt(0)+x.slice(1):x;}
+
+/* ---------- 상태 & DOM ---------- */
+let sel=[]; // 선택된 chip id
+const $=id=>document.getElementById(id);
+const chipHost=$("chipHost");
+
+// chips 렌더
+(function renderChips(){
+ let out="";let last=null;
+ CHIPS.forEach((c,i)=>{
+  if(c.c!==last){if(last!==null)out+="</div>";out+=`<div class="catlab">${c.c}</div><div class="chips">`;last=c.c;}
+  out+=`<button type="button" class="chip" data-id="${i}">${c.t}</button>`;
+ });
+ out+="</div>";
+ chipHost.innerHTML=out;
+})();
+
+chipHost.addEventListener("click",e=>{
+ const b=e.target.closest(".chip");if(!b)return;
+ const id=+b.dataset.id;
+ const at=sel.indexOf(id);
+ if(at>=0){sel.splice(at,1);}
+ else{if(sel.length>=5)return;sel.push(id);}
+ syncChips();
+});
+
+function syncChips(){
+ document.querySelectorAll(".chip").forEach(b=>{
+  const id=+b.dataset.id;const on=sel.includes(id);
+  b.classList.toggle("on",on);
+  b.disabled=(!on&&sel.length>=5);
+ });
+ $("selCount").textContent=sel.length;
+ $("goBtn").disabled=sel.length!==5;
+}
+
+$("randomBtn").addEventListener("click",()=>{
+ const pool=[...Array(CHIPS.length).keys()];
+ sel=[];
+ while(sel.length<5){const k=pool.splice(Math.floor(Math.random()*pool.length),1)[0];sel.push(k);}
+ syncChips();
+});
+
+$("goBtn").addEventListener("click",()=>{
+ if(sel.length!==5)return;
+ const res=compute(sel);
+ render(res,true);
+});
+
+/* ---------- 렌더 ---------- */
+let current=null;
+function render(res,pushUrl){
+ current=res;
+ $("rName").textContent=res.name;
+ $("rTag").textContent=res.tag;
+ $("rKeys").innerHTML=res.keys.map(k=>`<span>${k}</span>`).join("");
+ $("rGauges").innerHTML=AX.map((a,i)=>{
+  const g=res.gauge[i],b=res.bits[i];
+  return `<div class="gauge"><span class="pl${b?"":" hot"}">${a.L}</span>`+
+   `<span class="track"><i style="left:${g}%"></i></span>`+
+   `<span class="pr${b?" hot":""}">${a.R}</span></div>`;
+ }).join("");
+ $("rRare").textContent=res.rare+"%";
+ $("rDesc").textContent=res.desc;
+ $("rGood").innerHTML=res.good.map(x=>`<li>${x}</li>`).join("");
+ $("rBad").innerHTML=res.bad.map(x=>`<li>${x}</li>`).join("");
+ $("result").style.display="block";
+ if(pushUrl){
+  const payload=enc({v:1,p:res.ids});
+  history.replaceState(null,"",location.pathname+"?r="+payload);
+  $("result").scrollIntoView({behavior:"smooth",block:"start"});
+ }
+}
+
+/* ---------- URL 인코딩 ---------- */
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+function dec(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))));}
+
+/* ---------- 공유/저장 ---------- */
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1800);}
+function curUrl(){return location.origin+location.pathname+"?r="+enc({v:1,p:current.ids});}
+function shareText(){return `[취향DNA] 나는 "${current.name}"\n${current.tag} · 희귀도 ${current.rare}%\n${curUrl()}`;}
+
+$("copyLink").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(curUrl());toast("링크를 복사했어요");}catch(e){toast("복사 실패, 길게 눌러 복사하세요");}});
+$("copyText").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(shareText());toast("텍스트를 복사했어요");}catch(e){toast("복사 실패");}});
+$("shareX").addEventListener("click",()=>{
+ const u=`https://twitter.com/intent/tweet?text=${encodeURIComponent(`나의 취향DNA는 "${current.name}" 🧬\n${current.tag}`)}&url=${encodeURIComponent(curUrl())}`;
+ window.open(u,"_blank","noopener");
+});
+$("shareEtc").addEventListener("click",async()=>{
+ if(navigator.share){try{await navigator.share({title:"취향DNA",text:shareText().split("\n").slice(0,2).join(" "),url:curUrl()});}catch(e){}}
+ else{try{await navigator.clipboard.writeText(shareText());toast("공유 텍스트를 복사했어요");}catch(e){toast("공유를 지원하지 않아요");}}
+});
+
+/* ---------- 캔버스 PNG ---------- */
+$("saveBtn").addEventListener("click",()=>{
+ const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;
+ const x=cv.getContext("2d");
+ const g=x.createLinearGradient(0,0,W,H);
+ g.addColorStop(0,"#4c1d95");g.addColorStop(.45,"#6d28d9");g.addColorStop(1,"#a855f7");
+ x.fillStyle=g;x.fillRect(0,0,W,H);
+ // glow
+ const rg=x.createRadialGradient(W-160,120,10,W-160,120,320);
+ rg.addColorStop(0,"rgba(255,255,255,.28)");rg.addColorStop(1,"rgba(255,255,255,0)");
+ x.fillStyle=rg;x.fillRect(0,0,W,H);
+ const PAD=88;
+ x.textBaseline="alphabetic";
+ x.fillStyle="#e9d5ff";x.font="700 30px sans-serif";x.fillText("T A S T E   D N A",PAD,150);
+ x.fillStyle="#ffffff";x.font="900 92px sans-serif";
+ wrap(x,current.name,PAD,258,W-PAD*2,96);
+ x.fillStyle="#f3e8ff";x.font="400 38px sans-serif";
+ const ty=current.name.length>7?420:360;
+ wrap(x,current.tag,PAD,ty,W-PAD*2,50);
+ // keywords
+ let kx=PAD,ky=ty+90;x.font="700 30px sans-serif";
+ current.keys.forEach(k=>{const w=x.measureText(k).width+44;
+  x.fillStyle="rgba(255,255,255,.18)";rr(x,kx,ky-38,w,52,26);x.fill();
+  x.fillStyle="#fff";x.fillText(k,kx+22,ky);kx+=w+14;});
+ // gauges
+ let gy=ky+90;const gw=W-PAD*2-260;const gx0=PAD+130;
+ x.font="700 26px sans-serif";
+ AX.forEach((a,i)=>{
+  x.fillStyle="#ddd6fe";x.textAlign="right";x.fillText(a.L,gx0-24,gy+9);
+  x.textAlign="left";x.fillText(a.R,gx0+gw+24,gy+9);
+  x.fillStyle="rgba(255,255,255,.2)";rr(x,gx0,gy-9,gw,18,9);x.fill();
+  const px=gx0+gw*(current.gauge[i]/100);
+  x.fillStyle="#fff";x.beginPath();x.arc(px,gy,15,0,7);x.fill();
+  x.textAlign="left";
+  gy+=78;
+ });
+ // rarity line
+ x.strokeStyle="rgba(255,255,255,.28)";x.lineWidth=2;x.beginPath();x.moveTo(PAD,gy+8);x.lineTo(W-PAD,gy+8);x.stroke();
+ x.fillStyle="#e9d5ff";x.font="700 30px sans-serif";x.fillText("희귀도 RARITY",PAD,gy+72);
+ x.fillStyle="#fff";x.font="900 60px sans-serif";x.textAlign="right";x.fillText(current.rare+"%",W-PAD,gy+78);x.textAlign="left";
+ // watermark
+ x.fillStyle="rgba(255,255,255,.62)";x.font="600 28px sans-serif";x.fillText("tomatoeggcat.com/taste-dna",PAD,H-56);
+ const url=cv.toDataURL("image/png");
+ const a=document.createElement("a");a.href=url;a.download=`취향DNA_${current.name}.png`;a.click();
+ toast("이미지를 저장했어요");
+});
+function wrap(x,text,px,py,maxw,lh){
+ const chars=text.split("");let line="",yy=py;
+ for(const c of chars){const test=line+c;
+  if(x.measureText(test).width>maxw&&line){x.fillText(line,px,yy);line=c;yy+=lh;}
+  else line=test;}
+ x.fillText(line,px,yy);return yy;
+}
+function rr(x,px,py,w,h,r){x.beginPath();x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+h,r);x.arcTo(px+w,py+h,px,py+h,r);x.arcTo(px,py+h,px,py,r);x.arcTo(px,py,px+w,py,r);x.closePath();}
+
+/* ---------- 리믹스 / 인바운드 ---------- */
+$("remixBtn").addEventListener("click",()=>{
+ $("inputCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+$("meToo").addEventListener("click",()=>{
+ sel=[];syncChips();
+ $("result").style.display="none";
+ history.replaceState(null,"",location.pathname);
+ $("inbound").classList.remove("show");
+ $("inputCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* ---------- 초기 로드 ---------- */
+(function init(){
+ syncChips();
+ const p=new URLSearchParams(location.search).get("r");
+ if(p){
+  try{
+   const st=dec(p);
+   if(st&&Array.isArray(st.p)&&st.p.length===5&&st.p.every(n=>n>=0&&n<CHIPS.length)){
+    sel=st.p.slice();syncChips();
+    render(compute(sel),false);
+    $("inbound").classList.add("show");
+   }
+  }catch(e){/* 잘못된 링크는 무시 */}
+ }
+})();
+</script>
+</body>
+</html>
