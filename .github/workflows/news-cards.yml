@@ -89,8 +89,10 @@ jobs:
           url=$(vercel deploy --prod --token="${{ secrets.VERCEL_TOKEN }}" --yes)
           echo "Deployed: $url"
 
+      # SNS 게시는 Vercel 시크릿 가드와 무관하게 실행한다:
+      # 배포가 네이티브 Vercel Git 연동으로 이뤄지는 경우에도 post-social.mjs 가
+      # 공개 이미지 URL 200 폴링으로 배포 완료를 기다리고, META_* 미설정이면 스스로 스킵한다.
       - name: Post to Instagram / Facebook
-        if: steps.guard.outputs.ok == 'true'
         env:
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
