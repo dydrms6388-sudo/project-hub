@@ -23,6 +23,7 @@
     chats: {},   // pid -> [{who,t,at}]
     votes: {},
     lastSwipe: null,
+    discView: "swipe", taps: {},
     settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0, lang: "ko" },
     filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" },
     stats: { likesSent: 0, matches: 0 },
@@ -56,6 +57,8 @@
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
   S.roulette = Object.assign({ day: "" }, S.roulette || {});
   S.wc = Object.assign({ day: "", champ: "" }, S.wc || {});
+  S.discView = S.discView === "grid" ? "grid" : "swipe";
+  S.taps = S.taps || {};
   S.battle = Object.assign({ day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 }, S.battle || {});
   S.balance = S.balance || {};
   S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
@@ -91,6 +94,7 @@
     // 디스커버
     "필터": "Filter", "패스": "Pass", "슈퍼": "Super", "되돌리기": "Rewind", "부스트": "Boost",
     "오늘 좋아요": "Likes today", "슈퍼라이크": "Super Likes", "무제한": "Unlimited",
+    "그리드": "Grid", "스와이프": "Swipe", "가까운 순": "nearest first", "탭 보내기": "Send a Tap", "탭 보냄": "Tapped",
     "탐색 필터": "Discovery Filters", "적용하기": "Apply", "초기화": "Reset",
     // 섹션 헤더
     "받은 좋아요": "Likes You", "크러시 카드 도감": "Crush Card Collection",
@@ -710,6 +714,46 @@
       S.restoredPid = null;
     }
   }
+  /* ── 탭(👋) — 좋아요보다 가벼운 관심 신호 ── */
+  function tapPid(pid) {
+    if (S.taps[pid]) { toast("이미 👋 탭을 보냈어요"); return; }
+    S.taps[pid] = Date.now(); save(); vibrate(14);
+    const p = P(pid);
+    toast(`👋 ${esc(p ? p.name : "")}님에게 탭을 보냈어요 — 무료·무제한`);
+    // 데모 회신 루프: 35% 확률로 잠시 후 상대가 좋아요를 보냄
+    if (Math.random() < 0.35 && p && !S.incoming.includes(pid) && !S.matches.some((m) => m.pid === pid)) {
+      setTimeout(() => {
+        if (S.incoming.includes(pid) || S.matches.some((m) => m.pid === pid)) return;
+        S.incoming.push(pid); save(); badges();
+        toast(`💜 ${esc(p.name)}님이 탭에 답했어요 — 받은 좋아요 확인!`);
+      }, 6000 + Math.random() * 9000);
+    }
+    if (tab === "discover" && S.discView === "grid") paintGridTap(pid);
+  }
+  function paintGridTap(pid) { const b = $(`.dg-tap[data-tap="${pid}"]`); if (b) { b.classList.add("on"); b.textContent = "👋✓"; } }
+  /* 그리드에서 특정 프로필 직접 좋아요/패스 */
+  function gridLike(pid) {
+    const p = P(pid); if (!p) return;
+    if (!canAct("like")) return;
+    S.likesUsed++; S.stats.likesSent++; S.liked.push(pid); S.lastSwipe = { pid, kind: "like" };
+    const boostOn = Date.now() < S.boostUntil;
+    const prob = compat(p) / 100 * 0.42 + (boostOn ? 0.2 : 0);
+    const sure = p.likedYou || S.incoming.includes(pid);
+    vibrate(12);
+    if (sure || Math.random() < prob) makeMatch(pid);
+    else { save(); vDiscover(); toast(`💜 ${esc(p.name)}님에게 좋아요를 보냈어요`); }
+  }
+  function gridPass(pid) { S.passed.push(pid); S.lastSwipe = { pid, kind: "nope" }; save(); vDiscover(); }
+  function gridPool() {
+    const gone = new Set([...S.passed, ...S.blocked, ...S.matches.map((m) => m.pid)]);
+    const F = S.filters;
+    return D.profiles.filter((p) => !gone.has(p.id))
+      .filter((p) => p.age >= F.ageMin && (F.ageMax >= 50 || p.age <= F.ageMax))
+      .filter((p) => F.area === "all" || (F.area === "mine" ? sameArea(p) : zoneOf(areaOf(p)) === F.area))
+      .filter((p) => F.looking === "all" || p.lookingFor === F.looking)
+      .filter((p) => !F.position || F.position === "all" || posOf(p) === F.position)
+      .sort((a, b) => (sameArea(b) - sameArea(a)) || (a.distanceKm - b.distanceKm)); // 가까운 순
+  }
   function vDiscover() {
     buildDeck();
     const boostOn = Date.now() < S.boostUntil;
@@ -721,8 +765,40 @@
     ].filter(Boolean);
     const F = S.filters;
     const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all" || (F.position && F.position !== "all");
+    const isGrid = S.discView === "grid";
+    if (isGrid) {
+      const pool = gridPool();
+      $("#view").innerHTML = `<div class="disc" style="padding-bottom:0">
+        <div class="fx-row">
+          <button class="fx-chip fx-btn" id="d-view" aria-label="보기 전환">🃏 ${t("스와이프")}</button>
+          <button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ ${t("필터")}${filterOn ? " ●" : ""}</button>
+          ${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
+        <p class="tiny" style="margin:0 2px 8px">🔳 ${t("그리드")} · ${t("가까운 순")} ${pool.length}명 · 👋 탭은 무료 시그널이에요</p>
+        <div class="dgrid">${pool.map((p) => `
+          <button class="dg-card" data-pid="${p.id}">
+            <span class="dg-ph" style="background:linear-gradient(150deg,${p.grad[0]},${p.grad[1]})">${p.emoji}
+              ${p.lastActiveMin < 30 ? '<i class="dg-on"></i>' : ""}
+              ${S.liked.includes(p.id) ? '<i class="dg-liked">💜</i>' : ""}</span>
+            <span class="dg-nm">${esc(p.name)}, ${p.age}</span>
+            <span class="dg-meta">${sameArea(p) ? p.distanceKm + "km" : esc(areaOf(p))}</span>
+            <span class="dg-tap ${S.taps[p.id] ? "on" : ""}" data-tap="${p.id}" role="button" aria-label="탭 보내기">${S.taps[p.id] ? "👋✓" : "👋"}</span>
+          </button>`).join("")}</div>
+        ${!pool.length ? `<div class="empty"><div class="em">🔳</div>조건에 맞는 프로필이 없어요.<br>필터를 넓혀보세요.</div>` : ""}
+        <div class="quota" style="margin-top:10px">${likeLimit() === Infinity
+          ? `<span>💜 ${t("좋아요")} <b>${t("무제한")}</b></span>` : `<span>${t("오늘 좋아요")} <b>${Math.max(0, likeLimit() - S.likesUsed)}</b>/${likeLimit()}</span>`}
+          <span>👋 ${t("탭 보내기")}: 무료</span></div>
+        ${adSlot()}</div>`;
+      $("#d-view").onclick = () => { S.discView = "swipe"; save(); vDiscover(); };
+      $("#d-filter").onclick = filterSheet;
+      $$(".dg-card").forEach((c) => c.onclick = (e) => {
+        const tapBtn = e.target.closest(".dg-tap");
+        if (tapBtn) { e.stopPropagation(); tapPid(tapBtn.dataset.tap); return; }
+        openProfile(c.dataset.pid, "grid");
+      });
+      return;
+    }
     $("#view").innerHTML = `<div class="disc">
-      <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ ${t("필터")}${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
+      <div class="fx-row"><button class="fx-chip fx-btn" id="d-view" aria-label="보기 전환">🔳 ${t("그리드")}</button><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ ${t("필터")}${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
       <div class="deck" id="deck"></div>
       <div class="actions">
         <div class="act-w"><button class="act md rew" id="a-rew" aria-label="마지막 카드 되돌리기">↩${rewindLeft() > 0 ? "" : '<span class="lock">🔒</span>'}</button><small>${t("되돌리기")}</small></div>
@@ -736,6 +812,7 @@
         <span>⭐ ${t("슈퍼라이크")} <b>${Math.max(0, superLimit() - S.supersUsed)}</b>/${superLimit()}${S.items.superlike ? ` <i class="buff">+${S.items.superlike}📦</i>` : ""}</span></div>
       ${adSlot()}</div>`;
     paintDeck();
+    $("#d-view").onclick = () => { S.discView = "grid"; save(); vDiscover(); };
     $("#a-nope").onclick = () => swipeTop("nope");
     $("#a-like").onclick = () => swipeTop("like");
     $("#a-sup").onclick = () => swipeTop("sup");
@@ -1040,6 +1117,10 @@
           ${ctx === "deck" ? `<div class="pd-actions">
             <button class="btn-line" data-nope style="color:var(--red)">✕ 패스</button>
             <button class="btn-grad" data-like style="flex:1">💜 좋아요</button></div>` : ""}
+          ${ctx === "grid" ? `<div class="pd-actions">
+            <button class="btn-line" data-gnope style="color:var(--red)">✕ ${t("패스")}</button>
+            <button class="btn-line" data-gtap>👋 ${S.taps[p.id] ? t("탭 보냄") : "탭"}</button>
+            <button class="btn-grad" data-glike style="flex:1">💜 ${t("좋아요")}</button></div>` : ""}
           ${ctx === "likes" ? `<div class="pd-actions">
             <button class="btn-line" data-lpass style="color:var(--red)">✕ 지나가기</button>
             <button class="btn-grad" data-lmatch style="flex:1">💜 나도 좋아요 (바로 매치!)</button></div>` : ""}
@@ -1054,6 +1135,10 @@
     const nb = $("[data-nope]", o), lb = $("[data-like]", o);
     if (nb) nb.onclick = () => { close(); swipeTop("nope"); };
     if (lb) lb.onclick = () => { close(); swipeTop("like"); };
+    const gn = $("[data-gnope]", o), gl = $("[data-glike]", o), gt = $("[data-gtap]", o);
+    if (gn) gn.onclick = () => { close(); gridPass(pid); };
+    if (gl) gl.onclick = () => { close(); gridLike(pid); };
+    if (gt) gt.onclick = () => { tapPid(pid); gt.textContent = "👋 " + t("탭 보냄"); };
     const lp = $("[data-lpass]", o), lm = $("[data-lmatch]", o);
     if (lp) lp.onclick = () => { S.incoming = S.incoming.filter((x) => x !== pid); S.passed.push(pid); save(); close(); go("likes"); };
     if (lm) lm.onclick = () => { close(); makeMatch(pid); };
