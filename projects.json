@@ -3772,7 +3772,17 @@
       "github": "https://github.com/dydrms6388-sudo/dydrms-otcharim",
       "status": "live",
       "date": "2026-07-23"
+    },
+    {
+      "name": "사진줄여 (PhotoSlim)",
+      "emoji": "🖼️",
+      "domain": "생활·유틸",
+      "desc": "사진 용량을 원하는 KB로 정확히 맞춰주는 무료 이미지 압축기. 업로드 용량 제한(이력서·증명사진·공무원 원서·카톡·블로그·이메일·중고거래)에 딱 맞게 줄인다. 핵심 차별점 3종: ①목표 용량 모드=원하는 KB(예 100KB) 입력 시 JPEG/WebP 품질을 이분탐색(binary search)으로 자동 조절해 목표 이하 최고 화질을 찾고, 그래도 초과면 크기를 단계 축소해 반드시 목표를 맞춤 ②한국 실제 규격 프리셋 7종(이력서·증명사진 413×531·≤200KB / 공무원 원서 ≤500KB / 카톡 프로필 ≤1MB / 블로그·카페 / 이메일 / 중고거래 / 웹 상세페이지)+정확 용량 퀵버튼(50·100·200·500KB·1MB) ③100% 브라우저(Canvas API) 처리=사진이 서버로 전송·저장되지 않아 증명사진·신분증도 안심(인터넷 꺼도 동작). 여러 장 일괄 압축+ZIP 다운로드, JPG/PNG/WebP 변환, 긴 변 리사이즈, EXIF(GPS) 자동 제거, 원본보다 커지면 원본 유지 가드, HEIC·PNG투명·초대형 이미지 엣지케이스 처리. 재방문 훅=누적 절약 용량 통계(localStorage). 몰입4종: react-three-fiber 3D 떠다니는 사진 타일, framer-motion 결과 전환, canvas-confetti 50%+ 절약 축하, Web Audio 100% 합성 효과음(음소거 기본 OFF). SEO: '사진 용량 줄이기/이미지 압축/jpg 용량 줄이기/사진 100KB 이하로/증명사진·카톡 프로필 용량' 정조준+WebApplication/FAQPage/HowTo JSON-LD·OG·sitemap/robots·FAQ 10문항·용도별 가이드표. 수익화: 애드센스(env 인라인·ads.txt·meta)+개인정보/문의. 무백엔드·무가입·무유료API. 허브 dedup: 큐알핀=QR / 달지기=음력 / 촉=반응속도게임과 별개인 '이미지 파일용량 압축' 전용 신규 버티컬(허브 dedup 0). 큐 전부 금융→비금융 발산 선정.",
+      "live": "https://photoslim.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/photoslim",
+      "status": "live",
+      "date": "2026-07-23"
     }
   ],
-  "updatedAt": "2026-07-23T13:09:45.033Z"
+  "updatedAt": "2026-07-23"
 }
