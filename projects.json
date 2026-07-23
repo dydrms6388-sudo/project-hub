@@ -3752,7 +3752,17 @@
       "github": "https://github.com/dydrms6388-sudo/dydrms-numbaseball",
       "status": "live",
       "date": "2026-07-23"
+    },
+    {
+      "name": "오늘옷장 (기온별 옷차림)",
+      "emoji": "🧥",
+      "domain": "생활·패션",
+      "desc": "오늘 몇 도, 뭐 입지? 위치만 켜면 오늘 날씨에 딱 맞는 옷차림을 상·하의·아우터·신발·액세서리 한 카드로 대신 골라주는 무료 웹 도구. 널리 통용되는 기온별 옷차림표 8구간을 기준으로, ①기상청 겨울철 체감온도 공식(바람 반영)으로 실제보다 추운 '체감'을 계산해 더 따뜻하게 ②아침·저녁 일교차가 8°C 이상이면 '겹쳐입기(레이어링)' 경고와 처방 ③'추위/더위 잘 탐' 개인 체감 슬라이더(-3~+3)로 한 단계 보정 ④성인(남/여)·아이 대상 + 캐주얼/오피스/액티브 스타일 톤별 코디까지 개인화. Open-Meteo(무료·무키) 지오로케이션으로 현재 기온·풍속·습도·일교차 자동 조회(실패 시 슬라이더·숫자·프리셋 수동 폴백, 접근성 이중화). 재방문 훅=오늘 뭐 입었지 코디 일지(추웠다/딱좋았다/더웠다 기록→다음 추천 자동 보정, 🔥연속 스트릭·최근 14일 기록·'어제보다 N도' 비교). 몰입4종: react-three-fiber 3D 수은 온도계(기온 따라 색·수은 높이 반응)+떠다니는 의류 오브젝트·Sparkles(ErrorBoundary 그라디언트 폴백), framer-motion 결과 전환, canvas-confetti 일지 기록·스트릭(prefers-reduced-motion 존중), Web Audio 100% 합성 효과음(음소거 기본 OFF). SEO: '오늘 뭐 입지/기온별 옷차림/N도 옷차림(4~30°C 개별 랜딩 27p)/환절기 옷차림/체감온도 옷차림' 정조준+WebApplication/FAQPage/Article JSON-LD·동적 OG·sitemap/robots·옷차림 가이드 4편(레이어링·소재별 보온력·체감온도 원리·환절기) SSG. 수익화: 애드센스(env 인라인·ads.txt·meta)+온도 구간별 고AOV 쿠팡 파트너스(패딩·코트·트렌치·히트텍·가디건 등)·소개/개인정보/문의 3p. 무백엔드·무가입·무유료API, 위치·기록은 기기 localStorage에만 저장(서버 전송 0). colorfit(퍼스널컬러)과 축분리된 '기온 기반 옷차림' 전용 신규 버티컬(허브 dedup 0). 큐 전부 금융→비금융 발산 선정.",
+      "live": "https://dydrms-otcharim.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-otcharim",
+      "status": "live",
+      "date": "2026-07-23"
     }
   ],
-  "updatedAt": "2026-07-23"
+  "updatedAt": "2026-07-23T00:00:00.000Z"
 }
