@@ -2,6 +2,16 @@
   "owner": "dydrms6388",
   "projects": [
     {
+      "name": "얼굴신호 (FaceSignal)",
+      "emoji": "🔮",
+      "domain": "뷰티·건강/스킨케어 자가체크",
+      "desc": "여드름이 난 위치가 알려주는 몸의 신호를 읽는 무료 페이스매핑 자가체크. 이마·미간·눈가·볼·코·입가·턱·헤어라인 등 12개 얼굴 부위별로 잘 생기는 트러블·흔한 원인·셀프케어 액션·생활습관 팁을 정리하고, 8문항 '오늘의 피부 신호등'으로 양호/주의/집중케어를 즉시 진단, 부위+트러블+메모를 남기는 트러블 일지(localStorage·연속기록 스트릭)로 반복 부위 흐름을 추적한다. 부위별 SEO 상세페이지 12종(이마 여드름·턱 여드름·볼 여드름 등 롱테일)+트러블 유형 가이드(좁쌀·화농성·블랙헤드·건조·홍조·색소침착·비립종)+FAQ/JSON-LD(MedicalWebPage·FAQPage)·sitemap/robots. 몰입4종: react-three-fiber 3D 부유 디스토트 블롭 배경(dynamic ssr:false)·framer-motion 카드/부위 전환(AnimatePresence popLayout으로 Next16 프리즈 회피)·canvas-confetti 결과 연출·Web Audio 100% 합성 사운드(음소거 기본 OFF). 수익화키트: AdSense(env 인라인·ads.txt)·부위 맥락형 쿠팡 제휴(클렌저·트러블패치·논코메도제닉 보습)·Web Share·개인정보/소개. 무가입·무백엔드·무유료API, YMYL 의료 비진단 고지. 손톱읽기·혀읽기·이빨괜찮아 자가진단 클러스터와 축분리(얼굴 트러블 전용). 키워드: 페이스매핑·여드름 위치·이마 여드름·턱 여드름·볼 여드름·여드름 원인·부위별 여드름·피부 트러블 자가체크.",
+      "live": "https://dydrms-facemap.vercel.app",
+      "github": "https://github.com/dydrms6388-sudo/dydrms-facemap",
+      "status": "live",
+      "date": "2026-07-23"
+    },
+    {
       "name": "혀읽기 (TongueRead)",
       "emoji": "👅",
       "domain": "건강·셀프케어/설진",
