@@ -7,7 +7,7 @@
     "pass": 51,
     "reviewNeeded": 4,
     "reviewing": 0,
-    "avgOverall": 82.2
+    "avgOverall": 82.3
   },
   "projects": [
     {
@@ -2494,38 +2494,32 @@
       "source": "daily/2026-06-18-dicetower",
       "live": "https://dicetower.vercel.app",
       "status": "review-needed",
-      "loops": 1,
+      "loops": 3,
       "axes": {
-        "functional": 86,
-        "mobileUX": 82,
-        "design": 80,
-        "content": 74,
-        "realValue": 70
+        "functional": 85,
+        "mobileUX": 80,
+        "design": 83,
+        "content": 76,
+        "realValue": 68
       },
       "reviewerAvg": 78.4,
       "userScores": [
-        65,
         74,
-        61,
-        51,
-        58
+        68,
+        82,
+        70,
+        70
       ],
-      "userAvg": 62,
-      "overall": 70.2,
+      "userAvg": 72.8,
+      "overall": 75.6,
       "findings": [
-        "PWA 완전 부재(수정됨)",
-        "랜딩 d100 지원/히스토리 새로고침 삭제 사실오류(프로젝트허브 랜딩)",
-        "d10 3D 기하학 오류(길쭉한 d8, 수정됨-오각쌍뿔)",
-        "터치타깃 36/24/16px(수정됨->44px)",
-        "단일 d20에만 크리티컬/펌블(수정됨-다면체 nat max/min)",
-        "해결: 랜딩 d100 지원/히스토리 삭제 사실오류 정정(랜딩은 landing-content.json 미포함이라 직접 수정)"
+        "루프2: 다인 패스앤플레이인데 플레이어별 통계/랭킹 없음(추가-운 랭킹)",
+        "루프3: 운 랭킹 평균에 modifier 포함→보정치 큰 사람 유리(수정-raw 눈합), crit/fumble 단일d20만→다다이스 0(수정-critDice/fumbleDice), 모바일 핵심지표 숨김(수정-2행 표시), 1회 데이터 1위 단정(수정-≥3회 가드)",
+        "잔여(구조적): 순수 유틸리티라 리텐션/realValue 천장. 리더보드 세션 한정(URL 공유·영구화 없음) - 백엔드 도입 시 owner-todo. 5루프 이전에 정지(구조적 한계)."
       ],
       "changes": [
-        "public/sw.js+manifest+RegisterSW",
-        "page.tsx 삭제/Info 컨트롤 44px hit area",
-        "Dice3D d10Geometry() 오각쌍뿔 BufferGeometry(값은 유지)",
-        "dice.ts critDice/fumbleDice 인덱스+page 하이라이트",
-        "LOOP1 보강: project-hub/dice-tower 랜딩 사실오류 정정(d100 미지원 명시, 히스토리 최근 30회 저장으로 수정)"
+        "루프2: dice.ts computePlayerStats + StatsPanel 플레이어별 운 랭킹 섹션(2명+)",
+        "루프3: luck avg를 raw 눈합(modifier 제외)으로, crits/fumbles를 critDice/fumbleDice 기반 다면체 공통 지표로, 2행 레이아웃(모바일 전 지표 표시), 1위 메시지 ≥3회 가드, 라벨 정확화"
       ],
       "history": [
         {
@@ -2535,9 +2529,17 @@
         {
           "loop": 1,
           "overall": 70.2
+        },
+        {
+          "loop": 2,
+          "overall": 73.8
+        },
+        {
+          "loop": 3,
+          "overall": 75.6
         }
       ],
-      "reviewedAt": "2026-07-22"
+      "reviewedAt": "2026-07-24"
     },
     {
       "slug": "driver-license-quiz",
