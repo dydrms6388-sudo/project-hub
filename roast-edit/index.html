@@ -433,7 +433,7 @@ $("copyText").addEventListener("click",function(){navigator.clipboard.writeText(
 $("shareX").addEventListener("click",function(){
  var r=state.c===0?cur.roast:cur.sweet;
  var txt="내 글이 사이다첨삭에서 "+(state.c===0?"사이다 지수 ":"당도 지수 ")+r.score+"점 ("+r.grade+") 받음 🌶️";
- window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(curUrl()),"_blank");
+ window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(curUrl()),"_blank","noopener");
 });
 $("webShare").addEventListener("click",function(){
  if(navigator.share){navigator.share({title:"사이다첨삭",text:shareText().split("\n").slice(0,2).join(" "),url:curUrl()}).catch(function(){});}
