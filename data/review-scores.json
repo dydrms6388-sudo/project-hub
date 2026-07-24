@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-07-22",
+  "updatedAt": "2026-07-24",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
     "total": 55,
-    "pass": 50,
-    "reviewNeeded": 5,
+    "pass": 51,
+    "reviewNeeded": 4,
     "reviewing": 0,
-    "avgOverall": 81.9
+    "avgOverall": 82.2
   },
   "projects": [
     {
@@ -2429,35 +2429,36 @@
       "name": "썸타이밍궁합",
       "source": "daily/2026-06-22-couple-chemistry-test",
       "live": "https://couple-chemistry-test.vercel.app",
-      "status": "review-needed",
-      "loops": 1,
+      "status": "pass",
+      "loops": 5,
       "axes": {
-        "functional": 86,
-        "mobileUX": 83,
-        "design": 84,
-        "content": 83,
-        "realValue": 66
+        "functional": 84,
+        "mobileUX": 84,
+        "design": 83,
+        "content": 86,
+        "realValue": 82
       },
-      "reviewerAvg": 80.4,
+      "reviewerAvg": 83.8,
       "userScores": [
-        67,
-        44,
-        63,
-        31,
-        55
+        82,
+        70,
+        80,
+        64,
+        86
       ],
-      "userAvg": 52,
-      "overall": 66.2,
+      "userAvg": 76.4,
+      "overall": 80.2,
       "findings": [
-        "점수 분포 좁고 편향(52~83, 수정됨->18+rng*78/bias±14)",
-        "공유 URL에 이름+생년월일 평문 노출(수정됨-마스킹+seed)",
-        "PWA 부재(수정됨)",
-        "배포 메타 5가지/8가지 불일치(소스는 8가지 정상)"
+        "루프2: 원샷 계산기라 리플레이/리텐션 부족(VIRAL canvas 카드·데일리 미션·스트릭으로 보강)",
+        "루프3: canvas 드로잉 자릿수 정렬/이모지 말줄임/칩 겹침, 스트릭 글로벌→페어분리, 미션 풀 얕음(해결됨)",
+        "루프5: 스트릭 표시 '연속 궁합'↔실제 미션카운트 의미 불일치, 배지 reached가 기기전체 bestEver와 OR(해결됨-라벨 정확화·streak.best 기준)",
+        "잔여: 푸시/알림 없이 자발 재방문 의존(정적 스택 한계, 백엔드 도입 시 owner-todo)"
       ],
       "changes": [
-        "chemistry.ts base 30+rng*65->18+rng*78, clamp/bias 확대, GRADES 재분할(반전~운명 궁합)",
-        "encodeShare/decodeShare/maskName로 ?c=에서 PII 제거(레거시 호환 유지)",
-        "public/sw.js+manifest+ServiceWorkerRegister"
+        "루프2: ResultCard.tsx canvas 결과 카드(tomatoeggcat 워터마크+PNG 저장), coupleMission+스트릭, ?c= '나도 해보기' CTA",
+        "루프3: canvas measureText 중앙정렬·[...text] 이모지 말줄임·칩 실측 배치·하트 이모지폰트; 스트릭 pairKey 페어분리+bestEver 분리; 미션 16→24종+순열로 연속중복 방지",
+        "루프4: 마일스톤 배지(3/7/14/30일)+달성 컨페티; canvas 하트 이모지폰트·CTA 정렬 명시",
+        "루프5: 입력 배너 라벨 '연속 궁합'→'연속 미션' 정확화, 배지 reached를 streak.best(페어별) 기준으로 수정"
       ],
       "history": [
         {
@@ -2467,9 +2468,25 @@
         {
           "loop": 1,
           "overall": 66.2
+        },
+        {
+          "loop": 2,
+          "overall": 69
+        },
+        {
+          "loop": 3,
+          "overall": 73.4
+        },
+        {
+          "loop": 4,
+          "overall": 79.3
+        },
+        {
+          "loop": 5,
+          "overall": 80.2
         }
       ],
-      "reviewedAt": "2026-07-22"
+      "reviewedAt": "2026-07-24"
     },
     {
       "slug": "dice-tower",
