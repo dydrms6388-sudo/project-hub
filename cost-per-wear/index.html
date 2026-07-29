@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>1회당 — 옷 한 벌의 1회 착용 원가 계산 | TomatoEggCat</title>
+<meta name="description" content="20만원짜리 코트를 세 번 입었으면 한 번에 6만 6천원. 이미 산 물건의 1회당 원가를 낮추는 게임입니다. 가격과 착용 횟수만 기록하면 1회당 원가, 옷장 총액, 착용 편중도, 명예의 전당이 자동으로. 체형·사이즈는 다루지 않고 쇼핑도 권하지 않습니다. 기록은 내 브라우저에만." />
+<link rel="canonical" href="https://tomatoeggcat.com/cost-per-wear/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="1회당 — 옷 한 벌의 1회 착용 원가" />
+<meta property="og:description" content="안 사게 하는 앱이 아니라, 이미 산 걸 더 쓰게 만드는 앱. 오늘 입은 것 한 번 탭하면 1회당 원가가 내려갑니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/cost-per-wear/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="1회당 — 옷 한 벌의 1회 착용 원가" />
+<meta name="twitter:description" content="1회당 원가를 낮추는 게임. 기록은 내 브라우저에만 남습니다." />
+<script>
+/* 공유 링크(?r=)를 광고 스크립트가 읽어 가기 전에 먼저 회수하고 주소를 비운다.
+   본문 아래 IIFE에서 지우면 그 사이에 광고가 먼저 로드돼 URL을 볼 수 있는 틈이 생긴다. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.has("r")){
+      window.__sharedPayload=q.get("r");
+      history.replaceState(null,"",location.pathname);
+    }
+  }catch(e){}
+})();
+</script>
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"1회당","description":"옷과 물건의 구매가와 사용 횟수를 기록해 1회당 원가를 계산하고, 이미 가진 것을 더 쓰게 만드는 무료 웹 도구. 모든 기록은 사용자의 브라우저에만 저장되며 서버로 전송되지 않는다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/cost-per-wear/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"1회당 원가는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"구매가를 지금까지의 착용 횟수로 나눕니다. 20만원짜리 코트를 세 번 입었으면 1회당 6만 6천원이고, 열 번 더 입으면 1만 5천원으로 내려갑니다. 아직 한 번도 입지 않은 항목은 무한대 같은 숫자를 쓰지 않고 그냥 0회로 표시합니다. 구독처럼 매달 돈이 나가는 항목은 월 요금을 그 달의 사용 횟수로 나누는 방식으로 따로 계산합니다."}},
+{"@type":"Question","name":"내 기록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"이 페이지는 서버가 없어서 모든 기록이 사용자의 브라우저 저장소에만 남습니다. 계정도 로그인도 없고 어떤 값도 외부로 전송되지 않습니다. 기기를 바꾸거나 브라우저 데이터를 지우면 사라지므로 내보내기 버튼으로 JSON 파일을 저장해 두었다가 가져오기로 복원할 수 있습니다."}},
+{"@type":"Question","name":"체형이나 사이즈도 기록하나요?","acceptedAnswer":{"@type":"Answer","text":"전혀 다루지 않습니다. 사이즈, 치수, 체형, 체중, 핏 평가 같은 항목은 입력란 자체가 없습니다. 이 도구는 몸에 관한 앱이 아니라 돈에 관한 앱입니다. 마찬가지로 쇼핑을 권하거나 제휴 링크로 상품을 소개하는 기능도 넣지 않았습니다."}},
+{"@type":"Question","name":"착용 편중도가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"가장 자주 입는 상위 20퍼센트의 항목이 전체 착용 횟수 중 몇 퍼센트를 차지하는지 보여 주는 수치입니다. 옷장에 서른 벌이 있어도 실제로는 몇 벌만 반복해서 입는 경우가 많은데, 그 사실을 처음으로 숫자로 보게 되는 지표입니다. 높다고 잘못된 것은 아니며 판정이나 등급을 매기지 않습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"생활 도구","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"1회당","item":"https://tomatoeggcat.com/cost-per-wear/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#5eead4;--acc2:#99f6e4;--accdim:#0f3d38}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;word-break:keep-all}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#9ca3af;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#5eead4,#818cf8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+.lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
+.lab b{color:var(--acc2)}
+.hint{font-size:13px;color:#9ca3af;margin:6px 0 0;line-height:1.65}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{width:auto;flex:none;padding:9px 13px;font-size:13.5px;font-weight:600;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
+.chip.on{background:rgba(94,234,212,.14);border-color:var(--acc);color:var(--acc2)}
+textarea{width:100%;padding:12px 14px;font-size:15px;background:#0f0f0f;color:#ededed;border:1px solid #333;border-radius:12px;font-family:inherit;line-height:1.6;resize:vertical}
+textarea:focus{outline:none;border-color:var(--acc)}
+input[type=text],input[type=number],input[type=month],select{width:100%;padding:12px 14px;font-size:15px;background:#0f0f0f;color:#ededed;border:1px solid #333;border-radius:12px;min-height:46px}
+input:focus,select:focus{outline:none;border-color:var(--acc)}
+.field{margin-top:16px}
+.row2{display:flex;gap:10px;flex-wrap:wrap}
+.row2>div{flex:1;min-width:140px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#062e2a;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#13211f;color:var(--acc2);border:1px solid #2b4a45;font-weight:700}
+button.mini{width:auto;padding:9px 13px;font-size:13px;min-height:44px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#0f3d38,#164e49);border-bottom:1px solid #2b6b64}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#99f6e4;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+/* 오늘 입은 것 타일 */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:420px){.tiles{grid-template-columns:repeat(3,1fr)}}
+.tile{width:100%;padding:12px 6px;background:#0f0f0f;border:1px solid #333;border-radius:14px;cursor:pointer;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:.12s;color:#c9c9c9;font-weight:700}
+.tile .em{font-size:26px;line-height:1}
+.tile .nm{font-size:13px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .pw{font-size:12.5px;color:#9ca3af;font-weight:600}
+.tile.done{background:rgba(94,234,212,.14);border-color:var(--acc);color:var(--acc2)}
+.tile.done .pw{color:var(--acc2)}
+/* 글꼴을 키운 기기에서 가로 스크롤로 숨는 날짜 버튼이 생기지 않도록 줄바꿈시킨다.
+   숨은 버튼을 알리는 것보다 아예 숨지 않게 하는 편이 확실하다. */
+.daysw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;padding-bottom:2px}
+.daysw button{flex:1 1 44px;min-width:44px;padding:10px 4px;background:#0f0f0f;color:#9ca3af;border:1px solid #333;font-size:13px;font-weight:700;min-height:44px;white-space:nowrap}
+.daysw button.on{background:rgba(94,234,212,.12);border-color:var(--acc);color:var(--acc2)}
+/* 통계 */
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stats .b{flex:1;min-width:120px;background:#101010;border:1px solid #262626;border-radius:12px;padding:12px}
+.stats .b .k{font-size:12.5px;color:#9ca3af;font-weight:700}
+.stats .b .v{font-size:22px;font-weight:900;color:var(--acc2);line-height:1.25}
+.stats .b .s{font-size:12.5px;color:#9ca3af}
+.big{background:#101010;border:1px solid #262626;border-radius:12px;padding:14px;margin-top:10px}
+.big .k{font-size:13px;color:#9ca3af;font-weight:700}
+.big .v{font-size:34px;font-weight:900;color:#ededed;line-height:1.2}
+.big .s{font-size:12.5px;color:#9ca3af}
+/* 목록 */
+.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:88px;background:#0f0f0f;color:#9ca3af;border:1px solid #333;font-size:13.5px;font-weight:700;min-height:44px}
+.tabs button.on{background:rgba(94,234,212,.12);border-color:var(--acc);color:var(--acc2)}
+.item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #232323;flex-wrap:wrap}
+.item .em{font-size:26px;flex:none;width:34px;text-align:center}
+.item .mid{flex:1;min-width:0}
+.item .t{font-size:14.5px;font-weight:700;color:#ededed;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .sub{font-size:13px;color:#9ca3af}
+.item .rt{flex:none;text-align:right}
+.item .rt .pw{font-size:16px;font-weight:900;color:var(--acc2)}
+.item .rt .cnt{font-size:12.5px;color:#9ca3af}
+.item .rt .zero{color:#9ca3af;font-size:13px;font-weight:700}
+.iacts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.iacts button{width:auto;padding:9px 13px;font-size:13px;min-height:44px;min-width:44px;background:#161616;color:#c9c9c9;border:1px solid #2e2e2e;font-weight:700;border-radius:8px}
+.iacts button:first-child{background:rgba(94,234,212,.12);border-color:#2b4a45;color:var(--acc2)}
+.goal{font-size:12px;color:var(--acc2);margin-top:3px}
+.empty{color:#9ca3af;font-size:14px;padding:14px 0;text-align:center;line-height:1.7}
+.hall{counter-reset:h}
+.hall .h{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #232323}
+.hall .rk{font-size:15px;font-weight:900;color:var(--acc);width:26px;flex:none;text-align:center}
+.hall .hn{flex:1;font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hall .hv{font-size:15px;font-weight:900;color:var(--acc2)}
+.conc{height:12px;background:#1f1f1f;border-radius:999px;overflow:hidden;margin-top:8px}
+.conc i{display:block;height:100%;background:linear-gradient(90deg,#5eead4,#818cf8);width:0;transition:width .7s}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
+th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #232323}
+th{color:#9ca3af;font-weight:700;font-size:12.5px}
+td b{color:var(--acc2)}
+details{margin-top:12px;border:1px solid #262626;border-radius:12px;background:#101010}
+summary{cursor:pointer;padding:12px 14px;font-size:13.5px;font-weight:700;color:#c9c9c9}
+details .dbody{padding:0 14px 14px}
+.disc{font-size:12px;color:#9ca3af;background:#141414;border:1px solid #262626;border-radius:10px;padding:10px 12px;margin-top:12px}
+.about h2{font-size:19px;margin:28px 0 10px;color:var(--acc2)}
+.about p,.about li{font-size:14.5px;color:#c9c9c9}
+.faq dt{font-weight:800;margin-top:14px;color:#ededed}
+.faq dd{margin:4px 0 0;color:#9ca3af;font-size:14.5px}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#141414;border:1px solid #2a2a2a;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
+.rel a:hover{border-color:var(--acc);color:var(--acc2)}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#9ca3af}
+footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#262626;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sw{display:flex;align-items:center;gap:10px;font-size:13.5px;color:#9ca3af;margin-top:10px;min-height:44px;padding:6px 2px;cursor:pointer}
+.sw input{width:auto;min-height:auto}
+/* 인라인 편집 — 모바일에서 prompt 연타는 취소 사고가 잦다 */
+.editbox{flex:1 0 100%;background:#101010;border:1px solid var(--acc);border-radius:12px;padding:14px;margin-top:10px}
+.editbox .er{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.editbox .er>*{flex:1;min-width:120px}
+.editbox .eh{font-size:12.5px;color:#9ca3af;margin:0 0 10px;line-height:1.6}
+.editbox .ea{display:flex;gap:8px;margin-top:4px}
+.editbox .ea button{flex:1;min-height:46px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>🧥 친구가 옷장 성적표를 공유했어요. 내 1회당 원가는 얼마일까요?</span>
+  <button id="inboundBtn" type="button">나도 해보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 생활 도구 › 1회당</nav>
+
+<header>
+  <h1>🧥 1회당</h1>
+  <p class="lead">20만원짜리 코트를 세 번 입었으면 <b>한 번에 6만 6천원</b>. 안 사게 하는 앱이 아니라, <b>이미 산 걸 더 쓰게 만드는</b> 앱입니다.</p>
+</header>
+
+<!-- 공유 유입 요약 -->
+<section class="card" id="sharedCard" style="display:none">
+  <p class="lab">🔗 <b>공유된 옷장 성적표</b></p>
+  <div id="sharedBody"></div>
+  <p class="hint">공유 링크에는 합계 숫자와 카테고리가 담깁니다. 항목 이름은 보낸 사람이 <b>직접 켠 경우에만</b> 들어갑니다. 아래에서 내 것도 바로 시작할 수 있어요.</p>
+</section>
+
+<!-- 오늘 입은 것 -->
+<section class="card" id="todayCard">
+  <p class="lab">✅ <b>오늘 입은 것</b> — 탭 한 번이면 끝</p>
+  <div class="daysw" id="daysw" role="group" aria-label="기록할 날짜"></div>
+  <div class="tiles" id="tiles" role="group" aria-label="오늘 입은 것 고르기"></div>
+  <p class="hint" id="todayHint">자주·최근에 입은 순으로 8개가 올라옵니다. 검색하지 않아도 되게 만드는 게 목적이에요.</p>
+</section>
+
+<!-- 요약 -->
+<section class="card" id="sumCard" style="display:none">
+  <p class="lab">📊 <b>내 옷장</b></p>
+  <div class="stats" id="stats"></div>
+  <div class="big">
+    <div class="k">옷장 평균 1회당</div>
+    <div class="v" id="avgPw">—</div>
+    <div class="s" id="avgSub">항목을 등록하면 계산됩니다.</div>
+  </div>
+</section>
+
+<!-- 등록 -->
+<section class="card" id="addCard">
+  <p class="lab">➕ <b>등록</b> — <b>이름과 가격만</b> 넣으면 됩니다 (나머지는 선택)</p>
+  <div class="field">
+    <input type="text" id="nName" aria-label="항목 이름" maxlength="24" placeholder="예: 네이비 코트, 검정 후드티, 로봇청소기" />
+    <p class="hint" id="catSuggest">이름을 적으면 카테고리를 알아서 제안합니다.</p>
+  </div>
+  <div class="row2 field">
+    <div><input type="number" id="nPrice" aria-label="가격(원)" min="0" max="100000000" step="1000" inputmode="numeric" placeholder="가격 (원)" /></div>
+    <div><input type="month" id="nWhen" aria-label="산 시기(선택)" title="산 시기 (선택)" /></div>
+  </div>
+  <div class="field">
+    <p class="lab">카테고리 <span style="font-weight:400;color:#9ca3af">(비워 두면 이름 보고 자동)</span></p>
+    <div class="chips" id="catChips" role="group" aria-label="카테고리"></div>
+  </div>
+  <div class="field">
+    <p class="lab">종류 <span style="font-weight:400;color:#9ca3af">(기본: 한 번 사는 것)</span></p>
+    <div class="chips" id="kindChips" role="group" aria-label="한 번 사는 것인지 구독인지">
+      <button type="button" class="chip on" data-k="own">한 번 사는 것</button>
+      <button type="button" class="chip" data-k="sub">매달 내는 것 (구독)</button>
+    </div>
+    <p class="hint" id="kindHint">구독은 ‘1회당’ 대신 <b>그 달 요금 ÷ 그 달 사용 횟수</b>로 계산합니다.</p>
+  </div>
+  <div class="acts">
+    <button id="addBtn" type="button">등록하기</button>
+    <button class="ghost" id="keepAddBtn" type="button">등록하고 계속</button>
+  </div>
+  <div class="acts" id="demoWrap" style="display:none">
+    <button class="ghost" id="demoBtn" type="button">👀 먼저 예시로 둘러보기</button>
+  </div>
+  <p class="hint">브랜드·상세 스펙은 묻지 않습니다. <b>사이즈·치수·체형·체중 입력란은 이 도구에 없습니다.</b></p>
+
+  <details id="bulkBox">
+    <summary>📋 여러 개 한 번에 넣기 (옷장 정리하면서)</summary>
+    <div class="dbody">
+      <p class="hint" style="margin-top:0">한 줄에 하나씩 <b>이름, 가격</b> 순으로 적으세요. 쉼표·탭·띄어쓰기 다 됩니다. 카테고리는 이름을 보고 알아서 붙습니다.</p>
+      <textarea id="bulkText" aria-label="여러 항목 한 번에 붙여넣기" rows="7" placeholder="네이비 코트, 198000&#10;검정 후드티 39000&#10;청바지 79000&#10;흰 운동화 129000&#10;에어프라이어 89000"></textarea>
+      <div class="acts">
+        <button class="ghost" id="bulkBtn" type="button">한 번에 등록</button>
+      </div>
+      <p class="hint">가격을 안 적으면 0원으로 들어갑니다. 나중에 각 항목의 ‘수정’에서 고칠 수 있어요.</p>
+    </div>
+  </details>
+</section>
+
+<!-- 목록 -->
+<section class="card" id="listCard">
+  <p class="lab">📦 <b>목록</b></p>
+  <div class="tabs" id="tabs" role="group" aria-label="목록 보기 방식">
+    <button type="button" data-t="all" class="on">전체</button>
+    <button type="button" data-t="idle">요즘 안 입은 것</button>
+    <button type="button" data-t="zero">아직 0회</button>
+    <button type="button" data-t="arch">아카이브</button>
+  </div>
+  <div id="list"></div>
+</section>
+
+<!-- 통계 -->
+<section class="card" id="statCard">
+  <p class="lab">🏆 <b>명예의 전당</b> — 지금 쓰고 있는 것 중 1회당 원가가 가장 낮은 다섯</p>
+  <div class="hall" id="hall"></div>
+
+  <div class="field">
+    <p class="lab">📈 <b>착용 편중도</b></p>
+    <div class="conc"><i id="concBar"></i></div>
+    <p class="hint" id="concTxt">—</p>
+  </div>
+
+  <details>
+    <summary>🧾 다음에 살 때 볼 데이터 (아카이브 기준 패턴)</summary>
+    <div class="dbody">
+      <table id="patTable"><thead><tr><th>구분</th><th>항목</th><th>평균 착용</th><th>평균 1회당</th></tr></thead><tbody></tbody></table>
+      <p class="hint">방출(아카이브)한 항목만 집계합니다. 다 쓰고 보낸 것들의 기록이라 다음 구매 전에 볼 수 있는 가장 정직한 데이터입니다.</p>
+    </div>
+  </details>
+
+  <div class="acts">
+    <button id="saveBtn" type="button">🖼️ 성적표 카드 저장</button>
+    <button class="ghost" id="copyLinkBtn" type="button">🔗 링크 복사</button>
+    <button class="ghost" id="copyTextBtn" type="button">📋 텍스트 복사</button>
+    <button class="ghost" id="xBtn" type="button">𝕏 공유</button>
+    <button class="ghost" id="shareBtn" type="button" style="display:none">📤 공유</button>
+  </div>
+  <label class="sw"><input type="checkbox" id="withNames" /> 공유에 항목 이름 포함 (기본은 카테고리만)</label>
+
+  <div class="acts">
+    <button class="ghost mini" id="exportBtn" type="button">⬇️ 백업(JSON)</button>
+    <button class="ghost mini" id="csvBtn" type="button">📊 엑셀용(CSV)</button>
+    <button class="ghost mini" id="importBtn" type="button">⬆️ 가져오기</button>
+    <button class="ghost mini" id="wipeBtn" type="button">전체 삭제</button>
+  </div>
+  <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
+
+  <p class="disc">🔒 모든 기록은 <b>이 브라우저 안에만</b> 저장되며, 저희는 그 내용을 받아 가지 않습니다(수집 서버가 없습니다). 다만 이 페이지에는 광고가 붙어 있어 페이지 주소가 광고 제공자에게 전달될 수 있습니다 — <b>내가 공유할 때뿐 아니라 남이 보낸 공유 링크를 열 때도</b> 마찬가지입니다. 브라우저 데이터를 지우면 함께 사라지니 가끔 내보내기로 백업해 두세요. 이 도구는 어떤 상품도 추천하거나 판매하지 않습니다.</p>
+
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</section>
+
+<section class="about">
+  <h2>🧥 1회당 소개</h2>
+  <p>옷장에 서른 벌이 있는데 매일 같은 다섯 벌만 입습니다. 다들 알고 있지만 숫자로 본 적은 없습니다. 1회당은 그 숫자를 보여 주는 도구입니다. 계산은 아주 단순합니다. 산 값을 지금까지 입은 횟수로 나눕니다. 20만원짜리 코트를 세 번 입었으면 1회당 6만 6천원이고, 열 번 더 입으면 1만 5천원이 됩니다. 이 숫자는 쓸수록 내려가기 때문에, 절약 앱과 달리 무언가를 참으라고 말하지 않습니다. 이미 산 것을 더 꺼내 입게 만드는 쪽으로 작동합니다.</p>
+  <p>기록에 걸리는 시간이 길면 아무도 쓰지 않는다는 것을 전제로 만들었습니다. 홈 화면 맨 위에 자주 입고 최근에 입은 여덟 개가 큰 타일로 올라오고, 탭 한 번이면 오늘 착용이 기록됩니다. 어제 것을 깜빡했다면 ‘어제’로 바꿔 소급 입력할 수 있습니다. 검색해서 찾아 들어가야 하는 구조는 일부러 만들지 않았습니다.</p>
+  <p>이 도구는 <b>몸에 관한 것을 일절 다루지 않습니다.</b> 사이즈, 치수, 체형, 체중, 핏 평가는 입력란 자체가 없습니다. 돈에 관한 도구이기 때문입니다. 같은 이유로 쇼핑을 권하거나 제휴 링크로 상품을 소개하지 않고, 1회당 원가가 높은 항목을 낭비라고 부르지도 않습니다. 숫자만 그대로 두고, 다음에 한 번 더 입으면 내려간다는 사실만 보여 줍니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>이름·가격·산 시기만 넣어 항목을 등록합니다. 카테고리는 이름을 보고 알아서 제안합니다.</li>
+    <li>옷장을 열어 둔 김에 ‘등록하고 계속’으로 여러 개를 연달아 넣습니다.</li>
+    <li>입은 날 홈 상단 타일을 한 번 탭합니다. 하루에 한 번만 기록되고, 다시 누르면 취소됩니다.</li>
+    <li>‘목표 1회당’을 정하면 몇 번 더 입어야 하는지 남은 횟수가 표시됩니다.</li>
+    <li>이제 안 입는 항목은 방출하면 최종 1회당 원가와 함께 아카이브로 넘어갑니다(삭제되지 않습니다).</li>
+    <li>아카이브가 쌓이면 카테고리별·가격대별 평균 착용 횟수가 보입니다. 다음 구매 전에 볼 데이터입니다.</li>
+  </ol>
+  <h2>옷 말고도 됩니다</h2>
+  <ul>
+    <li><b>가전</b> — 에어프라이어를 몇 번 썼는지 세어 보면 1회당 원가가 나옵니다.</li>
+    <li><b>취미 장비</b> — 캠핑 의자, 라켓, 카메라 렌즈처럼 사 두고 안 쓰는 것들.</li>
+    <li><b>구독</b> — 월 요금을 그 달 실제 사용 횟수로 나눠 계산합니다. 한 달에 두 번 본 스트리밍은 1회당 요금이 꽤 큽니다.</li>
+  </ul>
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>Q. 1회당 원가는 어떻게 계산하나요?</dt>
+    <dd>구매가 ÷ 착용(사용) 횟수입니다. 아직 한 번도 안 쓴 항목은 무한대 대신 그냥 ‘0회’로 표시합니다. 구독은 월 요금 ÷ 그 달 사용 횟수로 따로 계산합니다.</dd>
+    <dt>Q. 기록은 어디에 저장되나요?</dt>
+    <dd>이 브라우저 안에만 저장됩니다. 계정도 로그인도 없고 서버로 아무것도 전송되지 않습니다. 브라우저 데이터를 지우면 사라지므로 ‘내보내기’로 JSON 백업을 만들어 두세요.</dd>
+    <dt>Q. 사진은 왜 못 넣나요?</dt>
+    <dd>서버가 없는 정적 페이지라 사진을 브라우저 저장소에 넣으면 용량이 금방 차서 기록 전체가 깨질 수 있습니다. 그래서 사진 대신 카테고리 이모지 타일을 씁니다. 인식 속도는 오히려 이쪽이 빠릅니다.</dd>
+    <dt>Q. 사이즈나 체형도 기록할 수 있나요?</dt>
+    <dd>할 수 없습니다. 의도적으로 뺐습니다. 이 도구는 돈에 관한 것이지 몸에 관한 것이 아닙니다.</dd>
+    <dt>Q. 착용 편중도가 높으면 나쁜 건가요?</dt>
+    <dd>아닙니다. 좋고 나쁨을 판정하지 않습니다. 자주 입는 상위 몇 개가 전체 착용의 몇 %를 차지하는지 보여 줄 뿐이고, 그 숫자를 처음 본다는 것 자체가 이 지표의 쓸모입니다. 항목 수가 적으면 이 비율은 크게 흔들리므로 화면에 표본 경고를 함께 띄웁니다.</dd>
+    <dt>Q. 공유하면 내 옷장이 다 보이나요?</dt>
+    <dd>기본값에서는 아닙니다. 공유 링크와 카드에는 합계 숫자와 카테고리만 들어갑니다. 다만 <b>‘공유에 항목 이름 포함’ 체크박스를 켜면</b> 자주 입은 항목 이름이 링크와 카드에 함께 들어가고, 카드 하단 문구도 그에 맞게 바뀝니다.</dd>
+  </dl>
+  <p style="color:#9ca3af;font-size:13px">※ 본 도구는 개인 기록용 계산기이며 금융·투자 조언이 아닙니다. 표시되는 금액은 사용자가 입력한 값을 나눈 결과입니다.</p>
+</section>
+
+<nav class="rel">
+  <a href="/used-price-check/">💸 중고 시세</a>
+  <a href="/subscription-reminder/">🔁 구독 정리</a>
+  <a href="/dydrms-washlabel/">🧺 세탁기호 사전</a>
+  <a href="/sunset-forecast/">🌇 오늘 노을</a>
+  <a href="/">🍅 전체 도구</a>
+</nav>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">기록되었습니다</div>
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= 카테고리 (하드코딩된 옷 전용 아님 — 확장 가능) ================= */
+var CATS = [
+  { k:"outer", label:"아우터", em:"🧥", kw:["코트","패딩","자켓","재킷","점퍼","가디건","야상","바람막이","무스탕","블레이저"] },
+  { k:"top",   label:"상의",   em:"👕", kw:["티","셔츠","니트","맨투맨","후드","블라우스","스웨터","나시","조끼"] },
+  { k:"bottom",label:"하의",   em:"👖", kw:["바지","청바지","슬랙스","반바지","치마","스커트","조거","트레이닝"] },
+  { k:"dress", label:"원피스", em:"👗", kw:["원피스","드레스","점프수트"] },
+  { k:"shoes", label:"신발",   em:"👟", kw:["신발","운동화","구두","부츠","샌들","슬리퍼","로퍼","스니커"] },
+  { k:"bag",   label:"가방",   em:"👜", kw:["가방","백팩","크로스백","토트","클러치","지갑"] },
+  { k:"acc",   label:"액세서리",em:"🧢", kw:["모자","목도리","머플러","장갑","벨트","시계","안경","선글라스","귀걸이","목걸이","반지","넥타이"] },
+  { k:"appli", label:"가전",   em:"🔌", kw:["청소기","에어프라이어","믹서","공기청정기","가습기","선풍기","커피","전기","오븐","드라이기","모니터","키보드","이어폰","헤드폰","노트북","카메라","렌즈","태블릿"] },
+  { k:"hobby", label:"취미장비",em:"🎣", kw:["텐트","의자","라켓","골프","자전거","보드","기타","키트","캠핑","등산","낚시","요가","덤벨","매트"] },
+  { k:"sub",   label:"구독",   em:"🔁", kw:["구독","넷플릭스","멤버십","요금제","월정액","프라임","패스"] },
+  { k:"etc",   label:"기타",   em:"📦", kw:[] }
+];
+function catOf(k){ for(var i=0;i<CATS.length;i++) if(CATS[i].k===k) return CATS[i]; return CATS[CATS.length-1]; }
+function suggestCat(name){
+  var n=String(name||"").toLowerCase();
+  for(var i=0;i<CATS.length;i++){
+    for(var j=0;j<CATS[i].kw.length;j++) if(n.indexOf(CATS[i].kw[j])>=0) return CATS[i].k;
+  }
+  return null;
+}
+var PRICE_BANDS = [
+  { max:30000,  label:"3만원 이하" },
+  { max:100000, label:"3~10만원" },
+  { max:300000, label:"10~30만원" },
+  { max:Infinity, label:"30만원 초과" }
+];
+
+/* ================= utils ================= */
+function $(id){ return document.getElementById(id); }
+function pad(n){ return n<10?"0"+n:""+n; }
+/* 다른 앱과 마찬가지로 날짜 기준선을 KST로 고정한다(해외에서 월 경계가 밀리지 않게) */
+function todayKey(off){
+  var kst=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()).split("-").map(Number);
+  var d=new Date(Date.UTC(kst[0],kst[1]-1,kst[2]-(off||0),3,0,0));
+  return d.getUTCFullYear()+"-"+pad(d.getUTCMonth()+1)+"-"+pad(d.getUTCDate());
+}
+function monthKey(s){ return String(s||"").slice(0,7); }
+function daysBetween(a,b){ return Math.floor((b-a)/86400000); }
+function parseKey(k){ var p=String(k).split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+function won(n){ return Math.round(n).toLocaleString("ko-KR")+"원"; }
+function shortWon(n){
+  if(n>=100000000) return (n/100000000).toFixed(1).replace(/\.0$/,"")+"억";
+  if(n>=10000) return Math.round(n/10000).toLocaleString("ko-KR")+"만";
+  return Math.round(n).toLocaleString("ko-KR");
+}
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function dec(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(err){ return null; } }
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},2100); }
+
+/* ================= store ================= */
+var LSKEY="cost-per-wear:v1";
+var db={ v:1, items:[] };
+function load(){
+  try{
+    var raw=localStorage.getItem(LSKEY);
+    if(raw){ var o=JSON.parse(raw); if(o && Array.isArray(o.items)) db=o; }
+  }catch(err){}
+  db.items.forEach(function(it){ if(!Array.isArray(it.w)) it.w=[]; });
+}
+function save(){ try{ localStorage.setItem(LSKEY, JSON.stringify(db)); }catch(err){ toast("저장 공간이 부족합니다. 내보내기로 백업해 주세요"); } }
+function uid(){ return "i"+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36); }
+function active(){ return db.items.filter(function(i){ return i.st!=="archived"; }); }
+function archived(){ return db.items.filter(function(i){ return i.st==="archived"; }); }
+function byId(id){ for(var i=0;i<db.items.length;i++) if(db.items[i].id===id) return db.items[i]; return null; }
+
+/* 1회당 원가. 구독(sub)은 이번 달 요금 ÷ 이번 달 사용 횟수 */
+function perUse(it){
+  /* 방출(아카이브)한 항목은 그때 확정된 최종 원가를 쓴다.
+     구독은 '이번 달' 기준이라, 방출 다음 달이 되면 이번 달 0회가 되어
+     방출 당시 값이 화면·CSV에서 통째로 사라졌다. */
+  if(it.st==="archived" && typeof it.fin==="number") return it.fin;
+  if(it.kind==="sub"){
+    var m=todayKey(0).slice(0,7);
+    var c=it.w.filter(function(d){ return d.slice(0,7)===m; }).length;
+    return c>0 ? it.p/c : null;
+  }
+  return it.w.length>0 ? it.p/it.w.length : null;
+}
+function useCount(it){
+  if(it.kind==="sub"){ var m=todayKey(0).slice(0,7); return it.w.filter(function(d){ return d.slice(0,7)===m; }).length; }
+  return it.w.length;
+}
+/* 목표까지 남은 횟수 — 목록·토스트·목표설정이 전부 이 함수를 쓴다.
+   구독은 '이번 달' 기준이므로 useCount를 써야 화면끼리 숫자가 어긋나지 않는다. */
+function remainToGoal(it){
+  if(!it.g) return null;
+  return Math.max(0, Math.ceil(it.p/it.g) - useCount(it));
+}
+function lastUse(it){ return it.w.length ? it.w.slice().sort()[it.w.length-1] : null; }
+function idleDays(it){
+  var l=lastUse(it); if(!l) return null;
+  return daysBetween(parseKey(l), parseKey(todayKey(0)));
+}
+
+/* ================= 오늘 입은 것 타일 ================= */
+/* 소급 입력 7일 — 이틀만 되면 한 번 밀린 순간 그 착용은 영영 기록 못 하고
+   1회당 원가가 영구히 과대평가된다. 일주일까지 되짚을 수 있게 한다. */
+var dayOff=0;
+(function buildDaysw(){
+  var w=$("daysw");
+  for(var i=0;i<7;i++){
+    var d=new Date(); d.setDate(d.getDate()-i);
+    var b=document.createElement("button");
+    b.type="button"; b.dataset.off=String(i);
+    b.textContent = i===0?"오늘" : i===1?"어제" : (d.getMonth()+1)+"/"+d.getDate();
+    b.setAttribute("aria-pressed", i===0?"true":"false");
+    if(i===0) b.className="on";
+    b.addEventListener("click",function(){
+      dayOff=+this.dataset.off;
+      Array.prototype.forEach.call(w.children,function(c){
+        var on = c===this; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+      },this);
+      renderTiles();
+    });
+    w.appendChild(b);
+  }
+})();
+function tileItems(){
+  var key=todayKey(dayOff);
+  return active().slice().sort(function(a,b){
+    var aw=a.w.indexOf(key)>=0?1:0, bw=b.w.indexOf(key)>=0?1:0;
+    if(aw!==bw) return bw-aw;                       /* 오늘 기록된 것 먼저 */
+    var al=lastUse(a)||"", bl=lastUse(b)||"";
+    if(al!==bl) return al<bl?1:-1;                  /* 최근 사용 */
+    return b.w.length-a.w.length;                   /* 자주 사용 */
+  }).slice(0,8);
+}
+function renderTiles(){
+  var holder=$("tiles"); holder.innerHTML="";
+  var list=tileItems(), key=todayKey(dayOff);
+  if(!list.length){
+    holder.innerHTML='<p class="empty" style="grid-column:1/-1">아직 등록된 항목이 없어요. 아래에서 하나만 넣어 보세요.</p>';
+    $("todayHint").textContent="첫 항목을 등록하면 여기에 타일이 생깁니다. 어떤 화면인지 먼저 보고 싶으면 예시를 넣어 보세요.";
+    $("demoWrap").style.display="";
+    return;
+  }
+  $("demoWrap").style.display="none";
+  list.forEach(function(it){
+    var done=it.w.indexOf(key)>=0;
+    var pu=perUse(it);
+    var b=document.createElement("button");
+    b.type="button"; b.className="tile"+(done?" done":"");
+    b.setAttribute("aria-pressed", done?"true":"false");
+    b.innerHTML='<span class="em">'+catOf(it.c).em+'</span><span class="nm">'+esc(it.n)+'</span><span class="pw">'
+      + (pu===null ? (it.kind==="sub"?"이번 달 0회":"0회") : shortWon(pu)+"원") + '</span>';
+    b.addEventListener("click",function(){ toggleWear(it, key); });
+    holder.appendChild(b);
+  });
+  $("todayHint").textContent = dayOff===0
+    ? "탭 한 번이면 오늘 착용 기록. 다시 누르면 취소됩니다."
+    : (dayOff===1 ? "어제" : dayOff+"일 전") + " 것을 소급 입력하는 중입니다. 일주일 전까지 되짚을 수 있어요.";
+}
+function toggleWear(it, key){
+  var i=it.w.indexOf(key);
+  if(i>=0){ it.w.splice(i,1); save(); renderAll(); toast("기록을 취소했어요"); return; }
+  it.w.push(key); it.w.sort(); save(); renderAll();
+  var pu=perUse(it);
+  var msg = pu===null ? esc(it.n)+" 기록됨"
+    : it.n+" · "+useCount(it)+"회 → 1회당 "+won(pu);
+  if(it.g && pu!==null && pu>it.g){
+    var need=remainToGoal(it);
+    if(need!==null) msg += " (목표까지 "+need+"번)";
+  }
+  toast(msg);
+}
+
+/* ================= 등록 ================= */
+var newCat=null, newKind="own";
+var catHolder=$("catChips");
+CATS.forEach(function(c){
+  var b=document.createElement("button");
+  b.type="button"; b.className="chip"; b.dataset.k=c.k; b.textContent=c.em+" "+c.label;
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){ setCat(c.k); });
+  catHolder.appendChild(b);
+});
+function setCat(k){
+  newCat=k;
+  Array.prototype.forEach.call(catHolder.children,function(x){
+    var on = x.dataset.k===k;
+    x.classList.toggle("on", on); x.setAttribute("aria-pressed", on?"true":"false");
+  });
+}
+$("nName").addEventListener("input",function(){
+  var s=suggestCat($("nName").value);
+  if(s && !$("nName")._touched){ setCat(s); $("catSuggest").textContent="‘"+catOf(s).label+"’으로 제안했어요. 다르면 아래에서 바꾸세요."; }
+});
+catHolder.addEventListener("click",function(){ $("nName")._touched=true; });
+Array.prototype.forEach.call($("kindChips").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
+  b.addEventListener("click",function(){
+    newKind=b.dataset.k;
+    Array.prototype.forEach.call($("kindChips").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
+    $("kindHint").innerHTML = newKind==="sub"
+      ? "구독은 <b>그 달 요금 ÷ 그 달 사용 횟수</b>로 계산합니다. 가격칸에 월 요금을 넣어 주세요."
+      : "구독은 ‘1회당’ 대신 <b>그 달 요금 ÷ 그 달 사용 횟수</b>로 계산합니다.";
+    if(newKind==="sub") setCat("sub");
+  });
+});
+(function initMonth(){
+  var d=new Date();
+  $("nWhen").value = d.getFullYear()+"-"+pad(d.getMonth()+1);
+})();
+function addItem(keepOpen){
+  var n=$("nName").value.trim();
+  var p=parseFloat($("nPrice").value);
+  if(!n){ toast("이름을 적어 주세요"); $("nName").focus(); return; }
+  if(!(p>=0)){ toast("가격을 숫자로 적어 주세요"); $("nPrice").focus(); return; }
+  if(p>100000000){ toast("가격이 너무 큽니다"); return; }
+  var c=newCat || suggestCat(n) || "etc";
+  db.items.push({
+    id:uid(), n:n.slice(0,24), p:Math.round(p), a:$("nWhen").value||monthKey(todayKey(0)),
+    c:c, kind:newKind, st:"active", w:[], g:null
+  });
+  save();
+  $("nName").value=""; $("nPrice").value=""; $("nName")._touched=false;
+  $("catSuggest").textContent="이름을 적으면 카테고리를 알아서 제안합니다.";
+  renderAll();
+  toast("‘"+n.slice(0,12)+"’ 등록 완료");
+  if(keepOpen) $("nName").focus();
+  else $("todayCard").scrollIntoView({behavior:"smooth",block:"start"});
+}
+/* 일괄 등록 — 옷장 30벌을 한 줄씩 폼으로 넣는 것이 가장 큰 진입장벽이었다. */
+$("bulkBtn").addEventListener("click",function(){
+  var raw=$("bulkText").value;
+  if(!raw.trim()){ toast("붙여넣을 목록이 없어요"); return; }
+  var lines=raw.split(/\r?\n/).map(function(l){ return l.trim(); }).filter(Boolean).slice(0,200);
+  var added=0, skipped=0;
+  lines.forEach(function(l){
+    /* "이름, 가격" / "이름<TAB>가격" / "이름 가격" 모두 허용. 가격은 줄 끝의 숫자로 본다. */
+    var m=l.match(/^(.*?)[\s,\t]*([0-9][0-9,]*)\s*원?$/);
+    var name, price;
+    if(m && m[1].trim()){ name=m[1].replace(/[,\t]+$/,"").trim(); price=parseInt(m[2].replace(/,/g,""),10); }
+    else { name=l.replace(/[,\t]+$/,"").trim(); price=0; }
+    if(!name){ skipped++; return; }
+    if(!(price>=0) || price>100000000){ skipped++; return; }
+    var cat=suggestCat(name)||"etc";
+    /* 이름이 구독으로 분류되면 계산 방식도 구독으로 맞춘다.
+       카테고리만 구독이고 kind는 own이면 '월 요금 ÷ 그 달 사용'이 아니라
+       누적 횟수로 나눠 원가가 몇 배로 싸 보이는 착시가 생긴다. */
+    db.items.push({
+      id:uid(), n:name.slice(0,24), p:Math.round(price),
+      a:monthKey(todayKey(0)), c:cat, kind: cat==="sub" ? "sub" : "own", st:"active", w:[], g:null
+    });
+    added++;
+  });
+  if(!added){ toast("등록할 줄을 찾지 못했어요"); return; }
+  save(); renderAll();
+  $("bulkText").value=""; $("bulkBox").open=false;
+  toast(added+"개 등록 완료"+(skipped?(" · "+skipped+"줄 건너뜀"):"")+" — 카테고리는 목록에서 고칠 수 있어요");
+  $("listCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+/* 첫 화면이 0으로 도배돼 "안 쓴 앱" 인상을 주던 문제.
+   한 번 눌러 실제 화면을 보고, 지우고 내 것으로 시작할 수 있게 한다. */
+var DEMO=[
+  { n:"검정 후드티", p:39000, c:"top",    w:52 },
+  { n:"청바지",     p:79000, c:"bottom", w:41 },
+  { n:"흰 운동화",  p:129000,c:"shoes",  w:33 },
+  { n:"네이비 코트",p:198000,c:"outer",  w:9  },
+  { n:"가죽 자켓",  p:340000,c:"outer",  w:2  },
+  { n:"에어프라이어",p:89000, c:"appli",  w:14 }
+];
+$("demoBtn").addEventListener("click",function(){
+  if(db.items.length && !window.confirm("예시 항목 6개를 넣습니다. 기존 기록은 그대로 남습니다. 계속할까요?")) return;
+  var base=new Date();
+  DEMO.forEach(function(x,idx){
+    var wears=[];
+    for(var i=0;i<x.w;i++){
+      var d=new Date(base); d.setDate(d.getDate()-(i*Math.max(1,Math.floor(60/x.w))+idx));
+      wears.push(d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()));
+    }
+    db.items.push({ id:uid(), n:"[예시] "+x.n, p:x.p, a:monthKey(todayKey(0)), c:x.c,
+                    kind:"own", st:"active", w:wears.slice(0,x.w), g:null, demo:true });
+  });
+  save(); renderAll();
+  toast("예시를 넣었습니다. 이름 앞에 [예시]가 붙어 있으니 확인 후 지우세요");
+  $("sumCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+$("addBtn").addEventListener("click",function(){ addItem(false); });
+$("keepAddBtn").addEventListener("click",function(){ addItem(true); });
+$("nPrice").addEventListener("keydown",function(e){ if(e.key==="Enter") addItem(true); });
+
+/* ================= 목록 ================= */
+var tab="all";
+Array.prototype.forEach.call($("tabs").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
+  b.addEventListener("click",function(){
+    tab=b.dataset.t;
+    Array.prototype.forEach.call($("tabs").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
+    renderList();
+  });
+});
+function listFor(){
+  if(tab==="arch") return archived();
+  var a=active();
+  if(tab==="idle") return a.filter(function(i){ var d=idleDays(i); return d===null || d>=30; });
+  if(tab==="zero") return a.filter(function(i){ return useCount(i)===0; });   /* 화면 뱃지와 같은 기준(구독은 이번 달) */
+  return a;
+}
+function renderList(){
+  var holder=$("list"); holder.innerHTML="";
+  var list=listFor().slice().sort(function(a,b){
+    var pa=perUse(a), pb=perUse(b);
+    if(pa===null && pb===null) return b.p-a.p;
+    if(pa===null) return 1;
+    if(pb===null) return -1;
+    return pb-pa;
+  });
+  if(!list.length){
+    var msg = tab==="arch" ? "아직 방출한 항목이 없습니다."
+      : tab==="idle" ? "30일 넘게 손대지 않은 항목이 없습니다."
+      : tab==="zero" ? "0회인 항목이 없습니다. 전부 한 번씩은 입으셨네요."
+      : "등록된 항목이 없습니다.";
+    holder.innerHTML='<p class="empty">'+msg+'</p>';
+    return;
+  }
+  list.forEach(function(it){
+    var pu=perUse(it), cnt=useCount(it), idle=idleDays(it);
+    var d=document.createElement("div"); d.className="item"; d.dataset.edit=it.id;
+    var sub = catOf(it.c).label + " · " + shortWon(it.p) + "원"
+      + (it.kind==="sub" ? "/월" : "")
+      + (it.a ? " · "+it.a.replace("-","년 ")+"월" : "");
+    if(it.st==="archived") sub += " · 방출 " + (it.ar||"");
+    else if(idle!==null) sub += " · " + (idle===0?"오늘 입음":idle+"일 전");
+    else sub += " · 아직 안 입음";
+    var right = pu===null
+      ? '<div class="zero">'+(it.kind==="sub"?"이번 달 0회":"0회")+'</div>'
+      : '<div class="pw">'+won(pu)+'</div><div class="cnt">'+cnt+'회'+(it.kind==="sub"?" (이번 달)":"")+'</div>';
+    d.innerHTML =
+      '<div class="em">'+catOf(it.c).em+'</div>'+
+      '<div class="mid"><div class="t">'+esc(it.n)+'</div><div class="sub">'+esc(sub)+'</div>'+
+        (it.g&&it.st!=="archived"?'<div class="goal">🎯 목표 '+won(it.g)+' — 앞으로 '+remainToGoal(it)+'번 더'+(it.kind==="sub"?' (이번 달)':'')+'</div>':'')+
+        '<div class="iacts"></div></div>'+
+      '<div class="rt">'+right+'</div>';
+    var ia=d.querySelector(".iacts");
+    if(it.st==="archived"){
+      ia.appendChild(mkBtn("되돌리기",function(){ it.st="active"; delete it.ar; save(); renderAll(); toast("다시 옷장으로"); }));
+    } else {
+      ia.appendChild(mkBtn("+1 오늘",function(){ toggleWear(it, todayKey(0)); }));
+      ia.appendChild(mkBtn("수정",function(){ editItem(it); }));
+      ia.appendChild(mkBtn(it.g?"목표 수정":"목표 정하기",function(){ setGoal(it); }));
+      ia.appendChild(mkBtn("방출",function(){ release(it); }));
+    }
+    ia.appendChild(mkBtn("삭제",function(){
+      if(!window.confirm("‘"+it.n+"’ 기록을 완전히 지울까요? 되돌릴 수 없습니다.")) return;
+      db.items=db.items.filter(function(x){ return x.id!==it.id; }); save(); renderAll(); toast("삭제했습니다");
+    }));
+    holder.appendChild(d);
+  });
+  if(tab==="idle" && list.length){
+    var note=document.createElement("p"); note.className="hint";
+    note.textContent="30일 넘게 손이 안 간 항목입니다. 정리할지는 직접 정하세요 — 방출해도 기록은 아카이브에 남습니다.";
+    holder.appendChild(note);
+  }
+}
+function mkBtn(label, fn){
+  var b=document.createElement("button"); b.type="button"; b.textContent=label;
+  b.addEventListener("click",fn); return b;
+}
+/* 항목 수정 — 잘못 넣은 가격을 고치려고 삭제·재등록하면 착용 기록이 통째로 날아간다.
+   세일가 정정, 수선비 합산, 중고 구매 반영 모두 여기서 한다. */
+function editItem(it){
+  var host=document.querySelector('.item[data-edit="'+it.id+'"]');
+  if(document.getElementById("editBox")) document.getElementById("editBox").remove();
+  var box=document.createElement("div");
+  box.className="editbox"; box.id="editBox";
+  box.innerHTML =
+    '<p class="eh">착용 기록 <b>'+it.w.length+'회</b>는 그대로 유지됩니다. '
+      + '세일가로 샀으면 실제 낸 금액, 수선비를 더하려면 합친 금액, 선물받았거나 물려받았으면 0을 넣으세요.</p>'
+    + '<div class="er">'
+      + '<input type="text" id="edName" maxlength="24" aria-label="이름" placeholder="이름" />'
+      + '<input type="number" id="edPrice" min="0" max="100000000" inputmode="numeric" aria-label="가격(원)" placeholder="가격 (원)" />'
+      + '<input type="month" id="edWhen" aria-label="산 시기" />'
+    + '</div>'
+    + '<div class="er"><select id="edCat" aria-label="카테고리"></select></div>'
+    + '<div class="ea"><button id="edSave" type="button">저장</button>'
+      + '<button class="ghost" id="edCancel" type="button">취소</button></div>';
+  (host||$("list")).appendChild(box);
+  $("edName").value=it.n; $("edPrice").value=it.p; $("edWhen").value=it.a||"";
+  CATS.forEach(function(c){
+    var o=document.createElement("option"); o.value=c.k; o.textContent=c.em+" "+c.label;
+    if(c.k===it.c) o.selected=true;
+    $("edCat").appendChild(o);
+  });
+  $("edName").focus();
+  $("edCancel").addEventListener("click",function(){ box.remove(); });
+  $("edSave").addEventListener("click",function(){
+    var n=$("edName").value.trim().slice(0,24);
+    if(!n){ toast("이름은 비울 수 없어요"); $("edName").focus(); return; }
+    var p=parseFloat($("edPrice").value);
+    if(!(p>=0)){ toast("가격을 숫자로 적어 주세요"); $("edPrice").focus(); return; }
+    if(p>100000000){ toast("가격이 너무 큽니다"); return; }
+    var old=it.p;
+    it.n=n; it.p=Math.round(p); it.c=$("edCat").value;
+    var av=$("edWhen").value;
+    if(av && /^\d{4}-\d{2}$/.test(av)) it.a=av;
+    save(); renderAll();
+    var pu=perUse(it);
+    toast(old!==it.p
+      ? ("가격 "+won(old)+" → "+won(it.p)+(pu===null?"":" · 1회당 "+won(pu)))
+      : "수정했습니다");
+  });
+}
+function setGoal(it){
+  var cur = it.g ? String(it.g) : "";
+  var v = window.prompt("‘"+it.n+"’의 목표 1회당 원가를 원 단위로 적어 주세요. (비우면 목표 해제)", cur);
+  if(v===null) return;
+  v=v.replace(/[^\d]/g,"");
+  if(!v){ it.g=null; save(); renderAll(); toast("목표를 해제했습니다"); return; }
+  var g=parseInt(v,10);
+  /* 0을 넣으면 가격÷0 = Infinity 가 화면에 그대로 노출된다 */
+  if(!(g>0)){ toast("목표 금액은 1원 이상이어야 해요"); return; }
+  if(g>=it.p && it.p>0){ toast("목표가 구매가보다 크거나 같아요. 한 번만 써도 달성됩니다"); }
+  it.g=g;
+  save(); renderAll();
+  var need=remainToGoal(it);
+  toast("목표 "+won(it.g)+" — 앞으로 "+need+"번 더"+(it.kind==="sub"?" (이번 달)":"")+" 쓰면 됩니다");
+}
+function release(it){
+  var pu=perUse(it);
+  var msg = pu===null
+    ? "‘"+it.n+"’을(를) 방출할까요? 한 번도 쓰지 않은 채로 기록됩니다."
+    : "‘"+it.n+"’을(를) 방출할까요? 최종 1회당 "+won(pu)+" ("+it.w.length+"회)로 아카이브에 남습니다.";
+  if(!window.confirm(msg)) return;
+  it.st="archived"; it.ar=todayKey(0); it.fin = pu===null ? null : Math.round(pu);
+  save(); renderAll(); toast("아카이브로 옮겼습니다");
+}
+
+/* ================= 통계 ================= */
+function summary(){
+  var a=active();
+  var own=a.filter(function(i){ return i.kind!=="sub"; });
+  var total=own.reduce(function(s,i){ return s+i.p; },0);
+  var wears=own.reduce(function(s,i){ return s+i.w.length; },0);
+  /* 평균 1회당은 '값을 치른 것'끼리만 나눈다. 0원(선물·물려받음) 항목은 가격에
+     0을 더하면서 착용 횟수만 분모에 얹어 평균을 실제보다 훨씬 싸게 보이게 만든다.
+     (예: 30만원 코트 10회 + 공짜 목도리 40회 → 6,000원처럼 보이지만 실제는 30,000원) */
+  var paid=own.filter(function(i){ return i.p>0; });
+  var paidTotal=paid.reduce(function(s,i){ return s+i.p; },0);
+  var paidWears=paid.reduce(function(s,i){ return s+i.w.length; },0);
+  var avg = paidWears>0 ? paidTotal/paidWears : null;
+  var freeWears = wears - paidWears;
+  /* 편중도: 착용 상위 20% 항목이 전체 착용의 몇 % */
+  var sorted=own.slice().sort(function(x,y){ return y.w.length-x.w.length; });
+  var topN=Math.max(1, Math.ceil(sorted.length*0.2));
+  var topPct = sorted.length ? Math.round(topN/sorted.length*100) : 0;  /* 실제 비율(항목 6개면 33%) */
+  var topWears=sorted.slice(0,topN).reduce(function(s,i){ return s+i.w.length; },0);
+  var conc = wears>0 ? Math.round(topWears/wears*100) : null;
+  var idle=a.filter(function(i){ var d=idleDays(i); return d===null||d>=30; }).length;
+  var zero=a.filter(function(i){ return useCount(i)===0; }).length;   /* 목록 탭과 같은 기준 */
+  /* 명예의 전당은 '싸게 잘 산 것'을 보는 자리다. 0원(선물·물려받음)은 나눗셈이 항상 0이라
+     한 번만 입어도 1위를 차지해 순위를 무의미하게 만든다 → 별도 표기하고 순위에서 뺀다. */
+  var hall=own.filter(function(i){ return i.w.length>0 && i.p>0; })
+    .map(function(i){ return { n:i.n, c:i.c, pu:i.p/i.w.length, cnt:i.w.length }; })
+    .sort(function(x,y){ return x.pu-y.pu; }).slice(0,5);
+  var freeCount=own.filter(function(i){ return i.p===0; }).length;
+  return { n:a.length, own:own.length, total:total, wears:wears, avg:avg, conc:conc,
+           topN:topN, topPct:topPct, idle:idle, zero:zero, hall:hall, free:freeCount,
+           paidTotal:paidTotal, paidWears:paidWears, freeWears:freeWears };
+}
+function renderStats(){
+  var s=summary();
+  /* 아무것도 없을 때 0으로 도배된 대시보드를 먼저 보여 주면 초라하다 */
+  $("sumCard").style.display = db.items.length ? "" : "none";
+  $("stats").innerHTML =
+    box("항목", s.n+"개", s.zero?("아직 0회 "+s.zero+"개"):"전부 한 번은 사용")
+    + box("옷장 총액", shortWon(s.total)+"원", "구독 제외")
+    + box("총 착용", s.wears+"회", s.idle?("30일 미사용 "+s.idle+"개"):"모두 최근 사용");
+  $("avgPw").textContent = s.avg===null ? "—" : won(s.avg);
+  $("avgSub").innerHTML = s.avg===null
+    ? "값을 치른 항목을 한 번 입으면 계산됩니다."
+    : "총액 "+won(s.paidTotal)+" ÷ 착용 "+s.paidWears+"회. 한 번 더 입을 때마다 내려갑니다."
+      + (s.freeWears ? "<br>선물·물려받은 0원 항목의 착용 "+s.freeWears+"회는 평균에서 뺐습니다(공짜라 평균을 왜곡해서요)." : "");
+
+  var h=$("hall");
+  if(!s.hall.length){ h.innerHTML='<p class="empty">값을 치르고 산 항목을 한 번이라도 입으면 순위가 만들어집니다.</p>'; }
+  else {
+    h.innerHTML = s.hall.map(function(x,i){
+      return '<div class="h"><div class="rk">'+(i+1)+'</div><div class="hn">'+catOf(x.c).em+' '+esc(x.n)+'</div>'
+        + '<div class="hv">'+won(x.pu)+'</div></div>';
+    }).join("");
+  }
+  if(s.free){
+    h.innerHTML += '<p class="hint">🎁 선물받거나 물려받은 0원 항목 '+s.free+'개는 순위에서 뺐습니다. '
+      + '나누면 늘 0원이라 한 번만 입어도 1위가 되어 순위가 의미를 잃기 때문입니다.</p>';
+  }
+  if(s.conc===null){
+    $("concBar").style.width="0%";
+    $("concTxt").textContent="착용 기록이 쌓이면 자주 입는 몇 벌이 전체 착용의 몇 %를 차지하는지 보여 드립니다.";
+  } else {
+    $("concBar").style.width="0%";
+    setTimeout(function(){ $("concBar").style.width=s.conc+"%"; },40);
+    /* '상위 20%'라고 못박으면 항목 수가 5의 배수가 아닐 때 라벨이 사실과 어긋난다.
+       실제 개수와 실제 비율을 그대로 쓴다. */
+    var small = s.own < 10;
+    $("concTxt").innerHTML="자주 입는 <b>"+s.topN+"개</b>(전체 "+s.own+"개 중 "+s.topPct+"%)가 "
+      + "전체 착용의 <b>"+s.conc+"%</b>를 차지합니다. 좋고 나쁨을 판정하지 않습니다 — 그냥 그렇다는 숫자입니다."
+      + (small ? "<br><b>다만 항목이 "+s.own+"개뿐이라 이 숫자는 아직 크게 흔들립니다.</b> 10개 이상부터 참고할 만해집니다." : "")
+      + "<br>구독 항목은 이 계산에서 빠져 있습니다.";
+  }
+  renderPattern();
+}
+function box(k,v,s){ return '<div class="b"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>'; }
+function renderPattern(){
+  var tb=$("patTable").querySelector("tbody"); tb.innerHTML="";
+  var arch=archived().filter(function(i){ return i.kind!=="sub" && i.p>0; });
+  if(!arch.length){
+    tb.innerHTML='<tr><td colspan="4" style="color:#9ca3af">방출한 항목이 없어 아직 패턴이 없습니다.</td></tr>';
+    return;
+  }
+  var byCat={}, byBand={};
+  arch.forEach(function(i){
+    (byCat[i.c]=byCat[i.c]||[]).push(i);
+    var band="30만원 초과";
+    for(var b=0;b<PRICE_BANDS.length;b++) if(i.p<=PRICE_BANDS[b].max){ band=PRICE_BANDS[b].label; break; }
+    (byBand[band]=byBand[band]||[]).push(i);
+  });
+  /* 표본 수(n)를 반드시 함께 적는다. n=1짜리 "평균 3.2회"를 단정적으로 보여 주지 않기 위해서. */
+  function rows(kind, map, nameFn){
+    Object.keys(map).forEach(function(k){
+      var arr=map[k];
+      var avgW=arr.reduce(function(s,i){ return s+i.w.length; },0)/arr.length;
+      var used=arr.filter(function(i){ return i.w.length>0; });
+      var avgPu=used.length ? used.reduce(function(s,i){ return s+i.p/i.w.length; },0)/used.length : null;
+      var weak = arr.length < 3;
+      var tr=document.createElement("tr");
+      tr.innerHTML="<td>"+kind+"</td><td>"+esc(nameFn(k))+"</td>"
+        + "<td><b>"+avgW.toFixed(1)+"회</b> <span style='color:#9ca3af;font-size:13.5px'>(n="+arr.length+")</span></td>"
+        + "<td>"+(avgPu===null?"—":won(avgPu))+(weak?" <span style='color:#fbbf24;font-size:13.5px'>참고만</span>":"")+"</td>";
+      tb.appendChild(tr);
+    });
+  }
+  rows("카테고리", byCat, function(k){ return catOf(k).em+" "+catOf(k).label; });
+  rows("가격대", byBand, function(k){ return k; });
+}
+
+/* ================= 공유 ================= */
+function shareState(){
+  var s=summary();
+  var withNames=$("withNames").checked;
+  return {
+    n:s.n, t:s.total, w:s.wears,
+    a: s.avg===null?null:Math.round(s.avg),
+    c: s.conc, tn:s.topN, tp:s.topPct, own:s.own,
+    h: s.hall.slice(0,3).map(function(x){
+      return { c:x.c, p:Math.round(x.pu), k:x.cnt, n: withNames ? String(x.n).slice(0,14) : null };
+    })
+  };
+}
+function resultUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(shareState())); }
+function copy(text,msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});
+  } else fallbackCopy(text,msg);
+}
+function fallbackCopy(text,msg){
+  var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(err){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+function shareText(){
+  var s=shareState();
+  var lines=["🧥 내 옷장 1회당 성적표"];
+  lines.push("항목 "+s.n+"개 · 총액 "+shortWon(s.t)+"원 · 총 착용 "+s.w+"회");
+  lines.push("옷장 평균 1회당 "+(s.a===null?"—":won(s.a)));
+  if(s.c!==null){
+    lines.push("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 전체 착용의 "+s.c+"%");
+    if((s.own||s.n) < 10) lines.push("(항목이 "+(s.own||s.n)+"개뿐이라 이 비율은 아직 크게 흔들립니다)");
+  }
+  if(s.h.length) lines.push("명예의 전당 1위: "+(s.h[0].n?s.h[0].n:catOf(s.h[0].c).label)+" "+won(s.h[0].p));
+  lines.push(resultUrl());
+  return lines.join("\n");
+}
+function guardEmpty(){
+  if(!active().length){ toast("먼저 항목을 하나 등록해 주세요"); return true; }
+  return false;
+}
+function nameWarn(where){
+  if(!$("withNames").checked) return true;
+  return window.confirm(where+"\n\n지금 \u2018항목 이름 포함\u2019이 켜져 있어 옷 이름이 함께 나갑니다. 계속할까요?");
+}
+$("copyLinkBtn").addEventListener("click",function(){ if(!guardEmpty() && nameWarn("링크를 복사합니다.")) copy(resultUrl(),"링크가 복사되었습니다"); });
+$("copyTextBtn").addEventListener("click",function(){ if(!guardEmpty() && nameWarn("텍스트를 복사합니다.")) copy(shareText(),"텍스트가 복사되었습니다"); });
+$("xBtn").addEventListener("click",function(){
+  if(guardEmpty()) return;
+  /* 공개 게시는 이름 포함 여부와 무관하게 항상 확인받는다(다른 앱과 동작 통일) */
+  var xWarn = $("withNames").checked
+    ? "X(트위터)에 공개로 올립니다.\n\n지금 ‘항목 이름 포함’이 켜져 있어 옷 이름이 함께 나갑니다. 계속할까요?"
+    : "X(트위터)에 공개로 올립니다.\n\n옷장 총액·평균 1회당·착용 편중도가 함께 나갑니다(항목 이름은 빠집니다). 계속할까요?";
+  if(!window.confirm(xWarn)) return;
+  var s=shareState();
+  var base=s.own||s.n;
+  var t="내 옷장 평균 1회당 "+(s.a===null?"—":won(s.a))+", 자주 입는 "+s.tn+"개가 전체 착용의 "+(s.c===null?"—":s.c+"%")+" 🧥"
+    + (base && base<10 ? " (항목 "+base+"개라 아직 흔들리는 숫자)" : "");
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
+});
+if(navigator.share){
+  $("shareBtn").style.display="";
+  $("shareBtn").addEventListener("click",function(){
+    if(guardEmpty()) return;
+    if(!nameWarn("다른 앱으로 공유합니다.")) return;
+    navigator.share({ title:"1회당", text:shareText(), url:resultUrl() }).catch(function(){});
+  });
+}
+
+/* ================= 카드 이미지 ================= */
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function drawCard(){
+  var s=shareState(), cv=$("cv"), ctx=cv.getContext("2d"), W=1080, H=1350;
+  var g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,"#0f3d38"); g.addColorStop(1,"#1e1b4b");
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  ctx.textAlign="center";
+  ctx.fillStyle="rgba(255,255,255,.72)"; ctx.font="700 30px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("내 옷장 1회당 성적표", W/2, 108);
+  ctx.fillStyle="rgba(255,255,255,.55)"; ctx.font="600 26px -apple-system,sans-serif";
+  ctx.fillText("항목 "+s.n+"개 · 총액 "+shortWon(s.t)+"원 · 총 착용 "+s.w+"회", W/2, 156);
+
+  ctx.fillStyle="rgba(255,255,255,.08)"; roundRect(ctx,90,210,900,250,28); ctx.fill();
+  ctx.fillStyle="rgba(255,255,255,.6)"; ctx.font="700 28px -apple-system,sans-serif";
+  ctx.fillText("옷장 평균 1회당", W/2, 275);
+  ctx.fillStyle="#5eead4"; ctx.font="900 110px -apple-system,'Apple SD Gothic Neo',sans-serif";
+  ctx.fillText(s.a===null?"—":s.a.toLocaleString("ko-KR")+"원", W/2, 390);
+  ctx.fillStyle="rgba(255,255,255,.5)"; ctx.font="600 24px -apple-system,sans-serif";
+  ctx.fillText("한 번 더 입을 때마다 내려갑니다", W/2, 435);
+
+  ctx.fillStyle="rgba(255,255,255,.08)"; roundRect(ctx,90,500,900,150,24); ctx.fill();
+  ctx.fillStyle="rgba(255,255,255,.6)"; ctx.font="700 28px -apple-system,sans-serif";
+  if(s.c===null || s.c===undefined){
+    /* 숫자를 만들 수 없을 땐 지어내지 않고 그렇다고 적는다 */
+    ctx.fillStyle="rgba(255,255,255,.55)"; ctx.font="700 32px -apple-system,'Apple SD Gothic Neo',sans-serif";
+    ctx.fillText("착용을 기록하면 편중도가 나옵니다", W/2, 585);
+  } else {
+    ctx.fillText("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 차지하는 착용 비중", W/2, 560);
+    ctx.fillStyle="#a5b4fc"; ctx.font="900 70px -apple-system,sans-serif";
+    ctx.fillText(s.c+"%", W/2, 630);
+  }
+  var sampleBase=s.own||s.n;
+  if(sampleBase && sampleBase < 10){
+    ctx.fillStyle="rgba(255,255,255,.5)"; ctx.font="600 22px -apple-system,sans-serif";
+    ctx.fillText("항목 "+sampleBase+"개 — 아직 크게 흔들리는 숫자입니다", W/2, 666);
+  }
+
+  ctx.textAlign="left";
+  ctx.fillStyle="rgba(255,255,255,.72)"; ctx.font="800 34px -apple-system,'Apple SD Gothic Neo',sans-serif";
+  ctx.fillText("🏆 명예의 전당", 100, 730);
+  var y=770;
+  if(!s.h.length){
+    ctx.fillStyle="rgba(255,255,255,.45)"; ctx.font="600 28px -apple-system,sans-serif";
+    ctx.fillText("아직 기록이 없습니다", 100, y+40);
+  }
+  s.h.forEach(function(x,i){
+    ctx.fillStyle="rgba(255,255,255,.08)"; roundRect(ctx,90,y,900,110,20); ctx.fill();
+    ctx.fillStyle="#5eead4"; ctx.font="900 40px -apple-system,sans-serif";
+    ctx.fillText(String(i+1), 125, y+70);
+    ctx.fillStyle="#fff"; ctx.font="700 34px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+    var nm = x.n ? (catOf(x.c).em+" "+x.n) : (catOf(x.c).em+" "+catOf(x.c).label);
+    ctx.fillText(nm.slice(0,16), 190, y+58);
+    ctx.fillStyle="rgba(255,255,255,.5)"; ctx.font="600 24px -apple-system,sans-serif";
+    ctx.fillText(x.k+"회 사용", 190, y+92);
+    ctx.textAlign="right"; ctx.fillStyle="#99f6e4"; ctx.font="900 40px -apple-system,sans-serif";
+    ctx.fillText(x.p.toLocaleString("ko-KR")+"원", 955, y+72);
+    ctx.textAlign="left";
+    y+=130;
+  });
+  ctx.textAlign="center";
+  ctx.fillStyle="rgba(255,255,255,.4)"; ctx.font="600 24px -apple-system,sans-serif";
+  /* 카드에 실제로 들어간 내용과 문구가 어긋나면 안 된다.
+     '항목 이름 포함'이 켜져 있으면 이름이 그려져 있으므로 그렇게 적는다. */
+  ctx.fillText($("withNames").checked ? "항목 이름이 함께 담겨 있습니다" : "숫자와 카테고리만 담겨 있습니다", W/2, 1268);
+  ctx.fillStyle="rgba(255,255,255,.75)"; ctx.font="700 28px -apple-system,sans-serif";
+  ctx.fillText("tomatoeggcat.com/cost-per-wear", W/2, 1312);
+}
+$("saveBtn").addEventListener("click",function(){
+  if(guardEmpty()) return;
+  drawCard();
+  var a=document.createElement("a");
+  a.download="cost-per-wear.png"; a.href=$("cv").toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("이미지가 저장되었습니다");
+});
+
+/* ================= 내보내기 / 가져오기 / 삭제 ================= */
+$("exportBtn").addEventListener("click",function(){
+  var blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="cost-per-wear-backup.json";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },2000);
+  toast("백업 파일을 내려받았습니다");
+});
+/* 엑셀에서 바로 피벗 돌릴 수 있게 한 줄 = 한 항목으로 평탄화해 내보낸다. */
+$("csvBtn").addEventListener("click",function(){
+  if(!db.items.length){ toast("내보낼 항목이 없어요"); return; }
+  var q=function(v){ return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'; };
+  var head=["이름","카테고리","종류","가격","산시기","상태","착용횟수(누적)","원가계산기준횟수","1회당원가","첫착용","마지막착용","목표1회당","방출일"];
+  var lines=[head.map(q).join(",")];
+  db.items.forEach(function(it){
+    var sorted=it.w.slice().sort();
+    var pu=perUse(it);
+    lines.push([
+      it.n, catOf(it.c).label, it.kind==="sub"?"구독":"소유", it.p, it.a||"",
+      it.st==="archived"?"아카이브":"사용중", it.w.length, useCount(it),
+      pu===null?"":Math.round(pu), sorted[0]||"", sorted[sorted.length-1]||"",
+      it.g||"", it.ar||""
+    ].map(q).join(","));
+  });
+  /* 엑셀이 UTF-8 한글을 깨뜨리지 않도록 BOM을 붙인다 */
+  var blob=new Blob(["﻿"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="cost-per-wear.csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },2000);
+  toast("CSV를 내려받았습니다 ("+db.items.length+"개)");
+});
+$("importBtn").addEventListener("click",function(){ $("fileIn").click(); });
+$("fileIn").addEventListener("change",function(){
+  var f=$("fileIn").files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var o=JSON.parse(rd.result);
+      if(!o || !Array.isArray(o.items)) throw new Error("형식");
+      if(!window.confirm("현재 기록을 파일 내용으로 덮어쓸까요?")) return;
+      db={ v:1, items:o.items.filter(function(i){ return i && i.id && typeof i.p==="number"; }).map(function(i){
+        return { id:String(i.id), n:String(i.n||"이름 없음").slice(0,24), p:Math.max(0,Math.round(i.p)),
+                 a:String(i.a||"").slice(0,7), c:catOf(i.c).k, kind:i.kind==="sub"?"sub":"own",
+                 st:i.st==="archived"?"archived":"active", ar:i.ar?String(i.ar).slice(0,10):undefined,
+                 w:Array.isArray(i.w)?i.w.filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(d); }).slice(0,4000):[],
+                 g:typeof i.g==="number"?i.g:null };
+      }) };
+      save(); renderAll(); toast("가져오기 완료 ("+db.items.length+"개)");
+    }catch(err){ toast("파일을 읽지 못했어요"); }
+    $("fileIn").value="";
+  };
+  rd.readAsText(f);
+});
+$("wipeBtn").addEventListener("click",function(){
+  if(!window.confirm("모든 기록을 삭제할까요? 되돌릴 수 없습니다.")) return;
+  db={ v:1, items:[] }; save(); renderAll(); toast("전체 삭제했습니다");
+});
+
+/* ================= 공유 유입 (?r=) ================= */
+/* 공유 페이로드에 실제 비율(tp)이 없으면(옛 링크) 개수/항목수로 유도한다.
+   없다고 0%를 그대로 찍으면 "3개인데 0%" 같은 모순이 화면에 남는다. */
+function concLabel(s){
+  /* 착용 기록이 없으면 개인 화면처럼 구체적 숫자를 만들지 않는다.
+     "자주 입는 1개(전체의 100%)"인데 값은 "—"인 모순 카드를 막는다. */
+  if(s.c===null || s.c===undefined) return "착용 기록이 쌓이면 계산됩니다";
+  var tn = s.tn||0, n = s.own||s.n||0;
+  var tp = s.tp || (n && tn ? Math.round(tn/n*100) : 0);
+  if(!tn || !n) return "자주 입는 항목이 차지하는 비중";
+  return "자주 입는 "+tn+"개(전체의 "+tp+"%) 비중";
+}
+function renderShared(s){
+  var rows = (s.h||[]).map(function(x,i){
+    var nm = x.n ? esc(String(x.n).slice(0,14)) : catOf(x.c).label;
+    return '<div class="h"><div class="rk">'+(i+1)+'</div><div class="hn">'+catOf(x.c).em+' '+nm+'</div><div class="hv">'+won(x.p)+'</div></div>';
+  }).join("");
+  $("sharedBody").innerHTML =
+    '<div class="stats">'
+    + box("항목", (s.n||0)+"개", "총액 "+shortWon(s.t||0)+"원")
+    + box("평균 1회당", s.a===null||s.a===undefined?"—":won(s.a), "총 착용 "+(s.w||0)+"회")
+    + box("착용 편중도", s.c===null||s.c===undefined?"—":s.c+"%", concLabel(s))
+    + '</div>'
+    + (rows ? '<div class="hall" style="margin-top:10px">'+rows+'</div>' : "")
+    + (function(){ var base=s.own||s.n; return (base && base<10) ? '<p class="hint">항목이 '+base+'개뿐이라 이 비율은 크게 흔들립니다. 10개 이상부터 참고할 만해집니다.</p>' : ""; })();
+  $("sharedCard").style.display="block";
+}
+function sanitizeShared(o){
+  if(!o || typeof o!=="object") return null;
+  var num=function(v){ return typeof v==="number" && isFinite(v) ? v : null; };
+  var s={ n:num(o.n)||0, t:num(o.t)||0, w:num(o.w)||0, a:num(o.a), c:num(o.c), tn:num(o.tn)||1, tp:num(o.tp)||0, own:num(o.own)||0, h:[] };
+  if(Array.isArray(o.h)) s.h=o.h.slice(0,3).map(function(x){
+    return { c:catOf(x&&x.c).k, p:Math.max(0,Math.round(num(x&&x.p)||0)), k:Math.max(0,Math.round(num(x&&x.k)||0)),
+             n: (x&&typeof x.n==="string") ? x.n.slice(0,14) : null };
+  });
+  return s;
+}
+
+/* ================= render ================= */
+function renderAll(){ renderTiles(); renderStats(); renderList(); }
+load();
+renderAll();
+
+var sharedRaw = window.__sharedPayload || new URLSearchParams(location.search).get("r");
+if(sharedRaw){
+  var sh=sanitizeShared(dec(sharedRaw));
+  if(sh){
+    renderShared(sh);
+    $("inbound").classList.add("show");
+    $("inboundBtn").addEventListener("click",function(){
+      $("inbound").classList.remove("show");
+      $("addCard").scrollIntoView({behavior:"smooth"});
+      $("nName").focus();
+    });
+  }
+}
+})();
+</script>
+</body>
+</html>

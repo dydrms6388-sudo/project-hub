@@ -11,6 +11,9 @@
 - 예외 = **내장(builtin) 앱**: `gen-pages.mjs` 의 `BUILTINS` 배열에 등록된 slug 폴더는
   손으로 관리하는 "진짜 앱"이며 생성기가 덮어쓰지 않는다 (verification 메타만 주입).
   기존: salary, dsr, jeonse-loan, yangdo, refinance, age, dday, bmi, pyeong.
+  이후 VIRAL/기록 앱들이 추가되어 현재 30종 (`BUILTINS` 배열이 정본, 진행 이력은 `STATUS.md`).
+  ⚠️ 생성기를 돌리면 커밋된 다른 랜딩 산출물도 함께 갱신된다. 앱 추가 PR에서는
+  **내 앱 + `gen-pages.mjs` + `index.html`만 커밋**하고 나머지 drift 는 되돌린다(배포 때 재생성됨).
 
 ## 새 자립형(client-side) 앱을 추가하는 법
 1. `/<slug>/index.html` 에 **단일 파일 완결형** 앱 작성 (백엔드/외부 API/키 금지).
