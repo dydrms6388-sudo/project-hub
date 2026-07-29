@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>걸음의 모양 — 걸어서 그림 그리기, GPS 드로잉 | TomatoEggCat</title>
+<meta name="description" content="고양이를 고르고 걸으면 GPS 궤적이 고양이가 됩니다. 목표 거리에 맞는 그림 크기를 먼저 계산해 주고, 걷는 동안 궤적을 실시간으로 그려 원본 모양과 얼마나 닮았는지 점수를 냅니다. 칼로리도 페이스도 보지 않는 그림 앱이며 위치는 기기 밖으로 나가지 않습니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/walk-shape/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="걸음의 모양 — 걸어서 그림 그리기" />
+<meta property="og:description" content="모양을 고르고 걸으면 GPS 궤적이 그림이 됩니다. 운동 앱이 아니라 드로잉 도구." />
+<meta property="og:url" content="https://tomatoeggcat.com/walk-shape/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="걸음의 모양 — 걸어서 그림 그리기" />
+<meta name="twitter:description" content="걷고 나면 궤적이 그림이 됩니다. 칼로리도 페이스도 보지 않습니다." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"걸음의 모양","description":"고른 도형을 목표 거리에 맞춰 얼마나 큰 범위로 걸어야 하는지 계산해 주고, 걷는 동안 GPS 궤적을 기록해 원본 모양과의 닮은 정도를 점수로 내주는 GPS 드로잉 도구. 위치는 걷는 동안에만 수집하며 기기 밖으로 전송하지 않습니다.","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/walk-shape/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"걸을 길을 자동으로 만들어 주나요?","acceptedAnswer":{"@type":"Answer","text":"만들지 않습니다. 길을 자동 생성하려면 도로망 데이터와 경로 계산 서버가 필요한데 이 사이트에는 서버가 없습니다. 대신 고른 모양을 목표 거리로 걸으려면 가로 세로 몇 미터 범위가 필요한지 계산해 주고, 실제로 어느 길을 걸을지는 사용자가 직접 정합니다. 안전한 길인지 아닌지는 화면이 아니라 눈으로 판단해 주세요."}},
+{"@type":"Question","name":"위치 정보는 어디로 가나요?","acceptedAnswer":{"@type":"Answer","text":"어디로도 가지 않습니다. 위치는 걷기를 시작한 뒤부터 종료할 때까지만 수집하고, 브라우저 안에서 시작점 기준 상대 좌표로 바꿔 그림을 그립니다. 결과 카드와 공유 링크에는 위도 경도가 들어가지 않아 집 위치가 드러나지 않습니다. 절대 좌표가 필요한 GPX 파일은 사용자가 직접 내려받기를 눌렀을 때만 기기에 저장됩니다."}},
+{"@type":"Question","name":"닮은 정도 점수는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"내 궤적과 원본 모양을 각각 같은 개수의 점으로 다시 나눈 뒤, 크기와 위치를 정규화하고 두 선이 서로 얼마나 어긋났는지를 양방향으로 잽니다. 어긋난 거리 가운데 상위 10퍼센트 지점과 평균을 함께 보는 방식이라 점 하나가 크게 튀었다고 점수가 0이 되지는 않습니다. 완벽을 목표로 하지 않으므로 60점만 넘어도 남들 눈에는 그 모양으로 보입니다."}},
+{"@type":"Question","name":"운동 기록도 볼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"칼로리, 페이스, 심박수는 일부러 넣지 않았습니다. 이 도구는 운동 앱이 아니라 그림 도구입니다. 총 거리와 걸린 시간만 보여 주는데, 그건 그림의 크기와 작업 시간이기 때문입니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"산책·기록","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"걸음의 모양","item":"https://tomatoeggcat.com/walk-shape/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#a3e635;--acc2:#d9f99d;--ink:#0a0a0a}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.65}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#a3e635,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px;word-break:keep-all}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+.lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 10px}
+.lab b{color:var(--acc2)}
+.hint{font-size:12px;color:#6b7280;margin:7px 0 0;word-break:keep-all}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#14260a;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#18220f;color:var(--acc2);border:1px solid #3c5320;font-weight:700}
+button.danger{background:#2b1218;color:#fecdd3;border:1px solid #7f1d2c;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.safety{border:1px solid #7f1d1d;background:#1d0f0f;border-radius:14px;padding:15px 16px;margin-bottom:18px}
+.safety p{margin:0;font-size:13.5px;color:#fca5a5;word-break:keep-all}
+.safety p+p{margin-top:7px}
+.safety b{color:#fecaca}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:9px}
+.sh{background:#0f0f0f;border:1px solid #2c2c2c;border-radius:12px;padding:7px 5px 5px;cursor:pointer;text-align:center;width:auto;min-height:0;color:#c9c9c9;font-size:11.5px;font-weight:600}
+.sh.on{border-color:var(--acc);background:rgba(163,230,53,.1);color:var(--acc2)}
+.sh canvas{display:block;width:100%;height:auto;aspect-ratio:1;margin-bottom:3px}
+.plan{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.plan button{width:auto;flex:none;padding:9px 14px;font-size:13.5px;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;font-weight:600;min-height:42px}
+.plan button.on{background:rgba(163,230,53,.14);border-color:var(--acc);color:var(--acc2)}
+.planOut{margin-top:14px;border:1px dashed #3c5320;border-radius:12px;padding:14px;font-size:14px;color:#d9f99d;word-break:keep-all}
+.planOut b{font-size:17px}
+.canvasWrap{position:relative;background:#050505;border:1px solid #262626;border-radius:16px;overflow:hidden;aspect-ratio:1}
+.canvasWrap canvas{width:100%;height:100%;display:block;touch-action:none}
+.live{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.live div{flex:1;min-width:96px;background:#111;border:1px solid #242424;border-radius:12px;padding:11px}
+.live b{display:block;font-size:20px;color:#fff}
+.live span{font-size:12px;color:#8b8b8b}
+.gpsState{font-size:13px;color:#fbbf24;margin:10px 0 0}
+.score{font-size:52px;font-weight:900;color:#fff;line-height:1.1;margin:4px 0 0}
+.score small{font-size:17px;color:#9ca3af;font-weight:700}
+.stage{display:none}
+.stage.on{display:block}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#1f3308,#2c4610);border-bottom:1px solid #4d7a1c}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#d9f99d;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.about h2{font-size:18px;margin:26px 0 8px;color:#e5e7eb}
+.about p,.about li{font-size:14.5px;color:#b6b6b6;word-break:keep-all}
+.about ol,.about ul{padding-left:20px}
+.faq dt{font-weight:700;color:#e5e7eb;margin-top:14px;font-size:14.5px}
+.faq dd{margin:5px 0 0;font-size:14.5px;color:#b6b6b6;word-break:keep-all}
+.rel{display:flex;flex-wrap:wrap;gap:9px;margin-top:34px}
+.rel a{font-size:13px;color:#9ca3af;border:1px solid #2a2a2a;padding:8px 12px;border-radius:999px;text-decoration:none}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:#e5e7eb;color:#111;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:60}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.disc{font-size:12px;color:#6b7280;margin:14px 0 0;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>🐾 친구가 걸어서 그린 그림을 공유했어요. 당신은 무엇을 그려 볼까요?</span>
+  <button id="inboundBtn" type="button">나도 그려보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 산책·기록 › 걸음의 모양</nav>
+
+<header>
+  <h1>🐾 걸음의 모양</h1>
+  <p class="lead">고양이를 고르고 걸으면, 다 걷고 났을 때 GPS 궤적이 고양이가 됩니다. 칼로리도 페이스도 심박수도 보지 않습니다. <b>이건 운동 앱이 아니라 그림 도구</b>입니다.</p>
+</header>
+
+<div class="safety">
+  <p><b>⚠️ 먼저 읽어 주세요 — 길은 이 앱이 아니라 당신이 고릅니다.</b></p>
+  <p>이 도구는 걸을 길을 만들어 주지 <b>않습니다</b>. 도로망 데이터와 경로 계산 서버가 없기 때문입니다. 그래서 위험한 길로 안내할 위험도 없지만, 반대로 <b>안전한 길인지 판단하는 일은 전적으로 당신 몫</b>입니다. 자동차 전용도로·터널·철길·사유지·하천 안으로는 절대 들어가지 마세요.</p>
+  <p>걸으면서 화면을 계속 보지 마세요. 그림은 나중에 확인해도 됩니다. <b>궤적이 망가져도 괜찮습니다.</b> 그림 때문에 무리해서 길을 건너거나 어두운 곳으로 들어가지 마세요. 밤에는 밝고 사람이 있는 길로만 걸으세요.</p>
+</div>
+
+<!-- 1. 모양 -->
+<section class="card" id="shapeCard">
+  <p class="lab">1. 무엇을 그릴까요</p>
+  <div class="grid" id="shapeGrid"></div>
+  <div class="acts">
+    <button type="button" class="ghost" id="drawOwnBtn">직접 그리기 ✍️</button>
+  </div>
+  <div id="drawOwnBox" style="display:none;margin-top:14px">
+    <div class="canvasWrap" style="aspect-ratio:1"><canvas id="drawCv" width="600" height="600"></canvas></div>
+    <p class="hint">한 붓 그리기로 그려 주세요. 손을 떼면 거기서 선이 끝납니다. <b>끊긴 선은 걸어서 재현할 수 없습니다.</b></p>
+    <div class="acts">
+      <button type="button" class="ghost" id="drawClear">지우기</button>
+      <button type="button" id="drawUse">이 모양으로 하기</button>
+    </div>
+  </div>
+</section>
+
+<!-- 2. 계획 -->
+<section class="card" id="planCard">
+  <p class="lab">2. 얼마나 걸을까요</p>
+  <div class="plan" id="distPlan">
+    <button type="button" data-d="2000">2km</button>
+    <button type="button" data-d="3000" class="on">3km</button>
+    <button type="button" data-d="5000">5km</button>
+    <button type="button" data-d="8000">8km</button>
+    <button type="button" data-d="10000">10km</button>
+  </div>
+  <div class="planOut" id="planOut">모양을 먼저 골라 주세요.</div>
+  <p class="hint">경로를 만들어 주지는 않습니다. 대신 <b>그림이 들어갈 크기</b>를 알려 드립니다. 출발점에 서서 그 범위 안의 길을 눈으로 훑어보고, 걸을 만한 길인지 직접 확인한 뒤 시작하세요.</p>
+</section>
+
+<!-- 3. 걷기 -->
+<section class="card" id="walkCard">
+  <p class="lab">3. 걷기 <b id="walkState">대기 중</b></p>
+  <div class="canvasWrap"><canvas id="liveCv" width="700" height="700"></canvas></div>
+  <div class="live">
+    <div><b id="lDist">0.00</b><span>킬로미터</span></div>
+    <div><b id="lTime">00:00</b><span>걸은 시간</span></div>
+    <div><b id="lPts">0</b><span>기록된 점</span></div>
+  </div>
+  <p class="gpsState" id="gpsState"></p>
+  <div class="acts">
+    <button type="button" id="startBtn">걷기 시작 🚶</button>
+    <button type="button" class="ghost" id="pauseBtn" style="display:none">일시정지</button>
+    <button type="button" class="ghost" id="stopBtn" style="display:none">다 걸었어요 ✓</button>
+  </div>
+  <div class="acts">
+    <button type="button" class="ghost" id="fingerBtn" style="flex:0 0 auto;min-width:0;padding:10px 14px;font-size:13px">GPS 없이 손가락으로 시험해 보기</button>
+  </div>
+  <p class="hint">위치는 <b>걷는 동안에만</b> 수집합니다. 백그라운드 추적 코드는 없고, 이 화면을 벗어나면 기록도 멈춥니다. 일시정지했다가 다음 날 이어 걸어도 됩니다.</p>
+</section>
+
+<!-- 4. 결과 -->
+<section class="stage" id="resultStage">
+  <div class="card">
+    <p class="lab">걸어서 그린 그림</p>
+    <div class="canvasWrap"><canvas id="artCv" width="900" height="900"></canvas></div>
+    <p class="score" id="scoreNum">—<small>/100 닮음</small></p>
+    <p style="margin:2px 0 0;font-size:14px;color:#9ca3af" id="scoreWord"></p>
+    <div class="live">
+      <div><b id="rDist">0.00</b><span>킬로미터</span></div>
+      <div><b id="rTime">00:00</b><span>걸린 시간</span></div>
+      <div><b id="rShape">—</b><span>그린 모양</span></div>
+    </div>
+    <div class="acts">
+      <button type="button" id="saveBtn">이미지로 저장 🖼️</button>
+      <button type="button" class="ghost" id="copyLinkBtn">링크 복사 🔗</button>
+    </div>
+    <div class="acts">
+      <button type="button" class="ghost" id="copyTextBtn">텍스트 복사 📋</button>
+      <button type="button" class="ghost" id="xBtn">X 공유</button>
+      <button type="button" class="ghost" id="shareBtn" style="display:none">공유하기 📤</button>
+    </div>
+    <div class="acts">
+      <button type="button" class="ghost" id="gpxBtn">GPX 내려받기 📍</button>
+      <button type="button" class="ghost" id="remixBtn">같은 모양으로 다시 ⟲</button>
+    </div>
+    <p class="disc">🔒 결과 카드와 공유 링크에는 <b>위도·경도가 들어가지 않습니다.</b> 시작점을 원점으로 삼은 상대 좌표만 담기므로 집이나 출발지가 드러나지 않습니다. GPX 파일에는 실제 좌표가 들어 있으니 아무 데나 올리지 마세요.</p>
+
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</section>
+
+<section class="about">
+  <h2>🐾 걸음의 모양 소개</h2>
+  <p>GPS 드로잉은 원래 마니아들의 놀이였습니다. 지도를 몇 시간씩 들여다보며 손으로 경로를 짜고, 그 길을 그대로 걸어서 궤적을 그림으로 만드는 일입니다. 걸음의 모양은 그 놀이의 진입 장벽을 낮추는 도구입니다. 그리고 싶은 모양을 고르면 그 그림을 목표 거리로 그리려면 얼마나 넓은 범위가 필요한지 알려 주고, 걷는 동안 궤적을 그려 주고, 다 걷고 나면 원본과 얼마나 닮았는지 점수를 냅니다.</p>
+  <p>여기에서 중요한 것은 이 도구가 운동 앱이 아니라는 점입니다. 칼로리도 페이스도 심박수도 보여 주지 않습니다. 그림을 그리러 나온 사람에게 속도를 말해 주는 것은 실례입니다. 그리고 신기하게도, 운동을 싫어하는 사람이 고양이를 그리겠다고 8킬로미터를 걷습니다.</p>
+
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>그리고 싶은 모양을 고릅니다. 직접 한 붓으로 그려서 쓸 수도 있습니다.</li>
+    <li>목표 거리를 고르면 <b>그림이 들어갈 범위(가로 세로 미터)</b>를 계산해 줍니다.</li>
+    <li>출발점에 서서 그 범위 안의 길을 눈으로 확인합니다. 걸을 수 없는 길이면 거리를 줄이거나 다른 모양을 고르세요.</li>
+    <li>걷기 시작을 누르고 걷습니다. 화면은 보지 않아도 됩니다. 주머니에 넣고 걸으세요.</li>
+    <li>다 걸었으면 종료를 누릅니다. 궤적이 그림이 되고 닮음 점수가 나옵니다.</li>
+    <li>이미지로 저장해서 공유하거나, GPX로 내려받아 다른 앱에서 볼 수 있습니다.</li>
+  </ol>
+
+  <h2>닮음 점수 읽는 법</h2>
+  <ul>
+    <li><b>80점 이상</b> — 누가 봐도 그 모양입니다. 지도 없이 걸었다면 대단한 겁니다.</li>
+    <li><b>60~79점</b> — 말해 주면 보입니다. 대부분의 GPS 드로잉이 여기 있습니다. 충분합니다.</li>
+    <li><b>40~59점</b> — 분위기는 남았습니다. 길이 허락하지 않았을 뿐입니다.</li>
+    <li><b>40점 미만</b> — 오늘은 그냥 산책이었던 걸로. 그것도 나쁘지 않습니다.</li>
+  </ul>
+  <p>점수는 내 궤적과 원본 모양을 같은 개수의 점으로 다시 나눈 뒤, 크기와 위치를 맞추고 두 선이 서로 얼마나 어긋났는지를 양방향으로 재서 계산합니다(하우스도르프 거리의 변형). 어긋남 가운데 <b>상위 10퍼센트 지점과 평균</b>을 함께 보기 때문에, 신호가 한 번 튀었다고 점수가 무너지지 않고 그림을 덜 그리면 그만큼만 깎입니다. 완벽을 노리지 않는 편이 훨씬 재미있습니다.</p>
+
+  <h2>안전과 프라이버시</h2>
+  <ul>
+    <li>이 도구는 <b>경로를 지시하지 않습니다.</b> 따라서 자동차 전용도로나 터널로 안내할 가능성도 구조적으로 0입니다. 대신 길 선택의 책임이 사용자에게 있습니다.</li>
+    <li>위치는 <b>걷기를 시작한 뒤부터 종료할 때까지만</b> 수집합니다. 백그라운드 추적 코드는 한 줄도 없습니다.</li>
+    <li>궤적은 시작점을 원점으로 하는 <b>상대 좌표(미터)</b>로 변환해 그림을 그립니다. 결과 카드와 공유 링크에 위도·경도가 들어가지 않습니다.</li>
+    <li>절대 좌표가 필요한 GPX 내려받기는 버튼을 눌렀을 때만, 그것도 이 기기 안으로만 저장됩니다.</li>
+    <li>야간에는 조명과 인적이 있는 길로만 걸으세요. 그림보다 안전이 먼저입니다.</li>
+  </ul>
+
+  <h2>솔직하게 밝히는 한계</h2>
+  <p>원래 기획의 핵심은 <b>모양을 실제 도로망에 맞춰 걸을 수 있는 경로로 바꾸는 알고리즘</b>이었습니다. 그러려면 OpenStreetMap 보행 도로망 데이터와 그래프 최단경로 계산이 필요하고, 그건 서버가 있어야 합니다. 이 사이트는 서버가 없는 정적 사이트라 <b>경로 자동 생성은 구현하지 않았습니다.</b> 지도 타일도 외부에서 불러오지 않으므로 결과 그림에 지도 배경이 깔리지 않습니다.</p>
+  <p>대신 서버 없이 할 수 있는 세 가지에 집중했습니다. 목표 거리에 맞는 <b>그림 크기 계산</b>, 걷는 동안의 <b>궤적 기록과 실시간 그리기</b>, 그리고 <b>닮음 점수</b>입니다. 실제로 GPS 드로잉을 해 보면 경로를 미리 짜는 것보다 대략의 크기를 알고 즉흥적으로 걷는 편이 더 즐겁기도 합니다.</p>
+
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>Q. 실내나 지하에서도 되나요?</dt>
+    <dd>어렵습니다. GPS 신호가 약한 곳에서는 궤적이 튀거나 끊깁니다. 정확도가 낮은 점은 자동으로 걸러 내지만, 건물 사이나 지하에서는 그림이 크게 흔들릴 수 있습니다.</dd>
+    <dt>Q. 여러 날에 나눠 걸어도 되나요?</dt>
+    <dd>됩니다. 일시정지를 누르면 기록이 멈추고, 다시 시작을 누르면 같은 그림에 이어서 그립니다. 다만 브라우저 탭을 닫으면 기록이 사라지니 그날의 결과는 종료 후 저장해 두세요.</dd>
+    <dt>Q. 왜 지도가 안 보이나요?</dt>
+    <dd>지도 타일을 외부에서 불러오지 않기 때문입니다. 외부 요청을 하지 않는다는 것은 당신의 위치가 어떤 지도 서버에도 알려지지 않는다는 뜻이기도 합니다. 그림만 보이는 대신 위치가 새어 나가지 않습니다.</dd>
+    <dt>Q. 칼로리는 왜 안 보여 주나요?</dt>
+    <dd>일부러입니다. 이건 운동 앱이 아닙니다. 그림을 그리러 나온 사람에게 소모 칼로리를 말해 주는 순간 산책이 운동이 되고, 운동이 되면 즐겁지 않아집니다.</dd>
+    <dt>Q. 저작권 있는 캐릭터를 그려도 되나요?</dt>
+    <dd>기본 제공 모양은 전부 이 사이트에서 직접 만든 도형입니다. 직접 그리기로 무엇을 그리든 자유지만, 남의 캐릭터나 로고를 그대로 옮긴 결과물을 공개적으로 배포하는 일은 권하지 않습니다.</dd>
+  </dl>
+  <p style="color:#6b7280;font-size:13px">※ 보행 중 사고·부상에 대해 이 도구는 책임지지 않습니다. 교통 신호와 주변 상황을 항상 우선하세요. 이 도구는 의료·운동 처방이 아닙니다.</p>
+</section>
+
+<nav class="rel">
+  <a href="/manbo-steps/">👟 만보 계산기</a>
+  <a href="/five-photos/">📷 오늘의 다섯 장</a>
+  <a href="/travel-pin/">📍 여행 핀</a>
+  <a href="/nameless/">📖 이름 없는 것들</a>
+  <a href="/">🍅 전체 도구</a>
+</nav>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+
+</div>
+<div class="toast" id="toast">저장되었습니다</div>
+<canvas id="cardCv" width="1080" height="1350" style="display:none"></canvas>
+
+<script>
+(function(){
+"use strict";
+function $(id){ return document.getElementById(id); }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function dec(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},1900); }
+function pad(n){ return n<10?"0"+n:""+n; }
+
+/* ============================================================
+   기하 — 모양 정의, 리샘플, 정규화, 닮음 점수 (순수 함수)
+   ============================================================ */
+/* GEO-START */
+function poly(fn, n, close){
+  var out=[]; for(var i=0;i<n;i++) out.push(fn(i/(n-(close?0:1))));
+  if(close) out.push(out[0].slice());
+  return out;
+}
+function heartPts(){
+  return poly(function(u){
+    var t = u*Math.PI*2;
+    var x = 16*Math.pow(Math.sin(t),3);
+    var y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+    return [x, -y];
+  }, 96, true);
+}
+function starPts(points, inner){
+  var out=[];
+  for(var i=0;i<points*2;i++){
+    var r = i%2 ? inner : 1;
+    var a = -Math.PI/2 + i*Math.PI/points;
+    out.push([Math.cos(a)*r, Math.sin(a)*r]);
+  }
+  out.push(out[0].slice());
+  return out;
+}
+function circlePts(n){ return poly(function(u){ var t=u*Math.PI*2; return [Math.cos(t),Math.sin(t)]; }, n||64, true); }
+function crescentPts(){
+  var a = poly(function(u){ var t=-Math.PI/2 + u*Math.PI*1.5; return [Math.cos(t),Math.sin(t)]; }, 44, false);
+  var b = poly(function(u){ var t=Math.PI - u*Math.PI*1.5; return [Math.cos(t)*0.55+0.42, Math.sin(t)*0.86]; }, 34, false);
+  return a.concat(b, [a[0].slice()]);
+}
+function spiralPts(){ return poly(function(u){ var t=u*Math.PI*5.4; var r=0.13+u*0.87; return [Math.cos(t)*r, Math.sin(t)*r]; }, 110, false); }
+function wavePts(){ return poly(function(u){ return [u*2-1, Math.sin(u*Math.PI*4)*0.55]; }, 80, false); }
+function leafPts(){
+  var a = poly(function(u){ var t=u*Math.PI; return [Math.cos(t)*0.0 + (u*2-1), Math.sin(t)*0.62]; }, 42, false);
+  var b = poly(function(u){ var t=Math.PI - u*Math.PI; return [-(Math.cos(t)*0.0) + (1-u*2), -Math.sin(t)*0.62]; }, 42, false);
+  return a.concat(b, [a[0].slice()]);
+}
+function lemniscatePts(){
+  return poly(function(u){ var t=u*Math.PI*2; var d=1+Math.sin(t)*Math.sin(t);
+    return [Math.cos(t)/d, Math.sin(t)*Math.cos(t)/d*2]; }, 96, true);
+}
+var RAW = [
+  {id:"heart", n:"하트", c:"도형", p:heartPts()},
+  {id:"star", n:"별", c:"도형", p:starPts(5,0.42)},
+  {id:"circle", n:"동그라미 · ㅇ", c:"글자", p:circlePts(64)},
+  {id:"moon", n:"초승달", c:"자연", p:crescentPts()},
+  {id:"spiral", n:"소용돌이", c:"도형", p:spiralPts()},
+  {id:"wave", n:"물결", c:"자연", p:wavePts()},
+  {id:"leaf", n:"나뭇잎", c:"자연", p:leafPts()},
+  {id:"eight", n:"8자", c:"숫자", p:lemniscatePts()},
+  {id:"cat", n:"고양이", c:"동물", p:[[0.20,0.36],[0.27,0.07],[0.42,0.27],[0.58,0.27],[0.73,0.07],[0.80,0.36],[0.87,0.60],[0.72,0.86],[0.50,0.96],[0.28,0.86],[0.13,0.60],[0.20,0.36]]},
+  {id:"fish", n:"물고기", c:"동물", p:[[0.04,0.50],[0.34,0.24],[0.64,0.21],[0.84,0.40],[0.97,0.26],[0.94,0.50],[0.97,0.74],[0.84,0.60],[0.64,0.79],[0.34,0.76],[0.04,0.50]]},
+  {id:"bird", n:"새", c:"동물", p:[[0.03,0.62],[0.22,0.34],[0.40,0.52],[0.50,0.20],[0.60,0.52],[0.78,0.34],[0.97,0.62],[0.72,0.68],[0.50,0.90],[0.28,0.68],[0.03,0.62]]},
+  {id:"house", n:"집", c:"사물", p:[[0.10,0.95],[0.10,0.45],[0.50,0.07],[0.90,0.45],[0.90,0.95],[0.10,0.95]]},
+  {id:"bolt", n:"번개", c:"자연", p:[[0.56,0.02],[0.24,0.56],[0.45,0.56],[0.30,0.98],[0.76,0.42],[0.53,0.42],[0.73,0.02],[0.56,0.02]]},
+  {id:"crown", n:"왕관", c:"사물", p:[[0.07,0.86],[0.15,0.24],[0.32,0.56],[0.50,0.14],[0.68,0.56],[0.85,0.24],[0.93,0.86],[0.07,0.86]]},
+  {id:"umbrella", n:"우산", c:"사물", p:[[0.05,0.45],[0.20,0.16],[0.50,0.06],[0.80,0.16],[0.95,0.45],[0.80,0.38],[0.65,0.45],[0.53,0.38],[0.53,0.82],[0.44,0.94],[0.31,0.88]]},
+  {id:"cup", n:"컵", c:"사물", p:[[0.72,0.30],[0.88,0.36],[0.88,0.58],[0.72,0.64],[0.70,0.88],[0.26,0.88],[0.20,0.16],[0.76,0.16],[0.72,0.30]]},
+  {id:"g", n:"ㄱ", c:"글자", p:[[0.12,0.14],[0.88,0.14],[0.62,0.90]]},
+  {id:"d", n:"ㄷ", c:"글자", p:[[0.86,0.12],[0.14,0.12],[0.14,0.88],[0.86,0.88]]},
+  {id:"s", n:"ㅅ", c:"글자", p:[[0.14,0.90],[0.50,0.12],[0.86,0.90]]},
+  {id:"m", n:"ㅁ", c:"글자", p:[[0.14,0.14],[0.86,0.14],[0.86,0.86],[0.14,0.86],[0.14,0.14]]},
+  {id:"seven", n:"7", c:"숫자", p:[[0.16,0.12],[0.84,0.12],[0.40,0.92]]},
+  {id:"tri", n:"세모", c:"도형", p:[[0.50,0.08],[0.93,0.90],[0.07,0.90],[0.50,0.08]]}
+];
+/* 모든 모양을 0..1 정규화(가로세로 비율 유지) */
+function fitUnit(pts){
+  var xs=pts.map(function(p){return p[0];}), ys=pts.map(function(p){return p[1];});
+  var x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs);
+  var y0=Math.min.apply(null,ys), y1=Math.max.apply(null,ys);
+  var w=x1-x0||1, h=y1-y0||1, s=Math.max(w,h);
+  return pts.map(function(p){ return [ (p[0]-x0)/s + (s-w)/(2*s), (p[1]-y0)/s + (s-h)/(2*s) ]; });
+}
+var SHAPES = RAW.map(function(s){ return {id:s.id, n:s.n, c:s.c, p:fitUnit(s.p)}; });
+
+function pathLen(pts){
+  var d=0; for(var i=1;i<pts.length;i++){ var dx=pts[i][0]-pts[i-1][0], dy=pts[i][1]-pts[i-1][1]; d+=Math.sqrt(dx*dx+dy*dy); }
+  return d;
+}
+function bbox(pts){
+  var xs=pts.map(function(p){return p[0];}), ys=pts.map(function(p){return p[1];});
+  return { x0:Math.min.apply(null,xs), x1:Math.max.apply(null,xs), y0:Math.min.apply(null,ys), y1:Math.max.apply(null,ys) };
+}
+/* 목표 거리로 그리려면 필요한 실제 크기(미터) */
+function planSize(shape, meters){
+  var per = pathLen(shape.p);       // 정규화 단위 길이
+  if(per <= 0) return null;
+  var scale = meters/per;           // 1 단위 = scale 미터
+  var b = bbox(shape.p);
+  return { w: (b.x1-b.x0)*scale, h: (b.y1-b.y0)*scale, per: per };
+}
+/* 등간격 리샘플 */
+function resample(pts, n){
+  if(pts.length < 2) return [];
+  var total = pathLen(pts), step = total/(n-1), out=[pts[0].slice()], acc=0, i=1, cur=pts[0];
+  while(out.length < n && i < pts.length){
+    var dx=pts[i][0]-cur[0], dy=pts[i][1]-cur[1], seg=Math.sqrt(dx*dx+dy*dy);
+    if(acc+seg >= step && seg > 0){
+      var t=(step-acc)/seg, nx=cur[0]+dx*t, ny=cur[1]+dy*t;
+      out.push([nx,ny]); cur=[nx,ny]; acc=0;
+    } else { acc+=seg; cur=pts[i]; i++; }
+  }
+  while(out.length < n) out.push(pts[pts.length-1].slice());
+  return out;
+}
+/* 위치·크기 정규화(비율 유지, 중심 정렬) */
+function normalize(pts){
+  var b = bbox(pts), w=b.x1-b.x0, h=b.y1-b.y0, s=Math.max(w,h)||1;
+  var cx=(b.x0+b.x1)/2, cy=(b.y0+b.y1)/2;
+  return pts.map(function(p){ return [(p[0]-cx)/s, (p[1]-cy)/s]; });
+}
+/* A의 각 점에서 B까지의 최단거리 분포. 최댓값만 보면 점 하나 때문에 0점이 되므로
+   상위 10% 지점(p90)과 평균을 함께 본다. */
+function dirStats(A,B){
+  var ds=[];
+  for(var i=0;i<A.length;i++){
+    var best=Infinity;
+    for(var j=0;j<B.length;j++){
+      var dx=A[i][0]-B[j][0], dy=A[i][1]-B[j][1], d=dx*dx+dy*dy;
+      if(d<best) best=d;
+    }
+    ds.push(Math.sqrt(best));
+  }
+  ds.sort(function(x,y){ return x-y; });
+  var sum=0; for(var k=0;k<ds.length;k++) sum+=ds[k];
+  return { p90: ds[Math.min(ds.length-1, Math.floor(ds.length*0.9))], mean: sum/ds.length };
+}
+/* 이동 평균 — GPS 잡음(고주파 흔들림)만 걷어낸다. 실제 경로 모양은 남는다. */
+function smooth(pts, k){
+  if(pts.length < k*2+1) return pts.slice();
+  var out=[];
+  for(var i=0;i<pts.length;i++){
+    var x=0,y=0,c=0;
+    for(var j=Math.max(0,i-k); j<=Math.min(pts.length-1,i+k); j++){ x+=pts[j][0]; y+=pts[j][1]; c++; }
+    out.push([x/c, y/c]);
+  }
+  return out;
+}
+/* 순서를 따지는 정렬 비용(DTW). 거리만 보면 같은 칸을 헤맨 낙서도 높은 점수를 받는데,
+   실제로 그림을 그리려면 선을 순서대로 따라가야 하므로 순서 비용을 함께 본다. */
+function dtwMean(A,B){
+  var n=A.length, m=B.length;
+  var prev=new Float64Array(m+1), cur=new Float64Array(m+1);
+  prev.fill(Infinity); prev[0]=0;
+  for(var i=1;i<=n;i++){
+    cur[0]=Infinity;
+    for(var j=1;j<=m;j++){
+      var dx=A[i-1][0]-B[j-1][0], dy=A[i-1][1]-B[j-1][1];
+      var best=prev[j-1];
+      if(prev[j]<best) best=prev[j];
+      if(cur[j-1]<best) best=cur[j-1];
+      cur[j]=Math.sqrt(dx*dx+dy*dy)+best;
+    }
+    var t=prev; prev=cur; cur=t;
+  }
+  return prev[m]/(n+m);
+}
+/* 닫힌 모양은 어디서 출발했는지 알 수 없으므로 시작점을 돌려 가며, 방향도 뒤집어 가며 최선을 찾는다. */
+function bestDtw(A,B){
+  var closed = Math.abs(B[0][0]-B[B.length-1][0]) + Math.abs(B[0][1]-B[B.length-1][1]) < 0.08;
+  var shifts = closed ? 18 : 1, best = Infinity;
+  for(var s=0;s<shifts;s++){
+    var off = Math.round(s*B.length/shifts);
+    var Bs = B.slice(off).concat(B.slice(0,off));
+    var c1 = dtwMean(A,Bs); if(c1<best) best=c1;
+    var c2 = dtwMean(A,Bs.slice().reverse()); if(c2<best) best=c2;
+  }
+  return best;
+}
+/* 닮음 점수 0~100.
+   1) 궤적의 GPS 잡음을 평활 → 크기·위치 정규화
+   2) 양방향 어긋남(상위 10% + 평균) + 순서 정렬 비용(DTW)
+   3) 길이 벌점 — 같은 자리를 헤맨 낙서는 모양보다 훨씬 길다. */
+function similarity(trace, shape){
+  if(!trace || trace.length < 8) return { score:0, dist:1 };
+  var N=110;
+  var A = normalize(resample(smooth(trace,2), N));
+  var B = normalize(resample(shape, N));
+  var a = dirStats(A,B), b = dirStats(B,A);
+  var d = 0.6*Math.max(a.p90,b.p90) + 0.4*Math.max(a.mean,b.mean);
+  var w = bestDtw(A,B);
+  var mix = 0.45*d + 0.55*w;
+  var ratio = pathLen(B) > 0 ? pathLen(A)/pathLen(B) : 1;
+  var pen = ratio > 1.6 ? Math.max(0.15, 1 - (ratio-1.6)*0.55) : 1;
+  var score = Math.round(Math.max(0, Math.min(100, (1 - mix/0.30) * 100 * pen)));
+  return { score:score, dist:d, dtw:w, ratio:ratio };
+}
+function scoreWord(s){
+  if(s>=80) return "누가 봐도 그 모양입니다.";
+  if(s>=60) return "말해 주면 보입니다. 충분히 잘 그렸습니다.";
+  if(s>=40) return "분위기는 남았습니다. 길이 허락하지 않았을 뿐입니다.";
+  return "오늘은 그냥 산책이었던 걸로. 그것도 좋습니다.";
+}
+/* 위경도 → 시작점 기준 상대 미터 (등거리 근사) */
+function toLocal(track){
+  if(!track.length) return [];
+  var lat0=track[0].lat, lng0=track[0].lng, k=Math.cos(lat0*Math.PI/180);
+  return track.map(function(p){ return [ (p.lng-lng0)*111320*k, -(p.lat-lat0)*110540 ]; });
+}
+function haversine(a,b){
+  var R=6371000, p1=a.lat*Math.PI/180, p2=b.lat*Math.PI/180;
+  var dp=(b.lat-a.lat)*Math.PI/180, dl=(b.lng-a.lng)*Math.PI/180;
+  var x=Math.sin(dp/2)*Math.sin(dp/2)+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);
+  return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+/* GEO-END */
+
+if(typeof module !== "undefined" && module.exports){
+  module.exports = { SHAPES:SHAPES, similarity:similarity, planSize:planSize, resample:resample,
+                     normalize:normalize, pathLen:pathLen, toLocal:toLocal, haversine:haversine };
+}
+
+/* ============================================================
+   상태
+   ============================================================ */
+var shape = SHAPES[8];        // 기본: 고양이
+var targetM = 3000;
+var track = [];               // {lat,lng,t}
+var localPts = [];            // 상대 미터
+var watchId = null, startedAt = 0, elapsed = 0, tickId = null, finished = null;
+var fingerMode = false, shared = null;
+
+/* ---- 모양 고르기 ---- */
+function shapePreview(cv, pts, color){
+  var ctx = cv.getContext("2d"), W=cv.width, H=cv.height, m=W*0.14;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle = color || "#a3e635"; ctx.lineWidth = W*0.045;
+  ctx.lineJoin="round"; ctx.lineCap="round";
+  ctx.beginPath();
+  pts.forEach(function(p,i){
+    var x = m + p[0]*(W-2*m), y = m + p[1]*(H-2*m);
+    if(i) ctx.lineTo(x,y); else ctx.moveTo(x,y);
+  });
+  ctx.stroke();
+}
+var grid = $("shapeGrid");
+SHAPES.forEach(function(s){
+  var b = document.createElement("button");
+  b.type="button"; b.className="sh"; b.dataset.id=s.id;
+  var cv = document.createElement("canvas"); cv.width=120; cv.height=120;
+  b.appendChild(cv);
+  var t = document.createElement("span"); t.textContent = s.n; b.appendChild(t);
+  b.addEventListener("click",function(){ selectShape(s.id); });
+  grid.appendChild(b);
+  shapePreview(cv, s.p, "#9ca3af");
+});
+function selectShape(id){
+  var s = SHAPES.filter(function(x){ return x.id===id; })[0];
+  if(!s) return;
+  shape = s;
+  Array.prototype.forEach.call(grid.children,function(b){
+    var on = b.dataset.id===id;
+    b.classList.toggle("on", on);
+    shapePreview(b.firstChild, SHAPES.filter(function(x){return x.id===b.dataset.id;})[0].p, on ? "#a3e635" : "#9ca3af");
+  });
+  paintPlan(); drawLive();
+}
+function useCustom(pts){
+  shape = { id:"custom", n:"직접 그린 모양", c:"직접", p:fitUnit(pts) };
+  Array.prototype.forEach.call(grid.children,function(b){ b.classList.remove("on"); });
+  paintPlan(); drawLive();
+  toast("직접 그린 모양으로 설정했습니다");
+}
+
+/* ---- 직접 그리기 ---- */
+(function(){
+  var cv = $("drawCv"), ctx = cv.getContext("2d"), pts=[], drawing=false;
+  function clear(){ ctx.fillStyle="#050505"; ctx.fillRect(0,0,cv.width,cv.height); pts=[]; }
+  clear();
+  function pos(e){
+    var r = cv.getBoundingClientRect(), t = e.changedTouches ? e.changedTouches[0] : e;
+    return [ (t.clientX-r.left)/r.width*cv.width, (t.clientY-r.top)/r.height*cv.height ];
+  }
+  function down(e){ e.preventDefault(); drawing=true; pts=[]; clear(); var p=pos(e); pts.push(p);
+    ctx.strokeStyle="#a3e635"; ctx.lineWidth=10; ctx.lineJoin="round"; ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(p[0],p[1]); }
+  function move(e){ if(!drawing) return; e.preventDefault(); var p=pos(e);
+    var last = pts[pts.length-1];
+    if(Math.abs(p[0]-last[0])+Math.abs(p[1]-last[1]) < 6) return;
+    pts.push(p); ctx.lineTo(p[0],p[1]); ctx.stroke(); }
+  function up(){ drawing=false; }
+  cv.addEventListener("mousedown",down); cv.addEventListener("mousemove",move);
+  cv.addEventListener("mouseup",up); cv.addEventListener("mouseleave",up);
+  cv.addEventListener("touchstart",down,{passive:false}); cv.addEventListener("touchmove",move,{passive:false}); cv.addEventListener("touchend",up);
+  $("drawClear").addEventListener("click",clear);
+  $("drawOwnBtn").addEventListener("click",function(){
+    var box=$("drawOwnBox"); box.style.display = box.style.display==="none" ? "" : "none";
+  });
+  $("drawUse").addEventListener("click",function(){
+    if(pts.length < 10){ toast("조금 더 길게 그려 주세요"); return; }
+    useCustom(pts.map(function(p){ return [p[0]/cv.width, p[1]/cv.height]; }));
+    $("drawOwnBox").style.display="none";
+  });
+})();
+
+/* ---- 계획 ---- */
+Array.prototype.forEach.call($("distPlan").children,function(b){
+  b.addEventListener("click",function(){
+    Array.prototype.forEach.call($("distPlan").children,function(x){x.classList.remove("on");});
+    b.classList.add("on"); targetM = +b.dataset.d; paintPlan();
+  });
+});
+function paintPlan(){
+  var p = planSize(shape, targetM);
+  if(!p){ $("planOut").textContent = "모양을 먼저 골라 주세요."; return; }
+  var w = Math.round(p.w), h = Math.round(p.h);
+  var blocks = (w/100).toFixed(1);
+  $("planOut").innerHTML =
+    "<b>" + shape.n + "</b>를 " + (targetM/1000) + "km로 그리려면<br>" +
+    "가로 <b>" + w.toLocaleString() + "m</b> × 세로 <b>" + h.toLocaleString() + "m</b> 범위가 필요합니다.<br>" +
+    "<span style='color:#9ca3af;font-size:13px'>대략 도시 블록 " + blocks + "칸 정도의 폭입니다. 출발점을 그 범위의 " +
+    "왼쪽 위 어귀에 두면 편합니다. 걸을 수 있는 길인지는 직접 확인해 주세요.</span>";
+}
+
+/* ---- 걷기 ---- */
+function fmtTime(ms){
+  var s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60);
+  return h ? h+":"+pad(m%60)+":"+pad(s%60) : pad(m)+":"+pad(s%60);
+}
+function totalDist(){
+  if(track.length > 1){
+    var d=0; for(var i=1;i<track.length;i++) d += haversine(track[i-1], track[i]);
+    return d;
+  }
+  return pathLen(localPts);   // 손가락 시험 모드: 가상 미터 길이
+}
+function drawLive(){
+  var cv=$("liveCv"), ctx=cv.getContext("2d"), W=cv.width, H=cv.height, m=W*0.1;
+  ctx.fillStyle="#050505"; ctx.fillRect(0,0,W,H);
+  // 목표 모양(흐리게)
+  ctx.strokeStyle="rgba(163,230,53,.22)"; ctx.lineWidth=W*0.02; ctx.lineJoin="round"; ctx.lineCap="round";
+  ctx.beginPath();
+  shape.p.forEach(function(p,i){ var x=m+p[0]*(W-2*m), y=m+p[1]*(H-2*m); i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+  ctx.stroke();
+  // 궤적
+  var pts = localPts;
+  if(pts.length > 1){
+    var b = bbox(pts), w=b.x1-b.x0, h=b.y1-b.y0, s=Math.max(w,h)||1;
+    ctx.strokeStyle="#ffffff"; ctx.lineWidth=W*0.016; ctx.beginPath();
+    pts.forEach(function(p,i){
+      var x = m + ((p[0]-b.x0) + (s-w)/2)/s*(W-2*m);
+      var y = m + ((p[1]-b.y0) + (s-h)/2)/s*(H-2*m);
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    });
+    ctx.stroke();
+    // 현재 위치
+    var last = pts[pts.length-1];
+    var lx = m + ((last[0]-b.x0)+(s-w)/2)/s*(W-2*m), ly = m + ((last[1]-b.y0)+(s-h)/2)/s*(H-2*m);
+    ctx.fillStyle="#a3e635"; ctx.beginPath(); ctx.arc(lx,ly,W*0.016,0,Math.PI*2); ctx.fill();
+  }
+}
+function tick(){
+  $("lDist").textContent = (totalDist()/1000).toFixed(2);
+  $("lTime").textContent = fmtTime(elapsed + (startedAt ? Date.now()-startedAt : 0));
+  $("lPts").textContent = track.length;
+  drawLive();
+}
+function addPoint(lat,lng,acc){
+  if(acc && acc > 45) return;          // 정확도 낮은 점 버림
+  var p = {lat:lat, lng:lng, t:Date.now()};
+  if(track.length){
+    var d = haversine(track[track.length-1], p);
+    if(d < 4) return;                  // 제자리 잡음 제거
+    if(d > 300) return;                // 순간이동 튐 제거
+  }
+  track.push(p);
+  localPts = toLocal(track);
+  tick();
+}
+$("startBtn").addEventListener("click",function(){
+  if(finished){   // 완료 후 다시 시작 = 새 그림
+    track=[]; localPts=[]; elapsed=0; finished=null; shared=null;
+    $("resultStage").classList.remove("on"); tick();
+  }
+  if(fingerMode){ startFinger(); return; }
+  if(!navigator.geolocation){ $("gpsState").textContent = "이 브라우저는 위치 기능을 지원하지 않습니다. ‘손가락으로 시험해 보기’를 눌러 보세요."; return; }
+  $("gpsState").textContent = "위치 권한을 확인하는 중…";
+  watchId = navigator.geolocation.watchPosition(function(pos){
+    $("gpsState").textContent = "기록 중 · 정확도 약 " + Math.round(pos.coords.accuracy) + "m";
+    addPoint(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy);
+  }, function(err){
+    $("gpsState").textContent = "위치를 받지 못했습니다 (" + (err.message||"권한 거부") + "). 권한을 허용하거나 손가락 시험 모드를 써 주세요.";
+  }, { enableHighAccuracy:true, maximumAge:2000, timeout:15000 });
+  startedAt = Date.now();
+  tickId = setInterval(tick, 1000);
+  $("walkState").textContent = "기록 중";
+  $("startBtn").style.display="none"; $("pauseBtn").style.display=""; $("stopBtn").style.display="";
+});
+$("pauseBtn").addEventListener("click",function(){
+  if(watchId !== null){ navigator.geolocation.clearWatch(watchId); watchId=null; }
+  if(tickId){ clearInterval(tickId); tickId=null; }
+  elapsed += startedAt ? Date.now()-startedAt : 0; startedAt = 0;
+  $("walkState").textContent = "일시정지";
+  $("startBtn").style.display=""; $("startBtn").textContent="이어서 걷기 🚶"; $("pauseBtn").style.display="none";
+});
+$("stopBtn").addEventListener("click",function(){ finish(); });
+function finish(){
+  if(watchId !== null){ navigator.geolocation.clearWatch(watchId); watchId=null; }
+  if(tickId){ clearInterval(tickId); tickId=null; }
+  elapsed += startedAt ? Date.now()-startedAt : 0; startedAt = 0;
+  if(localPts.length < 8){ toast("기록된 점이 너무 적습니다"); return; }
+  var sim = similarity(localPts, shape.p);
+  finished = { pts: localPts.slice(), score: sim.score, dist: totalDist(), ms: elapsed, shape: shape.n, id: shape.id };
+  paintResult(finished);
+  $("resultStage").classList.add("on");
+  $("resultStage").scrollIntoView({behavior:"smooth"});
+  $("walkState").textContent = "완료";
+  $("startBtn").style.display=""; $("startBtn").textContent="처음부터 다시 🚶";
+  $("pauseBtn").style.display="none"; $("stopBtn").style.display="none";
+}
+/* 손가락 시험 모드 — GPS 없이 그리기 흐름 확인용 */
+function startFinger(){
+  toast("캔버스 위를 손가락(또는 마우스)으로 끌어 보세요");
+  $("walkState").textContent = "손가락 시험 모드";
+  $("startBtn").style.display="none"; $("stopBtn").style.display="";
+}
+$("fingerBtn").addEventListener("click",function(){
+  fingerMode = !fingerMode;
+  $("fingerBtn").textContent = fingerMode ? "시험 모드 끄기" : "GPS 없이 손가락으로 시험해 보기";
+  $("gpsState").textContent = fingerMode ? "시험 모드입니다. 실제 위치는 전혀 사용하지 않습니다." : "";
+  if(fingerMode){ track=[]; localPts=[]; elapsed=0; drawLive(); }
+});
+(function(){
+  var cv=$("liveCv"), drawing=false;
+  function pos(e){
+    var r=cv.getBoundingClientRect(), t=e.changedTouches?e.changedTouches[0]:e;
+    return [ (t.clientX-r.left)/r.width, (t.clientY-r.top)/r.height ];
+  }
+  function push(e){
+    if(!fingerMode || !drawing) return;
+    e.preventDefault();
+    var p = pos(e);
+    localPts.push([p[0]*400, p[1]*400]);   // 가상 미터
+    elapsed += 900;
+    tick();
+  }
+  cv.addEventListener("mousedown",function(e){ if(!fingerMode) return; drawing=true; push(e); });
+  cv.addEventListener("mousemove",push);
+  cv.addEventListener("mouseup",function(){ drawing=false; });
+  cv.addEventListener("touchstart",function(e){ if(!fingerMode) return; drawing=true; push(e); },{passive:false});
+  cv.addEventListener("touchmove",push,{passive:false});
+  cv.addEventListener("touchend",function(){ drawing=false; });
+})();
+
+/* ---- 결과 ---- */
+function drawArt(cv, pts, opts){
+  var ctx=cv.getContext("2d"), W=cv.width, H=cv.height, m=W*0.12;
+  ctx.fillStyle = opts && opts.bg || "#080808"; ctx.fillRect(0,0,W,H);
+  if(!pts.length) return;
+  var b = bbox(pts), w=b.x1-b.x0, h=b.y1-b.y0, s=Math.max(w,h)||1;
+  function X(p){ return m + ((p[0]-b.x0)+(s-w)/2)/s*(W-2*m); }
+  function Y(p){ return m + ((p[1]-b.y0)+(s-h)/2)/s*(H-2*m); }
+  // 은은한 격자
+  ctx.strokeStyle="rgba(255,255,255,.05)"; ctx.lineWidth=1;
+  for(var i=1;i<6;i++){
+    ctx.beginPath(); ctx.moveTo(W*i/6,0); ctx.lineTo(W*i/6,H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,H*i/6); ctx.lineTo(W,H*i/6); ctx.stroke();
+  }
+  var g = ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,"#a3e635"); g.addColorStop(1,"#22d3ee");
+  ctx.strokeStyle=g; ctx.lineWidth=W*0.012; ctx.lineJoin="round"; ctx.lineCap="round";
+  ctx.beginPath();
+  pts.forEach(function(p,i){ i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p)); });
+  ctx.stroke();
+  ctx.fillStyle="#ffffff";
+  ctx.beginPath(); ctx.arc(X(pts[0]),Y(pts[0]),W*0.012,0,Math.PI*2); ctx.fill();
+}
+function paintResult(f){
+  drawArt($("artCv"), f.pts, {});
+  $("scoreNum").innerHTML = f.score + "<small>/100 닮음</small>";
+  $("scoreWord").textContent = scoreWord(f.score);
+  $("rDist").textContent = (f.dist/1000).toFixed(2);
+  $("rTime").textContent = fmtTime(f.ms);
+  $("rShape").textContent = f.shape;
+  try{ history.replaceState(null,"",location.pathname+"?r="+encodeURIComponent(enc(packState(f)))); }catch(e){}
+}
+/* 공유 상태: 상대 좌표를 정규화·양자화(위경도 없음) */
+function packState(f){
+  var pts = resample(f.pts, Math.min(90, Math.max(20, f.pts.length)));
+  var b = bbox(pts), s = Math.max(b.x1-b.x0, b.y1-b.y0) || 1;
+  return {
+    i: f.id, n: f.shape, s: f.score,
+    d: Math.round(f.dist), t: Math.round(f.ms/1000),
+    p: pts.map(function(p){ return [ Math.round((p[0]-b.x0)/s*1000), Math.round((p[1]-b.y0)/s*1000) ]; })
+  };
+}
+function unpackState(st){
+  if(!st || !st.p || !st.p.length) return null;
+  return { pts: st.p.map(function(p){ return [p[0], p[1]]; }), score: st.s|0, dist: st.d|0,
+           ms: (st.t|0)*1000, shape: String(st.n||"모양").slice(0,20), id: String(st.i||"") };
+}
+$("remixBtn").addEventListener("click",function(){
+  track=[]; localPts=[]; elapsed=0; finished=null; shared=null;
+  $("resultStage").classList.remove("on");
+  tick();
+  $("walkCard").scrollIntoView({behavior:"smooth"});
+});
+/* GPX — 절대 좌표. 사용자가 명시적으로 누를 때만. */
+$("gpxBtn").addEventListener("click",function(){
+  if(!track.length){ toast("이번 세션에 기록된 실제 좌표가 없습니다"); return; }
+  var x = '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="tomatoeggcat.com/walk-shape" xmlns="http://www.topografix.com/GPX/1/1">\n<trk><name>'
+    + shape.n + '</name><trkseg>\n'
+    + track.map(function(p){ return '<trkpt lat="'+p.lat.toFixed(6)+'" lon="'+p.lng.toFixed(6)+'"><time>'+new Date(p.t).toISOString()+'</time></trkpt>'; }).join("\n")
+    + '\n</trkseg></trk>\n</gpx>\n';
+  var a=document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([x],{type:"application/gpx+xml"}));
+  a.download = "walk-shape-" + shape.id + ".gpx";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
+  toast("GPX를 내려받았습니다 (실제 좌표 포함)");
+});
+
+/* ---- 공유 ---- */
+function cur(){ return shared || finished; }
+function resultUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(packState(cur()))); }
+function copy(text,msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});
+  } else fallbackCopy(text,msg);
+}
+function fallbackCopy(text,msg){
+  var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+function shareText(){
+  var f=cur();
+  return "🐾 걸어서 "+f.shape+"을(를) 그렸습니다 — 닮음 "+f.score+"/100\n"
+    + (f.dist/1000).toFixed(2)+"km · "+fmtTime(f.ms)+"\n"+resultUrl();
+}
+$("copyLinkBtn").addEventListener("click",function(){ if(cur()) copy(resultUrl(),"링크가 복사되었습니다"); });
+$("copyTextBtn").addEventListener("click",function(){ if(cur()) copy(shareText(),"텍스트가 복사되었습니다"); });
+$("xBtn").addEventListener("click",function(){
+  var f=cur(); if(!f) return;
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("걸어서 "+f.shape+"을(를) 그렸습니다 🐾 닮음 "+f.score+"/100, "+(f.dist/1000).toFixed(2)+"km")+"&url="+encodeURIComponent(resultUrl()),"_blank");
+});
+if(navigator.share){
+  $("shareBtn").style.display="";
+  $("shareBtn").addEventListener("click",function(){
+    if(!cur()) return;
+    navigator.share({ title:"걸음의 모양", text:shareText(), url:resultUrl() }).catch(function(){});
+  });
+}
+$("saveBtn").addEventListener("click",function(){
+  var f = cur(); if(!f) return;
+  var cv=$("cardCv"), ctx=cv.getContext("2d"), W=1080, H=1350;
+  var F='-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  ctx.fillStyle="#080808"; ctx.fillRect(0,0,W,H);
+  // 궤적 아트(정사각 영역)
+  var tmp=document.createElement("canvas"); tmp.width=900; tmp.height=900;
+  drawArt(tmp, f.pts, {});
+  ctx.drawImage(tmp, 90, 210, 900, 900);
+  ctx.strokeStyle="#1f2937"; ctx.lineWidth=2; ctx.strokeRect(90,210,900,900);
+  ctx.textAlign="left"; ctx.textBaseline="alphabetic";
+  ctx.fillStyle="#a3e635"; ctx.font="700 34px "+F;
+  ctx.fillText("걸음의 모양", 90, 130);
+  ctx.fillStyle="#9ca3af"; ctx.font="28px "+F;
+  ctx.fillText("걸어서 그린 " + f.shape, 90, 175);
+  ctx.fillStyle="#ffffff"; ctx.font="900 76px "+F;
+  ctx.fillText(f.score + "", 90, 1215);
+  var wsc = ctx.measureText(f.score+"").width;
+  ctx.fillStyle="#9ca3af"; ctx.font="30px "+F;
+  ctx.fillText("/100 닮음", 100+wsc, 1215);
+  ctx.textAlign="right"; ctx.fillStyle="#e5e7eb"; ctx.font="700 34px "+F;
+  ctx.fillText((f.dist/1000).toFixed(2)+"km · "+fmtTime(f.ms), W-90, 1215);
+  ctx.fillStyle="#4b5563"; ctx.font="24px "+F;
+  ctx.fillText("tomatoeggcat.com/walk-shape", W-90, 1280);
+  ctx.textAlign="left"; ctx.fillStyle="#4b5563"; ctx.font="22px "+F;
+  ctx.fillText("위경도 없이 상대 좌표만 그렸습니다", 90, 1280);
+  var a=document.createElement("a");
+  a.download="walk-shape-"+(f.id||"art")+"-"+f.score+".png";
+  a.href=cv.toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("이미지를 저장했습니다");
+});
+
+/* ---- 부팅 ---- */
+selectShape("cat");
+tick();
+var params = new URLSearchParams(location.search);
+if(params.has("r")){
+  var st = unpackState(dec(params.get("r")));
+  if(st){
+    shared = st;
+    paintResult(st);
+    $("resultStage").classList.add("on");
+    $("inbound").classList.add("show");
+    $("inboundBtn").addEventListener("click",function(){
+      $("inbound").classList.remove("show"); shared=null;
+      $("resultStage").classList.remove("on");
+      $("shapeCard").scrollIntoView({behavior:"smooth"});
+    });
+  }
+}
+})();
+</script>
+</body>
+</html>
