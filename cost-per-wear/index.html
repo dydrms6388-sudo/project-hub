@@ -987,10 +987,15 @@ function drawCard(){
 
   ctx.fillStyle="rgba(255,255,255,.08)"; roundRect(ctx,90,500,900,150,24); ctx.fill();
   ctx.fillStyle="rgba(255,255,255,.6)"; ctx.font="700 28px -apple-system,sans-serif";
-  ctx.fillText(s.c===null ? "착용 기록이 쌓이면 편중도가 나옵니다"
-    : "자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 차지하는 착용 비중", W/2, 560);
-  ctx.fillStyle="#a5b4fc"; ctx.font="900 70px -apple-system,sans-serif";
-  ctx.fillText(s.c===null?"—":s.c+"%", W/2, 630);
+  if(s.c===null || s.c===undefined){
+    /* 숫자를 만들 수 없을 땐 지어내지 않고 그렇다고 적는다 */
+    ctx.fillStyle="rgba(255,255,255,.55)"; ctx.font="700 32px -apple-system,'Apple SD Gothic Neo',sans-serif";
+    ctx.fillText("착용을 기록하면 편중도가 나옵니다", W/2, 585);
+  } else {
+    ctx.fillText("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 차지하는 착용 비중", W/2, 560);
+    ctx.fillStyle="#a5b4fc"; ctx.font="900 70px -apple-system,sans-serif";
+    ctx.fillText(s.c+"%", W/2, 630);
+  }
   var sampleBase=s.own||s.n;
   if(sampleBase && sampleBase < 10){
     ctx.fillStyle="rgba(255,255,255,.5)"; ctx.font="600 22px -apple-system,sans-serif";
@@ -1098,7 +1103,10 @@ $("wipeBtn").addEventListener("click",function(){
 /* 공유 페이로드에 실제 비율(tp)이 없으면(옛 링크) 개수/항목수로 유도한다.
    없다고 0%를 그대로 찍으면 "3개인데 0%" 같은 모순이 화면에 남는다. */
 function concLabel(s){
-  var tn = s.tn||0, n = s.n||0;
+  /* 착용 기록이 없으면 개인 화면처럼 구체적 숫자를 만들지 않는다.
+     "자주 입는 1개(전체의 100%)"인데 값은 "—"인 모순 카드를 막는다. */
+  if(s.c===null || s.c===undefined) return "착용 기록이 쌓이면 계산됩니다";
+  var tn = s.tn||0, n = s.own||s.n||0;
   var tp = s.tp || (n && tn ? Math.round(tn/n*100) : 0);
   if(!tn || !n) return "자주 입는 항목이 차지하는 비중";
   return "자주 입는 "+tn+"개(전체의 "+tp+"%) 비중";

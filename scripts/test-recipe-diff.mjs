@@ -249,6 +249,72 @@ ok("1/2 == 0.5 → 변경 없음", numEq.count === 0, JSON.stringify(numEq.ing.m
 const realUnitChange = diffRecipes({ i: [{ n: "설탕", a: "1", u: "큰술" }], s: [] }, { i: [{ n: "설탕", a: "2", u: "T" }], s: [] });
 ok("진짜 양 변경(1→2)은 여전히 잡힘", realUnitChange.count === 1, JSON.stringify(realUnitChange.ing.map(x => x.text)));
 
+/* ── 동의어표의 경계선 (루프 3~4에서 두 번 어긋난 지점이라 못박아 둔다) ──
+   표기만 다른 것 = 같음 / 부위·입자도·품종이 다른 것 = 다름.
+   너무 많이 묶으면 "재료를 바꿨는데 달라진 게 없다"며 저장이 막히는 사고가 난다. */
+console.log("\n[3-g] 동의어표 경계 — 같은 것만 같다고 해야 한다");
+[
+  ["다진마늘", "마늘 다진 것", true],
+  ["고추가루", "고춧가루", true],
+  ["물", "생수", true],
+  ["계란", "달걀", true],
+  ["대파", "파", true],
+  ["양파", "깐양파", true],
+].forEach(([a, b, same]) => {
+  const d = diffRecipes({ i: [{ n: a, a: "1", u: "큰술" }], s: [] }, { i: [{ n: b, a: "1", u: "큰술" }], s: [] });
+  ok(`같은 것: ${a} == ${b}`, (d.count === 0) === same, JSON.stringify(d.ing.map(x => x.text)));
+});
+[
+  ["목살", "삼겹살"],
+  ["진간장", "국간장"],
+  ["백설탕", "황설탕"],
+  ["설탕", "설탕가루"],
+  ["대파", "대파흰부분"],
+  ["대파", "쪽파"],
+  ["깻잎", "깻잎순"],
+  ["멸치육수", "다시마육수"],
+].forEach(([a, b]) => {
+  const d = diffRecipes({ i: [{ n: a, a: "1", u: "큰술" }], s: [] }, { i: [{ n: b, a: "1", u: "큰술" }], s: [] });
+  ok(`다른 재료: ${a} != ${b}`, d.count > 0, "변경 0건 — 동의어표가 과하게 묶고 있다");
+});
+
+/* ── 단위 환산 동치 (1kg == 1000g) ── */
+console.log("\n[3-h] 단위 환산");
+[
+  [["1", "kg"], ["1000", "g"], true],
+  [["1", "L"], ["1000", "ml"], true],
+  [["1", "L"], ["500", "ml"], false],
+  [["1", "큰술"], ["3", "작은술"], true],
+].forEach(([a, b, same]) => {
+  const d = diffRecipes({ i: [{ n: "밀가루", a: a[0], u: a[1] }], s: [] }, { i: [{ n: "밀가루", a: b[0], u: b[1] }], s: [] });
+  ok(`${a[0]}${a[1]} ${same ? "==" : "!="} ${b[0]}${b[1]}`, (d.count === 0) === same, JSON.stringify(d.ing.map(x => x.text)));
+});
+
+/* ── 쉼표 목록에서 재료가 사라지면 안 된다 (루프 4: 조용한 데이터 손실) ── */
+console.log("\n[3-i] 쉼표 목록 — 정량과 어림이 섞여도 하나도 잃지 않는다");
+[
+  ["소금 약간, 대파 1대, 후추 약간", 3],
+  ["다진마늘 1T, 다진생강 약간, 대파 1대", 3],
+  ["마늘 2쪽, 생강 1쪽", 2],
+].forEach(([line, want]) => {
+  const r = parseFree("재료\n" + line);
+  ok(`"${line}" → 재료 ${want}개`, r.ings.length === want && r.steps.length === 0,
+     `실제 재료 ${r.ings.length}개 / 단계 ${r.steps.length}개: ` + JSON.stringify(r.ings.map(x => x.n)));
+});
+ok("설명 문장은 쪼개지 않는다", parseFree("냄비에 넣고, 센불에서 끓인다").ings.length === 0);
+
+/* ── 앱이 만든 표기를 다시 넣어도 읽혀야 한다 ── */
+console.log("\n[3-j] 배율 표기 되먹임 · 유니코드 분수");
+[
+  ["설탕 1과 1/2컵", "설탕", "1.5", "컵"],
+  ["설탕 1½컵", "설탕", "1.5", "컵"],
+  ["멸치육수 1국자", "멸치육수", "1", "국자"],
+  ["대파 1줄기", "대파", "1", "줄기"],
+].forEach(([input, n, a, u]) => {
+  const r = parseIngredient(input);
+  ok(`${input} → ${n} ${a}${u}`, !!r && r.n === n && r.a === a && r.u === u, JSON.stringify(r));
+});
+
 /* 인분 배율은 엔진 구간 밖(뷰 코드)이라 파일에서 따로 추출한다 */
 console.log("\n[3-f] 인분 배율 — 부엌에서 쓸 수 있는 값이어야 한다");
 const scaleSrc = html.match(/var COMMON_FRACTIONS[\s\S]*?\n\}\nfunction scaleAmount[\s\S]*?\n\}/);
