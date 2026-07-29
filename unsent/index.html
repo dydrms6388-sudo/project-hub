@@ -42,16 +42,16 @@
 body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:680px;margin:0 auto;padding:24px 18px 64px}
 a{color:var(--acc)}
-.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
-.nav a{color:#7aa2ff;text-decoration:none}
+.nav{font-size:13px;color:#8b93a1;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none;display:inline-block;padding:12px 6px;margin-left:-6px}
 h1{font-size:25px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#a5b4fc,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:#9ca3af;margin:0 0 18px;font-size:15px}
 .card{border:1px solid #232326;background:#141417;border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 10px}
 .lab b{color:var(--acc2)}
-.hint{font-size:12px;color:#6b7280;margin:8px 0 0}
+.hint{font-size:12px;color:#8b93a1;margin:8px 0 0}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{width:auto;flex:none;padding:9px 14px;font-size:14px;font-weight:600;background:#0f0f12;color:#c9c9c9;border:1px solid #313136;border-radius:999px;cursor:pointer;min-height:42px;transition:.12s}
+.chip{width:auto;flex:none;padding:9px 14px;font-size:14px;font-weight:600;background:#0f0f12;color:#c9c9c9;border:1px solid #313136;border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
 .chip.on{background:rgba(165,180,252,.14);border-color:var(--acc);color:var(--acc2)}
 input[type=text],input[type=password],textarea,select{width:100%;padding:12px 14px;font-size:15px;background:#0f0f12;color:#ededed;border:1px solid #313136;border-radius:12px;min-height:46px;font-family:inherit}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc)}
@@ -59,7 +59,7 @@ button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:v
 button.ghost{background:#181826;color:var(--acc2);border:1px solid #33334a;font-weight:700}
 button.quiet{background:transparent;color:#8b8b93;border:1px solid #2a2a30;font-weight:700}
 button.danger{background:#2a1414;color:#fca5a5;border:1px solid #4a2222;font-weight:700}
-button.mini{width:auto;padding:8px 13px;font-size:13px;min-height:38px;border-radius:9px}
+button.mini{width:auto;padding:8px 13px;font-size:13px;min-height:44px;border-radius:9px}
 button:disabled{opacity:.4;cursor:not-allowed}
 .acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .acts button{flex:1;min-width:130px}
@@ -71,7 +71,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .step.on{display:block}
 /* 작성 화면 — 가장 조용하게 */
 .compose{background:var(--paper);border:1px solid #1e1e24;border-radius:20px;padding:28px 22px}
-.compose .to{font-size:13px;color:#6b7280;margin:0 0 20px;letter-spacing:.02em}
+.compose .to{font-size:13px;color:#8b93a1;margin:0 0 20px;letter-spacing:.02em}
 .compose textarea{background:transparent;border:0;min-height:280px;padding:0;font-size:16.5px;line-height:1.85;resize:none}
 .compose textarea:focus{outline:none}
 .compose textarea::placeholder{color:#3f3f46}
@@ -82,13 +82,13 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .bub{max-width:82%;padding:12px 15px;border-radius:16px;font-size:15px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
 .bub.me{align-self:flex-end;background:#26263a;color:#e7e7f0;border-bottom-right-radius:5px}
 .bub.you{align-self:flex-start;background:#1a1a1f;color:#d4d4d8;border:1px solid #26262c;border-bottom-left-radius:5px}
-.typing{align-self:flex-start;font-size:13px;color:#6b7280;padding:6px 4px}
+.typing{align-self:flex-start;font-size:13px;color:#8b93a1;padding:6px 4px}
 .dots i{display:inline-block;width:5px;height:5px;margin-right:3px;border-radius:50%;background:#52525b;animation:bl 1.2s infinite}
 .dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
 @keyframes bl{0%,60%,100%{opacity:.25}30%{opacity:1}}
 .reply{margin-top:16px}
 .reply textarea{min-height:80px;resize:vertical}
-.turnleft{font-size:12px;color:#6b7280;text-align:right;margin:8px 0 0}
+.turnleft{font-size:12px;color:#8b93a1;text-align:right;margin:8px 0 0}
 /* 종료 */
 .ended{text-align:center;padding:34px 10px}
 .ended h2{font-size:21px;font-weight:800;margin:0 0 8px}
@@ -106,14 +106,14 @@ button:disabled{opacity:.4;cursor:not-allowed}
 /* 보관함 */
 .arc{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border:1px solid #232326;background:#131316;border-radius:12px;margin-bottom:9px}
 .arc .m{font-size:13.5px;color:#c9c9c9}
-.arc .m s{text-decoration:none;display:block;font-size:12px;color:#6b7280;margin-top:2px}
+.arc .m s{text-decoration:none;display:block;font-size:12px;color:#8b93a1;margin-top:2px}
 .arc button{width:auto;min-height:36px;padding:7px 11px;font-size:12.5px}
-.empty{text-align:center;color:#6b7280;font-size:14px;padding:26px 10px;border:1px dashed #2a2a30;border-radius:14px}
+.empty{text-align:center;color:#8b93a1;font-size:14px;padding:26px 10px;border:1px dashed #2a2a30;border-radius:14px}
 /* 카드 */
 .stat{background:#12121a;border:1px solid #26263a;border-radius:18px;padding:26px 20px;text-align:center}
 .stat .n{font-size:52px;font-weight:900;color:var(--acc2);line-height:1.1}
 .stat .t{font-size:15px;color:#9ca3af;margin-top:8px}
-.stat .w{font-size:10.5px;color:#4b4b57;margin-top:16px;letter-spacing:.04em}
+.stat .w{font-size:11px;color:#8b93a1;margin-top:16px;letter-spacing:.04em}
 .disc{font-size:12px;color:#9ca3af;background:#141417;border:1px solid #26262c;border-radius:10px;padding:10px 12px;margin-top:12px}
 .about h2{font-size:19px;margin:30px 0 10px;color:var(--acc2)}
 .about h3{font-size:16px;margin:20px 0 6px}
@@ -124,8 +124,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
 .rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#141417;border:1px solid #2a2a30;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
 .rel a:hover{border-color:var(--acc);color:var(--acc2)}
-footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f22;font-size:12.5px;color:#6b7280}
-footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f22;font-size:12.5px;color:#8b93a1}
+footer a{color:#9ca3af;text-decoration:none;margin-right:4px;display:inline-block;padding:12px 12px 12px 0}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#26262c;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .adbox{margin-top:20px}
@@ -158,7 +158,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   </div>
 
   <div class="card">
-    <p class="lab">무슨 일이 있었나요 <span style="color:#6b7280;font-weight:400">— 선택, 세 줄 이내</span></p>
+    <p class="lab">무슨 일이 있었나요 <span style="color:#8b93a1;font-weight:400">— 선택, 세 줄 이내</span></p>
     <textarea id="ctx" maxlength="180" rows="3" placeholder="마지막으로 이야기한 게 언제인지, 무슨 일이 있었는지"></textarea>
     <p class="hint">적어 두면 답장이 조금 더 그 상황에 가깝게 나옵니다. 비워 두어도 됩니다.</p>
   </div>
@@ -210,7 +210,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
       <button class="quiet" id="againBtn" type="button">다시 쓰기</button>
     </div>
     <div id="keepWrap" style="display:none;margin-top:14px">
-      <p class="lab">암호 <span style="color:#6b7280;font-weight:400">— 선택. 넣으면 이 암호로 잠깁니다</span></p>
+      <p class="lab">암호 <span style="color:#8b93a1;font-weight:400">— 선택. 넣으면 이 암호로 잠깁니다</span></p>
       <input type="password" id="keepPw" autocomplete="new-password" placeholder="비워 두면 잠그지 않고 저장합니다" />
       <p class="hint">암호는 어디에도 저장되지 않습니다. 잊으면 그 기록은 다시 열 수 없습니다.</p>
       <div class="acts"><button class="quiet" id="keepCancel" type="button">취소</button><button id="keepGo" type="button">남기기</button></div>
@@ -242,6 +242,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <div class="t" id="statT">아직 쓴 적이 없습니다</div>
     <div class="w">tomatoeggcat.com/unsent</div>
   </div>
+  <div id="shareWrap" style="display:none">
   <div class="acts">
     <button class="ghost" id="saveImg" type="button">이미지로 저장</button>
     <button class="ghost" id="copyLink" type="button">링크 복사</button>
@@ -253,8 +254,10 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   </div>
   <p class="hint" style="text-align:center">공유되는 것은 이 숫자뿐입니다. 본문·관계·상황은 링크에도 이미지에도 들어가지 않습니다.</p>
 
-  <div style="margin-top:18px">
-    <p class="lab">숫자만 넣어 카드 만들기 <span style="color:#6b7280;font-weight:400">— 리믹스</span></p>
+  </div>
+  <p class="hint" id="shareLock" style="text-align:center">한 번 쓰고 나면 이 숫자를 저장·공유할 수 있습니다.</p>
+  <div id="rxWrap" style="margin-top:18px;display:none">
+    <p class="lab">숫자만 넣어 카드 만들기 <span style="color:#8b93a1;font-weight:400">— 리믹스</span></p>
     <input type="text" id="rxN" inputmode="numeric" placeholder="횟수" />
     <div class="acts"><button class="ghost" id="rxGo" type="button">이 숫자로 카드 만들기</button></div>
   </div>
@@ -266,7 +269,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 </section>
 
 <section class="card">
-  <p class="lab">보관함 <span style="color:#6b7280;font-weight:400">— 남기기를 고른 것만</span></p>
+  <p class="lab">보관함 <span style="color:#8b93a1;font-weight:400">— 남기기를 고른 것만</span></p>
   <div id="archive"></div>
   <div class="acts" id="wipeWrap" style="display:none"><button class="danger" id="wipeArc" type="button">보관함 전체 삭제</button></div>
 </section>
@@ -504,16 +507,38 @@ function chooseStance(h, turn, sig){
   if(sig.longing && turn < 2) pool = ["avoid","short","deflect","guard"];
   return pool[(h + turn*7919) % pool.length];
 }
-function buildReply(text, turn, ctx){
+/* 한 대화 안에서 같은 문장이 두 번 나오면 몰입이 깨진다.
+   고른 스탠스에서 아직 안 쓴 문장을 찾고, 다 썼으면 다른 스탠스로 넘어간다. */
+function pickFresh(pool, h, salt, used){
+  for(var i=0;i<pool.length;i++){
+    var cand = pool[(h + salt + i) % pool.length];
+    if(used.indexOf(cand) < 0) return cand;
+  }
+  return pick(pool, h, salt);
+}
+function buildReply(text, turn, ctx, used){
+  used = used || [];
   var sig = readSignals(text);
   var h = hash(sel.rel + "|" + (ctx||"") + "|" + text + "|" + turn);
   var stance = chooseStance(h, turn, sig);
   var bank = BANK[sel.rel] || BANK.other;
-  var line = pick(bank[stance], h, turn+1);
+  var order = [stance].concat(STANCES.filter(function(s){ return s !== stance; }));
+  var line = null;
+  for(var i=0;i<order.length && line===null;i++){
+    var pool = bank[order[i]];
+    for(var j=0;j<pool.length;j++){
+      var cand = pool[(h + (turn+1) + j) % pool.length];
+      if(used.indexOf(cand) < 0){ line = cand; stance = order[i]; break; }
+    }
+  }
+  if(line === null) line = pick(bank[stance], h, turn+1);
+  used.push(line);
   var tailKeys = Object.keys(TAIL).filter(function(k){ return sig[k]; });
   if(tailKeys.length && stance !== "short" && (h % 3) !== 0){
     var tk = tailKeys[h % tailKeys.length];
-    line += "\n" + pick(TAIL[tk], h, turn+5);
+    var tail = pickFresh(TAIL[tk], h, turn+5, used);
+    used.push(tail);
+    line += "\n" + tail;
   }
   return { text: line, stance: stance };
 }
@@ -545,7 +570,7 @@ $("send").addEventListener("click", function(){
   var ctx = $("ctx").value.trim().slice(0,180);
   var risk = safetyScan(text + " " + ctx);
   if(risk){ toSafety(risk); return; }
-  session = { turns:[{ who:"me", body:text }], ctx:ctx, startedAt:Date.now() };
+  session = { turns:[{ who:"me", body:text }], ctx:ctx, startedAt:Date.now(), used:[] };
   S.written++; save(); renderStat();
   $("threadTitle").innerHTML = "받는 사람 — <b>" + esc(sel.rel==="other" && sel.title ? sel.title : relOf().to) + "</b>";
   renderThread();
@@ -579,7 +604,7 @@ function respond(){
     if(!session) return;
     var last = session.turns[session.turns.length-1].body;
     var turn = myTurnCount() - 1;
-    var r = buildReply(last, turn, session.ctx);
+    var r = buildReply(last, turn, session.ctx, session.used);
     session.turns.push({ who:"you", body:r.text });
     renderThread();
     if(myTurnCount() >= 6){ endSession(); return; }
@@ -711,6 +736,10 @@ function renderStat(n){
   $("statT").textContent = shownN
     ? "번 썼고, 한 번도 보내지 않았습니다"
     : "아직 쓴 적이 없습니다";
+  var canShare = shownN > 0;
+  $("shareWrap").style.display = canShare ? "block" : "none";
+  $("rxWrap").style.display = canShare ? "block" : "none";
+  $("shareLock").style.display = canShare ? "none" : "block";
   $("rxN").value = shownN || "";
 }
 function resultUrl(){ return location.origin + location.pathname + "?r=" + encodeURIComponent(enc({ v:1, n:shownN })); }

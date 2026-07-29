@@ -42,26 +42,26 @@
 body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:680px;margin:0 auto;padding:24px 18px 64px}
 a{color:var(--acc)}
-.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
-.nav a{color:#7aa2ff;text-decoration:none}
+.nav{font-size:13px;color:#8b93a1;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none;display:inline-block;padding:12px 6px;margin-left:-6px}
 h1{font-size:25px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#f0abfc,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:#9ca3af;margin:0 0 18px;font-size:15px}
 .card{border:1px solid var(--line);background:#151217;border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 10px}
 .lab b{color:var(--acc2)}
-.hint{font-size:12px;color:#6b7280;margin:7px 0 0}
+.hint{font-size:12px;color:#8b93a1;margin:7px 0 0}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{width:auto;flex:none;padding:8px 12px;font-size:13.5px;font-weight:600;background:#0f0d11;color:#c9c9c9;border:1px solid #322c37;border-radius:999px;cursor:pointer;min-height:40px;transition:.12s}
+.chip{width:auto;flex:none;padding:8px 12px;font-size:13.5px;font-weight:600;background:#0f0d11;color:#c9c9c9;border:1px solid #322c37;border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
 .chip.on{background:rgba(240,171,252,.14);border-color:var(--acc);color:var(--acc2)}
 input[type=text],input[type=password],textarea,select{width:100%;padding:11px 13px;font-size:15px;background:#0f0d11;color:#ededed;border:1px solid #322c37;border-radius:10px;min-height:44px;font-family:inherit}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc)}
-input[type=range]{width:100%;min-height:32px;padding:0;accent-color:var(--acc)}
+input[type=range]{width:100%;min-height:44px;padding:0;accent-color:var(--acc)}
 .field{margin-top:13px}
 button{margin:0;width:100%;padding:13px;border:0;border-radius:11px;background:var(--acc);color:#3b0a3f;font-size:15.5px;font-weight:800;cursor:pointer;min-height:46px}
 button.ghost{background:#1c1520;color:var(--acc2);border:1px solid #3d2f44;font-weight:700}
 button.quiet{background:transparent;color:#8b8b93;border:1px solid #2a262e;font-weight:700}
 button.danger{background:#2a1414;color:#fca5a5;border:1px solid #4a2222;font-weight:700}
-button.mini{width:auto;padding:7px 10px;font-size:12.5px;min-height:36px;border-radius:8px}
+button.mini{width:auto;padding:7px 10px;font-size:12.5px;min-height:44px;border-radius:8px}
 .acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .acts button{flex:1;min-width:130px}
 .inbound{display:none;position:sticky;top:0;z-index:30;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#3b0a3f,#4c1d52);border-bottom:1px solid #6b2f74}
@@ -74,9 +74,11 @@ button.mini{width:auto;padding:7px 10px;font-size:12.5px;min-height:36px;border-
 .tabs .badge{display:inline-block;min-width:18px;padding:0 5px;margin-left:3px;font-size:11px;line-height:18px;border-radius:999px;background:var(--acc);color:#3b0a3f;font-weight:800}
 section.tab{display:none}section.tab.on{display:block}
 /* 편집 */
-.stage{position:relative;width:100%;aspect-ratio:1/1;background:#0b0a0c;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:100%;aspect-ratio:1/1;transition:min-height .2s;touch-action:none;cursor:grab;background:#0b0a0c;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .stage canvas{max-width:100%;max-height:100%;display:block}
-.stage .ph{color:#4b4b52;font-size:14px;text-align:center;padding:20px}
+.stage .ph{color:#8b93a1;font-size:14px;text-align:center;padding:20px}
+.stage.idle{aspect-ratio:auto;min-height:120px;cursor:default}
+.stage.grabbing{cursor:grabbing}
 .strip{display:flex;gap:8px;overflow-x:auto;padding:10px 0 4px}
 .strip .th{position:relative;flex:none;width:62px;height:62px;border-radius:9px;overflow:hidden;border:2px solid transparent;cursor:pointer}
 .strip .th.on{border-color:var(--acc)}
@@ -87,7 +89,7 @@ section.tab{display:none}section.tab.on{display:block}
 .sld{display:flex;align-items:center;gap:10px;margin-top:8px}
 .sld span{font-size:12.5px;color:#8b8b93;width:44px;flex:none}
 .sld input{flex:1}
-.sld em{font-style:normal;font-size:12px;color:#6b7280;width:38px;text-align:right;flex:none}
+.sld em{font-style:normal;font-size:12px;color:#8b93a1;width:38px;text-align:right;flex:none}
 /* 업로드 연출 */
 .up{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;padding:20px}
 .up.show{display:flex}
@@ -100,7 +102,7 @@ section.tab{display:none}section.tab.on{display:block}
 .post .bd{padding:13px 15px;text-align:left}
 .post .cap{font-size:14.5px;color:#ededed;white-space:pre-wrap;word-break:break-word}
 .post .tags{font-size:13.5px;color:#93c5fd;margin-top:6px}
-.post .pl{font-size:12.5px;color:#6b7280;margin-top:6px}
+.post .pl{font-size:12.5px;color:#8b93a1;margin-top:6px}
 .upmsg{font-size:15px;color:var(--acc2);font-weight:700;margin-top:16px}
 /* 오는 중 */
 .cnt{text-align:center;padding:24px 14px;border:1px solid var(--line);background:#0f0d11;border-radius:14px}
@@ -113,9 +115,9 @@ section.tab{display:none}section.tab.on{display:block}
 .cal .m s{text-decoration:none;display:block;margin-top:5px;min-height:12px;font-size:11px;color:var(--acc);letter-spacing:1px}
 .wq{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);background:#121016;border-radius:11px;margin-bottom:8px}
 .wq .m{font-size:13.5px;color:#c9c9c9}
-.wq .m s{text-decoration:none;display:block;font-size:12px;color:#6b7280;margin-top:2px}
+.wq .m s{text-decoration:none;display:block;font-size:12px;color:#8b93a1;margin-top:2px}
 .wq button{width:auto;min-height:34px;padding:6px 10px;font-size:12px}
-.empty{text-align:center;color:#6b7280;font-size:14px;padding:26px 10px;border:1px dashed #2a262e;border-radius:14px}
+.empty{text-align:center;color:#8b93a1;font-size:14px;padding:26px 10px;border:1px dashed #2a262e;border-radius:14px}
 /* 도착 */
 .arv{border:1px solid var(--line);background:#151217;border-radius:16px;overflow:hidden;margin-bottom:16px}
 .arv .hd{padding:12px 15px;font-size:12.5px;color:var(--acc2);border-bottom:1px solid var(--line);font-weight:700}
@@ -123,10 +125,10 @@ section.tab{display:none}section.tab.on{display:block}
 .arv .bd{padding:14px 15px}
 .arv .cap{font-size:15px;white-space:pre-wrap;word-break:break-word}
 .arv .tags{font-size:13.5px;color:#93c5fd;margin-top:6px}
-.arv .pl{font-size:12.5px;color:#6b7280;margin-top:6px}
+.arv .pl{font-size:12.5px;color:#8b93a1;margin-top:6px}
 .lyr{border-top:1px dashed #322c37;margin-top:12px;padding-top:10px}
 .lyr p{font-size:14px;margin:0 0 6px;color:#c9c9c9}
-.lyr p s{text-decoration:none;color:#6b7280;font-size:11.5px;display:block}
+.lyr p s{text-decoration:none;color:#8b93a1;font-size:11.5px;display:block}
 .disc{font-size:12px;color:#9ca3af;background:#121016;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:12px}
 .about h2{font-size:19px;margin:30px 0 10px;color:var(--acc2)}
 .about h3{font-size:16px;margin:20px 0 6px}
@@ -136,11 +138,16 @@ section.tab{display:none}section.tab.on{display:block}
 .faq dd{margin:4px 0 0;color:#9ca3af;font-size:14.5px;word-break:keep-all}
 .rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
 .rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#151217;border:1px solid #2a262e;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
-footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1b23;font-size:12.5px;color:#6b7280}
-footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1b23;font-size:12.5px;color:#8b93a1}
+footer a{color:#9ca3af;text-decoration:none;margin-right:4px;display:inline-block;padding:12px 12px 12px 0}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#2a262e;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .adbox{margin-top:20px}
+.filebtn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;border:1px dashed #3a3a42;border-radius:12px;padding:13px;min-height:48px;font-size:14.5px;font-weight:700;cursor:pointer}
+.filebtn input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.filebtn:hover{border-color:var(--acc)}
+.sld input[type=range]{min-height:44px}
+
 </style>
 </head>
 <body>
@@ -158,6 +165,16 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <p class="lead">고르고, 보정하고, 캡션을 쓰고, 올립니다. 좋아요도 조회수도 없습니다. 정해 둔 기간 뒤에 나에게만 나타납니다.</p>
 </header>
 
+<div class="card" id="onb" style="display:none">
+  <p class="lab">처음이시죠 — <b>두 가지만</b></p>
+  <ol style="margin:0 0 6px;padding-left:20px;font-size:14.5px;color:#c9c9c9">
+    <li style="margin-bottom:6px"><b>올린 뒤가 없습니다.</b> 좋아요도 조회수도 댓글도 없고, 볼 수 있는 사람은 나중의 나뿐입니다.</li>
+    <li><b>기간을 섞어 두세요.</b> 전부 1년으로 두는 것보다 <b>3년짜리를 하나씩 끼워 두면</b> 훨씬 재미있어집니다. 잊을 때쯤 오거든요.</li>
+  </ol>
+  <p class="hint">봉인 방식은 게시물마다 고를 수 있습니다. 정말 못 열게 하려면 암호 봉인을 쓰세요 — 암호는 저장하지 않습니다.</p>
+  <div class="acts"><button id="onbGo" type="button">시작하기</button></div>
+</div>
+
 <div class="tabs" id="tabs">
   <button type="button" data-t="post" class="on">올리기</button>
   <button type="button" data-t="wait">오는 중<span class="badge" id="bWait" style="display:none">0</span></button>
@@ -169,7 +186,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <section class="tab on" id="tab-post">
   <div class="card">
     <p class="lab">사진</p>
-    <input type="file" id="pick" accept="image/*" multiple style="padding:10px 12px;font-size:13.5px" />
+    <label class="filebtn" style="color:var(--acc2)"><input type="file" id="pick" accept="image/*" multiple aria-label="올릴 사진 고르기" /><span id="pickLbl">📷 사진 고르기 (여러 장 가능)</span></label>
     <div class="strip" id="strip"></div>
     <div class="mv" id="mv" style="display:none">
       <button class="quiet" id="mvL" type="button">◀ 앞으로</button>
@@ -180,17 +197,18 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 
   <div class="card">
     <p class="lab">보정</p>
-    <div class="stage" id="stage"><div class="ph" id="stagePh">사진을 고르면 여기에서 보정합니다.<br />만지작거리는 시간이 절반입니다.</div></div>
+    <div class="stage idle" id="stage"><div class="ph" id="stagePh">사진을 고르면 여기에서 보정합니다.<br />만지작거리는 시간이 절반입니다.</div></div>
 
+    <p class="hint" id="dragHint" style="display:none;text-align:center">사진을 드래그해서 보이는 부분을 옮길 수 있습니다.</p>
     <p class="lab" style="margin:16px 0 8px">비율</p>
     <div class="chips" id="cropChips"></div>
 
     <p class="lab" style="margin:16px 0 8px">필터</p>
     <div class="chips" id="filterChips"></div>
 
-    <div class="sld"><span>밝기</span><input type="range" id="sBri" min="60" max="140" value="100" /><em id="vBri">100</em></div>
-    <div class="sld"><span>대비</span><input type="range" id="sCon" min="60" max="140" value="100" /><em id="vCon">100</em></div>
-    <div class="sld"><span>채도</span><input type="range" id="sSat" min="0" max="200" value="100" /><em id="vSat">100</em></div>
+    <div class="sld"><span>밝기</span><input type="range" id="sBri" min="60" max="140" value="100" aria-label="밝기" /><em id="vBri">100</em></div>
+    <div class="sld"><span>대비</span><input type="range" id="sCon" min="60" max="140" value="100" aria-label="대비" /><em id="vCon">100</em></div>
+    <div class="sld"><span>채도</span><input type="range" id="sSat" min="0" max="200" value="100" aria-label="채도" /><em id="vSat">100</em></div>
     <div class="acts"><button class="quiet mini" id="resetEdit" type="button">이 사진 보정 초기화</button></div>
   </div>
 
@@ -198,11 +216,11 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <p class="lab">캡션</p>
     <textarea id="cap" rows="4" maxlength="1000" placeholder="아무도 안 봅니다. 그래서 아무렇게나 써도 됩니다."></textarea>
     <div class="field">
-      <p class="lab">해시태그 <span style="color:#6b7280;font-weight:400">— 어디에도 연결되지 않습니다</span></p>
+      <p class="lab">해시태그 <span style="color:#8b93a1;font-weight:400">— 어디에도 연결되지 않습니다</span></p>
       <input type="text" id="tags" maxlength="200" placeholder="#여름 #퇴근길" />
     </div>
     <div class="field">
-      <p class="lab">위치 <span style="color:#6b7280;font-weight:400">— 시·구 정도만</span></p>
+      <p class="lab">위치 <span style="color:#8b93a1;font-weight:400">— 시·구 정도만</span></p>
       <input type="text" id="place" maxlength="40" placeholder="예: 서울 마포구" />
       <p class="hint">위치는 글자로만 저장됩니다. 좌표를 받아 가지 않습니다.</p>
     </div>
@@ -235,6 +253,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     </div>
     <div class="cal" id="cal"></div>
     <p class="hint" style="text-align:center">앞으로 12개월 · 점 하나가 게시물 하나</p>
+    <div id="shareWrap" style="display:none">
     <div class="acts">
       <button class="ghost" id="saveImg" type="button">이미지로 저장</button>
       <button class="ghost" id="copyLink" type="button">링크 복사</button>
@@ -245,15 +264,17 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
       <button class="ghost" id="webShare" type="button" style="display:none">공유하기</button>
     </div>
     <p class="hint" style="text-align:center">공유되는 것은 개수뿐입니다. 사진·캡션은 나가지 않습니다.</p>
+    </div>
+    <p class="hint" id="shareLock" style="text-align:center">하나 올리면 여기서 저장·공유할 수 있습니다.</p>
     <div style="margin-top:16px">
-      <p class="lab">숫자만 넣어 카드 만들기 <span style="color:#6b7280;font-weight:400">— 리믹스</span></p>
+      <p class="lab">숫자만 넣어 카드 만들기 <span style="color:#8b93a1;font-weight:400">— 리믹스</span></p>
       <input type="text" id="rxN" inputmode="numeric" placeholder="개수" />
       <div class="acts"><button class="ghost" id="rxGo" type="button">이 숫자로 카드 만들기</button></div>
     </div>
   </div>
 
   <div class="card">
-    <p class="lab">대기 목록 <span style="color:#6b7280;font-weight:400">— 날짜와 개수만</span></p>
+    <p class="lab">대기 목록 <span style="color:#8b93a1;font-weight:400">— 날짜와 개수만</span></p>
     <div id="waitList"></div>
     <p class="hint">내용은 볼 수 없습니다. 미리보기 기능은 만들지 않았습니다. 다만 내용을 보지 않고도 지울 수는 있습니다.</p>
   </div>
@@ -274,7 +295,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <!-- ── 설정 ── -->
 <section class="tab" id="tab-conf">
   <div class="card">
-    <p class="lab">내보내기 <span style="color:#6b7280;font-weight:400">— 락인은 하지 않습니다</span></p>
+    <p class="lab">내보내기 <span style="color:#8b93a1;font-weight:400">— 락인은 하지 않습니다</span></p>
     <p class="hint" style="margin:0 0 12px">사진과 캡션을 zip으로 내려받습니다. 기본은 <b>도착한 것만</b>입니다.</p>
     <div class="acts">
       <button class="ghost" id="expDone" type="button">도착한 것 내보내기</button>
@@ -465,7 +486,8 @@ function unseal(post, pw, force){
 /* ══════════ 로컬 설정 ══════════ */
 var CFG;
 try{ CFG = JSON.parse(localStorage.getItem(LS)) || null; }catch(e){ CFG=null; }
-if(!CFG) CFG = { period:"1y", seal:"device", posted:0 };
+if(!CFG) CFG = { period:"1y", seal:"device", posted:0, onboarded:false };
+if(!("onboarded" in CFG)) CFG.onboarded = (CFG.posted > 0);
 function saveCfg(){ try{ localStorage.setItem(LS, JSON.stringify(CFG)); }catch(e){} }
 
 /* ══════════ 이미지 편집 ══════════ */
@@ -499,12 +521,16 @@ $("pick").addEventListener("change", function(e){
         el.onload = function(){ if(--left === 0){ renderStrip(); select(imgs.length-1); } };
         el.onerror = function(){ if(--left === 0){ renderStrip(); } };
         el.src = src;
-        imgs.push({ src:src, el:el, crop:"sq", filter:"none", bri:100, con:100, sat:100 });
+        imgs.push({ src:src, el:el, crop:"sq", filter:"none", bri:100, con:100, sat:100, ox:0, oy:0 });
       } else if(--left === 0){ renderStrip(); }
     });
   });
   e.target.value = "";
 });
+/* 파일 선택 라벨 — 네이티브 영문 UI 대신 우리 문구를 쓴다 */
+function syncPickLbl(){
+  $("pickLbl").textContent = imgs.length ? "📷 " + imgs.length + "장 · 더 고르기" : "📷 사진 고르기 (여러 장 가능)";
+}
 function downscale(file, cb){
   var fr = new FileReader();
   fr.onload = function(){
@@ -533,8 +559,11 @@ function renderStrip(){
     d.addEventListener("click", function(){ select(i); });
     s.appendChild(d);
   });
+  syncPickLbl();
   $("mv").style.display = imgs.length ? "flex" : "none";
   $("stagePh").style.display = imgs.length ? "none" : "block";
+  $("stage").classList.toggle("idle", !imgs.length);
+  $("dragHint").style.display = imgs.length ? "block" : "none";
 }
 function select(i){
   cur = i;
@@ -577,7 +606,7 @@ function syncSliderLabels(){
 }
 $("resetEdit").addEventListener("click", function(){
   if(!imgs[cur]) return;
-  imgs[cur].crop="sq"; imgs[cur].filter="none"; imgs[cur].bri=100; imgs[cur].con=100; imgs[cur].sat=100;
+  imgs[cur].crop="sq"; imgs[cur].filter="none"; imgs[cur].bri=100; imgs[cur].con=100; imgs[cur].sat=100; imgs[cur].ox=0; imgs[cur].oy=0;
   select(cur);
 });
 $("mvL").addEventListener("click", function(){ move(-1); });
@@ -598,6 +627,7 @@ function clearStage(){
   var st = $("stage"), c = st.querySelector("canvas");
   if(c) c.remove();
   $("stagePh").style.display = "block";
+  st.classList.add("idle");
 }
 function filterCss(o){
   var f = FILTERS.filter(function(x){ return x.k===o.filter; })[0];
@@ -623,7 +653,10 @@ function renderTo(o, maxW){
   c.height = Math.max(1, Math.round(th*scale));
   var x = c.getContext("2d");
   x.filter = filterCss(o);
-  var sx = Math.round((ow-tw)/2), sy = Math.round((oh-th)/2);
+  var sx = Math.round((ow-tw)/2 + (o.ox||0));
+  var sy = Math.round((oh-th)/2 + (o.oy||0));
+  sx = Math.max(0, Math.min(ow-tw, sx));
+  sy = Math.max(0, Math.min(oh-th, sy));
   x.drawImage(im, sx, sy, tw, th, 0, 0, c.width, c.height);
   return c;
 }
@@ -632,9 +665,34 @@ function draw(){
   var st = $("stage");
   var old = st.querySelector("canvas");
   if(old) old.remove();
+  st.classList.remove("idle");
   st.appendChild(renderTo(imgs[cur], 720));
   $("stagePh").style.display = "none";
 }
+
+/* 크롭 위치 드래그 — 중앙 고정이면 인물이 잘린다 */
+var drag = null;
+var stageEl = $("stage");
+stageEl.addEventListener("pointerdown", function(e){
+  if(!imgs[cur]) return;
+  var c = stageEl.querySelector("canvas"); if(!c) return;
+  var rect = c.getBoundingClientRect();
+  var im = imgs[cur].el;
+  drag = { x:e.clientX, y:e.clientY, ox:imgs[cur].ox||0, oy:imgs[cur].oy||0,
+           scale:(im.naturalWidth || im.width) / rect.width };
+  stageEl.classList.add("grabbing");
+  if(stageEl.setPointerCapture) stageEl.setPointerCapture(e.pointerId);
+});
+stageEl.addEventListener("pointermove", function(e){
+  if(!drag || !imgs[cur]) return;
+  e.preventDefault();
+  imgs[cur].ox = drag.ox - (e.clientX - drag.x) * drag.scale;
+  imgs[cur].oy = drag.oy - (e.clientY - drag.y) * drag.scale;
+  draw();
+});
+["pointerup","pointercancel","pointerleave"].forEach(function(ev){
+  stageEl.addEventListener(ev, function(){ drag = null; stageEl.classList.remove("grabbing"); });
+});
 
 /* ══════════ 기간 · 봉인 ══════════ */
 var PERIODS = [
@@ -767,6 +825,9 @@ function refresh(){
 function renderWait(waiting){
   $("waitN").textContent = shownWait;
   $("waitT").textContent = shownWait ? "개가 오는 중" : "오는 중인 게시물이 없습니다";
+  var canShare = shownWait > 0;
+  $("shareWrap").style.display = canShare ? "block" : "none";
+  $("shareLock").style.display = canShare ? "none" : "block";
   $("rxN").value = shownWait || "";
   var box = $("waitList"); box.innerHTML = "";
   if(!waiting.length){ box.innerHTML = '<div class="empty">기다리는 게시물이 없습니다.</div>'; return; }
@@ -1052,8 +1113,15 @@ $("saveImg").addEventListener("click", function(){
   toast("이미지가 저장되었습니다");
 });
 
+$("onbGo").addEventListener("click", function(){
+  CFG.onboarded = true; saveCfg();
+  $("onb").style.display = "none";
+  $("pick").focus();
+});
+
 /* ══════════ 시작 ══════════ */
 var params = new URLSearchParams(location.search);
+if(!CFG.onboarded && !params.has("r")) $("onb").style.display = "block";
 refresh().then(function(){
   var now = Date.now();
   notifyArrivals(allPosts.filter(function(p){ return p.revealAt <= now; }).length);
@@ -1063,6 +1131,8 @@ refresh().then(function(){
       shownWait = Math.max(0, st.n|0);
       $("waitN").textContent = shownWait;
       $("waitT").textContent = shownWait ? "개가 오는 중" : "오는 중인 게시물이 없습니다";
+      $("shareWrap").style.display = "block";
+      $("shareLock").style.display = "none";
       $("inbound").classList.add("show");
       $("inboundBtn").addEventListener("click", function(){
         $("inbound").classList.remove("show");
