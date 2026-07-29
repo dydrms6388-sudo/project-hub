@@ -4,7 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,follow" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem("tec-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <title>백 개 — 딱 100개만 담기는 목록, 101번째는 하나를 보내야 한다 | TomatoEggCat</title>
 <meta name="description" content="책·영화·음악·물건 무엇이든 딱 100개만 담을 수 있는 목록. 101번째를 넣으려면 이미 있는 하나를 보내야 하고, 보내는 이유를 반드시 한 줄 적어야 합니다. 보낸 기록은 지워지지 않고 방출 로그에 영원히 쌓여, 머문 기간과 이유가 함께 남습니다. 순위도 좋아요도 댓글도 없는, 브라우저 안에서만 동작하는 100개 목록 도구." />
 <link rel="canonical" href="https://tomatoeggcat.com/baekgae/" />
@@ -37,26 +39,46 @@
 ]}
 </script>
 <style>
-:root{color-scheme:dark;--acc:#e8c37a;--acc2:#f5deb0;--ink:#ededed;--dim:#9ca3af;--faint:#6b7280;--line:#262626;--panel:#161616;--deep:#0f0f0f}
+:root{color-scheme:dark;
+  --acc:#e8c37a;--acc2:#f5deb0;--onacc:var(--onacc);--g1:#e8c37a;--g2:#c9a3e8;
+  --ink:#ededed;--body:var(--body);--dim:#9ca3af;--faint:#6b7280;
+  --bg:#0a0a0a;--panel:var(--panel);--deep:var(--deep);--sheet:var(--sheet);
+  --line:var(--line);--edge:var(--edge);--hair:var(--hair);--track:var(--track);--quote:var(--quote);
+  --ghostbg:var(--ghostbg);--ghostbd:var(--ghostbd);--toast:var(--line);--toastfg:#ededed;--scrim:var(--scrim)}
+/* 라이트 테마: 시스템 설정을 따르되, 허브에서 저장한 테마(data-theme)가 있으면 그쪽이 이긴다 */
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){color-scheme:light;
+    --acc:#8a6410;--acc2:#6b4e0a;--onacc:#ffffff;--g1:#8a6410;--g2:#6d3fa8;
+    --ink:#16191d;--body:#2b2f36;--dim:#5b6472;--faint:#7c8593;
+    --bg:#f7f8fa;--panel:#ffffff;--deep:#f1f3f6;--sheet:#ffffff;
+    --line:#e3e7ec;--edge:#d2d8e0;--hair:#eceff3;--track:#e8ecf1;--quote:#d9c79a;
+    --navlink:#2f5fd0;--danger:#b42318;--dangerbd:#e6b4ae;--ret:#5b34a8;--retbd:#cdbdf0;--acctint:rgba(138,100,16,.10);--ghostbg:#f7f1e2;--ghostbd:#d9c79a;--toast:#1f2430;--toastfg:#f5f6f8;--scrim:rgba(20,24,30,.55)}
+}
+:root[data-theme="light"]{color-scheme:light;
+  --acc:#8a6410;--acc2:#6b4e0a;--onacc:#ffffff;--g1:#8a6410;--g2:#6d3fa8;
+  --ink:#16191d;--body:#2b2f36;--dim:#5b6472;--faint:#7c8593;
+  --bg:#f7f8fa;--panel:#ffffff;--deep:#f1f3f6;--sheet:#ffffff;
+  --line:#e3e7ec;--edge:#d2d8e0;--hair:#eceff3;--track:#e8ecf1;--quote:#d9c79a;
+  --navlink:#2f5fd0;--danger:#b42318;--dangerbd:#e6b4ae;--ret:#5b34a8;--retbd:#cdbdf0;--acctint:rgba(138,100,16,.10);--ghostbg:#f7f1e2;--ghostbd:#d9c79a;--toast:#1f2430;--toastfg:#f5f6f8;--scrim:rgba(20,24,30,.55)}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:760px;margin:0 auto;padding:24px 18px 64px}
 a{color:var(--acc)}
 .nav{font-size:13px;color:var(--faint);margin-bottom:16px}
-.nav a{color:#7aa2ff;text-decoration:none}
-h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#e8c37a,#c9a3e8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav a{color:var(--navlink);text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:var(--dim);margin:0 0 20px;font-size:15px}
 .card{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:var(--dim);letter-spacing:.03em;margin:0 0 8px}
 .lab b{color:var(--acc2)}
 .hint{font-size:12px;color:var(--faint);margin:6px 0 0}
-button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#2a1f08;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
-button.ghost{background:#1d1810;color:var(--acc2);border:1px solid #4a3c22;font-weight:700}
-button.tiny{width:auto;padding:8px 12px;font-size:13px;min-height:38px;border-radius:9px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:var(--onacc);font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:var(--ghostbg);color:var(--acc2);border:1px solid var(--ghostbd);font-weight:700}
+button.tiny{width:auto;padding:8px 12px;font-size:13px;min-height:44px;border-radius:9px}
 button:disabled{opacity:.4;cursor:not-allowed}
 .acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .acts button{flex:1 1 0;min-width:140px}
-input[type=text],textarea,select{width:100%;padding:12px 14px;font-size:15px;background:var(--deep);color:var(--ink);border:1px solid #333;border-radius:12px;min-height:46px;font-family:inherit}
+input[type=text],textarea,select{width:100%;padding:12px 14px;font-size:15px;background:var(--deep);color:var(--ink);border:1px solid var(--edge);border-radius:12px;min-height:46px;font-family:inherit}
 textarea{min-height:84px;resize:vertical;line-height:1.55}
 input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc)}
 .row{display:flex;gap:10px;align-items:center}
@@ -68,96 +90,109 @@ input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var
 
 /* 탭 */
 .tabs{display:flex;gap:8px;margin-bottom:16px}
-.tabs button{flex:1;background:var(--deep);color:#c9c9c9;border:1px solid #2e2e2e;font-size:13.5px;font-weight:700;min-height:44px;padding:10px 6px}
-.tabs button.on{background:rgba(232,195,122,.14);border-color:var(--acc);color:var(--acc2)}
+.tabs button{flex:1;background:var(--deep);color:var(--dim);border:1px solid var(--edge);font-size:13.5px;font-weight:700;min-height:44px;padding:10px 6px}
+.tabs button.on{background:var(--acctint);border-color:var(--acc);color:var(--acc2)}
 
 /* 카운터 */
 .counter{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .cnum{font-size:38px;font-weight:800;letter-spacing:-.02em;color:var(--acc2);font-variant-numeric:tabular-nums}
 .cnum small{font-size:17px;font-weight:700;color:var(--faint)}
 .cstate{font-size:13px;font-weight:700;color:var(--dim);text-align:right}
-.ctrack{height:8px;background:#232323;border-radius:99px;overflow:hidden;margin-top:12px}
-.ctrack i{display:block;height:100%;background:linear-gradient(90deg,#e8c37a,#c9a3e8);transition:width .3s}
-.full .cnum{color:#fca5a5}
-.full .ctrack i{background:linear-gradient(90deg,#fca5a5,#e8c37a)}
+.ctrack{height:8px;background:var(--track);border-radius:99px;overflow:hidden;margin-top:12px}
+.ctrack i{display:block;height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .3s}
+.grid100{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin-top:14px}
+.grid100 span{aspect-ratio:1;border-radius:2px;background:var(--track)}
+.grid100 span.on{background:var(--acc)}
+.grid100 span.new{background:var(--acc2)}
+.full .cnum{color:var(--danger)}
+.full .ctrack i{background:linear-gradient(90deg,var(--danger),var(--g1))}
 
 /* 항목 목록 */
 .sortrow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 10px}
 .sortrow .lab{margin:0}
 .seg{display:flex;gap:6px}
-.seg button{width:auto;padding:7px 11px;font-size:12.5px;min-height:34px;border-radius:8px;background:var(--deep);color:#a3a3a3;border:1px solid #2e2e2e;font-weight:700}
-.seg button.on{color:var(--acc2);border-color:#5a4826;background:#1d1810}
-ul.items{list-style:none;margin:0;padding:0;border-top:1px solid #202020}
-ul.items li{display:flex;align-items:flex-start;gap:12px;padding:11px 2px;border-bottom:1px solid #1c1c1c}
+.seg button{width:auto;padding:7px 11px;font-size:12.5px;min-height:44px;border-radius:8px;background:var(--deep);color:var(--dim);border:1px solid var(--edge);font-weight:700}
+.seg button.on{color:var(--acc2);border-color:var(--ghostbd);background:var(--ghostbg)}
+ul.items{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+ul.items li{display:flex;align-items:flex-start;gap:12px;padding:11px 2px;border-bottom:1px solid var(--hair)}
 .it-main{flex:1;min-width:0}
-.it-name{font-size:15.5px;font-weight:700;word-break:break-word}
-.it-meta{font-size:12px;color:var(--faint);margin-top:2px}
-.it-note{font-size:13px;color:var(--dim);margin-top:3px;word-break:break-word}
-.it-back{display:inline-block;font-size:11px;font-weight:700;color:#a78bfa;border:1px solid #4c3f7a;border-radius:99px;padding:1px 7px;margin-left:6px;vertical-align:middle}
-.send{width:auto;flex:none;padding:7px 11px;font-size:12.5px;min-height:34px;border-radius:8px;background:#1a1a1a;color:#9ca3af;border:1px solid #2e2e2e;font-weight:700}
-.send:hover{color:#fca5a5;border-color:#7f3b3b}
+.it-name{display:block;font-size:15.5px;font-weight:700;word-break:break-word;color:var(--ink);line-height:1.45}
+.it-meta{display:block;font-size:12px;color:var(--faint);margin-top:2px}
+.it-note{display:block;font-size:13px;color:var(--dim);margin-top:3px;word-break:break-word}
+.it-back{display:inline-block;font-size:11px;font-weight:700;color:var(--ret);border:1px solid var(--retbd);border-radius:99px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.it-edit{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:8px;padding:4px 2px;margin:0;min-height:0;color:inherit;font:inherit;font-weight:400;cursor:pointer}
+.it-edit:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.send{width:auto;flex:none;padding:7px 11px;font-size:12.5px;min-height:44px;border-radius:8px;background:var(--deep);color:var(--dim);border:1px solid var(--edge);font-weight:700}
+.send:hover{color:var(--danger);border-color:var(--dangerbd)}
 .empty{color:var(--faint);font-size:14px;text-align:center;padding:28px 8px;line-height:1.7}
 
 /* 방출 로그 — 읽히는 페이지 */
 .logpage{padding:26px 22px}
 .logpage h2{font-size:21px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em}
 .logsub{color:var(--faint);font-size:13.5px;margin:0 0 24px}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#232323;border:1px solid #232323;border-radius:14px;overflow:hidden;margin-bottom:30px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--track);border:1px solid var(--track);border-radius:14px;overflow:hidden;margin-bottom:30px}
 .stat{background:var(--panel);padding:14px 15px}
 .stat .k{font-size:11.5px;color:var(--faint);letter-spacing:.04em;font-weight:700}
 .stat .v{font-size:19px;font-weight:800;color:var(--acc2);margin-top:3px;font-variant-numeric:tabular-nums;word-break:break-word;line-height:1.35}
 .stat .v small{font-size:12.5px;color:var(--dim);font-weight:700}
 .stat .v .sub{display:block;font-size:12.5px;color:var(--dim);font-weight:700;margin-top:1px}
-.yearhead{display:flex;align-items:baseline;gap:10px;margin:34px 0 14px;padding-bottom:8px;border-bottom:1px solid #2a2a2a}
+.yearhead{display:flex;align-items:baseline;gap:10px;margin:34px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--edge)}
 .yearhead:first-of-type{margin-top:0}
 .yearhead .y{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--acc2);font-variant-numeric:tabular-nums}
 .yearhead .c{font-size:13px;color:var(--faint)}
-.entry{padding:16px 0;border-bottom:1px solid #1b1b1b}
+.entry{padding:16px 0;border-bottom:1px solid var(--hair)}
 .entry:last-child{border-bottom:0}
 .e-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .e-name{font-size:16.5px;font-weight:700;letter-spacing:-.01em;word-break:break-word}
 .e-date{font-size:12px;color:var(--faint);white-space:nowrap;font-variant-numeric:tabular-nums}
-.e-ten{font-size:12.5px;color:#8b8b8b;margin-top:2px}
-.e-reason{margin:9px 0 0;padding-left:13px;border-left:2px solid #3d3222;color:#d6d3cd;font-size:14.5px;line-height:1.72;word-break:break-word}
-.e-return{border-left-color:#4c3f7a;color:#c4b5fd}
+.e-ten{font-size:12.5px;color:var(--faint);margin-top:2px}
+.e-reason{margin:9px 0 0;padding-left:13px;border-left:2px solid var(--quote);color:var(--body);font-size:14.5px;line-height:1.72;word-break:break-word}
+.e-return{border-left-color:var(--retbd);color:var(--ret)}
 .disc{font-size:12px;color:var(--faint);margin:18px 0 0;line-height:1.7}
 
 /* 방출 모달 */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:60;display:none;overflow-y:auto;padding:20px 14px}
+.modal{position:fixed;inset:0;background:var(--scrim);z-index:60;display:none;overflow-y:auto;padding:20px 14px}
 .modal.show{display:block}
-.sheet{max-width:560px;margin:0 auto;background:#141414;border:1px solid #2e2e2e;border-radius:18px;padding:22px}
+.sheet{max-width:560px;margin:0 auto;background:var(--sheet);border:1px solid var(--edge);border-radius:18px;padding:22px}
 .sheet h3{font-size:19px;font-weight:800;margin:0 0 6px}
 .sheet .why{color:var(--dim);font-size:13.5px;margin:0 0 16px}
-.picklist{max-height:270px;overflow-y:auto;border:1px solid #262626;border-radius:12px;margin-top:10px}
-.picklist button{width:100%;text-align:left;background:transparent;color:#d4d4d4;border:0;border-bottom:1px solid #1e1e1e;border-radius:0;font-size:14.5px;font-weight:600;padding:11px 13px;min-height:44px}
+.picklist{max-height:270px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;margin-top:10px}
+.picklist button{width:100%;text-align:left;background:transparent;color:var(--body);border:0;border-bottom:1px solid var(--hair);border-radius:0;font-size:14.5px;font-weight:600;padding:11px 13px;min-height:44px}
 .picklist button:last-child{border-bottom:0}
-.picklist button.on{background:rgba(232,195,122,.13);color:var(--acc2)}
+.picklist button.on{background:var(--acctint);color:var(--acc2)}
 .picklist button span{display:block;font-size:11.5px;color:var(--faint);font-weight:600;margin-top:2px}
 .cnt{font-size:12px;color:var(--faint);text-align:right;margin:5px 0 0}
-.cnt.over{color:#fca5a5}
-.stepnum{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:var(--acc);color:#2a1f08;border-radius:99px;font-size:12px;font-weight:800;margin-right:6px}
+.cnt.over{color:var(--danger)}
+.stepnum{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:var(--acc);color:var(--onacc);border-radius:99px;font-size:12px;font-weight:800;margin-right:6px}
 
 /* 공유 유입 */
-.inbound{display:none;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(90deg,rgba(232,195,122,.14),rgba(201,163,232,.1));border:1px solid #4a3c22;border-radius:14px;padding:13px 15px;margin-bottom:18px;font-size:14px;font-weight:700}
+.inbound{display:none;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(90deg,var(--acctint),rgba(201,163,232,.1));border:1px solid var(--ghostbd);border-radius:14px;padding:13px 15px;margin-bottom:18px;font-size:14px;font-weight:700}
 .inbound.show{display:flex}
 .inbound span{flex:1;min-width:180px}
 .inbound button{width:auto;flex:none;padding:9px 14px;font-size:13.5px;min-height:40px}
-.shared{border-color:#4a3c22}
+.shared{border-color:var(--ghostbd)}
 
 /* 소개 콘텐츠 */
-.about{margin-top:34px;color:#c9c9c9}
+.about{margin-top:34px;color:var(--dim)}
 .about h2{font-size:19px;font-weight:800;margin:26px 0 8px;color:var(--ink)}
 .about p{font-size:14.5px;line-height:1.85;margin:0 0 12px}
 .about ol,.about ul{padding-left:20px;font-size:14.5px;line-height:1.85;margin:0 0 12px}
 .about li{margin-bottom:5px}
 .faq dt{font-weight:700;color:var(--acc2);margin-top:14px;font-size:14.5px}
-.faq dd{margin:5px 0 0;font-size:14.5px;line-height:1.8;color:#bdbdbd}
+.faq dd{margin:5px 0 0;font-size:14.5px;line-height:1.8;color:var(--dim)}
 .rel{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
-.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#141414;border:1px solid #2a2a2a;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:var(--dim);background:var(--sheet);border:1px solid var(--edge);border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
 .rel a:hover{border-color:var(--acc);color:var(--acc2)}
-footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:var(--faint)}
-footer a{color:var(--dim);text-decoration:none;margin-right:12px}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#262626;color:var(--ink);font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:80}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--hair);font-size:12.5px;color:var(--faint)}
+footer a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;color:var(--dim);text-decoration:none;margin-right:8px}
+.nav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{width:auto;flex:none;padding:10px 14px;font-size:14px;font-weight:600;background:var(--deep);color:var(--dim);border:1px solid var(--edge);border-radius:999px;cursor:pointer;min-height:44px}
+.chip.on{background:var(--acctint);border-color:var(--acc);color:var(--acc2)}
+.undobar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(24px);display:flex;align-items:center;gap:14px;background:var(--toast);color:var(--toastfg);font-size:14px;font-weight:700;padding:8px 10px 8px 18px;border-radius:999px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s,transform .25s,visibility .25s;z-index:70;max-width:calc(100vw - 32px)}
+.undobar.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.undobar button{width:auto;flex:none;min-height:44px;padding:11px 16px;font-size:13.5px;border-radius:999px;background:var(--acc);color:var(--onacc)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--toast);color:var(--toastfg);font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:80}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (max-width:420px){.cnum{font-size:32px}.logpage{padding:22px 16px}.yearhead .y{font-size:22px}}
 </style>
@@ -191,7 +226,7 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
 <div class="listbar">
   <select id="listSel" aria-label="목록 선택"></select>
   <button class="tiny ghost" id="newListBtn" type="button">＋ 새 목록</button>
-  <button class="tiny ghost" id="listMenuBtn" type="button">⋯</button>
+  <button class="tiny ghost" id="listMenuBtn" type="button" aria-label="목록 관리 · 백업">관리</button>
 </div>
 
 <div class="tabs">
@@ -208,6 +243,14 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
       <div class="cstate" id="cState">아직 비어 있습니다</div>
     </div>
     <div class="ctrack"><i id="cBar" style="width:0%"></i></div>
+    <div class="grid100" id="grid100" aria-hidden="true"></div>
+  </section>
+
+  <section class="card" id="onboard" style="display:none">
+    <p class="lab">무엇으로 100칸을 채울까요?</p>
+    <p class="hint" style="margin:0 0 12px">종류를 고르면 목록 이름을 지어 드립니다. 나중에 언제든 바꿀 수 있습니다.</p>
+    <div class="chips" id="obKinds"></div>
+    <p class="hint" id="obHint" style="margin-top:12px">아래 <b>항목 추가</b>에 첫 번째를 넣으면 시작됩니다. 100칸이 다 차기 전까지는 아무 고민 없이 쌓기만 하면 됩니다.</p>
   </section>
 
   <section class="card">
@@ -221,12 +264,14 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
   </section>
 
   <div class="sortrow">
-    <p class="lab">보유 중인 항목</p>
+    <p class="lab">보유 중인 항목 <b id="shownN"></b></p>
     <div class="seg">
-      <button id="sortAdded" class="on" type="button">추가순</button>
+      <button id="sortAdded" class="on" type="button">최근순</button>
+      <button id="sortOld" type="button">오래된 순</button>
       <button id="sortName" type="button">이름순</button>
     </div>
   </div>
+  <input type="text" id="holdSearch" placeholder="🔎 이름·메모로 찾기" autocomplete="off" aria-label="보유 항목 검색" style="margin-bottom:10px" />
   <ul class="items" id="itemList"></ul>
   <p class="hint" id="equalNote" style="display:none">100개는 서로 평등합니다. 이 도구에는 순위가 없습니다.</p>
 </section>
@@ -249,7 +294,7 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
     <button id="xBtn" type="button" class="ghost">X(트위터) 공유</button>
     <button id="shareBtn" type="button" class="ghost" style="display:none">공유하기 📤</button>
   </div>
-  <p class="disc">※ 목록과 방출 로그는 이 브라우저 안에만 저장되며 서버로 전송되지 않습니다. 브라우저 데이터를 지우면 사라지니 백업(⋯ 메뉴)을 권합니다. 공유 링크에는 목록 이름·보유 항목·최근 방출 기록이 주소 안에 담깁니다.</p>
+  <p class="disc">※ 목록과 방출 로그는 이 브라우저 안에만 저장되며 서버로 전송되지 않습니다. 브라우저 데이터를 지우면 사라지니 백업(‘관리’ 버튼)을 권합니다. 공유 링크에는 목록 이름·보유 항목·최근 방출 기록이 주소 안에 담깁니다.</p>
 
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -321,7 +366,7 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
     <dt>Q. 순위를 매기거나 친구를 팔로우할 수 있나요?</dt>
     <dd>둘 다 없습니다. 100개는 평등하고 정렬은 추가순·이름순만 있으며, 좋아요·댓글·팔로우 기능은 만들지 않았습니다. 보여주고 싶을 때는 공유 링크나 이미지 카드로 결과만 내보내면 됩니다.</dd>
     <dt>Q. 내 목록은 어디에 저장되나요?</dt>
-    <dd>이 브라우저 안에만 저장되고 어디로도 전송되지 않습니다. 브라우저 데이터를 지우거나 기기를 바꾸면 사라지므로 ⋯ 메뉴의 백업으로 파일을 내려받아 두세요. 공유 링크의 내용도 서버가 아니라 주소 안에 담깁니다. 실명·연락처 등 개인정보는 적지 마세요.</dd>
+    <dd>이 브라우저 안에만 저장되고 어디로도 전송되지 않습니다. 브라우저 데이터를 지우거나 기기를 바꾸면 사라지므로 ‘관리’ 버튼의 백업으로 파일을 내려받아 두세요. 공유 링크의 내용도 서버가 아니라 주소 안에 담깁니다. 실명·연락처 등 개인정보는 적지 마세요.</dd>
     <dt>Q. ‘같은 걸 버린 사람들’ 화면은 무엇인가요?</dt>
     <dd>내가 보낸 항목을 다른 사람도 보냈다면, 그 사람이 적어둔 이유만 익명으로 모아 보여주는 화면입니다. 서버가 없으므로 자동으로 모이지는 않고, 친구에게 받은 공유 링크를 직접 붙여넣어야 합니다. 링크에 담긴 방출 기록만 이 브라우저에 저장되고 목록 이름은 저장하지 않으며, 이 화면에도 좋아요·댓글·팔로우는 없습니다.</dd>
   </dl>
@@ -375,16 +420,49 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
     <h3>목록 관리</h3>
     <p class="why" id="menuName">—</p>
     <div class="acts"><button id="mnRename" type="button" class="ghost">이름 바꾸기 ✏️</button></div>
+    <div class="acts"><button id="mnText" type="button" class="ghost">텍스트로 복사 📝</button></div>
     <div class="acts"><button id="mnExport" type="button" class="ghost">백업 파일 내려받기 💾</button></div>
     <div class="acts"><button id="mnImport" type="button" class="ghost">백업 파일 불러오기 📂</button></div>
     <div class="acts"><button id="mnDelete" type="button" class="ghost" style="color:#fca5a5;border-color:#5c2b2b">이 목록 삭제 🗑️</button></div>
     <div class="acts"><button id="mnClose" type="button">닫기</button></div>
     <p class="hint">삭제하면 그 목록의 방출 로그도 함께 사라지고 되돌릴 수 없습니다. 백업을 먼저 받아 두세요.</p>
-    <input type="file" id="fileIn" accept="application/json" style="display:none" />
+    <input type="file" id="fileIn" accept="application/json" aria-label="백업 파일 선택" style="display:none" />
   </div>
 </div>
 
-<div class="toast" id="toast">복사되었습니다</div>
+<!-- 항목 고치기 -->
+<div class="modal" id="editModal">
+  <div class="sheet">
+    <h3>항목 고치기</h3>
+    <p class="why">이름과 메모를 고칠 수 있습니다. 고쳐도 <b>방출 로그는 그대로</b>이고, 머문 기간도 유지됩니다.</p>
+    <p class="lab">이름</p>
+    <input type="text" id="editName" maxlength="60" aria-label="항목 이름" autocomplete="off" />
+    <p class="lab" style="margin-top:14px">한 줄 메모 <span style="color:var(--faint);font-weight:400">(선택)</span></p>
+    <input type="text" id="editNote" maxlength="60" aria-label="항목 메모" autocomplete="off" />
+    <div class="acts"><button id="editSave" type="button">저장</button></div>
+    <div class="acts"><button id="editSend" type="button" class="ghost">이 항목 보내기 →</button></div>
+    <div class="acts"><button id="editCancel" type="button" class="ghost">닫기</button></div>
+  </div>
+</div>
+
+<!-- 목록 이름/종류 -->
+<div class="modal" id="nameModal">
+  <div class="sheet">
+    <h3 id="nmTitle">새 목록</h3>
+    <p class="why" id="nmWhy">이름과 종류를 정하면 100칸이 준비됩니다.</p>
+    <p class="lab">목록 이름</p>
+    <input type="text" id="nmName" maxlength="30" placeholder="예: 인생 영화 100" aria-label="목록 이름" autocomplete="off" />
+    <div id="nmKindWrap">
+      <p class="lab" style="margin-top:16px">종류</p>
+      <div class="chips" id="nmKinds"></div>
+    </div>
+    <div class="acts"><button id="nmOk" type="button" disabled>만들기</button></div>
+    <div class="acts"><button id="nmCancel" type="button" class="ghost">취소</button></div>
+  </div>
+</div>
+
+<div class="undobar" id="undobar"><span id="undoText">보냈습니다</span><button id="undoBtn" type="button">되돌리기</button></div>
+<div class="toast" id="toast" role="status" aria-live="polite">복사되었습니다</div>
 <canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
 
 <script>
@@ -487,6 +565,23 @@ function releaseItem(L, itemId, reason, now){
   return L;
 }
 
+/* 이름·메모 수정. 오타 하나 때문에 사유를 지어내 버리는 일이 없도록. */
+function editItem(L, itemId, name, note){
+  var nm = String(name == null ? "" : name).trim().slice(0, 60);
+  if (!nm) throw { code: "EMPTY", message: "항목 이름을 입력해 주세요" };
+  var norm = normName(nm);
+  if (!norm) throw { code: "EMPTY", message: "항목 이름을 입력해 주세요" };
+  var idx = -1;
+  for (var i = 0; i < L.items.length; i++) if (L.items[i].id === itemId) { idx = i; break; }
+  if (idx < 0) throw { code: "NOTFOUND", message: "항목을 찾을 수 없습니다" };
+  var dup = heldIndex(L, norm);
+  if (dup >= 0 && dup !== idx) throw { code: "DUP", message: "이미 목록에 있는 항목입니다" };
+  L.items[idx].name = nm;
+  L.items[idx].norm = norm;
+  L.items[idx].note = String(note == null ? "" : note).trim().slice(0, 60);
+  return L;
+}
+
 /* 101번째 교체: 방출과 추가를 한 번에 처리해 101개 상태를 만들지 않는다. */
 function replaceItem(L, itemId, reason, name, note, now){
   releaseItem(L, itemId, reason, now);
@@ -519,7 +614,7 @@ var POOL_MAX = 30;
 /* 같은 스냅샷을 두 번 넣어도 한 번만 쌓이도록 하는 내용 기반 키 */
 function poolKey(entries){
   var s = "";
-  for (var i = 0; i < entries.length; i++) s += entries[i][0] + " " + entries[i][1] + "";
+  for (var i = 0; i < entries.length; i++) s += entries[i][0] + "\u0000" + entries[i][1] + "\u0001";
   var h = 2166136261;
   for (var j = 0; j < s.length; j++){ h ^= s.charCodeAt(j); h = Math.imul(h, 16777619); }
   return (h >>> 0).toString(36) + "-" + entries.length;
@@ -574,7 +669,7 @@ if (typeof module !== "undefined" && module.exports){
   module.exports = { CAP:CAP, normName:normName, makeList:makeList, validate:validate,
                      addItem:addItem, releaseItem:releaseItem, replaceItem:replaceItem,
                      statsOf:statsOf, findList:findList, poolAdd:poolAdd, overlaps:overlaps,
-                     POOL_MAX:POOL_MAX };
+                     POOL_MAX:POOL_MAX, editItem:editItem, KINDS:KINDS };
 }
 
 /* ── 저장소 ───────────────────────────────────────────── */
@@ -606,23 +701,51 @@ function load(){
   fresh.cur = fresh.lists[0].id;
   return fresh;
 }
+/* 저장 성공 여부를 돌려준다. 실패를 삼키면 "저장됐다"고 잘못 알리게 된다. */
 function persist(){
-  try { localStorage.setItem(KEY, JSON.stringify(state)); }
-  catch (e) { toast("브라우저 저장 공간이 부족합니다"); }
+  try { localStorage.setItem(KEY, JSON.stringify(state)); return true; }
+  catch (e) { return false; }
 }
 
 /* 모든 변경은 이 관문을 지난다. 검증에 걸리면 저장하지 않고 되돌린다. */
+var prevState = null;   /* 되돌리기용 직전 상태 (한 단계) */
 function commit(mutate){
   var next = clone(state);
   try { mutate(next); }
   catch (err){ toast(err && err.message ? err.message : "처리할 수 없습니다"); throw err; }
   var bad = validate(next);
   if (bad){ toast(bad); throw { code: "INVALID", message: bad }; }
+  prevState = state;    /* next 는 복제본이라 이전 객체는 그대로 남아 있다 */
   state = next;
-  persist();
+  var saved = persist();
   render();
+  if (!saved){
+    /* 저장이 실패했는데 성공 토스트가 뜨면 안 된다 — 던져서 호출부의 성공 안내를 막는다 */
+    toast("저장 공간이 부족해 이 변경이 저장되지 않았습니다");
+    throw { code: "NOSAVE", message: "저장 공간이 부족해 이 변경이 저장되지 않았습니다" };
+  }
   return true;
 }
+
+/* ── 되돌리기 ─────────────────────────────────────────── */
+var undoTimer = null;
+function offerUndo(text){
+  if (!prevState) return;
+  $("undoText").textContent = text;
+  $("undobar").classList.add("show");
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(hideUndo, 9000);
+}
+function hideUndo(){ $("undobar").classList.remove("show"); clearTimeout(undoTimer); }
+$("undoBtn").addEventListener("click", function(){
+  if (!prevState) { hideUndo(); return; }
+  state = prevState;
+  prevState = null;
+  persist();
+  render();
+  hideUndo();
+  toast("되돌렸습니다");
+});
 
 function cur(){ return findList(state, state.cur) || state.lists[0]; }
 
@@ -657,24 +780,113 @@ function renderHold(){
     : (n === 0 ? "아직 비어 있습니다" : "앞으로 <b>" + (CAP - n) + "칸</b> 남았습니다");
   $("tabHoldN").textContent = n;
 
+  /* 100칸 격자 — 상한이 몇 칸인지 한눈에 보이게 한다 */
+  var g = $("grid100");
+  if (g.childElementCount !== CAP){
+    var cells = "";
+    for (var c = 0; c < CAP; c++) cells += "<span></span>";
+    g.innerHTML = cells;
+  }
+  var kids = g.children;
+  for (var d = 0; d < CAP; d++) kids[d].className = d < n ? (d === n - 1 ? "on new" : "on") : "";
+
+  /* 빈 목록이면 종류부터 고르게 안내 */
+  $("onboard").style.display = n === 0 ? "" : "none";
+  if (n === 0) renderObKinds();
+
   var arr = L.items.slice();
   if (sortMode === "name") arr.sort(function(a, b){ return a.name.localeCompare(b.name, "ko"); });
+  else if (sortMode === "old") arr.sort(function(a, b){ return a.addedAt - b.addedAt; });
   else arr.sort(function(a, b){ return b.addedAt - a.addedAt; });
+
+  /* 100개를 스크롤로만 훑지 않도록 이름·메모 검색 */
+  var q = normName($("holdSearch").value || "");
+  if (q) arr = arr.filter(function(it){ return it.norm.indexOf(q) >= 0 || normName(it.note || "").indexOf(q) >= 0; });
+  $("shownN").textContent = q ? arr.length + "/" + n + " 표시" : "";
+  $("holdSearch").style.display = n > 8 ? "" : "none";
 
   $("equalNote").style.display = n > 3 ? "" : "none";
   $("itemList").innerHTML = arr.length ? arr.map(function(it){
-    return '<li><div class="it-main"><div class="it-name">' + esc(it.name) +
-      (it.re ? '<span class="it-back">' + (it.back ? it.back + "일 만에 돌아옴" : "오늘 다시 돌아옴") + "</span>" : "") + "</div>" +
-      '<div class="it-meta">' + fmtDate(it.addedAt) + " 추가 · " + days(now() - it.addedAt) + "일째</div>" +
-      (it.note ? '<div class="it-note">' + esc(it.note) + "</div>" : "") +
-      '</div><button class="send" type="button" data-send="' + esc(it.id) + '">보내기</button></li>';
-  }).join("") : '<li><p class="empty">아직 아무것도 없습니다.<br>무엇이든 첫 번째로 넣어 보세요.</p></li>';
+    return '<li><div class="it-main"><button class="it-edit" type="button" data-edit="' + esc(it.id) +
+      '" aria-label="' + esc(it.name) + ' 고치기"><span class="it-name">' + esc(it.name) +
+      (it.re ? '<span class="it-back">' + (it.back ? it.back + "일 만에 돌아옴" : "오늘 다시 돌아옴") + "</span>" : "") + "</span>" +
+      '<span class="it-meta">' + fmtDate(it.addedAt) + " 추가 · " + days(now() - it.addedAt) + "일째</span>" +
+      (it.note ? '<span class="it-note">' + esc(it.note) + "</span>" : "") +
+      '</button></div><button class="send" type="button" data-send="' + esc(it.id) + '" aria-label="' +
+      esc(it.name) + ' 보내기">보내기</button></li>';
+  }).join("") : '<li><p class="empty">' + (q ? "찾는 항목이 없습니다." : "아직 아무것도 없습니다.<br>무엇이든 첫 번째로 넣어 보세요.") + "</p></li>";
 
   var btns = $("itemList").querySelectorAll("[data-send]");
   for (var i = 0; i < btns.length; i++){
     btns[i].addEventListener("click", function(){ openRelease(this.getAttribute("data-send"), null); });
   }
+  var eds = $("itemList").querySelectorAll("[data-edit]");
+  for (var k = 0; k < eds.length; k++){
+    eds[k].addEventListener("click", function(){ openEdit(this.getAttribute("data-edit")); });
+  }
 }
+
+/* ── 빈 목록 온보딩 ────────────────────────────────────── */
+var OB = {
+  "책": { title: "인생 책 100권", eg: "예: 무라카미 하루키 『노르웨이의 숲』" },
+  "영화": { title: "인생 영화 100편", eg: "예: 화양연화" },
+  "음악": { title: "인생 앨범 100장", eg: "예: 김광석 『다시 부르기』" },
+  "물건": { title: "남길 물건 100개", eg: "예: 10년 쓴 스탠드" },
+  "장소": { title: "다시 갈 곳 100군데", eg: "예: 제주 사려니숲길" },
+  "자유": { title: "내 목록", eg: "무엇이든 한 줄로 적어 주세요" }
+};
+function renderObKinds(){
+  var k = cur().kind;
+  $("obKinds").innerHTML = KINDS.map(function(x){
+    return '<button class="chip' + (x === k ? " on" : "") + '" type="button" data-ob="' + esc(x) + '">' + esc(x) + "</button>";
+  }).join("");
+  var bs = $("obKinds").querySelectorAll("[data-ob]");
+  for (var i = 0; i < bs.length; i++){
+    bs[i].addEventListener("click", function(){
+      var kind = this.getAttribute("data-ob"), o = OB[kind] || OB["자유"];
+      try {
+        commit(function(st){
+          var L = findList(st, st.cur);
+          L.kind = kind;
+          if (!L.items.length && !L.log.length) L.title = o.title;   /* 아직 아무것도 없을 때만 이름 제안 */
+        });
+      } catch (e){ return; }
+      $("addName").placeholder = o.eg;
+      $("addName").focus();
+      toast("‘" + o.title + "’로 시작합니다");
+    });
+  }
+}
+
+/* ── 항목 고치기 ───────────────────────────────────────── */
+var editId = null;
+function openEdit(id){
+  var L = cur(), it = null;
+  for (var i = 0; i < L.items.length; i++) if (L.items[i].id === id) { it = L.items[i]; break; }
+  if (!it) return;
+  editId = id;
+  $("editName").value = it.name;
+  $("editNote").value = it.note || "";
+  $("editModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+  setTimeout(function(){ $("editName").focus(); }, 30);
+}
+function closeEdit(){ $("editModal").classList.remove("show"); document.body.style.overflow = ""; editId = null; }
+$("editCancel").addEventListener("click", closeEdit);
+$("editModal").addEventListener("click", function(e){ if (e.target === this) closeEdit(); });
+$("editSave").addEventListener("click", function(){
+  var id = editId, nm = $("editName").value, nt = $("editNote").value;
+  try {
+    commit(function(st){ editItem(findList(st, st.cur), id, nm, nt); });
+    closeEdit();
+    toast("고쳤습니다");
+  } catch (e){ /* commit 이 사유를 알린다 */ }
+});
+$("editSend").addEventListener("click", function(){
+  var id = editId;
+  closeEdit();
+  openRelease(id, null);
+});
 
 function renderLog(){
   var L = cur();
@@ -814,8 +1026,17 @@ function tab(which){
 $("tabHold").addEventListener("click", function(){ tab("hold"); });
 $("tabLog").addEventListener("click", function(){ tab("log"); });
 $("tabPool").addEventListener("click", function(){ tab("pool"); });
-$("sortAdded").addEventListener("click", function(){ sortMode = "added"; $("sortAdded").classList.add("on"); $("sortName").classList.remove("on"); renderHold(); });
-$("sortName").addEventListener("click", function(){ sortMode = "name"; $("sortName").classList.add("on"); $("sortAdded").classList.remove("on"); renderHold(); });
+function setSort(mode){
+  sortMode = mode;
+  $("sortAdded").classList.toggle("on", mode === "added");
+  $("sortOld").classList.toggle("on", mode === "old");
+  $("sortName").classList.toggle("on", mode === "name");
+  renderHold();
+}
+$("sortAdded").addEventListener("click", function(){ setSort("added"); });
+$("sortOld").addEventListener("click", function(){ setSort("old"); });
+$("sortName").addEventListener("click", function(){ setSort("name"); });
+$("holdSearch").addEventListener("input", renderHold);
 
 /* ── 추가 ─────────────────────────────────────────────── */
 function tryAdd(){
@@ -897,7 +1118,7 @@ $("mConfirm").addEventListener("click", function(){
     });
     if (add){ $("addName").value = ""; $("addNote").value = ""; }
     closeRelease();
-    toast(add ? "한 자리를 비우고 새 항목이 들어갔습니다" : "방출 로그에 남겼습니다");
+    offerUndo(add ? "한 자리를 비우고 새 항목이 들어갔습니다" : "방출 로그에 남겼습니다");
   } catch (err){ /* commit 이 사유를 토스트로 알린다 */ }
 });
 
@@ -905,18 +1126,55 @@ $("mConfirm").addEventListener("click", function(){
 $("listSel").addEventListener("change", function(){
   state.cur = this.value; persist(); render();
 });
-$("newListBtn").addEventListener("click", function(){
-  var title = prompt("새 목록의 이름은? (예: 인생 영화 100)", "");
-  if (title === null) return;
-  title = String(title).trim(); if (!title) return;
-  var kind = prompt("종류를 적어 주세요 (" + KINDS.join(" / ") + ")", "자유");
-  if (kind === null) return;
+/* ── 목록 이름/종류 시트 (네이티브 prompt 대신) ─────────── */
+var nmMode = "new", nmKind = "자유";
+function openName(mode){
+  nmMode = mode;
+  var L = cur();
+  nmKind = mode === "new" ? "자유" : L.kind;
+  $("nmTitle").textContent = mode === "new" ? "새 목록" : "목록 이름 바꾸기";
+  $("nmWhy").textContent = mode === "new"
+    ? "이름과 종류를 정하면 100칸이 준비됩니다."
+    : "이름과 종류를 바꿔도 담긴 항목과 방출 로그는 그대로입니다.";
+  $("nmName").value = mode === "new" ? "" : L.title;
+  $("nmOk").textContent = mode === "new" ? "만들기" : "저장";
+  renderKinds();
+  syncNm();
+  $("nameModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+  setTimeout(function(){ $("nmName").focus(); }, 30);
+}
+function closeName(){ $("nameModal").classList.remove("show"); document.body.style.overflow = ""; }
+function renderKinds(){
+  $("nmKinds").innerHTML = KINDS.map(function(k){
+    return '<button class="chip' + (k === nmKind ? " on" : "") + '" type="button" data-kind="' + esc(k) + '">' + esc(k) + "</button>";
+  }).join("");
+  var cs = $("nmKinds").querySelectorAll("[data-kind]");
+  for (var i = 0; i < cs.length; i++){
+    cs[i].addEventListener("click", function(){ nmKind = this.getAttribute("data-kind"); renderKinds(); });
+  }
+}
+function syncNm(){ $("nmOk").disabled = !$("nmName").value.trim(); }
+$("nmName").addEventListener("input", syncNm);
+$("nmCancel").addEventListener("click", closeName);
+$("nameModal").addEventListener("click", function(e){ if (e.target === this) closeName(); });
+$("nmOk").addEventListener("click", function(){
+  var title = $("nmName").value.trim(), kind = nmKind, mode = nmMode;
+  if (!title) return;
   commit(function(st){
-    var L = makeList(title, String(kind).trim(), now());
-    st.lists.push(L); st.cur = L.id;
+    if (mode === "new"){
+      var L = makeList(title, kind, now());
+      st.lists.push(L); st.cur = L.id;
+    } else {
+      var C = findList(st, st.cur);
+      C.title = title.slice(0, 30);
+      C.kind = KINDS.indexOf(kind) >= 0 ? kind : C.kind;
+    }
   });
-  toast("새 목록을 만들었습니다");
+  closeName();
+  toast(mode === "new" ? "새 목록을 만들었습니다" : "바꿨습니다");
 });
+$("newListBtn").addEventListener("click", function(){ openName("new"); });
 $("listMenuBtn").addEventListener("click", function(){
   $("menuName").textContent = cur().title + " · " + cur().kind + " · 보유 " + cur().items.length + "개 / 보낸 것 " + statsOf(cur()).count + "가지";
   $("menu").classList.add("show");
@@ -924,11 +1182,8 @@ $("listMenuBtn").addEventListener("click", function(){
 $("mnClose").addEventListener("click", function(){ $("menu").classList.remove("show"); });
 $("menu").addEventListener("click", function(e){ if (e.target === this) this.classList.remove("show"); });
 $("mnRename").addEventListener("click", function(){
-  var t = prompt("목록 이름", cur().title);
-  if (t === null) return;
-  t = String(t).trim(); if (!t) return;
-  commit(function(st){ findList(st, st.cur).title = t.slice(0, 30); });
   $("menu").classList.remove("show");
+  openName("rename");
 });
 $("mnDelete").addEventListener("click", function(){
   if (state.lists.length <= 1){ toast("마지막 목록은 삭제할 수 없습니다"); return; }
@@ -940,6 +1195,26 @@ $("mnDelete").addEventListener("click", function(){
   });
   $("menu").classList.remove("show");
   toast("삭제했습니다");
+});
+/* 보유 목록 + 방출 로그를 그대로 읽을 수 있는 텍스트로 (블로그·메모앱 이관용) */
+$("mnText").addEventListener("click", function(){
+  var L = cur(), s = statsOf(L);
+  var out = ["# " + L.title + " (" + L.kind + ")", "보유 " + L.items.length + "/100 · 보낸 것 " + s.count + "가지", ""];
+  out.push("## 지금 담고 있는 것");
+  L.items.slice().sort(function(a, b){ return a.addedAt - b.addedAt; }).forEach(function(it, i){
+    out.push((i + 1) + ". " + it.name + (it.note ? " — " + it.note : "") + "  (" + fmtDate(it.addedAt) + " 추가)");
+  });
+  var rel = L.log.filter(function(e){ return e.type === "release"; }).sort(function(a, b){ return b.at - a.at; });
+  if (rel.length){
+    out.push("", "## 보낸 것과 그 이유");
+    rel.forEach(function(e){
+      out.push("- " + e.name + " · " + e.tenure + "일 머묾 · " + fmtDate(e.at));
+      out.push("  " + e.reason);
+    });
+  }
+  out.push("", "tomatoeggcat.com/baekgae");
+  copy(out.join("\n"), "텍스트로 복사했습니다");
+  $("menu").classList.remove("show");
 });
 $("mnExport").addEventListener("click", function(){
   var blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
@@ -990,8 +1265,9 @@ function snapshot(){
     payload = { t: L.title, k: L.kind, h: L.items.length, c: s.count, a: s.avg,
                 i: items.slice(0, itemN),
                 l: rel.slice(0, logN).map(function(e){ return [e.name, e.reason, e.tenure, Math.round(e.at / 86400000)]; }) };
+    /* 메신저·브라우저가 잘라먹지 않도록 넉넉히 짧게 유지한다 */
     var size = enc(payload).length;
-    if (size <= 3200) break;
+    if (size <= 1800) break;
     if (itemN > 12){ itemN = Math.max(12, itemN - 12); continue; }
     if (logN > 5){ logN -= 3; continue; }
     break;
