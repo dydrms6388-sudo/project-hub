@@ -286,11 +286,19 @@ for (const d of daily) {
       ${srcHtml}
     </div>`;
 
+  // YMYL(금융·건강·법률 등) 도구는 결과 오인 방지를 위해 상단에 간결한 참고용 고지를 노출.
+  const isYmyl = NEEDS_NOTE.test(`${d.cat} ${d.domain} ${d.name}`);
+  const topNoteHtml = isYmyl
+    ? `<p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 ${REVIEW_LABEL(reviewed)}입니다.</p>`
+    : "";
+
+  // 스캔 가독성 우선: 소개 → (참고용) → 이럴 때 유용해요 → 사용법 → 배경지식(긴 글은 아래로) → 팁 → 주의 → FAQ
   const body = `<h2>${esc(d.name)} 소개</h2>
     <p>${esc(intro)}</p>
-    ${bgHtml}
-    ${stepsHtml}
+    ${topNoteHtml}
     ${scenHtml}
+    ${stepsHtml}
+    ${bgHtml}
     ${tipsHtml}
     ${cautHtml}
     ${faqHtml}

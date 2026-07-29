@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>미팅노트 소개</h2>
     <p>회의 중 빠르게 적은 메모를 붙여넣으면 결정 사항·액션 아이템·안건 요약으로 자동 정리해 주는 도구입니다. 담당자와 기한이 언급된 경우 액션 아이템으로 추출해 실행 목록을 바로 만들 수 있어, 회의 후 정리에 드는 시간을 줄여 줍니다. 녹음이나 로그인 없이 텍스트 입력만으로 즉시 사용할 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>회의에서 결정된 사항이 제대로 기록·공유되지 않으면 실행이 흐지부지되거나 같은 내용을 다음 회의에서 다시 논의하는 일이 생깁니다. 효과적인 회의록은 &#39;무엇을 결정했고, 누가 언제까지 무엇을 할 것인가&#39;를 명확하게 담고 있어야 합니다. 메모가 길고 비구조적일수록 정리하는 데 시간이 걸리는데, AI 기반 텍스트 분류는 핵심 내용을 빠르게 범주화하는 데 도움을 줍니다. 다만 자동 정리는 입력 텍스트의 명확성에 크게 의존하므로, 결과를 그대로 사용하기 전에 사람이 검토하는 과정이 중요합니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>5~6명이 참여한 팀 회의가 끝난 직후, 이야기한 내용을 빠르게 정리해 공유해야 할 때 유용합니다.</li>
+        <li>메모는 있는데 액션 아이템이 어딘가에 섞여 있어 찾기 번거로울 때, 실행 목록만 빠르게 추출할 수 있습니다.</li>
+        <li>주 1회 정기 회의처럼 반복되는 회의의 회의록을 일관된 형식으로 유지하고 싶을 때 활용할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>회의 중 메모한 텍스트를 입력창에 붙여넣습니다.</li>
@@ -133,12 +140,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>정리된 내용을 읽고 사실 여부와 빠진 내용을 직접 검토·수정합니다.</li>
         <li>완성된 회의록을 복사해 팀 채널, 이메일, 문서 도구로 공유합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>5~6명이 참여한 팀 회의가 끝난 직후, 이야기한 내용을 빠르게 정리해 공유해야 할 때 유용합니다.</li>
-        <li>메모는 있는데 액션 아이템이 어딘가에 섞여 있어 찾기 번거로울 때, 실행 목록만 빠르게 추출할 수 있습니다.</li>
-        <li>주 1회 정기 회의처럼 반복되는 회의의 회의록을 일관된 형식으로 유지하고 싶을 때 활용할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>회의에서 결정된 사항이 제대로 기록·공유되지 않으면 실행이 흐지부지되거나 같은 내용을 다음 회의에서 다시 논의하는 일이 생깁니다. 효과적인 회의록은 &#39;무엇을 결정했고, 누가 언제까지 무엇을 할 것인가&#39;를 명확하게 담고 있어야 합니다. 메모가 길고 비구조적일수록 정리하는 데 시간이 걸리는데, AI 기반 텍스트 분류는 핵심 내용을 빠르게 범주화하는 데 도움을 줍니다. 다만 자동 정리는 입력 텍스트의 명확성에 크게 의존하므로, 결과를 그대로 사용하기 전에 사람이 검토하는 과정이 중요합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>메모에 담당자 이름과 기한을 명시해 두면 액션 아이템 추출 정확도가 높아집니다. &#39;홍길동이 목요일까지 확인하기로&#39; 같은 형식이 효과적입니다.</li>

@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>기초대사량 계산기 (BMR·TDEE) 소개</h2>
     <p>키·체중·나이·성별과 평소 활동 수준을 입력하면 기초대사량(BMR)과 하루 총 소비 칼로리(TDEE), 목표에 맞는 권장 칼로리와 단백질·탄수화물·지방 비율까지 한 번에 계산합니다. 다이어트를 시작하거나 운동 식단을 조정할 때 &#39;몇 칼로리를 먹어야 하는지&#39; 기준점을 잡는 도구입니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>기초대사량(BMR)은 아무것도 하지 않고 안정 상태를 유지할 때 생명 활동에 필요한 최소 에너지량입니다. 이 도구에서 사용하는 Mifflin-St Jeor 공식은 1990년에 발표된 이후 현대인의 체성분을 가장 잘 반영하는 공식으로 널리 활용됩니다. TDEE는 BMR에 활동 지수(좌식~고강도 운동)를 곱해 실제 하루 소비 칼로리를 추정합니다. 체중 감량을 목표로 할 때는 TDEE보다 적게 먹고, 근육 증가를 목표로 할 때는 TDEE보다 조금 더 섭취하는 것이 기본 원리입니다. 매크로(단백질·탄수화물·지방)는 같은 칼로리라도 체성분 변화 효율에 차이를 만들기 때문에 칼로리와 함께 관리하는 것이 중요합니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>체중 감량을 시작하기 전 하루에 몇 칼로리를 먹어야 할지 기준이 없을 때, TDEE 기반 권장 칼로리를 출발점으로 삼아 식사량을 조절할 수 있습니다.</li>
+        <li>헬스를 시작해 근육을 늘리고 싶은데 단백질을 하루에 얼마나 먹어야 하는지 모를 때, 매크로 목표치를 계산해 식품별 섭취량을 조율하는 데 활용할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>키(cm)·체중(kg)·나이·성별을 입력하세요.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>감량·유지·증량 목표 중 하나를 선택하면 권장 칼로리가 자동 조정됩니다.</li>
         <li>단백질·탄수화물·지방 매크로 목표치를 참고해 식단을 구성하세요.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>체중 감량을 시작하기 전 하루에 몇 칼로리를 먹어야 할지 기준이 없을 때, TDEE 기반 권장 칼로리를 출발점으로 삼아 식사량을 조절할 수 있습니다.</li>
-        <li>헬스를 시작해 근육을 늘리고 싶은데 단백질을 하루에 얼마나 먹어야 하는지 모를 때, 매크로 목표치를 계산해 식품별 섭취량을 조율하는 데 활용할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>기초대사량(BMR)은 아무것도 하지 않고 안정 상태를 유지할 때 생명 활동에 필요한 최소 에너지량입니다. 이 도구에서 사용하는 Mifflin-St Jeor 공식은 1990년에 발표된 이후 현대인의 체성분을 가장 잘 반영하는 공식으로 널리 활용됩니다. TDEE는 BMR에 활동 지수(좌식~고강도 운동)를 곱해 실제 하루 소비 칼로리를 추정합니다. 체중 감량을 목표로 할 때는 TDEE보다 적게 먹고, 근육 증가를 목표로 할 때는 TDEE보다 조금 더 섭취하는 것이 기본 원리입니다. 매크로(단백질·탄수화물·지방)는 같은 칼로리라도 체성분 변화 효율에 차이를 만들기 때문에 칼로리와 함께 관리하는 것이 중요합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>활동 수준을 과대평가하는 경우가 많으므로, 처음에는 한 단계 낮게 선택하고 2~3주간 체중 변화를 보며 조정하는 것이 현실적입니다.</li>

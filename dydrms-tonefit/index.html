@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>톤핏 소개</h2>
     <p>퍼스널컬러는 타고난 피부·눈동자·머리카락의 색감과 잘 어울리는 색 계열을 찾는 방법으로, 올바르게 적용하면 얼굴이 더 밝아 보이고 피로감이 줄어드는 효과가 있습니다. 이 도구는 사진 업로드 없이 12가지 문항만으로 봄 웜·여름 쿨·가을 웜·겨울 쿨 계열의 12톤 중 내 유형을 진단하고, 어울리는 색상 팔레트와 메이크업·헤어 방향을 함께 제안합니다. 전문 진단 전 방향을 미리 잡거나 일상 쇼핑에 바로 참고하기 좋습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>퍼스널컬러 이론은 1980년대 색채학자 카롤 잭슨이 체계화한 &#39;시즌 팔레트&#39;에서 출발했습니다. 피부의 언더톤(따뜻한 황색 계열의 웜톤, 차가운 분홍·파란 계열의 쿨톤)과 명도·채도 조합으로 계절형으로 분류하는 방식이 현재 12톤·16톤 등 세분화된 체계로 발전했습니다. 웜톤과 쿨톤의 구분은 혈관 색으로 가늠하는 방법이 널리 알려져 있는데, 손목 안쪽 혈관이 초록빛이면 웜톤, 푸른빛이면 쿨톤으로 보는 식입니다. 다만 자연광이 아닌 실내 조명 아래에서는 언더톤 판단이 달라질 수 있어 자가 진단의 한계가 생깁니다. 퍼스널컬러는 피부색 자체가 아닌 피부 아래 색조를 기준으로 하기 때문에, 같은 피부 밝기라도 웜과 쿨이 모두 존재합니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>옷을 살 때마다 색상 선택이 망설여지는 분이 기준을 잡는 데 유용합니다.</li>
+        <li>염색이나 메이크업 변화를 앞두고 방향을 미리 확인하고 싶을 때 활용할 수 있습니다.</li>
+        <li>백화점·스튜디오 전문 진단 전에 내 계열을 미리 파악해 진단 시간을 단축할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>자연광이 드는 환경에서 메이크업을 지운 상태로 거울을 보며 시작합니다.</li>
@@ -133,12 +140,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>추천 색상 팔레트를 확인하고 내 옷장·화장품과 비교해봅니다.</li>
         <li>메이크업 및 헤어 컬러 방향 제안을 참고해 스타일에 적용합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>옷을 살 때마다 색상 선택이 망설여지는 분이 기준을 잡는 데 유용합니다.</li>
-        <li>염색이나 메이크업 변화를 앞두고 방향을 미리 확인하고 싶을 때 활용할 수 있습니다.</li>
-        <li>백화점·스튜디오 전문 진단 전에 내 계열을 미리 파악해 진단 시간을 단축할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>퍼스널컬러 이론은 1980년대 색채학자 카롤 잭슨이 체계화한 &#39;시즌 팔레트&#39;에서 출발했습니다. 피부의 언더톤(따뜻한 황색 계열의 웜톤, 차가운 분홍·파란 계열의 쿨톤)과 명도·채도 조합으로 계절형으로 분류하는 방식이 현재 12톤·16톤 등 세분화된 체계로 발전했습니다. 웜톤과 쿨톤의 구분은 혈관 색으로 가늠하는 방법이 널리 알려져 있는데, 손목 안쪽 혈관이 초록빛이면 웜톤, 푸른빛이면 쿨톤으로 보는 식입니다. 다만 자연광이 아닌 실내 조명 아래에서는 언더톤 판단이 달라질 수 있어 자가 진단의 한계가 생깁니다. 퍼스널컬러는 피부색 자체가 아닌 피부 아래 색조를 기준으로 하기 때문에, 같은 피부 밝기라도 웜과 쿨이 모두 존재합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>문항에 답할 때 조명이 노란 실내보다 흐린 날 창가 자연광 아래에서 확인하면 훨씬 정확합니다.</li>

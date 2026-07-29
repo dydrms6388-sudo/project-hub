@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,6 +125,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>오늘옷장 (기온별 옷차림) 소개</h2>
     <p>오늘 몇 도, 뭐 입지? 위치만 켜면 오늘 날씨에 딱 맞는 옷차림을 상·하의·아우터·신발·액세서리 한 카드로 대신 골라주는 무료 웹 도구. 널리 통용되는 기온별 옷차림표 8구간을 기준으로, ①기상청 겨울철 체감온도 공식(바람 반영)으로 실제보다 추운 &#39;체감&#39;을 계산해 더 따뜻하게 ②아침·저녁 일교차가 8°C 이상이면 &#39;겹쳐입기(레이어링)&#39; 경고와 처방 ③&#39;추위/더위 잘 탐&#39; 개인 체감 슬라이더(-3~+3)로 한 단계 보정 ④성인(남/여)·아이 대상 + 캐주얼/오피스/액티브 스타일 톤별 코디까지 개인화. Open-Meteo(무료·무키) 지오로케이션으로 현재 기온·풍속·습도·일교차 자동 조회(실패 시 슬라이더·숫자·프리셋 수동 폴백, 접근성 이중화). 재방문 훅=오늘 뭐 입었지 코디 일지(추웠다/딱좋았다/더웠다 기록→다음 추천 자동 보정, 🔥연속 스트릭·최근 14일 기록·&#39;어제보다 N도&#39; 비교). 무백엔드·무가입·무유료API, 위치·기록은 기기 localStorage에만 저장(서버 전송 0). colorfit(퍼스널컬러)과 축분리된 &#39;기온 기반 옷차림&#39; 전용 신규 버티컬(허브 dedup 0). 큐 전부 금융→비금융 발산 선정.</p>
+    
     
     <h2>이렇게 사용하세요</h2>
     <ol>

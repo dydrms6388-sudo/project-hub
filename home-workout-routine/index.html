@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>홈트 루틴 생성기 소개</h2>
     <p>운동할 부위, 강도, 가용 시간만 선택하면 워밍업부터 쿨다운까지 맞춤 홈 트레이닝 루틴을 자동으로 만들어주는 도구입니다. 매번 어떤 운동을 할지 고민하는 번거로움 없이 타이머와 음성 큐에 맞춰 바로 시작할 수 있으며, 맨몸 운동 40종 라이브러리와 연속 운동 기록 기능을 갖추고 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>맨몸 운동(calisthenics)은 자신의 체중을 저항으로 활용하는 운동 방식으로, 별도 기구 없이 어디서든 수행할 수 있습니다. 스쿼트, 푸시업, 런지, 버피처럼 복합 관절 운동 위주로 구성하면 근력과 심폐 지구력을 동시에 향상할 수 있습니다. 운동 효과를 높이려면 단순히 반복 횟수를 늘리는 것보다 동작의 정확성과 근육에 가해지는 시간(time under tension)을 조절하는 것이 중요합니다. 또한 같은 부위를 연속해서 운동하면 회복이 충분하지 않아 오히려 근 성장과 회복에 불리하므로, 부위를 나누어 교대로 훈련하는 분할 루틴 개념이 중요합니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>헬스장에 갈 시간이 없는 날 15~30분짜리 루틴을 생성해 집에서 빠르게 운동을 마치는 데 활용할 수 있습니다.</li>
+        <li>초보자가 어떤 운동을 어떤 순서로 해야 할지 몰라 시작을 못하는 경우, 강도를 &#39;입문&#39;으로 설정하면 단계별 루틴이 자동으로 나와 바로 따라 할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>운동 부위(전신, 상체, 하체, 코어 등)를 선택합니다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>플레이어 시작 버튼을 눌러 타이머와 음성 큐에 맞추어 운동합니다.</li>
         <li>운동 완료 후 기록이 저장되어 연속 운동 현황과 칼로리 추정치를 확인합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>헬스장에 갈 시간이 없는 날 15~30분짜리 루틴을 생성해 집에서 빠르게 운동을 마치는 데 활용할 수 있습니다.</li>
-        <li>초보자가 어떤 운동을 어떤 순서로 해야 할지 몰라 시작을 못하는 경우, 강도를 &#39;입문&#39;으로 설정하면 단계별 루틴이 자동으로 나와 바로 따라 할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>맨몸 운동(calisthenics)은 자신의 체중을 저항으로 활용하는 운동 방식으로, 별도 기구 없이 어디서든 수행할 수 있습니다. 스쿼트, 푸시업, 런지, 버피처럼 복합 관절 운동 위주로 구성하면 근력과 심폐 지구력을 동시에 향상할 수 있습니다. 운동 효과를 높이려면 단순히 반복 횟수를 늘리는 것보다 동작의 정확성과 근육에 가해지는 시간(time under tension)을 조절하는 것이 중요합니다. 또한 같은 부위를 연속해서 운동하면 회복이 충분하지 않아 오히려 근 성장과 회복에 불리하므로, 부위를 나누어 교대로 훈련하는 분할 루틴 개념이 중요합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>워밍업 5분은 절대 건너뛰지 마세요. 관절과 근육을 충분히 풀어야 부상 위험을 낮출 수 있습니다.</li>

@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>영양제 궁합 체커 소개</h2>
     <p>여러 영양제를 함께 복용할 때 흡수를 방해하는 조합과 오히려 시너지를 내는 조합이 존재합니다. 복용 중인 영양제를 선택하면 흡수 방해·중복·복용 시간 분리 필요 여부를 5색 신호등으로 즉시 판정하고, 충돌 없는 하루 복용표를 자동으로 만들어줍니다. 영양제를 여러 종류 먹고 있지만 복용 순서나 조합이 맞는지 확신이 없는 분들에게 유용합니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>영양소 간 흡수 경쟁은 소장에서 동일한 운반 단백질이나 수용체를 두고 경쟁할 때 발생합니다. 대표적으로 칼슘과 철분은 이가 양이온 운반체(DMT1)를 공유하기 때문에 고용량이 동시에 들어오면 철분 흡수율이 낮아진다고 알려져 있습니다. 반대로 비타민C는 철분을 환원 상태로 유지해 흡수를 높이는 시너지 관계입니다. 비타민D는 칼슘의 장 흡수를 촉진하는 역할을 하지만, 두 성분 모두 고용량 장기 복용 시 상한선(UL)을 넘지 않도록 주의가 필요합니다. 지용성 비타민(A·D·E·K)은 식사와 함께 복용하면 흡수율이 높아지며, 체내에 축적될 수 있어 수용성 비타민보다 과잉 섭취에 더 주의해야 합니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>철분제를 오랫동안 먹었는데 빈혈이 개선되지 않아, 함께 먹는 칼슘이나 커피가 흡수를 방해하고 있는 건 아닌지 확인하고 싶을 때.</li>
+        <li>임신 후 산부인과에서 추가 영양제를 처방받았는데, 이미 복용 중인 영양제와 겹치거나 충돌이 있는지 빠르게 점검하고 싶을 때.</li>
+        <li>영양제를 여러 개 챙겨 먹기 어려울 때, 하루 중 어느 시간에 무엇을 묶어서 먹어도 괜찮은지 한 번에 파악하고 싶을 때.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>현재 복용 중인 영양제를 목록에서 모두 선택한다.</li>
@@ -133,12 +140,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>자동 생성된 하루 복용 시간표를 확인하고 아침·점심·저녁 섭취 타이밍을 조정한다.</li>
         <li>임신·수유 중이라면 관련 성분 선택 시 표시되는 주의 배너를 반드시 확인한다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>철분제를 오랫동안 먹었는데 빈혈이 개선되지 않아, 함께 먹는 칼슘이나 커피가 흡수를 방해하고 있는 건 아닌지 확인하고 싶을 때.</li>
-        <li>임신 후 산부인과에서 추가 영양제를 처방받았는데, 이미 복용 중인 영양제와 겹치거나 충돌이 있는지 빠르게 점검하고 싶을 때.</li>
-        <li>영양제를 여러 개 챙겨 먹기 어려울 때, 하루 중 어느 시간에 무엇을 묶어서 먹어도 괜찮은지 한 번에 파악하고 싶을 때.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>영양소 간 흡수 경쟁은 소장에서 동일한 운반 단백질이나 수용체를 두고 경쟁할 때 발생합니다. 대표적으로 칼슘과 철분은 이가 양이온 운반체(DMT1)를 공유하기 때문에 고용량이 동시에 들어오면 철분 흡수율이 낮아진다고 알려져 있습니다. 반대로 비타민C는 철분을 환원 상태로 유지해 흡수를 높이는 시너지 관계입니다. 비타민D는 칼슘의 장 흡수를 촉진하는 역할을 하지만, 두 성분 모두 고용량 장기 복용 시 상한선(UL)을 넘지 않도록 주의가 필요합니다. 지용성 비타민(A·D·E·K)은 식사와 함께 복용하면 흡수율이 높아지며, 체내에 축적될 수 있어 수용성 비타민보다 과잉 섭취에 더 주의해야 합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>칼슘과 철분의 흡수 경쟁은 한 끼에 칼슘 섭취량이 많을 때 더 두드러지므로, 식사로 유제품을 많이 먹는 끼니에는 철분제를 피하는 것이 낫습니다.</li>

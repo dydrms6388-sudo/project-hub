@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>열나요 소개</h2>
     <p>아이가 새벽에 열이 오르면 몸무게에 맞는 해열제 용량이 얼마인지 당황하며 계산하게 됩니다. 열나요는 체중을 입력하면 아세트아미노펜과 이부프로펜 각각의 1회 적정 용량을 계산해주고, 투약 시각을 기록하면 다음 복용 가능 시각을 실시간 타이머로 알려줍니다. 새벽 발열에 침착하게 대처할 수 있도록 돕는 육아 보조 도구입니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>소아 해열제는 크게 아세트아미노펜(타이레놀 계열)과 이부프로펜(부루펜 계열) 두 가지로 나뉩니다. 두 성분은 작용 기전이 달라 교차복용이 가능하지만, 각각의 복용 간격과 하루 최대 용량을 지키는 것이 중요합니다. 소아 용량은 성인처럼 고정 용량이 아니라 체중을 기준으로 산정하는 것이 원칙입니다. 이부프로펜은 생후 6개월 미만 영아에게는 사용하지 않는 것이 권고되며, 신장 기능에 부담이 갈 수 있어 탈수 상태인 아이에게는 주의가 필요합니다. 열 자체는 면역 반응의 일부이므로 무조건 낮추는 것이 목표가 아니라 아이의 불편함을 줄이는 것이 핵심입니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>새벽 2시에 아이 이마가 뜨거울 때, 약통 설명서를 찾아 읽지 않아도 체중만 입력하면 용량을 바로 확인할 수 있습니다.</li>
+        <li>아세트아미노펜을 먹인 뒤 열이 잘 안 떨어질 때 이부프로펜으로 교차복용하려면, 몇 시간 후에 먹일 수 있는지 타이머로 확인할 수 있습니다.</li>
+        <li>어린이집이나 병원에서 &#39;오늘 몇 시에 뭘 먹였나요?&#39; 라는 질문을 받을 때, 체온·투약 기록을 그대로 보여줄 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>아이의 체중(kg)을 입력합니다.</li>
@@ -133,12 +140,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>투약 시각을 기록하면 다음 복용 가능 시각 타이머가 시작됩니다.</li>
         <li>체온을 추가 기록해 열 추이를 시간대별로 확인합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>새벽 2시에 아이 이마가 뜨거울 때, 약통 설명서를 찾아 읽지 않아도 체중만 입력하면 용량을 바로 확인할 수 있습니다.</li>
-        <li>아세트아미노펜을 먹인 뒤 열이 잘 안 떨어질 때 이부프로펜으로 교차복용하려면, 몇 시간 후에 먹일 수 있는지 타이머로 확인할 수 있습니다.</li>
-        <li>어린이집이나 병원에서 &#39;오늘 몇 시에 뭘 먹였나요?&#39; 라는 질문을 받을 때, 체온·투약 기록을 그대로 보여줄 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>소아 해열제는 크게 아세트아미노펜(타이레놀 계열)과 이부프로펜(부루펜 계열) 두 가지로 나뉩니다. 두 성분은 작용 기전이 달라 교차복용이 가능하지만, 각각의 복용 간격과 하루 최대 용량을 지키는 것이 중요합니다. 소아 용량은 성인처럼 고정 용량이 아니라 체중을 기준으로 산정하는 것이 원칙입니다. 이부프로펜은 생후 6개월 미만 영아에게는 사용하지 않는 것이 권고되며, 신장 기능에 부담이 갈 수 있어 탈수 상태인 아이에게는 주의가 필요합니다. 열 자체는 면역 반응의 일부이므로 무조건 낮추는 것이 목표가 아니라 아이의 불편함을 줄이는 것이 핵심입니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>아세트아미노펜과 이부프로펜을 교차복용할 때는 각 성분 기준으로 4~6시간 간격을 지켜야 합니다. 두 가지를 동시에 먹이거나 너무 짧은 간격으로 교차하면 과다복용 위험이 있습니다.</li>

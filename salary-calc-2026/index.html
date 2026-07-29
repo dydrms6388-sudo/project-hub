@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>2026 연봉 실수령액 계산기 소개</h2>
     <p>세전 연봉을 입력하면 국민연금·건강보험·고용보험·소득세·지방소득세를 공제한 월 실수령액을 즉시 계산해 주는 도구입니다. 취업·이직 전 연봉 협상 기준을 잡거나 실제 생활비 계획을 세울 때 출발점으로 활용할 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>근로자가 월급을 받을 때는 세전 금액에서 4대 보험료와 소득세가 원천공제됩니다. 4대 보험은 국민연금(근로자 부담 4.5%), 건강보험(근로자 부담 3.545%), 장기요양보험(건강보험료의 12.95%), 고용보험(근로자 부담 0.9%)으로 구성되며, 요율은 매년 정부 고시로 조정됩니다. 소득세는 월 급여와 부양가족 수에 따른 간이세액표를 기준으로 원천징수되고, 지방소득세는 소득세액의 10%가 추가 공제됩니다. 연봉이 같더라도 비과세 항목(식대 월 20만 원 한도 등), 부양가족 수, 추가 공제 항목에 따라 실수령액이 달라지므로 이 계산기 결과는 일반 기준의 추정값으로 이해하는 것이 적합합니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>취업 제안을 받은 뒤 연봉 4,000만 원과 4,500만 원의 실수령 차이가 월 얼마인지 바로 비교해 연봉 협상 기준선을 잡을 수 있습니다.</li>
+        <li>이직 후 연봉이 오르더라도 세금·보험 공제가 늘어 실수령 증가폭이 생각보다 작을 수 있는데, 실수령 기준으로 생활비 계획을 세우는 데 활용할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>세전 연봉 금액을 입력합니다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>계산 결과에서 공제 항목별(국민연금·건강보험·장기요양·고용보험·소득세·지방소득세) 금액을 확인합니다.</li>
         <li>월 실수령액과 연간 실수령액을 함께 확인하고, 연봉을 바꿔 가며 여러 시나리오를 비교합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>취업 제안을 받은 뒤 연봉 4,000만 원과 4,500만 원의 실수령 차이가 월 얼마인지 바로 비교해 연봉 협상 기준선을 잡을 수 있습니다.</li>
-        <li>이직 후 연봉이 오르더라도 세금·보험 공제가 늘어 실수령 증가폭이 생각보다 작을 수 있는데, 실수령 기준으로 생활비 계획을 세우는 데 활용할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>근로자가 월급을 받을 때는 세전 금액에서 4대 보험료와 소득세가 원천공제됩니다. 4대 보험은 국민연금(근로자 부담 4.5%), 건강보험(근로자 부담 3.545%), 장기요양보험(건강보험료의 12.95%), 고용보험(근로자 부담 0.9%)으로 구성되며, 요율은 매년 정부 고시로 조정됩니다. 소득세는 월 급여와 부양가족 수에 따른 간이세액표를 기준으로 원천징수되고, 지방소득세는 소득세액의 10%가 추가 공제됩니다. 연봉이 같더라도 비과세 항목(식대 월 20만 원 한도 등), 부양가족 수, 추가 공제 항목에 따라 실수령액이 달라지므로 이 계산기 결과는 일반 기준의 추정값으로 이해하는 것이 적합합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>비과세 식대(월 20만 원 한도)가 포함된 연봉이라면 이를 입력해야 실수령액 추정이 더 정확합니다. 같은 연봉이라도 식대 비과세 포함 여부에 따라 실수령이 달라집니다.</li>

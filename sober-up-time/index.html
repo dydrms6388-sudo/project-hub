@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>깰때 — 술 깨는 시간 계산기 소개</h2>
     <p>마신 술의 종류와 양, 체중을 입력하면 혈중알코올농도(BAC)가 시간에 따라 어떻게 변하는지 위드마크 공식으로 추정해 줍니다. 음주 후 몸 상태를 스스로 돌아보고 싶을 때 참고 지표로 활용할 수 있습니다. 수치는 개인 신진대사와 건강 상태에 따라 실제와 차이가 날 수 있으므로 어디까지나 참고 자료로만 사용하세요.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>혈중알코올농도는 섭취한 알코올이 혈류에 얼마나 녹아 있는지를 나타내는 지표입니다. 위드마크(Widmark) 공식은 체중, 성별, 섭취량을 바탕으로 BAC를 추산하는 방법으로, 약리학 연구에서 수십 년간 사용되어 왔습니다. 일반적으로 알코올은 간에서 시간당 약 0.01~0.02% 수준으로 분해되지만 이 속도는 유전적 요인, 체지방 비율, 식사 여부, 복용 중인 약물 등에 따라 개인마다 크게 다릅니다. 공복 상태에서는 알코올이 장으로 빠르게 이동해 흡수 속도가 높아지므로 같은 양을 마셔도 BAC가 더 빨리 오르는 경향이 있습니다. 수면 중에도 분해는 계속되지만, 각성 상태보다 속도가 다소 달라질 수 있습니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>전날 밤 늦게까지 마신 다음 날 아침, 몸 상태가 어느 정도 회복됐는지 가늠하고 싶을 때 참고 자료로 활용할 수 있습니다.</li>
+        <li>회식 자리에서 마신 양을 돌아보며 충분한 휴식 시간을 어림잡아 계획할 때 도움이 됩니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>성별과 체중(kg)을 입력합니다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>계산 버튼을 누르면 시간대별 추정 BAC 그래프와 알코올이 체내에서 거의 사라지는 예상 시각이 표시됩니다.</li>
         <li>식사 여부나 음주 속도 등 조건을 바꿔 보며 결과 변화를 확인합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>전날 밤 늦게까지 마신 다음 날 아침, 몸 상태가 어느 정도 회복됐는지 가늠하고 싶을 때 참고 자료로 활용할 수 있습니다.</li>
-        <li>회식 자리에서 마신 양을 돌아보며 충분한 휴식 시간을 어림잡아 계획할 때 도움이 됩니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>혈중알코올농도는 섭취한 알코올이 혈류에 얼마나 녹아 있는지를 나타내는 지표입니다. 위드마크(Widmark) 공식은 체중, 성별, 섭취량을 바탕으로 BAC를 추산하는 방법으로, 약리학 연구에서 수십 년간 사용되어 왔습니다. 일반적으로 알코올은 간에서 시간당 약 0.01~0.02% 수준으로 분해되지만 이 속도는 유전적 요인, 체지방 비율, 식사 여부, 복용 중인 약물 등에 따라 개인마다 크게 다릅니다. 공복 상태에서는 알코올이 장으로 빠르게 이동해 흡수 속도가 높아지므로 같은 양을 마셔도 BAC가 더 빨리 오르는 경향이 있습니다. 수면 중에도 분해는 계속되지만, 각성 상태보다 속도가 다소 달라질 수 있습니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>공복 음주는 흡수가 빨라 같은 양이라도 BAC가 더 높게 나올 수 있으므로 결과를 더 보수적으로 해석하세요.</li>

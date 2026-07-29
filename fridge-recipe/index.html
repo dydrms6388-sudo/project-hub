@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>냉파고 소개</h2>
     <p>냉장고에 남은 재료를 등록하면 그 재료로 만들 수 있는 레시피를 추천하고, 식품별 소비기한 정보와 임박 알림까지 제공하는 생활 도구입니다. 유통기한이 지나 버려지는 식재료를 줄이고 장 볼 때 중복 구매를 막는 데 도움이 됩니다. 냉장고 속 재료를 파먹으며 식비를 절약하고 싶은 분에게 유용합니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>국내에서 가정이 버리는 음식물 쓰레기의 상당 부분은 유통기한 초과와 비슷한 재료 중복 구매에서 발생합니다. 식품에는 제조사 표기 기준의 소비기한(먹어도 안전한 기한)이 있고, 품목에 따라 냉장 보관 시 실제 섭취 가능 기간이 크게 달라집니다. 예를 들어 달걀은 냉장 보관 시 약 25일, 두부는 개봉 전 냉장 7~14일 정도가 일반적으로 알려진 참고 기준입니다. 식품의약품안전처에서 제공하는 식품별 소비기한 참고값을 기반으로 하면 어떤 재료를 먼저 써야 하는지 판단하는 데 도움이 됩니다. 냉동 보관은 냉장에 비해 보존 기간이 훨씬 길지만, 해동 후에는 재냉동하지 않고 빠르게 사용하는 것이 원칙입니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>주말에 장을 보기 전 냉장고 목록을 확인해 이미 있는 재료를 중복 구매하는 실수를 막고, 임박한 재료부터 소진 계획을 세울 때 유용합니다.</li>
+        <li>냉장고 속 자투리 재료(반 남은 두부, 시든 파 한 줄기 등)로 무엇을 만들 수 있는지 아이디어가 필요할 때 재료 조합 기반 레시피 추천을 활용할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>냉장고 목록에 보유 재료를 추가하고 구입일 또는 개봉일을 입력한다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>재료 파먹기 탭에서 보유 재료를 선택하고 레시피 추천 버튼을 누른다.</li>
         <li>사용한 재료는 목록에서 소진 처리해 냉장고 현황을 최신 상태로 유지한다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>주말에 장을 보기 전 냉장고 목록을 확인해 이미 있는 재료를 중복 구매하는 실수를 막고, 임박한 재료부터 소진 계획을 세울 때 유용합니다.</li>
-        <li>냉장고 속 자투리 재료(반 남은 두부, 시든 파 한 줄기 등)로 무엇을 만들 수 있는지 아이디어가 필요할 때 재료 조합 기반 레시피 추천을 활용할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>국내에서 가정이 버리는 음식물 쓰레기의 상당 부분은 유통기한 초과와 비슷한 재료 중복 구매에서 발생합니다. 식품에는 제조사 표기 기준의 소비기한(먹어도 안전한 기한)이 있고, 품목에 따라 냉장 보관 시 실제 섭취 가능 기간이 크게 달라집니다. 예를 들어 달걀은 냉장 보관 시 약 25일, 두부는 개봉 전 냉장 7~14일 정도가 일반적으로 알려진 참고 기준입니다. 식품의약품안전처에서 제공하는 식품별 소비기한 참고값을 기반으로 하면 어떤 재료를 먼저 써야 하는지 판단하는 데 도움이 됩니다. 냉동 보관은 냉장에 비해 보존 기간이 훨씬 길지만, 해동 후에는 재냉동하지 않고 빠르게 사용하는 것이 원칙입니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>채소·유제품·육류처럼 소비기한이 짧은 식품을 먼저 등록하면 임박 알림을 가장 효율적으로 받을 수 있습니다.</li>

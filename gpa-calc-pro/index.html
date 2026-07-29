@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>학점계산기프로 소개</h2>
     <p>4.5·4.3·4.0 등 다양한 만점 기준을 지원하는 대학 학점 계산기입니다. 전공 평점, P/F 과목, 재수강 처리를 각각 구분해 실제 성적표에 가까운 결과를 계산하고, 목표 평점을 입력하면 남은 학기에 필요한 성적도 역산해 줍니다. 장학금 기준 확인이나 대학원 지원 준비에 활용할 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>대학 학점(GPA)은 졸업 요건 충족은 물론 장학금 수혜, 편입, 대학원 입학, 취업 지원 등 여러 상황에서 중요한 기준이 됩니다. 국내 대학은 4.5 만점 체계를 가장 많이 사용하지만 4.3이나 4.0을 적용하는 학교도 있고, 동일한 만점 기준 안에서도 등급 구간이 학교마다 다를 수 있습니다. 재수강 과목의 기존 성적을 평균에 반영할지 교체할지도 학칙에 따라 달라지므로, 계산 전에 학교 규정을 먼저 확인하는 것이 중요합니다. 대학원이나 해외 대학에 지원할 때는 4.0 또는 100점 환산 점수를 요구하는 경우가 많아 환산 기능도 유용하게 쓰입니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>졸업을 앞두고 현재 평점이 장학금 유지 기준을 충족하는지, 부족하면 다음 학기에 어떤 성적이 필요한지 계산할 때 유용합니다.</li>
+        <li>대학원 지원 서류를 준비하면서 4.0 환산 점수나 100점 환산 성적을 확인해야 할 때 활용할 수 있습니다.</li>
+        <li>재수강 과목이 누적된 경우, 학칙에 따른 처리 방식을 적용해 실제 평점이 어떻게 달라지는지 시뮬레이션할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>사용하는 대학의 만점 기준(4.5, 4.3, 4.0)을 선택합니다.</li>
@@ -134,12 +141,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>목표 평점을 입력하면 남은 학기에 필요한 평균 성적이 역산됩니다.</li>
         <li>학기별 GPA 추이 그래프로 변화 흐름을 파악합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>졸업을 앞두고 현재 평점이 장학금 유지 기준을 충족하는지, 부족하면 다음 학기에 어떤 성적이 필요한지 계산할 때 유용합니다.</li>
-        <li>대학원 지원 서류를 준비하면서 4.0 환산 점수나 100점 환산 성적을 확인해야 할 때 활용할 수 있습니다.</li>
-        <li>재수강 과목이 누적된 경우, 학칙에 따른 처리 방식을 적용해 실제 평점이 어떻게 달라지는지 시뮬레이션할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>대학 학점(GPA)은 졸업 요건 충족은 물론 장학금 수혜, 편입, 대학원 입학, 취업 지원 등 여러 상황에서 중요한 기준이 됩니다. 국내 대학은 4.5 만점 체계를 가장 많이 사용하지만 4.3이나 4.0을 적용하는 학교도 있고, 동일한 만점 기준 안에서도 등급 구간이 학교마다 다를 수 있습니다. 재수강 과목의 기존 성적을 평균에 반영할지 교체할지도 학칙에 따라 달라지므로, 계산 전에 학교 규정을 먼저 확인하는 것이 중요합니다. 대학원이나 해외 대학에 지원할 때는 4.0 또는 100점 환산 점수를 요구하는 경우가 많아 환산 기능도 유용하게 쓰입니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>재수강 처리 방식은 &#39;기존 성적 교체&#39;와 &#39;평균 산입&#39; 두 가지로 나뉘며 학교마다 다르므로, 학생지원처에 먼저 확인하세요.</li>

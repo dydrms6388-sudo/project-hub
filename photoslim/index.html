@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,6 +125,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>사진줄여 (PhotoSlim) 소개</h2>
     <p>사진 용량을 원하는 KB로 정확히 맞춰주는 무료 이미지 압축기. 업로드 용량 제한(이력서·증명사진·공무원 원서·카톡·블로그·이메일·중고거래)에 딱 맞게 줄인다. 핵심 차별점 3종: ①목표 용량 모드=원하는 KB(예 100KB) 입력 시 JPEG/WebP 품질을 이분탐색(binary search)으로 자동 조절해 목표 이하 최고 화질을 찾고, 그래도 초과면 크기를 단계 축소해 반드시 목표를 맞춤 ②한국 실제 규격 프리셋 7종(이력서·증명사진 413×531·≤200KB / 공무원 원서 ≤500KB / 카톡 프로필 ≤1MB / 블로그·카페 / 이메일 / 중고거래 / 웹 상세페이지)+정확 용량 퀵버튼(50·100·200·500KB·1MB) ③100% 브라우저(Canvas API) 처리=사진이 서버로 전송·저장되지 않아 증명사진·신분증도 안심(인터넷 꺼도 동작). 여러 장 일괄 압축+ZIP 다운로드, JPG/PNG/WebP 변환, 긴 변 리사이즈, EXIF(GPS) 자동 제거, 원본보다 커지면 원본 유지 가드, HEIC·PNG투명·초대형 이미지 엣지케이스 처리. 재방문 훅=누적 절약 용량 통계(localStorage). 무백엔드·무가입·무유료API. 허브 dedup: 큐알핀=QR / 달지기=음력 / 촉=반응속도게임과 별개인 &#39;이미지 파일용량 압축&#39; 전용 신규 버티컬(허브 dedup 0). 큐 전부 금융→비금융 발산 선정.</p>
+    
     
     <h2>이렇게 사용하세요</h2>
     <ol>

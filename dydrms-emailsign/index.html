@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>메일서명만들기 소개</h2>
     <p>이메일 서명은 수신자에게 발신인의 신뢰감을 전달하는 작지만 중요한 요소입니다. 이름, 직함, 회사명, 연락처, 소셜 링크를 입력하면 Gmail과 Outlook에 바로 붙여넣을 수 있는 HTML 서명이 30초 안에 완성됩니다. 코딩 지식 없이도 6가지 디자인 중 선택해 전문적인 서명을 만들 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>이메일 서명은 단순한 연락처 안내를 넘어, 브랜드 일관성과 전문성을 전달하는 비즈니스 커뮤니케이션 요소로 자리 잡았습니다. HTML 형식의 서명은 텍스트 서명에 비해 로고, 구분선, 색상 등을 활용할 수 있어 시각적으로 더 완성된 인상을 줍니다. 다만 HTML 서명은 이메일 클라이언트마다 렌더링이 다를 수 있고, 특히 외부 이미지는 수신자의 보안 설정에 따라 차단되기도 합니다. Gmail, Outlook, Apple Mail 등 주요 클라이언트 모두 HTML 서명을 지원하지만, 서명 설정 방법이 앱마다 다르기 때문에 처음 설정할 때 각 플랫폼의 안내를 함께 참고하는 것이 좋습니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>새 직장에 입사해 공식 업무 이메일 서명을 처음 만들어야 할 때, 코딩 없이 빠르게 세팅하고 싶은 상황.</li>
+        <li>프리랜서로서 여러 클라이언트에게 다른 직함이나 연락처로 대응해야 해서 서명 프리셋을 여러 개 관리하고 싶은 상황.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>이름, 직함, 회사명, 전화번호, 이메일 주소를 입력한다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>자주 쓰는 서명은 프리셋으로 저장해 두어 다음번에 빠르게 불러온다.</li>
         <li>복사 버튼을 눌러 Gmail 서명 설정이나 Outlook 서명 편집기에 붙여넣는다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>새 직장에 입사해 공식 업무 이메일 서명을 처음 만들어야 할 때, 코딩 없이 빠르게 세팅하고 싶은 상황.</li>
-        <li>프리랜서로서 여러 클라이언트에게 다른 직함이나 연락처로 대응해야 해서 서명 프리셋을 여러 개 관리하고 싶은 상황.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>이메일 서명은 단순한 연락처 안내를 넘어, 브랜드 일관성과 전문성을 전달하는 비즈니스 커뮤니케이션 요소로 자리 잡았습니다. HTML 형식의 서명은 텍스트 서명에 비해 로고, 구분선, 색상 등을 활용할 수 있어 시각적으로 더 완성된 인상을 줍니다. 다만 HTML 서명은 이메일 클라이언트마다 렌더링이 다를 수 있고, 특히 외부 이미지는 수신자의 보안 설정에 따라 차단되기도 합니다. Gmail, Outlook, Apple Mail 등 주요 클라이언트 모두 HTML 서명을 지원하지만, 서명 설정 방법이 앱마다 다르기 때문에 처음 설정할 때 각 플랫폼의 안내를 함께 참고하는 것이 좋습니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>서명에는 핵심 정보(이름, 직함, 전화번호, 이메일)만 담는 것이 읽기 편합니다. 링크를 너무 많이 넣으면 스팸 필터에 걸릴 가능성이 높아질 수 있습니다.</li>

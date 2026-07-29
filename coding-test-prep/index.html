@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>코테 준비실 소개</h2>
     <p>코딩테스트를 앞둔 취업 준비생과 이직 희망자를 위한 학습 관리 도구입니다. 시험 D-day 카운트다운, 문제 풀이 기록, 알고리즘 유형별 숙련도 추적, 연속 풀이 잔디를 한곳에서 관리하고, 남은 기간에 맞는 맞춤 스터디 플랜을 제안받을 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>코딩테스트는 국내 주요 IT 기업과 스타트업의 채용 과정에서 필수 관문이 되어 있으며, 주로 알고리즘·자료구조 문제를 시간 안에 푸는 방식으로 진행됩니다. 그래프 탐색(BFS/DFS), 동적 프로그래밍, 이분탐색, 그리디, 구현 등 유형별로 접근 방법이 뚜렷이 다르기 때문에 자신이 어느 유형에 취약한지 파악하는 것이 효율적인 준비의 첫걸음입니다. 꾸준한 풀이 습관이 단기 벼락치기보다 훨씬 효과적이며, 풀이 이후 틀린 원인을 기록하는 회고 습관도 실력 향상에 중요합니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>공채 시즌이 한 달 남았을 때 유형별 숙련도 차트를 보고 취약한 항목을 집중 공략하는 전략을 세울 수 있습니다.</li>
+        <li>스터디 그룹에서 각자의 학습 기록을 공유하며 서로 어떤 유형을 풀었는지 비교하고 균형 있게 준비하는 데 활용할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>시험 날짜를 입력해 D-day 카운트다운을 설정한다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>연속 풀이 기록(잔디)을 유지하며 매일 풀이 습관을 이어간다.</li>
         <li>맞춤 스터디 플랜을 참고해 남은 기간 동안 집중할 유형과 분량을 결정한다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>공채 시즌이 한 달 남았을 때 유형별 숙련도 차트를 보고 취약한 항목을 집중 공략하는 전략을 세울 수 있습니다.</li>
-        <li>스터디 그룹에서 각자의 학습 기록을 공유하며 서로 어떤 유형을 풀었는지 비교하고 균형 있게 준비하는 데 활용할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>코딩테스트는 국내 주요 IT 기업과 스타트업의 채용 과정에서 필수 관문이 되어 있으며, 주로 알고리즘·자료구조 문제를 시간 안에 푸는 방식으로 진행됩니다. 그래프 탐색(BFS/DFS), 동적 프로그래밍, 이분탐색, 그리디, 구현 등 유형별로 접근 방법이 뚜렷이 다르기 때문에 자신이 어느 유형에 취약한지 파악하는 것이 효율적인 준비의 첫걸음입니다. 꾸준한 풀이 습관이 단기 벼락치기보다 훨씬 효과적이며, 풀이 이후 틀린 원인을 기록하는 회고 습관도 실력 향상에 중요합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>숙련도 차트에서 점수가 낮은 유형부터 먼저 공략하세요. 강한 유형을 더 갈고닦는 것보다 약한 곳을 끌어올리는 것이 합격 가능성을 높입니다.</li>

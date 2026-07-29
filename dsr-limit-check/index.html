@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>DSR미리보기 (DSR Check) 소개</h2>
     <p>DSR(총부채원리금상환비율)은 추가 대출 가능 여부를 가르는 핵심 지표로, 연소득과 현재 보유한 모든 대출의 연간 원리금 상환액을 비교한 비율입니다. 이 도구에 연소득과 기존 대출 정보를 입력하면 현재 DSR 수준과 추가로 얼마까지 빌릴 수 있는지를 즉시 확인할 수 있습니다. 주택담보대출이나 전세자금대출 계획을 세우기 전에 미리 점검해 두면 은행 방문 시 불필요한 시간을 아낄 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>DSR 규제는 가계부채 관리를 위해 도입된 제도로, 은행권은 40%, 2금융권(저축은행·카드사 등)은 50%가 상한선입니다. 즉 연소득의 40~50%를 초과하는 원리금 부담을 지는 대출은 원칙적으로 불가합니다. 스트레스 DSR은 실제 계약 금리보다 일정 수준 높은 금리를 가정해 원리금을 산정하는 방식으로, 금리 상승 리스크를 반영해 한도를 더 보수적으로 잡습니다. 원리금 균등 상환, 원금 균등 상환, 만기 일시 상환 방식에 따라 연간 상환액이 달라지므로 상환 방식 선택이 DSR에 미치는 영향도 중요합니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>주택담보대출을 추가로 받으려는데 기존 신용대출과 합산하면 DSR 한도를 넘는지 미리 파악해 대출 금액이나 기간을 조정할 수 있습니다.</li>
+        <li>전세 계약 후 생활비 마련을 위한 신용대출을 검토할 때, 전세자금대출이 DSR에 얼마나 반영되는지 확인하고 순서와 시기를 조율하는 데 도움이 됩니다.</li>
+        <li>연봉 인상이 예정된 경우, 소득 증가 후 DSR이 얼마나 개선되는지 시나리오별로 미리 계산해볼 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>연간 세전 소득(근로·사업·기타 합산)을 입력하세요.</li>
@@ -133,12 +140,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>은행권(40%)·비은행권(50%) 기준별 현재 DSR과 추가 한도를 확인하세요.</li>
         <li>스트레스 DSR 가산 적용 시 변화도 함께 확인하세요.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>주택담보대출을 추가로 받으려는데 기존 신용대출과 합산하면 DSR 한도를 넘는지 미리 파악해 대출 금액이나 기간을 조정할 수 있습니다.</li>
-        <li>전세 계약 후 생활비 마련을 위한 신용대출을 검토할 때, 전세자금대출이 DSR에 얼마나 반영되는지 확인하고 순서와 시기를 조율하는 데 도움이 됩니다.</li>
-        <li>연봉 인상이 예정된 경우, 소득 증가 후 DSR이 얼마나 개선되는지 시나리오별로 미리 계산해볼 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>DSR 규제는 가계부채 관리를 위해 도입된 제도로, 은행권은 40%, 2금융권(저축은행·카드사 등)은 50%가 상한선입니다. 즉 연소득의 40~50%를 초과하는 원리금 부담을 지는 대출은 원칙적으로 불가합니다. 스트레스 DSR은 실제 계약 금리보다 일정 수준 높은 금리를 가정해 원리금을 산정하는 방식으로, 금리 상승 리스크를 반영해 한도를 더 보수적으로 잡습니다. 원리금 균등 상환, 원금 균등 상환, 만기 일시 상환 방식에 따라 연간 상환액이 달라지므로 상환 방식 선택이 DSR에 미치는 영향도 중요합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>상환 방식이 만기 일시 상환이면 원금 부담이 DSR에 덜 반영되어 한도가 높아 보일 수 있지만, 만기 시 전액 상환 부담이 크므로 본인 상황에 맞는 방식을 선택하세요.</li>

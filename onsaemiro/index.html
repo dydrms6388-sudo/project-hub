@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>Onsaemiro (온새미로) 소개</h2>
     <p>온새미로는 생활 계산기, 학습 도구, 취미·건강 관련 유틸리티를 한 곳에 모아 제공하는 무료 웹 서비스 허브입니다. 앱을 따로 설치할 필요 없이 브라우저에서 바로 접속해 원하는 도구를 즉시 사용할 수 있으며, 가볍게 쓸 수 있는 도구부터 계산이 복잡한 생활 밀착형 서비스까지 폭넓게 갖추고 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>스마트폰 앱 설치 없이 웹 브라우저 하나로 다양한 기능을 쓰는 방식은 PWA(Progressive Web App) 개념과 함께 확산되었습니다. 웹 도구 허브는 개별 앱을 내려받아 관리하는 번거로움 없이 필요한 순간 바로 쓰고 닫을 수 있다는 점에서 실용적입니다. 특히 계산기, 변환기, 테스트, 일정 관련 도구처럼 가끔 쓰지만 필요할 때 즉시 꺼내 쓰고 싶은 기능들을 단일 공간에서 찾을 수 있다는 것이 허브형 서비스의 핵심 가치입니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>갑자기 계산이 필요한 상황에서 앱을 찾아 설치하는 대신 브라우저 주소창에 바로 접속해 원하는 도구를 꺼내 쓸 수 있습니다.</li>
+        <li>학습, 건강, 재무 관련 여러 도구를 번갈아 써야 할 때, 각각의 앱을 오가지 않고 한 탭에서 이동하며 처리할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>메인 화면의 카테고리 탭 또는 검색창에서 원하는 도구를 찾습니다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>신규 도구는 메인 페이지나 카테고리 목록에 우선 노출됩니다.</li>
         <li>도구를 사용하다 개선 의견이 생기면 피드백 기능으로 의견을 남길 수 있습니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>갑자기 계산이 필요한 상황에서 앱을 찾아 설치하는 대신 브라우저 주소창에 바로 접속해 원하는 도구를 꺼내 쓸 수 있습니다.</li>
-        <li>학습, 건강, 재무 관련 여러 도구를 번갈아 써야 할 때, 각각의 앱을 오가지 않고 한 탭에서 이동하며 처리할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>스마트폰 앱 설치 없이 웹 브라우저 하나로 다양한 기능을 쓰는 방식은 PWA(Progressive Web App) 개념과 함께 확산되었습니다. 웹 도구 허브는 개별 앱을 내려받아 관리하는 번거로움 없이 필요한 순간 바로 쓰고 닫을 수 있다는 점에서 실용적입니다. 특히 계산기, 변환기, 테스트, 일정 관련 도구처럼 가끔 쓰지만 필요할 때 즉시 꺼내 쓰고 싶은 기능들을 단일 공간에서 찾을 수 있다는 것이 허브형 서비스의 핵심 가치입니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>카테고리 탭을 먼저 살펴보면 검색어가 떠오르지 않을 때도 비슷한 도구를 빠르게 발견할 수 있습니다.</li>

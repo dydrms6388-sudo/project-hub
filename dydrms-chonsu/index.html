@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,6 +125,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>촌수각 소개</h2>
     <p>고모의 남편·누나의 남편·아내의 언니·남편의 남동생… 헷갈리는 가족 호칭과 촌수를 한 번에 정리하는 무료 도구. 나로부터 상대까지 관계 경로(아버지→형→아들 식)를 한 단계씩 눌러 촌수·정식 호칭(부를 때)·지칭(가리킬 때)·계열(직계/방계/친가/외가/처가/시가/인척)을 규칙 엔진으로 산출(부모1촌·형제2촌·부부0촌 공통조상 세대합 계산, 나의 성별·손위/손아래·혼인 반영). 27개 대표 관계 검증 완료(매형vs형부, 백부·숙부·고모·외삼촌·이모, 친사촌·외사촌·고종사촌·이종사촌, 장인·시아버지, 처남·처형·아주버님·도련님, 며느리·사위·당숙). 4개 축: ①관계 찾기(경로 빌더+결과카드+촌수 계산 설명) ②가족 관계도(가족 등록→나와의 촌수·호칭 자동+localStorage 저장 재방문훅) ③호칭 도감(계열별 70+ 관계 검색: 매형·시누이·올케·동서 등) ④호칭 퀴즈(명절 대비 셔플 8문항+최고기록 스트릭). 무가입·무백엔드(브라우저 계산·기기 저장). 경조사각(축의금)·달지기(음력)와 별개인 친족 관계·호칭 전용 축.</p>
+    
     
     <h2>이렇게 사용하세요</h2>
     <ol>

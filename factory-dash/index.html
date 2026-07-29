@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>팩토리 대시보드 소개</h2>
     <p>매일 생성되는 서비스들을 한 화면에서 파악하고, 관심 있는 항목에 표시해 두면 다음 개발 우선순위에 반영됩니다. 목표 진행률과 항목별 메모 기능을 통해 전체 흐름을 놓치지 않고 이어가는 운영 전용 도구입니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>프로젝트가 많아질수록 어떤 서비스가 어느 단계에 있는지 한눈에 보기 어렵고, 중요한 아이디어가 목록 속에 묻히는 일이 생깁니다. 대시보드는 분산된 정보를 한 곳에 모아 현황을 빠르게 파악하고 다음 행동을 결정하는 데 도움을 주는 도구입니다. 우선순위 표시 기능은 즉각적인 피드백 루프를 만들어, 단순히 목록을 쌓아두는 것과 달리 실제 개발 흐름과 연결되도록 설계되어 있습니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>하루에 여러 서비스가 새로 생겼을 때, 목록 전체를 훑으며 주목할 항목을 빠르게 골라내는 데 유용합니다.</li>
+        <li>어떤 서비스를 다음에 디벨롭할지 결정이 필요할 때, 이전에 표시해 둔 관심 항목과 메모를 참고해 작업 순서를 잡을 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>대시보드에 접속해 현재까지 생성된 서비스 목록을 확인하세요.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>메모 기능으로 각 서비스별 개선 아이디어나 이슈를 기록하세요.</li>
         <li>전체 목표 진행률을 확인하고 다음 작업 방향을 정하세요.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>하루에 여러 서비스가 새로 생겼을 때, 목록 전체를 훑으며 주목할 항목을 빠르게 골라내는 데 유용합니다.</li>
-        <li>어떤 서비스를 다음에 디벨롭할지 결정이 필요할 때, 이전에 표시해 둔 관심 항목과 메모를 참고해 작업 순서를 잡을 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>프로젝트가 많아질수록 어떤 서비스가 어느 단계에 있는지 한눈에 보기 어렵고, 중요한 아이디어가 목록 속에 묻히는 일이 생깁니다. 대시보드는 분산된 정보를 한 곳에 모아 현황을 빠르게 파악하고 다음 행동을 결정하는 데 도움을 주는 도구입니다. 우선순위 표시 기능은 즉각적인 피드백 루프를 만들어, 단순히 목록을 쌓아두는 것과 달리 실제 개발 흐름과 연결되도록 설계되어 있습니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>관심 표시는 1~3개에 집중하는 것이 효과적입니다. 너무 많이 표시하면 우선순위가 희석됩니다.</li>

@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>촉 (Chok) 소개</h2>
     <p>반응 속도, 연속 입력력, 주의력, 단기 기억력을 각각 측정하는 미니게임 4종으로 두뇌 반응 나이를 추정해 주는 오락·자기인식 도구입니다. 결과는 오락 목적의 참고 수치이며, 의학적 진단 도구가 아닙니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>인지 반응 속도는 감각 기관이 자극을 인식한 뒤 뇌가 처리하고 운동 명령을 내리기까지 걸리는 시간을 말합니다. 일반적으로 단순 반응 시간의 평균은 성인 기준 150~250ms 수준이며, 집중력 상태나 수면 여부, 나이에 따라 달라질 수 있다는 연구 결과들이 있습니다. 주의력은 관련 없는 정보를 걸러 내고 목표 자극에 집중하는 능력이고, 단기 기억력은 수초~수십 초 내에 정보를 보유하고 처리하는 능력입니다. 이런 인지 요소들은 스포츠 훈련, 게임, 운전 등 다양한 일상 상황에서 체감할 수 있지만, 단일 측정으로 개인의 전반적인 인지 능력을 단정하기는 어렵습니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>수면이 부족한 날과 충분히 잔 날 각각 측정해 컨디션에 따른 반응 속도 변화를 비교해 볼 수 있습니다.</li>
+        <li>게임이나 스포츠를 꾸준히 연습하는 사람이 훈련 전후 변화를 간단히 트래킹하는 동기 부여 도구로 활용할 수 있습니다.</li>
+        <li>가족끼리 각자 측정 후 결과를 비교하며 세대 간 반응 속도 차이를 화제 삼아 이야기 나눌 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>시작하기를 누르면 첫 번째 미니게임(반응 속도)이 바로 시작됩니다.</li>
@@ -133,12 +140,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>4종 결과를 합산해 두뇌 반응 나이가 계산되고 화면에 표시됩니다.</li>
         <li>세부 점수와 과거 기록을 비교하거나 결과를 공유합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>수면이 부족한 날과 충분히 잔 날 각각 측정해 컨디션에 따른 반응 속도 변화를 비교해 볼 수 있습니다.</li>
-        <li>게임이나 스포츠를 꾸준히 연습하는 사람이 훈련 전후 변화를 간단히 트래킹하는 동기 부여 도구로 활용할 수 있습니다.</li>
-        <li>가족끼리 각자 측정 후 결과를 비교하며 세대 간 반응 속도 차이를 화제 삼아 이야기 나눌 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>인지 반응 속도는 감각 기관이 자극을 인식한 뒤 뇌가 처리하고 운동 명령을 내리기까지 걸리는 시간을 말합니다. 일반적으로 단순 반응 시간의 평균은 성인 기준 150~250ms 수준이며, 집중력 상태나 수면 여부, 나이에 따라 달라질 수 있다는 연구 결과들이 있습니다. 주의력은 관련 없는 정보를 걸러 내고 목표 자극에 집중하는 능력이고, 단기 기억력은 수초~수십 초 내에 정보를 보유하고 처리하는 능력입니다. 이런 인지 요소들은 스포츠 훈련, 게임, 운전 등 다양한 일상 상황에서 체감할 수 있지만, 단일 측정으로 개인의 전반적인 인지 능력을 단정하기는 어렵습니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>소음이나 알림이 없는 조용한 환경에서 테스트해야 주의력 게임 측정이 더 정확합니다.</li>

@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>여행핀 (Travel Pin) 소개</h2>
     <p>가보고 싶은 여행지를 핀으로 모으고, 같은 목적지에 관심 있는 여행자들과 실시간으로 정보를 나눌 수 있는 여행 커뮤니티 서비스입니다. 3D 지구본으로 여행지를 직관적으로 탐색하고, 목적지별 채팅방에서 동행을 구하거나 현지에서 직접 얻은 꿀팁을 주고받을 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>여행 정보는 가이드북이나 공식 관광 사이트보다 최근에 다녀온 여행자의 생생한 후기에서 실질적인 내용을 얻는 경우가 많습니다. 여행지별로 관심사가 같은 사람들이 모이는 커뮤니티는 비자 절차, 성수기·비수기 물가, 숙소 위치 팁처럼 공식 자료에 없는 정보를 빠르게 수집하는 데 효과적입니다. 동행 여행의 경우 혼자 감당하기 어려운 비용이나 일정이 유연해지는 장점도 있어, 솔로 여행자와 동행 희망자를 연결하는 플랫폼 수요는 꾸준히 늘고 있습니다.</p>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>처음 가는 여행지의 실제 치안, 이동 수단, 환전 팁 같은 생생한 현지 정보를 공식 자료 대신 최근 방문자에게 직접 물어볼 수 있습니다.</li>
+        <li>혼자 여행을 계획 중이지만 투어나 특정 코스를 함께 다닐 동행을 원할 때 같은 시기에 같은 목적지를 계획 중인 사람과 연결할 수 있습니다.</li>
+        <li>다음 여행 목적지를 아직 못 정했을 때 3D 지구본을 탐색하며 핀을 꽂아 두고, 나중에 비교하며 여행지를 좁혀 나갈 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>3D 지구본을 돌려 관심 있는 지역을 찾거나 큐레이션 여행지 목록에서 선택합니다.</li>
@@ -133,12 +140,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>여행 시기, 인원, 궁금한 점을 게시하거나 다른 여행자의 정보에 댓글을 달아 소통합니다.</li>
         <li>동행을 원하는 사람과 연락처를 나누거나 함께 일정을 조율합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>처음 가는 여행지의 실제 치안, 이동 수단, 환전 팁 같은 생생한 현지 정보를 공식 자료 대신 최근 방문자에게 직접 물어볼 수 있습니다.</li>
-        <li>혼자 여행을 계획 중이지만 투어나 특정 코스를 함께 다닐 동행을 원할 때 같은 시기에 같은 목적지를 계획 중인 사람과 연결할 수 있습니다.</li>
-        <li>다음 여행 목적지를 아직 못 정했을 때 3D 지구본을 탐색하며 핀을 꽂아 두고, 나중에 비교하며 여행지를 좁혀 나갈 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>여행 정보는 가이드북이나 공식 관광 사이트보다 최근에 다녀온 여행자의 생생한 후기에서 실질적인 내용을 얻는 경우가 많습니다. 여행지별로 관심사가 같은 사람들이 모이는 커뮤니티는 비자 절차, 성수기·비수기 물가, 숙소 위치 팁처럼 공식 자료에 없는 정보를 빠르게 수집하는 데 효과적입니다. 동행 여행의 경우 혼자 감당하기 어려운 비용이나 일정이 유연해지는 장점도 있어, 솔로 여행자와 동행 희망자를 연결하는 플랫폼 수요는 꾸준히 늘고 있습니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>채팅방에 글을 올릴 때 여행 예정 시기와 인원, 여행 스타일(배낭여행/호텔·패키지 등)을 함께 적으면 잘 맞는 동행을 찾기 훨씬 수월합니다.</li>

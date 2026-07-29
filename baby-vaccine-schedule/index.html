@@ -76,8 +76,10 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +125,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   </div>
   <section class="about"><h2>베이비샷 소개</h2>
     <p>아이의 생년월일을 입력하면 출생부터 만 12세까지 국가예방접종 일정을 날짜까지 자동으로 계산해 줍니다. 다음 접종까지 남은 날과 전체 완료율을 한눈에 파악할 수 있어 접종을 빠뜨리지 않고 챙기는 데 도움이 됩니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>국가예방접종 프로그램은 결핵, B형간염, DTaP(디프테리아·파상풍·백일해), 폴리오, 뇌수막염, 수두, MMR(홍역·유행성이하선염·풍진) 등 여러 감염병을 예방하기 위해 출생 직후부터 단계적으로 접종을 권고합니다. 일정이 촘촘하게 설계된 이유는 영·유아기에 면역 체계가 아직 취약한 시기에 맞춰 방어 면역을 조기에 형성하기 위해서입니다. 국가예방접종은 보건소 및 지정 의료기관에서 무료로 받을 수 있으며, 선택예방접종(로타바이러스, 독감 등)은 별도 비용이 발생할 수 있습니다. 접종 일정이 다소 늦어져도 대부분 이어서 맞을 수 있지만, 구체적인 방법은 소아과 의사와 확인하는 것이 안전합니다.</p>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>신생아 접종은 종류가 많고 간격이 짧아 일정 관리가 까다롭습니다. 달력에 일정을 자동으로 뽑아두면 병원 예약 시기를 미리 확인하는 데 유용합니다.</li>
+        <li>첫째 아이 때와 달리 둘째부터는 양육에 여유가 없어 접종 일정을 놓치기 쉬운데, 캘린더 알림으로 미리 상기해 두는 데 활용할 수 있습니다.</li>
+    </ul>
     <h2>이렇게 사용하세요</h2>
     <ol>
         <li>아이의 생년월일을 입력합니다.</li>
@@ -133,11 +139,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>다음 접종까지 남은 D-day를 확인해 병원 예약 시기를 파악합니다.</li>
         <li>캘린더 파일(.ics)을 내려받아 스마트폰에 알림을 등록합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>신생아 접종은 종류가 많고 간격이 짧아 일정 관리가 까다롭습니다. 달력에 일정을 자동으로 뽑아두면 병원 예약 시기를 미리 확인하는 데 유용합니다.</li>
-        <li>첫째 아이 때와 달리 둘째부터는 양육에 여유가 없어 접종 일정을 놓치기 쉬운데, 캘린더 알림으로 미리 상기해 두는 데 활용할 수 있습니다.</li>
-    </ul>
+    <h2>알아두면 좋은 배경지식</h2>
+    <p>국가예방접종 프로그램은 결핵, B형간염, DTaP(디프테리아·파상풍·백일해), 폴리오, 뇌수막염, 수두, MMR(홍역·유행성이하선염·풍진) 등 여러 감염병을 예방하기 위해 출생 직후부터 단계적으로 접종을 권고합니다. 일정이 촘촘하게 설계된 이유는 영·유아기에 면역 체계가 아직 취약한 시기에 맞춰 방어 면역을 조기에 형성하기 위해서입니다. 국가예방접종은 보건소 및 지정 의료기관에서 무료로 받을 수 있으며, 선택예방접종(로타바이러스, 독감 등)은 별도 비용이 발생할 수 있습니다. 접종 일정이 다소 늦어져도 대부분 이어서 맞을 수 있지만, 구체적인 방법은 소아과 의사와 확인하는 것이 안전합니다.</p>
     <h2>활용 팁</h2>
     <ul>
         <li>같은 날 여러 백신을 동시에 접종하는 방식은 보건 당국이 권고하는 안전한 방법입니다. 접종 후 최소 15~30분은 의료 기관에서 대기하며 이상 반응 여부를 확인하세요.</li>
