@@ -70,7 +70,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .inbound button{width:auto;padding:10px 18px;font-size:15px}
 .result{display:none;margin-top:8px}
 /* ---- score hero ---- */
-.hero{border-radius:16px;padding:22px 20px;text-align:center;position:relative;overflow:hidden}
+.hero{border-radius:16px;padding:22px 20px;text-align:center;position:relative;overflow:hidden;text-shadow:0 1px 3px rgba(0,0,0,.55)}
 .hero .num{font-size:64px;font-weight:900;line-height:1;letter-spacing:-.02em}
 .hero .num small{font-size:22px;font-weight:800;opacity:.75}
 .hero .grade{font-size:19px;font-weight:800;margin-top:6px}
@@ -298,7 +298,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <p class="hint">기록은 이 브라우저에만 있습니다. 브라우저 데이터를 지우면 함께 사라지니 가끔 내보내기로 백업해 두세요.</p>
   </div>
 
-  <p class="disc">⚠️ 이 점수는 <b>검증되지 않은 가설 모델</b>의 결과이며 기상 예보가 아닙니다. 구름·강수·대기 값은 사용자가 입력한 값입니다. 기상 특보나 안전에 관한 판단은 반드시 기상청 공식 정보를 따르세요. 노을을 보러 갈 때는 일몰 후 어두워지는 속도가 생각보다 빠르니 이동 안전에 유의하세요.</p>
+  <p class="disc">🔒 이 페이지에는 광고가 붙어 있어 <b>페이지 주소</b>가 광고 제공자에게 전달될 수 있습니다(주소에는 지역명과 하늘 상태만 들어가고 좌표는 들어가지 않습니다).<br><br>⚠️ 이 점수는 <b>검증되지 않은 가설 모델</b>의 결과이며 기상 예보가 아닙니다. 구름·강수·대기 값은 사용자가 입력한 값입니다. 기상 특보나 안전에 관한 판단은 반드시 기상청 공식 정보를 따르세요. 노을을 보러 갈 때는 일몰 후 어두워지는 속도가 생각보다 빠르니 이동 안전에 유의하세요.</p>
 
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -363,7 +363,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 </footer>
 
 </div>
-<div class="toast" id="toast">복사되었습니다</div>
+<div class="toast" id="toast" role="status" aria-live="polite">복사되었습니다</div>
 <canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
 
 <script>
@@ -442,9 +442,9 @@ var EASY = [
 var GRADES = [
   { min:0,  label:"그냥 지나가는 저녁", emo:"🌥️", tone:["#334155","#1e293b"] },
   { min:30, label:"은은한 편",         emo:"🌆", tone:["#7c5b3f","#3f2d1f"] },
-  { min:50, label:"괜찮은 노을",       emo:"🌇", tone:["#c2410c","#7c2d12"] },
-  { min:70, label:"좋은 노을",         emo:"🔥", tone:["#f97316","#be123c"] },
-  { min:85, label:"굉장한 노을 가능성", emo:"✨", tone:["#fb923c","#db2777"] }
+  { min:50, label:"괜찮은 노을",       emo:"🌇", tone:["#9a3412","#7c2d12"] },
+  { min:70, label:"좋은 노을",         emo:"🔥", tone:["#b45309","#9f1239"] },
+  { min:85, label:"굉장한 노을 가능성", emo:"✨", tone:["#c2410c","#a21caf"] }
 ];
 
 /* 지역: 시군구 단위 대표 좌표 (상시 위치 추적 없음) */
@@ -900,11 +900,16 @@ $("wipeBtn").addEventListener("click",function(){
   renderAccuracy(); toast("기록을 삭제했습니다");
 });
 function renderAccuracy(){
-  var logs = loadLogs().filter(function(l){ return typeof l.r==="number" && typeof l.s==="number"; });
+  /* 가중치를 바꿔 모델 버전이 올라가면 옛 로그로 채점한 결과와 섞여 적중률이 왜곡된다.
+     현재 모델로 매긴 기록만 집계한다(버전 표기가 없는 옛 기록은 제외). */
+  var allLogs = loadLogs().filter(function(l){ return typeof l.r==="number" && typeof l.s==="number"; });
+  var logs = allLogs.filter(function(l){ return l.mv===MODEL_VERSION; });
+  var otherVer = allLogs.length - logs.length;
   var body = $("accBody");
   if(logs.length < 5){
     body.innerHTML = '<p class="hint" style="margin:0">평가 기록 <b>'+logs.length+'건</b> — 5건부터 적중률을 계산합니다. '
-      + '표본이 적을 때 그럴듯한 숫자를 만들어 보여 주는 대신 아직 모른다고 적어 둡니다.</p>';
+      + '표본이 적을 때 그럴듯한 숫자를 만들어 보여 주는 대신 아직 모른다고 적어 둡니다.'
+      + (otherVer ? ' (다른 모델 버전으로 매긴 기록 '+otherVer+'건은 섞지 않고 제외했습니다.)' : '')+'</p>';
     return;
   }
   /* 버킷별로도 최소 표본을 요구한다. 전체 5건을 넘겼어도 한쪽이 1건이면
@@ -928,7 +933,7 @@ function renderAccuracy(){
     + cell("70점 미만이라 한 날", loRate, loGood, lo.length, loOk)
     + '<div class="b"><div class="k">모델이 만든 차이</div><div class="v">'+(lift===null?"—":(lift>0?"+":"")+lift+"%p")+'</div><div class="s">'+(lift===null?"양쪽 표본이 "+MIN_BUCKET+"건씩 모여야 비교합니다":(lift<=0?"아직 무작위보다 낫다는 근거가 없습니다":"높다고 한 날이 실제로 더 좋았습니다"))+'</div></div>'
     + '</div>'
-    + '<p class="hint">기록 '+logs.length+'건 · 모델 '+MODEL_VERSION+' 기준. 이 수치는 이 브라우저의 기록만 씁니다. '
+    + '<p class="hint">기록 '+logs.length+'건 · 모델 '+MODEL_VERSION+' 기준'+(otherVer?' (다른 버전 '+otherVer+'건 제외)':'')+'. 이 수치는 이 브라우저의 기록만 씁니다. '
     + '값이 낮게 나와도 조정하지 않고 그대로 표시합니다. <b>다만 이 평가는 점수를 본 사람이 직접 매긴 자기보고라, 높은 점수를 본 날 후하게 채점하는 편향이 섞일 수 있습니다.</b> 엄밀한 검증이 아니라 참고용 지표로만 보세요.</p>';
 }
 

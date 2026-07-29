@@ -93,11 +93,11 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .steps li{font-size:14.5px;margin-bottom:7px;word-break:keep-all}
 .steps li em{font-style:normal;color:#9ca3af;font-size:12.5px}
 .reason{background:rgba(163,230,53,.09);border-left:3px solid var(--acc);border-radius:8px;padding:9px 12px;font-size:14px;color:#d4d4d4;margin-top:12px;word-break:keep-all}
-.srcbadge{display:inline-block;font-size:11.5px;font-weight:800;color:#a1a1aa;background:#1c1c1c;border:1px solid #2e2e2e;border-radius:999px;padding:3px 10px;margin-right:6px}
+.srcbadge{display:inline-block;font-size:12.5px;font-weight:800;color:#a1a1aa;background:#1c1c1c;border:1px solid #2e2e2e;border-radius:999px;padding:3px 10px;margin-right:6px}
 /* diff */
 .diff{margin-top:6px}
 .dline{display:flex;gap:8px;align-items:flex-start;font-size:14px;padding:7px 10px;border-radius:8px;margin-bottom:6px;word-break:keep-all}
-.dline .tag{flex:none;font-size:11px;font-weight:900;border-radius:6px;padding:2px 7px;margin-top:2px}
+.dline .tag{flex:none;font-size:12.5px;font-weight:900;border-radius:6px;padding:2px 7px;margin-top:2px}
 .d-add{background:rgba(63,98,18,.2)} .d-add .tag{background:#3f6212;color:#ecfccb}
 .d-del{background:rgba(127,29,29,.18)} .d-del .tag{background:#7f1d1d;color:#fee2e2}
 .d-chg{background:rgba(120,53,15,.2)} .d-chg .tag{background:#78350f;color:#fef3c7}
@@ -301,7 +301,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
       <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
     </div>
   </details>
-  <p class="disc">🔒 서버가 없어 모든 레시피는 이 브라우저에만 있습니다. 공유는 <b>레시피 전체가 담긴 링크</b>를 보내는 방식이라, 가족에게만 보내면 그것이 곧 가족 모드입니다. 브라우저 데이터를 지우면 사라지니 내보내기로 백업해 두세요.</p>
+  <p class="disc">🔒 서버가 없어 모든 레시피는 이 브라우저에만 있습니다. 이 페이지에는 광고가 붙어 있어 <b>페이지 주소</b>가 광고 제공자에게 전달될 수 있고, ‘링크 복사’로 만든 주소에는 레시피 전체가 담깁니다. 공유는 <b>레시피 전체가 담긴 링크</b>를 보내는 방식이라, 가족에게만 보내면 그것이 곧 가족 모드입니다. 브라우저 데이터를 지우면 사라지니 내보내기로 백업해 두세요.</p>
 </section>
 
 <section class="about">
@@ -368,7 +368,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <button class="ghost cclose" id="cookClose" type="button">닫기</button>
   <div class="cwake" id="cookWake"></div>
 </div>
-<div class="toast" id="toast">저장되었습니다</div>
+<div class="toast" id="toast" role="status" aria-live="polite">저장되었습니다</div>
 <canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
 
 <script>
@@ -443,9 +443,16 @@ function normName(s){
 }
 
 /* 한 줄 → 재료 객체 (실패 시 null) */
+/* 손질 지시("채썰기", "껍질 벗겨") — 재료 줄 끝에 붙는 흔한 표기.
+   떼어 내서 메모로 보관하고 재료·분량만 남긴다. */
+var PREP_TAIL = /\s*[,，]?\s*((?:껍질\s*)?(?:벗겨|까서|깎아)?\s*)?((?:채|어슷|얇게|굵게|잘게|깍둑|송송)?\s*(?:썰기|썰어서?|썬\s*것|다지기|다져서?|다진\s*것|갈기|갈아서?|손질|준비)(?:\s*(?:준비|해서|하기|둔\s*것))?)\s*$/;
 function parseIngredient(line){
   var s = String(line).trim().replace(/^[-*•·]\s*/,"").replace(/\s*[:：]\s*/," ");
   if(!s) return null;
+  /* 전각·축약 단위 표기를 표준형으로 */
+  s = s.replace(/㎖/g,"ml").replace(/㎗/g,"dl").replace(/ℓ|㎘/g,"L").replace(/㎏/g,"kg").replace(/㎎/g,"mg")
+       .replace(/([0-9])\s*Ts\b/g,"$1큰술").replace(/([0-9])\s*ts\b/g,"$1작은술")
+       .replace(/([0-9])\s*tbsp\b/gi,"$1큰술").replace(/([0-9])\s*tsp\b/gi,"$1작은술");
 
   /* 재료 옆 괄호 설명은 실제 레시피에서 기본값이다.
      "돼지고기 300g(목살 또는 앞다리살)" → 설명을 메모로 떼어 내고 나머지를 파싱한다. */
@@ -455,6 +462,13 @@ function parseIngredient(line){
 
   /* "300g 정도", "10마리쯤" 같은 어림 접미 제거 */
   s = s.replace(/\s*(정도|쯤|가량|남짓)\s*$/,"").trim();
+
+  /* "양파 1개 채썰기" — 손질 지시를 메모로 떼어 낸다(없으면 재료 인식 자체가 실패했다) */
+  var prep = s.match(PREP_TAIL);
+  if(prep && prep[0].trim()){
+    var rest = s.slice(0, s.length - prep[0].length).trim();
+    if(rest){ note = (note ? note+" · " : "") + prep[0].trim(); s = rest; }
+  }
 
   var unitAlt = UNITS.slice().sort(function(a,b){ return b.length-a.length; })
     .map(function(u){ return u.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }).join("|");
@@ -504,6 +518,25 @@ function parseStep(line){
   return { a:s.slice(0,120), m: mm?parseInt(mm[1],10):null, t: tm?parseInt(tm[1],10):null, o:"" };
 }
 
+/* "마늘 2쪽, 생강 1쪽"처럼 한 줄에 여러 재료가 쉼표로 이어진 표기를 쪼갠다.
+   쪼개지 않으면 이름이 "마늘 2쪽, 생강"으로 뭉개져 diff가 가짜 변경을 만들어 낸다.
+   각 조각이 전부 재료로 읽힐 때만 쪼갠다(설명 문장을 잘못 자르지 않게). */
+function splitIngredientLine(line){
+  var s = String(line||"").trim();
+  if(!/[,，]/.test(s)) return null;
+  var parts = s.split(/\s*[,，]\s*/).map(function(x){ return x.trim(); }).filter(Boolean);
+  if(parts.length < 2) return null;
+  var out = [];
+  for(var i=0;i<parts.length;i++){
+    /* 조각 하나가 너무 길면 재료 나열이 아니라 문장이다 */
+    if(parts[i].length > 20) return null;
+    var g = parseIngredient(parts[i]);
+    if(!g || !g.a) return null;      /* 분량이 없으면 재료 나열로 보지 않는다 */
+    out.push(g);
+  }
+  return out;
+}
+
 /* 자유 서술 → { ings, steps } */
 function parseFree(text){
   var lines = String(text||"").split(/\r?\n/);
@@ -520,10 +553,14 @@ function parseFree(text){
       continue;
     }
     if(mode==="ing"){
+      var multi=splitIngredientLine(raw);
+      if(multi){ multi.forEach(function(x){ ings.push(x); }); continue; }
       var ig=parseIngredient(raw);
       if(ig) ings.push(ig); else { var st2=parseStep(raw); if(st2) steps.push(st2); }
       continue;
     }
+    var multi2=splitIngredientLine(raw);
+    if(multi2){ multi2.forEach(function(x){ ings.push(x); }); continue; }
     var g=parseIngredient(raw);
     if(g) ings.push(g); else { var s3=parseStep(raw); if(s3) steps.push(s3); }
   }
@@ -1082,7 +1119,7 @@ $("vXBtn").addEventListener("click",function(){
   /* X는 공개 게시다. 집안 레시피를 실수로 공개하지 않도록 한 번 확인받는다. */
   if(!window.confirm("X(트위터)에 공개로 올립니다.\n\n링크에는 재료·순서·바꾼 이유와 ‘"+(viewing.au||"익명")+"’이라는 이름이 함께 들어갑니다. 누구나 볼 수 있게 됩니다.\n\n계속할까요?")) return;
   var t=viewing.cr ? ("“"+viewing.cr+"” — "+viewing.t+" 🌿") : (viewing.t+" 레시피를 계보로 남겼습니다 🌿");
-  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(shareUrl()),"_blank");
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(shareUrl()),"_blank","noopener");
 });
 if(navigator.share){
   $("vShareBtn").style.display="";
