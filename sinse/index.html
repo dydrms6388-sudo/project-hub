@@ -16,6 +16,19 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="신세 — 받은 마음을 적어 두는 장부" />
 <meta name="twitter:description" content="점수도 등급도 없이, 횟수만 적습니다." />
+<script>
+/* 공유 링크(?r=)를 광고 스크립트가 읽어 가기 전에 먼저 회수하고 주소를 비운다.
+   본문 아래 IIFE에서 지우면 그 사이에 광고가 먼저 로드돼 URL을 볼 수 있는 틈이 생긴다. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.has("r")){
+      window.__sharedPayload=q.get("r");
+      history.replaceState(null,"",location.pathname);
+    }
+  }catch(e){}
+})();
+</script>
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <script type="application/ld+json">
@@ -73,7 +86,7 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .dirsw button.on{background:rgba(212,180,131,.12);border-color:var(--acc);color:var(--acc2);font-weight:700}
 /* 탭 */
 .tabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
-.tabs button{flex:1;min-width:78px;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:12px;font-size:13px;font-weight:600;min-height:44px;padding:10px 6px}
+.tabs button{flex:1;min-width:78px;word-break:keep-all;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:12px;font-size:13px;font-weight:600;min-height:44px;padding:10px 6px}
 .tabs button.on{background:rgba(212,180,131,.1);border-color:var(--acc);color:var(--acc2)}
 /* 장부 줄 */
 .entry{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--ln)}
@@ -157,12 +170,12 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
 <!-- 기록 -->
 <section class="card" id="addCard">
   <p class="lab">적기</p>
-  <div class="dirsw" id="dirsw">
+  <div class="dirsw" id="dirsw" role="group" aria-label="받았다 또는 줬다">
     <button type="button" data-d="r" class="on">받았다</button>
     <button type="button" data-d="g">줬다</button>
   </div>
 
-  <div class="chips" id="kindChips"></div>
+  <div class="chips" id="kindChips" role="group" aria-label="무엇을 주고받았는지"></div>
   <div class="field" id="kindEtcWrap" style="display:none">
     <input type="text" id="fKindEtc" aria-label="무엇을 받았는지" maxlength="14" placeholder="무엇을 (예: 짐 옮겨줌)" />
   </div>
@@ -203,7 +216,7 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
   <div class="acts" id="demoWrap" style="display:none">
     <button class="ghost" id="demoBtn" type="button">👀 예시로 둘러보기</button>
   </div>
-  <div class="tabs" id="tabs">
+  <div class="tabs" id="tabs" role="group" aria-label="보기 방식">
     <button type="button" data-t="all" class="on">전체</button>
     <button type="button" data-t="person">사람별</button>
     <button type="button" data-t="kind">종류별</button>
@@ -762,8 +775,12 @@ function shareText(){
   return lines.join("\n");
 }
 function guard(){ if(!db.favors.length){ toast("먼저 한 줄이라도 적어 주세요"); return true; } return false; }
-$("copyLinkBtn").addEventListener("click",function(){ if(!guard()) copy(resultUrl(),"링크를 복사했습니다"); });
-$("copyTextBtn").addEventListener("click",function(){ if(!guard()) copy(shareText(),"텍스트를 복사했습니다"); });
+function nameWarn(where){
+  if(!$("showNames").checked) return true;
+  return window.confirm(where+"\n\n지금 \u2018이름 표시\u2019가 켜져 있어 상대 이름이 가려지지 않은 채 나갑니다. 계속할까요?");
+}
+$("copyLinkBtn").addEventListener("click",function(){ if(!guard() && nameWarn("링크를 복사합니다.")) copy(resultUrl(),"링크를 복사했습니다"); });
+$("copyTextBtn").addEventListener("click",function(){ if(!guard() && nameWarn("텍스트를 복사합니다.")) copy(shareText(),"텍스트를 복사했습니다"); });
 $("xBtn").addEventListener("click",function(){
   if(guard()) return;
   var warn = $("showNames").checked
@@ -777,6 +794,7 @@ if(navigator.share){
   $("shareBtn").style.display="";
   $("shareBtn").addEventListener("click",function(){
     if(guard()) return;
+    if(!nameWarn("다른 앱으로 공유합니다.")) return;
     navigator.share({ title:"신세", text:shareText(), url:resultUrl() }).catch(function(){});
   });
 }
@@ -893,9 +911,9 @@ $("demoBtn").addEventListener("click",function(){
 function renderAll(){ renderPeopleChips(); renderList(); renderYear(); $("demoWrap").style.display = db.favors.length ? "none" : ""; }
 load(); renderAll();
 
-var params=new URLSearchParams(location.search);
-if(params.has("r")){
-  var sh=decd(params.get("r"));
+var sharedRaw = window.__sharedPayload || new URLSearchParams(location.search).get("r");
+if(sharedRaw){
+  var sh=decd(sharedRaw);
   if(sh && typeof sh.r==="number"){
     var num=function(v){ return typeof v==="number"&&isFinite(v)&&v>=0 ? Math.round(v) : 0; };
     var t=Array.isArray(sh.t)?sh.t.slice(0,3).map(function(x){ return { l:String(x&&x.l||"—").slice(0,10), n:num(x&&x.n) }; }):[];

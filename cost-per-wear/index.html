@@ -16,6 +16,19 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="1회당 — 옷 한 벌의 1회 착용 원가" />
 <meta name="twitter:description" content="1회당 원가를 낮추는 게임. 기록은 내 브라우저에만 남습니다." />
+<script>
+/* 공유 링크(?r=)를 광고 스크립트가 읽어 가기 전에 먼저 회수하고 주소를 비운다.
+   본문 아래 IIFE에서 지우면 그 사이에 광고가 먼저 로드돼 URL을 볼 수 있는 틈이 생긴다. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.has("r")){
+      window.__sharedPayload=q.get("r");
+      history.replaceState(null,"",location.pathname);
+    }
+  }catch(e){}
+})();
+</script>
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <script type="application/ld+json">
@@ -37,7 +50,7 @@
 <style>
 :root{color-scheme:dark;--acc:#5eead4;--acc2:#99f6e4;--accdim:#0f3d38}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;word-break:keep-all}
 .wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
 a{color:var(--acc)}
 .nav{font-size:13px;color:#9ca3af;margin-bottom:16px}
@@ -170,8 +183,8 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <!-- 오늘 입은 것 -->
 <section class="card" id="todayCard">
   <p class="lab">✅ <b>오늘 입은 것</b> — 탭 한 번이면 끝</p>
-  <div class="daysw" id="daysw"></div>
-  <div class="tiles" id="tiles"></div>
+  <div class="daysw" id="daysw" role="group" aria-label="기록할 날짜"></div>
+  <div class="tiles" id="tiles" role="group" aria-label="오늘 입은 것 고르기"></div>
   <div class="acts" id="demoWrap" style="display:none">
     <button class="ghost" id="demoBtn" type="button">👀 예시로 둘러보기</button>
   </div>
@@ -202,11 +215,11 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   </div>
   <div class="field">
     <p class="lab">카테고리</p>
-    <div class="chips" id="catChips"></div>
+    <div class="chips" id="catChips" role="group" aria-label="카테고리"></div>
   </div>
   <div class="field">
     <p class="lab">종류</p>
-    <div class="chips" id="kindChips">
+    <div class="chips" id="kindChips" role="group" aria-label="한 번 사는 것인지 구독인지">
       <button type="button" class="chip on" data-k="own">한 번 사는 것</button>
       <button type="button" class="chip" data-k="sub">매달 내는 것 (구독)</button>
     </div>
@@ -234,7 +247,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <!-- 목록 -->
 <section class="card" id="listCard">
   <p class="lab">📦 <b>목록</b></p>
-  <div class="tabs" id="tabs">
+  <div class="tabs" id="tabs" role="group" aria-label="목록 보기 방식">
     <button type="button" data-t="all" class="on">전체</button>
     <button type="button" data-t="idle">요즘 안 입은 것</button>
     <button type="button" data-t="zero">아직 0회</button>
@@ -485,6 +498,7 @@ function renderTiles(){
     var pu=perUse(it);
     var b=document.createElement("button");
     b.type="button"; b.className="tile"+(done?" done":"");
+    b.setAttribute("aria-pressed", done?"true":"false");
     b.innerHTML='<span class="em">'+catOf(it.c).em+'</span><span class="nm">'+esc(it.n)+'</span><span class="pw">'
       + (pu===null ? (it.kind==="sub"?"이번 달 0회":"0회") : shortWon(pu)+"원") + '</span>';
     b.addEventListener("click",function(){ toggleWear(it, key); });
@@ -580,9 +594,13 @@ $("bulkBtn").addEventListener("click",function(){
     else { name=l.replace(/[,\t]+$/,"").trim(); price=0; }
     if(!name){ skipped++; return; }
     if(!(price>=0) || price>100000000){ skipped++; return; }
+    var cat=suggestCat(name)||"etc";
+    /* 이름이 구독으로 분류되면 계산 방식도 구독으로 맞춘다.
+       카테고리만 구독이고 kind는 own이면 '월 요금 ÷ 그 달 사용'이 아니라
+       누적 횟수로 나눠 원가가 몇 배로 싸 보이는 착시가 생긴다. */
     db.items.push({
       id:uid(), n:name.slice(0,24), p:Math.round(price),
-      a:monthKey(todayKey(0)), c:suggestCat(name)||"etc", kind:"own", st:"active", w:[], g:null
+      a:monthKey(todayKey(0)), c:cat, kind: cat==="sub" ? "sub" : "own", st:"active", w:[], g:null
     });
     added++;
   });
@@ -638,7 +656,7 @@ function listFor(){
   if(tab==="arch") return archived();
   var a=active();
   if(tab==="idle") return a.filter(function(i){ var d=idleDays(i); return d===null || d>=30; });
-  if(tab==="zero") return a.filter(function(i){ return i.w.length===0; });
+  if(tab==="zero") return a.filter(function(i){ return useCount(i)===0; });   /* 화면 뱃지와 같은 기준(구독은 이번 달) */
   return a;
 }
 function renderList(){
@@ -920,8 +938,12 @@ function guardEmpty(){
   if(!active().length){ toast("먼저 항목을 하나 등록해 주세요"); return true; }
   return false;
 }
-$("copyLinkBtn").addEventListener("click",function(){ if(!guardEmpty()) copy(resultUrl(),"링크가 복사되었습니다"); });
-$("copyTextBtn").addEventListener("click",function(){ if(!guardEmpty()) copy(shareText(),"텍스트가 복사되었습니다"); });
+function nameWarn(where){
+  if(!$("withNames").checked) return true;
+  return window.confirm(where+"\n\n지금 \u2018항목 이름 포함\u2019이 켜져 있어 옷 이름이 함께 나갑니다. 계속할까요?");
+}
+$("copyLinkBtn").addEventListener("click",function(){ if(!guardEmpty() && nameWarn("링크를 복사합니다.")) copy(resultUrl(),"링크가 복사되었습니다"); });
+$("copyTextBtn").addEventListener("click",function(){ if(!guardEmpty() && nameWarn("텍스트를 복사합니다.")) copy(shareText(),"텍스트가 복사되었습니다"); });
 $("xBtn").addEventListener("click",function(){
   if(guardEmpty()) return;
   if($("withNames").checked && !window.confirm("X(트위터)에 공개로 올립니다.\n\n지금 ‘항목 이름 포함’이 켜져 있어 옷 이름이 함께 나갑니다. 계속할까요?")) return;
@@ -933,6 +955,7 @@ if(navigator.share){
   $("shareBtn").style.display="";
   $("shareBtn").addEventListener("click",function(){
     if(guardEmpty()) return;
+    if(!nameWarn("다른 앱으로 공유합니다.")) return;
     navigator.share({ title:"1회당", text:shareText(), url:resultUrl() }).catch(function(){});
   });
 }
@@ -964,7 +987,8 @@ function drawCard(){
 
   ctx.fillStyle="rgba(255,255,255,.08)"; roundRect(ctx,90,500,900,150,24); ctx.fill();
   ctx.fillStyle="rgba(255,255,255,.6)"; ctx.font="700 28px -apple-system,sans-serif";
-  ctx.fillText("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 차지하는 착용 비중", W/2, 560);
+  ctx.fillText(s.c===null ? "착용 기록이 쌓이면 편중도가 나옵니다"
+    : "자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 차지하는 착용 비중", W/2, 560);
   ctx.fillStyle="#a5b4fc"; ctx.font="900 70px -apple-system,sans-serif";
   ctx.fillText(s.c===null?"—":s.c+"%", W/2, 630);
   var sampleBase=s.own||s.n;
@@ -1110,9 +1134,9 @@ function renderAll(){ renderTiles(); renderStats(); renderList(); }
 load();
 renderAll();
 
-var params=new URLSearchParams(location.search);
-if(params.has("r")){
-  var sh=sanitizeShared(dec(params.get("r")));
+var sharedRaw = window.__sharedPayload || new URLSearchParams(location.search).get("r");
+if(sharedRaw){
+  var sh=sanitizeShared(dec(sharedRaw));
   if(sh){
     renderShared(sh);
     $("inbound").classList.add("show");

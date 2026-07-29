@@ -16,6 +16,19 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="레시피 계보 — 엄마 레시피에서 내 버전이 갈라져 나오는 곳" />
 <meta name="twitter:description" content="바꾸고, 이유를 남기면 집안 레시피의 계보가 그려집니다." />
+<script>
+/* 공유 링크(?r=)를 광고 스크립트가 읽어 가기 전에 먼저 회수하고 주소를 비운다.
+   본문 아래 IIFE에서 지우면 그 사이에 광고가 먼저 로드돼 URL을 볼 수 있는 틈이 생긴다. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.has("r")){
+      window.__sharedPayload=q.get("r");
+      history.replaceState(null,"",location.pathname);
+    }
+  }catch(e){}
+})();
+</script>
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <script type="application/ld+json">
@@ -37,7 +50,7 @@
 <style>
 :root{color-scheme:dark;--acc:#a3e635;--acc2:#d9f99d;--accdim:#25340f}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;word-break:keep-all}
 .wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
 a{color:var(--acc)}
 .nav{font-size:13px;color:#9ca3af;margin-bottom:16px}
@@ -178,7 +191,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <!-- 열람 중인 레시피(공유로 받은 것 또는 내 버전) -->
 <section class="card" id="viewCard" style="display:none">
   <p class="lab">📖 <b>지금 보고 있는 레시피</b></p>
-  <div class="scaler" id="scaler">
+  <div class="scaler" id="scaler" role="group" aria-label="인분 배율">
     <span class="sl">인분</span>
     <button class="ghost mini" id="sMinus" type="button" aria-label="인분 줄이기">−</button>
     <b id="sVal">1×</b>
@@ -263,7 +276,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 
   <div class="field">
     <p class="lab">📌 이 레시피는 어디서 왔나요? <b style="color:#fca5a5">— 이것만 고르면 저장됩니다</b></p>
-    <div class="chips" id="srcChips">
+    <div class="chips" id="srcChips" role="group" aria-label="이 레시피의 출처">
       <button type="button" class="chip" data-k="own">직접 개발</button>
       <button type="button" class="chip" data-k="learn">가족·지인에게 배움</button>
       <button type="button" class="chip" data-k="adapt">참고 후 변형</button>
@@ -383,7 +396,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 var UNITS = ["큰술","작은술","숟가락","숟갈","스푼","티스푼","테이블스푼","컵","공기","종이컵",
   "g","kg","mg","ml","mL","L","l","리터","밀리리터","그램","킬로그램",
   "개","알","쪽","줄","장","봉지","봉","캔","팩","톨","주먹","꼬집","방울","마리","포기","단","자밤",
-  "대","뿌리","조각","덩어리","자루","근","T","t","cc","스틱","봉투","모","통","송이","다발","줌","꼬치","인분"];
+  "대","뿌리","줄기","조각","덩어리","자루","근","국자","공기","알갱이","T","t","cc","스틱","봉투","모","통","송이","다발","줌","꼬치","인분"];
 /* 단위 표기 통일 — 같은 양인데 표기만 다를 때 diff가 "바뀜"으로 오판하지 않게.
    화면에는 사용자가 쓴 표기를 그대로 보여 주고, 비교할 때만 이 표를 쓴다. */
 var UNIT_CANON = {
@@ -399,6 +412,9 @@ function canonUnit(u){
   var t=String(u||"").trim();
   return UNIT_CANON[t] || t.toLowerCase();
 }
+/* 단위 환산 배율 — 1kg == 1000g 처럼 같은 양을 표기만 바꾼 경우를 같게 본다 */
+var UNIT_SCALE = { "kg":1000, "g":1, "mg":0.001, "L":1000, "ml":1, "큰술":15, "작은술":5 };
+var UNIT_FAMILY = { "kg":"질량","g":"질량","mg":"질량", "L":"부피","ml":"부피","큰술":"부피","작은술":"부피" };
 /* 분량 비교용 정규화 — "1/2"와 "0.5", "1"과 "1.0"을 같은 값으로 본다. */
 function normAmount(a){
   var s=String(a==null?"":a).trim();
@@ -425,11 +441,11 @@ var SYNONYM = {
   /* 맞춤법 변형 */
   "고추가루":"고춧가루","고춧가루":"고춧가루",
   "설탕가루":"설탕",
-  "깻잎순":"깻잎",
   /* 같은 물건의 준말·별칭 */
   "생수":"물","정수":"물","물":"물",
   "대파흰부분":"대파","대파":"대파",
   "깐양파":"양파","양파":"양파",
+  "깐마늘":"마늘","마늘":"마늘",
   "계란":"달걀","달걀":"달걀",
   "당근채":"당근",
   /* '파'는 대파의 준말이라 같은 것으로 본다. 다만 '쪽파'·'실파'는 별개 재료이므로
@@ -455,6 +471,14 @@ var PREP_TAIL = /\s*[,，]?\s*((?:껍질\s*)?(?:벗겨|까서|깎아)?\s*)?((?:�
 function parseIngredient(line){
   var s = String(line).trim().replace(/^[-*•·]\s*/,"").replace(/\s*[:：]\s*/," ");
   if(!s) return null;
+  /* 혼합분수 "1½" → "1.5" (그냥 치환하면 "11/2"가 되어 5.5로 읽힌다) */
+  s = s.replace(/([0-9])\s*½/g, function(_,d){ return (parseInt(d,10)+0.5).toString(); })
+       .replace(/([0-9])\s*¼/g, function(_,d){ return (parseInt(d,10)+0.25).toString(); })
+       .replace(/([0-9])\s*¾/g, function(_,d){ return (parseInt(d,10)+0.75).toString(); });
+  /* 앱이 만든 배율 표기("1과 1/2컵")를 다시 넣어도 읽히게 */
+  s = s.replace(/([0-9]+)\s*과\s*([0-9]+)\/([0-9]+)/g, function(_,w,n,d){
+    return (parseInt(w,10) + (+n)/(+d)).toString();
+  });
   /* 전각·축약 단위 표기를 표준형으로 */
   s = s.replace(/㎖/g,"ml").replace(/㎗/g,"dl").replace(/ℓ|㎘/g,"L").replace(/㎏/g,"kg").replace(/㎎/g,"mg")
        .replace(/([0-9])\s*Ts\b/g,"$1큰술").replace(/([0-9])\s*ts\b/g,"$1작은술")
@@ -537,7 +561,11 @@ function splitIngredientLine(line){
     /* 조각 하나가 너무 길면 재료 나열이 아니라 문장이다 */
     if(parts[i].length > 20) return null;
     var g = parseIngredient(parts[i]);
-    if(!g || !g.a) return null;      /* 분량이 없으면 재료 나열로 보지 않는다 */
+    /* 모든 조각이 재료로 읽혀야 쪼갠다. 단, 분량이 숫자가 아니어도
+       "소금 약간"처럼 단위(약간·적당량)가 잡혔으면 재료로 인정한다.
+       예전에는 분량 숫자를 요구해서 "소금 약간, 대파 1대, 후추 약간"이 통째로
+       버려지고 재료가 소리 없이 사라졌다 — 데이터 손실이라 가장 나쁜 실패였다. */
+    if(!g || !g.n || (!g.a && !g.u)) return null;
     out.push(g);
   }
   return out;
@@ -609,7 +637,7 @@ function diffRecipes(parent, child){
     var c = cmap[normName(x.n)];
     if(!c) return;
     /* 표기만 다르고 실제 양이 같으면(1큰술 vs 1T) 변경으로 보지 않는다. */
-    if(normAmount(x.a)!==normAmount(c.a) || canonUnit(x.u)!==canonUnit(c.u)){
+    if(!sameQuantity(x, c)){
       out.ing.push({ kind:"chg", text: x.n+" "+amt(x)+" → "+amt(c) });
     }
   });
@@ -657,6 +685,17 @@ function amt(x){
   return (a+(u?(a?"":"")+u:"")).replace(/^\s+/,"") || (a||u);
 }
 function cut(s){ s=String(s||""); return s.length>26 ? s.slice(0,26)+"…" : s; }
+/* 같은 양인가? 표기(1/2 vs 0.5)와 단위 환산(1kg vs 1000g)을 모두 흡수한다. */
+function sameQuantity(a, b){
+  var ua=canonUnit(a.u), ub=canonUnit(b.u);
+  var na=normAmount(a.a), nb=normAmount(b.a);
+  if(ua===ub) return na===nb;
+  var fa=UNIT_FAMILY[ua], fb=UNIT_FAMILY[ub];
+  if(!fa || fa!==fb) return false;          /* 다른 계열이면 비교 불가 → 변경으로 본다 */
+  var va=parseFloat(na), vb=parseFloat(nb);
+  if(!isFinite(va) || !isFinite(vb)) return false;
+  return Math.abs(va*UNIT_SCALE[ua] - vb*UNIT_SCALE[ub]) < 1e-6;
+}
 /* @engine-end */
 
 /* ================= utils ================= */
@@ -715,9 +754,12 @@ function renumber(){
 $("addIng").addEventListener("click",function(){ $("ingRows").appendChild(ingRow()); });
 $("addStep").addEventListener("click",function(){ $("stepRows").appendChild(stepRow()); renumber(); });
 Array.prototype.forEach.call($("srcChips").children,function(b){
+  b.setAttribute("aria-pressed","false");
   b.addEventListener("click",function(){
     srcKind=b.dataset.k;
-    Array.prototype.forEach.call($("srcChips").children,function(c){ c.classList.toggle("on", c===b); });
+    Array.prototype.forEach.call($("srcChips").children,function(c){
+      var on=(c===b); c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
     $("srcNoteWrap").style.display = srcKind==="adapt" ? "block" : "none";
   });
 });
@@ -731,7 +773,7 @@ function fillEditor(r, asFork){
   renumber();
   if(r && r.sk){
     srcKind = asFork ? null : r.sk;
-    Array.prototype.forEach.call($("srcChips").children,function(c){ c.classList.toggle("on", c.dataset.k===srcKind); });
+    Array.prototype.forEach.call($("srcChips").children,function(c){ var on=c.dataset.k===srcKind; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false"); });
     $("srcNoteWrap").style.display = srcKind==="adapt" ? "block" : "none";
     if(!asFork) $("eSrcNote").value = r.sn||"";
   }
@@ -1220,9 +1262,9 @@ $("vSaveBtn").addEventListener("click",function(){
 /* ================= 시작 ================= */
 load(); renderMine();
 fillEditor(null,false);
-var params=new URLSearchParams(location.search);
-if(params.has("r")){
-  var shared=decd(params.get("r"));
+var sharedRaw = window.__sharedPayload || new URLSearchParams(location.search).get("r");
+if(sharedRaw){
+  var shared=decd(sharedRaw);
   if(shared && shared.t && Array.isArray(shared.i) && Array.isArray(shared.s)){
     var r=cleanRecipe(shared);
     openRecipe(r);

@@ -16,6 +16,19 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="오늘 노을 — 오늘 저녁 노을이 좋을지 미리 계산" />
 <meta name="twitter:description" content="노을 점수·절정 시각·근거 3줄. 일몰 시각과 방위는 천문 계산." />
+<script>
+/* 공유 링크(?r=)를 광고 스크립트가 읽어 가기 전에 먼저 회수하고 주소를 비운다.
+   본문 아래 IIFE에서 지우면 그 사이에 광고가 먼저 로드돼 URL을 볼 수 있는 틈이 생긴다. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.has("r")){
+      window.__sharedPayload=q.get("r");
+      history.replaceState(null,"",location.pathname);
+    }
+  }catch(e){}
+})();
+</script>
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <script type="application/ld+json">
@@ -72,9 +85,9 @@ button:disabled{opacity:.4;cursor:not-allowed}
 /* ---- score hero ---- */
 .hero{border-radius:16px;padding:22px 20px;text-align:center;position:relative;overflow:hidden;text-shadow:0 1px 3px rgba(0,0,0,.55)}
 .hero .num{font-size:64px;font-weight:900;line-height:1;letter-spacing:-.02em}
-.hero .num small{font-size:22px;font-weight:800;opacity:.75}
+.hero .num small{font-size:22px;font-weight:800;color:#fff}
 .hero .grade{font-size:19px;font-weight:800;margin-top:6px}
-.hero .where{font-size:13px;opacity:.8;margin-top:4px}
+.hero .where{font-size:13.5px;color:#fff;margin-top:4px;font-weight:600}
 .peak{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
 .peak .box{flex:1;min-width:150px;background:#101010;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px}
 .peak .k{font-size:13px;color:#9ca3af;font-weight:700}
@@ -961,6 +974,7 @@ $("copyLinkBtn").addEventListener("click",function(){ if(current) copy(resultUrl
 $("copyTextBtn").addEventListener("click",function(){ if(current) copy(shareText(),"텍스트가 복사되었습니다"); });
 $("xBtn").addEventListener("click",function(){
   if(!current) return;
+  if(!window.confirm("X(트위터)에 공개로 올립니다.\n\n점수·지역명·하늘 상태가 함께 나갑니다(좌표는 들어가지 않습니다). 계속할까요?")) return;
   var t="오늘 노을 "+current.out.score+"점, 절정은 "+hhmm(current.out.peak)+" ("+current.out.place.name+") 🌇";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
 });
@@ -1089,9 +1103,9 @@ function sanitize(st){
   }
   return out;
 }
-var params=new URLSearchParams(location.search);
-if(params.has("r")){
-  var st0=sanitize(dec2(params.get("r")));
+var sharedRaw = window.__sharedPayload || new URLSearchParams(location.search).get("r");
+if(sharedRaw){
+  var st0=sanitize(dec2(sharedRaw));
   if(st0){
     sel.reg=st0.g; sel.day=st0.d; sel.easy=st0.easy||null;
     sel.lat=null; sel.lng=null; sel.name=null;
