@@ -58,16 +58,19 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 .qbox .qdate{font-size:12px;color:#6b7280;margin-bottom:6px}
 .qbox .qtext{font-size:17px;font-weight:700;color:#fbcfe8;line-height:1.55}
 .qtools{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
-.qtools button{margin:0;padding:8px 13px;min-height:40px;border-radius:999px;border:1px solid #333;background:#0f0f0f;color:#9ca3af;font-size:13px;font-weight:600;cursor:pointer}
+.qtools button{margin:0;padding:8px 14px;min-height:44px;border-radius:999px;border:1px solid #333;background:#0f0f0f;color:#9ca3af;font-size:13px;font-weight:600;cursor:pointer}
 .qtools label.tog{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#8a8a8a;margin:0;cursor:pointer}
 .cta{margin-top:8px;width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(90deg,#ec4899,#e11d48);color:#fff;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
 .cta:active{transform:translateY(1px)}
 .ghost{margin-top:8px;width:100%;padding:13px;border-radius:12px;border:1px solid #333;background:#141414;color:#9ca3af;font-size:14px;font-weight:600;cursor:pointer;min-height:44px}
 .sealed{display:flex;align-items:center;gap:12px;border:1px solid #3b1f2e;background:linear-gradient(160deg,#1c1017,#180d13);border-radius:14px;padding:16px;margin:12px 0}
-.sealed .lock{font-size:26px}
+.sealed .lock{font-size:26px;animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.08);opacity:1}}
+@media (prefers-reduced-motion:reduce){.sealed .lock{animation:none}}
 .sealed .t{font-size:14px;color:#d4d4d8}
 .linkline{display:flex;gap:8px;margin-top:10px}
-.linkline input{flex:1;font-size:13px;color:#9ca3af}
+.linkline input{flex:1;min-width:0;font-size:13px;color:#9ca3af}
+.linkline button{flex:0 0 auto;margin:0;padding:0 18px;min-height:48px;border-radius:12px;border:1px solid var(--accent);background:rgba(236,72,153,.14);color:var(--accent2);font-size:15px;font-weight:700;cursor:pointer}
 /* result bubbles */
 .duo{margin-top:14px}
 .bubble{border-radius:16px;padding:14px 16px;margin:10px 0;position:relative}
@@ -79,6 +82,9 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 .resq{border-radius:14px;background:#141018;border:1px solid #312536;padding:14px 16px}
 .resq .qd{font-size:12px;color:#6b7280;margin-bottom:4px}
 .resq .qt{font-size:16.5px;font-weight:700;color:#fbcfe8}
+.resq .qt:focus{outline:none}
+.resq .qt:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;border-radius:6px}
+.resq .wm{margin-top:10px;font-size:11px;color:#7a5a6c;text-align:right;letter-spacing:.02em}
 .out{display:none;margin-top:20px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .actions button{flex:1 1 calc(50% - 4px);min-height:46px;margin:0;padding:12px;border-radius:12px;border:1px solid #333;background:#141414;color:#e5e7eb;font-size:14px;font-weight:600;cursor:pointer}
@@ -86,8 +92,13 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 .actions button.remix{flex-basis:100%;background:#0f0f0f}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#ec4899;color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;z-index:60}
 .toast.show{opacity:1}
-.inbound{display:none;position:sticky;top:0;z-index:50;margin:-22px -18px 18px;padding:12px 18px;background:linear-gradient(90deg,#ec4899,#e11d48);color:#fff;font-weight:800;text-align:center}
-.inbound button{margin:0;margin-left:8px;padding:8px 14px;border:0;border-radius:999px;background:#3b0a1e;color:#fbcfe8;font-size:13px;font-weight:700;cursor:pointer;min-height:40px}
+.inbound{display:none;position:sticky;top:0;z-index:50;margin:-22px -18px 18px;padding:10px 14px;background:linear-gradient(90deg,#ec4899,#e11d48);color:#fff;font-weight:800}
+.inbound .row{display:flex;align-items:center;gap:10px;max-width:680px;margin:0 auto}
+.inbound .msg{flex:1;min-width:0;font-size:14px;line-height:1.35}
+.inbound button{flex:0 0 auto;margin:0;padding:8px 14px;border:0;border-radius:999px;background:#3b0a1e;color:#fbcfe8;font-size:13px;font-weight:700;cursor:pointer;min-height:44px}
+.inbound .close{padding:0;width:44px;background:transparent;color:#fff;font-size:20px;line-height:1}
+/* sticky 배너가 결과 상단(질문)을 덮지 않도록 스크롤 여백을 준다 */
+.out,.card,#arch{scroll-margin-top:var(--stick,0px)}
 .adbox{margin:26px 0 8px}
 h2{font-size:18px;margin:30px 0 8px}
 .prose p{color:#d4d4d4;font-size:14.5px}
@@ -104,13 +115,22 @@ h2{font-size:18px;margin:30px 0 8px}
 .arch-item .d{font-size:12px;color:#6b7280}
 .arch-item .q{font-size:14px;font-weight:700;color:#e5e7eb;margin:2px 0 6px}
 .arch-item .a{font-size:13px;color:#a3a3a3;white-space:pre-wrap;word-break:break-word}
+.arch-item{position:relative}
+.arch-del{display:block;margin:8px 0 0 auto;padding:6px 12px;min-height:44px;border-radius:999px;border:1px solid #2b2b2b;background:transparent;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer}
+.arch-del:hover,.arch-del:focus-visible{color:#f472b6;border-color:#4a2239;background:rgba(236,72,153,.08)}
 footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
 footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="inbound" id="inbound"><span id="inboundMsg">문답이 도착했어요 🫶</span><button id="tryMe">나도 해보기 →</button></div>
+<div class="inbound" id="inbound" role="status">
+  <div class="row">
+    <span class="msg" id="inboundMsg">문답이 도착했어요 🫶</span>
+    <button id="tryMe">나도 해보기 →</button>
+    <button class="close" id="inboundClose" aria-label="알림 닫기">×</button>
+  </div>
+</div>
 
 <div class="nav"><a href="/">🍅 TomatoEggCat</a> › 엔터·바이럴 › 둘만의 문답</div>
 <div class="hero-emoji">🫶</div>
@@ -148,15 +168,27 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   <div class="field">
     <label for="myAnswer">나의 답 <span style="color:#6b7280">(1분이면 충분해요)</span></label>
     <textarea id="myAnswer" maxlength="300" placeholder="솔직하게, 짧아도 좋아요."></textarea>
-    <div class="hint">상대가 자기 답을 쓰기 전까지, 이 답은 봉인되어 보이지 않아요.</div>
+    <div class="hint"><span id="myCount">0 / 300자</span> · 상대가 자기 답을 쓰기 전까지, 이 답은 봉인되어 보이지 않아요.</div>
   </div>
   <button class="cta" id="seal">답 봉인하고 초대 링크 만들기 🔒</button>
+</div>
+
+<!-- ── A: 내가 만든 링크를 다시 열었을 때 ── -->
+<div class="card" id="waitCard" style="display:none">
+  <div class="sealed"><div class="lock">⏳</div><div class="t"><b>내가 보낸 링크예요.</b><br />아직 상대가 답하지 않았어요. 상대가 답을 제출하면 그쪽 화면에서 두 답이 열리고, 상대가 보내주는 <b>답장 링크</b>로 나도 확인할 수 있어요.</div></div>
+  <div class="resq"><div class="qd" id="wDate"></div><div class="qt" id="wQText"></div></div>
+  <div class="bubble b1" style="margin-top:12px"><div class="who" id="wWho"></div><div class="txt" id="wTxt"></div></div>
+  <div class="actions">
+    <button class="primary" id="wCopy">초대 링크 다시 복사</button>
+    <button id="wNew">새 질문으로 시작하기</button>
+  </div>
 </div>
 
 <!-- ── A: 봉인 완료 화면 ── -->
 <div class="card" id="sealedCard" style="display:none">
   <div class="sealed"><div class="lock">🔒</div><div class="t"><b id="sealedTitle">답을 봉인했어요.</b><br />아래 링크를 <b>딱 한 사람</b>에게만 보내세요. 상대가 답을 쓰는 순간, 상대 화면에서 두 답이 동시에 열립니다. 상대가 보내주는 <b>답장 링크</b>로 당신도 확인할 수 있어요.</div></div>
-  <div class="linkline"><input type="text" id="inviteUrl" readonly /><button class="qtools-copy" id="copyInvite" style="margin:0;padding:0 16px;border-radius:12px;border:1px solid var(--accent);background:rgba(236,72,153,.14);color:var(--accent2);font-weight:700;cursor:pointer">복사</button></div>
+  <div class="linkline"><input type="text" id="inviteUrl" readonly aria-label="초대 링크" /><button id="copyInvite">복사</button></div>
+  <div class="hint" id="urlWarn" style="display:none">링크가 길어요. 일부 메신저에서 잘릴 수 있으니 <b>'보낼 메시지 복사'</b>로 보내거나, 답을 조금 줄여 주세요.</div>
   <div class="actions">
     <button class="primary" id="shareInvite">공유하기</button>
     <button id="copyInviteText">보낼 메시지 복사</button>
@@ -178,6 +210,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   <div class="field">
     <label for="rAnswer">나의 답</label>
     <textarea id="rAnswer" maxlength="300" placeholder="솔직하게, 짧아도 좋아요."></textarea>
+    <div class="hint" id="rCount">0 / 300자</div>
   </div>
   <button class="cta" id="unlock">내 답 제출하고 서로 열기 🔓</button>
   <button class="ghost" id="skipBtn">이번 질문은 건너뛸게요 (이유는 묻지 않아요)</button>
@@ -186,12 +219,13 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 <!-- ── 공개(결과) 화면 ── -->
 <div class="out" id="out">
   <div id="resultCard">
-    <div class="resq"><div class="qd" id="resDate"></div><div class="qt" id="resQ"></div></div>
+    <div class="resq"><div class="qd" id="resDate"></div><div class="qt" id="resQ" tabindex="-1"></div><div class="wm">🫶 tomatoeggcat.com/dul</div></div>
     <div class="duo">
       <div class="bubble b1" id="bub1"><div class="who" id="who1"></div><div class="txt" id="txt1"></div></div>
       <div class="bubble b2" id="bub2"><div class="who" id="who2"></div><div class="txt" id="txt2"></div></div>
     </div>
   </div>
+  <div class="hint" id="replyHint" style="display:none;margin-top:10px">상대는 아직 이 결과를 못 봤어요. 아래 <b>'답장 링크 복사'</b>로 링크를 보내주면 상대 화면에서도 두 답이 열려요.</div>
   <div class="actions">
     <button class="primary" id="saveImg">이미지로 저장</button>
     <button id="copyReply" style="display:none">답장 링크 복사</button>
@@ -211,6 +245,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   <p class="hint" style="margin-bottom:6px">완성된 문답은 이 브라우저에만 저장돼요. 서버에는 아무것도 남지 않아요.</p>
   <div id="archList"></div>
   <button class="ghost" id="exportArch">기록 전체 텍스트로 복사</button>
+  <button class="ghost" id="wipeArch">이 기기의 기록 전부 지우기</button>
 </div>
 
 <div class="prose">
@@ -258,7 +293,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 </footer>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
@@ -456,12 +491,67 @@ function decodeState(p){
   return null;
 }
 function buildUrl(o){return location.origin+location.pathname+"?r="+encodeState(o);}
+/* 문답 하나를 가리키는 지문 — 내가 만든 링크인지 판별하는 데 쓴다 */
+function fingerprint(o){return [o.d,o.q,o.n1].join("|");}
+function rememberMine(o){
+  try{
+    var arr=JSON.parse(localStorage.getItem("dul_mine")||"[]");
+    var fp=fingerprint(o);
+    if(arr.indexOf(fp)<0)arr.unshift(fp);
+    localStorage.setItem("dul_mine",JSON.stringify(arr.slice(0,50)));
+  }catch(e){}
+}
+function isMine(o){
+  try{
+    return JSON.parse(localStorage.getItem("dul_mine")||"[]").indexOf(fingerprint(o))>=0;
+  }catch(e){return false;}
+}
+function rememberName(n){try{localStorage.setItem("dul_name",n||"");}catch(e){}}
+function savedName(){try{return localStorage.getItem("dul_name")||"";}catch(e){return "";}}
+
+/* sticky 배너 높이를 CSS 변수로 흘려보내 스크롤 시 제목이 가려지지 않게 한다 */
+function syncStick(){
+  var el=$("#inbound");
+  var h=(el&&el.style.display!=="none")?el.getBoundingClientRect().height+8:0;
+  document.documentElement.style.setProperty("--stick",Math.round(h)+"px");
+}
+function showBanner(msg){
+  $("#inboundMsg").textContent=msg;
+  $("#inbound").style.display="block";
+  syncStick();
+}
+window.addEventListener("resize",syncStick);
 
 /* ───────────────── 토스트/복사 ───────────────── */
 var toastT;
 function toast(msg){var el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove("show");},1800);}
+/* 복사: clipboard API → execCommand 폴백 → 최후엔 선택 상태로 남겨 직접 복사 유도 */
+function legacyCopy(txt){
+  try{
+    var ta=document.createElement("textarea");
+    ta.value=txt;ta.setAttribute("readonly","");
+    ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";
+    document.body.appendChild(ta);
+    ta.select();ta.setSelectionRange(0,txt.length);
+    var ok=document.execCommand("copy");
+    ta.remove();
+    return ok;
+  }catch(e){return false;}
+}
 function copy(txt,okMsg){
-  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){toast(okMsg);},function(){toast("복사 실패: 길게 눌러 직접 복사해 주세요");});
+  var done=function(){toast(okMsg);};
+  var fail=function(){
+    if(legacyCopy(txt)){done();return;}
+    /* 최후 수단: 링크 칸에 넣고 선택해 둔다 */
+    var box=$("#inviteUrl");
+    if(box){box.value=txt;box.focus();box.select();}
+    toast("자동 복사가 막혔어요. 선택된 주소를 길게 눌러 복사해 주세요");
+  };
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(done,fail);
+  }else{
+    if(legacyCopy(txt))done();else fail();
+  }
 }
 
 /* ───────────────── 트랙 칩 ───────────────── */
@@ -485,9 +575,13 @@ $("#seal").addEventListener("click",function(){
   pending={v:1,st:1,t:track,d:todayStr(),q:q,n1:n,a1:veil(a),k1:0};
   var url=buildUrl(pending);
   $("#inviteUrl").value=url;
+  rememberMine(pending);            /* 내가 만든 링크임을 기기에 표시 */
+  rememberName(n);
   $("#composeCard").style.display="none";
   $("#sealedCard").style.display="block";
+  $("#urlWarn").style.display=url.length>900?"block":"none";
   $("#sealedCard").scrollIntoView({behavior:"smooth",block:"start"});
+  $("#copyInvite").focus();
 });
 $("#backEdit").addEventListener("click",function(){
   $("#sealedCard").style.display="none";
@@ -506,14 +600,40 @@ $("#shareInvite").addEventListener("click",function(){
 
 /* ───────────────── B: 응답/공개 ───────────────── */
 function showReply(s){
-  $("#inbound").style.display="block";
-  $("#inboundMsg").textContent=(s.n1||"누군가")+" 님이 오늘의 질문에 답하고 봉인했어요 🫶";
+  showBanner("문답이 도착했어요 🫶");
   $("#composeCard").style.display="none";
   $("#replyCard").style.display="block";
   $("#rDate").textContent=fmtDate(s.d)+" · "+(TRACK_LABEL[s.t]||"우리끼리");
   $("#rQText").textContent=s.q;
   $("#rSealedName").textContent=(s.n1||"상대")+" 님";
+  $("#rName").value=savedName();
 }
+/* 내가 만든 링크를 내가 열었을 때: 응답 화면 대신 '전송 대기' 안내 */
+function showWaiting(s){
+  $("#composeCard").style.display="none";
+  $("#replyCard").style.display="none";
+  $("#waitCard").style.display="block";
+  $("#wDate").textContent=fmtDate(s.d)+" · "+(TRACK_LABEL[s.t]||"우리끼리");
+  $("#wQText").textContent=s.q;
+  $("#wWho").textContent=(s.n1||"나")+" 님(나)의 답";
+  $("#wTxt").textContent=s.k1?"이번 질문은 건너뛰었어요.":unveil(s.a1);
+  $("#inviteUrl").value=location.href;
+}
+/* 글자수 카운터 */
+function countUp(taSel,outSel){
+  var ta=$(taSel),out=$(outSel);
+  if(!ta||!out)return;
+  var max=Number(ta.getAttribute("maxlength")||300);
+  var upd=function(){
+    var n=ta.value.length;
+    out.textContent=n+" / "+max+"자";
+    out.style.color=n>=max*0.9?"#f472b6":"#6b7280";
+  };
+  if(!ta._counted){ta.addEventListener("input",upd);ta._counted=true;}
+  ta._recount=upd;
+  upd();
+}
+function recount(taSel){var ta=$(taSel);if(ta&&ta._recount)ta._recount();}
 function reveal(s){
   lastResult={q:s.q,d:s.d,t:s.t,n1:s.n1,a1:unveil(s.a1),k1:s.k1||0,n2:s.n2,a2:s.n2?unveil(s.a2):"",k2:s.k2||0};
   $("#replyCard").style.display="none";
@@ -524,7 +644,9 @@ function reveal(s){
   setBubble("#who1","#txt1","#bub1",lastResult.n1,lastResult.a1,lastResult.k1);
   setBubble("#who2","#txt2","#bub2",lastResult.n2,lastResult.a2,lastResult.k2);
   $("#out").style.display="block";
+  syncStick();
   $("#out").scrollIntoView({behavior:"smooth",block:"start"});
+  try{$("#resQ").focus();}catch(e){}
   saveArchive(lastResult);
   renderArchive();
 }
@@ -539,16 +661,26 @@ function submitReply(skipped){
   if(!n){toast("닉네임을 입력해 주세요");$("#rName").focus();return;}
   var a=($("#rAnswer").value||"").trim();
   if(!skipped&&!a){toast("나의 답을 먼저 써 주세요");$("#rAnswer").focus();return;}
+  rememberName(n);
   var s=inState;
   s.st=2;s.n2=n;s.a2=veil(skipped?"":a);s.k2=skipped?1:0;
   try{history.replaceState(null,"",location.pathname+"?r="+encodeState(s));}catch(e){}
   inState=s;
   $("#copyReply").style.display="block";
+  $("#replyHint").style.display="block";
+  showBanner("서로의 답이 열렸어요 🔓");   /* 배너를 결과 상태로 갱신 */
   reveal(s);
   toast(skipped?"건너뛰었어요. 상대의 답이 열렸어요":"서로의 답이 열렸어요 🔓");
 }
 $("#unlock").addEventListener("click",function(){submitReply(false);});
-$("#skipBtn").addEventListener("click",function(){submitReply(true);});
+$("#skipBtn").addEventListener("click",function(){
+  var typed=($("#rAnswer").value||"").trim();
+  var msg=typed
+    ? "쓰던 답이 지워지고 '건너뜀'으로 남아요. 그래도 건너뛸까요?"
+    : "이번 질문을 건너뛸까요? 상대에게는 '건너뜀'만 보이고 이유는 묻지 않아요.";
+  if(!window.confirm(msg))return;
+  submitReply(true);
+});
 
 /* ───────────────── 결과 공유 ───────────────── */
 $("#copyReply").addEventListener("click",function(){
@@ -571,7 +703,7 @@ $("#remix").addEventListener("click",function(){
   var L=lastResult;
   try{history.replaceState(null,"",location.pathname);}catch(e){}
   $("#out").style.display="none";
-  $("#inbound").style.display="none";
+  $("#inbound").style.display="none";syncStick();
   $("#composeCard").style.display="block";
   if(L){
     if(TRACK_LABEL[L.t]&&L.t!=="custom"){
@@ -585,8 +717,23 @@ $("#remix").addEventListener("click",function(){
 });
 $("#tryMe").addEventListener("click",function(){
   try{history.replaceState(null,"",location.pathname);}catch(e){}
-  $("#inbound").style.display="none";
+  $("#inbound").style.display="none";syncStick();
+  $("#replyCard").style.display="none";
+  $("#waitCard").style.display="none";
   $("#composeCard").style.display="block";
+  $("#composeCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+$("#inboundClose").addEventListener("click",function(){
+  $("#inbound").style.display="none";syncStick();
+});
+/* 대기 화면 액션 */
+$("#wCopy").addEventListener("click",function(){copy(location.href,"초대 링크를 복사했어요 🔒");});
+$("#wNew").addEventListener("click",function(){
+  try{history.replaceState(null,"",location.pathname);}catch(e){}
+  $("#waitCard").style.display="none";
+  $("#composeCard").style.display="block";
+  rerollOffset++;renderQuestion();
+  $("#myAnswer").value="";recount("#myAnswer");
   $("#composeCard").scrollIntoView({behavior:"smooth",block:"start"});
 });
 
@@ -620,23 +767,28 @@ $("#saveImg").addEventListener("click",function(){
   y+=30;
   x.strokeStyle="rgba(236,72,153,.3)";x.lineWidth=2;x.beginPath();x.moveTo(cx,y);x.lineTo(cx+maxW,y);x.stroke();
   y+=64;
-  /* 질문 */
+  /* 질문 — 너무 길면 카드가 넘치므로 6줄로 제한 */
   x.fillStyle="#fbcfe8";x.font="700 36px 'Apple SD Gothic Neo',sans-serif";
-  wrapText(x,"Q. "+L.q,maxW).forEach(function(ln){x.fillText(ln,cx,y);y+=52;});
+  var qLines=wrapText(x,"Q. "+L.q,maxW);
+  if(qLines.length>6)qLines=qLines.slice(0,6).concat(["…"]);
+  qLines.forEach(function(ln){x.fillText(ln,cx,y);y+=52;});
   y+=30;
-  /* 답 두 개 */
-  function block(name,answer,skipped,tint){
-    x.fillStyle=tint;x.font="700 28px 'Apple SD Gothic Neo',sans-serif";
-    x.fillText(name+" 님의 답",cx,y);y+=44;
-    x.fillStyle=skipped?"#8a8a8a":"#ededed";x.font=(skipped?"italic 400":"400")+" 31px 'Apple SD Gothic Neo',sans-serif";
-    var txt=skipped?"이번 질문은 건너뛰었어요.":answer;
-    var lines=wrapText(x,txt,maxW);
-    if(lines.length>7)lines=lines.slice(0,7).concat(["…"]);
-    lines.forEach(function(ln){x.fillText(ln,cx,y);y+=46;});
-    y+=44;
-  }
-  block(L.n1||"상대",L.a1,L.k1,"#f472b6");
-  if(L.n2)block(L.n2,L.a2,L.k2,"#93c5fd");
+  /* 남은 높이를 두 답에 나눠 담는다 — 워터마크 영역(하단 150px)은 항상 비워 둔다 */
+  var BOTTOM=H-150, LH=46, HEAD=44, GAP=44;
+  var blocks=[{n:L.n1||"상대",a:L.a1,k:L.k1,c:"#f472b6"}];
+  if(L.n2)blocks.push({n:L.n2,a:L.a2,k:L.k2,c:"#93c5fd"});
+  var avail=BOTTOM-y-blocks.length*(HEAD+GAP);
+  var budget=Math.max(2,Math.floor(avail/LH/blocks.length));
+  blocks.forEach(function(b){
+    x.fillStyle=b.c;x.font="700 28px 'Apple SD Gothic Neo',sans-serif";
+    x.fillText(b.n+" 님의 답",cx,y);y+=HEAD;
+    x.fillStyle=b.k?"#8a8a8a":"#ededed";
+    x.font=(b.k?"italic 400":"400")+" 31px 'Apple SD Gothic Neo',sans-serif";
+    var lines=wrapText(x,b.k?"이번 질문은 건너뛰었어요.":b.a,maxW);
+    if(lines.length>budget)lines=lines.slice(0,budget-1).concat([lines[budget-1].slice(0,-1)+"…"]);
+    lines.forEach(function(ln){x.fillText(ln,cx,y);y+=LH;});
+    y+=GAP;
+  });
   /* 워터마크 */
   x.textAlign="right";x.fillStyle="rgba(244,114,182,.7)";x.font="400 24px 'Apple SD Gothic Neo',sans-serif";
   x.fillText("tomatoeggcat.com/dul",cx+maxW,H-70);
@@ -670,9 +822,28 @@ function renderArchive(){
     var q=document.createElement("div");q.className="q";q.textContent="Q. "+it.q;
     var a=document.createElement("div");a.className="a";
     a.textContent=it.n1+": "+(it.k1?"(건너뜀)":it.a1)+"\n"+it.n2+": "+(it.k2?"(건너뜀)":it.a2);
-    el.appendChild(d);el.appendChild(q);el.appendChild(a);box.appendChild(el);
+    var del=document.createElement("button");
+    del.className="arch-del";del.type="button";
+    del.textContent="이 기록 지우기";
+    del.setAttribute("aria-label",fmtDate(it.d)+" 문답 기록 지우기");
+    del.addEventListener("click",function(){
+      if(!window.confirm("이 기록을 이 기기에서 지울까요? 되돌릴 수 없어요."))return;
+      removeArchive(it.key);renderArchive();toast("기록을 지웠어요");
+    });
+    el.appendChild(d);el.appendChild(q);el.appendChild(a);el.appendChild(del);box.appendChild(el);
   });
 }
+function removeArchive(key){
+  try{
+    var arr=loadArchive().filter(function(x){return x.key!==key;});
+    localStorage.setItem("dul_archive",JSON.stringify(arr));
+  }catch(e){}
+}
+$("#wipeArch").addEventListener("click",function(){
+  if(!window.confirm("이 기기에 저장된 문답 기록을 모두 지울까요? 되돌릴 수 없어요.\n(상대 기기의 기록과 이미 주고받은 링크는 지워지지 않아요)"))return;
+  try{localStorage.removeItem("dul_archive");localStorage.removeItem("dul_mine");}catch(e){}
+  renderArchive();toast("이 기기의 기록을 모두 지웠어요");
+});
 $("#exportArch").addEventListener("click",function(){
   var arr=loadArchive();
   var out=arr.map(function(it){
@@ -684,6 +855,9 @@ $("#exportArch").addEventListener("click",function(){
 /* ───────────────── 부팅 ───────────────── */
 (function boot(){
   try{if(localStorage.getItem("dul_noheavy"))$("#noHeavy").checked=true;}catch(e){}
+  $("#myName").value=savedName();
+  countUp("#myAnswer","#myCount");
+  countUp("#rAnswer","#rCount");
   renderQuestion();
   renderArchive();
   var q=new URLSearchParams(location.search).get("r");
@@ -691,12 +865,16 @@ $("#exportArch").addEventListener("click",function(){
     var s=decodeState(q);
     if(s){
       inState=s;
+      var mine=isMine(s);
       if(s.st===2&&s.n2){
-        /* 답장 링크: 둘 다 답함 → 바로 공개 */
-        $("#inbound").style.display="block";
-        $("#inboundMsg").textContent="답장이 도착했어요! 서로의 답이 열렸어요 🔓";
-        $("#copyReply").style.display="none";
+        /* 둘 다 답한 상태 → 공개. 답장 링크 복사는 '나중에 답한 쪽'에게만 의미가 있다 */
+        showBanner(mine?"답장이 도착했어요 🔓":"서로의 답이 열렸어요 🔓");
+        $("#copyReply").style.display=mine?"none":"block";
+        $("#replyHint").style.display=mine?"none":"block";
         reveal(s);
+      }else if(mine){
+        /* 내가 만든 초대 링크를 내가 다시 열었을 때 — 응답 화면 대신 대기 안내 */
+        showWaiting(s);
       }else{
         /* 초대 링크: 상대의 답은 봉인 상태 */
         showReply(s);
