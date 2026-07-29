@@ -213,6 +213,56 @@ ok("진짜 양 변경은 여전히 잡힘", has(diffRecipes(synParent, realChang
 ok("진짜 재료 교체도 여전히 잡힘",
    has(diffRecipes(synParent, { i: [{ n: "대파", a: "1", u: "대" }, { n: "다진마늘", a: "1", u: "큰술" }, { n: "유부", a: "1", u: "장" }], s: [] }), "chg", "두부"));
 
+/* ── 리뷰 루프 2: 요리 커뮤니티 페르소나가 새로 잡은 실패 케이스 ── */
+console.log("\n[3-d] 실제 블로그 표기 (괄호 설명 · 범위 · 어림 · 정육점 단위)");
+const paren = parseFree(`재료
+돼지고기 300g(목살 또는 앞다리살)
+김치 1/2포기(잘 익은 것)
+두부 1모`);
+ok("괄호 설명이 붙어도 재료로 인식", paren.ings.length === 3, JSON.stringify(paren.ings));
+ok("괄호 설명 줄이 조리 단계로 새지 않음", paren.steps.length === 0, JSON.stringify(paren.steps.map(x => x.a)));
+ok("괄호 안 설명은 메모로 보존", paren.ings[0].o === "목살 또는 앞다리살", JSON.stringify(paren.ings[0]));
+
+const more = [
+  ["고기 한근", "고기", "1", "근"],
+  ["물 500~600ml", "물", "500~600", "ml"],
+  ["김치 300g 정도", "김치", "300", "g"],
+  ["물 1리터", "물", "1", "리터"],
+  ["간장 3숟갈", "간장", "3", "숟갈"],
+  ["멸치 10마리정도", "멸치", "10", "마리"],
+  ["양파 1/4개", "양파", "1/4", "개"],
+];
+more.forEach(([input, n, a, u]) => {
+  const r = parseIngredient(input);
+  ok(`표기 파싱: ${input}`, !!r && r.n === n && r.a === a && r.u === u, JSON.stringify(r));
+});
+const vague = parseIngredient("소금 약간씩");
+ok("‘약간씩’에서 재료명이 깨지지 않음", !!vague && vague.n === "소금", JSON.stringify(vague));
+
+console.log("\n[3-e] 단위·수량 표기 동치 (diff 오탐 방지)");
+[["큰술", "T"], ["작은술", "티스푼"], ["ml", "cc"], ["개", "알"]].forEach(([a, b]) => {
+  const d = diffRecipes({ i: [{ n: "설탕", a: "1", u: a }], s: [] }, { i: [{ n: "설탕", a: "1", u: b }], s: [] });
+  ok(`1${a} == 1${b} → 변경 없음`, d.count === 0, JSON.stringify(d.ing.map(x => x.text)));
+});
+const numEq = diffRecipes({ i: [{ n: "물", a: "1/2", u: "컵" }], s: [] }, { i: [{ n: "물", a: "0.5", u: "컵" }], s: [] });
+ok("1/2 == 0.5 → 변경 없음", numEq.count === 0, JSON.stringify(numEq.ing.map(x => x.text)));
+const realUnitChange = diffRecipes({ i: [{ n: "설탕", a: "1", u: "큰술" }], s: [] }, { i: [{ n: "설탕", a: "2", u: "T" }], s: [] });
+ok("진짜 양 변경(1→2)은 여전히 잡힘", realUnitChange.count === 1, JSON.stringify(realUnitChange.ing.map(x => x.text)));
+
+/* 인분 배율은 엔진 구간 밖(뷰 코드)이라 파일에서 따로 추출한다 */
+console.log("\n[3-f] 인분 배율 — 부엌에서 쓸 수 있는 값이어야 한다");
+const scaleSrc = html.match(/var COMMON_FRACTIONS[\s\S]*?\n\}\nfunction scaleAmount[\s\S]*?\n\}/);
+const scale = new Function(scaleSrc[0] + "; return scaleAmount;")();
+[
+  ["1/2", 0.5, "1/4"], ["1/2", 2, "1"], ["1", 0.5, "1/2"],
+  ["3", 0.5, "1과 1/2"], ["1/3", 2, "2/3"], ["1/4", 2, "1/2"],
+  ["300", 0.5, "150"], ["500~600", 2, "1000~1200"],
+].forEach(([a, k, want]) => {
+  const got = scale(a, k);
+  ok(`${a} × ${k} = ${want}`, got === want, "실제 " + got);
+});
+ok("숫자가 아닌 양(약간)은 그대로", scale("", 2) === "" && scale("약간", 2) === "약간");
+
 /* ───────────────────────── 4. 3단계 포크 계보 샘플 ───────────────────────── */
 console.log("\n[4] 3단계 포크 계보 샘플");
 

@@ -40,7 +40,7 @@
 body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
 a{color:var(--acc)}
-.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav{font-size:13px;color:#9ca3af;margin-bottom:16px}
 .nav a{color:#7aa2ff;text-decoration:none}
 h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#5eead4,#818cf8);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
@@ -77,8 +77,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .tile .pw{font-size:11.5px;color:#9ca3af;font-weight:600}
 .tile.done{background:rgba(94,234,212,.14);border-color:var(--acc);color:var(--acc2)}
 .tile.done .pw{color:var(--acc2)}
-.daysw{display:flex;gap:8px;margin-bottom:10px}
-.daysw button{flex:1;background:#0f0f0f;color:#9ca3af;border:1px solid #333;font-size:13.5px;font-weight:700;min-height:44px}
+.daysw{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.daysw button{flex:1 1 0;min-width:0;padding:10px 4px;background:#0f0f0f;color:#9ca3af;border:1px solid #333;font-size:13px;font-weight:700;min-height:44px;white-space:nowrap}
 .daysw button.on{background:rgba(94,234,212,.12);border-color:var(--acc);color:var(--acc2)}
 /* 통계 */
 .stats{display:flex;gap:10px;flex-wrap:wrap}
@@ -130,7 +130,7 @@ details .dbody{padding:0 14px 14px}
 .rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
 .rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#141414;border:1px solid #2a2a2a;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
 .rel a:hover{border-color:var(--acc);color:var(--acc2)}
-footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#9ca3af}
 footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#262626;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -235,7 +235,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 
 <!-- 통계 -->
 <section class="card" id="statCard">
-  <p class="lab">🏆 <b>명예의 전당</b> — 1회당 원가가 가장 낮은 다섯</p>
+  <p class="lab">🏆 <b>명예의 전당</b> — 지금 쓰고 있는 것 중 1회당 원가가 가장 낮은 다섯</p>
   <div class="hall" id="hall"></div>
 
   <div class="field">
@@ -269,7 +269,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   </div>
   <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
 
-  <p class="disc">🔒 모든 기록은 <b>이 브라우저 안에만</b> 저장되며 서버로 전송되지 않습니다. 브라우저 데이터를 지우면 함께 사라지니 가끔 내보내기로 백업해 두세요. 이 도구는 어떤 상품도 추천하거나 판매하지 않습니다.</p>
+  <p class="disc">🔒 모든 기록은 <b>이 브라우저 안에만</b> 저장되며, 저희는 그 내용을 받아 가지 않습니다(수집 서버가 없습니다). 다만 이 페이지에는 광고가 붙어 있어 페이지 주소 정도는 광고 제공자에게 전달될 수 있습니다. 브라우저 데이터를 지우면 함께 사라지니 가끔 내보내기로 백업해 두세요. 이 도구는 어떤 상품도 추천하거나 판매하지 않습니다.</p>
 
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -306,11 +306,11 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <dt>Q. 사이즈나 체형도 기록할 수 있나요?</dt>
     <dd>할 수 없습니다. 의도적으로 뺐습니다. 이 도구는 돈에 관한 것이지 몸에 관한 것이 아닙니다.</dd>
     <dt>Q. 착용 편중도가 높으면 나쁜 건가요?</dt>
-    <dd>아닙니다. 좋고 나쁨을 판정하지 않습니다. 상위 20%가 전체 착용의 몇 %를 차지하는지 보여 줄 뿐이고, 그 숫자를 처음 본다는 것 자체가 이 지표의 쓸모입니다.</dd>
+    <dd>아닙니다. 좋고 나쁨을 판정하지 않습니다. 자주 입는 상위 몇 개가 전체 착용의 몇 %를 차지하는지 보여 줄 뿐이고, 그 숫자를 처음 본다는 것 자체가 이 지표의 쓸모입니다. 항목 수가 적으면 이 비율은 크게 흔들리므로 화면에 표본 경고를 함께 띄웁니다.</dd>
     <dt>Q. 공유하면 내 옷장이 다 보이나요?</dt>
     <dd>아닙니다. 공유 링크와 카드에는 합계 숫자와 카테고리만 들어갑니다. 항목 이름을 넣고 싶으면 체크박스를 직접 켜야 합니다.</dd>
   </dl>
-  <p style="color:#6b7280;font-size:13px">※ 본 도구는 개인 기록용 계산기이며 금융·투자 조언이 아닙니다. 표시되는 금액은 사용자가 입력한 값을 나눈 결과입니다.</p>
+  <p style="color:#9ca3af;font-size:13px">※ 본 도구는 개인 기록용 계산기이며 금융·투자 조언이 아닙니다. 표시되는 금액은 사용자가 입력한 값을 나눈 결과입니다.</p>
 </section>
 
 <nav class="rel">
@@ -624,7 +624,7 @@ function renderList(){
     d.innerHTML =
       '<div class="em">'+catOf(it.c).em+'</div>'+
       '<div class="mid"><div class="t">'+esc(it.n)+'</div><div class="sub">'+esc(sub)+'</div>'+
-        (it.g&&it.st!=="archived"?'<div class="goal">🎯 목표 '+won(it.g)+' — 앞으로 '+Math.max(0,Math.ceil(it.p/it.g)-it.w.length)+'번 더</div>':'')+
+        (it.g&&it.st!=="archived"?'<div class="goal">🎯 목표 '+won(it.g)+' — 앞으로 '+Math.max(0,Math.ceil(it.p/it.g)-useCount(it))+'번 더'+(it.kind==="sub"?' (이번 달)':'')+'</div>':'')+
         '<div class="iacts"></div></div>'+
       '<div class="rt">'+right+'</div>';
     var ia=d.querySelector(".iacts");
@@ -769,9 +769,9 @@ function renderStats(){
 function box(k,v,s){ return '<div class="b"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>'; }
 function renderPattern(){
   var tb=$("patTable").querySelector("tbody"); tb.innerHTML="";
-  var arch=archived().filter(function(i){ return i.kind!=="sub"; });
+  var arch=archived().filter(function(i){ return i.kind!=="sub" && i.p>0; });
   if(!arch.length){
-    tb.innerHTML='<tr><td colspan="4" style="color:#6b7280">방출한 항목이 없어 아직 패턴이 없습니다.</td></tr>';
+    tb.innerHTML='<tr><td colspan="4" style="color:#9ca3af">방출한 항목이 없어 아직 패턴이 없습니다.</td></tr>';
     return;
   }
   var byCat={}, byBand={};
@@ -791,8 +791,8 @@ function renderPattern(){
       var weak = arr.length < 3;
       var tr=document.createElement("tr");
       tr.innerHTML="<td>"+kind+"</td><td>"+esc(nameFn(k))+"</td>"
-        + "<td><b>"+avgW.toFixed(1)+"회</b> <span style='color:#6b7280;font-size:12px'>(n="+arr.length+")</span></td>"
-        + "<td>"+(avgPu===null?"—":won(avgPu))+(weak?" <span style='color:#6b7280;font-size:12px'>참고만</span>":"")+"</td>";
+        + "<td><b>"+avgW.toFixed(1)+"회</b> <span style='color:#9ca3af;font-size:12px'>(n="+arr.length+")</span></td>"
+        + "<td>"+(avgPu===null?"—":won(avgPu))+(weak?" <span style='color:#9ca3af;font-size:12px'>참고만</span>":"")+"</td>";
       tb.appendChild(tr);
     });
   }
@@ -807,7 +807,7 @@ function shareState(){
   return {
     n:s.n, t:s.total, w:s.wears,
     a: s.avg===null?null:Math.round(s.avg),
-    c: s.conc, tn:s.topN,
+    c: s.conc, tn:s.topN, tp:s.topPct,
     h: s.hall.slice(0,3).map(function(x){
       return { c:x.c, p:Math.round(x.pu), k:x.cnt, n: withNames ? String(x.n).slice(0,14) : null };
     })
@@ -830,7 +830,7 @@ function shareText(){
   var lines=["🧥 내 옷장 1회당 성적표"];
   lines.push("항목 "+s.n+"개 · 총액 "+shortWon(s.t)+"원 · 총 착용 "+s.w+"회");
   lines.push("옷장 평균 1회당 "+(s.a===null?"—":won(s.a)));
-  if(s.c!==null) lines.push("상위 20%가 전체 착용의 "+s.c+"%");
+  if(s.c!==null) lines.push("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 전체 착용의 "+s.c+"%");
   if(s.h.length) lines.push("명예의 전당 1위: "+(s.h[0].n?s.h[0].n:catOf(s.h[0].c).label)+" "+won(s.h[0].p));
   lines.push(resultUrl());
   return lines.join("\n");
@@ -843,9 +843,10 @@ $("copyLinkBtn").addEventListener("click",function(){ if(!guardEmpty()) copy(res
 $("copyTextBtn").addEventListener("click",function(){ if(!guardEmpty()) copy(shareText(),"텍스트가 복사되었습니다"); });
 $("xBtn").addEventListener("click",function(){
   if(guardEmpty()) return;
+  if($("withNames").checked && !window.confirm("X(트위터)에 공개로 올립니다.\n\n지금 ‘항목 이름 포함’이 켜져 있어 옷 이름이 함께 나갑니다. 계속할까요?")) return;
   var s=shareState();
-  var t="내 옷장 평균 1회당 "+(s.a===null?"—":won(s.a))+", 상위 20%가 전체 착용의 "+(s.c===null?"—":s.c+"%")+" 🧥";
-  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank");
+  var t="내 옷장 평균 1회당 "+(s.a===null?"—":won(s.a))+", 자주 입는 "+s.tn+"개가 전체 착용의 "+(s.c===null?"—":s.c+"%")+" 🧥";
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
 });
 if(navigator.share){
   $("shareBtn").style.display="";
@@ -882,7 +883,7 @@ function drawCard(){
 
   ctx.fillStyle="rgba(255,255,255,.08)"; roundRect(ctx,90,500,900,150,24); ctx.fill();
   ctx.fillStyle="rgba(255,255,255,.6)"; ctx.font="700 28px -apple-system,sans-serif";
-  ctx.fillText("자주 입는 상위 20%가 차지하는 착용 비중", W/2, 560);
+  ctx.fillText("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 차지하는 착용 비중", W/2, 560);
   ctx.fillStyle="#a5b4fc"; ctx.font="900 70px -apple-system,sans-serif";
   ctx.fillText(s.c===null?"—":s.c+"%", W/2, 630);
 
@@ -993,15 +994,16 @@ function renderShared(s){
     '<div class="stats">'
     + box("항목", (s.n||0)+"개", "총액 "+shortWon(s.t||0)+"원")
     + box("평균 1회당", s.a===null||s.a===undefined?"—":won(s.a), "총 착용 "+(s.w||0)+"회")
-    + box("착용 편중도", s.c===null||s.c===undefined?"—":s.c+"%", "상위 20% 비중")
+    + box("착용 편중도", s.c===null||s.c===undefined?"—":s.c+"%", "자주 입는 "+(s.tn||0)+"개(전체의 "+(s.tp||0)+"%) 비중")
     + '</div>'
-    + (rows ? '<div class="hall" style="margin-top:10px">'+rows+'</div>' : "");
+    + (rows ? '<div class="hall" style="margin-top:10px">'+rows+'</div>' : "")
+    + ((s.n && s.n < 10) ? '<p class="hint">항목이 '+s.n+'개뿐이라 이 비율은 크게 흔들립니다. 10개 이상부터 참고할 만해집니다.</p>' : "");
   $("sharedCard").style.display="block";
 }
 function sanitizeShared(o){
   if(!o || typeof o!=="object") return null;
   var num=function(v){ return typeof v==="number" && isFinite(v) ? v : null; };
-  var s={ n:num(o.n)||0, t:num(o.t)||0, w:num(o.w)||0, a:num(o.a), c:num(o.c), tn:num(o.tn)||1, h:[] };
+  var s={ n:num(o.n)||0, t:num(o.t)||0, w:num(o.w)||0, a:num(o.a), c:num(o.c), tn:num(o.tn)||1, tp:num(o.tp)||0, h:[] };
   if(Array.isArray(o.h)) s.h=o.h.slice(0,3).map(function(x){
     return { c:catOf(x&&x.c).k, p:Math.max(0,Math.round(num(x&&x.p)||0)), k:Math.max(0,Math.round(num(x&&x.k)||0)),
              n: (x&&typeof x.n==="string") ? x.n.slice(0,14) : null };

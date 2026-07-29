@@ -238,7 +238,7 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
   </div>
   <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
 
-  <p class="disc">아주 사적인 기록입니다. 모든 내용은 이 브라우저 안에만 저장되고 어디로도 전송되지 않습니다. 서버가 없는 정적 페이지라 화면 잠금 기능은 넣지 않았습니다 — 브라우저 안에서 만든 비밀번호 잠금은 실제 보안이 되지 못하면서 안전하다는 착각만 주기 때문입니다. 공용 기기에서는 쓰지 마시고, 기기 자체 잠금을 사용해 주세요.</p>
+  <p class="disc">아주 사적인 기록입니다. 적어 둔 내용은 이 브라우저 안에만 저장되며, 저희는 그 내용을 받아 가지 않습니다(수집 서버가 없습니다). 다만 이 페이지에는 광고가 붙어 있어 <b>페이지 주소</b> 정도는 광고 제공자에게 전달될 수 있습니다 — 기록 내용은 주소에 들어가지 않습니다. 서버가 없는 정적 페이지라 화면 잠금 기능은 넣지 않았습니다 — 브라우저 안에서 만든 비밀번호 잠금은 실제 보안이 되지 못하면서 안전하다는 착각만 주기 때문입니다. 공용 기기에서는 쓰지 마시고, 기기 자체 잠금을 사용해 주세요.</p>
 
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -324,7 +324,7 @@ function kindOf(k){ for(var i=0;i<KINDS.length;i++) if(KINDS[i].k===k) return KI
 /* ================= utils ================= */
 function $(id){ return document.getElementById(id); }
 function pad(n){ return n<10?"0"+n:""+n; }
-function today(){ var d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function today(){ return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
 function parseD(s){ var p=String(s).split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
 function daysAgo(s){ return Math.floor((parseD(today())-parseD(s))/86400000); }
 function fmtD(s){ var p=String(s).split("-"); return p[1].replace(/^0/,"")+"월 "+p[2].replace(/^0/,"")+"일"; }
@@ -470,18 +470,70 @@ function attachEntryActions(node, f){
     save(); renderAll();
     toast(f.s ? "표시했습니다" : "표시를 해제했습니다");
   });
-  var b2=document.createElement("button"); b2.type="button"; b2.className="tiny"; b2.textContent="맥락 적기";
-  b2.addEventListener("click",function(){
-    var v=window.prompt("한 줄 맥락", f.b||"");
-    if(v===null) return;
-    f.b=String(v).slice(0,40); save(); renderAll();
-  });
+  var b2=document.createElement("button"); b2.type="button"; b2.className="tiny"; b2.textContent="고치기";
+  b2.addEventListener("click",function(){ editFavor(f); });
   var b3=document.createElement("button"); b3.type="button"; b3.className="tiny"; b3.textContent="삭제";
   b3.addEventListener("click",function(){
     if(!window.confirm("이 기록을 지울까요?")) return;
     db.favors=db.favors.filter(function(x){ return x.id!==f.id; }); save(); renderAll();
   });
   box.appendChild(b1); box.appendChild(b2); box.appendChild(b3);
+}
+/* 기록 하나를 통째로 고친다. 지금까지는 삭제 후 재입력뿐이었다. */
+function editFavor(f){
+  var p=personById(f.pid);
+  var who=window.prompt("누구에게 (호칭)", p?p.l:"");
+  if(who===null) return;
+  who=String(who).trim().slice(0,14);
+  if(!who){ toast("호칭은 비울 수 없어요"); return; }
+
+  var names=KINDS.map(function(k,i){ return (i+1)+". "+k.label; }).join("  ");
+  var cur=0; KINDS.forEach(function(k,i){ if(k.k===f.k) cur=i+1; });
+  var kv=window.prompt("무엇인지 번호로 골라 주세요\n\n"+names, String(cur));
+  if(kv===null) return;
+  var ki=parseInt(kv,10);
+  if(ki>=1 && ki<=KINDS.length){
+    f.k=KINDS[ki-1].k;
+    if(f.k==="etc"){
+      var ke=window.prompt("무엇인지 한 마디로", f.ke||"");
+      if(ke!==null) f.ke=String(ke).trim().slice(0,14);
+    } else f.ke="";
+  }
+
+  var dv=window.prompt("날짜 (YYYY-MM-DD)", f.d);
+  if(dv===null) return;
+  dv=String(dv).trim();
+  if(/^\d{4}-\d{2}-\d{2}$/.test(dv)) f.d=dv;
+
+  var bv=window.prompt("한 줄 맥락 (비워도 됩니다)", f.b||"");
+  if(bv!==null) f.b=String(bv).slice(0,40);
+
+  var np=ensurePerson(who, p?p.t:"etc");
+  f.pid=np.id;
+  save(); renderAll(); toast("고쳤습니다");
+}
+/* 같은 사람을 다르게 적어 통계가 쪼개졌을 때 합친다. */
+function mergePerson(p){
+  var others=db.people.filter(function(x){ return x.id!==p.id; });
+  if(!others.length){ toast("합칠 다른 이름이 없어요"); return; }
+  var list=others.map(function(x,i){ return (i+1)+". "+x.l; }).join("\n");
+  var v=window.prompt("‘"+p.l+"’를 누구와 같은 사람으로 합칠까요?\n번호를 적어 주세요.\n\n"+list, "");
+  if(v===null) return;
+  var i=parseInt(v,10);
+  if(!(i>=1 && i<=others.length)){ toast("번호를 확인해 주세요"); return; }
+  var target=others[i-1];
+  if(!window.confirm("‘"+p.l+"’의 기록을 ‘"+target.l+"’ 쪽으로 옮깁니다. 되돌릴 수 없습니다.")) return;
+  var moved=0;
+  db.favors.forEach(function(f){ if(f.pid===p.id){ f.pid=target.id; moved++; } });
+  db.people=db.people.filter(function(x){ return x.id!==p.id; });
+  save(); renderAll(); toast(moved+"건을 ‘"+target.l+"’로 합쳤습니다");
+}
+function renderPersonName(p){
+  var v=window.prompt("호칭 바꾸기", p.l);
+  if(v===null) return;
+  v=String(v).trim().slice(0,14);
+  if(!v){ toast("호칭은 비울 수 없어요"); return; }
+  p.l=v; save(); renderAll(); toast("바꿨습니다");
 }
 function renderList(){
   var h=$("listBody"); h.innerHTML="";
@@ -517,6 +569,13 @@ function renderList(){
       var d=document.createElement("div"); d.className="person";
       d.innerHTML='<div class="pn">'+esc(p.l)+' <span style="font-size:12px;color:var(--ink3);font-weight:400">'+(TAGS[p.t]||"기타")+'</span></div>'
         + '<div class="pc">받은 것 <b>'+got+'번</b> · 준 것 <b>'+gave+'번</b></div>';
+      var pacts=document.createElement("div"); pacts.className="eacts";
+      var bRename=document.createElement("button"); bRename.type="button"; bRename.className="tiny"; bRename.textContent="호칭 바꾸기";
+      bRename.addEventListener("click",function(){ renderPersonName(p); });
+      var bMerge=document.createElement("button"); bMerge.type="button"; bMerge.className="tiny"; bMerge.textContent="같은 사람 합치기";
+      bMerge.addEventListener("click",function(){ mergePerson(p); });
+      pacts.appendChild(bRename); pacts.appendChild(bMerge);
+      d.appendChild(pacts);
       var det=document.createElement("details");
       det.innerHTML='<summary>시간순으로 보기 ('+arr.length+')</summary>';
       var body=document.createElement("div"); body.className="dbody";
@@ -554,7 +613,8 @@ function renderList(){
 
 /* ================= 연말 정산 ================= */
 function yearStats(){
-  var y=new Date().getFullYear();
+  /* 연도 경계도 기기 타임존이 아니라 KST 기준으로 */
+  var y=+new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric"}).format(new Date());
   var inY=db.favors.filter(function(f){ return String(f.d).slice(0,4)===String(y); });
   var got=inY.filter(function(f){ return f.dir==="r"; });
   var gave=inY.filter(function(f){ return f.dir==="g"; });
@@ -626,9 +686,17 @@ $("thxCopy").addEventListener("click",function(){
 function shareState(){
   var s=yearStats();
   var names=$("showNames").checked;
+  /* 자유입력 종류에는 사람 이름이 섞여 들어갈 수 있다("지영이가 준 선물").
+     이름을 가리기로 했으면 프리셋 종류만 내보낸다. */
+  var presetOnly=function(label){
+    if(names) return label;
+    var ok=false;
+    KINDS.forEach(function(k){ if(k.label===label) ok=true; });
+    return ok ? label : null;
+  };
   return { y:s.y, r:s.got, g:s.gave, s:s.settled,
            t:s.top.map(function(t){ return { l: names ? String(t.l).slice(0,10) : mask(t.l), n:t.n }; }),
-           kg:s.topGot, kgn:s.topGotN, kv:s.topGave, kvn:s.topGaveN };
+           kg:presetOnly(s.topGot), kgn:s.topGotN, kv:presetOnly(s.topGave), kvn:s.topGaveN };
 }
 function resultUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(shareState())); }
 function copy(text,msg){
@@ -656,8 +724,12 @@ $("copyLinkBtn").addEventListener("click",function(){ if(!guard()) copy(resultUr
 $("copyTextBtn").addEventListener("click",function(){ if(!guard()) copy(shareText(),"텍스트를 복사했습니다"); });
 $("xBtn").addEventListener("click",function(){
   if(guard()) return;
+  var warn = $("showNames").checked
+    ? "X(트위터)에 공개로 올립니다.\n\n지금 ‘이름 표시’가 켜져 있어 상대 이름이 가려지지 않은 채 나갑니다. 계속할까요?"
+    : "X(트위터)에 공개로 올립니다.\n\n올해 신세 진 횟수와 종류가 함께 나갑니다(이름은 가려집니다). 계속할까요?";
+  if(!window.confirm(warn)) return;
   var s=shareState();
-  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(s.y+"년, 저는 "+s.r+"번 신세를 졌습니다.")+"&url="+encodeURIComponent(resultUrl()),"_blank");
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(s.y+"년, 저는 "+s.r+"번 신세를 졌습니다.")+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
 });
 if(navigator.share){
   $("shareBtn").style.display="";
