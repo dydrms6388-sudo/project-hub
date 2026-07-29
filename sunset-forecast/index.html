@@ -258,9 +258,14 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
       <button class="ghost" id="shareBtn" type="button" style="display:none">📤 공유</button>
       <button class="ghost" id="remixBtn" type="button">🔁 조건 바꿔 다시</button>
     </div>
-    <div class="acts">
-      <button class="ghost" id="icsBtn" type="button">⏰ 일몰 90분 전 캘린더 알림 받기</button>
-    </div>
+    <details>
+      <summary>🔗 공유 · 저장 · 알림</summary>
+      <div class="dbody">
+        <div class="acts">
+          <button class="ghost" id="icsBtn" type="button">⏰ 일몰 90분 전 캘린더 알림 받기</button>
+        </div>
+      </div>
+    </details>
     <p class="hint">푸시 알림은 서버가 필요해 제공하지 않습니다. 대신 캘린더 일정(.ics)으로 같은 알림을 받을 수 있고, 점수가 낮은 날엔 굳이 알림을 만들지 않아도 됩니다.</p>
   </div>
 
@@ -279,11 +284,16 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <div class="card">
     <p class="lab">📉 <b>이 모델의 적중률</b> — 낮아도 그대로 보여 드립니다</p>
     <div id="accBody"></div>
-    <div class="acts">
-      <button class="ghost mini" id="exportBtn" type="button">⬇️ 기록 내보내기</button>
-      <button class="ghost mini" id="importBtn" type="button">⬆️ 가져오기</button>
-      <button class="ghost mini" id="wipeBtn" type="button">기록 전체 삭제</button>
-    </div>
+    <details>
+      <summary>내 기록 관리 (백업 · 가져오기 · 삭제)</summary>
+      <div class="dbody">
+        <div class="acts">
+          <button class="ghost mini" id="exportBtn" type="button">⬇️ 기록 내보내기</button>
+          <button class="ghost mini" id="importBtn" type="button">⬆️ 가져오기</button>
+          <button class="ghost mini" id="wipeBtn" type="button">기록 전체 삭제</button>
+        </div>
+      </div>
+    </details>
     <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
     <p class="hint">기록은 이 브라우저에만 있습니다. 브라우저 데이터를 지우면 함께 사라지니 가끔 내보내기로 백업해 두세요.</p>
   </div>

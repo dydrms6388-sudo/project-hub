@@ -94,7 +94,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .tabs button{flex:1;min-width:88px;background:#0f0f0f;color:#9ca3af;border:1px solid #333;font-size:13.5px;font-weight:700;min-height:44px}
 .tabs button.on{background:rgba(94,234,212,.12);border-color:var(--acc);color:var(--acc2)}
-.item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #232323}
+.item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #232323;flex-wrap:wrap}
 .item .em{font-size:26px;flex:none;width:34px;text-align:center}
 .item .mid{flex:1;min-width:0}
 .item .t{font-size:14.5px;font-weight:700;color:#ededed;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -136,6 +136,13 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .sw{display:flex;align-items:center;gap:8px;font-size:13px;color:#9ca3af;margin-top:10px}
 .sw input{width:auto;min-height:auto}
+/* 인라인 편집 — 모바일에서 prompt 연타는 취소 사고가 잦다 */
+.editbox{flex:1 0 100%;background:#101010;border:1px solid var(--acc);border-radius:12px;padding:14px;margin-top:10px}
+.editbox .er{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.editbox .er>*{flex:1;min-width:120px}
+.editbox .eh{font-size:12.5px;color:#9ca3af;margin:0 0 10px;line-height:1.6}
+.editbox .ea{display:flex;gap:8px;margin-top:4px}
+.editbox .ea button{flex:1;min-height:46px}
 </style>
 </head>
 <body>
@@ -165,6 +172,9 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <p class="lab">✅ <b>오늘 입은 것</b> — 탭 한 번이면 끝</p>
   <div class="daysw" id="daysw"></div>
   <div class="tiles" id="tiles"></div>
+  <div class="acts" id="demoWrap" style="display:none">
+    <button class="ghost" id="demoBtn" type="button">👀 예시로 둘러보기</button>
+  </div>
   <p class="hint" id="todayHint">자주·최근에 입은 순으로 8개가 올라옵니다. 검색하지 않아도 되게 만드는 게 목적이에요.</p>
 </section>
 
@@ -454,9 +464,11 @@ function renderTiles(){
   var list=tileItems(), key=todayKey(dayOff);
   if(!list.length){
     holder.innerHTML='<p class="empty" style="grid-column:1/-1">아직 등록된 항목이 없어요. 아래에서 하나만 넣어 보세요.</p>';
-    $("todayHint").textContent="첫 항목을 등록하면 여기에 타일이 생깁니다.";
+    $("todayHint").textContent="첫 항목을 등록하면 여기에 타일이 생깁니다. 어떤 화면인지 먼저 보고 싶으면 예시를 넣어 보세요.";
+    $("demoWrap").style.display="";
     return;
   }
+  $("demoWrap").style.display="none";
   list.forEach(function(it){
     var done=it.w.indexOf(key)>=0;
     var pu=perUse(it);
@@ -569,6 +581,32 @@ $("bulkBtn").addEventListener("click",function(){
   toast(added+"개 등록 완료"+(skipped?(" · "+skipped+"줄 건너뜀"):"")+" — 카테고리는 목록에서 고칠 수 있어요");
   $("listCard").scrollIntoView({behavior:"smooth",block:"start"});
 });
+/* 첫 화면이 0으로 도배돼 "안 쓴 앱" 인상을 주던 문제.
+   한 번 눌러 실제 화면을 보고, 지우고 내 것으로 시작할 수 있게 한다. */
+var DEMO=[
+  { n:"검정 후드티", p:39000, c:"top",    w:52 },
+  { n:"청바지",     p:79000, c:"bottom", w:41 },
+  { n:"흰 운동화",  p:129000,c:"shoes",  w:33 },
+  { n:"네이비 코트",p:198000,c:"outer",  w:9  },
+  { n:"가죽 자켓",  p:340000,c:"outer",  w:2  },
+  { n:"에어프라이어",p:89000, c:"appli",  w:14 }
+];
+$("demoBtn").addEventListener("click",function(){
+  if(db.items.length && !window.confirm("예시 항목 6개를 넣습니다. 기존 기록은 그대로 남습니다. 계속할까요?")) return;
+  var base=new Date();
+  DEMO.forEach(function(x,idx){
+    var wears=[];
+    for(var i=0;i<x.w;i++){
+      var d=new Date(base); d.setDate(d.getDate()-(i*Math.max(1,Math.floor(60/x.w))+idx));
+      wears.push(d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()));
+    }
+    db.items.push({ id:uid(), n:"[예시] "+x.n, p:x.p, a:monthKey(todayKey(0)), c:x.c,
+                    kind:"own", st:"active", w:wears.slice(0,x.w), g:null, demo:true });
+  });
+  save(); renderAll();
+  toast("예시를 넣었습니다. 이름 앞에 [예시]가 붙어 있으니 확인 후 지우세요");
+  $("sumCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
 $("addBtn").addEventListener("click",function(){ addItem(false); });
 $("keepAddBtn").addEventListener("click",function(){ addItem(true); });
 $("nPrice").addEventListener("keydown",function(e){ if(e.key==="Enter") addItem(true); });
@@ -611,7 +649,7 @@ function renderList(){
   }
   list.forEach(function(it){
     var pu=perUse(it), cnt=useCount(it), idle=idleDays(it);
-    var d=document.createElement("div"); d.className="item";
+    var d=document.createElement("div"); d.className="item"; d.dataset.edit=it.id;
     var sub = catOf(it.c).label + " · " + shortWon(it.p) + "원"
       + (it.kind==="sub" ? "/월" : "")
       + (it.a ? " · "+it.a.replace("-","년 ")+"월" : "");
@@ -655,32 +693,46 @@ function mkBtn(label, fn){
 /* 항목 수정 — 잘못 넣은 가격을 고치려고 삭제·재등록하면 착용 기록이 통째로 날아간다.
    세일가 정정, 수선비 합산, 중고 구매 반영 모두 여기서 한다. */
 function editItem(it){
-  var n=window.prompt("이름", it.n);
-  if(n===null) return;
-  n=String(n).trim().slice(0,24);
-  if(!n){ toast("이름은 비울 수 없어요"); return; }
-
-  var pv=window.prompt(
-    "가격 (원)\n\n· 세일가로 샀으면 실제 낸 금액\n· 수선비를 더하려면 합친 금액\n· 선물받았거나 물려받았으면 0\n\n착용 기록 "+it.w.length+"회는 그대로 유지됩니다.",
-    String(it.p));
-  if(pv===null) return;
-  pv=String(pv).replace(/[^\d]/g,"");
-  if(pv===""){ toast("가격을 숫자로 적어 주세요"); return; }
-  var p=parseInt(pv,10);
-  if(p>100000000){ toast("가격이 너무 큽니다"); return; }
-
-  var av=window.prompt("산 시기 (YYYY-MM, 비우면 그대로)", it.a||"");
-  if(av===null) return;
-  av=String(av).trim();
-
-  var old=it.p;
-  it.n=n; it.p=p;
-  if(av && /^\d{4}-\d{2}$/.test(av)) it.a=av;
-  save(); renderAll();
-  var pu=perUse(it);
-  toast(old!==p
-    ? ("가격 "+won(old)+" → "+won(p)+(pu===null?"":" · 1회당 "+won(pu)))
-    : "수정했습니다");
+  var host=document.querySelector('.item[data-edit="'+it.id+'"]');
+  if(document.getElementById("editBox")) document.getElementById("editBox").remove();
+  var box=document.createElement("div");
+  box.className="editbox"; box.id="editBox";
+  box.innerHTML =
+    '<p class="eh">착용 기록 <b>'+it.w.length+'회</b>는 그대로 유지됩니다. '
+      + '세일가로 샀으면 실제 낸 금액, 수선비를 더하려면 합친 금액, 선물받았거나 물려받았으면 0을 넣으세요.</p>'
+    + '<div class="er">'
+      + '<input type="text" id="edName" maxlength="24" aria-label="이름" placeholder="이름" />'
+      + '<input type="number" id="edPrice" min="0" max="100000000" inputmode="numeric" aria-label="가격(원)" placeholder="가격 (원)" />'
+      + '<input type="month" id="edWhen" aria-label="산 시기" />'
+    + '</div>'
+    + '<div class="er"><select id="edCat" aria-label="카테고리"></select></div>'
+    + '<div class="ea"><button id="edSave" type="button">저장</button>'
+      + '<button class="ghost" id="edCancel" type="button">취소</button></div>';
+  (host||$("list")).appendChild(box);
+  $("edName").value=it.n; $("edPrice").value=it.p; $("edWhen").value=it.a||"";
+  CATS.forEach(function(c){
+    var o=document.createElement("option"); o.value=c.k; o.textContent=c.em+" "+c.label;
+    if(c.k===it.c) o.selected=true;
+    $("edCat").appendChild(o);
+  });
+  $("edName").focus();
+  $("edCancel").addEventListener("click",function(){ box.remove(); });
+  $("edSave").addEventListener("click",function(){
+    var n=$("edName").value.trim().slice(0,24);
+    if(!n){ toast("이름은 비울 수 없어요"); $("edName").focus(); return; }
+    var p=parseFloat($("edPrice").value);
+    if(!(p>=0)){ toast("가격을 숫자로 적어 주세요"); $("edPrice").focus(); return; }
+    if(p>100000000){ toast("가격이 너무 큽니다"); return; }
+    var old=it.p;
+    it.n=n; it.p=Math.round(p); it.c=$("edCat").value;
+    var av=$("edWhen").value;
+    if(av && /^\d{4}-\d{2}$/.test(av)) it.a=av;
+    save(); renderAll();
+    var pu=perUse(it);
+    toast(old!==it.p
+      ? ("가격 "+won(old)+" → "+won(it.p)+(pu===null?"":" · 1회당 "+won(pu)))
+      : "수정했습니다");
+  });
 }
 function setGoal(it){
   var cur = it.g ? String(it.g) : "";
@@ -985,6 +1037,14 @@ $("wipeBtn").addEventListener("click",function(){
 });
 
 /* ================= 공유 유입 (?r=) ================= */
+/* 공유 페이로드에 실제 비율(tp)이 없으면(옛 링크) 개수/항목수로 유도한다.
+   없다고 0%를 그대로 찍으면 "3개인데 0%" 같은 모순이 화면에 남는다. */
+function concLabel(s){
+  var tn = s.tn||0, n = s.n||0;
+  var tp = s.tp || (n && tn ? Math.round(tn/n*100) : 0);
+  if(!tn || !n) return "자주 입는 항목이 차지하는 비중";
+  return "자주 입는 "+tn+"개(전체의 "+tp+"%) 비중";
+}
 function renderShared(s){
   var rows = (s.h||[]).map(function(x,i){
     var nm = x.n ? esc(String(x.n).slice(0,14)) : catOf(x.c).label;
@@ -994,7 +1054,7 @@ function renderShared(s){
     '<div class="stats">'
     + box("항목", (s.n||0)+"개", "총액 "+shortWon(s.t||0)+"원")
     + box("평균 1회당", s.a===null||s.a===undefined?"—":won(s.a), "총 착용 "+(s.w||0)+"회")
-    + box("착용 편중도", s.c===null||s.c===undefined?"—":s.c+"%", "자주 입는 "+(s.tn||0)+"개(전체의 "+(s.tp||0)+"%) 비중")
+    + box("착용 편중도", s.c===null||s.c===undefined?"—":s.c+"%", concLabel(s))
     + '</div>'
     + (rows ? '<div class="hall" style="margin-top:10px">'+rows+'</div>' : "")
     + ((s.n && s.n < 10) ? '<p class="hint">항목이 '+s.n+'개뿐이라 이 비율은 크게 흔들립니다. 10개 이상부터 참고할 만해집니다.</p>' : "");

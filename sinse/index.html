@@ -44,22 +44,22 @@ a{color:var(--acc)}
 .nav a{color:#8aa2c8;text-decoration:none}
 h1{font-size:25px;font-weight:700;margin:0 0 8px;color:var(--ink);letter-spacing:-.02em}
 .lead{color:var(--ink2);margin:0 0 28px;font-size:15px;line-height:1.8}
-.card{border:1px solid var(--ln);background:var(--pap);border-radius:14px;padding:22px;margin-bottom:20px}
+.card{border:1px solid var(--ln);background:var(--pap);border-radius:18px;padding:22px;margin-bottom:20px}
 .lab{font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:.06em;margin:0 0 12px;text-transform:none}
 .lab b{color:var(--acc2);font-weight:700}
 .hint{font-size:13px;color:var(--ink3);margin:8px 0 0;line-height:1.7}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{width:auto;flex:none;padding:9px 14px;font-size:13.5px;font-weight:600;background:transparent;color:var(--ink2);border:1px solid var(--ln);border-radius:8px;cursor:pointer;min-height:44px;transition:.12s}
+.chip{width:auto;flex:none;padding:9px 14px;font-size:13.5px;font-weight:600;background:transparent;color:var(--ink2);border:1px solid var(--ln);border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
 .chip.on{background:rgba(212,180,131,.12);border-color:var(--acc);color:var(--acc2)}
-input[type=text],input[type=date],select{width:100%;padding:12px 14px;font-size:15px;background:var(--pap2);color:var(--ink);border:1px solid var(--ln);border-radius:9px;min-height:46px;font-family:inherit}
+input[type=text],input[type=date],select{width:100%;padding:12px 14px;font-size:15px;background:var(--pap2);color:var(--ink);border:1px solid var(--ln);border-radius:12px;min-height:46px;font-family:inherit}
 input:focus,select:focus{outline:none;border-color:var(--acc)}
 .field{margin-top:18px}
 .row2{display:flex;gap:9px;flex-wrap:wrap}
 .row2>div{flex:1;min-width:140px}
-button{margin:0;width:100%;padding:14px;border:0;border-radius:9px;background:var(--acc);color:#241d10;font-size:15.5px;font-weight:700;cursor:pointer;min-height:48px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#241d10;font-size:15.5px;font-weight:700;cursor:pointer;min-height:48px}
 button.ghost{background:transparent;color:var(--acc2);border:1px solid #4a4034;font-weight:600}
 button.mini{width:auto;padding:9px 13px;font-size:13px;min-height:44px}
-button.tiny{width:auto;padding:8px 12px;font-size:13px;min-height:44px;min-width:44px;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:7px;font-weight:600}
+button.tiny{width:auto;padding:8px 12px;font-size:13px;min-height:44px;min-width:44px;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:8px;font-weight:600}
 button:disabled{opacity:.35;cursor:not-allowed}
 .acts{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
 .acts button{flex:1;min-width:130px}
@@ -73,7 +73,7 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .dirsw button.on{background:rgba(212,180,131,.12);border-color:var(--acc);color:var(--acc2);font-weight:700}
 /* 탭 */
 .tabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
-.tabs button{flex:1;min-width:78px;background:transparent;color:var(--ink3);border:1px solid var(--ln);font-size:13px;font-weight:600;min-height:44px;padding:10px 6px}
+.tabs button{flex:1;min-width:78px;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:12px;font-size:13px;font-weight:600;min-height:44px;padding:10px 6px}
 .tabs button.on{background:rgba(212,180,131,.1);border-color:var(--acc);color:var(--acc2)}
 /* 장부 줄 */
 .entry{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--ln)}
@@ -96,7 +96,7 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .kindrow .kv{flex:none;font-size:13.5px;color:var(--ink2);font-weight:700;width:52px;text-align:right}
 .empty{color:var(--ink3);font-size:13.5px;padding:22px 0;text-align:center;line-height:1.8}
 /* 연말 정산 */
-.yr{background:var(--pap2);border:1px solid var(--ln);border-radius:12px;padding:24px 20px;text-align:center}
+.yr{background:var(--pap2);border:1px solid var(--ln);border-radius:14px;padding:24px 20px;text-align:center}
 .yr .yl{font-size:13px;color:var(--ink3);letter-spacing:.08em}
 .yr .yn{font-size:56px;font-weight:800;color:var(--acc2);line-height:1.15;margin:6px 0 2px;letter-spacing:-.03em}
 .yr .ys{font-size:14.5px;color:var(--ink2)}
@@ -105,11 +105,17 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .yrgrid .yb .k{font-size:12.5px;color:var(--ink3);letter-spacing:.04em}
 .yrgrid .yb .v{font-size:16px;color:var(--ink);font-weight:700;margin-top:3px;line-height:1.5}
 .yrgrid .yb .s{font-size:12.5px;color:var(--ink3)}
+.editbox{background:var(--pap2);border:1px solid var(--acc);border-radius:14px;padding:14px;margin-top:10px}
+.editbox .er{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.editbox .er>*{flex:1;min-width:130px}
+.editbox .ech{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.editbox .ea{display:flex;gap:8px;margin-top:4px}
+.editbox .ea button{flex:1;min-height:46px}
 .sw{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink2);margin-top:14px}
 .sw input{width:auto;min-height:auto}
 .vow{font-size:13px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-left:2px solid var(--acc);border-radius:8px;padding:13px 15px;margin-top:16px;line-height:1.8}
 .vow b{color:var(--acc2)}
-details{margin-top:14px;border:1px solid var(--ln);border-radius:11px;background:var(--pap2)}
+details{margin-top:14px;border:1px solid var(--ln);border-radius:12px;background:var(--pap2)}
 summary{cursor:pointer;padding:13px 15px;font-size:13.5px;font-weight:600;color:var(--ink2)}
 details .dbody{padding:0 15px 15px}
 .disc{font-size:13px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-radius:9px;padding:12px 14px;margin-top:14px;line-height:1.75}
@@ -162,7 +168,8 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
   </div>
 
   <div class="field">
-    <div class="chips" id="peopleChips"></div>
+    <p class="lab" id="peopleLab" style="display:none">최근에 적은 사람 — 탭하면 바로 선택됩니다</p>
+    <div class="chips" id="peopleChips" role="group" aria-label="최근에 적은 사람"></div>
     <div class="field">
       <input type="text" id="fPerson" aria-label="상대 호칭" maxlength="14" placeholder="누구에게 — 내가 부르는 호칭으로" />
       <p class="hint">연락처를 읽지 않습니다. 실명이 아니어도 됩니다. 준호 씨, 옆자리, 이모처럼 내가 알아보는 이름이면 충분합니다.</p>
@@ -193,6 +200,9 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
 
 <!-- 보기 -->
 <section class="card" id="listCard">
+  <div class="acts" id="demoWrap" style="display:none">
+    <button class="ghost" id="demoBtn" type="button">👀 예시로 둘러보기</button>
+  </div>
   <div class="tabs" id="tabs">
     <button type="button" data-t="all" class="on">전체</button>
     <button type="button" data-t="person">사람별</button>
@@ -231,12 +241,17 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
 
   <p class="vow">이 도구가 <b>하지 않는 것</b> — 상대에게 알림 보내기, 초대·공유 코드 만들기, 점수·등급·순위 매기기, 받은 것과 준 것을 적자·흑자로 계산하기, 갚을 때가 됐다고 재촉하기, 밥 한 끼와 이사 도움을 금액으로 환산하기, 연락처 읽기. 전부 만들지 않았습니다.</p>
 
-  <div class="acts">
-    <button class="ghost mini" id="exportBtn" type="button">내보내기</button>
-    <button class="ghost mini" id="importBtn" type="button">가져오기</button>
-    <button class="ghost mini" id="wipeBtn" type="button">전체 삭제</button>
-  </div>
-  <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
+  <details>
+    <summary>내 데이터 관리 (백업 · 가져오기 · 삭제)</summary>
+    <div class="dbody">
+      <div class="acts">
+        <button class="ghost mini" id="exportBtn" type="button">내보내기</button>
+        <button class="ghost mini" id="importBtn" type="button">가져오기</button>
+        <button class="ghost mini" id="wipeBtn" type="button">전체 삭제</button>
+      </div>
+      <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
+    </div>
+  </details>
 
   <p class="disc">아주 사적인 기록입니다. 적어 둔 내용은 이 브라우저 안에만 저장되며, 저희는 그 내용을 받아 가지 않습니다(수집 서버가 없습니다). 다만 이 페이지에는 광고가 붙어 있어 <b>페이지 주소</b> 정도는 광고 제공자에게 전달될 수 있습니다 — 기록 내용은 주소에 들어가지 않습니다. 서버가 없는 정적 페이지라 화면 잠금 기능은 넣지 않았습니다 — 브라우저 안에서 만든 비밀번호 잠금은 실제 보안이 되지 못하면서 안전하다는 착각만 주기 때문입니다. 공용 기기에서는 쓰지 마시고, 기기 자체 잠금을 사용해 주세요.</p>
 
@@ -389,6 +404,7 @@ KINDS.forEach(function(k){
 });
 function renderPeopleChips(){
   var h=$("peopleChips"); h.innerHTML="";
+  $("peopleLab").style.display = db.favors.length ? "" : "none";
   var recent=db.favors.slice(-40).reverse();
   var seen={}, order=[];
   recent.forEach(function(f){ if(!seen[f.pid]){ seen[f.pid]=1; order.push(f.pid); } });
@@ -481,36 +497,52 @@ function attachEntryActions(node, f){
 }
 /* 기록 하나를 통째로 고친다. 지금까지는 삭제 후 재입력뿐이었다. */
 function editFavor(f){
+  var host=document.querySelector('.entry[data-id="'+f.id+'"] .body');
+  var prev=document.getElementById("favEdit"); if(prev) prev.remove();
   var p=personById(f.pid);
-  var who=window.prompt("누구에게 (호칭)", p?p.l:"");
-  if(who===null) return;
-  who=String(who).trim().slice(0,14);
-  if(!who){ toast("호칭은 비울 수 없어요"); return; }
-
-  var names=KINDS.map(function(k,i){ return (i+1)+". "+k.label; }).join("  ");
-  var cur=0; KINDS.forEach(function(k,i){ if(k.k===f.k) cur=i+1; });
-  var kv=window.prompt("무엇인지 번호로 골라 주세요\n\n"+names, String(cur));
-  if(kv===null) return;
-  var ki=parseInt(kv,10);
-  if(ki>=1 && ki<=KINDS.length){
-    f.k=KINDS[ki-1].k;
-    if(f.k==="etc"){
-      var ke=window.prompt("무엇인지 한 마디로", f.ke||"");
-      if(ke!==null) f.ke=String(ke).trim().slice(0,14);
-    } else f.ke="";
-  }
-
-  var dv=window.prompt("날짜 (YYYY-MM-DD)", f.d);
-  if(dv===null) return;
-  dv=String(dv).trim();
-  if(/^\d{4}-\d{2}-\d{2}$/.test(dv)) f.d=dv;
-
-  var bv=window.prompt("한 줄 맥락 (비워도 됩니다)", f.b||"");
-  if(bv!==null) f.b=String(bv).slice(0,40);
-
-  var np=ensurePerson(who, p?p.t:"etc");
-  f.pid=np.id;
-  save(); renderAll(); toast("고쳤습니다");
+  var box=document.createElement("div");
+  box.className="editbox"; box.id="favEdit";
+  box.innerHTML =
+    '<div class="er"><input type="text" id="feWho" maxlength="14" aria-label="누구에게" placeholder="누구에게 (호칭)" />'
+      + '<input type="date" id="feDate" aria-label="날짜" /></div>'
+    + '<div class="ech" id="feKinds" role="group" aria-label="무엇인지 고르기"></div>'
+    + '<div class="er"><input type="text" id="feEtc" maxlength="14" aria-label="무엇인지" placeholder="무엇인지 (그 외일 때)" style="display:none" /></div>'
+    + '<div class="er"><input type="text" id="feBody" maxlength="40" aria-label="한 줄 맥락" placeholder="한 줄 맥락 (비워도 됩니다)" /></div>'
+    + '<div class="ea"><button id="feSave" type="button">저장</button>'
+      + '<button class="ghost" id="feCancel" type="button">취소</button></div>';
+  (host||$("listBody")).appendChild(box);
+  $("feWho").value = p?p.l:"";
+  $("feDate").value = f.d;
+  $("feBody").value = f.b||"";
+  var pickKind=f.k;
+  KINDS.forEach(function(k){
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"+(k.k===pickKind?" on":""); b.textContent=k.em+" "+k.label;
+    b.setAttribute("aria-pressed", k.k===pickKind?"true":"false");
+    b.addEventListener("click",function(){
+      pickKind=k.k;
+      Array.prototype.forEach.call($("feKinds").children,function(c){
+        var on=(c===b); c.classList.toggle("on",on); c.setAttribute("aria-pressed",on?"true":"false");
+      });
+      $("feEtc").style.display = k.k==="etc" ? "" : "none";
+    });
+    $("feKinds").appendChild(b);
+  });
+  if(pickKind==="etc"){ $("feEtc").style.display=""; $("feEtc").value=f.ke||""; }
+  $("feCancel").addEventListener("click",function(){ box.remove(); });
+  $("feSave").addEventListener("click",function(){
+    var who=$("feWho").value.trim().slice(0,14);
+    if(!who){ toast("호칭은 비울 수 없어요"); $("feWho").focus(); return; }
+    if(pickKind==="etc" && !$("feEtc").value.trim()){ toast("무엇인지 한 마디만 적어 주세요"); $("feEtc").focus(); return; }
+    f.k=pickKind;
+    f.ke = pickKind==="etc" ? $("feEtc").value.trim().slice(0,14) : "";
+    var dv=$("feDate").value;
+    if(/^\d{4}-\d{2}-\d{2}$/.test(dv)) f.d=dv;
+    f.b=$("feBody").value.slice(0,40);
+    var np=ensurePerson(who, p?p.t:"etc");
+    f.pid=np.id;
+    save(); renderAll(); toast("고쳤습니다");
+  });
 }
 /* 같은 사람을 다르게 적어 통계가 쪼개졌을 때 합친다. */
 function mergePerson(p){
@@ -827,7 +859,28 @@ $("wipeBtn").addEventListener("click",function(){
 });
 
 /* ================= 시작 ================= */
-function renderAll(){ renderPeopleChips(); renderList(); renderYear(); }
+/* 첫 화면이 비어 있어 "연말 정산이 어떻게 생겼는지" 감이 안 온다는 지적 반영.
+   예시를 넣어 보고 지운 뒤 내 것으로 시작할 수 있게 한다. */
+var DEMO_FAVORS=[
+  ["준호","r","meal","점심 사 줌",4],["준호","r","ride","공항까지 태워 줌",30],
+  ["준호","g","coffee","커피 삼",12],["민지","r","help","이사 도와줌",60],
+  ["민지","r","meal","저녁 사 줌",21],["민지","g","gift","집들이 선물",55],
+  ["수아","r","listen","힘들 때 들어줌",8],["수아","g","meal","밥 삼",40],
+  ["엄마","r","care","반찬 챙겨 줌",3],["엄마","r","kid","아이 봐줌",17]
+];
+$("demoBtn").addEventListener("click",function(){
+  if(db.favors.length && !window.confirm("예시 기록 10건을 넣습니다. 기존 기록은 그대로 남습니다. 계속할까요?")) return;
+  DEMO_FAVORS.forEach(function(x){
+    var d=new Date(); d.setDate(d.getDate()-x[4]);
+    var p=ensurePerson("[예시] "+x[0], "friend");
+    db.favors.push({ id:uid(), pid:p.id, dir:x[1], k:x[2], ke:"", b:x[3],
+      d:d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()), s:null });
+  });
+  save(); renderAll();
+  toast("예시를 넣었습니다. 호칭 앞에 [예시]가 붙어 있으니 확인 후 지우세요");
+  $("yearCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+function renderAll(){ renderPeopleChips(); renderList(); renderYear(); $("demoWrap").style.display = db.favors.length ? "none" : ""; }
 load(); renderAll();
 
 var params=new URLSearchParams(location.search);
