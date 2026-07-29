@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>안 보낸 메시지 — 보내면 안 되는 말을 쓰고, 보냈다면 어땠을지 본다 | TomatoEggCat</title>
+<meta name="description" content="새벽 세 시에 쓰는 그 메시지를 여기에 씁니다. 보내기를 누르면 상대가 답장합니다. 잘 받아주지 않습니다. 실제로 그럴 법한 방식으로 답합니다. 그리고 이 대화는 어디에도 가지 않습니다. 발송 기능도, 본문을 밖으로 내보내는 버튼도 없는 감정 시뮬레이터." />
+<link rel="canonical" href="https://tomatoeggcat.com/unsent/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="안 보낸 메시지 — 보냈다면 어땠을지, 보내기 전에" />
+<meta property="og:description" content="쓰고, 보내고, 답장을 받습니다. 다만 실제로는 아무 데도 가지 않습니다. 발송 기능이 없는 것이 이 도구의 전부입니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/unsent/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="안 보낸 메시지" />
+<meta name="twitter:description" content="보내면 안 되는 메시지를 쓰고, 보냈다면 어땠을지 본다. 실제로는 안 간다." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"안 보낸 메시지","description":"보내면 안 되는 메시지를 쓰고, 수신자를 관계 유형별 응답 엔진이 현실적으로 연기해 보냈다면 어땠을지를 체험하게 하는 정적 웹앱. 실제 발송 기능이 없고, 메시지 본문을 밖으로 내보내는 경로도 없다. 위험 신호가 감지되면 연기를 즉시 중단하고 도움 경로를 안내한다.","applicationCategory":"LifestyleApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/unsent/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"메시지가 실제로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"전송되지 않습니다. 발송 기능이 코드에 존재하지 않습니다. 연락처를 입력하는 칸도 없고 외부로 나가는 통신도 없습니다. 보내기 버튼은 이 브라우저 안에서 답장 화면을 여는 역할만 합니다. 본문을 복사하거나 내보내는 버튼도 일부러 만들지 않았습니다. 이 도구에서 유일하게 밖으로 나갈 수 없어야 하는 것이 메시지 본문이기 때문입니다."}},
+{"@type":"Question","name":"답장은 누가 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"서버도 외부 AI도 쓰지 않습니다. 관계 유형별로 준비된 반응 패턴(방어·회피·화제 전환·짧게 끊기·부분 인정·지침)을 고르고, 쓴 글에서 읽어낸 신호(사과 요구·비난·그리움·재회 이야기 등)와 대화 순서에 맞춰 문장을 조립합니다. 같은 글을 쓰면 같은 답이 나옵니다."}},
+{"@type":"Question","name":"왜 상대가 다정하게 답해 주지 않나요?","acceptedAnswer":{"@type":"Answer","text":"의도한 설계입니다. 상대가 이상적으로 답하면 위로를 받고 실제로 보내게 됩니다. 그러면 이 도구는 정확히 반대의 일을 하는 셈이 됩니다. 그래서 상대는 자기 입장이 있고, 감정을 전부 인정해 주지 않으며, 때로는 회피하거나 짧게 끊습니다. 다만 현실적인 것과 잔인한 것은 다르므로 사용자를 공격하거나 모욕하는 문장은 넣지 않았습니다."}},
+{"@type":"Question","name":"위험한 이야기를 쓰면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"자해·자살을 암시하는 표현이나 상대에 대한 폭력·보복·스토킹 계획이 감지되면 연기를 그 자리에서 멈춥니다. 답장은 생성되지 않고, 판단하거나 진단하는 문구 없이 도움을 받을 수 있는 경로만 조용히 안내합니다. 이 판정은 브라우저 안에서만 이루어지며 어디에도 보고되지 않습니다."}},
+{"@type":"Question","name":"쓴 내용은 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"기본은 저장하지 않습니다. 끝내면 사라집니다. 남기기를 명시적으로 고른 경우에만 이 브라우저의 보관함에 들어가고, 암호를 설정하면 그 암호로 잠겨 저장됩니다. 보관함은 시간순 목록뿐이며 검색도 공유도 없습니다. 전체 삭제는 언제든 한 번의 확인으로 가능합니다."}},
+{"@type":"Question","name":"공유 버튼은 무엇을 공유하나요?","acceptedAnswer":{"@type":"Answer","text":"횟수 하나만 공유합니다. 지금까지 몇 번 썼고 한 번도 보내지 않았다는 숫자입니다. 메시지 본문, 관계, 상황 메모는 링크에도 이미지에도 들어가지 않습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"마음 정리","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"안 보낸 메시지","item":"https://tomatoeggcat.com/unsent/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#a5b4fc;--acc2:#c7d2fe;--paper:#101014}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:25px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#a5b4fc,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 18px;font-size:15px}
+.card{border:1px solid #232326;background:#141417;border-radius:18px;padding:20px;margin-bottom:18px}
+.lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 10px}
+.lab b{color:var(--acc2)}
+.hint{font-size:12px;color:#6b7280;margin:8px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{width:auto;flex:none;padding:9px 14px;font-size:14px;font-weight:600;background:#0f0f12;color:#c9c9c9;border:1px solid #313136;border-radius:999px;cursor:pointer;min-height:42px;transition:.12s}
+.chip.on{background:rgba(165,180,252,.14);border-color:var(--acc);color:var(--acc2)}
+input[type=text],input[type=password],textarea,select{width:100%;padding:12px 14px;font-size:15px;background:#0f0f12;color:#ededed;border:1px solid #313136;border-radius:12px;min-height:46px;font-family:inherit}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc)}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#141433;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#181826;color:var(--acc2);border:1px solid #33334a;font-weight:700}
+button.quiet{background:transparent;color:#8b8b93;border:1px solid #2a2a30;font-weight:700}
+button.danger{background:#2a1414;color:#fca5a5;border:1px solid #4a2222;font-weight:700}
+button.mini{width:auto;padding:8px 13px;font-size:13px;min-height:38px;border-radius:9px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.inbound{display:none;position:sticky;top:0;z-index:30;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#1e1b4b,#2e2a6b);border-bottom:1px solid #4c46a3}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:var(--acc2);flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.step{display:none}
+.step.on{display:block}
+/* 작성 화면 — 가장 조용하게 */
+.compose{background:var(--paper);border:1px solid #1e1e24;border-radius:20px;padding:28px 22px}
+.compose .to{font-size:13px;color:#6b7280;margin:0 0 20px;letter-spacing:.02em}
+.compose textarea{background:transparent;border:0;min-height:280px;padding:0;font-size:16.5px;line-height:1.85;resize:none}
+.compose textarea:focus{outline:none}
+.compose textarea::placeholder{color:#3f3f46}
+.late{font-size:12.5px;color:#8b8b93;background:#15151c;border:1px solid #26263a;border-radius:10px;padding:9px 12px;margin:0 0 14px;display:none}
+.late.show{display:block}
+/* 대화 */
+.thread{display:flex;flex-direction:column;gap:12px}
+.bub{max-width:82%;padding:12px 15px;border-radius:16px;font-size:15px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.bub.me{align-self:flex-end;background:#26263a;color:#e7e7f0;border-bottom-right-radius:5px}
+.bub.you{align-self:flex-start;background:#1a1a1f;color:#d4d4d8;border:1px solid #26262c;border-bottom-left-radius:5px}
+.typing{align-self:flex-start;font-size:13px;color:#6b7280;padding:6px 4px}
+.dots i{display:inline-block;width:5px;height:5px;margin-right:3px;border-radius:50%;background:#52525b;animation:bl 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,60%,100%{opacity:.25}30%{opacity:1}}
+.reply{margin-top:16px}
+.reply textarea{min-height:80px;resize:vertical}
+.turnleft{font-size:12px;color:#6b7280;text-align:right;margin:8px 0 0}
+/* 종료 */
+.ended{text-align:center;padding:34px 10px}
+.ended h2{font-size:21px;font-weight:800;margin:0 0 8px}
+.ended p{color:#8b8b93;font-size:14.5px;margin:0}
+.count{font-size:15px;color:#9ca3af;text-align:center;margin:20px 0 0}
+.count b{color:var(--acc2);font-weight:800}
+/* 안전 */
+.safe{border:1px solid #3a2a1a;background:#191410;border-radius:18px;padding:22px}
+.safe h2{font-size:18px;font-weight:800;margin:0 0 10px;color:#fcd34d}
+.safe p{font-size:14.5px;color:#d4d4d8;margin:0 0 12px;word-break:keep-all}
+.safe ul{margin:0;padding-left:0;list-style:none}
+.safe li{font-size:14.5px;color:#e7e7f0;padding:10px 12px;border:1px solid #33291c;border-radius:10px;margin-bottom:8px;background:#141110}
+.safe li b{color:#fcd34d}
+.safe .sm{font-size:12.5px;color:#8b8b93}
+/* 보관함 */
+.arc{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border:1px solid #232326;background:#131316;border-radius:12px;margin-bottom:9px}
+.arc .m{font-size:13.5px;color:#c9c9c9}
+.arc .m s{text-decoration:none;display:block;font-size:12px;color:#6b7280;margin-top:2px}
+.arc button{width:auto;min-height:36px;padding:7px 11px;font-size:12.5px}
+.empty{text-align:center;color:#6b7280;font-size:14px;padding:26px 10px;border:1px dashed #2a2a30;border-radius:14px}
+/* 카드 */
+.stat{background:#12121a;border:1px solid #26263a;border-radius:18px;padding:26px 20px;text-align:center}
+.stat .n{font-size:52px;font-weight:900;color:var(--acc2);line-height:1.1}
+.stat .t{font-size:15px;color:#9ca3af;margin-top:8px}
+.stat .w{font-size:10.5px;color:#4b4b57;margin-top:16px;letter-spacing:.04em}
+.disc{font-size:12px;color:#9ca3af;background:#141417;border:1px solid #26262c;border-radius:10px;padding:10px 12px;margin-top:12px}
+.about h2{font-size:19px;margin:30px 0 10px;color:var(--acc2)}
+.about h3{font-size:16px;margin:20px 0 6px}
+.about p,.about li{font-size:14.5px;color:#c9c9c9;word-break:keep-all}
+.about ol,.about ul{padding-left:20px}
+.faq dt{font-weight:800;margin-top:14px;color:#ededed}
+.faq dd{margin:4px 0 0;color:#9ca3af;font-size:14.5px;word-break:keep-all}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#141417;border:1px solid #2a2a30;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
+.rel a:hover{border-color:var(--acc);color:var(--acc2)}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f22;font-size:12.5px;color:#6b7280}
+footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#26262c;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.adbox{margin-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>✉️ 친구가 “한 번도 보내지 않았다”는 기록을 공유했어요.</span>
+  <button id="inboundBtn" type="button">나도 써보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 마음 정리 › 안 보낸 메시지</nav>
+
+<header>
+  <h1>✉️ 안 보낸 메시지</h1>
+  <p class="lead">보내면 안 되는 메시지를 여기에 씁니다. 보내기를 누르면 답장이 옵니다. 그리고 실제로는 아무 데도 가지 않습니다.</p>
+</header>
+
+<!-- ── 1. 관계 ── -->
+<section class="step on" id="s1">
+  <div class="card">
+    <p class="lab">누구에게 <b>쓰지 못한 말</b>인가요</p>
+    <div class="chips" id="relChips"></div>
+    <div id="otherWrap" style="display:none;margin-top:14px">
+      <div class="chips" id="otherChips"></div>
+      <p class="hint">이름이나 연락처를 넣는 칸은 만들지 않았습니다. 관계와 호칭만 고릅니다.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="lab">무슨 일이 있었나요 <span style="color:#6b7280;font-weight:400">— 선택, 세 줄 이내</span></p>
+    <textarea id="ctx" maxlength="180" rows="3" placeholder="마지막으로 이야기한 게 언제인지, 무슨 일이 있었는지"></textarea>
+    <p class="hint">적어 두면 답장이 조금 더 그 상황에 가깝게 나옵니다. 비워 두어도 됩니다.</p>
+  </div>
+
+  <div class="card">
+    <p class="lab">답장이 오는 데 <b>걸리는 시간</b></p>
+    <div class="chips" id="delayChips"></div>
+    <div class="acts"><button id="goCompose" type="button">쓰러 가기</button></div>
+  </div>
+</section>
+
+<!-- ── 2. 작성 ── -->
+<section class="step" id="s2">
+  <p class="late" id="lateNote">지금은 새벽입니다. 지금 쓰는 것과 아침에 읽는 것은 대개 다릅니다. 그래도 쓰는 건 괜찮습니다 — 어차피 가지 않으니까요.</p>
+  <div class="compose">
+    <p class="to" id="toLine">받는 사람 —</p>
+    <textarea id="body" placeholder="쓰세요. 분량 제한은 없습니다."></textarea>
+  </div>
+  <div class="acts">
+    <button class="quiet" id="backRel" type="button">뒤로</button>
+    <button id="send" type="button">보내기</button>
+  </div>
+  <p class="hint" style="text-align:center">이 버튼은 아무 데도 보내지 않습니다.</p>
+</section>
+
+<!-- ── 3. 대화 ── -->
+<section class="step" id="s3">
+  <div class="card">
+    <p class="lab" id="threadTitle">—</p>
+    <div class="thread" id="thread"></div>
+    <div class="reply" id="replyBox" style="display:none">
+      <textarea id="replyText" placeholder="더 하고 싶은 말이 있으면"></textarea>
+      <div class="acts"><button class="quiet" id="stopBtn" type="button">여기서 그만</button><button id="sendMore" type="button">보내기</button></div>
+      <p class="turnleft" id="turnLeft">—</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. 종료 ── -->
+<section class="step" id="s4">
+  <div class="card">
+    <div class="ended">
+      <h2>이 대화는 아무 데도 가지 않았습니다.</h2>
+      <p>메시지도, 답장도, 이 화면 밖으로 나가지 않았습니다.</p>
+      <p class="count" id="countLine">—</p>
+    </div>
+    <div class="acts">
+      <button class="ghost" id="keepBtn" type="button">보관함에 남기기</button>
+      <button class="quiet" id="againBtn" type="button">다시 쓰기</button>
+    </div>
+    <div id="keepWrap" style="display:none;margin-top:14px">
+      <p class="lab">암호 <span style="color:#6b7280;font-weight:400">— 선택. 넣으면 이 암호로 잠깁니다</span></p>
+      <input type="password" id="keepPw" autocomplete="new-password" placeholder="비워 두면 잠그지 않고 저장합니다" />
+      <p class="hint">암호는 어디에도 저장되지 않습니다. 잊으면 그 기록은 다시 열 수 없습니다.</p>
+      <div class="acts"><button class="quiet" id="keepCancel" type="button">취소</button><button id="keepGo" type="button">남기기</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 안전 ── -->
+<section class="step" id="sSafe">
+  <div class="safe">
+    <h2>여기서 잠시 멈출게요</h2>
+    <p id="safeWhy">시뮬레이션을 계속하지 않겠습니다. 지금은 상대의 반응을 상상하는 것보다 사람과 이야기하는 편이 낫습니다.</p>
+    <ul>
+      <li><b>자살예방 상담전화 109</b> — 24시간, 전화</li>
+      <li><b>정신건강 상담전화 1577-0199</b> — 24시간</li>
+      <li><b>생명의전화 1588-9191</b></li>
+      <li><b>청소년 전화 1388</b></li>
+    </ul>
+    <p class="sm">이 판정은 이 브라우저 안에서만 이루어졌고 어디에도 기록되지 않았습니다. 쓰신 글도 그대로 사라집니다.</p>
+    <div class="acts"><button class="quiet" id="safeBack" type="button">처음으로</button></div>
+  </div>
+</section>
+
+<!-- ── 기록 ── -->
+<section class="card" id="statCard">
+  <p class="lab">지금까지</p>
+  <div class="stat" id="stat">
+    <div class="n" id="statN">0</div>
+    <div class="t" id="statT">아직 쓴 적이 없습니다</div>
+    <div class="w">tomatoeggcat.com/unsent</div>
+  </div>
+  <div class="acts">
+    <button class="ghost" id="saveImg" type="button">이미지로 저장</button>
+    <button class="ghost" id="copyLink" type="button">링크 복사</button>
+  </div>
+  <div class="acts" style="margin-top:10px">
+    <button class="ghost" id="copyText" type="button">텍스트 복사</button>
+    <button class="ghost" id="xBtn" type="button">X에 공유</button>
+    <button class="ghost" id="webShare" type="button" style="display:none">공유하기</button>
+  </div>
+  <p class="hint" style="text-align:center">공유되는 것은 이 숫자뿐입니다. 본문·관계·상황은 링크에도 이미지에도 들어가지 않습니다.</p>
+
+  <div style="margin-top:18px">
+    <p class="lab">숫자만 넣어 카드 만들기 <span style="color:#6b7280;font-weight:400">— 리믹스</span></p>
+    <input type="text" id="rxN" inputmode="numeric" placeholder="횟수" />
+    <div class="acts"><button class="ghost" id="rxGo" type="button">이 숫자로 카드 만들기</button></div>
+  </div>
+
+  <div class="adbox">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</section>
+
+<section class="card">
+  <p class="lab">보관함 <span style="color:#6b7280;font-weight:400">— 남기기를 고른 것만</span></p>
+  <div id="archive"></div>
+  <div class="acts" id="wipeWrap" style="display:none"><button class="danger" id="wipeArc" type="button">보관함 전체 삭제</button></div>
+</section>
+
+<!-- ── 본문 ── -->
+<section class="about">
+  <h2>보내지 말라는 말은 아무 효과가 없다</h2>
+  <p>새벽 세 시에 쓰는 메시지를 두고 주변에서 해 줄 수 있는 말은 대개 “보내지 마”입니다. 그 말이 통한 적은 거의 없습니다. 보내고 싶은 게 아니라 <b>보낸 다음에 무슨 일이 일어나는지</b>를 알고 싶은 것이기 때문입니다. 그래서 이 도구는 말리는 대신 보여줍니다.</p>
+  <p>대개 두세 번 돌려보면 스스로 안 보내게 됩니다. 상대가 예상대로 방어적으로 나오는 걸 보는 순간, 그 대화가 어디로 갈지가 눈에 보이거든요.</p>
+
+  <h3>상대가 다정하지 않은 것은 의도입니다</h3>
+  <p>여기서 상대가 “네 말이 다 맞아, 미안해”로 답한다면 이 도구는 실패한 것입니다. 위로를 받고 나면 진짜로 보내게 되니까요. 그래서 상대에게는 자기 입장이 있고, 감정을 전부 인정해 주지 않으며, 회피하거나 화제를 돌리거나 짧게 끊기도 합니다. 다만 <b>현실적인 것과 잔인한 것은 다릅니다.</b> 사용자를 공격하거나 모욕하는 문장은 넣지 않았습니다.</p>
+
+  <h3>이 도구가 하지 않는 것</h3>
+  <ul>
+    <li><b>발송 기능이 없습니다.</b> 연락처 입력란도, 외부로 나가는 통신도 없습니다.</li>
+    <li><b>본문을 밖으로 내보내는 버튼이 없습니다.</b> 공유·복사·내보내기는 전부 “횟수” 하나에만 걸려 있습니다.</li>
+    <li><b>상대의 이름을 묻지 않습니다.</b> 관계 유형과 호칭만 고릅니다. 실존 인물이 아니라 관계 유형을 연기하는 것이기 때문입니다.</li>
+    <li><b>기본적으로 저장하지 않습니다.</b> 끝내면 사라집니다.</li>
+  </ul>
+
+  <h3>위험 신호가 보이면 멈춥니다</h3>
+  <p>자해·자살을 암시하는 표현이나 상대에 대한 폭력·보복·스토킹 계획이 보이면 연기를 그 자리에서 중단합니다. 답장은 만들어지지 않고, 판단하거나 진단하는 문구 없이 도움을 받을 수 있는 경로만 조용히 보여 드립니다. 이 판정은 브라우저 안에서만 이루어지며 어디에도 보고되지 않습니다.</p>
+
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>메시지가 실제로 전송되나요?</dt>
+    <dd>전송되지 않습니다. 발송 기능이 코드에 존재하지 않고, 연락처 입력란도 없으며, 외부로 나가는 통신도 없습니다. 보내기 버튼은 답장 화면을 여는 역할만 합니다.</dd>
+    <dt>답장은 누가 쓰나요?</dt>
+    <dd>서버도 외부 AI도 쓰지 않습니다. 관계 유형별 반응 패턴(방어·회피·화제 전환·짧게 끊기·부분 인정·지침)을 고르고, 쓴 글에서 읽어낸 신호와 대화 순서에 맞춰 문장을 조립합니다. 같은 글을 쓰면 같은 답이 나옵니다.</dd>
+    <dt>왜 상대가 다정하게 답해 주지 않나요?</dt>
+    <dd>의도한 설계입니다. 이상적인 상대를 만나면 위로를 받고 실제로 보내게 됩니다. 그러면 이 도구는 정확히 반대의 일을 하게 됩니다.</dd>
+    <dt>위험한 이야기를 쓰면 어떻게 되나요?</dt>
+    <dd>연기를 즉시 멈추고 도움 경로만 안내합니다. 답장은 생성되지 않습니다. 판정은 브라우저 안에서만 이루어지며 어디에도 보고되지 않습니다.</dd>
+    <dt>쓴 내용은 저장되나요?</dt>
+    <dd>기본은 저장하지 않습니다. 남기기를 고른 경우에만 이 브라우저의 보관함에 들어가고, 암호를 넣으면 그 암호로 잠깁니다. 암호는 저장되지 않으므로 잊으면 열 수 없습니다. 보관함은 시간순 목록뿐이고 검색도 공유도 없습니다.</dd>
+    <dt>몇 번까지 주고받을 수 있나요?</dt>
+    <dd>최대 여섯 번입니다. 그 뒤에는 자동으로 끝납니다. 대화가 길어질수록 상대는 지치고 짧아지는데, 그것도 현실적인 반응이라 그대로 두었습니다.</dd>
+  </dl>
+</section>
+
+<div class="rel">
+  <a href="/future-letter/">✉️ 미래편지</a>
+  <a href="/fight-judge/">⚖️ 잘잘못 판독기</a>
+  <a href="/tone-lab/">🎭 말투연구소</a>
+  <a href="/checkout-zero/">🧾 결제완료</a>
+</div>
+
+<footer>
+  <a href="/">홈</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <p style="margin:10px 0 0">상담·치료·진단을 대신하지 않습니다. 도움이 필요하면 자살예방 상담전화 109, 정신건강 상담전화 1577-0199.</p>
+</footer>
+
+</div>
+
+<canvas id="cv" width="900" height="1200" style="display:none"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var KEY = "unsent.v1";
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function dec(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+function toast(m){ var t=$("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},2200); }
+function hash(s){ var h=2166136261; s=String(s); for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=(h*16777619)>>>0; } return h>>>0; }
+function pick(arr,h,salt){ return arr[(h+salt*2654435761)%arr.length]; }
+
+/* ── 저장소: 횟수와 보관함만. 진행 중 대화는 메모리에만 있다 ── */
+var DEFAULT = { v:1, written:0, sent:0, archive:[] };
+var S;
+try{ S = JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ S=null; }
+if(!S || typeof S!=="object") S = JSON.parse(JSON.stringify(DEFAULT));
+for(var k in DEFAULT) if(!(k in S)) S[k] = JSON.parse(JSON.stringify(DEFAULT[k]));
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); return true; }catch(e){ toast("저장 공간이 부족해요"); return false; } }
+
+/* ══════════ 안전 ══════════
+   최우선 흐름. 감지되면 어떤 답장도 생성하지 않는다. */
+var SELF_HARM = ["죽고싶","죽고 싶","죽어버리","죽어야","자살","목숨을 끊","목맬","목 맬","사라지고 싶","사라지고싶","없어지고 싶","없어지고싶","살기 싫","살기싫","살고 싶지 않","살고싶지 않","끝내고 싶","끝내고싶","유서","손목","약을 다 ","뛰어내리","극단적 선택","죽는 게 나","죽는게 나"];
+var VIOLENCE = ["죽여버","죽여 버","죽일","때려죽","패버","패 버","칼로","불태","해치","가만 안 둬","가만안둬","가만두지 않","반쯤 죽","묻어버","없애버","복수할","보복할","협박","신상 털","신상털"];
+var STALK = ["집 앞에서 기다","집앞에서 기다","미행","따라다닐","계속 찾아갈","회사 앞에서 기다","회사앞에서 기다","몰래 지켜","주소를 알아내","알아내서 찾아"];
+function safetyScan(text){
+  var t = String(text||"").replace(/\s+/g," ");
+  for(var i=0;i<SELF_HARM.length;i++) if(t.indexOf(SELF_HARM[i])>=0) return "self";
+  for(var j=0;j<VIOLENCE.length;j++) if(t.indexOf(VIOLENCE[j])>=0) return "harm";
+  for(var m=0;m<STALK.length;m++) if(t.indexOf(STALK[m])>=0) return "stalk";
+  return null;
+}
+var SAFE_WHY = {
+  self: "시뮬레이션을 계속하지 않겠습니다. 지금은 상대의 반응을 상상하는 것보다, 사람과 이야기하는 편이 낫습니다.",
+  harm: "여기서 멈추겠습니다. 이 도구는 상대에게 무엇을 할지 계획하는 데 쓰이면 안 됩니다.",
+  stalk: "여기서 멈추겠습니다. 이 도구는 누군가를 찾아가거나 지켜보는 계획에 쓰이면 안 됩니다."
+};
+function toSafety(kind){
+  $("safeWhy").textContent = SAFE_WHY[kind] || SAFE_WHY.self;
+  session = null;
+  $("body").value = "";
+  $("replyText").value = "";
+  showStep("sSafe");
+}
+
+/* ══════════ 관계 · 호칭 ══════════ */
+var RELS = [
+  { k:"ex",     label:"헤어진 사람", to:"헤어진 사람에게" },
+  { k:"family", label:"가족",       to:"가족에게" },
+  { k:"boss",   label:"상사·동료",  to:"상사에게" },
+  { k:"friend", label:"친구",       to:"친구에게" },
+  { k:"self",   label:"나 자신",    to:"나에게" },
+  { k:"other",  label:"직접 고르기", to:"그 사람에게" }
+];
+/* 호칭은 프리셋만. 이름을 적을 수 있는 칸을 두지 않는다. */
+var TITLES = ["너","당신","그쪽","선배","후배","팀장님","엄마","아빠","형","누나","언니","오빠","동생"];
+var DELAYS = [ {k:"now",label:"바로",ms:900}, {k:"few",label:"몇 초",ms:3200}, {k:"long",label:"한참",ms:9000} ];
+
+var sel = { rel:"ex", title:"", delay:"few" };
+
+function buildChips(host, items, get, set, after){
+  var h = $(host); h.innerHTML = "";
+  items.forEach(function(it){
+    var b = document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent = it.label;
+    b.dataset.k = it.k;
+    if(it.k === get()) b.classList.add("on");
+    b.addEventListener("click", function(){
+      set(it.k);
+      var all = h.querySelectorAll("button");
+      for(var i=0;i<all.length;i++) all[i].classList.toggle("on", all[i]===b);
+      if(after) after();
+    });
+    h.appendChild(b);
+  });
+}
+buildChips("relChips", RELS, function(){return sel.rel;}, function(v){sel.rel=v;}, function(){
+  $("otherWrap").style.display = sel.rel==="other" ? "block" : "none";
+});
+buildChips("otherChips", TITLES.map(function(t){return {k:t,label:t};}),
+  function(){return sel.title;}, function(v){sel.title=v;});
+buildChips("delayChips", DELAYS, function(){return sel.delay;}, function(v){sel.delay=v;});
+
+/* ══════════ 신호 읽기 ══════════ */
+var SIGNALS = [
+  { k:"apology", words:["사과","미안하다고","사과해","잘못했","인정해"] },
+  { k:"blame",   words:["너 때문","네 탓","너때문","당신 때문","너는 항상","넌 항상","맨날"] },
+  { k:"longing", words:["보고 싶","보고싶","그리워","그립","생각나","돌아가고 싶"] },
+  { k:"reunion", words:["다시 만나","다시 시작","돌아와","한 번만 더","다시 볼"] },
+  { k:"anger",   words:["짜증","화가","열받","어이없","진짜 너무","최악","됐어"] },
+  { k:"guilt",   words:["내가 미안","내 잘못","내가 잘못","후회"] },
+  { k:"ask",     words:["?","왜 그랬","뭐였","어땠","괜찮아"] }
+];
+function readSignals(text){
+  var t = String(text||""), out = {};
+  SIGNALS.forEach(function(s){
+    for(var i=0;i<s.words.length;i++) if(t.indexOf(s.words[i])>=0){ out[s.k]=true; return; }
+  });
+  return out;
+}
+
+/* ══════════ 반응 은행 ══════════
+   원칙: 상대는 자기 입장이 있다. 전부 인정하지 않는다.
+   공격·모욕은 넣지 않는다. 어떤 문장도 "네 말이 다 맞아"로 끝나지 않는다. */
+var STANCES = ["guard","avoid","deflect","short","partial","weary"];
+var BANK = {
+  ex: {
+    guard:  ["그때 일은 나도 할 말이 없진 않아.","그렇게만 기억하고 있구나. 나는 좀 다르게 기억해.","내가 잘못한 것만 남았나 보네. 나도 힘들었어."],
+    avoid:  ["지금 이런 얘기 하기엔 좀 그래.","이걸 지금 얘기해서 뭐가 달라져?","미안한데 지금은 이 대화 못 하겠어."],
+    deflect:["그건 그렇고, 요즘은 어때.","잘 지내는 것 같아 보이던데.","다들 잘 지내지?"],
+    short:  ["응.","알겠어.","그래.","봤어."],
+    partial:["미안한 부분은 있어. 그렇다고 전부 내 탓은 아니야.","내가 서툴렀던 건 맞아. 근데 너도 알잖아.","그 점은 인정해. 나머지는 아니야."],
+    weary:  ["우리 이 얘기 몇 번째야.","이 대화 끝이 없는 거 알잖아.","이제 그만하자. 서로 지쳐."]
+  },
+  family: {
+    guard:  ["나는 그때 최선이라고 생각했어.","내가 다 잘못했다는 거야?","그 시절엔 다 그랬어."],
+    avoid:  ["나중에 얼굴 보고 얘기하자.","전화로 하자, 이런 건.","지금 바빠. 이따 보자."],
+    deflect:["밥은 먹었어?","요새 몸은 괜찮고?","돈은 부족하지 않아?"],
+    short:  ["알았다.","그래.","응, 봤다."],
+    partial:["그 부분은 미안하게 생각해. 근데 너도 좀 그랬어.","서운했으면 미안하다. 나도 서운한 게 있었고.","내가 표현을 못 한 건 맞아."],
+    weary:  ["이 얘기 또 하는구나.","우리 매번 여기서 막히네.","그만하자. 마음만 상해."]
+  },
+  boss: {
+    guard:  ["그건 그렇게 볼 일이 아닌 것 같은데요.","제 입장에서는 다른 판단이 있었습니다.","그 결정에는 배경이 있었어요."],
+    avoid:  ["이건 메시지로 할 얘기는 아닌 것 같네요.","내일 따로 얘기합시다.","지금 확인이 어렵습니다."],
+    deflect:["그 건은 어떻게 되고 있죠?","일단 이번 주 마감부터 봅시다.","다음 주에 정리해서 봅시다."],
+    short:  ["네.","확인했습니다.","알겠습니다."],
+    partial:["말씀하신 부분은 참고하겠습니다. 다만 전부 동의하지는 않습니다.","제가 놓친 게 있다면 챙기겠습니다.","그 지점은 인정합니다."],
+    weary:  ["이 얘기는 여기까지 하죠.","서로 입장이 다른 것 같습니다.","길어질 것 같은데 다음에 합시다."]
+  },
+  friend: {
+    guard:  ["나는 그렇게 생각 안 했는데.","그때 나도 정신없었어.","내 입장도 좀 봐줘."],
+    avoid:  ["아 그거… 나중에 얘기하자.","지금 좀 그래. 미안.","이거 톡으로 하면 꼬여."],
+    deflect:["야 근데 그거 봤어?","주말에 뭐 해?","다음에 술이나 한잔하자."],
+    short:  ["ㅇㅇ","알겠어","그래"],
+    partial:["미안한 건 맞아. 근데 너도 좀 심했어.","내가 연락 안 한 건 잘못했어. 그것만.","그 부분은 내가 미안."],
+    weary:  ["우리 이거 계속 반복이야.","솔직히 좀 지친다.","이쯤에서 접자."]
+  },
+  self: {
+    guard:  ["그때는 그게 최선이었어. 지금 와서 쉽게 말하지 마.","네가 지금 아는 걸 그때의 나는 몰랐어.","그렇게 몰아붙이면 남는 게 뭔데."],
+    avoid:  ["지금 이걸 파고들 때는 아닌 것 같아.","오늘은 여기까지만 하자.","이 생각 계속하면 잠 못 자."],
+    deflect:["일단 물 한 잔 마시고 오자.","내일 할 일부터 정리하는 게 낫지 않을까.","오늘 밥은 먹었나."],
+    short:  ["응.","알아.","그래, 알았어."],
+    partial:["잘못한 게 있는 건 맞아. 전부는 아니야.","후회되는 건 맞는데, 그때의 나를 미워하진 말자.","그 부분은 인정. 나머지는 아니야."],
+    weary:  ["이 질문 몇 번째 하는지 알아?","답이 안 나오는 거 알잖아.","그만 곱씹자."]
+  },
+  other: {
+    guard:  ["제 생각은 좀 다릅니다.","그렇게만 보시면 곤란해요.","저도 할 말이 있어요."],
+    avoid:  ["지금은 이 얘기 하기 어렵습니다.","나중에 얘기해요.","이건 여기서 할 얘기가 아닌 것 같아요."],
+    deflect:["그건 그렇고, 요즘 어떻게 지내세요.","다른 얘기지만 잘 지내시죠.","그 일은 잘 마무리됐나요."],
+    short:  ["네.","알겠어요.","봤어요."],
+    partial:["일부는 제 잘못이 맞아요. 전부는 아니고요.","그 점은 인정합니다.","서운하셨다면 그건 미안해요."],
+    weary:  ["이 얘기는 여기까지 하죠.","서로 지치는 것 같네요.","그만하는 게 좋겠어요."]
+  }
+};
+/* 신호별 덧붙임 — 상대가 사용자의 말을 "받되 인정하지는 않는" 한 마디 */
+var TAIL = {
+  longing: ["나도 가끔 생각은 나. 그게 다야.","그 말 들으니까 좀 그렇긴 하다.","…그렇구나."],
+  reunion: ["그건 아닌 것 같아.","지금은 그럴 수 없어.","그 얘기는 하지 말자."],
+  apology: ["사과를 하라고 하면 더 하기 싫어져.","그 말은 강요처럼 들려.","내가 해야 할 사과가 뭔지는 내가 정할게."],
+  blame:  ["다 내 탓으로 정리되는 건 좀 그래.","나만 문제였던 건 아니잖아.","그렇게 말하면 할 말이 없어지지."],
+  anger:  ["화난 건 알겠어.","지금 상태로는 얘기가 안 될 것 같은데.","좀 진정되면 얘기하자."],
+  guilt:  ["네가 그렇게까지 자책할 일인가 싶기도 하고.","그건 네 문제야, 내가 풀어줄 수 있는 게 아니야.","…"],
+  ask:    ["글쎄. 지금 답하기 어렵네.","그건 나도 잘 모르겠어.","꼭 답을 해야 하나."]
+};
+
+function chooseStance(h, turn, sig){
+  /* 후반으로 갈수록 지치고 짧아진다. 어떤 경우에도 전면 수용은 없다. */
+  var pool;
+  if(turn >= 4)      pool = ["weary","short","short","avoid","guard"];
+  else if(turn >= 2) pool = ["guard","avoid","short","weary","partial","deflect"];
+  else               pool = ["guard","avoid","deflect","partial","short"];
+  if(sig.anger)   pool = ["guard","weary","avoid","short"];
+  if(sig.apology) pool = ["guard","partial","weary","avoid"];
+  if(sig.reunion) pool = ["avoid","guard","short","weary"];
+  if(sig.longing && turn < 2) pool = ["avoid","short","deflect","guard"];
+  return pool[(h + turn*7919) % pool.length];
+}
+function buildReply(text, turn, ctx){
+  var sig = readSignals(text);
+  var h = hash(sel.rel + "|" + (ctx||"") + "|" + text + "|" + turn);
+  var stance = chooseStance(h, turn, sig);
+  var bank = BANK[sel.rel] || BANK.other;
+  var line = pick(bank[stance], h, turn+1);
+  var tailKeys = Object.keys(TAIL).filter(function(k){ return sig[k]; });
+  if(tailKeys.length && stance !== "short" && (h % 3) !== 0){
+    var tk = tailKeys[h % tailKeys.length];
+    line += "\n" + pick(TAIL[tk], h, turn+5);
+  }
+  return { text: line, stance: stance };
+}
+
+/* ══════════ 화면 ══════════ */
+var STEPS = ["s1","s2","s3","s4","sSafe"];
+function showStep(id){
+  STEPS.forEach(function(s){ $(s).classList.toggle("on", s===id); });
+  $("statCard").style.display = (id==="sSafe") ? "none" : "block";
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+function relOf(){ for(var i=0;i<RELS.length;i++) if(RELS[i].k===sel.rel) return RELS[i]; return RELS[0]; }
+
+var session = null; // { turns:[{who,body}], ctx, startedAt }
+
+$("goCompose").addEventListener("click", function(){
+  var r = relOf();
+  $("toLine").textContent = "받는 사람 — " + (sel.rel==="other" && sel.title ? sel.title : r.to);
+  var hr = new Date().getHours();
+  $("lateNote").classList.toggle("show", hr >= 0 && hr < 5);
+  showStep("s2");
+  setTimeout(function(){ $("body").focus(); }, 250);
+});
+$("backRel").addEventListener("click", function(){ showStep("s1"); });
+
+$("send").addEventListener("click", function(){
+  var text = $("body").value.trim();
+  if(!text){ toast("아직 아무것도 쓰지 않으셨어요"); return; }
+  var ctx = $("ctx").value.trim().slice(0,180);
+  var risk = safetyScan(text + " " + ctx);
+  if(risk){ toSafety(risk); return; }
+  session = { turns:[{ who:"me", body:text }], ctx:ctx, startedAt:Date.now() };
+  S.written++; save(); renderStat();
+  $("threadTitle").innerHTML = "받는 사람 — <b>" + esc(sel.rel==="other" && sel.title ? sel.title : relOf().to) + "</b>";
+  renderThread();
+  showStep("s3");
+  respond();
+});
+$("sendMore").addEventListener("click", function(){
+  var text = $("replyText").value.trim();
+  if(!text || !session) return;
+  var risk = safetyScan(text);
+  if(risk){ toSafety(risk); return; }
+  session.turns.push({ who:"me", body:text });
+  $("replyText").value = "";
+  renderThread();
+  respond();
+});
+$("stopBtn").addEventListener("click", function(){ endSession(); });
+
+function myTurnCount(){ return session ? session.turns.filter(function(t){return t.who==="me";}).length : 0; }
+
+function respond(){
+  $("replyBox").style.display = "none";
+  var th = $("thread");
+  var tp = document.createElement("div");
+  tp.className = "typing";
+  tp.innerHTML = '<span class="dots"><i></i><i></i><i></i></span> 읽는 중…';
+  th.appendChild(tp);
+  th.scrollIntoView({ behavior:"smooth", block:"end" });
+  var ms = DELAYS.filter(function(d){return d.k===sel.delay;})[0].ms;
+  setTimeout(function(){
+    if(!session) return;
+    var last = session.turns[session.turns.length-1].body;
+    var turn = myTurnCount() - 1;
+    var r = buildReply(last, turn, session.ctx);
+    session.turns.push({ who:"you", body:r.text });
+    renderThread();
+    if(myTurnCount() >= 6){ endSession(); return; }
+    $("replyBox").style.display = "block";
+    $("turnLeft").textContent = "앞으로 " + (6 - myTurnCount()) + "번 더 보낼 수 있습니다";
+  }, ms);
+}
+function renderThread(){
+  var th = $("thread");
+  th.innerHTML = "";
+  session.turns.forEach(function(t){
+    var b = document.createElement("div");
+    b.className = "bub " + (t.who==="me" ? "me" : "you");
+    b.textContent = t.body;
+    th.appendChild(b);
+  });
+}
+function endSession(){
+  $("countLine").innerHTML = "지금까지 <b>" + S.written + "번</b> 썼고, <b>한 번도</b> 보내지 않았습니다.";
+  $("keepWrap").style.display = "none";
+  showStep("s4");
+}
+$("againBtn").addEventListener("click", function(){
+  /* 관계·상황은 남기고 본문만 비운다 */
+  session = null;
+  $("body").value = "";
+  showStep("s1");
+});
+$("safeBack").addEventListener("click", function(){ showStep("s1"); });
+
+/* ══════════ 보관함 (선택 · 암호 잠금) ══════════ */
+$("keepBtn").addEventListener("click", function(){ $("keepWrap").style.display = "block"; $("keepPw").focus(); });
+$("keepCancel").addEventListener("click", function(){ $("keepWrap").style.display = "none"; });
+$("keepGo").addEventListener("click", function(){ keep($("keepPw").value); });
+
+function b64(buf){ var s="", a=new Uint8Array(buf); for(var i=0;i<a.length;i++) s+=String.fromCharCode(a[i]); return btoa(s); }
+function unb64(s){ var bin=atob(s), a=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
+function deriveKey(pw, salt){
+  var encd = new TextEncoder();
+  return crypto.subtle.importKey("raw", encd.encode(pw), "PBKDF2", false, ["deriveKey"])
+    .then(function(base){
+      return crypto.subtle.deriveKey(
+        { name:"PBKDF2", salt:salt, iterations:150000, hash:"SHA-256" },
+        base, { name:"AES-GCM", length:256 }, false, ["encrypt","decrypt"]);
+    });
+}
+function keep(pw){
+  if(!session) return;
+  var payload = JSON.stringify({ rel: sel.rel, ctx: session.ctx, turns: session.turns });
+  var meta = { id: String(Date.now()), at: Date.now(), rel: relOf().label, locked: !!pw };
+  if(!pw){
+    meta.body = payload;
+    S.archive.unshift(meta); save(); renderArchive();
+    $("keepWrap").style.display = "none";
+    toast("보관함에 남겼습니다");
+    return;
+  }
+  if(!(window.crypto && crypto.subtle)){ toast("이 브라우저에서는 잠금을 쓸 수 없어요"); return; }
+  var salt = crypto.getRandomValues(new Uint8Array(16));
+  var iv = crypto.getRandomValues(new Uint8Array(12));
+  deriveKey(pw, salt).then(function(key){
+    return crypto.subtle.encrypt({ name:"AES-GCM", iv:iv }, key, new TextEncoder().encode(payload));
+  }).then(function(ct){
+    meta.salt = b64(salt); meta.iv = b64(iv); meta.ct = b64(ct);
+    S.archive.unshift(meta); save(); renderArchive();
+    $("keepWrap").style.display = "none";
+    $("keepPw").value = "";
+    toast("잠가서 보관했습니다");
+  }).catch(function(){ toast("잠그는 데 실패했어요"); });
+}
+function renderArchive(){
+  var box = $("archive");
+  box.innerHTML = "";
+  if(!S.archive.length){
+    box.innerHTML = '<div class="empty">보관한 것이 없습니다.<br />기본은 저장하지 않습니다.</div>';
+    $("wipeWrap").style.display = "none";
+    return;
+  }
+  $("wipeWrap").style.display = "flex";
+  S.archive.forEach(function(a){
+    var d = new Date(a.at);
+    var el = document.createElement("div");
+    el.className = "arc";
+    el.innerHTML =
+      '<div class="m">' + esc(a.rel) + (a.locked ? " · 🔒 잠김" : "") +
+      '<s>' + d.getFullYear() + "." + (d.getMonth()+1) + "." + d.getDate() + '</s></div>' +
+      '<div style="display:flex;gap:6px"><button class="quiet" data-open="'+esc(a.id)+'">열기</button>' +
+      '<button class="quiet" data-del="'+esc(a.id)+'">삭제</button></div>';
+    box.appendChild(el);
+  });
+}
+$("archive").addEventListener("click", function(e){
+  var t = e.target; if(!t || !t.dataset) return;
+  if(t.dataset.del){
+    S.archive = S.archive.filter(function(a){ return a.id !== t.dataset.del; });
+    save(); renderArchive(); return;
+  }
+  if(t.dataset.open){
+    var a = S.archive.filter(function(x){ return x.id === t.dataset.open; })[0];
+    if(!a) return;
+    if(!a.locked){ openArchived(a, JSON.parse(a.body)); return; }
+    var pw = window.prompt("이 기록의 암호를 입력하세요");
+    if(pw == null) return;
+    deriveKey(pw, unb64(a.salt)).then(function(key){
+      return crypto.subtle.decrypt({ name:"AES-GCM", iv:unb64(a.iv) }, key, unb64(a.ct));
+    }).then(function(pt){
+      openArchived(a, JSON.parse(new TextDecoder().decode(pt)));
+    }).catch(function(){ toast("암호가 맞지 않습니다"); });
+  }
+});
+function openArchived(meta, data){
+  sel.rel = data.rel || sel.rel;
+  session = { turns: data.turns, ctx: data.ctx, startedAt: meta.at };
+  $("threadTitle").innerHTML = "보관된 기록 — <b>" + esc(meta.rel) + "</b>";
+  renderThread();
+  $("replyBox").style.display = "none";
+  showStep("s3");
+}
+$("wipeArc").addEventListener("click", function(){
+  if(!window.confirm("보관함을 전부 지웁니다. 되돌릴 수 없습니다. 계속할까요?")) return;
+  S.archive = []; save(); renderArchive(); toast("보관함을 비웠습니다");
+});
+
+/* ══════════ 기록 카드 · 공유 (숫자만) ══════════ */
+var shownN = 0;
+function renderStat(n){
+  shownN = (typeof n === "number") ? n : S.written;
+  $("statN").textContent = shownN;
+  $("statT").textContent = shownN
+    ? "번 썼고, 한 번도 보내지 않았습니다"
+    : "아직 쓴 적이 없습니다";
+  $("rxN").value = shownN || "";
+}
+function resultUrl(){ return location.origin + location.pathname + "?r=" + encodeURIComponent(enc({ v:1, n:shownN })); }
+function shareText(){
+  return "✉️ 안 보낸 메시지 — 지금까지 " + shownN + "번 썼고, 한 번도 보내지 않았습니다.\n" + resultUrl();
+}
+function copy(text,msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fb(text,msg);});
+  } else fb(text,msg);
+}
+function fb(text,msg){
+  var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+$("copyLink").addEventListener("click", function(){ copy(resultUrl(),"링크가 복사되었습니다"); });
+$("copyText").addEventListener("click", function(){ copy(shareText(),"텍스트가 복사되었습니다"); });
+$("xBtn").addEventListener("click", function(){
+  var t = "지금까지 " + shownN + "번 썼고, 한 번도 보내지 않았습니다 ✉️";
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank");
+});
+if(navigator.share){
+  $("webShare").style.display = "block";
+  $("webShare").addEventListener("click", function(){
+    navigator.share({ title:"안 보낸 메시지", text:"지금까지 "+shownN+"번 썼고, 한 번도 보내지 않았습니다.", url:resultUrl() }).catch(function(){});
+  });
+}
+$("rxGo").addEventListener("click", function(){
+  var n = Math.max(0, Math.round(Number($("rxN").value)||0));
+  renderStat(n);
+  $("stat").scrollIntoView({ behavior:"smooth", block:"center" });
+  toast("카드를 다시 만들었습니다");
+});
+function drawCard(){
+  var cv=$("cv"), x=cv.getContext("2d"), W=cv.width, H=cv.height;
+  var g = x.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,"#12121a"); g.addColorStop(1,"#0a0a0e");
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.strokeStyle="#26263a"; x.lineWidth=3; x.strokeRect(30,30,W-60,H-60);
+  x.textAlign="center";
+  x.fillStyle="#6b7280"; x.font="600 30px sans-serif";
+  x.fillText("안 보낸 메시지", W/2, 180);
+  x.fillStyle="#c7d2fe"; x.font="900 220px sans-serif";
+  x.fillText(String(shownN), W/2, 520);
+  x.fillStyle="#9ca3af"; x.font="400 40px sans-serif";
+  x.fillText("번 썼고", W/2, 610);
+  x.fillStyle="#e7e7f0"; x.font="800 52px sans-serif";
+  x.fillText("한 번도 보내지 않았습니다", W/2, 700);
+  x.strokeStyle="#26263a"; x.lineWidth=2;
+  x.beginPath(); x.moveTo(160,790); x.lineTo(W-160,790); x.stroke();
+  x.fillStyle="#6b7280"; x.font="400 30px sans-serif";
+  x.fillText("본문은 이 카드에도, 링크에도 없습니다.", W/2, 860);
+  x.fillStyle="#4b4b57"; x.font="600 26px sans-serif";
+  x.fillText("tomatoeggcat.com/unsent", W/2, H-90);
+}
+$("saveImg").addEventListener("click", function(){
+  drawCard();
+  var a=document.createElement("a");
+  a.download="unsent-"+shownN+".png";
+  a.href=$("cv").toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("이미지가 저장되었습니다");
+});
+
+/* ══════════ 인바운드 ══════════ */
+var params = new URLSearchParams(location.search);
+if(params.has("r")){
+  var st = dec(params.get("r"));
+  if(st && typeof st.n === "number"){
+    renderStat(Math.max(0, st.n|0));
+    $("inbound").classList.add("show");
+    $("inboundBtn").addEventListener("click", function(){
+      $("inbound").classList.remove("show");
+      history.replaceState(null,"",location.pathname);
+      renderStat();
+      showStep("s1");
+    });
+  } else renderStat();
+} else renderStat();
+renderArchive();
+})();
+</script>
+</body>
+</html>
