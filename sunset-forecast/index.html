@@ -125,7 +125,10 @@ details .dbody{padding:0 14px 14px}
 .acc-grid .b .k{font-size:13px;color:#9ca3af;font-weight:700}
 .acc-grid .b .v{font-size:24px;font-weight:900;color:#ededed}
 .acc-grid .b .s{font-size:12.5px;color:#9ca3af}
-.about h2{font-size:19px;margin:28px 0 10px;color:var(--acc2)}
+.aboutbox{margin-top:20px;border:1px solid #262626;border-radius:12px;background:#101010}
+.aboutbox>summary{cursor:pointer;padding:14px 16px;font-size:14px;font-weight:700;color:#c9c9c9}
+.aboutbox .about{padding:0 16px 8px}
+.about h2{font-size:19px;margin:22px 0 10px;color:var(--acc2)}
 .about p,.about li{font-size:14.5px;color:#c9c9c9}
 .faq dt{font-weight:800;margin-top:14px;color:#ededed}
 .faq dd{margin:4px 0 0;color:#9ca3af;font-size:14.5px}
@@ -152,7 +155,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <header>
   <h1>🌇 오늘 노을</h1>
   <p class="lead">노을은 매일 있지만 <b>좋은 노을은 한 달에 서너 번</b>입니다. 오늘이 그날인지, 나가 볼 만한지 점수와 근거로 알려 드립니다.</p>
-  <div class="exp">🧪 실험 중 — 가설 기반 모델입니다</div>
+  <div class="exp">🧪 실험 중 — 아직 검증하며 다듬는 중입니다</div>
 </header>
 
 <section class="card" id="inputCard">
@@ -317,6 +320,8 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </section>
 
+<details class="aboutbox">
+  <summary>🌇 오늘 노을이 어떤 도구인지 · 좋은 노을의 조건 · 자주 묻는 질문</summary>
 <section class="about">
   <h2>🌇 오늘 노을 소개</h2>
   <p>노을은 매일 지지만, 사진으로 남기고 싶을 만큼 좋은 노을은 한 달에 서너 번뿐입니다. 그리고 그 서너 번은 우연이 아니라 조건이 맞았을 때 나옵니다. 하늘 중간과 위쪽에 빛을 받아 줄 구름이 적당히 있고, 해가 지는 서쪽 낮은 하늘이 열려 있어서 마지막 빛이 그 구름 밑면까지 닿을 수 있을 때입니다. 오늘 노을은 그 조건들을 점수로 바꿔 주는 도구입니다. 지역과 오늘 하늘 상태를 고르면 0~100점의 노을 점수, 절정이 올 것 같은 시각, 그리고 왜 그렇게 봤는지 근거 세 줄이 함께 나옵니다.</p>
@@ -361,6 +366,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   </dl>
   <p style="color:#9ca3af;font-size:13px">※ 본 도구는 참고용 계산기이며 기상 예보 서비스가 아닙니다. 기상 특보·재해 정보는 기상청 등 공식 기관 정보를 확인하세요.</p>
 </section>
+</details>
 
 <nav class="rel">
   <a href="/dydrms-stargazer/">🔭 별보러가자</a>
@@ -745,7 +751,7 @@ function render(st){
   $("peakTime").textContent = hhmm(out.peak);
   $("peakSub").textContent = out.peak ? ("일몰 " + out.offset + "분 뒤 · 가장 붉은 순간") : "이 위도에서는 계산되지 않음";
   $("setTime").textContent = hhmm(out.t.sunset);
-  $("setSub").textContent = out.t.goldenStart ? ("골든아워 " + hhmm(out.t.goldenStart) + "부터") : "—";
+  $("setSub").textContent = out.t.goldenStart ? ("빛 좋은 시간 " + hhmm(out.t.goldenStart) + "부터") : "—";
 
   var wl = $("whyList"); wl.innerHTML = "";
   reasons(out).forEach(function(r){
@@ -799,11 +805,17 @@ function render(st){
 
   /* 시간표 */
   var tt=$("ttable").querySelector("tbody"); tt.innerHTML="";
-  [["🌅 일출", out.t.sunrise],["☀️ 남중", out.t.noon],["✨ 골든아워 시작", out.t.goldenStart],
-   ["🌇 일몰", out.t.sunset],["🔥 노을 절정(추정)", out.peak],["🔵 블루아워", out.t.blueEnd],["🌃 시민박명 끝", out.t.civilEnd]
+  [["🌅 일출", out.t.sunrise, "해가 뜨는 시각"],
+   ["☀️ 남중", out.t.noon, "해가 가장 높이 뜬 때"],
+   ["✨ 골든아워 시작", out.t.goldenStart, "빛이 낮고 길어 모든 게 금색으로 보이는 시간"],
+   ["🌇 일몰", out.t.sunset, "해가 지평선에 닿는 시각"],
+   ["🔥 노을 절정(추정)", out.peak, "가장 붉어질 것으로 본 순간"],
+   ["🔵 블루아워 시작", out.t.blueEnd, "해가 진 뒤 하늘이 짙은 파랑으로 물드는 때"],
+   ["🌃 시민박명 끝", out.t.civilEnd, "바깥에서 글씨를 읽을 수 있는 밝기의 끝"]
   ].forEach(function(r){
     var tr=document.createElement("tr");
-    tr.innerHTML="<td>"+r[0]+"</td><td style='text-align:right'><b>"+hhmm(r[1])+"</b></td>";
+    tr.innerHTML="<td>"+r[0]+"<br><span style='font-size:12.5px;color:#9ca3af;font-weight:400'>"+r[2]+"</span></td>"
+      +"<td style='text-align:right;vertical-align:top'><b>"+hhmm(r[1])+"</b></td>";
     tt.appendChild(tr);
   });
 
