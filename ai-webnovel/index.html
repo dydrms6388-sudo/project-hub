@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">AI가 매주 새 에피소드를 연재하는 웹소설을 무료로 읽을 수 있는 서비스입니다.</p>
     <a class="cta" href="https://nobling.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>노블링 (Nobling) 소개</h2>
-    <p>AI가 매주 새 에피소드를 연재하는 웹소설을 무료로 읽을 수 있는 서비스입니다. 판타지·로맨스·스릴러 등 다양한 장르 중 원하는 작품을 찾아 주간 랭킹으로 인기작을 확인하거나 신작을 발견할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> AI가 매주 새 에피소드를 연재하는 웹소설을 무료로 읽을 수 있는 서비스입니다.</li>
+        <li><b>이럴 때</b> 출퇴근 이동 시간에 짧은 에피소드 한 편을 읽고 싶을 때, 스마트폰 브라우저에서 바로 접속해 회원 가입 없이 즉시 읽기 시작할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>다음 화를 무료로 읽으려면 화면 안내를 따릅니다.</li>
         <li>신작 알림을 설정하면 새 에피소드가 올라올 때 안내를 받을 수 있습니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>웹소설은 2010년대 이후 국내에서 빠르게 성장한 콘텐츠 장르로, 짧은 에피소드 단위로 연재되는 형식이 스마트폰 독서 환경에 잘 맞아 꾸준히 독자층을 넓혀 왔습니다. 최근에는 대규모 언어 모델(LLM)을 이용해 이야기 구조와 문체를 학습시키고, 정해진 세계관과 인물 설정 내에서 자동으로 다음 회차를 생성하는 AI 연재 방식이 등장하고 있습니다. AI 생성 소설은 인간 작가와 달리 마감에 얽매이지 않고 일정한 속도로 연재를 이어 갈 수 있다는 특징이 있지만, 문체의 일관성이나 감정적 깊이는 아직 인간 작가와 차이가 있을 수 있습니다. 독자 입장에서는 새로운 형식의 이야기 소비 경험을 해 볼 수 있다는 점에서 흥미로운 선택지가 됩니다.</p>
+    <details class="deep">
+      <summary>노블링 (Nobling) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>AI가 매주 새 에피소드를 연재하는 웹소설을 무료로 읽을 수 있는 서비스입니다. 판타지·로맨스·스릴러 등 다양한 장르 중 원하는 작품을 찾아 주간 랭킹으로 인기작을 확인하거나 신작을 발견할 수 있습니다.</p>
+        <p>웹소설은 2010년대 이후 국내에서 빠르게 성장한 콘텐츠 장르로, 짧은 에피소드 단위로 연재되는 형식이 스마트폰 독서 환경에 잘 맞아 꾸준히 독자층을 넓혀 왔습니다. 최근에는 대규모 언어 모델(LLM)을 이용해 이야기 구조와 문체를 학습시키고, 정해진 세계관과 인물 설정 내에서 자동으로 다음 회차를 생성하는 AI 연재 방식이 등장하고 있습니다. AI 생성 소설은 인간 작가와 달리 마감에 얽매이지 않고 일정한 속도로 연재를 이어 갈 수 있다는 특징이 있지만, 문체의 일관성이나 감정적 깊이는 아직 인간 작가와 차이가 있을 수 있습니다. 독자 입장에서는 새로운 형식의 이야기 소비 경험을 해 볼 수 있다는 점에서 흥미로운 선택지가 됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>처음 방문한다면 주간 랭킹 상위 5위 안에 드는 작품부터 읽어 보세요. 많은 독자가 재미있다고 반응한 작품을 먼저 경험하면 서비스 특성을 파악하기 좋습니다.</li>

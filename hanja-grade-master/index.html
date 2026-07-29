@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">한국어문회 기준 8급부터 5급까지, 준급수(7급II·6급II·5급II)를 포함한 전 배정한자를 플래시카드와 급수별 모의고사로 익히는 무료 학습 도구입니다.</p>
     <a class="cta" href="https://hanja-grade-master.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>한자급수마스터 소개</h2>
-    <p>한국어문회 기준 8급부터 5급까지, 준급수(7급II·6급II·5급II)를 포함한 전 배정한자를 플래시카드와 급수별 모의고사로 익히는 무료 학습 도구입니다. 카드를 탭하면 뒤집혀 정답이 나오는 방식이라, 한자를 보고 훈(뜻)과 음(소리)을 먼저 떠올린 뒤 확인합니다. 틀린 한자는 오답노트에 자동으로 모이고, 자주 틀리는 글자일수록 다음 학습에서 먼저·더 자주 다시 떠서 약한 부분을 집중적으로 메웁니다. 모의고사는 응시할 때마다 문항을 무작위로 뽑아 매번 다른 회차처럼 실전 감각을 기를 수 있으며, 설치나 회원가입 없이 브라우저에서 바로 쓰고 학습 기록은 외부로 나가지 않고 지금 쓰는 기기 안에만 저장됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 한국어문회 기준 8급부터 5급까지, 준급수(7급II·6급II·5급II)를 포함한 전 배정한자를 플래시카드와 급수별 모의고사로 익히는 무료 학습 도구입니다.</li>
+        <li><b>이럴 때</b> 급수 자격증을 처음 준비하는 초등학생이나 기초부터 다지려는 성인 입문자가 등하교·출퇴근길에 스마트폰 브라우저로 5분씩 플래시카드를 반복할 때 적합합니다. 이 도구가 다루는 8급~5급은 초등 교육과정에서 접하는 기초 한자와 상당 부분 겹쳐 학교 학습 보완에도 쓸 수 있는데, 다만 모두 교육급수(민간자격)이므로 공인 자격이나 취업용이 목표라면 이 급수만으로는 그 목표에 이르지 못하며 초등~입문 단계의 기초를 다지는 용도로 보는 것이 맞습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>학습이 어느 정도 쌓이면 &#39;모의고사&#39; 탭에서 급수를 골라 응시해 실제 유형·문항 비중(독음·훈음 중심, 6급II부터는 한자 쓰기 포함)으로 실력을 점검한다. 문항 수는 실제 시험 규모에 맞춰져 있고 줄여서 짧게 연습할 수도 있으며, 시험 직후 틀린 한자를 바로 플래시카드로 복습하면 헷갈린 부분을 기억이 생생할 때 바로잡을 수 있다.</li>
         <li>모의고사 정답률이 안정적으로 높아지면(권장 예시: 3회 연속 85% 이상) 다음 급수를 병행해 범위를 넓히고, 일일 학습 목표와 연속 출석 기록으로 매일 조금씩 반복하는 습관을 만든다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>한자능력검정시험은 하나의 국가시험이 아니라 한국어문회·대한검정회·한자교육진흥회 등 여러 기관이 각자 시행하는 자격시험이며, 이 도구는 응시자가 가장 많은 한국어문회 기준만 지원합니다. 어문회 배정한자 수는 8급 50자, 7급II 100자, 7급 150자, 6급II 225자, 6급 300자, 5급II 400자, 5급 500자로 정해져 있고, 이 가운데 8급~5급은 국가공인급수가 아닌 교육급수(민간자격)로 주로 초등 단계의 기초 학습에 쓰입니다. 준급수(II)는 인접한 두 급수 사이의 난이도 격차를 줄이려 어문회가 세분해 둔 구간입니다. 기관마다 급수 체계·배정한자 수·출제 방식이 크게 달라 급수 명칭만으로는 난이도를 비교하기 어려우니, 다른 기관 응시자는 해당 기관 공고를 확인하세요(기관 간 구조 차이는 아래 FAQ의 비교 표를 참고).</p>
+    <details class="deep">
+      <summary>한자급수마스터 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>한국어문회 기준 8급부터 5급까지, 준급수(7급II·6급II·5급II)를 포함한 전 배정한자를 플래시카드와 급수별 모의고사로 익히는 무료 학습 도구입니다. 카드를 탭하면 뒤집혀 정답이 나오는 방식이라, 한자를 보고 훈(뜻)과 음(소리)을 먼저 떠올린 뒤 확인합니다. 틀린 한자는 오답노트에 자동으로 모이고, 자주 틀리는 글자일수록 다음 학습에서 먼저·더 자주 다시 떠서 약한 부분을 집중적으로 메웁니다. 모의고사는 응시할 때마다 문항을 무작위로 뽑아 매번 다른 회차처럼 실전 감각을 기를 수 있으며, 설치나 회원가입 없이 브라우저에서 바로 쓰고 학습 기록은 외부로 나가지 않고 지금 쓰는 기기 안에만 저장됩니다.</p>
+        <p>한자능력검정시험은 하나의 국가시험이 아니라 한국어문회·대한검정회·한자교육진흥회 등 여러 기관이 각자 시행하는 자격시험이며, 이 도구는 응시자가 가장 많은 한국어문회 기준만 지원합니다. 어문회 배정한자 수는 8급 50자, 7급II 100자, 7급 150자, 6급II 225자, 6급 300자, 5급II 400자, 5급 500자로 정해져 있고, 이 가운데 8급~5급은 국가공인급수가 아닌 교육급수(민간자격)로 주로 초등 단계의 기초 학습에 쓰입니다. 준급수(II)는 인접한 두 급수 사이의 난이도 격차를 줄이려 어문회가 세분해 둔 구간입니다. 기관마다 급수 체계·배정한자 수·출제 방식이 크게 달라 급수 명칭만으로는 난이도를 비교하기 어려우니, 다른 기관 응시자는 해당 기관 공고를 확인하세요(기관 간 구조 차이는 아래 FAQ의 비교 표를 참고).</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>하루에 몰아서 외우기보다 매일 15자 안팎으로 나눠 반복하는 편이 장기 기억에 훨씬 효과적입니다(15자는 준비 기간표의 기준값이며, 집중력·시간에 따라 대략 10~20자 사이에서 개인차가 있습니다). 자주 틀리는 한자를 먼저 띄워 주는 복습 방식도 매일 조금씩 학습할 때 가장 잘 작동합니다.</li>

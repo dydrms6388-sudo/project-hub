@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">중국어노트는 병음 발음표, HSK 레벨 진단, 단어 암기, 병음 변환, 한자 획순, 양사·성어 가이드 등 중국어 학습에 필요한 도구를 한 곳에 모은 무료 학습 허브입니다.</p>
     <a class="cta" href="https://dydrms-zhongnote.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>중국어노트 소개</h2>
-    <p>중국어노트는 병음 발음표, HSK 레벨 진단, 단어 암기, 병음 변환, 한자 획순, 양사·성어 가이드 등 중국어 학습에 필요한 도구를 한 곳에 모은 무료 학습 허브입니다. 초급 학습자부터 HSK 고급 준비자까지, 필요한 기능만 골라 쓸 수 있도록 구성되어 있습니다. 중국어의 복잡한 발음 체계와 어휘를 단계적으로 익히는 데 도움이 됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 중국어노트는 병음 발음표, HSK 레벨 진단, 단어 암기, 병음 변환, 한자 획순, 양사·성어 가이드 등 중국어 학습에 필요한 도구를 한 곳에 모은 무료 학습 허브입니다.</li>
+        <li><b>이럴 때</b> 중국어를 처음 배우는 단계에서 병음 발음표로 기본 음절을 정리하면 이후 단어를 배울 때 발음 기반이 탄탄해집니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>병음 변환기에 한자를 입력해 발음을 빠르게 확인합니다.</li>
         <li>HSK 단어 암기 기능에서 목표 급수 어휘를 반복 학습합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>중국어는 성조(4성+경성)가 의미를 결정하는 언어로, 같은 발음이라도 성조에 따라 전혀 다른 뜻이 됩니다. 발음 표기 체계인 병음(拼音)은 성모(자음 21개)와 운모(모음 38개)의 조합으로 구성되며, 이를 먼저 체계적으로 익혀야 이후 단어 암기 속도가 빨라집니다. HSK(한어수평고시)는 중국 정부가 공인하는 중국어 능력 시험으로 1~6급이 있으며, 각 급수별 필수 어휘 수가 지정되어 있습니다. 간체자(중국 본토)와 번체자(대만·홍콩)는 같은 의미지만 자형이 다르기 때문에 목적에 따라 어떤 자형을 배울지 고려할 필요가 있습니다.</p>
+    <details class="deep">
+      <summary>중국어노트 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>중국어노트는 병음 발음표, HSK 레벨 진단, 단어 암기, 병음 변환, 한자 획순, 양사·성어 가이드 등 중국어 학습에 필요한 도구를 한 곳에 모은 무료 학습 허브입니다. 초급 학습자부터 HSK 고급 준비자까지, 필요한 기능만 골라 쓸 수 있도록 구성되어 있습니다. 중국어의 복잡한 발음 체계와 어휘를 단계적으로 익히는 데 도움이 됩니다.</p>
+        <p>중국어는 성조(4성+경성)가 의미를 결정하는 언어로, 같은 발음이라도 성조에 따라 전혀 다른 뜻이 됩니다. 발음 표기 체계인 병음(拼音)은 성모(자음 21개)와 운모(모음 38개)의 조합으로 구성되며, 이를 먼저 체계적으로 익혀야 이후 단어 암기 속도가 빨라집니다. HSK(한어수평고시)는 중국 정부가 공인하는 중국어 능력 시험으로 1~6급이 있으며, 각 급수별 필수 어휘 수가 지정되어 있습니다. 간체자(중국 본토)와 번체자(대만·홍콩)는 같은 의미지만 자형이 다르기 때문에 목적에 따라 어떤 자형을 배울지 고려할 필요가 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>성조는 중국어 발음의 핵심입니다. 단어를 외우기 전에 병음 발음표로 4성과 경성 소리를 귀로 충분히 들어두면 이후 암기가 훨씬 효율적입니다.</li>

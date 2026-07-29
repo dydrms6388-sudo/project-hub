@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">영어 단어를 오래 기억하려면 한꺼번에 외우는 것보다 틀린 단어를 더 자주, 잘 아는 단어는 드물게 반복하는 방식이 효과적입니다.</p>
     <a class="cta" href="https://dydrms-vocapop.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>보카팝 소개</h2>
-    <p>영어 단어를 오래 기억하려면 한꺼번에 외우는 것보다 틀린 단어를 더 자주, 잘 아는 단어는 드물게 반복하는 방식이 효과적입니다. 이 도구는 그 원리를 적용한 간격 반복(SRS) 방식으로 토익·토익스피킹·토플 필수 단어를 하루 10문제씩 퀴즈로 제공하고, 오답은 더 자주 출제되도록 조정합니다. 매일 10분 이내의 학습으로 시험 어휘를 체계적으로 쌓아갈 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 영어 단어를 오래 기억하려면 한꺼번에 외우는 것보다 틀린 단어를 더 자주, 잘 아는 단어는 드물게 반복하는 방식이 효과적입니다.</li>
+        <li><b>이럴 때</b> 시험이 2~3달 남았을 때, 벼락치기 대신 매일 10문제씩 꾸준히 쌓아 기초 어휘부터 체계적으로 확보할 때 적합합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>틀린 단어는 자동으로 복습 목록에 추가되어 이후 더 자주 출제됩니다.</li>
         <li>결과 대시보드에서 오늘 진행률과 연속 학습 스트릭을 확인합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>망각곡선은 독일 심리학자 에빙하우스가 19세기에 밝혀낸 기억 패턴으로, 새로 학습한 내용은 24시간 안에 절반 이상 잊혀지며 반복이 없으면 계속 빠르게 소멸합니다. 이를 역으로 활용한 것이 간격 반복 학습(Spaced Repetition System, SRS)으로, 기억이 흐릿해지기 직전에 다시 노출시켜 기억 곡선을 높이는 방식입니다. 라이트너 박스 시스템은 SRS의 대표적인 구현 방법으로, 정답을 맞힌 카드는 다음 복습 간격을 늘리고 틀린 카드는 짧은 간격으로 되돌리는 방식입니다. 토익은 비즈니스·일상 상황의 실용 어휘가 중심이고, 토플은 학술 텍스트에서 빈번하게 쓰이는 고급 어휘 비중이 높아, 목표 시험에 맞는 단어 풀이 중요합니다.</p>
+    <details class="deep">
+      <summary>보카팝 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>영어 단어를 오래 기억하려면 한꺼번에 외우는 것보다 틀린 단어를 더 자주, 잘 아는 단어는 드물게 반복하는 방식이 효과적입니다. 이 도구는 그 원리를 적용한 간격 반복(SRS) 방식으로 토익·토익스피킹·토플 필수 단어를 하루 10문제씩 퀴즈로 제공하고, 오답은 더 자주 출제되도록 조정합니다. 매일 10분 이내의 학습으로 시험 어휘를 체계적으로 쌓아갈 수 있습니다.</p>
+        <p>망각곡선은 독일 심리학자 에빙하우스가 19세기에 밝혀낸 기억 패턴으로, 새로 학습한 내용은 24시간 안에 절반 이상 잊혀지며 반복이 없으면 계속 빠르게 소멸합니다. 이를 역으로 활용한 것이 간격 반복 학습(Spaced Repetition System, SRS)으로, 기억이 흐릿해지기 직전에 다시 노출시켜 기억 곡선을 높이는 방식입니다. 라이트너 박스 시스템은 SRS의 대표적인 구현 방법으로, 정답을 맞힌 카드는 다음 복습 간격을 늘리고 틀린 카드는 짧은 간격으로 되돌리는 방식입니다. 토익은 비즈니스·일상 상황의 실용 어휘가 중심이고, 토플은 학술 텍스트에서 빈번하게 쓰이는 고급 어휘 비중이 높아, 목표 시험에 맞는 단어 풀이 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>답을 바로 선택하기 전에 예문을 한 번 읽어보세요. 맥락 안에서 단어를 익히면 실제 시험에서 지문 안에서 뜻을 유추하는 능력도 함께 훈련됩니다.</li>

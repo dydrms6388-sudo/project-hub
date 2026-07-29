@@ -14,7 +14,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
 import { renderHub } from "./lib/hub.mjs";
-import { iconFor } from "./lib/icons.mjs";
+import { iconFor, iconForSlug } from "./lib/icons.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
@@ -234,7 +234,7 @@ for (const d of daily) {
   if (APEX_SERVED.has(d.slug)) { if (existsSync(`${d.slug}/index.html`)) rmSync(d.slug, { recursive: true, force: true }); continue; }
   let related = daily.filter(x => x.cat === d.cat && x.slug !== d.slug).slice(0, 6);
   if (related.length < 4) related = related.concat(daily.filter(x => x.slug !== d.slug && !related.includes(x)).slice(0, 6 - related.length));
-  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span class="rel-ic" aria-hidden="true">${iconFor(r.cat)}</span> ${esc(r.name)}</a>`).join("\n      ");
+  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span class="rel-ic" aria-hidden="true">${iconForSlug(r.slug, r.cat)}</span> ${esc(r.name)}</a>`).join("\n      ");
 
   // ── 사용자용 콘텐츠 조립(고유 콘텐츠 우선, 없으면 정제된 폴백) ──
   const c = CONTENT[d.slug] || {};
@@ -258,8 +258,8 @@ for (const d of daily) {
 
   const secUl = (title, items) => items.length
     ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
-  const bgHtml = background
-    ? `<h2>알아두면 좋은 배경지식</h2>\n    ${background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => p.includes("|") ? renderRich(p).html : `<p>${esc(p)}</p>`).join("\n    ")}` : "";
+  const bgParas = background
+    ? background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => p.includes("|") ? renderRich(p).html : `<p>${esc(p)}</p>`).join("\n    ") : "";
   const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${richInline(s)}</li>`).join("\n        ")}\n    </ol>`;
   const scenHtml = secUl("이럴 때 유용해요", scenarios);
   const tipsHtml = secUl("활용 팁", tips);
@@ -292,13 +292,29 @@ for (const d of daily) {
     ? `<p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 ${REVIEW_LABEL(reviewed)}입니다.</p>`
     : "";
 
-  // 스캔 가독성 우선: 소개 → (참고용) → 이럴 때 유용해요 → 사용법 → 배경지식(긴 글은 아래로) → 팁 → 주의 → FAQ
-  const body = `<h2>${esc(d.name)} 소개</h2>
-    <p>${esc(intro)}</p>
+  // 실행 우선 + 스캔 가독성: 한눈 요약 → (참고용) → 이럴 때 → 사용법 → [자세한 소개·배경지식은 접기] → 팁 → 주의 → FAQ
+  const tldrHtml = `<div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> ${richInline(lead)}</li>
+        ${scenarios[0] ? `<li><b>이럴 때</b> ${richInline(scenarios[0])}</li>` : ""}
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>`;
+  const detailHtml = (background || intro)
+    ? `<details class="deep">
+      <summary>${esc(d.name)} 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>${esc(intro)}</p>
+        ${bgParas}
+      </div>
+    </details>`
+    : "";
+  const body = `${tldrHtml}
     ${topNoteHtml}
     ${scenHtml}
     ${stepsHtml}
-    ${bgHtml}
+    ${detailHtml}
     ${tipsHtml}
     ${cautHtml}
     ${faqHtml}
@@ -355,7 +371,7 @@ for (const d of daily) {
     .replaceAll("%%SLUG%%", d.slug)
     .replaceAll("%%NAME%%", esc(d.name))
     .replaceAll("%%EMOJI%%", d.emoji)
-    .replaceAll("%%HEROICON%%", iconFor(d.cat))
+    .replaceAll("%%HEROICON%%", iconForSlug(d.slug, d.cat))
     .replaceAll("%%LIVE%%", esc(d.live))
     .replaceAll("%%CTA%%", esc(ctaText))
     .replaceAll("%%CATEGORY%%", esc(d.cat))
@@ -433,6 +449,14 @@ for (const b of BUILTINS) {
   if (!existsSync(f)) continue;
   let h = readFileSync(f, "utf8");
   const before = h;
+
+  // YMYL 내장(금융·건강) 입력 화면 상단에 참고용 고지(멱등): 결과 오인 방지.
+  const YMYL_BUILTINS = new Set(["salary", "dsr", "jeonse-loan", "yangdo", "refinance", "bmi"]);
+  h = h.replace(/\s*<p class="topnote"[\s\S]*?<\/p>/i, "");
+  if (YMYL_BUILTINS.has(b.slug) && /<div class="card"/.test(h)) {
+    const tn = `<p class="topnote" style="color:var(--x6b7280,#8b8f98);font-size:13px;background:var(--x171717,#171717);border:1px solid var(--x262626,#262626);border-left:3px solid var(--xfbbf24,#fbbf24);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6">ⓘ 참고용 추정입니다. 실제 심사·세무 결과와 다를 수 있으며, 2026년 요율·세법 기준으로 반영합니다.</p>\n`;
+    h = h.replace(/(?=<div class="card")/, tn);
+  }
 
   // robots(멱등): 집중 색인 전략을 내장에도 적용. CORE만 색인, 나머지(master 신규 앱 포함)는 noindex.
   h = h.replace(/\s*<meta name="robots"[^>]*>/gi, "");

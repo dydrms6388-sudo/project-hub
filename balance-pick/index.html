@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">두 가지 선택지 중 하나를 고르는 순간, 지금까지 참여한 모든 사람의 투표 비율이 공개됩니다.</p>
     <a class="cta" href="https://balancepick.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>밸런스픽 (BalancePick) 소개</h2>
-    <p>두 가지 선택지 중 하나를 고르는 순간, 지금까지 참여한 모든 사람의 투표 비율이 공개됩니다. 내가 다수파인지 소수파인지 확인하는 재미, 그리고 같은 질문에 친구들은 어떻게 답할지 궁금증이 생기는 밸런스 게임 공간입니다. 음식, 연애, 돈, 판타지 상황 등 50가지 질문으로 구성되어 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 두 가지 선택지 중 하나를 고르는 순간, 지금까지 참여한 모든 사람의 투표 비율이 공개됩니다.</li>
+        <li><b>이럴 때</b> 모임이나 단체 채팅에서 대화 소재가 없을 때, 밸런스 질문 하나를 공유하면 서로의 선택 이유를 이야기하는 자연스러운 대화가 시작됩니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>나는 다수파인지 소수파인지 확인하세요.</li>
         <li>결과 카드를 공유해 친구들의 선택과 비교해 보세요.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>밸런스 게임은 &#39;둘 다 싫어도 하나는 골라야 한다&#39;는 제약이 만드는 재미로, 선택 자체가 대화의 시작점이 됩니다. 개인의 가치관, 경험, 상황에 따라 같은 질문에도 전혀 다른 선택을 하기 때문에 결과 비교가 흥미롭고 이야깃거리가 풍부합니다. 실시간으로 집계되는 전체 투표 비율을 보여주는 방식은 내 선택이 사회적으로 얼마나 대중적인지 또는 독특한지를 즉각적으로 보여주어 참여 흥미를 높입니다.</p>
+    <details class="deep">
+      <summary>밸런스픽 (BalancePick) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>두 가지 선택지 중 하나를 고르는 순간, 지금까지 참여한 모든 사람의 투표 비율이 공개됩니다. 내가 다수파인지 소수파인지 확인하는 재미, 그리고 같은 질문에 친구들은 어떻게 답할지 궁금증이 생기는 밸런스 게임 공간입니다. 음식, 연애, 돈, 판타지 상황 등 50가지 질문으로 구성되어 있습니다.</p>
+        <p>밸런스 게임은 &#39;둘 다 싫어도 하나는 골라야 한다&#39;는 제약이 만드는 재미로, 선택 자체가 대화의 시작점이 됩니다. 개인의 가치관, 경험, 상황에 따라 같은 질문에도 전혀 다른 선택을 하기 때문에 결과 비교가 흥미롭고 이야깃거리가 풍부합니다. 실시간으로 집계되는 전체 투표 비율을 보여주는 방식은 내 선택이 사회적으로 얼마나 대중적인지 또는 독특한지를 즉각적으로 보여주어 참여 흥미를 높입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>투표 비율이 가장 팽팽한 &#39;박빙 대결&#39; 질문일수록 의견이 갈리는 주제이므로 대화 소재로 더 흥미롭습니다.</li>

@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">스트리밍·클라우드·앱 구독 서비스를 한 곳에 모아 결제일과 무료 체험 종료일을 미리 알려주는 도구입니다.</p>
     <a class="cta" href="https://dydrms-subreminder.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>구독해지알리미 소개</h2>
-    <p>스트리밍·클라우드·앱 구독 서비스를 한 곳에 모아 결제일과 무료 체험 종료일을 미리 알려주는 도구입니다. 자동 갱신으로 빠져나가는 구독료가 연간 얼마인지 한눈에 볼 수 있어, 쓰지 않는 서비스를 정리하는 계기가 됩니다. 로그인 없이 기기 브라우저에만 저장되므로 개인 금융 정보 걱정 없이 사용할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 스트리밍·클라우드·앱 구독 서비스를 한 곳에 모아 결제일과 무료 체험 종료일을 미리 알려주는 도구입니다.</li>
+        <li><b>이럴 때</b> 무료 체험 후 자동 결제로 전환된 서비스가 있는지 확인하고, 종료 전에 해지 여부를 결정하고 싶을 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>결제일이 가까운 항목이 강조 표시되거나 브라우저 알림으로 안내됩니다.</li>
         <li>해지할 서비스는 목록에서 삭제하거나 비활성 상태로 표시합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>구독 경제 모델이 확산되면서 사람들이 실제로 가입한 구독 서비스의 수가 본인이 인지하는 것보다 많은 경우가 흔합니다. 결제일이 일정하지 않거나 여러 카드로 분산되어 있으면 어디서 얼마가 빠져나가는지 파악하기 어렵습니다. 무료 체험 기간이 끝나면 자동으로 유료로 전환되는 구조도 불필요한 지출로 이어지기 쉽습니다. 구독 비용을 월 단위로 파악하는 것만으로도 실제 지출을 줄이는 데 의미 있는 첫걸음이 됩니다.</p>
+    <details class="deep">
+      <summary>구독해지알리미 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>스트리밍·클라우드·앱 구독 서비스를 한 곳에 모아 결제일과 무료 체험 종료일을 미리 알려주는 도구입니다. 자동 갱신으로 빠져나가는 구독료가 연간 얼마인지 한눈에 볼 수 있어, 쓰지 않는 서비스를 정리하는 계기가 됩니다. 로그인 없이 기기 브라우저에만 저장되므로 개인 금융 정보 걱정 없이 사용할 수 있습니다.</p>
+        <p>구독 경제 모델이 확산되면서 사람들이 실제로 가입한 구독 서비스의 수가 본인이 인지하는 것보다 많은 경우가 흔합니다. 결제일이 일정하지 않거나 여러 카드로 분산되어 있으면 어디서 얼마가 빠져나가는지 파악하기 어렵습니다. 무료 체험 기간이 끝나면 자동으로 유료로 전환되는 구조도 불필요한 지출로 이어지기 쉽습니다. 구독 비용을 월 단위로 파악하는 것만으로도 실제 지출을 줄이는 데 의미 있는 첫걸음이 됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>무료 체험 등록 시 즉시 종료일을 이 도구에 입력해 두면, 결제 전환 직전에 알림을 받아 해지 여부를 결정할 수 있습니다.</li>

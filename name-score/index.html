@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">한글 이름을 입력하면 음양오행·수리 격(원형이정)·발음오행 상생상극 등 전통 성명학 원리를 바탕으로 이름의 특성을 풀이해주는 도구입니다.</p>
     <a class="cta" href="https://ireumsaju.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>이름연구소 소개</h2>
-    <p>한글 이름을 입력하면 음양오행·수리 격(원형이정)·발음오행 상생상극 등 전통 성명학 원리를 바탕으로 이름의 특성을 풀이해주는 도구입니다. 새로 지은 이름의 조화를 살피거나 개명·태명 후보를 비교할 때 참고 자료로 활용할 수 있습니다. 모든 분석은 기기 내에서만 처리되며 서버로 전송되지 않습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 한글 이름을 입력하면 음양오행·수리 격(원형이정)·발음오행 상생상극 등 전통 성명학 원리를 바탕으로 이름의 특성을 풀이해주는 도구입니다.</li>
+        <li><b>이럴 때</b> 아이 태명이나 출생 이름 후보 여러 개를 올려놓고 오행 균형과 수리 점수를 비교해 가장 조화로운 이름을 추리는 데 참고할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>이름 궁합 탭에서 비교하고 싶은 상대방 이름을 추가 입력해 소리 오행 조합을 확인한다.</li>
         <li>작명 추천 탭에서 성씨 기반으로 길한 이름 후보를 점수순으로 살펴본다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>성명학은 이름의 획수·발음·음양오행 배합이 사람의 기운과 운세에 영향을 준다는 동양 전통 관념에서 비롯되었습니다. 수리 격 중 하나인 81수리는 이름 획수의 합을 1~81의 수리로 환산해 길흉을 판단하는 방식으로, 일본과 한국의 전통 작명에서 오랫동안 활용되어 왔습니다. 원형이정은 성과 이름 각 부분의 획수 합이 만드는 네 가지 격(원격·형격·이격·정격)으로 이름 전체의 조화를 평가합니다. 발음오행은 이름의 초성 자음이 가진 오행(목·화·토·금·수) 속성이 서로 상생·상극 관계인지를 살핍니다. 이런 풀이는 과학적 검증과는 별개의 문화적·역사적 전통이며, 참고와 재미 목적으로 이해하는 것이 적합합니다.</p>
+    <details class="deep">
+      <summary>이름연구소 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>한글 이름을 입력하면 음양오행·수리 격(원형이정)·발음오행 상생상극 등 전통 성명학 원리를 바탕으로 이름의 특성을 풀이해주는 도구입니다. 새로 지은 이름의 조화를 살피거나 개명·태명 후보를 비교할 때 참고 자료로 활용할 수 있습니다. 모든 분석은 기기 내에서만 처리되며 서버로 전송되지 않습니다.</p>
+        <p>성명학은 이름의 획수·발음·음양오행 배합이 사람의 기운과 운세에 영향을 준다는 동양 전통 관념에서 비롯되었습니다. 수리 격 중 하나인 81수리는 이름 획수의 합을 1~81의 수리로 환산해 길흉을 판단하는 방식으로, 일본과 한국의 전통 작명에서 오랫동안 활용되어 왔습니다. 원형이정은 성과 이름 각 부분의 획수 합이 만드는 네 가지 격(원격·형격·이격·정격)으로 이름 전체의 조화를 평가합니다. 발음오행은 이름의 초성 자음이 가진 오행(목·화·토·금·수) 속성이 서로 상생·상극 관계인지를 살핍니다. 이런 풀이는 과학적 검증과는 별개의 문화적·역사적 전통이며, 참고와 재미 목적으로 이해하는 것이 적합합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>한자 이름이라면 한글 획수법 기본 모드보다 한자 원획수를 직접 입력하는 정밀 모드를 사용하면 더 정확한 수리 분석이 가능합니다.</li>

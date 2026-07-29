@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">12가지 유형 퍼스널 컬러 자가진단 도구입니다.</p>
     <a class="cta" href="https://personal-color-diag.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>컬러무드 퍼스널컬러 소개</h2>
-    <p>12가지 유형 퍼스널 컬러 자가진단 도구입니다. 사진 없이 12개 문항에 보기 중 하나를 고르는 버튼(택1)으로 답하면 약 2분 만에 유형이 나옵니다. 문항은 웜/쿨(언더톤)을 재는 5개, 명도(밝고 어두운 정도)를 재는 4개, 채도(선명하고 탁한 정도)를 재는 3개로 나뉩니다. 예를 들어 &#39;흰 티와 아이보리 티 중 얼굴이 더 환해 보이는 쪽은?&#39;은 웜/쿨을, &#39;선명한 원색 옷과 톤 다운된 옷 중 얼굴이 더 또렷해 보이는 쪽은?&#39;은 채도를 측정합니다. 답변마다 배점된 가중치를 세 축에 합산해 좌표를 잡고, 그 좌표에서 가장 가까운 유형과 베스트·워스트 팔레트를 매칭합니다. 봄 웜 라이트부터 겨울 쿨 딥까지 12가지 유형 중 하나를 안내하며, 좌표가 두 유형 경계에 걸치면 인접 유형을 함께 보여 주고 팔레트의 HEX 코드는 눌러서 바로 복사할 수 있습니다. 결과는 이미지로 저장하거나 언제든 다시 진단할 수 있습니다. 모든 계산은 브라우저 안에서 이뤄져 사진 촬영·업로드가 전혀 없고 선택한 답변조차 서버로 전송되지 않으며, 설치나 회원가입 없이 무료로 바로 쓸 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 12가지 유형 퍼스널 컬러 자가진단 도구입니다.</li>
+        <li><b>이럴 때</b> 온라인 쇼핑에서 색 선택에 자주 실패해 반품이 잦은 사람. 구매 전 베스트 컬러 범위를 정해 두면 후보를 좁힐 수 있다. 다만 쇼핑몰 색 필터는 &#39;레드·블루&#39; 같은 대략적 색군만 주는 경우가 많으니, 팔레트 HEX와 가장 가까운 색군을 고르거나 상품 상세컷을 캡처해 베스트 팔레트 옆에 나란히 두고 눈으로 비교하는 편이 현실적이다. 예를 들어 겨울 쿨 딥이면 버건디·다크 네이비를, 봄 웜 라이트면 피치·아이보리를 우선 후보에 둔다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -142,8 +161,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>웜/쿨이 애매한 뉴트럴·올리브 톤이라면 다음 순서로 좁힌다. ① 웜/쿨 5문항 중 (1)티 색과 (4)주얼리 두 문항의 답이 엇갈리는지 본다. ② 엇갈린다면 나머지 (2)(3)(5) 세 문항의 다수 방향을 우선한다. ③ 그래도 좌표가 0에 가까우면 도구가 뮤트 계열(여름 뮤트·가을 뮤트)을 인접 유형으로 함께 띄우니, 회색빛이 섞인 뮤트 팔레트부터 얼굴에 대어 보고 맑은 색은 후순위로 검토한다. 올리브 톤은 채도 축이 낮게 나오는 경우가 많아 브라이트보다 뮤트·트루 계열이 맞을 확률이 높다.</li>
         <li>결과 이미지를 저장하거나 팔레트의 HEX 코드를 복사해 쇼핑할 때 참고 자료로 활용한다. 컨디션이나 조명이 달랐다면 다시 진단해 결과를 비교해 보세요.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>퍼스널 컬러는 피부 언더톤(웜/쿨), 명도, 채도 세 축으로 개인에게 어울리는 색 범위를 나누는, 컬러 컨설팅 업계에서 널리 쓰이는 경험적 분류 틀입니다. 계절로 색을 묶는 발상은 20세기 초 스위스 미술교육가 요하네스 이텐(Johannes Itten)이 학생들의 피부·머리색에 어울리는 색을 계절에 빗댄 색채 이론에서 싹텄고, 로버트 도어(Robert Dorr)의 웜·쿨 이색 체계를 거쳐 미국에서 대중용으로 정리됐습니다. 이를 봄·여름·가을·겨울 4계절로 대중화한 것이 컬러 컨설턴트 캐롤 잭슨(Carole Jackson)이 1980년 펴낸 『Color Me Beautiful』입니다. 이후 각 계절을 명도·채도로 세분화한 12타입·16타입 체계로 발전했는데, 16타입은 계절 사이의 중간 성격까지 잡는 대신 색천 수와 학습 부담이 커, 국내 스튜디오와 앱 진단에서는 12타입을 채택하는 곳이 다수입니다. 톤 명칭은 라이트·브라이트·트루·뮤트·딥처럼 영어 발음을 그대로 옮겨 부르는 관용 표기가 흔합니다. 전문가 진단은 얼굴 옆에 색천을 대어 안색 변화를 보는 &#39;드레이핑&#39;으로 이뤄지며, 보통 100~150장 안팎을 단계적으로 좁혀 비교합니다. 대면 진단 비용은 2026년 기준 강남·홍대·성수 일대 주요 스튜디오 공개가를 기준으로 5만~15만 원대에 형성돼 있습니다. 어울리는 색은 안색을 맑고 생기 있게, 어울리지 않는 색은 얼굴을 칙칙하거나 붉게 보이게 하므로, 결과는 정답이 아니라 색 선택의 방향을 좁혀 주는 참고선으로 이해하면 됩니다.</p>
+    <details class="deep">
+      <summary>컬러무드 퍼스널컬러 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>12가지 유형 퍼스널 컬러 자가진단 도구입니다. 사진 없이 12개 문항에 보기 중 하나를 고르는 버튼(택1)으로 답하면 약 2분 만에 유형이 나옵니다. 문항은 웜/쿨(언더톤)을 재는 5개, 명도(밝고 어두운 정도)를 재는 4개, 채도(선명하고 탁한 정도)를 재는 3개로 나뉩니다. 예를 들어 &#39;흰 티와 아이보리 티 중 얼굴이 더 환해 보이는 쪽은?&#39;은 웜/쿨을, &#39;선명한 원색 옷과 톤 다운된 옷 중 얼굴이 더 또렷해 보이는 쪽은?&#39;은 채도를 측정합니다. 답변마다 배점된 가중치를 세 축에 합산해 좌표를 잡고, 그 좌표에서 가장 가까운 유형과 베스트·워스트 팔레트를 매칭합니다. 봄 웜 라이트부터 겨울 쿨 딥까지 12가지 유형 중 하나를 안내하며, 좌표가 두 유형 경계에 걸치면 인접 유형을 함께 보여 주고 팔레트의 HEX 코드는 눌러서 바로 복사할 수 있습니다. 결과는 이미지로 저장하거나 언제든 다시 진단할 수 있습니다. 모든 계산은 브라우저 안에서 이뤄져 사진 촬영·업로드가 전혀 없고 선택한 답변조차 서버로 전송되지 않으며, 설치나 회원가입 없이 무료로 바로 쓸 수 있습니다.</p>
+        <p>퍼스널 컬러는 피부 언더톤(웜/쿨), 명도, 채도 세 축으로 개인에게 어울리는 색 범위를 나누는, 컬러 컨설팅 업계에서 널리 쓰이는 경험적 분류 틀입니다. 계절로 색을 묶는 발상은 20세기 초 스위스 미술교육가 요하네스 이텐(Johannes Itten)이 학생들의 피부·머리색에 어울리는 색을 계절에 빗댄 색채 이론에서 싹텄고, 로버트 도어(Robert Dorr)의 웜·쿨 이색 체계를 거쳐 미국에서 대중용으로 정리됐습니다. 이를 봄·여름·가을·겨울 4계절로 대중화한 것이 컬러 컨설턴트 캐롤 잭슨(Carole Jackson)이 1980년 펴낸 『Color Me Beautiful』입니다. 이후 각 계절을 명도·채도로 세분화한 12타입·16타입 체계로 발전했는데, 16타입은 계절 사이의 중간 성격까지 잡는 대신 색천 수와 학습 부담이 커, 국내 스튜디오와 앱 진단에서는 12타입을 채택하는 곳이 다수입니다. 톤 명칭은 라이트·브라이트·트루·뮤트·딥처럼 영어 발음을 그대로 옮겨 부르는 관용 표기가 흔합니다. 전문가 진단은 얼굴 옆에 색천을 대어 안색 변화를 보는 &#39;드레이핑&#39;으로 이뤄지며, 보통 100~150장 안팎을 단계적으로 좁혀 비교합니다. 대면 진단 비용은 2026년 기준 강남·홍대·성수 일대 주요 스튜디오 공개가를 기준으로 5만~15만 원대에 형성돼 있습니다. 어울리는 색은 안색을 맑고 생기 있게, 어울리지 않는 색은 얼굴을 칙칙하거나 붉게 보이게 하므로, 결과는 정답이 아니라 색 선택의 방향을 좁혀 주는 참고선으로 이해하면 됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>결과 정확도는 조명이 좌우합니다. 형광등·백열등은 색을 왜곡하니 한낮 창가의 자연광에서 맨얼굴로 답해 보세요.</li>

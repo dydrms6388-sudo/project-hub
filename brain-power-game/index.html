@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">반응속도, 순간기억, 순서기억, 조준 정확도, 시간 감각(5초 멈추기) 다섯 가지 미니게임으로 오늘의 두뇌력 점수를 측정하는 일일 챌린지 도구입니다.</p>
     <a class="cta" href="https://noeryeok.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>두뇌력 소개</h2>
-    <p>반응속도, 순간기억, 순서기억, 조준 정확도, 시간 감각(5초 멈추기) 다섯 가지 미니게임으로 오늘의 두뇌력 점수를 측정하는 일일 챌린지 도구입니다. 매일 같은 다섯 종목에 도전해 어제보다 나아졌는지, 다른 사람들과 비교하면 어느 위치인지 확인할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 반응속도, 순간기억, 순서기억, 조준 정확도, 시간 감각(5초 멈추기) 다섯 가지 미니게임으로 오늘의 두뇌력 점수를 측정하는 일일 챌린지 도구입니다.</li>
+        <li><b>이럴 때</b> 시험이나 중요한 미팅 전날 수면·컨디션이 인지 능력에 어떤 영향을 주는지 일상 단위로 추적하고 싶을 때 활용할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>모든 종목이 끝나면 오늘의 총 두뇌력 점수와 백분위를 확인한다.</li>
         <li>현재 티어와 결과 카드를 확인하고 공유 링크나 이미지로 저장한다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>반응속도, 단기 기억, 집중력 같은 인지 기능은 나이, 수면 상태, 스트레스 수준에 따라 하루 단위로도 변동합니다. 일상에서 이를 수치로 측정할 기회는 많지 않은데, 표준화된 과제를 반복 수행하면 자신의 인지 컨디션 변화를 간접적으로 파악할 수 있습니다. 반응속도 측정은 밀리초 단위로 이루어지며, 훈련을 거치면 단기적으로 향상되는 경향이 있습니다. 다만 이 게임들은 의료·임상용 인지 평가 도구가 아니므로 건강 진단 목적으로 사용하는 것은 적합하지 않습니다.</p>
+    <details class="deep">
+      <summary>두뇌력 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>반응속도, 순간기억, 순서기억, 조준 정확도, 시간 감각(5초 멈추기) 다섯 가지 미니게임으로 오늘의 두뇌력 점수를 측정하는 일일 챌린지 도구입니다. 매일 같은 다섯 종목에 도전해 어제보다 나아졌는지, 다른 사람들과 비교하면 어느 위치인지 확인할 수 있습니다.</p>
+        <p>반응속도, 단기 기억, 집중력 같은 인지 기능은 나이, 수면 상태, 스트레스 수준에 따라 하루 단위로도 변동합니다. 일상에서 이를 수치로 측정할 기회는 많지 않은데, 표준화된 과제를 반복 수행하면 자신의 인지 컨디션 변화를 간접적으로 파악할 수 있습니다. 반응속도 측정은 밀리초 단위로 이루어지며, 훈련을 거치면 단기적으로 향상되는 경향이 있습니다. 다만 이 게임들은 의료·임상용 인지 평가 도구가 아니므로 건강 진단 목적으로 사용하는 것은 적합하지 않습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>5초 멈추기 게임은 지나치게 긴장하거나 초를 세면 오히려 감각이 틀어집니다. 느긋하게 자신의 시간 감각을 믿는 편이 정확도에 유리합니다.</li>

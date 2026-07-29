@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">110개 이상의 고사성어를 뜻·한자·유래와 함께 4지선다 퀴즈로 배울 수 있는 학습 도구입니다.</p>
     <a class="cta" href="https://dydrms-hanja-quiz.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>사자성어 퀴즈 소개</h2>
-    <p>110개 이상의 고사성어를 뜻·한자·유래와 함께 4지선다 퀴즈로 배울 수 있는 학습 도구입니다. 틀린 문제를 오답노트에 자동으로 모아두기 때문에, 한자를 처음 접하는 학생부터 교양을 넓히고 싶은 성인까지 자신의 수준에 맞게 활용할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 110개 이상의 고사성어를 뜻·한자·유래와 함께 4지선다 퀴즈로 배울 수 있는 학습 도구입니다.</li>
+        <li><b>이럴 때</b> 수능이나 한자급수시험을 앞둔 학생이 약점 성어를 오답노트로 집중 반복하는 용도로 활용하면 시간 대비 효율이 높습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>오답노트 모드에서 틀린 성어만 골라 반복 학습한다.</li>
         <li>사전 기능에서 원하는 성어를 검색해 뜻과 예문을 확인한다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>고사성어(故事成語)는 역사적 사건이나 고전에서 유래한 네 글자 한자 표현으로, 중국 고전 문학과 역사서에 뿌리를 두고 있습니다. 한자 문화권 전반에서 쓰이며 한국어에서도 일상 대화, 신문, 문학에서 자주 등장합니다. 예를 들어 &#39;사면초가(四面楚歌)&#39;는 항우가 사방이 적에게 포위된 상황에서 유래했고, &#39;오십보백보(五十步百步)&#39;는 맹자의 비유에서 나왔습니다. 각 글자가 개별 의미를 가지기 때문에 한자 하나하나의 뜻을 이해하면 낯선 성어도 의미를 유추할 수 있다는 장점이 있습니다. 수능 국어와 한국사, 한자급수시험에도 고사성어가 출제되어 실용적 학습 가치도 높습니다.</p>
+    <details class="deep">
+      <summary>사자성어 퀴즈 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>110개 이상의 고사성어를 뜻·한자·유래와 함께 4지선다 퀴즈로 배울 수 있는 학습 도구입니다. 틀린 문제를 오답노트에 자동으로 모아두기 때문에, 한자를 처음 접하는 학생부터 교양을 넓히고 싶은 성인까지 자신의 수준에 맞게 활용할 수 있습니다.</p>
+        <p>고사성어(故事成語)는 역사적 사건이나 고전에서 유래한 네 글자 한자 표현으로, 중국 고전 문학과 역사서에 뿌리를 두고 있습니다. 한자 문화권 전반에서 쓰이며 한국어에서도 일상 대화, 신문, 문학에서 자주 등장합니다. 예를 들어 &#39;사면초가(四面楚歌)&#39;는 항우가 사방이 적에게 포위된 상황에서 유래했고, &#39;오십보백보(五十步百步)&#39;는 맹자의 비유에서 나왔습니다. 각 글자가 개별 의미를 가지기 때문에 한자 하나하나의 뜻을 이해하면 낯선 성어도 의미를 유추할 수 있다는 장점이 있습니다. 수능 국어와 한국사, 한자급수시험에도 고사성어가 출제되어 실용적 학습 가치도 높습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>한자 하나하나의 뜻을 먼저 파악해두면 처음 보는 성어도 의미를 어느 정도 유추할 수 있어 외우는 속도가 빨라집니다.</li>

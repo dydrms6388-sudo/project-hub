@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">레티놀·비타민C·AHA처럼 효과 좋은 성분들을 함께 써도 되는지 헷갈릴 때, 내 피부 타입과 고민을 기반으로 아침·저녁 루틴을 설계하고 성분 간 충돌 경고를 확인할 수 있는 스킨케어 도구입니다.</p>
     <a class="cta" href="https://dydrms-skinsync.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>스킨싱크 소개</h2>
-    <p>레티놀·비타민C·AHA처럼 효과 좋은 성분들을 함께 써도 되는지 헷갈릴 때, 내 피부 타입과 고민을 기반으로 아침·저녁 루틴을 설계하고 성분 간 충돌 경고를 확인할 수 있는 스킨케어 도구입니다. 성분 궁합 14가지 규칙과 28일 피부 컨디션 기록 기능까지 갖춰, 내 피부에 맞는 루틴을 직접 검증해볼 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 레티놀·비타민C·AHA처럼 효과 좋은 성분들을 함께 써도 되는지 헷갈릴 때, 내 피부 타입과 고민을 기반으로 아침·저녁 루틴을 설계하고 성분 간 충돌 경고를 확인할 수 있는 스킨케어 도구입니다.</li>
+        <li><b>이럴 때</b> 레티놀을 처음 루틴에 추가하려는데, 기존에 쓰던 AHA 토너와 함께 써도 되는지 확인하고 싶을 때.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>성분 궁합 점수와 함께 쓰면 안 되는 조합 경고를 확인합니다.</li>
         <li>제안된 아침·저녁 루틴을 저장하고 28일 피부 컨디션 기록을 시작합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>스킨케어 성분 간 궁합은 단순한 유행이 아니라 피부과학적 근거가 있습니다. 레티놀은 세포 턴오버를 촉진하는 비타민A 유도체이고, AHA(알파하이드록시산)·BHA(베타하이드록시산)는 각질 결합을 분해하는 산성 성분입니다. 두 가지를 동시에 사용하면 각질층이 과도하게 자극받아 홍조·피부 장벽 손상으로 이어질 수 있습니다. 비타민C(아스코르브산)는 산성 환경에서 안정적이어서 pH가 낮은 제품과 잘 어울리지만, 나이아신아마이드와 함께 쓰면 니코틴산이 생성돼 홍조를 유발할 수 있다는 연구도 있습니다(농도·조성에 따라 차이 있음). 피부 장벽을 구성하는 세라마이드·지방산·콜레스테롤은 강한 산성 성분 반복 사용 후 무너지기 쉬우므로, 순서와 조합 관리가 중요합니다.</p>
+    <details class="deep">
+      <summary>스킨싱크 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>레티놀·비타민C·AHA처럼 효과 좋은 성분들을 함께 써도 되는지 헷갈릴 때, 내 피부 타입과 고민을 기반으로 아침·저녁 루틴을 설계하고 성분 간 충돌 경고를 확인할 수 있는 스킨케어 도구입니다. 성분 궁합 14가지 규칙과 28일 피부 컨디션 기록 기능까지 갖춰, 내 피부에 맞는 루틴을 직접 검증해볼 수 있습니다.</p>
+        <p>스킨케어 성분 간 궁합은 단순한 유행이 아니라 피부과학적 근거가 있습니다. 레티놀은 세포 턴오버를 촉진하는 비타민A 유도체이고, AHA(알파하이드록시산)·BHA(베타하이드록시산)는 각질 결합을 분해하는 산성 성분입니다. 두 가지를 동시에 사용하면 각질층이 과도하게 자극받아 홍조·피부 장벽 손상으로 이어질 수 있습니다. 비타민C(아스코르브산)는 산성 환경에서 안정적이어서 pH가 낮은 제품과 잘 어울리지만, 나이아신아마이드와 함께 쓰면 니코틴산이 생성돼 홍조를 유발할 수 있다는 연구도 있습니다(농도·조성에 따라 차이 있음). 피부 장벽을 구성하는 세라마이드·지방산·콜레스테롤은 강한 산성 성분 반복 사용 후 무너지기 쉬우므로, 순서와 조합 관리가 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>레티놀과 AHA/BHA는 같은 날 밤에 함께 바르기보다 격일로 사용하거나 시간대를 분리하는 것이 일반적입니다.</li>

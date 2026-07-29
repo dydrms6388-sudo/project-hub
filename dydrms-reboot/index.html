@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">특정 반복 습관을 끊으려 결심했지만 의지력만으로는 한계를 느끼는 분을 위해 설계된 도구입니다.</p>
     <a class="cta" href="https://dydrms-reboot.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>리부트 소개</h2>
-    <p>특정 반복 습관을 끊으려 결심했지만 의지력만으로는 한계를 느끼는 분을 위해 설계된 도구입니다. 연속 유지 기록을 초 단위로 보여주고, 충동이 찾아오는 순간 바로 꺼내 쓸 수 있는 대처 방법을 안내합니다. 가입 없이 기기에서 바로 시작할 수 있으며, 기록은 본인 기기에만 저장됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 특정 반복 습관을 끊으려 결심했지만 의지력만으로는 한계를 느끼는 분을 위해 설계된 도구입니다.</li>
+        <li><b>이럴 때</b> 혼자서 여러 차례 시도했지만 반복 실패를 겪는 경우, 기록이 쌓이는 것을 눈으로 보며 동기를 유지하는 보조 도구로 활용할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>7일, 30일 등 마일스톤에 도달하면 배지가 잠금 해제되고 다음 목표를 확인합니다.</li>
         <li>익명 커뮤니티 탭에서 같은 목표를 가진 다른 사람들의 글을 보거나 응원을 남깁니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>행동 심리학에서는 습관 변화를 &#39;의지력 문제&#39;가 아닌 &#39;환경 설계 문제&#39;로 봅니다. 연속 기록(스트릭)이 끊기는 것에 대한 손실 회피 심리가 행동 지속에 실질적인 역할을 하며, 이는 다양한 습관 형성 연구에서 확인된 기제입니다. 충동은 일반적으로 20~30분이 지나면 자연스럽게 줄어드는 파도형 패턴을 보입니다. &#39;충동 서핑&#39;은 충동을 억누르려 싸우는 대신 관찰하며 흘려보내는 심리 기법으로, 인지행동치료(CBT)와 수용전념치료(ACT)에서 활용됩니다. 사회적 동조 효과 역시 집단 목표 달성률을 높이는 요인으로 알려져 있습니다.</p>
+    <details class="deep">
+      <summary>리부트 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>특정 반복 습관을 끊으려 결심했지만 의지력만으로는 한계를 느끼는 분을 위해 설계된 도구입니다. 연속 유지 기록을 초 단위로 보여주고, 충동이 찾아오는 순간 바로 꺼내 쓸 수 있는 대처 방법을 안내합니다. 가입 없이 기기에서 바로 시작할 수 있으며, 기록은 본인 기기에만 저장됩니다.</p>
+        <p>행동 심리학에서는 습관 변화를 &#39;의지력 문제&#39;가 아닌 &#39;환경 설계 문제&#39;로 봅니다. 연속 기록(스트릭)이 끊기는 것에 대한 손실 회피 심리가 행동 지속에 실질적인 역할을 하며, 이는 다양한 습관 형성 연구에서 확인된 기제입니다. 충동은 일반적으로 20~30분이 지나면 자연스럽게 줄어드는 파도형 패턴을 보입니다. &#39;충동 서핑&#39;은 충동을 억누르려 싸우는 대신 관찰하며 흘려보내는 심리 기법으로, 인지행동치료(CBT)와 수용전념치료(ACT)에서 활용됩니다. 사회적 동조 효과 역시 집단 목표 달성률을 높이는 요인으로 알려져 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>충동은 억누르려 할수록 강해지는 경향이 있으니, SOS의 호흡 가이드로 20~30분만 흘려보내는 데 집중하세요.</li>

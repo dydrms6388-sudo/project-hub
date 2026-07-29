@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">임신 중에는 지금 몇 주차인지, 이번 주 아기가 어느 정도 크는지 궁금한 것들이 끊이지 않습니다.</p>
     <a class="cta" href="https://dydrms-ssukssuk.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>쑥쑥디데이 소개</h2>
-    <p>임신 중에는 지금 몇 주차인지, 이번 주 아기가 어느 정도 크는지 궁금한 것들이 끊이지 않습니다. 쑥쑥디데이는 임신 주수 계산부터 주차별 태아 발달 정보, 배란일 계산, 정부 지원 확인까지 한 화면에서 볼 수 있도록 모아둔 도구입니다. 임신·출산 정보를 이 사이트 저 사이트 옮겨 다니는 번거로움을 줄이고 싶은 예비 부모에게 유용합니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 임신 중에는 지금 몇 주차인지, 이번 주 아기가 어느 정도 크는지 궁금한 것들이 끊이지 않습니다.</li>
+        <li><b>이럴 때</b> 산부인과 방문 전날 현재 주수와 태아 발달 상황을 미리 확인해 진료 시 궁금한 점을 정리할 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>태명을 등록하고 체중 기록을 꾸준히 남겨둡니다.</li>
         <li>2026년 기준 정부 출산·육아 지원 목록을 확인해 신청 가능한 항목을 점검합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>임신 주수는 마지막 생리 시작일(LMP, Last Menstrual Period)을 기준으로 계산하는 것이 의학적 표준입니다. 이 때문에 배란 및 수정이 이루어진 시점보다 약 2주 앞선 날부터 계산되어 초음파 결과와 1~2주 차이가 나는 것이 일반적입니다. 태아는 40주를 기준으로 성장하며, 각 주차마다 뇌·심장·폐 등 주요 장기의 발달 단계가 다릅니다. 한국의 출산·육아 지원 제도는 매년 예산과 정책이 조정되므로, 정확한 지원 내용은 보건복지부나 국민건강보험공단 공식 채널에서 최신 공고를 확인하는 것이 중요합니다.</p>
+    <details class="deep">
+      <summary>쑥쑥디데이 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>임신 중에는 지금 몇 주차인지, 이번 주 아기가 어느 정도 크는지 궁금한 것들이 끊이지 않습니다. 쑥쑥디데이는 임신 주수 계산부터 주차별 태아 발달 정보, 배란일 계산, 정부 지원 확인까지 한 화면에서 볼 수 있도록 모아둔 도구입니다. 임신·출산 정보를 이 사이트 저 사이트 옮겨 다니는 번거로움을 줄이고 싶은 예비 부모에게 유용합니다.</p>
+        <p>임신 주수는 마지막 생리 시작일(LMP, Last Menstrual Period)을 기준으로 계산하는 것이 의학적 표준입니다. 이 때문에 배란 및 수정이 이루어진 시점보다 약 2주 앞선 날부터 계산되어 초음파 결과와 1~2주 차이가 나는 것이 일반적입니다. 태아는 40주를 기준으로 성장하며, 각 주차마다 뇌·심장·폐 등 주요 장기의 발달 단계가 다릅니다. 한국의 출산·육아 지원 제도는 매년 예산과 정책이 조정되므로, 정확한 지원 내용은 보건복지부나 국민건강보험공단 공식 채널에서 최신 공고를 확인하는 것이 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>임신 주수는 생리 주기가 28일 기준이 아닌 경우 실제 초음파 결과와 차이가 날 수 있습니다. 주치의가 제시한 예정일을 우선 기준으로 삼으세요.</li>

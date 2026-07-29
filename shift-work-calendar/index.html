@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">교대근무자는 달력을 펼치면 &#39;오늘이 주간인지 야간인지 비번인지&#39;부터 확인해야 합니다.</p>
     <a class="cta" href="https://shift-work-calendar.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>교대근무달력 소개</h2>
-    <p>교대근무자는 달력을 펼치면 &#39;오늘이 주간인지 야간인지 비번인지&#39;부터 확인해야 합니다. 이 도구는 주야비·3조2교대·4조3교대 같은 순환 패턴을 한 번만 설정하면, 그 순서를 시작 날짜부터 하루씩 이어 붙여 몇 달 치 근무표를 자동으로 펼쳐줍니다. 요일에 고정되지 않고 패턴을 따라 움직이는 주휴일과 비번도 달력 위에 그대로 표시되고, 완성한 표는 .ics 파일로 스마트폰 캘린더에 넣거나 설정 URL로 같은 조 동료와 공유할 수 있습니다. 각 날짜를 탭하면 그날 붙는 기본급·야간·연장·휴일 수당까지 항목별로 자동 매핑해 보여주는데, 모든 계산은 브라우저 안에서만 이뤄져 입력한 급여 정보가 서버로 전송되지 않습니다. 설치나 회원가입 없이 무료로 씁니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 교대근무자는 달력을 펼치면 &#39;오늘이 주간인지 야간인지 비번인지&#39;부터 확인해야 합니다.</li>
+        <li><b>이럴 때</b> 통상시급 12,000원으로, 밤 10시부터 이튿날 아침 6시까지 근무하는 야간조라고 하면 휴게 1시간을 뺀 실근로 7시간이 잡힙니다. 이 도구는 그날 일당을 기본급 7시간×12,000=84,000원, 야간 가산 7시간×6,000=42,000원, 합계 126,000원으로 분해해 보여줍니다. 이달 야간이 7번이면 야간 가산만 약 294,000원이 쌓이는 셈이라, 다음 급여에 가산수당이 얼마나 붙을지 미리 가늠하고 싶을 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>날짜를 탭해 기본급·야간·연장·휴일 수당의 하루 분해 내역을 확인한다.</li>
         <li>완성한 근무표를 .ics 파일로 내보내 캘린더에 등록하거나 설정 URL을 동료와 공유한다. 입력값은 이 브라우저에만 저장되므로 기기나 브라우저를 바꾸면 다시 입력하거나 URL을 불러와야 한다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>근로기준법 제56조는 야간(오후 10시부터 다음 날 오전 6시까지)·연장(1일 8시간 또는 주 40시간 초과)·휴일 근로에 각각 통상임금의 50%를 더 얹도록 정합니다. 세 가지는 겹칠 수 있어, 밤 10시 이후까지 이어진 연장근무처럼 야간과 연장이 함께 걸리면 그 시간은 연장 가산 50%와 야간 가산 50%가 같이 붙어 기본임금을 포함해 통상임금의 2배가 됩니다. 야간 가산은 밤 10시~아침 6시 구간과 겹치는 부분만 분 단위로 따지되, 휴게시간처럼 실제로 일하지 않은 시간은 빠집니다. 교대제는 이 규정이 요일이 아니라 &#39;패턴상 어떤 날&#39;에 걸리느냐로 결정된다는 점이 일반 근무와 다릅니다. 조별 표준 근무시간도 제도마다 달라 3조2교대는 한 교대가 대개 12시간, 4조3교대는 8시간이며, 4조3교대 기준 야간 근무는 보통 월 7~8회가량 돌아옵니다. 통상시급은 직접 입력하거나 월 고정급을 209시간으로 나눠 구하는 것이 일반적이고, 상시근로자 5인 미만 사업장은 연장·야간·휴일 가산 적용 의무 자체가 없어 계산이 달라집니다.</p>
+    <details class="deep">
+      <summary>교대근무달력 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>교대근무자는 달력을 펼치면 &#39;오늘이 주간인지 야간인지 비번인지&#39;부터 확인해야 합니다. 이 도구는 주야비·3조2교대·4조3교대 같은 순환 패턴을 한 번만 설정하면, 그 순서를 시작 날짜부터 하루씩 이어 붙여 몇 달 치 근무표를 자동으로 펼쳐줍니다. 요일에 고정되지 않고 패턴을 따라 움직이는 주휴일과 비번도 달력 위에 그대로 표시되고, 완성한 표는 .ics 파일로 스마트폰 캘린더에 넣거나 설정 URL로 같은 조 동료와 공유할 수 있습니다. 각 날짜를 탭하면 그날 붙는 기본급·야간·연장·휴일 수당까지 항목별로 자동 매핑해 보여주는데, 모든 계산은 브라우저 안에서만 이뤄져 입력한 급여 정보가 서버로 전송되지 않습니다. 설치나 회원가입 없이 무료로 씁니다.</p>
+        <p>근로기준법 제56조는 야간(오후 10시부터 다음 날 오전 6시까지)·연장(1일 8시간 또는 주 40시간 초과)·휴일 근로에 각각 통상임금의 50%를 더 얹도록 정합니다. 세 가지는 겹칠 수 있어, 밤 10시 이후까지 이어진 연장근무처럼 야간과 연장이 함께 걸리면 그 시간은 연장 가산 50%와 야간 가산 50%가 같이 붙어 기본임금을 포함해 통상임금의 2배가 됩니다. 야간 가산은 밤 10시~아침 6시 구간과 겹치는 부분만 분 단위로 따지되, 휴게시간처럼 실제로 일하지 않은 시간은 빠집니다. 교대제는 이 규정이 요일이 아니라 &#39;패턴상 어떤 날&#39;에 걸리느냐로 결정된다는 점이 일반 근무와 다릅니다. 조별 표준 근무시간도 제도마다 달라 3조2교대는 한 교대가 대개 12시간, 4조3교대는 8시간이며, 4조3교대 기준 야간 근무는 보통 월 7~8회가량 돌아옵니다. 통상시급은 직접 입력하거나 월 고정급을 209시간으로 나눠 구하는 것이 일반적이고, 상시근로자 5인 미만 사업장은 연장·야간·휴일 가산 적용 의무 자체가 없어 계산이 달라집니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>8시간 일하면 1시간 이상, 4시간 일하면 30분 이상의 휴게시간은 근로시간에서 빠지고 야간·연장 가산 대상도 아닙니다. 시작·종료 시각과 함께 조별 휴게시간을 넣어야 이 도구가 실근로 기준으로 수당을 정확히 계산합니다.</li>

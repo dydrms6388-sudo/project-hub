@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">음식, 여행지, 취미, 동물 등 어떤 주제든 두 선택지를 반복해 비교하며 최종 1위를 가려내는 이상형 월드컵 게임입니다.</p>
     <a class="cta" href="https://dydrms-worldcup.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>이상형월드컵 메이커 소개</h2>
-    <p>음식, 여행지, 취미, 동물 등 어떤 주제든 두 선택지를 반복해 비교하며 최종 1위를 가려내는 이상형 월드컵 게임입니다. 준비된 주제를 바로 즐기거나 직접 항목을 만들어 공유 링크 하나로 친구들을 초대할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 음식, 여행지, 취미, 동물 등 어떤 주제든 두 선택지를 반복해 비교하며 최종 1위를 가려내는 이상형 월드컵 게임입니다.</li>
+        <li><b>이럴 때</b> 단체 채팅방에 &#39;이번 회식 메뉴 월드컵&#39;을 공유하면 여러 명이 각자 플레이하고 결과를 비교하며 자연스럽게 의견을 모을 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>토너먼트가 끝나면 최종 우승 결과와 전체 순위, 다른 이용자들의 우승 랭킹 그래프를 확인합니다.</li>
         <li>결과 화면에서 링크나 공유 버튼으로 친구에게 보냅니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>이상형 월드컵은 한 번에 많은 선택지를 비교하기 어려울 때 둘씩 직접 대결시켜 최선을 골라내는 토너먼트 방식을 활용합니다. 선택 심리학에서는 선택지가 너무 많으면 오히려 결정을 못 하는 &#39;선택의 역설&#39;이 생기는데, 이 포맷은 항상 두 가지만 비교하게 해 이 문제를 해결합니다. 덕분에 막연히 좋아하는 것들 중에서 진짜 1순위를 발견하는 재미가 생깁니다. 결과를 모아 &#39;전체 이용자 중 N%가 이것을 우승으로 뽑았다&#39;는 통계로 보여주면 개인의 취향이 대중과 얼마나 다른지 비교하는 또 다른 즐거움이 있습니다.</p>
+    <details class="deep">
+      <summary>이상형월드컵 메이커 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>음식, 여행지, 취미, 동물 등 어떤 주제든 두 선택지를 반복해 비교하며 최종 1위를 가려내는 이상형 월드컵 게임입니다. 준비된 주제를 바로 즐기거나 직접 항목을 만들어 공유 링크 하나로 친구들을 초대할 수 있습니다.</p>
+        <p>이상형 월드컵은 한 번에 많은 선택지를 비교하기 어려울 때 둘씩 직접 대결시켜 최선을 골라내는 토너먼트 방식을 활용합니다. 선택 심리학에서는 선택지가 너무 많으면 오히려 결정을 못 하는 &#39;선택의 역설&#39;이 생기는데, 이 포맷은 항상 두 가지만 비교하게 해 이 문제를 해결합니다. 덕분에 막연히 좋아하는 것들 중에서 진짜 1순위를 발견하는 재미가 생깁니다. 결과를 모아 &#39;전체 이용자 중 N%가 이것을 우승으로 뽑았다&#39;는 통계로 보여주면 개인의 취향이 대중과 얼마나 다른지 비교하는 또 다른 즐거움이 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>직접 만든 월드컵은 링크 하나로 공유되므로 단체 채팅방에 올려 여럿이 동시에 즐기기 좋습니다.</li>

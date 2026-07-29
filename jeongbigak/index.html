@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">차 점검 시기를 놓쳐 예상치 못한 수리비가 나온 경험이 있다면, 정비각이 도움이 됩니다.</p>
     <a class="cta" href="https://jeongbigak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>정비각 소개</h2>
-    <p>차 점검 시기를 놓쳐 예상치 못한 수리비가 나온 경험이 있다면, 정비각이 도움이 됩니다. 현재 주행거리를 입력하면 엔진오일·타이어·브레이크패드 등 16개 소모품의 교환 권장 시기를 한 번에 진단해주어, 어떤 항목을 먼저 점검해야 할지 파악할 수 있습니다. 계절별 점검 항목과 차종별 부품 정보도 함께 확인할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 차 점검 시기를 놓쳐 예상치 못한 수리비가 나온 경험이 있다면, 정비각이 도움이 됩니다.</li>
+        <li><b>이럴 때</b> 중고차를 구입했거나 오래된 차를 물려받아 정비 이력을 모를 때, 주행거리 기준으로 어떤 항목을 먼저 점검해야 할지 순서를 잡을 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>계절 점검 탭에서 현재 계절에 맞는 추가 점검 항목을 확인합니다.</li>
         <li>진단 결과를 내 차고에 저장해 다음 점검 때 이전 기록을 참고합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>자동차 소모품은 각각 교환 주기가 다르게 설계되어 있습니다. 엔진오일은 주행거리(보통 5,000~1만 km)뿐 아니라 시간 경과(보통 1년)도 기준이 됩니다. 타이어는 트레드 마모도와 경화 상태를 함께 봐야 하며, 브레이크패드는 잔량이 일정 수준 이하면 제동 거리가 늘고 디스크까지 손상될 수 있어 조기 발견이 중요합니다. 냉각수·브레이크액·에어컨 필터 등은 눈에 잘 띄지 않아 교환 시기를 놓치기 쉬운 항목들입니다. 미리 파악해두면 정비소에서 불필요한 항목을 권유받을 때 판단 기준이 되기도 합니다.</p>
+    <details class="deep">
+      <summary>정비각 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>차 점검 시기를 놓쳐 예상치 못한 수리비가 나온 경험이 있다면, 정비각이 도움이 됩니다. 현재 주행거리를 입력하면 엔진오일·타이어·브레이크패드 등 16개 소모품의 교환 권장 시기를 한 번에 진단해주어, 어떤 항목을 먼저 점검해야 할지 파악할 수 있습니다. 계절별 점검 항목과 차종별 부품 정보도 함께 확인할 수 있습니다.</p>
+        <p>자동차 소모품은 각각 교환 주기가 다르게 설계되어 있습니다. 엔진오일은 주행거리(보통 5,000~1만 km)뿐 아니라 시간 경과(보통 1년)도 기준이 됩니다. 타이어는 트레드 마모도와 경화 상태를 함께 봐야 하며, 브레이크패드는 잔량이 일정 수준 이하면 제동 거리가 늘고 디스크까지 손상될 수 있어 조기 발견이 중요합니다. 냉각수·브레이크액·에어컨 필터 등은 눈에 잘 띄지 않아 교환 시기를 놓치기 쉬운 항목들입니다. 미리 파악해두면 정비소에서 불필요한 항목을 권유받을 때 판단 기준이 되기도 합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>엔진오일은 주행이 적어도 6개월~1년 사이에 한 번은 점검하는 것이 좋습니다. 장기 주차 후에도 오일 상태를 확인하세요.</li>

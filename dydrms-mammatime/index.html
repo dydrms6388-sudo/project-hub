@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">신생아를 처음 돌보는 부모와 출산을 앞둔 예비 부모를 위한 올인원 도구입니다.</p>
     <a class="cta" href="https://dydrms-mammatime.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>맘마타임 (MammaTime) 소개</h2>
-    <p>신생아를 처음 돌보는 부모와 출산을 앞둔 예비 부모를 위한 올인원 도구입니다. 수유 간격 타이머, 출산예정일·임신 주수 계산, 출산준비물 목록 자동 생성, 예상 키 계산, 육아일기까지 임신부터 초기 육아까지 필요한 기능을 한 곳에서 무료로 제공합니다. 가입 없이 바로 사용할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 신생아를 처음 돌보는 부모와 출산을 앞둔 예비 부모를 위한 올인원 도구입니다.</li>
+        <li><b>이럴 때</b> 밤중 수유 시 마지막으로 언제 먹였는지 기억이 나지 않을 때, 타이머 기록을 확인해 다음 수유 시간을 파악하는 데 바로 활용할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>아이가 태어난 후 육아일기(/diary)에 성장 기록을 남깁니다.</li>
         <li>예상 키 계산기에 부모 키를 입력해 참고용 성인 예상 키를 확인합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>신생아는 생후 수 주 동안 위 용량이 작아 2~3시간 간격으로 수유가 필요하며, 밤낮 구분 없이 반복됩니다. 타이머와 기록이 없으면 마지막 수유 시간을 기억하기 어려운 상황이 자주 생깁니다. 출산준비물은 품목이 많고 구매 타이밍이 중요한데, 계절이나 수유 방식에 따라 필요한 물품의 종류와 수량이 달라집니다. 예상 키 계산은 부모의 키를 바탕으로 한 통계적 추정 방식이 일반적으로 사용되며, 실제 키는 영양·환경·건강 등 다양한 요인의 영향을 받습니다.</p>
+    <details class="deep">
+      <summary>맘마타임 (MammaTime) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>신생아를 처음 돌보는 부모와 출산을 앞둔 예비 부모를 위한 올인원 도구입니다. 수유 간격 타이머, 출산예정일·임신 주수 계산, 출산준비물 목록 자동 생성, 예상 키 계산, 육아일기까지 임신부터 초기 육아까지 필요한 기능을 한 곳에서 무료로 제공합니다. 가입 없이 바로 사용할 수 있습니다.</p>
+        <p>신생아는 생후 수 주 동안 위 용량이 작아 2~3시간 간격으로 수유가 필요하며, 밤낮 구분 없이 반복됩니다. 타이머와 기록이 없으면 마지막 수유 시간을 기억하기 어려운 상황이 자주 생깁니다. 출산준비물은 품목이 많고 구매 타이밍이 중요한데, 계절이나 수유 방식에 따라 필요한 물품의 종류와 수량이 달라집니다. 예상 키 계산은 부모의 키를 바탕으로 한 통계적 추정 방식이 일반적으로 사용되며, 실제 키는 영양·환경·건강 등 다양한 요인의 영향을 받습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>출산준비물 생성기는 계절을 반영해 품목을 조정하므로, 출산 예정일을 정확히 입력할수록 계절용품 목록이 실용적입니다.</li>

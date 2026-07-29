@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">회원가입 없이 바로 푸는 운전면허 필기(학과)시험 대비 무료 웹앱.</p>
     <a class="cta" href="https://dydrms-driving-test.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>운전면허 필기고사 소개</h2>
-    <p>회원가입 없이 바로 푸는 운전면허 필기(학과)시험 대비 무료 웹앱. 도로교통법 근거로 원저작 재구성한 131문항 기출 문제은행(교통법규·안전운전·안전표지·처벌/벌점·자동차상식 5개 카테고리)을 바탕으로 ①실전 모의고사(실제와 동일하게 40문항·40분 타이머·문제 네비게이터·100점 환산 자동 채점→1종 70점·2종 60점 합격 즉시 판정, 합격 시 컨페티+점수 공유카드) ②카테고리 연습(유형별 무제한 풀이+선택 즉시 도로교통법 근거 해설) ③오답노트(틀린 문제 자동 수집·맞히면 소멸, localStorage) ④안전표지 도감(주의·규제·지시 20종을 직접 그린 인라인 SVG+의미 해설+4지선다 미니퀴즈)를 제공. 재방문 훅: 학습 연속일 스트릭·응시횟수·최고점수·누적 정답률 홈 대시보드+오답노트. 정확성 검증: 음주 0.03%(정지)/0.08%(취소)·누산벌점 121/201/271·정지 40점·속도위반 구간별 벌점·어린이보호구역 30km/h 등 실제 도로교통법 기준 반영. 무백엔드·무가입, 모든 진도·오답·기록은 브라우저 localStorage에만 저장. 학습용 자료 면책 고지. 자동차 클러스터(정비각·연비각·카시트핏)와 별개인 운전면허 학과시험 대비 축. 타깃: 운전면허 필기시험·기출문제·모의고사·학과시험·1종 2종 필기·안전표지·운전면허 오답노트.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 회원가입 없이 바로 푸는 운전면허 필기(학과)시험 대비 무료 웹앱.</li>
+        
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     
     <h2>이렇게 사용하세요</h2>
@@ -133,7 +152,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>안내에 따라 값을 입력하거나 항목을 선택합니다.</li>
         <li>결과를 확인하고 필요하면 저장·공유합니다.</li>
     </ol>
-    
+    <details class="deep">
+      <summary>운전면허 필기고사 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>회원가입 없이 바로 푸는 운전면허 필기(학과)시험 대비 무료 웹앱. 도로교통법 근거로 원저작 재구성한 131문항 기출 문제은행(교통법규·안전운전·안전표지·처벌/벌점·자동차상식 5개 카테고리)을 바탕으로 ①실전 모의고사(실제와 동일하게 40문항·40분 타이머·문제 네비게이터·100점 환산 자동 채점→1종 70점·2종 60점 합격 즉시 판정, 합격 시 컨페티+점수 공유카드) ②카테고리 연습(유형별 무제한 풀이+선택 즉시 도로교통법 근거 해설) ③오답노트(틀린 문제 자동 수집·맞히면 소멸, localStorage) ④안전표지 도감(주의·규제·지시 20종을 직접 그린 인라인 SVG+의미 해설+4지선다 미니퀴즈)를 제공. 재방문 훅: 학습 연속일 스트릭·응시횟수·최고점수·누적 정답률 홈 대시보드+오답노트. 정확성 검증: 음주 0.03%(정지)/0.08%(취소)·누산벌점 121/201/271·정지 40점·속도위반 구간별 벌점·어린이보호구역 30km/h 등 실제 도로교통법 기준 반영. 무백엔드·무가입, 모든 진도·오답·기록은 브라우저 localStorage에만 저장. 학습용 자료 면책 고지. 자동차 클러스터(정비각·연비각·카시트핏)와 별개인 운전면허 학과시험 대비 축. 타깃: 운전면허 필기시험·기출문제·모의고사·학과시험·1종 2종 필기·안전표지·운전면허 오답노트.</p>
+        
+      </div>
+    </details>
     
     
     

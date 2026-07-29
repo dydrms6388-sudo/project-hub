@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">되/돼, 안/않, 사이시옷, 외래어 표기 등 한국인이 실생활에서 자주 혼동하는 맞춤법을 퀴즈로 진단하고, 틀린 규칙을 자동으로 모아 복습할 수 있는 학습 도구입니다.</p>
     <a class="cta" href="https://spelling-self-quiz.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>맞춤법셀프점검 소개</h2>
-    <p>되/돼, 안/않, 사이시옷, 외래어 표기 등 한국인이 실생활에서 자주 혼동하는 맞춤법을 퀴즈로 진단하고, 틀린 규칙을 자동으로 모아 복습할 수 있는 학습 도구입니다. 자기소개서를 쓰는 취업 준비생부터 국어 시험을 앞둔 학생, 평소 맞춤법이 신경 쓰이는 직장인까지 부담 없이 활용할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 되/돼, 안/않, 사이시옷, 외래어 표기 등 한국인이 실생활에서 자주 혼동하는 맞춤법을 퀴즈로 진단하고, 틀린 규칙을 자동으로 모아 복습할 수 있는 학습 도구입니다.</li>
+        <li><b>이럴 때</b> 자기소개서나 보고서를 제출하기 전에 해당 글에서 자주 쓰이는 표현 유형을 먼저 풀어보면 실수를 사전에 줄일 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>10문제가 끝나면 점수·등급과 틀린 규칙 목록을 확인한다.</li>
         <li>약점 카드 페이지에서 자주 틀리는 규칙만 모아 집중적으로 다시 푼다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>한국어 맞춤법은 1988년 고시된 한글 맞춤법 규정을 근간으로 하며, 국립국어원이 해석과 심의를 담당합니다. &#39;되다&#39;와 &#39;돼다&#39;, &#39;-율&#39;과 &#39;-률&#39;, 사이시옷 표기처럼 혼동이 잦은 항목들은 단순히 외우기보다 원리를 이해해야 안정적으로 쓸 수 있습니다. 예를 들어 &#39;되/돼&#39;는 &#39;하다/해&#39;로 치환해보는 방법이 효과적이고, &#39;-율/-률&#39;은 앞 글자의 받침 유무에 따라 결정됩니다. 외래어 표기는 국립국어원 외래어 표기법을 따르는데, 언어별 발음 특성을 반영하기 때문에 영어 철자와 한국어 표기가 예상과 다른 경우가 많습니다. 틀린 규칙을 반복 학습하는 방식(SRS, 간격 반복)은 단기 기억이 아닌 장기 기억으로 굳히는 데 효과적이라는 것이 학습과학 연구에서 거듭 확인된 바 있습니다.</p>
+    <details class="deep">
+      <summary>맞춤법셀프점검 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>되/돼, 안/않, 사이시옷, 외래어 표기 등 한국인이 실생활에서 자주 혼동하는 맞춤법을 퀴즈로 진단하고, 틀린 규칙을 자동으로 모아 복습할 수 있는 학습 도구입니다. 자기소개서를 쓰는 취업 준비생부터 국어 시험을 앞둔 학생, 평소 맞춤법이 신경 쓰이는 직장인까지 부담 없이 활용할 수 있습니다.</p>
+        <p>한국어 맞춤법은 1988년 고시된 한글 맞춤법 규정을 근간으로 하며, 국립국어원이 해석과 심의를 담당합니다. &#39;되다&#39;와 &#39;돼다&#39;, &#39;-율&#39;과 &#39;-률&#39;, 사이시옷 표기처럼 혼동이 잦은 항목들은 단순히 외우기보다 원리를 이해해야 안정적으로 쓸 수 있습니다. 예를 들어 &#39;되/돼&#39;는 &#39;하다/해&#39;로 치환해보는 방법이 효과적이고, &#39;-율/-률&#39;은 앞 글자의 받침 유무에 따라 결정됩니다. 외래어 표기는 국립국어원 외래어 표기법을 따르는데, 언어별 발음 특성을 반영하기 때문에 영어 철자와 한국어 표기가 예상과 다른 경우가 많습니다. 틀린 규칙을 반복 학습하는 방식(SRS, 간격 반복)은 단기 기억이 아닌 장기 기억으로 굳히는 데 효과적이라는 것이 학습과학 연구에서 거듭 확인된 바 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>&#39;되/돼&#39; 판단이 어려울 때는 &#39;하/해&#39;로 바꿔 읽어보는 것이 가장 빠른 방법입니다. &#39;해&#39;가 자연스러우면 &#39;돼&#39;, &#39;하&#39;가 어울리면 &#39;되&#39;입니다.</li>

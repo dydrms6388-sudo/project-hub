@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">강아지 밥을 누가 줬는지 가족끼리 서로 물어보고 이미 줬다가 이중으로 주는 상황, 한 번쯤 겪어봤을 겁니다.</p>
     <a class="cta" href="https://dydrms-babjwo.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>밥줬어? 소개</h2>
-    <p>강아지 밥을 누가 줬는지 가족끼리 서로 물어보고 이미 줬다가 이중으로 주는 상황, 한 번쯤 겪어봤을 겁니다. 밥줬어?는 회원가입 없이 6자리 코드나 링크 하나로 가족 모두의 스마트폰을 연결해 반려동물의 밥·약·물·산책 체크를 실시간으로 공유합니다. 누군가 체크하면 몇 초 안에 다른 가족 화면에도 반영됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 강아지 밥을 누가 줬는지 가족끼리 서로 물어보고 이미 줬다가 이중으로 주는 상황, 한 번쯤 겪어봤을 겁니다.</li>
+        <li><b>이럴 때</b> 부부가 각자 다른 시간에 출퇴근하는 집에서 아침저녁 밥 담당이 나뉠 때, 체크판 하나로 이중 급여 없이 관리할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>다른 가족의 화면에 실시간으로 완료 여부가 표시되는 것을 확인합니다.</li>
         <li>최근 7일 차트와 투약 기록에서 누가 언제 체크했는지 이력을 확인합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>다인 가구에서 반려동물을 함께 키울 때 급여 중복이나 투약 누락은 실수로 일어나기 쉽습니다. 특히 심장사상충 예방약처럼 한 달에 한 번 투여하는 약은 &#39;내가 줬나, 네가 줬나&#39; 기억이 엇갈리면 한 번에 두 번 주거나 건너뛰는 경우가 생깁니다. 반려동물은 스스로 증상을 표현하기 어렵기 때문에 보호자가 기록을 남기는 것이 중요합니다. 실시간 공유 체크판은 이 간격을 줄이는 가장 단순한 방법입니다.</p>
+    <details class="deep">
+      <summary>밥줬어? 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>강아지 밥을 누가 줬는지 가족끼리 서로 물어보고 이미 줬다가 이중으로 주는 상황, 한 번쯤 겪어봤을 겁니다. 밥줬어?는 회원가입 없이 6자리 코드나 링크 하나로 가족 모두의 스마트폰을 연결해 반려동물의 밥·약·물·산책 체크를 실시간으로 공유합니다. 누군가 체크하면 몇 초 안에 다른 가족 화면에도 반영됩니다.</p>
+        <p>다인 가구에서 반려동물을 함께 키울 때 급여 중복이나 투약 누락은 실수로 일어나기 쉽습니다. 특히 심장사상충 예방약처럼 한 달에 한 번 투여하는 약은 &#39;내가 줬나, 네가 줬나&#39; 기억이 엇갈리면 한 번에 두 번 주거나 건너뛰는 경우가 생깁니다. 반려동물은 스스로 증상을 표현하기 어렵기 때문에 보호자가 기록을 남기는 것이 중요합니다. 실시간 공유 체크판은 이 간격을 줄이는 가장 단순한 방법입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>하루 2회 급여라면 아침·저녁 항목을 따로 설정해두는 것이 누락 방지에 효과적입니다.</li>

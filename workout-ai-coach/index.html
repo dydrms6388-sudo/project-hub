@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">오늘 운동과 식사 내용을 채팅창에 자연스럽게 입력하면 AI가 운동 종류·세트·칼로리를 자동으로 파악해 기록해줍니다.</p>
     <a class="cta" href="https://dydrms-owanwan.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>오운완 AI 코치 (OWANWAN) 소개</h2>
-    <p>오늘 운동과 식사 내용을 채팅창에 자연스럽게 입력하면 AI가 운동 종류·세트·칼로리를 자동으로 파악해 기록해줍니다. 매일 얼마나 했는지 주간 대시보드로 흐름을 볼 수 있어 꾸준히 이어가는 데 동기가 됩니다. 운동 로그를 일일이 수기로 입력하는 번거로움 없이 말하듯 기록하는 방식을 원하는 분들에게 맞습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 오늘 운동과 식사 내용을 채팅창에 자연스럽게 입력하면 AI가 운동 종류·세트·칼로리를 자동으로 파악해 기록해줍니다.</li>
+        <li><b>이럴 때</b> 헬스장을 다녀온 직후 &#39;오늘 데드리프트 100kg 3세트 5회, 런지 20개 3세트 했어&#39;라고 입력하면 자동 정리되는 방식으로 귀찮음 없이 기록을 남기고 싶을 때.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>주간 차트와 연속 기록으로 진척을 돌아봅니다.</li>
         <li>알림을 설정해 운동 시간에 리마인드를 받습니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>피트니스 기록의 핵심은 꾸준함입니다. 앱 기록이 번거로우면 결국 중단하게 되는 경우가 많은데, 자연어로 입력하면 진입 장벽이 낮아집니다. 운동 효과를 높이려면 점진적 과부하(progresssive overload), 즉 이전보다 조금씩 중량·세트·횟수를 늘려가는 원칙이 중요하며, 이를 위해선 이전 기록이 있어야 비교가 됩니다. 칼로리 추정은 음식 데이터베이스와 평균값에 기반하므로 정밀도에 한계가 있지만, 대략적인 섭취 경향을 파악하는 데는 충분히 유용합니다. 연속 기록(스트릭)은 운동 루틴 형성에 심리적 모멘텀 역할을 합니다.</p>
+    <details class="deep">
+      <summary>오운완 AI 코치 (OWANWAN) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>오늘 운동과 식사 내용을 채팅창에 자연스럽게 입력하면 AI가 운동 종류·세트·칼로리를 자동으로 파악해 기록해줍니다. 매일 얼마나 했는지 주간 대시보드로 흐름을 볼 수 있어 꾸준히 이어가는 데 동기가 됩니다. 운동 로그를 일일이 수기로 입력하는 번거로움 없이 말하듯 기록하는 방식을 원하는 분들에게 맞습니다.</p>
+        <p>피트니스 기록의 핵심은 꾸준함입니다. 앱 기록이 번거로우면 결국 중단하게 되는 경우가 많은데, 자연어로 입력하면 진입 장벽이 낮아집니다. 운동 효과를 높이려면 점진적 과부하(progresssive overload), 즉 이전보다 조금씩 중량·세트·횟수를 늘려가는 원칙이 중요하며, 이를 위해선 이전 기록이 있어야 비교가 됩니다. 칼로리 추정은 음식 데이터베이스와 평균값에 기반하므로 정밀도에 한계가 있지만, 대략적인 섭취 경향을 파악하는 데는 충분히 유용합니다. 연속 기록(스트릭)은 운동 루틴 형성에 심리적 모멘텀 역할을 합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>운동 입력 시 &#39;벤치프레스 60kg 5세트 8회&#39;처럼 무게와 횟수를 명시하면 더 정확한 데이터가 쌓이고 다음 주 목표를 잡을 때 비교가 됩니다.</li>

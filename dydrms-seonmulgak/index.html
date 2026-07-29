@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">선물각은 &#39;뭘 줄지&#39;와 &#39;언제까지 주문해야 늦지 않는지&#39;를 한 화면에서 같이 챙기는 연애·관계용 도구입니다.</p>
     <a class="cta" href="https://dydrms-seonmulgak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>선물각 소개</h2>
-    <p>선물각은 &#39;뭘 줄지&#39;와 &#39;언제까지 주문해야 늦지 않는지&#39;를 한 화면에서 같이 챙기는 연애·관계용 도구입니다. 받는 사람과의 관계·상황·예산·취향 네 항목을 고르면 큐레이션 38종에 매겨진 태그와 겹치는 정도(적합도)를 계산해, 적합도가 높은 순으로 후보를 정렬해 즉시 보여줍니다. 여기에 100일·n주년 같은 기념일 날짜를 자동으로 세고, 그 날짜에서 배송 소요와 성수기 버퍼를 거꾸로 빼 &#39;언제까지 결제해야 제때 도착하는지&#39; 주문 마감일을 챙겨주는 기능이 더해집니다. 회원가입·설치 없이 무료로 쓰고, 입력값과 등록한 기념일은 서버로 보내지 않고 지금 쓰는 브라우저 안에만 저장됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 선물각은 &#39;뭘 줄지&#39;와 &#39;언제까지 주문해야 늦지 않는지&#39;를 한 화면에서 같이 챙기는 연애·관계용 도구입니다.</li>
+        <li><b>이럴 때</b> 받는 사람 취향을 도무지 모를 때 켜기 좋습니다. 관계와 예산만 고정하고 취향 키워드만 바꿔보면 같은 &#39;연인 + 5만원&#39;이라도 상위 후보의 성격이 확 갈립니다. 실용으로 두면 블루투스 분실방지 트래커·고속 보조배터리처럼 매일 쓰는 물건이, 감성으로 바꾸면 무드등·이니셜 각인 소품이, 취미형으로 옮기면 클라이밍 초크백·핸드드립 도구가 앞에 옵니다. 키워드 하나로 결과 결이 이렇게 달라지니, 후보를 훑으며 상대가 어느 쪽에 반응할지 거꾸로 가늠해 볼 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,11 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>적합도 순으로 정렬된 후보에서 상세 내용과 구매 링크를 확인합니다. 한 조합당 상위 5~8개가 노출되며, &#39;~1만원 + 병문안&#39;처럼 조건이 좁게 겹치는 조합은 후보가 2~3개로 줄 수 있습니다(우회법은 시나리오 참고).</li>
         <li>D-day 관리에 시작일(사귀기 시작한 날 등)을 등록하면 100·200일과 n주년이 자동 계산되고, 각 기념일에서 배송 소요를 역산해 주문 마감일까지 잡힙니다. 화면에는 「주문 마감 3월 7일(D-15) · 성수기 아님」처럼 남은 날과 마감일이 한 줄로 표시되고, 성수기 구간에 걸리면 마감일이 그만큼 앞당겨져 뜹니다. 역산 산식과 성수기 버퍼표는 위 배경 설명에 정리해 두었습니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>이 도구의 무게중심은 &#39;뭘 살까&#39;보다 &#39;언제 사야 늦지 않나&#39;에 있습니다. 배경을 세 갈래로 정리합니다.</p>
+    <details class="deep">
+      <summary>선물각 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>선물각은 &#39;뭘 줄지&#39;와 &#39;언제까지 주문해야 늦지 않는지&#39;를 한 화면에서 같이 챙기는 연애·관계용 도구입니다. 받는 사람과의 관계·상황·예산·취향 네 항목을 고르면 큐레이션 38종에 매겨진 태그와 겹치는 정도(적합도)를 계산해, 적합도가 높은 순으로 후보를 정렬해 즉시 보여줍니다. 여기에 100일·n주년 같은 기념일 날짜를 자동으로 세고, 그 날짜에서 배송 소요와 성수기 버퍼를 거꾸로 빼 &#39;언제까지 결제해야 제때 도착하는지&#39; 주문 마감일을 챙겨주는 기능이 더해집니다. 회원가입·설치 없이 무료로 쓰고, 입력값과 등록한 기념일은 서버로 보내지 않고 지금 쓰는 브라우저 안에만 저장됩니다.</p>
+        <p>이 도구의 무게중심은 &#39;뭘 살까&#39;보다 &#39;언제 사야 늦지 않나&#39;에 있습니다. 배경을 세 갈래로 정리합니다.</p>
     <p>(1) 관계별 통용 가격대 — 아래는 국내에서 널리 쓰이는 관행을 정리한 참고값일 뿐, 개인·관계·지역에 따라 크게 달라지는 느슨한 기준이지 고정된 규칙이 아닙니다.</p>
     <table class="rt"><thead><tr><th>관계·상황</th><th>통용 가격대(참고)</th></tr></thead><tbody><tr><td>연인 100일</td><td>3~10만원</td></tr><tr><td>어버이날·부모</td><td>3~5만원(카네이션+용돈/실용 선물)</td></tr><tr><td>직장 상사·동료</td><td>3만원 안팎</td></tr></tbody></table>
     <p>이 암묵적 기대를 잘못 읽으면 선물이 되레 부담이나 오해가 되기 쉽습니다.</p>
@@ -152,6 +174,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p>주문 마감일 = 기념일 − (배송 소요 3일 + 안전 여유 2일 + 성수기 버퍼)</p>
     <table class="rt"><thead><tr><th>성수기 구간</th><th>해당 기간</th><th>성수기 버퍼</th></tr></thead><tbody><tr><td>발렌타인데이(2월 14일) 직전</td><td>2/1~2/13</td><td>+5일</td></tr><tr><td>어버이날(5월 8일) 전후</td><td>5/1~5/8</td><td>+3일</td></tr><tr><td>설·추석 연휴 직전</td><td>연휴 시작 전 7일</td><td>+5일</td></tr><tr><td>평상시</td><td>그 외 전체</td><td>+0일</td></tr></tbody></table>
     <p>계산 예시 ① 어버이날(5월 8일)은 5/1~5/8 성수기 구간이라 버퍼 +3일이 붙어, 5월 8일 − (3 + 2 + 3)일 = 4월 30일이 주문 마감일입니다. 5월 초·중순에 주문하면 이미 늦을 수 있다는 뜻입니다. ② 3월 12일 200일은 성수기가 아니어서 버퍼 0일, 마감일은 정확히 5일 전인 3월 7일로 잡힙니다. 이 표와 산식만 있으면 독자가 직접 자기 기념일의 마감일을 계산해 볼 수 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>적합도 상위 후보라도 도착이 늦으면 소용없습니다. 후보 목록을 D-day 화면의 주문 마감일과 나란히 놓고, 마감일을 넘기는 항목부터 걷어내 &#39;지금 결제해도 제때 오는 것&#39;만 남기세요. 성수기 구간이면 도구가 이미 마감일을 앞당겨 잡아두므로 그 날짜를 그대로 믿고 움직이면 됩니다.</li>

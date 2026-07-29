@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">12개 질문으로 친구 모임 안에서 내가 주로 어떤 역할을 맡는 유형인지 파악하고, 친구들도 함께 참여하면 그룹 전체의 케미 점수와 궁합 쌍을 볼 수 있는 테스트입니다.</p>
     <a class="cta" href="https://friend-chemistry-test.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>내친구 케미테스트 소개</h2>
-    <p>12개 질문으로 친구 모임 안에서 내가 주로 어떤 역할을 맡는 유형인지 파악하고, 친구들도 함께 참여하면 그룹 전체의 케미 점수와 궁합 쌍을 볼 수 있는 테스트입니다. 가볍게 즐기면서 서로의 성향 차이를 이야기하는 자연스러운 계기를 만들어 줍니다. 로그인 없이 링크 공유만으로 그룹이 완성됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 12개 질문으로 친구 모임 안에서 내가 주로 어떤 역할을 맡는 유형인지 파악하고, 친구들도 함께 참여하면 그룹 전체의 케미 점수와 궁합 쌍을 볼 수 있는 테스트입니다.</li>
+        <li><b>이럴 때</b> 오랜 친구 모임에서 서로에 대해 안다고 생각했지만 성향 차이를 새롭게 발견하는 재미있는 경험을 만들고 싶을 때 활용하세요.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>친구들이 각자 테스트를 마치면 그룹 케미 점수와 구성이 업데이트됩니다.</li>
         <li>최고 궁합 쌍, 의외의 조합 등을 함께 보며 이야기를 나눕니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>집단 내 역할은 심리학과 사회학에서 오랫동안 연구된 주제입니다. 한 그룹 안에는 분위기를 이끄는 사람, 중재자, 아이디어를 제안하는 사람, 꼼꼼히 실행하는 사람 등 다양한 역할이 자연스럽게 분화되는 경향이 있습니다. 이런 역할 다양성은 집단이 다양한 상황에 유연하게 대응하는 데 도움을 준다고 알려져 있습니다. 케미 테스트는 심리 진단 도구가 아니라 자기 성찰과 소통의 즐거운 출발점으로, 결과를 너무 진지하게 받아들이기보다 대화의 소재로 활용하는 것이 좋습니다.</p>
+    <details class="deep">
+      <summary>내친구 케미테스트 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>12개 질문으로 친구 모임 안에서 내가 주로 어떤 역할을 맡는 유형인지 파악하고, 친구들도 함께 참여하면 그룹 전체의 케미 점수와 궁합 쌍을 볼 수 있는 테스트입니다. 가볍게 즐기면서 서로의 성향 차이를 이야기하는 자연스러운 계기를 만들어 줍니다. 로그인 없이 링크 공유만으로 그룹이 완성됩니다.</p>
+        <p>집단 내 역할은 심리학과 사회학에서 오랫동안 연구된 주제입니다. 한 그룹 안에는 분위기를 이끄는 사람, 중재자, 아이디어를 제안하는 사람, 꼼꼼히 실행하는 사람 등 다양한 역할이 자연스럽게 분화되는 경향이 있습니다. 이런 역할 다양성은 집단이 다양한 상황에 유연하게 대응하는 데 도움을 준다고 알려져 있습니다. 케미 테스트는 심리 진단 도구가 아니라 자기 성찰과 소통의 즐거운 출발점으로, 결과를 너무 진지하게 받아들이기보다 대화의 소재로 활용하는 것이 좋습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>솔직하게 답할수록 실제 자신의 모습에 가까운 결과가 나옵니다. &#39;좋게 보이려는&#39; 답보다 현실적인 선택이 더 재미있는 결과로 이어집니다.</li>

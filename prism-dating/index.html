@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">PRISM(프리즘)은 한국 게이 남성을 위한 프라이버시 우선 데이팅 서비스입니다.</p>
     <a class="cta" href="https://tomatoeggcat.com/prism/" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>PRISM (프리즘) 소개</h2>
-    <p>PRISM(프리즘)은 한국 게이 남성을 위한 프라이버시 우선 데이팅 서비스입니다. 위치를 흐리게 표시하고 사진을 매치 후에 단계적으로 공개하는 등, 원치 않는 노출(아우팅)을 막는 설계를 기본값으로 제공합니다. 앱 설치 없이 웹(PWA)에서 바로 사용할 수 있으며, 기본 기능은 무료입니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> PRISM(프리즘)은 한국 게이 남성을 위한 프라이버시 우선 데이팅 서비스입니다.</li>
+        <li><b>이럴 때</b> 주변에 자신을 드러내기 어려운 환경에서, 신원 노출 걱정을 덜고 비슷한 사람들과 대화를 시작하고 싶을 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,9 +159,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>서로 좋아요를 보내 매치가 성사되면 채팅이 열리고, 설정에 따라 사진이 단계적으로 공개됩니다.</li>
         <li>대화가 편안하게 이어지면 공개된 장소에서의 만남을 약속하고, 불쾌한 상대는 즉시 차단하거나 신고합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>성소수자에게 데이팅 앱은 단순한 만남 도구를 넘어 자신을 안전하게 드러낼 수 있는 몇 안 되는 공간입니다. 그러나 한국에서는 성적 지향이 알려지는 것만으로 직장이나 가족 관계에 실질적인 어려움을 겪을 수 있어, 정밀한 위치 노출이나 프로필 화면 캡처가 큰 위험 요인이 됩니다. 실제로 기존 해외 앱에서는 거리 정보를 조합해 사용자의 생활 반경을 추정하거나, 캡처된 프로필이 당사자 동의 없이 유포되는 문제가 지적되어 왔습니다.</p>
+    <details class="deep">
+      <summary>PRISM (프리즘) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>PRISM(프리즘)은 한국 게이 남성을 위한 프라이버시 우선 데이팅 서비스입니다. 위치를 흐리게 표시하고 사진을 매치 후에 단계적으로 공개하는 등, 원치 않는 노출(아우팅)을 막는 설계를 기본값으로 제공합니다. 앱 설치 없이 웹(PWA)에서 바로 사용할 수 있으며, 기본 기능은 무료입니다.</p>
+        <p>성소수자에게 데이팅 앱은 단순한 만남 도구를 넘어 자신을 안전하게 드러낼 수 있는 몇 안 되는 공간입니다. 그러나 한국에서는 성적 지향이 알려지는 것만으로 직장이나 가족 관계에 실질적인 어려움을 겪을 수 있어, 정밀한 위치 노출이나 프로필 화면 캡처가 큰 위험 요인이 됩니다. 실제로 기존 해외 앱에서는 거리 정보를 조합해 사용자의 생활 반경을 추정하거나, 캡처된 프로필이 당사자 동의 없이 유포되는 문제가 지적되어 왔습니다.</p>
     <p>안전한 공간 설계란 이런 위험을 사용자가 일일이 신경 쓰지 않아도 되도록 서비스 구조 자체에 반영하는 것을 말합니다. 위치를 동 단위가 아닌 넓은 구역으로만 표시하기, 사진을 상호 매치 이후에 공개하기, 앱 진입 시 잠금을 걸기, 수집하는 개인정보를 최소화하기가 대표적입니다. PRISM은 이러한 안전장치를 유료 기능이 아닌 기본 기능으로 제공하는 것을 원칙으로 삼고, 만남의 속도보다 사용자의 통제권을 우선하는 방향으로 설계되었습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>프로필 소개는 취미나 관심사 등 대화의 실마리가 되는 내용을 구체적으로 적을수록 매치 후 대화가 자연스럽게 이어집니다.</li>

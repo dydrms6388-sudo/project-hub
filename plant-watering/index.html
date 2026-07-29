@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">키우는 식물을 등록하면 다음에 물 줄 날을 D-day로 계산해 대시보드에 띄워 주는 물 주기 도구입니다.</p>
     <a class="cta" href="https://mulju-plant-care.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>물주기 (식물 물주기 알리미) 소개</h2>
-    <p>키우는 식물을 등록하면 다음에 물 줄 날을 D-day로 계산해 대시보드에 띄워 주는 물 주기 도구입니다. 단순히 날짜만 세는 고정 알람과 달리, 식물종·화분 크기·놓인 자리의 햇빛 조건·현재 계절 네 가지를 기본 주기에 반영해 자동으로 늘리고 줄입니다 — 예를 들어 그늘 자리는 +30%, 여름 생장기는 -20%처럼 조정 폭이 정해져 있습니다. 계산과 급수 기록은 모두 브라우저 안에서만 처리되어 입력한 식물 정보가 외부 서버로 나가지 않으며, 설치나 회원가입 없이 무료로 한국어로 씁니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 키우는 식물을 등록하면 다음에 물 줄 날을 D-day로 계산해 대시보드에 띄워 주는 물 주기 도구입니다.</li>
+        <li><b>이럴 때</b> 화분이 여러 개라 매번 흙을 일일이 만져 확인하기 번거로운 집사. 스킨답서스·몬스테라·산세베리아처럼 물 주기가 제각각인 식물을 함께 키울 때, 대시보드 한 화면으로 오늘 물 줄 화분의 우선순위를 파악할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,14 +160,19 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>23종 가이드에서 물 줄 신호, 난이도, 반려동물 안전 여부를 확인합니다. &#39;적정 물 양&#39;은 급수 때마다 추적하는 값이 아니라 종별 고정 참고 정보로 제공됩니다.</li>
         <li>여러 화분을 등록해 두면 대시보드 한 화면만 보고도 그날 물이 필요한 식물을 놓치지 않고 챙길 수 있습니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>화분 식물이 죽는 가장 흔한 원인은 물 부족이 아니라 물을 너무 자주 줘서 생기는 과습입니다. 흙이 늘 젖어 있으면 흙 속 공기층이 사라져 뿌리가 숨을 쉬지 못하고, 이 상태가 이어지면 뿌리 끝부터 물러 썩는 근부병(뿌리썩음)으로 번집니다. 문제는 초기 증상이 물 부족과 헷갈린다는 점인데, 감별 포인트는 이렇습니다 — 물이 부족하면 잎이 시들면서 가장자리가 바삭하게 마르고, 과습이면 잎이 누렇게 늘어지며 흙에서 물비린내나 곰팡이 냄새가 납니다. 그래서 달력 날짜보다 겉흙이 말랐는지가 늘 우선하는 기준이고, 이 도구의 D-day도 그 확인을 대신하는 것이 아니라 &#39;이쯤 확인해 보라&#39;는 신호선입니다.</p>
+    <details class="deep">
+      <summary>물주기 (식물 물주기 알리미) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>키우는 식물을 등록하면 다음에 물 줄 날을 D-day로 계산해 대시보드에 띄워 주는 물 주기 도구입니다. 단순히 날짜만 세는 고정 알람과 달리, 식물종·화분 크기·놓인 자리의 햇빛 조건·현재 계절 네 가지를 기본 주기에 반영해 자동으로 늘리고 줄입니다 — 예를 들어 그늘 자리는 +30%, 여름 생장기는 -20%처럼 조정 폭이 정해져 있습니다. 계산과 급수 기록은 모두 브라우저 안에서만 처리되어 입력한 식물 정보가 외부 서버로 나가지 않으며, 설치나 회원가입 없이 무료로 한국어로 씁니다.</p>
+        <p>화분 식물이 죽는 가장 흔한 원인은 물 부족이 아니라 물을 너무 자주 줘서 생기는 과습입니다. 흙이 늘 젖어 있으면 흙 속 공기층이 사라져 뿌리가 숨을 쉬지 못하고, 이 상태가 이어지면 뿌리 끝부터 물러 썩는 근부병(뿌리썩음)으로 번집니다. 문제는 초기 증상이 물 부족과 헷갈린다는 점인데, 감별 포인트는 이렇습니다 — 물이 부족하면 잎이 시들면서 가장자리가 바삭하게 마르고, 과습이면 잎이 누렇게 늘어지며 흙에서 물비린내나 곰팡이 냄새가 납니다. 그래서 달력 날짜보다 겉흙이 말랐는지가 늘 우선하는 기준이고, 이 도구의 D-day도 그 확인을 대신하는 것이 아니라 &#39;이쯤 확인해 보라&#39;는 신호선입니다.</p>
     <p>한국은 계절 편차가 커서 이 판단이 특히 중요합니다. 봄·여름 생장기에는 증산이 빨라 자주, 겨울에는 훨씬 드물게 줘야 하는데, 겨울에 느려지는 성격은 식물군마다 다릅니다. 다육 식물·구근류는 생장을 멈추는 &#39;휴면&#39;에 들어가 물을 거의 끊다시피 해야 하고, 몬스테라·스킨답서스 같은 열대 관엽은 휴면이라기보다 광량이 줄어 생장이 둔해지는 것이라 완전히 끊지는 않되 간격만 늘립니다. 여기에 국내 겨울 난방 실내는 습도가 20~40%까지 떨어져(국립원예특작과학원이 권장하는 실내 적정 습도 40~60%보다 한참 낮습니다) 겉흙이 예상보다 빨리 마르고, 반대로 기상청 기준 6월 하순~7월 하순 장마철에는 습도가 높아 흙이 잘 마르지 않으므로 이 시기엔 간격을 며칠 더 벌려 잡는 편이 안전합니다.</p>
     <p>[계절·환경별 기본 주기 조정] — 간접광·중형 화분·봄을 100% 기준으로</p>
     <table class="rt"><thead><tr><th>조건</th><th>조정 폭</th></tr></thead><tbody><tr><td>여름 생장기</td><td>-20%</td></tr><tr><td>겨울(열대 관엽, 광량 저하)</td><td>+30~40%</td></tr><tr><td>겨울(다육·구근 휴면)</td><td>+50% 이상</td></tr><tr><td>직사광 자리</td><td>-20%</td></tr><tr><td>그늘 자리</td><td>+30%</td></tr><tr><td>대형 화분(지름 20cm 이상)</td><td>+2~3일</td></tr><tr><td>소형 화분(지름 10cm 이하)</td><td>-1~2일</td></tr><tr><td>토분 재질(선택 입력 시)</td><td>-2~3일</td></tr></tbody></table>
     <p>[도구가 자동 반영하는 변수 / 반영하지 못하는 변수]</p>
     <table class="rt"><thead><tr><th>자동 반영</th><th>반영 못 함 → 겉흙으로 직접 확인</th></tr></thead><tbody><tr><td>식물종, 화분 크기</td><td>실내 온도</td></tr><tr><td>햇빛 조건, 계절(기기 날짜)</td><td>실내 습도·통풍</td></tr><tr><td>화분 재질(선택 입력)</td><td>최근 분갈이·개별 생육 상태</td></tr></tbody></table>
     <p>이렇게 온도·습도·통풍처럼 자동으로 알 수 없는 변수가 남기 때문에, D-day가 떠도 마지막엔 손가락으로 겉흙을 확인한다는 원칙 하나만 기억해 두면 됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li><p>내장 23종은 국내에서 검색량·유통량이 많은 초보 인기종 위주로 골랐습니다. 관엽식물(스킨답서스·몬스테라·스파티필름·고무나무·벵갈고무나무·파키라·홍콩야자·아이비·필로덴드론·칼라데아·마란타·관음죽), 야자류(아레카야자·테이블야자), 다육·선인장(다육 식물·선인장·스투키·알로에), 공기정화·기타(산세베리아·개운죽·행운목), 허브(로즈마리·바질)로 나뉩니다. 대표 6종의 가이드 밀도는 이렇습니다.</p>

@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">12개 문항에 답하면 나의 연애 유형과 잘 맞는 상대 유형을 알려주는 심리 테스트입니다.</p>
     <a class="cta" href="https://dydrms-love-style-test.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>연애 스타일 테스트 소개</h2>
-    <p>12개 문항에 답하면 나의 연애 유형과 잘 맞는 상대 유형을 알려주는 심리 테스트입니다. 8가지 연애 유형 중 내 성향이 어디에 해당하는지 확인하고, 찰떡 궁합과 환장 궁합도 함께 볼 수 있어 연인이나 썸 상대와 비교해 보기 좋습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 12개 문항에 답하면 나의 연애 유형과 잘 맞는 상대 유형을 알려주는 심리 테스트입니다.</li>
+        <li><b>이럴 때</b> 새로 사귄 연인과 서로의 연애 스타일이 어떻게 다른지 자연스럽게 대화 주제로 꺼낼 때 활용하면, 민감한 주제를 유연하게 꺼내는 계기가 됩니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>찰떡 궁합과 환장 궁합 유형을 살펴봅니다.</li>
         <li>결과를 공유해 연인이나 친구와 각자 유형을 비교해 봅니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>연애 스타일은 심리학에서 애착 이론(attachment theory)과 밀접하게 연결됩니다. 존 볼비와 메리 에인즈워스의 연구를 출발점으로, 사람마다 어린 시절 형성된 애착 패턴이 성인이 되어서도 친밀한 관계에서 나타난다는 개념입니다. 안정형, 불안형, 회피형 같은 유형 분류가 대표적이며, 이를 연애 맥락에 맞게 다듬은 다양한 심리 테스트가 꾸준히 활용됩니다. 중요한 것은 이러한 유형이 고정된 정체성이 아니라, 상대와 상황에 따라 달라지는 경향성이라는 점입니다.</p>
+    <details class="deep">
+      <summary>연애 스타일 테스트 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>12개 문항에 답하면 나의 연애 유형과 잘 맞는 상대 유형을 알려주는 심리 테스트입니다. 8가지 연애 유형 중 내 성향이 어디에 해당하는지 확인하고, 찰떡 궁합과 환장 궁합도 함께 볼 수 있어 연인이나 썸 상대와 비교해 보기 좋습니다.</p>
+        <p>연애 스타일은 심리학에서 애착 이론(attachment theory)과 밀접하게 연결됩니다. 존 볼비와 메리 에인즈워스의 연구를 출발점으로, 사람마다 어린 시절 형성된 애착 패턴이 성인이 되어서도 친밀한 관계에서 나타난다는 개념입니다. 안정형, 불안형, 회피형 같은 유형 분류가 대표적이며, 이를 연애 맥락에 맞게 다듬은 다양한 심리 테스트가 꾸준히 활용됩니다. 중요한 것은 이러한 유형이 고정된 정체성이 아니라, 상대와 상황에 따라 달라지는 경향성이라는 점입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>지금 사귀는 상대나 이상형을 떠올리며 답하기보다 &#39;평소 연애에서 내가 어떻게 행동하는지&#39;를 기준으로 답해야 더 정확한 결과가 나옵니다.</li>

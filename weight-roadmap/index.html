@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">현재 체중·목표 체중·주당 감량 속도(0.3·0.5·1kg 등)를 넣으면 목표에 &#39;언제 도달하는지&#39;를 실제 달력 날짜로 환산해 주는 도구입니다.</p>
     <a class="cta" href="https://weight-roadmap.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>감량로드맵 소개</h2>
-    <p>현재 체중·목표 체중·주당 감량 속도(0.3·0.5·1kg 등)를 넣으면 목표에 &#39;언제 도달하는지&#39;를 실제 달력 날짜로 환산해 주는 도구입니다. 간판 기능은 속도별 도달 날짜 역산으로, 예컨대 8kg을 빼려 할 때 주당 1kg이면 약 8주 뒤(9월 초), 0.5kg이면 약 16주 뒤(11월 초), 0.3kg이면 약 27주 뒤(이듬해 1월)로 도달일이 크게 벌어지는데, 이 차이를 한눈에 비교해 무리한 계획인지 미리 가늠할 수 있습니다. 계산은 체지방 1kg을 약 7,700kcal로 보는 에너지 수지를 거꾸로 풀어(총 결핍량 → 소요일 → 달력 날짜) 이뤄집니다. 표준체중과 BMI는 목표 구간을 잡을 때 참고하도록 표시만 하고, 기초대사량(BMR)·하루 소비량(TDEE)·하루 권장 칼로리는 목표 속도를 역산하기 위해 이 도구가 직접 계산합니다. 매일 체중을 기록하면 7일 이동평균 추세선으로 하루하루 숫자에 흔들리지 않고 방향을 추적할 수 있어, 다이어트를 시작하기 전 목표가 현실적인지 날짜로 확인하는 데 도움이 됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 현재 체중·목표 체중·주당 감량 속도(0.3·0.5·1kg 등)를 넣으면 목표에 &#39;언제 도달하는지&#39;를 실제 달력 날짜로 환산해 주는 도구입니다.</li>
+        <li><b>이럴 때</b> 결혼식·바디프로필·건강검진은 물론, 명절 뒤 체중 관리나 여름 휴가·수능 후·입대 전처럼 날짜가 고정된 이벤트를 앞두고 &#39;남은 기간에 몇 kg까지 현실적인지&#39;를 날짜로 역산해 보고 싶은 사람. 예를 들어 3개월(약 13주) 뒤 행사라면 주당 0.5kg 기준 약 6.5kg이 현실적 상한선임을 도달일과 함께 확인할 수 있고, 수능(11월 중순)을 마치고 이듬해 3월 입대 전까지처럼 시작·마감이 정해진 구간도 남은 주차로 속도를 거꾸로 잡을 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -143,8 +162,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>매일 기상 직후 공복·배변 후 같은 조건에서 잰 체중을 입력해 추세 그래프에 누적합니다. 조건을 통일해야 수분 변동에 따른 하루치 출렁임이 걸러지고, 도구가 그려 주는 7일 이동평균선이 의미를 갖습니다.</li>
         <li>진척 카드(이미지)를 저장하거나 링크로 공유해 동기로 삼습니다. 카드에는 예를 들어 &#39;목표 60kg · 예상 도달 2026-11-03 · D-112 · 최근 4주 추세 −1.8kg&#39;처럼 목표·도달일·남은 일수·최근 추세가 한눈에 요약됩니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>이 도구의 계산 뼈대는 &#39;에너지 수지 → 총 결핍량 → 소요일 → 달력상 도달일&#39;로 이어지는 역산입니다. 체지방 1kg은 약 7,700kcal에 해당하므로, 현재 체중과 목표 체중의 차이(예: 8kg)에 7,700을 곱하면 필요한 총 결핍량(약 61,600kcal)이 나오고, 이를 선택한 속도가 만드는 하루 결핍으로 나누면 소요 일수가, 오늘 날짜에 더하면 예상 도달일이 됩니다. 그래서 목표는 그대로 두고 주당 속도만 바꿔도 소요 일수가 달라져 도달 날짜가 앞뒤로 이동합니다. 감량이 진행되면 몸은 부족한 에너지를 저장분에서 끌어다 쓰는데, 체지방만 순수하게 빠지는 것이 아니라 근육과 글리코겐(및 결합된 수분)도 함께 줄어, 급격할수록 근육 손실 비중이 커집니다. 하루 약 500kcal를 덜 섭취(또는 더 소비)하면 1주에 약 3,500kcal, 곧 3,500÷7,700≒0.45kg이 줄어드는 셈이고, 이를 편의상 &#39;주당 0.5kg&#39;으로 반올림해 표기합니다. 초반에 빨리 줄다 완만해지는 것도 글리코겐에 붙어 있던 수분이 먼저 빠지기 때문입니다. 함께 표시되는 국내 기준으로, 대한비만학회는 BMI 25 이상을 비만으로 봅니다. 서구(30 이상)보다 낮은 지점에서 관리를 권고하는 이유는, 같은 BMI라도 아시아인은 내장지방이 잘 쌓여 당뇨·고혈압 같은 대사질환 위험이 더 높기 때문입니다(국가건강검진에서도 허리둘레 남 90cm·여 85cm 이상을 복부비만으로 봅니다). 표준체중은 키(m)²×22, 하루 권장 칼로리는 Mifflin-St Jeor 공식을 바탕으로 하며, 진료지침은 &#39;초기 체중의 5~10%를 6개월 내 감량&#39;을 현실적 1차 목표로 제시합니다. 다만 7,700kcal 규칙은 이론값이라 실제 속도는 이보다 느려지는 경향이 있는데, 그 원리(대사적응)와 폭은 아래 유의사항에 정리했습니다.</p>
+    <details class="deep">
+      <summary>감량로드맵 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>현재 체중·목표 체중·주당 감량 속도(0.3·0.5·1kg 등)를 넣으면 목표에 &#39;언제 도달하는지&#39;를 실제 달력 날짜로 환산해 주는 도구입니다. 간판 기능은 속도별 도달 날짜 역산으로, 예컨대 8kg을 빼려 할 때 주당 1kg이면 약 8주 뒤(9월 초), 0.5kg이면 약 16주 뒤(11월 초), 0.3kg이면 약 27주 뒤(이듬해 1월)로 도달일이 크게 벌어지는데, 이 차이를 한눈에 비교해 무리한 계획인지 미리 가늠할 수 있습니다. 계산은 체지방 1kg을 약 7,700kcal로 보는 에너지 수지를 거꾸로 풀어(총 결핍량 → 소요일 → 달력 날짜) 이뤄집니다. 표준체중과 BMI는 목표 구간을 잡을 때 참고하도록 표시만 하고, 기초대사량(BMR)·하루 소비량(TDEE)·하루 권장 칼로리는 목표 속도를 역산하기 위해 이 도구가 직접 계산합니다. 매일 체중을 기록하면 7일 이동평균 추세선으로 하루하루 숫자에 흔들리지 않고 방향을 추적할 수 있어, 다이어트를 시작하기 전 목표가 현실적인지 날짜로 확인하는 데 도움이 됩니다.</p>
+        <p>이 도구의 계산 뼈대는 &#39;에너지 수지 → 총 결핍량 → 소요일 → 달력상 도달일&#39;로 이어지는 역산입니다. 체지방 1kg은 약 7,700kcal에 해당하므로, 현재 체중과 목표 체중의 차이(예: 8kg)에 7,700을 곱하면 필요한 총 결핍량(약 61,600kcal)이 나오고, 이를 선택한 속도가 만드는 하루 결핍으로 나누면 소요 일수가, 오늘 날짜에 더하면 예상 도달일이 됩니다. 그래서 목표는 그대로 두고 주당 속도만 바꿔도 소요 일수가 달라져 도달 날짜가 앞뒤로 이동합니다. 감량이 진행되면 몸은 부족한 에너지를 저장분에서 끌어다 쓰는데, 체지방만 순수하게 빠지는 것이 아니라 근육과 글리코겐(및 결합된 수분)도 함께 줄어, 급격할수록 근육 손실 비중이 커집니다. 하루 약 500kcal를 덜 섭취(또는 더 소비)하면 1주에 약 3,500kcal, 곧 3,500÷7,700≒0.45kg이 줄어드는 셈이고, 이를 편의상 &#39;주당 0.5kg&#39;으로 반올림해 표기합니다. 초반에 빨리 줄다 완만해지는 것도 글리코겐에 붙어 있던 수분이 먼저 빠지기 때문입니다. 함께 표시되는 국내 기준으로, 대한비만학회는 BMI 25 이상을 비만으로 봅니다. 서구(30 이상)보다 낮은 지점에서 관리를 권고하는 이유는, 같은 BMI라도 아시아인은 내장지방이 잘 쌓여 당뇨·고혈압 같은 대사질환 위험이 더 높기 때문입니다(국가건강검진에서도 허리둘레 남 90cm·여 85cm 이상을 복부비만으로 봅니다). 표준체중은 키(m)²×22, 하루 권장 칼로리는 Mifflin-St Jeor 공식을 바탕으로 하며, 진료지침은 &#39;초기 체중의 5~10%를 6개월 내 감량&#39;을 현실적 1차 목표로 제시합니다. 다만 7,700kcal 규칙은 이론값이라 실제 속도는 이보다 느려지는 경향이 있는데, 그 원리(대사적응)와 폭은 아래 유의사항에 정리했습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>체중은 하루에도 식사·수분·염분·배변에 따라 1~2kg씩 출렁입니다. 매일 같은 조건(기상 직후 공복, 배변 후, 같은 옷차림)에서 재야 이 잡음이 걸러져 추세선이 쓸모 있는 데이터가 됩니다.</li>

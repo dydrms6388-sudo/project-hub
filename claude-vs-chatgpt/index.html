@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">클로드(Claude)와 챗GPT(ChatGPT) 중 한국인에게는 어느 쪽이 더 맞을까요?</p>
     <a class="cta" href="https://claude.ai/referral/S0onO3A10w?s=ios" target="_blank" rel="noopener">무료체험으로 직접 비교하기 →</a>
   </div>
-  <section class="about"><h2>클로드 vs 챗GPT 비교 — 한국인 관점 가이드 소개</h2>
-    <p>클로드(Claude)와 챗GPT(ChatGPT) 중 한국인에게는 어느 쪽이 더 맞을까요? 두 AI 모두 뛰어나지만, 한국어 문장의 자연스러움·긴 문서 처리·결과물을 바로 만들어주는 편의성에서는 클로드가 강점을 보입니다. 이 글은 한국어 사용자 관점에서 두 AI를 비교하고, 클로드 프로를 무료로 체험할 수 있는 추천 링크를 안내합니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 클로드(Claude)와 챗GPT(ChatGPT) 중 한국인에게는 어느 쪽이 더 맞을까요?</li>
+        <li><b>이럴 때</b> 이메일·제안서·보고서 같은 한국어 글쓰기가 많아 문장의 자연스러움이 중요한 작업.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,10 +160,15 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>긴 문서(회의록·계약서·논문)를 통째로 넣고 요약·질문을 시도해 봅니다.</li>
         <li>무료체험 기간 동안 실전에 써본 뒤, 내 작업에 더 맞는 쪽을 정합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>클로드는 안스로픽(Anthropic), 챗GPT는 오픈AI(OpenAI)가 만들었습니다. 두 서비스 모두 문장 생성·요약·번역·코딩을 두루 다루지만 설계 철학과 강점이 다릅니다. 클로드는 ‘정직하고 안전한 답변’을, 챗GPT는 ‘넓은 활용 범위와 생태계’를 강조하는 경향이 있습니다.</p>
+    <details class="deep">
+      <summary>클로드 vs 챗GPT 비교 — 한국인 관점 가이드 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>클로드(Claude)와 챗GPT(ChatGPT) 중 한국인에게는 어느 쪽이 더 맞을까요? 두 AI 모두 뛰어나지만, 한국어 문장의 자연스러움·긴 문서 처리·결과물을 바로 만들어주는 편의성에서는 클로드가 강점을 보입니다. 이 글은 한국어 사용자 관점에서 두 AI를 비교하고, 클로드 프로를 무료로 체험할 수 있는 추천 링크를 안내합니다.</p>
+        <p>클로드는 안스로픽(Anthropic), 챗GPT는 오픈AI(OpenAI)가 만들었습니다. 두 서비스 모두 문장 생성·요약·번역·코딩을 두루 다루지만 설계 철학과 강점이 다릅니다. 클로드는 ‘정직하고 안전한 답변’을, 챗GPT는 ‘넓은 활용 범위와 생태계’를 강조하는 경향이 있습니다.</p>
     <p>한국어 사용자에게 가장 체감되는 차이는 문장의 자연스러움과 문맥 유지입니다. 클로드는 존댓말과 뉘앙스를 비교적 자연스럽게 살리고, 긴 문서를 한 번에 넣어도 앞부분의 내용을 잘 기억합니다. 챗GPT는 이미지 생성·다양한 플러그인·GPTs 같은 폭넓은 기능이 강점입니다.</p>
     <p>또 하나의 차이는 결과물의 형태입니다. 클로드는 문서·코드·표를 대화 안에서 바로 ‘아티팩트’로 만들어 저장·수정할 수 있고, 반복 작업은 ‘프로젝트’로 맞춤 설정할 수 있습니다. 어떤 작업을 자주 하느냐에 따라 어느 쪽이 더 편한지가 달라집니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>같은 질문을 두 AI에 각각 던져 답변을 나란히 놓고 비교하면 차이가 가장 명확히 체감됩니다.</li>

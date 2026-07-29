@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">연봉·근무시간·복지·성장·문화·안정성 여섯 가지 항목으로 내 직장을 90초 안에 진단하고, 회사 규모와 연차를 반영해 상위 몇 퍼센트인지 보여주는 직장 자가진단 도구입니다.</p>
     <a class="cta" href="https://company-vs-average.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>우리회사 점수 소개</h2>
-    <p>연봉·근무시간·복지·성장·문화·안정성 여섯 가지 항목으로 내 직장을 90초 안에 진단하고, 회사 규모와 연차를 반영해 상위 몇 퍼센트인지 보여주는 직장 자가진단 도구입니다. 이직을 고민하거나 현재 처우가 객관적으로 어느 수준인지 냉정하게 파악하고 싶은 직장인에게 유용합니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 연봉·근무시간·복지·성장·문화·안정성 여섯 가지 항목으로 내 직장을 90초 안에 진단하고, 회사 규모와 연차를 반영해 상위 몇 퍼센트인지 보여주는 직장 자가진단 도구입니다.</li>
+        <li><b>이럴 때</b> 이직 제안을 받았는데 현재 직장과 어느 쪽이 더 나은지 감정이 아닌 수치로 비교하고 싶을 때.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>결과 화면에서 항목별 점수, 레이더 차트, 이직 신호등을 확인합니다.</li>
         <li>이전 직장이나 다른 오퍼와 비교 기능으로 의사결정 근거를 추가합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>직장 만족도는 연봉 하나로 설명되지 않습니다. 고용노동부가 발표하는 사업체 노동력 조사에 따르면 임금 수준보다 근무시간·문화·성장 기회가 이직 의향에 더 강한 영향을 미치는 경우도 많습니다. 또한 같은 연봉이라도 대기업·중소기업·스타트업은 복지·고용 안정성·성장 궤도가 크게 다르기 때문에 단순 비교보다 규모와 연차를 보정한 비교가 의미 있습니다. 이직 결정을 내릴 때 &#39;현재 직장이 실제로 어떤 수준인지&#39;를 수치로 파악해두면 감정적 판단이 아닌 근거 있는 선택을 할 수 있습니다.</p>
+    <details class="deep">
+      <summary>우리회사 점수 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>연봉·근무시간·복지·성장·문화·안정성 여섯 가지 항목으로 내 직장을 90초 안에 진단하고, 회사 규모와 연차를 반영해 상위 몇 퍼센트인지 보여주는 직장 자가진단 도구입니다. 이직을 고민하거나 현재 처우가 객관적으로 어느 수준인지 냉정하게 파악하고 싶은 직장인에게 유용합니다.</p>
+        <p>직장 만족도는 연봉 하나로 설명되지 않습니다. 고용노동부가 발표하는 사업체 노동력 조사에 따르면 임금 수준보다 근무시간·문화·성장 기회가 이직 의향에 더 강한 영향을 미치는 경우도 많습니다. 또한 같은 연봉이라도 대기업·중소기업·스타트업은 복지·고용 안정성·성장 궤도가 크게 다르기 때문에 단순 비교보다 규모와 연차를 보정한 비교가 의미 있습니다. 이직 결정을 내릴 때 &#39;현재 직장이 실제로 어떤 수준인지&#39;를 수치로 파악해두면 감정적 판단이 아닌 근거 있는 선택을 할 수 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>연봉은 세전 기본급 외에 성과급·인센티브·주식 보상을 포함한 실수령 기준으로 입력해야 다른 조건과 비교 시 더 의미 있는 결과가 나옵니다.</li>

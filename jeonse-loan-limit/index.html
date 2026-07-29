@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">전세 계약 전 내가 실제로 얼마까지 대출받을 수 있는지 미리 파악해두면 협상과 자금 계획이 훨씬 수월합니다.</p>
     <a class="cta" href="https://jeonse-loan-eligibility.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>전세대출되나 (전세자금대출 한도 계산기) 소개</h2>
-    <p>전세 계약 전 내가 실제로 얼마까지 대출받을 수 있는지 미리 파악해두면 협상과 자금 계획이 훨씬 수월합니다. 소득·보증금·지역·나이를 입력하면 버팀목·청년전용·신생아 특례·시중은행 전세자금대출의 추정 한도와 예상 금리를 한눈에 비교할 수 있습니다. DSR 기준과 주거 유형 차이까지 반영해 어떤 상품이 내 상황에 가장 유리한지 빠르게 확인하는 데 유용합니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 전세 계약 전 내가 실제로 얼마까지 대출받을 수 있는지 미리 파악해두면 협상과 자금 계획이 훨씬 수월합니다.</li>
+        <li><b>이럴 때</b> 처음 전세 계약을 앞두고 내가 신청할 수 있는 정책 대출 상품이 어떤 것들이 있는지, 한도와 금리는 어느 정도인지 한 번에 비교하고 싶을 때.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>금리가 낮은 순으로 추천 상품과 최대 한도를 확인한다.</li>
         <li>여러 시나리오를 저장하거나 링크로 공유해 배우자나 가족과 함께 검토한다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>전세자금대출은 크게 주택도시기금을 재원으로 하는 정책 상품(버팀목·청년전용·신생아 특례 등)과 시중은행 자체 상품으로 나뉩니다. 정책 상품은 소득 기준, 자산 기준, 주택 규모 제한이 있는 대신 금리가 낮은 것이 특징입니다. DSR(총부채원리금상환비율)은 연간 모든 대출의 원리금 합계가 연소득에서 차지하는 비율로, 이 비율이 일정 기준을 초과하면 대출 한도가 줄어들거나 거절될 수 있습니다. 전세자금대출 자체도 DSR에 포함되므로, 기존에 다른 대출이 있다면 추가 대출 여력이 달라집니다. 대출 한도는 일반적으로 보증금의 70~80% 이내에서 설정되며, 전세보증보험 가입 여부에 따라 조건이 달라지기도 합니다.</p>
+    <details class="deep">
+      <summary>전세대출되나 (전세자금대출 한도 계산기) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>전세 계약 전 내가 실제로 얼마까지 대출받을 수 있는지 미리 파악해두면 협상과 자금 계획이 훨씬 수월합니다. 소득·보증금·지역·나이를 입력하면 버팀목·청년전용·신생아 특례·시중은행 전세자금대출의 추정 한도와 예상 금리를 한눈에 비교할 수 있습니다. DSR 기준과 주거 유형 차이까지 반영해 어떤 상품이 내 상황에 가장 유리한지 빠르게 확인하는 데 유용합니다.</p>
+        <p>전세자금대출은 크게 주택도시기금을 재원으로 하는 정책 상품(버팀목·청년전용·신생아 특례 등)과 시중은행 자체 상품으로 나뉩니다. 정책 상품은 소득 기준, 자산 기준, 주택 규모 제한이 있는 대신 금리가 낮은 것이 특징입니다. DSR(총부채원리금상환비율)은 연간 모든 대출의 원리금 합계가 연소득에서 차지하는 비율로, 이 비율이 일정 기준을 초과하면 대출 한도가 줄어들거나 거절될 수 있습니다. 전세자금대출 자체도 DSR에 포함되므로, 기존에 다른 대출이 있다면 추가 대출 여력이 달라집니다. 대출 한도는 일반적으로 보증금의 70~80% 이내에서 설정되며, 전세보증보험 가입 여부에 따라 조건이 달라지기도 합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>버팀목전세대출은 부부 합산 소득 기준이 적용되므로, 맞벌이 부부는 합산 소득으로 입력해야 정확한 결과가 나옵니다.</li>
@@ -169,7 +193,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="related">
     <h2>관련 서비스</h2>
     <div class="rel-grid"><a class="rel" href="/pyeong-converter-plus/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 평수변환플러스</a>
-      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 연봉상위 (SalaryRank)</a>
+      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M6 20v-5"/><path d="M12 20V6"/><path d="M18 20v-9"/></svg></span> 연봉상위 (SalaryRank)</a>
       <a class="rel" href="/cheongyak-score-calc/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 청약가점기</a>
       <a class="rel" href="/salary-net-pay/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 급여실수령 (연봉 실수령액 계산기)</a>
       <a class="rel" href="/dsr-limit-check/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> DSR미리보기 (DSR Check)</a>

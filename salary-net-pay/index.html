@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">세전 연봉을 입력하면 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세 항목별 공제액과 월 실수령액을 한 화면에서 확인할 수 있습니다.</p>
     <a class="cta" href="https://salary-net-pay.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>급여실수령 (연봉 실수령액 계산기) 소개</h2>
-    <p>세전 연봉을 입력하면 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세 항목별 공제액과 월 실수령액을 한 화면에서 확인할 수 있습니다. 부양가족 수, 비과세 항목, 퇴직금 포함 여부까지 반영해 실제 급여명세서와 가장 가까운 추정치를 제공합니다. 이직 협상이나 연봉 제안을 받았을 때 숫자 근거를 갖추는 데 활용하기 좋습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 세전 연봉을 입력하면 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세 항목별 공제액과 월 실수령액을 한 화면에서 확인할 수 있습니다.</li>
+        <li><b>이럴 때</b> 이직 제안서에 적힌 연봉이 퇴직금 포함인지 별도인지 불분명할 때, 두 가지 조건으로 각각 계산해 실제 차이를 숫자로 파악할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>항목별 공제액과 월 실수령액을 확인하세요.</li>
         <li>다른 연봉 금액을 추가 입력해 시나리오를 나란히 비교하세요.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>근로소득자의 실수령액은 4대 보험료와 근로소득세, 지방소득세가 공제된 후 남는 금액입니다. 국민연금은 기준소득월액에 9%(근로자 4.5%)를, 건강보험은 보험료율에 따라 매년 달라지며 장기요양보험료는 건강보험료의 일정 비율로 부과됩니다. 소득세는 부양가족 수에 따라 간이세액표를 적용하며, 비과세 항목(식대·차량유지비 등)은 과세 대상 금액에서 빠지기 때문에 실수령액이 달라집니다. 퇴직금을 연봉에 포함해 표시하는 경우도 있어, 제안받은 금액이 퇴직금 별도인지 포함인지 확인하는 것이 중요합니다.</p>
+    <details class="deep">
+      <summary>급여실수령 (연봉 실수령액 계산기) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>세전 연봉을 입력하면 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세 항목별 공제액과 월 실수령액을 한 화면에서 확인할 수 있습니다. 부양가족 수, 비과세 항목, 퇴직금 포함 여부까지 반영해 실제 급여명세서와 가장 가까운 추정치를 제공합니다. 이직 협상이나 연봉 제안을 받았을 때 숫자 근거를 갖추는 데 활용하기 좋습니다.</p>
+        <p>근로소득자의 실수령액은 4대 보험료와 근로소득세, 지방소득세가 공제된 후 남는 금액입니다. 국민연금은 기준소득월액에 9%(근로자 4.5%)를, 건강보험은 보험료율에 따라 매년 달라지며 장기요양보험료는 건강보험료의 일정 비율로 부과됩니다. 소득세는 부양가족 수에 따라 간이세액표를 적용하며, 비과세 항목(식대·차량유지비 등)은 과세 대상 금액에서 빠지기 때문에 실수령액이 달라집니다. 퇴직금을 연봉에 포함해 표시하는 경우도 있어, 제안받은 금액이 퇴직금 별도인지 포함인지 확인하는 것이 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>식대 비과세는 근로계약서나 사규에 명시된 경우에만 적용되므로 본인 상황을 확인한 뒤 선택하세요.</li>
@@ -172,7 +196,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="related">
     <h2>관련 서비스</h2>
     <div class="rel-grid"><a class="rel" href="/pyeong-converter-plus/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 평수변환플러스</a>
-      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 연봉상위 (SalaryRank)</a>
+      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M6 20v-5"/><path d="M12 20V6"/><path d="M18 20v-9"/></svg></span> 연봉상위 (SalaryRank)</a>
       <a class="rel" href="/cheongyak-score-calc/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 청약가점기</a>
       <a class="rel" href="/jeonse-loan-limit/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 전세대출되나 (전세자금대출 한도 계산기)</a>
       <a class="rel" href="/dsr-limit-check/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> DSR미리보기 (DSR Check)</a>

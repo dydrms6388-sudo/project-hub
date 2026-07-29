@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">상황에 딱 맞는 인사말 문구를 상대·말투에 맞게 골라주는 무료 도구.</p>
     <a class="cta" href="https://dydrms-malseonmul.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>말선물 소개</h2>
-    <p>상황에 딱 맞는 인사말 문구를 상대·말투에 맞게 골라주는 무료 도구. ①상황 8종(명절·안부, 축하, 감사, 위로·문상, 사과, 비즈니스·이메일, 응원·격려, 짧은 카드 문구)×세부 40여 상황에서 손으로 쓴 200+개 문구 ②말투 선택(정중·격식/따뜻하게/담백·친근/유쾌하게)과 받는분 호칭·보내는 나 이름을 넣으면 바로 쓰는 문장으로 자동 완성(슬롯 치환) ③추석·설날·새해·어버이날·수능 등 오늘 날짜 기준 시즌 스포트라이트로 지금 검색 몰리는 인사말 즉시 추천 ④결정적 셔플로 다른 문구 다시 뽑기, 문구 도감 전체 브라우징 ⑤마음에 드는 문구 보관함(localStorage 리텐션)·원탭 복사·공유. 무가입·무백엔드·100% 브라우저 처리.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 상황에 딱 맞는 인사말 문구를 상대·말투에 맞게 골라주는 무료 도구.</li>
+        
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     
     <h2>이렇게 사용하세요</h2>
@@ -133,7 +152,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>안내에 따라 값을 입력하거나 항목을 선택합니다.</li>
         <li>결과를 확인하고 필요하면 저장·공유합니다.</li>
     </ol>
-    
+    <details class="deep">
+      <summary>말선물 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>상황에 딱 맞는 인사말 문구를 상대·말투에 맞게 골라주는 무료 도구. ①상황 8종(명절·안부, 축하, 감사, 위로·문상, 사과, 비즈니스·이메일, 응원·격려, 짧은 카드 문구)×세부 40여 상황에서 손으로 쓴 200+개 문구 ②말투 선택(정중·격식/따뜻하게/담백·친근/유쾌하게)과 받는분 호칭·보내는 나 이름을 넣으면 바로 쓰는 문장으로 자동 완성(슬롯 치환) ③추석·설날·새해·어버이날·수능 등 오늘 날짜 기준 시즌 스포트라이트로 지금 검색 몰리는 인사말 즉시 추천 ④결정적 셔플로 다른 문구 다시 뽑기, 문구 도감 전체 브라우징 ⑤마음에 드는 문구 보관함(localStorage 리텐션)·원탭 복사·공유. 무가입·무백엔드·100% 브라우저 처리.</p>
+        
+      </div>
+    </details>
     
     
     
@@ -147,7 +172,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="related">
     <h2>관련 서비스</h2>
     <div class="rel-grid"><a class="rel" href="/pyeong-converter-plus/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 평수변환플러스</a>
-      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 연봉상위 (SalaryRank)</a>
+      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M6 20v-5"/><path d="M12 20V6"/><path d="M18 20v-9"/></svg></span> 연봉상위 (SalaryRank)</a>
       <a class="rel" href="/cheongyak-score-calc/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 청약가점기</a>
       <a class="rel" href="/jeonse-loan-limit/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 전세대출되나 (전세자금대출 한도 계산기)</a>
       <a class="rel" href="/salary-net-pay/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 급여실수령 (연봉 실수령액 계산기)</a>

@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">전역각은 입대일과 군별을 입력하면 전역일 D-day, 복무 진행률, 진급 타임라인, 봉급 누적 추정액, 정기휴가 일정을 한 화면에 보여주는 복무 기간 안내 도구입니다.</p>
     <a class="cta" href="https://dydrms-jeonyeokgak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>전역각 소개</h2>
-    <p>전역각은 입대일과 군별을 입력하면 전역일 D-day, 복무 진행률, 진급 타임라인, 봉급 누적 추정액, 정기휴가 일정을 한 화면에 보여주는 복무 기간 안내 도구입니다. 복무 중인 장병 본인은 물론, 기다리는 가족이나 연인도 공유 링크로 함께 카운트다운할 수 있습니다. 직접 계산하지 않아도 주요 일정을 한눈에 파악할 수 있어 복무 계획을 세우는 데 도움이 됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 전역각은 입대일과 군별을 입력하면 전역일 D-day, 복무 진행률, 진급 타임라인, 봉급 누적 추정액, 정기휴가 일정을 한 화면에 보여주는 복무 기간 안내 도구입니다.</li>
+        <li><b>이럴 때</b> 입대 전 가족에게 링크를 보내두면, 부모님도 오늘 기준 D-day를 별도 계산 없이 실시간으로 확인할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>봉급 누적 추정액과 장병내일준비적금 매칭 정보를 살펴봅니다.</li>
         <li>공유 링크를 생성해 가족이나 연인에게 전달합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>대한민국 병역 의무자는 군별에 따라 복무 기간이 다릅니다. 육군·해병대는 18개월, 해군은 20개월, 공군은 21개월이 현행 기준이며, 사회복무요원은 21개월입니다. 진급은 입대 후 이병·일병·상병·병장 순서로 이루어지며, 각 계급 체류 기간이 정해져 있습니다. 병 봉급은 매년 국방부 예산에 따라 책정되며, 장병내일준비적금은 월 최대 40만 원 납입 시 정부가 추가 매칭 지원을 하는 제도입니다. 복무 중 금전 계획을 세우려면 봉급 추이와 적금 정보를 함께 파악하는 것이 유리합니다.</p>
+    <details class="deep">
+      <summary>전역각 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>전역각은 입대일과 군별을 입력하면 전역일 D-day, 복무 진행률, 진급 타임라인, 봉급 누적 추정액, 정기휴가 일정을 한 화면에 보여주는 복무 기간 안내 도구입니다. 복무 중인 장병 본인은 물론, 기다리는 가족이나 연인도 공유 링크로 함께 카운트다운할 수 있습니다. 직접 계산하지 않아도 주요 일정을 한눈에 파악할 수 있어 복무 계획을 세우는 데 도움이 됩니다.</p>
+        <p>대한민국 병역 의무자는 군별에 따라 복무 기간이 다릅니다. 육군·해병대는 18개월, 해군은 20개월, 공군은 21개월이 현행 기준이며, 사회복무요원은 21개월입니다. 진급은 입대 후 이병·일병·상병·병장 순서로 이루어지며, 각 계급 체류 기간이 정해져 있습니다. 병 봉급은 매년 국방부 예산에 따라 책정되며, 장병내일준비적금은 월 최대 40만 원 납입 시 정부가 추가 매칭 지원을 하는 제도입니다. 복무 중 금전 계획을 세우려면 봉급 추이와 적금 정보를 함께 파악하는 것이 유리합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>장병내일준비적금은 복무 중에만 가입할 수 있습니다. 봉급 정보를 확인한 뒤 가능한 한 빠르게 신청하는 것이 납입 기간을 최대한 활용하는 방법입니다.</li>

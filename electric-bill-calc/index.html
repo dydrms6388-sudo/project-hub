@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">에어컨·냉장고·세탁기 등 가전제품의 하루 사용 시간을 입력하면 이번 달 예상 전기요금을 추정해 주는 시뮬레이터입니다.</p>
     <a class="cta" href="https://dydrms-power-bill.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>전기요금시뮬 소개</h2>
-    <p>에어컨·냉장고·세탁기 등 가전제품의 하루 사용 시간을 입력하면 이번 달 예상 전기요금을 추정해 주는 시뮬레이터입니다. 누진제 구간과 부가세, 전력산업기반기금까지 반영해 실제 고지서와 비슷한 수준의 금액을 가늠할 수 있습니다. 냉방 철에 요금이 걱정될 때나 절전 효과를 미리 확인하고 싶을 때 활용하세요.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 에어컨·냉장고·세탁기 등 가전제품의 하루 사용 시간을 입력하면 이번 달 예상 전기요금을 추정해 주는 시뮬레이터입니다.</li>
+        <li><b>이럴 때</b> 여름철 에어컨을 하루 몇 시간 틀어야 누진 2구간을 넘지 않을지 미리 확인하고 싶을 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>추정 월 사용량(kWh)과 누진 구간별 요금 내역을 확인합니다.</li>
         <li>특정 기기의 사용 시간을 줄여 절전 효과를 시뮬레이션합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>국내 가정용 전기요금은 단순 사용량 단가에 더해 기본요금·부가세(10%)·전력산업기반기반기금(약 3.7%)이 포함된 구조입니다. 특히 누진제가 적용되어 사용량이 많아질수록 구간별 단가가 높아지는 방식이어서, 여름철에 에어컨 사용이 늘면 요금이 가파르게 오를 수 있습니다. 한전의 단가와 기본요금 체계는 정기적으로 조정되므로 최신 고지서나 한국전력 공식 홈페이지에서 현행 기준을 확인하는 것이 정확합니다. 에너지 소비효율 등급은 제품 앞면에 표시되며, 1등급 제품은 5등급 제품 대비 전력 소비를 30~40% 줄일 수 있습니다.</p>
+    <details class="deep">
+      <summary>전기요금시뮬 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>에어컨·냉장고·세탁기 등 가전제품의 하루 사용 시간을 입력하면 이번 달 예상 전기요금을 추정해 주는 시뮬레이터입니다. 누진제 구간과 부가세, 전력산업기반기금까지 반영해 실제 고지서와 비슷한 수준의 금액을 가늠할 수 있습니다. 냉방 철에 요금이 걱정될 때나 절전 효과를 미리 확인하고 싶을 때 활용하세요.</p>
+        <p>국내 가정용 전기요금은 단순 사용량 단가에 더해 기본요금·부가세(10%)·전력산업기반기반기금(약 3.7%)이 포함된 구조입니다. 특히 누진제가 적용되어 사용량이 많아질수록 구간별 단가가 높아지는 방식이어서, 여름철에 에어컨 사용이 늘면 요금이 가파르게 오를 수 있습니다. 한전의 단가와 기본요금 체계는 정기적으로 조정되므로 최신 고지서나 한국전력 공식 홈페이지에서 현행 기준을 확인하는 것이 정확합니다. 에너지 소비효율 등급은 제품 앞면에 표시되며, 1등급 제품은 5등급 제품 대비 전력 소비를 30~40% 줄일 수 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>에어컨 설정 온도를 1도 올리면 전력 소비를 약 7% 줄일 수 있다고 알려져 있으니, 온도 조정이 가장 효과적인 절전 방법입니다.</li>

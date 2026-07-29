@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -118,13 +131,19 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 <div class="wrap">
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">금융·부동산</span> <span class="sep">›</span> <span class="c-cur">연봉상위 (SalaryRank)</span></nav>
   <div class="hero">
-    <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></div>
+    <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M6 20v-5"/><path d="M12 20V6"/><path d="M18 20v-9"/></svg></div>
     <h1>연봉상위 (SalaryRank)</h1>
     <p class="lead">세전 연봉(연간 총급여)만 넣으면 내 소득이 전체 근로소득자 중 상위 몇 %인지 즉시 알려주는 도구입니다.</p>
     <a class="cta" href="https://dydrms-salary-rank.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>연봉상위 (SalaryRank) 소개</h2>
-    <p>세전 연봉(연간 총급여)만 넣으면 내 소득이 전체 근로소득자 중 상위 몇 %인지 즉시 알려주는 도구입니다. 국세청이 공개하는 근로소득 백분위 분포에 입력 금액을 대입해 순위를 백분위로 환산합니다. 기준 자료는 2023년 귀속(2024년 12월 공개) 근로소득 연말정산 통계이며, 이하 이 문서에서 다루는 모든 금액과 순위는 &#39;세전 총급여, 연말정산 신고인원 약 2,085만 명&#39; 기준입니다. 결과 화면은 (1) 전체 근로소득자 중 상위 %, (2) 같은 연령대 내 상위 %, (3) 같은 연령대 평균 총급여와의 차액(원), (4) 상위 10%·상위 1% 경계까지 남은 금액을 함께 보여줍니다. 계산은 브라우저 안에서만 이뤄져 입력한 연봉이 서버로 전송되지 않으며, 설치·회원가입 없이 무료로 이용할 수 있고 인터페이스는 한국어로 제공됩니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 세전 연봉(연간 총급여)만 넣으면 내 소득이 전체 근로소득자 중 상위 몇 %인지 즉시 알려주는 도구입니다.</li>
+        <li><b>이럴 때</b> 연봉 협상이나 이직을 앞둔 직장인이 자신의 위치를 수치로 확인할 때 유용합니다. 예컨대 현재 6,000만 원(대략 상위 20%대 초중반, 자료 연도에 따라 경계는 이동)에서 8,700만 원을 제안받았다면, 두 금액을 각각 넣어 상위 10% 경계로 올라선다는 사실을 눈으로 확인하고 협상 여지를 가늠할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>금액을 바꿔가며 &#39;연봉이 얼마 오르면 상위 몇 %가 되는지&#39; 같은 시나리오를 비교해 봅니다.</li>
         <li>결과 화면 하단의 [이미지로 저장]·[링크 공유] 버튼을 누르면 &#39;상위 몇 %&#39; 요약 카드만 만들어집니다. 링크를 받은 사람은 입력한 연봉 원본 숫자 없이 순위 요약만 보게 되며, 공유 링크에도 소득 금액이 담기지 않습니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>기준 자료는 국세청이 국세통계포털(TASIS)의 &#39;근로소득&#39; 분류로 공개하는 &#39;근로소득 백분위 현황&#39; 및 더 촘촘한 &#39;근로소득 천분위 현황&#39; 표입니다. 2023년 귀속(2024년 12월 공개) 기준 신고 인원은 약 2,085만 명, 평균 총급여 4,332만 원, 중위 총급여 3,213만 원입니다. 여기서 핵심은 평균이 중위값보다 약 1,120만 원이나 높다는 점입니다.\n\n평균이 중위값보다 이렇게 높은 이유는 소득 분포가 오른쪽으로 길게 늘어진(right-skewed) 형태이기 때문입니다. 소수의 고소득자가 평균을 끌어올리는 반면 대다수는 중위값 근처에 몰려 있어, 소득 분포는 흔히 로그정규분포에 가깝다고 설명됩니다(금액에 로그를 취하면 좌우 대칭 종 모양에 가까워짐). 다만 상위 극소수 구간의 소득 꼬리는 로그정규보다 파레토(멱함수) 분포에 더 가깝게 두껍게 뻗는데, 이 도구가 상위 1%·0.1% 같은 최상위 경계를 별도로 다룰 수 있는 것도 그 때문입니다. 결론적으로 &#39;평균보다 적으니 나는 하위권&#39;이라는 감은 통계적으로 틀릴 때가 많습니다. 평균(4,332만 원)만 받아도 상위 37% 안팎, 중위값(3,213만 원)이면 정확히 상위 50%입니다.\n\n순위 산출 방식도 알아두면 좋습니다. 국세청 원자료는 완전한 백분위 컷오프 표를 항상 통째로 제공하지는 않고, 소득 구간별 인원·금액 형태로 공개하는 부분이 있습니다. 그래서 이 도구의 경계값은 공개된 백분위·천분위 값을 우선 쓰되, 표에 없는 지점은 인접 구간을 선형보간(구간 사이를 직선으로 이어 추정)한 근사치입니다. 뒤에 나오는 상위 10% 약 8,700만 원, 상위 1% 약 1억 8,000만 원 같은 경계도 이런 근사 컷오프이며, 자료 연도나 지표 정의에 따라 수백만 원 단위로 움직일 수 있습니다.\n\n한 가지 꼭 유의할 점은 모집단이 &#39;근로소득 연말정산 신고자&#39;라는 것입니다. 사업소득자, 프리랜서, 임대·금융소득자, 미신고 소득은 빠져 있습니다. 이들 중 고소득 비중이 낮지 않아, 근로소득자만 놓고 계산한 &#39;상위 10%&#39;는 전체 소득자를 포함한 실제 상위 10%보다 낮은 소득 구간일 가능성이 큽니다. 방향과 크기를 거칠게 가늠하면, 종합소득 신고자까지 합칠 경우 근로소득 기준 &#39;상위 10%&#39;가 전체 소득자 기준으로는 상위 12~15% 정도로 밀려날 수 있습니다(수 %P 규모의 상향 왜곡). 따라서 이 도구의 결과는 &#39;전 국민 중 상위 몇 %&#39;가 아니라 &#39;근로소득 신고자 중 상위 몇 %&#39;로 읽어야 하며, 세후 실수령액이나 보유 자산 순위와도 다릅니다.</p>
+    <details class="deep">
+      <summary>연봉상위 (SalaryRank) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>세전 연봉(연간 총급여)만 넣으면 내 소득이 전체 근로소득자 중 상위 몇 %인지 즉시 알려주는 도구입니다. 국세청이 공개하는 근로소득 백분위 분포에 입력 금액을 대입해 순위를 백분위로 환산합니다. 기준 자료는 2023년 귀속(2024년 12월 공개) 근로소득 연말정산 통계이며, 이하 이 문서에서 다루는 모든 금액과 순위는 &#39;세전 총급여, 연말정산 신고인원 약 2,085만 명&#39; 기준입니다. 결과 화면은 (1) 전체 근로소득자 중 상위 %, (2) 같은 연령대 내 상위 %, (3) 같은 연령대 평균 총급여와의 차액(원), (4) 상위 10%·상위 1% 경계까지 남은 금액을 함께 보여줍니다. 계산은 브라우저 안에서만 이뤄져 입력한 연봉이 서버로 전송되지 않으며, 설치·회원가입 없이 무료로 이용할 수 있고 인터페이스는 한국어로 제공됩니다.</p>
+        <p>기준 자료는 국세청이 국세통계포털(TASIS)의 &#39;근로소득&#39; 분류로 공개하는 &#39;근로소득 백분위 현황&#39; 및 더 촘촘한 &#39;근로소득 천분위 현황&#39; 표입니다. 2023년 귀속(2024년 12월 공개) 기준 신고 인원은 약 2,085만 명, 평균 총급여 4,332만 원, 중위 총급여 3,213만 원입니다. 여기서 핵심은 평균이 중위값보다 약 1,120만 원이나 높다는 점입니다.\n\n평균이 중위값보다 이렇게 높은 이유는 소득 분포가 오른쪽으로 길게 늘어진(right-skewed) 형태이기 때문입니다. 소수의 고소득자가 평균을 끌어올리는 반면 대다수는 중위값 근처에 몰려 있어, 소득 분포는 흔히 로그정규분포에 가깝다고 설명됩니다(금액에 로그를 취하면 좌우 대칭 종 모양에 가까워짐). 다만 상위 극소수 구간의 소득 꼬리는 로그정규보다 파레토(멱함수) 분포에 더 가깝게 두껍게 뻗는데, 이 도구가 상위 1%·0.1% 같은 최상위 경계를 별도로 다룰 수 있는 것도 그 때문입니다. 결론적으로 &#39;평균보다 적으니 나는 하위권&#39;이라는 감은 통계적으로 틀릴 때가 많습니다. 평균(4,332만 원)만 받아도 상위 37% 안팎, 중위값(3,213만 원)이면 정확히 상위 50%입니다.\n\n순위 산출 방식도 알아두면 좋습니다. 국세청 원자료는 완전한 백분위 컷오프 표를 항상 통째로 제공하지는 않고, 소득 구간별 인원·금액 형태로 공개하는 부분이 있습니다. 그래서 이 도구의 경계값은 공개된 백분위·천분위 값을 우선 쓰되, 표에 없는 지점은 인접 구간을 선형보간(구간 사이를 직선으로 이어 추정)한 근사치입니다. 뒤에 나오는 상위 10% 약 8,700만 원, 상위 1% 약 1억 8,000만 원 같은 경계도 이런 근사 컷오프이며, 자료 연도나 지표 정의에 따라 수백만 원 단위로 움직일 수 있습니다.\n\n한 가지 꼭 유의할 점은 모집단이 &#39;근로소득 연말정산 신고자&#39;라는 것입니다. 사업소득자, 프리랜서, 임대·금융소득자, 미신고 소득은 빠져 있습니다. 이들 중 고소득 비중이 낮지 않아, 근로소득자만 놓고 계산한 &#39;상위 10%&#39;는 전체 소득자를 포함한 실제 상위 10%보다 낮은 소득 구간일 가능성이 큽니다. 방향과 크기를 거칠게 가늠하면, 종합소득 신고자까지 합칠 경우 근로소득 기준 &#39;상위 10%&#39;가 전체 소득자 기준으로는 상위 12~15% 정도로 밀려날 수 있습니다(수 %P 규모의 상향 왜곡). 따라서 이 도구의 결과는 &#39;전 국민 중 상위 몇 %&#39;가 아니라 &#39;근로소득 신고자 중 상위 몇 %&#39;로 읽어야 하며, 세후 실수령액이나 보유 자산 순위와도 다릅니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>상여금·성과급·수당이 연봉에 포함됐는지 먼저 확인하세요. 계약 연봉과 실제 연간 수령 총액이 다르면 입력값이 달라지고 순위도 함께 바뀝니다.</li>

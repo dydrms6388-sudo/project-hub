@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">생년월일로 사주의 오행 구성 비율을 분석하고, 그날의 일진과 결합해 오늘 내 기운이 강한지 약한지를 읽어주는 데일리 운세 도구입니다.</p>
     <a class="cta" href="https://dydrms-ohaeng.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>오행나침반 소개</h2>
-    <p>생년월일로 사주의 오행 구성 비율을 분석하고, 그날의 일진과 결합해 오늘 내 기운이 강한지 약한지를 읽어주는 데일리 운세 도구입니다. 목·화·토·금·수 다섯 기운 중 내게 지금 무엇이 필요한지를 색과 방위로 연결해 일상에서 가볍게 참고할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 생년월일로 사주의 오행 구성 비율을 분석하고, 그날의 일진과 결합해 오늘 내 기운이 강한지 약한지를 읽어주는 데일리 운세 도구입니다.</li>
+        <li><b>이럴 때</b> 중요한 발표나 면접 전날, 오늘 기운이 내게 유리한지 가볍게 점검하고 마음의 준비를 갖추고 싶을 때.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>오늘 추천 행운색·유리한 방위·보완 오행을 확인합니다.</li>
         <li>매일 방문해 업데이트된 일진 정보로 하루 기운 흐름을 파악합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>오행(五行)은 동아시아 전통 우주론에서 세상의 변화를 목·화·토·금·수 다섯 가지 원리로 설명하는 체계입니다. 사주에서는 태어난 해·달·일·시 각각에 오행이 배치되어 개인의 기질적 강약을 나타낸다고 봅니다. 상생(相生)은 서로를 돕는 관계, 상극(相克)은 서로를 제어하는 관계로, 한쪽이 지나치게 강하거나 약할 때 일상의 색이나 방향을 의식적으로 활용해 균형을 보완하는 것이 전통적인 활용법입니다. 일진은 그날의 천간·지지 조합에서 도출한 기운으로, 개인 사주와 함께 보면 그날 흐름의 유불리를 가늠할 수 있습니다.</p>
+    <details class="deep">
+      <summary>오행나침반 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>생년월일로 사주의 오행 구성 비율을 분석하고, 그날의 일진과 결합해 오늘 내 기운이 강한지 약한지를 읽어주는 데일리 운세 도구입니다. 목·화·토·금·수 다섯 기운 중 내게 지금 무엇이 필요한지를 색과 방위로 연결해 일상에서 가볍게 참고할 수 있습니다.</p>
+        <p>오행(五行)은 동아시아 전통 우주론에서 세상의 변화를 목·화·토·금·수 다섯 가지 원리로 설명하는 체계입니다. 사주에서는 태어난 해·달·일·시 각각에 오행이 배치되어 개인의 기질적 강약을 나타낸다고 봅니다. 상생(相生)은 서로를 돕는 관계, 상극(相克)은 서로를 제어하는 관계로, 한쪽이 지나치게 강하거나 약할 때 일상의 색이나 방향을 의식적으로 활용해 균형을 보완하는 것이 전통적인 활용법입니다. 일진은 그날의 천간·지지 조합에서 도출한 기운으로, 개인 사주와 함께 보면 그날 흐름의 유불리를 가늠할 수 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>행운색은 옷 전체를 바꾸기보다 악세서리·파우치·메모지 같은 작은 아이템에 살짝 적용하면 부담 없이 활용할 수 있습니다.</li>

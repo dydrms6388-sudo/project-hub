@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">카테고리, 상황, 예산을 고른 뒤 슬롯머신을 돌리면 90가지 메뉴 중 조건에 맞는 점심을 뽑아 주는 결정 도우미입니다.</p>
     <a class="cta" href="https://jumsim-slot.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>점심뭐먹 (Jumsim) 소개</h2>
-    <p>카테고리, 상황, 예산을 고른 뒤 슬롯머신을 돌리면 90가지 메뉴 중 조건에 맞는 점심을 뽑아 주는 결정 도우미입니다. 혼밥부터 팀 점심, 배달까지 상황별로 후보를 좁혀 주어 고민 시간을 줄여 줍니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 카테고리, 상황, 예산을 고른 뒤 슬롯머신을 돌리면 90가지 메뉴 중 조건에 맞는 점심을 뽑아 주는 결정 도우미입니다.</li>
+        <li><b>이럴 때</b> 팀원 5명이 점심 메뉴를 두고 30분째 실랑이를 벌일 때, 각자 한 번씩 돌려 가장 많이 나온 메뉴로 결정하면 공정하고 빠릅니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>슬롯머신 버튼을 눌러 결과 메뉴를 확인합니다.</li>
         <li>결과가 마음에 들지 않으면 다시 돌리고, 마음에 들면 즐겨찾기로 저장하거나 공유합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>사람은 하루에 크고 작은 결정을 수백 번 내리는데, 선택지가 많아질수록 결정에 드는 인지 자원이 늘어나고 피로감도 커집니다. 점심 메뉴처럼 반복적이고 사소해 보이는 결정도 &#39;결정 피로&#39;를 가중시킬 수 있습니다. 슬롯머신처럼 무작위 선택을 시각적으로 보여 주는 방식은 결과에 대한 수용도를 높이는 효과가 있는데, 자신이 직접 선택하지 않았다는 느낌이 오히려 아쉬움을 줄여 주기 때문입니다. 또한 혼자 먹을 때는 개인 취향만 반영하면 되지만 팀 점심은 여러 사람의 기호를 맞춰야 해 합의 비용이 생기는데, 무작위 도구가 중립적인 중재자 역할을 할 수 있습니다.</p>
+    <details class="deep">
+      <summary>점심뭐먹 (Jumsim) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>카테고리, 상황, 예산을 고른 뒤 슬롯머신을 돌리면 90가지 메뉴 중 조건에 맞는 점심을 뽑아 주는 결정 도우미입니다. 혼밥부터 팀 점심, 배달까지 상황별로 후보를 좁혀 주어 고민 시간을 줄여 줍니다.</p>
+        <p>사람은 하루에 크고 작은 결정을 수백 번 내리는데, 선택지가 많아질수록 결정에 드는 인지 자원이 늘어나고 피로감도 커집니다. 점심 메뉴처럼 반복적이고 사소해 보이는 결정도 &#39;결정 피로&#39;를 가중시킬 수 있습니다. 슬롯머신처럼 무작위 선택을 시각적으로 보여 주는 방식은 결과에 대한 수용도를 높이는 효과가 있는데, 자신이 직접 선택하지 않았다는 느낌이 오히려 아쉬움을 줄여 주기 때문입니다. 또한 혼자 먹을 때는 개인 취향만 반영하면 되지만 팀 점심은 여러 사람의 기호를 맞춰야 해 합의 비용이 생기는데, 무작위 도구가 중립적인 중재자 역할을 할 수 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>카테고리를 &#39;아무거나&#39;로 두면 평소 잘 선택하지 않던 메뉴가 나올 수 있어 입맛 확장에 도움이 됩니다.</li>

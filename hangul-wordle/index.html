@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">매일 자정 새로 바뀌는 두 글자 한글 단어를 초성·중성·종성 단위 색 힌트를 단서로 6번 안에 맞히는 일일 단어 퍼즐입니다.</p>
     <a class="cta" href="https://dydrms-natmal.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>또박또박 소개</h2>
-    <p>매일 자정 새로 바뀌는 두 글자 한글 단어를 초성·중성·종성 단위 색 힌트를 단서로 6번 안에 맞히는 일일 단어 퍼즐입니다. 영어권의 워들을 한글 자모 체계에 맞게 재해석한 게임으로, 국어의 자모 구조를 활용한 추리가 핵심 재미입니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 매일 자정 새로 바뀌는 두 글자 한글 단어를 초성·중성·종성 단위 색 힌트를 단서로 6번 안에 맞히는 일일 단어 퍼즐입니다.</li>
+        <li><b>이럴 때</b> 출퇴근 이동 중 5분 안에 끝낼 수 있는 가벼운 두뇌 활동이 필요할 때 하루 한 번 도전하기에 딱 맞습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>이전 줄의 힌트를 조합해 후보 단어를 좁혀가며 6번 안에 정답을 맞힙니다.</li>
         <li>정답 후 &#39;오늘의 단어 뜻&#39;을 확인하고 스포일러 없는 이모지 그리드를 복사해 결과를 공유합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>한글은 자음과 모음을 조합해 음절을 이루는 독특한 표음 문자입니다. 영어 워들이 알파벳 단위로 힌트를 주는 것과 달리, 한글은 초성·중성·종성을 각각 따로 판정해야 정확한 단서가 됩니다. 예를 들어 &#39;달&#39;이라는 글자에서 받침 &#39;ㄹ&#39;의 위치 정보는 영어 방식으로는 표현하기 어렵습니다. 이 게임은 종성이 없는 글자를 별도 기호로 표기해 받침 유무 자체가 힌트가 되지 않도록 설계되어 있어, 한글의 구조를 알수록 추리가 정교해지는 재미가 있습니다. 단어 퍼즐은 단기 기억과 어휘 활성화, 문제 해결 사고를 동시에 자극하는 활동으로 꾸준한 일일 도전이 어휘력 향상에도 도움이 됩니다.</p>
+    <details class="deep">
+      <summary>또박또박 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>매일 자정 새로 바뀌는 두 글자 한글 단어를 초성·중성·종성 단위 색 힌트를 단서로 6번 안에 맞히는 일일 단어 퍼즐입니다. 영어권의 워들을 한글 자모 체계에 맞게 재해석한 게임으로, 국어의 자모 구조를 활용한 추리가 핵심 재미입니다.</p>
+        <p>한글은 자음과 모음을 조합해 음절을 이루는 독특한 표음 문자입니다. 영어 워들이 알파벳 단위로 힌트를 주는 것과 달리, 한글은 초성·중성·종성을 각각 따로 판정해야 정확한 단서가 됩니다. 예를 들어 &#39;달&#39;이라는 글자에서 받침 &#39;ㄹ&#39;의 위치 정보는 영어 방식으로는 표현하기 어렵습니다. 이 게임은 종성이 없는 글자를 별도 기호로 표기해 받침 유무 자체가 힌트가 되지 않도록 설계되어 있어, 한글의 구조를 알수록 추리가 정교해지는 재미가 있습니다. 단어 퍼즐은 단기 기억과 어휘 활성화, 문제 해결 사고를 동시에 자극하는 활동으로 꾸준한 일일 도전이 어휘력 향상에도 도움이 됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>첫 시도에는 받침 없이 자주 쓰이는 자음과 모음이 골고루 들어간 단어를 골라 빠르게 정보를 얻는 것이 유리합니다.</li>

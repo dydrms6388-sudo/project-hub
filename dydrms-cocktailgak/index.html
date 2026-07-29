@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">어떤 칵테일을 마실지 고민되거나, 바에서 무엇을 주문해야 할지 감이 없을 때 취향 기반으로 빠르게 찾아볼 수 있는 도구입니다.</p>
     <a class="cta" href="https://dydrms-cocktailgak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>칵테일각 소개</h2>
-    <p>어떤 칵테일을 마실지 고민되거나, 바에서 무엇을 주문해야 할지 감이 없을 때 취향 기반으로 빠르게 찾아볼 수 있는 도구입니다. 달콤함·쓴맛·도수·무드를 선택하면 맞는 클래식 칵테일을 추천해주고, 각 칵테일의 재료·비율·제조법과 간단한 역사 스토리도 함께 볼 수 있습니다. 술을 마시지 않는 분을 위한 무알콜 옵션도 포함되어 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 어떤 칵테일을 마실지 고민되거나, 바에서 무엇을 주문해야 할지 감이 없을 때 취향 기반으로 빠르게 찾아볼 수 있는 도구입니다.</li>
+        <li><b>이럴 때</b> 바에서 메뉴판을 보고도 무엇을 고를지 모를 때 취향 필터로 주문할 칵테일을 미리 정해가면 편합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>칵테일 스토리(탄생 배경·이름의 유래 등)를 읽으며 술자리 대화 소재로 활용합니다.</li>
         <li>마음에 드는 칵테일은 즐겨찾기에 저장하거나 결과 카드로 공유합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>칵테일은 일반적으로 베이스 증류주, 리큐어, 주스·시럽 등 조화 재료, 그리고 물·얼음으로 구성됩니다. 1800년대 미국에서 체계가 잡힌 이래 금주법 시대를 거치며 다양한 클래식 칵테일이 탄생했고, 마티니·올드패션드·네그로니·사이드카 등은 100년이 넘는 레시피가 지금도 바의 기본으로 쓰입니다. 칵테일의 맛은 단맛(sweet)·산미(sour)·쓴맛(bitter)·짠맛(salty)·알코올 도수의 균형으로 결정되며, 어느 요소를 강조하느냐에 따라 스타일이 나뉩니다. 무알콜 칵테일(목테일, mocktail)은 최근 절주 문화 확산과 함께 바 메뉴에서 비중이 빠르게 늘고 있으며, 좋은 목테일은 알코올 없이도 복잡하고 풍부한 풍미를 냅니다.</p>
+    <details class="deep">
+      <summary>칵테일각 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>어떤 칵테일을 마실지 고민되거나, 바에서 무엇을 주문해야 할지 감이 없을 때 취향 기반으로 빠르게 찾아볼 수 있는 도구입니다. 달콤함·쓴맛·도수·무드를 선택하면 맞는 클래식 칵테일을 추천해주고, 각 칵테일의 재료·비율·제조법과 간단한 역사 스토리도 함께 볼 수 있습니다. 술을 마시지 않는 분을 위한 무알콜 옵션도 포함되어 있습니다.</p>
+        <p>칵테일은 일반적으로 베이스 증류주, 리큐어, 주스·시럽 등 조화 재료, 그리고 물·얼음으로 구성됩니다. 1800년대 미국에서 체계가 잡힌 이래 금주법 시대를 거치며 다양한 클래식 칵테일이 탄생했고, 마티니·올드패션드·네그로니·사이드카 등은 100년이 넘는 레시피가 지금도 바의 기본으로 쓰입니다. 칵테일의 맛은 단맛(sweet)·산미(sour)·쓴맛(bitter)·짠맛(salty)·알코올 도수의 균형으로 결정되며, 어느 요소를 강조하느냐에 따라 스타일이 나뉩니다. 무알콜 칵테일(목테일, mocktail)은 최근 절주 문화 확산과 함께 바 메뉴에서 비중이 빠르게 늘고 있으며, 좋은 목테일은 알코올 없이도 복잡하고 풍부한 풍미를 냅니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>처음 칵테일을 접한다면 도수가 낮고 단맛이 있는 스타일(애퍼롤 스프리츠, 코스모폴리탄 등)부터 시작해 취향의 방향을 파악해가세요.</li>

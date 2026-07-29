@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">12개 질문으로 자신이 얼마나 예민하게 반응하고 또 얼마나 빨리 회복하는지를 두 축으로 파악해 보는 심리 자가 점검 도구입니다.</p>
     <a class="cta" href="https://dydrms-glassmind.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>유리멘탈 지수 소개</h2>
-    <p>12개 질문으로 자신이 얼마나 예민하게 반응하고 또 얼마나 빨리 회복하는지를 두 축으로 파악해 보는 심리 자가 점검 도구입니다. &#39;유리멘탈&#39;이라고 불리는 예민한 기질과 회복탄력성은 서로 다른 차원이므로, 두 가지를 함께 보면 자신의 심리 패턴을 더 구체적으로 이해할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 12개 질문으로 자신이 얼마나 예민하게 반응하고 또 얼마나 빨리 회복하는지를 두 축으로 파악해 보는 심리 자가 점검 도구입니다.</li>
+        <li><b>이럴 때</b> 스트레스가 많은 시기와 평온한 시기에 각각 체크해 보면 상황이 자신의 멘탈 상태에 얼마나 영향을 주는지 비교할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>결과 카드를 저장하거나 지인과 공유한다.</li>
         <li>다음 날부터 매일 멘탈 날씨 체크로 컨디션 변화를 기록한다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>예민성(감각 처리 민감성)은 자극에 더 깊이 반응하는 기질적 특성으로, 심리학자 일레인 아론의 연구에서 인구의 약 15~20% 정도가 고감각 특성을 지닌다고 알려져 있습니다. 이는 단순히 나쁜 특성이 아니라, 세부에 민감하고 공감 능력이 높은 장점과 함께 오는 특성입니다. 회복탄력성은 스트레스 상황에서 원래 상태로 돌아오는 능력을 의미하며, 이 두 가지가 조합될 때 개인이 스트레스를 어떻게 경험하고 대처하는지가 달라집니다. 둘 다 환경과 습관에 따라 어느 정도 변화할 수 있습니다.</p>
+    <details class="deep">
+      <summary>유리멘탈 지수 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>12개 질문으로 자신이 얼마나 예민하게 반응하고 또 얼마나 빨리 회복하는지를 두 축으로 파악해 보는 심리 자가 점검 도구입니다. &#39;유리멘탈&#39;이라고 불리는 예민한 기질과 회복탄력성은 서로 다른 차원이므로, 두 가지를 함께 보면 자신의 심리 패턴을 더 구체적으로 이해할 수 있습니다.</p>
+        <p>예민성(감각 처리 민감성)은 자극에 더 깊이 반응하는 기질적 특성으로, 심리학자 일레인 아론의 연구에서 인구의 약 15~20% 정도가 고감각 특성을 지닌다고 알려져 있습니다. 이는 단순히 나쁜 특성이 아니라, 세부에 민감하고 공감 능력이 높은 장점과 함께 오는 특성입니다. 회복탄력성은 스트레스 상황에서 원래 상태로 돌아오는 능력을 의미하며, 이 두 가지가 조합될 때 개인이 스트레스를 어떻게 경험하고 대처하는지가 달라집니다. 둘 다 환경과 습관에 따라 어느 정도 변화할 수 있습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>이상적인 모습이 아니라 실제로 어떻게 반응하는지를 기준으로 답해야 자신의 패턴을 정확하게 볼 수 있습니다.</li>

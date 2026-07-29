@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">화장품 용기에 적힌 개봉 후 사용기한(PAO)을 매번 기억하기란 쉽지 않습니다.</p>
     <a class="cta" href="https://dydrms-vanity.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>화장대요정 소개</h2>
-    <p>화장품 용기에 적힌 개봉 후 사용기한(PAO)을 매번 기억하기란 쉽지 않습니다. 화장대요정은 제품 카테고리를 선택하고 개봉일만 입력하면 만료일을 자동으로 계산해주어, 유효기간이 지난 제품을 모르고 쓰는 상황을 줄여줍니다. 피부 트러블이 잦거나 화장품을 여러 개 동시에 쓰는 분께 특히 유용합니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 화장품 용기에 적힌 개봉 후 사용기한(PAO)을 매번 기억하기란 쉽지 않습니다.</li>
+        <li><b>이럴 때</b> 서랍 속에 언제 열었는지 기억 안 나는 쿠션 팩트나 마스카라가 있을 때, 개봉일을 입력해두면 교체 시기를 놓치지 않습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -141,8 +160,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>임박하거나 만료된 제품을 먼저 소진하거나 교체 계획을 세웁니다.</li>
         <li>여행 파우치용 제품은 별도 항목으로 등록해 외출 시에도 확인합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>화장품의 유통기한과 개봉 후 사용기한은 별개의 개념입니다. 유통기한이 남아 있어도 뚜껑을 열고 공기·세균에 노출된 순간부터 품질이 달라지기 시작합니다. 국제적으로 통용되는 PAO 심볼(열린 항아리 모양 아이콘)은 개봉 후 몇 개월 내에 사용해야 하는지를 나타내며, 마스카라처럼 세균 오염 위험이 큰 제품은 보통 3~6개월, 크림류는 6~12개월, 향수나 파우더는 12~24개월 등 카테고리마다 권장 기간이 다릅니다. 변질된 화장품을 계속 쓰면 피부 자극이나 트러블의 원인이 될 수 있어, 관리가 필요한 이유입니다.</p>
+    <details class="deep">
+      <summary>화장대요정 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>화장품 용기에 적힌 개봉 후 사용기한(PAO)을 매번 기억하기란 쉽지 않습니다. 화장대요정은 제품 카테고리를 선택하고 개봉일만 입력하면 만료일을 자동으로 계산해주어, 유효기간이 지난 제품을 모르고 쓰는 상황을 줄여줍니다. 피부 트러블이 잦거나 화장품을 여러 개 동시에 쓰는 분께 특히 유용합니다.</p>
+        <p>화장품의 유통기한과 개봉 후 사용기한은 별개의 개념입니다. 유통기한이 남아 있어도 뚜껑을 열고 공기·세균에 노출된 순간부터 품질이 달라지기 시작합니다. 국제적으로 통용되는 PAO 심볼(열린 항아리 모양 아이콘)은 개봉 후 몇 개월 내에 사용해야 하는지를 나타내며, 마스카라처럼 세균 오염 위험이 큰 제품은 보통 3~6개월, 크림류는 6~12개월, 향수나 파우더는 12~24개월 등 카테고리마다 권장 기간이 다릅니다. 변질된 화장품을 계속 쓰면 피부 자극이나 트러블의 원인이 될 수 있어, 관리가 필요한 이유입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>선크림은 물리적·화학적 차단 성분 모두 개봉 후 12개월 이내 사용이 일반적으로 권장됩니다. 특히 자외선 차단 효능이 떨어질 수 있으므로 기한 관리에 신경 쓰는 것이 좋습니다.</li>

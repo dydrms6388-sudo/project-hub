@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상 포인트 게임입니다.</p>
     <a class="cta" href="https://dydrms-eggcat.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>에그캣 ($EGGCAT) 소개</h2>
-    <p>에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상 포인트 게임입니다. EGG는 게임 내 포인트로 실제 자금이 아니며, 도박이나 투자 권유와 무관한 엔터테인먼트 서비스입니다. 시세 흐름을 읽는 감각을 재미있게 익히고 싶은 사람에게 적합합니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상 포인트 게임입니다.</li>
+        <li><b>이럴 때</b> 코인 시장이 처음이라 실제 투자 전에 가격 흐름 읽는 연습을 해보고 싶을 때 부담 없이 활용할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>라운드 종료 후 정산 결과를 확인하고 EGG 포인트를 수령한다.</li>
         <li>다음 라운드 자동 참여 설정으로 연속 베팅하고 연승 보상을 노린다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>암호화폐 시세는 주식보다 변동성이 크고 24시간 쉬지 않고 움직입니다. 비트코인·이더리움을 비롯한 주요 코인의 가격은 거래소 수요·공급, 거시경제 지표, 규제 뉴스, 소셜미디어 여론 등 다양한 요인이 복합적으로 작용해 결정됩니다. 단기 방향성 예측은 전문 트레이더들도 틀리기 쉬운 영역이며, 실제 자금 없이 이런 흐름을 관찰하고 감각을 기르는 시뮬레이션 방식은 시장 구조를 이해하는 데 도움이 될 수 있습니다. 풀 배분 방식(맞춘 쪽이 틀린 쪽 포인트를 나눠 갖는 구조)은 전통 예측 시장의 원리를 단순화한 것입니다.</p>
+    <details class="deep">
+      <summary>에그캣 ($EGGCAT) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상 포인트 게임입니다. EGG는 게임 내 포인트로 실제 자금이 아니며, 도박이나 투자 권유와 무관한 엔터테인먼트 서비스입니다. 시세 흐름을 읽는 감각을 재미있게 익히고 싶은 사람에게 적합합니다.</p>
+        <p>암호화폐 시세는 주식보다 변동성이 크고 24시간 쉬지 않고 움직입니다. 비트코인·이더리움을 비롯한 주요 코인의 가격은 거래소 수요·공급, 거시경제 지표, 규제 뉴스, 소셜미디어 여론 등 다양한 요인이 복합적으로 작용해 결정됩니다. 단기 방향성 예측은 전문 트레이더들도 틀리기 쉬운 영역이며, 실제 자금 없이 이런 흐름을 관찰하고 감각을 기르는 시뮬레이션 방식은 시장 구조를 이해하는 데 도움이 될 수 있습니다. 풀 배분 방식(맞춘 쪽이 틀린 쪽 포인트를 나눠 갖는 구조)은 전통 예측 시장의 원리를 단순화한 것입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>락 구간에 표시되는 잠정 승패는 아직 최종 가격이 아니므로 라운드가 완전히 끝날 때까지 결과를 단정하지 마세요.</li>

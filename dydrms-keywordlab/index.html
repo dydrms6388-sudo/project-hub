@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">블로거와 콘텐츠 제작자를 위해, 시드 키워드 하나로 연관 롱테일 키워드를 발굴하고 검색 의도·경쟁도를 분석해주는 무료 키워드 연구 도구입니다.</p>
     <a class="cta" href="https://dydrms-keywordlab.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>키워드연구소 소개</h2>
-    <p>블로거와 콘텐츠 제작자를 위해, 시드 키워드 하나로 연관 롱테일 키워드를 발굴하고 검색 의도·경쟁도를 분석해주는 무료 키워드 연구 도구입니다. 글 제목·목차·메타 설명까지 자동으로 제안해줘, 주제 선정부터 포스팅 초안 틀 잡기까지 시간을 단축할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 블로거와 콘텐츠 제작자를 위해, 시드 키워드 하나로 연관 롱테일 키워드를 발굴하고 검색 의도·경쟁도를 분석해주는 무료 키워드 연구 도구입니다.</li>
+        <li><b>이럴 때</b> 새로운 블로그 주제를 시작하려는데 어떤 세부 키워드를 먼저 공략할지 방향을 잡고 싶을 때.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>선택한 키워드로 자동 생성된 글 제목·목차·메타 설명 초안을 검토합니다.</li>
         <li>초안을 복사해 블로그 포스팅 작성에 활용합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>검색엔진 최적화(SEO)에서 키워드 선택은 콘텐츠 도달 범위를 결정짓는 핵심 요소입니다. 단어 몇 개로 이루어진 단어(헤드 키워드)는 검색량이 많지만 경쟁이 치열해 개인 블로그가 상위에 노출되기 어렵습니다. 반면 구체적인 의도가 담긴 롱테일 키워드는 검색량은 작지만 경쟁이 낮고, 방문자가 실제로 필요로 하는 정보와 일치할 가능성이 높아 전환율이 높은 경향이 있습니다. 검색 의도(정보형·비교형·구매형 등)를 파악하면 글의 구조와 톤을 독자가 원하는 방식에 맞출 수 있어, 같은 키워드라도 의도를 반영한 글이 그렇지 않은 글보다 체류 시간과 클릭률에서 유리합니다.</p>
+    <details class="deep">
+      <summary>키워드연구소 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>블로거와 콘텐츠 제작자를 위해, 시드 키워드 하나로 연관 롱테일 키워드를 발굴하고 검색 의도·경쟁도를 분석해주는 무료 키워드 연구 도구입니다. 글 제목·목차·메타 설명까지 자동으로 제안해줘, 주제 선정부터 포스팅 초안 틀 잡기까지 시간을 단축할 수 있습니다.</p>
+        <p>검색엔진 최적화(SEO)에서 키워드 선택은 콘텐츠 도달 범위를 결정짓는 핵심 요소입니다. 단어 몇 개로 이루어진 단어(헤드 키워드)는 검색량이 많지만 경쟁이 치열해 개인 블로그가 상위에 노출되기 어렵습니다. 반면 구체적인 의도가 담긴 롱테일 키워드는 검색량은 작지만 경쟁이 낮고, 방문자가 실제로 필요로 하는 정보와 일치할 가능성이 높아 전환율이 높은 경향이 있습니다. 검색 의도(정보형·비교형·구매형 등)를 파악하면 글의 구조와 톤을 독자가 원하는 방식에 맞출 수 있어, 같은 키워드라도 의도를 반영한 글이 그렇지 않은 글보다 체류 시간과 클릭률에서 유리합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>경쟁도가 낮고 검색 의도가 뚜렷한 롱테일 키워드는 소규모 블로그에서도 상위 노출 가능성이 높습니다. 처음 블로그를 시작한다면 헤드 키워드보다 롱테일부터 쌓는 것이 현실적입니다.</li>

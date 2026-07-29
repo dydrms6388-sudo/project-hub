@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">코딩테스트를 앞둔 취업 준비생과 이직 희망자를 위한 학습 관리 도구입니다.</p>
     <a class="cta" href="https://coding-test-dday.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>코테 준비실 소개</h2>
-    <p>코딩테스트를 앞둔 취업 준비생과 이직 희망자를 위한 학습 관리 도구입니다. 시험 D-day 카운트다운, 문제 풀이 기록, 알고리즘 유형별 숙련도 추적, 연속 풀이 잔디를 한곳에서 관리하고, 남은 기간에 맞는 맞춤 스터디 플랜을 제안받을 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 코딩테스트를 앞둔 취업 준비생과 이직 희망자를 위한 학습 관리 도구입니다.</li>
+        <li><b>이럴 때</b> 공채 시즌이 한 달 남았을 때 유형별 숙련도 차트를 보고 취약한 항목을 집중 공략하는 전략을 세울 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>연속 풀이 기록(잔디)을 유지하며 매일 풀이 습관을 이어간다.</li>
         <li>맞춤 스터디 플랜을 참고해 남은 기간 동안 집중할 유형과 분량을 결정한다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>코딩테스트는 국내 주요 IT 기업과 스타트업의 채용 과정에서 필수 관문이 되어 있으며, 주로 알고리즘·자료구조 문제를 시간 안에 푸는 방식으로 진행됩니다. 그래프 탐색(BFS/DFS), 동적 프로그래밍, 이분탐색, 그리디, 구현 등 유형별로 접근 방법이 뚜렷이 다르기 때문에 자신이 어느 유형에 취약한지 파악하는 것이 효율적인 준비의 첫걸음입니다. 꾸준한 풀이 습관이 단기 벼락치기보다 훨씬 효과적이며, 풀이 이후 틀린 원인을 기록하는 회고 습관도 실력 향상에 중요합니다.</p>
+    <details class="deep">
+      <summary>코테 준비실 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>코딩테스트를 앞둔 취업 준비생과 이직 희망자를 위한 학습 관리 도구입니다. 시험 D-day 카운트다운, 문제 풀이 기록, 알고리즘 유형별 숙련도 추적, 연속 풀이 잔디를 한곳에서 관리하고, 남은 기간에 맞는 맞춤 스터디 플랜을 제안받을 수 있습니다.</p>
+        <p>코딩테스트는 국내 주요 IT 기업과 스타트업의 채용 과정에서 필수 관문이 되어 있으며, 주로 알고리즘·자료구조 문제를 시간 안에 푸는 방식으로 진행됩니다. 그래프 탐색(BFS/DFS), 동적 프로그래밍, 이분탐색, 그리디, 구현 등 유형별로 접근 방법이 뚜렷이 다르기 때문에 자신이 어느 유형에 취약한지 파악하는 것이 효율적인 준비의 첫걸음입니다. 꾸준한 풀이 습관이 단기 벼락치기보다 훨씬 효과적이며, 풀이 이후 틀린 원인을 기록하는 회고 습관도 실력 향상에 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>숙련도 차트에서 점수가 낮은 유형부터 먼저 공략하세요. 강한 유형을 더 갈고닦는 것보다 약한 곳을 끌어올리는 것이 합격 가능성을 높입니다.</li>

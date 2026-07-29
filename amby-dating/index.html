@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">바이섹슈얼·팬섹슈얼·퀴어 등 다양한 성적 지향을 가진 분들이 편안하게 이용할 수 있는 데이팅 및 커뮤니티 서비스입니다.</p>
     <a class="cta" href="https://dydrms-amby.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>Amby (앰비) 소개</h2>
-    <p>바이섹슈얼·팬섹슈얼·퀴어 등 다양한 성적 지향을 가진 분들이 편안하게 이용할 수 있는 데이팅 및 커뮤니티 서비스입니다. 끌림의 방향과 관계 방식을 세밀하게 표현할 수 있는 프로필을 만들고, 공통점이 있는 사람들과 연결될 수 있습니다. 맞춤 아이스브레이커 대화와 주제별 커뮤니티 라운지를 통해 자연스럽게 관계를 시작할 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 바이섹슈얼·팬섹슈얼·퀴어 등 다양한 성적 지향을 가진 분들이 편안하게 이용할 수 있는 데이팅 및 커뮤니티 서비스입니다.</li>
+        <li><b>이럴 때</b> 기존 데이팅 앱에서 성적 지향이나 관계 방식을 충분히 표현하기 어려웠던 분이 자신에게 맞는 플랫폼을 찾고 싶을 때 적합합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>매칭이 이루어지면 맞춤 아이스브레이커 질문으로 대화를 자연스럽게 시작합니다.</li>
         <li>주제별 커뮤니티 라운지에서 공통 관심사를 가진 사람들과 교류합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>바이섹슈얼·팬섹슈얼·퀴어 커뮤니티는 이분법적 성별 구분이나 단일 성적 지향을 전제로 설계된 기존 데이팅 앱에서 자신을 온전히 표현하기 어려운 경우가 많습니다. 끌림은 성별뿐 아니라 젠더 표현, 관계 방식(모노가미·폴리아모리 등)에 따라 다양하게 나타날 수 있어, 이를 충분히 담을 수 있는 인클루시브한 프로필 구조가 중요합니다. 안전한 공간 설계는 인클루시브 데이팅 플랫폼의 핵심 요소로, 차단·신고 기능과 비공개 모드는 이용자가 원하는 수준의 프라이버시를 유지할 수 있도록 지원합니다. 커뮤니티 기능은 만남을 전제하지 않고도 비슷한 경험과 관심사를 가진 사람들과 교류하는 공간으로 활용됩니다.</p>
+    <details class="deep">
+      <summary>Amby (앰비) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>바이섹슈얼·팬섹슈얼·퀴어 등 다양한 성적 지향을 가진 분들이 편안하게 이용할 수 있는 데이팅 및 커뮤니티 서비스입니다. 끌림의 방향과 관계 방식을 세밀하게 표현할 수 있는 프로필을 만들고, 공통점이 있는 사람들과 연결될 수 있습니다. 맞춤 아이스브레이커 대화와 주제별 커뮤니티 라운지를 통해 자연스럽게 관계를 시작할 수 있습니다.</p>
+        <p>바이섹슈얼·팬섹슈얼·퀴어 커뮤니티는 이분법적 성별 구분이나 단일 성적 지향을 전제로 설계된 기존 데이팅 앱에서 자신을 온전히 표현하기 어려운 경우가 많습니다. 끌림은 성별뿐 아니라 젠더 표현, 관계 방식(모노가미·폴리아모리 등)에 따라 다양하게 나타날 수 있어, 이를 충분히 담을 수 있는 인클루시브한 프로필 구조가 중요합니다. 안전한 공간 설계는 인클루시브 데이팅 플랫폼의 핵심 요소로, 차단·신고 기능과 비공개 모드는 이용자가 원하는 수준의 프라이버시를 유지할 수 있도록 지원합니다. 커뮤니티 기능은 만남을 전제하지 않고도 비슷한 경험과 관심사를 가진 사람들과 교류하는 공간으로 활용됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>프로필 소개를 구체적으로 적으면 공통점이 많은 사람과 연결될 가능성이 높아집니다. 좋아하는 것, 찾는 관계 방식 등을 솔직하게 담으세요.</li>

@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">정기헌혈을 다짐하는 20~30대(대학생·직장인 헌혈러)와 첫헌혈 도전자가 8주 주기를 챙기며 헌혈을 이어가는 헌혈 동행 트래커 + 익명 헌혈방.</p>
     <a class="cta" href="https://dydrms-heonhyeol.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>헌혈챌린지 소개</h2>
-    <p>정기헌혈을 다짐하는 20~30대(대학생·직장인 헌혈러)와 첫헌혈 도전자가 8주 주기를 챙기며 헌혈을 이어가는 헌혈 동행 트래커 + 익명 헌혈방. 헌혈은 8주(혈소판 2주) 간격으로 챙겨야 하는데 바빠서 깜빡하고, 철분/컨디션 관리까지 필요해 혼자 정기헌혈을 이어가기 어려운 이들에게 주기 리마인드와 &#39;나처럼 기증하는 사람&#39; 동기를 제공. 개인: 다음 헌혈 가능일 D-day(8주 카운트다운·자동 리마인드), 누적 헌혈횟수·총 기증 혈액량·생명 나눔 횟수, 헌혈 전후 철분/수면/컨디션 체크리스트, 헌혈 후기·부작용 일기. 그룹: 익명 헌혈방(4자리 코드·무가입) → 이번 달 누적 헌혈횟수 랭킹, &#39;이번 주 함께 헌혈한 N명&#39; 실시간 카운터, 헌혈 인증 익명 피드, 원탭 응원. 리텐션: 8주 D-day 주기 갱신(주기) + 정기헌혈 스트릭(연속) + 마일스톤 배지(1·5·10·20·50회·1갤런 수집) + 또래 소셜비교. PWA(manifest.json+Service Worker+아이콘, 오프라인 D-day·누적횟수·체크리스트 조회).</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 정기헌혈을 다짐하는 20~30대(대학생·직장인 헌혈러)와 첫헌혈 도전자가 8주 주기를 챙기며 헌혈을 이어가는 헌혈 동행 트래커 + 익명 헌혈방.</li>
+        
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     
     <h2>이렇게 사용하세요</h2>
@@ -133,7 +152,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>안내에 따라 값을 입력하거나 항목을 선택합니다.</li>
         <li>결과를 확인하고 필요하면 저장·공유합니다.</li>
     </ol>
-    
+    <details class="deep">
+      <summary>헌혈챌린지 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>정기헌혈을 다짐하는 20~30대(대학생·직장인 헌혈러)와 첫헌혈 도전자가 8주 주기를 챙기며 헌혈을 이어가는 헌혈 동행 트래커 + 익명 헌혈방. 헌혈은 8주(혈소판 2주) 간격으로 챙겨야 하는데 바빠서 깜빡하고, 철분/컨디션 관리까지 필요해 혼자 정기헌혈을 이어가기 어려운 이들에게 주기 리마인드와 &#39;나처럼 기증하는 사람&#39; 동기를 제공. 개인: 다음 헌혈 가능일 D-day(8주 카운트다운·자동 리마인드), 누적 헌혈횟수·총 기증 혈액량·생명 나눔 횟수, 헌혈 전후 철분/수면/컨디션 체크리스트, 헌혈 후기·부작용 일기. 그룹: 익명 헌혈방(4자리 코드·무가입) → 이번 달 누적 헌혈횟수 랭킹, &#39;이번 주 함께 헌혈한 N명&#39; 실시간 카운터, 헌혈 인증 익명 피드, 원탭 응원. 리텐션: 8주 D-day 주기 갱신(주기) + 정기헌혈 스트릭(연속) + 마일스톤 배지(1·5·10·20·50회·1갤런 수집) + 또래 소셜비교. PWA(manifest.json+Service Worker+아이콘, 오프라인 D-day·누적횟수·체크리스트 조회).</p>
+        
+      </div>
+    </details>
     
     
     

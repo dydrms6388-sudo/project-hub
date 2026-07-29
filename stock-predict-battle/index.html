@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">오늘의 관심 종목이 오를지 내릴지 커뮤니티와 함께 예측하고 토론할 수 있는 투자 커뮤니티 서비스입니다.</p>
     <a class="cta" href="https://dydrms-tteoksang.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>떡상각 소개</h2>
-    <p>오늘의 관심 종목이 오를지 내릴지 커뮤니티와 함께 예측하고 토론할 수 있는 투자 커뮤니티 서비스입니다. 국내외 주식과 코인을 대상으로 매일 새 배틀이 열리고, AI 시황 브리핑과 종목 토론 게시판을 통해 다양한 시각을 접할 수 있습니다. 재미와 정보를 함께 즐기는 공간이며, 특정 종목에 대한 투자를 권유하지 않습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 오늘의 관심 종목이 오를지 내릴지 커뮤니티와 함께 예측하고 토론할 수 있는 투자 커뮤니티 서비스입니다.</li>
+        <li><b>이럴 때</b> 투자를 처음 공부하는 사람이 종목에 대한 다양한 시각을 비용 없이 접하고 토론 감각을 기르는 데 활용할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -139,8 +158,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>종목 토론 게시판에서 다른 참여자의 근거와 의견을 읽고 댓글로 대화한다.</li>
         <li>매일 참여해 연속 등급을 올리고 다음 날 배틀 결과를 확인한다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>주가와 코인 시세의 단기 방향을 예측하는 것은 전문 투자자도 꾸준히 맞히기 어렵습니다. 그럼에도 시장에서는 여론·심리·공포·탐욕 같은 집단 감정이 단기 가격에 상당한 영향을 미친다는 연구가 있습니다. 투자 커뮤니티에서 다수의 의견이 어느 방향으로 쏠리는지 관찰하는 것 자체가 시장 심리를 이해하는 학습 과정이 될 수 있습니다. AI 시황 브리핑은 최근 기술적 지표(이동평균·거래량 추이 등)를 참고해 방향성 힌트를 제공하지만 정확성을 보장하지 않으며, 이 서비스의 예측과 투표 결과는 어떠한 방식으로도 실제 주가에 영향을 주지 않습니다.</p>
+    <details class="deep">
+      <summary>떡상각 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>오늘의 관심 종목이 오를지 내릴지 커뮤니티와 함께 예측하고 토론할 수 있는 투자 커뮤니티 서비스입니다. 국내외 주식과 코인을 대상으로 매일 새 배틀이 열리고, AI 시황 브리핑과 종목 토론 게시판을 통해 다양한 시각을 접할 수 있습니다. 재미와 정보를 함께 즐기는 공간이며, 특정 종목에 대한 투자를 권유하지 않습니다.</p>
+        <p>주가와 코인 시세의 단기 방향을 예측하는 것은 전문 투자자도 꾸준히 맞히기 어렵습니다. 그럼에도 시장에서는 여론·심리·공포·탐욕 같은 집단 감정이 단기 가격에 상당한 영향을 미친다는 연구가 있습니다. 투자 커뮤니티에서 다수의 의견이 어느 방향으로 쏠리는지 관찰하는 것 자체가 시장 심리를 이해하는 학습 과정이 될 수 있습니다. AI 시황 브리핑은 최근 기술적 지표(이동평균·거래량 추이 등)를 참고해 방향성 힌트를 제공하지만 정확성을 보장하지 않으며, 이 서비스의 예측과 투표 결과는 어떠한 방식으로도 실제 주가에 영향을 주지 않습니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>AI 픽과 대중 여론이 엇갈리는 종목은 시장 심리가 갈린 상황이므로, 어떤 쪽이 맞는지 결과를 추적하며 분석 능력을 키우기 좋습니다.</li>

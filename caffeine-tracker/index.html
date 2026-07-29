@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">커피, 차, 에너지드링크 등 하루 동안 마신 음료를 기록하면 카페인 누적량과 권장 상한까지 남은 여유를 실시간으로 확인할 수 있습니다.</p>
     <a class="cta" href="https://dydrms-caffeine-tracker.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>카페인한도추적 소개</h2>
-    <p>커피, 차, 에너지드링크 등 하루 동안 마신 음료를 기록하면 카페인 누적량과 권장 상한까지 남은 여유를 실시간으로 확인할 수 있습니다. 카페인 반감기 곡선을 바탕으로 취침 시각에 체내에 얼마나 남는지까지 예측해 주므로, 커피를 끊지 않고도 수면의 질을 지키고 싶은 분에게 유용합니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 커피, 차, 에너지드링크 등 하루 동안 마신 음료를 기록하면 카페인 누적량과 권장 상한까지 남은 여유를 실시간으로 확인할 수 있습니다.</li>
+        <li><b>이럴 때</b> 오후에 커피를 한 잔 더 마셔도 될지, 밤 수면에 영향을 줄지 미리 가늠해 보고 싶을 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>취침 예정 시각을 입력하면 그 시각의 체내 잔존 카페인을 반감기 곡선으로 확인합니다.</li>
         <li>하루가 지나면 기록이 초기화되고 주간·월간 섭취 추세를 차트로 돌아볼 수 있습니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>카페인은 뇌의 아데노신 수용체를 차단해 각성 효과를 내지만, 체내에서 절반으로 줄어드는 반감기가 약 5시간에 달합니다. 오후 3시에 마신 아메리카노 한 잔의 카페인이 밤 11시에도 4분의 1 정도 남아 있을 수 있다는 뜻입니다. 일반 성인에게 권고되는 하루 상한은 약 400mg이지만 임신 중이거나 카페인에 민감한 경우 이보다 훨씬 낮아집니다. 음료마다 카페인 함량 차이가 크고, 같은 아메리카노라도 원두 종류와 추출 방식에 따라 달라지기 때문에 실제 섭취량을 파악하기가 쉽지 않습니다. 이런 이유로 자신이 하루에 카페인을 얼마나 섭취하는지 추적해 보는 것이 수면 문제나 두근거림 같은 증상을 이해하는 첫걸음이 됩니다.</p>
+    <details class="deep">
+      <summary>카페인한도추적 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>커피, 차, 에너지드링크 등 하루 동안 마신 음료를 기록하면 카페인 누적량과 권장 상한까지 남은 여유를 실시간으로 확인할 수 있습니다. 카페인 반감기 곡선을 바탕으로 취침 시각에 체내에 얼마나 남는지까지 예측해 주므로, 커피를 끊지 않고도 수면의 질을 지키고 싶은 분에게 유용합니다.</p>
+        <p>카페인은 뇌의 아데노신 수용체를 차단해 각성 효과를 내지만, 체내에서 절반으로 줄어드는 반감기가 약 5시간에 달합니다. 오후 3시에 마신 아메리카노 한 잔의 카페인이 밤 11시에도 4분의 1 정도 남아 있을 수 있다는 뜻입니다. 일반 성인에게 권고되는 하루 상한은 약 400mg이지만 임신 중이거나 카페인에 민감한 경우 이보다 훨씬 낮아집니다. 음료마다 카페인 함량 차이가 크고, 같은 아메리카노라도 원두 종류와 추출 방식에 따라 달라지기 때문에 실제 섭취량을 파악하기가 쉽지 않습니다. 이런 이유로 자신이 하루에 카페인을 얼마나 섭취하는지 추적해 보는 것이 수면 문제나 두근거림 같은 증상을 이해하는 첫걸음이 됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>콜드브루는 긴 추출 시간 때문에 일반 아메리카노보다 카페인이 많을 수 있으니 용량과 원두를 확인하세요.</li>

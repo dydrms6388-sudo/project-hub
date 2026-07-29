@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의 답을 조합해 독자적인 케미 점수와 궁합 카드를 만들어 주는 페어형 심리 테스트입니다.</p>
     <a class="cta" href="https://dydrms-chemicode.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>케미코드 (ChemiCode) 소개</h2>
-    <p>12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의 답을 조합해 독자적인 케미 점수와 궁합 카드를 만들어 주는 페어형 심리 테스트입니다. 상대가 누구냐에 따라 결과가 달라지기 때문에, 여러 사람과 비교하며 자신의 관계 패턴을 살펴볼 수 있습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의 답을 조합해 독자적인 케미 점수와 궁합 카드를 만들어 주는 페어형 심리 테스트입니다.</li>
+        <li><b>이럴 때</b> 새로 사귄 상대와 서로의 연애 스타일이 얼마나 다른지 부담 없이 확인해 보고 싶을 때 대화 소재로 활용할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>궁합 카드를 함께 보며 서로의 성향 차이와 공통점을 이야기 나눈다.</li>
         <li>여러 사람에게 링크를 보내 각각의 케미 결과를 컬렉션으로 모아본다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>연애 성향 유형화는 MBTI나 애착 유형 이론처럼 개인의 행동·감정 패턴을 몇 가지 축으로 나누어 자기 이해를 돕는 방식입니다. 실제 심리학에서는 회피형·불안형·안정형 같은 애착 스타일이 친밀한 관계에서의 반응 방식을 상당 부분 설명한다고 봅니다. 두 사람의 유형이 어떻게 상호작용하는지를 보는 궁합 개념은, 서로 어떤 부분에서 맞고 어긋날 수 있는지를 대화로 꺼내는 출발점이 될 수 있습니다. 물론 실제 관계는 수치 하나로 결정되지 않으며, 소통과 노력이 훨씬 큰 변수입니다.</p>
+    <details class="deep">
+      <summary>케미코드 (ChemiCode) 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의 답을 조합해 독자적인 케미 점수와 궁합 카드를 만들어 주는 페어형 심리 테스트입니다. 상대가 누구냐에 따라 결과가 달라지기 때문에, 여러 사람과 비교하며 자신의 관계 패턴을 살펴볼 수 있습니다.</p>
+        <p>연애 성향 유형화는 MBTI나 애착 유형 이론처럼 개인의 행동·감정 패턴을 몇 가지 축으로 나누어 자기 이해를 돕는 방식입니다. 실제 심리학에서는 회피형·불안형·안정형 같은 애착 스타일이 친밀한 관계에서의 반응 방식을 상당 부분 설명한다고 봅니다. 두 사람의 유형이 어떻게 상호작용하는지를 보는 궁합 개념은, 서로 어떤 부분에서 맞고 어긋날 수 있는지를 대화로 꺼내는 출발점이 될 수 있습니다. 물론 실제 관계는 수치 하나로 결정되지 않으며, 소통과 노력이 훨씬 큰 변수입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>첫 느낌으로 빠르게 답하면 평소 실제 행동에 가까운 결과가 나옵니다. 이상적인 모습을 고르면 결과가 실제 성향에서 멀어질 수 있습니다.</li>

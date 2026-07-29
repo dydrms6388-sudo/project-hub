@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">일본어노트는 한국인의 시선으로 일본어를 풀어낸 학습 블로그입니다.</p>
     <a class="cta" href="https://dydrms-jpnote.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>일본어노트 소개</h2>
-    <p>일본어노트는 한국인의 시선으로 일본어를 풀어낸 학습 블로그입니다. 회화 표현부터 히라가나·가타카나 발음, 한자 어휘, 문법 구조, JLPT 시험 대비까지 주제별로 정리되어 있으며, 모든 예문에 가나 표기와 한국어 뜻을 함께 달아 혼자 공부할 때도 막히는 일이 없습니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 일본어노트는 한국인의 시선으로 일본어를 풀어낸 학습 블로그입니다.</li>
+        <li><b>이럴 때</b> JLPT 시험을 앞두고 어휘·문법 포인트를 빠르게 훑고 싶을 때, 시험 등급별로 정리된 글을 참고 자료로 활용할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>문법 글에서 조사 용법과 て형·동사 활용 패턴을 확인하고 노트에 정리합니다.</li>
         <li>오늘의 한마디를 하루 한 문장씩 따라 써 어휘를 조금씩 축적합니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>한국어와 일본어는 어순이 같고 조사 체계도 유사해, 한국인이 비교적 빠르게 기초를 습득할 수 있는 언어입니다. 그러나 히라가나 46자·가타카나 46자의 문자 체계, 한자(漢字)와 세 문자의 혼용, 그리고 동사 활용의 규칙성 때문에 초반 장벽을 넘지 못하고 포기하는 학습자가 많습니다. JLPT(일본어능력시험)는 N5부터 N1까지 5단계로 나뉘며 어휘·문법·독해·청해를 종합 평가합니다. 장음·촉음·탁음처럼 한국어에 없는 발음 규칙을 초기에 정확히 잡아두지 않으면 회화로 이어지기 어렵습니다. 가타카나는 외래어·의성어 표기에 폭넓게 쓰여 일상 텍스트 읽기에서 빠질 수 없는 문자입니다.</p>
+    <details class="deep">
+      <summary>일본어노트 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>일본어노트는 한국인의 시선으로 일본어를 풀어낸 학습 블로그입니다. 회화 표현부터 히라가나·가타카나 발음, 한자 어휘, 문법 구조, JLPT 시험 대비까지 주제별로 정리되어 있으며, 모든 예문에 가나 표기와 한국어 뜻을 함께 달아 혼자 공부할 때도 막히는 일이 없습니다.</p>
+        <p>한국어와 일본어는 어순이 같고 조사 체계도 유사해, 한국인이 비교적 빠르게 기초를 습득할 수 있는 언어입니다. 그러나 히라가나 46자·가타카나 46자의 문자 체계, 한자(漢字)와 세 문자의 혼용, 그리고 동사 활용의 규칙성 때문에 초반 장벽을 넘지 못하고 포기하는 학습자가 많습니다. JLPT(일본어능력시험)는 N5부터 N1까지 5단계로 나뉘며 어휘·문법·독해·청해를 종합 평가합니다. 장음·촉음·탁음처럼 한국어에 없는 발음 규칙을 초기에 정확히 잡아두지 않으면 회화로 이어지기 어렵습니다. 가타카나는 외래어·의성어 표기에 폭넓게 쓰여 일상 텍스트 읽기에서 빠질 수 없는 문자입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>한국어 조사와 일본어 조사의 대응 관계를 먼저 정리해두면(은/는→は, 이/가→が, 을/를→を) 문장 구성 속도가 눈에 띄게 빨라집니다.</li>

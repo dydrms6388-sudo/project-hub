@@ -80,6 +80,19 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about h2:first-child{margin-top:8px}
 .about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
 .about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
 .about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
@@ -123,8 +136,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">이사 업체에 정식 견적을 부르기 전, 대략적인 비용 범위를 먼저 그려 보는 계산 도구입니다.</p>
     <a class="cta" href="https://dydrms-isamiri.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>이사미리 소개</h2>
-    <p>이사 업체에 정식 견적을 부르기 전, 대략적인 비용 범위를 먼저 그려 보는 계산 도구입니다. 거주 평수(짐의 양), 이사 방식(일반·반포장·포장), 출발지와 도착지의 이동 거리, 층수와 엘리베이터 유무, 이사 날짜를 넣으면 시세를 바탕으로 예상 금액대를 계산합니다. 내부적으로는 평수를 짐 물량(톤수와 차량 등급)으로 환산하고, 필요한 인력 수를 얹은 뒤 이동 거리와 날짜별 할증을 가중해 하한·상한이 있는 범위로 보여 줍니다. 결과 화면에서는 이사 방식과 날짜를 바꿔 가며 여러 조합의 예상 금액을 한 표에 나란히 놓고 비교할 수 있어, 어떤 선택이 얼마를 아끼는지 한눈에 대볼 수 있는 것이 이 도구의 특징입니다. 각 항목(인력·차량·사다리차·할증)이 금액을 얼마나 끌어올리는지도 함께 보여 줍니다.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 이사 업체에 정식 견적을 부르기 전, 대략적인 비용 범위를 먼저 그려 보는 계산 도구입니다.</li>
+        <li><b>이럴 때</b> 이사 예산을 잡기 전, 포장과 반포장 중 어느 쪽이 형편에 맞는지 금액으로 대보고 싶은 사람. 방식만 바꿔 두 금액을 한 표에 나란히 놓으면 차이가 바로 드러납니다(구간별 기준 값과 반포장의 절감 폭은 시세·할증표 참고). 대신 옷·책을 직접 싸는 하루치 품을 감안해 정하면 됩니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
     <h2>이럴 때 유용해요</h2>
     <ul>
@@ -140,8 +159,11 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>이사 날짜를 선택하면 월말·주말·이사철·손없는날 여부가 자동으로 판별돼 해당 할증이 얹힙니다(할증 폭은 시세·할증표와 FAQ 참고). 방식이나 날짜를 바꾸면 금액이 실시간으로 다시 계산되고, 여러 조합이 한 표에 나란히 쌓여 어느 쪽이 유리한지 바로 대볼 수 있습니다.</li>
         <li>결과로 나온 예상 금액대와 항목별 구성(인력·차량·사다리차·할증)을 확인합니다. 함께 뜨는 절약 팁과 D-30 예약·D-14 방문 견적·D-7 관리비 정산·D-1 전입신고 서류 준비·이사 직후~14일 이내 전입신고(확정일자)처럼 언제 무엇을 해야 하는지 대략적인 흐름도 참고할 수 있습니다(주민등록법상 전입신고는 이사 후 14일 이내가 의무입니다). 한편 이 도구는 &#39;비용 범위 추정&#39;에 집중합니다. 짐 싸기·주소 이전 같은 준비 항목 점검은 이사 체크리스트 도구, 소형 짐 단건 운송 견적은 용달·화물 계산기가 따로 있으니 목적에 맞게 나눠 쓰면 됩니다.</li>
     </ol>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>국내 이사 비용은 짐의 양(평수·가구 수), 이동 거리, 이사 방식, 층수와 엘리베이터·사다리차 사용 여부로 정해지고, 여기에 날짜 요인이 더해집니다.</p>
+    <details class="deep">
+      <summary>이사미리 자세히 알아보기 · 배경지식</summary>
+      <div class="deep-body">
+        <p>이사 업체에 정식 견적을 부르기 전, 대략적인 비용 범위를 먼저 그려 보는 계산 도구입니다. 거주 평수(짐의 양), 이사 방식(일반·반포장·포장), 출발지와 도착지의 이동 거리, 층수와 엘리베이터 유무, 이사 날짜를 넣으면 시세를 바탕으로 예상 금액대를 계산합니다. 내부적으로는 평수를 짐 물량(톤수와 차량 등급)으로 환산하고, 필요한 인력 수를 얹은 뒤 이동 거리와 날짜별 할증을 가중해 하한·상한이 있는 범위로 보여 줍니다. 결과 화면에서는 이사 방식과 날짜를 바꿔 가며 여러 조합의 예상 금액을 한 표에 나란히 놓고 비교할 수 있어, 어떤 선택이 얼마를 아끼는지 한눈에 대볼 수 있는 것이 이 도구의 특징입니다. 각 항목(인력·차량·사다리차·할증)이 금액을 얼마나 끌어올리는지도 함께 보여 줍니다.</p>
+        <p>국내 이사 비용은 짐의 양(평수·가구 수), 이동 거리, 이사 방식, 층수와 엘리베이터·사다리차 사용 여부로 정해지고, 여기에 날짜 요인이 더해집니다.</p>
     <p>이사 방식은 세 가지입니다. 포장이사는 짐 포장부터 운반, 새 집 정리까지 업체가 전담하고, 일반이사는 짐을 직접 다 싸서 운반만 맡기는 가장 저렴한 방식이며, 반포장이사는 그 중간입니다. 다만 반포장에서 업체와 소비자가 나누는 작업 범위는 업체마다 달라 계약 전 확인이 필요합니다. 통상적인 분기는 다음과 같습니다.</p>
     <table class="rt"><thead><tr><th>짐 구분</th><th>업체 담당</th><th>소비자 담당</th></tr></thead><tbody><tr><td>대형 가구(장롱·침대 등)</td><td>해체·운반·재조립</td><td>—</td></tr><tr><td>대형 가전(냉장고·세탁기·TV)</td><td>운반·설치 연계</td><td>—</td></tr><tr><td>소품(옷·책·주방용품)</td><td>운반만</td><td>박스에 담아 포장</td></tr><tr><td>새 집 정리·수납</td><td>—</td><td>직접 정리</td></tr></tbody></table>
     <p>물량 환산: 이 도구는 평수를 아래 기준으로 짐 물량과 차량·인력으로 환산합니다(지역·업체에 따라 편차).</p>
@@ -152,6 +174,8 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p>날짜 요인 중 가장 큰 것은 &#39;손없는날&#39;입니다. &#39;손(損)&#39;은 날짜에 따라 방위를 옮겨 다니며 그 방향의 활동을 방해한다고 여긴 존재로, 손이 어느 방위에도 머물지 않는 날을 손없는날이라 불렀습니다. 음력 끝자리가 9 또는 0인 날(음력 9·10·19·20·29·30일)이 여기 해당하고, 작은달은 30일이 없어 그믐인 29일이 이에 준하며, 이사·혼례에 길하다고 여겨 수요가 몰리는 탓에 평일 비수기보다 오히려 비쌉니다. 이 도구는 입력한 날짜의 음력을 자동으로 판별해 손없는날 여부를 표시합니다. 가령 2026년 음력 1월 9·10일은 양력 2월 25·26일(수·목)에 해당합니다.</p>
     <p>수요가 몰리는 날일수록 좋은 업체의 차량과 인력이 먼저 차기 때문에, 성수기·주말·손없는날은 한두 달 전에 예약이 마감되는 경우가 흔합니다. 반대로 날짜를 3~4주 이상 앞당겨 잡으면 원하는 업체를 고를 여지가 넓어지고, 성수기 프리미엄을 피한 평일을 선점하기도 쉬워 협상에서 유리해집니다.</p>
     <p>참고로 이사 화물을 주선하는 업체는 화물자동차 운수사업법상 화물자동차 운송주선사업(이사화물) 허가를 받아야 하며, 이는 화물을 직접 나르는 일반 운송사업과 구분되는 주선업입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>날짜를 유연하게 잡을 수 있다면 손없는날과 주말을 피해 평일 중반(화~목)을 노리세요. 성수기 프리미엄만 빠져도 총액이 눈에 띄게 내려갑니다(할증 폭은 FAQ 참고).</li>
