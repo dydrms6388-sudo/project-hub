@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -129,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">건강·운동</span> <span class="sep">›</span> <span class="c-cur">손톱읽기 (NailReader)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></div>
