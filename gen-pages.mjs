@@ -292,28 +292,33 @@ for (const d of daily) {
     ? `<p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 ${REVIEW_LABEL(reviewed)}입니다.</p>`
     : "";
 
-  // 실행 우선 + 스캔 가독성: 한눈 요약 → (참고용) → 이럴 때 → 사용법 → [자세한 소개·배경지식은 접기] → 팁 → 주의 → FAQ
+  // 실행 우선 + 스캔 가독성: 한눈 요약 → (참고용) → 이럴 때(후크) → [사용법·배경지식은 접기] → 팁 → 주의 → FAQ
+  // 히어로 lead 와 중복되는 "무엇을" 줄은 제거(같은 문장 반복 방지). scenarios 없을 때만 폴백으로 노출.
+  const tldrItems = [
+    scenarios[0]
+      ? `<li><b>이럴 때</b> ${richInline(scenarios[0])}</li>`
+      : `<li><b>무엇을</b> ${richInline(lead)}</li>`,
+    `<li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>`,
+  ];
   const tldrHtml = `<div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> ${richInline(lead)}</li>
-        ${scenarios[0] ? `<li><b>이럴 때</b> ${richInline(scenarios[0])}</li>` : ""}
-        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+        ${tldrItems.join("\n        ")}
       </ul>
     </div>`;
-  const detailHtml = (background || intro)
-    ? `<details class="deep">
-      <summary>${esc(d.name)} 자세히 알아보기 · 배경지식</summary>
+  // 긴 사용법(번호 목록)과 소개·배경지식을 한 접이식으로 묶어 첫 화면이 텍스트 벽이 되지 않게 함
+  // (콘텐츠는 그대로 DOM 에 남아 색인/E-E-A-T 유지, 기본 접힘으로 스캔성만 개선).
+  const detailHtml = `<details class="deep">
+      <summary>사용법과 자세한 설명 보기 · ${esc(d.name)}</summary>
       <div class="deep-body">
-        <p>${esc(intro)}</p>
+        ${stepsHtml}
+        ${intro ? `<p>${esc(intro)}</p>` : ""}
         ${bgParas}
       </div>
-    </details>`
-    : "";
+    </details>`;
   const body = `${tldrHtml}
     ${topNoteHtml}
     ${scenHtml}
-    ${stepsHtml}
     ${detailHtml}
     ${tipsHtml}
     ${cautHtml}

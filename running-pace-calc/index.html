@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 달린 거리와 소요 시간을 입력하면 현재 페이스와 주요 대회 거리별 완주 예상 기록을 즉시 계산해 줍니다.</li>
         <li><b>이럴 때</b> 10km 대회 기록을 기반으로 하프마라톤 목표 시간을 가늠하고, 남은 훈련 기간 동안 어느 페이스로 달려야 하는지 구간을 잡는 데 활용할 수 있습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -150,7 +149,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>10km 대회 기록을 기반으로 하프마라톤 목표 시간을 가늠하고, 남은 훈련 기간 동안 어느 페이스로 달려야 하는지 구간을 잡는 데 활용할 수 있습니다.</li>
         <li>트레드밀에서 km/h 표시가 헷갈릴 때, 속도를 페이스(분/km)로 변환해 익숙한 단위로 확인할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 러닝페이스</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>달린 거리(km)와 소요 시간(시·분·초)을 입력합니다.</li>
         <li>현재 페이스와 km당 소요 시간이 즉시 계산됩니다.</li>
@@ -158,9 +160,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>목표 페이스를 입력해 대회 완주 시간과 구간별 스플릿을 계획합니다.</li>
         <li>훈련 페이스 존과 심박 존을 참고해 오늘 훈련에 적합한 속도 구간을 파악합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>러닝페이스 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>달린 거리와 소요 시간을 입력하면 현재 페이스와 주요 대회 거리별 완주 예상 기록을 즉시 계산해 줍니다. 훈련 페이스 구간, 심박 존, 케이던스 메트로놈까지 갖춰 대회 준비를 체계적으로 도울 수 있습니다.</p>
         <p>달리기에서 &#39;페이스&#39;는 1km를 달리는 데 걸리는 시간(분:초)으로 표현하며, 훈련 강도와 대회 전략을 세우는 기본 단위입니다. 완주 예측에 많이 쓰이는 Riegel 공식은 거리가 늘수록 피로 누적이 비례 이상으로 증가한다는 관찰을 반영하며, 단거리 기록이 있을 때 장거리 목표를 가늠하는 데 유용합니다. Jack Daniels의 훈련 페이스 존은 회복 달리기부터 인터벌까지 목적에 따라 적정 속도를 구분하며, 과훈련 없이 체계적으로 능력을 키우는 데 활용됩니다. 케이던스(분당 보폭 수) 170~180회는 착지 충격을 분산하고 부상 위험을 낮추는 데 도움이 된다고 알려져 있지만, 체형과 훈련 수준에 따라 최적값은 개인마다 다릅니다.</p>
       </div>

@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 4.5·4.3·4.0 등 다양한 만점 기준을 지원하는 대학 학점 계산기입니다.</li>
         <li><b>이럴 때</b> 졸업을 앞두고 현재 평점이 장학금 유지 기준을 충족하는지, 부족하면 다음 학기에 어떤 성적이 필요한지 계산할 때 유용합니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -151,7 +150,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>대학원 지원 서류를 준비하면서 4.0 환산 점수나 100점 환산 성적을 확인해야 할 때 활용할 수 있습니다.</li>
         <li>재수강 과목이 누적된 경우, 학칙에 따른 처리 방식을 적용해 실제 평점이 어떻게 달라지는지 시뮬레이션할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 학점계산기프로</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>사용하는 대학의 만점 기준(4.5, 4.3, 4.0)을 선택합니다.</li>
         <li>과목명·학점 수·취득 등급을 한 줄씩 입력합니다.</li>
@@ -160,9 +162,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>목표 평점을 입력하면 남은 학기에 필요한 평균 성적이 역산됩니다.</li>
         <li>학기별 GPA 추이 그래프로 변화 흐름을 파악합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>학점계산기프로 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>4.5·4.3·4.0 등 다양한 만점 기준을 지원하는 대학 학점 계산기입니다. 전공 평점, P/F 과목, 재수강 처리를 각각 구분해 실제 성적표에 가까운 결과를 계산하고, 목표 평점을 입력하면 남은 학기에 필요한 성적도 역산해 줍니다. 장학금 기준 확인이나 대학원 지원 준비에 활용할 수 있습니다.</p>
         <p>대학 학점(GPA)은 졸업 요건 충족은 물론 장학금 수혜, 편입, 대학원 입학, 취업 지원 등 여러 상황에서 중요한 기준이 됩니다. 국내 대학은 4.5 만점 체계를 가장 많이 사용하지만 4.3이나 4.0을 적용하는 학교도 있고, 동일한 만점 기준 안에서도 등급 구간이 학교마다 다를 수 있습니다. 재수강 과목의 기존 성적을 평균에 반영할지 교체할지도 학칙에 따라 달라지므로, 계산 전에 학교 규정을 먼저 확인하는 것이 중요합니다. 대학원이나 해외 대학에 지원할 때는 4.0 또는 100점 환산 점수를 요구하는 경우가 많아 환산 기능도 유용하게 쓰입니다.</p>
       </div>

@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 여행이나 모임에서 여러 명이 번갈아 결제한 비용을 누가 누구에게 얼마를 보내면 되는지 최소한의 송금 횟수로 정리해주는 정산 도구입니다.</li>
         <li><b>이럴 때</b> 3박 4일 여행에서 숙박·교통·식사를 번갈아 결제했을 때, 돌아오는 길에 링크 하나로 전체 정산을 마무리하는 데 활용할 수 있습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -150,7 +149,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>3박 4일 여행에서 숙박·교통·식사를 번갈아 결제했을 때, 돌아오는 길에 링크 하나로 전체 정산을 마무리하는 데 활용할 수 있습니다.</li>
         <li>정기 모임에서 일부만 참여한 코스(추가 술자리, 노래방 등)가 있을 때 항목별 나눔 대상을 개별 지정해 공정하게 분리 정산할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 엔빵클리어</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>참여자 이름을 모두 입력한다.</li>
         <li>지출 항목마다 금액·결제자·함께 나눌 사람을 지정한다.</li>
@@ -159,9 +161,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>각자 송금 완료 후 해당 항목을 체크해 완료 처리한다.</li>
         <li>결과 링크를 단체 채팅방에 공유해 모든 참여자가 내역을 확인한다.</li>
     </ol>
-    <details class="deep">
-      <summary>엔빵클리어 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>여행이나 모임에서 여러 명이 번갈아 결제한 비용을 누가 누구에게 얼마를 보내면 되는지 최소한의 송금 횟수로 정리해주는 정산 도구입니다. 원 단위까지 정확하게 나눠 합계가 항상 0원이 되도록 계산하므로, &#39;나중에 어떻게 하지&#39;라는 뒤처리 고민을 한 번에 해결합니다.</p>
         <p>여러 사람이 참여하는 모임에서 돌아가며 결제하다 보면 각자 낸 금액과 실제 부담해야 할 금액 사이에 차이가 생깁니다. 이를 단순히 1:1로 정산하면 인원이 늘어날수록 송금 건수가 폭발적으로 늘어납니다. 예를 들어 4명이 서로 정산하면 최대 6번의 송금이 필요하지만, 최대채권자와 최대채무자를 순서대로 매칭하는 그리디 알고리즘을 쓰면 대부분 2~3번으로 줄일 수 있습니다. 이 방식은 순잔액(각자 낸 금액 - 부담해야 할 금액)을 계산한 뒤, 가장 많이 받아야 할 사람과 가장 많이 보내야 할 사람부터 차례로 정산을 합치는 원리입니다.</p>
       </div>

@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -140,21 +140,20 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
       <p class="tldr-h">한눈에 보기</p>
       <ul>
         <li><b>무엇을</b> 오늘 몇 도, 뭐 입지?</li>
-        
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
     </div>
     
     
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 오늘옷장 (기온별 옷차림)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>아래 ‘바로 실행하기’를 눌러 도구를 엽니다.</li>
         <li>안내에 따라 값을 입력하거나 항목을 선택합니다.</li>
         <li>결과를 확인하고 필요하면 저장·공유합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>오늘옷장 (기온별 옷차림) 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>오늘 몇 도, 뭐 입지? 위치만 켜면 오늘 날씨에 딱 맞는 옷차림을 상·하의·아우터·신발·액세서리 한 카드로 대신 골라주는 무료 웹 도구. 널리 통용되는 기온별 옷차림표 8구간을 기준으로, ①기상청 겨울철 체감온도 공식(바람 반영)으로 실제보다 추운 &#39;체감&#39;을 계산해 더 따뜻하게 ②아침·저녁 일교차가 8°C 이상이면 &#39;겹쳐입기(레이어링)&#39; 경고와 처방 ③&#39;추위/더위 잘 탐&#39; 개인 체감 슬라이더(-3~+3)로 한 단계 보정 ④성인(남/여)·아이 대상 + 캐주얼/오피스/액티브 스타일 톤별 코디까지 개인화. Open-Meteo(무료·무키) 지오로케이션으로 현재 기온·풍속·습도·일교차 자동 조회(실패 시 슬라이더·숫자·프리셋 수동 폴백, 접근성 이중화). 재방문 훅=오늘 뭐 입었지 코디 일지(추웠다/딱좋았다/더웠다 기록→다음 추천 자동 보정, 🔥연속 스트릭·최근 14일 기록·&#39;어제보다 N도&#39; 비교). 무백엔드·무가입·무유료API, 위치·기록은 기기 localStorage에만 저장(서버 전송 0). colorfit(퍼스널컬러)과 축분리된 &#39;기온 기반 옷차림&#39; 전용 신규 버티컬(허브 dedup 0). 큐 전부 금융→비금융 발산 선정.</p>
         
       </div>

@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 대출 금리가 내렸거나 더 나은 상품이 나왔을 때, 중도상환수수료를 내고도 갈아타는 것이 실제로 이득인지 계산합니다.</li>
         <li><b>이럴 때</b> 주택담보대출 금리가 1%p 이상 내려간 시점에 갈아타기를 검토할 때, 수수료와 부대 비용까지 감안한 실제 이득을 계산해 볼 수 있습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -150,7 +149,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>주택담보대출 금리가 1%p 이상 내려간 시점에 갈아타기를 검토할 때, 수수료와 부대 비용까지 감안한 실제 이득을 계산해 볼 수 있습니다.</li>
         <li>대출 실행 3년이 지나 중도상환수수료가 없어졌다면, 더 낮은 금리로 전환했을 때 남은 기간 동안 얼마나 절감되는지 빠르게 확인할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 갈아타이밍 (LoanRefi)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>현재 대출의 잔여 원금·금리(%)·남은 기간(개월)을 입력하세요.</li>
         <li>이동할 새 대출의 금리와 기간을 입력하세요.</li>
@@ -158,9 +160,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>월 절감액과 손익분기 개월 수를 확인하세요.</li>
         <li>남은 대출 기간과 손익분기 시점을 비교해 갈아타기 여부를 판단하세요.</li>
     </ol>
-    <details class="deep">
-      <summary>갈아타이밍 (LoanRefi) 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>대출 금리가 내렸거나 더 나은 상품이 나왔을 때, 중도상환수수료를 내고도 갈아타는 것이 실제로 이득인지 계산합니다. 잔여 원금·현재 금리·새 금리·남은 기간·수수료율을 입력하면 월 절감액, 손익분기 시점, 전체 기간의 순절감액을 바로 확인할 수 있습니다. 막연히 &#39;갈아타야 하나&#39; 고민하는 대신 숫자로 따져보고 결정하는 용도입니다.</p>
         <p>대출 갈아타기(대환 대출)는 기존 대출을 새 대출로 교체하는 것으로, 금리를 낮추거나 상환 조건을 바꾸기 위해 선택합니다. 중도상환수수료는 대출 약정 기간 전에 상환할 때 금융기관이 부과하는 비용으로 통상 잔여 원금의 0.5~1.5% 수준이며 대출 실행 후 일정 기간(보통 3년)이 지나면 면제되는 경우가 많습니다. 금리 차이가 크더라도 수수료와 부대 비용(근저당 설정·말소비, 인지세, 취급 수수료)이 누적되면 실제 절감 효과가 줄어들 수 있어, 손익분기 개월 수를 남은 대출 기간과 비교하는 것이 핵심입니다.</p>
       </div>

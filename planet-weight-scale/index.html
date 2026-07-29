@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 내 몸무게와 나이를 입력하면 수성부터 태양까지 11개 천체에서 각각 얼마나 무거울지, 나이는 몇 살이 되는지, 점프 높이는 얼마나 달라지는지를 NASA 물리 데이터 기반으로 환산해 주는 과학 교육 도구입니다.</li>
         <li><b>이럴 때</b> 초등·중학생 과학 수업에서 태양계 중력 개념을 설명할 때, 본인 체중을 직접 입력해 보면 추상적인 중력 수치가 체감 가능한 숫자로 바뀌어 이해를 돕습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -150,7 +149,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>초등·중학생 과학 수업에서 태양계 중력 개념을 설명할 때, 본인 체중을 직접 입력해 보면 추상적인 중력 수치가 체감 가능한 숫자로 바뀌어 이해를 돕습니다.</li>
         <li>우주에 관심 있는 성인이 &#39;내가 목성에 서 있다면&#39;을 구체적인 수치로 상상해 보고 싶을 때 활용할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 별저울 (CosmoScale)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>지구 기준 체중(kg)과 현재 나이를 입력합니다.</li>
         <li>11개 천체 목록(수성·금성·지구·달·화성·목성·토성·천왕성·해왕성·명왕성·태양)의 환산 결과를 확인합니다.</li>
@@ -158,9 +160,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>막대 그래프로 천체별 체중 비율을 한눈에 비교합니다.</li>
         <li>프로필을 저장하거나 결과 화면을 공유합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>별저울 (CosmoScale) 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>내 몸무게와 나이를 입력하면 수성부터 태양까지 11개 천체에서 각각 얼마나 무거울지, 나이는 몇 살이 되는지, 점프 높이는 얼마나 달라지는지를 NASA 물리 데이터 기반으로 환산해 주는 과학 교육 도구입니다. 우주의 중력 차이가 얼마나 극적인지 직관적으로 체험할 수 있습니다.</p>
         <p>천체마다 질량과 반지름이 달라 표면 중력 가속도(g)가 모두 다릅니다. 지구의 g를 1로 놓으면 달은 약 0.165, 화성은 약 0.38, 목성은 약 2.53, 태양은 약 27.9 수준입니다. 몸무게는 질량에 중력 가속도를 곱한 힘이므로, 같은 사람이 달에 가면 지구 체중의 약 6분의 1만 저울에 찍히고 태양 표면에 갈 수 있다면 약 28배로 늘어납니다. 나이는 각 천체의 공전 주기 기준으로 환산하는데, 화성의 1년은 지구 기준 약 687일이므로 지구 나이 20세는 화성 나이로 약 10.6세가 됩니다. 점프 높이는 중력이 약한 천체일수록 반비례해 높아져, 달에서는 지구보다 6배 가까이 높이 뛸 수 있습니다.</p>
       </div>

@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> HBM, EUV, GAA, 파운드리처럼 뉴스에 매일 등장하지만 무심코 지나쳤던 반도체 용어를 풀어 주는 교양 블로그입니다.</li>
         <li><b>이럴 때</b> 삼성전자·SK하이닉스나 파운드리 공채를 준비하는 취준생. &#39;GAA 수율&#39; 같은 헤드라인이 왜 파운드리 경쟁의 핵심인지 인과로 꿰면 자소서·면접 기본기가 잡힙니다. 흐름은 이렇습니다 — EUV로 회로를 극도로 미세화하면 트랜지스터가 짧아지며 게이트가 전류를 제대로 막지 못하는 단채널 효과(누설 전류)가 심해지고, 이를 잡으려 채널을 사방에서 감싸는 GAA 구조로 넘어가지만, 구조가 복잡해질수록 미세 결함 하나에도 칩이 죽어 수율(정상 칩 비율) 확보가 승부처가 됩니다. 직무별 추천 순서도 짤 수 있습니다. 파운드리: EUV 노광 → GAA 트랜지스터 → 공정 노드의 진실 → 수율(D0). 패키징: HBM 적층 → TSV → CoWoS·어드밴스드 패키징 → 칩렛. 메모리: DRAM 구조 → NAND 3D 적층 → HBM → DDR/LPDDR. 3~4편만 순서대로 읽어도 직무 개념이 한 줄로 꿰집니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -151,7 +150,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>반도체 관련주와 산업 뉴스를 챙기는 투자자·독자. &#39;TSMC 2nm 양산 개시&#39;, &#39;엔비디아, SK하이닉스 HBM 공급 확대&#39; 같은 헤드라인의 의미를 숫자로 이해할 수 있습니다. 예컨대 HBM이 &#39;GPU 병목을 뚫는다&#39;는 말은, GDDR이 칩당 32비트 안팎의 좁은 버스를 쓰는 데 비해 HBM은 스택당 1024비트의 넓은 버스를 TSV로 연결해 스택 하나만으로 초당 1TB(HBM3E급)가 넘는 대역폭을 낸다는 뜻입니다. AI 가속기 한 개에 이런 스택을 6~8개 붙이니 연산 유닛이 데이터를 굶지 않고 돌아갑니다. 개별 뉴스를 &#39;HBM → AI 가속기 → 파운드리 경쟁&#39; 구도 안에서 읽으면 헤드라인이 산업 지도 위의 좌표로 바뀝니다.</li>
         <li>기술 교양을 넓히고 싶은 일반인. PC·스마트폰에 직접 들어가는 DRAM·SSD 이야기부터 읽으면 진입 장벽이 낮습니다. &#39;내 노트북 SSD는 왜 전원을 꺼도 파일이 남을까&#39; 같은 일상 질문에서 출발해 하루 한 편씩 쌓기 좋고, &#39;오늘의 반도체 상식&#39;만 매일 챙겨도 기초 용어 감이 잡힙니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 칩노트</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>상단 검색창, 가나다·알파벳 색인, 태그로 원하는 개념을 찾습니다. 기사에서 &#39;CoWoS&#39;가 걸리면 검색창에 &#39;CoWoS&#39;나 &#39;패키징&#39;을 넣으면 관련 글이 묶여 나오고, 반도체가 처음이라면 스마트폰·PC와 바로 이어지는 메모리 카테고리부터 골라도 됩니다.</li>
         <li><p>본문을 읽습니다. 낯선 용어에는 괄호 풀이와 비유가 병기되고, 헷갈리는 짝은 비교표로 정리됩니다. 본문에서 실제로 만나는 표는 이런 형태입니다.</p>
@@ -161,9 +163,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <table class="rt"><thead><tr><th>항목</th><th>DUV</th><th>EUV</th></tr></thead><tbody><tr><td>파장</td><td>193nm</td><td>13.5nm</td></tr><tr><td>환경</td><td>대기 중 노광</td><td>진공 필수(빛이 공기에 흡수됨)</td></tr><tr><td>광학계</td><td>투과 렌즈</td><td>다층 반사경으로 빛을 접어 전달</td></tr><tr><td>미세화</td><td>멀티패터닝 부담 큼</td><td>한 번에 더 미세한 패턴</td></tr><tr><td>장비가</td><td>상대적으로 저렴</td><td>표준 EUV 수천억 원대, High-NA는 그 이상</td></tr></tbody></table></li>
         <li>글 하단의 관련 글 추천을 따라 연결된 개념을 이어 읽고, 매일 바뀌는 &#39;오늘의 반도체 상식&#39;으로 짧은 지식을 하나씩 더합니다. 각 글에는 난이도 태그(입문·심화)와 작성일이 붙어 있어 순서를 고르기 쉽습니다.</li>
     </ol>
-    <details class="deep">
-      <summary>칩노트 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>HBM, EUV, GAA, 파운드리처럼 뉴스에 매일 등장하지만 무심코 지나쳤던 반도체 용어를 풀어 주는 교양 블로그입니다. 칩노트의 핵심은 낱개 용어 사전이 아니라 &#39;엮어 읽기&#39;입니다. 한 개념을 읽으면 본문에 걸린 링크와 글 하단 추천을 따라 다음 개념으로 이어지도록 큐레이션돼, 흩어진 용어가 하나의 산업 지도로 연결됩니다. [한눈에 보기] 카테고리 5개(메모리·파운드리·AI칩·장비·산업) · 편당 3~5분 · &#39;오늘의 반도체 상식&#39; 매일 갱신, 심화 글은 주 2~3편 · 상단 검색창에 용어 일부만 넣으면 관련 글이 묶여 나옴 · 회원가입·설치·결제 없이 전부 무료. 필자는 반도체 업계 경력과 전공 지식을 갖췄고, 기업 공식 발표와 기술 자료를 근거로 글을 쓰며 발행 전 사실 확인을 거칩니다. 별도 가입이나 설치 없이 모든 글을 바로 읽을 수 있습니다.</p>
         <p>반도체는 크게 데이터를 저장하는 메모리(DRAM·NAND 플래시), 연산을 맡는 로직(CPU·GPU·NPU), 신호 처리와 전력 관리를 담당하는 아날로그·혼성신호로 나뉩니다. 뉴스에 자주 나오는 3nm·2nm 같은 공정 노드는 오해가 가장 많은 대목입니다. 2000년대 초반까지는 노드 숫자가 트랜지스터 게이트 길이 같은 실제 물리 치수를 대략 반영했지만, FinFET이 등장한 20nm 안팎을 기점으로 숫자와 실측치의 연결이 끊겼습니다. 지금의 노드 숫자는 어느 한 부분의 길이도 아닌, 세대를 구분하는 마케팅 명칭에 가깝습니다. 그래서 업계는 게이트 길이 대신 CPP(콘택트 게이트 간격), 메탈 피치, 트랜지스터 밀도(MTr/mm²), SRAM 셀 면적 같은 실제 지표로 세대를 평가합니다. 또 하나 중요한 흐름은 구조 전환입니다. 채널을 세 면에서 감싸던 FinFET(주로 7nm·5nm대)에서, 채널을 사방으로 완전히 감싸 게이트 제어력을 회복한 GAA(게이트 올 어라운드)로 넘어가는 세대가 2nm 안팎입니다. 삼성전자가 3nm에서 GAA(MBCFET)를 먼저 도입했고, TSMC는 N2, 인텔은 18A에서 나노시트형 GAA를 채택합니다. 같은 &#39;2nm&#39;라도 삼성·TSMC·인텔이 제각각인 이유는 각 사가 앞세우는 측정 기준(트랜지스터 밀도, SRAM 스케일링, 성능/와트 등)이 서로 다르기 때문입니다. HBM(고대역폭 메모리)은 여러 DRAM 다이를 TSV(실리콘 관통 전극)로 수직 적층해 대역폭을 끌어올린 제품으로, AI 가속기의 핵심 부품이 되며 SK하이닉스·삼성전자가 시장을 이끌고 있습니다. 산업 규모로 보면 반도체 수출은 업황에 따라 크게 출렁입니다. 2024년에는 약 1,419억 달러로 총수출의 약 20%를 차지했지만(산업통상자원부 &#39;수출입 동향&#39; 기준), 메모리 불황이던 2023년에는 약 986억 달러로 총수출의 15%대까지 내려앉았습니다. 여기에 K칩스법 세제 지원, 소부장(소재·부품·장비) 국산화, 용인 반도체 클러스터 같은 국내 이슈가 맞물려 있어, 용어를 알면 뉴스와 산업 흐름이 한결 잘 읽힙니다.</p>
       </div>

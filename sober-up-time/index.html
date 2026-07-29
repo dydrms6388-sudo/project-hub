@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 마신 술의 종류와 양, 체중을 입력하면 혈중알코올농도(BAC)가 시간에 따라 어떻게 변하는지 위드마크 공식으로 추정해 줍니다.</li>
         <li><b>이럴 때</b> 전날 밤 늦게까지 마신 다음 날 아침, 몸 상태가 어느 정도 회복됐는지 가늠하고 싶을 때 참고 자료로 활용할 수 있습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -150,7 +149,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>전날 밤 늦게까지 마신 다음 날 아침, 몸 상태가 어느 정도 회복됐는지 가늠하고 싶을 때 참고 자료로 활용할 수 있습니다.</li>
         <li>회식 자리에서 마신 양을 돌아보며 충분한 휴식 시간을 어림잡아 계획할 때 도움이 됩니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 깰때 — 술 깨는 시간 계산기</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>성별과 체중(kg)을 입력합니다.</li>
         <li>마신 술의 종류(맥주·소주·와인·위스키 등)와 양을 잔 수 또는 ml로 추가합니다.</li>
@@ -158,9 +160,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>계산 버튼을 누르면 시간대별 추정 BAC 그래프와 알코올이 체내에서 거의 사라지는 예상 시각이 표시됩니다.</li>
         <li>식사 여부나 음주 속도 등 조건을 바꿔 보며 결과 변화를 확인합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>깰때 — 술 깨는 시간 계산기 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>마신 술의 종류와 양, 체중을 입력하면 혈중알코올농도(BAC)가 시간에 따라 어떻게 변하는지 위드마크 공식으로 추정해 줍니다. 음주 후 몸 상태를 스스로 돌아보고 싶을 때 참고 지표로 활용할 수 있습니다. 수치는 개인 신진대사와 건강 상태에 따라 실제와 차이가 날 수 있으므로 어디까지나 참고 자료로만 사용하세요.</p>
         <p>혈중알코올농도는 섭취한 알코올이 혈류에 얼마나 녹아 있는지를 나타내는 지표입니다. 위드마크(Widmark) 공식은 체중, 성별, 섭취량을 바탕으로 BAC를 추산하는 방법으로, 약리학 연구에서 수십 년간 사용되어 왔습니다. 일반적으로 알코올은 간에서 시간당 약 0.01~0.02% 수준으로 분해되지만 이 속도는 유전적 요인, 체지방 비율, 식사 여부, 복용 중인 약물 등에 따라 개인마다 크게 다릅니다. 공복 상태에서는 알코올이 장으로 빠르게 이동해 흡수 속도가 높아지므로 같은 양을 마셔도 BAC가 더 빨리 오르는 경향이 있습니다. 수면 중에도 분해는 계속되지만, 각성 상태보다 속도가 다소 달라질 수 있습니다.</p>
       </div>

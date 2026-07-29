@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 학원라운지는 지역·과목별 학원 후기와 별점 랭킹, 학원비 계산기, &#39;학원 vs 과외&#39; 비용 비교를 한 화면에 모은 학부모 정보 커뮤니티입니다.</li>
         <li><b>이럴 때</b> 초등 진학 후 첫 수학 학원을 알아보는 학부모가, 우리 동네 학원 후기와 별점을 먼저 훑어보고 체험수업 전에 방문할 곳의 우선순위를 정할 때 유용합니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -152,7 +151,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>학원을 옮길지 고민 중인 부모가, 지금 다니는 곳과 후보 학원의 실제 월 학원비를 부대비용까지 포함해 각각 계산하고 총액으로 비교하고 싶을 때 활용할 수 있습니다.</li>
         <li>우리 지역·과목에 후기가 거의 없는 학부모가, 직접 첫 후기를 남겨 두고 이후 다른 부모의 반응을 지켜보며 정보를 쌓아 갈 때도 쓸 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 학원라운지</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>먼저 검색창에서 우리 지역·과목에 후기가 있는지 확인합니다. 현재 등록 학원은 약 1만 2천 곳, 누적 후기는 약 8만 건이며 서울·경기 비중이 약 68%로 수도권 데이터가 두터우니, 방문 계획을 세우기 전에 우리 동네 데이터가 얼마나 쌓였는지부터 봐 두면 헛걸음을 줄일 수 있습니다.</li>
         <li>지역과 과목을 선택해 학원 목록과 별점 랭킹을 불러옵니다. 별점 산정 방식(대상 기간·최소 후기 수·시간 가중)은 FAQ의 &#39;별점 랭킹&#39; 항목에 정리되어 있습니다.</li>
@@ -161,9 +163,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>&#39;학원 vs 과외&#39; 비교에서 학원의 월 고정비와 과외의 월 환산액을 나란히 놓고, 어느 쪽이 싼지·몇 회부터 역전되는지만 읽어 냅니다. 자세한 환산과 손익분기 계산은 FAQ의 &#39;학원 vs 과외&#39; 항목을 참고하세요.</li>
         <li>결정에 도움을 받았다면 학부모 게시판에 후기를 남겨 다음 부모에게 정보를 넘겨주고, 같은 지역 부모들의 최근 경험을 주고받습니다.</li>
     </ol>
-    <details class="deep">
-      <summary>학원라운지 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>학원라운지는 지역·과목별 학원 후기와 별점 랭킹, 학원비 계산기, &#39;학원 vs 과외&#39; 비용 비교를 한 화면에 모은 학부모 정보 커뮤니티입니다. 상담에서 듣는 홍보성 설명 대신 실제로 자녀를 보낸 부모들의 후기로 후보를 좁히고, 수업료·교재비·부대비용을 직접 더해 통장에서 실제로 빠져나가는 월 학원비까지 한자리에서 따져 볼 수 있습니다. 계산기는 입력한 항목을 기기 안에서 합산하며, 입력값은 로컬에만 저장되어 서버로 나가지 않습니다. 회원가입 없이 닉네임만으로 바로 쓸 수 있고, 이용료도 없습니다. 후기 비교 없이 금액만 빠르게 계산하고 싶다면 단독 &#39;학원비 계산기&#39;나 &#39;과외비 계산기&#39;가 더 간단하고, 후기·별점 기반 비교까지 함께 하려면 학원라운지가 맞습니다.</p>
         <p>통계청이 2025년 3월 발표한 &#39;2024년 초중고 사교육비조사&#39; 결과를 보면, 사교육에 참여한 학생 1인당 월평균 사교육비는 55.9만 원입니다. 사교육을 받지 않는 학생까지 포함한 전체 학생 평균(47.4만 원)보다 높은데, 참여율이 80.0%여서 자녀를 실제로 학원에 보내는 가정의 부담을 가늠할 때는 이 &#39;참여 학생 기준&#39; 수치가 현실에 더 가깝습니다. 참여율이 높은 고등학생은 참여 학생 기준으로 월 74만 원 안팎에 이르고, 자녀가 둘 이상이거나 주요 과목을 여러 개 돌리면 가계에서 차지하는 비중이 상당해집니다. (수치는 발표 원자료 기준이며, 조사 연도·발표 시점에 따라 갱신됩니다.)</p>
     <p>그런데 학원비는 교육청에 게시된 교습비가 전부가 아닙니다. 순수 수업료 외에 붙는 비용은 크게 셋으로 나눠 보면 정리가 쉽습니다. ① 매달 고정으로 붙는 상시 항목(교재비, 셔틀버스비 등), ② 아이에 따라 붙기도 빠지기도 하는 선택 항목(클리닉·보충비, 자율학습실 이용료 등), ③ 특정 시기에만 나오는 시기성 항목(레벨테스트비, 모의고사·시험 응시료, 방학 특강비 등)입니다.</p>

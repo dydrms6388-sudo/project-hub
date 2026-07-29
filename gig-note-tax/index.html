@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 3.3% 원천징수로 수입이 들어오는 프리랜서·N잡러가 5월 종합소득세를 신고하기 전에 예상 세액을 미리 가늠해 볼 수 있는 수입 장부 겸 세금 추정 도구입니다.</li>
         <li><b>이럴 때</b> 연말에 갑자기 5월 종소세 납부액이 얼마일지 걱정될 때, 연중 수입 기록을 토대로 미리 납부 예상액을 파악해 준비금을 따로 챙겨 둘 수 있습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -151,7 +150,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>강의·번역·디자인 등 업종이 다른 수입이 동시에 발생하는 N잡러가 각 수입원별로 분리 기록해 종합 세액 흐름을 한눈에 볼 수 있습니다.</li>
         <li>첫 프리랜서 신고를 앞두고 환급이 될지 납부가 될지 감이 없을 때 간단 추정값으로 신고 준비 방향을 잡을 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 긱노트 (GigNote)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>수입이 발생한 날짜, 금액, 업종을 입력해 장부에 기록합니다.</li>
         <li>3.3% 원천징수 여부를 선택하면 기납부 세액이 자동으로 반영됩니다.</li>
@@ -160,9 +162,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>월별 수입 차트로 소득 흐름을 파악하고 절세 체크리스트를 점검합니다.</li>
         <li>신고 마감 D-day 알림을 캘린더에 저장하고 JSON 백업으로 데이터를 보관합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>긱노트 (GigNote) 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>3.3% 원천징수로 수입이 들어오는 프리랜서·N잡러가 5월 종합소득세를 신고하기 전에 예상 세액을 미리 가늠해 볼 수 있는 수입 장부 겸 세금 추정 도구입니다. 업종별 단순경비율을 자동으로 적용해 환급 예상액이나 추가 납부액을 즉시 보여 줍니다.</p>
         <p>프리랜서 소득은 지급 시점에 수입액의 3.3%(소득세 3% + 지방소득세 0.3%)가 원천징수됩니다. 하지만 이 원천징수는 세금을 미리 납부해 두는 중간 과정일 뿐, 다음 해 5월에 반드시 종합소득세를 신고하고 정산해야 합니다. 이때 단순경비율 방식은 업종코드별로 국세청이 정한 비율만큼 수입에서 경비를 인정해 주는 방식으로, 실제 지출 영수증 없이도 적용할 수 있어 수입 규모가 크지 않은 프리랜서에게 일반적으로 적합합니다. 단, 업종마다 경비율이 다르고 수입이 일정 기준을 넘으면 기준경비율이나 복식부기 의무가 생기므로, 본인의 업종코드를 국세청 홈택스에서 먼저 확인하는 것이 중요합니다.</p>
       </div>

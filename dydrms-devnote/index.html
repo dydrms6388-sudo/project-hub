@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 데브노트는 프론트엔드, 백엔드, AI, 알고리즘, 개발자 커리어를 주제로 실전 코드 예제와 체크리스트를 함께 제공하는 개발자 지식 블로그입니다.</li>
         <li><b>이럴 때</b> 특정 개념을 빠르게 복습하고 싶을 때, 카테고리와 검색으로 원하는 주제의 글을 찾아 코드 예제를 확인하는 방식으로 활용할 수 있습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -151,7 +150,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>이직이나 코딩 테스트 준비 시 알고리즘 글을 훑으며 자신이 취약한 부분을 체크리스트로 점검해볼 수 있습니다.</li>
         <li>새로운 기술 스택을 도입하려는 팀에서 간단한 예제를 통해 빠르게 첫 인상을 확인하는 용도로도 활용됩니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 데브노트</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>관심 카테고리(프론트엔드·백엔드·AI·알고리즘·커리어)를 선택해 글 목록을 불러옵니다.</li>
         <li>읽고 싶은 글을 선택해 개념 설명과 코드 예제를 함께 읽습니다.</li>
@@ -159,9 +161,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>글 하단의 체크리스트로 핵심 포인트를 스스로 점검합니다.</li>
         <li>나중에 다시 볼 글은 브라우저 북마크로 저장해 참고 자료로 활용합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>데브노트 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>데브노트는 프론트엔드, 백엔드, AI, 알고리즘, 개발자 커리어를 주제로 실전 코드 예제와 체크리스트를 함께 제공하는 개발자 지식 블로그입니다. 개념 설명에 그치지 않고 실제로 복사해 돌려볼 수 있는 코드가 글마다 포함되어 있어, 읽고 바로 적용해볼 수 있는 것이 특징입니다.</p>
         <p>소프트웨어 개발 분야는 프레임워크·라이브러리·툴링이 빠르게 바뀌어 몇 달 전 자료가 이미 낡아 있는 경우도 흔합니다. 프론트엔드에서는 React·Vue·Next.js·Svelte 같은 선택지가 계속 늘어나고, 백엔드는 클라우드 네이티브 아키텍처와 서버리스 모델이 기존 방식을 빠르게 대체하고 있습니다. AI 관련 기술은 특히 변화 속도가 빨라, LLM API 활용·RAG·에이전트 패턴 등 실무에서 요구하는 지식의 범위가 급격히 넓어지고 있습니다. 알고리즘과 자료구조는 변화가 적지만 코딩 테스트와 시스템 설계 면접에서 여전히 핵심을 차지하고 있어, 꾸준한 반복 학습이 필요한 영역입니다.</p>
       </div>

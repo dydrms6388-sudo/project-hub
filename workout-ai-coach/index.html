@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 오늘 운동과 식사 내용을 채팅창에 자연스럽게 입력하면 AI가 운동 종류·세트·칼로리를 자동으로 파악해 기록해줍니다.</li>
         <li><b>이럴 때</b> 헬스장을 다녀온 직후 &#39;오늘 데드리프트 100kg 3세트 5회, 런지 20개 3세트 했어&#39;라고 입력하면 자동 정리되는 방식으로 귀찮음 없이 기록을 남기고 싶을 때.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -151,7 +150,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>식단 관리를 병행할 때 세 끼 식사 내용을 사진 없이 텍스트로 빠르게 입력해 하루 총 섭취 칼로리를 가늠하고 싶을 때.</li>
         <li>일주일치 기록을 한눈에 보며 어떤 요일에 운동 공백이 생겼는지 패턴을 파악하고 계획을 조정하고 싶을 때.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 오운완 AI 코치 (OWANWAN)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>채팅창에 오늘 운동이나 식사를 자연스럽게 입력합니다.</li>
         <li>AI가 운동 종류·세트·칼로리 등을 파싱해 기록으로 정리합니다.</li>
@@ -159,9 +161,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>주간 차트와 연속 기록으로 진척을 돌아봅니다.</li>
         <li>알림을 설정해 운동 시간에 리마인드를 받습니다.</li>
     </ol>
-    <details class="deep">
-      <summary>오운완 AI 코치 (OWANWAN) 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>오늘 운동과 식사 내용을 채팅창에 자연스럽게 입력하면 AI가 운동 종류·세트·칼로리를 자동으로 파악해 기록해줍니다. 매일 얼마나 했는지 주간 대시보드로 흐름을 볼 수 있어 꾸준히 이어가는 데 동기가 됩니다. 운동 로그를 일일이 수기로 입력하는 번거로움 없이 말하듯 기록하는 방식을 원하는 분들에게 맞습니다.</p>
         <p>피트니스 기록의 핵심은 꾸준함입니다. 앱 기록이 번거로우면 결국 중단하게 되는 경우가 많은데, 자연어로 입력하면 진입 장벽이 낮아집니다. 운동 효과를 높이려면 점진적 과부하(progresssive overload), 즉 이전보다 조금씩 중량·세트·횟수를 늘려가는 원칙이 중요하며, 이를 위해선 이전 기록이 있어야 비교가 됩니다. 칼로리 추정은 음식 데이터베이스와 평균값에 기반하므로 정밀도에 한계가 있지만, 대략적인 섭취 경향을 파악하는 데는 충분히 유용합니다. 연속 기록(스트릭)은 운동 루틴 형성에 심리적 모멘텀 역할을 합니다.</p>
       </div>

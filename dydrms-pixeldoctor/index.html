@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -140,21 +140,20 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
       <p class="tldr-h">한눈에 보기</p>
       <ul>
         <li><b>무엇을</b> 불량화소·데드픽셀·빛샘·번인·응답속도 등 9가지 모니터·화면 검사를 무설치·무가입으로 브라우저에서 한 번에 하는 종합 점검 도구.</li>
-        
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
     </div>
     
     
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 픽셀닥터 (PixelDoctor)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>아래 ‘바로 실행하기’를 눌러 도구를 엽니다.</li>
         <li>안내에 따라 값을 입력하거나 항목을 선택합니다.</li>
         <li>결과를 확인하고 필요하면 저장·공유합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>픽셀닥터 (PixelDoctor) 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>불량화소·데드픽셀·빛샘·번인·응답속도 등 9가지 모니터·화면 검사를 무설치·무가입으로 브라우저에서 한 번에 하는 종합 점검 도구. 새 모니터 개봉 검수, 중고거래(당근·번개) 검수, 폰 화면 확인, 게이밍 응답속도 점검을 3분 안에. 9종 검사=①불량화소(빨강·초록·파랑·흰·검 8색 전체화면 순환으로 죽은 픽셀·스턱픽셀·핫픽셀 탐지) ②픽셀 살리기(빠른 색 깜빡임으로 스턱픽셀 복구, 광과민성 발작 경고 게이트) ③번인·잔상(50%회색·단색 순환으로 OLED 번인 확인) ④응답속도·고스팅(UFO식 다속도 이동상자로 잔상·오버슈트 육안 점검, 측정 주사율 표시) ⑤명암비·감마·밴딩(흑백 계조·근접명암 패치) ⑥색감·균일도(단색·그라데이션·균일도 격자) ⑦선명도(1픽셀 체커보드·모아레·텍스트, DPR 보정) ⑧빛샘·IPS 글로우(완전 검은화면, 각도 고정=불량/각도변화=IPS정상 구분) ⑨터치(손가락 문질러 커버리지% 측정·반응없는 터치불량 탐지). 전체검사(9종 순차)+중고거래 검수모드(불량화소→빛샘→번인→균일도→터치 순서)+개별실행. 전체화면 엔진(requestFullscreen+의사전체화면 폴백·크롬 자동숨김·WakeLock·DPR보정 캔버스·키보드/탭 조작). 항목별 이상없음/의심/불량 판정→A~D 등급 검진표(localStorage 무서버 저장·PNG 검진표 Web Share 공유=중고거래 증빙). 100% 클라이언트(검사 데이터 서버 미전송)·무유료API. 허브 최초·유일 디스플레이 점검 버티컬(모니터테스트/불량화소/화면테스트 grep 0건). 타깃: 불량화소 테스트·모니터 테스트·데드픽셀·화면 테스트·번인 테스트·빛샘 테스트·픽셀 살리기·응답속도 테스트·명암비 테스트·중고 모니터 검수.</p>
         
       </div>

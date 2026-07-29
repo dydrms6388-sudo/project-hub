@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 가입한 보험의 종류를 선택해 추가하면 실손 중복, 과보험, 보장 공백 구간을 한 화면에 시각화해 주는 자가 진단 도구입니다.</li>
         <li><b>이럴 때</b> 직장인이 된 뒤 부모님이 들어준 어릴 적 보험과 새로 가입한 보험이 겹치는지 한눈에 파악하고 싶을 때 유용합니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -150,7 +149,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>직장인이 된 뒤 부모님이 들어준 어릴 적 보험과 새로 가입한 보험이 겹치는지 한눈에 파악하고 싶을 때 유용합니다.</li>
         <li>보험료 지출을 줄이고 싶지만 어떤 보험을 해지해도 되는지 판단이 서지 않을 때 구조 파악 용도로 활용할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 보험과진단</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>가입한 보험 종류(실손, 종신, 암, 상해, 운전자 등)를 목록에서 선택해 추가한다.</li>
         <li>각 보험의 보장 유형이 비례형인지 정액형인지 확인·조정한다.</li>
@@ -158,9 +160,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>실손 중복 구간, 미보장 구간, 과보험 위험 항목을 순서대로 검토한다.</li>
         <li>결과를 참고해 정리가 필요한 보험과 추가가 필요한 보장을 메모한다.</li>
     </ol>
-    <details class="deep">
-      <summary>보험과진단 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>가입한 보험의 종류를 선택해 추가하면 실손 중복, 과보험, 보장 공백 구간을 한 화면에 시각화해 주는 자가 진단 도구입니다. 보험료는 매달 빠져나가지만 내가 어디서 중복 납부하고 어디가 비어 있는지 파악하기 어려운데, 이 도구로 전체 구조를 직접 들여다볼 수 있습니다.</p>
         <p>국내에서 실손의료보험은 &#39;비례보상&#39; 원칙이 적용되어, 여러 곳에 가입했다고 해서 각각 전액을 받는 것이 아니라 실제 손해액 범위 안에서 비례 분담됩니다. 반면 암 진단금·수술비 같은 정액형 보험은 가입 건수만큼 중복 지급이 가능합니다. 이 구분을 모르면 실손보험을 두 개 유지하며 보험료를 이중으로 내거나, 정작 필요한 보장은 빠져 있는 상황이 생깁니다. 보험 계약은 장기간 유지되므로 한 번 구조를 점검해 불필요한 지출을 줄이는 것이 중요합니다.</p>
       </div>

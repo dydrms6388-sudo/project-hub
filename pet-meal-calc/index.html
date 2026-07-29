@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 강아지·고양이의 하루 적정 사료량을 체중·나이·중성화 여부·활동량·비만도에 맞게 계산해 주는 반려동물 급식 도구입니다.</li>
         <li><b>이럴 때</b> 중성화 수술 후 체중이 늘기 시작한 반려견에게 기존 급여량이 적절한지 확인하고 조정 기준을 잡을 때 활용할 수 있습니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -151,7 +150,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>사료 브랜드를 바꿀 때 새 제품의 칼로리 밀도를 입력해 기존과 동일한 열량 기준으로 급여량을 조정하는 데 도움이 됩니다.</li>
         <li>체중 감량이 필요한 고양이의 목표 체중을 설정하고 단계적으로 줄여가는 식이 계획의 기준점으로 사용할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 펫밀 PetMeal</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>반려동물 종류(개·고양이)와 이름, 현재 체중, 나이를 입력합니다.</li>
         <li>중성화 여부와 활동 수준(저활동·보통·활발)을 선택합니다.</li>
@@ -159,9 +161,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>현재 먹이는 사료의 100g당 칼로리(kcal)를 포장지에서 확인해 입력합니다.</li>
         <li>하루 권장 급여량(g)·칼로리·끼니당 양·간식 허용량을 확인하고 체중 추이를 기록합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>펫밀 PetMeal 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>강아지·고양이의 하루 적정 사료량을 체중·나이·중성화 여부·활동량·비만도에 맞게 계산해 주는 반려동물 급식 도구입니다. 포장지 평균 기준이 아닌 개별 조건을 반영한 RER/DER 공식을 사용하므로, 과식이나 영양 부족 없는 식사 루틴을 만드는 데 실질적인 도움이 됩니다. 여러 마리를 키우는 경우 반려동물별 프로필을 따로 관리할 수 있습니다.</p>
         <p>반려동물의 기초 에너지 요구량(RER, Resting Energy Requirement)은 체중(kg)에 0.75승을 적용한 뒤 종별 상수를 곱해 산출합니다. 여기에 생애주기(성장기·성체·노령), 중성화 여부, 활동 수준, 비만도(BCS, Body Condition Score)에 따른 계수를 곱한 값이 일일 에너지 요구량(DER)입니다. 중성화 수술을 한 동물은 대사율이 낮아지므로 동일 체중이라도 더 적은 칼로리가 필요합니다. BCS는 갈비뼈 촉감과 허리 라인으로 판단하는 9단계 체형 지표로, 5가 표준 체형이고 7 이상이면 비만으로 분류합니다. 사료 포장지의 급여 기준은 일반 성견·성묘의 평균값이어서 개체별 차이를 반영하지 않으므로 참고 수준에 그칩니다.</p>
       </div>

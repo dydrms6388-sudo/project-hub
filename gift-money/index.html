@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 결혼식·장례식·돌잔치·개업 등 경조사에 얼마를 내야 할지 막막할 때, 경조사 종류와 상대와의 관계, 참석·식사 여부만 고르면 우리 사회의 통념에 맞는 적정 금액대를 알려 주는 도구입니다.</li>
         <li><b>이럴 때</b> 직장 동료의 결혼식에 참석은 하지만 식사는 하지 않는 경우, 요즘 통용되는 선을 확인하고 싶은 직장인. 참석해 식사까지 하면 식대를 감안한 금액을, 얼굴만 비추고 밥은 먹지 않으면 그보다 낮은 금액을 기준으로 삼는 식으로 도구가 조건을 나눠 다른 금액을 제시합니다(식대를 반영하는 구체적 계산 근거는 아래 팁 참조).</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -152,7 +151,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>처음으로 직속 상사나 거래처의 경조사를 챙기게 되어, 금액뿐 아니라 봉투 문구와 전달 방법까지 예의에 맞게 확인하고 싶은 사회 초년생. 관계가 업무로 얽힌 경우 개인 친분보다 조직 관례에 맞추는 편이 무난하다는 점까지 안내합니다.</li>
         <li>부모님 세대나 다른 지역 기준과 내 기준이 달라 헷갈리는 사람. 지역·세대는 계산에 반영되지 않지만, 도구가 제공하는 지역·세대 참고 구간표(아래 팁)를 보고 상대가 속한 지역·연령대의 통념을 함께 대입해 판단할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 얼마내지</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>경조사 종류(결혼, 장례, 돌잔치, 개업, 승진 등)를 선택합니다. 승진처럼 현금 부조가 관례가 아닌 항목은 금액 대신 선물 예산대와 추천 방식을 보여 줍니다.</li>
         <li>상대와의 관계를 통일된 등급(지인 / 친함 / 매우 친함 / 업무·예우 / 친척)에서 고릅니다. 이 등급은 모든 경조사 종류에 동일하게 적용되어 입력과 결과가 일관됩니다.</li>
@@ -160,9 +162,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>관계 등급과 참석·식사 조합에 맞춰 계산된 추천 금액대와 봉투 문구·전달 예절 가이드를 확인합니다. 지역·세대는 계산에 자동 반영하지 않고 참고 구간표로만 안내하니, 표를 보고 본인 상황에 맞게 최종 조정합니다.</li>
         <li>실제로 낸 금액과 받은 금액을 날짜·행사 메모와 함께 장부에 기록해, 다음에 같은 사람의 경조사가 생기면 자동 답례 제안의 기준으로 활용합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>얼마내지 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>결혼식·장례식·돌잔치·개업 등 경조사에 얼마를 내야 할지 막막할 때, 경조사 종류와 상대와의 관계, 참석·식사 여부만 고르면 우리 사회의 통념에 맞는 적정 금액대를 알려 주는 도구입니다. 여러 축의금 인식조사와 오랜 관례를 관계 등급별 금액 구간으로 정리해 두고, 입력한 조건을 그 구간에 대입해 추천 금액과 함께 봉투 문구·전달 예절을 한 화면에 보여 줍니다. 가장 큰 차별점은 장부 기능으로, 과거에 주고받은 금액을 기록해 두면 같은 사람의 경조사가 다시 생겼을 때 예전에 받은 금액을 기준(원금)으로 답례액을 자동 제안합니다. 입력값과 장부는 이 기기의 브라우저 안에서만 처리·저장되며 서버로 전송되지 않고, 설치나 회원가입 없이 무료로 쓸 수 있습니다.</p>
         <p>한국의 경조사비는 단순한 축하금·조의금을 넘어 관계를 이어 가고 감사를 주고받는 상부상조 문화의 일부입니다. 적정 금액은 상대와의 친밀도, 참석·식사 여부, 지역과 집안 관례, 연령대에 따라 달라지고 물가에 맞춰 통념도 조금씩 바뀝니다. 봉투에 넣는 금액은 3·5·7만 원 같은 홀수와, 짝수지만 &#39;꽉 찬 수&#39;로 여겨지는 10만 원을 선호하는 관례가 있는데 그 유래는 아래 FAQ에서 다룹니다. 장부를 적는 관습은 상대가 나의 경조사에 낸 금액을 기억해 두었다가 비슷한 정도로 갚으려는 오래된 정서에서 비롯되었습니다.</p>
       </div>

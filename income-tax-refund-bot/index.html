@@ -93,11 +93,11 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .about .deep>summary:hover{color:var(--acc)}
 .about .deep .deep-body{padding:2px 16px 16px}
 .about .deep .deep-body p:first-child{margin-top:0}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -139,7 +139,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="about"><div class="tldr">
       <p class="tldr-h">한눈에 보기</p>
       <ul>
-        <li><b>무엇을</b> 입사일, 퇴사일, 월급여만 입력하면 법정 퇴직금과 퇴직소득세를 계산 과정까지 풀어서 세후 실수령액을 알려주는 도구입니다.</li>
         <li><b>이럴 때</b> 퇴직 협상 전에 법정 최저 퇴직금 기준을 미리 파악해 두면, 회사 측이 제시하는 금액이 적정한지 가늠하는 기준이 됩니다.</li>
         <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
       </ul>
@@ -150,7 +149,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>퇴직 협상 전에 법정 최저 퇴직금 기준을 미리 파악해 두면, 회사 측이 제시하는 금액이 적정한지 가늠하는 기준이 됩니다.</li>
         <li>10년 이상 장기 재직자가 퇴직 예정 시점을 1~2년 앞두고 연도별로 세후 수령액을 비교해 퇴직 시점을 전략적으로 고려할 때 활용할 수 있습니다.</li>
     </ul>
-    <h2>이렇게 사용하세요</h2>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 퇴직금계산소 (세후)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>입사일과 퇴사일(또는 퇴직 예정일)을 입력합니다.</li>
         <li>최근 3개월 월평균 급여를 입력합니다.</li>
@@ -158,9 +160,6 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>퇴직소득세 계산 화면에서 근속연수 공제와 환산급여 내역을 확인합니다.</li>
         <li>세후 실수령액과 IRP 이전 시 과세이연 효과를 확인하고 비교합니다.</li>
     </ol>
-    <details class="deep">
-      <summary>퇴직금계산소 (세후) 자세히 알아보기 · 배경지식</summary>
-      <div class="deep-body">
         <p>입사일, 퇴사일, 월급여만 입력하면 법정 퇴직금과 퇴직소득세를 계산 과정까지 풀어서 세후 실수령액을 알려주는 도구입니다. 근속연수 공제, 환산급여 방식 등 복잡한 세금 산식을 직접 따져보기 어려운 분이 퇴직 전 자금 계획을 세우는 데 참고할 수 있습니다.</p>
         <p>퇴직금은 근로기준법상 1년 이상 계속 근로한 근로자에게 30일분 이상의 평균임금을 지급하도록 정해져 있습니다. 퇴직소득세는 다른 소득세와 달리 장기간 누적된 소득을 한 번에 받는다는 점을 감안해 &#39;근속연수 공제&#39;와 &#39;환산급여 방식&#39;으로 세 부담을 낮춰주는 구조입니다. 근속연수가 길수록 공제 금액이 커지므로 퇴직 시점에 따라 세후 수령액 차이가 상당할 수 있습니다. 또한 퇴직금을 IRP(개인형 퇴직연금) 계좌로 이전하면 실제 수령 시점까지 세금 납부를 미룰 수 있고, 55세 이후 연금으로 수령하면 세율이 낮아지는 과세이연 효과를 누릴 수 있습니다.</p>
       </div>
