@@ -606,10 +606,14 @@ function paint(){
   c.list.forEach(function(j){ var t = Date.parse(j.t); if(t >= since){ recent++; days[j.t.slice(0,10)] = 1; } });
   var activeDays = Math.max(1, Object.keys(days).length);
   var perDay = recent ? recent/activeDays : 5;
-  var e = etaYear(Math.max(0,total - c.total), perDay, new Date().getFullYear());
-  $("etaLine").textContent = (e && total > c.total)
-    ? "이 속도(하루 "+perDay.toFixed(1)+"장)면 완주는 "+e.year+"년쯤입니다. 하루 15장으로 늘리면 "+ (etaYear(total-c.total,15,new Date().getFullYear())||{}).year +"년."
-    : "";
+  var yr = new Date().getFullYear();
+  var e = etaYear(Math.max(0,total - c.total), perDay, yr);
+  if(e && total > c.total){
+    var line = "이 속도(하루 "+perDay.toFixed(1)+"장)면 완주는 "+e.year+"년쯤입니다.";
+    var fast = etaYear(total - c.total, 15, yr);
+    if(fast && fast.year < e.year) line += " 하루 15장으로 늘리면 "+fast.year+"년.";
+    $("etaLine").textContent = line;
+  } else $("etaLine").textContent = "";
   paintTrash(c);
   paintRecap(c);
 }

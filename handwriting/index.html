@@ -361,7 +361,7 @@ if(typeof module !== "undefined" && module.exports){
    그리기
    ============================================================ */
 var COLORS = ["#1d1b16","#1d4ed8","#b91c1c","#3f6212"];
-var PENS = [{w:2.6,sm:0.55},{w:5.0,sm:0.5},{w:8.5,sm:0.42}];
+var PENS = [{w:3.4},{w:6.2},{w:10.5}];
 var UNIT = 1024;                 // 정규화 좌표계
 var MAXPAGES = 3, MAXBYTES = 6144;
 
@@ -470,14 +470,12 @@ function trimmed(){
     note.pages[page].push(drawing);
     repaint();
   });
-  cv.addEventListener("pointermove",function(e){
-    if(!drawing) { if(eraser && e.buttons) hitErase(pos(e)); return; }
-    e.preventDefault();
-    var p = pos(e), last = drawing.p[drawing.p.length-1];
+  /* 점 하나 추가 + 직전 구간만 증분 렌더(전체 리페인트는 지연의 주범이라 하지 않는다) */
+  function addPoint(ev){
+    var p = pos(ev), last = drawing.p[drawing.p.length-1];
     var dx = p[0]-last[0], dy = p[1]-last[1];
     if(dx*dx+dy*dy < 9) return;                 // 3단위 미만 이동은 버림(용량 절약)
     drawing.p.push([p[0], p[1], now()-drawing.t0]);
-    // 증분 렌더 — 마지막 구간만 그린다(전체 리페인트 금지: 지연의 주범)
     var ctx = ctxOf(cv), scale = cv.width/UNIT, pts = drawing.p, n = pts.length;
     if(n >= 2){
       var a=pts[n-2], b=pts[n-1];
@@ -489,6 +487,15 @@ function trimmed(){
       ctx.lineTo(b[0]*scale, b[1]*scale);
       ctx.stroke();
     }
+  }
+  cv.addEventListener("pointermove",function(e){
+    if(!drawing) { if(eraser && e.buttons) hitErase(pos(e)); return; }
+    e.preventDefault();
+    // 브라우저는 빠른 필기 중 pointermove를 프레임 단위로 합쳐서 전달한다.
+    // 합쳐진 원본 이벤트를 모두 꺼내 써야 빠르게 그은 획의 곡선이 뭉개지지 않는다.
+    var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : null;
+    if(!evs || !evs.length) evs = [e];
+    for(var i=0;i<evs.length;i++) addPoint(evs[i]);
     if(e.timeStamp){
       var lat = performance.now() - e.timeStamp;
       if(lat >= 0 && lat < 400){ lats.push(lat); if(lats.length>400) lats.shift(); }
