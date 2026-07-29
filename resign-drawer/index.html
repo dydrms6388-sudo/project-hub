@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>사표함 — 사표를 쓰고, 서랍에 넣고, 몇 달 버티는지 계산한다 | TomatoEggCat</title>
+<meta name="description" content="사표를 씁니다. 제출하면 어디에도 가지 않고 서랍에 들어갑니다. 그리고 퇴직금·실업급여·고정지출을 넣으면 퇴사 후 몇 달을 버티는지 월별 잔고로 나옵니다. 실업급여 기준값은 기준연도별 표에서 오고 직접 고칠 수 있으며, 자발적 퇴사의 수급 제한도 계산 흐름에서 짚습니다. 추정치이며 법률·재무 자문이 아닙니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/resign-drawer/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="사표함 — 쓰고, 서랍에 넣고, 몇 달 버티는지 본다" />
+<meta property="og:description" content="사표는 어디에도 가지 않습니다. 대신 퇴사 후 몇 달을 버티는지가 숫자로 나옵니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/resign-drawer/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="사표함" />
+<meta name="twitter:description" content="사표를 쓰고 서랍에 넣는다. 그리고 몇 달 버티는지 계산한다." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"사표함","description":"사직서를 작성해 서랍에 보관하고, 퇴직금·실업급여·고정지출을 바탕으로 퇴사 후 버틸 수 있는 개월 수를 월별 잔고로 계산하는 정적 웹앱. 실제 제출 기능은 없다. 실업급여 기준값은 기준연도별 설정 표에서 읽고 사용자가 직접 수정할 수 있으며, 모든 결과는 추정치로 표기된다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/resign-drawer/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"사표가 실제로 제출되나요?","acceptedAnswer":{"@type":"Answer","text":"제출되지 않습니다. 제출 버튼은 작성한 사직서를 이 브라우저의 서랍에 넣는 역할만 합니다. 회사로 보내는 기능도, 메일을 발송하는 기능도 없습니다. 회사명이나 상사 실명을 넣는 입력란도 만들지 않았습니다."}},
+{"@type":"Question","name":"자발적으로 퇴사해도 실업급여를 받나요?","acceptedAnswer":{"@type":"Answer","text":"원칙적으로 제한됩니다. 구직급여는 비자발적 이직에 대해 지급되는 것이 원칙이며, 스스로 사직한 경우에는 원칙적으로 수급 자격이 인정되지 않습니다. 다만 임금 체불, 근로조건의 현저한 저하, 질병, 통근 곤란 등 정당한 이직 사유가 인정되는 예외가 있습니다. 이 도구는 퇴사 사유를 자발로 고르면 실업급여를 0원으로 두고 계산하며, 예외에 해당하는지는 반드시 고용센터에서 확인하셔야 합니다."}},
+{"@type":"Question","name":"실업급여 금액은 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"1일 구직급여는 이직 전 평균임금의 60%로 계산한 뒤 상한액과 하한액을 적용합니다. 하한액은 최저임금의 80%에 1일 8시간을 곱한 값입니다. 이 상한액·최저임금·소정급여일수는 코드에 박아 두지 않고 기준연도별 설정 표에서 읽어 오며, 화면에 기준연도가 표시됩니다. 값이 바뀌었다면 설정에서 직접 고쳐 계산할 수 있습니다."}},
+{"@type":"Question","name":"퇴직금은 어떻게 추정하나요?","acceptedAnswer":{"@type":"Answer","text":"1일 평균임금 곱하기 30일 곱하기 재직일수 나누기 365의 산식을 씁니다. 1일 평균임금은 입력한 세전 월평균임금에 12를 곱하고 365로 나눈 근사값을 사용합니다. 실제 평균임금은 퇴직 전 3개월의 임금 총액과 그 기간의 총일수로 산정하고 상여·연차수당 등이 반영되므로 실제 금액과 차이가 납니다. 어디까지나 근사치입니다."}},
+{"@type":"Question","name":"이 계산을 믿고 퇴사해도 되나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 법률·재무 자문이 아닙니다. 실업급여 수급 요건, 퇴직금 산정, 세금은 개인 상황에 따라 달라지며 모든 결과는 추정치입니다. 정확한 내용은 고용센터나 공인노무사에게 확인하세요. 이 도구는 퇴사를 권하지도 말리지도 않고 숫자만 보여줍니다."}},
+{"@type":"Question","name":"쓴 사표는 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"이 브라우저에만 저장됩니다. 서버도 로그인도 없습니다. 서랍에는 그때 쓴 본문과 함께 그 시점의 재무 시뮬레이션 결과가 같이 남아, 몇 달 뒤에 열어 보면 준비 상태가 나아졌는지 비교할 수 있습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"직장·퇴사","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"사표함","item":"https://tomatoeggcat.com/resign-drawer/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#94a3b8;--acc2:#cbd5e1;--ink:#e2e8f0;--warn:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:#93c5fd}
+.nav{font-size:13px;color:#64748b;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:25px;font-weight:800;margin:0 0 6px;color:#e2e8f0;letter-spacing:-.01em}
+.lead{color:#94a3b8;margin:0 0 18px;font-size:15px}
+.card{border:1px solid #232a33;background:#12161b;border-radius:16px;padding:20px;margin-bottom:18px}
+.lab{font-size:13px;font-weight:700;color:#94a3b8;letter-spacing:.03em;margin:0 0 10px}
+.lab b{color:var(--acc2)}
+.hint{font-size:12px;color:#64748b;margin:7px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{width:auto;flex:none;padding:9px 13px;font-size:14px;font-weight:600;background:#0f1318;color:#cbd5e1;border:1px solid #2b333d;border-radius:8px;cursor:pointer;min-height:42px;transition:.12s}
+.chip.on{background:#1e293b;border-color:#64748b;color:#f1f5f9}
+input[type=text],input[type=number],textarea,select{width:100%;padding:11px 13px;font-size:15px;background:#0f1318;color:#e2e8f0;border:1px solid #2b333d;border-radius:8px;min-height:44px;font-family:inherit}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#64748b}
+input[type=range]{width:100%;min-height:34px;padding:0;accent-color:#94a3b8}
+.field{margin-top:13px}
+.row2{display:flex;gap:10px}.row2>div{flex:1}
+button{margin:0;width:100%;padding:13px;border:0;border-radius:9px;background:#334155;color:#f1f5f9;font-size:15.5px;font-weight:800;cursor:pointer;min-height:46px}
+button.ghost{background:#151b22;color:#cbd5e1;border:1px solid #2b333d;font-weight:700}
+button.danger{background:#2a1414;color:#fca5a5;border:1px solid #4a2222;font-weight:700}
+button.mini{width:auto;padding:7px 11px;font-size:12.5px;min-height:36px;border-radius:7px}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.inbound{display:none;position:sticky;top:0;z-index:30;margin:-24px -18px 16px;padding:12px 18px;background:#1e293b;border-bottom:1px solid #334155}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#cbd5e1;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.tabs{display:flex;gap:5px;margin:0 0 18px;background:#0f1318;border:1px solid #232a33;border-radius:11px;padding:5px}
+.tabs button{flex:1;padding:10px 3px;font-size:13.5px;font-weight:700;background:transparent;color:#64748b;border-radius:7px;min-height:44px}
+.tabs button.on{background:#1e293b;color:#f1f5f9}
+section.tab{display:none}section.tab.on{display:block}
+/* 사표 용지 */
+.sheet{background:#f4f4f0;color:#1c1c19;border-radius:8px;padding:26px 22px;font-family:"Apple SD Gothic Neo","Noto Sans KR",serif;box-shadow:0 1px 0 #cfcfc6,0 0 0 1px #d8d8cf}
+.sheet h2{margin:0 0 20px;text-align:center;font-size:26px;font-weight:900;letter-spacing:.42em;text-indent:.42em}
+.sheet .to{font-size:14px;color:#4a4a44;margin:0 0 14px}
+.sheet textarea{background:transparent;border:0;color:#1c1c19;font-family:inherit;font-size:15px;line-height:1.9;min-height:230px;padding:0;resize:vertical;width:100%}
+.sheet textarea:focus{outline:none}
+.sheet .sig{margin-top:22px;text-align:right;font-size:14px;color:#4a4a44}
+/* 봉투 연출 */
+.env{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center}
+.env.show{display:flex}
+.envbox{width:230px;height:150px;background:#e7e3d6;border-radius:6px;position:relative;box-shadow:0 18px 50px rgba(0,0,0,.6);animation:drop .9s cubic-bezier(.3,.9,.4,1) forwards}
+.envbox::before{content:"";position:absolute;inset:0;border-top:75px solid #d8d3c2;border-left:115px solid transparent;border-right:115px solid transparent;border-radius:6px 6px 0 0;transform-origin:top;animation:seal .5s .35s ease forwards}
+.envbox span{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:13px;color:#6b6558;font-weight:700}
+@keyframes drop{0%{transform:translateY(-40px) scale(.9);opacity:0}55%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(26px) scale(.96);opacity:1}}
+@keyframes seal{to{transform:rotateX(0deg)}}
+/* 서랍 */
+.bigno{text-align:center;padding:26px 14px;border:1px solid #232a33;background:#0f1318;border-radius:14px}
+.bigno .n{font-size:56px;font-weight:900;color:#f1f5f9;line-height:1.05}
+.bigno .t{font-size:15px;color:#94a3b8;margin-top:6px}
+.bigno .w{font-size:10.5px;color:#475569;margin-top:14px;letter-spacing:.04em}
+.ltr{border:1px solid #232a33;background:#12161b;border-radius:11px;padding:13px 15px;margin-bottom:9px}
+.ltr .hd{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:#64748b}
+.ltr .pv{font-size:14px;color:#cbd5e1;margin:7px 0 0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ltr .rw{font-size:12.5px;color:#94a3b8;margin-top:8px}
+.ltr .rw b{color:#cbd5e1}
+.ltr .bt{display:flex;gap:6px;margin-top:10px}
+.ltr .bt button{width:auto;min-height:34px;padding:6px 10px;font-size:12px}
+.empty{text-align:center;color:#64748b;font-size:14px;padding:26px 10px;border:1px dashed #2b333d;border-radius:12px}
+/* 결과 */
+.kv{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #1e242c;font-size:14.5px;color:#94a3b8}
+.kv b{color:#f1f5f9;font-weight:800;text-align:right}
+.kv.big{padding:16px 0}
+.kv.big b{font-size:22px}
+.warn{font-size:13px;color:#fde68a;background:#1c1710;border:1px solid #3d3220;border-radius:9px;padding:11px 13px;margin:14px 0 0}
+.warn b{color:var(--warn)}
+.est{font-size:12px;color:#64748b;background:#0f1318;border:1px solid #232a33;border-radius:8px;padding:9px 11px;margin-top:12px}
+canvas.chart{width:100%;height:190px;display:block;margin-top:14px;border-radius:8px;background:#0f1318;border:1px solid #232a33}
+.sens{font-size:13.5px;color:#94a3b8;margin-top:6px}
+.sens b{color:#cbd5e1}
+.rs{font-size:12px;color:#64748b}
+.rs b{color:#94a3b8}
+.about h2{font-size:19px;margin:30px 0 10px;color:var(--acc2)}
+.about h3{font-size:16px;margin:20px 0 6px}
+.about p,.about li{font-size:14.5px;color:#cbd5e1;word-break:keep-all}
+.about ol,.about ul{padding-left:20px}
+.faq dt{font-weight:800;margin-top:14px;color:#e2e8f0}
+.faq dd{margin:4px 0 0;color:#94a3b8;font-size:14.5px;word-break:keep-all}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#cbd5e1;background:#12161b;border:1px solid #2b333d;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1e242c;font-size:12.5px;color:#64748b}
+footer a{color:#94a3b8;text-decoration:none;margin-right:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#334155;color:#f1f5f9;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.adbox{margin-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>🗂️ 친구가 사표함 기록을 공유했어요.</span>
+  <button id="inboundBtn" type="button">나도 써보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 직장·퇴사 › 사표함</nav>
+
+<header>
+  <h1>🗂️ 사표함</h1>
+  <p class="lead">사표를 씁니다. 제출하면 어디에도 가지 않고 서랍에 들어갑니다. 그리고 몇 달을 버티는지가 숫자로 나옵니다.</p>
+</header>
+
+<div class="tabs" id="tabs">
+  <button type="button" data-t="write" class="on">사표 쓰기</button>
+  <button type="button" data-t="drawer">서랍</button>
+  <button type="button" data-t="calc">계산</button>
+  <button type="button" data-t="react">반응</button>
+</div>
+
+<!-- ── 사표 쓰기 ── -->
+<section class="tab on" id="tab-write">
+  <div class="card">
+    <p class="lab">양식</p>
+    <div class="chips" id="tplChips"></div>
+    <p class="lab" style="margin:16px 0 10px">수신 <span style="color:#64748b;font-weight:400">— 호칭만 고릅니다</span></p>
+    <div class="chips" id="toChips"></div>
+    <p class="hint">회사명·상사 실명을 넣는 칸은 만들지 않았습니다. 본문에도 적지 않는 편이 좋습니다.</p>
+  </div>
+
+  <div class="sheet">
+    <h2>사 직 서</h2>
+    <p class="to" id="sheetTo">수신 —</p>
+    <textarea id="letter" placeholder="여기에 씁니다."></textarea>
+    <p class="sig" id="sheetDate">—</p>
+  </div>
+  <div class="acts"><button id="fileBtn" type="button">제출</button></div>
+  <p class="hint" style="text-align:center">이 버튼은 서랍으로만 보냅니다.</p>
+</section>
+
+<!-- ── 서랍 ── -->
+<section class="tab" id="tab-drawer">
+  <div class="card">
+    <div class="bigno" id="bigno">
+      <div class="n" id="cntN">0</div>
+      <div class="t" id="cntT">아직 사표를 쓴 적이 없습니다</div>
+      <div class="w">tomatoeggcat.com/resign-drawer</div>
+    </div>
+    <div class="acts">
+      <button class="ghost" id="saveImg" type="button">이미지로 저장</button>
+      <button class="ghost" id="copyLink" type="button">링크 복사</button>
+    </div>
+    <div class="acts" style="margin-top:10px">
+      <button class="ghost" id="copyText" type="button">텍스트 복사</button>
+      <button class="ghost" id="xBtn" type="button">X에 공유</button>
+      <button class="ghost" id="webShare" type="button" style="display:none">공유하기</button>
+    </div>
+    <p class="hint" style="text-align:center">공유되는 것은 횟수와 버틸 수 있는 개월 수뿐입니다. 본문·급여는 나가지 않습니다.</p>
+    <div style="margin-top:16px">
+      <p class="lab">숫자만 넣어 카드 만들기 <span style="color:#64748b;font-weight:400">— 리믹스</span></p>
+      <div class="row2">
+        <div><input type="number" id="rxN" inputmode="numeric" placeholder="횟수" /></div>
+        <div><input type="number" id="rxR" inputmode="numeric" placeholder="버티는 개월" /></div>
+      </div>
+      <div class="acts"><button class="ghost" id="rxGo" type="button">이 숫자로 카드 만들기</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="lab">보관된 사표</p>
+    <div id="letters"></div>
+    <div class="acts" id="wipeWrap" style="display:none"><button class="danger" id="wipeBtn" type="button">서랍 비우기</button></div>
+  </div>
+</section>
+
+<!-- ── 계산 ── -->
+<section class="tab" id="tab-calc">
+  <div class="card">
+    <p class="lab">입력</p>
+    <div class="field row2">
+      <div><input type="number" id="iNet" inputmode="numeric" placeholder="월 실수령액" /></div>
+      <div><input type="number" id="iGross" inputmode="numeric" placeholder="세전 월평균임금" /></div>
+    </div>
+    <p class="hint">세전 월평균임금은 퇴직금·실업급여 산정에, 실수령액은 재취업 이후 소득에 씁니다. 한쪽만 넣으면 나머지는 근사치로 추정합니다.</p>
+    <div class="field row2">
+      <div><input type="number" id="iYears" inputmode="decimal" placeholder="근속연수 (예: 3.5)" /></div>
+      <div><input type="number" id="iAge" inputmode="numeric" placeholder="나이" /></div>
+    </div>
+    <div class="field row2">
+      <div><input type="number" id="iFixed" inputmode="numeric" placeholder="월 고정지출" /></div>
+      <div><input type="number" id="iCash" inputmode="numeric" placeholder="현재 현금성 자산" /></div>
+    </div>
+    <div class="field">
+      <p class="lab">퇴사 사유</p>
+      <div class="chips" id="reasonChips"></div>
+    </div>
+    <div class="field">
+      <p class="lab">4대보험 지역가입 전환 <span style="color:#64748b;font-weight:400">— 월 예상 부담</span></p>
+      <input type="number" id="iIns" inputmode="numeric" placeholder="예: 150000 (모르면 비워 두세요)" />
+      <p class="hint">퇴사하면 직장가입자에서 지역가입자로 바뀌어 건강보험·국민연금을 직접 냅니다. 지역가입 건강보험료는 소득뿐 아니라 재산으로도 산정되어 이 도구가 계산할 수 없습니다. 적어 두면 고정지출에 더해 계산합니다. 임의계속가입 제도도 확인해 보세요.</p>
+    </div>
+    <div class="acts"><button id="calcBtn" type="button">계산</button></div>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <p class="lab">결과 <span class="rs">— 기준연도 <b id="rsYear">—</b></span></p>
+
+    <div class="warn" id="uiWarn" style="display:none"></div>
+
+    <div class="kv"><span>퇴직금 (추정)</span><b id="rSev">—</b></div>
+    <div class="kv"><span>실업급여 1일 (추정)</span><b id="rDaily">—</b></div>
+    <div class="kv"><span>소정급여일수</span><b id="rDays">—</b></div>
+    <div class="kv"><span>실업급여 총액 (추정)</span><b id="rUiTotal">—</b></div>
+    <div class="kv"><span>월 고정지출</span><b id="rFixed">—</b></div>
+    <div class="kv big"><span>버틸 수 있는 기간</span><b id="rRunway">—</b></div>
+
+    <canvas class="chart" id="chart" width="640" height="190"></canvas>
+    <p class="hint" style="text-align:center">월별 잔고 추이 · 붉은 선이 0원</p>
+
+    <div class="field" style="margin-top:18px">
+      <p class="lab">고정지출을 <b id="sCutL">0%</b> 줄이면</p>
+      <input type="range" id="sCut" min="0" max="50" step="5" value="0" />
+      <p class="sens" id="sCutOut">—</p>
+    </div>
+    <div class="field">
+      <p class="lab">재취업이 <b id="sJobL">없다면</b></p>
+      <input type="range" id="sJob" min="0" max="12" step="1" value="0" />
+      <p class="sens" id="sJobOut">—</p>
+    </div>
+
+    <p class="est">모든 숫자는 <b>추정치</b>이며 실제와 다를 수 있습니다. 실업급여 수급 요건·퇴직금 산정·세금은 개인 상황에 따라 달라집니다. 정확한 내용은 <b>고용센터(1350)</b> 또는 공인노무사에게 확인하세요. 이 도구는 법률·재무 자문이 아닙니다.</p>
+
+    <div class="adbox">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="lab">기준값 <span style="color:#64748b;font-weight:400">— 매년 바뀝니다. 바뀌었으면 여기서 고치세요</span></p>
+    <div class="field">
+      <p class="lab" style="font-weight:400;color:#64748b">기준연도</p>
+      <select id="rsSel"></select>
+    </div>
+    <div class="field row2">
+      <div><input type="number" id="rsCap" inputmode="numeric" placeholder="1일 상한액" /></div>
+      <div><input type="number" id="rsWage" inputmode="numeric" placeholder="최저시급" /></div>
+    </div>
+    <p class="hint">1일 하한액 = 최저시급 × 8시간 × 80%. 현재 <b id="rsFloor">—</b>. 상한액은 2019년 이후 동결된 값을 기본으로 두었습니다. <b>반드시 고용보험 공식 안내로 확인하세요.</b></p>
+    <div class="acts"><button class="ghost" id="rsSave" type="button">기준값 저장</button><button class="ghost" id="rsReset" type="button">기본값으로</button></div>
+  </div>
+</section>
+
+<!-- ── 반응 ── -->
+<section class="tab" id="tab-react">
+  <div class="card">
+    <p class="lab">상사 유형</p>
+    <div class="chips" id="bossChips"></div>
+    <div class="acts"><button id="reactBtn" type="button">예상 반응 보기</button></div>
+    <div id="reactOut" style="display:none;margin-top:16px"></div>
+    <p class="est">여기 나오는 것은 <b>예언이 아니라 가능성</b>입니다. 실제 반응은 사람과 상황에 따라 전혀 다를 수 있습니다. 팀·주변 사람들의 반응은 만들지 않았습니다 — 불필요한 관계 불안만 만들기 때문입니다.</p>
+  </div>
+</section>
+
+<!-- ── 본문 ── -->
+<section class="about">
+  <h2>써서 서랍에 넣는 것만으로도 정리가 된다</h2>
+  <p>퇴사 충동은 상시적인데 그걸 처리할 도구는 없습니다. 사표를 쓰면 진짜로 내야 할 것 같고, 안 쓰면 계속 머릿속에 남습니다. 그래서 쓰되 아무 데도 보내지 않는 자리를 만들었습니다. 서랍에는 지금까지 쓴 사표가 전부 쌓이고, <b>몇 번 썼는지</b>가 그대로 기록이 됩니다.</p>
+  <p>그리고 여기 붙어 있는 재무 계산은 농담이 아닙니다. 대부분 자기가 몇 달 버틸 수 있는지 계산해 본 적이 없습니다. <b>6개월</b>이 나오면 진짜 나가도 되고, <b>1개월</b>이 나오면 무엇을 준비해야 하는지가 명확해집니다. 어느 쪽이든 막연함이 사라집니다.</p>
+
+  <h3>자발적 퇴사와 실업급여</h3>
+  <p>구직급여는 <b>비자발적 이직</b>에 지급되는 것이 원칙입니다. 스스로 사직한 경우에는 원칙적으로 수급 자격이 인정되지 않습니다. 임금 체불, 근로조건의 현저한 저하, 질병, 통근 곤란처럼 정당한 이직 사유로 인정되는 예외가 있지만, 인정 여부는 고용센터의 판단입니다. 이 도구는 퇴사 사유를 <b>자발</b>로 고르면 실업급여를 0원으로 두고 계산합니다. 이걸 빼고 계산하면 있지도 않은 돈으로 버티는 그림이 나오기 때문입니다.</p>
+
+  <h3>계산 방식</h3>
+  <ul>
+    <li><b>퇴직금</b> = 1일 평균임금 × 30일 × (재직일수 ÷ 365). 1일 평균임금은 세전 월평균임금 × 12 ÷ 365로 근사했습니다. 실제로는 퇴직 전 3개월 임금 총액을 그 기간 총일수로 나누고 상여·연차수당이 반영되므로 차이가 납니다.</li>
+    <li><b>실업급여 1일</b> = 1일 평균임금의 60%. 여기에 상한액과 하한액을 적용합니다. 하한액 = 최저시급 × 8시간 × 80%.</li>
+    <li><b>소정급여일수</b>는 가입기간과 나이(50세 기준)에 따라 120~270일입니다.</li>
+    <li><b>런웨이</b> = (현금성 자산 + 퇴직금 + 실업급여) 를 월 고정지출로 소진해 가며 잔고가 0에 닿는 달을 찾습니다.</li>
+  </ul>
+  <p>상한액·최저시급·소정급여일수는 <b>코드에 박아 두지 않고</b> 기준연도별 표에서 읽습니다. 화면에 기준연도가 표시되고, 값이 바뀌었으면 설정에서 직접 고쳐 다시 계산할 수 있습니다. 이 종류의 숫자는 매년 바뀌기 때문입니다.</p>
+
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>사표가 실제로 제출되나요?</dt>
+    <dd>제출되지 않습니다. 제출 버튼은 작성한 사직서를 이 브라우저의 서랍에 넣는 역할만 합니다. 회사로 보내거나 메일을 발송하는 기능이 없고, 회사명·상사 실명 입력란도 만들지 않았습니다.</dd>
+    <dt>자발적으로 퇴사해도 실업급여를 받나요?</dt>
+    <dd>원칙적으로 제한됩니다. 정당한 이직 사유가 인정되는 예외가 있지만 판단은 고용센터가 합니다. 이 도구는 자발을 고르면 0원으로 두고 계산하며, 화면에도 그 사실을 표시합니다.</dd>
+    <dt>실업급여 금액은 어떻게 계산되나요?</dt>
+    <dd>1일 평균임금의 60%를 구한 뒤 상한액·하한액을 적용합니다. 하한액은 최저임금의 80% × 8시간입니다. 이 값들은 기준연도별 설정 표에서 오고 화면에 기준연도가 표시되며, 직접 고칠 수 있습니다.</dd>
+    <dt>퇴직금은 정확한가요?</dt>
+    <dd>근사치입니다. 실제 평균임금은 퇴직 전 3개월의 임금 총액과 그 기간 총일수로 산정되고 상여·연차수당이 반영됩니다. 또한 1년 미만 근속은 법정 퇴직금 지급 대상이 아닙니다.</dd>
+    <dt>이 계산을 믿고 퇴사해도 되나요?</dt>
+    <dd>법률·재무 자문이 아닙니다. 모든 결과는 추정치이며, 정확한 내용은 고용센터(1350)나 공인노무사에게 확인하세요. 이 도구는 퇴사를 권하지도 말리지도 않습니다.</dd>
+    <dt>쓴 사표는 어디에 저장되나요?</dt>
+    <dd>이 브라우저에만 저장됩니다. 서랍에는 본문과 함께 그 시점의 계산 결과가 같이 남아, 나중에 열어 보면 준비 상태가 나아졌는지 비교할 수 있습니다.</dd>
+  </dl>
+</section>
+
+<div class="rel">
+  <a href="/quit-letter/">📨 밈 사직서 생성기</a>
+  <a href="/salary/">💵 연봉 실수령액</a>
+  <a href="/unsent/">✉️ 안 보낸 메시지</a>
+  <a href="/checkout-zero/">🧾 결제완료</a>
+</div>
+
+<footer>
+  <a href="/">홈</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <p style="margin:10px 0 0">추정치 계산 도구이며 법률·재무 자문이 아닙니다. 고용센터 1350.</p>
+</footer>
+
+</div>
+
+<div class="env" id="env"><div class="envbox"><span>서랍에 넣는 중…</span></div></div>
+<canvas id="cv" width="900" height="1150" style="display:none"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var KEY = "resign.v1";
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function dec(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+function toast(m){ var t=$("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},2200); }
+function won(n){ return (Math.round(Number(n)||0)).toLocaleString("ko-KR")+"원"; }
+function hash(s){ var h=2166136261; s=String(s); for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=(h*16777619)>>>0; } return h>>>0; }
+
+/* ══════════════════════════════════════════════════════════
+   기준값 표 (rulesets)
+   실업급여 관련 수치는 전부 여기서만 온다. 계산부에 숫자를 박지 않는다.
+   이 값들은 매년 바뀐다 → 기준연도를 화면에 표시하고 사용자가 고칠 수 있게 한다.
+   ────────────────────────────────────────────────────────── */
+var RULESETS = {
+  2026: {
+    year: 2026,
+    dailyCap: 66000,      // 1일 구직급여 상한액
+    minWage: 10320,       // 최저시급 → 하한액 = minWage × dailyHours × floorRate
+    dailyHours: 8,
+    floorRate: 0.8,
+    wageRate: 0.6,        // 1일 평균임금 대비 구직급여 지급률
+    source: "고용보험 공식 안내(반드시 확인)"
+  },
+  2025: {
+    year: 2025,
+    dailyCap: 66000,
+    minWage: 10030,
+    dailyHours: 8,
+    floorRate: 0.8,
+    wageRate: 0.6,
+    source: "고용보험 공식 안내(반드시 확인)"
+  }
+};
+/* 소정급여일수 — 2019.10.1 이후 기준. 나이는 이직일 기준. */
+var UI_DAYS = {
+  under50: [ {lt:1,d:120}, {lt:3,d:150}, {lt:5,d:180}, {lt:10,d:210}, {lt:Infinity,d:240} ],
+  over50:  [ {lt:1,d:120}, {lt:3,d:180}, {lt:5,d:210}, {lt:10,d:240}, {lt:Infinity,d:270} ]
+};
+var AGE_SPLIT = 50;
+
+function floorOf(rs){ return Math.round(rs.minWage * rs.dailyHours * rs.floorRate); }
+function activeRuleset(){
+  var base = RULESETS[S.rsYear] || RULESETS[2026];
+  var o = {};
+  for(var k in base) o[k] = base[k];
+  if(S.rsOverride && S.rsOverride.year === base.year){
+    if(S.rsOverride.dailyCap) o.dailyCap = S.rsOverride.dailyCap;
+    if(S.rsOverride.minWage)  o.minWage  = S.rsOverride.minWage;
+  }
+  return o;
+}
+
+/* ══════════ 계산 엔진 (rs 를 인자로만 받는다) ══════════ */
+function severance(monthlyGross, years){
+  if(!(monthlyGross > 0) || !(years > 0)) return 0;
+  if(years < 1) return 0;                       // 1년 미만은 법정 퇴직금 대상 아님
+  var dailyAvg = monthlyGross * 12 / 365;
+  return Math.round(dailyAvg * 30 * years);
+}
+function uiDaily(monthlyGross, rs){
+  if(!(monthlyGross > 0)) return 0;
+  var dailyAvg = monthlyGross * 12 / 365;
+  var v = dailyAvg * rs.wageRate;
+  var floor = floorOf(rs);
+  if(v > rs.dailyCap) v = rs.dailyCap;
+  if(v < floor) v = floor;
+  // 하한이 상한을 넘어선 해에는 하한이 적용된다
+  return Math.round(v);
+}
+function uiDays(years, age){
+  var tbl = (age >= AGE_SPLIT) ? UI_DAYS.over50 : UI_DAYS.under50;
+  for(var i=0;i<tbl.length;i++) if(years < tbl[i].lt) return tbl[i].d;
+  return tbl[tbl.length-1].d;
+}
+function eligible(reason){ return reason !== "self"; }
+
+function simulate(inp, rs, opt){
+  opt = opt || {};
+  var cut = opt.cut || 0, rehire = opt.rehire || 0;
+  // 둘 중 하나만 넣어도 계산이 성립하도록 서로에서 근사한다.
+  // net 을 비워 두면 재취업 슬라이더가 조용히 0원을 더하게 되므로 반드시 채운다.
+  var gross = inp.gross > 0 ? inp.gross : Math.round(inp.net / 0.86);
+  var net   = inp.net   > 0 ? inp.net   : Math.round(gross * 0.86);
+  var sev = severance(gross, inp.years);
+  var elig = eligible(inp.reason);
+  var daily = elig ? uiDaily(gross, rs) : 0;
+  var days = elig ? uiDays(inp.years, inp.age) : 0;
+  var uiTotal = daily * days;
+  var fixed = Math.round((inp.fixed + (inp.ins||0)) * (1 - cut/100));
+
+  var bal = inp.cash + sev;
+  var series = [bal];
+  var uiLeft = days, zeroAt = null;
+  for(var m=1; m<=36; m++){
+    var income = 0;
+    if(uiLeft > 0){
+      var use = Math.min(30, uiLeft);
+      income += daily * use;
+      uiLeft -= use;
+    }
+    if(rehire > 0 && m >= rehire) income += net;   // 재취업 후에는 실수령액이 들어온다
+    bal = bal + income - fixed;
+    series.push(Math.round(bal));
+    if(bal <= 0 && zeroAt === null) zeroAt = m;
+  }
+  return {
+    gross:gross, sev:sev, daily:daily, days:days, uiTotal:uiTotal,
+    fixed:fixed, elig:elig, series:series, zeroAt:zeroAt,
+    runway: zeroAt === null ? null : zeroAt, rsYear: rs.year
+  };
+}
+
+/* ══════════ 저장소 ══════════ */
+var DEFAULT = { v:1, letters:[], rsYear:2026, rsOverride:null, inp:null, tpl:"std", to:"대표이사 귀하", boss:"num" };
+var S;
+try{ S = JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ S=null; }
+if(!S || typeof S!=="object") S = JSON.parse(JSON.stringify(DEFAULT));
+for(var k in DEFAULT) if(!(k in S)) S[k] = DEFAULT[k];
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); return true; }catch(e){ toast("저장 공간이 부족해요"); return false; } }
+
+/* ══════════ 탭 ══════════ */
+var TABS = ["write","drawer","calc","react"];
+function showTab(t){
+  TABS.forEach(function(x){ $("tab-"+x).classList.toggle("on", x===t); });
+  var bs = $("tabs").querySelectorAll("button");
+  for(var i=0;i<bs.length;i++) bs[i].classList.toggle("on", bs[i].dataset.t===t);
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+$("tabs").addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest("button[data-t]") : null;
+  if(b) showTab(b.dataset.t);
+});
+
+/* ══════════ 사표 작성 ══════════ */
+var TPLS = {
+  blank: { label:"백지", body:"" },
+  short: { label:"간결", body:"일신상의 사유로 금일부로 사직하고자 하오니 재가하여 주시기 바랍니다." },
+  std:   { label:"표준", body:"본인은 일신상의 사유로 인하여 현재 담당하고 있는 업무를 더 이상 수행하기 어렵다고 판단하여, 사직하고자 합니다.\n\n그동안 베풀어 주신 배려에 감사드립니다. 인수인계는 성실히 마치겠습니다.\n\n위와 같이 사직원을 제출하오니 재가하여 주시기 바랍니다." },
+  long:  { label:"장문", body:"본인은 재직 기간 동안 맡은 업무를 성실히 수행하고자 노력하였으나, 개인적인 사정과 향후 진로에 대한 고민 끝에 사직을 결심하게 되었습니다.\n\n결정에 이르기까지 오랜 시간 고민하였고, 조직에 미칠 영향을 최소화하기 위해 인수인계 계획을 준비하였습니다. 잔여 업무와 담당 건은 후임자가 정해지는 대로 문서와 구두로 빠짐없이 전달하겠습니다.\n\n재직하는 동안 많은 것을 배웠습니다. 함께해 주신 분들께 감사드립니다.\n\n위와 같이 사직원을 제출하오니 재가하여 주시기 바랍니다." }
+};
+var TOS = ["대표이사 귀하","팀장님 귀하","부서장 귀하","인사팀 귀하"];
+
+function chips(host, items, get, set, after){
+  var h = $(host); h.innerHTML = "";
+  items.forEach(function(it){
+    var b = document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent = it.label; b.dataset.k = it.k;
+    if(it.k === get()) b.classList.add("on");
+    b.addEventListener("click", function(){
+      set(it.k);
+      var all = h.querySelectorAll("button");
+      for(var i=0;i<all.length;i++) all[i].classList.toggle("on", all[i]===b);
+      if(after) after();
+    });
+    h.appendChild(b);
+  });
+}
+chips("tplChips", Object.keys(TPLS).map(function(k){ return {k:k,label:TPLS[k].label}; }),
+  function(){ return S.tpl; },
+  function(v){ S.tpl = v; save(); },
+  function(){ $("letter").value = TPLS[S.tpl].body; });
+chips("toChips", TOS.map(function(t){ return {k:t,label:t}; }),
+  function(){ return S.to; },
+  function(v){ S.to = v; save(); $("sheetTo").textContent = "수신 — " + v; });
+
+function todayStr(){ var d=new Date(); return d.getFullYear()+"년 "+(d.getMonth()+1)+"월 "+d.getDate()+"일"; }
+$("sheetTo").textContent = "수신 — " + S.to;
+$("sheetDate").textContent = todayStr();
+$("letter").value = TPLS[S.tpl].body;
+
+$("fileBtn").addEventListener("click", function(){
+  var body = $("letter").value.trim();
+  if(!body){ toast("아직 아무것도 쓰지 않으셨어요"); return; }
+  $("env").classList.add("show");
+  setTimeout(function(){
+    $("env").classList.remove("show");
+    var snap = S.inp ? simulate(S.inp, activeRuleset()) : null;
+    S.letters.unshift({
+      id: String(Date.now()), at: Date.now(), tpl: S.tpl, to: S.to, body: body,
+      sim: snap ? { runway: snap.runway, sev: snap.sev, uiTotal: snap.uiTotal, fixed: snap.fixed, rsYear: snap.rsYear } : null
+    });
+    save(); renderDrawer();
+    showTab("drawer");
+    toast("서랍에 넣었습니다");
+  }, 1300);
+});
+
+/* ══════════ 서랍 ══════════ */
+var shown = { n:0, r:null };
+function renderDrawer(){
+  var n = S.letters.length;
+  shown.n = n;
+  var last = null;
+  for(var i=0;i<S.letters.length;i++) if(S.letters[i].sim){ last = S.letters[i].sim; break; }
+  shown.r = last ? last.runway : (S.inp ? simulate(S.inp, activeRuleset()).runway : null);
+  $("cntN").textContent = n;
+  $("cntT").textContent = n ? "번 사표를 썼습니다" : "아직 사표를 쓴 적이 없습니다";
+  $("rxN").value = n || "";
+  $("rxR").value = (shown.r == null ? "" : shown.r);
+
+  var box = $("letters");
+  box.innerHTML = "";
+  if(!n){
+    box.innerHTML = '<div class="empty">서랍이 비어 있습니다.</div>';
+    $("wipeWrap").style.display = "none";
+    return;
+  }
+  $("wipeWrap").style.display = "flex";
+  S.letters.forEach(function(L, idx){
+    var d = new Date(L.at);
+    var ago = Math.floor((Date.now()-L.at)/86400000);
+    var el = document.createElement("div");
+    el.className = "ltr";
+    var rw = L.sim
+      ? '그때 계산: 버티는 기간 <b>' + (L.sim.runway==null ? "36개월 이상" : L.sim.runway+"개월") + '</b> · 고정지출 <b>'+won(L.sim.fixed)+'</b> · 기준연도 '+L.sim.rsYear
+      : '그때는 계산을 하지 않았습니다';
+    el.innerHTML =
+      '<div class="hd"><span>' + d.getFullYear()+"."+(d.getMonth()+1)+"."+d.getDate() +
+      (ago>0 ? " · "+ago+"일 전" : " · 오늘") + '</span><span>'+esc(TPLS[L.tpl] ? TPLS[L.tpl].label : "")+'</span></div>' +
+      '<p class="pv">'+esc(L.body)+'</p>' +
+      '<p class="rw">'+rw+'</p>' +
+      '<div class="bt"><button class="ghost" data-open="'+esc(L.id)+'">펼쳐 보기</button>' +
+      (idx>0 ? '<button class="ghost" data-cmp="'+esc(L.id)+'">지금과 비교</button>' : '') +
+      '<button class="ghost" data-del="'+esc(L.id)+'">삭제</button></div>';
+    box.appendChild(el);
+  });
+}
+$("letters").addEventListener("click", function(e){
+  var t=e.target; if(!t||!t.dataset) return;
+  var find = function(id){ return S.letters.filter(function(L){ return L.id===id; })[0]; };
+  if(t.dataset.del){
+    S.letters = S.letters.filter(function(L){ return L.id !== t.dataset.del; });
+    save(); renderDrawer(); return;
+  }
+  if(t.dataset.open){
+    var L = find(t.dataset.open); if(!L) return;
+    var pv = t.closest(".ltr").querySelector(".pv");
+    pv.style.webkitLineClamp = pv.style.webkitLineClamp === "unset" ? "2" : "unset";
+    return;
+  }
+  if(t.dataset.cmp){
+    var M = find(t.dataset.cmp); if(!M) return;
+    var now = S.inp ? simulate(S.inp, activeRuleset()) : null;
+    var d = new Date(M.at);
+    var months = Math.max(0, Math.round((Date.now()-M.at)/(30*86400000)));
+    var thenR = M.sim ? (M.sim.runway==null ? "36개월 이상" : M.sim.runway+"개월") : "계산 없음";
+    var nowR  = now ? (now.runway==null ? "36개월 이상" : now.runway+"개월") : "계산 없음";
+    toast((months?months+"개월 전":"최근")+"의 당신: "+thenR+" → 지금: "+nowR);
+    return;
+  }
+});
+$("wipeBtn").addEventListener("click", function(){
+  if(!window.confirm("서랍의 사표를 전부 지웁니다. 되돌릴 수 없습니다. 계속할까요?")) return;
+  S.letters = []; save(); renderDrawer(); toast("서랍을 비웠습니다");
+});
+
+/* ══════════ 계산 ══════════ */
+var REASONS = [
+  { k:"self",     label:"자발적 퇴사" },
+  { k:"advised",  label:"권고사직" },
+  { k:"contract", label:"계약만료" }
+];
+var curReason = "self";
+chips("reasonChips", REASONS, function(){ return curReason; }, function(v){ curReason = v; });
+
+function readInputs(){
+  return {
+    net:   Math.max(0, Math.round(Number($("iNet").value)||0)),
+    gross: Math.max(0, Math.round(Number($("iGross").value)||0)),
+    years: Math.max(0, Number($("iYears").value)||0),
+    age:   Math.max(0, Math.round(Number($("iAge").value)||0)),
+    fixed: Math.max(0, Math.round(Number($("iFixed").value)||0)),
+    cash:  Math.max(0, Math.round(Number($("iCash").value)||0)),
+    ins:   Math.max(0, Math.round(Number($("iIns").value)||0)),
+    reason: curReason
+  };
+}
+function fillInputs(i){
+  if(!i) return;
+  $("iNet").value=i.net||""; $("iGross").value=i.gross||""; $("iYears").value=i.years||"";
+  $("iAge").value=i.age||""; $("iFixed").value=i.fixed||""; $("iCash").value=i.cash||"";
+  $("iIns").value=i.ins||"";
+  curReason = i.reason || "self";
+  chips("reasonChips", REASONS, function(){ return curReason; }, function(v){ curReason = v; });
+}
+$("calcBtn").addEventListener("click", function(){
+  var i = readInputs();
+  if(!i.net && !i.gross){ toast("월 실수령액이나 세전 월평균임금을 넣어 주세요"); return; }
+  if(!i.fixed){ toast("월 고정지출을 넣어 주세요"); return; }
+  S.inp = i; save();
+  renderResult();
+  $("resultCard").scrollIntoView({ behavior:"smooth", block:"start" });
+});
+function fmtRunway(r){ return r==null ? "36개월 이상" : r+"개월"; }
+function renderResult(){
+  var rs = activeRuleset();
+  var r = simulate(S.inp, rs, { cut: Number($("sCut").value)||0, rehire: Number($("sJob").value)||0 });
+  $("resultCard").style.display = "block";
+  $("rsYear").textContent = rs.year + "년";
+  $("rSev").textContent = S.inp.years < 1 ? "0원 (1년 미만)" : won(r.sev);
+  $("rDaily").textContent = r.elig ? won(r.daily) : "0원";
+  $("rDays").textContent = r.elig ? r.days + "일" : "—";
+  $("rUiTotal").textContent = r.elig ? won(r.uiTotal) : "0원";
+  $("rFixed").textContent = won(r.fixed);
+  $("rRunway").textContent = fmtRunway(r.runway);
+
+  var w = $("uiWarn");
+  if(!r.elig){
+    w.style.display = "block";
+    w.innerHTML = "<b>자발적 퇴사는 원칙적으로 실업급여 수급이 제한됩니다.</b> 그래서 실업급여를 0원으로 두고 계산했습니다. 임금 체불·근로조건의 현저한 저하·질병·통근 곤란 등 정당한 이직 사유로 인정되는 예외가 있으나 판단은 고용센터가 합니다. 반드시 확인하세요(1350).";
+  } else {
+    w.style.display = "block";
+    w.innerHTML = "<b>수급 자격은 고용센터가 판단합니다.</b> 이직 사유가 인정되고 피보험 단위기간 등 요건을 갖춘 경우를 가정한 추정치입니다. 상한·하한액과 소정급여일수는 <b>"+rs.year+"년</b> 기준값입니다.";
+  }
+  drawChart(r.series);
+  renderSens(rs);
+  renderDrawer();
+}
+function renderSens(rs){
+  var cut = Number($("sCut").value)||0, job = Number($("sJob").value)||0;
+  $("sCutL").textContent = cut + "%";
+  $("sJobL").textContent = job ? job + "개월 뒤라면" : "없다면";
+  var base = simulate(S.inp, rs, {});
+  var a = simulate(S.inp, rs, { cut: cut });
+  var b = simulate(S.inp, rs, { rehire: job });
+  var diff = function(x){
+    if(x.runway == null) return "36개월 이상 (0원에 닿지 않습니다)";
+    if(base.runway == null) return x.runway + "개월";
+    var d = x.runway - base.runway;
+    return x.runway + "개월 (" + (d>=0 ? "+" : "") + d + "개월)";
+  };
+  $("sCutOut").innerHTML = "고정지출 <b>" + won(a.fixed) + "</b> → 버티는 기간 <b>" + diff(a) + "</b>";
+  $("sJobOut").innerHTML = job
+    ? "재취업 " + job + "개월 뒤 → 버티는 기간 <b>" + diff(b) + "</b>"
+    : "재취업을 가정하지 않은 기준값입니다";
+}
+["sCut","sJob"].forEach(function(id){
+  $(id).addEventListener("input", function(){
+    if(!S.inp) return;
+    var rs = activeRuleset();
+    renderSens(rs);
+    var r = simulate(S.inp, rs, { cut:Number($("sCut").value)||0, rehire:Number($("sJob").value)||0 });
+    $("rRunway").textContent = fmtRunway(r.runway);
+    $("rFixed").textContent = won(r.fixed);
+    drawChart(r.series);
+  });
+});
+function drawChart(series){
+  var cv = $("chart"), x = cv.getContext("2d");
+  var dpr = window.devicePixelRatio || 1;
+  var W = cv.clientWidth || 640, H = 190;
+  cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+  x.setTransform(dpr,0,0,dpr,0,0);
+  x.clearRect(0,0,W,H);
+  var pad = 12, n = Math.min(series.length, 25);
+  var vals = series.slice(0,n);
+  var max = Math.max.apply(null, vals.concat([0]));
+  var min = Math.min.apply(null, vals.concat([0]));
+  var span = (max-min) || 1;
+  var px = function(i){ return pad + i*(W-pad*2)/(n-1); };
+  var py = function(v){ return H-pad - (v-min)*(H-pad*2)/span; };
+  // 0원 선
+  x.strokeStyle="#7f1d1d"; x.lineWidth=1.5; x.setLineDash([4,4]);
+  x.beginPath(); x.moveTo(pad, py(0)); x.lineTo(W-pad, py(0)); x.stroke(); x.setLineDash([]);
+  // 면적
+  var g = x.createLinearGradient(0,pad,0,H-pad);
+  g.addColorStop(0,"rgba(148,163,184,.32)"); g.addColorStop(1,"rgba(148,163,184,0)");
+  x.beginPath(); x.moveTo(px(0), py(vals[0]));
+  for(var i=1;i<n;i++) x.lineTo(px(i), py(vals[i]));
+  x.lineTo(px(n-1), py(min)); x.lineTo(px(0), py(min)); x.closePath();
+  x.fillStyle=g; x.fill();
+  // 선
+  x.beginPath(); x.moveTo(px(0), py(vals[0]));
+  for(var j=1;j<n;j++) x.lineTo(px(j), py(vals[j]));
+  x.strokeStyle="#cbd5e1"; x.lineWidth=2; x.stroke();
+  // 0원 도달 지점
+  for(var m=1;m<n;m++){
+    if(vals[m] <= 0 && vals[m-1] > 0){
+      x.fillStyle="#ef4444";
+      x.beginPath(); x.arc(px(m), py(vals[m]), 4.5, 0, Math.PI*2); x.fill();
+      x.fillStyle="#fca5a5"; x.font="600 11px sans-serif"; x.textAlign="center";
+      x.fillText(m+"개월", px(m), Math.max(14, py(vals[m])-10));
+      break;
+    }
+  }
+  x.fillStyle="#475569"; x.font="500 10.5px sans-serif"; x.textAlign="left";
+  x.fillText("0", pad+2, py(0)-4);
+}
+
+/* ══════════ 기준값 설정 ══════════ */
+function renderRs(){
+  var sel = $("rsSel");
+  sel.innerHTML = "";
+  Object.keys(RULESETS).sort().reverse().forEach(function(y){
+    var o = document.createElement("option");
+    o.value = y; o.textContent = y + "년 기준";
+    if(Number(y) === Number(S.rsYear)) o.selected = true;
+    sel.appendChild(o);
+  });
+  var rs = activeRuleset();
+  $("rsCap").value = rs.dailyCap;
+  $("rsWage").value = rs.minWage;
+  $("rsFloor").textContent = won(floorOf(rs)) + " / 일";
+}
+$("rsSel").addEventListener("change", function(){
+  S.rsYear = Number(this.value); S.rsOverride = null; save(); renderRs();
+  if(S.inp) renderResult();
+});
+$("rsSave").addEventListener("click", function(){
+  S.rsOverride = {
+    year: Number(S.rsYear),
+    dailyCap: Math.max(0, Math.round(Number($("rsCap").value)||0)),
+    minWage:  Math.max(0, Math.round(Number($("rsWage").value)||0))
+  };
+  save(); renderRs();
+  if(S.inp) renderResult();
+  toast("기준값을 저장했습니다");
+});
+$("rsReset").addEventListener("click", function(){
+  S.rsOverride = null; save(); renderRs();
+  if(S.inp) renderResult();
+  toast("기본값으로 되돌렸습니다");
+});
+
+/* ══════════ 반응 시뮬레이션 ══════════ */
+var BOSSES = [
+  { k:"num",   label:"숫자형" },
+  { k:"deal",  label:"회유형" },
+  { k:"emo",   label:"감정형" },
+  { k:"cold",  label:"무관심형" }
+];
+var REACT = {
+  num:  ["“인수인계 일정부터 정리해서 보내 주세요.” 감정 표현 없이 절차부터 확인할 수 있습니다.",
+         "후임 채용 기간을 이유로 퇴사일 조정을 요청할 수 있습니다. 사직 의사 표시 이후의 절차는 취업규칙과 근로기준법을 확인하세요.",
+         "남은 연차와 미사용 수당 정산을 먼저 물어볼 수 있습니다."],
+  deal: ["연봉이나 직무 조정을 제안하는 카운터오퍼가 나올 수 있습니다.",
+         "“한 달만 더 생각해 보라”며 결정을 미루자고 할 수 있습니다.",
+         "팀 이동이나 업무 축소를 대안으로 제시할 수 있습니다."],
+  emo:  ["서운함을 먼저 표현할 수 있습니다. “나한테 왜 말 안 했냐”는 식의 반응이 나올 수 있습니다.",
+         "개인적인 배신감으로 받아들이고 대화가 길어질 수 있습니다.",
+         "처음엔 감정적으로 반응했다가, 며칠 뒤 사무적으로 돌아올 수 있습니다."],
+  cold: ["“알겠다”로 끝날 수 있습니다. 붙잡는 말이 없을 수 있습니다.",
+         "곧바로 인사팀으로 넘기고 더 이야기하지 않을 수 있습니다.",
+         "반응이 거의 없어서 오히려 허탈할 수 있습니다."]
+};
+var COMMON = [
+  "카운터오퍼를 받는다면, 처음 나가려던 이유가 돈이었는지 아닌지를 먼저 구분해 보세요.",
+  "인수인계 범위와 마지막 근무일은 말로만 정하지 말고 문서로 남겨 두는 편이 안전합니다.",
+  "사직 의사를 밝힌 시점부터 퇴사까지의 기간과 절차는 회사 취업규칙에 따라 다릅니다."
+];
+var curBoss = "num";
+chips("bossChips", BOSSES, function(){ return curBoss; }, function(v){ curBoss = v; S.boss=v; save(); });
+$("reactBtn").addEventListener("click", function(){
+  var h = hash(curBoss + "|" + S.letters.length);
+  var pool = REACT[curBoss];
+  var out = $("reactOut");
+  out.style.display = "block";
+  out.innerHTML =
+    '<p class="lab">이럴 수도 있습니다 <span style="color:#64748b;font-weight:400">— 가능성일 뿐입니다</span></p>' +
+    pool.map(function(t){ return '<div class="kv"><span style="text-align:left">'+esc(t)+'</span></div>'; }).join("") +
+    '<p class="lab" style="margin-top:16px">챙겨 둘 것</p>' +
+    '<div class="kv"><span style="text-align:left">'+esc(COMMON[h % COMMON.length])+'</span></div>';
+});
+
+/* ══════════ 공유 ══════════ */
+function resultUrl(){ return location.origin + location.pathname + "?r=" + encodeURIComponent(enc({ v:1, n:shown.n, r:shown.r })); }
+function shareText(){
+  return "🗂️ 사표함 — 지금까지 " + shown.n + "번 썼습니다."
+    + (shown.r != null ? " 지금 나가면 " + shown.r + "개월 버팁니다." : "")
+    + "\n" + resultUrl();
+}
+function copy(text,msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fb(text,msg);});
+  } else fb(text,msg);
+}
+function fb(text,msg){
+  var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+$("copyLink").addEventListener("click", function(){ copy(resultUrl(),"링크가 복사되었습니다"); });
+$("copyText").addEventListener("click", function(){ copy(shareText(),"텍스트가 복사되었습니다"); });
+$("xBtn").addEventListener("click", function(){
+  var t = "지금까지 " + shown.n + "번 사표를 썼습니다 🗂️" + (shown.r != null ? " (버티는 기간 "+shown.r+"개월)" : "");
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank");
+});
+if(navigator.share){
+  $("webShare").style.display = "block";
+  $("webShare").addEventListener("click", function(){
+    navigator.share({ title:"사표함", text:shareText().split("\n")[0], url:resultUrl() }).catch(function(){});
+  });
+}
+$("rxGo").addEventListener("click", function(){
+  shown.n = Math.max(0, Math.round(Number($("rxN").value)||0));
+  var r = $("rxR").value;
+  shown.r = (r === "" ? null : Math.max(0, Math.round(Number(r)||0)));
+  $("cntN").textContent = shown.n;
+  $("cntT").textContent = shown.n ? "번 사표를 썼습니다" : "아직 사표를 쓴 적이 없습니다";
+  $("bigno").scrollIntoView({ behavior:"smooth", block:"center" });
+  toast("카드를 다시 만들었습니다");
+});
+function drawCard(){
+  var cv=$("cv"), x=cv.getContext("2d"), W=cv.width, H=cv.height;
+  x.fillStyle="#0f1318"; x.fillRect(0,0,W,H);
+  x.strokeStyle="#232a33"; x.lineWidth=3; x.strokeRect(30,30,W-60,H-60);
+  x.textAlign="center";
+  x.fillStyle="#64748b"; x.font="600 30px sans-serif";
+  x.fillText("사 표 함", W/2, 170);
+  x.fillStyle="#f1f5f9"; x.font="900 210px sans-serif";
+  x.fillText(String(shown.n), W/2, 470);
+  x.fillStyle="#94a3b8"; x.font="500 44px sans-serif";
+  x.fillText("번 사표를 썼습니다", W/2, 555);
+  x.strokeStyle="#232a33"; x.lineWidth=2;
+  x.beginPath(); x.moveTo(150,650); x.lineTo(W-150,650); x.stroke();
+  if(shown.r != null){
+    x.fillStyle="#94a3b8"; x.font="400 34px sans-serif";
+    x.fillText("지금 나가면", W/2, 730);
+    x.fillStyle="#cbd5e1"; x.font="800 76px sans-serif";
+    x.fillText(shown.r + "개월", W/2, 820);
+    x.fillStyle="#64748b"; x.font="400 28px sans-serif";
+    x.fillText("버팁니다 (추정치)", W/2, 872);
+  } else {
+    x.fillStyle="#64748b"; x.font="400 32px sans-serif";
+    x.fillText("그리고 한 번도 내지 않았습니다", W/2, 740);
+  }
+  x.fillStyle="#475569"; x.font="600 26px sans-serif";
+  x.fillText("tomatoeggcat.com/resign-drawer", W/2, H-80);
+}
+$("saveImg").addEventListener("click", function(){
+  drawCard();
+  var a=document.createElement("a");
+  a.download="resign-drawer-"+shown.n+".png";
+  a.href=$("cv").toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("이미지가 저장되었습니다");
+});
+
+/* ══════════ 초기화 · 인바운드 ══════════ */
+renderRs();
+fillInputs(S.inp);
+renderDrawer();
+if(S.inp) renderResult();
+
+var params = new URLSearchParams(location.search);
+if(params.has("r")){
+  var st = dec(params.get("r"));
+  if(st && typeof st.n === "number"){
+    shown.n = Math.max(0, st.n|0);
+    shown.r = (st.r == null ? null : Math.max(0, st.r|0));
+    $("cntN").textContent = shown.n;
+    $("cntT").textContent = shown.n ? "번 사표를 썼습니다" : "아직 사표를 쓴 적이 없습니다";
+    $("inbound").classList.add("show");
+    $("inboundBtn").addEventListener("click", function(){
+      $("inbound").classList.remove("show");
+      history.replaceState(null,"",location.pathname);
+      renderDrawer();
+      showTab("write");
+    });
+    showTab("drawer");
+  }
+}
+})();
+</script>
+</body>
+</html>
