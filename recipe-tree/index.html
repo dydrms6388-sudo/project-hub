@@ -1162,8 +1162,14 @@ function shareText(){
   return lines.join("\n");
 }
 function guardView(){ if(!viewing){ toast("먼저 레시피를 저장하거나 열어 주세요"); return true; } return false; }
-$("vLinkBtn").addEventListener("click",function(){ if(!guardView()) copy(shareUrl(),"링크가 복사되었습니다"); });
-$("vTextBtn").addEventListener("click",function(){ if(!guardView()) copy(shareText(),"텍스트가 복사되었습니다"); });
+/* 링크·텍스트·시스템 공유 모두 같은 내용(재료·순서·바꾼 이유·이름)이 나간다.
+   X만 경고하고 나머지를 열어 두면 사실상 보호가 없는 것과 같다.
+   이 앱은 이름을 가리는 토글도 없어(작성자 이름은 항상 포함) 더 그렇다. */
+function shareWarn(where){
+  return window.confirm(where+"\n\n링크에 레시피 전체(재료·순서·바꾼 이유)와 이름 \u2018"+(viewing.au||"익명")+"\u2019이 함께 담깁니다.\n링크를 아는 사람은 누구나 볼 수 있습니다.\n\n계속할까요?");
+}
+$("vLinkBtn").addEventListener("click",function(){ if(!guardView() && shareWarn("링크를 복사합니다.")) copy(shareUrl(),"링크가 복사되었습니다"); });
+$("vTextBtn").addEventListener("click",function(){ if(!guardView() && shareWarn("텍스트를 복사합니다.")) copy(shareText(),"텍스트가 복사되었습니다"); });
 $("vXBtn").addEventListener("click",function(){
   if(guardView()) return;
   /* X는 공개 게시다. 집안 레시피를 실수로 공개하지 않도록 한 번 확인받는다. */
@@ -1175,6 +1181,7 @@ if(navigator.share){
   $("vShareBtn").style.display="";
   $("vShareBtn").addEventListener("click",function(){
     if(guardView()) return;
+    if(!shareWarn("다른 앱으로 공유합니다.")) return;
     navigator.share({ title:viewing.t, text:shareText(), url:shareUrl() }).catch(function(){});
   });
 }

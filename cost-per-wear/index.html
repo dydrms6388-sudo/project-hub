@@ -946,7 +946,11 @@ $("copyLinkBtn").addEventListener("click",function(){ if(!guardEmpty() && nameWa
 $("copyTextBtn").addEventListener("click",function(){ if(!guardEmpty() && nameWarn("텍스트를 복사합니다.")) copy(shareText(),"텍스트가 복사되었습니다"); });
 $("xBtn").addEventListener("click",function(){
   if(guardEmpty()) return;
-  if($("withNames").checked && !window.confirm("X(트위터)에 공개로 올립니다.\n\n지금 ‘항목 이름 포함’이 켜져 있어 옷 이름이 함께 나갑니다. 계속할까요?")) return;
+  /* 공개 게시는 이름 포함 여부와 무관하게 항상 확인받는다(다른 앱과 동작 통일) */
+  var xWarn = $("withNames").checked
+    ? "X(트위터)에 공개로 올립니다.\n\n지금 ‘항목 이름 포함’이 켜져 있어 옷 이름이 함께 나갑니다. 계속할까요?"
+    : "X(트위터)에 공개로 올립니다.\n\n옷장 총액·평균 1회당·착용 편중도가 함께 나갑니다(항목 이름은 빠집니다). 계속할까요?";
+  if(!window.confirm(xWarn)) return;
   var s=shareState();
   var t="내 옷장 평균 1회당 "+(s.a===null?"—":won(s.a))+", 자주 입는 "+s.tn+"개가 전체 착용의 "+(s.c===null?"—":s.c+"%")+" 🧥";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
