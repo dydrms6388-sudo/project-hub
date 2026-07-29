@@ -47,10 +47,12 @@ h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90de
 .card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
 .lab b{color:var(--acc2)}
-.hint{font-size:12px;color:#6b7280;margin:6px 0 0}
+.hint{font-size:13px;color:#9ca3af;margin:6px 0 0;line-height:1.65}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{width:auto;flex:none;padding:9px 13px;font-size:13.5px;font-weight:600;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
 .chip.on{background:rgba(94,234,212,.14);border-color:var(--acc);color:var(--acc2)}
+textarea{width:100%;padding:12px 14px;font-size:15px;background:#0f0f0f;color:#ededed;border:1px solid #333;border-radius:12px;font-family:inherit;line-height:1.6;resize:vertical}
+textarea:focus{outline:none;border-color:var(--acc)}
 input[type=text],input[type=number],input[type=month],select{width:100%;padding:12px 14px;font-size:15px;background:#0f0f0f;color:#ededed;border:1px solid #333;border-radius:12px;min-height:46px}
 input:focus,select:focus{outline:none;border-color:var(--acc)}
 .field{margin-top:16px}
@@ -72,7 +74,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .tile{width:100%;padding:10px 6px;background:#0f0f0f;border:1px solid #333;border-radius:14px;cursor:pointer;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:.12s;color:#c9c9c9;font-weight:700}
 .tile .em{font-size:26px;line-height:1}
 .tile .nm{font-size:11.5px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tile .pw{font-size:10.5px;color:#6b7280;font-weight:600}
+.tile .pw{font-size:11.5px;color:#9ca3af;font-weight:600}
 .tile.done{background:rgba(94,234,212,.14);border-color:var(--acc);color:var(--acc2)}
 .tile.done .pw{color:var(--acc2)}
 .daysw{display:flex;gap:8px;margin-bottom:10px}
@@ -81,11 +83,11 @@ button:disabled{opacity:.4;cursor:not-allowed}
 /* 통계 */
 .stats{display:flex;gap:10px;flex-wrap:wrap}
 .stats .b{flex:1;min-width:120px;background:#101010;border:1px solid #262626;border-radius:12px;padding:12px}
-.stats .b .k{font-size:11.5px;color:#6b7280;font-weight:700}
+.stats .b .k{font-size:12.5px;color:#9ca3af;font-weight:700}
 .stats .b .v{font-size:22px;font-weight:900;color:var(--acc2);line-height:1.25}
-.stats .b .s{font-size:11px;color:#6b7280}
+.stats .b .s{font-size:12.5px;color:#9ca3af}
 .big{background:#101010;border:1px solid #262626;border-radius:12px;padding:14px;margin-top:10px}
-.big .k{font-size:12px;color:#6b7280;font-weight:700}
+.big .k{font-size:13px;color:#9ca3af;font-weight:700}
 .big .v{font-size:34px;font-weight:900;color:#ededed;line-height:1.2}
 .big .s{font-size:12.5px;color:#9ca3af}
 /* 목록 */
@@ -96,15 +98,16 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .item .em{font-size:26px;flex:none;width:34px;text-align:center}
 .item .mid{flex:1;min-width:0}
 .item .t{font-size:14.5px;font-weight:700;color:#ededed;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.item .sub{font-size:12px;color:#6b7280}
+.item .sub{font-size:13px;color:#9ca3af}
 .item .rt{flex:none;text-align:right}
 .item .rt .pw{font-size:16px;font-weight:900;color:var(--acc2)}
-.item .rt .cnt{font-size:11.5px;color:#6b7280}
+.item .rt .cnt{font-size:12.5px;color:#9ca3af}
 .item .rt .zero{color:#9ca3af;font-size:13px;font-weight:700}
 .iacts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
-.iacts button{width:auto;padding:6px 10px;font-size:11.5px;min-height:36px;background:#161616;color:#9ca3af;border:1px solid #2e2e2e;font-weight:700;border-radius:8px}
+.iacts button{width:auto;padding:9px 13px;font-size:13px;min-height:44px;min-width:44px;background:#161616;color:#c9c9c9;border:1px solid #2e2e2e;font-weight:700;border-radius:8px}
+.iacts button:first-child{background:rgba(94,234,212,.12);border-color:#2b4a45;color:var(--acc2)}
 .goal{font-size:12px;color:var(--acc2);margin-top:3px}
-.empty{color:#6b7280;font-size:13.5px;padding:14px 0;text-align:center}
+.empty{color:#9ca3af;font-size:14px;padding:14px 0;text-align:center;line-height:1.7}
 .hall{counter-reset:h}
 .hall .h{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #232323}
 .hall .rk{font-size:15px;font-weight:900;color:var(--acc);width:26px;flex:none;text-align:center}
@@ -160,10 +163,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <!-- 오늘 입은 것 -->
 <section class="card" id="todayCard">
   <p class="lab">✅ <b>오늘 입은 것</b> — 탭 한 번이면 끝</p>
-  <div class="daysw" id="daysw">
-    <button type="button" data-off="0" class="on">오늘</button>
-    <button type="button" data-off="1">어제</button>
-  </div>
+  <div class="daysw" id="daysw"></div>
   <div class="tiles" id="tiles"></div>
   <p class="hint" id="todayHint">자주·최근에 입은 순으로 8개가 올라옵니다. 검색하지 않아도 되게 만드는 게 목적이에요.</p>
 </section>
@@ -183,12 +183,12 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <section class="card" id="addCard">
   <p class="lab">➕ <b>등록</b> — 이름 · 가격 · 산 시기. 이 셋이면 끝</p>
   <div class="field">
-    <input type="text" id="nName" maxlength="24" placeholder="예: 네이비 코트, 검정 후드티, 로봇청소기" />
+    <input type="text" id="nName" aria-label="항목 이름" maxlength="24" placeholder="예: 네이비 코트, 검정 후드티, 로봇청소기" />
     <p class="hint" id="catSuggest">이름을 적으면 카테고리를 알아서 제안합니다.</p>
   </div>
   <div class="row2 field">
-    <div><input type="number" id="nPrice" min="0" max="100000000" step="1000" inputmode="numeric" placeholder="가격 (원)" /></div>
-    <div><input type="month" id="nWhen" /></div>
+    <div><input type="number" id="nPrice" aria-label="가격(원)" min="0" max="100000000" step="1000" inputmode="numeric" placeholder="가격 (원)" /></div>
+    <div><input type="month" id="nWhen" aria-label="산 시기" /></div>
   </div>
   <div class="field">
     <p class="lab">카테고리</p>
@@ -207,6 +207,18 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <button class="ghost" id="keepAddBtn" type="button">등록하고 계속</button>
   </div>
   <p class="hint">브랜드·상세 스펙은 묻지 않습니다. <b>사이즈·치수·체형·체중 입력란은 이 도구에 없습니다.</b></p>
+
+  <details id="bulkBox">
+    <summary>📋 여러 개 한 번에 넣기 (옷장 정리하면서)</summary>
+    <div class="dbody">
+      <p class="hint" style="margin-top:0">한 줄에 하나씩 <b>이름, 가격</b> 순으로 적으세요. 쉼표·탭·띄어쓰기 다 됩니다. 카테고리는 이름을 보고 알아서 붙습니다.</p>
+      <textarea id="bulkText" aria-label="여러 항목 한 번에 붙여넣기" rows="7" placeholder="네이비 코트, 198000&#10;검정 후드티 39000&#10;청바지 79000&#10;흰 운동화 129000&#10;에어프라이어 89000"></textarea>
+      <div class="acts">
+        <button class="ghost" id="bulkBtn" type="button">한 번에 등록</button>
+      </div>
+      <p class="hint">가격을 안 적으면 0원으로 들어갑니다. 나중에 각 항목의 ‘수정’에서 고칠 수 있어요.</p>
+    </div>
+  </details>
 </section>
 
 <!-- 목록 -->
@@ -250,7 +262,8 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <label class="sw"><input type="checkbox" id="withNames" /> 공유에 항목 이름 포함 (기본은 카테고리만)</label>
 
   <div class="acts">
-    <button class="ghost mini" id="exportBtn" type="button">⬇️ 내보내기</button>
+    <button class="ghost mini" id="exportBtn" type="button">⬇️ 백업(JSON)</button>
+    <button class="ghost mini" id="csvBtn" type="button">📊 엑셀용(CSV)</button>
     <button class="ghost mini" id="importBtn" type="button">⬆️ 가져오기</button>
     <button class="ghost mini" id="wipeBtn" type="button">전체 삭제</button>
   </div>
@@ -404,14 +417,28 @@ function idleDays(it){
 }
 
 /* ================= 오늘 입은 것 타일 ================= */
+/* 소급 입력 7일 — 이틀만 되면 한 번 밀린 순간 그 착용은 영영 기록 못 하고
+   1회당 원가가 영구히 과대평가된다. 일주일까지 되짚을 수 있게 한다. */
 var dayOff=0;
-Array.prototype.forEach.call($("daysw").children,function(b){
-  b.addEventListener("click",function(){
-    dayOff=+b.dataset.off;
-    Array.prototype.forEach.call($("daysw").children,function(c){ c.classList.toggle("on", c===b); });
-    renderTiles();
-  });
-});
+(function buildDaysw(){
+  var w=$("daysw");
+  for(var i=0;i<7;i++){
+    var d=new Date(); d.setDate(d.getDate()-i);
+    var b=document.createElement("button");
+    b.type="button"; b.dataset.off=String(i);
+    b.textContent = i===0?"오늘" : i===1?"어제" : (d.getMonth()+1)+"/"+d.getDate();
+    b.setAttribute("aria-pressed", i===0?"true":"false");
+    if(i===0) b.className="on";
+    b.addEventListener("click",function(){
+      dayOff=+this.dataset.off;
+      Array.prototype.forEach.call(w.children,function(c){
+        var on = c===this; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+      },this);
+      renderTiles();
+    });
+    w.appendChild(b);
+  }
+})();
 function tileItems(){
   var key=todayKey(dayOff);
   return active().slice().sort(function(a,b){
@@ -442,7 +469,7 @@ function renderTiles(){
   });
   $("todayHint").textContent = dayOff===0
     ? "탭 한 번이면 오늘 착용 기록. 다시 누르면 취소됩니다."
-    : "어제 것을 소급 입력하는 중입니다. 하루 지난 것까지 가능해요.";
+    : (dayOff===1 ? "어제" : dayOff+"일 전") + " 것을 소급 입력하는 중입니다. 일주일 전까지 되짚을 수 있어요.";
 }
 function toggleWear(it, key){
   var i=it.w.indexOf(key);
@@ -464,15 +491,16 @@ var catHolder=$("catChips");
 CATS.forEach(function(c){
   var b=document.createElement("button");
   b.type="button"; b.className="chip"; b.dataset.k=c.k; b.textContent=c.em+" "+c.label;
-  b.addEventListener("click",function(){
-    newCat=c.k;
-    Array.prototype.forEach.call(catHolder.children,function(x){ x.classList.toggle("on", x.dataset.k===c.k); });
-  });
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){ setCat(c.k); });
   catHolder.appendChild(b);
 });
 function setCat(k){
   newCat=k;
-  Array.prototype.forEach.call(catHolder.children,function(x){ x.classList.toggle("on", x.dataset.k===k); });
+  Array.prototype.forEach.call(catHolder.children,function(x){
+    var on = x.dataset.k===k;
+    x.classList.toggle("on", on); x.setAttribute("aria-pressed", on?"true":"false");
+  });
 }
 $("nName").addEventListener("input",function(){
   var s=suggestCat($("nName").value);
@@ -480,9 +508,12 @@ $("nName").addEventListener("input",function(){
 });
 catHolder.addEventListener("click",function(){ $("nName")._touched=true; });
 Array.prototype.forEach.call($("kindChips").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
   b.addEventListener("click",function(){
     newKind=b.dataset.k;
-    Array.prototype.forEach.call($("kindChips").children,function(c){ c.classList.toggle("on", c===b); });
+    Array.prototype.forEach.call($("kindChips").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
     $("kindHint").innerHTML = newKind==="sub"
       ? "구독은 <b>그 달 요금 ÷ 그 달 사용 횟수</b>로 계산합니다. 가격칸에 월 요금을 넣어 주세요."
       : "구독은 ‘1회당’ 대신 <b>그 달 요금 ÷ 그 달 사용 횟수</b>로 계산합니다.";
@@ -512,6 +543,32 @@ function addItem(keepOpen){
   if(keepOpen) $("nName").focus();
   else $("todayCard").scrollIntoView({behavior:"smooth",block:"start"});
 }
+/* 일괄 등록 — 옷장 30벌을 한 줄씩 폼으로 넣는 것이 가장 큰 진입장벽이었다. */
+$("bulkBtn").addEventListener("click",function(){
+  var raw=$("bulkText").value;
+  if(!raw.trim()){ toast("붙여넣을 목록이 없어요"); return; }
+  var lines=raw.split(/\r?\n/).map(function(l){ return l.trim(); }).filter(Boolean).slice(0,200);
+  var added=0, skipped=0;
+  lines.forEach(function(l){
+    /* "이름, 가격" / "이름<TAB>가격" / "이름 가격" 모두 허용. 가격은 줄 끝의 숫자로 본다. */
+    var m=l.match(/^(.*?)[\s,\t]*([0-9][0-9,]*)\s*원?$/);
+    var name, price;
+    if(m && m[1].trim()){ name=m[1].replace(/[,\t]+$/,"").trim(); price=parseInt(m[2].replace(/,/g,""),10); }
+    else { name=l.replace(/[,\t]+$/,"").trim(); price=0; }
+    if(!name){ skipped++; return; }
+    if(!(price>=0) || price>100000000){ skipped++; return; }
+    db.items.push({
+      id:uid(), n:name.slice(0,24), p:Math.round(price),
+      a:monthKey(todayKey(0)), c:suggestCat(name)||"etc", kind:"own", st:"active", w:[], g:null
+    });
+    added++;
+  });
+  if(!added){ toast("등록할 줄을 찾지 못했어요"); return; }
+  save(); renderAll();
+  $("bulkText").value=""; $("bulkBox").open=false;
+  toast(added+"개 등록 완료"+(skipped?(" · "+skipped+"줄 건너뜀"):"")+" — 카테고리는 목록에서 고칠 수 있어요");
+  $("listCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
 $("addBtn").addEventListener("click",function(){ addItem(false); });
 $("keepAddBtn").addEventListener("click",function(){ addItem(true); });
 $("nPrice").addEventListener("keydown",function(e){ if(e.key==="Enter") addItem(true); });
@@ -519,9 +576,12 @@ $("nPrice").addEventListener("keydown",function(e){ if(e.key==="Enter") addItem(
 /* ================= 목록 ================= */
 var tab="all";
 Array.prototype.forEach.call($("tabs").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
   b.addEventListener("click",function(){
     tab=b.dataset.t;
-    Array.prototype.forEach.call($("tabs").children,function(c){ c.classList.toggle("on", c===b); });
+    Array.prototype.forEach.call($("tabs").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
     renderList();
   });
 });
@@ -572,6 +632,7 @@ function renderList(){
       ia.appendChild(mkBtn("되돌리기",function(){ it.st="active"; delete it.ar; save(); renderAll(); toast("다시 옷장으로"); }));
     } else {
       ia.appendChild(mkBtn("+1 오늘",function(){ toggleWear(it, todayKey(0)); }));
+      ia.appendChild(mkBtn("수정",function(){ editItem(it); }));
       ia.appendChild(mkBtn(it.g?"목표 수정":"목표 정하기",function(){ setGoal(it); }));
       ia.appendChild(mkBtn("방출",function(){ release(it); }));
     }
@@ -590,6 +651,36 @@ function renderList(){
 function mkBtn(label, fn){
   var b=document.createElement("button"); b.type="button"; b.textContent=label;
   b.addEventListener("click",fn); return b;
+}
+/* 항목 수정 — 잘못 넣은 가격을 고치려고 삭제·재등록하면 착용 기록이 통째로 날아간다.
+   세일가 정정, 수선비 합산, 중고 구매 반영 모두 여기서 한다. */
+function editItem(it){
+  var n=window.prompt("이름", it.n);
+  if(n===null) return;
+  n=String(n).trim().slice(0,24);
+  if(!n){ toast("이름은 비울 수 없어요"); return; }
+
+  var pv=window.prompt(
+    "가격 (원)\n\n· 세일가로 샀으면 실제 낸 금액\n· 수선비를 더하려면 합친 금액\n· 선물받았거나 물려받았으면 0\n\n착용 기록 "+it.w.length+"회는 그대로 유지됩니다.",
+    String(it.p));
+  if(pv===null) return;
+  pv=String(pv).replace(/[^\d]/g,"");
+  if(pv===""){ toast("가격을 숫자로 적어 주세요"); return; }
+  var p=parseInt(pv,10);
+  if(p>100000000){ toast("가격이 너무 큽니다"); return; }
+
+  var av=window.prompt("산 시기 (YYYY-MM, 비우면 그대로)", it.a||"");
+  if(av===null) return;
+  av=String(av).trim();
+
+  var old=it.p;
+  it.n=n; it.p=p;
+  if(av && /^\d{4}-\d{2}$/.test(av)) it.a=av;
+  save(); renderAll();
+  var pu=perUse(it);
+  toast(old!==p
+    ? ("가격 "+won(old)+" → "+won(p)+(pu===null?"":" · 1회당 "+won(pu)))
+    : "수정했습니다");
 }
 function setGoal(it){
   var cur = it.g ? String(it.g) : "";
@@ -622,14 +713,19 @@ function summary(){
   /* 편중도: 착용 상위 20% 항목이 전체 착용의 몇 % */
   var sorted=own.slice().sort(function(x,y){ return y.w.length-x.w.length; });
   var topN=Math.max(1, Math.ceil(sorted.length*0.2));
+  var topPct = sorted.length ? Math.round(topN/sorted.length*100) : 0;  /* 실제 비율(항목 6개면 33%) */
   var topWears=sorted.slice(0,topN).reduce(function(s,i){ return s+i.w.length; },0);
   var conc = wears>0 ? Math.round(topWears/wears*100) : null;
   var idle=a.filter(function(i){ var d=idleDays(i); return d===null||d>=30; }).length;
   var zero=a.filter(function(i){ return i.w.length===0; }).length;
-  var hall=own.filter(function(i){ return i.w.length>0; })
+  /* 명예의 전당은 '싸게 잘 산 것'을 보는 자리다. 0원(선물·물려받음)은 나눗셈이 항상 0이라
+     한 번만 입어도 1위를 차지해 순위를 무의미하게 만든다 → 별도 표기하고 순위에서 뺀다. */
+  var hall=own.filter(function(i){ return i.w.length>0 && i.p>0; })
     .map(function(i){ return { n:i.n, c:i.c, pu:i.p/i.w.length, cnt:i.w.length }; })
     .sort(function(x,y){ return x.pu-y.pu; }).slice(0,5);
-  return { n:a.length, total:total, wears:wears, avg:avg, conc:conc, topN:topN, idle:idle, zero:zero, hall:hall };
+  var freeCount=own.filter(function(i){ return i.p===0; }).length;
+  return { n:a.length, own:own.length, total:total, wears:wears, avg:avg, conc:conc,
+           topN:topN, topPct:topPct, idle:idle, zero:zero, hall:hall, free:freeCount };
 }
 function renderStats(){
   var s=summary();
@@ -643,20 +739,30 @@ function renderStats(){
     : "총액 "+won(s.total)+" ÷ 총 착용 "+s.wears+"회. 한 번 더 입을 때마다 내려갑니다.";
 
   var h=$("hall");
-  if(!s.hall.length){ h.innerHTML='<p class="empty">한 번이라도 입은 항목이 생기면 순위가 만들어집니다.</p>'; }
+  if(!s.hall.length){ h.innerHTML='<p class="empty">값을 치르고 산 항목을 한 번이라도 입으면 순위가 만들어집니다.</p>'; }
   else {
     h.innerHTML = s.hall.map(function(x,i){
       return '<div class="h"><div class="rk">'+(i+1)+'</div><div class="hn">'+catOf(x.c).em+' '+esc(x.n)+'</div>'
         + '<div class="hv">'+won(x.pu)+'</div></div>';
     }).join("");
   }
+  if(s.free){
+    h.innerHTML += '<p class="hint">🎁 선물받거나 물려받은 0원 항목 '+s.free+'개는 순위에서 뺐습니다. '
+      + '나누면 늘 0원이라 한 번만 입어도 1위가 되어 순위가 의미를 잃기 때문입니다.</p>';
+  }
   if(s.conc===null){
     $("concBar").style.width="0%";
-    $("concTxt").textContent="착용 기록이 쌓이면 상위 20%가 전체 착용의 몇 %인지 보여 드립니다.";
+    $("concTxt").textContent="착용 기록이 쌓이면 자주 입는 몇 벌이 전체 착용의 몇 %를 차지하는지 보여 드립니다.";
   } else {
     $("concBar").style.width="0%";
     setTimeout(function(){ $("concBar").style.width=s.conc+"%"; },40);
-    $("concTxt").innerHTML="자주 입는 상위 20%(<b>"+s.topN+"개</b>)가 전체 착용의 <b>"+s.conc+"%</b>를 차지합니다. 좋고 나쁨을 판정하지 않습니다 — 그냥 그렇다는 숫자입니다.";
+    /* '상위 20%'라고 못박으면 항목 수가 5의 배수가 아닐 때 라벨이 사실과 어긋난다.
+       실제 개수와 실제 비율을 그대로 쓴다. */
+    var small = s.own < 10;
+    $("concTxt").innerHTML="자주 입는 <b>"+s.topN+"개</b>(전체 "+s.own+"개 중 "+s.topPct+"%)가 "
+      + "전체 착용의 <b>"+s.conc+"%</b>를 차지합니다. 좋고 나쁨을 판정하지 않습니다 — 그냥 그렇다는 숫자입니다."
+      + (small ? "<br><b>다만 항목이 "+s.own+"개뿐이라 이 숫자는 아직 크게 흔들립니다.</b> 10개 이상부터 참고할 만해집니다." : "")
+      + "<br>구독 항목은 이 계산에서 빠져 있습니다.";
   }
   renderPattern();
 }
@@ -675,14 +781,18 @@ function renderPattern(){
     for(var b=0;b<PRICE_BANDS.length;b++) if(i.p<=PRICE_BANDS[b].max){ band=PRICE_BANDS[b].label; break; }
     (byBand[band]=byBand[band]||[]).push(i);
   });
+  /* 표본 수(n)를 반드시 함께 적는다. n=1짜리 "평균 3.2회"를 단정적으로 보여 주지 않기 위해서. */
   function rows(kind, map, nameFn){
     Object.keys(map).forEach(function(k){
       var arr=map[k];
       var avgW=arr.reduce(function(s,i){ return s+i.w.length; },0)/arr.length;
       var used=arr.filter(function(i){ return i.w.length>0; });
       var avgPu=used.length ? used.reduce(function(s,i){ return s+i.p/i.w.length; },0)/used.length : null;
+      var weak = arr.length < 3;
       var tr=document.createElement("tr");
-      tr.innerHTML="<td>"+kind+"</td><td>"+esc(nameFn(k))+"</td><td><b>"+avgW.toFixed(1)+"회</b></td><td>"+(avgPu===null?"—":won(avgPu))+"</td>";
+      tr.innerHTML="<td>"+kind+"</td><td>"+esc(nameFn(k))+"</td>"
+        + "<td><b>"+avgW.toFixed(1)+"회</b> <span style='color:#6b7280;font-size:12px'>(n="+arr.length+")</span></td>"
+        + "<td>"+(avgPu===null?"—":won(avgPu))+(weak?" <span style='color:#6b7280;font-size:12px'>참고만</span>":"")+"</td>";
       tb.appendChild(tr);
     });
   }
@@ -821,6 +931,30 @@ $("exportBtn").addEventListener("click",function(){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(function(){ URL.revokeObjectURL(a.href); },2000);
   toast("백업 파일을 내려받았습니다");
+});
+/* 엑셀에서 바로 피벗 돌릴 수 있게 한 줄 = 한 항목으로 평탄화해 내보낸다. */
+$("csvBtn").addEventListener("click",function(){
+  if(!db.items.length){ toast("내보낼 항목이 없어요"); return; }
+  var q=function(v){ return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'; };
+  var head=["이름","카테고리","종류","가격","산시기","상태","착용횟수","1회당원가","첫착용","마지막착용","목표1회당","방출일"];
+  var lines=[head.map(q).join(",")];
+  db.items.forEach(function(it){
+    var sorted=it.w.slice().sort();
+    var pu=perUse(it);
+    lines.push([
+      it.n, catOf(it.c).label, it.kind==="sub"?"구독":"소유", it.p, it.a||"",
+      it.st==="archived"?"아카이브":"사용중", it.w.length,
+      pu===null?"":Math.round(pu), sorted[0]||"", sorted[sorted.length-1]||"",
+      it.g||"", it.ar||""
+    ].map(q).join(","));
+  });
+  /* 엑셀이 UTF-8 한글을 깨뜨리지 않도록 BOM을 붙인다 */
+  var blob=new Blob(["﻿"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="cost-per-wear.csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },2000);
+  toast("CSV를 내려받았습니다 ("+db.items.length+"개)");
 });
 $("importBtn").addEventListener("click",function(){ $("fileIn").click(); });
 $("fileIn").addEventListener("change",function(){

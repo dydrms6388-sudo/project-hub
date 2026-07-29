@@ -35,7 +35,7 @@
 ]}
 </script>
 <style>
-:root{color-scheme:dark;--ink:#e8e4dc;--ink2:#a8a29a;--ink3:#6f6a62;--pap:#141311;--pap2:#1b1a17;--ln:#2a2723;--acc:#d4b483;--acc2:#e9d5b0}
+:root{color-scheme:dark;--ink:#e8e4dc;--ink2:#a8a29a;--ink3:#9a938a;--pap:#141311;--pap2:#1b1a17;--ln:#2a2723;--acc:#d4b483;--acc2:#e9d5b0}
 *{box-sizing:border-box}
 body{margin:0;background:#0d0c0b;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.75;letter-spacing:-.005em}
 .wrap{max-width:640px;margin:0 auto;padding:28px 20px 72px}
@@ -45,9 +45,9 @@ a{color:var(--acc)}
 h1{font-size:25px;font-weight:700;margin:0 0 8px;color:var(--ink);letter-spacing:-.02em}
 .lead{color:var(--ink2);margin:0 0 28px;font-size:15px;line-height:1.8}
 .card{border:1px solid var(--ln);background:var(--pap);border-radius:14px;padding:22px;margin-bottom:20px}
-.lab{font-size:12.5px;font-weight:700;color:var(--ink3);letter-spacing:.06em;margin:0 0 12px;text-transform:none}
+.lab{font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:.06em;margin:0 0 12px;text-transform:none}
 .lab b{color:var(--acc2);font-weight:700}
-.hint{font-size:12px;color:var(--ink3);margin:8px 0 0;line-height:1.7}
+.hint{font-size:13px;color:var(--ink3);margin:8px 0 0;line-height:1.7}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chip{width:auto;flex:none;padding:9px 14px;font-size:13.5px;font-weight:600;background:transparent;color:var(--ink2);border:1px solid var(--ln);border-radius:8px;cursor:pointer;min-height:44px;transition:.12s}
 .chip.on{background:rgba(212,180,131,.12);border-color:var(--acc);color:var(--acc2)}
@@ -59,7 +59,7 @@ input:focus,select:focus{outline:none;border-color:var(--acc)}
 button{margin:0;width:100%;padding:14px;border:0;border-radius:9px;background:var(--acc);color:#241d10;font-size:15.5px;font-weight:700;cursor:pointer;min-height:48px}
 button.ghost{background:transparent;color:var(--acc2);border:1px solid #4a4034;font-weight:600}
 button.mini{width:auto;padding:9px 13px;font-size:13px;min-height:44px}
-button.tiny{width:auto;padding:5px 10px;font-size:12px;min-height:34px;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:7px;font-weight:600}
+button.tiny{width:auto;padding:8px 12px;font-size:13px;min-height:44px;min-width:44px;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:7px;font-weight:600}
 button:disabled{opacity:.35;cursor:not-allowed}
 .acts{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
 .acts button{flex:1;min-width:130px}
@@ -82,7 +82,7 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .entry .top{font-size:15px;color:var(--ink);word-break:keep-all}
 .entry .top b{font-weight:700}
 .entry .ctx{font-size:13px;color:var(--ink2);margin-top:1px;word-break:keep-all}
-.entry .meta{font-size:11.5px;color:var(--ink3);margin-top:4px;letter-spacing:.02em}
+.entry .meta{font-size:12.5px;color:var(--ink3);margin-top:4px;letter-spacing:.02em}
 .entry .settled{color:var(--acc);font-weight:700}
 .eacts{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
 .person{padding:16px 0;border-bottom:1px solid var(--ln)}
@@ -102,17 +102,17 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .yr .ys{font-size:14.5px;color:var(--ink2)}
 .yrgrid{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;text-align:left}
 .yrgrid .yb{flex:1;min-width:150px;background:var(--pap);border:1px solid var(--ln);border-radius:10px;padding:14px}
-.yrgrid .yb .k{font-size:11.5px;color:var(--ink3);letter-spacing:.04em}
+.yrgrid .yb .k{font-size:12.5px;color:var(--ink3);letter-spacing:.04em}
 .yrgrid .yb .v{font-size:16px;color:var(--ink);font-weight:700;margin-top:3px;line-height:1.5}
-.yrgrid .yb .s{font-size:12px;color:var(--ink3)}
+.yrgrid .yb .s{font-size:12.5px;color:var(--ink3)}
 .sw{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink2);margin-top:14px}
 .sw input{width:auto;min-height:auto}
-.vow{font-size:12.5px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-left:2px solid var(--acc);border-radius:8px;padding:13px 15px;margin-top:16px;line-height:1.8}
+.vow{font-size:13px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-left:2px solid var(--acc);border-radius:8px;padding:13px 15px;margin-top:16px;line-height:1.8}
 .vow b{color:var(--acc2)}
 details{margin-top:14px;border:1px solid var(--ln);border-radius:11px;background:var(--pap2)}
 summary{cursor:pointer;padding:13px 15px;font-size:13.5px;font-weight:600;color:var(--ink2)}
 details .dbody{padding:0 15px 15px}
-.disc{font-size:12px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-radius:9px;padding:12px 14px;margin-top:14px;line-height:1.75}
+.disc{font-size:13px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-radius:9px;padding:12px 14px;margin-top:14px;line-height:1.75}
 .about h2{font-size:18px;margin:32px 0 10px;color:var(--acc2);font-weight:700}
 .about p,.about li{font-size:14.5px;color:var(--ink2);line-height:1.85}
 .faq dt{font-weight:700;margin-top:16px;color:var(--ink)}
@@ -158,21 +158,21 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
 
   <div class="chips" id="kindChips"></div>
   <div class="field" id="kindEtcWrap" style="display:none">
-    <input type="text" id="fKindEtc" maxlength="14" placeholder="무엇을 (예: 짐 옮겨줌)" />
+    <input type="text" id="fKindEtc" aria-label="무엇을 받았는지" maxlength="14" placeholder="무엇을 (예: 짐 옮겨줌)" />
   </div>
 
   <div class="field">
     <div class="chips" id="peopleChips"></div>
     <div class="field">
-      <input type="text" id="fPerson" maxlength="14" placeholder="누구에게 — 내가 부르는 호칭으로" />
+      <input type="text" id="fPerson" aria-label="상대 호칭" maxlength="14" placeholder="누구에게 — 내가 부르는 호칭으로" />
       <p class="hint">연락처를 읽지 않습니다. 실명이 아니어도 됩니다. 준호 씨, 옆자리, 이모처럼 내가 알아보는 이름이면 충분합니다.</p>
     </div>
   </div>
 
   <div class="row2 field">
-    <div><input type="date" id="fDate" /></div>
+    <div><input type="date" id="fDate" aria-label="날짜" /></div>
     <div>
-      <select id="fTag">
+      <select id="fTag" aria-label="상대와의 관계">
         <option value="friend">친구</option>
         <option value="family">가족</option>
         <option value="work">동료</option>
@@ -182,7 +182,7 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
   </div>
 
   <div class="field">
-    <input type="text" id="fBody" maxlength="40" placeholder="한 줄 맥락 (비워도 됩니다)" />
+    <input type="text" id="fBody" aria-label="한 줄 맥락" maxlength="40" placeholder="한 줄 맥락 (비워도 됩니다)" />
   </div>
 
   <div class="acts">
@@ -220,8 +220,8 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
     <summary>고맙다고 말하고 싶을 때 — 문장 초안 만들기</summary>
     <div class="dbody">
       <p class="hint" style="margin-top:0">기록을 하나 고르면 보낼 만한 문장을 만들어 드립니다. <b>이 도구는 대신 보내지 않습니다.</b> 복사만 해 드리고, 보낼지 말지는 직접 정하세요.</p>
-      <div class="field"><select id="thxSel"></select></div>
-      <div class="field"><input type="text" id="thxOut" readonly placeholder="기록을 고르면 문장이 만들어집니다" /></div>
+      <div class="field"><select id="thxSel" aria-label="고마움을 표현할 기록 고르기"></select></div>
+      <div class="field"><input type="text" id="thxOut" aria-label="만들어진 문장" readonly placeholder="기록을 고르면 문장이 만들어집니다" /></div>
       <div class="acts">
         <button class="ghost mini" id="thxMake" type="button">문장 만들기</button>
         <button class="ghost mini" id="thxCopy" type="button">복사</button>
@@ -313,7 +313,10 @@ var KINDS = [
   { k:"care",   label:"챙겨줌", em:"🧺" },
   { k:"listen", label:"들어줌", em:"👂" },
   { k:"gift",   label:"선물",   em:"🎁" },
-  { k:"etc",    label:"기타",   em:"✍️" }
+  { k:"kid",    label:"아이 봐줌", em:"🧸" },
+  { k:"info",   label:"알려줌",   em:"💡" },
+  { k:"intro",  label:"소개해줌", em:"🤝" },
+  { k:"etc",    label:"그 외",   em:"✍️" }
 ];
 var TAGS = { family:"가족", friend:"친구", work:"동료", etc:"기타" };
 function kindOf(k){ for(var i=0;i<KINDS.length;i++) if(KINDS[i].k===k) return KINDS[i]; return KINDS[KINDS.length-1]; }
@@ -362,17 +365,24 @@ function ensurePerson(label, tag){
 /* ================= 입력 ================= */
 var dir="r", kind=null, pickedPerson=null;
 Array.prototype.forEach.call($("dirsw").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
   b.addEventListener("click",function(){
     dir=b.dataset.d;
-    Array.prototype.forEach.call($("dirsw").children,function(c){ c.classList.toggle("on", c===b); });
+    Array.prototype.forEach.call($("dirsw").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
   });
 });
 KINDS.forEach(function(k){
   var b=document.createElement("button");
   b.type="button"; b.className="chip"; b.dataset.k=k.k; b.textContent=k.em+" "+k.label;
+  b.setAttribute("aria-pressed","false");
   b.addEventListener("click",function(){
     kind=k.k;
-    Array.prototype.forEach.call($("kindChips").children,function(c){ c.classList.toggle("on", c.dataset.k===k.k); });
+    Array.prototype.forEach.call($("kindChips").children,function(c){
+      var on = c.dataset.k===k.k;
+      c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
     $("kindEtcWrap").style.display = k.k==="etc" ? "block" : "none";
   });
   $("kindChips").appendChild(b);
@@ -425,9 +435,12 @@ $("addBtn").addEventListener("click",function(){
 /* ================= 보기 ================= */
 var tab="all";
 Array.prototype.forEach.call($("tabs").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
   b.addEventListener("click",function(){
     tab=b.dataset.t;
-    Array.prototype.forEach.call($("tabs").children,function(c){ c.classList.toggle("on", c===b); });
+    Array.prototype.forEach.call($("tabs").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
     renderList();
   });
 });

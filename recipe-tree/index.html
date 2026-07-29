@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,follow" />
 <meta name="theme-color" content="#0a0a0a" />
-<title>레시피 계보 — 레시피를 git처럼, 갈라진 내 버전 만들기 | TomatoEggCat</title>
-<meta name="description" content="엄마 김치찌개에서 갈라져 나온 내 버전, 거기서 또 갈라진 친구 버전. 레시피를 재료·단계 단위로 구조화해 저장하고, 남의 레시피를 포크해 내 버전을 만들면 무엇이 어떻게 달라졌는지 사람이 읽는 문장으로 보여 줍니다. 설탕 1큰술에서 매실청 2큰술로. 변경 이유 한 줄이 남고 계보도가 그려집니다." />
+<title>레시피 계보 — 엄마 레시피에서 내 버전이 갈라져 나오는 곳 | TomatoEggCat</title>
+<meta name="description" content="엄마 김치찌개에서 갈라져 나온 내 버전, 거기서 또 갈라진 친구 버전. 레시피를 재료와 단계로 나눠 저장하면, 남의 레시피에서 내 버전을 만들 때 무엇이 어떻게 달라졌는지 사람이 읽는 말로 보여 줍니다. 설탕 1큰술에서 매실청 2큰술로. 바꾼 이유 한 줄이 남고 집안 레시피의 계보가 그려집니다. 인분 수 자동 환산과 조리 중 큰 글씨 보기도 있습니다." />
 <link rel="canonical" href="https://tomatoeggcat.com/recipe-tree/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TomatoEggCat" />
-<meta property="og:title" content="레시피 계보 — 레시피를 git처럼" />
-<meta property="og:description" content="레시피를 포크하고 무엇이 달라졌는지 diff로 봅니다. 변경 이유 한 줄이 진짜 콘텐츠입니다." />
+<meta property="og:title" content="레시피 계보 — 엄마 레시피에서 내 버전이 갈라져 나오는 곳" />
+<meta property="og:description" content="내 버전을 만들면 무엇이 달라졌는지 한눈에. 바꾼 이유 한 줄이 남습니다." />
 <meta property="og:url" content="https://tomatoeggcat.com/recipe-tree/" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="레시피 계보 — 레시피를 git처럼" />
-<meta name="twitter:description" content="포크하고, 바꾸고, 이유를 남기면 계보가 그려집니다." />
+<meta name="twitter:title" content="레시피 계보 — 엄마 레시피에서 내 버전이 갈라져 나오는 곳" />
+<meta name="twitter:description" content="바꾸고, 이유를 남기면 집안 레시피의 계보가 그려집니다." />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <script type="application/ld+json">
@@ -47,7 +47,7 @@ h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90de
 .card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
 .lab b{color:var(--acc2)}
-.hint{font-size:12px;color:#6b7280;margin:6px 0 0}
+.hint{font-size:13px;color:#9ca3af;margin:6px 0 0;line-height:1.65}
 .warn{font-size:12.5px;color:#fca5a5;background:rgba(127,29,29,.22);border:1px solid #7f1d1d;border-radius:10px;padding:10px 12px;margin-top:8px}
 .ok{font-size:12.5px;color:#bef264;background:rgba(63,98,18,.22);border:1px solid #3f6212;border-radius:10px;padding:10px 12px;margin-top:8px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -62,7 +62,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc)}
 button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#1a2408;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
 button.ghost{background:#1a2110;color:var(--acc2);border:1px solid #3c4a25;font-weight:700}
 button.mini{width:auto;padding:9px 13px;font-size:13px;min-height:44px}
-button.tiny{width:auto;padding:5px 9px;font-size:12px;min-height:34px;background:#161616;color:#9ca3af;border:1px solid #2e2e2e;border-radius:8px;font-weight:700}
+button.tiny{width:auto;padding:8px 12px;font-size:13px;min-height:44px;min-width:44px;background:#161616;color:#c9c9c9;border:1px solid #2e2e2e;border-radius:8px;font-weight:700}
 button:disabled{opacity:.4;cursor:not-allowed}
 .acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .acts button{flex:1;min-width:130px}
@@ -83,7 +83,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 /* 레시피 보기 */
 .recipe{background:#101010;border:1px solid #262626;border-radius:14px;padding:18px}
 .recipe h2{margin:0 0 4px;font-size:22px;font-weight:900;color:#ededed}
-.rmeta{font-size:12.5px;color:#6b7280;margin-bottom:12px}
+.rmeta{font-size:13px;color:#9ca3af;margin-bottom:12px}
 .rmeta b{color:var(--acc2)}
 .sec{font-size:13px;font-weight:800;color:var(--acc2);margin:14px 0 6px;letter-spacing:.04em}
 .ings{list-style:none;margin:0;padding:0}
@@ -113,14 +113,14 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .tnode .body{flex:1;background:#101010;border:1px solid #262626;border-radius:10px;padding:9px 12px;margin-bottom:8px;min-width:0}
 .tnode.cur .body{border-color:#4d7c0f}
 .tnode .tt{font-size:14px;font-weight:800;color:#ededed}
-.tnode .ts{font-size:12px;color:#6b7280}
+.tnode .ts{font-size:13px;color:#9ca3af}
 .tnode .tc{font-size:12.5px;color:var(--acc2);margin-top:2px;word-break:keep-all}
 /* 목록 */
 .mine{display:flex;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #232323}
 .mine .mi{flex:1;min-width:0}
 .mine .mt{font-size:14.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mine .ms{font-size:12px;color:#6b7280}
-.empty{color:#6b7280;font-size:13.5px;padding:14px 0;text-align:center}
+.mine .ms{font-size:13px;color:#9ca3af}
+.empty{color:#9ca3af;font-size:14px;padding:14px 0;text-align:center;line-height:1.7}
 .cooks li{font-size:13.5px;color:#c9c9c9;margin-bottom:6px}
 .cooks li b{color:var(--acc2)}
 details{margin-top:12px;border:1px solid #262626;border-radius:12px;background:#101010}
@@ -138,13 +138,33 @@ footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:1
 footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#262626;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* 인분 배율 */
+.scaler{display:flex;align-items:center;gap:10px;background:#101010;border:1px solid #262626;border-radius:12px;padding:10px 14px;margin-bottom:12px;flex-wrap:wrap}
+.scaler .sl{font-size:13px;font-weight:700;color:#9ca3af}
+.scaler b{font-size:17px;font-weight:900;color:var(--acc2);min-width:44px;text-align:center}
+.scaler button{width:auto;min-width:48px;min-height:48px;padding:10px 16px;font-size:20px;line-height:1}
+.scaler .sn{font-size:13px;color:#9ca3af;flex:1;min-width:130px}
+/* 조리 중 보기 — 큰 글씨 전체화면 */
+.cook{display:none;position:fixed;inset:0;z-index:60;background:#0a0a0a;overflow-y:auto;padding:22px 20px 40px}
+.cook.show{display:block}
+.cook h3{margin:0 0 4px;font-size:22px;color:var(--acc2)}
+.cook .cmeta{font-size:15px;color:#9ca3af;margin-bottom:16px}
+.cook .cing{background:#101010;border:1px solid #262626;border-radius:12px;padding:14px 16px;margin-bottom:18px}
+.cook .cing li{font-size:19px;padding:6px 0;display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed #262626;list-style:none}
+.cook .cing ul{margin:0;padding:0}
+.cook .cstep{font-size:15px;color:#9ca3af;font-weight:700;margin-bottom:8px}
+.cook .cbody{font-size:27px;line-height:1.55;font-weight:700;color:#ededed;word-break:keep-all;min-height:170px}
+.cook .cnav{display:flex;gap:10px;margin-top:20px}
+.cook .cnav button{flex:1;min-height:60px;font-size:18px}
+.cook .cclose{width:100%;margin-top:14px;min-height:52px}
+.cook .cwake{font-size:13px;color:#9ca3af;margin-top:12px;text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <div class="inbound" id="inbound">
-  <span>🍲 누군가 레시피를 공유했어요. 내 입맛대로 갈라 볼까요?</span>
+  <span>🍲 누군가 레시피를 보냈어요. 내 입맛대로 바꿔 볼까요?</span>
   <button id="inboundBtn" type="button">내 버전 만들기 →</button>
 </div>
 
@@ -152,15 +172,23 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 
 <header>
   <h1>🌿 레시피 계보</h1>
-  <p class="lead">엄마 김치찌개에서 갈라져 나온 내 버전. 거기서 또 갈라진 친구 버전. <b>레시피를 git처럼</b> 관리하고, 무엇이 어떻게 달라졌는지 문장으로 봅니다.</p>
+  <p class="lead">엄마 김치찌개에서 갈라져 나온 내 버전. 거기서 또 갈라진 친구 버전. 레시피를 적어 두면 <b>무엇이 어떻게 달라졌는지</b> 저절로 정리되고, 집안 레시피의 계보가 남습니다.</p>
 </header>
 
 <!-- 열람 중인 레시피(공유/포크) -->
 <section class="card" id="viewCard" style="display:none">
   <p class="lab">📖 <b>지금 보고 있는 레시피</b></p>
+  <div class="scaler" id="scaler">
+    <span class="sl">인분</span>
+    <button class="ghost mini" id="sMinus" type="button" aria-label="인분 줄이기">−</button>
+    <b id="sVal">1×</b>
+    <button class="ghost mini" id="sPlus" type="button" aria-label="인분 늘리기">＋</button>
+    <span class="sn" id="sNote">재료 양이 같이 바뀝니다</span>
+  </div>
   <div class="recipe" id="viewBody"></div>
   <div class="acts">
-    <button id="forkBtn" type="button">🍴 내 버전 만들기</button>
+    <button id="cookModeBtn" type="button">👨‍🍳 조리 중 보기</button>
+    <button class="ghost" id="forkBtn" type="button">🍴 내 버전 만들기</button>
     <button class="ghost" id="cookedBtn" type="button">🍳 만들었어요</button>
   </div>
   <div id="diffWrap" style="display:none">
@@ -179,6 +207,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <button class="ghost" id="vXBtn" type="button">𝕏 공유</button>
     <button class="ghost" id="vShareBtn" type="button" style="display:none">📤 공유</button>
   </div>
+  <p class="hint">🔗 <b>링크 하나에 레시피 전체가 들어갑니다</b> — 재료·순서·바꾼 이유·이름까지요. 그래서 링크를 아는 사람은 누구나 볼 수 있고, 메신저 미리보기나 브라우저 기록에도 남을 수 있습니다. 집안 레시피라면 <b>단톡방이나 개인 메시지로만</b> 보내세요.</p>
 
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -186,26 +215,27 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 
 <!-- 붙여넣기 파서 -->
 <section class="card" id="parseCard">
-  <p class="lab">📝 <b>메모를 붙여넣기</b> — 규칙 기반 파서가 표로 정리합니다 (AI 아님)</p>
-  <textarea id="rawText" maxlength="4000" placeholder="재료&#10;돼지고기 300g&#10;김치 1/2포기&#10;설탕 1큰술&#10;&#10;만드는 법&#10;1. 냄비에 김치와 고기를 넣고 5분 볶는다&#10;2. 물 500ml 붓고 15분 끓인다&#10;3. 두부 올리고 3분 더 끓인다"></textarea>
+  <p class="lab">📝 <b>적어 둔 메모 붙여넣기</b> — 재료와 순서를 표로 나눠 드립니다</p>
+  <textarea id="rawText" aria-label="레시피 메모 붙여넣기" maxlength="4000" placeholder="재료&#10;돼지고기 300g&#10;김치 1/2포기&#10;설탕 1큰술&#10;&#10;만드는 법&#10;1. 냄비에 김치와 고기를 넣고 5분 볶는다&#10;2. 물 500ml 붓고 15분 끓인다&#10;3. 두부 올리고 3분 더 끓인다"></textarea>
   <div class="acts">
-    <button class="ghost" id="parseBtn" type="button">파싱해서 아래에 채우기</button>
+    <button class="ghost" id="parseBtn" type="button">표로 정리해서 아래에 채우기</button>
   </div>
   <div id="parseNote"></div>
-  <p class="hint">파싱 결과를 그대로 저장하지 않습니다. 아래 표에서 <b>직접 확인하고 고친 뒤</b> 저장하세요. 파서는 정규식과 단위 사전으로만 동작하므로 틀릴 수 있습니다.</p>
+  <p class="hint">정리한 결과를 바로 저장하지 않습니다. 아래 표에서 <b>직접 확인하고 고친 뒤</b> 저장하세요. AI가 아니라 정해진 규칙으로 나누는 방식이라 <b>틀릴 때가 있습니다.</b></p>
 </section>
 
 <!-- 편집기 -->
 <section class="card" id="editCard">
   <p class="lab">🍳 <b>레시피</b></p>
   <div class="field">
-    <input type="text" id="eTitle" maxlength="40" placeholder="레시피 이름 (예: 우리집 김치찌개)" />
+    <input type="text" id="eTitle" aria-label="레시피 이름" maxlength="40" placeholder="레시피 이름 (예: 우리집 김치찌개)" />
   </div>
   <div class="row2 field">
-    <div><input type="text" id="eYields" maxlength="14" placeholder="몇 인분 (예: 2인분)" /></div>
-    <div><input type="number" id="eMin" min="0" max="1440" inputmode="numeric" placeholder="총 소요 (분)" /></div>
-    <div><input type="text" id="eAuthor" maxlength="12" placeholder="내 이름/별명" /></div>
+    <div><input type="text" id="eYields" aria-label="몇 인분" maxlength="14" placeholder="몇 인분 (예: 2인분)" /></div>
+    <div><input type="number" id="eMin" aria-label="총 소요 시간(분)" min="0" max="1440" inputmode="numeric" placeholder="총 소요 (분)" /></div>
+    <div><input type="text" id="eAuthor" aria-label="내 이름 또는 별명" maxlength="12" placeholder="내 이름/별명" /></div>
   </div>
+  <p class="hint">이름은 <b>실명이 아니어도 됩니다.</b> ‘엄마’, ‘할머니’, ‘민이’처럼 우리끼리 아는 호칭이면 충분해요. 이 이름은 공유 링크와 카드에 그대로 나옵니다.</p>
 
   <div class="field">
     <p class="lab">🥕 재료</p>
@@ -227,14 +257,14 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
       <button type="button" class="chip" data-k="adapt">참고 후 변형</button>
     </div>
     <div class="field" id="srcNoteWrap" style="display:none">
-      <input type="text" id="eSrcNote" maxlength="60" placeholder="무엇을 참고했는지 (예: 할머니 방식 + 유튜브 보고 변형)" />
+      <input type="text" id="eSrcNote" aria-label="참고한 출처" maxlength="60" placeholder="무엇을 참고했는지 (예: 할머니 방식 + 유튜브 보고 변형)" />
       <p class="hint">‘참고 후 변형’은 출처 표기가 필수입니다. <b>출판된 요리책·방송·유료 콘텐츠의 설명 문장을 그대로 옮기지 마세요.</b> 재료 목록과 달리 설명 문장과 사진은 저작권 보호를 받습니다.</p>
     </div>
   </div>
 
   <div class="field" id="reasonWrap" style="display:none">
     <p class="lab">✏️ 무엇을 왜 바꿨나요? <b>(포크 저장 시 필수 · 140자)</b></p>
-    <input type="text" id="eReason" maxlength="140" placeholder="예: 아이가 먹어서 설탕 대신 매실청, 덜 맵게" />
+    <input type="text" id="eReason" aria-label="바꾼 이유" maxlength="140" placeholder="예: 아이가 먹어서 설탕 대신 매실청, 덜 맵게" />
     <p class="hint">이 한 줄들이 이 서비스의 진짜 콘텐츠입니다.</p>
   </div>
 
@@ -309,6 +339,19 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 </footer>
 
 </div>
+<div class="cook" id="cookView">
+  <h3 id="cookTitle">—</h3>
+  <div class="cmeta" id="cookMeta">—</div>
+  <div class="cing" id="cookIng"></div>
+  <div class="cstep" id="cookStepNo">—</div>
+  <div class="cbody" id="cookBody">—</div>
+  <div class="cnav">
+    <button class="ghost" id="cookPrev" type="button">← 이전</button>
+    <button id="cookNext" type="button">다음 →</button>
+  </div>
+  <button class="ghost cclose" id="cookClose" type="button">닫기</button>
+  <div class="cwake" id="cookWake"></div>
+</div>
 <div class="toast" id="toast">저장되었습니다</div>
 <canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
 
@@ -319,12 +362,44 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 /* ============================================================
    @engine-start  — 파서 + diff 엔진 (scripts/test-recipe-diff.mjs 가 이 구간을 그대로 추출해 테스트한다)
    ============================================================ */
-var UNITS = ["큰술","작은술","스푼","숟가락","컵","공기","g","kg","mg","ml","mL","L","l","개","알","쪽","줄","장","봉지","봉","캔","팩","톨","주먹","꼬집","방울","마리","포기","단","자밤","T","t","cc"];
-var VAGUE = ["약간","적당량","조금","취향껏","넉넉히"];
+/* 단위 사전 — 실제 한국 레시피 표기 기준. 긴 것부터 매칭하므로 순서는 무관. */
+var UNITS = ["큰술","작은술","숟가락","스푼","티스푼","컵","공기","종이컵","g","kg","mg","ml","mL","L","l",
+  "개","알","쪽","줄","장","봉지","봉","캔","팩","톨","주먹","꼬집","방울","마리","포기","단","자밤",
+  "대","뿌리","조각","덩어리","자루","块","T","t","cc","스틱","봉투","모","통","송이","다발","줌","꼬치","인분"];
+var VAGUE = ["약간","적당량","조금","취향껏","넉넉히","살짝","듬뿍","조금씩"];
+/* 한글 수량 표기 → 숫자 (예: "설탕 한 큰술", "대파 반 대") */
+var KNUM = { "한":"1","하나":"1","두":"2","둘":"2","세":"3","셋":"3","서":"3","네":"4","넷":"4","너":"4",
+  "다섯":"5","여섯":"6","일곱":"7","여덟":"8","아홉":"9","열":"10","반":"1/2","한두":"1.5","두세":"2.5" };
+/* 재료 동의어 정규화 — 표기가 흔들려도 같은 재료로 본다.
+   왼쪽(변형)을 오른쪽(대표)으로 통일한다. diff가 "뺐다+넣었다"로 오인하지 않게 하는 핵심. */
+var SYNONYM = {
+  "파":"대파","쪽파":"쪽파","대파흰부분":"대파",
+  "마늘다진것":"다진마늘","다진마늘":"다진마늘","마늘다짐":"다진마늘","간마늘":"다진마늘",
+  "생강다진것":"다진생강","다진생강":"다진생강",
+  "고추가루":"고춧가루","고춧가루":"고춧가루",
+  "진간장":"간장","국간장":"간장","양조간장":"간장",
+  "왜간장":"간장","조선간장":"간장",
+  "설탕":"설탕","백설탕":"설탕","황설탕":"설탕",
+  "소금":"소금","맛소금":"소금","천일염":"소금",
+  "참기름":"참기름","들기름":"들기름",
+  "돼지고기":"돼지고기","목살":"돼지고기","삼겹살":"돼지고기","앞다리살":"돼지고기",
+  "물":"물","생수":"물","정수":"물",
+  "멸치육수":"육수","다시육수":"육수","육수":"육수","다시마육수":"육수",
+  "청양고추":"청양고추","홍고추":"홍고추",
+  "양파":"양파","깐양파":"양파",
+  "두부":"두부","부침두부":"두부","찌개두부":"두부"
+};
 var SECTION_ING = /^\s*[[\-*#]*\s*(재료|주재료|부재료|양념|양념장|소스|재료\s*준비)\s*[\]:：]?\s*$/;
 var SECTION_STEP = /^\s*[[\-*#]*\s*(만드는\s*법|조리법|조리\s*순서|순서|과정|레시피|만들기)\s*[\]:：]?\s*$/;
 
-function normName(s){ return String(s||"").replace(/\s+/g,"").toLowerCase(); }
+/* 이름 정규화: 공백·소문자 → 괄호 설명 제거 → 동의어 통일.
+   "마늘 다진 것" / "다진마늘" / "간마늘"이 전부 같은 재료로 취급된다. */
+function normName(s){
+  var t = String(s||"").replace(/\s+/g,"").toLowerCase();
+  var bare = t.replace(/[(（][^)）]*[)）]/g,"");   /* 두부(부침용) → 두부 */
+  if(bare) t = bare;
+  return SYNONYM[t] || t;
+}
 
 /* 한 줄 → 재료 객체 (실패 시 null) */
 function parseIngredient(line){
@@ -332,7 +407,19 @@ function parseIngredient(line){
   if(!s) return null;
   var unitAlt = UNITS.slice().sort(function(a,b){ return b.length-a.length; })
     .map(function(u){ return u.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }).join("|");
-  var re = new RegExp("^(.+?)\\s*([0-9]+(?:[./][0-9]+)?|[0-9]*[½¼¾])\\s*(" + unitAlt + ")?\\s*$");
+
+  /* "2컵반", "1큰술반" 처럼 뒤에 '반'이 붙는 합성 표기를 먼저 분리 */
+  var half = false;
+  var sHalf = s.replace(new RegExp("([0-9])\\s*(" + unitAlt + ")\\s*반\\s*$"), function(_,d,u){ half=true; return d+".5 "+u; });
+  if(half) s = sHalf;
+
+  /* 한글 수량("한 큰술", "반 대") → 숫자로 치환 */
+  var knumAlt = Object.keys(KNUM).sort(function(a,b){ return b.length-a.length; }).join("|");
+  s = s.replace(new RegExp("(^|\\s)(" + knumAlt + ")\\s*(" + unitAlt + ")\\s*$"), function(_,pre,k,u){
+    return pre + KNUM[k] + u;
+  });
+
+  var re = new RegExp("^(.+?)\\s*([0-9]+(?:[./.][0-9]+)?|[0-9]*[½¼¾])\\s*(" + unitAlt + ")?\\s*$");
   var m = s.match(re);
   if(m && m[1].trim()){
     return { n:m[1].trim().slice(0,24), a:m[2].replace("½","1/2").replace("¼","1/4").replace("¾","3/4"), u:(m[3]||"").trim(), o:"" };
@@ -491,22 +578,30 @@ function save(){ try{ localStorage.setItem(LSKEY, JSON.stringify(db)); }catch(er
 var srcKind=null, forkParent=null; /* 포크 중이면 부모 레시피 객체 */
 function ingRow(v){
   var d=document.createElement("div"); d.className="rowline";
-  d.innerHTML='<input class="ing-n" type="text" maxlength="24" placeholder="재료" />'
-    +'<input class="ing-a" type="text" maxlength="8" placeholder="양" />'
-    +'<input class="ing-u" type="text" maxlength="6" placeholder="단위" />'
-    +'<button class="tiny del" type="button">✕</button>';
+  d.innerHTML='<input class="ing-n" type="text" maxlength="24" placeholder="재료" aria-label="재료 이름" />'
+    +'<input class="ing-a" type="text" maxlength="8" placeholder="양" aria-label="분량" />'
+    +'<input class="ing-u" type="text" maxlength="6" placeholder="단위" aria-label="단위" />'
+    +'<button class="tiny del" type="button" aria-label="이 줄 지우기">✕</button>';
   if(v){ d.querySelector(".ing-n").value=v.n||""; d.querySelector(".ing-a").value=v.a||""; d.querySelector(".ing-u").value=v.u||""; }
-  d.querySelector(".del").addEventListener("click",function(){ d.remove(); renumber(); });
+  d.querySelector(".del").addEventListener("click",function(){
+    var nm=d.querySelector(".ing-n").value.trim();
+    if(nm && !window.confirm("‘"+nm+"’ 줄을 지울까요?")) return;
+    d.remove(); renumber();
+  });
   return d;
 }
 function stepRow(v){
   var d=document.createElement("div"); d.className="rowline";
   d.innerHTML='<span class="stepno">1</span>'
-    +'<input class="st-a" type="text" maxlength="120" placeholder="무엇을 하나요" />'
-    +'<input class="st-m" type="number" min="0" max="600" inputmode="numeric" placeholder="분" />'
-    +'<button class="tiny del" type="button">✕</button>';
+    +'<input class="st-a" type="text" maxlength="120" placeholder="무엇을 하나요" aria-label="조리 단계 설명" />'
+    +'<input class="st-m" type="number" min="0" max="600" inputmode="numeric" placeholder="분" aria-label="소요 시간(분)" />'
+    +'<button class="tiny del" type="button" aria-label="이 줄 지우기">✕</button>';
   if(v){ d.querySelector(".st-a").value=v.a||""; if(v.m) d.querySelector(".st-m").value=v.m; }
-  d.querySelector(".del").addEventListener("click",function(){ d.remove(); renumber(); });
+  d.querySelector(".del").addEventListener("click",function(){
+    var a=d.querySelector(".st-a").value.trim();
+    if(a && !window.confirm("이 단계를 지울까요?\n\n“"+a.slice(0,40)+"”")) return;
+    d.remove(); renumber();
+  });
   return d;
 }
 function renumber(){
@@ -640,8 +735,84 @@ function recipeHtml(r){
             return '<li><b>'+esc(c.d)+'</b> '+esc(c.n||"")+(c.x?' <span style="color:#a3e635">→ 다음엔: '+esc(c.x)+'</span>':"")+'</li>';
           }).join("") + '</ul>' : "");
 }
+/* ── 인분 배율 ── 분수·소수 표기를 살려서 재료 양만 곱한다 */
+var SCALES=[0.5,1,1.5,2,3,4], scaleIdx=1;
+function scaleAmount(a, k){
+  var s=String(a||"").trim();
+  if(!s || k===1) return s;
+  var m=s.match(/^([0-9]+)\/([0-9]+)$/);
+  var v = m ? (+m[1]/+m[2]) : parseFloat(s);
+  if(!isFinite(v)) return s;                 /* 숫자가 아니면(약간 등) 그대로 */
+  var r=v*k;
+  if(Math.abs(r-Math.round(r))<1e-9) return String(Math.round(r));
+  if(Math.abs(r*2-Math.round(r*2))<1e-9) return (Math.floor(r)?Math.floor(r):"")+"1/2".replace(/^/,Math.floor(r)?"과 ":"");
+  return (Math.round(r*10)/10).toString();
+}
+function scaledRecipe(r){
+  var k=SCALES[scaleIdx];
+  if(k===1) return r;
+  var c=JSON.parse(JSON.stringify(r));
+  c.i=c.i.map(function(x){ return { n:x.n, a:scaleAmount(x.a,k), u:x.u, o:x.o }; });
+  return c;
+}
+function renderScaler(){
+  var k=SCALES[scaleIdx];
+  $("sVal").textContent = (k===1?"1×":(k+"×"));
+  var base = viewing && viewing.y ? viewing.y : null;
+  $("sNote").textContent = k===1
+    ? (base ? ("원래 "+base+" 기준입니다") : "재료 양이 같이 바뀝니다")
+    : ("재료 양을 "+k+"배로 계산했습니다" + (base ? (" (원래 "+base+")") : ""));
+}
+$("sMinus").addEventListener("click",function(){
+  if(scaleIdx<=0){ toast("더 줄일 수 없어요"); return; }
+  scaleIdx--; renderScaler(); $("viewBody").innerHTML=recipeHtml(scaledRecipe(viewing));
+});
+$("sPlus").addEventListener("click",function(){
+  if(scaleIdx>=SCALES.length-1){ toast("더 늘릴 수 없어요"); return; }
+  scaleIdx++; renderScaler(); $("viewBody").innerHTML=recipeHtml(scaledRecipe(viewing));
+});
+
+/* ── 조리 중 보기 ── 큰 글씨 + 단계 넘기기 + 화면 꺼짐 방지 */
+var cookStep=0, wakeLock=null;
+function openCook(){
+  if(!viewing || !viewing.s.length){ toast("단계가 없어요"); return; }
+  cookStep=0; renderCook();
+  $("cookView").classList.add("show");
+  document.body.style.overflow="hidden";
+  if(navigator.wakeLock && navigator.wakeLock.request){
+    navigator.wakeLock.request("screen").then(function(w){
+      wakeLock=w; $("cookWake").textContent="🔆 조리하는 동안 화면이 꺼지지 않습니다";
+    }).catch(function(){ $("cookWake").textContent="이 브라우저는 화면 꺼짐 방지를 지원하지 않아요"; });
+  } else $("cookWake").textContent="이 브라우저는 화면 꺼짐 방지를 지원하지 않아요";
+}
+function closeCook(){
+  $("cookView").classList.remove("show");
+  document.body.style.overflow="";
+  if(wakeLock){ try{ wakeLock.release(); }catch(err){} wakeLock=null; }
+}
+function renderCook(){
+  var r=scaledRecipe(viewing);
+  $("cookTitle").textContent=r.t;
+  $("cookMeta").textContent=(r.y?r.y:"")+(SCALES[scaleIdx]!==1?(" × "+SCALES[scaleIdx]):"")+(r.m?(" · 총 "+r.m+"분"):"");
+  $("cookIng").innerHTML='<ul>'+r.i.map(function(x){
+    return '<li><span>'+esc(x.n)+'</span><span>'+esc(amt(x)||"—")+'</span></li>'; }).join("")+'</ul>';
+  $("cookStepNo").textContent=(cookStep+1)+" / "+r.s.length+" 단계";
+  var st=r.s[cookStep];
+  $("cookBody").textContent=st.a+(st.m?("  ("+st.m+"분)"):"");
+  $("cookPrev").disabled = cookStep===0;
+  $("cookNext").textContent = cookStep===r.s.length-1 ? "다 됐어요 ✓" : "다음 →";
+}
+$("cookModeBtn").addEventListener("click",openCook);
+$("cookClose").addEventListener("click",closeCook);
+$("cookPrev").addEventListener("click",function(){ if(cookStep>0){ cookStep--; renderCook(); } });
+$("cookNext").addEventListener("click",function(){
+  if(cookStep < viewing.s.length-1){ cookStep++; renderCook(); }
+  else { closeCook(); toast("맛있게 드세요!"); }
+});
+
 function openRecipe(r){
   viewing=r;
+  scaleIdx=1; renderScaler();
   $("viewBody").innerHTML=recipeHtml(r);
   $("viewCard").style.display="block";
   /* diff */
@@ -804,6 +975,8 @@ $("vLinkBtn").addEventListener("click",function(){ if(!guardView()) copy(shareUr
 $("vTextBtn").addEventListener("click",function(){ if(!guardView()) copy(shareText(),"텍스트가 복사되었습니다"); });
 $("vXBtn").addEventListener("click",function(){
   if(guardView()) return;
+  /* X는 공개 게시다. 집안 레시피를 실수로 공개하지 않도록 한 번 확인받는다. */
+  if(!window.confirm("X(트위터)에 공개로 올립니다.\n\n링크에는 재료·순서·바꾼 이유와 ‘"+(viewing.au||"익명")+"’이라는 이름이 함께 들어갑니다. 누구나 볼 수 있게 됩니다.\n\n계속할까요?")) return;
   var t=viewing.cr ? ("“"+viewing.cr+"” — "+viewing.t+" 🌿") : (viewing.t+" 레시피를 계보로 남겼습니다 🌿");
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(shareUrl()),"_blank");
 });

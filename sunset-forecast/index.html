@@ -48,7 +48,8 @@ h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90de
 .card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
 .lab b{color:var(--acc2)}
-.hint{font-size:12px;color:#6b7280;margin:6px 0 0}
+/* 본문 보조 텍스트: 다크 배경 대비 4.5:1 이상(WCAG AA) + 13px 이상 */
+.hint{font-size:13px;color:#9ca3af;margin:6px 0 0;line-height:1.65}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{width:auto;flex:none;padding:9px 13px;font-size:13.5px;font-weight:600;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
 .chip.on{background:rgba(251,146,60,.15);border-color:var(--acc);color:var(--acc2)}
@@ -76,7 +77,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .hero .where{font-size:13px;opacity:.8;margin-top:4px}
 .peak{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
 .peak .box{flex:1;min-width:150px;background:#101010;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px}
-.peak .k{font-size:12px;color:#6b7280;font-weight:700}
+.peak .k{font-size:13px;color:#9ca3af;font-weight:700}
 .peak .v{font-size:20px;font-weight:900;color:var(--acc2);margin-top:2px}
 .peak .s{font-size:12px;color:#9ca3af}
 .why{margin:14px 0 0;padding:0;list-style:none}
@@ -98,7 +99,7 @@ table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
 th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #232323}
 th{color:#9ca3af;font-weight:700;font-size:12.5px}
 td b{color:var(--acc2)}
-.mini-note{font-size:12px;color:#6b7280;margin-top:8px}
+.mini-note{font-size:13px;color:#9ca3af;margin-top:8px;line-height:1.65}
 details{margin-top:12px;border:1px solid #262626;border-radius:12px;background:#101010}
 summary{cursor:pointer;padding:12px 14px;font-size:13.5px;font-weight:700;color:#c9c9c9}
 details .dbody{padding:0 14px 14px}
@@ -108,9 +109,9 @@ details .dbody{padding:0 14px 14px}
 .rate button.on{background:rgba(251,146,60,.15);border-color:var(--acc);color:var(--acc2)}
 .acc-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
 .acc-grid .b{flex:1;min-width:140px;background:#101010;border:1px solid #262626;border-radius:12px;padding:12px}
-.acc-grid .b .k{font-size:12px;color:#6b7280;font-weight:700}
+.acc-grid .b .k{font-size:13px;color:#9ca3af;font-weight:700}
 .acc-grid .b .v{font-size:24px;font-weight:900;color:#ededed}
-.acc-grid .b .s{font-size:11.5px;color:#6b7280}
+.acc-grid .b .s{font-size:12.5px;color:#9ca3af}
 .about h2{font-size:19px;margin:28px 0 10px;color:var(--acc2)}
 .about p,.about li{font-size:14.5px;color:#c9c9c9}
 .faq dt{font-weight:800;margin-top:14px;color:#ededed}
@@ -151,43 +152,55 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
       <button class="ghost mini" id="geoBtn" type="button">현위치</button>
     </div>
   </div>
-  <p class="hint" id="geoHint">현위치를 쓰면 좌표는 이 브라우저 안에서만 쓰이고 저장·전송되지 않습니다.</p>
+  <p class="hint" id="geoHint">현위치를 쓰면 좌표는 계산에만 쓰이고 <b>저장되지 않습니다.</b> 공유 링크에도 좌표 대신 가장 가까운 지역 이름만 들어갑니다.</p>
 
   <div class="field">
     <p class="lab">📅 <b>언제</b></p>
     <select id="day" aria-label="날짜 선택"></select>
   </div>
 
-  <div class="field">
-    <p class="lab">☁️ <b>중·상층 구름</b> — 빛을 받아 줄 스크린</p>
-    <div class="chips" id="midChips"></div>
-    <p class="hint">높이 떠 있는 옅은 구름(새털·양떼구름). 하늘 절반쯤 덮였을 때가 제일 좋습니다.</p>
+  <!-- ── 간단 모드: 창밖 한 번 보고 하나만 고르면 끝 ── -->
+  <div class="field" id="easyField">
+    <p class="lab">🌤️ <b>지금 하늘, 어떤가요?</b> — 하나만 고르면 됩니다</p>
+    <div class="chips" id="easyChips" role="group" aria-label="하늘 상태 간단 선택"></div>
+    <p class="hint">창밖을 한 번 보고 제일 가까운 걸 고르세요. 세부 값은 자동으로 채워집니다. 더 정확하게 넣고 싶으면 아래 ‘직접 고르기’를 펼치면 됩니다.</p>
   </div>
 
-  <div class="field">
-    <p class="lab">🪟 <b>서쪽 지평선</b> — 빛이 통과할 창</p>
-    <div class="chips" id="lowChips"></div>
-    <p class="hint">해가 지는 쪽 낮은 하늘이 두꺼운 구름에 막혀 있으면 위쪽 구름에 빛이 닿지 못합니다.</p>
-  </div>
+  <details id="advBox">
+    <summary>🔧 직접 고르기 (더 정확하게 · 선택)</summary>
+    <div class="dbody">
+      <div class="field">
+        <p class="lab">☁️ <b>중·상층 구름</b> — 빛을 받아 줄 스크린</p>
+        <div class="chips" id="midChips" role="group" aria-label="중상층 구름"></div>
+        <p class="hint">높이 떠 있는 옅은 구름(새털·양떼구름). 하늘 절반쯤 덮였을 때가 제일 좋습니다.</p>
+      </div>
 
-  <div class="field">
-    <p class="lab">🌧️ <b>비·눈</b></p>
-    <div class="chips" id="precChips"></div>
-  </div>
+      <div class="field">
+        <p class="lab">🪟 <b>서쪽 지평선</b> — 빛이 통과할 창</p>
+        <div class="chips" id="lowChips" role="group" aria-label="서쪽 지평선"></div>
+        <p class="hint">해가 지는 쪽 낮은 하늘이 두꺼운 구름에 막혀 있으면 위쪽 구름에 빛이 닿지 못합니다.</p>
+      </div>
 
-  <div class="field">
-    <p class="lab">🌫️ <b>대기 상태</b></p>
-    <div class="chips" id="airChips"></div>
-  </div>
+      <div class="field">
+        <p class="lab">🌧️ <b>비·눈</b></p>
+        <div class="chips" id="precChips" role="group" aria-label="강수"></div>
+      </div>
 
-  <div class="field">
-    <p class="lab">💧 <b>습도</b></p>
-    <div class="chips" id="humChips"></div>
-  </div>
+      <div class="field">
+        <p class="lab">🌫️ <b>대기 상태</b></p>
+        <div class="chips" id="airChips" role="group" aria-label="대기 상태"></div>
+      </div>
+
+      <div class="field">
+        <p class="lab">💧 <b>습도</b></p>
+        <div class="chips" id="humChips" role="group" aria-label="습도"></div>
+      </div>
+    </div>
+  </details>
 
   <div class="field">
     <button id="calcBtn" type="button">노을 점수 계산하기</button>
-    <p class="hint">☝️ 구름·강수·대기 값은 <b>직접 보고 고르는 값</b>입니다. 이 페이지는 서버가 없어 기상 데이터를 자동으로 받아오지 않습니다. 예보를 확인하려면 <a href="https://www.weather.go.kr/w/index.do" target="_blank" rel="noopener nofollow">기상청 날씨누리</a>를 참고하세요.</p>
+    <p class="hint">☝️ 하늘 상태는 <b>직접 보고 고르는 값</b>입니다. 이 페이지는 서버가 없어 기상 데이터를 자동으로 받아오지 않습니다. 예보를 미리 보려면 <a href="https://www.weather.go.kr/w/index.do" target="_blank" rel="noopener noreferrer nofollow">기상청 날씨누리</a>를 참고하세요. 반대로 <b>일몰 시각과 해가 지는 방위는 천문 계산이라 하늘을 안 봐도 정확합니다.</b></p>
   </div>
 </section>
 
@@ -254,7 +267,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <div class="card">
     <p class="lab">👀 <b>실제로는 어땠나요?</b></p>
     <p class="hint" style="margin:0 0 8px">노을을 보고 나서 눌러 주세요. 이 기록으로 아래 적중률이 계산됩니다.</p>
-    <div class="rate" id="rate">
+    <div class="rate" id="rate" role="group" aria-label="노을 실제 만족도 평가">
       <button type="button" data-r="1">별로</button>
       <button type="button" data-r="2">보통</button>
       <button type="button" data-r="3">좋았음</button>
@@ -267,8 +280,12 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <p class="lab">📉 <b>이 모델의 적중률</b> — 낮아도 그대로 보여 드립니다</p>
     <div id="accBody"></div>
     <div class="acts">
+      <button class="ghost mini" id="exportBtn" type="button">⬇️ 기록 내보내기</button>
+      <button class="ghost mini" id="importBtn" type="button">⬆️ 가져오기</button>
       <button class="ghost mini" id="wipeBtn" type="button">기록 전체 삭제</button>
     </div>
+    <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
+    <p class="hint">기록은 이 브라우저에만 있습니다. 브라우저 데이터를 지우면 함께 사라지니 가끔 내보내기로 백업해 두세요.</p>
   </div>
 
   <p class="disc">⚠️ 이 점수는 <b>검증되지 않은 가설 모델</b>의 결과이며 기상 예보가 아닙니다. 구름·강수·대기 값은 사용자가 입력한 값입니다. 기상 특보나 안전에 관한 판단은 반드시 기상청 공식 정보를 따르세요. 노을을 보러 갈 때는 일몰 후 어두워지는 속도가 생각보다 빠르니 이동 안전에 유의하세요.</p>
@@ -283,9 +300,9 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <p>이 도구가 다른 날씨 앱과 다른 점은 <b>판정이 전부 계산</b>이라는 것입니다. AI를 부르지 않고, 어떤 값도 서버로 보내지 않습니다. 일몰·일출 시각과 해가 지는 방위각, 골든아워와 블루아워 구간은 태양 위치를 구하는 천문 계산식으로 직접 계산하므로 인터넷 연결이 끊겨도 정확합니다. 반면 구름과 대기 상태는 이 페이지가 알 방법이 없으므로 사용자가 직접 고릅니다. 없는 데이터를 있는 것처럼 꾸미지 않는 편이 낫다고 판단했습니다.</p>
   <h2>이렇게 사용하세요</h2>
   <ol>
-    <li>지역을 고르거나 ‘현위치’를 누릅니다. 좌표는 저장되지 않고 계산에만 쓰입니다.</li>
+    <li>지역을 고르거나 ‘현위치’를 누릅니다. 좌표는 저장되지 않고, 공유 링크에도 들어가지 않습니다.</li>
     <li>날짜를 고릅니다. 오늘부터 7일까지 일몰 시각과 방위가 바로 계산됩니다.</li>
-    <li>기상청 예보나 창밖을 보고 구름·강수·대기·습도 다섯 가지를 고릅니다.</li>
+    <li><b>창밖을 한 번 보고 ‘지금 하늘 어떤가요?’에서 하나만 고릅니다.</b> 세부 값 다섯 개는 자동으로 채워집니다. 더 정확히 넣고 싶을 때만 ‘직접 고르기’를 펼치면 됩니다.</li>
     <li>‘노을 점수 계산하기’를 누르면 점수와 절정 시각, 근거 세 줄이 나옵니다.</li>
     <li>나가 볼 만하다면 ‘캘린더 알림 받기’로 일몰 90분 전 알림을 걸어 둡니다.</li>
     <li>노을을 본 뒤 네 단계로 평가하면 적중률 화면이 채워집니다.</li>
@@ -298,6 +315,14 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <li><b>낮은 습도와 좋은 시정</b> — 뿌연 날은 색이 탁해집니다.</li>
     <li><b>절정은 일몰 직후</b> — 가장 붉은 순간은 해가 지평선 아래로 내려간 뒤 10~20분 사이에 오는 경우가 많습니다. 해가 졌다고 바로 들어가면 제일 좋은 장면을 놓칩니다.</li>
   </ul>
+  <h2>화면에 나오는 말들</h2>
+  <ul>
+    <li><b>골든아워</b> — 해가 지평선 위 6도쯤에 걸린 때부터 해질 때까지. 빛이 낮고 길게 들어와 모든 것이 금색으로 보이는 시간입니다. 사진이 가장 잘 나오는 구간이라 이렇게 부릅니다.</li>
+    <li><b>블루아워</b> — 해가 진 뒤 하늘이 짙은 파랑으로 물드는 짧은 시간. 노을이 끝난 다음에 옵니다.</li>
+    <li><b>시민박명</b> — 해가 진 뒤에도 바깥에서 글씨를 읽을 수 있을 만큼 밝은 시간의 끝. 이때가 지나면 본격적으로 어두워집니다.</li>
+    <li><b>방위</b> — 해가 지는 방향입니다. 나침반에서 북쪽을 0도로 시계 방향으로 잰 각도예요. 270도면 정서쪽입니다.</li>
+    <li><b>중·상층운</b> — 높이 떠 있는 옅은 구름입니다. 새털구름·양떼구름처럼 하늘 높은 곳에 있는 것들이요.</li>
+  </ul>
   <h2>자주 묻는 질문</h2>
   <dl class="faq">
     <dt>Q. 기상청 예보를 자동으로 가져오나요?</dt>
@@ -309,7 +334,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <dt>Q. 알림은 안 오나요?</dt>
     <dd>푸시 알림은 서버가 필요해 제공하지 않습니다. 대신 캘린더 일정 파일을 내려받으면 일몰 90분 전에 한 번 울립니다. ‘오늘은 별로일 것 같습니다’ 같은 알림은 애초에 만들지 않습니다.</dd>
     <dt>Q. 내 위치나 평가가 서버로 가나요?</dt>
-    <dd>가지 않습니다. 현위치 좌표는 계산에만 쓰고 저장하지 않으며, 평가 기록은 이 브라우저의 저장소에만 남습니다. ‘기록 전체 삭제’로 언제든 지울 수 있습니다.</dd>
+    <dd>가지 않습니다. 현위치 좌표는 계산에만 쓰고 저장하지 않으며, 평가 기록은 이 브라우저의 저장소에만 남습니다. <b>공유 링크와 주소창에도 좌표는 들어가지 않습니다</b> — 현위치를 썼더라도 가장 가까운 시군구 이름으로 바꿔서 내보냅니다. 링크를 받은 사람이 집 위치를 역추적할 수 없게 하기 위해서입니다. ‘기록 전체 삭제’로 언제든 지울 수 있고, ‘내보내기’로 백업을 만들 수 있습니다.</dd>
   </dl>
   <p style="color:#6b7280;font-size:13px">※ 본 도구는 참고용 계산기이며 기상 예보 서비스가 아닙니다. 기상 특보·재해 정보는 기상청 등 공식 기관 정보를 확인하세요.</p>
 </section>
@@ -394,6 +419,16 @@ var MODEL = {
 var ORDER = ["mid","low","prec","air","hum"];
 /* 절정 시각: 중·상층운 양에 따른 일몰 이후 분(分) */
 var PEAK_OFFSET = { 0:3, 20:9, 50:15, 75:17, 95:11 };
+/* 간단 모드: 창밖 한 번 본 인상 → 5개 세부값 매핑. 세부 조절은 '직접 고르기'에서. */
+var EASY = [
+  { k:"clear",  label:"🌞 구름 거의 없음", set:{ mid:"none",  low:"open",   prec:"none",  air:"clear", hum:"mid"  } },
+  { k:"thin",   label:"🌤️ 옅은 구름 조금", set:{ mid:"few",   low:"open",   prec:"none",  air:"clear", hum:"mid"  } },
+  { k:"half",   label:"⛅ 구름 절반쯤",     set:{ mid:"half",  low:"open",   prec:"none",  air:"ok",    hum:"mid"  } },
+  { k:"grey",   label:"☁️ 하늘 꽉 참",      set:{ mid:"full",  low:"most",   prec:"none",  air:"ok",    hum:"high" } },
+  { k:"after",  label:"🌈 비 갠 직후",      set:{ mid:"half",  low:"open",   prec:"after", air:"clear", hum:"mid"  } },
+  { k:"rain",   label:"🌧️ 비·눈 오는 중",   set:{ mid:"full",  low:"closed", prec:"rain",  air:"ok",    hum:"high" } },
+  { k:"hazy",   label:"😷 뿌옇고 답답함",   set:{ mid:"few",   low:"slight", prec:"none",  air:"bad",   hum:"high" } }
+];
 var GRADES = [
   { min:0,  label:"그냥 지나가는 저녁", emo:"🌥️", tone:["#334155","#1e293b"] },
   { min:30, label:"은은한 편",         emo:"🌆", tone:["#7c5b3f","#3f2d1f"] },
@@ -472,6 +507,13 @@ function pad(n){ return n < 10 ? "0"+n : ""+n; }
 var KST = { timeZone:"Asia/Seoul", hour:"2-digit", minute:"2-digit", hour12:false };
 function hhmm(d){ if(!d || isNaN(d)) return "—"; try{ return new Intl.DateTimeFormat("ko-KR", KST).format(d); }catch(err){ return pad(d.getHours())+":"+pad(d.getMinutes()); } }
 function dayKey(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+/* 한국 앱이므로 '오늘'의 기준선을 기기 타임존이 아니라 KST로 못박는다.
+   (해외/여행 중 기기 타임존이 달라도 날짜가 하루 밀리지 않게) */
+function kstToday(){
+  var f = new Intl.DateTimeFormat("en-CA", { timeZone:"Asia/Seoul", year:"numeric", month:"2-digit", day:"2-digit" });
+  var p = f.format(new Date()).split("-");   /* YYYY-MM-DD */
+  return new Date(+p[0], +p[1]-1, +p[2], 12, 0, 0);
+}
 function dayLabel(d, i){
   var w = ["일","월","화","수","목","금","토"][d.getDay()];
   var pre = i===0 ? "오늘" : i===1 ? "내일" : i===2 ? "모레" : (d.getMonth()+1)+"월 "+d.getDate()+"일";
@@ -483,7 +525,7 @@ function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"
 function gradeFor(s){ var g=GRADES[0]; for(var i=0;i<GRADES.length;i++) if(s>=GRADES[i].min) g=GRADES[i]; return g; }
 
 /* ================= state ================= */
-var sel = { reg:0, day:0, mid:"half", low:"open", prec:"none", air:"ok", hum:"mid", lat:null, lng:null, name:null };
+var sel = { reg:0, day:0, easy:"half", mid:"half", low:"open", prec:"none", air:"ok", hum:"mid", lat:null, lng:null, name:null };
 var current = null;
 
 /* ================= build UI ================= */
@@ -492,12 +534,16 @@ REGIONS.forEach(function(r,i){
   var o=document.createElement("option"); o.value=String(i); o.textContent=r[0]; regSel.appendChild(o);
 });
 regSel.value="0";
-regSel.addEventListener("change",function(){ sel.reg=+regSel.value; sel.lat=null; sel.lng=null; sel.name=null; });
+regSel.addEventListener("change",function(){
+  sel.reg=+regSel.value; sel.lat=null; sel.lng=null; sel.name=null;
+  $("geoHint").textContent="현위치를 쓰면 좌표는 계산에만 쓰이고 저장되지 않습니다. 공유 링크에도 좌표 대신 가장 가까운 지역 이름만 들어갑니다.";
+  remember();
+});
 
 var daySel = $("day");
 function buildDays(){
   daySel.innerHTML="";
-  var base=new Date();
+  var base=kstToday();
   for(var i=0;i<7;i++){
     var d=new Date(base.getFullYear(),base.getMonth(),base.getDate()+i,12,0,0);
     var o=document.createElement("option"); o.value=String(i); o.textContent=dayLabel(d,i);
@@ -513,21 +559,65 @@ function buildChips(key, holderId){
   MODEL[key].options.forEach(function(o){
     var b=document.createElement("button");
     b.type="button"; b.className="chip"; b.textContent=o.label; b.dataset.k=o.k;
+    b.setAttribute("aria-pressed","false");
     b.addEventListener("click",function(){
-      sel[key]=o.k;
-      Array.prototype.forEach.call(holder.children,function(c){ c.classList.toggle("on", c.dataset.k===o.k); });
+      sel[key]=o.k; sel.easy=null;   /* 직접 고르면 간단 모드 선택은 해제 */
+      syncChips(); remember();
     });
     holder.appendChild(b);
   });
 }
 buildChips("mid","midChips"); buildChips("low","lowChips"); buildChips("prec","precChips");
 buildChips("air","airChips"); buildChips("hum","humChips");
+
+/* 간단 모드 칩 */
+EASY.forEach(function(e){
+  var b=document.createElement("button");
+  b.type="button"; b.className="chip"; b.textContent=e.label; b.dataset.e=e.k;
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){
+    sel.easy=e.k;
+    ORDER.forEach(function(k){ sel[k]=e.set[k]; });
+    syncChips(); remember();
+  });
+  $("easyChips").appendChild(b);
+});
+
 function syncChips(){
   [["mid","midChips"],["low","lowChips"],["prec","precChips"],["air","airChips"],["hum","humChips"]].forEach(function(p){
-    Array.prototype.forEach.call($(p[1]).children,function(c){ c.classList.toggle("on", c.dataset.k===sel[p[0]]); });
+    Array.prototype.forEach.call($(p[1]).children,function(c){
+      var on = c.dataset.k===sel[p[0]];
+      c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
+  });
+  Array.prototype.forEach.call($("easyChips").children,function(c){
+    var on = c.dataset.e===sel.easy;
+    c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
   });
 }
+
+/* 마지막 선택 기억 — 매번 처음부터 다시 고르지 않게 */
+var PREFKEY="sunset-forecast:pref:v1";
+function remember(){
+  try{ localStorage.setItem(PREFKEY, JSON.stringify({ g:sel.reg, easy:sel.easy,
+    mid:sel.mid, low:sel.low, prec:sel.prec, air:sel.air, hum:sel.hum })); }catch(err){}
+}
+function recall(){
+  try{
+    var p=JSON.parse(localStorage.getItem(PREFKEY)||"null");
+    if(!p) return false;
+    if(typeof p.g==="number" && REGIONS[p.g]) sel.reg=p.g;
+    ORDER.forEach(function(k){
+      MODEL[k].options.forEach(function(o){ if(o.k===p[k]) sel[k]=p[k]; });
+    });
+    EASY.forEach(function(e){ if(e.k===p.easy) sel.easy=p.easy; });
+    return true;
+  }catch(err){ return false; }
+}
+var hadPref = recall();
+regSel.value=String(sel.reg);
 syncChips();
+if(!sel.easy && !hadPref) $("advBox").open=false;
 
 /* 현위치 (저장하지 않음) */
 $("geoBtn").addEventListener("click",function(){
@@ -537,7 +627,7 @@ $("geoBtn").addEventListener("click",function(){
     sel.lat=Math.round(p.coords.latitude*1000)/1000;
     sel.lng=Math.round(p.coords.longitude*1000)/1000;
     sel.name="현위치";
-    $("geoHint").textContent="현위치 적용됨 ("+sel.lat.toFixed(2)+", "+sel.lng.toFixed(2)+") · 저장하지 않습니다";
+    $("geoHint").textContent="현위치 적용됨 · 좌표는 저장하지 않고, 공유 링크에는 가장 가까운 지역("+REGIONS[nearestRegion(sel.lat,sel.lng)][0]+")만 들어갑니다.";
   },function(){
     $("geoHint").textContent="위치를 가져오지 못했어요. 목록에서 지역을 골라 주세요.";
   },{ enableHighAccuracy:false, timeout:8000, maximumAge:600000 });
@@ -550,7 +640,7 @@ function place(){
   return { name:r[0], lat:r[1], lng:r[2] };
 }
 function dateFor(i){
-  var b=new Date();
+  var b=kstToday();
   return new Date(b.getFullYear(), b.getMonth(), b.getDate()+i, 12, 0, 0);
 }
 function compute(st){
@@ -676,13 +766,32 @@ function render(st){
   $("result").style.display="block";
   loadRatingUI(st, out);
   renderAccuracy();
-  try{ history.replaceState(null,"",location.pathname+"?r="+encodeURIComponent(enc(st))); }catch(err){}
+  /* 주소창·히스토리에도 좌표를 남기지 않는다(기기를 함께 쓰는 사람·리퍼러 노출 방지) */
+  try{ history.replaceState(null,"",location.pathname+"?r="+encodeURIComponent(enc(shareSafeState(st)))); }catch(err){}
 }
 
+/* 계산에 쓰는 상태(정확한 좌표 포함 가능) */
 function stateFromSel(){
-  var st = { g:sel.reg, d:sel.day, mid:sel.mid, low:sel.low, prec:sel.prec, air:sel.air, hum:sel.hum };
+  var st = { g:sel.reg, d:sel.day, easy:sel.easy, mid:sel.mid, low:sel.low, prec:sel.prec, air:sel.air, hum:sel.hum };
   if(sel.lat!==null){ st.lat=sel.lat; st.lng=sel.lng; st.nm="현위치"; }
   return st;
+}
+/* 현위치와 가장 가까운 등록 지역 index */
+function nearestRegion(lat, lng){
+  var best=0, bd=Infinity;
+  for(var i=0;i<REGIONS.length;i++){
+    var dy=REGIONS[i][1]-lat, dx=(REGIONS[i][2]-lng)*Math.cos(lat*rad);
+    var d=dy*dy+dx*dx;
+    if(d<bd){ bd=d; best=i; }
+  }
+  return best;
+}
+/* 공유·주소창에 나가는 상태 — 좌표를 절대 싣지 않는다.
+   현위치를 썼더라도 가장 가까운 시군구로 바꿔서 내보낸다(약 111m 정밀도 좌표 유출 방지). */
+function shareSafeState(st){
+  var out = { g:st.g, d:st.d, easy:st.easy, mid:st.mid, low:st.low, prec:st.prec, air:st.air, hum:st.hum };
+  if(typeof st.lat==="number") out.g = nearestRegion(st.lat, st.lng);
+  return out;
 }
 $("calcBtn").addEventListener("click",function(){
   render(stateFromSel());
@@ -703,9 +812,10 @@ function loadRatingUI(st, out){
   var logs=loadLogs(), id=logId(st,out), mine=null;
   for(var i=0;i<logs.length;i++) if(logs[i].id===id) mine=logs[i];
   Array.prototype.forEach.call($("rate").children,function(b){
-    b.classList.toggle("on", !!mine && String(mine.r)===b.dataset.r);
+    var on = !!mine && String(mine.r)===b.dataset.r;
+    b.classList.toggle("on", on); b.setAttribute("aria-pressed", on?"true":"false");
   });
-  var future = out.date > new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 0, 0);
+  var future = out.date > kstToday();
   $("rateHint").textContent = future
     ? "아직 오지 않은 날입니다. 그날 노을을 본 뒤에 평가해 주세요."
     : "평가는 이 브라우저에만 저장되며 어디로도 전송되지 않습니다.";
@@ -722,6 +832,39 @@ Array.prototype.forEach.call($("rate").children,function(b){
     toast("평가가 기록되었습니다");
   });
 });
+$("exportBtn").addEventListener("click",function(){
+  var logs=loadLogs();
+  if(!logs.length){ toast("아직 내보낼 기록이 없어요"); return; }
+  var blob=new Blob([JSON.stringify({ v:1, model:MODEL_VERSION, logs:logs },null,2)],{type:"application/json"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="sunset-forecast-backup.json";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },2000);
+  toast("백업 파일을 내려받았습니다");
+});
+$("importBtn").addEventListener("click",function(){ $("fileIn").click(); });
+$("fileIn").addEventListener("change",function(){
+  var f=$("fileIn").files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var o=JSON.parse(rd.result);
+      if(!o || !Array.isArray(o.logs)) throw new Error("형식");
+      if(!window.confirm("현재 평가 기록을 파일 내용으로 덮어쓸까요?")) return;
+      var clean=o.logs.filter(function(l){
+        return l && typeof l.s==="number" && typeof l.r==="number" && l.r>=1 && l.r<=4;
+      }).map(function(l){
+        return { id:String(l.id||"").slice(0,60), d:String(l.d||"").slice(0,10), p:String(l.p||"").slice(0,20),
+                 s:Math.max(0,Math.min(100,Math.round(l.s))), r:Math.round(l.r), mv:String(l.mv||"").slice(0,24) };
+      });
+      saveLogs(clean);
+      if(current) loadRatingUI(current.state, current.out);
+      renderAccuracy(); toast("가져오기 완료 ("+clean.length+"건)");
+    }catch(err){ toast("파일을 읽지 못했어요"); }
+    $("fileIn").value="";
+  };
+  rd.readAsText(f);
+});
 $("wipeBtn").addEventListener("click",function(){
   if(!window.confirm("이 브라우저에 저장된 평가 기록을 모두 지울까요? 되돌릴 수 없습니다.")) return;
   try{ localStorage.removeItem(LSKEY); }catch(err){}
@@ -736,25 +879,33 @@ function renderAccuracy(){
       + '표본이 적을 때 그럴듯한 숫자를 만들어 보여 주는 대신 아직 모른다고 적어 둡니다.</p>';
     return;
   }
+  /* 버킷별로도 최소 표본을 요구한다. 전체 5건을 넘겼어도 한쪽이 1건이면
+     "100%" 같은 숫자는 의미가 없으므로 만들어 보여 주지 않는다. */
+  var MIN_BUCKET = 3;
   var hi = logs.filter(function(l){ return l.s>=70; });
   var lo = logs.filter(function(l){ return l.s<70; });
   var hiGood = hi.filter(function(l){ return l.r>=3; }).length;
   var loGood = lo.filter(function(l){ return l.r>=3; }).length;
-  var hiRate = hi.length ? Math.round(hiGood/hi.length*100) : null;
-  var loRate = lo.length ? Math.round(loGood/lo.length*100) : null;
+  var hiOk = hi.length >= MIN_BUCKET, loOk = lo.length >= MIN_BUCKET;
+  var hiRate = hiOk ? Math.round(hiGood/hi.length*100) : null;
+  var loRate = loOk ? Math.round(loGood/lo.length*100) : null;
   var lift = (hiRate!==null && loRate!==null) ? (hiRate - loRate) : null;
+  var cell = function(title, rate, good, n, ok){
+    return '<div class="b"><div class="k">'+title+'</div><div class="v">'+(ok?rate+"%":"—")+'</div>'
+      + '<div class="s">'+(ok ? ("실제로 좋았던 비율 ("+good+"/"+n+")") : ("표본 "+n+"건 — "+MIN_BUCKET+"건부터 계산"))+'</div></div>';
+  };
   body.innerHTML =
     '<div class="acc-grid">'
-    + '<div class="b"><div class="k">70점 이상이라 한 날</div><div class="v">'+(hiRate===null?"—":hiRate+"%")+'</div><div class="s">실제로 좋았던 비율 ('+hiGood+'/'+hi.length+')</div></div>'
-    + '<div class="b"><div class="k">70점 미만이라 한 날</div><div class="v">'+(loRate===null?"—":loRate+"%")+'</div><div class="s">실제로 좋았던 비율 ('+loGood+'/'+lo.length+')</div></div>'
-    + '<div class="b"><div class="k">모델이 만든 차이</div><div class="v">'+(lift===null?"—":(lift>0?"+":"")+lift+"%p")+'</div><div class="s">'+(lift===null?"표본 부족":(lift<=0?"아직 무작위보다 낫다는 근거가 없습니다":"높다고 한 날이 실제로 더 좋았습니다"))+'</div></div>'
+    + cell("70점 이상이라 한 날", hiRate, hiGood, hi.length, hiOk)
+    + cell("70점 미만이라 한 날", loRate, loGood, lo.length, loOk)
+    + '<div class="b"><div class="k">모델이 만든 차이</div><div class="v">'+(lift===null?"—":(lift>0?"+":"")+lift+"%p")+'</div><div class="s">'+(lift===null?"양쪽 표본이 "+MIN_BUCKET+"건씩 모여야 비교합니다":(lift<=0?"아직 무작위보다 낫다는 근거가 없습니다":"높다고 한 날이 실제로 더 좋았습니다"))+'</div></div>'
     + '</div>'
     + '<p class="hint">기록 '+logs.length+'건 · 모델 '+MODEL_VERSION+' 기준. 이 수치는 이 브라우저의 기록만 씁니다. '
     + '값이 낮게 나와도 조정하지 않고 그대로 표시합니다.</p>';
 }
 
 /* ================= 공유 ================= */
-function resultUrl(){ return location.origin + location.pathname + "?r=" + encodeURIComponent(enc(current.state)); }
+function resultUrl(){ return location.origin + location.pathname + "?r=" + encodeURIComponent(enc(shareSafeState(current.state))); }
 function copy(text,msg){
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});
@@ -896,8 +1047,10 @@ function sanitize(st){
     MODEL[k].options.forEach(function(o){ if(o.k===st[k]) ok=true; });
     out[k] = ok ? st[k] : MODEL[k].options[0].k;
   });
+  EASY.forEach(function(e){ if(e.k===st.easy) out.easy=st.easy; });
+  /* 좌표는 링크로 받지 않는다. 예전 형식(좌표 포함) 링크가 오더라도 지역으로 환원한다. */
   if(typeof st.lat==="number" && typeof st.lng==="number" && Math.abs(st.lat)<=90 && Math.abs(st.lng)<=180){
-    out.lat=st.lat; out.lng=st.lng; out.nm="공유된 위치";
+    out.g = nearestRegion(st.lat, st.lng);
   }
   return out;
 }
@@ -905,9 +1058,9 @@ var params=new URLSearchParams(location.search);
 if(params.has("r")){
   var st0=sanitize(dec2(params.get("r")));
   if(st0){
-    sel.reg=st0.g; sel.day=st0.d;
+    sel.reg=st0.g; sel.day=st0.d; sel.easy=st0.easy||null;
+    sel.lat=null; sel.lng=null; sel.name=null;
     ORDER.forEach(function(k){ sel[k]=st0[k]; });
-    if(st0.lat!==undefined){ sel.lat=st0.lat; sel.lng=st0.lng; sel.name=st0.nm; }
     daySel.value=String(sel.day); regSel.value=String(sel.reg);
     syncChips();
     render(st0);
