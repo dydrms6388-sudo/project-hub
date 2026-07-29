@@ -179,7 +179,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 </section>
 
 <!-- 요약 -->
-<section class="card" id="sumCard">
+<section class="card" id="sumCard" style="display:none">
   <p class="lab">📊 <b>내 옷장</b></p>
   <div class="stats" id="stats"></div>
   <div class="big">
@@ -804,6 +804,8 @@ function summary(){
 }
 function renderStats(){
   var s=summary();
+  /* 아무것도 없을 때 0으로 도배된 대시보드를 먼저 보여 주면 초라하다 */
+  $("sumCard").style.display = db.items.length ? "" : "none";
   $("stats").innerHTML =
     box("항목", s.n+"개", s.zero?("아직 0회 "+s.zero+"개"):"전부 한 번은 사용")
     + box("옷장 총액", shortWon(s.total)+"원", "구독 제외")
