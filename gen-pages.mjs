@@ -78,6 +78,11 @@ const BUILTINS = [
   { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
+  // ── 5차: 기록·생활 4종(12차 기획) — 전부 로컬 저장, 서버/AI 호출 0건 ──
+  { slug: "sunset-forecast", emoji: "🌇", name: "오늘 노을", desc: "오늘 노을 점수·절정 시각·근거 3줄, 일몰 방위까지", k: "노을 일몰 시각 방위 골든아워 하늘", prio: "0.7" },
+  { slug: "cost-per-wear", emoji: "🧥", name: "1회당", desc: "옷·물건의 1회 착용 원가와 착용 편중도 기록", k: "1회당 원가 옷장 착용 소비 가계부", prio: "0.7" },
+  { slug: "recipe-tree", emoji: "🌿", name: "레시피 계보", desc: "레시피를 git처럼 — 포크·차이 비교·계보도", k: "레시피 포크 계보 버전 요리 기록", prio: "0.7" },
+  { slug: "sinse", emoji: "🤝", name: "신세", desc: "돈이 아닌 받은 마음의 장부, 연말 정산 카드", k: "신세 호의 도움 장부 기록 연말정산", prio: "0.7" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
@@ -85,6 +90,7 @@ const BUILTIN_CATS = [
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
+  { title: "📓 기록 · 생활", tag: "새로 나옴", slugs: ["sunset-forecast", "cost-per-wear", "recipe-tree", "sinse"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
 

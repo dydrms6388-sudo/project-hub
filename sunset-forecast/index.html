@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>오늘 노을 — 오늘 저녁 노을이 좋을지 미리 계산 | TomatoEggCat</title>
+<meta name="description" content="노을은 매일 있지만 좋은 노을은 한 달에 서너 번. 지역과 하늘 상태만 고르면 오늘 노을 점수(0~100), 절정 예상 시각, 그렇게 판정한 근거 3줄을 보여 줍니다. 일몰 시각과 해가 지는 방위는 천문 계산으로 정확하게. 캘린더 알림·적중률 기록까지, 서버 없이 브라우저에서." />
+<link rel="canonical" href="https://tomatoeggcat.com/sunset-forecast/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="오늘 노을 — 오늘 저녁 노을이 좋을지 미리 계산" />
+<meta property="og:description" content="오늘 노을 점수와 절정 예상 시각, 그리고 그렇게 본 근거 3줄. 해가 지는 방위까지 알려 주니 어느 쪽 하늘을 볼지 정해집니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/sunset-forecast/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="오늘 노을 — 오늘 저녁 노을이 좋을지 미리 계산" />
+<meta name="twitter:description" content="노을 점수·절정 시각·근거 3줄. 일몰 시각과 방위는 천문 계산." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"오늘 노을","description":"지역과 하늘 상태를 입력하면 오늘 노을의 품질 점수(0~100)와 절정 예상 시각, 판정 근거를 계산해 주는 무료 웹 도구. 일몰·일출 시각과 태양 방위각은 천문 계산식으로 구하며, AI 호출 없이 브라우저 안에서만 동작한다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/sunset-forecast/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"이 도구가 기상청 예보를 자동으로 가져오나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 이 페이지는 서버가 없는 완전 정적 도구라 기상 데이터를 자동으로 받아오지 않습니다. 구름·강수·대기 상태는 사용자가 직접 보고 고른 값을 씁니다. 대신 일몰·일출 시각과 해가 지는 방위각, 골든아워와 블루아워 구간은 천문 계산식으로 직접 구하기 때문에 별도 데이터 없이도 정확합니다. 없는 데이터를 있는 것처럼 보여 주지 않으려고 이렇게 나눴습니다."}},
+{"@type":"Question","name":"노을 점수는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"다섯 가지 요소에 가중치를 곱해 더합니다. 중·상층운의 양(빛을 받아 줄 스크린), 서쪽 지평선 부근이 열려 있는 정도(빛이 통과할 창), 강수 여부, 대기의 투명도, 습도입니다. 중·상층운은 많을수록 좋은 것이 아니라 50% 부근에서 가장 높은 점수를 받는 산 모양 곡선을 씁니다. 가중치는 코드가 아니라 화면에서 펼쳐 볼 수 있는 설정 표에 들어 있고 모델 버전이 함께 표시됩니다."}},
+{"@type":"Question","name":"점수가 맞는지 확인할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"노을을 보고 나서 별로, 보통, 좋았음, 굉장했음 중 하나로 평가하면 그날의 점수와 함께 이 브라우저에 기록됩니다. 기록이 다섯 건 이상 쌓이면 적중률 화면이 열려 높은 점수를 준 날 중 실제로 좋았던 비율과 낮은 점수를 준 날 중 좋았던 비율을 보여 줍니다. 수치가 낮게 나와도 그대로 표시합니다. 이 모델은 아직 실험 중이며 검증되지 않은 가설에서 출발했습니다."}},
+{"@type":"Question","name":"알림을 받을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"서버가 없어 푸시 알림은 보내지 못합니다. 대신 캘린더 알림 받기 버튼을 누르면 절정 예상 시각에 맞춘 일정 파일이 내려받아지고, 일몰 90분 전에 한 번 울리도록 알림이 설정되어 있습니다. 이 파일을 캘린더 앱에 넣으면 별도 앱 설치 없이 같은 효과를 얻을 수 있습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"생활 도구","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"오늘 노을","item":"https://tomatoeggcat.com/sunset-forecast/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#fb923c;--acc2:#fed7aa;--accdim:#4a2410}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#fb923c,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 8px;font-size:15px}
+.exp{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#fdba74;background:rgba(251,146,60,.12);border:1px solid #7c3d16;border-radius:999px;padding:4px 12px;margin:0 0 20px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+.lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
+.lab b{color:var(--acc2)}
+.hint{font-size:12px;color:#6b7280;margin:6px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{width:auto;flex:none;padding:9px 13px;font-size:13.5px;font-weight:600;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
+.chip.on{background:rgba(251,146,60,.15);border-color:var(--acc);color:var(--acc2)}
+.field{margin-top:18px}
+select{width:100%;padding:12px 14px;font-size:15px;background:#0f0f0f;color:#ededed;border:1px solid #333;border-radius:12px;min-height:46px}
+select:focus{outline:none;border-color:var(--acc)}
+.row2{display:flex;gap:10px}
+.row2>div{flex:1;min-width:0}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#3b1a06;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#231a13;color:var(--acc2);border:1px solid #4a3423;font-weight:700}
+button.mini{width:auto;padding:9px 14px;font-size:13.5px;min-height:44px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#4a2410,#6b3418);border-bottom:1px solid #8a4a22}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#fed7aa;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.result{display:none;margin-top:8px}
+/* ---- score hero ---- */
+.hero{border-radius:16px;padding:22px 20px;text-align:center;position:relative;overflow:hidden}
+.hero .num{font-size:64px;font-weight:900;line-height:1;letter-spacing:-.02em}
+.hero .num small{font-size:22px;font-weight:800;opacity:.75}
+.hero .grade{font-size:19px;font-weight:800;margin-top:6px}
+.hero .where{font-size:13px;opacity:.8;margin-top:4px}
+.peak{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+.peak .box{flex:1;min-width:150px;background:#101010;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px}
+.peak .k{font-size:12px;color:#6b7280;font-weight:700}
+.peak .v{font-size:20px;font-weight:900;color:var(--acc2);margin-top:2px}
+.peak .s{font-size:12px;color:#9ca3af}
+.why{margin:14px 0 0;padding:0;list-style:none}
+.why li{font-size:14.5px;color:#d4d4d4;background:#101010;border:1px solid #262626;border-left:3px solid var(--acc);border-radius:8px;padding:9px 12px;margin-bottom:7px;word-break:keep-all}
+.why li b{color:var(--acc2)}
+.bars{margin-top:14px}
+.bar{margin-bottom:9px}
+.bar .bl{display:flex;justify-content:space-between;font-size:12.5px;color:#9ca3af;font-weight:700}
+.bar .bl em{font-style:normal;color:#d4d4d4}
+.btrack{height:8px;background:#1f1f1f;border-radius:999px;overflow:hidden;margin-top:3px}
+.btrack i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#fb7185);border-radius:999px;width:0;transition:width .6s}
+/* ---- compass ---- */
+.compass{display:flex;gap:14px;align-items:center;background:#101010;border:1px solid #262626;border-radius:12px;padding:14px;margin-top:14px}
+.compass svg{flex:none}
+.compass .ct{font-size:13.5px;color:#c9c9c9;word-break:keep-all}
+.compass .ct b{color:var(--acc2);font-size:15px}
+/* ---- timetable ---- */
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #232323}
+th{color:#9ca3af;font-weight:700;font-size:12.5px}
+td b{color:var(--acc2)}
+.mini-note{font-size:12px;color:#6b7280;margin-top:8px}
+details{margin-top:12px;border:1px solid #262626;border-radius:12px;background:#101010}
+summary{cursor:pointer;padding:12px 14px;font-size:13.5px;font-weight:700;color:#c9c9c9}
+details .dbody{padding:0 14px 14px}
+.disc{font-size:12px;color:#9ca3af;background:#141414;border:1px solid #262626;border-radius:10px;padding:10px 12px;margin-top:12px}
+.rate{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.rate button{flex:1;min-width:96px;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;font-size:14px;font-weight:700}
+.rate button.on{background:rgba(251,146,60,.15);border-color:var(--acc);color:var(--acc2)}
+.acc-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.acc-grid .b{flex:1;min-width:140px;background:#101010;border:1px solid #262626;border-radius:12px;padding:12px}
+.acc-grid .b .k{font-size:12px;color:#6b7280;font-weight:700}
+.acc-grid .b .v{font-size:24px;font-weight:900;color:#ededed}
+.acc-grid .b .s{font-size:11.5px;color:#6b7280}
+.about h2{font-size:19px;margin:28px 0 10px;color:var(--acc2)}
+.about p,.about li{font-size:14.5px;color:#c9c9c9}
+.faq dt{font-weight:800;margin-top:14px;color:#ededed}
+.faq dd{margin:4px 0 0;color:#9ca3af;font-size:14.5px}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#141414;border:1px solid #2a2a2a;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
+.rel a:hover{border-color:var(--acc);color:var(--acc2)}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#262626;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:380px){.hero .num{font-size:52px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>🌇 친구가 오늘 노을 예보를 공유했어요. 당신 동네는 어떤가요?</span>
+  <button id="inboundBtn" type="button">나도 해보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 생활 도구 › 오늘 노을</nav>
+
+<header>
+  <h1>🌇 오늘 노을</h1>
+  <p class="lead">노을은 매일 있지만 <b>좋은 노을은 한 달에 서너 번</b>입니다. 오늘이 그날인지, 나가 볼 만한지 점수와 근거로 알려 드립니다.</p>
+  <div class="exp">🧪 실험 중 — 가설 기반 모델입니다</div>
+</header>
+
+<section class="card" id="inputCard">
+  <p class="lab">📍 <b>어디에서</b> 보시나요</p>
+  <div class="row2">
+    <div>
+      <select id="region" aria-label="지역 선택"></select>
+    </div>
+    <div style="flex:0 0 auto">
+      <button class="ghost mini" id="geoBtn" type="button">현위치</button>
+    </div>
+  </div>
+  <p class="hint" id="geoHint">현위치를 쓰면 좌표는 이 브라우저 안에서만 쓰이고 저장·전송되지 않습니다.</p>
+
+  <div class="field">
+    <p class="lab">📅 <b>언제</b></p>
+    <select id="day" aria-label="날짜 선택"></select>
+  </div>
+
+  <div class="field">
+    <p class="lab">☁️ <b>중·상층 구름</b> — 빛을 받아 줄 스크린</p>
+    <div class="chips" id="midChips"></div>
+    <p class="hint">높이 떠 있는 옅은 구름(새털·양떼구름). 하늘 절반쯤 덮였을 때가 제일 좋습니다.</p>
+  </div>
+
+  <div class="field">
+    <p class="lab">🪟 <b>서쪽 지평선</b> — 빛이 통과할 창</p>
+    <div class="chips" id="lowChips"></div>
+    <p class="hint">해가 지는 쪽 낮은 하늘이 두꺼운 구름에 막혀 있으면 위쪽 구름에 빛이 닿지 못합니다.</p>
+  </div>
+
+  <div class="field">
+    <p class="lab">🌧️ <b>비·눈</b></p>
+    <div class="chips" id="precChips"></div>
+  </div>
+
+  <div class="field">
+    <p class="lab">🌫️ <b>대기 상태</b></p>
+    <div class="chips" id="airChips"></div>
+  </div>
+
+  <div class="field">
+    <p class="lab">💧 <b>습도</b></p>
+    <div class="chips" id="humChips"></div>
+  </div>
+
+  <div class="field">
+    <button id="calcBtn" type="button">노을 점수 계산하기</button>
+    <p class="hint">☝️ 구름·강수·대기 값은 <b>직접 보고 고르는 값</b>입니다. 이 페이지는 서버가 없어 기상 데이터를 자동으로 받아오지 않습니다. 예보를 확인하려면 <a href="https://www.weather.go.kr/w/index.do" target="_blank" rel="noopener nofollow">기상청 날씨누리</a>를 참고하세요.</p>
+  </div>
+</section>
+
+<section class="result" id="result">
+  <div class="card">
+    <div class="hero" id="hero">
+      <div class="num" id="scoreNum">0<small>점</small></div>
+      <div class="grade" id="gradeTxt">—</div>
+      <div class="where" id="whereTxt">—</div>
+    </div>
+
+    <div class="peak">
+      <div class="box">
+        <div class="k">절정 예상</div>
+        <div class="v" id="peakTime">—</div>
+        <div class="s" id="peakSub">—</div>
+      </div>
+      <div class="box">
+        <div class="k">일몰</div>
+        <div class="v" id="setTime">—</div>
+        <div class="s" id="setSub">—</div>
+      </div>
+    </div>
+
+    <ul class="why" id="whyList"></ul>
+
+    <div class="compass">
+      <svg id="compassSvg" width="104" height="104" viewBox="0 0 104 104" aria-hidden="true"></svg>
+      <div class="ct" id="compassTxt">—</div>
+    </div>
+
+    <div class="bars" id="bars"></div>
+
+    <details>
+      <summary>🧮 점수를 만든 가중치 표 보기 (모델 <span id="mv">—</span>)</summary>
+      <div class="dbody">
+        <table id="wTable"><thead><tr><th>요소</th><th>가중치</th><th>내 값</th><th>요소 점수</th></tr></thead><tbody></tbody></table>
+        <p class="mini-note">가중치는 코드에 박아 두지 않고 이 표 하나에서만 옵니다. 사용자 평가가 쌓이면 조정할 값입니다.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>🕰️ 오늘의 빛 시간표</summary>
+      <div class="dbody">
+        <table id="ttable"><tbody></tbody></table>
+        <p class="mini-note">이 시각들은 태양 위치 계산식으로 구한 값이라 날씨와 무관하게 정확합니다(±1분). 한국 표준시 기준.</p>
+      </div>
+    </details>
+
+    <div class="acts">
+      <button id="saveBtn" type="button">🖼️ 카드 저장</button>
+      <button class="ghost" id="copyLinkBtn" type="button">🔗 링크 복사</button>
+      <button class="ghost" id="copyTextBtn" type="button">📋 텍스트 복사</button>
+      <button class="ghost" id="xBtn" type="button">𝕏 공유</button>
+      <button class="ghost" id="shareBtn" type="button" style="display:none">📤 공유</button>
+      <button class="ghost" id="remixBtn" type="button">🔁 조건 바꿔 다시</button>
+    </div>
+    <div class="acts">
+      <button class="ghost" id="icsBtn" type="button">⏰ 일몰 90분 전 캘린더 알림 받기</button>
+    </div>
+    <p class="hint">푸시 알림은 서버가 필요해 제공하지 않습니다. 대신 캘린더 일정(.ics)으로 같은 알림을 받을 수 있고, 점수가 낮은 날엔 굳이 알림을 만들지 않아도 됩니다.</p>
+  </div>
+
+  <div class="card">
+    <p class="lab">👀 <b>실제로는 어땠나요?</b></p>
+    <p class="hint" style="margin:0 0 8px">노을을 보고 나서 눌러 주세요. 이 기록으로 아래 적중률이 계산됩니다.</p>
+    <div class="rate" id="rate">
+      <button type="button" data-r="1">별로</button>
+      <button type="button" data-r="2">보통</button>
+      <button type="button" data-r="3">좋았음</button>
+      <button type="button" data-r="4">굉장했음</button>
+    </div>
+    <p class="hint" id="rateHint">평가는 이 브라우저에만 저장되며 어디로도 전송되지 않습니다.</p>
+  </div>
+
+  <div class="card">
+    <p class="lab">📉 <b>이 모델의 적중률</b> — 낮아도 그대로 보여 드립니다</p>
+    <div id="accBody"></div>
+    <div class="acts">
+      <button class="ghost mini" id="wipeBtn" type="button">기록 전체 삭제</button>
+    </div>
+  </div>
+
+  <p class="disc">⚠️ 이 점수는 <b>검증되지 않은 가설 모델</b>의 결과이며 기상 예보가 아닙니다. 구름·강수·대기 값은 사용자가 입력한 값입니다. 기상 특보나 안전에 관한 판단은 반드시 기상청 공식 정보를 따르세요. 노을을 보러 갈 때는 일몰 후 어두워지는 속도가 생각보다 빠르니 이동 안전에 유의하세요.</p>
+
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</section>
+
+<section class="about">
+  <h2>🌇 오늘 노을 소개</h2>
+  <p>노을은 매일 지지만, 사진으로 남기고 싶을 만큼 좋은 노을은 한 달에 서너 번뿐입니다. 그리고 그 서너 번은 우연이 아니라 조건이 맞았을 때 나옵니다. 하늘 중간과 위쪽에 빛을 받아 줄 구름이 적당히 있고, 해가 지는 서쪽 낮은 하늘이 열려 있어서 마지막 빛이 그 구름 밑면까지 닿을 수 있을 때입니다. 오늘 노을은 그 조건들을 점수로 바꿔 주는 도구입니다. 지역과 오늘 하늘 상태를 고르면 0~100점의 노을 점수, 절정이 올 것 같은 시각, 그리고 왜 그렇게 봤는지 근거 세 줄이 함께 나옵니다.</p>
+  <p>이 도구가 다른 날씨 앱과 다른 점은 <b>판정이 전부 계산</b>이라는 것입니다. AI를 부르지 않고, 어떤 값도 서버로 보내지 않습니다. 일몰·일출 시각과 해가 지는 방위각, 골든아워와 블루아워 구간은 태양 위치를 구하는 천문 계산식으로 직접 계산하므로 인터넷 연결이 끊겨도 정확합니다. 반면 구름과 대기 상태는 이 페이지가 알 방법이 없으므로 사용자가 직접 고릅니다. 없는 데이터를 있는 것처럼 꾸미지 않는 편이 낫다고 판단했습니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>지역을 고르거나 ‘현위치’를 누릅니다. 좌표는 저장되지 않고 계산에만 쓰입니다.</li>
+    <li>날짜를 고릅니다. 오늘부터 7일까지 일몰 시각과 방위가 바로 계산됩니다.</li>
+    <li>기상청 예보나 창밖을 보고 구름·강수·대기·습도 다섯 가지를 고릅니다.</li>
+    <li>‘노을 점수 계산하기’를 누르면 점수와 절정 시각, 근거 세 줄이 나옵니다.</li>
+    <li>나가 볼 만하다면 ‘캘린더 알림 받기’로 일몰 90분 전 알림을 걸어 둡니다.</li>
+    <li>노을을 본 뒤 네 단계로 평가하면 적중률 화면이 채워집니다.</li>
+  </ol>
+  <h2>좋은 노을의 조건</h2>
+  <ul>
+    <li><b>스크린</b> — 중·상층운이 하늘의 절반쯤 있을 때가 가장 좋습니다. 하나도 없으면 색이 걸릴 곳이 없고, 꽉 차면 빛 자체가 막힙니다.</li>
+    <li><b>창</b> — 해가 지는 서쪽 지평선 부근이 열려 있어야 마지막 빛이 위쪽 구름의 밑면을 때립니다. 이 조건이 무너지면 다른 게 아무리 좋아도 점수가 크게 깎입니다.</li>
+    <li><b>비가 그친 직후</b> — 대기 중 먼지가 씻겨 나가 빛이 선명해집니다. 이 도구는 이 경우를 가산 요인으로 봅니다.</li>
+    <li><b>낮은 습도와 좋은 시정</b> — 뿌연 날은 색이 탁해집니다.</li>
+    <li><b>절정은 일몰 직후</b> — 가장 붉은 순간은 해가 지평선 아래로 내려간 뒤 10~20분 사이에 오는 경우가 많습니다. 해가 졌다고 바로 들어가면 제일 좋은 장면을 놓칩니다.</li>
+  </ul>
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>Q. 기상청 예보를 자동으로 가져오나요?</dt>
+    <dd>아닙니다. 서버가 없는 정적 페이지라 기상 데이터를 받아오지 않습니다. 구름·강수·대기·습도는 사용자가 보고 고른 값을 씁니다. 대신 일몰 시각·방위각·박명 구간은 천문 계산으로 직접 구하므로 데이터 없이도 정확합니다. 없는 데이터를 있는 척하지 않으려고 이렇게 나눴습니다.</dd>
+    <dt>Q. 점수는 어떻게 나오나요?</dt>
+    <dd>중·상층운, 서쪽 지평선 개방도, 강수, 대기 투명도, 습도 다섯 요소에 가중치를 곱해 더합니다. 중·상층운은 많을수록 좋은 게 아니라 50% 부근에서 최고점을 받는 산 모양 곡선입니다. 가중치는 결과 화면의 표에서 전부 펼쳐 볼 수 있고 모델 버전이 함께 표시됩니다.</dd>
+    <dt>Q. 절정 시각은 왜 일몰보다 늦나요?</dt>
+    <dd>해가 지평선 아래로 내려간 뒤에도 빛은 위쪽 구름 밑면을 계속 비춥니다. 가장 붉은 순간은 보통 그때입니다. 구름이 많을수록 절정이 조금 더 뒤로 밀리도록 계산합니다.</dd>
+    <dt>Q. 알림은 안 오나요?</dt>
+    <dd>푸시 알림은 서버가 필요해 제공하지 않습니다. 대신 캘린더 일정 파일을 내려받으면 일몰 90분 전에 한 번 울립니다. ‘오늘은 별로일 것 같습니다’ 같은 알림은 애초에 만들지 않습니다.</dd>
+    <dt>Q. 내 위치나 평가가 서버로 가나요?</dt>
+    <dd>가지 않습니다. 현위치 좌표는 계산에만 쓰고 저장하지 않으며, 평가 기록은 이 브라우저의 저장소에만 남습니다. ‘기록 전체 삭제’로 언제든 지울 수 있습니다.</dd>
+  </dl>
+  <p style="color:#6b7280;font-size:13px">※ 본 도구는 참고용 계산기이며 기상 예보 서비스가 아닙니다. 기상 특보·재해 정보는 기상청 등 공식 기관 정보를 확인하세요.</p>
+</section>
+
+<nav class="rel">
+  <a href="/dydrms-stargazer/">🔭 별보러가자</a>
+  <a href="/dydrms-suntimer/">🧴 선크림 타이머</a>
+  <a href="/mosquito-forecast/">🦟 모기 예보</a>
+  <a href="/cost-per-wear/">🧥 1회당</a>
+  <a href="/">🍅 전체 도구</a>
+</nav>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+
+</div>
+<div class="toast" id="toast">복사되었습니다</div>
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= 설정 테이블 (가중치는 오직 여기서만 온다) ================= */
+var MODEL_VERSION = "v1.0-hypothesis";
+/* 각 요소: weight(합=1), options(라벨 + 요소점수 0~100) */
+var MODEL = {
+  mid: {
+    label: "중·상층운 (스크린)", weight: 0.30,
+    /* 산 모양: 하늘의 절반쯤 덮였을 때 최고. cover=예상 운량(%) */
+    options: [
+      { k:"none",  label:"거의 없음",   cover:0  },
+      { k:"few",   label:"조금 (20%)",  cover:20 },
+      { k:"half",  label:"절반쯤 (50%)",cover:50 },
+      { k:"many",  label:"많음 (75%)",  cover:75 },
+      { k:"full",  label:"꽉 참 (95%)", cover:95 }
+    ],
+    score: function(o){ return Math.max(0, Math.min(100, Math.round(100 - Math.abs(o.cover - 50) * 2.2))); }
+  },
+  low: {
+    label: "서쪽 지평선 (창)", weight: 0.28,
+    options: [
+      { k:"open",   label:"활짝 열림",   v:100 },
+      { k:"slight", label:"조금 걸림",   v:70  },
+      { k:"most",   label:"많이 막힘",   v:28  },
+      { k:"closed", label:"완전히 막힘", v:0   }
+    ],
+    score: function(o){ return o.v; }
+  },
+  prec: {
+    label: "강수", weight: 0.18,
+    options: [
+      { k:"after", label:"비 갠 직후", v:100 },
+      { k:"none",  label:"없음",       v:84  },
+      { k:"light", label:"약한 비",    v:32  },
+      { k:"rain",  label:"비·눈",      v:4   }
+    ],
+    score: function(o){ return o.v; }
+  },
+  air: {
+    label: "대기 투명도", weight: 0.16,
+    options: [
+      { k:"clear", label:"아주 맑음", v:100 },
+      { k:"ok",    label:"보통",     v:72  },
+      { k:"hazy",  label:"뿌옇",     v:38  },
+      { k:"bad",   label:"미세먼지 나쁨", v:14 }
+    ],
+    score: function(o){ return o.v; }
+  },
+  hum: {
+    label: "습도", weight: 0.08,
+    options: [
+      { k:"low",  label:"낮음(건조)", v:100 },
+      { k:"mid",  label:"보통",       v:74  },
+      { k:"high", label:"높음(습함)", v:44  }
+    ],
+    score: function(o){ return o.v; }
+  }
+};
+var ORDER = ["mid","low","prec","air","hum"];
+/* 절정 시각: 중·상층운 양에 따른 일몰 이후 분(分) */
+var PEAK_OFFSET = { 0:3, 20:9, 50:15, 75:17, 95:11 };
+var GRADES = [
+  { min:0,  label:"그냥 지나가는 저녁", emo:"🌥️", tone:["#334155","#1e293b"] },
+  { min:30, label:"은은한 편",         emo:"🌆", tone:["#7c5b3f","#3f2d1f"] },
+  { min:50, label:"괜찮은 노을",       emo:"🌇", tone:["#c2410c","#7c2d12"] },
+  { min:70, label:"좋은 노을",         emo:"🔥", tone:["#f97316","#be123c"] },
+  { min:85, label:"굉장한 노을 가능성", emo:"✨", tone:["#fb923c","#db2777"] }
+];
+
+/* 지역: 시군구 단위 대표 좌표 (상시 위치 추적 없음) */
+var REGIONS = [
+  ["서울 종로구",37.573,126.979],["인천 중구",37.474,126.622],["수원 팔달구",37.283,127.019],
+  ["춘천시",37.881,127.730],["강릉시",37.752,128.876],["속초시",38.207,128.591],
+  ["대전 서구",36.355,127.384],["세종시",36.480,127.289],["청주 상당구",36.635,127.489],
+  ["천안 동남구",36.810,127.146],["전주 완산구",35.824,127.148],["군산시",35.968,126.737],
+  ["광주 서구",35.152,126.890],["목포시",34.812,126.392],["여수시",34.760,127.662],
+  ["대구 중구",35.869,128.606],["안동시",36.568,128.729],["포항 북구",36.041,129.365],
+  ["울산 남구",35.544,129.330],["부산 해운대구",35.163,129.164],["창원 의창구",35.254,128.640],
+  ["통영시",34.854,128.433],["제주시",33.499,126.531],["서귀포시",33.254,126.560],
+  ["울릉군",37.484,130.906]
+];
+
+/* ================= 태양 위치 계산 (순수 수학, 외부 데이터 0건) ================= */
+var rad = Math.PI/180, dayMs = 86400000, J1970 = 2440588, J2000 = 2451545;
+var e0 = rad * 23.4397;
+function toDays(d){ return d.valueOf()/dayMs - 0.5 + J1970 - J2000; }
+function fromJ(j){ return new Date((j + 0.5 - J1970) * dayMs); }
+function meanAnomaly(d){ return rad * (357.5291 + 0.98560028 * d); }
+function eclipticLon(M){
+  var C = rad * (1.9148*Math.sin(M) + 0.02*Math.sin(2*M) + 0.0003*Math.sin(3*M));
+  return M + C + rad*102.9372 + Math.PI;
+}
+function decl(L){ return Math.asin(Math.sin(e0) * Math.sin(L)); }
+var J0 = 0.0009;
+function approxTransit(Ht, lw, n){ return J0 + (Ht + lw)/(2*Math.PI) + n; }
+function transitJ(ds, M, L){ return J2000 + ds + 0.0053*Math.sin(M) - 0.0069*Math.sin(2*L); }
+function hourAngle(h, phi, d){
+  var x = (Math.sin(h) - Math.sin(phi)*Math.sin(d)) / (Math.cos(phi)*Math.cos(d));
+  if (x > 1 || x < -1) return null;           /* 백야·극야 → 해당 고도 미도달 */
+  return Math.acos(x);
+}
+/* 하루의 태양 이벤트. 반환 시각은 Date, 없으면 null */
+function sunTimes(date, lat, lng){
+  var lw = -lng * rad, phi = lat * rad;
+  var d = toDays(date), n = Math.round(d - J0 - lw/(2*Math.PI));
+  var ds = approxTransit(0, lw, n);
+  var M = meanAnomaly(ds), L = eclipticLon(M), dec = decl(L);
+  var noonJ = transitJ(ds, M, L);
+  function at(hDeg){
+    var w = hourAngle(hDeg*rad, phi, dec);
+    if (w === null) return { rise:null, set:null, w:null };
+    var setJ = transitJ(approxTransit(w, lw, n), M, L);
+    return { rise: fromJ(noonJ - (setJ - noonJ)), set: fromJ(setJ), w: w };
+  }
+  var sun = at(-0.833), gold = at(6), blue = at(-4), civil = at(-6);
+  /* 일몰 방위각: 시각(H=+w)에서의 방위, 북=0° 시계방향 */
+  var az = null;
+  if (sun.w !== null){
+    var H = sun.w;
+    var a = Math.atan2(Math.sin(H), Math.cos(H)*Math.sin(phi) - Math.tan(dec)*Math.cos(phi));
+    az = (a/rad + 180) % 360;
+    if (az < 0) az += 360;
+  }
+  var azRise = az === null ? null : (360 - az) % 360;
+  return {
+    noon: fromJ(noonJ), sunrise: sun.rise, sunset: sun.set,
+    goldenStart: gold.set, blueEnd: blue.set, civilEnd: civil.set,
+    goldenRiseEnd: gold.rise, sunsetAz: az, sunriseAz: azRise, dec: dec/rad
+  };
+}
+var DIRS = ["북","북북동","북동","동북동","동","동남동","남동","남남동","남","남남서","남서","서남서","서","서북서","북서","북북서"];
+function dirName(az){ return DIRS[Math.round(az/22.5) % 16]; }
+
+/* ================= utils ================= */
+function $(id){ return document.getElementById(id); }
+function pad(n){ return n < 10 ? "0"+n : ""+n; }
+var KST = { timeZone:"Asia/Seoul", hour:"2-digit", minute:"2-digit", hour12:false };
+function hhmm(d){ if(!d || isNaN(d)) return "—"; try{ return new Intl.DateTimeFormat("ko-KR", KST).format(d); }catch(err){ return pad(d.getHours())+":"+pad(d.getMinutes()); } }
+function dayKey(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function dayLabel(d, i){
+  var w = ["일","월","화","수","목","금","토"][d.getDay()];
+  var pre = i===0 ? "오늘" : i===1 ? "내일" : i===2 ? "모레" : (d.getMonth()+1)+"월 "+d.getDate()+"일";
+  return pre + " (" + w + ")";
+}
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function dec2(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(err){ return null; } }
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},1900); }
+function gradeFor(s){ var g=GRADES[0]; for(var i=0;i<GRADES.length;i++) if(s>=GRADES[i].min) g=GRADES[i]; return g; }
+
+/* ================= state ================= */
+var sel = { reg:0, day:0, mid:"half", low:"open", prec:"none", air:"ok", hum:"mid", lat:null, lng:null, name:null };
+var current = null;
+
+/* ================= build UI ================= */
+var regSel = $("region");
+REGIONS.forEach(function(r,i){
+  var o=document.createElement("option"); o.value=String(i); o.textContent=r[0]; regSel.appendChild(o);
+});
+regSel.value="0";
+regSel.addEventListener("change",function(){ sel.reg=+regSel.value; sel.lat=null; sel.lng=null; sel.name=null; });
+
+var daySel = $("day");
+function buildDays(){
+  daySel.innerHTML="";
+  var base=new Date();
+  for(var i=0;i<7;i++){
+    var d=new Date(base.getFullYear(),base.getMonth(),base.getDate()+i,12,0,0);
+    var o=document.createElement("option"); o.value=String(i); o.textContent=dayLabel(d,i);
+    daySel.appendChild(o);
+  }
+  daySel.value=String(sel.day);
+}
+buildDays();
+daySel.addEventListener("change",function(){ sel.day=+daySel.value; });
+
+function buildChips(key, holderId){
+  var holder=$(holderId);
+  MODEL[key].options.forEach(function(o){
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent=o.label; b.dataset.k=o.k;
+    b.addEventListener("click",function(){
+      sel[key]=o.k;
+      Array.prototype.forEach.call(holder.children,function(c){ c.classList.toggle("on", c.dataset.k===o.k); });
+    });
+    holder.appendChild(b);
+  });
+}
+buildChips("mid","midChips"); buildChips("low","lowChips"); buildChips("prec","precChips");
+buildChips("air","airChips"); buildChips("hum","humChips");
+function syncChips(){
+  [["mid","midChips"],["low","lowChips"],["prec","precChips"],["air","airChips"],["hum","humChips"]].forEach(function(p){
+    Array.prototype.forEach.call($(p[1]).children,function(c){ c.classList.toggle("on", c.dataset.k===sel[p[0]]); });
+  });
+}
+syncChips();
+
+/* 현위치 (저장하지 않음) */
+$("geoBtn").addEventListener("click",function(){
+  if(!navigator.geolocation){ toast("이 브라우저는 위치를 지원하지 않아요"); return; }
+  $("geoHint").textContent="위치를 확인하는 중…";
+  navigator.geolocation.getCurrentPosition(function(p){
+    sel.lat=Math.round(p.coords.latitude*1000)/1000;
+    sel.lng=Math.round(p.coords.longitude*1000)/1000;
+    sel.name="현위치";
+    $("geoHint").textContent="현위치 적용됨 ("+sel.lat.toFixed(2)+", "+sel.lng.toFixed(2)+") · 저장하지 않습니다";
+  },function(){
+    $("geoHint").textContent="위치를 가져오지 못했어요. 목록에서 지역을 골라 주세요.";
+  },{ enableHighAccuracy:false, timeout:8000, maximumAge:600000 });
+});
+
+/* ================= 계산 ================= */
+function place(){
+  if(sel.lat!==null && sel.lng!==null) return { name:"현위치", lat:sel.lat, lng:sel.lng };
+  var r=REGIONS[sel.reg]||REGIONS[0];
+  return { name:r[0], lat:r[1], lng:r[2] };
+}
+function dateFor(i){
+  var b=new Date();
+  return new Date(b.getFullYear(), b.getMonth(), b.getDate()+i, 12, 0, 0);
+}
+function compute(st){
+  var p = (st.lat!==null && st.lat!==undefined) ? { name:st.nm||"현위치", lat:st.lat, lng:st.lng }
+        : { name:(REGIONS[st.g]||REGIONS[0])[0], lat:(REGIONS[st.g]||REGIONS[0])[1], lng:(REGIONS[st.g]||REGIONS[0])[2] };
+  var date = dateFor(st.d);
+  var t = sunTimes(date, p.lat, p.lng);
+  var parts = [], total = 0;
+  ORDER.forEach(function(k){
+    var m = MODEL[k];
+    var o = null;
+    for(var i=0;i<m.options.length;i++) if(m.options[i].k===st[k]) o=m.options[i];
+    if(!o) o=m.options[0];
+    var fs = m.score(o);
+    total += fs * m.weight;
+    parts.push({ key:k, label:m.label, weight:m.weight, optLabel:o.label, fscore:fs, contrib:fs*m.weight });
+  });
+  var score = Math.max(0, Math.min(100, Math.round(total)));
+  var midOpt = null;
+  for(var j=0;j<MODEL.mid.options.length;j++) if(MODEL.mid.options[j].k===st.mid) midOpt=MODEL.mid.options[j];
+  var offset = PEAK_OFFSET[midOpt ? midOpt.cover : 50];
+  if(offset===undefined) offset=13;
+  var peak = t.sunset ? new Date(t.sunset.getTime() + offset*60000) : null;
+  return { place:p, date:date, t:t, parts:parts, score:score, peak:peak, offset:offset, grade:gradeFor(score) };
+}
+
+/* 근거 3줄 — 점수에 가장 크게 기여/감점한 요소 순 */
+function reasons(out){
+  var ranked = out.parts.slice().sort(function(a,b){
+    return Math.abs(b.fscore-50)*b.weight - Math.abs(a.fscore-50)*a.weight;
+  }).slice(0,3);
+  return ranked.map(function(p){
+    var good = p.fscore >= 60;
+    var mid = p.fscore >= 40 && p.fscore < 60;
+    var verdict = good ? "유리" : mid ? "보통" : "불리";
+    var note = "";
+    if(p.key==="mid") note = p.fscore>=60 ? "빛이 걸릴 스크린이 충분합니다" : (p.optLabel.indexOf("없음")>=0 ? "색이 걸릴 구름이 거의 없습니다" : "구름이 너무 두꺼워 빛이 막힙니다");
+    if(p.key==="low") note = p.fscore>=60 ? "서쪽 아래가 열려 마지막 빛이 통과합니다" : "서쪽 낮은 하늘이 막혀 빛이 올라오지 못합니다";
+    if(p.key==="prec") note = p.fscore>=84 ? (p.optLabel.indexOf("갠")>=0 ? "비가 갠 직후라 대기가 씻겼습니다" : "강수 없음") : "비·눈이 색을 지웁니다";
+    if(p.key==="air") note = p.fscore>=60 ? "대기가 맑아 색이 선명합니다" : "대기가 뿌옇게 깔려 색이 탁해집니다";
+    if(p.key==="hum") note = p.fscore>=60 ? "건조해서 선명도가 좋습니다" : "습해서 색이 무뎌집니다";
+    return { text: p.label.replace(/ \(.*\)/,"") + " " + p.optLabel + " — " + note, verdict: verdict };
+  });
+}
+
+/* ================= 렌더 ================= */
+function render(st){
+  var out = compute(st);
+  current = { state: st, out: out };
+
+  var g = out.grade;
+  $("hero").style.background = "linear-gradient(140deg,"+g.tone[0]+","+g.tone[1]+")";
+  $("scoreNum").innerHTML = out.score + "<small>점</small>";
+  $("gradeTxt").textContent = g.emo + " " + g.label;
+  var dLab = dayLabel(out.date, st.d);
+  $("whereTxt").textContent = out.place.name + " · " + dLab;
+
+  $("peakTime").textContent = hhmm(out.peak);
+  $("peakSub").textContent = out.peak ? ("일몰 " + out.offset + "분 뒤 · 가장 붉은 순간") : "이 위도에서는 계산되지 않음";
+  $("setTime").textContent = hhmm(out.t.sunset);
+  $("setSub").textContent = out.t.goldenStart ? ("골든아워 " + hhmm(out.t.goldenStart) + "부터") : "—";
+
+  var wl = $("whyList"); wl.innerHTML = "";
+  reasons(out).forEach(function(r){
+    var li=document.createElement("li");
+    li.innerHTML = "<b>["+r.verdict+"]</b> " + r.text.replace(/[<>]/g,"");
+    wl.appendChild(li);
+  });
+
+  /* 나침반 */
+  var az = out.t.sunsetAz;
+  var svg = $("compassSvg");
+  if(az === null){
+    svg.innerHTML = "";
+    $("compassTxt").textContent = "이 날짜·위도에서는 해가 지지 않거나 계산 범위를 벗어납니다.";
+  } else {
+    var cx=52, cy=52, R=44;
+    var a=(az-90)*Math.PI/180;
+    var x2=cx+Math.cos(a)*(R-6), y2=cy+Math.sin(a)*(R-6);
+    svg.innerHTML =
+      '<circle cx="52" cy="52" r="44" fill="#0a0a0a" stroke="#333"/>'+
+      '<circle cx="52" cy="52" r="3" fill="#fb923c"/>'+
+      '<text x="52" y="15" fill="#6b7280" font-size="10" text-anchor="middle">N</text>'+
+      '<text x="52" y="97" fill="#6b7280" font-size="10" text-anchor="middle">S</text>'+
+      '<text x="95" y="56" fill="#6b7280" font-size="10" text-anchor="middle">E</text>'+
+      '<text x="9" y="56" fill="#fed7aa" font-size="10" text-anchor="middle">W</text>'+
+      '<line x1="52" y1="52" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="#fb923c" stroke-width="3" stroke-linecap="round"/>'+
+      '<circle cx="'+x2.toFixed(1)+'" cy="'+y2.toFixed(1)+'" r="5" fill="#fb923c"/>';
+    $("compassTxt").innerHTML = "해는 <b>" + dirName(az) + " " + az.toFixed(0) + "°</b> 방향으로 집니다.<br>그쪽 하늘이 트인 곳을 찾으세요.";
+  }
+
+  /* 요소 막대 */
+  var bars=$("bars"); bars.innerHTML="";
+  out.parts.forEach(function(p){
+    var d=document.createElement("div"); d.className="bar";
+    d.innerHTML='<div class="bl"><span>'+p.label+' <em>'+p.optLabel+'</em></span><span>'+p.fscore+'</span></div><div class="btrack"><i style="width:0"></i></div>';
+    bars.appendChild(d);
+    setTimeout(function(){ d.querySelector("i").style.width = p.fscore + "%"; }, 30);
+  });
+
+  /* 가중치 표 */
+  $("mv").textContent = MODEL_VERSION;
+  var tb = $("wTable").querySelector("tbody"); tb.innerHTML="";
+  out.parts.forEach(function(p){
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>"+p.label+"</td><td>"+(p.weight*100).toFixed(0)+"%</td><td>"+p.optLabel+"</td><td><b>"+p.fscore+"</b></td>";
+    tb.appendChild(tr);
+  });
+  var trT=document.createElement("tr");
+  trT.innerHTML="<td><b>합계</b></td><td>100%</td><td>—</td><td><b>"+out.score+"</b></td>";
+  tb.appendChild(trT);
+
+  /* 시간표 */
+  var tt=$("ttable").querySelector("tbody"); tt.innerHTML="";
+  [["🌅 일출", out.t.sunrise],["☀️ 남중", out.t.noon],["✨ 골든아워 시작", out.t.goldenStart],
+   ["🌇 일몰", out.t.sunset],["🔥 노을 절정(추정)", out.peak],["🔵 블루아워", out.t.blueEnd],["🌃 시민박명 끝", out.t.civilEnd]
+  ].forEach(function(r){
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>"+r[0]+"</td><td style='text-align:right'><b>"+hhmm(r[1])+"</b></td>";
+    tt.appendChild(tr);
+  });
+
+  $("result").style.display="block";
+  loadRatingUI(st, out);
+  renderAccuracy();
+  try{ history.replaceState(null,"",location.pathname+"?r="+encodeURIComponent(enc(st))); }catch(err){}
+}
+
+function stateFromSel(){
+  var st = { g:sel.reg, d:sel.day, mid:sel.mid, low:sel.low, prec:sel.prec, air:sel.air, hum:sel.hum };
+  if(sel.lat!==null){ st.lat=sel.lat; st.lng=sel.lng; st.nm="현위치"; }
+  return st;
+}
+$("calcBtn").addEventListener("click",function(){
+  render(stateFromSel());
+  $("result").scrollIntoView({ behavior:"smooth", block:"start" });
+});
+$("remixBtn").addEventListener("click",function(){
+  $("inputCard").scrollIntoView({ behavior:"smooth", block:"start" });
+});
+
+/* ================= 평가 · 적중률 (로컬 전용) ================= */
+var LSKEY = "sunset-forecast:v1";
+function loadLogs(){
+  try{ var raw=localStorage.getItem(LSKEY); var a=raw?JSON.parse(raw):[]; return Array.isArray(a)?a:[]; }catch(err){ return []; }
+}
+function saveLogs(a){ try{ localStorage.setItem(LSKEY, JSON.stringify(a.slice(-400))); }catch(err){} }
+function logId(st, out){ return dayKey(out.date) + "|" + out.place.name; }
+function loadRatingUI(st, out){
+  var logs=loadLogs(), id=logId(st,out), mine=null;
+  for(var i=0;i<logs.length;i++) if(logs[i].id===id) mine=logs[i];
+  Array.prototype.forEach.call($("rate").children,function(b){
+    b.classList.toggle("on", !!mine && String(mine.r)===b.dataset.r);
+  });
+  var future = out.date > new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 0, 0);
+  $("rateHint").textContent = future
+    ? "아직 오지 않은 날입니다. 그날 노을을 본 뒤에 평가해 주세요."
+    : "평가는 이 브라우저에만 저장되며 어디로도 전송되지 않습니다.";
+}
+Array.prototype.forEach.call($("rate").children,function(b){
+  b.addEventListener("click",function(){
+    if(!current) return;
+    var logs=loadLogs(), id=logId(current.state, current.out), found=false;
+    for(var i=0;i<logs.length;i++) if(logs[i].id===id){ logs[i].r=+b.dataset.r; logs[i].s=current.out.score; logs[i].mv=MODEL_VERSION; found=true; }
+    if(!found) logs.push({ id:id, d:dayKey(current.out.date), p:current.out.place.name, s:current.out.score, r:+b.dataset.r, mv:MODEL_VERSION });
+    saveLogs(logs);
+    loadRatingUI(current.state, current.out);
+    renderAccuracy();
+    toast("평가가 기록되었습니다");
+  });
+});
+$("wipeBtn").addEventListener("click",function(){
+  if(!window.confirm("이 브라우저에 저장된 평가 기록을 모두 지울까요? 되돌릴 수 없습니다.")) return;
+  try{ localStorage.removeItem(LSKEY); }catch(err){}
+  if(current) loadRatingUI(current.state, current.out);
+  renderAccuracy(); toast("기록을 삭제했습니다");
+});
+function renderAccuracy(){
+  var logs = loadLogs().filter(function(l){ return typeof l.r==="number" && typeof l.s==="number"; });
+  var body = $("accBody");
+  if(logs.length < 5){
+    body.innerHTML = '<p class="hint" style="margin:0">평가 기록 <b>'+logs.length+'건</b> — 5건부터 적중률을 계산합니다. '
+      + '표본이 적을 때 그럴듯한 숫자를 만들어 보여 주는 대신 아직 모른다고 적어 둡니다.</p>';
+    return;
+  }
+  var hi = logs.filter(function(l){ return l.s>=70; });
+  var lo = logs.filter(function(l){ return l.s<70; });
+  var hiGood = hi.filter(function(l){ return l.r>=3; }).length;
+  var loGood = lo.filter(function(l){ return l.r>=3; }).length;
+  var hiRate = hi.length ? Math.round(hiGood/hi.length*100) : null;
+  var loRate = lo.length ? Math.round(loGood/lo.length*100) : null;
+  var lift = (hiRate!==null && loRate!==null) ? (hiRate - loRate) : null;
+  body.innerHTML =
+    '<div class="acc-grid">'
+    + '<div class="b"><div class="k">70점 이상이라 한 날</div><div class="v">'+(hiRate===null?"—":hiRate+"%")+'</div><div class="s">실제로 좋았던 비율 ('+hiGood+'/'+hi.length+')</div></div>'
+    + '<div class="b"><div class="k">70점 미만이라 한 날</div><div class="v">'+(loRate===null?"—":loRate+"%")+'</div><div class="s">실제로 좋았던 비율 ('+loGood+'/'+lo.length+')</div></div>'
+    + '<div class="b"><div class="k">모델이 만든 차이</div><div class="v">'+(lift===null?"—":(lift>0?"+":"")+lift+"%p")+'</div><div class="s">'+(lift===null?"표본 부족":(lift<=0?"아직 무작위보다 낫다는 근거가 없습니다":"높다고 한 날이 실제로 더 좋았습니다"))+'</div></div>'
+    + '</div>'
+    + '<p class="hint">기록 '+logs.length+'건 · 모델 '+MODEL_VERSION+' 기준. 이 수치는 이 브라우저의 기록만 씁니다. '
+    + '값이 낮게 나와도 조정하지 않고 그대로 표시합니다.</p>';
+}
+
+/* ================= 공유 ================= */
+function resultUrl(){ return location.origin + location.pathname + "?r=" + encodeURIComponent(enc(current.state)); }
+function copy(text,msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});
+  } else fallbackCopy(text,msg);
+}
+function fallbackCopy(text,msg){
+  var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(err){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+function shareText(){
+  var o=current.out;
+  return "🌇 오늘 노을 " + o.score + "점 — " + o.grade.label + "\n"
+    + o.place.name + " · 절정 " + hhmm(o.peak) + " (일몰 " + hhmm(o.t.sunset) + ")\n"
+    + reasons(o).map(function(r){ return "· " + r.text; }).join("\n") + "\n"
+    + resultUrl();
+}
+$("copyLinkBtn").addEventListener("click",function(){ if(current) copy(resultUrl(),"링크가 복사되었습니다"); });
+$("copyTextBtn").addEventListener("click",function(){ if(current) copy(shareText(),"텍스트가 복사되었습니다"); });
+$("xBtn").addEventListener("click",function(){
+  if(!current) return;
+  var t="오늘 노을 "+current.out.score+"점, 절정은 "+hhmm(current.out.peak)+" ("+current.out.place.name+") 🌇";
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank");
+});
+if(navigator.share){
+  $("shareBtn").style.display="";
+  $("shareBtn").addEventListener("click",function(){
+    if(!current) return;
+    navigator.share({ title:"오늘 노을", text:shareText(), url:resultUrl() }).catch(function(){});
+  });
+}
+
+/* ================= 캘린더 알림(.ics) — 푸시 대체 ================= */
+function icsStamp(d){
+  return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+"T"+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+"Z";
+}
+$("icsBtn").addEventListener("click",function(){
+  if(!current || !current.out.peak){ toast("절정 시각을 계산할 수 없어요"); return; }
+  var o=current.out;
+  var start=o.peak, end=new Date(o.peak.getTime()+20*60000);
+  var uid = "sunset-"+dayKey(o.date)+"-"+Math.abs(Math.round(o.place.lat*100))+"@tomatoeggcat.com";
+  var lines=[
+    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//TomatoEggCat//sunset-forecast//KO","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    "BEGIN:VEVENT","UID:"+uid,"DTSTAMP:"+icsStamp(new Date()),
+    "DTSTART:"+icsStamp(start),"DTEND:"+icsStamp(end),
+    "SUMMARY:🌇 노을 "+o.score+"점 — "+o.grade.label+" ("+o.place.name+")",
+    "DESCRIPTION:절정 "+hhmm(o.peak)+" / 일몰 "+hhmm(o.t.sunset)+" / 해는 "+(o.t.sunsetAz===null?"—":dirName(o.t.sunsetAz))+" 방향. "
+      + reasons(o).map(function(r){ return r.text; }).join(" \\n ") + " \\n tomatoeggcat.com/sunset-forecast",
+    "BEGIN:VALARM","TRIGGER:-PT90M","ACTION:DISPLAY","DESCRIPTION:90분 뒤 노을 절정입니다","END:VALARM",
+    "END:VEVENT","END:VCALENDAR"
+  ];
+  var blob=new Blob([lines.join("\r\n")],{type:"text/calendar;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="sunset-"+dayKey(o.date)+".ics";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  toast("캘린더 파일을 내려받았습니다");
+});
+
+/* ================= 카드 이미지 (1080x1350) ================= */
+function drawCard(){
+  if(!current) return;
+  var o=current.out, cv=$("cv"), ctx=cv.getContext("2d"), W=1080, H=1350;
+  var g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,o.grade.tone[0]); g.addColorStop(1,o.grade.tone[1]);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  /* 태양 원 */
+  ctx.globalAlpha=.22; ctx.fillStyle="#fff7ed";
+  ctx.beginPath(); ctx.arc(W/2, 470, 300, 0, Math.PI*2); ctx.fill();
+  ctx.globalAlpha=1;
+  ctx.textAlign="center"; ctx.fillStyle="rgba(255,255,255,.8)";
+  ctx.font="700 30px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("오늘 노을 · 실험 중인 예보", W/2, 110);
+  ctx.fillStyle="#fff";
+  ctx.font="900 220px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText(String(o.score), W/2, 480);
+  ctx.font="800 46px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText(o.grade.emo+" "+o.grade.label, W/2, 560);
+  ctx.font="700 34px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillStyle="rgba(255,255,255,.9)";
+  ctx.fillText(o.place.name+" · "+dayLabel(o.date, current.state.d), W/2, 620);
+
+  /* 시각 박스 */
+  ctx.fillStyle="rgba(0,0,0,.28)";
+  roundRect(ctx, 90, 670, 900, 150, 24); ctx.fill();
+  ctx.fillStyle="rgba(255,255,255,.65)"; ctx.font="700 26px -apple-system,sans-serif";
+  ctx.fillText("절정 예상", 315, 720); ctx.fillText("일몰", 765, 720);
+  ctx.fillStyle="#fff"; ctx.font="900 62px -apple-system,sans-serif";
+  ctx.fillText(hhmm(o.peak), 315, 790); ctx.fillText(hhmm(o.t.sunset), 765, 790);
+
+  /* 근거 3줄 */
+  ctx.textAlign="left"; var y=900;
+  reasons(o).forEach(function(r){
+    ctx.fillStyle="rgba(0,0,0,.24)"; roundRect(ctx, 90, y-44, 900, 96, 18); ctx.fill();
+    ctx.fillStyle="#fff"; ctx.font="700 30px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+    wrapText(ctx, r.text, 118, y, 844, 40);
+    y += 118;
+  });
+  ctx.textAlign="center";
+  ctx.fillStyle="rgba(255,255,255,.55)"; ctx.font="600 26px -apple-system,sans-serif";
+  ctx.fillText("해는 "+(o.t.sunsetAz===null?"—":dirName(o.t.sunsetAz)+" "+o.t.sunsetAz.toFixed(0)+"°")+" 방향으로 집니다", W/2, 1268);
+  ctx.fillStyle="rgba(255,255,255,.75)"; ctx.font="700 28px -apple-system,sans-serif";
+  ctx.fillText("tomatoeggcat.com/sunset-forecast", W/2, 1312);
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function wrapText(ctx,text,x,y,maxW,lh){
+  var chars=String(text).split(""), line="";
+  for(var i=0;i<chars.length;i++){
+    var test=line+chars[i];
+    if(ctx.measureText(test).width>maxW && line){ ctx.fillText(line,x,y); y+=lh; line=chars[i]; }
+    else line=test;
+  }
+  if(line) ctx.fillText(line,x,y);
+  return y;
+}
+$("saveBtn").addEventListener("click",function(){
+  if(!current) return;
+  drawCard();
+  var a=document.createElement("a");
+  a.download="sunset-"+current.out.score+".png";
+  a.href=$("cv").toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("이미지가 저장되었습니다");
+});
+
+/* ================= 공유 유입 (?r=) ================= */
+function sanitize(st){
+  if(!st || typeof st!=="object") return null;
+  var out={};
+  out.g = (typeof st.g==="number" && REGIONS[st.g]) ? st.g : 0;
+  out.d = (typeof st.d==="number" && st.d>=0 && st.d<7) ? st.d : 0;
+  ORDER.forEach(function(k){
+    var ok=false;
+    MODEL[k].options.forEach(function(o){ if(o.k===st[k]) ok=true; });
+    out[k] = ok ? st[k] : MODEL[k].options[0].k;
+  });
+  if(typeof st.lat==="number" && typeof st.lng==="number" && Math.abs(st.lat)<=90 && Math.abs(st.lng)<=180){
+    out.lat=st.lat; out.lng=st.lng; out.nm="공유된 위치";
+  }
+  return out;
+}
+var params=new URLSearchParams(location.search);
+if(params.has("r")){
+  var st0=sanitize(dec2(params.get("r")));
+  if(st0){
+    sel.reg=st0.g; sel.day=st0.d;
+    ORDER.forEach(function(k){ sel[k]=st0[k]; });
+    if(st0.lat!==undefined){ sel.lat=st0.lat; sel.lng=st0.lng; sel.name=st0.nm; }
+    daySel.value=String(sel.day); regSel.value=String(sel.reg);
+    syncChips();
+    render(st0);
+    $("inbound").classList.add("show");
+    $("inboundBtn").addEventListener("click",function(){
+      $("inbound").classList.remove("show");
+      $("inputCard").scrollIntoView({ behavior:"smooth" });
+    });
+  }
+}
+})();
+</script>
+</body>
+</html>

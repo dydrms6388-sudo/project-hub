@@ -1,0 +1,223 @@
+// scripts/test-recipe-diff.mjs — 레시피 계보(/recipe-tree/) 엔진 유닛테스트
+// 실행: node scripts/test-recipe-diff.mjs
+//
+// 이 저장소는 테스트 러너가 없고 앱은 단일 HTML 파일이다. 엔진 코드를 복사하면
+// 원본과 어긋나므로, recipe-tree/index.html 의 `@engine-start ~ @engine-end`
+// 구간을 그대로 추출해 평가한다. 즉 테스트 대상 = 실제 배포되는 코드.
+import { readFileSync } from "node:fs";
+
+const html = readFileSync(new URL("../recipe-tree/index.html", import.meta.url), "utf8");
+const m = html.match(/@engine-start([\s\S]*?)@engine-end/);
+if (!m) { console.error("❌ 엔진 구간(@engine-start/@engine-end)을 찾지 못했습니다."); process.exit(1); }
+const engineSrc = m[1]
+  .replace(/^[\s\S]*?\*\//, "")   // 시작 마커가 들어 있던 주석의 꼬리 제거
+  .replace(/\/\*\s*$/, "");       // 끝 마커를 열던 주석의 머리 제거
+const engine = new Function(engineSrc + "\nreturn { parseFree, parseIngredient, parseStep, detectPaste, diffRecipes, amt };")();
+const { parseFree, parseIngredient, detectPaste, diffRecipes } = engine;
+
+let pass = 0, fail = 0;
+function ok(name, cond, extra) {
+  if (cond) { pass++; console.log("  ✅ " + name); }
+  else { fail++; console.log("  ❌ " + name + (extra ? "\n     → " + extra : "")); }
+}
+function has(diff, kind, needle) {
+  return diff.ing.concat(diff.step).some(x => x.kind === kind && x.text.includes(needle));
+}
+
+/* ───────────────────────── 1. diff — 재료 6종 · 단계 8개 변경 케이스 ───────────────────────── */
+console.log("\n[1] diff — 재료 6종 변경 + 단계 8개 변경");
+
+const parent = {
+  t: "엄마 김치찌개", au: "엄마",
+  i: [
+    { n: "돼지고기", a: "300", u: "g" },
+    { n: "김치", a: "1/2", u: "포기" },
+    { n: "설탕", a: "1", u: "큰술" },
+    { n: "대파", a: "1", u: "대" },
+    { n: "두부", a: "1", u: "모" },
+    { n: "고춧가루", a: "1", u: "큰술" },
+    { n: "다진마늘", a: "1", u: "큰술" },
+    { n: "멸치육수", a: "500", u: "ml" },
+  ],
+  s: [
+    { a: "냄비에 김치와 고기를 넣고 볶는다", m: 5 },
+    { a: "고춧가루와 다진마늘을 넣는다", m: null },
+    { a: "멸치육수를 붓는다", m: null },
+    { a: "센불에서 끓인다", m: 15 },
+    { a: "두부를 올린다", m: null },
+    { a: "약불로 줄여 더 끓인다", m: 5 },
+    { a: "대파를 넣는다", m: null },
+    { a: "간을 본다", m: null },
+  ],
+};
+
+// 재료 변경 6종: 설탕→매실청(교체는 1:1일 때만이므로 여기선 삭제/추가로 잡힘),
+//   돼지고기 양 변경, 김치 양 변경, 고춧가루 삭제, 청양고추 추가, 멸치육수 단위 변경
+const child6 = {
+  t: "내 버전", au: "나",
+  i: [
+    { n: "돼지고기", a: "400", u: "g" },      // 변경
+    { n: "김치", a: "1", u: "포기" },          // 변경
+    { n: "매실청", a: "2", u: "큰술" },        // 추가(설탕 대신)
+    { n: "대파", a: "1", u: "대" },
+    { n: "두부", a: "1", u: "모" },
+    { n: "청양고추", a: "2", u: "개" },        // 추가
+    { n: "다진마늘", a: "1", u: "큰술" },
+    { n: "멸치육수", a: "600", u: "ml" },      // 변경
+  ],                                            // 설탕·고춧가루 삭제
+  s: parent.s.slice(),
+};
+const d1 = diffRecipes(parent, child6);
+ok("돼지고기 양 변경 감지", has(d1, "chg", "돼지고기 300g → 400g"), JSON.stringify(d1.ing));
+ok("김치 양 변경 감지", has(d1, "chg", "김치 1/2포기 → 1포기"));
+ok("멸치육수 양 변경 감지", has(d1, "chg", "멸치육수 500ml → 600ml"));
+ok("설탕 삭제 감지", has(d1, "del", "설탕"));
+ok("고춧가루 삭제 감지", has(d1, "del", "고춧가루"));
+ok("매실청 추가 감지", has(d1, "add", "매실청"));
+ok("청양고추 추가 감지", has(d1, "add", "청양고추"));
+ok("재료 변경 6종 정확히 6~7건(교체 미분리)", d1.ing.length === 7, "실제 " + d1.ing.length + "건: " + JSON.stringify(d1.ing.map(x => x.text)));
+ok("단계는 변화 없음", d1.step.length === 0, JSON.stringify(d1.step));
+
+// 단계 8개 전부 다른 케이스
+const child8 = {
+  t: "완전 다른 버전", au: "나",
+  i: parent.i.slice(),
+  s: [
+    { a: "고기를 먼저 밑간한다", m: 10 },
+    { a: "김치를 따로 볶는다", m: 7 },
+    { a: "육수 대신 쌀뜨물을 붓는다", m: null },
+    { a: "중불에서 끓인다", m: 20 },
+    { a: "두부는 마지막에 넣는다", m: null },
+    { a: "들기름을 두른다", m: null },
+    { a: "대파와 청양고추를 넣는다", m: null },
+    { a: "불을 끄고 뜸을 들인다", m: 3 },
+  ],
+};
+const d2 = diffRecipes(parent, child8);
+ok("단계 8개 삭제 감지", d2.step.filter(x => x.kind === "del").length === 8, "실제 " + d2.step.filter(x => x.kind === "del").length);
+ok("단계 8개 추가 감지", d2.step.filter(x => x.kind === "add").length === 8, "실제 " + d2.step.filter(x => x.kind === "add").length);
+ok("재료는 변화 없음", d2.ing.length === 0);
+ok("총 변경 건수 16건", d2.count === 16, "실제 " + d2.count);
+
+// 1:1 교체는 화살표 한 줄로
+const childSwap = { t: "x", i: parent.i.map(x => x.n === "설탕" ? { n: "매실청", a: "2", u: "큰술" } : x), s: parent.s.slice() };
+const d3 = diffRecipes(parent, childSwap);
+ok("1:1 재료 교체는 화살표 한 줄", has(d3, "chg", "설탕 1큰술 → 매실청 2큰술"), JSON.stringify(d3.ing.map(x => x.text)));
+ok("교체 시 add/del 로 중복 표시하지 않음", d3.ing.length === 1, JSON.stringify(d3.ing.map(x => x.text)));
+
+// 순서 변경 감지
+const childOrder = { t: "x", i: parent.i.slice(), s: [parent.s[1], parent.s[0], ...parent.s.slice(2)] };
+const d4 = diffRecipes(parent, childOrder);
+ok("단계 순서 변경 감지", d4.step.some(x => x.kind === "ord"), JSON.stringify(d4.step));
+
+// 시간 변경 감지
+const childTime = { t: "x", i: parent.i.slice(), s: parent.s.map(x => x.a === "센불에서 끓인다" ? { a: x.a, m: 25 } : x) };
+const d5 = diffRecipes(parent, childTime);
+ok("조리 시간 변경 감지 (15분 → 25분)", has(d5, "chg", "15분 → 25분"), JSON.stringify(d5.step));
+
+// 변화 없음
+const d6 = diffRecipes(parent, { t: "x", i: parent.i.slice(), s: parent.s.slice() });
+ok("동일 레시피는 변경 0건", d6.count === 0, JSON.stringify(d6));
+
+/* ───────────────────────── 2. 외부 텍스트 붙여넣기 감지 10종 ───────────────────────── */
+console.log("\n[2] 외부 붙여넣기 감지 — 양성 10종 / 음성 3종");
+
+const positives = [
+  ["출처 표기", "재료\n돼지고기 300g\n출처: 백종원 요리책 32쪽\n김치 1포기"],
+  ["링크 포함", "김치찌개 만들기\nhttps://blog.example.com/kimchi\n돼지고기 300g"],
+  ["구독 유도", "구독과 좋아요 부탁드려요! 오늘은 김치찌개입니다\n재료 준비해 주세요"],
+  ["저작권 표기", "김치찌개 레시피 © 2025 쿠킹매거진 All rights reserved\n돼지고기 300g"],
+  ["작성자 표기", "김철수 셰프의 비법 김치찌개\n재료\n돼지고기 300g"],
+  ["사진 캡션", "사진 1 완성된 김치찌개의 모습입니다\n사진 2 재료를 손질하는 과정\n돼지고기 300g"],
+  ["긴 본문", "김치찌개는 한국인의 소울푸드입니다. ".repeat(60)],
+  ["설명체 장문 반복", [
+    "먼저 냄비에 잘 익은 김치를 넣고 돼지고기와 함께 충분히 볶아 주는 것이 좋습니다",
+    "이때 불은 중불로 유지하면서 재료가 타지 않도록 계속 저어 주시는 것이 중요합니다",
+    "김치가 어느 정도 익으면 준비해 둔 멸치 육수를 부어 주시고 뚜껑을 덮어 주세요",
+    "국물이 끓어오르기 시작하면 두부를 넣고 다시 한 번 푹 끓여 주시면 완성됩니다",
+  ].join("\n")],
+  ["문장 반복", "재료를 준비합니다 그리고 손질을 시작합니다\n재료를 준비합니다 그리고 손질을 시작합니다\n재료를 준비합니다 그리고 손질을 시작합니다"],
+  ["무단전재 문구", "본 레시피의 무단 전재 및 재배포를 금합니다\n인스타 @cooking\n돼지고기 300g"],
+];
+positives.forEach(([name, text]) => {
+  const d = detectPaste(text);
+  ok("감지: " + name + " (정황 " + d.score + "개)", d.score >= 1, JSON.stringify(d.flags));
+});
+
+const negatives = [
+  ["짧은 자기 메모", "재료\n돼지고기 300g\n김치 1/2포기\n설탕 1큰술\n\n만드는 법\n1. 볶는다\n2. 끓인다"],
+  ["재료만", "돼지고기 300g\n김치 1포기\n두부 1모"],
+  ["단계만 짧게", "1. 김치 볶기\n2. 물 붓기\n3. 두부 올리기"],
+];
+negatives.forEach(([name, text]) => {
+  const d = detectPaste(text);
+  ok("오탐 없음: " + name, d.score === 0, JSON.stringify(d.flags));
+});
+
+/* ───────────────────────── 3. 자유 서술 파서 ───────────────────────── */
+console.log("\n[3] 규칙 기반 파서");
+
+const p1 = parseFree(`재료
+돼지고기 300g
+김치 1/2포기
+설탕 1큰술
+대파 약간
+
+만드는 법
+1. 냄비에 김치와 고기를 넣고 5분 볶는다
+2. 물 500ml 붓고 15분 끓인다
+3. 두부 올리고 3분 더 끓인다`);
+ok("재료 4개 파싱", p1.ings.length === 4, JSON.stringify(p1.ings));
+ok("단계 3개 파싱", p1.steps.length === 3, JSON.stringify(p1.steps));
+ok("분량+단위 분리 (300 / g)", p1.ings[0].a === "300" && p1.ings[0].u === "g", JSON.stringify(p1.ings[0]));
+ok("분수 분량 유지 (1/2포기)", p1.ings[1].a === "1/2" && p1.ings[1].u === "포기", JSON.stringify(p1.ings[1]));
+ok("모호 단위 처리 (대파 약간)", p1.ings[3].n === "대파" && p1.ings[3].u === "약간", JSON.stringify(p1.ings[3]));
+ok("단계 소요시간 추출 (5분)", p1.steps[0].m === 5, JSON.stringify(p1.steps[0]));
+ok("단계 번호 제거", !/^\d/.test(p1.steps[1].a), p1.steps[1].a);
+
+const p2 = parseIngredient("설탕: 1큰술");
+ok("콜론 구분 파싱", p2 && p2.n === "설탕" && p2.a === "1" && p2.u === "큰술", JSON.stringify(p2));
+const p3 = parseIngredient("- 간장 2T");
+ok("불릿·약어 단위 파싱", p3 && p3.n === "간장" && p3.u === "T", JSON.stringify(p3));
+
+const p4 = parseFree("1. 물을 끓인다\n2. 면을 넣는다");
+ok("섹션 헤더 없어도 번호줄은 단계로", p4.steps.length === 2 && p4.ings.length === 0, JSON.stringify(p4));
+
+/* ───────────────────────── 4. 3단계 포크 계보 샘플 ───────────────────────── */
+console.log("\n[4] 3단계 포크 계보 샘플");
+
+// 뿌리 → 자식 → 손자. 앱의 저장 로직과 동일한 방식으로 anc/par 를 쌓는다.
+function fork(parentR, changes, reason, author, title) {
+  const child = { ...parentR, ...changes, t: title, au: author };
+  child.cr = reason;
+  child.par = { t: parentR.t, au: parentR.au, i: parentR.i, s: parentR.s };
+  child.anc = (parentR.anc || []).concat([{ t: parentR.t, au: parentR.au, cr: parentR.cr || "" }]).slice(-6);
+  child.root = parentR.root || ("root-" + parentR.t);
+  return child;
+}
+const root = { ...parent, root: "root-엄마 김치찌개" };
+const gen2 = fork(root,
+  { i: root.i.map(x => x.n === "설탕" ? { n: "매실청", a: "2", u: "큰술" } : x) },
+  "아이가 먹어서 설탕 대신 매실청", "딸", "우리집 김치찌개");
+const gen3 = fork(gen2,
+  { i: gen2.i.concat([{ n: "청양고추", a: "2", u: "개" }]) },
+  "매운 걸 좋아해서 청양고추 추가", "친구", "매운 김치찌개");
+
+ok("3세대 계보 체인 길이 3", (gen3.anc.length + 1) === 3, JSON.stringify(gen3.anc.map(a => a.t)));
+ok("뿌리가 체인 첫 노드", gen3.anc[0].t === "엄마 김치찌개");
+ok("중간 세대의 변경 이유 보존", gen3.anc[1].cr === "아이가 먹어서 설탕 대신 매실청", gen3.anc[1].cr);
+ok("root 가 3세대까지 동일", gen3.root === root.root && gen2.root === root.root);
+const dg3 = diffRecipes(gen3.par, gen3);
+ok("손자 diff = 청양고추 추가 1건", dg3.count === 1 && has(dg3, "add", "청양고추"), JSON.stringify(dg3));
+const dg2 = diffRecipes(gen2.par, gen2);
+ok("자식 diff = 설탕→매실청 교체 1건", dg2.count === 1 && has(dg2, "chg", "설탕 1큰술 → 매실청 2큰술"), JSON.stringify(dg2));
+
+// 부모가 삭제돼도 자식은 스냅샷으로 살아남는다
+const orphan = JSON.parse(JSON.stringify(gen3));
+ok("부모 스냅샷만으로 diff 재현 가능", diffRecipes(orphan.par, orphan).count === 1);
+
+/* ───────────────────────── 결과 ───────────────────────── */
+console.log("\n────────────────────────────");
+console.log(`통과 ${pass} · 실패 ${fail}`);
+if (fail) { console.log("❌ 실패한 테스트가 있습니다."); process.exit(1); }
+console.log("✅ 전부 통과");
