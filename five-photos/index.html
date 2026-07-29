@@ -47,12 +47,16 @@ h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90de
 .card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
 .lab b{color:var(--acc2)}
-.hint{font-size:12px;color:#6b7280;margin:6px 0 0;word-break:keep-all}
+.hint{font-size:12.5px;color:#6b7280;margin:6px 0 0;word-break:keep-all}
 button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#062a3a;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
 button.ghost{background:#13202a;color:var(--acc2);border:1px solid #24455a;font-weight:700}
 button:disabled{opacity:.4;cursor:not-allowed}
 .acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .acts button{flex:1;min-width:130px}
+.trustline{margin:0 0 14px;padding:10px 13px;border:1px solid #14532d;background:#0d1f16;border-radius:12px;font-size:13px;color:#a7f3d0;word-break:keep-all}
+.details{margin:16px 0 18px}
+.details summary{cursor:pointer;font-size:13.5px;color:#9ca3af;padding:12px 4px;min-height:44px;display:flex;align-items:center}
+.details[open] summary{color:var(--acc2)}
 .privacy{border:1px solid #14532d;background:#0d1f16;border-radius:14px;padding:14px 16px;margin-bottom:18px}
 .privacy p{margin:0;font-size:13.5px;color:#a7f3d0;word-break:keep-all}
 .privacy p+p{margin-top:7px}
@@ -90,6 +94,13 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .stat span{font-size:12px;color:#8b8b8b}
 .eta{font-size:13.5px;color:#fbbf24;margin:10px 0 0}
 /* 결산 카드 */
+.periodTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.periodTabs button{width:auto;flex:none;padding:9px 14px;font-size:13px;min-height:44px;background:#111;color:#9ca3af;border:1px solid #2a2a2a;border-radius:999px;font-weight:600}
+.periodTabs button.on{background:#13202a;color:var(--acc2);border-color:#24455a}
+.ratio{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:16px;background:#1f2937}
+.ratio i{display:block;height:100%}
+.ratioLab{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:#94a3b8}
+.ratioLab b{color:#e5e7eb}
 .recap{background:linear-gradient(160deg,#101a24,#0b0f14);border:1px solid #24455a;border-radius:18px;padding:24px 20px}
 .recap h3{margin:0 0 4px;font-size:15px;color:var(--acc2);letter-spacing:.04em}
 .recap .big{font-size:44px;font-weight:900;margin:6px 0 0;color:#fff;line-height:1.15}
@@ -110,12 +121,12 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .faq dt{font-weight:700;color:#e5e7eb;margin-top:14px;font-size:14.5px}
 .faq dd{margin:5px 0 0;font-size:14.5px;color:#b6b6b6;word-break:keep-all}
 .rel{display:flex;flex-wrap:wrap;gap:9px;margin-top:34px}
-.rel a{font-size:13px;color:#9ca3af;border:1px solid #2a2a2a;padding:8px 12px;border-radius:999px;text-decoration:none}
+.rel a{font-size:13px;color:#9ca3af;border:1px solid #2a2a2a;padding:12px 14px;border-radius:999px;text-decoration:none;min-height:44px;display:flex;align-items:center}
 footer{margin-top:34px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
 footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:#e5e7eb;color:#111;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:60}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.disc{font-size:12px;color:#6b7280;margin:14px 0 0;word-break:keep-all}
+.disc{font-size:12.5px;color:#6b7280;margin:14px 0 0;word-break:keep-all}
 </style>
 </head>
 <body>
@@ -133,15 +144,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   <p class="lead">사진첩에 3만 장이 있어도 3만 장을 보는 일은 영원히 일어나지 않습니다. 그런데 <b>다섯 장이면 40초</b>입니다. 남길지 버릴지만 고르세요. 1년이면 1,800장이 정리됩니다.</p>
 </header>
 
-<div class="privacy">
-  <p><b>🔒 사진은 이 기기 밖으로 나가지 않습니다.</b></p>
-  <p>선택한 사진은 브라우저 메모리에서만 읽혀 화면에 그려집니다. 파일도 썸네일도 파일명도 어디로도 전송되지 않고, 업로드 코드 자체가 없습니다. 판정 기록은 이 브라우저의 저장소(IndexedDB)에만 남고 언제든 지울 수 있습니다.</p>
-  <p>얼굴 인식, 장소 분석, 자동 분류는 하지 않습니다. 이 도구는 그런 물건이 아닙니다.</p>
-</div>
-
-<div class="warn">
-  <p><b>⚠️ 이 도구는 사진을 삭제하지 않습니다.</b> 웹 브라우저에는 사진첩을 지울 권한이 없습니다. 버림으로 고른 사진은 30일 유예함에 쌓이고, 나중에 <b>파일명 목록</b>을 내려받아 갤러리 앱에서 직접 지우시면 됩니다. 앱이 조용히 지우는 경로는 없습니다.</p>
-</div>
+<p class="trustline">🔒 사진은 <b>이 기기 밖으로 나가지 않습니다</b> · 삭제도 하지 않습니다 · 로그인 없음</p>
 
 <!-- 0. 시작 -->
 <section class="card stage on" id="stageStart">
@@ -159,6 +162,18 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <p class="hint" id="resumeInfo"></p>
   </div>
 </section>
+
+<details class="details">
+  <summary>이 도구가 사진을 어떻게 다루는지 (꼭 읽어 주세요)</summary>
+  <div class="privacy">
+    <p><b>🔒 사진은 이 기기 밖으로 나가지 않습니다.</b></p>
+    <p>선택한 사진은 브라우저 메모리에서만 읽혀 화면에 그려집니다. 파일도 썸네일도 파일명도 어디로도 전송되지 않고, 업로드 코드 자체가 없습니다. 판정 기록은 이 브라우저의 저장소(IndexedDB)에만 남고 언제든 지울 수 있습니다.</p>
+    <p>얼굴 인식, 장소 분석, 자동 분류는 하지 않습니다. 이 도구는 그런 물건이 아닙니다.</p>
+  </div>
+  <div class="warn">
+    <p><b>⚠️ 이 도구는 사진을 삭제하지 않습니다.</b> 웹 브라우저에는 사진첩을 지울 권한이 없습니다. 버림으로 고른 사진은 30일 유예함에 쌓이고, 나중에 <b>파일명 목록</b>을 내려받아 갤러리 앱에서 직접 지우시면 됩니다. 앱이 조용히 지우는 경로는 없습니다.</p>
+  </div>
+</details>
 
 <!-- 1. 오늘의 다섯 장 -->
 <section class="stage" id="stageJudge">
@@ -179,7 +194,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
       <button type="button" class="bKeep" id="bKeep">남김 →</button>
     </div>
     <div class="undo"><button type="button" id="bUndo" disabled>방금 판정 되돌리기 ⟲</button></div>
-    <p class="hint">좌우로 밀어서 넘겨도 됩니다. 왼쪽 = 버림 후보, 오른쪽 = 남김, 위 = 즐겨찾기.</p>
+    <p class="hint">좌우로 밀어서 넘겨도 됩니다. 왼쪽 = 버림 후보, 오른쪽 = 남김, 위 = 즐겨찾기.<br>PC에서는 <b>← 버림 · → 남김 · ↑ 즐겨찾기 · Z 되돌리기</b> 키를 쓸 수 있습니다.</p>
   </div>
 </section>
 
@@ -220,15 +235,22 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 
 <!-- 결산 -->
 <section class="card" id="recapCard" style="display:none">
-  <p class="lab">📅 <span id="recapYear">2026</span>년 결산</p>
+  <p class="lab">📅 결산</p>
+  <div class="periodTabs" id="periodTabs">
+    <button type="button" data-p="year" class="on">올해</button>
+    <button type="button" data-p="30">최근 30일</button>
+    <button type="button" data-p="all">전체</button>
+  </div>
   <div class="recap" id="recap">
-    <h3>오늘의 다섯 장 · <span id="rYear">2026</span>년 결산</h3>
+    <h3>오늘의 다섯 장 · <span id="rYear">2026년</span> 결산</h3>
     <p class="big" id="rBig">0장을 보고<br>0장을 남겼습니다</p>
     <div class="row">
       <div><b id="rSeen">0</b><span>판정한 사진</span></div>
       <div><b id="rKeep">0</b><span>남긴 사진</span></div>
       <div><b id="rFav">0</b><span>즐겨찾기</span></div>
     </div>
+    <div class="ratio" id="ratioBar"></div>
+    <div class="ratioLab" id="ratioLab"></div>
     <p class="wm">tomatoeggcat.com/five-photos</p>
   </div>
   <p class="hint">결산 카드에는 <b>숫자만</b> 들어갑니다. 사진은 한 장도 들어가지 않으니 그대로 공유해도 사생활이 드러나지 않습니다.</p>
@@ -275,6 +297,9 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   </ol>
   <p>더 하기 버튼을 일부러 작게 두었습니다. 하루에 200장을 몰아서 보면 다음 날 오지 않기 때문입니다. 이 도구의 목적은 오늘 많이 하는 것이 아니라 내일도 하는 것입니다.</p>
 
+  <h2>결산은 연말까지 기다리지 않아도 됩니다</h2>
+  <p>결산 카드는 올해, 최근 30일, 전체 기간 중에서 고를 수 있습니다. 한 달만 해 봐도 숫자가 쌓이고, 그 숫자가 다음 달을 굴립니다. 카드에는 남긴 비율 막대만 들어가고 사진은 한 장도 들어가지 않습니다.</p>
+
   <h2>솔직하게 밝히는 한계</h2>
   <p>원래 이 기획은 사진첩 전체를 읽고 삭제까지 처리하는 휴대폰 앱을 전제로 했습니다. 이 도구는 설치가 필요 없는 웹 페이지이고, 웹 브라우저에는 사진첩 전체 접근 권한도, 사진 삭제 권한도 없습니다. 그래서 다음과 같이 축소했습니다.</p>
   <ul>
@@ -282,7 +307,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <li><b>삭제 → 파일명 목록 내려받기.</b> 앱이 사진을 지우는 경로는 아예 만들지 않았습니다.</li>
     <li><b>아침 알림 → 없음.</b> 백그라운드로 알림을 예약하려면 설치형 앱이나 푸시 서버가 필요합니다. 없는 기능을 흉내 내지 않았습니다.</li>
     <li><b>촬영 위치 표시 → 없음.</b> 위치 정보는 읽지도 표시하지도 않습니다. 장소 분석을 하지 않겠다는 원칙을 그대로 지켰습니다.</li>
-    <li><b>촬영일</b>은 파일의 수정 시각을 씁니다. 메신저로 받은 사진은 실제 촬영일과 다를 수 있습니다.</li>
+    <li><b>촬영일</b>은 사진에 EXIF 촬영 정보가 있으면 그것을, 없으면 파일 수정 시각을 씁니다(화면에 어느 쪽인지 표시됩니다). EXIF도 기기 안에서만 읽습니다.</li>
   </ul>
 
   <h2>자주 묻는 질문</h2>
@@ -381,6 +406,66 @@ function etaYear(remaining, perDay, fromYear){
 
 if(typeof module !== "undefined" && module.exports){
   module.exports = { assetKey:assetKey, isScreenshot:isScreenshot, pickToday:pickToday, etaYear:etaYear };
+}
+
+/* ── EXIF 촬영일(DateTimeOriginal) — 파일 앞부분만 읽어 기기 안에서 파싱.
+      수정 시각은 메신저로 받은 사진에서 실제 촬영일과 다르기 때문에 EXIF가 있으면 그쪽을 쓴다. ── */
+function parseExifDate(view){
+  if(view.byteLength < 8 || view.getUint16(0) !== 0xFFD8) return null;   // JPEG 아님
+  var off = 2;
+  while(off + 4 < view.byteLength){
+    if(view.getUint8(off) !== 0xFF) return null;
+    var marker = view.getUint8(off+1), size = view.getUint16(off+2);
+    if(marker === 0xE1){                                                  // APP1(Exif)
+      var base = off + 10;                                                // "Exif\0\0" 다음 = TIFF 헤더
+      if(base + 8 > view.byteLength) return null;
+      var little = view.getUint16(base) === 0x4949;
+      var ifd0 = base + view.getUint32(base+4, little);
+      function tagVal(dirStart, want){
+        if(dirStart + 2 > view.byteLength) return 0;
+        var n = view.getUint16(dirStart, little);
+        for(var i=0;i<n;i++){
+          var e = dirStart + 2 + i*12;
+          if(e + 12 > view.byteLength) return 0;
+          if(view.getUint16(e, little) === want) return view.getUint32(e+8, little);
+        }
+        return 0;
+      }
+      function tagStr(dirStart, want){
+        if(dirStart + 2 > view.byteLength) return null;
+        var n = view.getUint16(dirStart, little);
+        for(var i=0;i<n;i++){
+          var e = dirStart + 2 + i*12;
+          if(e + 12 > view.byteLength) return null;
+          if(view.getUint16(e, little) === want){
+            var len = view.getUint32(e+4, little), p = base + view.getUint32(e+8, little), out = "";
+            for(var k=0;k<len-1 && p+k<view.byteLength;k++) out += String.fromCharCode(view.getUint8(p+k));
+            return out;
+          }
+        }
+        return null;
+      }
+      var exifPtr = tagVal(ifd0, 0x8769);
+      var str = exifPtr ? tagStr(base + exifPtr, 0x9003) : null;          // DateTimeOriginal
+      if(!str) str = tagStr(ifd0, 0x0132);                                // DateTime 폴백
+      if(!str) return null;
+      var m = str.match(/^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}):(\d{2}):(\d{2})/);
+      if(!m) return null;
+      return new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5], +m[6]).getTime();
+    }
+    if(marker === 0xDA) return null;                                      // 이미지 데이터 시작
+    off += 2 + size;
+  }
+  return null;
+}
+function readExifDate(file){
+  return new Promise(function(res){
+    if(!/jpe?g/i.test(file.type) && !/\.jpe?g$/i.test(file.name)) { res(null); return; }
+    var fr = new FileReader();
+    fr.onload = function(){ try{ res(parseExifDate(new DataView(fr.result))); }catch(e){ res(null); } };
+    fr.onerror = function(){ res(null); };
+    fr.readAsArrayBuffer(file.slice(0, 131072));
+  });
 }
 
 /* ============================================================
@@ -498,15 +583,34 @@ function paintPager(){
   }
   var jc = $("judgeCount"); if(jc) jc.textContent = Math.min(qi+1, queue.length) + "/" + queue.length;
 }
+var preUrl = null, preId = null;
+function preloadNext(){
+  var nx = queue[qi+1];
+  if(!nx || preId === nx.id) return;
+  if(preUrl){ URL.revokeObjectURL(preUrl); preUrl = null; }
+  preUrl = URL.createObjectURL(nx.file); preId = nx.id;
+  var im = new Image(); im.src = preUrl;                 // 디코딩까지 미리 (깜빡임 방지)
+}
 function showPhoto(){
   var a = queue[qi];
   if(!a){ finishDay(); return; }
   if(objectUrl){ URL.revokeObjectURL(objectUrl); objectUrl = null; }
-  objectUrl = URL.createObjectURL(a.file);
+  if(preId === a.id && preUrl){ objectUrl = preUrl; preUrl = null; preId = null; }
+  else objectUrl = URL.createObjectURL(a.file);
   var img = $("photo");
   img.style.transform = ""; img.style.opacity = "1";
   img.src = objectUrl;
-  $("mDate").textContent = new Date(a.lm).toLocaleDateString("ko-KR",{year:"numeric",month:"long",day:"numeric"});
+  var fmt = function(t, exif){
+    return new Date(t).toLocaleDateString("ko-KR",{year:"numeric",month:"long",day:"numeric"}) + (exif ? " 촬영" : " (파일 시각)");
+  };
+  $("mDate").textContent = fmt(a.lm, false);
+  if(a.exif === undefined){
+    readExifDate(a.file).then(function(t){
+      a.exif = t || null;
+      if(queue[qi] && queue[qi].id === a.id && a.exif) $("mDate").textContent = fmt(a.exif, true);
+    });
+  } else if(a.exif) $("mDate").textContent = fmt(a.exif, true);
+  preloadNext();
   $("mName").textContent = a.name.length > 26 ? a.name.slice(0,24)+"…" : a.name;
   $("burstTag").style.display = (track==="burst") ? "" : ( track==="screenshot" ? "" : "none");
   $("burstTag").textContent = track==="screenshot" ? "스크린샷 트랙" : "연속 촬영 묶음";
@@ -548,6 +652,7 @@ $("bUndo").addEventListener("click",function(){
 });
 function finishDay(){
   if(objectUrl){ URL.revokeObjectURL(objectUrl); objectUrl=null; }
+  if(preUrl){ URL.revokeObjectURL(preUrl); preUrl=null; preId=null; }
   show("stageDone");
   var d = doneToday();
   $("doneMsg").textContent = d + "장 끝났습니다. " + (d >= 15 ? "오늘은 여기까지입니다. 내일 또 다섯 장." : "내일 또 다섯 장이 기다립니다.");
@@ -557,6 +662,17 @@ function finishDay(){
 $("moreBtn").addEventListener("click",function(){
   todayLimit = Math.min(15, doneToday() + 5);
   startDay();
+});
+
+/* ---- 키보드 (PC) ---- */
+document.addEventListener("keydown",function(e){
+  if(!$("stageJudge").classList.contains("on")) return;
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
+  var k = e.key;
+  if(k === "ArrowRight"){ e.preventDefault(); judge("keep"); }
+  else if(k === "ArrowLeft"){ e.preventDefault(); judge("trash"); }
+  else if(k === "ArrowUp"){ e.preventDefault(); judge("fav"); }
+  else if(k === "z" || k === "Z" || k === "ㅋ"){ e.preventDefault(); $("bUndo").click(); }
 });
 
 /* ---- 스와이프 ---- */
@@ -653,24 +769,40 @@ $("restoreTrash").addEventListener("click",function(){
   toast(t.length + "장을 되돌렸습니다");
   paint();
 });
+var period = "year";
+function periodLabel(){ return period === "year" ? (new Date().getFullYear() + "년") : (period === "30" ? "최근 30일" : "전체 기간"); }
 function recapData(){
-  var y = new Date().getFullYear(), c = counts();
+  var y = new Date().getFullYear(), c = counts(), since = Date.now() - 30*86400000;
   var seen=0, keep=0, fav=0;
   c.list.forEach(function(j){
-    if(j.t.slice(0,4) !== String(y)) return;
+    if(period === "year" && j.t.slice(0,4) !== String(y)) return;
+    if(period === "30" && Date.parse(j.t) < since) return;
     seen++; if(j.v==="keep") keep++; if(j.v==="fav"){ keep++; fav++; }
   });
-  return { y:y, seen:seen, keep:keep, fav:fav };
+  return { y:y, seen:seen, keep:keep, fav:fav, label: periodLabel() };
 }
 function paintRecap(c){
   var r = shared || recapData();
   $("recapCard").style.display = (r.seen || shared) ? "" : "none";
-  $("recapYear").textContent = r.y; $("rYear").textContent = r.y;
+  $("rYear").textContent = r.label || (r.y + "년");
   $("rBig").innerHTML = r.seen.toLocaleString()+"장을 보고<br>"+r.keep.toLocaleString()+"장을 남겼습니다";
   $("rSeen").textContent = r.seen.toLocaleString();
   $("rKeep").textContent = r.keep.toLocaleString();
   $("rFav").textContent = r.fav.toLocaleString();
+  var kept = r.keep, trashed = Math.max(0, r.seen - r.keep);
+  var tot = Math.max(1, r.seen);
+  $("ratioBar").innerHTML = "<i style='width:" + (kept/tot*100) + "%;background:#34d399'></i>"
+                          + "<i style='width:" + (trashed/tot*100) + "%;background:#fb7185'></i>";
+  $("ratioLab").innerHTML = "<span>남김 <b>" + Math.round(kept/tot*100) + "%</b></span>"
+                          + "<span>버림 후보 <b>" + Math.round(trashed/tot*100) + "%</b></span>"
+                          + "<span>즐겨찾기 <b>" + r.fav.toLocaleString() + "장</b></span>";
 }
+Array.prototype.forEach.call(document.querySelectorAll("#periodTabs button"),function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll("#periodTabs button").forEach(function(x){x.classList.remove("on");});
+    b.classList.add("on"); period = b.dataset.p; shared = null; paint();
+  });
+});
 $("remixBtn").addEventListener("click",function(){
   shared = null; todayLimit = Math.max(5, doneToday()+5);
   show("stageStart"); window.scrollTo({top:0,behavior:"smooth"});
@@ -684,7 +816,7 @@ $("resetBtn").addEventListener("click",function(){
 });
 
 /* ---- 공유 ---- */
-function state(){ var r = shared || recapData(); return { y:r.y, s:r.seen, k:r.keep, f:r.fav }; }
+function state(){ var r = shared || recapData(); return { y:r.y, s:r.seen, k:r.keep, f:r.fav, l:r.label || (r.y+"년") }; }
 function resultUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(state())); }
 function copy(text,msg){
   if(navigator.clipboard && navigator.clipboard.writeText){
@@ -699,7 +831,7 @@ function fallbackCopy(text,msg){
 }
 function shareText(){
   var s = state();
-  return "📷 오늘의 다섯 장 — "+s.y+"년 결산\n"+s.s.toLocaleString()+"장을 보고 "+s.k.toLocaleString()+"장을 남겼습니다. (즐겨찾기 "+s.f+")\n하루 다섯 장이면 40초.\n"+resultUrl();
+  return "📷 오늘의 다섯 장 — "+(s.l||s.y+"년")+" 결산\n"+s.s.toLocaleString()+"장을 보고 "+s.k.toLocaleString()+"장을 남겼습니다. (즐겨찾기 "+s.f+")\n하루 다섯 장이면 40초.\n"+resultUrl();
 }
 $("copyLinkBtn").addEventListener("click",function(){ copy(resultUrl(),"링크가 복사되었습니다"); });
 $("copyTextBtn").addEventListener("click",function(){ copy(shareText(),"텍스트가 복사되었습니다"); });
@@ -724,7 +856,7 @@ $("saveBtn").addEventListener("click",function(){
   ctx.fillStyle="#7dd3fc"; ctx.font="700 32px "+F;
   ctx.fillText("오늘의 다섯 장", M, 180);
   ctx.fillStyle="#94a3b8"; ctx.font="30px "+F;
-  ctx.fillText(s.y + "년 결산", M, 228);
+  ctx.fillText((s.l || (s.y+"년")) + " 결산", M, 228);
   ctx.fillStyle="#ffffff"; ctx.font="900 92px "+F;
   ctx.fillText(s.s.toLocaleString()+"장을 보고", M, 400);
   ctx.fillText(s.k.toLocaleString()+"장을 남겼습니다", M, 510);
@@ -736,9 +868,16 @@ $("saveBtn").addEventListener("click",function(){
     ctx.fillStyle="#94a3b8"; ctx.font="27px "+F; ctx.fillText(c[0], x, 668);
     ctx.fillStyle="#ffffff"; ctx.font="800 56px "+F; ctx.fillText(c[1], x, 738);
   });
+  // 남김 / 버림 비율 막대
+  var kept = s.k, trashed = Math.max(0, s.s - s.k), tot = Math.max(1, s.s), bw = W - 2*M;
+  ctx.fillStyle="#1f2937"; ctx.fillRect(M, 800, bw, 26);
+  ctx.fillStyle="#34d399"; ctx.fillRect(M, 800, bw*kept/tot, 26);
+  ctx.fillStyle="#fb7185"; ctx.fillRect(M + bw*kept/tot, 800, bw*trashed/tot, 26);
+  ctx.fillStyle="#94a3b8"; ctx.font="26px "+F;
+  ctx.fillText("남김 " + Math.round(kept/tot*100) + "%   ·   버림 후보 " + Math.round(trashed/tot*100) + "%", M, 872);
   ctx.fillStyle="#cbd5e1"; ctx.font="32px "+F;
-  ctx.fillText("3만 장은 못 봐도", M, 940);
-  ctx.fillText("다섯 장은 봅니다.", M, 992);
+  ctx.fillText("3만 장은 못 봐도", M, 960);
+  ctx.fillText("다섯 장은 봅니다.", M, 1012);
   ctx.fillStyle="#64748b"; ctx.font="26px "+F;
   ctx.fillText("이 카드에는 사진이 한 장도 들어 있지 않습니다.", M, 1120);
   ctx.fillText("숫자만 담긴 카드입니다.", M, 1162);
@@ -746,7 +885,7 @@ $("saveBtn").addEventListener("click",function(){
   ctx.fillText("tomatoeggcat.com/five-photos", W-M, H-110);
   ctx.textAlign="left";
   var a=document.createElement("a");
-  a.download="five-photos-"+s.y+".png"; a.href=cv.toDataURL("image/png");
+  a.download="five-photos-"+(s.l||s.y).replace(/\s/g,"")+".png"; a.href=cv.toDataURL("image/png");
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   toast("결산 카드를 저장했습니다");
 });
@@ -767,7 +906,8 @@ openDB().then(function(db){
   if(params.has("r")){
     var st = dec(params.get("r"));
     if(st && typeof st.s === "number"){
-      shared = { y: st.y||new Date().getFullYear(), seen: Math.max(0,st.s|0), keep: Math.max(0,st.k|0), fav: Math.max(0,st.f|0) };
+      shared = { y: st.y||new Date().getFullYear(), seen: Math.max(0,st.s|0), keep: Math.max(0,st.k|0), fav: Math.max(0,st.f|0),
+                 label: String(st.l||"").slice(0,12) || ((st.y||new Date().getFullYear())+"년") };
       $("inbound").classList.add("show");
       $("inboundBtn").addEventListener("click",function(){
         $("inbound").classList.remove("show"); shared = null;

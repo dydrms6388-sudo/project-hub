@@ -48,25 +48,25 @@ h1{font-size:25px;font-weight:800;margin:0 0 6px;letter-spacing:-.01em}
 .card{border:1px solid var(--rule);background:#fffdf8;border-radius:14px;padding:18px;margin-bottom:16px}
 .lab{font-size:12.5px;font-weight:700;color:var(--sub);letter-spacing:.04em;margin:0 0 9px}
 .lab b{color:var(--ink)}
-.hint{font-size:12px;color:var(--sub);margin:7px 0 0;word-break:keep-all}
+.hint{font-size:12.5px;color:var(--sub);margin:7px 0 0;word-break:keep-all}
 button{margin:0;width:100%;padding:12px;border:1px solid var(--ink);border-radius:10px;background:var(--ink);color:#fffdf8;font-size:15px;font-weight:700;cursor:pointer;min-height:46px;font-family:inherit}
 button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);font-weight:600}
 button:disabled{opacity:.35;cursor:not-allowed}
 .acts{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}
 .acts button{flex:1;min-width:124px}
 .tools{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
-.tools button{width:auto;flex:none;padding:8px 12px;font-size:13px;background:#fffdf8;color:#4d4941;border:1px solid var(--rule);min-height:40px;font-weight:600}
+.tools button{width:auto;flex:none;padding:10px 14px;font-size:13px;background:#fffdf8;color:#4d4941;border:1px solid var(--rule);min-height:44px;font-weight:600}
 .tools button.on{background:var(--ink);color:#fffdf8;border-color:var(--ink)}
-.swatch{width:34px;height:34px;padding:0;border-radius:999px;min-height:0;border:2px solid var(--rule)}
-.swatch.on{border-color:var(--ink);transform:scale(1.12)}
+.tools button.swatch{width:44px;min-width:44px;height:44px;padding:0;border-radius:999px;min-height:44px;border:2px solid var(--rule)}
+.tools button.swatch.on{border-color:var(--ink);transform:scale(1.1)}
 .pad{position:relative;border:1px solid var(--rule);background:#fffdf8;border-radius:12px;overflow:hidden;aspect-ratio:1/1.32;
   background-image:linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px);background-size:100% 8.33%}
 .pad canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
-.pad .pageno{position:absolute;right:9px;bottom:7px;font-size:11px;color:#b6ae9c}
+.pad .pageno{position:absolute;right:9px;bottom:7px;font-size:12px;color:#b6ae9c}
 .meter{display:flex;gap:9px;margin-top:10px;flex-wrap:wrap}
 .meter div{flex:1;min-width:96px;border:1px solid var(--rule);border-radius:10px;padding:9px 11px;background:#fffdf8}
 .meter b{display:block;font-size:16px}
-.meter span{font-size:11.5px;color:var(--sub)}
+.meter span{font-size:12.5px;color:var(--sub)}
 .bar{height:7px;border-radius:4px;background:#e8e2d3;overflow:hidden;margin-top:6px}
 .bar i{display:block;height:100%;background:var(--acc);width:0}
 .bar i.warn{background:#b45309}
@@ -79,19 +79,26 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .inbound span{flex:1;min-width:150px;font-size:14px;color:#4d4941}
 .inbound button{width:auto;padding:9px 16px;font-size:14px}
 .a11y{border:1px solid #b45309;background:#fdf6ea;border-radius:12px;padding:13px 15px;margin-bottom:16px}
-.a11y p{margin:0;font-size:13px;color:#7c4a06;word-break:keep-all}
+.a11y p{margin:0;font-size:13.5px;color:#7c4a06;word-break:keep-all}
 .about h2{font-size:17px;margin:26px 0 8px}
 .about p,.about li{font-size:14.5px;color:#413d35;word-break:keep-all}
 .about ol,.about ul{padding-left:19px}
 .faq dt{font-weight:700;margin-top:14px;font-size:14.5px}
 .faq dd{margin:5px 0 0;font-size:14.5px;color:#413d35;word-break:keep-all}
 .rel{display:flex;flex-wrap:wrap;gap:9px;margin-top:32px}
-.rel a{font-size:13px;color:var(--sub);border:1px solid var(--rule);padding:7px 12px;border-radius:999px;text-decoration:none}
-footer{margin-top:32px;padding-top:15px;border-top:1px solid var(--rule);font-size:12px;color:var(--sub)}
+.rel a{font-size:13px;color:var(--sub);border:1px solid var(--rule);padding:12px 14px;border-radius:999px;text-decoration:none;min-height:44px;display:flex;align-items:center}
+footer{margin-top:32px;padding-top:15px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--sub)}
 footer a{color:var(--sub);text-decoration:none;margin-right:12px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fffdf8;padding:11px 18px;border-radius:10px;font-size:13.5px;opacity:0;pointer-events:none;transition:.2s;z-index:60}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.disc{font-size:12px;color:var(--sub);margin:13px 0 0;word-break:keep-all}
+.zoomed{position:fixed;inset:0;background:var(--paper);z-index:80;display:none;padding:12px}
+.zoomed.on{display:flex;flex-direction:column}
+.zoomed canvas{flex:1;width:100%;min-height:0;object-fit:contain;background:#fffdf8;border:1px solid var(--rule);border-radius:10px}
+.zoomed button{margin-top:10px;flex:none}
+.over{display:none;border:1px solid #b45309;background:#fdf6ea;border-radius:10px;padding:12px 14px;margin-top:12px}
+.over.show{display:block}
+.over p{margin:0;font-size:13px;color:#7c4a06;word-break:keep-all}
+.disc{font-size:12.5px;color:var(--sub);margin:13px 0 0;word-break:keep-all}
 </style>
 </head>
 <body>
@@ -120,7 +127,9 @@ footer a{color:var(--sub);text-decoration:none;margin-right:12px}
     <div class="pad"><canvas id="viewCv" width="760" height="1003"></canvas><span class="pageno" id="viewPage">1 / 1</span></div>
     <div class="player">
       <button type="button" id="playBtn">▶ 써지는 과정 재생</button>
+      <button type="button" class="ghost" id="stopPlay">■ 정지</button>
       <button type="button" class="ghost" id="speedBtn">1.0배</button>
+      <button type="button" class="ghost" id="zoomBtn">🔍 크게 보기</button>
       <button type="button" class="ghost" id="pagePrev">‹</button>
       <button type="button" class="ghost" id="pageNext">›</button>
     </div>
@@ -145,10 +154,12 @@ footer a{color:var(--sub);text-decoration:none;margin-right:12px}
       <button type="button" class="swatch" data-color="2" style="background:#b91c1c"></button>
       <button type="button" class="swatch" data-color="3" style="background:#3f6212"></button>
       <button type="button" id="eraserBtn">지우개</button>
+      <button type="button" id="smoothBtn">필기 보정 끔</button>
     </div>
     <div class="pad"><canvas id="padCv" width="760" height="1003"></canvas><span class="pageno" id="padPage">1 / 3</span></div>
     <div class="tools" style="margin-top:10px">
       <button type="button" id="undoBtn">↩ 되돌리기</button>
+      <button type="button" id="redoBtn" disabled>↪ 되살리기</button>
       <button type="button" id="clearBtn">전체 지우기</button>
       <button type="button" id="pPrev">‹ 앞 장</button>
       <button type="button" id="pNext">뒷 장 ›</button>
@@ -173,9 +184,13 @@ footer a{color:var(--sub);text-decoration:none;margin-right:12px}
     <div class="pad"><canvas id="outCv" width="760" height="1003"></canvas><span class="pageno" id="outPage">1 / 1</span></div>
     <div class="player">
       <button type="button" id="playBtn2">▶ 다시 재생</button>
+      <button type="button" class="ghost" id="stopPlay2">■ 정지</button>
       <button type="button" class="ghost" id="speedBtn2">1.0배</button>
       <button type="button" class="ghost" id="outPrev">‹</button>
       <button type="button" class="ghost" id="outNext">›</button>
+    </div>
+    <div class="over" id="overWarn">
+      <p><b>링크로 보내기엔 글이 깁니다.</b> 획 데이터가 링크 한도(6KB)를 넘어서, 링크로 보내면 메신저에서 잘려 열리지 않을 수 있습니다. <b>이미지로 저장</b>해서 보내 주세요. 한 장 줄이거나 획을 줄이면 링크도 다시 열립니다.</p>
     </div>
     <div class="acts">
       <button type="button" id="saveBtn">이미지로 저장 🖼️</button>
@@ -212,6 +227,15 @@ footer a{color:var(--sub);text-decoration:none;margin-right:12px}
     <li>받은 사람은 <b>손글씨로만</b> 답장할 수 있습니다. 좋아요 버튼 같은 건 없습니다.</li>
   </ol>
 
+  <h2>이럴 때 씁니다</h2>
+  <ul>
+    <li>생일이나 기념일에 <b>손글씨 한 장</b>을 링크로 보낼 때. 카톡 텍스트보다 오래 남습니다.</li>
+    <li>사과하거나 고맙다고 말할 때. 손으로 쓰면 문장이 저절로 짧고 순해집니다.</li>
+    <li>가족에게 짧은 쪽지를 남길 때. 냉장고에 붙이는 메모의 인터넷판입니다.</li>
+    <li>글씨 연습 과정을 남기고 싶을 때. 재생을 보면 어디서 멈췄는지 보입니다.</li>
+    <li>단톡방에서 손글씨로만 대화해 보는 놀이. 답장도 손으로 써야 합니다.</li>
+  </ul>
+
   <h2>지우개와 재생</h2>
   <p>지운 획은 사라지지 않고 지운 시각과 함께 남습니다. 그래서 재생하면 원래 자리에 나타났다가 지운 순간에 사라집니다. 고쳐 쓴 흔적이 보이는 편지가 더 정직하다고 생각합니다. 물론 완성된 그림에는 남지 않으니, 흔적을 남기고 싶지 않다면 되돌리기(마지막 획 삭제)나 전체 지우기를 쓰세요.</p>
 
@@ -219,9 +243,9 @@ footer a{color:var(--sub);text-decoration:none;margin-right:12px}
   <ul>
     <li><b>공개 게시판은 만들지 않았습니다.</b> 원래 기획은 주제방이 있는 게시판이었지만, 여러 사람이 쓴 손글씨를 공개하려면 부적절한 그림을 걸러내는 검수가 반드시 필요합니다. 손글씨 검수는 글자 검수보다 훨씬 어려워 OCR과 이미지 분류, 그리고 사람 검수 큐가 필요한데 이 사이트에는 서버가 없습니다. 검수 없이 공개 게시판을 여는 것은 무책임하므로, <b>링크로만 주고받는 쪽지</b>로 범위를 좁혔습니다.</li>
     <li><b>검색되지 않습니다.</b> 손글씨는 글자가 아니므로 검색 대상이 아닙니다. OCR로 억지 색인을 만들 생각도 없습니다.</li>
-    <li><b>화면 낭독기로 읽을 수 없습니다.</b> 대체 텍스트를 자동 생성할 방법이 없습니다.</li>
+    <li><b>화면 낭독기로 읽을 수 없습니다.</b> 대체 텍스트를 자동 생성할 방법이 없습니다. 대신 받은 쪽지를 <b>전체 화면으로 크게 보는</b> 기능과 굵은 펜을 두어, 글씨가 잘 안 보이는 경우를 조금이나마 돕습니다.</li>
     <li><b>링크 길이 한도가 있습니다.</b> 획 데이터를 링크에 담기 때문에 6KB를 넘지 않도록 게이지를 두었습니다. 넘으면 이미지로 저장해 공유해 주세요.</li>
-    <li><b>필압은 저장하지 않습니다.</b> 용량 때문입니다. 대신 쓰는 속도에 따라 굵기가 변합니다.</li>
+    <li><b>필압은 저장하지 않습니다.</b> 용량 때문입니다. 대신 쓰는 속도에 따라 굵기가 변하고, 마우스나 트랙패드로 쓸 때는 <b>필기 보정</b>을 켜면 선이 부드러워집니다.</li>
   </ul>
 
   <h2>자주 묻는 질문</h2>
@@ -251,6 +275,13 @@ footer a{color:var(--sub);text-decoration:none;margin-right:12px}
   <div style="margin-top:8px">© TomatoEggCat</div>
 </footer>
 
+</div>
+<div class="zoomed" id="zoomed">
+  <canvas id="zoomCv" width="1140" height="1504"></canvas>
+  <div class="acts" style="margin-top:10px">
+    <button type="button" class="ghost" id="boldBtn">굵고 진하게</button>
+    <button type="button" id="zoomClose">닫기</button>
+  </div>
 </div>
 <div class="toast" id="toast">복사되었습니다</div>
 <canvas id="cardCv" width="1080" height="1350" style="display:none"></canvas>
@@ -365,6 +396,7 @@ var PENS = [{w:3.4},{w:6.2},{w:10.5}];
 var UNIT = 1024;                 // 정규화 좌표계
 var MAXPAGES = 3, MAXBYTES = 6144;
 
+var smoothing = false;      // 마우스·트랙패드로 쓸 때 각진 선을 부드럽게
 var note = { pages: [[],[],[]] };
 var page = 0, pen = 0, color = 0, eraser = false;
 var t0 = 0, drawing = null, lats = [];
@@ -412,7 +444,7 @@ function drawStroke(ctx, s, scale, upto){
 }
 function renderPage(cv, strokes, opts){
   var ctx = ctxOf(cv), scale = cv.width/UNIT;
-  ctx.clearRect(0,0,cv.width,cv.height);
+  if(!(opts && opts.keepBg)) ctx.clearRect(0,0,cv.width,cv.height);
   (strokes||[]).forEach(function(s){
     if(s.d && !(opts && opts.showErased)) return;
     drawStroke(ctx, s, scale);
@@ -468,11 +500,15 @@ function trimmed(){
     var t = now();
     drawing = { c:color, w:pen, d:0, t0:t, p:[[p[0],p[1],0]] };
     note.pages[page].push(drawing);
+    redoStack = []; $("redoBtn").disabled = true;
     repaint();
   });
   /* 점 하나 추가 + 직전 구간만 증분 렌더(전체 리페인트는 지연의 주범이라 하지 않는다) */
   function addPoint(ev){
     var p = pos(ev), last = drawing.p[drawing.p.length-1];
+    if(smoothing && drawing.p.length > 1){         // 지수 이동평균 — 손떨림/계단 현상 완화
+      p = [ last[0] + (p[0]-last[0])*0.55, last[1] + (p[1]-last[1])*0.55 ];
+    }
     var dx = p[0]-last[0], dy = p[1]-last[1];
     if(dx*dx+dy*dy < 9) return;                 // 3단위 미만 이동은 버림(용량 절약)
     drawing.p.push([p[0], p[1], now()-drawing.t0]);
@@ -519,28 +555,54 @@ Array.prototype.forEach.call(document.querySelectorAll(".swatch"),function(b){
     b.classList.add("on"); color = +b.dataset.color; eraser=false; $("eraserBtn").classList.remove("on");
   });
 });
+$("smoothBtn").addEventListener("click",function(){
+  smoothing = !smoothing;
+  this.classList.toggle("on", smoothing);
+  this.textContent = smoothing ? "필기 보정 켬" : "필기 보정 끔";
+  toast(smoothing ? "마우스로 써도 선이 부드러워집니다" : "보정을 껐습니다");
+});
 $("eraserBtn").addEventListener("click",function(){
   eraser = !eraser; this.classList.toggle("on", eraser);
   $("modeTag").textContent = eraser ? "지우개" : "";
 });
+var redoStack = [];
 $("undoBtn").addEventListener("click",function(){
-  var s = note.pages[page];
-  for(var i=s.length-1;i>=0;i--){ if(!s[i].d){ s.splice(i,1); break; } }
+  var arr = note.pages[page];
+  for(var i=arr.length-1;i>=0;i--){
+    if(!arr[i].d){ redoStack.push({ page:page, at:i, stroke:arr.splice(i,1)[0] }); break; }
+  }
+  $("redoBtn").disabled = redoStack.length === 0;
+  repaint();
+});
+$("redoBtn").addEventListener("click",function(){
+  var r = redoStack.pop();
+  if(!r) return;
+  if(page !== r.page){ page = r.page; }
+  note.pages[r.page].splice(Math.min(r.at, note.pages[r.page].length), 0, r.stroke);
+  $("redoBtn").disabled = redoStack.length === 0;
   repaint();
 });
 $("clearBtn").addEventListener("click",function(){
-  note = { pages: [[],[],[]] }; t0 = 0; page = 0; repaint(); toast("전부 지웠습니다");
+  note = { pages: [[],[],[]] }; t0 = 0; page = 0; redoStack = []; $("redoBtn").disabled = true;
+  repaint(); toast("전부 지웠습니다");
 });
 $("pPrev").addEventListener("click",function(){ if(page>0){ page--; repaint(); } });
 $("pNext").addEventListener("click",function(){ if(page<MAXPAGES-1){ page++; repaint(); } });
 
 /* ---- 재생 ---- */
+var playToken = 0;
+function stopPlay(cv, n, pageIdx){
+  playToken++;
+  renderPage(cv, (n.pages[pageIdx] || []));
+}
 function play(cv, n, pageIdx, speed, pageLabel){
+  var myToken = ++playToken;
   var tl = compressTimes(n);
   var strokes = n.pages[pageIdx] || [];
   var start = performance.now();
   var ctx = ctxOf(cv), scale = cv.width/UNIT;
   function frame(){
+    if(myToken !== playToken) return;              // 정지되었거나 다른 재생이 시작됨
     var P = (performance.now()-start) * speed;
     ctx.clearRect(0,0,cv.width,cv.height);
     strokes.forEach(function(s){
@@ -565,18 +627,27 @@ var speeds = [1, 1.5, 2, 0.5], si = 0, si2 = 0;
 $("speedBtn").addEventListener("click",function(){ si=(si+1)%speeds.length; this.textContent = speeds[si].toFixed(1)+"배"; });
 $("speedBtn2").addEventListener("click",function(){ si2=(si2+1)%speeds.length; this.textContent = speeds[si2].toFixed(1)+"배"; });
 $("playBtn").addEventListener("click",function(){ if(viewNote) play($("viewCv"), viewNote, viewPage, speeds[si]); });
+$("stopPlay").addEventListener("click",function(){ if(viewNote) stopPlay($("viewCv"), viewNote, viewPage); });
+$("stopPlay2").addEventListener("click",function(){ stopPlay($("outCv"), trimmed(), outPage); });
 $("playBtn2").addEventListener("click",function(){ play($("outCv"), trimmed(), outPage, speeds[si2]); });
 
 /* ---- 완성 ---- */
 var outPage = 0;
+function setOverState(){
+  var over = encodeNote(trimmed()).length > MAXBYTES;
+  $("overWarn").classList.toggle("show", over);
+  ["copyLinkBtn","copyTextBtn","xBtn","shareBtn"].forEach(function(id){
+    var b = $(id); if(b) b.disabled = over;
+  });
+  return over;
+}
 $("doneBtn").addEventListener("click",function(){
-  var bytes = encodeNote(trimmed());
-  if(bytes.length > MAXBYTES) toast("링크 한도를 넘었어요. 이미지로 저장해 공유해 주세요.");
+  if(setOverState()) toast("링크 한도를 넘었어요. 이미지로 저장해 공유해 주세요.");
   outPage = 0;
   show("doneStage");
   renderPage($("outCv"), trimmed().pages[0]);
   $("outPage").textContent = "1 / " + trimmed().pages.length;
-  setLink();
+  if(!$("copyLinkBtn").disabled) setLink();
   play($("outCv"), trimmed(), 0, speeds[si2]);
   $("doneStage").scrollIntoView({behavior:"smooth"});
 });
@@ -633,7 +704,7 @@ function fallbackCopy(text,msg){
   try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사에 실패했어요"); }
   document.body.removeChild(ta);
 }
-$("copyLinkBtn").addEventListener("click",function(){ setLink(); copy(noteUrl(),"링크가 복사되었습니다"); });
+$("copyLinkBtn").addEventListener("click",function(){ if(setOverState()) return; setLink(); copy(noteUrl(),"링크가 복사되었습니다"); });
 $("copyTextBtn").addEventListener("click",function(){
   setLink();
   copy("✍️ 손으로 쓴 쪽지가 도착했습니다. 글씨가 써지는 과정까지 그대로 재생됩니다.\n"+noteUrl(),"문구가 복사되었습니다");
@@ -651,26 +722,63 @@ if(navigator.share){
 }
 
 /* ---- 이미지 저장 ---- */
+/* 쓴 장을 전부 세로로 이어 붙여 한 장의 이미지로 저장한다.
+   (한 장만 저장하면 2·3장째가 조용히 사라지므로) */
 function saveCard(n, pageIdx, name){
-  var cv=$("cardCv"), ctx=cv.getContext("2d"), W=1080, H=1350;
+  var pages = n.pages.filter(function(p){ return p && p.length; });
+  if(!pages.length) pages = [n.pages[pageIdx] || []];
   var F='-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  var W=1080, PW=900, PH=1188, top=96, gap=28, bottom=110;
+  var H = top + pages.length*PH + (pages.length-1)*gap + bottom;
+  var cv=$("cardCv"); cv.width=W; cv.height=H;
+  var ctx=cv.getContext("2d");
   ctx.fillStyle="#f6f4ee"; ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle="#d9d2c2"; ctx.lineWidth=2; ctx.strokeRect(40,40,W-80,H-80);
-  // 손글씨(정사각 비율 유지)
-  var tmp=document.createElement("canvas"); tmp.width=900; tmp.height=1188;
-  renderPage(tmp, n.pages[pageIdx]);
-  ctx.drawImage(tmp, 90, 96, 900, 1120);
+  pages.forEach(function(strokes,i){
+    var y = top + i*(PH+gap);
+    var tmp=document.createElement("canvas"); tmp.width=PW; tmp.height=PH;
+    var tctx=tmp.getContext("2d");
+    tctx.fillStyle="#fffdf8"; tctx.fillRect(0,0,PW,PH);
+    renderPage(tmp, strokes, {keepBg:true});
+    ctx.drawImage(tmp, 90, y);
+    ctx.strokeStyle="#d9d2c2"; ctx.lineWidth=2; ctx.strokeRect(90, y, PW, PH);
+    if(pages.length > 1){
+      ctx.fillStyle="#b6ae9c"; ctx.font="24px "+F; ctx.textAlign="right";
+      ctx.fillText((i+1) + " / " + pages.length, 90+PW-16, y+PH-16);
+      ctx.textAlign="left";
+    }
+  });
   ctx.fillStyle="#8b8474"; ctx.font="26px "+F; ctx.textAlign="right";
-  ctx.fillText("tomatoeggcat.com/handwriting", W-90, H-72);
-  ctx.textAlign="left"; ctx.fillStyle="#8b8474"; ctx.font="24px "+F;
-  ctx.fillText("손으로 쓴 쪽지 · 키보드 없음", 90, H-72);
+  ctx.fillText("tomatoeggcat.com/handwriting", W-90, H-42);
+  ctx.textAlign="left"; ctx.font="24px "+F;
+  ctx.fillText("손으로 쓴 쪽지 · 키보드 없음", 90, H-42);
   var a=document.createElement("a");
   a.download=name+".png"; a.href=cv.toDataURL("image/png");
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  toast("이미지를 저장했습니다");
+  toast(pages.length > 1 ? pages.length+"장을 한 이미지로 저장했습니다" : "이미지를 저장했습니다");
 }
 $("saveBtn").addEventListener("click",function(){ saveCard(trimmed(), outPage, "handwriting-note"); });
 $("saveViewBtn").addEventListener("click",function(){ if(viewNote) saveCard(viewNote, viewPage, "handwriting-received"); });
+/* 크게 보기 — 손글씨는 낭독기로 읽을 수 없으므로, 최소한 확대해서 볼 수 있게 한다 */
+var boldView = false;
+function paintZoom(){
+  var z=$("zoomCv"), ctx=z.getContext("2d");
+  ctx.fillStyle="#fffdf8"; ctx.fillRect(0,0,z.width,z.height);
+  var pages = viewNote.pages[viewPage] || [];
+  if(boldView){                                   // 저시력 대응 — 굵고 진한 검정으로 다시 그린다
+    renderPage(z, pages.map(function(st){ return { c:0, w:2, d:st.d, t0:st.t0, p:st.p }; }), {keepBg:true});
+  } else renderPage(z, pages, {keepBg:true});
+}
+$("zoomBtn").addEventListener("click",function(){
+  if(!viewNote) return;
+  paintZoom();
+  $("zoomed").classList.add("on");
+});
+$("boldBtn").addEventListener("click",function(){
+  boldView = !boldView;
+  this.textContent = boldView ? "원래대로 보기" : "굵고 진하게";
+  paintZoom();
+});
+$("zoomClose").addEventListener("click",function(){ $("zoomed").classList.remove("on"); });
 
 /* ---- 부팅: 링크로 들어온 쪽지 ---- */
 (function(){
