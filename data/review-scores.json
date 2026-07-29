@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-07-24",
+  "updatedAt": "2026-07-29",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 55,
-    "pass": 51,
+    "total": 59,
+    "pass": 55,
     "reviewNeeded": 4,
     "reviewing": 0,
     "avgOverall": 82.2
@@ -2593,6 +2593,278 @@
         }
       ],
       "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "sunset-forecast",
+      "name": "오늘 노을",
+      "source": "project-hub/sunset-forecast",
+      "live": "https://tomatoeggcat.com/sunset-forecast/",
+      "status": "pass",
+      "loops": 5,
+      "axes": {
+        "functional": 86,
+        "mobileUX": 83,
+        "design": 85,
+        "content": 84,
+        "realValue": 81
+      },
+      "reviewerAvg": 83.8,
+      "userScores": [
+        85,
+        85,
+        78,
+        90,
+        80,
+        86,
+        87,
+        84,
+        78,
+        85
+      ],
+      "userAvg": 83.8,
+      "overall": 83.8,
+      "note": "노을 점수·가장 붉은 시각을 계산하고, 예보가 맞았는지 기록해 적중률을 보여 준다. 이번 루프의 게이트는 사용자 요청으로 90 이었으나 5루프 상한까지 도달하지 못했다(잔여 미달 사유는 findings 의 구조적 한계 항목).",
+      "findings": [
+        "기상 API 없이 사용자가 고른 구름·미세먼지·습도로 점수를 낸다 — 구조적 정확도 한계(소유자 과금 승인 필요, 잔여 과제).",
+        "일출·일몰 시각이 KASI 공표값과 보통 1~3분 차이(저정밀 태양위치 알고리즘). 앱 카피에 그대로 명시.",
+        "1차: KST 고정 누락으로 해외 표준시에서 날짜가 하루 밀림(수정됨).",
+        "5차: 결과가 스크린리더에 전혀 알림되지 않음(수정됨 — sr-only role=status + 포커스 이동).",
+        "5차: 현위치는 어디서 눌러도 이름이 같아 같은 날 다른 장소 기록이 한 건으로 뭉개짐(수정됨)."
+      ],
+      "changes": [
+        "KST 고정(Date.UTC 정오 기준)으로 표준시 무관 날짜 일치 — 4개 표준시 검증.",
+        "공유 상태에서 좌표 제거(가장 가까운 시군구로 치환), 적중률 페이지에 버킷별 최소 표본 3건 가드.",
+        "sr-only role=status 결과 요약 + 결과 영역 포커스 이동, 본문 word-break:keep-all.",
+        "logId 를 '현위치~가장가까운지역'으로 구분 — 좌표 미저장 약속은 유지.",
+        "정확도 주장을 실측(5일)에 맞춰 '보통 1~3분 차이'로 정정."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 63.1
+        },
+        {
+          "loop": 1,
+          "overall": 75.9
+        },
+        {
+          "loop": 2,
+          "overall": 81.6
+        },
+        {
+          "loop": 3,
+          "overall": 81.5
+        },
+        {
+          "loop": 4,
+          "overall": 83.8
+        }
+      ],
+      "reviewedAt": "2026-07-29"
+    },
+    {
+      "slug": "cost-per-wear",
+      "name": "1회당",
+      "source": "project-hub/cost-per-wear",
+      "live": "https://tomatoeggcat.com/cost-per-wear/",
+      "status": "pass",
+      "loops": 5,
+      "axes": {
+        "functional": 84,
+        "mobileUX": 84,
+        "design": 82,
+        "content": 82,
+        "realValue": 77
+      },
+      "reviewerAvg": 81.8,
+      "userScores": [
+        76,
+        86,
+        86,
+        79,
+        82,
+        85,
+        68,
+        86,
+        86,
+        83
+      ],
+      "userAvg": 81.7,
+      "overall": 81.7,
+      "note": "옷·물건의 1회당 원가를 계산한다. 몸·사이즈 항목은 의도적으로 없다. 이번 루프의 게이트는 사용자 요청으로 90 이었으나 5루프 상한까지 도달하지 못했다(잔여 미달 사유는 findings 의 구조적 한계 항목).",
+      "findings": [
+        "5차: 공유 카드 PNG에 '숫자와 카테고리만 담겨 있습니다'가 이름 포함 시에도 그려져 이미지 자체가 자기모순(수정됨 — 토글 연동).",
+        "5차: 유입 안내·FAQ의 '숫자와 카테고리만' 문구가 이름 포함 옵션과 어긋남(수정됨).",
+        "3차: 0원 항목이 평균 1회당 원가를 끌어내림(수정됨 — paid/paidWears 분리).",
+        "5차: 표본 경고('참고만','n=')가 본문보다 작은 12px(수정됨 — 13.5px·경고색).",
+        "5차: 요일 탭이 가로 스크롤이라 글꼴 확대 시 숨는 버튼 발생(수정됨 — 줄바꿈)."
+      ],
+      "changes": [
+        "공유 PNG 하단 문구를 '항목 이름 포함' 토글과 연동 — 카드 내용과 문구 불일치 제거.",
+        "유입 안내·FAQ 를 기본값/옵션 구분해 다시 씀.",
+        "평균 1회당 원가에서 0원 항목 제외(paid/paidWears), 목표까지 남은 착용 횟수 단일 소스화.",
+        "표본 경고 12px→13.5px·경고색, 요일 탭 flex-wrap 으로 숨는 버튼 제거.",
+        "몸·사이즈 입력 0개 / 제휴·쇼핑 링크 0개 / 죄책감 카피·연속기록 없음 유지."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 70.2
+        },
+        {
+          "loop": 1,
+          "overall": 76.5
+        },
+        {
+          "loop": 2,
+          "overall": 79.1
+        },
+        {
+          "loop": 3,
+          "overall": 80.9
+        },
+        {
+          "loop": 4,
+          "overall": 81.7
+        }
+      ],
+      "reviewedAt": "2026-07-29"
+    },
+    {
+      "slug": "recipe-tree",
+      "name": "레시피 계보",
+      "source": "project-hub/recipe-tree",
+      "live": "https://tomatoeggcat.com/recipe-tree/",
+      "status": "pass",
+      "loops": 5,
+      "axes": {
+        "functional": 82,
+        "mobileUX": 81,
+        "design": 80,
+        "content": 81,
+        "realValue": 77
+      },
+      "reviewerAvg": 80.2,
+      "userScores": [
+        80,
+        71,
+        85,
+        70,
+        84,
+        87,
+        84,
+        80,
+        83,
+        78
+      ],
+      "userAvg": 80.2,
+      "overall": 80.2,
+      "note": "레시피를 포크하고 바뀐 곳을 비교해 계보를 남긴다. 이번 루프의 게이트는 사용자 요청으로 90 이었으나 5루프 상한까지 도달하지 못했다(잔여 미달 사유는 findings 의 구조적 한계 항목).",
+      "findings": [
+        "서버가 없어 계보는 이 기기 안에서만 이어진다 — 남의 포크 수는 알 수 없음(구조적 한계, 표시 문구에 명시).",
+        "2차: 부위 동의어(목살→돼지고기)를 묶어 버려 재료를 바꾼 포크가 diff 0건이 되고 저장이 거부됨(수정됨 — 표기 변형만 동의어 처리, 테스트로 고정).",
+        "3차: 쉼표 목록에서 수량 없는 재료가 경고 없이 사라짐(수정됨).",
+        "5차: '지운 것 1 + 더한 것 1 = 바꿈' 휴리스틱이 무관한 재료도 묶을 수 있음(FAQ에 공개).",
+        "5차: 조리 중 보기가 dialog 시맨틱·포커스 이동 없음(수정됨), 재료/만드는 법 헤더 터치타겟 41.6px(수정됨 — 44px)."
+      ],
+      "changes": [
+        "diff 를 이름 키 맵에서 consume-once 짝짓기로 재작성 — 같은 이름 중복 재료 처리.",
+        "동의어 사전을 표기 변형으로 한정하고 113개 테스트로 고정(테스트가 배포 HTML의 엔진을 그대로 추출해 검사).",
+        "쉼표 목록에서 단위만 있는 조각도 살리도록 완화 — 무경고 데이터 유실 제거.",
+        "조리 중 보기에 role=dialog·aria-modal·포커스 이동·배경 aria-hidden 추가, summary 터치타겟 44px.",
+        "'바꿈' 휴리스틱의 한계를 FAQ 에 공개."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 58.8
+        },
+        {
+          "loop": 1,
+          "overall": 73.6
+        },
+        {
+          "loop": 2,
+          "overall": 75.7
+        },
+        {
+          "loop": 3,
+          "overall": 78.5
+        },
+        {
+          "loop": 4,
+          "overall": 80.2
+        }
+      ],
+      "reviewedAt": "2026-07-29"
+    },
+    {
+      "slug": "sinse",
+      "name": "신세",
+      "source": "project-hub/sinse",
+      "live": "https://tomatoeggcat.com/sinse/",
+      "status": "pass",
+      "loops": 5,
+      "axes": {
+        "functional": 83,
+        "mobileUX": 82,
+        "design": 85,
+        "content": 83,
+        "realValue": 74
+      },
+      "reviewerAvg": 81.4,
+      "userScores": [
+        79,
+        83,
+        79,
+        90,
+        83,
+        85,
+        65,
+        87,
+        80,
+        81
+      ],
+      "userAvg": 81.2,
+      "overall": 81.2,
+      "note": "돈으로 환산하지 않고 신세 진 횟수만 적는 장부. 상대에게 가는 알림 경로가 없다. 이번 루프의 게이트는 사용자 요청으로 90 이었으나 5루프 상한까지 도달하지 못했다(잔여 미달 사유는 findings 의 구조적 한계 항목).",
+      "findings": [
+        "5차: '이름은 가려져 있습니다' 문구가 이름 표시 옵션을 켠 경우 거짓이 됨(수정됨 — 실제 동작에 맞게 조건부).",
+        "5차: 가려서 빠진 종류를 카드가 '아직 없습니다'로 표기(수정됨 — 가림/없음 구분).",
+        "2차: 개인정보 카피가 실제 공유 링크 내용과 어긋남(수정됨).",
+        "요구사항대로 상대에게 가는 알림 경로 0개 · 점수/등급/랭킹 없음 · 적자·흑자 프레이밍 없음 · 연락처 권한 없음.",
+        "5차: 만들어진 문장(readonly input)이 스크린리더에 알림되지 않음(수정됨 — aria-live)."
+      ],
+      "changes": [
+        "가림 여부에 따라 문구가 달라지도록 유입 안내·공유 카드 캡션 조건부 처리.",
+        "shareState 에 kgh/kvh 플래그 추가 — '가림'과 '기록 없음'을 카드·유입 화면에서 구분.",
+        "자유입력 종류를 이름 가림 시 공유에서 제외(presetOnly), 이름 마스킹 기본 on.",
+        "만들어진 문장에 sr-only aria-live 추가, 본문 word-break:keep-all.",
+        "연도 통계 KST 고정, 고아 인물 정리(pruneOrphanPeople)."
+      ],
+      "history": [
+        {
+          "loop": 0,
+          "overall": 74.7
+        },
+        {
+          "loop": 1,
+          "overall": 79.0
+        },
+        {
+          "loop": 2,
+          "overall": 79.1
+        },
+        {
+          "loop": 3,
+          "overall": 82.4
+        },
+        {
+          "loop": 4,
+          "overall": 81.2
+        }
+      ],
+      "reviewedAt": "2026-07-29"
     }
   ]
 }

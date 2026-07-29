@@ -90,8 +90,10 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .tile .pw{font-size:12.5px;color:#9ca3af;font-weight:600}
 .tile.done{background:rgba(94,234,212,.14);border-color:var(--acc);color:var(--acc2)}
 .tile.done .pw{color:var(--acc2)}
-.daysw{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
-.daysw button{flex:1 1 0;min-width:0;padding:10px 4px;background:#0f0f0f;color:#9ca3af;border:1px solid #333;font-size:13px;font-weight:700;min-height:44px;white-space:nowrap}
+/* 글꼴을 키운 기기에서 가로 스크롤로 숨는 날짜 버튼이 생기지 않도록 줄바꿈시킨다.
+   숨은 버튼을 알리는 것보다 아예 숨지 않게 하는 편이 확실하다. */
+.daysw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;padding-bottom:2px}
+.daysw button{flex:1 1 44px;min-width:44px;padding:10px 4px;background:#0f0f0f;color:#9ca3af;border:1px solid #333;font-size:13px;font-weight:700;min-height:44px;white-space:nowrap}
 .daysw button.on{background:rgba(94,234,212,.12);border-color:var(--acc);color:var(--acc2)}
 /* 통계 */
 .stats{display:flex;gap:10px;flex-wrap:wrap}
@@ -177,7 +179,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 <section class="card" id="sharedCard" style="display:none">
   <p class="lab">🔗 <b>공유된 옷장 성적표</b></p>
   <div id="sharedBody"></div>
-  <p class="hint">공유 링크에는 숫자와 카테고리만 들어 있습니다. 아래에서 내 것도 바로 시작할 수 있어요.</p>
+  <p class="hint">공유 링크에는 합계 숫자와 카테고리가 담깁니다. 항목 이름은 보낸 사람이 <b>직접 켠 경우에만</b> 들어갑니다. 아래에서 내 것도 바로 시작할 수 있어요.</p>
 </section>
 
 <!-- 오늘 입은 것 -->
@@ -331,7 +333,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
     <dt>Q. 착용 편중도가 높으면 나쁜 건가요?</dt>
     <dd>아닙니다. 좋고 나쁨을 판정하지 않습니다. 자주 입는 상위 몇 개가 전체 착용의 몇 %를 차지하는지 보여 줄 뿐이고, 그 숫자를 처음 본다는 것 자체가 이 지표의 쓸모입니다. 항목 수가 적으면 이 비율은 크게 흔들리므로 화면에 표본 경고를 함께 띄웁니다.</dd>
     <dt>Q. 공유하면 내 옷장이 다 보이나요?</dt>
-    <dd>아닙니다. 공유 링크와 카드에는 합계 숫자와 카테고리만 들어갑니다. 항목 이름을 넣고 싶으면 체크박스를 직접 켜야 합니다.</dd>
+    <dd>기본값에서는 아닙니다. 공유 링크와 카드에는 합계 숫자와 카테고리만 들어갑니다. 다만 <b>‘공유에 항목 이름 포함’ 체크박스를 켜면</b> 자주 입은 항목 이름이 링크와 카드에 함께 들어가고, 카드 하단 문구도 그에 맞게 바뀝니다.</dd>
   </dl>
   <p style="color:#9ca3af;font-size:13px">※ 본 도구는 개인 기록용 계산기이며 금융·투자 조언이 아닙니다. 표시되는 금액은 사용자가 입력한 값을 나눈 결과입니다.</p>
 </section>
@@ -891,8 +893,8 @@ function renderPattern(){
       var weak = arr.length < 3;
       var tr=document.createElement("tr");
       tr.innerHTML="<td>"+kind+"</td><td>"+esc(nameFn(k))+"</td>"
-        + "<td><b>"+avgW.toFixed(1)+"회</b> <span style='color:#9ca3af;font-size:12px'>(n="+arr.length+")</span></td>"
-        + "<td>"+(avgPu===null?"—":won(avgPu))+(weak?" <span style='color:#9ca3af;font-size:12px'>참고만</span>":"")+"</td>";
+        + "<td><b>"+avgW.toFixed(1)+"회</b> <span style='color:#9ca3af;font-size:13.5px'>(n="+arr.length+")</span></td>"
+        + "<td>"+(avgPu===null?"—":won(avgPu))+(weak?" <span style='color:#fbbf24;font-size:13.5px'>참고만</span>":"")+"</td>";
       tb.appendChild(tr);
     });
   }
@@ -1036,7 +1038,9 @@ function drawCard(){
   });
   ctx.textAlign="center";
   ctx.fillStyle="rgba(255,255,255,.4)"; ctx.font="600 24px -apple-system,sans-serif";
-  ctx.fillText("숫자와 카테고리만 담겨 있습니다", W/2, 1268);
+  /* 카드에 실제로 들어간 내용과 문구가 어긋나면 안 된다.
+     '항목 이름 포함'이 켜져 있으면 이름이 그려져 있으므로 그렇게 적는다. */
+  ctx.fillText($("withNames").checked ? "항목 이름이 함께 담겨 있습니다" : "숫자와 카테고리만 담겨 있습니다", W/2, 1268);
   ctx.fillStyle="rgba(255,255,255,.75)"; ctx.font="700 28px -apple-system,sans-serif";
   ctx.fillText("tomatoeggcat.com/cost-per-wear", W/2, 1312);
 }

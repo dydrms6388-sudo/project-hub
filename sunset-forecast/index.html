@@ -50,13 +50,14 @@
 <style>
 :root{color-scheme:dark;--acc:#fb923c;--acc2:#fed7aa;--accdim:#4a2410}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;word-break:keep-all}
 .wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
 a{color:var(--acc)}
 .nav{font-size:13px;color:#9ca3af;margin-bottom:16px}
 .nav a{color:#7aa2ff;text-decoration:none}
 h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#fb923c,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:#9ca3af;margin:0 0 8px;font-size:15px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .exp{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#fdba74;background:rgba(251,146,60,.12);border:1px solid #7c3d16;border-radius:999px;padding:4px 12px;margin:0 0 20px}
 .card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
 .lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
@@ -220,7 +221,10 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
   </div>
 </section>
 
-<section class="result" id="result">
+<section class="result" id="result" tabindex="-1">
+  <!-- 화면에는 안 보이지만 스크린리더에는 결과 요약이 읽힌다.
+       결과 카드 전체를 읽히면 너무 길어서 핵심 세 줄만 담는다. -->
+  <p class="sr-only" id="srResult" role="status" aria-live="polite"></p>
   <div class="card">
     <div class="hero" id="hero">
       <div class="num" id="scoreNum">0<small>점</small></div>
@@ -753,6 +757,11 @@ function render(st){
   $("setTime").textContent = hhmm(out.t.sunset);
   $("setSub").textContent = out.t.goldenStart ? ("빛 좋은 시간 " + hhmm(out.t.goldenStart) + "부터") : "—";
 
+  $("srResult").textContent =
+    out.place.name + " " + dLab + " 노을 점수 " + out.score + "점, " + g.label + ". "
+    + (out.peak ? ("가장 붉은 시각 " + hhmm(out.peak) + ", 일몰 " + hhmm(out.t.sunset) + ".")
+                : "이 위도에서는 일몰이 계산되지 않습니다.");
+
   var wl = $("whyList"); wl.innerHTML = "";
   reasons(out).forEach(function(r){
     var li=document.createElement("li");
@@ -852,6 +861,8 @@ function shareSafeState(st){
 $("calcBtn").addEventListener("click",function(){
   render(stateFromSel());
   $("result").scrollIntoView({ behavior:"smooth", block:"start" });
+  /* 키보드·스크린리더 포커스도 결과로 옮긴다. 스크롤만 옮기면 포커스는 버튼에 남는다. */
+  try{ $("result").focus({ preventScroll:true }); }catch(err){ $("result").focus(); }
 });
 $("remixBtn").addEventListener("click",function(){
   $("inputCard").scrollIntoView({ behavior:"smooth", block:"start" });
@@ -863,7 +874,15 @@ function loadLogs(){
   try{ var raw=localStorage.getItem(LSKEY); var a=raw?JSON.parse(raw):[]; return Array.isArray(a)?a:[]; }catch(err){ return []; }
 }
 function saveLogs(a){ try{ localStorage.setItem(LSKEY, JSON.stringify(a.slice(-400))); }catch(err){} }
-function logId(st, out){ return dayKey(out.date) + "|" + out.place.name; }
+/* 현위치는 어디서 눌러도 이름이 똑같아서, 같은 날 다른 장소에서 본 노을이
+   한 기록으로 뭉개졌다. 좌표를 저장하지 않겠다는 약속은 지키면서 구분하려고
+   가장 가까운 등록 지역으로 갈음한다. */
+function logId(st, out){
+  var place = (typeof st.lat==="number" && typeof st.lng==="number")
+    ? "현위치~" + REGIONS[nearestRegion(st.lat, st.lng)][0]
+    : out.place.name;
+  return dayKey(out.date) + "|" + place;
+}
 function loadRatingUI(st, out){
   var logs=loadLogs(), id=logId(st,out), mine=null;
   for(var i=0;i<logs.length;i++) if(logs[i].id===id) mine=logs[i];

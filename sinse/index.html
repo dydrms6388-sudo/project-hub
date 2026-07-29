@@ -50,13 +50,14 @@
 <style>
 :root{color-scheme:dark;--ink:#e8e4dc;--ink2:#a8a29a;--ink3:#9a938a;--pap:#141311;--pap2:#1b1a17;--ln:#2a2723;--acc:#d4b483;--acc2:#e9d5b0}
 *{box-sizing:border-box}
-body{margin:0;background:#0d0c0b;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.75;letter-spacing:-.005em}
+body{margin:0;background:#0d0c0b;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.75;letter-spacing:-.005em;word-break:keep-all}
 .wrap{max-width:640px;margin:0 auto;padding:28px 20px 72px}
 a{color:var(--acc)}
 .nav{font-size:13px;color:var(--ink3);margin-bottom:20px}
 .nav a{color:#8aa2c8;text-decoration:none}
 h1{font-size:25px;font-weight:700;margin:0 0 8px;color:var(--ink);letter-spacing:-.02em}
 .lead{color:var(--ink2);margin:0 0 28px;font-size:15px;line-height:1.8}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .card{border:1px solid var(--ln);background:var(--pap);border-radius:18px;padding:22px;margin-bottom:20px}
 .lab{font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:.06em;margin:0 0 12px;text-transform:none}
 .lab b{color:var(--acc2);font-weight:700}
@@ -164,7 +165,7 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
 <section class="card" id="sharedCard" style="display:none">
   <p class="lab">공유된 정산</p>
   <div id="sharedBody"></div>
-  <p class="hint">공유 카드에는 이름 없이 횟수와 종류만 담깁니다.</p>
+  <p class="hint">공유 링크에는 횟수와 종류가 담깁니다. 사람 이름은 보낸 사람이 <b>직접 켠 경우에만</b> 들어갑니다(기본값은 가림).</p>
 </section>
 
 <!-- 기록 -->
@@ -245,6 +246,8 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
       <p class="hint" style="margin-top:0">기록을 하나 고르면 보낼 만한 문장을 만들어 드립니다. <b>이 도구는 대신 보내지 않습니다.</b> 복사만 해 드리고, 보낼지 말지는 직접 정하세요.</p>
       <div class="field"><select id="thxSel" aria-label="고마움을 표현할 기록 고르기"></select></div>
       <div class="field"><input type="text" id="thxOut" aria-label="만들어진 문장" readonly placeholder="기록을 고르면 문장이 만들어집니다" /></div>
+      <!-- readonly input 값이 바뀌어도 스크린리더는 조용하다. 만들어진 문장을 따로 읽어 준다. -->
+      <p class="sr-only" id="thxLive" role="status" aria-live="polite"></p>
       <div class="acts">
         <button class="ghost mini" id="thxMake" type="button">문장 만들기</button>
         <button class="ghost mini" id="thxCopy" type="button">복사</button>
@@ -734,6 +737,7 @@ $("thxMake").addEventListener("click",function(){
   var what = kindLabel(f);
   var body = f.b ? ("("+f.b+") ") : "";
   $("thxOut").value = (p?p.l:"") + ", " + when + " " + what + " 챙겨 주셔서 " + body + "고마웠어요. 그때 말로 제대로 못 한 것 같아 이제야 적어 봅니다.";
+  $("thxLive").textContent = "문장을 만들었습니다. " + $("thxOut").value;
   toast("초안을 만들었습니다. 보낼지는 직접 정하세요");
 });
 $("thxCopy").addEventListener("click",function(){
@@ -755,7 +759,10 @@ function shareState(){
   };
   return { y:s.y, r:s.got, g:s.gave, s:s.settled,
            t:s.top.map(function(t){ return { l: names ? String(t.l).slice(0,10) : mask(t.l), n:t.n }; }),
-           kg:presetOnly(s.topGot), kgn:s.topGotN, kv:presetOnly(s.topGave), kvn:s.topGaveN };
+           kg:presetOnly(s.topGot), kgn:s.topGotN, kv:presetOnly(s.topGave), kvn:s.topGaveN,
+           /* 가려서 빠진 것과 애초에 기록이 없는 것은 다르다. 카드가 '아직 없습니다'로
+              뭉개면 거짓말이 되므로 구분해서 넘긴다. */
+           kgh: !!(s.topGot && !presetOnly(s.topGot)), kvh: !!(s.topGave && !presetOnly(s.topGave)) };
 }
 function resultUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(shareState())); }
 function copy(text,msg){
@@ -835,8 +842,8 @@ function drawCard(){
     y += 60+lines.length*46 + 26;
   }
   block("가장 자주 신세 진 사람", s.t.length ? s.t.map(function(t,i){ return (i+1)+".  "+t.l+"  "+t.n+"번"; }) : ["아직 없습니다"]);
-  block("가장 많이 받은 것", [ s.kg ? (s.kg+"  "+s.kgn+"번") : "아직 없습니다" ]);
-  block("내가 건넨 것", [ s.g+"번" + (s.kv ? "   (주로 "+s.kv+")" : "") ]);
+  block("가장 많이 받은 것", [ s.kg ? (s.kg+"  "+s.kgn+"번") : (s.kgh ? "직접 적은 종류라 가렸습니다" : "아직 없습니다") ]);
+  block("내가 건넨 것", [ s.g+"번" + (s.kv ? "   (주로 "+s.kv+")" : (s.kvh ? "   (종류는 가렸습니다)" : "")) ]);
 
   ctx.textAlign="center";
   ctx.fillStyle="#6f6a62"; ctx.font="500 24px -apple-system,'Apple SD Gothic Neo',sans-serif";
@@ -926,8 +933,8 @@ if(sharedRaw){
       + '<div class="ys">신세를 졌다고 적혀 있습니다</div></div>'
       + '<div class="yrgrid">'
       + '<div class="yb"><div class="k">건넨 것</div><div class="v">'+num(sh.g)+'번</div><div class="s">비교하지 않습니다</div></div>'
-      + '<div class="yb"><div class="k">가장 많이 받은 것</div><div class="v">'+(sh.kg?esc(String(sh.kg).slice(0,14))+" "+num(sh.kgn)+"번":"—")+'</div><div class="s">&nbsp;</div></div>'
-      + (t.length?'<div class="yb"><div class="k">자주 신세 진 사람</div><div class="v">'+t.map(function(x,i){ return (i+1)+". "+esc(x.l)+" "+x.n+"번"; }).join("<br>")+'</div><div class="s">이름은 가려져 있습니다</div></div>':"")
+      + '<div class="yb"><div class="k">가장 많이 받은 것</div><div class="v">'+(sh.kg?esc(String(sh.kg).slice(0,14))+" "+num(sh.kgn)+"번":(sh.kgh?"가림":"—"))+'</div><div class="s">'+((!sh.kg&&sh.kgh)?"보낸 사람이 직접 적은 종류라 빠졌습니다":"&nbsp;")+'</div></div>'
+      + (t.length?'<div class="yb"><div class="k">자주 신세 진 사람</div><div class="v">'+t.map(function(x,i){ return (i+1)+". "+esc(x.l)+" "+x.n+"번"; }).join("<br>")+'</div><div class="s">보낸 사람이 적은 이름표 그대로입니다</div></div>':"")
       + '</div>';
     $("sharedCard").style.display="block";
     /* 남의 요약이 내 주소창·히스토리에 계속 남지 않게 정리한다 */
