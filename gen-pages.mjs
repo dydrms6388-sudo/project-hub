@@ -293,11 +293,11 @@ for (const d of daily) {
     : "";
 
   // 실행 우선 + 스캔 가독성: 한눈 요약 → (참고용) → 이럴 때(후크) → [사용법·배경지식은 접기] → 팁 → 주의 → FAQ
-  // 히어로 lead 와 중복되는 "무엇을" 줄은 제거(같은 문장 반복 방지). scenarios 없을 때만 폴백으로 노출.
+  // 한눈에 보기는 히어로 lead(전체 문장) 와도, 본문 "이럴 때 유용해요"(scenarios) 와도
+  // 같은 문장을 반복하지 않도록: 무엇을=lead 를 짧게 압축한 요약 한 줄만 노출.
+  const gist = lead.length > 52 ? lead.slice(0, 50).replace(/\s+\S*$/, "") + "…" : lead;
   const tldrItems = [
-    scenarios[0]
-      ? `<li><b>이럴 때</b> ${richInline(scenarios[0])}</li>`
-      : `<li><b>무엇을</b> ${richInline(lead)}</li>`,
+    `<li><b>무엇을</b> ${esc(gist)}</li>`,
     `<li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>`,
   ];
   const tldrHtml = `<div class="tldr">
