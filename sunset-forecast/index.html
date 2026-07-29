@@ -990,7 +990,7 @@ $("copyTextBtn").addEventListener("click",function(){ if(current) copy(shareText
 $("xBtn").addEventListener("click",function(){
   if(!current) return;
   if(!window.confirm("X(트위터)에 공개로 올립니다.\n\n점수·지역명·하늘 상태가 함께 나갑니다(좌표는 들어가지 않습니다). 계속할까요?")) return;
-  var t="오늘 노을 "+current.out.score+"점, 절정은 "+hhmm(current.out.peak)+" ("+current.out.place.name+") 🌇";
+  var t="오늘 노을 "+current.out.score+"점, 절정은 "+hhmm(current.out.peak)+" ("+current.out.place.name+") 🌇 ※기상 예보가 아니라 직접 고른 하늘 상태로 계산한 실험 중인 점수입니다";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
 });
 if(navigator.share){

@@ -385,7 +385,9 @@ function personById(id){
 }
 function ensurePerson(label, tag){
   var p=personByLabel(label);
-  if(p){ if(tag) p.t=tag; return p; }
+  /* 관계 태그를 덮어쓰면 과거 기록의 표시까지 소급으로 바뀐다.
+     이미 있는 사람이면 태그는 건드리지 않는다(바꾸려면 '호칭 바꾸기'에서). */
+  if(p) return p;
   p={ id:"p"+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36), l:label, t:tag||"etc" };
   db.people.push(p); return p;
 }

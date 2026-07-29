@@ -427,6 +427,10 @@ function byId(id){ for(var i=0;i<db.items.length;i++) if(db.items[i].id===id) re
 
 /* 1회당 원가. 구독(sub)은 이번 달 요금 ÷ 이번 달 사용 횟수 */
 function perUse(it){
+  /* 방출(아카이브)한 항목은 그때 확정된 최종 원가를 쓴다.
+     구독은 '이번 달' 기준이라, 방출 다음 달이 되면 이번 달 0회가 되어
+     방출 당시 값이 화면·CSV에서 통째로 사라졌다. */
+  if(it.st==="archived" && typeof it.fin==="number") return it.fin;
   if(it.kind==="sub"){
     var m=todayKey(0).slice(0,7);
     var c=it.w.filter(function(d){ return d.slice(0,7)===m; }).length;
@@ -809,7 +813,7 @@ function summary(){
   var topWears=sorted.slice(0,topN).reduce(function(s,i){ return s+i.w.length; },0);
   var conc = wears>0 ? Math.round(topWears/wears*100) : null;
   var idle=a.filter(function(i){ var d=idleDays(i); return d===null||d>=30; }).length;
-  var zero=a.filter(function(i){ return i.w.length===0; }).length;
+  var zero=a.filter(function(i){ return useCount(i)===0; }).length;   /* 목록 탭과 같은 기준 */
   /* 명예의 전당은 '싸게 잘 산 것'을 보는 자리다. 0원(선물·물려받음)은 나눗셈이 항상 0이라
      한 번만 입어도 1위를 차지해 순위를 무의미하게 만든다 → 별도 표기하고 순위에서 뺀다. */
   var hall=own.filter(function(i){ return i.w.length>0 && i.p>0; })
@@ -952,7 +956,9 @@ $("xBtn").addEventListener("click",function(){
     : "X(트위터)에 공개로 올립니다.\n\n옷장 총액·평균 1회당·착용 편중도가 함께 나갑니다(항목 이름은 빠집니다). 계속할까요?";
   if(!window.confirm(xWarn)) return;
   var s=shareState();
-  var t="내 옷장 평균 1회당 "+(s.a===null?"—":won(s.a))+", 자주 입는 "+s.tn+"개가 전체 착용의 "+(s.c===null?"—":s.c+"%")+" 🧥";
+  var base=s.own||s.n;
+  var t="내 옷장 평균 1회당 "+(s.a===null?"—":won(s.a))+", 자주 입는 "+s.tn+"개가 전체 착용의 "+(s.c===null?"—":s.c+"%")+" 🧥"
+    + (base && base<10 ? " (항목 "+base+"개라 아직 흔들리는 숫자)" : "");
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
 });
 if(navigator.share){

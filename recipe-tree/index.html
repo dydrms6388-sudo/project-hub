@@ -399,7 +399,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
 var UNITS = ["큰술","작은술","숟가락","숟갈","스푼","티스푼","테이블스푼","컵","공기","종이컵",
   "g","kg","mg","ml","mL","L","l","리터","밀리리터","그램","킬로그램",
   "개","알","쪽","줄","장","봉지","봉","캔","팩","톨","주먹","꼬집","방울","마리","포기","단","자밤",
-  "대","뿌리","줄기","조각","덩어리","자루","근","국자","공기","알갱이","T","t","cc","스틱","봉투","모","통","송이","다발","줌","꼬치","인분"];
+  "대","뿌리","줄기","조각","덩어리","자루","근","국자","공기","알갱이","토막","꼬투리","쪽파","T","t","cc","스틱","봉투","모","통","송이","다발","줌","꼬치","인분"];
 /* 단위 표기 통일 — 같은 양인데 표기만 다를 때 diff가 "바뀜"으로 오판하지 않게.
    화면에는 사용자가 쓴 표기를 그대로 보여 주고, 비교할 때만 이 표를 쓴다. */
 var UNIT_CANON = {
@@ -492,6 +492,13 @@ function parseIngredient(line){
   s = s.replace(/[(（]([^)）]*)[)）]\s*$/, function(_,inner){ note = String(inner).trim().slice(0,24); return ""; }).trim();
   if(!s) return null;
 
+  /* "멸치액젓 2큰술 또는 까나리액젓" — 대체 재료를 메모로 떼어 낸다.
+     안 떼면 재료로 인식되지 않고 조리 단계로 새거나 분량이 통째로 비어 버린다. */
+  var alt = s.match(/\s*(?:또는|혹은|대신)\s+(.+)$/);
+  if(alt){
+    var head = s.slice(0, s.length - alt[0].length).trim();
+    if(head){ note = (note ? note+" · " : "") + "또는 " + alt[1].trim().slice(0,20); s = head; }
+  }
   /* "300g 정도", "10마리쯤" 같은 어림 접미 제거 */
   s = s.replace(/\s*(정도|쯤|가량|남짓)\s*$/,"").trim();
 
@@ -500,6 +507,14 @@ function parseIngredient(line){
   if(prep && prep[0].trim()){
     var rest = s.slice(0, s.length - prep[0].length).trim();
     if(rest){ note = (note ? note+" · " : "") + prep[0].trim(); s = rest; }
+  }
+  /* "대파 어슷썰기 1대"처럼 손질 지시가 분량 앞(중간)에 낀 경우.
+     안 떼면 이름이 "대파 어슷썰기"가 되어, 내용을 안 바꿨는데도 diff가
+     "대파 → 대파 어슷썰기"라는 가짜 재료 교체를 만들어 낸다. */
+  var midPrep = s.match(/^(.+?)\s+((?:채|어슷|얇게|굵게|잘게|깍둑|송송)?\s*(?:썰기|썰어서?|다지기|다져서?|손질))\s+(?=[0-9가-힣])/);
+  if(midPrep && midPrep[1].trim()){
+    note = (note ? note+" · " : "") + midPrep[2].trim();
+    s = midPrep[1].trim() + " " + s.slice(midPrep[0].length);
   }
 
   var unitAlt = UNITS.slice().sort(function(a,b){ return b.length-a.length; })
@@ -516,6 +531,15 @@ function parseIngredient(line){
   var sHalf = s.replace(new RegExp("([0-9])\\s*(" + unitAlt + ")\\s*반\\s*$"), function(_,d,u){ half=true; return d+".5 "+u; });
   if(half) s = sHalf;
 
+  /* "고기 한 근 반" 같은 복합 한글 수량 → "1.5근" */
+  var knumAll = Object.keys(KNUM).sort(function(a,b){ return b.length-a.length; }).join("|");
+  var unitAll = UNITS.slice().sort(function(a,b){ return b.length-a.length; })
+    .map(function(u){ return u.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }).join("|");
+  s = s.replace(new RegExp("(^|\\s)(" + knumAll + ")\\s*(" + unitAll + ")\\s*반\\s*$"), function(_,pre,k,u){
+    var base = KNUM[k];
+    var v = base.indexOf("/")>=0 ? (function(){ var q=base.split("/"); return (+q[0])/(+q[1]); })() : parseFloat(base);
+    return pre + (v + 0.5) + u;
+  });
   /* 한글 수량("한 큰술", "반 대", "한근") → 숫자로 치환. 띄어쓰기가 없어도 잡는다. */
   var knumAlt = Object.keys(KNUM).sort(function(a,b){ return b.length-a.length; }).join("|");
   s = s.replace(new RegExp("(^|\\s)(" + knumAlt + ")\\s*(" + unitAlt + ")\\s*$"), function(_,pre,k,u){
@@ -627,22 +651,42 @@ function detectPaste(text){
 function diffRecipes(parent, child){
   var out = { ing:[], step:[], count:0 };
   var pi = (parent.i||[]), ci = (child.i||[]);
-  var pmap = {}, cmap = {};
-  pi.forEach(function(x){ pmap[normName(x.n)] = x; });
-  ci.forEach(function(x){ cmap[normName(x.n)] = x; });
+  /* 이름을 키로 한 map을 쓰면 같은 이름이 두 번 나오는 레시피(메인 설탕 1큰술 +
+     양념장 설탕 1작은술 — 한국 레시피에서 아주 흔하다)에서 뒤엣것이 앞엣것을
+     덮어써, 엉뚱한 짝끼리 비교되어 있지도 않은 변경이 찍혔다.
+     그래서 map 대신 '한 번 쓰면 소비되는' 짝짓기로 바꾼다.
+     1) 이름+양이 똑같은 것끼리 먼저 짝짓고(변경 없음)
+     2) 남은 것 중 이름이 같은 것끼리 순서대로 짝지어 양 변경으로 본다
+     3) 그래도 남으면 삭제/추가 */
+  var pLeft = pi.map(function(x){ return { x:x, used:false }; });
+  var cLeft = ci.map(function(x){ return { x:x, used:false }; });
 
-  var removed = [], added = [];
-  pi.forEach(function(x){ if(!cmap[normName(x.n)]) removed.push(x); });
-  ci.forEach(function(x){ if(!pmap[normName(x.n)]) added.push(x); });
-  /* 양·단위 변경 */
-  pi.forEach(function(x){
-    var c = cmap[normName(x.n)];
-    if(!c) return;
-    /* 표기만 다르고 실제 양이 같으면(1큰술 vs 1T) 변경으로 보지 않는다. */
-    if(!sameQuantity(x, c)){
-      out.ing.push({ kind:"chg", text: x.n+" "+amt(x)+" → "+amt(c) });
+  /* 1) 완전 일치 */
+  pLeft.forEach(function(p){
+    for(var i=0;i<cLeft.length;i++){
+      var c=cLeft[i];
+      if(c.used) continue;
+      if(normName(p.x.n)===normName(c.x.n) && sameQuantity(p.x, c.x)){
+        p.used=true; c.used=true; return;
+      }
     }
   });
+  /* 2) 이름만 같은 것 → 양·단위 변경 */
+  pLeft.forEach(function(p){
+    if(p.used) return;
+    for(var i=0;i<cLeft.length;i++){
+      var c=cLeft[i];
+      if(c.used) continue;
+      if(normName(p.x.n)===normName(c.x.n)){
+        p.used=true; c.used=true;
+        out.ing.push({ kind:"chg", text: p.x.n+" "+amt(p.x)+" → "+amt(c.x) });
+        return;
+      }
+    }
+  });
+  /* 3) 남은 것 */
+  var removed = pLeft.filter(function(p){ return !p.used; }).map(function(p){ return p.x; });
+  var added   = cLeft.filter(function(c){ return !c.used; }).map(function(c){ return c.x; });
   /* 1:1 이면 교체로 읽어 준다 */
   if(removed.length===1 && added.length===1){
     out.ing.push({ kind:"chg", text: removed[0].n+" "+amt(removed[0])+" → "+added[0].n+" "+amt(added[0]) });
@@ -853,7 +897,7 @@ $("saveBtn").addEventListener("click",function(){
     if(d.count===0){ toast("부모와 달라진 점이 없습니다. 무엇이든 바꿔야 새 버전이 됩니다"); return; }
     r.cr=reason.slice(0,140);
     r.par={ t:forkParent.t, au:forkParent.au, i:forkParent.i, s:forkParent.s };
-    r.anc=(forkParent.anc||[]).concat([{ t:forkParent.t, au:forkParent.au, cr:forkParent.cr||"" }]).slice(-6);
+    r.anc=(forkParent.anc||[]).concat([{ t:forkParent.t, au:forkParent.au, cr:forkParent.cr||"" }]).slice(-20);   /* 링크 길이 때문에 상한은 두되 넉넉히 */
     r.root=forkParent.root||forkParent.id||("root-"+forkParent.t);
   } else {
     r.root="root-"+r.t+"-"+r.au;
@@ -1008,7 +1052,7 @@ function openRecipe(r){
         + (n.cr?'<div class="tc">✏️ '+esc(n.cr)+'</div>':"")+'</div></div>';
     }).join("");
     var forks=db.recipes.filter(function(x){ return x.root && r.root && x.root===r.root && x.par; }).length;
-    $("forkCount").textContent = forks ? "— 내 기기에서 "+forks+"번 갈라졌습니다" : "";
+    $("forkCount").textContent = forks ? "— 이 기기에 저장된 갈래 "+forks+"개" : "";
     $("treeWrap").style.display="block";
   } else $("treeWrap").style.display="none";
   $("viewCard").scrollIntoView({behavior:"smooth",block:"start"});
@@ -1133,7 +1177,7 @@ function cleanRecipe(r){
   if(r.par && Array.isArray(r.par.i)) out.par={ t:str(r.par.t,40), au:str(r.par.au,12),
     i:r.par.i.slice(0,40).map(function(x){ return { n:str(x&&x.n,24), a:str(x&&x.a,8), u:str(x&&x.u,6) }; }),
     s:(Array.isArray(r.par.s)?r.par.s:[]).slice(0,30).map(function(x){ return { a:str(x&&x.a,120), m:(x&&typeof x.m==="number")?x.m:null }; }) };
-  if(Array.isArray(r.anc)) out.anc=r.anc.slice(0,6).map(function(a){ return { t:str(a&&a.t,40), au:str(a&&a.au,12), cr:str(a&&a.cr,140) }; });
+  if(Array.isArray(r.anc)) out.anc=r.anc.slice(0,20).map(function(a){ return { t:str(a&&a.t,40), au:str(a&&a.au,12), cr:str(a&&a.cr,140) }; });
   return out;
 }
 function shareUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(packShare(viewing))); }
@@ -1253,9 +1297,11 @@ function drawCard(){
     });
   }
   ctx.textAlign="center";
-  var chain=(r.anc||[]).length+1;
+  /* 화면의 "내 기기에서 N번 갈라짐"(가계 전체)과 다른 숫자를 말하지 않도록,
+     카드에는 '이 레시피까지 몇 대를 거쳤는지'를 명시적으로 적는다. */
+  var gen=(r.anc||[]).length+1;
   ctx.fillStyle="rgba(255,255,255,.45)"; ctx.font="600 25px -apple-system,sans-serif";
-  ctx.fillText(chain>1 ? ("이 레시피는 "+(chain-1)+"번 갈라져 여기까지 왔습니다") : "이 레시피의 뿌리입니다", W/2, 1268);
+  ctx.fillText(gen>1 ? ("원본에서 "+(gen-1)+"대를 거쳐 여기까지 왔습니다") : "이 레시피의 뿌리입니다", W/2, 1268);
   ctx.fillStyle="rgba(255,255,255,.75)"; ctx.font="700 28px -apple-system,sans-serif";
   ctx.fillText("tomatoeggcat.com/recipe-tree", W/2, 1312);
 }
