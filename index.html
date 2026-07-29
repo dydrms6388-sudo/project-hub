@@ -196,6 +196,14 @@
     .chip.is-on .n{color:rgba(4,19,13,.65)}
     html[data-theme="light"] .chip.is-on{color:#fff}
     html[data-theme="light"] .chip.is-on .n{color:rgba(255,255,255,.8)}
+    /* 칩 과다 노출 완화: 주요 7개만 기본 노출, 나머지는 '더 보기'로 펼침(콘텐츠·섹션은 그대로) */
+    .more-chip{display:none}
+    .chip-toggle:checked ~ .filters .more-chip{display:inline-flex}
+    .chip-toggle:checked ~ .filters .chip-more-btn{display:none}
+    .chip-more-btn{flex:0 0 auto; cursor:pointer; font-family:inherit; font-size:13px; font-weight:700;
+      color:var(--acc); background:transparent; border:1px dashed var(--acc-ln);
+      padding:8px 14px; border-radius:999px; white-space:nowrap; transition:color .14s, border-color .14s}
+    .chip-more-btn:hover{color:var(--tx); border-color:var(--acc)}
 
     /* ── 카테고리 섹션 ── */
     .cat{margin-top:34px; scroll-margin-top:70px; --cc:var(--acc)}
@@ -343,6 +351,7 @@
 
     <nav class="filters-sticky" aria-label="카테고리 필터">
       <div class="filters-wrap">
+        <input type="checkbox" id="chip-toggle" class="chip-toggle" hidden />
         <div class="filters" id="filters">
           <button class="chip is-on" data-filter="*" type="button">전체 <span class="n">403</span></button>
           <button class="chip" data-filter="featured" type="button">주요 도구 <span class="n">9</span></button>
@@ -351,17 +360,18 @@
           <button class="chip" data-filter="c2-취향-바이럴" type="button">취향 · 바이럴 <span class="n">6</span></button>
           <button class="chip" data-filter="c3-밈-직장인-놀이터" type="button">밈 · 직장인 놀이터 <span class="n">10</span></button>
           <button class="chip" data-filter="c4-데일리-뉴스" type="button">데일리 뉴스 <span class="n">1</span></button>
-          <button class="chip" data-filter="c5-건강-운동" type="button">건강·운동 <span class="n">100</span></button>
-          <button class="chip" data-filter="c6-생활-도구" type="button">생활 도구 <span class="n">82</span></button>
-          <button class="chip" data-filter="c7-교육-학습" type="button">교육·학습 <span class="n">55</span></button>
-          <button class="chip" data-filter="c8-엔터-바이럴" type="button">엔터·바이럴 <span class="n">37</span></button>
-          <button class="chip" data-filter="c9-운세-심리" type="button">운세·심리 <span class="n">23</span></button>
-          <button class="chip" data-filter="c10-금융-부동산" type="button">금융·부동산 <span class="n">18</span></button>
-          <button class="chip" data-filter="c11-취업-생산성" type="button">취업·생산성 <span class="n">15</span></button>
-          <button class="chip" data-filter="c12-연애-관계" type="button">연애·관계 <span class="n">14</span></button>
-          <button class="chip" data-filter="c13-반려-식물" type="button">반려·식물 <span class="n">11</span></button>
-          <button class="chip" data-filter="c14-뷰티-패션" type="button">뷰티·패션 <span class="n">8</span></button>
-          <button class="chip" data-filter="c15-여행-문화" type="button">여행·문화 <span class="n">7</span></button>
+          <button class="chip more-chip" data-filter="c5-건강-운동" type="button">건강·운동 <span class="n">100</span></button>
+          <button class="chip more-chip" data-filter="c6-생활-도구" type="button">생활 도구 <span class="n">82</span></button>
+          <button class="chip more-chip" data-filter="c7-교육-학습" type="button">교육·학습 <span class="n">55</span></button>
+          <button class="chip more-chip" data-filter="c8-엔터-바이럴" type="button">엔터·바이럴 <span class="n">37</span></button>
+          <button class="chip more-chip" data-filter="c9-운세-심리" type="button">운세·심리 <span class="n">23</span></button>
+          <button class="chip more-chip" data-filter="c10-금융-부동산" type="button">금융·부동산 <span class="n">18</span></button>
+          <button class="chip more-chip" data-filter="c11-취업-생산성" type="button">취업·생산성 <span class="n">15</span></button>
+          <button class="chip more-chip" data-filter="c12-연애-관계" type="button">연애·관계 <span class="n">14</span></button>
+          <button class="chip more-chip" data-filter="c13-반려-식물" type="button">반려·식물 <span class="n">11</span></button>
+          <button class="chip more-chip" data-filter="c14-뷰티-패션" type="button">뷰티·패션 <span class="n">8</span></button>
+          <button class="chip more-chip" data-filter="c15-여행-문화" type="button">여행·문화 <span class="n">7</span></button>
+          <label for="chip-toggle" class="chip-more-btn" role="button">＋ 11개 더</label>
         </div>
       </div>
     </nav>
