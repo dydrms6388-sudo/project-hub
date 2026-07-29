@@ -80,6 +80,7 @@ const BUILTINS = [
   { slug: "coin-moment", emoji: "🪙", name: "동전의 순간", desc: "무작위로 정해주고, 그걸 본 순간의 기분을 묻는다", k: "결정 선택 고민 동전 랜덤 결정장애", prio: "0.7" },
   { slug: "overlap", emoji: "🧩", name: "겹치는 부분", desc: "싸운 두 사람이 둘 다 동의하는 사실만 남기는 대조 도구", k: "갈등 싸움 대화 화해 관점 대조 커플", prio: "0.7" },
   { slug: "past-me", emoji: "🎞️", name: "과거의 나", desc: "충동의 순간, 평온할 때 남긴 내 영상을 스킵 없이 재생", k: "충동 금연 절제 습관 중독 의지 영상", prio: "0.7" },
+  { slug: "seonbae", emoji: "🧭", name: "10년 선배", desc: "나보다 7살 이상 많고 같은 걸 겪은 사람만 답할 수 있는 질문", k: "고민 조언 선배 퇴사 이직 진로 경험담", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
@@ -87,7 +88,7 @@ const BUILTIN_CATS = [
   { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
-  { title: "🧠 심리 메커니즘", tag: "신규", slugs: ["coin-moment", "overlap", "past-me"] },
+  { title: "🧠 심리 메커니즘", tag: "신규", slugs: ["coin-moment", "overlap", "past-me", "seonbae"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism"]);
