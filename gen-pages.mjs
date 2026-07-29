@@ -261,7 +261,10 @@ for (const d of daily) {
   const bgParas = background
     ? background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => p.includes("|") ? renderRich(p).html : `<p>${esc(p)}</p>`).join("\n    ") : "";
   const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${richInline(s)}</li>`).join("\n        ")}\n    </ol>`;
-  const scenHtml = secUl("이럴 때 유용해요", scenarios);
+  // 시나리오가 넉넉하면(≥3) 첫 항목은 '한눈에 보기'로 올리고 본문은 나머지를 노출 →
+  // 히어로 lead·TL;DR·본문 간 같은 예시 문장 반복 방지(콘텐츠 얇아지지 않게 ≥3일 때만).
+  const scenLeadInTldr = scenarios.length >= 3;
+  const scenHtml = secUl("이럴 때 유용해요", scenLeadInTldr ? scenarios.slice(1) : scenarios);
   const tipsHtml = secUl("활용 팁", tips);
   const cautHtml = cautions.length
     ? `<h2>주의사항</h2>\n    <ul class="cautions">\n        ${cautions.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
@@ -297,7 +300,9 @@ for (const d of daily) {
   // 같은 문장을 반복하지 않도록: 무엇을=lead 를 짧게 압축한 요약 한 줄만 노출.
   const gist = lead.length > 52 ? lead.slice(0, 50).replace(/\s+\S*$/, "") + "…" : lead;
   const tldrItems = [
-    `<li><b>무엇을</b> ${esc(gist)}</li>`,
+    scenLeadInTldr
+      ? `<li><b>이럴 때</b> ${richInline(scenarios[0])}</li>`
+      : `<li><b>무엇을</b> ${esc(gist)}</li>`,
     `<li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>`,
   ];
   const tldrHtml = `<div class="tldr">
