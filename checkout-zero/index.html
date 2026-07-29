@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>결제완료 — 사는 기분은 다 가져가고, 결제만 안 하는 쇼핑 | TomatoEggCat</title>
+<meta name="description" content="고르고, 담고, 주문서를 쓰고, 주문번호를 받고, 며칠에 걸쳐 배송을 추적합니다. 결제만 일어나지 않습니다. 결제하지 않은 금액은 그대로 저축 누계가 되고, 배송이 도착해 열어보면 예전에 등록해 둔 내 물건이 나옵니다. 카드번호를 넣는 칸도, 진짜 사러 가는 링크도 없는 충동구매 대체 도구." />
+<link rel="canonical" href="https://tomatoeggcat.com/checkout-zero/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="결제완료 — 사는 기분은 다 가져가고, 결제만 안 하는 쇼핑" />
+<meta property="og:description" content="주문하고 배송받는 과정은 그대로, 결제만 빠집니다. 안 쓴 돈은 저축 누계로 쌓이고, 도착한 택배를 열면 이미 내가 가진 물건이 나옵니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/checkout-zero/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="결제완료 — 결제만 안 하는 쇼핑" />
+<meta name="twitter:description" content="사는 기분은 다 주고, 잔고는 그대로. 안 쓴 돈이 저축이 되는 충동구매 대체 도구." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"결제완료","description":"구매의 전 과정(고르기·장바구니·주문서·주문번호·배송 추적·도착)을 그대로 재현하되 실제 결제는 일어나지 않는 정적 웹앱. 결제하지 않은 금액은 저축 누계가 되고, 배송 완료 후 열어보면 사용자가 미리 등록해 둔 자기 물건이 나온다. 모든 기록은 브라우저에만 저장된다.","applicationCategory":"LifestyleApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/checkout-zero/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"진짜로 돈이 빠져나가나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 도구에는 결제 수단을 연결하는 기능이 아예 없습니다. 카드번호나 계좌번호를 입력하는 칸 자체가 만들어져 있지 않고, 외부 결제사로 나가는 통신도 없습니다. 주문서의 결제수단 목록은 전부 이름뿐인 가짜 항목이며, 결제 버튼을 눌러도 브라우저 안에서 주문번호가 하나 만들어질 뿐입니다."}},
+{"@type":"Question","name":"배송은 어떻게 진행되나요?","acceptedAnswer":{"@type":"Answer","text":"주문할 때 고른 속도(체험 5분 또는 1일·2일·3일)에 따라 상품준비중 → 집화완료 → 간선상차 → 배송출발 → 배송완료 다섯 단계가 실제 시간에 걸쳐 진행됩니다. 도착 시각은 이른 아침 6시에 가장 가깝게 맞춰집니다. 진행 상태는 현재 시각을 기준으로 그때그때 계산되므로, 브라우저를 닫아 두어도 다시 열면 그동안 흐른 만큼 진행되어 있습니다."}},
+{"@type":"Question","name":"배송이 도착하면 무엇이 나오나요?","acceptedAnswer":{"@type":"Answer","text":"내 물건 탭에 미리 등록해 둔 소지품 중 하나가 나옵니다. 가장 오랫동안 보여주지 않은 것부터 뽑고 직전에 나온 것은 제외하므로 같은 물건이 연달아 나오지 않습니다. 아직 좋다·잊고 있었다·이제 안 쓴다 중 하나로 반응을 남길 수 있고, 이제 안 쓴다가 쌓이면 정리 목록이 됩니다. 등록해 둔 물건이 없으면 대신 그동안의 절약 누계를 보여줍니다."}},
+{"@type":"Question","name":"사진이나 입력한 내용이 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"전송되지 않습니다. 이 페이지는 서버도 로그인도 없는 정적 페이지이고, 등록한 이름·금액·사진은 모두 이 브라우저의 저장소에만 남습니다. 사진은 저장 공간을 아끼기 위해 가로세로 400픽셀 이하로 줄여서 보관합니다. 브라우저 데이터를 지우면 함께 사라지므로 중요한 기록의 보관용으로는 쓰지 마세요."}},
+{"@type":"Question","name":"72시간 뒤에 묻는 질문은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"장바구니에 담아만 두고 주문하지 않은 물건은 72시간이 지나면 아직도 갖고 싶은지 한 번 물어봅니다. 아니오를 고르면 목록에서 지워지고 넘긴 충동으로 집계되어, 절약 탭에 내가 충동의 몇 퍼센트를 넘겼는지가 쌓입니다. 여기에 진짜로 사러 가는 링크나 제휴 링크는 두지 않았습니다."}},
+{"@type":"Question","name":"절약 누계는 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"주문한(=결제하지 않은) 금액을 그대로 더한 값입니다. 실제 계좌나 카드 내역과는 연동되지 않는, 직접 적은 숫자에 대한 단순 합계입니다. 월 생활비를 입력해 두면 누계가 생활비 며칠치인지로 환산해 보여줍니다. 이 숫자는 재미와 자기 기록용이며 금융 자문이 아닙니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"소비 습관","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"결제완료","item":"https://tomatoeggcat.com/checkout-zero/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#7dd3a7;--acc2:#bbf7d0;--accdim:#14372a;--warm:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#7dd3a7,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 16px;font-size:15px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+.lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
+.lab b{color:var(--acc2)}
+.hint{font-size:12px;color:#6b7280;margin:6px 0 0}
+.notreal{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:#93a3b8;background:#101820;border:1px solid #1e2c3a;border-radius:12px;padding:9px 12px;margin:0 0 18px}
+.notreal b{color:#bfdbfe;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{width:auto;flex:none;padding:9px 13px;font-size:14px;font-weight:600;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:42px;transition:.12s}
+.chip.on{background:rgba(125,211,167,.14);border-color:var(--acc);color:var(--acc2)}
+input[type=text],input[type=number],textarea,select{width:100%;padding:12px 14px;font-size:15px;background:#0f0f0f;color:#ededed;border:1px solid #333;border-radius:12px;min-height:46px;font-family:inherit}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc)}
+textarea{min-height:70px;resize:vertical;line-height:1.5}
+.field{margin-top:14px}
+.row2{display:flex;gap:10px}
+.row2>div{flex:1}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#06231a;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#12211b;color:var(--acc2);border:1px solid #2a4a3a;font-weight:700}
+button.mini{width:auto;padding:8px 12px;font-size:13px;min-height:38px;border-radius:9px}
+button.danger{background:#2a1414;color:#fca5a5;border:1px solid #4a2222;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.inbound{display:none;position:sticky;top:0;z-index:30;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#14372a,#1b4d38);border-bottom:1px solid #2f6d52}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:var(--acc2);flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+/* tabs */
+.tabs{display:flex;gap:6px;margin:0 0 18px;background:#111;border:1px solid #232323;border-radius:14px;padding:5px}
+.tabs button{flex:1;padding:10px 4px;font-size:13.5px;font-weight:700;background:transparent;color:#8b8b8b;border-radius:10px;min-height:44px}
+.tabs button.on{background:#1d2a24;color:var(--acc2)}
+.tabs .badge{display:inline-block;min-width:18px;padding:0 5px;margin-left:3px;font-size:11px;line-height:18px;border-radius:999px;background:var(--acc);color:#06231a;font-weight:800}
+section.tab{display:none}
+section.tab.on{display:block}
+/* lists */
+.item{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #242424;background:#131313;border-radius:14px;margin-bottom:10px}
+.item .th{width:52px;height:52px;border-radius:10px;object-fit:cover;background:#1e1e1e;flex:none;display:flex;align-items:center;justify-content:center;font-size:22px;color:#555}
+.item .bd{flex:1;min-width:0}
+.item .nm{font-size:14.5px;font-weight:700;color:#ededed;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .sb{font-size:12.5px;color:#8b8b8b;margin-top:2px}
+.item .pr{font-size:14.5px;font-weight:800;color:var(--acc2);white-space:nowrap}
+.item .x{width:auto;min-height:34px;padding:6px 9px;font-size:12px;background:#1c1c1c;color:#8b8b8b;border:1px solid #2c2c2c;border-radius:8px;font-weight:700}
+.empty{text-align:center;color:#6b7280;font-size:14px;padding:26px 10px;border:1px dashed #2a2a2a;border-radius:14px}
+.sum{display:flex;justify-content:space-between;align-items:center;padding:14px 4px 2px;font-size:15px}
+.sum b{font-size:20px;font-weight:800;color:var(--acc2)}
+/* order tracking */
+.ord{border:1px solid #242424;background:#131313;border-radius:16px;padding:16px;margin-bottom:12px}
+.ordhd{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12.5px;color:#8b8b8b}
+.ordhd b{color:#c9c9c9;font-weight:700;letter-spacing:.02em}
+.ordnames{font-size:14.5px;font-weight:700;margin:8px 0 2px;word-break:keep-all}
+.ordamt{font-size:13px;color:var(--acc2);font-weight:700;margin-bottom:12px}
+.track{position:relative;padding-top:6px}
+.trackbar{height:6px;background:#232323;border-radius:999px;overflow:hidden}
+.trackbar i{display:block;height:100%;background:linear-gradient(90deg,#7dd3a7,#7aa2ff);width:0;border-radius:999px;transition:width .8s}
+.steps{display:flex;justify-content:space-between;margin-top:8px}
+.steps span{font-size:10.5px;color:#5b5b5b;flex:1;text-align:center}
+.steps span.on{color:var(--acc2);font-weight:700}
+.ordnote{font-size:13px;color:#9ca3af;margin-top:10px}
+.ordnote b{color:var(--warm)}
+/* paper receipt */
+.paper{background:#f7f4ec;color:#26221a;border-radius:14px;padding:24px 20px 20px;position:relative;overflow:hidden;box-shadow:inset 0 0 0 2px #c3b9a1,inset 0 0 0 5px #f7f4ec,inset 0 0 0 6px #ded5c0}
+.paper .tiny{font-size:11px;color:#8a7f66;text-align:center;letter-spacing:.1em;margin:0 0 8px}
+.paper h2{margin:0 0 6px;text-align:center;font-size:24px;font-weight:900;letter-spacing:.22em;text-indent:.22em;color:#1c1912}
+.paper .big{text-align:center;font-size:38px;font-weight:900;color:#14532d;margin:10px 0 2px;letter-spacing:-.01em}
+.paper .bigsub{text-align:center;font-size:12.5px;color:#6b6350;margin:0 0 14px}
+.pline{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;border-bottom:1px dashed #c3b9a1;color:#3b3527}
+.pline b{font-weight:800;color:#1c1912}
+.psep{border:0;border-top:1.5px solid #26221a;margin:12px 0 10px}
+.wm{font-size:10.5px;color:#a29a83;text-align:right;margin-top:12px;letter-spacing:.04em}
+/* bars */
+.bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin:14px 0 4px}
+.bars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bars .b i{display:block;width:100%;max-width:38px;background:linear-gradient(180deg,#7dd3a7,#2f6d52);border-radius:6px 6px 0 0;min-height:3px}
+.bars .b em{font-style:normal;font-size:10.5px;color:#6b7280;margin-top:6px}
+.bars .b s{text-decoration:none;font-size:10.5px;color:#8b8b8b;margin-bottom:4px}
+/* sheet */
+.sheet{display:none;position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.72);padding:18px;overflow-y:auto}
+.sheet.show{display:flex;align-items:flex-start;justify-content:center}
+.sheetin{background:#141414;border:1px solid #2a2a2a;border-radius:18px;padding:20px;max-width:520px;width:100%;margin:auto}
+.sheetin h3{margin:0 0 4px;font-size:19px;font-weight:800}
+.sheetin .sub{font-size:13px;color:#8b8b8b;margin:0 0 16px}
+.paying{text-align:center;padding:30px 0}
+.spin{width:44px;height:44px;margin:0 auto 14px;border:4px solid #2a2a2a;border-top-color:var(--acc);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.okmark{width:66px;height:66px;margin:0 auto 14px;border-radius:50%;background:rgba(125,211,167,.14);border:2px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:32px;animation:pop .45s cubic-bezier(.2,1.4,.5,1)}
+@keyframes pop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+.ordno{font-size:20px;font-weight:900;letter-spacing:.08em;color:var(--acc2);margin:8px 0 4px}
+.reveal{text-align:center}
+.reveal .rimg{width:180px;height:180px;border-radius:16px;object-fit:cover;background:#1e1e1e;margin:6px auto 12px;display:block}
+.reveal .rname{font-size:20px;font-weight:800}
+.reveal .rsince{font-size:13.5px;color:var(--warm);margin-top:4px}
+.disc{font-size:12px;color:#9ca3af;background:#141414;border:1px solid #262626;border-radius:10px;padding:10px 12px;margin-top:12px}
+.about h2{font-size:19px;margin:30px 0 10px;color:var(--acc2)}
+.about h3{font-size:16px;margin:20px 0 6px;color:#ededed}
+.about p,.about li{font-size:14.5px;color:#c9c9c9;word-break:keep-all}
+.about ol,.about ul{padding-left:20px}
+.faq dt{font-weight:800;margin-top:14px;color:#ededed}
+.faq dd{margin:4px 0 0;color:#9ca3af;font-size:14.5px;word-break:keep-all}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:#c9c9c9;background:#141414;border:1px solid #2a2a2a;border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
+.rel a:hover{border-color:var(--acc);color:var(--acc2)}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#262626;color:#ededed;font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.adbox{margin-top:20px}
+@media (max-width:380px){.tabs button{font-size:12px}.paper .big{font-size:31px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>🧾 친구가 “결제하지 않은 금액” 영수증을 공유했어요.</span>
+  <button id="inboundBtn" type="button">나도 해보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 소비 습관 › 결제완료</nav>
+
+<header>
+  <h1>🧾 결제완료</h1>
+  <p class="lead">고르고, 담고, 주문서를 쓰고, 주문번호를 받고, 며칠에 걸쳐 배송을 기다립니다. 결제만 일어나지 않습니다.</p>
+</header>
+
+<p class="notreal"><span>🔒</span><span><b>실제 결제는 일어나지 않습니다.</b> 카드번호를 넣는 칸도, 진짜 사러 가는 링크도 이 도구에는 없습니다. 적어 둔 내용은 이 브라우저에만 남습니다.</span></p>
+
+<!-- ── 온보딩 ── -->
+<div class="card" id="onb" style="display:none">
+  <p class="lab">처음이시죠 — <b>세 가지만</b></p>
+  <ol style="margin:0 0 6px;padding-left:20px;font-size:14.5px;color:#c9c9c9">
+    <li style="margin-bottom:6px"><b>사는 과정은 전부 그대로입니다.</b> 담고, 주문서를 쓰고, 결제 버튼을 누르고, 배송을 추적합니다.</li>
+    <li style="margin-bottom:6px"><b>돈은 나가지 않습니다.</b> 결제하지 않은 금액은 저축 누계로 쌓입니다.</li>
+    <li><b>택배가 도착하면 열어보세요.</b> 내가 이미 가진 물건 중 하나가 나옵니다 — 그래서 <b>‘내 물건’ 탭에 집에 있는 것부터 몇 개 등록</b>해 두시는 걸 권합니다.</li>
+  </ol>
+  <div class="field">
+    <p class="lab">월 생활비 <span style="color:#6b7280;font-weight:400">(선택 · 절약 누계를 “며칠치”로 환산합니다)</span></p>
+    <input type="number" id="onbLiving" inputmode="numeric" placeholder="예: 1200000" />
+  </div>
+  <div class="acts"><button id="onbGo" type="button">시작하기</button></div>
+</div>
+
+<!-- ── 탭 ── -->
+<div class="tabs" id="tabs">
+  <button type="button" data-t="want" class="on">🛒 담기<span class="badge" id="bCart" style="display:none">0</span></button>
+  <button type="button" data-t="order">📦 주문내역<span class="badge" id="bOrd" style="display:none">0</span></button>
+  <button type="button" data-t="thing">🏠 내 물건</button>
+  <button type="button" data-t="save">💰 절약</button>
+</div>
+
+<!-- ── 담기 ── -->
+<section class="tab on" id="tab-want">
+
+  <div class="card" id="holdCard" style="display:none">
+    <p class="lab">담아만 둔 지 <b>사흘</b>이 지났어요</p>
+    <p style="font-size:15.5px;font-weight:700;margin:0 0 4px" id="holdName">—</p>
+    <p class="hint" id="holdMeta">—</p>
+    <p style="font-size:14.5px;color:#c9c9c9;margin:12px 0 0">아직도 갖고 싶으세요?</p>
+    <div class="acts">
+      <button class="ghost" type="button" id="holdYes">네, 아직요</button>
+      <button class="ghost" type="button" id="holdNo">아니요, 지울래요</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="lab">갖고 싶은 것 <b>담기</b></p>
+    <div class="field">
+      <input type="text" id="wName" maxlength="40" placeholder="무엇을 사고 싶으세요?" />
+    </div>
+    <div class="field row2">
+      <div><input type="number" id="wPrice" inputmode="numeric" placeholder="가격 (원)" /></div>
+      <div><input type="text" id="wCat" maxlength="12" placeholder="분류 (선택)" /></div>
+    </div>
+    <div class="field">
+      <textarea id="wNote" maxlength="60" placeholder="왜 갖고 싶은지 한 줄 (선택)"></textarea>
+    </div>
+    <div class="field">
+      <input type="file" id="wPhoto" accept="image/*" style="padding:10px 12px;font-size:13.5px;min-height:44px" />
+      <p class="hint">사진은 선택입니다. 400px 이하로 줄여 이 브라우저에만 저장합니다.</p>
+    </div>
+    <div class="acts"><button id="wAdd" type="button">장바구니에 담기</button></div>
+  </div>
+
+  <div class="card">
+    <p class="lab">장바구니</p>
+    <div id="cartList"></div>
+    <div class="sum" id="cartSum" style="display:none"><span>합계</span><b id="cartTotal">0원</b></div>
+    <div class="acts" id="cartActs" style="display:none"><button id="toCheckout" type="button">주문서 작성 →</button></div>
+  </div>
+
+</section>
+
+<!-- ── 주문내역 ── -->
+<section class="tab" id="tab-order">
+  <div class="card">
+    <p class="lab">주문 <b>내역</b></p>
+    <p class="hint" id="notifyHint" style="margin:0 0 12px">배송 단계는 현재 시각으로 계산됩니다. 창을 닫아 두어도 다시 열면 그동안 흐른 만큼 진행되어 있습니다.</p>
+    <div class="acts" style="margin-top:0"><button class="ghost mini" id="notifyBtn" type="button">이 창이 열려 있는 동안 알림 받기</button></div>
+    <div id="ordList" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<!-- ── 내 물건 ── -->
+<section class="tab" id="tab-thing">
+  <div class="card">
+    <p class="lab">집에 있는 물건 <b>등록</b></p>
+    <p class="hint" style="margin:0 0 12px">택배가 도착하면 여기 등록해 둔 것 중 하나가 나옵니다. 열 개쯤 찍어 두면 가장 재미있습니다.</p>
+    <div class="field"><input type="text" id="tName" maxlength="40" placeholder="물건 이름" /></div>
+    <div class="field row2">
+      <div><input type="month" id="tSince" style="min-height:46px" /></div>
+      <div><input type="file" id="tPhoto" accept="image/*" style="padding:10px 12px;font-size:13.5px" /></div>
+    </div>
+    <p class="hint">왼쪽은 “언제부터 있었나” (선택). 기억나지 않으면 비워 두세요.</p>
+    <div class="acts"><button id="tAdd" type="button">등록</button></div>
+  </div>
+
+  <div class="card">
+    <p class="lab">등록된 물건 <b id="thingCount">0개</b></p>
+    <div id="thingList"></div>
+  </div>
+
+  <div class="card" id="tidyCard" style="display:none">
+    <p class="lab">정리 목록 <span style="color:#6b7280;font-weight:400">— “이제 안 쓴다”고 답한 것들</span></p>
+    <div id="tidyList"></div>
+  </div>
+</section>
+
+<!-- ── 절약 ── -->
+<section class="tab" id="tab-save">
+  <div class="card">
+    <p class="lab">결제하지 않은 금액 <b>영수증</b></p>
+
+    <div class="paper" id="paper">
+      <p class="tiny">CHECKOUT ZERO · 결제되지 않음</p>
+      <h2>영 수 증</h2>
+      <p class="big" id="pTotal">0원</p>
+      <p class="bigsub" id="pSub">아직 주문이 없습니다</p>
+      <hr class="psep" />
+      <div class="pline"><span>이번 달 안 쓴 돈</span><b id="pMonth">0원</b></div>
+      <div class="pline"><span>결제하지 않은 주문</span><b id="pOrders">0건</b></div>
+      <div class="pline" id="pPassRow" style="display:none"><span>넘긴 충동</span><b id="pPass">—</b></div>
+      <div class="pline" id="pDaysRow" style="display:none"><span>생활비 환산</span><b id="pDays">—</b></div>
+      <p class="wm">tomatoeggcat.com/checkout-zero</p>
+    </div>
+
+    <div class="bars" id="bars" style="display:none"></div>
+    <p class="hint" id="barsCap" style="display:none;text-align:center">최근 6개월 · 월별 안 쓴 금액</p>
+
+    <div class="acts">
+      <button class="ghost" id="saveImg" type="button">이미지로 저장</button>
+      <button class="ghost" id="copyLink" type="button">링크 복사</button>
+    </div>
+    <div class="acts" style="margin-top:10px">
+      <button class="ghost" id="copyText" type="button">텍스트 복사</button>
+      <button class="ghost" id="xBtn" type="button">X에 공유</button>
+      <button class="ghost" id="webShare" type="button" style="display:none">공유하기</button>
+    </div>
+
+    <p class="disc">이 숫자는 직접 적은 금액을 더한 자기 기록입니다. 실제 계좌·카드 내역과 연동되지 않으며 금융 자문이 아닙니다. 브라우저 데이터를 지우면 함께 사라집니다.</p>
+
+    <div class="adbox">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="lab">숫자만 넣어 <b>영수증 만들기</b> <span style="color:#6b7280;font-weight:400">— 리믹스</span></p>
+    <p class="hint" style="margin:0 0 12px">지금 화면의 숫자가 채워져 있습니다. 원하는 값으로 고쳐 한 번에 다시 만들 수 있습니다.</p>
+    <div class="field row2">
+      <div><input type="number" id="rxTotal" inputmode="numeric" placeholder="누적 금액" /></div>
+      <div><input type="number" id="rxMonth" inputmode="numeric" placeholder="이번 달" /></div>
+    </div>
+    <div class="field row2">
+      <div><input type="number" id="rxOrders" inputmode="numeric" placeholder="주문 건수" /></div>
+      <div><input type="number" id="rxPass" inputmode="numeric" placeholder="넘긴 충동 %" /></div>
+    </div>
+    <div class="acts"><button class="ghost" id="rxGo" type="button">이 숫자로 영수증 만들기</button></div>
+  </div>
+
+  <div class="card">
+    <p class="lab">설정</p>
+    <div class="field">
+      <p class="lab" style="font-weight:400;color:#8b8b8b">월 생활비 (절약 누계를 “며칠치”로 환산)</p>
+      <input type="number" id="setLiving" inputmode="numeric" placeholder="예: 1200000" />
+    </div>
+    <div class="acts"><button class="ghost" id="setSave" type="button">저장</button></div>
+    <div class="acts"><button class="danger" id="wipe" type="button">모든 기록 지우기</button></div>
+  </div>
+</section>
+
+<!-- ── 주문서 시트 ── -->
+<div class="sheet" id="sheet">
+  <div class="sheetin" id="sheetIn"></div>
+</div>
+
+<!-- ── 도착 열기 시트 ── -->
+<div class="sheet" id="openSheet">
+  <div class="sheetin" id="openIn"></div>
+</div>
+
+<!-- ── 본문 ── -->
+<section class="about">
+  <h2>사는 기분만 떼어내면 무엇이 남을까</h2>
+  <p>새벽에 장바구니를 채우는 일이 반복될 때, 정말 원한 게 그 물건이었던 적은 생각보다 적습니다. 고르는 동안의 몰입, 주문번호를 받는 순간의 확정감, 며칠 뒤 문 앞에 뭔가 와 있는 상태 — 실제로 붙잡고 있던 건 대개 이쪽입니다. 결제완료는 그 과정을 하나도 빼지 않고 그대로 두고, 돈이 빠져나가는 지점 하나만 제거한 도구입니다.</p>
+  <p>절약 앱이 잘 실패하는 이유는 <b>안 쓰는 것</b>부터 보여주기 때문입니다. 참으라고 말하는 화면은 아무도 오래 열지 않습니다. 여기서는 반대로 갑니다. 담고, 주문하고, 배송을 기다리는 경험을 먼저 전부 주고 나서 잔고를 보여줍니다. 화면 어디에도 훈계나 죄책감을 유도하는 문구를 두지 않았고, <b>“진짜 사러 가기” 같은 링크나 제휴 버튼도 넣지 않았습니다.</b> 그 버튼이 생기는 순간 이 도구는 정반대의 물건이 되기 때문입니다.</p>
+
+  <h3>도착한 택배를 열면 나오는 것</h3>
+  <p>배송이 완료된 주문을 열면 예전에 등록해 둔 <b>내 물건</b> 중 하나가 나옵니다. “2023년 11월에 오셨네요” 같은 한 줄과 함께요. 이미 충분히 가지고 있다는 말을 잔소리 없이 전할 방법은 사실 이것뿐입니다. 나온 물건에는 <b>아직 좋다 · 잊고 있었다 · 이제 안 쓴다</b> 중 하나로 답할 수 있고, “이제 안 쓴다”가 쌓이면 그대로 정리 목록이 됩니다. 등록해 둔 물건이 없으면 대신 그동안의 절약 누계를 보여줍니다.</p>
+
+  <h3>쓰는 법</h3>
+  <ol>
+    <li><b>내 물건 탭</b>에서 집에 있는 물건을 먼저 몇 개 등록합니다. 사진은 없어도 되지만, 있으면 도착의 재미가 훨씬 큽니다.</li>
+    <li><b>담기 탭</b>에서 갖고 싶은 것을 이름·가격과 함께 담습니다. 왜 갖고 싶은지 한 줄을 적어 두면 사흘 뒤에 다시 볼 때 유용합니다.</li>
+    <li><b>주문서 작성</b>을 눌러 배송지·요청사항·결제수단(전부 이름뿐인 가짜 목록)을 고르고 배송 속도를 정합니다.</li>
+    <li>결제 버튼을 누르면 주문번호가 나옵니다. <b>주문내역 탭</b>에서 상품준비중부터 배송완료까지 실제 시간에 걸쳐 진행됩니다.</li>
+    <li>배송완료가 되면 <b>열어보기</b>가 생깁니다. 열어서 나온 물건에 반응을 남기세요.</li>
+    <li>담아만 두고 사흘이 지난 물건은 “아직도 갖고 싶으세요?”라고 한 번 묻습니다. 아니오가 쌓이면 <b>넘긴 충동</b> 비율이 됩니다.</li>
+  </ol>
+
+  <h3>이 도구가 하지 않는 것</h3>
+  <ul>
+    <li>결제 수단을 연결하지 않습니다. 카드·계좌 입력란 자체가 만들어져 있지 않습니다.</li>
+    <li>계좌를 조회하거나 실제 지출을 불러오지 않습니다. 절약 누계는 직접 적은 금액의 단순 합계입니다.</li>
+    <li>상품 페이지를 긁어 오지 않습니다. 물건은 직접 이름·가격을 적어 등록합니다.</li>
+    <li>“이 돈으로 살 수 있었던 것”으로 환산하지 않습니다. 그건 다시 소비를 부추기는 방향이라, 대신 <b>생활비 며칠치</b>로만 환산합니다.</li>
+    <li>로그인·서버·전송이 없습니다. 사진을 포함해 모든 기록은 이 브라우저 안에만 있습니다.</li>
+  </ul>
+
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>진짜로 돈이 빠져나가나요?</dt>
+    <dd>아니요. 결제 수단을 연결하는 기능이 아예 없습니다. 카드번호·계좌번호를 입력하는 칸이 만들어져 있지 않고, 외부 결제사로 나가는 통신도 없습니다. 주문서의 결제수단은 전부 이름뿐인 가짜 목록이며, 결제 버튼은 브라우저 안에서 주문번호 하나를 만들 뿐입니다.</dd>
+    <dt>배송은 어떻게 진행되나요?</dt>
+    <dd>고른 속도(체험 5분 또는 1일·2일·3일)에 따라 상품준비중 → 집화완료 → 간선상차 → 배송출발 → 배송완료가 실제 시간에 걸쳐 진행됩니다. 도착 시각은 이른 아침 6시에 가장 가깝게 맞춰집니다. 진행 상태는 열어 볼 때의 현재 시각으로 계산하므로, 창을 닫아 두어도 다시 열면 그만큼 진행되어 있습니다.</dd>
+    <dt>알림은 오나요?</dt>
+    <dd>이 페이지에는 서버가 없어서 앱처럼 꺼져 있을 때 오는 푸시 알림은 보낼 수 없습니다. “알림 받기”를 켜 두면 <b>이 창이 열려 있는 동안</b>에 한해 단계가 바뀔 때 브라우저 알림이 뜹니다. 창을 닫았다면 다음에 들어왔을 때 진행된 상태가 그대로 보입니다.</dd>
+    <dt>배송이 도착하면 무엇이 나오나요?</dt>
+    <dd>내 물건 탭에 등록해 둔 소지품 중 하나가 나옵니다. 가장 오랫동안 보여주지 않은 것부터 뽑고 직전에 나온 것은 제외하므로 같은 물건이 연달아 나오지 않습니다. 등록해 둔 물건이 없으면 대신 절약 누계를 보여줍니다.</dd>
+    <dt>사진이나 입력한 내용이 서버로 전송되나요?</dt>
+    <dd>전송되지 않습니다. 서버도 로그인도 없는 정적 페이지이고, 이름·금액·사진은 모두 이 브라우저 저장소에만 남습니다. 사진은 공간을 아끼려고 400px 이하로 줄여 보관합니다. 브라우저 데이터를 지우면 함께 사라지므로 중요한 기록의 보관용으로는 쓰지 마세요.</dd>
+    <dt>72시간 뒤에 묻는 질문은 무엇인가요?</dt>
+    <dd>담아만 두고 주문하지 않은 물건은 사흘이 지나면 아직도 갖고 싶은지 한 번 묻습니다. 아니오를 고르면 목록에서 지워지고 넘긴 충동으로 집계되어, 절약 탭에 내가 충동의 몇 퍼센트를 넘겼는지가 쌓입니다.</dd>
+    <dt>공유하면 상대에게 무엇이 보이나요?</dt>
+    <dd>링크에는 영수증에 찍힌 숫자(누적 금액·이번 달·주문 건수·넘긴 충동 비율·생활비 환산)만 담깁니다. 물건 이름이나 사진은 링크에 들어가지 않습니다. 링크를 연 사람은 그 영수증을 그대로 보고, 상단의 “나도 해보기”로 바로 자기 것을 만들 수 있습니다.</dd>
+  </dl>
+</section>
+
+<div class="rel">
+  <a href="/subscription-reminder/">📮 구독 결제일 알리미</a>
+  <a href="/split-bill/">🧮 더치페이 정산기</a>
+  <a href="/pay-timer/">⏱️ 월급 초시계</a>
+  <a href="/salary/">💵 연봉 실수령액</a>
+</div>
+
+<footer>
+  <a href="/">홈</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <p style="margin:10px 0 0">실제 결제·계좌 연동이 없는 기록 도구입니다. 금융 자문이 아닙니다.</p>
+</footer>
+
+</div>
+
+<canvas id="cv" width="900" height="1300" style="display:none"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var KEY = "ckz.v1";
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function dec(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},2000); }
+function won(n){ return (Math.round(Number(n)||0)).toLocaleString("ko-KR")+"원"; }
+function uid(){ return Date.now().toString(36)+Math.floor(Math.random()*1e6).toString(36); }
+
+/* ---------------- 저장소 ---------------- */
+var DEFAULT = { v:1, onboarded:false, living:0, wants:[], orders:[], things:[], impulse:{asked:0,passed:0}, addr:"우리 집", req:"", pay:"", speed:"d1" };
+var S;
+function load(){
+  try{
+    var raw = localStorage.getItem(KEY);
+    S = raw ? JSON.parse(raw) : null;
+  }catch(e){ S = null; }
+  if(!S || typeof S!=="object") S = JSON.parse(JSON.stringify(DEFAULT));
+  for(var k in DEFAULT) if(!(k in S)) S[k] = JSON.parse(JSON.stringify(DEFAULT[k]));
+  if(!S.impulse || typeof S.impulse!=="object") S.impulse = {asked:0,passed:0};
+  return S;
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); return true; }
+  catch(e){
+    toast("저장 공간이 부족해요. 사진 없이 등록하거나 오래된 항목을 지워 주세요.");
+    return false;
+  }
+}
+load();
+
+/* ---------------- 배송 단계 ---------------- */
+var STAGES = [
+  { f:0.00, label:"상품준비중", note:"주문이 접수되어 상품을 준비하고 있습니다." },
+  { f:0.18, label:"집화완료",   note:"상품이 집화 처리되었습니다." },
+  { f:0.40, label:"간선상차",   note:"배송지 방향으로 이동하고 있습니다." },
+  { f:0.68, label:"배송출발",   note:"오늘 도착 예정입니다." },
+  { f:1.00, label:"배송완료",   note:"문 앞에 도착했습니다." }
+];
+var SPEEDS = [
+  { k:"demo", label:"체험 5분", days:0 },
+  { k:"d1",   label:"1일",      days:1 },
+  { k:"d2",   label:"2일",      days:2 },
+  { k:"d3",   label:"3일",      days:3 }
+];
+function speedOf(k){ for(var i=0;i<SPEEDS.length;i++) if(SPEEDS[i].k===k) return SPEEDS[i]; return SPEEDS[1]; }
+
+// 도착 시각은 이른 아침 6시에 가장 가깝게 맞춘다(도착의 체감이 가장 큰 시간대).
+function calcDeliverAt(at, key){
+  var sp = speedOf(key);
+  if(sp.days === 0) return at + 5*60*1000;
+  var t = at + sp.days*86400000;
+  var d = new Date(t);
+  var a = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 6, 0, 0, 0).getTime();
+  var b = a + 86400000;
+  var cand = (t - a) <= (b - t) ? a : b;
+  var min = at + Math.round(sp.days*0.6*86400000);
+  if(cand < min) cand = b;
+  if(cand < min) cand = min;
+  return cand;
+}
+function progressOf(o){
+  var span = o.deliverAt - o.at;
+  if(span <= 0) return 1;
+  var p = (Date.now() - o.at) / span;
+  return p < 0 ? 0 : (p > 1 ? 1 : p);
+}
+function stageIndex(p){
+  var i = 0;
+  for(var j=0;j<STAGES.length;j++) if(p >= STAGES[j].f) i = j;
+  return i;
+}
+function whenText(ts){
+  var d = new Date(ts), now = new Date();
+  var same = d.getFullYear()===now.getFullYear();
+  return (same ? "" : d.getFullYear()+"년 ") + (d.getMonth()+1)+"월 "+d.getDate()+"일 "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+function monthKey(ts){ var d=new Date(ts); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
+
+/* ---------------- 사진 축소 ---------------- */
+function shrink(file, cb){
+  if(!file){ cb(""); return; }
+  var fr = new FileReader();
+  fr.onload = function(){
+    var img = new Image();
+    img.onload = function(){
+      var MAX = 400;
+      var w = img.width, h = img.height;
+      var r = Math.min(1, MAX/Math.max(w,h));
+      var c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(w*r));
+      c.height = Math.max(1, Math.round(h*r));
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      try{ cb(c.toDataURL("image/jpeg", 0.72)); }catch(e){ cb(""); }
+    };
+    img.onerror = function(){ cb(""); };
+    img.src = fr.result;
+  };
+  fr.onerror = function(){ cb(""); };
+  fr.readAsDataURL(file);
+}
+
+/* ---------------- 탭 ---------------- */
+var TABS = ["want","order","thing","save"];
+function showTab(t){
+  TABS.forEach(function(k){
+    $("tab-"+k).classList.toggle("on", k===t);
+  });
+  var bs = $("tabs").querySelectorAll("button");
+  for(var i=0;i<bs.length;i++) bs[i].classList.toggle("on", bs[i].dataset.t===t);
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+$("tabs").addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest("button[data-t]") : null;
+  if(b) showTab(b.dataset.t);
+});
+
+/* ---------------- 담기 ---------------- */
+function renderCart(){
+  var box = $("cartList");
+  box.innerHTML = "";
+  if(!S.wants.length){
+    box.innerHTML = '<div class="empty">아직 담은 게 없습니다.<br />갖고 싶은 걸 하나 담아 보세요.</div>';
+    $("cartSum").style.display = "none";
+    $("cartActs").style.display = "none";
+  } else {
+    var total = 0;
+    S.wants.forEach(function(w){
+      total += Number(w.price)||0;
+      var el = document.createElement("div");
+      el.className = "item";
+      var sub = [];
+      if(w.cat) sub.push(w.cat);
+      if(w.note) sub.push(w.note);
+      el.innerHTML =
+        (w.img ? '<img class="th" alt="" />' : '<div class="th">🛍️</div>') +
+        '<div class="bd"><div class="nm">'+esc(w.name)+'</div><div class="sb">'+esc(sub.join(" · ")||"—")+'</div></div>' +
+        '<div class="pr">'+won(w.price)+'</div>' +
+        '<button class="x" type="button" data-del="'+esc(w.id)+'">빼기</button>';
+      if(w.img) el.querySelector("img.th").src = w.img;
+      box.appendChild(el);
+    });
+    $("cartTotal").textContent = won(total);
+    $("cartSum").style.display = "flex";
+    $("cartActs").style.display = "flex";
+  }
+  var b = $("bCart");
+  b.textContent = S.wants.length;
+  b.style.display = S.wants.length ? "inline-block" : "none";
+}
+$("cartList").addEventListener("click", function(e){
+  var id = e.target && e.target.dataset ? e.target.dataset.del : null;
+  if(!id) return;
+  S.wants = S.wants.filter(function(w){ return w.id !== id; });
+  save(); renderCart(); renderHold();
+});
+$("wAdd").addEventListener("click", function(){
+  var name = $("wName").value.trim();
+  var price = Math.max(0, Math.round(Number($("wPrice").value)||0));
+  if(!name){ toast("무엇을 담을지 적어 주세요"); return; }
+  if(!price){ toast("가격을 적어 주세요"); return; }
+  if(S.wants.length >= 40){ toast("장바구니는 40개까지예요"); return; }
+  var file = $("wPhoto").files && $("wPhoto").files[0];
+  shrink(file, function(img){
+    S.wants.push({
+      id: uid(), name: name.slice(0,40), price: price,
+      cat: $("wCat").value.trim().slice(0,12),
+      note: $("wNote").value.trim().slice(0,60),
+      img: img, addedAt: Date.now(), askedAt: 0
+    });
+    if(save()){
+      $("wName").value=""; $("wPrice").value=""; $("wCat").value=""; $("wNote").value=""; $("wPhoto").value="";
+      renderCart(); renderHold();
+      toast("장바구니에 담았습니다");
+    } else {
+      S.wants.pop();
+    }
+  });
+});
+
+/* ---------------- 충동 유예 (72시간) ---------------- */
+var HOLD_MS = 72*3600*1000;
+var holdTarget = null;
+function renderHold(){
+  var now = Date.now();
+  holdTarget = null;
+  for(var i=0;i<S.wants.length;i++){
+    var w = S.wants[i];
+    var base = w.askedAt || w.addedAt;
+    if(now - base >= HOLD_MS){ holdTarget = w; break; }
+  }
+  if(!holdTarget){ $("holdCard").style.display = "none"; return; }
+  $("holdCard").style.display = "block";
+  $("holdName").textContent = holdTarget.name + " · " + won(holdTarget.price);
+  var days = Math.floor((now - holdTarget.addedAt)/86400000);
+  $("holdMeta").textContent = "담은 지 " + days + "일" + (holdTarget.note ? " · “"+holdTarget.note+"”" : "");
+}
+$("holdYes").addEventListener("click", function(){
+  if(!holdTarget) return;
+  holdTarget.askedAt = Date.now();
+  S.impulse.asked++;
+  save(); renderHold(); renderSave();
+  toast("사흘 뒤에 다시 물어볼게요");
+});
+$("holdNo").addEventListener("click", function(){
+  if(!holdTarget) return;
+  var id = holdTarget.id;
+  S.wants = S.wants.filter(function(w){ return w.id !== id; });
+  S.impulse.asked++; S.impulse.passed++;
+  save(); renderCart(); renderHold(); renderSave();
+  toast("넘겼습니다");
+});
+
+/* ---------------- 주문서 ---------------- */
+var REQS = ["문 앞에 두세요","경비실에 맡겨 주세요","벨은 누르지 말아 주세요","도착 전에 연락 주세요"];
+var PAYS = ["상상페이","마음카드","참을성 간편결제","무통장(마음)"];
+var draft = { req:"", pay:"", speed:"d1" };
+
+$("toCheckout").addEventListener("click", function(){ openSheet(); });
+
+function openSheet(){
+  if(!S.wants.length){ toast("장바구니가 비어 있어요"); return; }
+  draft.req = S.req || REQS[0];
+  draft.pay = S.pay || PAYS[0];
+  draft.speed = S.speed || "d1";
+  var total = S.wants.reduce(function(a,w){ return a + (Number(w.price)||0); }, 0);
+  var names = S.wants.map(function(w){ return w.name; });
+  $("sheetIn").innerHTML =
+    '<h3>주문서</h3>' +
+    '<p class="sub">'+esc(names[0])+(names.length>1 ? ' 외 '+(names.length-1)+'건' : '')+' · 합계 <b style="color:#bbf7d0">'+won(total)+'</b></p>' +
+    '<div class="field"><p class="lab">배송지</p><input type="text" id="fAddr" maxlength="24" /><p class="hint">동·호수 같은 상세 주소는 적지 마세요. 별명이면 충분합니다.</p></div>' +
+    '<div class="field"><p class="lab">배송 요청사항</p><div class="chips" id="fReq"></div></div>' +
+    '<div class="field"><p class="lab">결제수단 <span style="color:#6b7280;font-weight:400">— 전부 이름뿐인 목록입니다</span></p><div class="chips" id="fPay"></div></div>' +
+    '<div class="field"><p class="lab">배송 속도</p><div class="chips" id="fSpeed"></div><p class="hint">고른 시간에 걸쳐 실제로 진행됩니다. 도착은 이른 아침에 맞춰집니다.</p></div>' +
+    '<div class="acts"><button class="ghost" id="fCancel" type="button">닫기</button><button id="fPayBtn" type="button">'+won(total)+' 결제하기</button></div>' +
+    '<p class="disc">이 버튼은 어떤 결제도 실행하지 않습니다. 눌러도 주문번호가 하나 만들어질 뿐입니다.</p>';
+  $("fAddr").value = S.addr || "우리 집";
+  chipify("fReq", REQS, function(){ return draft.req; }, function(v){ draft.req = v; });
+  chipify("fPay", PAYS, function(){ return draft.pay; }, function(v){ draft.pay = v; });
+  chipify("fSpeed", SPEEDS.map(function(s){ return s.label; }), function(){ return speedOf(draft.speed).label; }, function(v){
+    for(var i=0;i<SPEEDS.length;i++) if(SPEEDS[i].label===v) draft.speed = SPEEDS[i].k;
+  });
+  $("fCancel").addEventListener("click", closeSheet);
+  $("fPayBtn").addEventListener("click", function(){ doPay(total); });
+  $("sheet").classList.add("show");
+}
+function chipify(hostId, values, getCur, setCur){
+  var host = $(hostId);
+  host.innerHTML = "";
+  values.forEach(function(v){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = v;
+    if(v === getCur()) b.classList.add("on");
+    b.addEventListener("click", function(){
+      setCur(v);
+      var all = host.querySelectorAll("button");
+      for(var i=0;i<all.length;i++) all[i].classList.toggle("on", all[i] === b);
+    });
+    host.appendChild(b);
+  });
+}
+function closeSheet(){ $("sheet").classList.remove("show"); }
+$("sheet").addEventListener("click", function(e){ if(e.target === $("sheet")) closeSheet(); });
+
+function orderNo(at){
+  var d = new Date(at);
+  var ymd = String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+  return "TE"+ymd+"-"+String((S.orders.length+1)*7 % 9000 + 1000);
+}
+function doPay(total){
+  S.addr = $("fAddr").value.trim().slice(0,24) || "우리 집";
+  S.req = draft.req; S.pay = draft.pay; S.speed = draft.speed;
+  $("sheetIn").innerHTML = '<div class="paying"><div class="spin"></div><p style="font-size:15px;color:#9ca3af;margin:0">결제 처리 중…</p></div>';
+  setTimeout(function(){
+    var at = Date.now();
+    var o = {
+      id: uid(), no: orderNo(at), total: total, at: at,
+      speed: draft.speed, deliverAt: calcDeliverAt(at, draft.speed),
+      items: S.wants.map(function(w){ return { name:w.name, price:w.price, img:w.img }; }),
+      opened: false, revealId: null, reaction: null, notified: 0
+    };
+    S.orders.unshift(o);
+    S.wants = [];
+    save();
+    $("sheetIn").innerHTML =
+      '<div class="paying"><div class="okmark">✓</div>' +
+      '<p style="font-size:17px;font-weight:800;margin:0">결제가 완료되었습니다</p>' +
+      '<p class="ordno">'+esc(o.no)+'</p>' +
+      '<p style="font-size:13.5px;color:#8b8b8b;margin:0">도착 예정 · '+whenText(o.deliverAt)+'</p>' +
+      '<p style="font-size:12.5px;color:#5b5b5b;margin:10px 0 0">(그리고 아무 돈도 나가지 않았습니다)</p></div>' +
+      '<div class="acts"><button class="ghost" id="okClose" type="button">닫기</button><button id="okGo" type="button">주문내역 보기</button></div>';
+    $("okClose").addEventListener("click", function(){ closeSheet(); renderAll(); });
+    $("okGo").addEventListener("click", function(){ closeSheet(); renderAll(); showTab("order"); });
+    scheduleNotifs();
+  }, 1200);
+}
+
+/* ---------------- 주문내역 ---------------- */
+function renderOrders(){
+  var box = $("ordList");
+  box.innerHTML = "";
+  if(!S.orders.length){
+    box.innerHTML = '<div class="empty">아직 주문이 없습니다.<br />담기 탭에서 하나 주문해 보세요.</div>';
+  }
+  var waiting = 0;
+  S.orders.forEach(function(o){
+    var p = progressOf(o);
+    var si = stageIndex(p);
+    var done = p >= 1;
+    if(done && !o.opened) waiting++;
+    var el = document.createElement("div");
+    el.className = "ord";
+    var names = o.items.map(function(i){ return i.name; });
+    var steps = STAGES.map(function(s,i){ return '<span class="'+(i<=si?"on":"")+'">'+esc(s.label)+'</span>'; }).join("");
+    el.innerHTML =
+      '<div class="ordhd"><b>'+esc(o.no)+'</b><span>'+whenText(o.at)+' 주문</span></div>' +
+      '<div class="ordnames">'+esc(names[0])+(names.length>1 ? ' 외 '+(names.length-1)+'건' : '')+'</div>' +
+      '<div class="ordamt">'+won(o.total)+' · 결제되지 않음</div>' +
+      '<div class="track"><div class="trackbar"><i style="width:'+Math.round(p*100)+'%"></i></div><div class="steps">'+steps+'</div></div>' +
+      '<p class="ordnote">'+(done
+          ? (o.opened ? '열어봤습니다 · '+esc(o.reaction||"—") : '<b>도착했습니다.</b> 열어보세요.')
+          : esc(STAGES[si].note)+' 도착 예정 '+whenText(o.deliverAt))+'</p>' +
+      (done && !o.opened ? '<div class="acts"><button type="button" data-open="'+esc(o.id)+'">열어보기</button></div>' : '');
+    box.appendChild(el);
+  });
+  var b = $("bOrd");
+  b.textContent = waiting;
+  b.style.display = waiting ? "inline-block" : "none";
+}
+$("ordList").addEventListener("click", function(e){
+  var t = e.target;
+  var id = t && t.dataset ? t.dataset.open : null;
+  if(id) openArrival(id);
+});
+
+/* ---------------- 도착 열기 ---------------- */
+function pickThing(){
+  var pool = S.things.filter(function(t){ return t.status !== "unused"; });
+  if(!pool.length) return null;
+  var lastShown = null, lastAt = -1;
+  pool.forEach(function(t){ if((t.lastShownAt||0) > lastAt){ lastAt = t.lastShownAt||0; lastShown = t.id; } });
+  var cands = pool.length > 1 ? pool.filter(function(t){ return t.id !== lastShown; }) : pool;
+  cands.sort(function(a,b){ return (a.lastShownAt||0) - (b.lastShownAt||0); });
+  return cands[0];
+}
+function sinceText(t){
+  if(!t.since) return "언제부터 있었는지는 기록해 두지 않으셨네요.";
+  var p = String(t.since).split("-");
+  return p[0]+"년 "+Number(p[1])+"월에 오셨네요.";
+}
+function openArrival(id){
+  var o = null;
+  for(var i=0;i<S.orders.length;i++) if(S.orders[i].id===id) o = S.orders[i];
+  if(!o) return;
+  var thing = pickThing();
+  var body;
+  if(thing){
+    o.revealId = thing.id;
+    thing.lastShownAt = Date.now();
+    body =
+      '<div class="reveal">' +
+      '<p class="sub" style="margin:0 0 6px">'+esc(o.no)+' · 도착</p>' +
+      (thing.img ? '<img class="rimg" id="rImg" alt="" />' : '<div class="rimg" style="display:flex;align-items:center;justify-content:center;font-size:56px;color:#555">📦</div>') +
+      '<p class="rname">'+esc(thing.name)+'</p>' +
+      '<p class="rsince">'+esc(sinceText(thing))+'</p>' +
+      '<p style="font-size:13.5px;color:#8b8b8b;margin:14px 0 0">이미 가지고 계신 것입니다.</p>' +
+      '</div>' +
+      '<div class="acts"><button class="ghost" type="button" data-rx="아직 좋다">아직 좋다</button><button class="ghost" type="button" data-rx="잊고 있었다">잊고 있었다</button></div>' +
+      '<div class="acts"><button class="ghost" type="button" data-rx="이제 안 쓴다">이제 안 쓴다</button></div>';
+  } else {
+    var totals = totalsOf();
+    o.revealId = null;
+    body =
+      '<div class="reveal">' +
+      '<p class="sub" style="margin:0 0 6px">'+esc(o.no)+' · 도착</p>' +
+      '<div class="rimg" style="display:flex;align-items:center;justify-content:center;font-size:56px;color:#555">💰</div>' +
+      '<p class="rname">'+won(totals.total)+'</p>' +
+      '<p class="rsince">지금까지 결제하지 않은 금액입니다.</p>' +
+      '<p style="font-size:13.5px;color:#8b8b8b;margin:14px 0 0">내 물건 탭에 집에 있는 것들을 등록해 두면,<br />다음 택배부터는 그중 하나가 나옵니다.</p>' +
+      '</div>' +
+      '<div class="acts"><button class="ghost" type="button" data-rx="확인">확인</button></div>';
+  }
+  $("openIn").innerHTML = body;
+  if(thing && thing.img) $("rImg").src = thing.img;
+  $("openSheet").classList.add("show");
+  $("openIn").addEventListener("click", function h(e){
+    var rx = e.target && e.target.dataset ? e.target.dataset.rx : null;
+    if(!rx) return;
+    o.opened = true;
+    o.reaction = rx;
+    if(thing && rx === "이제 안 쓴다") thing.status = "unused";
+    save();
+    $("openIn").removeEventListener("click", h);
+    $("openSheet").classList.remove("show");
+    renderAll();
+    if(rx === "이제 안 쓴다") toast("정리 목록에 넣었습니다");
+  });
+}
+$("openSheet").addEventListener("click", function(e){ if(e.target === $("openSheet")) $("openSheet").classList.remove("show"); });
+
+/* ---------------- 내 물건 ---------------- */
+$("tAdd").addEventListener("click", function(){
+  var name = $("tName").value.trim();
+  if(!name){ toast("물건 이름을 적어 주세요"); return; }
+  if(S.things.length >= 60){ toast("물건은 60개까지예요"); return; }
+  var file = $("tPhoto").files && $("tPhoto").files[0];
+  shrink(file, function(img){
+    S.things.push({ id: uid(), name: name.slice(0,40), since: $("tSince").value || "", img: img, lastShownAt: 0, status: "keep" });
+    if(save()){
+      $("tName").value=""; $("tSince").value=""; $("tPhoto").value="";
+      renderThings();
+      toast("등록했습니다");
+    } else {
+      S.things.pop();
+    }
+  });
+});
+function renderThings(){
+  var keep = S.things.filter(function(t){ return t.status !== "unused"; });
+  var tidy = S.things.filter(function(t){ return t.status === "unused"; });
+  $("thingCount").textContent = keep.length + "개";
+  var box = $("thingList");
+  box.innerHTML = "";
+  if(!keep.length){
+    box.innerHTML = '<div class="empty">등록된 물건이 없습니다.<br />집에 있는 것부터 몇 개 찍어 두세요.</div>';
+  }
+  keep.forEach(function(t){
+    var el = document.createElement("div");
+    el.className = "item";
+    el.innerHTML =
+      (t.img ? '<img class="th" alt="" />' : '<div class="th">📦</div>') +
+      '<div class="bd"><div class="nm">'+esc(t.name)+'</div><div class="sb">'+esc(t.since ? t.since.replace("-","년 ")+"월부터" : "시점 미기록")+'</div></div>' +
+      '<button class="x" type="button" data-tdel="'+esc(t.id)+'">삭제</button>';
+    if(t.img) el.querySelector("img.th").src = t.img;
+    box.appendChild(el);
+  });
+  $("tidyCard").style.display = tidy.length ? "block" : "none";
+  var tb = $("tidyList");
+  tb.innerHTML = "";
+  tidy.forEach(function(t){
+    var el = document.createElement("div");
+    el.className = "item";
+    el.innerHTML =
+      (t.img ? '<img class="th" alt="" />' : '<div class="th">🧹</div>') +
+      '<div class="bd"><div class="nm">'+esc(t.name)+'</div><div class="sb">이제 안 쓴다고 답한 물건</div></div>' +
+      '<button class="x" type="button" data-tback="'+esc(t.id)+'">되돌리기</button>';
+    if(t.img) el.querySelector("img.th").src = t.img;
+    tb.appendChild(el);
+  });
+}
+$("thingList").addEventListener("click", function(e){
+  var id = e.target && e.target.dataset ? e.target.dataset.tdel : null;
+  if(!id) return;
+  S.things = S.things.filter(function(t){ return t.id !== id; });
+  save(); renderThings();
+});
+$("tidyList").addEventListener("click", function(e){
+  var id = e.target && e.target.dataset ? e.target.dataset.tback : null;
+  if(!id) return;
+  S.things.forEach(function(t){ if(t.id===id) t.status = "keep"; });
+  save(); renderThings();
+});
+
+/* ---------------- 절약 ---------------- */
+function totalsOf(){
+  var total = 0, month = 0, mk = monthKey(Date.now()), byMonth = {};
+  S.orders.forEach(function(o){
+    var v = Number(o.total)||0;
+    total += v;
+    var k = monthKey(o.at);
+    byMonth[k] = (byMonth[k]||0) + v;
+    if(k === mk) month += v;
+  });
+  var pass = S.impulse.asked ? Math.round(S.impulse.passed / S.impulse.asked * 100) : null;
+  var days = (S.living > 0) ? Math.floor(total / (S.living/30)) : null;
+  return { total:total, month:month, orders:S.orders.length, byMonth:byMonth, pass:pass, days:days };
+}
+var shown = null; // 화면에 보이는 영수증 숫자 (내 것 또는 공유받은 것)
+function renderSave(fromShared){
+  var t = fromShared || totalsOf();
+  shown = t;
+  $("pTotal").textContent = won(t.total);
+  $("pSub").textContent = t.orders
+    ? "결제 없이 지나간 " + t.orders + "번의 주문"
+    : "아직 주문이 없습니다";
+  $("pMonth").textContent = won(t.month);
+  $("pOrders").textContent = (t.orders||0) + "건";
+  if(t.pass != null){ $("pPassRow").style.display="flex"; $("pPass").textContent = t.pass + "%"; }
+  else $("pPassRow").style.display = "none";
+  if(t.days != null && t.days > 0){ $("pDaysRow").style.display="flex"; $("pDays").textContent = "생활비 " + t.days + "일치"; }
+  else $("pDaysRow").style.display = "none";
+
+  // 최근 6개월 막대
+  var bars = $("bars");
+  if(!fromShared && t.orders){
+    var keys = [], now = new Date();
+    for(var i=5;i>=0;i--){
+      var d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+      keys.push({ k: d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"), m: d.getMonth()+1 });
+    }
+    var max = 0;
+    keys.forEach(function(x){ max = Math.max(max, t.byMonth[x.k]||0); });
+    bars.innerHTML = keys.map(function(x){
+      var v = t.byMonth[x.k]||0;
+      var h = max ? Math.max(3, Math.round(v/max*90)) : 3;
+      return '<div class="b"><s>'+(v ? Math.round(v/10000)+"만" : "")+'</s><i style="height:'+h+'px"></i><em>'+x.m+'월</em></div>';
+    }).join("");
+    bars.style.display = "flex";
+    $("barsCap").style.display = "block";
+  } else {
+    bars.style.display = "none";
+    $("barsCap").style.display = "none";
+  }
+
+  $("rxTotal").value = t.total || "";
+  $("rxMonth").value = t.month || "";
+  $("rxOrders").value = t.orders || "";
+  $("rxPass").value = (t.pass == null ? "" : t.pass);
+}
+$("rxGo").addEventListener("click", function(){
+  var t = {
+    total: Math.max(0, Math.round(Number($("rxTotal").value)||0)),
+    month: Math.max(0, Math.round(Number($("rxMonth").value)||0)),
+    orders: Math.max(0, Math.round(Number($("rxOrders").value)||0)),
+    pass: $("rxPass").value === "" ? null : Math.min(100, Math.max(0, Math.round(Number($("rxPass").value)||0))),
+    days: S.living > 0 ? Math.floor((Math.max(0, Number($("rxTotal").value)||0)) / (S.living/30)) : null,
+    byMonth: {}
+  };
+  renderSave(t);
+  $("paper").scrollIntoView({ behavior:"smooth", block:"center" });
+  toast("영수증을 다시 만들었습니다");
+});
+$("setSave").addEventListener("click", function(){
+  S.living = Math.max(0, Math.round(Number($("setLiving").value)||0));
+  save(); renderSave();
+  toast("저장했습니다");
+});
+$("wipe").addEventListener("click", function(){
+  if(!window.confirm("주문·물건·절약 기록을 모두 지웁니다. 되돌릴 수 없습니다. 계속할까요?")) return;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  S = JSON.parse(JSON.stringify(DEFAULT));
+  history.replaceState(null, "", location.pathname);
+  renderAll();
+  toast("모두 지웠습니다");
+});
+
+/* ---------------- 공유 ---------------- */
+function sharePayload(){
+  var t = shown || totalsOf();
+  return { v:1, t:t.total, m:t.month, o:t.orders, p:t.pass, d:t.days };
+}
+// 공유 주소는 필요할 때만 만든다. 주소창에는 넣지 않는다 —
+// ?r= 가 붙어 있으면 새로고침했을 때 내 페이지가 "친구가 공유했어요" 화면으로 열린다.
+function resultUrl(){ return location.origin + location.pathname + "?r=" + encodeURIComponent(enc(sharePayload())); }
+function shareText(){
+  var t = shown || totalsOf();
+  return "🧾 결제완료 — 사는 기분은 다 가져가고, 결제만 안 했습니다\n"
+    + "결제하지 않은 금액 " + won(t.total) + " · 주문 " + (t.orders||0) + "건"
+    + (t.pass != null ? " · 넘긴 충동 " + t.pass + "%" : "") + "\n"
+    + resultUrl();
+}
+function copy(text, msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ toast(msg); }, function(){ fallbackCopy(text, msg); });
+  } else fallbackCopy(text, msg);
+}
+function fallbackCopy(text, msg){
+  var ta = document.createElement("textarea");
+  ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+$("copyLink").addEventListener("click", function(){ copy(resultUrl(), "링크가 복사되었습니다"); });
+$("copyText").addEventListener("click", function(){ copy(shareText(), "텍스트가 복사되었습니다"); });
+$("xBtn").addEventListener("click", function(){
+  var t = shown || totalsOf();
+  var msg = "사는 기분은 다 가져가고 결제만 안 했습니다 🧾 결제하지 않은 금액 " + won(t.total);
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(msg)+"&url="+encodeURIComponent(resultUrl()), "_blank");
+});
+if(navigator.share){
+  $("webShare").style.display = "block";
+  $("webShare").addEventListener("click", function(){
+    navigator.share({ title:"결제완료", text: shareText().split("\n").slice(0,2).join(" "), url: resultUrl() }).catch(function(){});
+  });
+}
+
+/* ---------------- 카드 이미지 ---------------- */
+function drawCard(){
+  var t = shown || totalsOf();
+  var cv = $("cv"), x = cv.getContext("2d");
+  var W = cv.width, H = cv.height, M = 70;
+  x.fillStyle = "#f7f4ec"; x.fillRect(0,0,W,H);
+  x.strokeStyle = "#c3b9a1"; x.lineWidth = 4; x.strokeRect(22,22,W-44,H-44);
+  x.strokeStyle = "#ded5c0"; x.lineWidth = 2; x.strokeRect(34,34,W-68,H-68);
+
+  x.textAlign = "center";
+  x.fillStyle = "#8a7f66"; x.font = "600 26px sans-serif";
+  x.fillText("CHECKOUT ZERO · 결제되지 않음", W/2, 120);
+  x.fillStyle = "#1c1912"; x.font = "900 62px sans-serif";
+  x.fillText("영  수  증", W/2, 210);
+
+  x.fillStyle = "#14532d"; x.font = "900 96px sans-serif";
+  x.fillText(won(t.total), W/2, 350);
+  x.fillStyle = "#6b6350"; x.font = "400 30px sans-serif";
+  x.fillText(t.orders ? "결제 없이 지나간 "+t.orders+"번의 주문" : "아직 주문이 없습니다", W/2, 400);
+
+  x.strokeStyle = "#26221a"; x.lineWidth = 3;
+  x.beginPath(); x.moveTo(M, 450); x.lineTo(W-M, 450); x.stroke();
+
+  var rows = [
+    ["이번 달 안 쓴 돈", won(t.month)],
+    ["결제하지 않은 주문", (t.orders||0)+"건"]
+  ];
+  if(t.pass != null) rows.push(["넘긴 충동", t.pass+"%"]);
+  if(t.days != null && t.days > 0) rows.push(["생활비 환산", "생활비 "+t.days+"일치"]);
+
+  var y = 520;
+  rows.forEach(function(r){
+    x.textAlign = "left";  x.fillStyle = "#3b3527"; x.font = "400 34px sans-serif"; x.fillText(r[0], M, y);
+    x.textAlign = "right"; x.fillStyle = "#1c1912"; x.font = "800 36px sans-serif"; x.fillText(r[1], W-M, y);
+    x.strokeStyle = "#c3b9a1"; x.lineWidth = 2;
+    x.beginPath(); x.setLineDash([6,6]); x.moveTo(M, y+22); x.lineTo(W-M, y+22); x.stroke(); x.setLineDash([]);
+    y += 86;
+  });
+
+  x.textAlign = "center";
+  x.fillStyle = "#6b6350"; x.font = "400 30px sans-serif";
+  wrapText(x, "고르고, 담고, 주문하고, 배송을 기다렸습니다. 결제만 일어나지 않았습니다.", W/2, y+70, W-M*2, 44);
+
+  x.fillStyle = "#a29a83"; x.font = "600 26px sans-serif";
+  x.textAlign = "right";
+  x.fillText("tomatoeggcat.com/checkout-zero", W-M, H-70);
+}
+function wrapText(x, text, cx, cy, maxW, lh){
+  var words = text.split(" "), line = "", lines = [];
+  words.forEach(function(w){
+    var test = line ? line+" "+w : w;
+    if(x.measureText(test).width > maxW && line){ lines.push(line); line = w; }
+    else line = test;
+  });
+  if(line) lines.push(line);
+  lines.forEach(function(l,i){ x.fillText(l, cx, cy + i*lh); });
+}
+$("saveImg").addEventListener("click", function(){
+  drawCard();
+  var a = document.createElement("a");
+  a.download = "checkout-zero.png";
+  a.href = $("cv").toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("이미지가 저장되었습니다");
+});
+
+/* ---------------- 알림 (이 창이 열려 있는 동안만) ---------------- */
+var timers = [];
+function scheduleNotifs(){
+  timers.forEach(clearTimeout); timers = [];
+  if(!("Notification" in window) || Notification.permission !== "granted") return;
+  var now = Date.now();
+  S.orders.forEach(function(o){
+    var span = o.deliverAt - o.at;
+    STAGES.forEach(function(s, i){
+      var at = o.at + span * s.f;
+      var d = at - now;
+      if(d > 500 && d < 6*3600*1000){
+        timers.push(setTimeout(function(){
+          try{ new Notification("["+o.no+"] "+s.label, { body: i === STAGES.length-1 ? "도착했습니다. 열어보세요." : s.note }); }catch(e){}
+          renderAll();
+        }, d));
+      }
+    });
+  });
+}
+$("notifyBtn").addEventListener("click", function(){
+  if(!("Notification" in window)){ toast("이 브라우저는 알림을 지원하지 않아요"); return; }
+  Notification.requestPermission().then(function(p){
+    if(p === "granted"){ scheduleNotifs(); toast("이 창이 열려 있는 동안 알림을 보냅니다"); }
+    else toast("알림이 허용되지 않았어요");
+  });
+});
+
+/* ---------------- 렌더 ---------------- */
+function renderAll(){
+  renderCart(); renderHold(); renderOrders(); renderThings();
+  $("setLiving").value = S.living || "";
+  if(!inboundMode) renderSave();
+}
+
+/* 진행 중인 배송이 있으면 화면을 주기적으로 갱신 */
+setInterval(function(){
+  var live = S.orders.some(function(o){ return progressOf(o) < 1 || !o.opened; });
+  if(live && $("tab-order").classList.contains("on")) renderOrders();
+}, 30000);
+document.addEventListener("visibilitychange", function(){ if(!document.hidden) renderAll(); });
+
+/* ---------------- 온보딩 ---------------- */
+$("onbGo").addEventListener("click", function(){
+  S.onboarded = true;
+  S.living = Math.max(0, Math.round(Number($("onbLiving").value)||0));
+  save();
+  $("onb").style.display = "none";
+  renderAll();
+  showTab("thing");
+  toast("집에 있는 물건부터 몇 개 등록해 보세요");
+});
+
+/* ---------------- 인바운드 (?r=) ---------------- */
+var inboundMode = false;
+var params = new URLSearchParams(location.search);
+if(params.has("r")){
+  var st = dec(params.get("r"));
+  if(st && typeof st.t === "number"){
+    inboundMode = true;
+    renderSave({
+      total: Math.max(0, st.t)|0,
+      month: Math.max(0, st.m||0)|0,
+      orders: Math.max(0, st.o||0)|0,
+      pass: (st.p == null ? null : Math.min(100, Math.max(0, st.p|0))),
+      days: (st.d == null ? null : Math.max(0, st.d|0)),
+      byMonth: {}
+    });
+    $("inbound").classList.add("show");
+    $("inboundBtn").addEventListener("click", function(){
+      $("inbound").classList.remove("show");
+      inboundMode = false;
+      history.replaceState(null, "", location.pathname);
+      renderSave();
+      showTab("want");
+    });
+    showTab("save");
+  }
+}
+
+if(!S.onboarded && !inboundMode) $("onb").style.display = "block";
+renderAll();
+scheduleNotifs();
+})();
+</script>
+</body>
+</html>
