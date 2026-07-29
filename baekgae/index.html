@@ -26,7 +26,8 @@
 {"@type":"Question","name":"101번째를 넣으면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"목록이 가득 찬 상태에서 새 항목을 추가하면, 보낼 항목 하나를 고르는 화면이 강제로 열립니다. 항목을 고르면 보내는 이유를 1자에서 140자 사이로 적어야 하고, 이유 없이 건너뛰는 경로는 없습니다. 확인을 누르는 순간 기존 항목이 방출 로그로 이동하고 새 항목이 그 자리에 들어갑니다. 이 교체는 한 번에 처리되므로 보유 항목이 100개를 넘는 중간 상태는 존재하지 않습니다."}},
 {"@type":"Question","name":"보낸 항목은 삭제되나요?","acceptedAnswer":{"@type":"Answer","text":"삭제되지 않습니다. 방출 로그로 옮겨져 항목 이름, 목록에 머문 기간, 보낸 이유, 보낸 날짜가 함께 영구 보존됩니다. 이 도구에서 진짜 콘텐츠는 지금 담고 있는 100개가 아니라 그동안 보낸 것들의 누적입니다. 3년 전에는 100위 안이었는데 지금은 아닌 이유, 그 이유들이 쌓인 페이지가 프로필보다 그 사람을 더 잘 설명합니다. 한 번 보낸 항목을 다시 넣을 수도 있으며, 그 경우 재입성도 며칠 만에 돌아왔는지와 함께 로그에 남습니다."}},
 {"@type":"Question","name":"순위를 매기거나 친구를 팔로우할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"둘 다 없습니다. 100개는 서로 평등하고 정렬은 추가순과 이름순만 제공합니다. 순위를 넣는 순간 이 도구는 그냥 또 하나의 랭킹 사이트가 되기 때문입니다. 좋아요, 댓글, 팔로우 같은 소셜 기능도 없습니다. 반응이 붙는 순간 목록은 기록이 아니라 공연이 되기 때문입니다. 다른 사람에게 보여주고 싶다면 공유 링크나 이미지 카드로 결과만 내보낼 수 있습니다."}},
-{"@type":"Question","name":"내 목록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"회원가입도 서버도 없고, 목록과 방출 로그는 지금 쓰는 브라우저의 저장소에만 보관됩니다. 어디로도 전송되지 않는 대신 브라우저 데이터를 지우거나 기기를 바꾸면 사라지므로, 중요한 목록은 백업 버튼으로 파일을 내려받아 두는 것을 권합니다. 공유 링크에는 목록 이름과 보유 항목, 최근 방출 기록이 주소 안에 담기며 서버에 올라가지 않습니다. 실명이나 전화번호 같은 개인정보는 적지 마세요."}}
+{"@type":"Question","name":"내 목록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"회원가입도 서버도 없고, 목록과 방출 로그는 지금 쓰는 브라우저의 저장소에만 보관됩니다. 어디로도 전송되지 않는 대신 브라우저 데이터를 지우거나 기기를 바꾸면 사라지므로, 중요한 목록은 백업 버튼으로 파일을 내려받아 두는 것을 권합니다. 공유 링크에는 목록 이름과 보유 항목, 최근 방출 기록이 주소 안에 담기며 서버에 올라가지 않습니다. 실명이나 전화번호 같은 개인정보는 적지 마세요."}},
+{"@type":"Question","name":"같은 걸 버린 사람들 화면은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"내가 보낸 항목을 다른 사람도 보냈다면, 그 사람이 보낼 때 적어둔 이유만 모아서 보여주는 화면입니다. 누가 썼는지는 표시되지 않고 이름이나 프로필도 없습니다. 서버가 없기 때문에 아무나 자동으로 모이는 것이 아니라, 친구에게 받은 백 개 공유 링크를 직접 붙여넣어야 모입니다. 링크에 담긴 방출 기록만 이 브라우저에 저장되며 목록 이름은 저장하지 않습니다. 좋아요나 댓글, 팔로우는 이 화면에도 없습니다."}}
 ]},
 {"@type":"BreadcrumbList","itemListElement":[
 {"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
@@ -67,7 +68,7 @@ input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var
 
 /* 탭 */
 .tabs{display:flex;gap:8px;margin-bottom:16px}
-.tabs button{flex:1;background:var(--deep);color:#c9c9c9;border:1px solid #2e2e2e;font-size:14.5px;font-weight:700;min-height:44px;padding:10px}
+.tabs button{flex:1;background:var(--deep);color:#c9c9c9;border:1px solid #2e2e2e;font-size:13.5px;font-weight:700;min-height:44px;padding:10px 6px}
 .tabs button.on{background:rgba(232,195,122,.14);border-color:var(--acc);color:var(--acc2)}
 
 /* 카운터 */
@@ -196,6 +197,7 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
 <div class="tabs">
   <button id="tabHold" class="on" type="button">보유 <b id="tabHoldN">0</b>/100</button>
   <button id="tabLog" type="button">방출 로그 <b id="tabLogN">0</b></button>
+  <button id="tabPool" type="button">같이 버린 것 <b id="tabPoolN">0</b></button>
 </div>
 
 <!-- 보유 -->
@@ -253,6 +255,27 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </section>
 
+<!-- 같은 걸 버린 사람들 -->
+<section id="viewPool" style="display:none">
+  <section class="card">
+    <p class="lab">🫂 같은 걸 버린 사람들</p>
+    <p class="hint" style="margin:0 0 14px">내가 보낸 것을 <b>다른 사람도 보냈다면</b>, 그 사람이 적어둔 이유만 모아서 보여줍니다.
+      누가 썼는지는 보이지 않고, 이름·프로필도 없습니다. 서버가 없으므로 <b>내가 받은 공유 링크</b>에 담긴 것만 모입니다.</p>
+    <textarea id="poolIn" placeholder="친구가 보낸 백 개 공유 링크를 여기에 붙여넣으세요. 여러 개를 한꺼번에 넣어도 됩니다."></textarea>
+    <div class="acts"><button id="poolAddBtn" type="button">링크에서 가져오기</button></div>
+    <p class="hint">가져온 내용은 <b>이 브라우저에만</b> 저장되고 어디로도 전송되지 않습니다. 목록 이름은 저장하지 않습니다.</p>
+  </section>
+
+  <section class="card logpage">
+    <h2>겹치는 이유들</h2>
+    <p class="logsub" id="poolSub">아직 모은 목록이 없습니다</p>
+    <div id="poolBody"></div>
+  </section>
+
+  <div class="acts"><button id="poolClear" type="button" class="ghost">모아둔 것 모두 지우기 🗑️</button></div>
+  <p class="disc">※ 이 화면에는 좋아요·댓글·팔로우가 없습니다. 다른 사람의 사유는 익명으로만 표시되며, 원본 링크를 준 사람 외에는 누구인지 알 수 없습니다.</p>
+</section>
+
 <section class="about">
   <h2>💯 백 개 소개</h2>
   <p>모든 목록 서비스는 무한히 담게 합니다. 위시리스트도, 읽고 싶은 책도, 나중에 볼 영화도 계속 쌓이기만 하고 아무도 다시 열어보지 않습니다. 500권짜리 목록은 취향이 아니라 소음이고, 그 사람에 대해 아무것도 말해주지 않습니다. 백 개는 정확히 그 반대로 만들어진 도구입니다. 담을 수 있는 칸이 100개뿐이라, 새로 넣고 싶은 게 생기면 반드시 이미 들어 있던 하나를 보내야 합니다. 그리고 보낼 때는 왜 보내는지 한 줄을 적어야 합니다. 건너뛰는 버튼은 없습니다.</p>
@@ -267,6 +290,7 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
     <li>101번째를 넣는 순간 <b>보낼 하나를 고르는 화면</b>이 열립니다. 항목을 고르고 보내는 이유를 1~140자로 적어야 교체가 완료됩니다.</li>
     <li>‘방출 로그’ 탭에서 그동안 보낸 것들이 연도별로 쌓인 페이지를 읽습니다. 머문 기간과 이유가 함께 남습니다.</li>
     <li>보냈던 항목을 다시 넣으면 ‘돌아옴’ 표시와 함께 며칠 만에 재입성했는지가 로그에 기록됩니다.</li>
+    <li>친구에게 받은 공유 링크를 ‘같이 버린 것’ 탭에 붙여넣으면, 나와 같은 것을 보낸 사람의 이유만 익명으로 모입니다.</li>
   </ol>
 
   <h2>이 도구에 일부러 없는 것</h2>
@@ -298,6 +322,8 @@ footer a{color:var(--dim);text-decoration:none;margin-right:12px}
     <dd>둘 다 없습니다. 100개는 평등하고 정렬은 추가순·이름순만 있으며, 좋아요·댓글·팔로우 기능은 만들지 않았습니다. 보여주고 싶을 때는 공유 링크나 이미지 카드로 결과만 내보내면 됩니다.</dd>
     <dt>Q. 내 목록은 어디에 저장되나요?</dt>
     <dd>이 브라우저 안에만 저장되고 어디로도 전송되지 않습니다. 브라우저 데이터를 지우거나 기기를 바꾸면 사라지므로 ⋯ 메뉴의 백업으로 파일을 내려받아 두세요. 공유 링크의 내용도 서버가 아니라 주소 안에 담깁니다. 실명·연락처 등 개인정보는 적지 마세요.</dd>
+    <dt>Q. ‘같은 걸 버린 사람들’ 화면은 무엇인가요?</dt>
+    <dd>내가 보낸 항목을 다른 사람도 보냈다면, 그 사람이 적어둔 이유만 익명으로 모아 보여주는 화면입니다. 서버가 없으므로 자동으로 모이지는 않고, 친구에게 받은 공유 링크를 직접 붙여넣어야 합니다. 링크에 담긴 방출 기록만 이 브라우저에 저장되고 목록 이름은 저장하지 않으며, 이 화면에도 좋아요·댓글·팔로우는 없습니다.</dd>
   </dl>
   <p style="color:#6b7280;font-size:13px">※ 백 개는 개인 기록용 도구입니다. 입력한 내용은 브라우저에만 저장되며, 의료·법률·금융 조언을 제공하지 않습니다.</p>
 </section>
@@ -388,6 +414,7 @@ function makeList(title, kind, now){
 /* 변경본이 규칙을 지키는지 검사. 위반이면 사유 문자열, 통과면 null. */
 function validate(st){
   if (!st || !Array.isArray(st.lists)) return "저장 구조가 올바르지 않습니다";
+  if (st.pool != null && !Array.isArray(st.pool)) return "저장 구조가 올바르지 않습니다";
   for (var i = 0; i < st.lists.length; i++){
     var L = st.lists[i];
     if (!L || !Array.isArray(L.items) || !Array.isArray(L.log)) return "목록 구조가 올바르지 않습니다";
@@ -483,12 +510,71 @@ function statsOf(L){
   out.avg = Math.round(sum / rel.length);
   return out;
 }
+
+/* ── 같은 걸 버린 사람들 (원안 Phase 4의 무서버 판) ─────────────────
+   서버가 없으므로 "내가 받은 공유 링크"에 담긴 방출 기록만 모은다.
+   신원 정보는 애초에 담기지 않으며, 목록 이름도 저장하지 않는다. */
+var POOL_MAX = 30;
+
+/* 같은 스냅샷을 두 번 넣어도 한 번만 쌓이도록 하는 내용 기반 키 */
+function poolKey(entries){
+  var s = "";
+  for (var i = 0; i < entries.length; i++) s += entries[i][0] + " " + entries[i][1] + "";
+  var h = 2166136261;
+  for (var j = 0; j < s.length; j++){ h ^= s.charCodeAt(j); h = Math.imul(h, 16777619); }
+  return (h >>> 0).toString(36) + "-" + entries.length;
+}
+
+/* 스냅샷에서 방출 기록만 뽑아 풀에 넣는다. 이미 있으면 무시하고 false. */
+function poolAdd(pool, snap){
+  var raw = (snap && Array.isArray(snap.l)) ? snap.l : [];
+  var entries = [];
+  for (var i = 0; i < raw.length; i++){
+    var e = raw[i];
+    if (!Array.isArray(e) || e.length < 2) continue;
+    var nm = String(e[0] == null ? "" : e[0]).trim().slice(0, 60);
+    var rs = String(e[1] == null ? "" : e[1]).trim().slice(0, REASON_MAX);
+    if (!nm || !rs) continue;
+    entries.push([nm, rs, e[2] | 0]);
+  }
+  if (!entries.length) return false;
+  var key = poolKey(entries);
+  for (var k = 0; k < pool.length; k++) if (pool[k].key === key) return false;
+  pool.push({ key: key, l: entries });          // 목록 이름·소유자 정보는 담지 않는다
+  while (pool.length > POOL_MAX) pool.shift();
+  return true;
+}
+
+/* 내가 보낸 것 중, 남도 보낸 항목만 골라 남의 사유를 모은다. */
+function overlaps(L, pool){
+  var mine = {};
+  for (var i = 0; i < L.log.length; i++){
+    var e = L.log[i];
+    if (e.type === "release") mine[e.norm] = e;   // 같은 항목은 최근 방출 기준
+  }
+  var out = [];
+  for (var norm in mine){
+    if (!Object.prototype.hasOwnProperty.call(mine, norm)) continue;
+    var others = [];
+    for (var p = 0; p < pool.length; p++){
+      var list = pool[p].l;
+      for (var q = 0; q < list.length; q++){
+        if (normName(list[q][0]) === norm) others.push({ reason: list[q][1], tenure: list[q][2] | 0 });
+      }
+    }
+    if (others.length) out.push({ name: mine[norm].name, myReason: mine[norm].reason,
+                                  myTenure: mine[norm].tenure, others: others });
+  }
+  out.sort(function(a, b){ return b.others.length - a.others.length; });
+  return out;
+}
 /*==core-end==*/
 
 if (typeof module !== "undefined" && module.exports){
   module.exports = { CAP:CAP, normName:normName, makeList:makeList, validate:validate,
                      addItem:addItem, releaseItem:releaseItem, replaceItem:replaceItem,
-                     statsOf:statsOf, findList:findList };
+                     statsOf:statsOf, findList:findList, poolAdd:poolAdd, overlaps:overlaps,
+                     POOL_MAX:POOL_MAX };
 }
 
 /* ── 저장소 ───────────────────────────────────────────── */
@@ -510,10 +596,13 @@ function load(){
   if (raw){
     try {
       var st = JSON.parse(raw);
-      if (st && Array.isArray(st.lists) && st.lists.length && !validate(st)) return st;
+      if (st && Array.isArray(st.lists) && st.lists.length && !validate(st)){
+        if (!Array.isArray(st.pool)) st.pool = [];   // 구버전 저장본 호환
+        return st;
+      }
     } catch (e) {}
   }
-  var fresh = { v: 1, lists: [makeList("내 목록", "자유", now())], cur: null };
+  var fresh = { v: 1, lists: [makeList("내 목록", "자유", now())], cur: null, pool: [] };
   fresh.cur = fresh.lists[0].id;
   return fresh;
 }
@@ -635,18 +724,96 @@ function renderLog(){
   $("logBody").innerHTML = html;
 }
 
-function render(){ renderLists(); renderHold(); renderLog(); }
+function renderPool(){
+  var L = cur(), pool = state.pool || [];
+  var rows = overlaps(L, pool);
+  $("tabPoolN").textContent = rows.length;
+  $("poolSub").textContent = pool.length
+    ? "목록 " + pool.length + "개를 모았고, 그중 " + rows.length + "가지가 나와 겹칩니다"
+    : "아직 모은 목록이 없습니다";
+
+  if (!pool.length){
+    $("poolBody").innerHTML = '<p class="empty">친구에게 백 개 공유 링크를 받아 위에 붙여넣어 보세요.<br>' +
+      "내가 보낸 것을 그 사람도 보냈다면, 그 사람이 적은 이유가 여기 모입니다.</p>";
+    return;
+  }
+  if (!rows.length){
+    $("poolBody").innerHTML = '<p class="empty">겹치는 항목이 아직 없습니다.<br>' +
+      "내가 보낸 것과 같은 것을 보낸 사람이 생기면 여기에 나타납니다.</p>";
+    return;
+  }
+
+  $("poolBody").innerHTML = rows.map(function(r){
+    var head = '<div class="yearhead"><span class="y" style="font-size:19px">' + esc(r.name) +
+               '</span><span class="c">나 말고 ' + r.others.length + "명이 보냄</span></div>";
+    var mine = '<div class="entry" style="padding:12px 0 14px"><div class="e-ten">내가 적은 이유 · ' +
+               r.myTenure + '일 머묾</div><p class="e-reason" style="opacity:.72">' + esc(r.myReason) + "</p></div>";
+    var theirs = r.others.map(function(o){
+      return '<div class="entry" style="padding:12px 0"><div class="e-ten">익명 · ' + o.tenure +
+             '일 머묾</div><p class="e-reason e-return">' + esc(o.reason) + "</p></div>";
+    }).join("");
+    return head + mine + theirs;
+  }).join("");
+}
+
+function render(){ renderLists(); renderHold(); renderLog(); renderPool(); }
+
+/* 붙여넣은 텍스트에서 ?r= 페이로드(또는 날 base64 토큰)를 전부 뽑아낸다. */
+function extractPayloads(text){
+  var out = [], seen = {}, m;
+  var re = /[?&]r=([A-Za-z0-9_-]{16,})/g;
+  while ((m = re.exec(text)) !== null) if (!seen[m[1]]) { seen[m[1]] = 1; out.push(m[1]); }
+  if (!out.length){
+    var re2 = /[A-Za-z0-9_-]{40,}/g;
+    while ((m = re2.exec(text)) !== null) if (!seen[m[0]]) { seen[m[0]] = 1; out.push(m[0]); }
+  }
+  return out;
+}
+
+$("poolAddBtn").addEventListener("click", function(){
+  var raw = $("poolIn").value;
+  if (!raw.trim()){ toast("공유 링크를 붙여넣어 주세요"); return; }
+  var payloads = extractPayloads(raw);
+  if (!payloads.length){ toast("링크에서 백 개 공유 정보를 찾지 못했습니다"); return; }
+
+  var added = 0, dup = 0, bad = 0;
+  try {
+    commit(function(st){
+      if (!Array.isArray(st.pool)) st.pool = [];
+      for (var i = 0; i < payloads.length; i++){
+        var sn = dec(payloads[i]);
+        if (!sn || typeof sn !== "object"){ bad++; continue; }
+        if (poolAdd(st.pool, sn)) added++; else dup++;
+      }
+    });
+  } catch (e){ return; }
+
+  $("poolIn").value = "";
+  tab("pool");
+  toast(added ? added + "개를 가져왔습니다" + (dup ? " (중복 " + dup + "개 제외)" : "")
+              : (dup ? "이미 가져온 목록입니다" : "가져올 방출 기록이 없습니다"));
+});
+
+$("poolClear").addEventListener("click", function(){
+  if (!(state.pool || []).length){ toast("모아둔 것이 없습니다"); return; }
+  if (!confirm("모아둔 " + state.pool.length + "개 목록을 지웁니다. 내 목록과 방출 로그는 그대로입니다.")) return;
+  commit(function(st){ st.pool = []; });
+  toast("모아둔 것을 지웠습니다");
+});
 
 /* ── 탭 ───────────────────────────────────────────────── */
 function tab(which){
-  var h = which === "hold";
-  $("viewHold").style.display = h ? "" : "none";
-  $("viewLog").style.display = h ? "none" : "";
-  $("tabHold").classList.toggle("on", h);
-  $("tabLog").classList.toggle("on", !h);
+  var views = { hold: "viewHold", log: "viewLog", pool: "viewPool" };
+  var tabs = { hold: "tabHold", log: "tabLog", pool: "tabPool" };
+  for (var k in views){
+    if (!Object.prototype.hasOwnProperty.call(views, k)) continue;
+    $(views[k]).style.display = (k === which) ? "" : "none";
+    $(tabs[k]).classList.toggle("on", k === which);
+  }
 }
 $("tabHold").addEventListener("click", function(){ tab("hold"); });
 $("tabLog").addEventListener("click", function(){ tab("log"); });
+$("tabPool").addEventListener("click", function(){ tab("pool"); });
 $("sortAdded").addEventListener("click", function(){ sortMode = "added"; $("sortAdded").classList.add("on"); $("sortName").classList.remove("on"); renderHold(); });
 $("sortName").addEventListener("click", function(){ sortMode = "name"; $("sortName").classList.add("on"); $("sortAdded").classList.remove("on"); renderHold(); });
 
