@@ -207,7 +207,7 @@ footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
     <button type="button" data-t="all" class="on">전체</button>
     <button type="button" data-t="person">사람별</button>
     <button type="button" data-t="kind">종류별</button>
-    <button type="button" data-t="old">오래된 것</button>
+    <button type="button" data-t="old">오래 된 받은 것</button>
   </div>
   <div id="listBody"></div>
 </section>
@@ -541,11 +541,21 @@ function editFavor(f){
     f.b=$("feBody").value.slice(0,40);
     var np=ensurePerson(who, p?p.t:"etc");
     f.pid=np.id;
+    pruneOrphanPeople();
     save(); renderAll(); toast("고쳤습니다");
   });
 }
 /* 같은 사람을 다르게 적어 통계가 쪼개졌을 때 합친다. */
+function personCount(id){ var n=0; db.favors.forEach(function(f){ if(f.pid===id) n++; }); return n; }
+/* 기록이 하나도 안 남은 사람은 화면 어디에도 안 보이는데 합치기 후보로만 떠서 혼란스럽다.
+   호칭을 바꾸는 과정에서 생긴 고아 레코드를 조용히 정리한다. */
+function pruneOrphanPeople(){
+  var before=db.people.length;
+  db.people=db.people.filter(function(x){ return personCount(x.id)>0; });
+  return before-db.people.length;
+}
 function mergePerson(p){
+  pruneOrphanPeople();
   var others=db.people.filter(function(x){ return x.id!==p.id; });
   if(!others.length){ toast("합칠 다른 이름이 없어요"); return; }
   var list=others.map(function(x,i){ return (i+1)+". "+x.l; }).join("\n");
@@ -577,9 +587,9 @@ function renderList(){
     var list=db.favors.slice().sort(function(a,b){ return a.d<b.d?1:a.d>b.d?-1:0; });
     if(tab==="old"){
       list=list.filter(function(f){ return f.dir==="r" && !f.s && daysAgo(f.d)>=365; });
-      if(!list.length){ h.innerHTML='<p class="empty">1년 넘게 그대로인 기록은 없습니다.</p>'; return; }
+      if(!list.length){ h.innerHTML='<p class="empty">1년 넘게 갚음 표시 없이 남은 <b>받은 기록</b>이 없습니다.</p>'; return; }
       var note=document.createElement("p"); note.className="hint"; note.style.margin="0 0 12px";
-      note.textContent="1년이 지난 기록입니다. 알림은 보내지 않습니다 — 목록으로만 보여 드립니다.";
+      note.textContent="1년이 지난 뒤에도 갚음 표시가 없는 \u2018받은 것\u2019만 모았습니다. 준 것은 여기 나오지 않습니다. 알림은 보내지 않습니다 — 목록으로만 보여 드립니다.";
       h.appendChild(note);
     }
     list.slice(0,200).forEach(function(f){

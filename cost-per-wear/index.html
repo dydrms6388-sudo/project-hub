@@ -751,7 +751,11 @@ function setGoal(it){
   if(v===null) return;
   v=v.replace(/[^\d]/g,"");
   if(!v){ it.g=null; save(); renderAll(); toast("목표를 해제했습니다"); return; }
-  it.g=parseInt(v,10);
+  var g=parseInt(v,10);
+  /* 0을 넣으면 가격÷0 = Infinity 가 화면에 그대로 노출된다 */
+  if(!(g>0)){ toast("목표 금액은 1원 이상이어야 해요"); return; }
+  if(g>=it.p && it.p>0){ toast("목표가 구매가보다 크거나 같아요. 한 번만 써도 달성됩니다"); }
+  it.g=g;
   save(); renderAll();
   var need=remainToGoal(it);
   toast("목표 "+won(it.g)+" — 앞으로 "+need+"번 더"+(it.kind==="sub"?" (이번 달)":"")+" 쓰면 됩니다");
@@ -879,7 +883,7 @@ function shareState(){
   return {
     n:s.n, t:s.total, w:s.wears,
     a: s.avg===null?null:Math.round(s.avg),
-    c: s.conc, tn:s.topN, tp:s.topPct,
+    c: s.conc, tn:s.topN, tp:s.topPct, own:s.own,
     h: s.hall.slice(0,3).map(function(x){
       return { c:x.c, p:Math.round(x.pu), k:x.cnt, n: withNames ? String(x.n).slice(0,14) : null };
     })
@@ -904,7 +908,7 @@ function shareText(){
   lines.push("옷장 평균 1회당 "+(s.a===null?"—":won(s.a)));
   if(s.c!==null){
     lines.push("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 전체 착용의 "+s.c+"%");
-    if(s.n < 10) lines.push("(항목이 "+s.n+"개뿐이라 이 비율은 아직 크게 흔들립니다)");
+    if((s.own||s.n) < 10) lines.push("(항목이 "+(s.own||s.n)+"개뿐이라 이 비율은 아직 크게 흔들립니다)");
   }
   if(s.h.length) lines.push("명예의 전당 1위: "+(s.h[0].n?s.h[0].n:catOf(s.h[0].c).label)+" "+won(s.h[0].p));
   lines.push(resultUrl());
@@ -961,9 +965,10 @@ function drawCard(){
   ctx.fillText("자주 입는 "+s.tn+"개(전체의 "+s.tp+"%)가 차지하는 착용 비중", W/2, 560);
   ctx.fillStyle="#a5b4fc"; ctx.font="900 70px -apple-system,sans-serif";
   ctx.fillText(s.c===null?"—":s.c+"%", W/2, 630);
-  if(s.n && s.n < 10){
+  var sampleBase=s.own||s.n;
+  if(sampleBase && sampleBase < 10){
     ctx.fillStyle="rgba(255,255,255,.5)"; ctx.font="600 22px -apple-system,sans-serif";
-    ctx.fillText("항목 "+s.n+"개 — 아직 크게 흔들리는 숫자입니다", W/2, 666);
+    ctx.fillText("항목 "+sampleBase+"개 — 아직 크게 흔들리는 숫자입니다", W/2, 666);
   }
 
   ctx.textAlign="left";
@@ -1084,13 +1089,13 @@ function renderShared(s){
     + box("착용 편중도", s.c===null||s.c===undefined?"—":s.c+"%", concLabel(s))
     + '</div>'
     + (rows ? '<div class="hall" style="margin-top:10px">'+rows+'</div>' : "")
-    + ((s.n && s.n < 10) ? '<p class="hint">항목이 '+s.n+'개뿐이라 이 비율은 크게 흔들립니다. 10개 이상부터 참고할 만해집니다.</p>' : "");
+    + (function(){ var base=s.own||s.n; return (base && base<10) ? '<p class="hint">항목이 '+base+'개뿐이라 이 비율은 크게 흔들립니다. 10개 이상부터 참고할 만해집니다.</p>' : ""; })();
   $("sharedCard").style.display="block";
 }
 function sanitizeShared(o){
   if(!o || typeof o!=="object") return null;
   var num=function(v){ return typeof v==="number" && isFinite(v) ? v : null; };
-  var s={ n:num(o.n)||0, t:num(o.t)||0, w:num(o.w)||0, a:num(o.a), c:num(o.c), tn:num(o.tn)||1, tp:num(o.tp)||0, h:[] };
+  var s={ n:num(o.n)||0, t:num(o.t)||0, w:num(o.w)||0, a:num(o.a), c:num(o.c), tn:num(o.tn)||1, tp:num(o.tp)||0, own:num(o.own)||0, h:[] };
   if(Array.isArray(o.h)) s.h=o.h.slice(0,3).map(function(x){
     return { c:catOf(x&&x.c).k, p:Math.max(0,Math.round(num(x&&x.p)||0)), k:Math.max(0,Math.round(num(x&&x.k)||0)),
              n: (x&&typeof x.n==="string") ? x.n.slice(0,14) : null };
