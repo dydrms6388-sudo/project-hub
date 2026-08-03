@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">금융·부동산</span> <span class="sep">›</span> <span class="c-cur">급여실수령 (연봉 실수령액 계산기)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">세전 연봉을 입력하면 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세 항목별 공제액과 월 실수령액을 한 화면에서 확인할 수 있습니다.</p>
     <a class="cta" href="https://salary-net-pay.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>급여실수령 (연봉 실수령액 계산기) 소개</h2>
-    <p>세전 연봉을 입력하면 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세 항목별 공제액과 월 실수령액을 한 화면에서 확인할 수 있습니다. 부양가족 수, 비과세 항목, 퇴직금 포함 여부까지 반영해 실제 급여명세서와 가장 가까운 추정치를 제공합니다. 이직 협상이나 연봉 제안을 받았을 때 숫자 근거를 갖추는 데 활용하기 좋습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>근로소득자의 실수령액은 4대 보험료와 근로소득세, 지방소득세가 공제된 후 남는 금액입니다. 국민연금은 기준소득월액에 9%(근로자 4.5%)를, 건강보험은 보험료율에 따라 매년 달라지며 장기요양보험료는 건강보험료의 일정 비율로 부과됩니다. 소득세는 부양가족 수에 따라 간이세액표를 적용하며, 비과세 항목(식대·차량유지비 등)은 과세 대상 금액에서 빠지기 때문에 실수령액이 달라집니다. 퇴직금을 연봉에 포함해 표시하는 경우도 있어, 제안받은 금액이 퇴직금 별도인지 포함인지 확인하는 것이 중요합니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>이럴 때</b> 이직 제안서에 적힌 연봉이 퇴직금 포함인지 별도인지 불분명할 때, 두 가지 조건으로 각각 계산해 실제 차이를 숫자로 파악할 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>연봉 협상에서 &#39;500만 원 인상&#39;이 매달 손에 쥐는 돈으로는 얼마인지 미리 확인해 두면 협상 테이블에서 구체적인 근거를 들 수 있습니다.</li>
+        <li>배우자 출산휴가·육아휴직 전후로 소득이 달라질 때 변경된 연봉 기준의 실수령액을 미리 파악해 가계 예산을 조정하는 데 도움이 됩니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 급여실수령 (연봉 실수령액 계산기)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>세전 연봉(원 단위)을 입력하세요.</li>
         <li>부양가족 수와 20세 이하 자녀 수를 선택하세요.</li>
@@ -134,12 +167,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>항목별 공제액과 월 실수령액을 확인하세요.</li>
         <li>다른 연봉 금액을 추가 입력해 시나리오를 나란히 비교하세요.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>이직 제안서에 적힌 연봉이 퇴직금 포함인지 별도인지 불분명할 때, 두 가지 조건으로 각각 계산해 실제 차이를 숫자로 파악할 수 있습니다.</li>
-        <li>연봉 협상에서 '500만 원 인상'이 매달 손에 쥐는 돈으로는 얼마인지 미리 확인해 두면 협상 테이블에서 구체적인 근거를 들 수 있습니다.</li>
-        <li>배우자 출산휴가·육아휴직 전후로 소득이 달라질 때 변경된 연봉 기준의 실수령액을 미리 파악해 가계 예산을 조정하는 데 도움이 됩니다.</li>
-    </ul>
+        <p>세전 연봉을 입력하면 국민연금·건강보험·장기요양·고용보험·소득세·지방소득세 항목별 공제액과 월 실수령액을 한 화면에서 확인할 수 있습니다. 부양가족 수, 비과세 항목, 퇴직금 포함 여부까지 반영해 실제 급여명세서와 가장 가까운 추정치를 제공합니다. 이직 협상이나 연봉 제안을 받았을 때 숫자 근거를 갖추는 데 활용하기 좋습니다.</p>
+        <p>근로소득자의 실수령액은 4대 보험료와 근로소득세, 지방소득세가 공제된 후 남는 금액입니다. 국민연금은 기준소득월액에 9%(근로자 4.5%)를, 건강보험은 보험료율에 따라 매년 달라지며 장기요양보험료는 건강보험료의 일정 비율로 부과됩니다. 소득세는 부양가족 수에 따라 간이세액표를 적용하며, 비과세 항목(식대·차량유지비 등)은 과세 대상 금액에서 빠지기 때문에 실수령액이 달라집니다. 퇴직금을 연봉에 포함해 표시하는 경우도 있어, 제안받은 금액이 퇴직금 별도인지 포함인지 확인하는 것이 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>식대 비과세는 근로계약서나 사규에 명시된 경우에만 적용되므로 본인 상황을 확인한 뒤 선택하세요.</li>
@@ -169,7 +200,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="related">
     <h2>관련 서비스</h2>
     <div class="rel-grid"><a class="rel" href="/pyeong-converter-plus/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 평수변환플러스</a>
-      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 연봉상위 (SalaryRank)</a>
+      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M6 20v-5"/><path d="M12 20V6"/><path d="M18 20v-9"/></svg></span> 연봉상위 (SalaryRank)</a>
       <a class="rel" href="/cheongyak-score-calc/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 청약가점기</a>
       <a class="rel" href="/jeonse-loan-limit/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 전세대출되나 (전세자금대출 한도 계산기)</a>
       <a class="rel" href="/dsr-limit-check/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> DSR미리보기 (DSR Check)</a>

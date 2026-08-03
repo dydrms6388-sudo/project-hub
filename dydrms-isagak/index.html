@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">생활 도구</span> <span class="sep">›</span> <span class="c-cur">이사각 (IsaGak)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.3 2.3-2.3-.4-.4-2.3z"/></svg></div>
@@ -121,16 +142,28 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">이사 날짜와 내 상황만 넣으면 지금 해야 할 일이 시기별로 자동 정리되는 무료 이사 준비 올인원.</p>
     <a class="cta" href="https://dydrms-isagak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>이사각 (IsaGak) 소개</h2>
-    <p>이사 날짜와 내 상황만 넣으면 지금 해야 할 일이 시기별로 자동 정리되는 무료 이사 준비 올인원. ①이사 플래너(이사일 D-day+집 유형·포장/반포장/일반·전세/월세/자가·반려동물/자동차/자녀전학/도시가스/에어컨 등 상황 선택→3~4주전·2주전·1주전·전날·당일·이사후 6단계 맞춤 체크리스트 33+항목 자동 생성, 진행률·완료 컨페티, 놓치면 손해 표시, localStorage 저장) ②포장이사 비용 추정(평수·방식·거리·층수/사다리차·에어컨 이전·성수기·손없는날 할증 반영→예상 견적 범위+반영요인+절약 팁, 2025~26 실거래 범위 기반) ③이사 후 행정처리 신호등(전입신고 14일·과태료 5만·확정일자 보증금보호·도시가스 전출입·자동차 30일·우편물 주거이전·전기수도 정산·대형폐기물·폐가전 무상수거 1599-0903, 기한/방법/불이익 단계별) ④평수별 이사 준비물·박스 개수 계산+쿠팡 소모품. 무백엔드·무가입, 모든 기록 기기에만 저장. 손없는날각(이사 길일)과 크로스링크·축 분리. 큐 전부 금융→비금융 생활 다각화, 오늘 스포츠·건강 로테이션 후 생활 신규 버티컬 dedup0. 비용·기한은 참고용, 실제 처리 전 정부24·지역 도시가스사 등 기관 확인 면책.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 이사 날짜와 내 상황만 넣으면 지금 해야 할 일이 시기별로 자동 정리되는 무료 이사 준비…</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
-    <h2>이렇게 사용하세요</h2>
+    
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 이사각 (IsaGak)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>아래 ‘바로 실행하기’를 눌러 도구를 엽니다.</li>
         <li>안내에 따라 값을 입력하거나 항목을 선택합니다.</li>
         <li>결과를 확인하고 필요하면 저장·공유합니다.</li>
     </ol>
-    
+        <p>이사 날짜와 내 상황만 넣으면 지금 해야 할 일이 시기별로 자동 정리되는 무료 이사 준비 올인원. ①이사 플래너(이사일 D-day+집 유형·포장/반포장/일반·전세/월세/자가·반려동물/자동차/자녀전학/도시가스/에어컨 등 상황 선택→3~4주전·2주전·1주전·전날·당일·이사후 6단계 맞춤 체크리스트 33+항목 자동 생성, 진행률·완료 컨페티, 놓치면 손해 표시, localStorage 저장) ②포장이사 비용 추정(평수·방식·거리·층수/사다리차·에어컨 이전·성수기·손없는날 할증 반영→예상 견적 범위+반영요인+절약 팁, 2025~26 실거래 범위 기반) ③이사 후 행정처리 신호등(전입신고 14일·과태료 5만·확정일자 보증금보호·도시가스 전출입·자동차 30일·우편물 주거이전·전기수도 정산·대형폐기물·폐가전 무상수거 1599-0903, 기한/방법/불이익 단계별) ④평수별 이사 준비물·박스 개수 계산+쿠팡 소모품. 무백엔드·무가입, 모든 기록 기기에만 저장. 손없는날각(이사 길일)과 크로스링크·축 분리. 큐 전부 금융→비금융 생활 다각화, 오늘 스포츠·건강 로테이션 후 생활 신규 버티컬 dedup0. 비용·기한은 참고용, 실제 처리 전 정부24·지역 도시가스사 등 기관 확인 면책.</p>
+        
+      </div>
+    </details>
     
     
     

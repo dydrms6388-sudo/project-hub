@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">건강·운동</span> <span class="sep">›</span> <span class="c-cur">꿀잠각</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></div>
@@ -121,24 +142,35 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">지금 잠들면 몇 시에 일어나야 개운할지를 수면 사이클 기준으로 계산해 주는 수면 도우미입니다.</p>
     <a class="cta" href="https://kkuljamgak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>꿀잠각 소개</h2>
-    <p>지금 잠들면 몇 시에 일어나야 개운할지를 수면 사이클 기준으로 계산해 주는 수면 도우미입니다. 기상 시각 계산 외에도 수면 일기, 부채 트래커, 낮잠 타이머를 갖춰 자신의 수면 패턴을 꾸준히 관리할 수 있습니다. 밤마다 켜두고 싶은 수면 환경(앰비언트 사운드·3D 야경)도 함께 제공합니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>인간의 수면은 얕은 수면(N1·N2)과 깊은 수면(N3), 그리고 렘(REM) 수면이 약 90분 간격으로 순환하는 구조를 갖습니다. 이 주기가 끝나는 시점, 즉 얕은 잠 단계에서 잠이 깨면 개운함을 느끼지만, 깊은 수면 중에 억지로 일어나면 수면 관성(Sleep Inertia)이 심해 피로감과 멍함이 오래 지속됩니다. 90분은 평균값이며 개인에 따라 80~120분까지 다양합니다. 한국 성인의 평균 수면 시간은 OECD 국가 중 낮은 편으로, 만성 수면 부족이 집중력 저하, 면역 기능 약화, 대사 문제와 연결된다는 연구 결과가 여럿 있습니다. 수면 부채는 주말 몰아자기로 완전히 해소되지 않는다는 것이 수면 연구의 대체적 견해입니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 지금 잠들면 몇 시에 일어나야 개운할지를 수면 사이클 기준으로 계산해 주는 수면 도우미입니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>다음 날 중요한 발표가 있어 가장 개운하게 일어날 수 있는 기상 시각을 미리 계산해 두고 싶을 때.</li>
+        <li>수면 일기를 2주 이상 꾸준히 기록해 어떤 요일·습관이 수면의 질에 영향을 주는지 패턴을 파악하고 싶을 때.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 꿀잠각</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
-        <li>지금 잠들 예정 시각을 입력하거나 '지금 바로' 버튼을 누른다.</li>
+        <li>지금 잠들 예정 시각을 입력하거나 &#39;지금 바로&#39; 버튼을 누른다.</li>
         <li>90분 사이클 기준으로 계산된 권장 기상 시각 목록을 확인한다.</li>
         <li>원하는 기상 시각을 선택하고 알람을 설정한다.</li>
         <li>기상 후 오늘의 수면 시간과 컨디션을 수면 일기에 기록한다.</li>
         <li>낮잠이 필요할 때는 낮잠 타이머를 20~30분으로 설정해 사용한다.</li>
         <li>주간 그래프에서 수면 부채 누적량과 수면 위생 streak을 확인한다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>다음 날 중요한 발표가 있어 가장 개운하게 일어날 수 있는 기상 시각을 미리 계산해 두고 싶을 때.</li>
-        <li>수면 일기를 2주 이상 꾸준히 기록해 어떤 요일·습관이 수면의 질에 영향을 주는지 패턴을 파악하고 싶을 때.</li>
-    </ul>
+        <p>지금 잠들면 몇 시에 일어나야 개운할지를 수면 사이클 기준으로 계산해 주는 수면 도우미입니다. 기상 시각 계산 외에도 수면 일기, 부채 트래커, 낮잠 타이머를 갖춰 자신의 수면 패턴을 꾸준히 관리할 수 있습니다. 밤마다 켜두고 싶은 수면 환경(앰비언트 사운드·3D 야경)도 함께 제공합니다.</p>
+        <p>인간의 수면은 얕은 수면(N1·N2)과 깊은 수면(N3), 그리고 렘(REM) 수면이 약 90분 간격으로 순환하는 구조를 갖습니다. 이 주기가 끝나는 시점, 즉 얕은 잠 단계에서 잠이 깨면 개운함을 느끼지만, 깊은 수면 중에 억지로 일어나면 수면 관성(Sleep Inertia)이 심해 피로감과 멍함이 오래 지속됩니다. 90분은 평균값이며 개인에 따라 80~120분까지 다양합니다. 한국 성인의 평균 수면 시간은 OECD 국가 중 낮은 편으로, 만성 수면 부족이 집중력 저하, 면역 기능 약화, 대사 문제와 연결된다는 연구 결과가 여럿 있습니다. 수면 부채는 주말 몰아자기로 완전히 해소되지 않는다는 것이 수면 연구의 대체적 견해입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>잠자리에 들고 실제로 잠드는 데 평균 10~20분 걸리므로, 취침 시각보다 15분 앞당겨 입력하면 더 정확한 기상 시각을 얻을 수 있습니다.</li>
@@ -166,12 +198,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <div class="coupang-slot" data-subid="kkuljamgak" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/dydrms-wonjunbi/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 원준비</a>
+    <div class="rel-grid"><a class="rel" href="/dydrms-facemap/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 얼굴신호 (FaceSignal)</a>
+      <a class="rel" href="/dydrms-hyeoread/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 혀읽기 (TongueRead)</a>
+      <a class="rel" href="/dydrms-wonjunbi/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 원준비</a>
       <a class="rel" href="/dydrms-bloom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 블룸</a>
       <a class="rel" href="/dydrms-dariease/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 다리편해</a>
-      <a class="rel" href="/dydrms-chabunhae/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 차분해</a>
-      <a class="rel" href="/dydrms-vitality/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 활력노트</a>
-      <a class="rel" href="/dydrms-binyeom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 코편안 (비염노트)</a></div>
+      <a class="rel" href="/dydrms-chabunhae/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 차분해</a></div>
   </section>
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>

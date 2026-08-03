@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">건강·운동</span> <span class="sep">›</span> <span class="c-cur">카페인한도추적</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">커피, 차, 에너지드링크 등 하루 동안 마신 음료를 기록하면 카페인 누적량과 권장 상한까지 남은 여유를 실시간으로 확인할 수 있습니다.</p>
     <a class="cta" href="https://dydrms-caffeine-tracker.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>카페인한도추적 소개</h2>
-    <p>커피, 차, 에너지드링크 등 하루 동안 마신 음료를 기록하면 카페인 누적량과 권장 상한까지 남은 여유를 실시간으로 확인할 수 있습니다. 카페인 반감기 곡선을 바탕으로 취침 시각에 체내에 얼마나 남는지까지 예측해 주므로, 커피를 끊지 않고도 수면의 질을 지키고 싶은 분에게 유용합니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>카페인은 뇌의 아데노신 수용체를 차단해 각성 효과를 내지만, 체내에서 절반으로 줄어드는 반감기가 약 5시간에 달합니다. 오후 3시에 마신 아메리카노 한 잔의 카페인이 밤 11시에도 4분의 1 정도 남아 있을 수 있다는 뜻입니다. 일반 성인에게 권고되는 하루 상한은 약 400mg이지만 임신 중이거나 카페인에 민감한 경우 이보다 훨씬 낮아집니다. 음료마다 카페인 함량 차이가 크고, 같은 아메리카노라도 원두 종류와 추출 방식에 따라 달라지기 때문에 실제 섭취량을 파악하기가 쉽지 않습니다. 이런 이유로 자신이 하루에 카페인을 얼마나 섭취하는지 추적해 보는 것이 수면 문제나 두근거림 같은 증상을 이해하는 첫걸음이 됩니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>이럴 때</b> 오후에 커피를 한 잔 더 마셔도 될지, 밤 수면에 영향을 줄지 미리 가늠해 보고 싶을 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>임신 중이거나 건강 이슈로 카페인 섭취를 줄이려는 분이 하루 목표치를 지키고 있는지 확인할 때 도움이 됩니다.</li>
+        <li>수면 문제가 있어 카페인과의 연관성을 파악하려는 분이 일주일치 패턴을 되돌아볼 때 활용할 수 있습니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 카페인한도추적</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>오늘 마신 음료를 음료 목록에서 선택하거나 직접 이름과 카페인량을 입력합니다.</li>
         <li>섭취한 시각을 함께 기록합니다.</li>
@@ -133,12 +166,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>취침 예정 시각을 입력하면 그 시각의 체내 잔존 카페인을 반감기 곡선으로 확인합니다.</li>
         <li>하루가 지나면 기록이 초기화되고 주간·월간 섭취 추세를 차트로 돌아볼 수 있습니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>오후에 커피를 한 잔 더 마셔도 될지, 밤 수면에 영향을 줄지 미리 가늠해 보고 싶을 때 유용합니다.</li>
-        <li>임신 중이거나 건강 이슈로 카페인 섭취를 줄이려는 분이 하루 목표치를 지키고 있는지 확인할 때 도움이 됩니다.</li>
-        <li>수면 문제가 있어 카페인과의 연관성을 파악하려는 분이 일주일치 패턴을 되돌아볼 때 활용할 수 있습니다.</li>
-    </ul>
+        <p>커피, 차, 에너지드링크 등 하루 동안 마신 음료를 기록하면 카페인 누적량과 권장 상한까지 남은 여유를 실시간으로 확인할 수 있습니다. 카페인 반감기 곡선을 바탕으로 취침 시각에 체내에 얼마나 남는지까지 예측해 주므로, 커피를 끊지 않고도 수면의 질을 지키고 싶은 분에게 유용합니다.</p>
+        <p>카페인은 뇌의 아데노신 수용체를 차단해 각성 효과를 내지만, 체내에서 절반으로 줄어드는 반감기가 약 5시간에 달합니다. 오후 3시에 마신 아메리카노 한 잔의 카페인이 밤 11시에도 4분의 1 정도 남아 있을 수 있다는 뜻입니다. 일반 성인에게 권고되는 하루 상한은 약 400mg이지만 임신 중이거나 카페인에 민감한 경우 이보다 훨씬 낮아집니다. 음료마다 카페인 함량 차이가 크고, 같은 아메리카노라도 원두 종류와 추출 방식에 따라 달라지기 때문에 실제 섭취량을 파악하기가 쉽지 않습니다. 이런 이유로 자신이 하루에 카페인을 얼마나 섭취하는지 추적해 보는 것이 수면 문제나 두근거림 같은 증상을 이해하는 첫걸음이 됩니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>콜드브루는 긴 추출 시간 때문에 일반 아메리카노보다 카페인이 많을 수 있으니 용량과 원두를 확인하세요.</li>
@@ -167,12 +198,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <div class="coupang-slot" data-subid="caffeine-tracker" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/dydrms-wonjunbi/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 원준비</a>
+    <div class="rel-grid"><a class="rel" href="/dydrms-facemap/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 얼굴신호 (FaceSignal)</a>
+      <a class="rel" href="/dydrms-hyeoread/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 혀읽기 (TongueRead)</a>
+      <a class="rel" href="/dydrms-wonjunbi/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 원준비</a>
       <a class="rel" href="/dydrms-bloom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 블룸</a>
       <a class="rel" href="/dydrms-dariease/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 다리편해</a>
-      <a class="rel" href="/dydrms-chabunhae/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 차분해</a>
-      <a class="rel" href="/dydrms-vitality/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 활력노트</a>
-      <a class="rel" href="/dydrms-binyeom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 코편안 (비염노트)</a></div>
+      <a class="rel" href="/dydrms-chabunhae/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 차분해</a></div>
   </section>
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>

@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">취업·생산성</span> <span class="sep">›</span> <span class="c-cur">미팅노트</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">회의 중 빠르게 적은 메모를 붙여넣으면 결정 사항·액션 아이템·안건 요약으로 자동 정리해 주는 도구입니다.</p>
     <a class="cta" href="https://dydrms-meetnote.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>미팅노트 소개</h2>
-    <p>회의 중 빠르게 적은 메모를 붙여넣으면 결정 사항·액션 아이템·안건 요약으로 자동 정리해 주는 도구입니다. 담당자와 기한이 언급된 경우 액션 아이템으로 추출해 실행 목록을 바로 만들 수 있어, 회의 후 정리에 드는 시간을 줄여 줍니다. 녹음이나 로그인 없이 텍스트 입력만으로 즉시 사용할 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>회의에서 결정된 사항이 제대로 기록·공유되지 않으면 실행이 흐지부지되거나 같은 내용을 다음 회의에서 다시 논의하는 일이 생깁니다. 효과적인 회의록은 '무엇을 결정했고, 누가 언제까지 무엇을 할 것인가'를 명확하게 담고 있어야 합니다. 메모가 길고 비구조적일수록 정리하는 데 시간이 걸리는데, AI 기반 텍스트 분류는 핵심 내용을 빠르게 범주화하는 데 도움을 줍니다. 다만 자동 정리는 입력 텍스트의 명확성에 크게 의존하므로, 결과를 그대로 사용하기 전에 사람이 검토하는 과정이 중요합니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>이럴 때</b> 5~6명이 참여한 팀 회의가 끝난 직후, 이야기한 내용을 빠르게 정리해 공유해야 할 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>메모는 있는데 액션 아이템이 어딘가에 섞여 있어 찾기 번거로울 때, 실행 목록만 빠르게 추출할 수 있습니다.</li>
+        <li>주 1회 정기 회의처럼 반복되는 회의의 회의록을 일관된 형식으로 유지하고 싶을 때 활용할 수 있습니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 미팅노트</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>회의 중 메모한 텍스트를 입력창에 붙여넣습니다.</li>
         <li>정리 버튼을 클릭하면 결정 사항·액션 아이템·안건 요약이 자동으로 분류됩니다.</li>
@@ -133,15 +166,13 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>정리된 내용을 읽고 사실 여부와 빠진 내용을 직접 검토·수정합니다.</li>
         <li>완성된 회의록을 복사해 팀 채널, 이메일, 문서 도구로 공유합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>5~6명이 참여한 팀 회의가 끝난 직후, 이야기한 내용을 빠르게 정리해 공유해야 할 때 유용합니다.</li>
-        <li>메모는 있는데 액션 아이템이 어딘가에 섞여 있어 찾기 번거로울 때, 실행 목록만 빠르게 추출할 수 있습니다.</li>
-        <li>주 1회 정기 회의처럼 반복되는 회의의 회의록을 일관된 형식으로 유지하고 싶을 때 활용할 수 있습니다.</li>
-    </ul>
+        <p>회의 중 빠르게 적은 메모를 붙여넣으면 결정 사항·액션 아이템·안건 요약으로 자동 정리해 주는 도구입니다. 담당자와 기한이 언급된 경우 액션 아이템으로 추출해 실행 목록을 바로 만들 수 있어, 회의 후 정리에 드는 시간을 줄여 줍니다. 녹음이나 로그인 없이 텍스트 입력만으로 즉시 사용할 수 있습니다.</p>
+        <p>회의에서 결정된 사항이 제대로 기록·공유되지 않으면 실행이 흐지부지되거나 같은 내용을 다음 회의에서 다시 논의하는 일이 생깁니다. 효과적인 회의록은 &#39;무엇을 결정했고, 누가 언제까지 무엇을 할 것인가&#39;를 명확하게 담고 있어야 합니다. 메모가 길고 비구조적일수록 정리하는 데 시간이 걸리는데, AI 기반 텍스트 분류는 핵심 내용을 빠르게 범주화하는 데 도움을 줍니다. 다만 자동 정리는 입력 텍스트의 명확성에 크게 의존하므로, 결과를 그대로 사용하기 전에 사람이 검토하는 과정이 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
-        <li>메모에 담당자 이름과 기한을 명시해 두면 액션 아이템 추출 정확도가 높아집니다. '홍길동이 목요일까지 확인하기로' 같은 형식이 효과적입니다.</li>
+        <li>메모에 담당자 이름과 기한을 명시해 두면 액션 아이템 추출 정확도가 높아집니다. &#39;홍길동이 목요일까지 확인하기로&#39; 같은 형식이 효과적입니다.</li>
         <li>회의 직후에 정리하면 기억이 생생할 때 누락된 내용을 보완하기 쉽습니다.</li>
         <li>자동 정리 결과는 입력 텍스트를 그대로 해석한 것이므로, 발언의 맥락이나 함의까지 반영되지 않을 수 있습니다. 공유 전에 반드시 한 번 검토하세요.</li>
     </ul>
@@ -155,7 +186,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <div class="qa"><p class="q">Q. 입력한 회의 내용이 외부 서버에 저장되나요?</p><p class="a">100% 브라우저 처리 방식의 경우 서버로 전송되지 않습니다. 다만 민감한 내용이라면 사용 전 개인정보 처리 방침을 확인하는 것을 권장합니다.</p></div>
     <div class="qa"><p class="q">Q. 영어로 된 회의 메모도 정리되나요?</p><p class="a">한국어와 영어 텍스트 모두 처리할 수 있으며, 두 언어가 섞인 경우에도 분류가 이루어집니다.</p></div>
     <div class="qa"><p class="q">Q. 결과가 실제 회의 내용과 다를 경우 어떻게 하나요?</p><p class="a">정리된 텍스트는 직접 수정할 수 있습니다. AI 분류는 참고 초안으로 활용하고, 최종 내용은 사람이 검토해 확정하는 것이 좋습니다.</p></div>
-    <div class="qa"><p class="q">Q. 담당자나 기한이 메모에 명확하지 않아도 추출되나요?</p><p class="a">어느 정도 유추는 가능하지만 정확도가 낮아집니다. 메모 단계에서 '누가 무엇을 언제까지'를 최대한 구체적으로 적는 것이 결과 품질을 높이는 가장 효과적인 방법입니다.</p></div>
+    <div class="qa"><p class="q">Q. 담당자나 기한이 메모에 명확하지 않아도 추출되나요?</p><p class="a">어느 정도 유추는 가능하지만 정확도가 낮아집니다. 메모 단계에서 &#39;누가 무엇을 언제까지&#39;를 최대한 구체적으로 적는 것이 결과 품질을 높이는 가장 효과적인 방법입니다.</p></div>
     <div class="qa"><p class="q">Q. 정리 결과를 파일로 저장할 수 있나요?</p><p class="a">텍스트를 복사해 문서 도구(한글, 워드, 노션 등)에 붙여넣는 방식으로 저장할 수 있습니다. 직접 파일 내보내기 기능이 있는 경우 해당 버튼을 사용하세요.</p></div>
     
     <div class="edbox">
