@@ -116,9 +116,9 @@
       "year": 1926,
       "mechanism": "깊이단서(원근 해석)",
       "params": [
-        { "name": "skew", "label": "기울임 각도(°)", "min": 0, "max": 60, "default": 40 },
+        { "name": "skew", "label": "기울임 각도(°)", "min": 0, "max": 55, "default": 40 },
         { "name": "width", "label": "전체 너비(px)", "min": 150, "max": 320, "default": 260 },
-        { "name": "splitRatio", "label": "좌우 분할 비율(%)", "min": 40, "max": 75, "default": 62 }
+        { "name": "height", "label": "높이(px)", "min": 70, "max": 160, "default": 110 }
       ],
       "copyrightStatus": "공유자산",
       "difficulty": "중"
@@ -344,7 +344,7 @@
       "year": 1995,
       "mechanism": "밝기항등성 · 조명 추론(그림자 할인)",
       "params": [
-        { "name": "shadowOpacity", "label": "그림자 진하기(%)", "min": 0, "max": 80, "default": 50 },
+        { "name": "shadowOpacity", "label": "그림자 진하기(%)", "min": 0, "max": 80, "default": 55 },
         { "name": "shadowSoftness", "label": "그림자 가장자리 흐림(px)", "min": 0, "max": 40, "default": 20 },
         { "name": "checkContrast", "label": "체커 대비(%)", "min": 20, "max": 100, "default": 70 }
       ],
