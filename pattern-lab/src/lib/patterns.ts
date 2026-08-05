@@ -74,8 +74,9 @@ export function clampParams(
   return out;
 }
 
-// 빌드 시점에 인라인되는 공개 환경변수. 미설정이면 기본 도메인 사용.
+// 빌드 시점에 인라인되는 공개 환경변수. 배포 시 NEXT_PUBLIC_SITE_URL 필수 —
+// 미설정 로컬 빌드는 localhost 플레이스홀더로 생성된다.
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pattern-lab.tomatoeggcat.com"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
 ).replace(/\/+$/, "");
 export const SITE_NAME = "수학 패턴 연구소";

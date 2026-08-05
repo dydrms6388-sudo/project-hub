@@ -46,7 +46,7 @@ export default function RootLayout({
               모든 패턴은 수식으로 브라우저에서 실시간 계산됩니다. 이미지 파일을
               쓰지 않으며, 생성된 그림은 자유롭게 내려받아 사용할 수 있습니다.
             </p>
-            <p>© {new Date().getFullYear()} 패턴연구소 (tomatoeggcat.com)</p>
+            <p>© {new Date().getFullYear()} 패턴연구소</p>
           </div>
         </footer>
       </body>
