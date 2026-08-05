@@ -17,8 +17,8 @@ export const inverseSquareOrbit: SimSpec = {
     else { x = -3; y = b; vx = p.v0; vy = 0; }
     let time = 0, div = false;
     const trail: [number, number][] = [];
-    const energyOf = () => 0.5 * (vx * vx + vy * vy) + sign * k / Math.hypot(x, y) * -1 * (sign < 0 ? 1 : -1);
-    const E0 = 0.5 * p.v0 * p.v0;
+    // 인력이면 U=-k/r, 척력이면 U=+k/r (가속도 부호와 일치)
+    const energyOf = () => 0.5 * (vx * vx + vy * vy) + (sign < 0 ? -k : k) / (Math.hypot(x, y) + 1e-4);
     return {
       get time() { return time; },
       step(dt: number) {
@@ -50,7 +50,7 @@ export const inverseSquareOrbit: SimSpec = {
           { label: sign < 0 ? "탈출속도 비" : "속력", value: sign < 0 ? fmt(p.v0 / escape, 2) : fmt(speed, 2) },
         ];
       },
-      energy() { return null; },
+      energy() { return energyOf(); },
       diverged() { return false; },
     } as Sim;
   },
@@ -130,7 +130,17 @@ export const threeBody: SimSpec = {
           { label: "상태", value: div ? "충돌/발산" : "진행 중" },
         ];
       },
-      energy() { return null; },
+      energy() {
+        let ke = 0;
+        for (const b of bodies) ke += 0.5 * b.m * (b.vx * b.vx + b.vy * b.vy);
+        let pe = 0;
+        for (let i = 0; i < bodies.length; i++)
+          for (let j = i + 1; j < bodies.length; j++) {
+            const dx = bodies[j].x - bodies[i].x, dy = bodies[j].y - bodies[i].y;
+            pe -= (bodies[i].m * bodies[j].m) / Math.sqrt(dx * dx + dy * dy + soft * soft);
+          }
+        return ke + pe;
+      },
       diverged() { return div; },
     } as Sim;
   },

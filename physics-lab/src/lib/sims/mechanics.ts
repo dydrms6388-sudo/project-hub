@@ -342,7 +342,7 @@ export const rotatingFrame: SimSpec = {
 
 /* 팽이 세차와 장동 */
 export const spinningTop: SimSpec = {
-  dt: 1 / 400, stepsPerFrame: 6, conservative: true,
+  dt: 1 / 400, stepsPerFrame: 6, conservative: false,
   create(p) {
     const spin = p.spinRate, beta0 = (p.tilt * Math.PI) / 180, Iratio = p.inertiaRatio;
     const I1 = 1, I3 = Iratio, mgd = 1;

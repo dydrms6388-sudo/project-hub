@@ -213,35 +213,42 @@ export const coupledOscillators: SimSpec = {
   },
 };
 
-/* 용수철 진자(카오스) */
+/* 용수철 진자(카오스) — 데카르트 좌표 속도 벨레(심플렉틱)로 에너지 보존 */
 export const elasticPendulum: SimSpec = {
-  dt: 1 / 400,
-  stepsPerFrame: 7,
+  dt: 1 / 800,
+  stepsPerFrame: 13,
   conservative: true,
   create(p, twin) {
     const k = p.springK, L0 = p.restLength, m = 1;
-    let r = L0 + p.stretch0;
-    let th = ((p.theta0 + (twin ?? 0)) * Math.PI) / 180;
-    let vr = 0, vth = 0, time = 0, div = false;
-    const energyOf = () =>
-      0.5 * m * (vr * vr + r * r * vth * vth) + 0.5 * k * (r - L0) ** 2 - m * g * r * Math.cos(th);
+    const r0 = L0 + p.stretch0;
+    const th0 = ((p.theta0 + (twin ?? 0)) * Math.PI) / 180;
+    // y는 아래쪽이 양수. 피벗은 원점.
+    let x = r0 * Math.sin(th0), y = r0 * Math.cos(th0);
+    let vx = 0, vy = 0, time = 0, div = false;
+    const accel = (px: number, py: number): [number, number] => {
+      const len = Math.hypot(px, py) || 1e-9;
+      const fs = -k * (len - L0); // 늘어나면 피벗 쪽(음)
+      return [(fs * px) / len / m, (fs * py) / len / m + g];
+    };
+    const energyOf = () => {
+      const len = Math.hypot(x, y);
+      return 0.5 * m * (vx * vx + vy * vy) + 0.5 * k * (len - L0) ** 2 - m * g * y;
+    };
     const E0 = energyOf();
     const trail: [number, number][] = [];
     return {
       get time() { return time; },
       step(dt: number) {
-        const s = rk4([r, vr, th, vth], time, dt, ([R, VR, TH, VTH]) => [
-          VR,
-          R * VTH * VTH - g * Math.cos(TH) - (k / m) * (R - L0),
-          VTH,
-          (-2 * VR * VTH - g * Math.sin(TH)) / R,
-        ]);
-        [r, vr, th, vth] = s;
+        const [ax0, ay0] = accel(x, y);
+        x += vx * dt + 0.5 * ax0 * dt * dt;
+        y += vy * dt + 0.5 * ay0 * dt * dt;
+        const [ax1, ay1] = accel(x, y);
+        vx += 0.5 * (ax0 + ax1) * dt;
+        vy += 0.5 * (ay0 + ay1) * dt;
         time += dt;
-        const bx = r * Math.sin(th), by = r * Math.cos(th);
-        trail.push([bx, by]);
+        trail.push([x, y]);
         if (trail.length > 400) trail.shift();
-        if (diverged(s) || r < 0.01) div = true;
+        if (diverged([x, y, vx, vy])) div = true;
       },
       draw(ctx: CanvasRenderingContext2D, w: number, h: number, o: DrawOpts) {
         clearBg(ctx, w, h);
@@ -251,31 +258,32 @@ export const elasticPendulum: SimSpec = {
         ctx.lineWidth = 1;
         ctx.beginPath();
         trail.forEach(([bx, by], i) => {
-          const x = ox + bx * scale, y = oy + by * scale;
-          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          const px = ox + bx * scale, py = oy + by * scale;
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
         });
         ctx.stroke();
-        const drawBob = (R: number, TH: number, col: string, a = 1) => {
+        const drawBob = (bx: number, by: number, col: string, a = 1) => {
           ctx.globalAlpha = a;
-          const x = ox + R * Math.sin(TH) * scale, y = oy + R * Math.cos(TH) * scale;
+          const px = ox + bx * scale, py = oy + by * scale;
           ctx.strokeStyle = GRID; ctx.lineWidth = 2;
-          line(ctx, ox, oy, x, y);
-          dot(ctx, x, y, 11, col);
+          line(ctx, ox, oy, px, py);
+          dot(ctx, px, py, 11, col);
           ctx.globalAlpha = 1;
         };
-        if (o.twin) { const t = o.twin as unknown as { _s(): number[] }; const st = t._s(); drawBob(st[0], st[2], TWIN, 0.6); }
-        drawBob(r, th, ACCENT);
+        if (o.twin) { const t = o.twin as unknown as { _s(): number[] }; const st = t._s(); drawBob(st[0], st[1], TWIN, 0.6); }
+        drawBob(x, y, ACCENT);
       },
       metrics(): Metric[] {
+        const len = Math.hypot(x, y);
         return [
-          { label: "줄 길이 r", value: fmt(r, 3), unit: "m" },
-          { label: "흔들림각", value: fmt((th * 180) / Math.PI, 1), unit: "°" },
+          { label: "줄 길이 r", value: fmt(len, 3), unit: "m" },
+          { label: "흔들림각", value: fmt((Math.atan2(x, y) * 180) / Math.PI, 1), unit: "°" },
           { label: "에너지 드리프트", value: fmt(energyDrift(energyOf(), E0), 3), unit: "%" },
         ];
       },
       energy() { return energyOf(); },
       diverged() { return div; },
-      _s: () => [r, vr, th, vth],
+      _s: () => [x, y, vx, vy],
     } as unknown as Sim;
   },
 };
