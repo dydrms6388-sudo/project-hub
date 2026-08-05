@@ -11,6 +11,7 @@ import {
 } from "@/lib/patterns";
 import { contents } from "@/lib/content";
 import { presets } from "@/lib/content/presets";
+import { applications } from "@/lib/content/applications";
 import Thumb from "@/components/Thumb";
 import PatternStage from "@/components/PatternStage";
 
@@ -122,6 +123,13 @@ export default async function PatternPage({ params }: Props) {
 
         <h2>파라미터를 극단으로 밀면</h2>
         <p>{content.extremes}</p>
+
+        {applications[slug] && (
+          <>
+            <h2>실제 쓰임새와 의미</h2>
+            <p>{applications[slug]}</p>
+          </>
+        )}
 
         {pset.length > 0 && (
           <>
