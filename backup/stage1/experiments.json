@@ -1,0 +1,674 @@
+{
+  "version": "draft-1",
+  "note": "인터랙티브 물리 실험실 1단계 항목 설계 초안. 40개 항목. canvas 2D 실시간 시뮬레이션(영상·이미지 금지), 고정 타임스텝, 오일러법 금지(RK4/Verlet/Symplectic), 초기조건 URL 쿼리 인코딩. isChaotic=true는 쌍둥이 비교 모드 필수. computeCost '고'는 Web Worker 필수. 지배방정식이 실질적으로 같은 항목은 모드/프리셋으로 병합했다(mergedFrom 참고).",
+  "categories": [
+    { "slug": "oscillation", "label": "진동 · 공명" },
+    { "slug": "chaos", "label": "카오스" },
+    { "slug": "gravity", "label": "중력 · 궤도" },
+    { "slug": "mechanics", "label": "역학 · 충돌" },
+    { "slug": "wave", "label": "파동 · 연속체" },
+    { "slug": "fluid-stat", "label": "유체 · 다체 · 통계" },
+    { "slug": "em-quantum", "label": "전자기 · 양자" }
+  ],
+  "experiments": [
+    {
+      "slug": "simple-pendulum",
+      "name": "단진자 (비선형)",
+      "category": "oscillation",
+      "governingEquation": "θ̈ = −(g/L)sinθ − bθ̇ — 소각 근사 없이 sinθ 전체를 적분. count>1이면 길이를 등차로 배열한 진자 파도 모드",
+      "integrator": "Symplectic",
+      "mergedFrom": ["pendulum-wave"],
+      "params": [
+        { "name": "length", "min": 0.2, "max": 3, "step": 0.05, "default": 1, "unit": "m", "meaning": "진자 길이 L — 주기 T≈2π√(L/g)의 결정 인자" },
+        { "name": "theta0", "min": 5, "max": 175, "step": 1, "default": 60, "unit": "°", "meaning": "초기각 — 커질수록 주기가 소각 근사에서 벗어난다" },
+        { "name": "damping", "min": 0, "max": 0.5, "step": 0.01, "default": 0, "unit": "1/s", "meaning": "감쇠 계수 b — 0이면 보존계(에너지 드리프트 표시)" },
+        { "name": "count", "min": 1, "max": 24, "step": 1, "default": 1, "unit": "개", "meaning": "진자 개수 — 2 이상이면 길이 배열 진자 파도" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "driven-oscillator",
+      "name": "강제 감쇠 진동자 (공명)",
+      "category": "oscillation",
+      "governingEquation": "ẍ + 2ζω₀ẋ + ω₀²x = (F/m)cos(ω_d t) — 자유 감쇠(F=0)부터 공명 곡선까지. RLC 회로와 수학적으로 동일(본문에서 대응 설명)",
+      "integrator": "RK4",
+      "mergedFrom": ["spring-mass", "rlc-circuit"],
+      "params": [
+        { "name": "omega0", "min": 0.5, "max": 5, "step": 0.05, "default": 2, "unit": "rad/s", "meaning": "고유 진동수 ω₀=√(k/m)" },
+        { "name": "zeta", "min": 0, "max": 1.2, "step": 0.01, "default": 0.05, "unit": "", "meaning": "감쇠비 ζ — 공명 봉우리의 높이와 폭" },
+        { "name": "driveAmp", "min": 0, "max": 5, "step": 0.1, "default": 1, "unit": "m/s²", "meaning": "구동 가속도 진폭 F/m — 0이면 자유 진동" },
+        { "name": "driveFreq", "min": 0.1, "max": 6, "step": 0.02, "default": 1.6, "unit": "rad/s", "meaning": "구동 진동수 ω_d — ω₀에 접근할 때 공명" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "coupled-oscillators",
+      "name": "결합 진동자 (정규모드·맥놀이)",
+      "category": "oscillation",
+      "governingEquation": "m₁ẍ₁ = −kx₁ − k_c(x₁−x₂), m₂ẍ₂ = −kx₂ − k_c(x₂−x₁) — 두 정규모드의 합성으로 에너지가 왕복한다",
+      "integrator": "Symplectic",
+      "params": [
+        { "name": "springK", "min": 1, "max": 20, "step": 0.5, "default": 8, "unit": "N/m", "meaning": "개별 용수철 상수 k" },
+        { "name": "couplingK", "min": 0.1, "max": 10, "step": 0.1, "default": 1, "unit": "N/m", "meaning": "결합 용수철 k_c — 약할수록 맥놀이 주기가 길다" },
+        { "name": "massRatio", "min": 0.2, "max": 5, "step": 0.1, "default": 1, "unit": "", "meaning": "질량비 m₂/m₁ — 1을 벗어나면 모드가 비대칭" },
+        { "name": "initMode", "min": 0, "max": 2, "step": 1, "default": 0, "unit": "", "meaning": "초기조건: 0=한쪽만 여기(맥놀이), 1=대칭 모드, 2=반대칭 모드" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "elastic-pendulum",
+      "name": "용수철 진자",
+      "category": "oscillation",
+      "governingEquation": "r̈ = rθ̇² + g·cosθ − (k/m)(r−L₀),  θ̈ = −(2ṙθ̇ + g·sinθ)/r — 신축·흔들림 모드의 비선형 에너지 교환",
+      "integrator": "Symplectic",
+      "params": [
+        { "name": "springK", "min": 5, "max": 100, "step": 1, "default": 20, "unit": "N/m", "meaning": "용수철 상수 — 신축 진동수 결정, 흔들림의 2배일 때 공명 교환" },
+        { "name": "restLength", "min": 0.5, "max": 2, "step": 0.05, "default": 1, "unit": "m", "meaning": "자연 길이 L₀" },
+        { "name": "theta0", "min": 5, "max": 90, "step": 1, "default": 30, "unit": "°", "meaning": "초기 흔들림각" },
+        { "name": "stretch0", "min": 0, "max": 0.5, "step": 0.01, "default": 0.2, "unit": "m", "meaning": "초기 늘임 — 신축 모드에 넣는 에너지" },
+        { "name": "twinDelta", "min": 0.0001, "max": 0.1, "step": 0.0001, "default": 0.001, "unit": "°", "meaning": "쌍둥이 비교의 초기각 차이" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "parametric-pendulum",
+      "name": "파라메트릭 진자 (그네와 카피차)",
+      "category": "oscillation",
+      "governingEquation": "θ̈ = −[(g + a_d ω_d² cos(ω_d t))/L]sinθ − bθ̇ — 지지점 상하 진동. 저주파·큰 진폭=그네 펌핑, 고주파=카피차 역진자 안정화",
+      "integrator": "RK4",
+      "mergedFrom": ["kapitza-pendulum", "swing-pumping"],
+      "params": [
+        { "name": "driveAmp", "min": 0, "max": 0.2, "step": 0.005, "default": 0.05, "unit": "m", "meaning": "지지점 진동 진폭 a_d" },
+        { "name": "driveFreq", "min": 1, "max": 80, "step": 0.5, "default": 12, "unit": "rad/s", "meaning": "지지점 진동수 ω_d — 고유 진동수의 2배에서 파라메트릭 공명, 매우 크면 역진자 안정" },
+        { "name": "length", "min": 0.2, "max": 2, "step": 0.05, "default": 0.6, "unit": "m", "meaning": "진자 길이" },
+        { "name": "theta0", "min": 1, "max": 179, "step": 1, "default": 20, "unit": "°", "meaning": "초기각 — 179° 부근에서 카피차 안정화 실험" },
+        { "name": "twinDelta", "min": 0.0001, "max": 0.1, "step": 0.0001, "default": 0.001, "unit": "°", "meaning": "쌍둥이 비교 초기각 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "foucault-pendulum",
+      "name": "푸코 진자",
+      "category": "oscillation",
+      "governingEquation": "ẍ = −ω₀²x + 2Ω·sinφ·ẏ,  ÿ = −ω₀²y − 2Ω·sinφ·ẋ — 회전 좌표계의 코리올리 항(소각 근사·연직 성분 무시 명시)",
+      "integrator": "RK4",
+      "params": [
+        { "name": "latitude", "min": -90, "max": 90, "step": 1, "default": 37, "unit": "°", "meaning": "위도 φ — 세차 주기 = 24h/sinφ, 적도에서 세차 소멸" },
+        { "name": "timeScale", "min": 1, "max": 2000, "step": 10, "default": 500, "unit": "배", "meaning": "시간 배속 — 실제 수 시간의 세차를 수 초에 압축" },
+        { "name": "length", "min": 10, "max": 100, "step": 1, "default": 67, "unit": "m", "meaning": "진자 길이 — 판테온 원본 67m" },
+        { "name": "amplitude", "min": 1, "max": 10, "step": 0.5, "default": 5, "unit": "m", "meaning": "진폭" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "stick-slip",
+      "name": "스틱-슬립 마찰 진동",
+      "category": "oscillation",
+      "governingEquation": "mẍ = k(v_belt·t − x) − F_f,  F_f = 쿨롱 마찰(정지 μ_s / 운동 μ_k 전환) — 마찰 모델은 근사임을 명시. 지진 스틱-슬립의 최소 모형",
+      "integrator": "RK4",
+      "params": [
+        { "name": "beltSpeed", "min": 0.1, "max": 5, "step": 0.1, "default": 1, "unit": "cm/s", "meaning": "벨트 속도 — 느릴수록 고착 구간이 길어진다" },
+        { "name": "muStatic", "min": 0.2, "max": 1, "step": 0.02, "default": 0.6, "unit": "", "meaning": "정지 마찰계수 μ_s" },
+        { "name": "muKinetic", "min": 0.1, "max": 0.9, "step": 0.02, "default": 0.3, "unit": "", "meaning": "운동 마찰계수 μ_k — μ_s와의 차가 진동의 원천" },
+        { "name": "springK", "min": 1, "max": 50, "step": 1, "default": 10, "unit": "N/m", "meaning": "끄는 용수철 상수" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "fput-chain",
+      "name": "FPUT 비선형 사슬",
+      "category": "oscillation",
+      "governingEquation": "mẍᵢ = k(xᵢ₊₁−2xᵢ+xᵢ₋₁)[1 + α(xᵢ₊₁−xᵢ₋₁)] — 페르미-파스타-울람-칭구(1955) 재귀 현상: 에너지가 열화되지 않고 초기 모드로 회귀",
+      "integrator": "Symplectic",
+      "params": [
+        { "name": "particles", "min": 16, "max": 128, "step": 16, "default": 64, "unit": "개", "meaning": "질점 수 N" },
+        { "name": "alpha", "min": 0, "max": 1, "step": 0.01, "default": 0.25, "unit": "", "meaning": "비선형 계수 α — 0이면 선형(모드 불변), 커지면 모드 혼합" },
+        { "name": "initMode", "min": 1, "max": 8, "step": 1, "default": 1, "unit": "", "meaning": "초기 여기 모드 번호 — 모드별 에너지 막대로 회귀 관찰" },
+        { "name": "amplitude", "min": 0.1, "max": 2, "step": 0.1, "default": 1, "unit": "", "meaning": "초기 진폭 — 비선형 결합 세기" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "double-pendulum",
+      "name": "이중 진자",
+      "category": "chaos",
+      "governingEquation": "라그랑주 방정식(표준형): (m₁+m₂)L₁θ̈₁ + m₂L₂θ̈₂cos(θ₁−θ₂) + … = −(m₁+m₂)g sinθ₁ — 2자유도 보존계 카오스의 대표",
+      "integrator": "RK4",
+      "params": [
+        { "name": "massRatio", "min": 0.1, "max": 5, "step": 0.1, "default": 1, "unit": "", "meaning": "질량비 m₂/m₁" },
+        { "name": "lengthRatio", "min": 0.2, "max": 3, "step": 0.1, "default": 1, "unit": "", "meaning": "길이비 L₂/L₁" },
+        { "name": "theta1", "min": 0, "max": 180, "step": 1, "default": 120, "unit": "°", "meaning": "위 진자 초기각 — 90° 이상에서 카오스 영역" },
+        { "name": "theta2", "min": -180, "max": 180, "step": 1, "default": -10, "unit": "°", "meaning": "아래 진자 초기각" },
+        { "name": "twinDelta", "min": 0.00001, "max": 0.1, "step": 0.00001, "default": 0.0001, "unit": "°", "meaning": "쌍둥이 초기각 차 — 발산까지 걸리는 시간을 바꾼다" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "driven-damped-pendulum",
+      "name": "강제 감쇠 진자",
+      "category": "chaos",
+      "governingEquation": "θ̈ = −sinθ − bθ̇ + A·cos(ω_d t) (무차원화) — 주기배증을 거쳐 카오스로 가는 최소 1.5자유도계",
+      "integrator": "RK4",
+      "params": [
+        { "name": "driveAmp", "min": 0, "max": 2, "step": 0.005, "default": 1.15, "unit": "", "meaning": "구동 진폭 A — 1.06~1.5 구간을 훑으면 주기배증 계단" },
+        { "name": "driveFreq", "min": 0.1, "max": 2, "step": 0.01, "default": 0.667, "unit": "", "meaning": "구동 진동수 ω_d(고유 진동수 단위)" },
+        { "name": "damping", "min": 0, "max": 1, "step": 0.01, "default": 0.5, "unit": "", "meaning": "감쇠 b — 끌개의 수축률" },
+        { "name": "twinDelta", "min": 0.00001, "max": 0.1, "step": 0.00001, "default": 0.0001, "unit": "rad", "meaning": "쌍둥이 초기 위상차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "duffing",
+      "name": "더핑 진동자",
+      "category": "chaos",
+      "governingEquation": "ẍ + δẋ − x + x³ = γ·cos(ωt) — 이중 우물 퍼텐셜 V(x)=−x²/2+x⁴/4 사이를 뛰어넘는 강제 진동",
+      "integrator": "RK4",
+      "params": [
+        { "name": "gamma", "min": 0, "max": 1, "step": 0.005, "default": 0.3, "unit": "", "meaning": "구동 세기 γ — 우물 탈출과 카오스의 문턱" },
+        { "name": "delta", "min": 0, "max": 1, "step": 0.01, "default": 0.2, "unit": "", "meaning": "감쇠 δ" },
+        { "name": "omega", "min": 0.1, "max": 3, "step": 0.01, "default": 1.2, "unit": "", "meaning": "구동 진동수 ω" },
+        { "name": "twinDelta", "min": 0.00001, "max": 0.1, "step": 0.00001, "default": 0.0001, "unit": "", "meaning": "쌍둥이 초기 위치 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "magnetic-pendulum",
+      "name": "자석 진자 (프랙탈 흡인 영역)",
+      "category": "chaos",
+      "governingEquation": "r̈ = −k_p·r − b·ṙ + Σᵢ k_m(rᵢ−r)/(|rᵢ−r|²+h²)^{3/2} — 자석을 점 인력원으로 근사(명시). 최종 정지 자석이 초기조건의 프랙탈 함수",
+      "integrator": "RK4",
+      "params": [
+        { "name": "magnets", "min": 2, "max": 5, "step": 1, "default": 3, "unit": "개", "meaning": "자석 개수 — 흡인 영역 색 개수" },
+        { "name": "magStrength", "min": 0.5, "max": 5, "step": 0.1, "default": 2, "unit": "", "meaning": "자석 세기 k_m" },
+        { "name": "damping", "min": 0.05, "max": 1, "step": 0.01, "default": 0.2, "unit": "1/s", "meaning": "감쇠 — 작을수록 경계가 미세해져 예측 불가" },
+        { "name": "height", "min": 0.1, "max": 1, "step": 0.05, "default": 0.3, "unit": "m", "meaning": "진자-자석 수직 거리 h — 특이점 완화" },
+        { "name": "twinDelta", "min": 0.0001, "max": 0.05, "step": 0.0001, "default": 0.002, "unit": "m", "meaning": "쌍둥이 초기 위치 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "standard-map",
+      "name": "표준 사상 (킥 로터)",
+      "category": "chaos",
+      "governingEquation": "p′ = p + K·sinθ,  θ′ = θ + p′ (mod 2π) — 주기적으로 차이는 회전자. 사상 자체가 정확히 심플렉틱, KAM 원환면의 붕괴를 보여준다",
+      "integrator": "Symplectic",
+      "params": [
+        { "name": "K", "min": 0, "max": 6, "step": 0.01, "default": 0.97, "unit": "", "meaning": "킥 세기 — 0.97 부근에서 마지막 KAM 곡선 붕괴(전역 확산 개시)" },
+        { "name": "orbits", "min": 10, "max": 200, "step": 10, "default": 60, "unit": "개", "meaning": "동시에 추적할 초기조건 수 — 위상공간 초상화" },
+        { "name": "iterations", "min": 100, "max": 5000, "step": 100, "default": 1000, "unit": "회", "meaning": "반복 횟수" },
+        { "name": "twinDelta", "min": 0.000001, "max": 0.01, "step": 0.000001, "default": 0.00001, "unit": "rad", "meaning": "쌍둥이 초기 θ 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "billiards",
+      "name": "동역학 당구 (스타디움)",
+      "category": "chaos",
+      "governingEquation": "자유 비행 + 경계 반사법칙(입사각=반사각) — 원(가적분)·타원(가적분, 초점 자취)·스타디움(부니모비치 1974, 카오스)의 대비. 반사 사상은 에너지를 정확히 보존",
+      "integrator": "Symplectic",
+      "params": [
+        { "name": "shape", "min": 0, "max": 2, "step": 1, "default": 2, "unit": "", "meaning": "경계: 0=원, 1=타원, 2=스타디움 — 가적분↔카오스 전환" },
+        { "name": "aspect", "min": 1, "max": 3, "step": 0.05, "default": 1.5, "unit": "", "meaning": "가로세로비(타원 이심률/스타디움 직선부 길이)" },
+        { "name": "launchAngle", "min": 0, "max": 180, "step": 0.5, "default": 40, "unit": "°", "meaning": "발사각" },
+        { "name": "twinDelta", "min": 0.0001, "max": 1, "step": 0.0001, "default": 0.01, "unit": "°", "meaning": "쌍둥이 발사각 차 — 원에선 평행 유지, 스타디움에선 지수 발산" }
+      ],
+      "isChaotic": true,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "henon-heiles",
+      "name": "에농-하일레스 계",
+      "category": "chaos",
+      "governingEquation": "H = ½(ẋ²+ẏ²) + ½(x²+y²) + x²y − y³/3 — 은하 내 별 운동 모형(1964). 에너지에 따라 규칙 원환면과 카오스 바다가 공존",
+      "integrator": "Symplectic",
+      "params": [
+        { "name": "energy", "min": 0.01, "max": 0.1666, "step": 0.001, "default": 0.125, "unit": "", "meaning": "총 에너지 E — 1/6에 가까울수록 카오스 영역 확대, 초과 시 탈출" },
+        { "name": "y0", "min": -0.4, "max": 0.6, "step": 0.01, "default": 0.1, "unit": "", "meaning": "초기 y — 푸앵카레 단면 위 시작점" },
+        { "name": "viewMode", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "0=실공간 궤적, 1=푸앵카레 단면(x=0, ẋ>0)" },
+        { "name": "twinDelta", "min": 0.00001, "max": 0.01, "step": 0.00001, "default": 0.0001, "unit": "", "meaning": "쌍둥이 초기 y 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "chaotic-waterwheel",
+      "name": "혼돈 물레바퀴 (말커스 바퀴)",
+      "category": "chaos",
+      "governingEquation": "I·ω̇ = −νω + gR·Σmᵢsinθᵢ,  ṁᵢ = 유입(상단 컵) − K·mᵢ — 새는 컵 물레바퀴. 로렌츠 방정식과 수학적으로 동등한 물리 실현",
+      "integrator": "RK4",
+      "params": [
+        { "name": "inflow", "min": 0, "max": 5, "step": 0.1, "default": 2, "unit": "kg/s", "meaning": "급수량 — 로렌츠 레일리 수에 대응, 문턱 위에서 무작위 반전" },
+        { "name": "leak", "min": 0.01, "max": 1, "step": 0.01, "default": 0.3, "unit": "1/s", "meaning": "컵 누수율 K" },
+        { "name": "friction", "min": 0.05, "max": 2, "step": 0.05, "default": 0.5, "unit": "", "meaning": "축 마찰 ν — 크면 정지, 작으면 회전 반전 카오스" },
+        { "name": "cups", "min": 8, "max": 24, "step": 2, "default": 12, "unit": "개", "meaning": "컵 개수" },
+        { "name": "twinDelta", "min": 0.0001, "max": 0.1, "step": 0.0001, "default": 0.001, "unit": "rad/s", "meaning": "쌍둥이 초기 각속도 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "inverse-square-orbit",
+      "name": "역제곱 힘 궤도 (케플러·러더퍼드)",
+      "category": "gravity",
+      "governingEquation": "r̈ = s·k·r̂/r² — s=−1 인력(케플러 타원·포물선·쌍곡선), s=+1 척력(러더퍼드 산란). 동일 방정식의 부호 두 얼굴",
+      "integrator": "Symplectic",
+      "mergedFrom": ["kepler-orbit", "rutherford-scattering"],
+      "params": [
+        { "name": "v0", "min": 0.2, "max": 2, "step": 0.01, "default": 1, "unit": "v_c", "meaning": "초기 속도(원궤도 속도 단위) — √2 이상이면 탈출" },
+        { "name": "r0", "min": 0.5, "max": 3, "step": 0.05, "default": 1, "unit": "AU", "meaning": "초기 거리" },
+        { "name": "forceSign", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "0=인력(중력), 1=척력(쿨롱 산란)" },
+        { "name": "impactParam", "min": 0, "max": 2, "step": 0.02, "default": 0.5, "unit": "AU", "meaning": "충돌 계수 b — 산란 모드에서 편향각을 결정" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "three-body",
+      "name": "삼체 문제",
+      "category": "gravity",
+      "governingEquation": "mᵢr̈ᵢ = Σ_{j≠i} Gmᵢmⱼ(rⱼ−rᵢ)/|rⱼ−rᵢ|³ — 평면 3체. 일반해 부재(푸앵카레 1890), 특수해(라그랑주점·피겨8)만 존재",
+      "integrator": "Symplectic",
+      "mergedFrom": ["figure-eight", "gravity-slingshot", "binary-star"],
+      "params": [
+        { "name": "preset", "min": 0, "max": 3, "step": 1, "default": 0, "unit": "", "meaning": "배치: 0=피겨8(슈바르츠·쇼벤코 해), 1=무작위, 2=계층 쌍성+행성, 3=슬링샷" },
+        { "name": "massRatio", "min": 0.1, "max": 10, "step": 0.1, "default": 1, "unit": "", "meaning": "질량비 — 피겨8은 등질량에서만 안정" },
+        { "name": "softening", "min": 0.001, "max": 0.1, "step": 0.001, "default": 0.01, "unit": "AU", "meaning": "근접 특이점 완화 길이(근사 명시)" },
+        { "name": "twinDelta", "min": 0.000001, "max": 0.01, "step": 0.000001, "default": 0.0001, "unit": "AU", "meaning": "쌍둥이 초기 위치 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "n-body-cluster",
+      "name": "N체 성단",
+      "category": "gravity",
+      "governingEquation": "r̈ᵢ = Σⱼ Gmⱼ(rⱼ−rᵢ)/(|rⱼ−rᵢ|²+ε²)^{3/2} — 소프트닝 포함 직접합 O(N²). 위리얼 평형·질량 분리·탈출자 관찰",
+      "integrator": "Verlet",
+      "params": [
+        { "name": "bodies", "min": 100, "max": 800, "step": 50, "default": 300, "unit": "개", "meaning": "천체 수 N — 계산량은 N²" },
+        { "name": "initialSpin", "min": 0, "max": 1, "step": 0.05, "default": 0.3, "unit": "", "meaning": "초기 회전 비율 — 0이면 급수축, 크면 원반화" },
+        { "name": "virialRatio", "min": 0.1, "max": 2, "step": 0.05, "default": 1, "unit": "", "meaning": "초기 운동/퍼텐셜 에너지 비 — 1이면 평형 근처" },
+        { "name": "softening", "min": 0.005, "max": 0.1, "step": 0.005, "default": 0.02, "unit": "", "meaning": "소프트닝 ε — 근접 쌍성 폭주 방지(근사 명시)" },
+        { "name": "twinDelta", "min": 0.00001, "max": 0.01, "step": 0.00001, "default": 0.0001, "unit": "", "meaning": "쌍둥이 비교: 별 하나의 초기 위치 차 — 두 성단을 병렬 실행해 궤도 발산 추적" }
+      ],
+      "isChaotic": true,
+      "computeCost": "고",
+      "needsWorker": true
+    },
+    {
+      "slug": "relativistic-precession",
+      "name": "상대론적 근일점 세차",
+      "category": "gravity",
+      "governingEquation": "u″(φ) + u = GM/h² + (3GM/c²)u² (u=1/r) — 슈바르츠실트 측지선의 약장 근사(명시). 마지막 항이 수성 세차 43″/세기의 근원",
+      "integrator": "RK4",
+      "params": [
+        { "name": "periRadius", "min": 4, "max": 50, "step": 0.5, "default": 10, "unit": "GM/c²", "meaning": "근일점 거리(중력 반지름 단위) — 작을수록 세차 급증" },
+        { "name": "eccentricity", "min": 0, "max": 0.9, "step": 0.01, "default": 0.4, "unit": "", "meaning": "궤도 이심률" },
+        { "name": "relFactor", "min": 0, "max": 1, "step": 0.01, "default": 1, "unit": "", "meaning": "상대론 항 보간 — 0이면 뉴턴(닫힌 타원), 1이면 GR(장미 궤도)" },
+        { "name": "orbitCount", "min": 1, "max": 30, "step": 1, "default": 10, "unit": "회", "meaning": "그릴 공전 수 — 세차 누적 관찰" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "swinging-atwood",
+      "name": "진동 애트우드 머신",
+      "category": "gravity",
+      "governingEquation": "(M+m)r̈ = mrθ̇² − Mg + mg·cosθ,  r θ̈ = −2ṙθ̇ − g·sinθ — 한쪽 추가 진자로 흔들리는 애트우드 머신. 질량비 μ=M/m에 따라 가적분(μ=3)↔카오스",
+      "integrator": "RK4",
+      "params": [
+        { "name": "massRatio", "min": 1.05, "max": 10, "step": 0.05, "default": 4.5, "unit": "", "meaning": "질량비 μ=M/m — 3에서 가적분 특례, 그 밖은 대부분 카오스" },
+        { "name": "r0", "min": 0.3, "max": 2, "step": 0.05, "default": 1, "unit": "m", "meaning": "진자 쪽 초기 줄 길이" },
+        { "name": "theta0", "min": 5, "max": 170, "step": 1, "default": 60, "unit": "°", "meaning": "초기각" },
+        { "name": "twinDelta", "min": 0.0001, "max": 0.1, "step": 0.0001, "default": 0.001, "unit": "°", "meaning": "쌍둥이 초기각 차" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "projectile-drag",
+      "name": "공기저항 발사체 (마그누스 포함)",
+      "category": "mechanics",
+      "governingEquation": "v̇ = g − (c_d/m)|v|v + (S/m)(ω̂×v) — 2차 항력 + 마그누스 힘(저속·구형 물체 근사 명시). 진공 포물선과 실시간 비교",
+      "integrator": "RK4",
+      "mergedFrom": ["terminal-velocity", "magnus-effect"],
+      "params": [
+        { "name": "v0", "min": 5, "max": 80, "step": 1, "default": 30, "unit": "m/s", "meaning": "초기 속력" },
+        { "name": "angle", "min": 5, "max": 85, "step": 1, "default": 45, "unit": "°", "meaning": "발사각 — 항력이 있으면 최적각이 45°보다 낮아진다" },
+        { "name": "dragCoef", "min": 0, "max": 0.05, "step": 0.001, "default": 0.01, "unit": "1/m", "meaning": "항력 계수 c_d/m — 0이면 진공 포물선" },
+        { "name": "spin", "min": -50, "max": 50, "step": 1, "default": 0, "unit": "rad/s", "meaning": "스핀 ω — 마그누스 휘어짐(커브볼·슬라이스)" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "rocket-equation",
+      "name": "로켓 방정식",
+      "category": "mechanics",
+      "governingEquation": "m(t)·v̇ = ṁ·v_e − m(t)g,  m(t)=m₀−ṁt — 치올콥스키: Δv = v_e·ln(m₀/m_f). 다단 분리의 이득을 수치로 확인",
+      "integrator": "RK4",
+      "params": [
+        { "name": "massRatio", "min": 2, "max": 20, "step": 0.5, "default": 8, "unit": "", "meaning": "질량비 m₀/m_f — Δv는 로그로만 늘어난다" },
+        { "name": "exhaustV", "min": 1, "max": 5, "step": 0.1, "default": 3, "unit": "km/s", "meaning": "배기 속도 v_e — 화학 로켓의 한계선" },
+        { "name": "burnRate", "min": 0.5, "max": 5, "step": 0.1, "default": 2, "unit": "%/s", "meaning": "연소율 ṁ/m₀ — 중력 손실과의 경쟁" },
+        { "name": "stages", "min": 1, "max": 3, "step": 1, "default": 1, "unit": "단", "meaning": "단수 — 같은 총질량으로 다단이 유리한 이유" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "elastic-collisions-1d",
+      "name": "1차원 탄성충돌 (π 세는 충돌)",
+      "category": "mechanics",
+      "governingEquation": "v₁′=((m₁−m₂)v₁+2m₂v₂)/(m₁+m₂) — 운동량·에너지 보존 충돌식. 질량비 100ⁿ:1이면 충돌 횟수가 π의 자릿수(갈페린 2003)",
+      "integrator": "Verlet",
+      "mergedFrom": ["newtons-cradle", "galperin-pi"],
+      "params": [
+        { "name": "massRatio", "min": 1, "max": 10000, "step": 1, "default": 100, "unit": "", "meaning": "질량비 m₁/m₂ — 100이면 충돌 31회(π=3.1…)" },
+        { "name": "v0", "min": 0.5, "max": 5, "step": 0.1, "default": 2, "unit": "m/s", "meaning": "큰 물체 초기 속도" },
+        { "name": "restitution", "min": 0.5, "max": 1, "step": 0.01, "default": 1, "unit": "", "meaning": "반발계수 e — 1 미만이면 에너지 소산, π 세기 실패" },
+        { "name": "wall", "min": 0, "max": 1, "step": 1, "default": 1, "unit": "", "meaning": "1=왼쪽 벽 있음(π 모드), 0=자유 공간" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "bouncing-ball",
+      "name": "튀는 공 (진동 바닥 카오스)",
+      "category": "mechanics",
+      "governingEquation": "자유낙하 ÿ=−g + 충돌 시 v′=−e·(v−v_f)+v_f — 반발계수 e와 진동 바닥 y_f=A sin(ωt). 바닥이 진동하면 튀는 공 사상(카오스)",
+      "integrator": "Verlet",
+      "params": [
+        { "name": "restitution", "min": 0.5, "max": 0.99, "step": 0.01, "default": 0.85, "unit": "", "meaning": "반발계수 e — 정지까지의 기하급수 바운스" },
+        { "name": "floorAmp", "min": 0, "max": 5, "step": 0.1, "default": 0, "unit": "mm", "meaning": "바닥 진동 진폭 A — 0이면 단순 감쇠, 켜면 카오스 모드" },
+        { "name": "floorFreq", "min": 5, "max": 60, "step": 1, "default": 20, "unit": "Hz", "meaning": "바닥 진동수" },
+        { "name": "h0", "min": 0.2, "max": 2, "step": 0.05, "default": 1, "unit": "m", "meaning": "초기 낙하 높이" },
+        { "name": "twinDelta", "min": 0.0001, "max": 0.01, "step": 0.0001, "default": 0.001, "unit": "m", "meaning": "쌍둥이 초기 높이 차(진동 바닥 모드)" }
+      ],
+      "isChaotic": true,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "galton-board",
+      "name": "갈톤 보드",
+      "category": "mechanics",
+      "governingEquation": "중력 낙하 + 말뚝과의 반발 충돌(반발계수) — 이항분포 B(n,½)가 쌓이며 중심극한정리로 정규곡선에 수렴",
+      "integrator": "Verlet",
+      "params": [
+        { "name": "rows", "min": 6, "max": 16, "step": 1, "default": 12, "unit": "줄", "meaning": "말뚝 줄 수 n — 분포 폭 √n" },
+        { "name": "balls", "min": 100, "max": 2000, "step": 100, "default": 600, "unit": "개", "meaning": "공 개수 — 많을수록 정규곡선에 밀착" },
+        { "name": "restitution", "min": 0.1, "max": 0.9, "step": 0.05, "default": 0.5, "unit": "", "meaning": "말뚝 반발계수 — 크면 좌우 편차 확대(비이항 왜곡)" },
+        { "name": "dropSpread", "min": 0, "max": 10, "step": 0.5, "default": 1, "unit": "mm", "meaning": "투입 위치 산포 — 초기조건 민감성 체감" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "brachistochrone-race",
+      "name": "최속강하선 경주",
+      "category": "mechanics",
+      "governingEquation": "곡선 구속 + 에너지 보존 v=√(2gΔy) (마찰 무시 명시) — 사이클로이드가 직선·원호보다 먼저 도착(베르누이 1696). 등시성(타우토크론)도 시연",
+      "integrator": "RK4",
+      "params": [
+        { "name": "curveMix", "min": 0, "max": 1, "step": 0.01, "default": 0, "unit": "", "meaning": "자유 곡선 변형 — 0=사이클로이드에서 벗어날수록 느려짐" },
+        { "name": "drop", "min": 0.5, "max": 3, "step": 0.1, "default": 1.5, "unit": "m", "meaning": "낙차" },
+        { "name": "tracks", "min": 2, "max": 4, "step": 1, "default": 3, "unit": "개", "meaning": "비교 트랙 수(직선·원호·사이클로이드·자유)" },
+        { "name": "tautochrone", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "1=출발 위치를 달리해 동시 도착(등시성) 모드" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "rotating-frame",
+      "name": "회전 좌표계 (코리올리 힘)",
+      "category": "mechanics",
+      "governingEquation": "r̈′ = −2Ω×ṙ′ − Ω×(Ω×r′) — 관성계의 직선 운동을 회전 원판 위에서 보면 휘어진다. 두 좌표계를 나란히 병렬 표시",
+      "integrator": "RK4",
+      "params": [
+        { "name": "omega", "min": 0.1, "max": 3, "step": 0.05, "default": 1, "unit": "rad/s", "meaning": "원판 각속도 Ω — 코리올리 힘 2Ωv의 크기" },
+        { "name": "v0", "min": 0.5, "max": 5, "step": 0.1, "default": 2, "unit": "m/s", "meaning": "공 발사 속도" },
+        { "name": "launchDir", "min": 0, "max": 360, "step": 5, "default": 90, "unit": "°", "meaning": "발사 방향(회전계 기준)" },
+        { "name": "showBoth", "min": 0, "max": 1, "step": 1, "default": 1, "unit": "", "meaning": "1=관성계·회전계 병렬, 0=회전계만" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "spinning-top",
+      "name": "팽이 세차와 장동",
+      "category": "mechanics",
+      "governingEquation": "라그랑주 팽이: I₁β̈ = (I₁ψ̇²cosβ − I₃ω₃ψ̇)sinβ + mgd·sinβ 등 오일러 각 방정식 — 빠른 스핀 극한에서 세차 Ω_p ≈ mgd/(I₃ω₃)",
+      "integrator": "RK4",
+      "params": [
+        { "name": "spinRate", "min": 10, "max": 200, "step": 5, "default": 60, "unit": "rad/s", "meaning": "자전 속도 ω₃ — 빠를수록 세차가 느리고 매끈" },
+        { "name": "tilt", "min": 5, "max": 60, "step": 1, "default": 30, "unit": "°", "meaning": "기울기 β₀" },
+        { "name": "inertiaRatio", "min": 1.2, "max": 4, "step": 0.1, "default": 2, "unit": "", "meaning": "관성모멘트비 I₃/I₁ — 장동 진동수에 영향" },
+        { "name": "nutationKick", "min": 0, "max": 2, "step": 0.1, "default": 0.5, "unit": "rad/s", "meaning": "초기 장동 여기 — 0이면 순수 세차" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "wave-on-string",
+      "name": "줄 위의 파동",
+      "category": "wave",
+      "governingEquation": "ÿᵢ = c²(yᵢ₊₁−2yᵢ+yᵢ₋₁)/Δx² − bẏᵢ — 이산화된 1차원 파동방정식(결합 진동자 사슬과 동일 극한). 반사·정상파·공명 모드",
+      "integrator": "Verlet",
+      "mergedFrom": ["coupled-chain", "standing-waves"],
+      "params": [
+        { "name": "waveSpeed", "min": 0.5, "max": 3, "step": 0.05, "default": 1.5, "unit": "", "meaning": "파속 c=√(T/μ) — 장력/선밀도" },
+        { "name": "endType", "min": 0, "max": 2, "step": 1, "default": 0, "unit": "", "meaning": "끝 조건: 0=고정(반전 반사), 1=자유(동상 반사), 2=흡수" },
+        { "name": "sourceType", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "0=단일 펄스, 1=연속 사인(정상파 형성)" },
+        { "name": "driveFreq", "min": 0.5, "max": 8, "step": 0.1, "default": 2, "unit": "Hz", "meaning": "구동 진동수 — 고유 모드와 일치 시 공명" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "ripple-tank",
+      "name": "물결 수조 (2차원 파동)",
+      "category": "wave",
+      "governingEquation": "∂²u/∂t² = c²∇²u — 2차원 격자 도약(leapfrog) 적분. 간섭·회절·이중 슬릿을 실시간으로",
+      "integrator": "Verlet",
+      "params": [
+        { "name": "sources", "min": 1, "max": 4, "step": 1, "default": 2, "unit": "개", "meaning": "파원 수 — 2개면 간섭 무늬" },
+        { "name": "frequency", "min": 0.5, "max": 4, "step": 0.1, "default": 1.5, "unit": "Hz", "meaning": "파원 진동수 — 파장과 무늬 간격" },
+        { "name": "barrier", "min": 0, "max": 2, "step": 1, "default": 0, "unit": "", "meaning": "장애물: 0=없음, 1=단일 틈, 2=이중 틈(회절)" },
+        { "name": "slitWidth", "min": 2, "max": 20, "step": 1, "default": 6, "unit": "px", "meaning": "틈 폭 — 파장 대비 좁을수록 회절 확산" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "doppler-effect",
+      "name": "도플러 효과와 마하 원뿔",
+      "category": "wave",
+      "governingEquation": "파면 r(t)=c(t−t_e), 관측 진동수 f′=f·c/(c∓v_s) — 등속 파원의 파면 기하. v_s>c면 마하 원뿔 sinθ=c/v_s",
+      "integrator": "RK4",
+      "params": [
+        { "name": "sourceSpeed", "min": 0, "max": 1.5, "step": 0.05, "default": 0.7, "unit": "마하", "meaning": "파원 속도(음속 단위) — 1을 넘으면 충격파 원뿔" },
+        { "name": "frequency", "min": 1, "max": 8, "step": 0.5, "default": 3, "unit": "Hz", "meaning": "파원 방출 진동수" },
+        { "name": "path", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "경로: 0=직선 통과, 1=원운동(사이렌 회전)" },
+        { "name": "observerX", "min": -1, "max": 1, "step": 0.05, "default": 0, "unit": "", "meaning": "관측자 위치 — 지나칠 때 진동수 급락 체감" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "diffusion-heat",
+      "name": "확산과 열전도",
+      "category": "wave",
+      "governingEquation": "∂u/∂t = D∇²u — 열전도와 입자 확산이 공유하는 방정식. 미시(랜덤워크 입자)와 거시(연속 농도장)를 같은 화면에서 대응, ⟨x²⟩=2Dt 표시",
+      "integrator": "RK4",
+      "mergedFrom": ["heat-conduction", "random-walk"],
+      "params": [
+        { "name": "diffusivity", "min": 0.1, "max": 3, "step": 0.05, "default": 1, "unit": "", "meaning": "확산 계수 D — 퍼짐 속도 √(Dt)" },
+        { "name": "initCondition", "min": 0, "max": 2, "step": 1, "default": 0, "unit": "", "meaning": "초기: 0=중앙 점 주입, 1=두 물체 접촉(온도 계단), 2=경계 고정 온도" },
+        { "name": "viewMode", "min": 0, "max": 2, "step": 1, "default": 2, "unit": "", "meaning": "0=입자(랜덤워크), 1=연속장, 2=병렬 비교" },
+        { "name": "particles", "min": 200, "max": 5000, "step": 100, "default": 1500, "unit": "개", "meaning": "랜덤워크 입자 수 — 많을수록 연속장에 수렴" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "hanging-chain",
+      "name": "매달린 사슬 (현수선과 슬링키)",
+      "category": "wave",
+      "governingEquation": "질점-용수철 사슬: mᵢr̈ᵢ = k(스프링 힘 합) + mᵢg − bṙᵢ — 정적 평형은 현수선 y=a·cosh(x/a). 슬링키 낙하 프리셋: 놓는 순간 하단은 정지 유지",
+      "integrator": "Verlet",
+      "mergedFrom": ["catenary", "slinky-drop"],
+      "params": [
+        { "name": "links", "min": 10, "max": 60, "step": 2, "default": 30, "unit": "개", "meaning": "사슬 마디 수" },
+        { "name": "stiffness", "min": 50, "max": 2000, "step": 50, "default": 500, "unit": "N/m", "meaning": "마디 강성 — 사슬(높음)↔슬링키(낮음)" },
+        { "name": "scenario", "min": 0, "max": 2, "step": 1, "default": 0, "unit": "", "meaning": "0=양끝 고정(현수선), 1=슬링키 자유낙하, 2=한끝 흔들기(파동 전파)" },
+        { "name": "damping", "min": 0, "max": 2, "step": 0.05, "default": 0.3, "unit": "1/s", "meaning": "감쇠 — 정적 형태 수렴 속도" }
+      ],
+      "isChaotic": false,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "gas-in-box",
+      "name": "상자 속 기체 (맥스웰-볼츠만)",
+      "category": "fluid-stat",
+      "governingEquation": "강체구 탄성충돌 + 벽 반사 — 임의 초기 속도가 맥스웰-볼츠만 분포로 이완. 벽 충격량으로 압력 P 측정, 브라운 입자·칸막이 혼합 모드 포함",
+      "integrator": "Verlet",
+      "mergedFrom": ["brownian-motion", "gas-mixing"],
+      "params": [
+        { "name": "particles", "min": 100, "max": 600, "step": 50, "default": 300, "unit": "개", "meaning": "기체 입자 수" },
+        { "name": "temperature", "min": 0.2, "max": 3, "step": 0.1, "default": 1, "unit": "", "meaning": "초기 온도(속도 척도) — 분포 폭과 압력" },
+        { "name": "volume", "min": 0.3, "max": 1, "step": 0.05, "default": 1, "unit": "", "meaning": "상자 부피 비율 — 압축 시 P·V 관계 확인" },
+        { "name": "mode", "min": 0, "max": 2, "step": 1, "default": 0, "unit": "", "meaning": "0=순수 기체, 1=브라운 대입자 추가, 2=칸막이 제거 혼합(엔트로피)" }
+      ],
+      "isChaotic": false,
+      "computeCost": "고",
+      "needsWorker": true
+    },
+    {
+      "slug": "point-vortices",
+      "name": "점 소용돌이 동역학",
+      "category": "fluid-stat",
+      "governingEquation": "ẋᵢ = −Σⱼ Γⱼ(yᵢ−yⱼ)/(2πr²ᵢⱼ), ẏᵢ = +Σⱼ Γⱼ(xᵢ−xⱼ)/(2πr²ᵢⱼ) — 2차원 비점성 이상유체의 점 와류(헬름홀츠 1858). 3개까지 가적분, 4개부터 카오스",
+      "integrator": "RK4",
+      "params": [
+        { "name": "vortices", "min": 2, "max": 6, "step": 1, "default": 4, "unit": "개", "meaning": "소용돌이 수 — 4개부터 카오스 진입" },
+        { "name": "circulationRatio", "min": -2, "max": 2, "step": 0.1, "default": 1, "unit": "", "meaning": "순환 Γ 비 — 음수 짝이면 쌍극자 전진(연기 고리 단면)" },
+        { "name": "tracers", "min": 0, "max": 500, "step": 50, "default": 200, "unit": "개", "meaning": "수동 추적 입자 — 혼합·감김 시각화" },
+        { "name": "twinDelta", "min": 0.0001, "max": 0.05, "step": 0.0001, "default": 0.001, "unit": "", "meaning": "쌍둥이 초기 위치 차(4개 이상에서 발산)" }
+      ],
+      "isChaotic": true,
+      "computeCost": "중",
+      "needsWorker": false
+    },
+    {
+      "slug": "radioactive-decay",
+      "name": "방사성 붕괴 통계",
+      "category": "fluid-stat",
+      "governingEquation": "dN/dt = −λN (앙상블 평균) + 원자별 확률 p=1−e^{−λΔt} 추첨 — 지수 곡선과 통계 요동의 관계. RC 방전과 동일한 형태(본문 대응)",
+      "integrator": "RK4",
+      "params": [
+        { "name": "atoms", "min": 50, "max": 2000, "step": 50, "default": 400, "unit": "개", "meaning": "초기 원자 수 — 적을수록 요동이 도드라진다" },
+        { "name": "halfLife", "min": 1, "max": 30, "step": 0.5, "default": 8, "unit": "s", "meaning": "반감기 T½=ln2/λ" },
+        { "name": "chain", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "1=2단계 붕괴 사슬(모핵→자핵→안정) — 자핵 극대 시점" },
+        { "name": "seed", "min": 1, "max": 9999, "step": 1, "default": 1, "unit": "", "meaning": "난수 시드 — 같은 시드는 같은 붕괴 이력 재현" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "charged-particle-fields",
+      "name": "전자기장 속 하전입자",
+      "category": "em-quantum",
+      "governingEquation": "m·v̇ = q(E + v×B) — 로런츠 힘. 사이클로트론 원운동 ω_c=qB/m, E×B 드리프트, 자기 거울(비균일 B 근사 명시)",
+      "integrator": "RK4",
+      "params": [
+        { "name": "Bz", "min": -3, "max": 3, "step": 0.1, "default": 1, "unit": "T", "meaning": "수직 자기장 — 원운동 반지름 r=mv/qB" },
+        { "name": "Ex", "min": -2, "max": 2, "step": 0.1, "default": 0, "unit": "V/m", "meaning": "가로 전기장 — 켜면 E×B 사이클로이드 드리프트" },
+        { "name": "v0", "min": 0.2, "max": 3, "step": 0.1, "default": 1, "unit": "", "meaning": "초기 속력" },
+        { "name": "chargeSign", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "0=양전하, 1=음전하 — 회전 방향 반전" },
+        { "name": "gradientB", "min": 0, "max": 1, "step": 0.05, "default": 0, "unit": "", "meaning": "자기장 기울기 — 자기 거울·구배 드리프트" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "electric-field-lines",
+      "name": "전기장 역선과 시험전하",
+      "category": "em-quantum",
+      "governingEquation": "E = Σᵢ kqᵢ(r−rᵢ)/|r−rᵢ|³, 역선은 dr/ds = E/|E| 적분 — 점전하 중첩 원리. 시험전하 운동 mr̈=qE 동시 표시",
+      "integrator": "RK4",
+      "params": [
+        { "name": "charges", "min": 2, "max": 6, "step": 1, "default": 2, "unit": "개", "meaning": "고정 전하 수" },
+        { "name": "chargeRatio", "min": -5, "max": 5, "step": 0.5, "default": -1, "unit": "", "meaning": "두 번째 전하 크기/부호 — 쌍극자↔같은 부호 배치" },
+        { "name": "lineDensity", "min": 8, "max": 48, "step": 4, "default": 24, "unit": "개", "meaning": "역선 개수 — 전하량 비례 규칙" },
+        { "name": "testCharges", "min": 0, "max": 20, "step": 1, "default": 5, "unit": "개", "meaning": "놓아 보는 시험전하 수 — 역선은 궤적이 아님을 확인" }
+      ],
+      "isChaotic": false,
+      "computeCost": "저",
+      "needsWorker": false
+    },
+    {
+      "slug": "quantum-tunneling",
+      "name": "양자 터널링 (파속 산란)",
+      "category": "em-quantum",
+      "governingEquation": "iħ∂ψ/∂t = −(ħ²/2m)∂²ψ/∂x² + V(x)ψ — 1차원 시간의존 슈뢰딩거. 분할연산자(운동/퍼텐셜 분리) 스펙트럴 적분 — 노름 보존 표시",
+      "integrator": "Symplectic",
+      "params": [
+        { "name": "packetEnergy", "min": 0.2, "max": 2, "step": 0.05, "default": 0.8, "unit": "V₀", "meaning": "파속 평균 에너지(장벽 높이 단위) — 1 미만에서도 투과 확률 존재" },
+        { "name": "barrierHeight", "min": 0.5, "max": 3, "step": 0.1, "default": 1, "unit": "", "meaning": "장벽 높이 V₀" },
+        { "name": "barrierWidth", "min": 0.05, "max": 1, "step": 0.05, "default": 0.3, "unit": "", "meaning": "장벽 폭 — 투과율이 지수적으로 민감" },
+        { "name": "packetWidth", "min": 0.05, "max": 0.5, "step": 0.01, "default": 0.15, "unit": "", "meaning": "파속 폭 — 좁을수록 운동량 분산 확대(불확정성)" }
+      ],
+      "isChaotic": false,
+      "computeCost": "고",
+      "needsWorker": true
+    }
+  ]
+}
