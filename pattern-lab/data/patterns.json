@@ -72,7 +72,7 @@
       "params": [
         { "name": "f1", "min": 1, "max": 8, "step": 0.01, "default": 2, "meaning": "진자1 진동수 — 정수비에서 벗어난 소수점이 무늬의 뒤틀림을 만든다" },
         { "name": "f2", "min": 1, "max": 8, "step": 0.01, "default": 3.01, "meaning": "진자2 진동수" },
-        { "name": "damping", "min": 0, "max": 0.02, "step": 0.0005, "default": 0.004, "meaning": "감쇠 계수 d — 클수록 중심으로 빨리 수렴" },
+        { "name": "damping", "min": 0, "max": 0.05, "step": 0.001, "default": 0.005, "meaning": "감쇠 계수 d — 클수록 중심으로 빨리 수렴" },
         { "name": "phase", "min": 0, "max": 360, "step": 1, "default": 90, "meaning": "위상차(°)" },
         { "name": "duration", "min": 10, "max": 120, "step": 5, "default": 60, "meaning": "적분 시간 — 선의 총 길이" }
       ],

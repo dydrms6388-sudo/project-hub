@@ -90,7 +90,7 @@ export const harmonographGeo: Geo = (p, w, h) => {
   const pts: [number, number][] = [];
   for (let i = 0; i <= steps; i++) {
     const t = (i / 220) * 1;
-    const decay = Math.exp(-p.damping * i);
+    const decay = Math.exp(-p.damping * t);
     pts.push([
       w / 2 + A * Math.sin(p.f1 * t + phase) * decay,
       h / 2 + A * Math.sin(p.f2 * t) * decay,
