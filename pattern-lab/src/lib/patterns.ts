@@ -74,5 +74,8 @@ export function clampParams(
   return out;
 }
 
-export const SITE_URL = "https://pattern-lab.tomatoeggcat.com";
+// 빌드 시점에 인라인되는 공개 환경변수. 미설정이면 기본 도메인 사용.
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pattern-lab.tomatoeggcat.com"
+).replace(/\/+$/, "");
 export const SITE_NAME = "수학 패턴 연구소";
