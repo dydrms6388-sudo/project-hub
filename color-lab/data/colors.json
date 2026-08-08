@@ -1,0 +1,410 @@
+{
+  "$comment": "color-lab 1단계 항목 설계 초안. 총 45개 = 색상 30 + 도구 9 + 이론 6. 색 이름은 CSS 표준 색상명·일반 안료명·관용 한국어 색이름만 사용. 상용 색상 체계(Pantone/RAL/먼셀) 코드·이름, 브랜드 컬러는 전부 배제함.",
+  "items": [
+    {
+      "type": "color",
+      "slug": "crimson",
+      "nameKo": "크림슨",
+      "nameEn": "Crimson",
+      "hex": "#DC143C",
+      "family": "red",
+      "sampleUses": ["경고·오류 강조", "세일 배지", "포인트 버튼"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "tomato",
+      "nameKo": "토마토",
+      "nameEn": "Tomato",
+      "hex": "#FF6347",
+      "family": "red",
+      "sampleUses": ["식품·요리 UI", "활기찬 CTA 버튼", "일러스트 포인트"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "vermilion",
+      "nameKo": "주홍",
+      "nameEn": "Vermilion",
+      "hex": "#E34234",
+      "family": "red",
+      "sampleUses": ["전통 공예·단청 모티프", "인장·도장 표현", "축제 포스터"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "maroon",
+      "nameKo": "마룬",
+      "nameEn": "Maroon",
+      "hex": "#800000",
+      "family": "red",
+      "sampleUses": ["가을·빈티지 무드", "대학·교복 배색", "와인·가죽 제품 소개"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "coral",
+      "nameKo": "코랄",
+      "nameEn": "Coral",
+      "hex": "#FF7F50",
+      "family": "orange",
+      "sampleUses": ["봄·여름 패션 배색", "뷰티·코스메틱 UI", "따뜻한 랜딩 페이지 포인트"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "salmon",
+      "nameKo": "새먼",
+      "nameEn": "Salmon",
+      "hex": "#FA8072",
+      "family": "orange",
+      "sampleUses": ["부드러운 알림 배경", "푸드 브랜딩", "파스텔 배색의 중간톤"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "apricot",
+      "nameKo": "살구색",
+      "nameEn": "Apricot",
+      "hex": "#FBCEB1",
+      "family": "orange",
+      "sampleUses": ["피부톤 표현", "유아·키즈 디자인", "은은한 배경색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "amber",
+      "nameKo": "호박색",
+      "nameEn": "Amber",
+      "hex": "#FFBF00",
+      "family": "yellow",
+      "sampleUses": ["신호등·주의 표시", "다크 모드 포인트", "꿀·맥주 등 식음료 표현"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "gold",
+      "nameKo": "골드",
+      "nameEn": "Gold",
+      "hex": "#FFD700",
+      "family": "yellow",
+      "sampleUses": ["프리미엄·수상 표시", "1위 배지", "명절·축하 그래픽"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "olive",
+      "nameKo": "올리브",
+      "nameEn": "Olive",
+      "hex": "#808000",
+      "family": "green",
+      "sampleUses": ["밀리터리·워크웨어 배색", "자연주의 브랜딩", "가을 배색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "mint",
+      "nameKo": "민트",
+      "nameEn": "Mint",
+      "hex": "#98FF98",
+      "family": "green",
+      "sampleUses": ["청량한 앱 배경", "디저트·카페 브랜딩", "여름 이벤트 그래픽"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "emerald",
+      "nameKo": "에메랄드",
+      "nameEn": "Emerald",
+      "hex": "#50C878",
+      "family": "green",
+      "sampleUses": ["금융·성장 지표 표현", "주얼리 소개", "선명한 성공 상태 색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "forest-green",
+      "nameKo": "포레스트그린",
+      "nameEn": "Forest Green",
+      "hex": "#228B22",
+      "family": "green",
+      "sampleUses": ["아웃도어·캠핑 브랜딩", "환경·에코 캠페인", "안정감 있는 강조색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "teal",
+      "nameKo": "틸",
+      "nameEn": "Teal",
+      "hex": "#008080",
+      "family": "cyan",
+      "sampleUses": ["의료·헬스케어 UI", "차분한 대시보드", "레트로 배색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "turquoise",
+      "nameKo": "터쿼이즈",
+      "nameEn": "Turquoise",
+      "hex": "#40E0D0",
+      "family": "cyan",
+      "sampleUses": ["여행·휴양 그래픽", "액세서리 표현", "시원한 포인트 색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "sky-blue",
+      "nameKo": "하늘색",
+      "nameEn": "Sky Blue",
+      "hex": "#87CEEB",
+      "family": "blue",
+      "sampleUses": ["날씨·항공 UI", "어린이 대상 디자인", "밝은 배경색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "navy",
+      "nameKo": "네이비",
+      "nameEn": "Navy",
+      "hex": "#000080",
+      "family": "blue",
+      "sampleUses": ["정장·유니폼 배색", "기업 웹사이트 기본색", "다크 모드 배경"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "cobalt-blue",
+      "nameKo": "코발트블루",
+      "nameEn": "Cobalt Blue",
+      "hex": "#0047AB",
+      "family": "blue",
+      "sampleUses": ["도자기·유리 공예 표현", "강렬한 브랜드 포인트", "스포츠 팀 배색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "prussian-blue",
+      "nameKo": "프러시안블루",
+      "nameEn": "Prussian Blue",
+      "hex": "#003153",
+      "family": "blue",
+      "sampleUses": ["판화·회화 안료 소개", "깊이 있는 배경색", "클래식한 인쇄물"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "ultramarine",
+      "nameKo": "울트라마린",
+      "nameEn": "Ultramarine",
+      "hex": "#120A8F",
+      "family": "blue",
+      "sampleUses": ["미술·안료 역사 콘텐츠", "야간·우주 테마", "고급 인쇄 포인트"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "indigo",
+      "nameKo": "인디고(쪽빛)",
+      "nameEn": "Indigo",
+      "hex": "#4B0082",
+      "family": "blue",
+      "sampleUses": ["데님·염색 공예", "전통 쪽 염색 소개", "차분한 강조색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "purple",
+      "nameKo": "퍼플(보라)",
+      "nameEn": "Purple",
+      "hex": "#800080",
+      "family": "purple",
+      "sampleUses": ["창의·예술 분야 브랜딩", "뷰티·향수 표현", "미스터리 테마"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "lavender",
+      "nameKo": "라벤더",
+      "nameEn": "Lavender",
+      "hex": "#E6E6FA",
+      "family": "purple",
+      "sampleUses": ["휴식·수면 관련 UI", "웨딩·파스텔 배색", "연한 배경색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "plum",
+      "nameKo": "플럼",
+      "nameEn": "Plum",
+      "hex": "#DDA0DD",
+      "family": "purple",
+      "sampleUses": ["가을 메이크업 표현", "부드러운 포인트 색", "파스텔 팔레트 구성"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "magenta",
+      "nameKo": "마젠타",
+      "nameEn": "Magenta",
+      "hex": "#FF00FF",
+      "family": "pink",
+      "sampleUses": ["인쇄 CMYK 원색 설명", "네온·사이버 테마", "강한 시선 유도"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "hot-pink",
+      "nameKo": "핫핑크",
+      "nameEn": "Hot Pink",
+      "hex": "#FF69B4",
+      "family": "pink",
+      "sampleUses": ["팝·엔터테인먼트 그래픽", "젊은 층 대상 캠페인", "SNS 썸네일 포인트"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "ivory",
+      "nameKo": "아이보리",
+      "nameEn": "Ivory",
+      "hex": "#FFFFF0",
+      "family": "neutral",
+      "sampleUses": ["웨딩·포멀 배색", "따뜻한 흰색 배경", "인테리어 기본색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "beige",
+      "nameKo": "베이지",
+      "nameEn": "Beige",
+      "hex": "#F5F5DC",
+      "family": "neutral",
+      "sampleUses": ["미니멀 인테리어", "뉴트럴 패션 배색", "문서·카드 배경"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "charcoal",
+      "nameKo": "차콜",
+      "nameEn": "Charcoal",
+      "hex": "#36454F",
+      "family": "neutral",
+      "sampleUses": ["순검정 대체 텍스트 색", "다크 모드 표면색", "수트·가구 배색"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "color",
+      "slug": "khaki",
+      "nameKo": "카키",
+      "nameEn": "Khaki",
+      "hex": "#C3B091",
+      "family": "neutral",
+      "sampleUses": ["아웃도어 의류 배색", "빈티지 톤 그래픽", "자연스러운 중간톤 배경"],
+      "trademarkRisk": "없음"
+    },
+    {
+      "type": "tool",
+      "slug": "contrast-checker",
+      "name": "명도 대비 검사기",
+      "computation": "두 색의 WCAG 2.x 상대 휘도를 계산해 대비비 (L1+0.05)/(L2+0.05)를 구하고 AA/AAA(일반·큰 텍스트) 통과 여부를 판정",
+      "standardBasis": "WCAG 2.1 §1.4.3 / §1.4.6, 상대 휘도 정의(sRGB 감마 역변환 포함)"
+    },
+    {
+      "type": "tool",
+      "slug": "color-converter",
+      "name": "색상 코드 변환기",
+      "computation": "HEX ↔ RGB ↔ HSL ↔ CIE LAB ↔ OKLCH 상호 변환(실시간, 복사 버튼 포함)",
+      "standardBasis": "sRGB(IEC 61966-2-1), CIE LAB(D65 기준), OKLab/OKLCH(Björn Ottosson, 2020), CSS Color Module Level 4"
+    },
+    {
+      "type": "tool",
+      "slug": "palette-generator",
+      "name": "배색 팔레트 생성기",
+      "computation": "기준색의 색상각을 회전해 보색(180°)·유사(±30°)·삼각(±120°)·분할보색(150°/210°)·사각(90° 간격) 팔레트 생성, PNG 다운로드",
+      "standardBasis": "HSL/OKLCH 색상각(hue) 회전 — 색상환 각도 관계"
+    },
+    {
+      "type": "tool",
+      "slug": "shade-generator",
+      "name": "명도 단계 생성기",
+      "computation": "입력 색의 밝기(L)를 보간해 틴트~셰이드 9~11단계 스케일 생성, CSS 변수 코드 출력",
+      "standardBasis": "OKLCH 밝기(L) 선형 보간(HSL 대비 지각 균일성 우수), CSS Color Module Level 4"
+    },
+    {
+      "type": "tool",
+      "slug": "image-color-extractor",
+      "name": "이미지 팔레트 추출",
+      "computation": "canvas ImageData에서 median cut 양자화로 대표색 추출 — 전 과정 브라우저 내 처리, 이미지 미전송 명시",
+      "standardBasis": "Median cut 색 양자화(Heckbert, 1982), Canvas 2D API"
+    },
+    {
+      "type": "tool",
+      "slug": "colorblind-simulator",
+      "name": "색각 이상 시뮬레이터",
+      "computation": "입력 색·팔레트를 제1색각(protanopia)·제2색각(deuteranopia)·제3색각(tritanopia) 변환 행렬로 시뮬레이션. 의료적 진단 아님 고지 필수",
+      "standardBasis": "Machado, Oliveira & Fernandes (2009, IEEE TVCG) 변환 행렬 — 페이지에 출처 명시"
+    },
+    {
+      "type": "tool",
+      "slug": "gradient-generator",
+      "name": "그라디언트 생성기",
+      "computation": "linear/radial/conic 그라디언트를 색·각도·정지점 슬라이더로 조정하고 CSS 코드 복사",
+      "standardBasis": "CSS Images Module Level 3/4 (gradient 문법)"
+    },
+    {
+      "type": "tool",
+      "slug": "color-mixer",
+      "name": "색 혼합기",
+      "computation": "두 색을 비율 슬라이더로 sRGB·OKLCH 두 색공간에서 각각 보간해 결과 비교(색공간에 따라 혼합 결과가 달라짐을 시각화)",
+      "standardBasis": "CSS Color Module Level 5 color-mix(), OKLab 보간"
+    },
+    {
+      "type": "tool",
+      "slug": "color-name-finder",
+      "name": "가까운 색 이름 찾기",
+      "computation": "입력 색을 CIE LAB으로 변환 후 CSS 표준 색상명 148종과의 색차(ΔE)를 계산해 최근접 이름 제시",
+      "standardBasis": "CSS named colors(CSS Color Level 4), CIE76/CIEDE2000 색차식"
+    },
+    {
+      "type": "theory",
+      "slug": "color-wheel",
+      "name": "색상환의 원리",
+      "computation": "인터랙티브 색상환(각도 드래그로 색 확인), RYB 회화 색상환과 RGB/HSL 색상환의 차이 시각화",
+      "standardBasis": "HSL 색상각(hue), 감산혼합·가산혼합의 구분"
+    },
+    {
+      "type": "theory",
+      "slug": "color-harmony",
+      "name": "배색 조화의 원리",
+      "computation": "보색·유사·삼각·분할보색·사각 관계를 색상환 위에서 토글로 탐색(생성 기능은 palette-generator로 연결, 계산 중복 없음)",
+      "standardBasis": "색상환 각도 관계 — 조화 규칙은 관례적 지침임을 본문에 명시"
+    },
+    {
+      "type": "theory",
+      "slug": "warm-cool-colors",
+      "name": "난색과 한색",
+      "computation": "색상각 구간별 난색/한색 인상 데모(같은 레이아웃을 난색·한색 팔레트로 전환 비교)",
+      "standardBasis": "색채학의 관례적 구분 — 물리적 색온도(K)와 다른 개념임을 구분 서술"
+    },
+    {
+      "type": "theory",
+      "slug": "color-spaces",
+      "name": "색공간 이해: RGB·HSL·LAB·OKLCH",
+      "computation": "슬라이더로 각 색공간의 축을 움직여 같은 색이 어떻게 표현되는지 비교(변환 자체는 color-converter와 공유 라이브러리 사용)",
+      "standardBasis": "sRGB, HSL, CIE LAB, OKLCH — CSS Color Module Level 4"
+    },
+    {
+      "type": "theory",
+      "slug": "color-accessibility",
+      "name": "색과 웹 접근성",
+      "computation": "해설 중심(색만으로 정보 전달 금지, 대비 기준, 색각 이상 배려) — 계산 데모는 contrast-checker·colorblind-simulator로 링크해 중복 배제",
+      "standardBasis": "WCAG 2.1/2.2 (1.4.1 색 사용, 1.4.3/1.4.6/1.4.11 대비)"
+    },
+    {
+      "type": "theory",
+      "slug": "color-meaning",
+      "name": "색의 연상과 문화적 의미",
+      "computation": "색 선택 시 문화권별 통설적 연상 비교 표시 — 단정 표현 금지, 통설·근거 구분 서술, 재미·참고용 고지",
+      "standardBasis": "문화적 통설(본문에서 출처와 통설 여부를 구분해 병기)"
+    }
+  ]
+}
