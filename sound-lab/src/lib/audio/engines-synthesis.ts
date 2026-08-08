@@ -38,11 +38,12 @@ function karplusBuffer(
   const buf = ctx.createBuffer(1, len, sr);
   const ch = buf.getChannelData(0);
   const rnd = mulberry32(97);
-  // 초기 여진: 밝기만큼 고역을 남긴 잡음
+  // 초기 여진: 밝기만큼 고역을 남긴 잡음 (밝기 0에서도 무음이 되지 않게 하한)
+  const b = 0.05 + bright * 0.95;
   let prev = 0;
   for (let i = 0; i < N; i++) {
     const w = rnd() * 2 - 1;
-    prev = bright * w + (1 - bright) * prev;
+    prev = b * w + (1 - b) * prev;
     ch[i] = prev;
   }
   for (let i = N; i < len; i++) {
