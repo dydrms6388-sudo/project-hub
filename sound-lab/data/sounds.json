@@ -1,0 +1,609 @@
+{
+  "categories": [
+    { "slug": "illusion", "name": "청각 착각", "desc": "실제 신호와 다르게 들리는 소리들. 귀와 뇌의 처리 방식이 만들어내는 착청 현상." },
+    { "slug": "psycho", "name": "심리음향 측정", "desc": "내 귀의 한계를 직접 재보는 실험. 가청 범위, 변별 한계, 마스킹 등." },
+    { "slug": "spatial", "name": "공간·거리 지각", "desc": "소리의 방향과 거리를 뇌가 계산하는 방법. 시간차, 레벨차, 잔향 단서." },
+    { "slug": "synthesis", "name": "합성·파동 원리", "desc": "소리를 만들고 변형하는 물리·디지털 원리. 배음, 변조, 필터, 왜곡." }
+  ],
+  "sounds": [
+    {
+      "slug": "shepard-risset",
+      "name": "무한 상승 음계 (셰퍼드-리세)",
+      "category": "illusion",
+      "principle": "옥타브 간격 부분음들에 고정된 스펙트럼 포락선을 씌우면, 각 부분음이 순환해도 전체 음높이가 끝없이 오르거나 내려가는 것처럼 지각된다.",
+      "synthesis": "additive",
+      "params": [
+        { "name": "speed", "min": -60, "max": 60, "step": 5, "default": 20, "unit": "cent/s", "meaning": "상승·하강 속도. 음수면 하강, 0이면 정지." },
+        { "name": "stepSemitones", "min": 0, "max": 2, "step": 1, "default": 1, "unit": "반음", "meaning": "계단 크기. 0이면 연속 글리산도(리세 방식), 1 이상이면 이산 음계(셰퍼드 방식)." },
+        { "name": "partials", "min": 4, "max": 10, "step": 1, "default": 7, "unit": "개", "meaning": "옥타브 간격으로 쌓는 부분음 개수. 많을수록 착각이 매끄러워진다." },
+        { "name": "envelopeCenter", "min": 200, "max": 2000, "step": 50, "default": 700, "unit": "Hz", "meaning": "스펙트럼 포락선의 중심 주파수. 소리의 전체적인 밝기를 결정한다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "중"
+    },
+    {
+      "slug": "risset-rhythm",
+      "name": "무한 가속 리듬",
+      "category": "illusion",
+      "principle": "셰퍼드 음계의 시간 영역 판. 배속 관계(1x·2x·4x)의 리듬 레이어를 교차 페이드하면 템포가 영원히 빨라지는 것처럼 들린다.",
+      "synthesis": "hybrid",
+      "params": [
+        { "name": "accel", "min": -20, "max": 20, "step": 1, "default": 8, "unit": "%/주기", "meaning": "한 순환 주기당 템포 변화율. 음수면 무한 감속." },
+        { "name": "baseTempo", "min": 60, "max": 180, "step": 5, "default": 120, "unit": "BPM", "meaning": "기준 템포. 지각되는 평균 빠르기를 정한다." },
+        { "name": "layers", "min": 2, "max": 4, "step": 1, "default": 3, "unit": "개", "meaning": "겹치는 배속 리듬 레이어 수. 많을수록 이음새가 숨는다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "missing-fundamental",
+      "name": "잃어버린 기본음",
+      "category": "illusion",
+      "principle": "기본 주파수 성분을 제거하고 배음만 재생해도, 뇌는 배음 간격의 주기성에서 존재하지 않는 기본음의 음높이를 복원해 듣는다.",
+      "synthesis": "additive",
+      "params": [
+        { "name": "fundamental", "min": 80, "max": 400, "step": 10, "default": 200, "unit": "Hz", "meaning": "암시되는 기본음. 실제로는 이 주파수 성분이 소리에 없다." },
+        { "name": "lowestHarmonic", "min": 1, "max": 8, "step": 1, "default": 3, "unit": "차", "meaning": "재생을 시작하는 배음 차수. 1이면 기본음 포함(비교용), 높일수록 저음이 실제로 사라진다." },
+        { "name": "harmonicCount", "min": 2, "max": 8, "step": 1, "default": 4, "unit": "개", "meaning": "연속으로 재생하는 배음 개수. 많을수록 복원된 음높이가 뚜렷하다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "tritone-paradox",
+      "name": "트라이톤 역설",
+      "category": "illusion",
+      "principle": "옥타브 정보가 모호한 셰퍼드 음 두 개를 반음 6개 간격으로 재생하면, 같은 소리를 듣고도 사람마다 올라갔다/내려갔다로 판단이 갈린다.",
+      "synthesis": "additive",
+      "params": [
+        { "name": "pitchClass", "min": 0, "max": 11, "step": 1, "default": 0, "unit": "반음", "meaning": "첫 음의 음이름(0=도). 어떤 쌍에서 판단이 뒤집히는지 시험한다." },
+        { "name": "envelopeCenter", "min": 200, "max": 2000, "step": 50, "default": 700, "unit": "Hz", "meaning": "포락선 중심. 지각되는 방향이 이 값에 따라 달라질 수 있다." },
+        { "name": "pause", "min": 0.2, "max": 1.5, "step": 0.1, "default": 0.5, "unit": "s", "meaning": "두 음 사이 간격." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "중"
+    },
+    {
+      "slug": "octave-illusion",
+      "name": "옥타브 착청 (도이치)",
+      "category": "illusion",
+      "principle": "양쪽 귀에 옥타브 차이 나는 두 음을 좌우 교대로 들려주면, 대부분 한쪽 귀에서 높은 음만·반대쪽에서 낮은 음만 들리는 재구성이 일어난다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "baseFreq", "min": 200, "max": 500, "step": 10, "default": 400, "unit": "Hz", "meaning": "낮은 음의 주파수. 높은 음은 그 옥타브 위." },
+        { "name": "rate", "min": 1, "max": 8, "step": 0.5, "default": 4, "unit": "Hz", "meaning": "좌우 교대 속도. 원 실험은 초당 4회." }
+      ],
+      "needsHeadphones": true,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "scale-illusion",
+      "name": "음계 착청 (도이치)",
+      "category": "illusion",
+      "principle": "상행·하행 음계를 음표 단위로 좌우 귀에 교차 분배해도, 뇌는 주파수 근접성에 따라 다시 묶어 매끄러운 두 선율로 재편성해 듣는다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "tempo", "min": 60, "max": 240, "step": 10, "default": 120, "unit": "BPM", "meaning": "음계 진행 속도." },
+        { "name": "keyShift", "min": -5, "max": 6, "step": 1, "default": 0, "unit": "반음", "meaning": "전체 조옮김. 음역이 착청 강도에 주는 영향을 시험한다." }
+      ],
+      "needsHeadphones": true,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "continuity-illusion",
+      "name": "연속성 착청",
+      "category": "illusion",
+      "principle": "음이 끊긴 구간을 충분히 큰 잡음으로 덮으면, 청각계는 음이 잡음 뒤에서 계속 이어졌다고 복원한다. 실제로 끊겼는지 아닌지 구별하지 못한다.",
+      "synthesis": "hybrid",
+      "params": [
+        { "name": "toneFreq", "min": 300, "max": 2000, "step": 50, "default": 1000, "unit": "Hz", "meaning": "지속음의 주파수." },
+        { "name": "noiseGainDb", "min": -12, "max": 12, "step": 1, "default": 0, "unit": "dB", "meaning": "잡음의 상대 레벨. 음보다 충분히 커야 연속으로 들린다." },
+        { "name": "gapDuration", "min": 50, "max": 500, "step": 10, "default": 150, "unit": "ms", "meaning": "잡음(및 끊김) 구간 길이. 길어지면 착각이 무너진다." },
+        { "name": "toneContinues", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "잡음 구간에서 음이 실제로 이어지는지(1) 끊기는지(0). 정답 확인용." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "zwicker-tone",
+      "name": "츠비커 톤 (청각 잔상)",
+      "category": "illusion",
+      "principle": "특정 대역을 파낸 노치 잡음을 수 초 듣고 멈추면, 파낸 대역 근처에서 존재하지 않는 희미한 순음이 잠깐 들린다. 시각의 잔상에 대응하는 청각 현상.",
+      "synthesis": "noise",
+      "params": [
+        { "name": "notchCenter", "min": 1000, "max": 8000, "step": 100, "default": 3000, "unit": "Hz", "meaning": "잡음에서 파내는 대역의 중심. 잔상 음높이가 이 근처에서 형성된다." },
+        { "name": "notchWidth", "min": 200, "max": 2000, "step": 100, "default": 700, "unit": "Hz", "meaning": "노치 폭. 너무 좁거나 넓으면 잔상이 약해진다." },
+        { "name": "noiseDuration", "min": 2, "max": 10, "step": 1, "default": 5, "unit": "s", "meaning": "잡음 제시 시간. 길수록 잔상이 뚜렷해지는 경향." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "주의",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "auditory-streaming",
+      "name": "청각 흐름 분리",
+      "category": "illusion",
+      "principle": "높낮이가 다른 두 음을 빠르게 번갈아 재생하면, 속도·간격에 따라 하나의 갤럽 리듬으로도, 독립된 두 멜로디로도 들린다. 청각 장면 분석의 기본 실험.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "freqA", "min": 300, "max": 1000, "step": 10, "default": 500, "unit": "Hz", "meaning": "기준 음 A의 주파수." },
+        { "name": "interval", "min": 1, "max": 15, "step": 1, "default": 7, "unit": "반음", "meaning": "A와 B의 음정 간격. 넓을수록 두 흐름으로 분리되기 쉽다." },
+        { "name": "rate", "min": 4, "max": 15, "step": 0.5, "default": 8, "unit": "음/s", "meaning": "재생 속도. 빠를수록 분리가 잘 일어난다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "huggins-pitch",
+      "name": "허긴스 피치 (양이 피치)",
+      "category": "illusion",
+      "principle": "양쪽 귀에 같은 잡음을 주되 한쪽만 좁은 대역의 위상을 뒤집으면, 어느 한쪽 귀에도 없는 음높이가 머릿속에서 만들어진다. 양이 비교로만 생기는 피치.",
+      "synthesis": "noise",
+      "params": [
+        { "name": "phaseFreq", "min": 300, "max": 1000, "step": 10, "default": 600, "unit": "Hz", "meaning": "위상을 반전시키는 대역의 중심. 지각되는 음높이가 이 값을 따라간다." },
+        { "name": "bandwidth", "min": 20, "max": 200, "step": 10, "default": 60, "unit": "Hz", "meaning": "위상 전이 대역폭. 좁을수록 음이 또렷하지만 약해진다." }
+      ],
+      "needsHeadphones": true,
+      "hearingRisk": "없음",
+      "cpuCost": "중"
+    },
+    {
+      "slug": "octave-scrambled-melody",
+      "name": "옥타브 뒤섞인 멜로디",
+      "category": "illusion",
+      "principle": "익숙한 선율(아리랑 등 민요)의 각 음을 무작위 옥타브로 흩어 놓으면 음이름은 전부 보존돼도 선율을 알아듣지 못한다. 멜로디 인지가 음이름이 아니라 윤곽에 의존함을 보인다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "scrambleRange", "min": 0, "max": 2, "step": 1, "default": 2, "unit": "옥타브", "meaning": "무작위 이동 범위. 0이면 원곡 그대로(정답 확인용)." },
+        { "name": "tempo", "min": 60, "max": 180, "step": 10, "default": 100, "unit": "BPM", "meaning": "연주 속도." },
+        { "name": "seed", "min": 1, "max": 20, "step": 1, "default": 1, "unit": "", "meaning": "옥타브 배치 패턴 번호. 바꾸면 다른 뒤섞임이 나온다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "mistuned-harmonic",
+      "name": "어긋난 배음 분리",
+      "category": "illusion",
+      "principle": "정수배 관계의 배음들은 하나의 음색으로 융합되지만, 한 배음만 몇 % 어긋나게 하면 그 성분이 별도의 음으로 튀어나와 들린다. 조화성 기반 그룹핑의 증거.",
+      "synthesis": "additive",
+      "params": [
+        { "name": "fundamental", "min": 100, "max": 300, "step": 10, "default": 200, "unit": "Hz", "meaning": "복합음의 기본 주파수." },
+        { "name": "harmonicIndex", "min": 2, "max": 8, "step": 1, "default": 4, "unit": "차", "meaning": "어긋나게 만들 배음의 차수." },
+        { "name": "mistuning", "min": 0, "max": 8, "step": 0.5, "default": 3, "unit": "%", "meaning": "어긋남 비율. 대략 2%를 넘으면 분리가 시작된다(개인차 있음)." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "binaural-beats",
+      "name": "양이 맥놀이",
+      "category": "psycho",
+      "principle": "좌우 귀에 조금 다른 주파수의 순음을 따로 넣으면, 공기 중 간섭 없이 뇌간의 양이 비교 회로에서 차이 주파수의 맥놀이가 만들어진다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "carrier", "min": 100, "max": 500, "step": 10, "default": 220, "unit": "Hz", "meaning": "기준 주파수. 대략 1000Hz 이하에서만 현상이 잘 생긴다." },
+        { "name": "beatFreq", "min": 1, "max": 30, "step": 0.5, "default": 8, "unit": "Hz", "meaning": "좌우 주파수 차 = 지각되는 맥놀이 속도." }
+      ],
+      "needsHeadphones": true,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "beat-frequency",
+      "name": "물리적 맥놀이",
+      "category": "psycho",
+      "principle": "주파수가 근접한 두 파동이 한 공간(또는 한 채널)에서 겹치면 보강·상쇄 간섭이 주기적으로 반복되어 차이 주파수만큼 음량이 출렁인다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "f1", "min": 200, "max": 600, "step": 1, "default": 440, "unit": "Hz", "meaning": "첫째 음의 주파수." },
+        { "name": "detune", "min": 0, "max": 30, "step": 0.5, "default": 4, "unit": "Hz", "meaning": "두 음의 주파수 차 = 초당 맥놀이 횟수. 커지면 거칠기로 바뀐다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "hearing-range",
+      "name": "가청 주파수 한계 테스트",
+      "category": "psycho",
+      "principle": "인간 가청 범위는 명목상 20Hz~20kHz지만 상한은 나이에 따라 내려간다. 순음 주파수를 옮기며 자기 귀의 상·하한을 직접 확인한다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "frequency", "min": 20, "max": 20000, "step": 1, "default": 1000, "unit": "Hz", "meaning": "테스트 순음의 주파수(로그 스케일 슬라이더). 재생 장비의 한계도 함께 시험된다." },
+        { "name": "level", "min": -60, "max": -20, "step": 1, "default": -30, "unit": "dBFS", "meaning": "출력 레벨. 안 들린다고 올린 채 가청 대역으로 돌아오면 위험하므로 리미터로 상한 고정." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "주의",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "equal-loudness",
+      "name": "등청감 곡선 체험",
+      "category": "psycho",
+      "principle": "같은 물리 레벨이라도 주파수에 따라 체감 음량이 크게 다르다. 귀는 2~5kHz에 가장 민감하고 저음·초고음에 둔감하다(ISO 226 등청감 곡선).",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "frequency", "min": 60, "max": 16000, "step": 1, "default": 1000, "unit": "Hz", "meaning": "비교할 순음의 주파수(로그 스케일). 1kHz 기준음과 번갈아 들으며 체감 음량을 비교한다." },
+        { "name": "referenceLevel", "min": -50, "max": -25, "step": 1, "default": -35, "unit": "dBFS", "meaning": "두 음에 공통 적용되는 물리 레벨." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "masking",
+      "name": "마스킹 (소리 가리기)",
+      "category": "psycho",
+      "principle": "큰 소리는 주파수가 가까운 작은 소리를 안 들리게 만든다. 동시에 울릴 때(동시 마스킹)뿐 아니라 큰 소리가 끝난 직후까지(순행 마스킹) 효과가 이어진다.",
+      "synthesis": "hybrid",
+      "params": [
+        { "name": "maskerFreq", "min": 250, "max": 4000, "step": 10, "default": 1000, "unit": "Hz", "meaning": "마스커(대역 잡음)의 중심 주파수." },
+        { "name": "probeOffset", "min": -12, "max": 12, "step": 1, "default": 4, "unit": "반음", "meaning": "표적음과 마스커의 간격. 가까울수록, 그리고 마스커보다 높은 쪽일수록 잘 가려진다." },
+        { "name": "probeLevel", "min": -60, "max": -20, "step": 1, "default": -40, "unit": "dBFS", "meaning": "표적음 레벨. 들리는 최소 레벨이 마스킹 문턱이다." },
+        { "name": "probeDelay", "min": 0, "max": 200, "step": 10, "default": 0, "unit": "ms", "meaning": "마스커 종료 후 표적음까지의 지연. 0이면 동시 마스킹, 키우면 순행 마스킹 감쇠를 본다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "roughness",
+      "name": "거칠기와 임계대역",
+      "category": "psycho",
+      "principle": "두 순음의 간격이 임계대역 안에 있으면 달팽이관의 같은 영역이 두 음을 함께 처리하며 거친 질감이 생긴다. 간격이 벌어지면 매끈한 두 음으로 분리된다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "meanFreq", "min": 200, "max": 1000, "step": 10, "default": 440, "unit": "Hz", "meaning": "두 음의 중심 주파수. 임계대역 폭은 중심 주파수에 따라 변한다." },
+        { "name": "separation", "min": 0, "max": 300, "step": 2, "default": 40, "unit": "Hz", "meaning": "두 음의 간격. 0 근처는 맥놀이, 수십 Hz는 거칠기, 그 이상은 분리." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "interval-consonance",
+      "name": "협화음의 물리학",
+      "category": "psycho",
+      "principle": "배음을 가진 두 음이 단순 정수비 음정을 이루면 배음들이 겹치거나 멀리 떨어져 거칠기가 최소가 된다. 복잡한 비율에서는 배음쌍들이 임계대역 안에서 충돌한다.",
+      "synthesis": "additive",
+      "params": [
+        { "name": "intervalCents", "min": 0, "max": 1200, "step": 10, "default": 700, "unit": "cent", "meaning": "두 음의 간격. 700=완전5도, 100=단2도. 연속으로 훑으며 협화·불협화 지형을 듣는다." },
+        { "name": "baseFreq", "min": 110, "max": 440, "step": 10, "default": 220, "unit": "Hz", "meaning": "아래 음의 주파수." },
+        { "name": "partialsPerTone", "min": 1, "max": 8, "step": 1, "default": 6, "unit": "개", "meaning": "음당 배음 수. 1(순음)로 줄이면 불협화감이 크게 약해지는 것이 핵심 관찰." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "combination-tones",
+      "name": "결합음 (타르티니 톤)",
+      "category": "psycho",
+      "principle": "충분히 큰 두 순음이 들어오면 달팽이관의 비선형성이 스피커에는 없는 새 주파수(특히 2f1−f2)를 귓속에서 만들어낸다. 18세기 타르티니가 보고한 제3의 음.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "f1", "min": 800, "max": 1500, "step": 10, "default": 1000, "unit": "Hz", "meaning": "아래 음의 주파수." },
+        { "name": "f2Ratio", "min": 1.1, "max": 1.5, "step": 0.01, "default": 1.2, "unit": "배", "meaning": "f2 = f1 × 비율. 비율을 움직이면 결합음 2f1−f2가 반대 방향으로 미끄러진다." },
+        { "name": "level", "min": -30, "max": -10, "step": 1, "default": -15, "unit": "dBFS", "meaning": "재생 레벨. 결합음은 비교적 큰 레벨에서만 들린다(리미터 상한 내)." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "주의",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "pitch-jnd",
+      "name": "음높이 변별 한계",
+      "category": "psycho",
+      "principle": "훈련되지 않은 귀도 좋은 조건에서 5~10센트(반음의 1/20~1/10) 차이를 구별한다. 두 음을 번갈아 들으며 자기 변별 문턱을 좁혀 간다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "baseFreq", "min": 200, "max": 2000, "step": 10, "default": 500, "unit": "Hz", "meaning": "기준음 주파수. 변별력은 주파수 대역에 따라 다르다." },
+        { "name": "diffCents", "min": 0, "max": 50, "step": 1, "default": 10, "unit": "cent", "meaning": "두 음의 차이. 구별되는 최소값이 나의 JND." },
+        { "name": "toneDuration", "min": 100, "max": 1000, "step": 50, "default": 300, "unit": "ms", "meaning": "음 길이. 짧아지면 변별이 급격히 어려워진다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "gap-detection",
+      "name": "시간 해상도 (틈 감지)",
+      "category": "psycho",
+      "principle": "연속 잡음 속의 짧은 무음 구간을 감지하는 최소 길이는 정상 청력에서 약 2~3ms다. 청각의 시간 분해능을 재는 표준 과제.",
+      "synthesis": "noise",
+      "params": [
+        { "name": "gapLength", "min": 0, "max": 50, "step": 0.5, "default": 5, "unit": "ms", "meaning": "잡음 한가운데 넣는 무음 길이. 감지되는 최소값이 시간 해상도." },
+        { "name": "centerFreq", "min": 500, "max": 8000, "step": 100, "default": 2000, "unit": "Hz", "meaning": "대역 잡음의 중심 주파수." },
+        { "name": "repeatInterval", "min": 0.5, "max": 2, "step": 0.1, "default": 1, "unit": "s", "meaning": "자극 반복 간격." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "click-train-pitch",
+      "name": "클릭이 음이 되는 순간",
+      "category": "psycho",
+      "principle": "클릭 반복률이 초당 약 20~30회를 넘으면 개별 사건으로 세던 지각이 하나의 음높이로 융합된다. 리듬과 피치의 경계를 직접 건넌다.",
+      "synthesis": "pulse",
+      "params": [
+        { "name": "clickRate", "min": 5, "max": 500, "step": 1, "default": 20, "unit": "Hz", "meaning": "초당 클릭 수(로그 스케일). 경계 근처에서 지각의 전환을 관찰한다." },
+        { "name": "lowpassCutoff", "min": 500, "max": 8000, "step": 100, "default": 4000, "unit": "Hz", "meaning": "클릭의 날카로움. 낮추면 부드러운 펄스가 된다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "modulation-perception",
+      "name": "변조 속도와 지각의 경계",
+      "category": "psycho",
+      "principle": "느린 변조는 비브라토·트레몰로로, 20Hz 부근부터는 거칠기로, 더 빨라지면 독립된 측대역 음으로 들린다. 같은 물리 조작이 속도에 따라 전혀 다른 지각을 낳는다.",
+      "synthesis": "AM",
+      "params": [
+        { "name": "carrier", "min": 200, "max": 2000, "step": 10, "default": 500, "unit": "Hz", "meaning": "반송파 주파수." },
+        { "name": "modRate", "min": 0.5, "max": 200, "step": 0.5, "default": 5, "unit": "Hz", "meaning": "변조 속도(로그 스케일). 흔들림→거칠기→측대역 분리로 지각이 바뀐다." },
+        { "name": "modDepth", "min": 0, "max": 100, "step": 1, "default": 30, "unit": "%", "meaning": "변조 깊이. 효과의 세기." },
+        { "name": "modType", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "0=진폭 변조(트레몰로 계열), 1=주파수 변조(비브라토 계열)." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "haas-effect",
+      "name": "하스 효과 (선행음 효과)",
+      "category": "spatial",
+      "principle": "같은 소리가 약 1~30ms 차이로 좌우에 도착하면 뇌는 먼저 온 쪽에서만 소리가 난다고 판단하고 늦은 쪽은 방향 정보에서 지운다. 반사음이 많은 실내에서 방향을 잡는 원리.",
+      "synthesis": "delay",
+      "params": [
+        { "name": "delay", "min": 0, "max": 40, "step": 0.5, "default": 10, "unit": "ms", "meaning": "좌우 도착 시간차. 1ms 이하는 중앙 이동, 1~30ms는 선행음 지배, 그 이상은 에코 분리." },
+        { "name": "levelDiff", "min": -10, "max": 10, "step": 1, "default": 0, "unit": "dB", "meaning": "늦은 쪽의 상대 레벨. 늦은 소리를 얼마나 키워야 방향이 되돌아오는지 시험한다." }
+      ],
+      "needsHeadphones": true,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "itd-ild",
+      "name": "시간차·레벨차 방향 지각",
+      "category": "spatial",
+      "principle": "수평 방향 지각은 두 단서로 계산된다. 저주파는 좌우 도착 시간차(ITD, 최대 약 0.7ms), 고주파는 머리 그림자에 의한 레벨차(ILD)가 우세하다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "itd", "min": -700, "max": 700, "step": 10, "default": 0, "unit": "µs", "meaning": "좌우 시간차. 음수는 왼쪽 선행. 저주파에서 이 단서만으로 상이 움직인다." },
+        { "name": "ild", "min": -20, "max": 20, "step": 1, "default": 0, "unit": "dB", "meaning": "좌우 레벨차. 고주파에서 우세한 단서." },
+        { "name": "frequency", "min": 200, "max": 4000, "step": 10, "default": 500, "unit": "Hz", "meaning": "테스트 음 주파수. 약 1.5kHz를 경계로 두 단서의 효과가 뒤바뀐다." }
+      ],
+      "needsHeadphones": true,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "doppler",
+      "name": "도플러 효과",
+      "category": "spatial",
+      "principle": "음원이 다가올 때는 파면이 압축되어 음이 높아지고 멀어질 때는 늘어나 낮아진다. 지연 시간을 실시간으로 변조해 통과하는 음원을 재현한다.",
+      "synthesis": "delay",
+      "params": [
+        { "name": "speed", "min": 5, "max": 80, "step": 1, "default": 20, "unit": "m/s", "meaning": "음원의 이동 속도. 빠를수록 통과 순간의 음높이 낙차가 크다." },
+        { "name": "sourceFreq", "min": 200, "max": 1000, "step": 10, "default": 440, "unit": "Hz", "meaning": "음원이 실제로 내는 주파수." },
+        { "name": "passDistance", "min": 1, "max": 20, "step": 1, "default": 5, "unit": "m", "meaning": "청자 옆을 지나는 최근접 거리. 가까울수록 전환이 급격하다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "reverb-distance",
+      "name": "잔향과 거리감",
+      "category": "spatial",
+      "principle": "거리 지각의 핵심 단서는 직접음과 잔향의 에너지 비율이다. 직접음이 줄고 잔향이 상대적으로 커질수록 같은 소리가 멀리서 나는 것으로 들린다.",
+      "synthesis": "convolution",
+      "params": [
+        { "name": "directRatio", "min": 0, "max": 100, "step": 1, "default": 60, "unit": "%", "meaning": "직접음 비율. 낮출수록 음원이 멀어진 느낌." },
+        { "name": "decayTime", "min": 0.2, "max": 5, "step": 0.1, "default": 1.5, "unit": "s", "meaning": "잔향 감쇠 시간. 공간의 크기·흡음 특성." },
+        { "name": "preDelay", "min": 0, "max": 100, "step": 5, "default": 20, "unit": "ms", "meaning": "직접음과 첫 반사음 사이 간격. 공간의 규모감." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "중"
+    },
+    {
+      "slug": "harmonic-series",
+      "name": "배음 쌓기",
+      "category": "synthesis",
+      "principle": "모든 주기적 파형은 정수배 배음의 합이다. 배음 구성비가 곧 음색이며, 홀수 배음만 쌓으면 사각파 계열, 전부 쌓으면 톱니파 계열이 된다(푸리에 합성).",
+      "synthesis": "additive",
+      "params": [
+        { "name": "fundamental", "min": 55, "max": 440, "step": 5, "default": 110, "unit": "Hz", "meaning": "기본 주파수 = 지각되는 음높이." },
+        { "name": "harmonicCount", "min": 1, "max": 16, "step": 1, "default": 8, "unit": "개", "meaning": "쌓는 배음 수. 1이면 순음, 늘릴수록 파형이 목표 모양에 수렴한다." },
+        { "name": "slope", "min": 0, "max": 12, "step": 0.5, "default": 6, "unit": "dB/oct", "meaning": "고차 배음 감쇠 기울기. 소리의 밝기를 정한다." },
+        { "name": "oddEvenBalance", "min": 0, "max": 100, "step": 1, "default": 50, "unit": "%", "meaning": "홀수·짝수 배음 비율. 0이면 홀수만(사각파·클라리넷 계열)." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "중"
+    },
+    {
+      "slug": "fm-synthesis",
+      "name": "FM 합성",
+      "category": "synthesis",
+      "principle": "반송파의 주파수를 다른 오실레이터로 빠르게 흔들면 측대역이 폭발적으로 생긴다. 두 주파수의 비가 정수이면 조화 음색, 아니면 종·금속성 비조화 음색이 된다.",
+      "synthesis": "FM",
+      "params": [
+        { "name": "carrier", "min": 100, "max": 1000, "step": 10, "default": 220, "unit": "Hz", "meaning": "반송파 주파수 = 대체로 지각되는 음높이." },
+        { "name": "ratio", "min": 0.5, "max": 8, "step": 0.5, "default": 2, "unit": "배", "meaning": "변조파/반송파 주파수 비. 정수비=조화, 비정수비=금속성." },
+        { "name": "index", "min": 0, "max": 20, "step": 0.5, "default": 5, "unit": "", "meaning": "변조 지수. 클수록 측대역이 넓게 퍼져 밝고 복잡해진다." },
+        { "name": "indexDecay", "min": 0.05, "max": 3, "step": 0.05, "default": 0.5, "unit": "s", "meaning": "변조 지수의 감쇠 시간. 타격 후 어두워지는 종소리 특성." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "ring-modulation",
+      "name": "링 변조",
+      "category": "synthesis",
+      "principle": "두 신호를 곱하면 원래 주파수는 사라지고 합과 차 주파수만 남는다. 입력의 배음 각각이 합·차 쌍으로 갈라져 비조화 스펙트럼이 만들어진다.",
+      "synthesis": "AM",
+      "params": [
+        { "name": "inputFreq", "min": 100, "max": 1000, "step": 10, "default": 440, "unit": "Hz", "meaning": "입력 음의 주파수." },
+        { "name": "modFreq", "min": 1, "max": 1000, "step": 1, "default": 100, "unit": "Hz", "meaning": "곱하는 신호의 주파수. 출력에는 합(f1+f2)·차(f1−f2)만 남는다." },
+        { "name": "mix", "min": 0, "max": 100, "step": 1, "default": 100, "unit": "%", "meaning": "원음과 변조음의 혼합비. 0이면 원음, 100이면 순수 링 변조." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "karplus-strong",
+      "name": "현 뜯기 물리 모델",
+      "category": "synthesis",
+      "principle": "짧은 잡음 버스트를 지연선에 넣고 감쇠 필터를 거쳐 되먹이면 현의 진동 방정식이 근사되어 기타 줄 소리가 난다. 지연 길이가 음높이, 필터가 감쇠를 정한다(카플러스-스트롱 알고리즘).",
+      "synthesis": "physical-model",
+      "params": [
+        { "name": "pitch", "min": 55, "max": 880, "step": 1, "default": 220, "unit": "Hz", "meaning": "음높이 = 샘플레이트 ÷ 지연선 길이." },
+        { "name": "damping", "min": 0, "max": 100, "step": 1, "default": 30, "unit": "%", "meaning": "고역 감쇠 정도. 클수록 둔탁하고 짧게 울린다." },
+        { "name": "pluckBrightness", "min": 500, "max": 8000, "step": 100, "default": 5000, "unit": "Hz", "meaning": "초기 잡음의 대역폭. 뜯는 위치·세기의 느낌." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "noise-colors",
+      "name": "소음의 색",
+      "category": "synthesis",
+      "principle": "잡음은 스펙트럼 기울기로 분류된다. 백색(0dB/oct)은 모든 주파수 동일, 분홍(−3)은 옥타브당 에너지 동일, 갈색(−6)은 저음 집중. 같은 무작위성이 기울기 하나로 전혀 다른 질감이 된다.",
+      "synthesis": "noise",
+      "params": [
+        { "name": "slope", "min": -6, "max": 6, "step": 0.5, "default": 0, "unit": "dB/oct", "meaning": "스펙트럼 기울기. −6=갈색, −3=분홍, 0=백색, +3=파랑, +6=보라." },
+        { "name": "lowpassCutoff", "min": 200, "max": 20000, "step": 100, "default": 20000, "unit": "Hz", "meaning": "상한 컷오프(로그 스케일). 잡음의 답답함·시원함." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "formant-vowels",
+      "name": "모음 합성기",
+      "category": "synthesis",
+      "principle": "모음의 정체는 성도 공명이 만드는 포먼트(스펙트럼 봉우리) 배치다. 첫째 포먼트는 입 벌림, 둘째는 혀 위치에 대응하며, 두 값만으로 아·이·우·에·오가 구분된다.",
+      "synthesis": "subtractive",
+      "params": [
+        { "name": "f1", "min": 200, "max": 1000, "step": 10, "default": 700, "unit": "Hz", "meaning": "첫째 포먼트. 높을수록 입을 크게 연 모음(아)에 가깝다." },
+        { "name": "f2", "min": 500, "max": 2500, "step": 10, "default": 1200, "unit": "Hz", "meaning": "둘째 포먼트. 높을수록 혀가 앞으로 온 모음(이)에 가깝다." },
+        { "name": "sourcePitch", "min": 80, "max": 300, "step": 5, "default": 120, "unit": "Hz", "meaning": "성대 진동 주파수. 목소리의 높낮이(모음 정체와는 독립)." },
+        { "name": "breathiness", "min": 0, "max": 100, "step": 1, "default": 10, "unit": "%", "meaning": "기식 잡음 비율. 속삭임에 가까워진다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "filter-sweep",
+      "name": "필터와 공명",
+      "category": "synthesis",
+      "principle": "감산 합성의 핵심. 배음이 풍부한 원음에서 대역을 깎아 음색을 조각하며, 공명(Q)을 높이면 컷오프 주파수의 성분이 증폭되어 특유의 우는 소리가 난다.",
+      "synthesis": "subtractive",
+      "params": [
+        { "name": "cutoff", "min": 100, "max": 8000, "step": 10, "default": 1000, "unit": "Hz", "meaning": "저역통과 컷오프(로그 스케일). 낮출수록 어두워진다." },
+        { "name": "resonance", "min": 0.5, "max": 25, "step": 0.5, "default": 5, "unit": "Q", "meaning": "공명 세기. 컷오프 부근이 부풀어 오른다(출력은 리미터로 상한 고정)." },
+        { "name": "sourceType", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "0=톱니파, 1=백색잡음. 깎을 재료의 차이를 비교한다." },
+        { "name": "lfoRate", "min": 0, "max": 10, "step": 0.1, "default": 0.5, "unit": "Hz", "meaning": "컷오프 자동 스윕 속도. 0이면 수동." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "adsr-envelope",
+      "name": "엔벨로프와 악기의 정체",
+      "category": "synthesis",
+      "principle": "음량의 시간 변화(어택·디케이·서스테인·릴리즈)는 스펙트럼 못지않게 악기 인지를 좌우한다. 어택만 바꿔도 같은 파형이 피아노에서 현악기로 들린다.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "attack", "min": 0, "max": 1000, "step": 5, "default": 10, "unit": "ms", "meaning": "시작 상승 시간. 짧으면 타악기적, 길면 활로 켜는 느낌." },
+        { "name": "decay", "min": 0, "max": 1000, "step": 5, "default": 200, "unit": "ms", "meaning": "피크에서 서스테인 레벨까지 내려오는 시간." },
+        { "name": "sustain", "min": 0, "max": 100, "step": 1, "default": 60, "unit": "%", "meaning": "유지 레벨. 0이면 치고 사라지는 소리." },
+        { "name": "release", "min": 0, "max": 2000, "step": 10, "default": 300, "unit": "ms", "meaning": "손을 뗀 뒤 사라지는 시간." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "comb-filter",
+      "name": "콤 필터와 플랜저",
+      "category": "synthesis",
+      "principle": "신호에 수 ms 지연된 복사본을 더하면 간섭으로 스펙트럼에 빗살 모양 골이 파인다. 지연을 천천히 흔들면 플랜저, 잡음에 걸면 골 간격에서 반복 피치가 들린다.",
+      "synthesis": "delay",
+      "params": [
+        { "name": "delayTime", "min": 0.5, "max": 20, "step": 0.1, "default": 5, "unit": "ms", "meaning": "지연 시간. 골 간격 = 1/지연시간이라 짧을수록 골이 성기다." },
+        { "name": "feedback", "min": 0, "max": 95, "step": 1, "default": 50, "unit": "%", "meaning": "되먹임 양. 골이 깊고 공명적이 된다." },
+        { "name": "lfoRate", "min": 0, "max": 2, "step": 0.05, "default": 0.2, "unit": "Hz", "meaning": "지연 시간의 흔들림 속도. 플랜저 특유의 움직임." },
+        { "name": "sourceType", "min": 0, "max": 1, "step": 1, "default": 0, "unit": "", "meaning": "0=백색잡음(반복 피치 관찰), 1=톱니파(플랜저 질감)." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "waveshaping-distortion",
+      "name": "왜곡과 배음 생성",
+      "category": "synthesis",
+      "principle": "신호를 비선형 곡선에 통과시키면 새 배음이 생긴다. 대칭 클리핑은 홀수 배음만, 비대칭은 짝수 배음까지 만든다. 기타 앰프 왜곡음의 물리적 정체.",
+      "synthesis": "waveshaper",
+      "params": [
+        { "name": "drive", "min": 0, "max": 40, "step": 1, "default": 10, "unit": "dB", "meaning": "입력 증폭량. 클수록 클리핑이 심해지고 배음이 늘어난다(출력 레벨은 보상됨)." },
+        { "name": "symmetry", "min": 0, "max": 100, "step": 1, "default": 50, "unit": "%", "meaning": "클리핑 곡선의 대칭도. 50에서 벗어나면 짝수 배음이 추가된다." },
+        { "name": "toneCutoff", "min": 500, "max": 8000, "step": 100, "default": 4000, "unit": "Hz", "meaning": "왜곡 후 저역통과. 앰프의 톤 노브에 해당." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "phase-cancellation",
+      "name": "위상 간섭과 상쇄",
+      "category": "synthesis",
+      "principle": "같은 주파수의 두 파동을 위상차 180°로 더하면 완전히 소멸한다. 미세한 주파수 차를 주면 위상이 천천히 돌며 소멸과 보강이 반복된다. 노이즈 캔슬링의 기본 원리.",
+      "synthesis": "oscillator",
+      "params": [
+        { "name": "phaseOffset", "min": 0, "max": 360, "step": 1, "default": 180, "unit": "°", "meaning": "두 음의 위상차. 180°에서 상쇄가 최대(디지털 합산이므로 완전 소멸)." },
+        { "name": "frequency", "min": 100, "max": 1000, "step": 10, "default": 300, "unit": "Hz", "meaning": "두 음의 공통 주파수." },
+        { "name": "detune", "min": 0, "max": 2, "step": 0.01, "default": 0, "unit": "Hz", "meaning": "미세 주파수 차. 0이 아니면 위상이 회전하며 느린 맥놀이가 된다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "저"
+    },
+    {
+      "slug": "digital-artifacts",
+      "name": "디지털의 흔적 (앨리어싱·양자화)",
+      "category": "synthesis",
+      "principle": "샘플레이트가 신호 주파수의 2배(나이퀴스트 한계)보다 낮으면 가짜 주파수가 접혀 들어오고, 비트 심도를 줄이면 양자화 잡음이 드러난다. 디지털 오디오의 두 가지 근본 한계.",
+      "synthesis": "worklet",
+      "params": [
+        { "name": "sampleRate", "min": 1000, "max": 24000, "step": 100, "default": 8000, "unit": "Hz", "meaning": "모의 샘플레이트. 소스 주파수의 2배 아래로 내리면 앨리어싱이 시작된다." },
+        { "name": "bitDepth", "min": 2, "max": 16, "step": 1, "default": 8, "unit": "bit", "meaning": "양자화 비트 수. 낮출수록 계단 잡음이 커진다." },
+        { "name": "sourceFreq", "min": 200, "max": 4000, "step": 10, "default": 1000, "unit": "Hz", "meaning": "소스 사인파 주파수. 나이퀴스트 한계를 넘나들며 접힘을 관찰한다." }
+      ],
+      "needsHeadphones": false,
+      "hearingRisk": "없음",
+      "cpuCost": "중"
+    }
+  ]
+}
