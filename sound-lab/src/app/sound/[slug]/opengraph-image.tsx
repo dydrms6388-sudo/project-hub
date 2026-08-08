@@ -42,7 +42,7 @@ export default async function OgImage({
       >
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 28, color: "#7ea0ff", fontWeight: 700 }}>
-            소리실험실{cat ? ` · ${cat.name}` : ""}
+            {`소리실험실${cat ? ` · ${cat.name}` : ""}`}
           </div>
           <div
             style={{

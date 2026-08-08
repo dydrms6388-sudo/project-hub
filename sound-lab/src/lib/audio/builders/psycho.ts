@@ -334,7 +334,9 @@ export const psychoBuilders: Record<string, Builder> = {
     // 1초 버퍼에 클릭 1개 → loop + playbackRate = 초당 클릭 수
     const buf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
     const ch = buf.getChannelData(0);
-    for (let i = 0; i < 48; i++) ch[i] = (1 - i / 48) * (i % 2 === 0 ? 1 : -0.6);
+    // 클릭을 400샘플 감쇠 펄스로 — 낮은 반복률에서도 들리도록 에너지 확보
+    for (let i = 0; i < 400; i++)
+      ch[i] = Math.exp(-i / 90) * (i % 2 === 0 ? 1 : -0.7);
     const src = ac.createBufferSource();
     src.buffer = buf;
     src.loop = true;

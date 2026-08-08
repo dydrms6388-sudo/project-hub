@@ -202,8 +202,11 @@ export const synthesisBuilders: Record<string, Builder> = {
       const slope = clamp(p.slope, -6, 6);
       for (const s of shelves) s.gain.setTargetAtTime(slope * 2, now, 0.03);
       lp.frequency.setTargetAtTime(clamp(p.lowpassCutoff, 200, 20000), now, 0.03);
-      // 기울기에 따른 대략적 라우드니스 보상
-      g.gain.setTargetAtTime(0.5 * Math.pow(10, -Math.abs(slope) * 3 / 20) * (slope > 0 ? 0.6 : 1.4), now, 0.05);
+      // 라우드니스 보상: 양의 기울기는 고역이 셸프 4개 누적(최대 +48dB)으로
+      // 증폭되므로 그만큼 되돌리고, 음의 기울기는 살짝만 보상한다.
+      const posComp = Math.pow(10, (-Math.max(slope, 0) * 7.5) / 20);
+      const negBoost = slope < 0 ? 1.25 : 1;
+      g.gain.setTargetAtTime(0.4 * posComp * negBoost, now, 0.05);
     };
     apply();
     noise.start();

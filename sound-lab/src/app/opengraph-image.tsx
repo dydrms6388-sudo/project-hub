@@ -51,8 +51,7 @@ export default async function OgImage() {
               fontWeight: 400,
             }}
           >
-            {sounds.length}가지 소리 현상을 브라우저에서 실시간 합성하는
-            인터랙티브 실험실
+            {`${sounds.length}가지 소리 현상을 브라우저에서 실시간 합성하는 인터랙티브 실험실`}
           </div>
         </div>
         <div

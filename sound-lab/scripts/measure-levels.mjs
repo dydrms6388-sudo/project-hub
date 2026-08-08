@@ -55,11 +55,11 @@ for (const s of data.sounds) {
     const measure = async (params, settleMs) => {
       await page.evaluate((p) => window.__soundlab.setParams(p), params);
       await page.waitForTimeout(settleMs);
-      // 500ms 동안 최대 피크 수집
+      // 주기적 소스(최대 1.6초 주기)도 잡히도록 1800ms 동안 최대 피크 수집
       return page.evaluate(async () => {
         let peak = 0;
         const t0 = performance.now();
-        while (performance.now() - t0 < 900) {
+        while (performance.now() - t0 < 1800) {
           peak = Math.max(peak, window.__soundlab.getPeak());
           await new Promise((r) => setTimeout(r, 16));
         }
