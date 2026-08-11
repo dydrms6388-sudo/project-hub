@@ -1,58 +1,24 @@
 /**
- * KST(UTC+9) 고정 날짜 계산. 순수 함수, I/O 없음.
+ * 문자에서 읽은 날짜 조각을 KST 시각으로 확정한다.
  *
- * 한국 카드 승인 문자는 전부 KST 로 찍히고 연도가 없다.
- * "지금"을 인자로 받아 연도를 추정하며, 절대 시스템 타임존에 의존하지 않는다.
- * (서버가 UTC 여도 사용자의 8/11 거래가 8/10 으로 밀리면 안 된다 — 스펙 10장 감사관 2)
+ * 달력 원시 연산(toKstParts, daysInMonth …)은 @haruchi/schema/time 에 있다.
+ * 파서와 예산 엔진이 같은 달력을 써야 하기 때문이다. 여기 남은 것은
+ * "연도가 없는 문자를 어떻게 읽을 것인가" 하는 파서 고유의 판단뿐이다.
  */
-
-export const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+import {
+  KST_OFFSET_MS,
+  daysInMonth,
+  isRealDate,
+  kstStampDay,
+  kstStampMinute,
+  kstToInstant,
+  pad2,
+  toKstParts,
+  type KstParts,
+} from '@haruchi/schema';
 
 /** 미래로 이만큼까지는 "올해"로 인정한다. 발신 시각과 붙여넣기 시각의 오차 흡수용. */
 const FUTURE_GRACE_MS = 24 * 60 * 60 * 1000;
-
-export interface KstParts {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-}
-
-/** UTC Date 를 KST 달력 필드로 분해한다. */
-export function toKstParts(instant: Date): KstParts {
-  const shifted = new Date(instant.getTime() + KST_OFFSET_MS);
-  return {
-    year: shifted.getUTCFullYear(),
-    month: shifted.getUTCMonth() + 1,
-    day: shifted.getUTCDate(),
-    hour: shifted.getUTCHours(),
-    minute: shifted.getUTCMinutes(),
-  };
-}
-
-function isLeapYear(year: number): boolean {
-  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-}
-
-export function daysInMonth(year: number, month: number): number {
-  const table = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  return table[month - 1] ?? 0;
-}
-
-/** 달력상 실재하는 날짜인지. 2/29 를 평년에 쓰면 false. */
-export function isRealDate(year: number, month: number, day: number): boolean {
-  if (month < 1 || month > 12) return false;
-  if (day < 1) return false;
-  return day <= daysInMonth(year, month);
-}
-
-/** KST 달력 필드 → UTC Date */
-export function kstToInstant(parts: KstParts): Date {
-  return new Date(
-    Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute) - KST_OFFSET_MS,
-  );
-}
 
 export interface ResolveDateInput {
   month: number;
@@ -115,22 +81,19 @@ export function resolveKstDate(input: ResolveDateInput): ResolvedDate | null {
   return {
     occurredAt: instant.toISOString().replace(/\.\d{3}Z$/, '.000Z'),
     hasTime,
-    plainDate: `${year}-${pad2(month)}-${pad2(day)}`,
+    plainDate: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
   };
 }
 
-export function pad2(n: number): string {
-  return String(n).padStart(2, '0');
-}
-
-/** dedupe_key 용 yyyyMMddHHmm (KST) */
-export function kstStampMinute(occurredAtIso: string): string {
-  const p = toKstParts(new Date(occurredAtIso));
-  return `${p.year}${pad2(p.month)}${pad2(p.day)}${pad2(p.hour)}${pad2(p.minute)}`;
-}
-
-/** dedupe_key 용 yyyyMMdd (KST) */
-export function kstStampDay(occurredAtIso: string): string {
-  const p = toKstParts(new Date(occurredAtIso));
-  return `${p.year}${pad2(p.month)}${pad2(p.day)}`;
-}
+// 파서의 공개 API 를 유지하기 위한 재수출. 구현은 schema 한 곳에만 있다.
+export {
+  KST_OFFSET_MS,
+  daysInMonth,
+  isRealDate,
+  kstStampDay,
+  kstStampMinute,
+  kstToInstant,
+  pad2,
+  toKstParts,
+  type KstParts,
+};
