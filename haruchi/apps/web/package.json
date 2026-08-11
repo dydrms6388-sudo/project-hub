@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@haruchi/categorizer": "workspace:*",
     "@haruchi/parser": "workspace:*",
     "@haruchi/schema": "workspace:*",
     "@supabase/ssr": "^0.7.0",

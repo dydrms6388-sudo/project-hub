@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   // packages/* 는 빌드 산출물 없이 소스를 그대로 쓴다. Next 가 트랜스파일한다.
-  transpilePackages: ['@haruchi/parser', '@haruchi/schema'],
+  transpilePackages: ['@haruchi/categorizer', '@haruchi/parser', '@haruchi/schema'],
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: true },
   // packages/* 는 ESM 규약대로 상대 import 에 .js 확장자를 쓴다.

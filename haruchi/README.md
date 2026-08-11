@@ -26,11 +26,12 @@
 ```
 haruchi/
   packages/
-    schema/   zod 스키마 + 타입 단일 소스 (순수 TS)
-    parser/   문자·알림 텍스트 → 거래 (순수 TS, 어댑터 패턴)
+    schema/      zod 스키마 + 타입 단일 소스 (순수 TS)
+    parser/      문자·알림 텍스트 → 거래 (순수 TS, 어댑터 패턴)
+    categorizer/ 자동 분류 3단 파이프라인 + 시드 규칙 (순수 TS)
   apps/web/   Next.js 15 App Router
-  supabase/migrations/  스키마 + RLS
-  scripts/    CI 게이트 (RLS 검사, 클라이언트 시크릿 스캔)
+  supabase/migrations/  스키마 + RLS + 카테고리 시드
+  scripts/    CI 게이트 (RLS, 클라이언트 시크릿, 시드 동기화)
 ```
 
 `packages/*` 는 React·Next·Supabase 에 의존하지 않는 순수 함수 모음이다.
@@ -45,6 +46,7 @@ pnpm test          # vitest, 커버리지 게이트 90%
 pnpm typecheck
 node scripts/check-rls.mjs
 node scripts/check-client-secrets.mjs
+node scripts/check-seed-sync.mjs
 pnpm --filter @haruchi/web dev
 ```
 
@@ -72,6 +74,24 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 그다음 `adapters/index.ts` 와 `fixtures/index.ts` 배열에 한 줄씩 추가한다.
 
+## 새 분류 규칙 추가
+
+시드 규칙(200여 개)은 **코드에** 있다. 배포와 함께 갱신되어야 하고 사용자별
+규칙과 섞이면 안 되기 때문이다.
+
+- 키워드만 추가할 때: `packages/categorizer/src/seed-rules.ts` 한 곳.
+- 카테고리 자체를 추가할 때: `src/categories.ts` 와
+  `supabase/migrations/0002_seed_categories.sql` 를 **함께** 고친다.
+  어긋나면 `scripts/check-seed-sync.mjs` 가 CI 에서 막는다.
+
+키워드 작성 시 주의:
+
+- 긴 키워드가 이긴다. "동물병원"이 "병원"보다 먼저 매칭되므로 상·하위 개념을
+  따로 신경 쓸 필요가 없다.
+- 짧고 흔한 조각은 넣지 않는다. "펫"은 "카펫"에, "이자"는 "이자카야"에 걸린다.
+  **오분류는 미분류보다 나쁘다** — 사용자가 알아채지 못한 채 통계가 틀어진다.
+- 영문 약어는 `prefix` 로 잠근다. "CU"를 contains 로 두면 "DOCUMENT"에 걸린다.
+
 ## 파서 설계 원칙
 
 - **LLM 을 쓰지 않는다.** 느리고, 비싸고, 비결정적이고, 금융 데이터가 외부로 나간다.
@@ -85,6 +105,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 - [x] Phase 0 — 모노레포, Next 15, 디자인 토큰, CI 게이트
 - [x] Phase 1 — 파서 어댑터 7종, dedupe, `/paste`, 스키마 + RLS
-- [ ] Phase 2 — 분류 + 대시보드
+- [~] Phase 2 — 분류 파이프라인·시드 규칙·교정 학습 완료 (실측 정확도 85.3%).
+      대시보드 "하루 가용액" 히어로는 예산 엔진(Phase 3)과 DB 가 필요해 남음
 - [ ] Phase 3 — 예산 + 목표
 - [ ] Phase 4~9 — 스펙 12장 로드맵 참고

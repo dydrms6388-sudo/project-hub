@@ -1,5 +1,6 @@
 'use client';
 
+import { categorize, findCategory } from '@haruchi/categorizer';
 import { parse } from '@haruchi/parser';
 import type { ParsedTransaction } from '@haruchi/schema';
 import { useMemo, useState } from 'react';
@@ -27,6 +28,16 @@ export function PasteClient({ canSave }: { canSave: boolean }) {
 
   // 입력이 바뀔 때마다 다시 읽는다. 순수 함수라 디바운스 없이도 즉각적이다.
   const result = useMemo(() => parse(text, { source: 'paste' }), [text]);
+  // 로그인 전이라 사용자 규칙도 전역 사전도 없다. 내장 시드 규칙만으로 분류한다.
+  const rows = useMemo(
+    () =>
+      result.transactions.map((tx) => ({
+        tx,
+        assignment: categorize({ merchantNormalized: tx.merchantNormalized, kind: tx.kind }),
+      })),
+    [result],
+  );
+  const needsReviewCount = rows.filter((row) => row.assignment.needsReview).length;
   const hasInput = text.trim().length > 0;
 
   return (
@@ -68,12 +79,13 @@ export function PasteClient({ canSave }: { canSave: boolean }) {
             parsed={result.transactions.length}
             duplicates={result.duplicateCount}
             failed={result.unparsed.length}
+            needsReview={needsReviewCount}
           />
 
-          {result.transactions.length > 0 && (
+          {rows.length > 0 && (
             <ul className="divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
-              {result.transactions.map((tx) => (
-                <TransactionPreview key={tx.dedupeKey} tx={tx} />
+              {rows.map(({ tx, assignment }) => (
+                <TransactionPreview key={tx.dedupeKey} tx={tx} categoryKey={assignment.categoryKey} />
               ))}
             </ul>
           )}
@@ -107,26 +119,48 @@ function Summary({
   parsed,
   duplicates,
   failed,
+  needsReview,
 }: {
   parsed: number;
   duplicates: number;
   failed: number;
+  needsReview: number;
 }) {
   return (
     <p className="text-sm text-muted">
       <span className="font-medium text-ink">{parsed}건</span>을 읽었어요
       {duplicates > 0 && <> · 같은 거래 {duplicates}건은 하나로 합쳤습니다</>}
+      {needsReview > 0 && <> · {needsReview}건은 카테고리를 정해 주세요</>}
       {failed > 0 && <> · {failed}건은 읽지 못했습니다</>}
     </p>
   );
 }
 
-function TransactionPreview({ tx }: { tx: ParsedTransaction }) {
+function TransactionPreview({
+  tx,
+  categoryKey,
+}: {
+  tx: ParsedTransaction;
+  categoryKey: string | null;
+}) {
   const isCancel = tx.isCancellation;
+  const category = categoryKey ? findCategory(categoryKey) : undefined;
   return (
     <li className="flex items-baseline justify-between gap-4 px-4 py-3">
       <div className="min-w-0">
-        <p className="truncate text-sm font-medium">{tx.merchantRaw}</p>
+        <div className="flex items-center gap-2">
+          <p className="truncate text-sm font-medium">{tx.merchantRaw}</p>
+          {category ? (
+            <span className="shrink-0 rounded border border-line px-1.5 py-0.5 text-[11px] text-muted">
+              {category.name}
+            </span>
+          ) : (
+            // 분류 실패를 감추지 않는다. 사용자가 고칠 수 있게 드러낸다.
+            <span className="shrink-0 rounded bg-warn-soft px-1.5 py-0.5 text-[11px] text-warn">
+              분류 필요
+            </span>
+          )}
+        </div>
         <p className="mt-0.5 text-xs text-muted">
           {formatKstDateTime(tx.occurredAt, tx.hasTime)}
           {tx.issuer && <> · {tx.issuer}</>}

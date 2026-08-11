@@ -20,6 +20,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@haruchi/categorizer':
+        specifier: workspace:*
+        version: link:../../packages/categorizer
       '@haruchi/parser':
         specifier: workspace:*
         version: link:../../packages/parser
@@ -60,6 +63,12 @@ importers:
       typescript:
         specifier: ^5.9.2
         version: 5.9.3
+
+  packages/categorizer:
+    dependencies:
+      '@haruchi/schema':
+        specifier: workspace:*
+        version: link:../schema
 
   packages/parser:
     dependencies:
