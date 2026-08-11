@@ -1,0 +1,56 @@
+name: haruchi CI
+
+# 하루치 서브프로젝트 전용. 허브(정적 사이트) 배포와는 무관하다.
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'haruchi/**'
+      - '.github/workflows/haruchi-ci.yml'
+  pull_request:
+    paths:
+      - 'haruchi/**'
+      - '.github/workflows/haruchi-ci.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: haruchi
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: haruchi/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      # 정책 없는 테이블은 그 자체로 데이터 유출이다. 머지 전에 막는다.
+      - name: RLS 정책 존재 검사
+        run: node scripts/check-rls.mjs
+
+      # service_role 키가 클라이언트 번들로 새면 RLS 가 통째로 무력화된다.
+      - name: 클라이언트 번들 시크릿 스캔
+        run: node scripts/check-client-secrets.mjs
+
+      # 분류기가 DB 에 없는 카테고리를 가리키면 조용히 미분류만 늘어난다.
+      - name: 시드 카테고리 동기화 검사
+        run: node scripts/check-seed-sync.mjs
+
+      - name: 타입 검사
+        run: pnpm typecheck
+
+      - name: 유닛 테스트 + 커버리지 게이트
+        run: pnpm vitest run --coverage
+
+      - name: 웹앱 빌드
+        run: pnpm --filter @haruchi/web build
