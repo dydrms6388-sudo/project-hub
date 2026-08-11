@@ -1,0 +1,97 @@
+@import 'tailwindcss';
+
+/*
+ * 하루치 디자인 토큰 — "금융 앱이 아니라 계기판" (스펙 6장).
+ *
+ * 숫자가 주인공이고 장식은 숫자를 방해하지 않는 선까지만 쓴다.
+ * 강조색은 두 개뿐이다: 안전(파랑) / 경고(주황).
+ * 빨강-초록 조합은 쓰지 않는다 — 적록색약 사용자에게 아무 정보도 주지 못한다.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --c-bg: #f6f7f8;
+  --c-surface: #ffffff;
+  --c-line: #e2e5e8;
+  --c-ink: #15181b;
+  --c-muted: #5e666d;
+  --c-safe: #1460b8;
+  --c-warn: #b8530a;
+  --c-safe-soft: #e8f0fb;
+  --c-warn-soft: #fbefe4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --c-bg: #0f1214;
+    --c-surface: #181c1f;
+    --c-line: #292f34;
+    --c-ink: #e8ecef;
+    --c-muted: #98a2ab;
+    --c-safe: #5aa7f2;
+    --c-warn: #ef9350;
+    --c-safe-soft: #14243a;
+    --c-warn-soft: #33220f;
+  }
+}
+
+:root[data-theme='dark'] {
+  --c-bg: #0f1214;
+  --c-surface: #181c1f;
+  --c-line: #292f34;
+  --c-ink: #e8ecef;
+  --c-muted: #98a2ab;
+  --c-safe: #5aa7f2;
+  --c-warn: #ef9350;
+  --c-safe-soft: #14243a;
+  --c-warn-soft: #33220f;
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-line: var(--c-line);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-safe: var(--c-safe);
+  --color-warn: var(--c-warn);
+  --color-safe-soft: var(--c-safe-soft);
+  --color-warn-soft: var(--c-warn-soft);
+
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * 금액 표시. 자릿수가 흔들리면 그 순간 신뢰가 깨진다 (스펙 6장).
+ * 금액이 나오는 모든 곳에서 이 클래스를 쓴다.
+ */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.01em;
+}
+
+/* 상태 전환은 150ms 이하. 카운트업은 대시보드 진입 1회만. */
+* {
+  transition-duration: 150ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
