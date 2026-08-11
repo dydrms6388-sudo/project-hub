@@ -13,6 +13,8 @@ import {
   isLeapYear,
   parsePlainDate,
   toPlainDate,
+  weekdayOf,
+  WEEKDAY_NAMES,
 } from '../src/time.js';
 
 describe('parsePlainDate / formatPlainDate', () => {
@@ -148,6 +150,25 @@ describe('differenceInMonths', () => {
 
   it('같은 달 안이면 0 이다', () => {
     expect(differenceInMonths('2026-08-11', '2026-08-31')).toBe(0);
+  });
+});
+
+describe('weekdayOf', () => {
+  it('요일을 KST 달력으로 센다', () => {
+    // 2026-08-01 은 토요일
+    expect(weekdayOf('2026-08-01')).toBe(6);
+    expect(WEEKDAY_NAMES[weekdayOf('2026-08-01')]).toBe('토');
+    expect(weekdayOf('2026-08-02')).toBe(0);
+    expect(WEEKDAY_NAMES[weekdayOf('2026-08-02')]).toBe('일');
+  });
+
+  it('윤년 2월 29일도 정확하다', () => {
+    // 2028-02-29 는 화요일
+    expect(WEEKDAY_NAMES[weekdayOf('2028-02-29')]).toBe('화');
+  });
+
+  it('일주일 뒤는 같은 요일이다', () => {
+    expect(weekdayOf(addDays('2026-08-01', 7))).toBe(weekdayOf('2026-08-01'));
   });
 });
 

@@ -76,6 +76,15 @@ importers:
         specifier: workspace:*
         version: link:../schema
 
+  packages/insight:
+    dependencies:
+      '@haruchi/budget':
+        specifier: workspace:*
+        version: link:../budget
+      '@haruchi/schema':
+        specifier: workspace:*
+        version: link:../schema
+
   packages/parser:
     dependencies:
       '@haruchi/schema':

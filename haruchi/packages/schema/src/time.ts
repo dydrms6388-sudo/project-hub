@@ -137,6 +137,14 @@ export function differenceInMonths(a: PlainDate, b: PlainDate): number {
   return to.day < from.day ? months - 1 : months;
 }
 
+/** 0=일요일 … 6=토요일 (KST 기준) */
+export function weekdayOf(date: PlainDate): number {
+  const { year, month, day } = parsePlainDate(date);
+  return new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+}
+
+export const WEEKDAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'] as const;
+
 /** dedupe_key 용 yyyyMMddHHmm (KST) */
 export function kstStampMinute(occurredAtIso: string): string {
   const p = toKstParts(new Date(occurredAtIso));
