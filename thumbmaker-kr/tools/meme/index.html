@@ -102,7 +102,7 @@
     var tpl = window.TM_TEMPLATES.filter(function(t){return t.id===preset.starterTpl;})[0];
     if (tpl) preset.starter = function(ed){ ed.state = ed._templateState(tpl); };
   }
-  new ThumbEditor(document.getElementById('editor'), preset);
+  window.__ed = new ThumbEditor(document.getElementById('editor'), preset);
 })();
 </script>
 </body>

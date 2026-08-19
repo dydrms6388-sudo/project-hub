@@ -50,6 +50,7 @@
 <button class="btn" id="zipAll" style="display:none">전체 ZIP 다운로드</button></div>
 <div class="prog" id="prog" style="display:none"><i></i></div>
 <p class="status" id="status"></p>
+<p class="notice-warn" id="miss" style="display:none"></p>
 <ul class="flist" id="out"></ul>
 <div id="cmpWrap" style="display:none"><h3>전/후 비교 (첫 번째 사진)</h3><div id="cmp"></div>
 <p class="status">가운데 손잡이를 좌우로 움직여 원본과 압축본을 비교하세요.</p></div>
@@ -192,6 +193,8 @@
     runBtn.disabled = true;
     var out = $('out'); out.innerHTML = '';
     results = [];
+    var missed = 0;
+    $('miss').style.display = 'none';
     var prog = $('prog'), bar = prog.querySelector('i');
     prog.style.display = '';
     var ext = opts.format === 'webp' ? 'webp' : 'jpg';
@@ -200,6 +203,7 @@
         $('status').textContent = (i + 1) + ' / ' + files.length + ' 처리 중… (' + files[i].name + ')';
         bar.style.width = ((i) / files.length * 100) + '%';
         var blob = await compressOne(files[i], opts);
+        if (opts.mode === 't' && blob.size > opts.targetKB * 1024) missed++;
         var name = IL.outName(files[i].name, 'compressed', ext);
         results.push({ name: name, blob: blob, origSize: files[i].size, origFile: files[i] });
         var li = document.createElement('li');
@@ -215,6 +219,12 @@
       }
       bar.style.width = '100%';
       $('status').textContent = '완료! ' + results.length + '장 압축됨';
+      if (missed > 0) {
+        $('miss').style.display = '';
+        $('miss').textContent = missed + '장은 목표 용량(' + opts.targetKB +
+          'KB)까지 줄이지 못했습니다. 최저 품질과 해상도 축소를 모두 적용한 결과입니다. ' +
+          '목표 용량을 조금 올리거나, 「이미지 크기 조절」로 해상도를 먼저 줄인 뒤 다시 시도해 보세요.';
+      }
       zipBtn.style.display = results.length > 1 ? '' : 'none';
       /* 첫 장 전/후 비교 슬라이더 */
       if (results.length) {
