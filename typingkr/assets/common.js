@@ -57,9 +57,14 @@
   };
 
   /* ---------- 모바일 감지 ---------- */
+  /* CSS 의 .pc-only / .mobile-note 브레이크포인트(max-width:700px)와 동일하게 판정.
+     JS 기본 모드와 CSS 로 숨긴 UI 가 어긋나지 않도록 기준을 하나로 맞춘다. */
   TK.isMobile = function () {
-    return window.matchMedia && matchMedia('(max-width: 700px)').matches &&
-      matchMedia('(pointer: coarse)').matches;
+    return !!(window.matchMedia && matchMedia('(max-width: 700px)').matches);
+  };
+  /* 터치 기기 여부(참고용) */
+  TK.isTouch = function () {
+    return !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
   };
 
   /* ---------- URL 결과 상태 (?r=base64) ---------- */

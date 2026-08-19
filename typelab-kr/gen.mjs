@@ -116,11 +116,19 @@ function crumbLd(items) {
 const funNotice = (extra) =>
   `<p class="notice">🎈 재미로 보는 결과입니다. 심리검사가 아닌 오락용 콘텐츠이며, 성격·능력·건강을 진단하지 않습니다.${extra ? ' ' + esc(extra) : ''}</p>`;
 
-function page({ title, desc, root, ld, body, tests, currentId }) {
-  return `${head({ title, desc, root, ld })}
+function page({ title, desc, root, ld, body, tests, currentId, tail }) {
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+${head({ title, desc, root, ld })}
+</head>
+<body>
 ${header(root)}
 <main>${body}</main>
-${footer(root, tests, currentId)}`;
+${footer(root, tests, currentId)}
+${tail || ''}</body>
+</html>
+`;
 }
 
 /* ---------- 데이터 로드 ---------- */
@@ -171,7 +179,7 @@ function validate(test) {
   });
 
   for (const [k, r] of Object.entries(test.results)) {
-    const len = r.detail.replace(/\s/g, '').length;
+    const len = r.detail.length;               /* 표준 글자 수(공백 포함) */
     if (len < 300) warnings.push(`${tag}/${k}: detail 본문 ${len}자 (300자 미만)`);
     if (!r.tips || r.tips.length < 2) warnings.push(`${tag}/${k}: tips 부족`);
     (r.match || []).forEach((m) => { if (!test.results[m]) warnings.push(`${tag}/${k}: match 대상 없음 ${m}`); });
@@ -285,12 +293,14 @@ async function genQuiz(test, tests) {
 <noscript><p class="notice">이 테스트는 자바스크립트로 동작합니다. 브라우저의 자바스크립트를 켜고 다시 시도해 주세요.</p></noscript>
 <p style="text-align:center;margin:20px 0"><a href="../">← ${esc(test.title)} 소개로 돌아가기</a></p>
 ${funNotice(test.adultNote)}
-</div>
-<script type="module">
+</div>`;
+
+  const tail = `<script type="module">
 import test from '${root}assets/data/tests/${test.id}.js';
 import { runQuiz } from '${root}assets/quiz.js';
 runQuiz(test, document.getElementById('quiz'));
-</script>`;
+</script>
+`;
 
   await emit(`tests/${test.id}/q/index.html`, page({
     title, desc, root, ld: [crumbLd([
@@ -298,7 +308,7 @@ runQuiz(test, document.getElementById('quiz'));
       { name: test.title, url: `/tests/${test.id}/` },
       { name: '테스트 진행', url: `/tests/${test.id}/q/` }
     ])],
-    body, tests, currentId: test.id
+    body, tests, currentId: test.id, tail
   }));
 }
 
@@ -378,8 +388,9 @@ ${faqBlock(faq)}
 <a class="btn" href="${root}tests/${test.id}/q/">다시 테스트하기</a>
 <a class="btn" href="${root}index.html">전체 테스트 보기</a>
 </div>
-</div>
-<script type="module">
+</div>`;
+
+  const tail = `<script type="module">
 import { bindResultActions } from '${root}assets/common.js';
 var host = location.host || 'typelab-kr.vercel.app';
 bindResultActions({
@@ -391,7 +402,8 @@ bindResultActions({
   watermark: host + '/tests/${test.id}',
   url: location.href.split('#')[0]
 });
-</script>`;
+</script>
+`;
 
   await emit(`tests/${test.id}/result/${key}/index.html`, page({
     title, desc, root, ld: [appLd(`${test.title} 결과 · ${r.title}`, desc), faqLd(faq),
@@ -400,7 +412,7 @@ bindResultActions({
         { name: test.title, url: `/tests/${test.id}/` },
         { name: r.title, url: `/tests/${test.id}/result/${key}/` }
       ])],
-    body, tests, currentId: test.id
+    body, tests, currentId: test.id, tail
   }));
 }
 
@@ -515,6 +527,9 @@ for (const rel of written) {
   if (/href="\/|src="\//.test(txt)) bad.push(`${rel}: 절대경로 사용`);
   if (/광고 영역|REPLACE_|lorem ipsum/i.test(txt)) bad.push(`${rel}: 금지 플레이스홀더`);
   if (/rel="canonical"/.test(txt)) bad.push(`${rel}: canonical 금지`);
+  if (!/^<!DOCTYPE html>/.test(txt)) bad.push(`${rel}: DOCTYPE 없음`);
+  if (!/<html lang="ko">/.test(txt)) bad.push(`${rel}: lang="ko" 없음`);
+  if (!/<meta name="viewport"/.test(txt)) bad.push(`${rel}: viewport 없음`);
 }
 warnings.push(...bad);
 
