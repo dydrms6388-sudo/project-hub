@@ -22,6 +22,7 @@ import { getFirstSuggestions, type SuggestionCard } from "@/lib/chat/suggestion"
 import { createClient } from "@/lib/supabase/server";
 import { RetryCard } from "../../_components/retry-card";
 import { MaskingNotice } from "./_components/masking-notice";
+import { RoomActions } from "./_components/room-actions";
 import { ChatRoomClient } from "./_components/chat-room";
 
 export const metadata: Metadata = {
@@ -47,9 +48,11 @@ async function getPartnerTopHobbies(partnerId: string): Promise<string[]> {
       .order("rank", { ascending: true })
       .limit(3);
 
-    const rows = (data ?? []) as { rank: number | null; hobbies: { name: string } | null }[];
+    // 조인 결과의 hobbies 는 스키마 생성 타입에 따라 객체/배열 둘 다로 올 수 있다
+    type HobbyJoin = { name: string } | { name: string }[] | null;
+    const rows = (data ?? []) as unknown as { rank: number | null; hobbies: HobbyJoin }[];
     return rows
-      .map((r) => r.hobbies?.name)
+      .map((r) => (Array.isArray(r.hobbies) ? r.hobbies[0]?.name : r.hobbies?.name))
       .filter((n): n is string => typeof n === "string" && n.length > 0);
   } catch {
     return [];
@@ -132,6 +135,9 @@ export default async function ChatRoomPage({
         <h1 className="min-w-0 flex-1 truncate text-h2">{nickname}</h1>
         {room.partner ? <VerifyLevelBadge level={room.partner.verifyLevel} compact /> : null}
         {closed ? <Badge variant="neutral">종료</Badge> : null}
+
+        {/* ⋮ 1탭 = [신고][차단] 2탭 (A5 부록 — 어디서든 2탭 이내) */}
+        <RoomActions matchId={matchId} targetId={room.partnerId} partnerNickname={nickname} />
       </div>
 
       {/* 상대 덕질카드 요약 — 기본 접힘(네이티브 details = 키보드/스크린리더 기본 지원) */}
