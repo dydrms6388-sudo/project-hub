@@ -164,8 +164,13 @@ export function maskMessage(input: MaskingInput): MaskingResult {
   const r3Spans = collect(reR3(), body, "R3");
   const r4Spans = collect(reR4(), body, "R4");
 
-  // R5: 전화번호로 이미 매치된 숫자열은 계좌로 재분류하지 않음 (오탐 방지 보강 ①)
+  // R5: 원문+정규화 양쪽에서 탐지해 합집합 — 은행명에 숫자 음절("카카오"의 오,
+  // "우체국"의 구)이 있어 정규화 텍스트만으로는 은행명이 깨지고, 원문만으로는
+  // 한글 숫자 계좌 우회를 놓친다. 전화번호(R1)로 이미 매치된 숫자열은 계좌로
+  // 재분류하지 않음 (오탐 방지 보강 ①)
   const r5Raw = [
+    ...collect(reR5Forward(), body, "R5"),
+    ...collect(reR5Reverse(), body, "R5"),
     ...collect(reR5Forward(), normalized, "R5"),
     ...collect(reR5Reverse(), normalized, "R5"),
   ];
