@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>에어컨 평수 계산기 — 필요 냉방능력(kW·BTU) 참고치 | 홈캘크</title>
+<meta name="description" content="방 평수와 용도(방·거실·사무실), 층고를 넣으면 필요한 냉방능력(kW)과 BTU 환산값을 참고치로 계산합니다. 제조사 평형 표기와 정격 냉방능력이 우선입니다." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/ac-size/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="에어컨 평수 계산기 — 필요 kW" />
+<meta property="og:description" content="방 평수와 용도(방·거실·사무실), 층고를 넣으면 필요한 냉방능력(kW)과 BTU 환산값을 참고치로 계산합니다. 제조사 평형 표기와 정격 냉방능력이 우선입니다." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/ac-size/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"에어컨 평수 계산기","url":"https://homecalc-kr.vercel.app/ac-size/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"방 평수와 용도(방·거실·사무실), 층고를 넣으면 필요한 냉방능력(kW)과 BTU 환산값을 참고치로 계산합니다. 제조사 평형 표기와 정격 냉방능력이 우선입니다."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"kW와 BTU는 어떤 관계인가요?","acceptedAnswer":{"@type":"Answer","text":"1kW ≈ 3,412 BTU/h입니다. 국내 제품은 정격 냉방능력을 kW로 표기하고, 해외·창문형 제품은 BTU로 표기하는 경우가 많습니다."}},{"@type":"Question","name":"'18평형' 에어컨은 18평 방에 쓰는 건가요?","acceptedAnswer":{"@type":"Answer","text":"제조사 권장 면적 표기이며 단열 조건이 좋은 상황을 전제로 합니다. 서향·최상층·큰 창이 있다면 한 단계 큰 용량을 고려하세요."}},{"@type":"Question","name":"용량이 크면 무조건 좋은가요?","acceptedAnswer":{"@type":"Answer","text":"너무 크면 잦은 On/Off로 제습이 덜 되고 초기 비용도 올라갑니다. 필요 용량보다 약간 여유 있는 정도가 적당합니다."}},{"@type":"Question","name":"전기요금은 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"냉방능력이 아니라 소비전력(kW)과 사용 시간으로 결정됩니다. 에너지소비효율등급 라벨의 소비전력을 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"에어컨 평수 계산기","item":"https://homecalc-kr.vercel.app/ac-size/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">에어컨 평수 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">❄️</div>
+    <h1>에어컨 평수 계산기</h1>
+    <p class="lead">평수 × 평당 냉방능력에 층고 보정을 더해 <strong>필요 냉방능력(kW)</strong>을 참고치로 계산합니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>공간 조건 입력</h2>
+    <div class="grid2">
+      <label class="f">면적 (평)
+        <input type="number" id="py" inputmode="decimal" step="any" min="0" value="10" />
+      </label>
+      <label class="f">공간 용도
+        <select id="use">
+          <option value="home">방·침실 (평당 0.4kW)</option>
+          <option value="living" selected>거실·주방 겸용 (평당 0.5kW)</option>
+          <option value="office">사무실·상가 (평당 0.55kW)</option>
+        </select>
+      </label>
+      <label class="f">천장 높이 (m) <span class="hint">— 기준 2.3m</span>
+        <input type="number" id="ceil" inputmode="decimal" step="0.1" min="1.5" value="2.3" />
+      </label>
+      <label class="f">추가 보정
+        <select id="extra">
+          <option value="1">없음</option>
+          <option value="1.1">햇빛 많음·서향 (+10%)</option>
+          <option value="1.15">최상층·단열 취약 (+15%)</option>
+          <option value="1.25">서향 + 최상층 (+25%)</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">필요 냉방능력 계산</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>에어컨 제품에 적힌 "○○평형"은 제조사가 정한 <strong>권장 사용 면적</strong>이고, 실제 성능 값은 제원표의 <strong>정격 냉방능력(kW)</strong>입니다. 이 계산기는 평수에 평당 필요 냉방능력을 곱하고 층고를 비례 보정해 대략 몇 kW짜리를 봐야 하는지 잡아 줍니다.</p>
+    <p>평당 계수는 공적 고시가 아니라 제조사 평형 표기를 역산한 <strong>업계 관행값</strong>입니다. 단열·창 면적·거주 인원·주방 열원에 따라 필요 용량이 달라지므로 여유를 두고 고르세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>냉방할 공간의 평수를 입력합니다. (㎡만 안다면 <a href="../pyeong/">평수 계산기</a>에서 환산)</li>
+      <li>방·거실·사무실 중 용도를 고르고, 천장이 높으면 층고를 실제 값으로 수정합니다.</li>
+      <li>서향·최상층 등 조건이 있으면 추가 보정을 선택하고 계산합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. kW와 BTU는 어떤 관계인가요?</p><p class="a">1kW ≈ 3,412 BTU/h입니다. 국내 제품은 정격 냉방능력을 kW로 표기하고, 해외·창문형 제품은 BTU로 표기하는 경우가 많습니다.</p></div>
+    <div class="qa"><p class="q">Q. '18평형' 에어컨은 18평 방에 쓰는 건가요?</p><p class="a">제조사 권장 면적 표기이며 단열 조건이 좋은 상황을 전제로 합니다. 서향·최상층·큰 창이 있다면 한 단계 큰 용량을 고려하세요.</p></div>
+    <div class="qa"><p class="q">Q. 용량이 크면 무조건 좋은가요?</p><p class="a">너무 크면 잦은 On/Off로 제습이 덜 되고 초기 비용도 올라갑니다. 필요 용량보다 약간 여유 있는 정도가 적당합니다.</p></div>
+    <div class="qa"><p class="q">Q. 전기요금은 어떻게 되나요?</p><p class="a">냉방능력이 아니라 소비전력(kW)과 사용 시간으로 결정됩니다. 에너지소비효율등급 라벨의 소비전력을 확인하세요.</p></div>
+<p class="note">평당 냉방능력 계수는 공적 고시가 아닌 <strong>업계 관행값</strong>입니다 <span class="badge todo">확인 필요</span>. 제품 선택은 제조사 권장 면적과 정격 냉방능력(에너지소비효율등급 라벨)을 기준으로 하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../pyeong/"><span class="ic">📐</span>평수 계산기</a>
+      <a class="rel" href="../lighting/"><span class="ic">💡</span>조명 밝기 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" rel="noopener"><span class="ic">⚡</span>평형별 전기요금 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-converter-plus/" rel="noopener"><span class="ic">📏</span>평수 변환 플러스 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { acSizeCalc } from "../lib/calc.mjs";
+const K = {"home":0.4,"living":0.5,"office":0.55};
+const $ = (id) => document.getElementById(id);
+$("calcBtn").addEventListener("click", () => {
+  const pyeong = parseFloat($("py").value);
+  const ceilingM = parseFloat($("ceil").value);
+  const extra = parseFloat($("extra").value) || 1;
+  if (!isFinite(pyeong) || pyeong <= 0 || !isFinite(ceilingM) || ceilingM <= 0) { hcToast("평수와 천장 높이를 입력하세요"); return; }
+  const perPyeongKw = K[$("use").value];
+  const r = acSizeCalc({ pyeong, perPyeongKw, ceilingM, baseCeilingM: 2.3 });
+  const kw = r.kw * extra;
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = "필요 냉방능력 약 <span>" + hcFmt(kw, 1) + "kW</span> <small>(" + hcFmt(kw * 3412.14) + " BTU/h)</small>";
+  $("resSub").textContent = "평당 " + perPyeongKw + "kW × " + pyeong + "평 × 층고 보정 " + hcFmt(r.factor, 2) + (extra !== 1 ? " × 추가 보정 " + hcFmt(extra, 2) : "") + " — 제품은 이 값 이상의 정격 냉방능력을 고르세요.";
+  $("resFormula").textContent = "필요 kW = 평수 × 평당 계수 × (천장고 ÷ 2.3m) × 보정 · 1kW ≈ 3,412 BTU/h";
+  $("srcLine").innerHTML = "평당 계수: 제조사 평형 표기 역산의 업계 관행값 <span class=\"badge todo\">확인 필요</span> · 제품 정격 냉방능력은 <a href=\"https://eep.energy.or.kr\" rel=\"noopener\">에너지소비효율등급 라벨</a> 확인 · 확인일 2026-08-19";
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>

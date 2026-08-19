@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>나라별 팁 계산기 — 국가별 팁 관행·1인당 금액까지</title>
+<meta name="description" content="미국 15~20%, 일본 0%처럼 나라마다 다른 팁 관행을 반영해 팁 금액과 총액, 인원수로 나눈 1인당 금액을 계산합니다. 봉사료가 이미 포함된 계산서 처리와 원화 환산도 지원합니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/tip-calc/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="나라별 팁 계산기" />
+<meta property="og:description" content="미국 15~20%, 일본 0%처럼 나라마다 다른 팁 관행을 반영해 팁 금액과 총액, 인원수로 나눈 1인당 금액을 계산합니다. 봉사료가 이미 포함된 계산서 처리와 원화 환산도 지원합니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/tip-calc/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"나라별 팁 계산기","description":"미국 15~20%, 일본 0%처럼 나라마다 다른 팁 관행을 반영해 팁 금액과 총액, 인원수로 나눈 1인당 금액을 계산합니다. 봉사료가 이미 포함된 계산서 처리와 원화 환산도 지원합니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/tip-calc/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"팁을 꼭 내야 하나요?","acceptedAnswer":{"@type":"Answer","text":"나라와 업장에 따라 다릅니다. 이 도구가 보여주는 것은 일반적인 관행 요약이며 법적 의무나 정답이 아닙니다. 봉사료가 이미 포함된 곳에서는 추가 팁이 필수가 아닙니다."}},{"@type":"Question","name":"표시된 비율이 실제와 다릅니다.","acceptedAnswer":{"@type":"Answer","text":"팁 관행은 지역·업장·서비스 형태에 따라 편차가 큽니다. 화면의 값은 참고용 요약이므로 필요하면 비율을 직접 수정해 계산하세요."}},{"@type":"Question","name":"원화로는 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"결과 아래에 공개 환율 API로 환산한 원화 금액을 함께 표시합니다. 환율을 불러오지 못하면 현지 통화 금액만 표시합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"팁 계산기","item":"https://tripcalc-kr.vercel.app/tip-calc/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>팁 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧾</div>
+    <h1>나라별 팁 계산기</h1>
+    <p class="lead">나라를 고르면 <strong>그 나라의 팁 관행</strong>이 기본값으로 들어갑니다. 봉사료 포함 계산서도 처리합니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>계산서 정보</h2>
+    <div class="grid2">
+      <label class="f">나라 <select id="country"></select></label>
+      <label class="f">계산서 금액 <span class="u" id="curLbl">(현지 통화)</span><input type="number" id="bill" min="0" step="any" value="100" /></label>
+    </div>
+    <div class="grid3" style="margin-top:12px">
+      <label class="f">팁 비율 <span class="u">(%)</span><input type="number" id="pct" min="0" max="40" step="0.5" value="15" /></label>
+      <label class="f">인원 <span class="u">(명)</span><input type="number" id="people" min="1" max="30" value="2" /></label>
+      <label class="f">봉사료 이미 포함<select id="incl"><option value="0">아니오</option><option value="1">예 (팁 계산 제외)</option></select></label>
+    </div>
+    <p class="note" id="custom"></p>
+    <button class="btn" id="goBtn" type="button">팁 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">총 결제액 <span class="num" id="total">-</span></p>
+      <dl class="kv" id="sum"></dl>
+      <p class="note" id="tipNote"></p>
+      <p class="note" id="krwNote"></p>
+      <div class="share"><button class="btn2" id="copyBtn" type="button">📋 결과 복사</button></div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>팁은 "얼마"보다 "내는지 여부"가 먼저다</h2>
+  <p>팁 문화는 나라마다 완전히 다릅니다. 미국·캐나다는 테이블 서비스에서 15~20%가 사실상 의무에 가깝고, 일본·중국은 팁을 건네면 오히려 사양하는 경우가 많습니다. 유럽 상당수 국가는 계산서에 봉사료가 포함돼 있어 잔돈 정도만 남기는 것이 관행입니다.</p>
+  <p>그래서 이 계산기는 금액 계산보다 <strong>그 나라에서 팁이 어떤 의미인지</strong>를 먼저 보여줍니다. 나라를 고르면 관행 요약이 표시되고, 관행 비율이 기본값으로 채워집니다. 물론 최종 금액은 서비스 만족도와 업장 정책에 따라 본인이 정하는 것입니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>나라를 고릅니다. 팁 비율 기본값과 관행 설명이 자동으로 채워집니다.</li>
+    <li>계산서 금액을 <strong>현지 통화 그대로</strong> 넣습니다.</li>
+    <li>계산서에 봉사료(service charge)가 이미 붙어 있다면 "예"를 고릅니다. 이때 팁은 0으로 계산하고 안내만 표시합니다.</li>
+    <li>인원을 넣으면 1인당 금액까지 나눠 줍니다.</li>
+  </ol>
+  <h2>팁을 낼 때 주의할 점</h2>
+  <ul>
+    <li>카드 영수증에 <em>Service charge</em>, <em>Gratuity</em>, <em>Coperto</em> 같은 항목이 이미 있는지 먼저 확인하세요. 중복 지불이 흔한 실수입니다.</li>
+    <li>미국은 세금(Tax) 전 금액 기준으로 계산하는 것이 일반적입니다.</li>
+    <li>단체 손님에게는 자동으로 18~20% 팁이 붙는 식당이 많습니다.</li>
+  </ul>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 팁을 꼭 내야 하나요?</p><p class="a">나라와 업장에 따라 다릅니다. 이 도구가 보여주는 것은 일반적인 관행 요약이며 법적 의무나 정답이 아닙니다. 봉사료가 이미 포함된 곳에서는 추가 팁이 필수가 아닙니다.</p></div>
+    <div class="qa"><p class="q">Q. 표시된 비율이 실제와 다릅니다.</p><p class="a">팁 관행은 지역·업장·서비스 형태에 따라 편차가 큽니다. 화면의 값은 참고용 요약이므로 필요하면 비율을 직접 수정해 계산하세요.</p></div>
+    <div class="qa"><p class="q">Q. 원화로는 얼마인가요?</p><p class="a">결과 아래에 공개 환율 API로 환산한 원화 금액을 함께 표시합니다. 환율을 불러오지 못하면 현지 통화 금액만 표시합니다.</p></div>
+    <h2>팁 관행 데이터 기준</h2>
+    <p class="note">국가별 팁 관행 요약은 일반적으로 알려진 관행을 정리한 <strong>참고용 요약</strong>이며(확인일 2026-08-19), 법령이나 공식 기준이 아닙니다.
+    같은 나라 안에서도 도시·업장·서비스 형태에 따라 크게 다르므로 계산서의 봉사료 표기와 현지 안내를 우선하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 팁 관행은 정답이 아니라 관행이며, 최종 금액은 이용자가 결정할 문제입니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/split-bill/" target="_blank" rel="noopener"><span class="e">🧾</span> 더치페이 정산 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, fillSelect, copyText, fmt } from "../assets/app.mjs";
+import { getRates, rateOf, fxFmt } from "../lib/fx.mjs";
+const C = [{"slug":"japan","n":"일본","flag":"🇯🇵","v":"100V","f":"50/60Hz","p":["A","B"],"tz":"Asia/Tokyo","cur":"JPY","curN":"엔","tip":"팁 문화 없음. 팁을 건네면 오히려 사양하는 경우가 많다.","pct":null},{"slug":"china","n":"중국","flag":"🇨🇳","v":"220V","f":"50Hz","p":["A","C","I"],"tz":"Asia/Shanghai","cur":"CNY","curN":"위안","tip":"팁 문화 없음. 일부 외국계 호텔에서만 소액 관행.","pct":null},{"slug":"taiwan","n":"대만","flag":"🇹🇼","v":"110V","f":"60Hz","p":["A","B"],"tz":"Asia/Taipei","cur":"TWD","curN":"신 타이완 달러","tip":"팁 필수 아님. 식당은 10% 봉사료가 계산서에 포함되는 경우가 많다.","pct":null},{"slug":"hongkong","n":"홍콩","flag":"🇭🇰","v":"220V","f":"50Hz","p":["G"],"tz":"Asia/Hong_Kong","cur":"HKD","curN":"홍콩 달러","tip":"식당 10% 봉사료 포함이 일반적. 별도 팁은 잔돈 정도.","pct":null},{"slug":"macau","n":"마카오","flag":"🇲🇴","v":"220V","f":"50Hz","p":["G","D"],"tz":"Asia/Macau","cur":"MOP","curN":"파타카","tip":"10% 봉사료 포함이 일반적. 별도 팁 필수 아님.","pct":null},{"slug":"mongolia","n":"몽골","flag":"🇲🇳","v":"230V","f":"50Hz","p":["C","E"],"tz":"Asia/Ulaanbaatar","cur":"MNT","curN":"투그릭","tip":"팁 의무 아님. 관광 가이드·기사에게 소액 팁 관행.","pct":[5,10]},{"slug":"singapore","n":"싱가포르","flag":"🇸🇬","v":"230V","f":"50Hz","p":["G"],"tz":"Asia/Singapore","cur":"SGD","curN":"싱가포르 달러","tip":"식당은 10% 봉사료+GST가 붙는다. 별도 팁 불필요.","pct":null},{"slug":"thailand","n":"태국","flag":"🇹🇭","v":"220V","f":"50Hz","p":["A","B","C","O"],"tz":"Asia/Bangkok","cur":"THB","curN":"바트","tip":"의무 아님. 식당에서 잔돈을 남기거나 20~50밧 정도의 소액 팁 관행.","pct":[0,10]},{"slug":"vietnam","n":"베트남","flag":"🇻🇳","v":"220V","f":"50Hz","p":["A","C"],"tz":"Asia/Ho_Chi_Minh","cur":"VND","curN":"동","tip":"팁 의무 아님. 고급 식당·스파·투어에서 5~10% 정도 관행.","pct":[5,10]},{"slug":"philippines","n":"필리핀","flag":"🇵🇭","v":"220V","f":"60Hz","p":["A","B","C"],"tz":"Asia/Manila","cur":"PHP","curN":"페소","tip":"봉사료(service charge)가 없으면 5~10% 팁 관행.","pct":[5,10]},{"slug":"malaysia","n":"말레이시아","flag":"🇲🇾","v":"240V","f":"50Hz","p":["G"],"tz":"Asia/Kuala_Lumpur","cur":"MYR","curN":"링깃","tip":"팁 의무 아님. 봉사료 10%가 포함되는 곳이 많다.","pct":null},{"slug":"indonesia","n":"인도네시아","flag":"🇮🇩","v":"230V","f":"50Hz","p":["C","F"],"tz":"Asia/Jakarta","cur":"IDR","curN":"루피아","tip":"봉사료 포함이 많음. 없으면 5~10% 소액 팁 관행.","pct":[5,10]},{"slug":"cambodia","n":"캄보디아","flag":"🇰🇭","v":"230V","f":"50Hz","p":["A","C","G"],"tz":"Asia/Phnom_Penh","cur":"KHR","curN":"리엘(달러 병용)","tip":"의무 아님. 가이드·기사·식당에 1~2달러 소액 팁 관행.","pct":[0,10]},{"slug":"laos","n":"라오스","flag":"🇱🇦","v":"230V","f":"50Hz","p":["A","B","C","E","F"],"tz":"Asia/Vientiane","cur":"LAK","curN":"킵","tip":"팁 문화 거의 없음. 투어 가이드에게 소액 관행.","pct":null},{"slug":"india","n":"인도","flag":"🇮🇳","v":"230V","f":"50Hz","p":["C","D","M"],"tz":"Asia/Kolkata","cur":"INR","curN":"루피","tip":"식당 5~10% 관행(봉사료 포함 여부 확인). 포터·기사 소액 팁.","pct":[5,10]},{"slug":"uzbekistan","n":"우즈베키스탄","flag":"🇺🇿","v":"220V","f":"50Hz","p":["C","F"],"tz":"Asia/Tashkent","cur":"UZS","curN":"솜","tip":"식당 계산서에 봉사료 10~15%가 붙는 경우가 많다. 별도 팁 의무 아님.","pct":null},{"slug":"uae","n":"아랍에미리트(두바이)","flag":"🇦🇪","v":"230V","f":"50Hz","p":["G","C","D"],"tz":"Asia/Dubai","cur":"AED","curN":"디르함","tip":"봉사료 포함이 많음. 없으면 10~15% 선택 팁 관행.","pct":[10,15]},{"slug":"qatar","n":"카타르","flag":"🇶🇦","v":"240V","f":"50Hz","p":["D","G"],"tz":"Asia/Qatar","cur":"QAR","curN":"리얄","tip":"봉사료 포함이 많음. 없으면 10% 내외 선택 팁.","pct":[0,10]},{"slug":"israel","n":"이스라엘","flag":"🇮🇱","v":"230V","f":"50Hz","p":["C","H","M"],"tz":"Asia/Jerusalem","cur":"ILS","curN":"셰켈","tip":"식당 10~15% 팁이 일반 관행(현금 선호 업장 있음).","pct":[10,15]},{"slug":"turkiye","n":"튀르키예","flag":"🇹🇷","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Istanbul","cur":"TRY","curN":"리라","tip":"식당 5~10% 팁 관행. 현금 팁 선호.","pct":[5,10]},{"slug":"uk","n":"영국","flag":"🇬🇧","v":"230V","f":"50Hz","p":["G"],"tz":"Europe/London","cur":"GBP","curN":"파운드","tip":"식당 10~12.5%. 봉사료(service charge) 포함 여부를 계산서에서 확인.","pct":[10,13]},{"slug":"ireland","n":"아일랜드","flag":"🇮🇪","v":"230V","f":"50Hz","p":["G"],"tz":"Europe/Dublin","cur":"EUR","curN":"유로","tip":"식당 10% 내외 선택 팁. 펍 카운터 주문은 팁 불필요.","pct":[0,10]},{"slug":"france","n":"프랑스","flag":"🇫🇷","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Paris","cur":"EUR","curN":"유로","tip":"봉사료(service compris)가 가격에 포함. 만족 시 잔돈 라운드업 정도.","pct":[0,5]},{"slug":"germany","n":"독일","flag":"🇩🇪","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Berlin","cur":"EUR","curN":"유로","tip":"5~10% 또는 라운드업. 결제 시 총액을 말하는 방식이 일반적.","pct":[5,10]},{"slug":"italy","n":"이탈리아","flag":"🇮🇹","v":"230V","f":"50Hz","p":["C","F","L"],"tz":"Europe/Rome","cur":"EUR","curN":"유로","tip":"자릿세(coperto)가 붙는 대신 팁 의무 없음. 만족 시 잔돈 정도.","pct":[0,5]},{"slug":"spain","n":"스페인","flag":"🇪🇸","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Madrid","cur":"EUR","curN":"유로","tip":"팁 의무 아님. 만족 시 잔돈 라운드업 또는 5% 내외.","pct":[0,5]},{"slug":"portugal","n":"포르투갈","flag":"🇵🇹","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Lisbon","cur":"EUR","curN":"유로","tip":"팁 의무 아님. 식당에서 5~10% 정도 선택 팁.","pct":[0,10]},{"slug":"netherlands","n":"네덜란드","flag":"🇳🇱","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Amsterdam","cur":"EUR","curN":"유로","tip":"봉사료 포함. 만족 시 5~10% 또는 라운드업.","pct":[0,10]},{"slug":"belgium","n":"벨기에","flag":"🇧🇪","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Brussels","cur":"EUR","curN":"유로","tip":"봉사료 포함이 원칙. 별도 팁 의무 없음.","pct":[0,5]},{"slug":"switzerland","n":"스위스","flag":"🇨🇭","v":"230V","f":"50Hz","p":["C","J"],"tz":"Europe/Zurich","cur":"CHF","curN":"스위스 프랑","tip":"봉사료 포함. 만족 시 라운드업 정도.","pct":[0,5]},{"slug":"austria","n":"오스트리아","flag":"🇦🇹","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Vienna","cur":"EUR","curN":"유로","tip":"5~10% 팁 관행. 결제 시 총액을 말하는 방식.","pct":[5,10]},{"slug":"czechia","n":"체코","flag":"🇨🇿","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Prague","cur":"CZK","curN":"코루나","tip":"식당 5~10% 또는 라운드업 관행.","pct":[5,10]},{"slug":"poland","n":"폴란드","flag":"🇵🇱","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Warsaw","cur":"PLN","curN":"즈워티","tip":"식당 10% 내외 팁 관행.","pct":[5,10]},{"slug":"hungary","n":"헝가리","flag":"🇭🇺","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Budapest","cur":"HUF","curN":"포린트","tip":"봉사료 10~15%가 계산서에 포함되는 경우 많음. 없으면 10% 내외.","pct":[0,10]},{"slug":"greece","n":"그리스","flag":"🇬🇷","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Athens","cur":"EUR","curN":"유로","tip":"팁 의무 아님. 만족 시 5~10% 또는 라운드업.","pct":[0,10]},{"slug":"denmark","n":"덴마크","flag":"🇩🇰","v":"230V","f":"50Hz","p":["C","E","F","K"],"tz":"Europe/Copenhagen","cur":"DKK","curN":"크로네","tip":"봉사료 포함이 원칙. 별도 팁 불필요.","pct":null},{"slug":"sweden","n":"스웨덴","flag":"🇸🇪","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Stockholm","cur":"SEK","curN":"크로나","tip":"팁 의무 없음. 만족 시 라운드업 정도.","pct":[0,5]},{"slug":"norway","n":"노르웨이","flag":"🇳🇴","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Oslo","cur":"NOK","curN":"크로네","tip":"팁 의무 없음. 만족 시 5~10% 선택.","pct":[0,10]},{"slug":"finland","n":"핀란드","flag":"🇫🇮","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Helsinki","cur":"EUR","curN":"유로","tip":"팁 문화 거의 없음. 봉사료 포함.","pct":null},{"slug":"iceland","n":"아이슬란드","flag":"🇮🇸","v":"230V","f":"50Hz","p":["C","F"],"tz":"Atlantic/Reykjavik","cur":"ISK","curN":"크로나","tip":"팁 문화 없음. 가격에 서비스 포함.","pct":null},{"slug":"russia","n":"러시아","flag":"🇷🇺","v":"220V","f":"50Hz","p":["C","F"],"tz":"Europe/Moscow","cur":"RUB","curN":"루블","tip":"식당 5~10% 팁 관행.","pct":[5,10]},{"slug":"usa","n":"미국","flag":"🇺🇸","v":"120V","f":"60Hz","p":["A","B"],"tz":"America/New_York","cur":"USD","curN":"달러","tip":"식당 테이블 서비스 15~20% 사실상 필수. 택시·미용 등도 팁 관행.","pct":[15,20]},{"slug":"canada","n":"캐나다","flag":"🇨🇦","v":"120V","f":"60Hz","p":["A","B"],"tz":"America/Toronto","cur":"CAD","curN":"캐나다 달러","tip":"식당 15~20% 팁 관행(미국과 유사).","pct":[15,20]},{"slug":"mexico","n":"멕시코","flag":"🇲🇽","v":"127V","f":"60Hz","p":["A","B"],"tz":"America/Mexico_City","cur":"MXN","curN":"페소","tip":"식당 10~15% 팁 관행.","pct":[10,15]},{"slug":"brazil","n":"브라질","flag":"🇧🇷","v":"127V/220V(지역별 상이)","f":"60Hz","p":["C","N"],"tz":"America/Sao_Paulo","cur":"BRL","curN":"헤알","tip":"식당 계산서에 10% 봉사료(serviço) 포함이 일반적.","pct":null},{"slug":"argentina","n":"아르헨티나","flag":"🇦🇷","v":"220V","f":"50Hz","p":["C","I"],"tz":"America/Argentina/Buenos_Aires","cur":"ARS","curN":"페소","tip":"식당 10% 팁 관행(현금 선호).","pct":[10,10]},{"slug":"chile","n":"칠레","flag":"🇨🇱","v":"220V","f":"50Hz","p":["C","L"],"tz":"America/Santiago","cur":"CLP","curN":"페소","tip":"계산서에 10% 팁(propina) 제안이 표시되는 것이 일반적.","pct":[10,10]},{"slug":"peru","n":"페루","flag":"🇵🇪","v":"220V","f":"60Hz","p":["A","C"],"tz":"America/Lima","cur":"PEN","curN":"솔","tip":"고급 식당 10% 내외. 일반 식당은 의무 아님.","pct":[0,10]},{"slug":"australia","n":"호주","flag":"🇦🇺","v":"230V","f":"50Hz","p":["I"],"tz":"Australia/Sydney","cur":"AUD","curN":"호주 달러","tip":"팁 의무 아님. 고급 식당에서 10% 정도 선택.","pct":[0,10]},{"slug":"newzealand","n":"뉴질랜드","flag":"🇳🇿","v":"230V","f":"50Hz","p":["I"],"tz":"Pacific/Auckland","cur":"NZD","curN":"뉴질랜드 달러","tip":"팁 의무 아님. 만족 시 10% 정도 선택.","pct":[0,10]},{"slug":"guam","n":"괌(미국령)","flag":"🇬🇺","v":"120V","f":"60Hz","p":["A","B"],"tz":"Pacific/Guam","cur":"USD","curN":"달러","tip":"미국식 팁 문화. 식당 15~20%, 봉사료 포함 여부 확인.","pct":[15,20]},{"slug":"saipan","n":"사이판(북마리아나)","flag":"🇲🇵","v":"120V","f":"60Hz","p":["A","B"],"tz":"Pacific/Saipan","cur":"USD","curN":"달러","tip":"미국식 팁 문화. 식당 15~20% 관행.","pct":[15,20]},{"slug":"egypt","n":"이집트","flag":"🇪🇬","v":"220V","f":"50Hz","p":["C","F"],"tz":"Africa/Cairo","cur":"EGP","curN":"파운드","tip":"박시시(팁) 문화가 강함. 식당 10% 내외+각종 서비스 소액 팁.","pct":[10,15]},{"slug":"morocco","n":"모로코","flag":"🇲🇦","v":"220V","f":"50Hz","p":["C","E"],"tz":"Africa/Casablanca","cur":"MAD","curN":"디르함","tip":"식당 5~10% 팁 관행. 가이드·포터 소액 팁.","pct":[5,10]},{"slug":"southafrica","n":"남아프리카공화국","flag":"🇿🇦","v":"230V","f":"50Hz","p":["C","D","M","N"],"tz":"Africa/Johannesburg","cur":"ZAR","curN":"랜드","tip":"식당 10~15% 팁 관행.","pct":[10,15]}];
+fillSelect($("country"), C.map((c) => ({ v: c.slug, n: c.flag + " " + c.n })), "usa");
+function cur() { return C.find((c) => c.slug === $("country").value) || C[0]; }
+function sync() {
+  const c = cur();
+  $("curLbl").textContent = "(" + c.cur + " " + c.curN + ")";
+  $("pct").value = c.pct ? (c.pct[0] + c.pct[1]) / 2 : 0;
+  $("custom").textContent = c.flag + " " + c.n + " — " + c.tip;
+}
+$("country").addEventListener("change", sync);
+sync();
+async function run() {
+  const c = cur();
+  const bill = Number($("bill").value) || 0;
+  const people = Math.max(1, +$("people").value || 1);
+  const incl = $("incl").value === "1";
+  const pct = incl ? 0 : Math.max(0, Number($("pct").value) || 0);
+  const tip = bill * pct / 100;
+  const total = bill + tip;
+  $("resultBox").hidden = false;
+  $("total").textContent = fxFmt(total, c.cur) + " " + c.cur;
+  $("sum").innerHTML =
+    "<dt>계산서</dt><dd>" + fxFmt(bill, c.cur) + " " + c.cur + "</dd>" +
+    "<dt>팁 (" + pct + "%)</dt><dd>" + fxFmt(tip, c.cur) + " " + c.cur + "</dd>" +
+    "<dt>1인당</dt><dd>" + fxFmt(total / people, c.cur) + " " + c.cur + "</dd>";
+  $("tipNote").textContent = incl
+    ? "봉사료가 이미 포함된 계산서로 처리했습니다. 추가 팁은 선택 사항입니다. (" + c.n + ": " + c.tip + ")"
+    : c.n + " 관행: " + c.tip;
+  showAd();
+  const fx = await getRates(c.cur);
+  const r = fx.ok ? rateOf(fx, c.cur, "KRW") : null;
+  $("krwNote").innerHTML = r
+    ? "원화 환산 약 <strong>" + fmt(total * r) + "원</strong> (1 " + c.cur + " ≈ " + fxFmt(r, "KRW") + "원" + (fx.stale ? ", 마지막으로 받아온 환율" : "") + ") — 참고용이며 은행 고시 환율이 아닙니다."
+    : "환율을 불러오지 못해 원화 환산은 생략했습니다. " + esc(fx.message || "");
+}
+$("goBtn").addEventListener("click", run);
+$("copyBtn").addEventListener("click", () => copyText($("total").textContent + " (" + cur().n + " 팁 포함, tripcalc-kr.vercel.app/tip-calc)"));
+
+</script>
+</body>
+</html>

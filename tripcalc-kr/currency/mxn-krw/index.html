@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>페소(MXN) → 원(KRW) 환율 계산기 — 100페소는 몇 원?</title>
+<meta name="description" content="페소(MXN)를 원(KRW)로 환산합니다. 멕시코 여행·구매 시 1·10·100·1,000 MXN 단위 환산표를 함께 보여주며, 환율은 공개 API에서 불러와 24시간 캐시합니다. 참고용이며 은행 고시 환율이 아닙니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/currency/mxn-krw/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="MXN/KRW 환율 계산기" />
+<meta property="og:description" content="페소(MXN)를 원(KRW)로 환산합니다. 멕시코 여행·구매 시 1·10·100·1,000 MXN 단위 환산표를 함께 보여주며, 환율은 공개 API에서 불러와 24시간 캐시합니다. 참고용이며 은행 고시 환율이 아닙니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/currency/mxn-krw/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"MXN/KRW 환율 계산기","description":"페소(MXN)를 원(KRW)로 환산합니다. 멕시코 여행·구매 시 1·10·100·1,000 MXN 단위 환산표를 함께 보여주며, 환율은 공개 API에서 불러와 24시간 캐시합니다. 참고용이며 은행 고시 환율이 아닙니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/currency/mxn-krw/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"MXN 환율은 얼마나 자주 갱신되나요?","acceptedAnswer":{"@type":"Answer","text":"유럽중앙은행 기준환율을 제공하는 공개 API를 사용하며 영업일 기준으로 하루 한 번 갱신됩니다. 브라우저에는 24시간 캐시되고, 상단 계산기의 새로고침으로 즉시 다시 받아올 수 있습니다."}},{"@type":"Question","name":"은행에서 환전하면 이 금액을 받나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 기준환율이며 실제 환전에는 스프레드와 수수료가 붙습니다. 참고용이며 은행 고시 환율이 아닙니다."}},{"@type":"Question","name":"인터넷이 안 되는 곳에서도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"한 번이라도 이 사이트에서 환율을 받아온 적이 있으면 저장된 값으로 계산하고 '마지막으로 받아온 환율'이라고 표시합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"환율 계산기","item":"https://tripcalc-kr.vercel.app/currency/"},{"@type":"ListItem","position":3,"name":"MXN/KRW","item":"https://tripcalc-kr.vercel.app/currency/mxn-krw/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <a href="../../currency/">환율 계산기</a> <span class="sep">›</span> <span>MXN/KRW</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🇲🇽🇰🇷</div>
+    <h1>MXN → KRW 환율</h1>
+    <p class="lead">🇲🇽 <strong>페소(MXN)</strong>를 🇰🇷 <strong>원(KRW)</strong>로 환산합니다. 열자마자 오늘 환율로 계산됩니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>페소(MXN) 금액</h2>
+    <label class="f">금액 <span class="u">(MXN)</span>
+      <input type="number" id="amt" inputmode="decimal" min="0" step="any" value="100" />
+    </label>
+    <button class="btn" id="goBtn" type="button">KRW로 환산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>환산 결과</h2>
+      <p class="big"><span class="num" id="out">-</span></p>
+      <div id="rateLines"></div>
+      <div id="quickTbl"></div>
+      <p class="note" id="fxStatus"></p>
+      <div class="share">
+        <button class="btn2" id="copyBtn" type="button">📋 결과 복사</button>
+        <a class="btn2" href="../">💱 다른 통화로 계산하기</a>
+        <a class="btn2" href="../krw-mxn/">⇅ KRW → MXN</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-label="다른 통화쌍">
+    <h2>다른 통화쌍</h2>
+    <div class="chips">
+      <a class="chip" href="../usd-krw/">🇺🇸 USD→KRW</a>
+      <a class="chip" href="../jpy-krw/">🇯🇵 JPY→KRW</a>
+      <a class="chip" href="../eur-krw/">🇮🇪 EUR→KRW</a>
+      <a class="chip" href="../cny-krw/">🇨🇳 CNY→KRW</a>
+      <a class="chip" href="../gbp-krw/">🇬🇧 GBP→KRW</a>
+      <a class="chip" href="../hkd-krw/">🇭🇰 HKD→KRW</a>
+      <a class="chip" href="../sgd-krw/">🇸🇬 SGD→KRW</a>
+      <a class="chip" href="../thb-krw/">🇹🇭 THB→KRW</a>
+      <a class="chip" href="../aud-krw/">🇦🇺 AUD→KRW</a>
+      <a class="chip" href="../brl-krw/">🇧🇷 BRL→KRW</a>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>페소(MXN) 환율, 이 페이지만 열어 두면 됩니다</h2>
+    <p>멕시코 등에서 쓰는 페소(MXN)를 원화로 환산합니다. 현지 가격표를 보고 "이게 우리 돈으로 얼마지?"를 바로 확인할 때 쓰세요.
+    페이지를 열면 자동으로 최신 기준환율을 불러오고, 네트워크가 안 되면 마지막으로 받아온 환율로 계산한 뒤 그 사실을 화면에 표시합니다.</p>
+    <p>표시되는 값은 <strong>기준환율</strong>입니다. 실제 은행·환전소·카드 결제에는 스프레드와 수수료가 붙기 때문에 실제로 손에 쥐는 원화은 이보다 불리합니다. 대략적인 감을 잡는 용도로 쓰세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>금액을 넣고 "KRW로 환산하기"를 누릅니다.</li>
+      <li>1 MXN 기준 환율과 역환율(1 KRW = ? MXN)이 함께 표시됩니다.</li>
+      <li>아래 단위별 표(1, 10, 100, 1,000 MXN)로 자릿수 감각을 잡을 수 있습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. MXN 환율은 얼마나 자주 갱신되나요?</p><p class="a">유럽중앙은행 기준환율을 제공하는 공개 API를 사용하며 영업일 기준으로 하루 한 번 갱신됩니다. 브라우저에는 24시간 캐시되고, 상단 계산기의 새로고침으로 즉시 다시 받아올 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 은행에서 환전하면 이 금액을 받나요?</p><p class="a">아닙니다. 기준환율이며 실제 환전에는 스프레드와 수수료가 붙습니다. 참고용이며 은행 고시 환율이 아닙니다.</p></div>
+    <div class="qa"><p class="q">Q. 인터넷이 안 되는 곳에서도 계산되나요?</p><p class="a">한 번이라도 이 사이트에서 환율을 받아온 적이 있으면 저장된 값으로 계산하고 '마지막으로 받아온 환율'이라고 표시합니다.</p></div>
+    <h2>환율 데이터의 출처와 한계</h2>
+    <p class="note">환율은 <a href="https://api.frankfurter.dev/" target="_blank" rel="noopener">Frankfurter</a>(유럽중앙은행 기준환율)의 공개 API 를 브라우저에서 직접 불러오고, 실패하면
+    <a href="https://open.er-api.com/" target="_blank" rel="noopener">ExchangeRate-API 공개 엔드포인트</a>를 시도합니다.
+    받아온 값은 브라우저에 24시간 캐시되고, 두 곳 모두 실패하면 마지막으로 저장된 값을 "오래된 값" 표시와 함께 보여줍니다.
+    저장된 값조차 없으면 숫자를 지어내지 않고 안내 메시지만 표시합니다.
+    환율은 참고용이며 은행 고시 환율이 아닙니다. 실제 환전 시에는 스프레드·수수료가 더해집니다. 기준환율은 영업일에만 갱신되므로 주말·공휴일에는 직전 영업일 값이 표시됩니다. (확인일 2026-08-19)</p>
+    
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/split-bill/" target="_blank" rel="noopener"><span class="e">🧾</span> 더치페이 정산 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../../privacy.html">개인정보처리방침</a>·<a href="../../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, copyText } from "../../assets/app.mjs";
+import { getRates, rateOf, fxFmt, fetchedLabel, FX_DISCLAIMER } from "../../lib/fx.mjs";
+const FROM = "MXN", TO = "KRW";
+const UNITS = [1,10,100,1000];
+async function run() {
+  $("resultBox").hidden = false;
+  $("fxStatus").innerHTML = "환율을 불러오는 중…";
+  const st = await getRates(FROM);
+  const r = rateOf(st, FROM, TO);
+  $("fxStatus").innerHTML = st.ok
+    ? (st.stale ? "<strong>마지막으로 받아온 환율</strong>을 사용 중입니다. " + esc(st.message) + " " : "") +
+      "출처: " + esc(st.src || "저장된 값") + (st.date ? " · 기준일 " + esc(st.date) : "") + " · 받아온 시각 " + esc(fetchedLabel(st)) + "<br />" + FX_DISCLAIMER
+    : "⚠ " + esc(st.message);
+  if (r == null) { $("out").textContent = "-"; showAd(); return; }
+  const a = Number($("amt").value) || 0;
+  $("out").textContent = fxFmt(a * r, TO) + " " + TO;
+  $("rateLines").innerHTML =
+    '<div class="fxline"><span>1 ' + FROM + "</span><b>" + fxFmt(r, TO) + " " + TO + "</b></div>" +
+    '<div class="fxline"><span>1 ' + TO + "</span><b>" + fxFmt(1 / r, FROM) + " " + FROM + "</b></div>";
+  $("quickTbl").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>' + FROM + "</th><th>" + TO + "</th></tr></thead><tbody>" +
+    UNITS.map((u) => "<tr><td>" + u.toLocaleString("ko-KR") + "</td><td>" + fxFmt(u * r, TO) + "</td></tr>").join("") + "</tbody></table></div>";
+  showAd();
+}
+$("goBtn").addEventListener("click", run);
+$("copyBtn").addEventListener("click", () => copyText($("amt").value + " " + FROM + " = " + $("out").textContent + " (tripcalc-kr.vercel.app/currency/" + FROM.toLowerCase() + "-" + TO.toLowerCase() + ")"));
+run();
+
+</script>
+</body>
+</html>

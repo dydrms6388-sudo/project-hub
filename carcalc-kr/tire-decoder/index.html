@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>타이어 규격 해독기 — 205/55R16 91V 읽는 법과 대체 규격 지름 오차</title>
+<meta name="description" content="205/55R16 91V 같은 타이어 표기를 폭·편평비·휠 인치·하중지수·속도기호로 풀어 읽고, 다른 규격으로 바꿨을 때 전체 지름이 몇 % 달라지는지, 속도계 오차는 얼마나 생기는지 계산합니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/tire-decoder/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="타이어 규격 해독기 — 대체 규격 오차" />
+<meta property="og:description" content="205/55R16 91V 같은 타이어 표기를 폭·편평비·휠 인치·하중지수·속도기호로 풀어 읽고, 다른 규격으로 바꿨을 때 전체 지름이 몇 % 달라지는지, 속도계 오차는 얼마나 생기는지 계산합니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/tire-decoder/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"타이어 규격 해독기","description":"205/55R16 91V 같은 타이어 표기를 폭·편평비·휠 인치·하중지수·속도기호로 풀어 읽고, 다른 규격으로 바꿨을 때 전체 지름이 몇 % 달라지는지, 속도계 오차는 얼마나 생기는지 계산합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/tire-decoder/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"지름 오차 ±3%는 법으로 정해진 기준인가요?","acceptedAnswer":{"@type":"Answer","text":"법정 수치라기보다 업계에서 널리 쓰이는 실무 권장 범위입니다. 오차가 커질수록 속도계 표시와 실제 속도의 차이, 주행거리계 오차가 커지므로 보수적으로 잡는 것이 안전합니다."}},{"@type":"Question","name":"인치업을 하면 왜 편평비를 낮추나요?","acceptedAnswer":{"@type":"Answer","text":"휠이 커진 만큼 사이드월을 얇게 해야 전체 지름이 유지되기 때문입니다. 예를 들어 205/55R16을 17인치로 올린다면 편평비를 45~50 근처로 낮춰 지름을 맞춥니다."}},{"@type":"Question","name":"폭을 넓히면 무조건 좋은가요?","acceptedAnswer":{"@type":"Answer","text":"접지력은 늘 수 있지만 연비가 나빠지고 노면 소음과 젖은 노면 배수 성능에 영향이 갑니다. 또 휠하우스·서스펜션 간섭 여부를 반드시 확인해야 합니다."}},{"@type":"Question","name":"하중지수를 낮춰도 되나요?","acceptedAnswer":{"@type":"Answer","text":"안 됩니다. 순정 하중지수 이상을 유지해야 합니다. 낮은 하중지수는 과부하 상태에서 타이어 손상 위험을 높입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"타이어 규격 해독기","item":"https://carcalc-kr.vercel.app/tire-decoder/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">타이어 규격 해독기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🛞</div>
+    <h1>타이어 규격 해독기</h1>
+    <p class="lead">옆면의 <strong>205/55R16 91V</strong>가 무슨 뜻인지 풀어 읽고, 다른 규격으로 바꿨을 때 <strong>지름 오차와 속도계 오차</strong>까지 계산합니다.</p>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label for="orig">현재 타이어 규격 <span class="hint">예: 205/55R16 91V</span></label>
+      <input type="text" id="orig" placeholder="205/55R16 91V" value="205/55R16 91V" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label for="alt">바꾸려는 규격 <span class="hint">선택 — 비우면 해독만</span></label>
+      <input type="text" id="alt" placeholder="225/45R17" value="225/45R17" autocomplete="off" />
+    </div>
+    <button class="btn full" id="go" type="button">규격 해독하기</button>
+  </div>
+  <div class="result" id="out" hidden></div>
+
+  <section class="about">
+    <h2>하중지수(Load Index) 표</h2>
+    <p>규격 뒤 두 자리 숫자는 타이어 한 개가 견딜 수 있는 최대 하중을 나타내는 코드입니다. <strong>순정보다 낮은 하중지수를 쓰면 안 됩니다.</strong></p>
+    <div class="row2"><div class="tblwrap"><table class="tbl" style="min-width:0"><thead><tr><th>지수</th><th>최대하중</th></tr></thead><tbody><tr><td>75</td><td class="num">387 kg</td></tr><tr><td>80</td><td class="num">450 kg</td></tr><tr><td>82</td><td class="num">475 kg</td></tr><tr><td>84</td><td class="num">500 kg</td></tr><tr><td>85</td><td class="num">515 kg</td></tr><tr><td>87</td><td class="num">545 kg</td></tr><tr><td>88</td><td class="num">560 kg</td></tr><tr><td>89</td><td class="num">580 kg</td></tr><tr><td>91</td><td class="num">615 kg</td></tr><tr><td>92</td><td class="num">630 kg</td></tr><tr><td>94</td><td class="num">670 kg</td></tr><tr><td>95</td><td class="num">690 kg</td></tr><tr><td>96</td><td class="num">710 kg</td></tr></tbody></table></div><div class="tblwrap"><table class="tbl" style="min-width:0"><thead><tr><th>지수</th><th>최대하중</th></tr></thead><tbody><tr><td>97</td><td class="num">730 kg</td></tr><tr><td>98</td><td class="num">750 kg</td></tr><tr><td>99</td><td class="num">775 kg</td></tr><tr><td>100</td><td class="num">800 kg</td></tr><tr><td>101</td><td class="num">825 kg</td></tr><tr><td>102</td><td class="num">850 kg</td></tr><tr><td>103</td><td class="num">875 kg</td></tr><tr><td>104</td><td class="num">900 kg</td></tr><tr><td>105</td><td class="num">925 kg</td></tr><tr><td>107</td><td class="num">975 kg</td></tr><tr><td>108</td><td class="num">1000 kg</td></tr><tr><td>109</td><td class="num">1030 kg</td></tr><tr><td>110</td><td class="num">1060 kg</td></tr></tbody></table></div></div>
+    <h2>속도기호(Speed Symbol) 표</h2>
+    <p>규격 맨 뒤 알파벳은 타이어가 견디는 최고 속도 등급입니다.</p>
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>기호</th><th>Q</th><th>R</th><th>S</th><th>T</th><th>H</th><th>V</th><th>W</th><th>Y</th></tr></thead><tbody><tr><td>최고속도</td><td class="num">160km/h</td><td class="num">170km/h</td><td class="num">180km/h</td><td class="num">190km/h</td><td class="num">210km/h</td><td class="num">240km/h</td><td class="num">270km/h</td><td class="num">300km/h</td></tr></tbody></table></div>
+    <p class="src">국제 표준 하중지수·속도기호 대응표 기준의 참고값입니다. 실제 장착 가능 규격은 차량 취급설명서와 타이어 제조사 적합표를 따르세요.</p>
+  </section>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>205/55R16 91V를 한 글자씩 읽으면</h2>
+    <ul>
+      <li><strong>205</strong> — 타이어 단면 폭(mm). 숫자가 클수록 접지면이 넓습니다.</li>
+      <li><strong>55</strong> — 편평비(%). 사이드월 높이가 폭의 55%라는 뜻이라 숫자가 작을수록 옆면이 얇습니다.</li>
+      <li><strong>R</strong> — 래디얼 구조. 승용차용은 거의 전부 R입니다.</li>
+      <li><strong>16</strong> — 휠(림) 지름(인치).</li>
+      <li><strong>91</strong> — 하중지수. 타이어 한 개가 견디는 최대 하중 코드(91 = 615kg).</li>
+      <li><strong>V</strong> — 속도기호. 견딜 수 있는 최고 속도 등급(V = 240km/h).</li>
+    </ul>
+    <h2>규격을 바꿀 때 지름이 중요한 이유</h2>
+    <p>타이어 <strong>전체 지름</strong>이 달라지면 바퀴 한 바퀴에 나아가는 거리가 달라집니다. 속도계와 주행거리계는 바퀴 회전수를 기준으로 계산하므로, 지름이 커지면 계기판보다 실제로 더 빨리·더 멀리 달리게 되고 작아지면 반대가 됩니다. ABS·차체자세제어 같은 전자장비도 바퀴 회전 정보를 쓰기 때문에 오차가 커지면 개입 시점이 어긋날 수 있습니다. 그래서 대체 규격은 <strong>지름 오차 ±3% 이내</strong>로 맞추는 것이 일반적인 권장 기준입니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li>타이어 옆면에 새겨진 규격을 그대로 입력합니다. 예: <code>205/55R16 91V</code></li>
+      <li>바꾸려는 규격을 두 번째 칸에 넣으면 지름 차이와 오차율, 속도계 오차가 계산됩니다.</li>
+      <li>오차가 ±3%를 넘으면 경고가 표시됩니다. 하중지수가 낮아지는 조합도 함께 경고합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 지름 오차 ±3%는 법으로 정해진 기준인가요?</p><p class="a">법정 수치라기보다 업계에서 널리 쓰이는 실무 권장 범위입니다. 오차가 커질수록 속도계 표시와 실제 속도의 차이, 주행거리계 오차가 커지므로 보수적으로 잡는 것이 안전합니다.</p></div>
+    <div class="qa"><p class="q">Q. 인치업을 하면 왜 편평비를 낮추나요?</p><p class="a">휠이 커진 만큼 사이드월을 얇게 해야 전체 지름이 유지되기 때문입니다. 예를 들어 205/55R16을 17인치로 올린다면 편평비를 45~50 근처로 낮춰 지름을 맞춥니다.</p></div>
+    <div class="qa"><p class="q">Q. 폭을 넓히면 무조건 좋은가요?</p><p class="a">접지력은 늘 수 있지만 연비가 나빠지고 노면 소음과 젖은 노면 배수 성능에 영향이 갑니다. 또 휠하우스·서스펜션 간섭 여부를 반드시 확인해야 합니다.</p></div>
+    <div class="qa"><p class="q">Q. 하중지수를 낮춰도 되나요?</p><p class="a">안 됩니다. 순정 하중지수 이상을 유지해야 합니다. 낮은 하중지수는 과부하 상태에서 타이어 손상 위험을 높입니다.</p></div>
+    <h2>데이터 출처와 확인일</h2>
+    <p class="src"><a href="https://www.law.go.kr/법령/자동차및자동차부품의성능과기준에관한규칙" target="_blank" rel="noopener">자동차 및 자동차부품의 성능과 기준에 관한 규칙 (타이어 안전기준)</a><br />데이터 확인일: 2026-08-19</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 장착 가능 여부는 차량 취급설명서와 제조사 적합표를 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../maintenance/"><span class="ic">🔧</span>소모품 교체 주기 기록</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-maintenance-cycle/" target="_blank" rel="noopener"><span class="ic">🔩</span>차량 소모품 교체주기 가이드</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-insurance-rider/" target="_blank" rel="noopener"><span class="ic">🛡️</span>자동차보험 특약 점검</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { parseTire, tireDiameter, tireDiff } from "../lib/calc.mjs";
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+const LI = {"75":387,"80":450,"82":475,"84":500,"85":515,"87":545,"88":560,"89":580,"91":615,"92":630,"94":670,"95":690,"96":710,"97":730,"98":750,"99":775,"100":800,"101":825,"102":850,"103":875,"104":900,"105":925,"107":975,"108":1000,"109":1030,"110":1060};
+const SS = {"Q":160,"R":170,"S":180,"T":190,"H":210,"V":240,"W":270,"Y":300};
+function desc(t) {
+  const parts = ['단면 폭 ' + t.width + 'mm', '편평비 ' + t.aspect + '% (사이드월 높이 ' + (t.width * t.aspect / 100).toFixed(1) + 'mm)', '휠(림) 지름 ' + t.rim + '인치'];
+  if (t.loadIndex) parts.push('하중지수 ' + t.loadIndex + (LI[t.loadIndex] ? ' = 개당 최대 ' + LI[t.loadIndex] + 'kg' : ''));
+  if (t.speedSymbol) parts.push('속도기호 ' + t.speedSymbol + (SS[t.speedSymbol] ? ' = 최고 ' + SS[t.speedSymbol] + 'km/h' : ''));
+  return parts;
+}
+function run() {
+  const o = parseTire($('orig').value);
+  if (!o) { alert('규격을 205/55R16 또는 205/55R16 91V 형식으로 입력하세요.'); return; }
+  const d1 = tireDiameter(o);
+  const a = $('alt').value.trim() ? parseTire($('alt').value) : null;
+  if ($('alt').value.trim() && !a) { alert('바꾸려는 규격 형식을 확인하세요. 예: 225/45R17'); return; }
+  const rows = [
+    ['현재 규격', o.width + '/' + o.aspect + 'R' + o.rim + (o.loadIndex ? ' ' + o.loadIndex + (o.speedSymbol || '') : '')],
+    ['전체 지름', d1.toFixed(1) + ' mm'],
+    ['둘레(1회전 거리)', (d1 * Math.PI / 1000).toFixed(3) + ' m'],
+  ];
+  const st = desc(o).map(function (x) { return x; });
+  st.unshift('전체 지름 = 림 인치 × 25.4 + 2 × (폭 × 편평비%) = ' + o.rim + '×25.4 + 2×(' + o.width + '×' + o.aspect + '%) = ' + d1.toFixed(1) + 'mm');
+  let big = d1.toFixed(1) + ' mm', sub = '현재 타이어 전체 지름';
+  let extra = '';
+  if (a) {
+    const df = tireDiff(o, a);
+    const ok = Math.abs(df.diffPct) <= 3;
+    rows.push(['대체 규격', a.width + '/' + a.aspect + 'R' + a.rim]);
+    rows.push(['대체 규격 지름', df.d2.toFixed(1) + ' mm']);
+    rows.push(['지름 차이', (df.diffMm >= 0 ? '+' : '') + df.diffMm.toFixed(1) + ' mm']);
+    rows.push(['지름 오차율', (df.diffPct >= 0 ? '+' : '') + df.diffPct.toFixed(2) + '% ' + (ok ? '<span class="badge ok">±3% 이내</span>' : '<span class="badge bad">±3% 초과</span>'), 'total']);
+    const shown = 100, real = shown * df.d2 / df.d1;
+    big = (df.diffPct >= 0 ? '+' : '') + df.diffPct.toFixed(2) + '%';
+    sub = ok ? '통상 권장 범위(±3%) 안입니다.' : '통상 권장 범위(±3%)를 벗어납니다. 속도계·ABS 오차가 커질 수 있습니다.';
+    st.push('대체 규격 지름 = ' + a.rim + '×25.4 + 2×(' + a.width + '×' + a.aspect + '%) = ' + df.d2.toFixed(1) + 'mm');
+    st.push('오차율 = (대체 − 현재) ÷ 현재 × 100 = (' + df.d2.toFixed(1) + ' − ' + df.d1.toFixed(1) + ') ÷ ' + df.d1.toFixed(1) + ' × 100 = ' + df.diffPct.toFixed(2) + '%');
+    st.push('속도계 오차: 계기판 ' + shown + 'km/h일 때 실제 약 ' + real.toFixed(1) + 'km/h');
+    if (a.loadIndex && o.loadIndex && a.loadIndex < o.loadIndex) extra = '<p class="src"><span class="badge bad">주의</span> 대체 규격의 하중지수가 현재보다 낮습니다. 순정보다 낮은 하중지수는 사용하지 마세요.</p>';
+  }
+  C.result('out', {
+    big: big, sub: sub, rows: rows,
+    foot: C.steps(st) + '<p class="src">' + desc(o).join(' · ') + '</p>' + extra,
+  });
+}
+$('go').addEventListener('click', run);
+</script>
+</body>
+</html>

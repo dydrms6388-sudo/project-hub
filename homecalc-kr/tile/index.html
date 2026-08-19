@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>타일 장수 계산기 — 규격·줄눈 폭·로스율 반영 | 홈캘크</title>
+<meta name="description" content="시공 면적과 타일 규격(300×300, 600×600 등), 줄눈 폭을 넣으면 필요한 타일 장수를 계산합니다. 정시공 8%·대각선 15% 로스율 조정 가능, ㎡당 장수도 함께 표시." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/tile/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧱</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="타일 장수 계산기" />
+<meta property="og:description" content="시공 면적과 타일 규격(300×300, 600×600 등), 줄눈 폭을 넣으면 필요한 타일 장수를 계산합니다. 정시공 8%·대각선 15% 로스율 조정 가능, ㎡당 장수도 함께 표시." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/tile/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"타일 계산기","url":"https://homecalc-kr.vercel.app/tile/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"시공 면적과 타일 규격(300×300, 600×600 등), 줄눈 폭을 넣으면 필요한 타일 장수를 계산합니다. 정시공 8%·대각선 15% 로스율 조정 가능, ㎡당 장수도 함께 표시."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"줄눈 폭을 0으로 하면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"타일 크기만으로 ㎡당 장수를 계산합니다. 실제로는 2~5mm 줄눈이 들어가므로 장수가 조금 줄어드는 것이 정상입니다."}},{"@type":"Question","name":"박스 단위로 파는데 장수만 나와도 되나요?","acceptedAnswer":{"@type":"Answer","text":"제품 상세의 '박스당 ○장'으로 나누어 올림하면 박스 수가 됩니다. 박스 단위 구매 시 여유분이 더 생깁니다."}},{"@type":"Question","name":"타일 접착제(압착 시멘트)는 얼마나 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"제품마다 소요량(㎏/㎡)이 달라 이 도구에서는 계산하지 않습니다. 접착제 포대에 표기된 ㎡당 소요량을 확인하세요."}},{"@type":"Question","name":"로스율은 왜 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"가장자리 재단, 운반·시공 중 파손, 색상 편차 대비 여유분 때문입니다. 정시공 5~10%, 패턴 시공 15% 내외가 일반적 관행입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"타일 계산기","item":"https://homecalc-kr.vercel.app/tile/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">타일 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧱</div>
+    <h1>타일 계산기</h1>
+    <p class="lead">타일 규격과 줄눈(메지) 폭으로 <strong>㎡당 장수</strong>를 구하고, 시공 로스를 더해 필요한 총 장수를 계산합니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>시공 조건 입력</h2>
+    <div class="grid2">
+      <label class="f">시공 면적 (㎡)
+        <input type="number" id="area" inputmode="decimal" step="any" min="0" value="10" />
+      </label>
+      <label class="f">타일 규격 프리셋
+        <select id="preset"></select>
+      </label>
+      <label class="f">타일 가로 (mm)
+        <input type="number" id="tw" inputmode="decimal" step="any" min="1" value="300" />
+      </label>
+      <label class="f">타일 세로 (mm)
+        <input type="number" id="th" inputmode="decimal" step="any" min="1" value="300" />
+      </label>
+      <label class="f">줄눈(메지) 폭 (mm)
+        <input type="number" id="grout" inputmode="decimal" step="any" min="0" value="3" />
+      </label>
+      <label class="f">시공 로스율 <span class="hint">— 조정 가능</span>
+        <select id="loss">
+          <option value="0.08">정시공 +8% (관행)</option>
+          <option value="0.15">대각선·패턴 +15% (관행)</option>
+          <option value="0.05">넓고 단순한 면 +5%</option>
+          <option value="0.2">굴곡 많은 욕실 +20%</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">필요 장수 계산</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>타일 장수는 타일 크기만으로 계산하면 실제보다 많이 나옵니다. 줄눈(메지) 폭만큼 한 장이 차지하는 면적이 커지기 때문입니다. 이 계산기는 (타일 가로+줄눈)×(세로+줄눈)을 한 장의 점유 면적으로 잡아 ㎡당 장수를 구한 뒤, 재단·파손 로스를 더합니다.</p>
+    <p>욕실 벽·바닥처럼 굴곡이 많은 곳은 로스가 커집니다. 같은 로트(색상 편차)를 나중에 구하기 어려우므로 여유분을 넉넉히 두는 것이 일반적입니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>시공할 면적(㎡)을 입력합니다. 벽 타일이면 벽 면적, 바닥이면 바닥 면적입니다.</li>
+      <li>프리셋에서 타일 규격을 고르거나 가로·세로(mm)를 직접 입력합니다.</li>
+      <li>줄눈 폭(보통 2~5mm)과 시공 방식별 로스율을 고르고 계산합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 줄눈 폭을 0으로 하면 어떻게 되나요?</p><p class="a">타일 크기만으로 ㎡당 장수를 계산합니다. 실제로는 2~5mm 줄눈이 들어가므로 장수가 조금 줄어드는 것이 정상입니다.</p></div>
+    <div class="qa"><p class="q">Q. 박스 단위로 파는데 장수만 나와도 되나요?</p><p class="a">제품 상세의 '박스당 ○장'으로 나누어 올림하면 박스 수가 됩니다. 박스 단위 구매 시 여유분이 더 생깁니다.</p></div>
+    <div class="qa"><p class="q">Q. 타일 접착제(압착 시멘트)는 얼마나 필요한가요?</p><p class="a">제품마다 소요량(㎏/㎡)이 달라 이 도구에서는 계산하지 않습니다. 접착제 포대에 표기된 ㎡당 소요량을 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 로스율은 왜 필요한가요?</p><p class="a">가장자리 재단, 운반·시공 중 파손, 색상 편차 대비 여유분 때문입니다. 정시공 5~10%, 패턴 시공 15% 내외가 일반적 관행입니다.</p></div>
+<p class="note">이 계산은 <strong>업계 일반 관행값</strong>을 사용한 <strong>참고용</strong> 결과입니다. 제품 라벨·시방서 표기가 있으면 그 값을 직접 입력하세요. 실제 시공 전에는 시공사 실측 견적이 우선합니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../flooring/"><span class="ic">🪵</span>장판·마루 계산기</a>
+      <a class="rel" href="../wallpaper/"><span class="ic">🧻</span>도배 자재 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong/" rel="noopener"><span class="ic">📐</span>평수 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-isagak/" rel="noopener"><span class="ic">📦</span>이사각 — 이사 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { tileCalc } from "../lib/calc.mjs";
+const PRESETS = [
+  { name: "직접 입력", w: 0, h: 0 },
+  { name: "100×100 (모자이크·욕실벽)", w: 100, h: 100 },
+  { name: "200×200", w: 200, h: 200 },
+  { name: "300×300 (욕실 바닥)", w: 300, h: 300 },
+  { name: "300×600 (욕실 벽)", w: 300, h: 600 },
+  { name: "600×600 (폴리싱)", w: 600, h: 600 },
+  { name: "600×1200 (대형 포세린)", w: 600, h: 1200 }
+];
+const $ = (id) => document.getElementById(id);
+const sel = $("preset");
+PRESETS.forEach((p, i) => { const o = document.createElement("option"); o.value = i; o.textContent = p.name; sel.appendChild(o); });
+sel.value = 3; $("tw").value = 300; $("th").value = 300;
+sel.addEventListener("change", () => {
+  const p = PRESETS[+sel.value];
+  if (p.w) { $("tw").value = p.w; $("th").value = p.h; }
+});
+$("calcBtn").addEventListener("click", () => {
+  const areaM2 = parseFloat($("area").value);
+  const tileWmm = parseFloat($("tw").value);
+  const tileHmm = parseFloat($("th").value);
+  const groutMm = parseFloat($("grout").value) || 0;
+  if (!isFinite(areaM2) || areaM2 <= 0 || !isFinite(tileWmm) || tileWmm <= 0 || !isFinite(tileHmm) || tileHmm <= 0) { hcToast("면적과 타일 규격을 입력하세요"); return; }
+  const lossRate = parseFloat($("loss").value);
+  const r = tileCalc({ areaM2, tileWmm, tileHmm, groutMm, lossRate });
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = "타일 약 <span>" + hcFmt(r.tiles) + "장</span> <small>(" + tileWmm + "×" + tileHmm + "mm)</small>";
+  $("resSub").textContent = "㎡당 " + hcFmt(r.perM2, 2) + "장 × " + hcFmt(areaM2, 2) + "㎡ = " + hcFmt(r.rawCount, 1) + "장 + 로스 " + Math.round(lossRate * 100) + "%";
+  $("resFormula").textContent = "㎡당 장수 = 1,000,000 ÷ ((" + tileWmm + "+" + groutMm + ") × (" + tileHmm + "+" + groutMm + ")) · 총 장수 = 올림( ㎡당 장수 × 면적 × " + (1 + lossRate).toFixed(2) + " )";
+  $("srcLine").innerHTML = "줄눈 폭·로스율: 업계 일반 관행(참고용, 시방서 우선) · 확인일 2026-08-19 <span class=\"badge todo\">확인 필요</span>";
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>

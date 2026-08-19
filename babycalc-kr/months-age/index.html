@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>아기 개월수 계산기 — 생후 개월·주수·일수와 교정연령 | BabyCalc</title>
+<meta name="description" content="생년월일만 입력하면 오늘 기준 생후 몇 개월 며칠인지, 총 일수와 주수, 이른둥이 교정연령까지 한 번에 계산합니다. 50일·100일·200일·첫돌 D-day도 함께 보여드려요.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/months-age/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="아기 개월수 계산기 — 개월·주수·교정연령">
+<meta property="og:description" content="생후 몇 개월 며칠? 총 일수·주수·교정연령과 100일·돌 D-day까지 한 번에.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/months-age/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"아기 개월수 계산기","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"생년월일만 입력하면 오늘 기준 생후 몇 개월 며칠인지, 총 일수와 주수, 이른둥이 교정연령까지 한 번에 계산합니다. 50일·100일·200일·첫돌 D-day도 함께 보여드려요.","url":"https://babycalc-kr.vercel.app/months-age/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"\"생후 100일\"은 태어난 날부터 며칠 뒤인가요?","acceptedAnswer":{"@type":"Answer","text":"한국에서는 태어난 날을 1일째로 세기 때문에 100일은 생일 + 99일이 됩니다. 이 도구는 태어난 날을 0일로 보는 총 일수와, 태어난 날을 1일로 보는 한국식 일수를 함께 보여줍니다."}},{"@type":"Question","name":"말일에 태어났는데 개월수가 이상해요.","acceptedAnswer":{"@type":"Answer","text":"1월 31일생 아기는 2월에 31일이 없으므로 2월 28일(윤년 29일)에 생후 1개월이 됩니다. 이 도구는 이런 말일 보정을 적용해 계산합니다."}},{"@type":"Question","name":"교정연령은 언제까지 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 만 2세 무렵까지 교정연령으로 성장·발달을 평가하고 이후에는 실제 나이를 사용합니다. 다만 출생 주수와 아이 상태에 따라 다르므로 담당 소아과 전문의의 안내를 따르세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"아기 개월수","item":"https://babycalc-kr.vercel.app/months-age/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">아기 개월수</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📅</div>
+    <h1>아기 개월수 계산기</h1>
+    <p class="lead">생후 몇 개월 며칠인지, 이른둥이라면 교정연령은 몇 개월인지 정확히 계산해 드려요.</p>
+  </div>
+  <p class="med-notice">⚠ 이 페이지는 <strong>참고용이며 진단이 아닙니다</strong>. 아이의 건강·발달과 관련한 판단은 반드시 <strong>소아과 전문의와 상담</strong>하세요.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>아기 정보</h2>
+    <div class="field">
+      <label for="birth">생년월일</label>
+      <input type="date" id="birth" required>
+      <p class="hint">입력값은 계산에만 쓰이고 서버로 전송되지 않습니다.</p>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="base">기준일</label>
+        <input type="date" id="base">
+        <p class="hint">비워 두면 오늘 날짜</p>
+      </div>
+      <div class="field">
+        <label for="due">출산 예정일 <span style="font-weight:400;color:var(--muted)">(선택)</span></label>
+        <input type="date" id="due">
+        <p class="hint">이른둥이 교정연령 계산용</p>
+      </div>
+    </div>
+    <button class="btn" type="submit">계산하기</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>계산 결과</h2>
+    <p class="res-big" id="mainAge">—</p>
+    <p class="res-sub" id="subAge"></p>
+    <div id="corrBox"></div>
+    <div class="kv"><span class="k">총 일수 (태어난 날 = 0일)</span><span class="v" id="kTotal">—</span></div>
+    <div class="kv"><span class="k">주수</span><span class="v" id="kWeek">—</span></div>
+    <div class="kv"><span class="k">한국식 일수 (태어난 날 = 1일)</span><span class="v" id="kKor">—</span></div>
+    <div class="kv"><span class="k">만 나이</span><span class="v" id="kYear">—</span></div>
+    <h2 style="margin-top:18px">기념일 D-day</h2>
+    <div class="tbl-scroll"><table class="tbl" id="ddayTbl">
+      <thead><tr><th>기념일</th><th>날짜</th><th>D-day</th></tr></thead><tbody></tbody>
+    </table></div>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" id="copyBtn">결과 복사</button>
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+    </div>
+    <p class="local-note">마지막 입력 생년월일은 이 브라우저에만 저장됩니다. <strong>서버 저장 없음.</strong></p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>개월수는 어떻게 세나요?</h2>
+    <p>아기 개월수는 <strong>달력 기준</strong>으로 셉니다. 3월 10일에 태어난 아기는 4월 10일에 생후 1개월, 5월 10일에 생후 2개월이 됩니다. 말일에 태어난 경우(예: 1월 31일)는 다음 달에 같은 날짜가 없으므로 그 달의 마지막 날(2월 28·29일)을 기준으로 개월이 채워집니다.</p><p>병원과 예방접종 일정은 대부분 이 <strong>만 개월수</strong>를 씁니다. 반면 "100일"처럼 한국에서 세는 날수는 <strong>태어난 날을 1일째로</strong> 계산하는 관습이 있어, 이 도구는 두 가지를 모두 보여줍니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>생년월일을 입력합니다. 과거 또는 미래의 특정 날짜 기준으로 보고 싶다면 <em>기준일</em>도 함께 입력하세요.</li><li>이른둥이(37주 미만 출생)라면 <em>출산 예정일</em>을 입력하면 교정연령이 함께 계산됩니다.</li><li>아래 기념일 표에서 50일·100일·200일·첫돌 날짜와 남은 일수를 확인할 수 있습니다.</li></ol>
+
+    <h2>교정연령이란?</h2>
+    <p>예정일보다 일찍 태어난 아기는 <strong>출산 예정일을 기준으로 다시 센 나이</strong>(교정연령)로 발달과 성장을 평가하는 것이 일반적입니다. 예를 들어 예정일보다 8주 일찍 태어난 생후 6개월 아기의 교정연령은 약 4개월입니다. 성장도표와 발달 이정표는 보통 <strong>만 2세(24개월)까지 교정연령으로</strong> 보고, 그 이후에는 실제 나이를 씁니다. 적용 시점과 방법은 담당 소아과에서 안내받는 것이 정확합니다.</p>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. "생후 100일"은 태어난 날부터 며칠 뒤인가요?</p><p class="a">한국에서는 태어난 날을 1일째로 세기 때문에 100일은 <strong>생일 + 99일</strong>이 됩니다. 이 도구는 태어난 날을 0일로 보는 총 일수와, 태어난 날을 1일로 보는 한국식 일수를 함께 보여줍니다.</p></div>
+      <div class="qa"><p class="q">Q. 말일에 태어났는데 개월수가 이상해요.</p><p class="a">1월 31일생 아기는 2월에 31일이 없으므로 2월 28일(윤년 29일)에 생후 1개월이 됩니다. 이 도구는 이런 말일 보정을 적용해 계산합니다.</p></div>
+      <div class="qa"><p class="q">Q. 교정연령은 언제까지 쓰나요?</p><p class="a">일반적으로 만 2세 무렵까지 교정연령으로 성장·발달을 평가하고 이후에는 실제 나이를 사용합니다. 다만 출생 주수와 아이 상태에 따라 다르므로 담당 소아과 전문의의 안내를 따르세요.</p></div>
+
+    <div class="src-box"><strong>계산 방식</strong> · 달력 기준 만 개월수(말일 보정 포함) + 총 일수. 교정연령은 출산 예정일을 기준일로 다시 계산합니다. 교정연령 적용 범위는 의료진 안내 기준.</div>
+
+    <p class="disclaimer">개월수 계산은 참고용입니다. 교정연령을 적용한 발달 평가는 진단이 아니며, 발달이 걱정되면 소아과 전문의와 상담하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../vaccine-schedule/"><span class="ic">💉</span>예방접종 일정표</a>
+      <a class="rel" href="../growth-percentile/"><span class="ic">📈</span>성장 백분위 계산기</a>
+      <a class="rel" href="../milestone/"><span class="ic">🧸</span>발달 이정표 체크</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/due-date-calc/"><span class="ic">🍅</span>출산 예정일 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { mkDate, babyAge, correctedAge, diffDays, fmtDate, fmtDateKo, addMonths } from '../assets/calc.mjs';
+const $ = (s) => document.querySelector(s);
+const BKEY = 'bc-baby-birth';
+
+function ddayText(n) {
+  if (n === 0) return '오늘 🎉';
+  return n > 0 ? 'D-' + n : 'D+' + (-n);
+}
+
+function calc(birth, base, due) {
+  const a = babyAge(birth, base);
+  if (!a) {
+    $('#mainAge').textContent = '기준일이 생년월일보다 빠릅니다';
+    $('#subAge').textContent = '';
+    bcShowResult('result');
+    return;
+  }
+  $('#mainAge').innerHTML = '생후 ' + a.months + '개월 ' + a.days + '일';
+  $('#subAge').textContent = fmtDateKo(birth) + ' 출생 · ' + fmtDateKo(base) + ' 기준';
+  $('#kTotal').textContent = a.totalDays.toLocaleString('ko-KR') + '일';
+  $('#kWeek').textContent = a.weeks + '주 ' + a.weekDays + '일';
+  $('#kKor').textContent = (a.totalDays + 1).toLocaleString('ko-KR') + '일째';
+  const years = Math.floor(a.months / 12);
+  $('#kYear').textContent = years > 0 ? '만 ' + years + '세 ' + (a.months % 12) + '개월' : '만 0세';
+
+  if (due) {
+    const c = correctedAge(due, base);
+    const gap = diffDays(birth, due);
+    if (gap > 0) {
+      const txt = c.beforeDue
+        ? '<p class="res-sub">아직 출산 예정일 전이라 교정연령은 0개월 이전입니다 (예정일까지 ' + (-c.totalDays) + '일).</p>'
+        : '<p class="res-big" style="font-size:22px">교정연령 ' + c.months + '개월 ' + c.days + '일</p>';
+      $('#corrBox').innerHTML = txt + '<p class="res-sub">예정일보다 ' + Math.floor(gap / 7) + '주 ' + (gap % 7) + '일 일찍 태어났어요. 성장·발달 평가는 보통 만 2세까지 교정연령을 기준으로 봅니다.</p>';
+    } else {
+      $('#corrBox').innerHTML = '<p class="res-sub">출산 예정일이 생년월일보다 빠르거나 같아 교정연령을 적용하지 않습니다.</p>';
+    }
+  } else {
+    $('#corrBox').innerHTML = '';
+  }
+
+  const marks = [
+    { name: '50일', date: new Date(birth.getFullYear(), birth.getMonth(), birth.getDate() + 49) },
+    { name: '100일', date: new Date(birth.getFullYear(), birth.getMonth(), birth.getDate() + 99) },
+    { name: '200일', date: new Date(birth.getFullYear(), birth.getMonth(), birth.getDate() + 199) },
+    { name: '6개월', date: addMonths(birth, 6) },
+    { name: '첫 돌 (12개월)', date: addMonths(birth, 12) },
+    { name: '두 돌 (24개월)', date: addMonths(birth, 24) },
+  ];
+  const tb = $('#ddayTbl tbody');
+  tb.innerHTML = '';
+  marks.forEach((m) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + m.name + '</td><td>' + fmtDate(m.date) + '</td><td>' + ddayText(diffDays(base, m.date)) + '</td>';
+    tb.appendChild(tr);
+  });
+  bcShowResult('result');
+}
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const b = $('#birth').value;
+  if (!b) return;
+  bcStore.set(BKEY, b);
+  const base = $('#base').value ? mkDate($('#base').value) : new Date();
+  const due = $('#due').value ? mkDate($('#due').value) : null;
+  calc(mkDate(b), base, due);
+});
+
+$('#copyBtn').addEventListener('click', () => {
+  const txt = $('#mainAge').textContent + ' (' + $('#kTotal').textContent + ', ' + $('#kWeek').textContent + ')';
+  navigator.clipboard && navigator.clipboard.writeText(txt);
+  $('#copyBtn').textContent = '복사됨!';
+  setTimeout(() => { $('#copyBtn').textContent = '결과 복사'; }, 1500);
+});
+
+const saved = bcStore.get(BKEY, null);
+if (saved) { $('#birth').value = saved; calc(mkDate(saved), new Date(), null); }
+</script>
+</body>
+</html>

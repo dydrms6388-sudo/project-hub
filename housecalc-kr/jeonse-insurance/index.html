@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>전세보증보험료 계산기 — 보증금·기간·요율로 보증료 산출</title>
+<meta name="description" content="전세보증금 반환보증(HUG·HF·SGI)의 보증료를 보증금 × 보증료율 × 보증기간으로 계산합니다. 보증료율은 주택유형·부채비율·우대에 따라 달라 공식 요율표에서 확인한 값을 직접 입력하도록 했습니다." />
+<link rel="canonical" href="https://housecalc-kr.vercel.app/jeonse-insurance/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="부동산 계산기 허브" />
+<meta property="og:title" content="전세보증보험료 계산기" />
+<meta property="og:description" content="전세보증금 반환보증(HUG·HF·SGI)의 보증료를 보증금 × 보증료율 × 보증기간으로 계산합니다. 보증료율은 주택유형·부채비율·우대에 따라 달라 공식 요율표에서 확인한 값을 직접 입력하도록 했습니다." />
+<meta property="og:url" content="https://housecalc-kr.vercel.app/jeonse-insurance/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script defer src="../assets/common.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"전세보증보험료 계산기","description":"전세보증금 반환보증(HUG·HF·SGI)의 보증료를 보증금 × 보증료율 × 보증기간으로 계산합니다. 보증료율은 주택유형·부채비율·우대에 따라 달라 공식 요율표에서 확인한 값을 직접 입력하도록 했습니다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://housecalc-kr.vercel.app/jeonse-insurance/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"가입 한도는 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"수도권·비수도권별 보증금 상한과 전세가율(담보인정비율) 요건이 있고 공고로 변경됩니다. 이 계산기는 그 요건을 판정하지 않으므로 가입 가능 여부는 각 기관에서 확인하세요."}},{"@type":"Question","name":"요율을 왜 자동으로 안 넣어 주나요?","acceptedAnswer":{"@type":"Answer","text":"주택유형(아파트/그 외), 부채비율 구간, 우대 대상 여부에 따라 요율이 달라지고 공시가 개정되기 때문입니다. 잘못된 기본값은 계산 전체를 틀리게 만들어 직접 입력 방식을 택했습니다."}},{"@type":"Question","name":"집주인 동의가 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"현재는 임대인 동의 없이 가입할 수 있는 상품이 일반적입니다. 다만 계약·전입·확정일자 등 요건이 있어 기관 안내를 확인해야 합니다."}},{"@type":"Question","name":"보증료를 나눠 낼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"기관·상품에 따라 분납이 가능한 경우가 있습니다. 이 계산기는 총액과 월 환산액을 함께 보여 줍니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://housecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"전세보증보험료 계산기","item":"https://housecalc-kr.vercel.app/jeonse-insurance/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🏠 부동산 계산기 허브</a> <span class="sep">›</span> <span>전세보증보험료 계산기</span></nav>
+  <p class="topnotice"><strong>고지</strong> — 이 사이트의 모든 계산은 <strong>참고용 추정이며 실제 세액·한도는 위택스·국세청·금융기관에서 확인</strong>해야 합니다.
+  세율·한도·요율은 법령 개정과 정책 변경으로 수시로 바뀌며, 개별 사정(감면·특례·심사 기준)에 따라 결과가 달라집니다.
+  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> ·
+  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a> ·
+  <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a></p>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🛡️</div>
+    <h1>전세보증보험료 계산기</h1>
+    <p class="lead">보증료 = <strong>보증금 × 보증료율 × 기간</strong>. 요율은 조건별로 달라 <strong>확인한 값을 직접</strong> 넣습니다.</p>
+  </div>
+
+  <section class="panel">
+    <h2>보증 조건</h2>
+    <label for="deposit">전세보증금 <span class="opt">(만원)</span></label>
+    <input type="text" id="deposit" data-comma value="30,000" />
+    <p class="src" id="depositEcho"></p>
+    <div class="row2">
+      <div>
+        <label for="months">보증기간 <span class="opt">(개월)</span></label>
+        <input type="number" id="months" step="1" min="1" value="24" />
+      </div>
+      <div>
+        <label for="rate">보증료율 <span class="opt">(연 %)</span> <span class="badge warn">확인 필요</span></label>
+        <input type="number" id="rate" step="0.001" min="0" placeholder="공식 요율표에서 확인" />
+      </div>
+    </div>
+    <div class="seg" id="rateChips">
+      <button type="button" data-v="0.122">아파트 예시 0.122%</button>
+      <button type="button" data-v="0.128">아파트 외(다세대·오피스텔 등) 예시 0.128%</button>
+    </div>
+    <p class="note warn"><span class="badge warn">확인 필요</span> 위 예시 요율은 참고값입니다. 실제 요율은 <strong>주택유형·부채비율·우대(사회배려계층 등)</strong>에 따라 달라지고 공시가 개정될 수 있어 이 사이트가 확정하지 않습니다.
+      <a href="https://www.khug.or.kr/hug/web/ig/dr/igdr000001.jsp" target="_blank" rel="noopener">HUG 공식 요율표</a>에서 확인한 값을 입력하세요.</p>
+    <div class="btnrow"><button class="btn" id="go">보증료 계산하기</button></div>
+  </section>
+  
+  <section class="result" id="result" hidden aria-live="polite">
+    <p class="sub">계산 결과 (참고용 추정)</p>
+    <p class="big" id="big"></p>
+    <p class="sub" id="sub"></p>
+    <div id="detail"></div>
+  </section>
+
+  <div class="adbox" id="adbox" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>전세보증금 반환보증이란</h2>
+    <p>계약이 끝났는데 집주인이 보증금을 돌려주지 않을 때, 보증기관이 대신 돌려주고 집주인에게 구상하는 상품입니다. HUG(주택도시보증공사), HF(한국주택금융공사), SGI서울보증 세 곳이 취급하며 가입 요건과 요율이 각각 다릅니다.</p>
+    <p>보험료는 <strong>보증금 × 연 보증료율 × 보증기간</strong>으로 계산합니다. 2년 계약이면 요율의 두 배가 든다고 보면 됩니다. 이 계산기는 요율만 정확히 넣으면 나머지는 단순 곱셈이므로, 여러 조건을 비교해 볼 때 유용합니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>전세보증금과 보증기간(보통 계약기간과 동일한 24개월)을 입력합니다.</li>
+      <li>HUG 요율표나 은행·앱에서 안내받은 보증료율을 입력합니다.</li>
+      <li>결과에서 총 보증료와 월 환산 금액을 확인합니다.</li>
+      <li>기관별 요율이 다르므로 값을 바꿔 가며 비교해 보세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 가입 한도는 얼마인가요?</p><p class="a">수도권·비수도권별 보증금 상한과 전세가율(담보인정비율) 요건이 있고 공고로 변경됩니다. 이 계산기는 그 요건을 판정하지 않으므로 가입 가능 여부는 각 기관에서 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 요율을 왜 자동으로 안 넣어 주나요?</p><p class="a">주택유형(아파트/그 외), 부채비율 구간, 우대 대상 여부에 따라 요율이 달라지고 공시가 개정되기 때문입니다. 잘못된 기본값은 계산 전체를 틀리게 만들어 직접 입력 방식을 택했습니다.</p></div>
+    <div class="qa"><p class="q">Q. 집주인 동의가 필요한가요?</p><p class="a">현재는 임대인 동의 없이 가입할 수 있는 상품이 일반적입니다. 다만 계약·전입·확정일자 등 요건이 있어 기관 안내를 확인해야 합니다.</p></div>
+    <div class="qa"><p class="q">Q. 보증료를 나눠 낼 수 있나요?</p><p class="a">기관·상품에 따라 분납이 가능한 경우가 있습니다. 이 계산기는 총액과 월 환산액을 함께 보여 줍니다.</p></div>
+    <h2>계산에 쓰인 값과 출처</h2>
+    <div class="tbwrap"><table class="tb">
+      <thead><tr><th>항목</th><th>값</th><th>근거</th><th>확인일</th></tr></thead>
+      <tbody>
+        <tr><td>HUG 보증료율 <span class="badge warn">확인 필요</span></td><td>직접 입력 — 예시값은 참고용</td><td><a href="https://www.khug.or.kr/hug/web/ig/dr/igdr000001.jsp" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>가입 한도·전세가율 요건 <span class="badge warn">확인 필요</span></td><td>계산 제외 — 공고 확인 필요</td><td><a href="https://www.khug.or.kr/hug/web/ig/dr/igdr000001.jsp" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>취급 기관</td><td>HUG · HF · SGI</td><td><a href="https://www.khug.or.kr" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note warn"><strong>확인 필요 항목</strong> — 아래 값은 개정·변동 가능성이 있어 이 사이트가 임의로 확정하지 않습니다. 계산에서 제외하거나 직접 입력하도록 했습니다.
+      <ul>
+        <li><strong>HUG 보증료율</strong> — HUG 보증료율은 부채비율·주택유형·우대(사회배려계층 할인 등)에 따라 달라지고 공시가 개정될 수 있음 — 공식 요율표 확인 후 직접 입력.</li>
+        <li><strong>가입 한도·전세가율 요건</strong> — 가입 가능 보증금 상한·전세가율 요건은 최신 공고 확인 필요.</li>
+      </ul>
+    </div>
+    <p class="note warn">이 계산기의 결과는 <strong>참고용 추정치</strong>이며 실제 부과·승인 금액을 확정하지 않습니다.
+    세금은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>(지방세)·<a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a>(국세),
+    대출 한도는 거래 금융기관, 등기 비용은 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 반드시 확인하세요.
+    이 사이트는 이름·연락처·주민등록번호 등 개인정보를 수집하지 않으며 모든 계산은 브라우저 안에서만 이뤄집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 계산기</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../broker-fee/"><span>🤝</span> 중개보수 계산기</a>
+      <a class="rel" href="../rent-yield/"><span>📈</span> 임대수익률 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-loan/" target="_blank" rel="noopener"><span>🏦</span> 전세자금대출 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-monthly-convert/" target="_blank" rel="noopener"><span>🔄</span> 전월세 전환 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">부동산 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { jeonseInsurance } from "../data/insurance.mjs";
+import { $, raw, man, txt, on, won, manwon, eok, pctStr, fbox, srcLine, setHtml, setText, showResult, echo, chips } from "../assets/ui.mjs";
+echo("deposit", "depositEcho");
+chips("rateChips", "rate");
+$("go").addEventListener("click", function () {
+  var dep = man("deposit"), mo = raw("months"), rate = raw("rate");
+  if (dep <= 0 || mo <= 0) { setText("big", "보증금과 기간을 입력하세요"); setText("sub", ""); setHtml("detail", ""); showResult(); return; }
+  if (rate <= 0) { setText("big", "보증료율을 입력하세요"); setText("sub", "요율은 조건별로 달라 자동 입력하지 않습니다"); setHtml("detail", fbox("입력 필요", [["보증료율", "HUG 공식 요율표에서 확인 후 입력"]], "확인처: HUG 주택도시보증공사")); showResult(); return; }
+  var total = dep * rate / 100 * (mo / 12);
+  var rows = [
+    ["보증금", eok(dep)],
+    ["연 보증료율 (직접 입력)", pctStr(rate, 3)],
+    ["보증기간", mo + "개월 (" + (Math.round(mo / 12 * 100) / 100) + "년)"],
+    ["보증료 = 보증금 × 요율 × 기간(년)", won(total)],
+    ["월 환산", won(total / mo)]
+  ];
+  setText("big", won(total));
+  setText("sub", "보증금 " + eok(dep) + " · 요율 " + pctStr(rate, 3) + " · " + mo + "개월");
+  setHtml("detail", fbox("산출 과정", rows, "기관에 따라 일할 계산(일수/365) 방식이 쓰여 며칠분 차이가 날 수 있습니다. 가입 한도·전세가율 요건은 이 계산에 포함되지 않습니다.")
+    + srcLine("보증료율", jeonseInsurance.hugRates)
+    + srcLine("가입 요건", jeonseInsurance.limits));
+  showResult();
+});
+</script>
+</body>
+</html>

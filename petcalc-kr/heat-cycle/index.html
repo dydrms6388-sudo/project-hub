@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>고양이 발정 주기 계산기 — 다음 발정 예상일 | PetCalc</title>
+<meta name="description" content="마지막 발정 시작일을 넣으면 다음 발정 예상 시기를 계산합니다. 발정은 평균 7일(3~14일) 지속되고 임신하지 않으면 2~3주 간격으로 반복됩니다. 중성화 상담 안내도 함께 제공합니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/heat-cycle/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="고양이 발정 주기 계산기 — 다음 발정 예상일 | PetCalc">
+<meta property="og:description" content="마지막 발정 시작일을 넣으면 다음 발정 예상 시기를 계산합니다. 발정은 평균 7일(3~14일) 지속되고 임신하지 않으면 2~3주 간격으로 반복됩니다. 중성화 상담 안내도 함께 제공합니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/heat-cycle/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"고양이 발정 주기 계산기 — 다음 발정 예상일 | PetCalc","description":"마지막 발정 시작일을 넣으면 다음 발정 예상 시기를 계산합니다. 발정은 평균 7일(3~14일) 지속되고 임신하지 않으면 2~3주 간격으로 반복됩니다. 중성화 상담 안내도 함께 제공합니다.","url":"https://petcalc-kr.vercel.app/heat-cycle/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"발정이 끝났는데 며칠 만에 또 시작해요.","acceptedAnswer":{"@type":"Answer","text":"정상적인 패턴입니다. 임신하지 않으면 보통 2~3주 간격으로 반복되며, 시즌 중에는 거의 이어지는 것처럼 느껴지기도 합니다."}},{"@type":"Question","name":"중성화는 언제 하나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 성 성숙 전후에 권장되지만, 적정 시기는 체중·건강 상태·품종에 따라 달라 수의사와 상담해 결정합니다."}},{"@type":"Question","name":"발정 중 수술해도 되나요?","acceptedAnswer":{"@type":"Answer","text":"발정기에는 생식기 혈관이 발달해 출혈 위험이 커지므로 보통 발정이 끝난 뒤로 미룹니다. 병원 판단에 따르세요."}},{"@type":"Question","name":"수컷 고양이도 발정 주기가 있나요?","acceptedAnswer":{"@type":"Answer","text":"수컷은 정해진 주기가 없고, 발정 난 암컷의 신호에 반응해 울음·마킹·탈출 시도가 늘어납니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"발정 주기 계산기","item":"https://petcalc-kr.vercel.app/heat-cycle/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">발정 주기 계산기</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">🌙</div>
+  <h1>고양이 발정 주기 계산기</h1>
+  <p class="lead">마지막 발정 시작일로 다음 발정 시기를 예측합니다. 개체차가 매우 큰 영역이라 참고용으로만 사용하세요.</p>
+</header>
+<p class="notice warn"><b>참고용이며 진단이 아닙니다.</b> 이 페이지의 계산·정보는 일반적인 기준을 안내할 뿐이며, 개체의 건강 상태를 판단하지 않습니다. 증상이 있거나 결정을 내려야 한다면 반드시 <b>수의사와 상담하세요</b>.</p>
+<p class="notice">같은 나이·체중이라도 품종, 중성화 여부, 활동량, 지병에 따라 결과가 달라집니다. <b>개체차가 있습니다</b> — 수치는 출발점으로만 쓰세요.</p>
+<section class="card">
+  <h2>마지막 발정 정보</h2>
+  <div class="field"><label for="ld">마지막 발정 시작일</label><input type="date" id="ld"></div>
+  <div class="row2">
+    <div class="field"><label for="du">지속 일수 <span class="hint">기본 7일</span></label><input type="number" id="du" min="3" max="14" step="1" value="7" inputmode="numeric"></div>
+    <div class="field"><label for="iv">반복 간격(일) <span class="hint">14~21</span></label><input type="number" id="iv" min="10" max="30" step="1" value="18" inputmode="numeric"></div>
+  </div>
+  <button class="btn" id="go" type="button">다음 발정 예상하기</button>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>예상 일정</h2>
+  <p class="big" id="big"></p>
+  <div class="rt-wrap"><table class="rt"><thead><tr><th>회차</th><th>예상 시작</th><th>예상 종료</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <p class="src">계절·일조 시간·개체차에 따라 실제 주기는 크게 달라집니다. 이 표는 확률적 예상일 뿐입니다.</p>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>고양이 발정, 어떤 주기인가요?</h2>
+<p>고양이는 <b>계절성 다발정 동물</b>입니다. 일조 시간이 길어지는 시기에 발정이 반복되며, 실내 조명 아래 사는 고양이는 계절과 무관하게 반복되기도 합니다. 발정은 평균 약 7일(3~14일) 지속되고, 교배·임신이 이뤄지지 않으면 보통 14~21일 간격으로 다시 시작됩니다.</p>
+<h3>발정 행동 신호</h3>
+<ul>
+<li>평소와 다른 큰 울음소리를 길게 반복한다</li>
+<li>바닥에 몸을 비비고 엉덩이를 들며 뒷발을 구른다</li>
+<li>애정 표현이 급격히 늘거나 탈출을 시도한다</li>
+<li>소변 마킹이 생기기도 한다 (개체차 큼)</li>
+</ul>
+<p>발정 중에는 통증이 아니라 호르몬 변화에 따른 행동이지만, 반복되는 발정은 자궁축농증·유선 종양 위험과도 관련이 있어 중성화 상담을 권합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>마지막 발정이 <b>시작된</b> 날짜를 입력합니다.</li>
+<li>평소 지속 일수와 반복 간격을 알고 있다면 조정합니다(기본 7일 / 18일).</li>
+<li>다음 6회의 예상 구간을 확인해 병원 예약이나 외출 관리를 계획하세요.</li>
+</ol>
+<p class="notice">첫 발정은 이르면 생후 4개월부터 올 수 있습니다. 아직 어리다고 임신이 안 되는 것이 아니므로 외출·탈출 관리에 주의하세요.</p>
+<p class="src">출처: 발정 지속 평균 약 7일(3~14일), 임신하지 않으면 2~3주(14~21일) 간격으로 반복. 개체차가 매우 큼. — <a href="https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics" rel="nofollow noopener" target="_blank">https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics</a> (확인일 2026-08-19)</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 발정이 끝났는데 며칠 만에 또 시작해요.</p><p class="a">정상적인 패턴입니다. 임신하지 않으면 보통 2~3주 간격으로 반복되며, 시즌 중에는 거의 이어지는 것처럼 느껴지기도 합니다.</p></div>
+<div class="qa"><p class="q">Q. 중성화는 언제 하나요?</p><p class="a">일반적으로 성 성숙 전후에 권장되지만, 적정 시기는 체중·건강 상태·품종에 따라 달라 수의사와 상담해 결정합니다.</p></div>
+<div class="qa"><p class="q">Q. 발정 중 수술해도 되나요?</p><p class="a">발정기에는 생식기 혈관이 발달해 출혈 위험이 커지므로 보통 발정이 끝난 뒤로 미룹니다. 병원 판단에 따르세요.</p></div>
+<div class="qa"><p class="q">Q. 수컷 고양이도 발정 주기가 있나요?</p><p class="a">수컷은 정해진 주기가 없고, 발정 난 암컷의 신호에 반응해 울음·마킹·탈출 시도가 늘어납니다.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../cat-age/index.html"><span class="ic">🐈</span><span>고양이 나이 계산기</span></a>
+      <a class="rel" href="../guide/first-cat-checklist/index.html"><span class="ic">📋</span><span>첫 고양이 준비 체크리스트</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-vet-cost/" rel="noopener"><span class="ic">🏥</span><span>동물병원 진료비 참고</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-petsafe/" rel="noopener"><span class="ic">⚠️</span><span>반려동물 위험물 체크</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-age-calc/" rel="noopener"><span class="ic">🐾</span><span>반려동물 나이 계산기</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+pcQ('go').addEventListener('click',function(){
+  var v=pcQ('ld').value;
+  if(!v){alert('마지막 발정 시작일을 선택해 주세요.');return;}
+  var b=new Date(v+'T00:00:00');
+  if(isNaN(b.getTime())){alert('날짜를 확인해 주세요.');return;}
+  var du=pcNum('du'); if(!isFinite(du)||du<3||du>14) du=7;
+  var iv=pcNum('iv'); if(!isFinite(iv)||iv<10||iv>30) iv=18;
+  var rows='', next=null;
+  for(var i=1;i<=6;i++){
+    var s=pcAddDays(b,iv*i), e=pcAddDays(s,du-1);
+    if(i===1) next=s;
+    rows+='<tr><td>'+i+'회차</td><td>'+pcDate(s)+'</td><td>'+pcDate(e)+'</td></tr>';
+  }
+  pcQ('big').innerHTML='다음 발정 예상 <b>'+pcDate(next)+'</b> 무렵';
+  pcQ('tb').innerHTML=rows;
+  pcShow('res');
+});
+})();
+</script>
+
+</body>
+</html>

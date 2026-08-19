@@ -1,0 +1,143 @@
+<!doctype html>
+<!-- ⚠ 자동 생성 파일: fitcalc-kr/gen.mjs 가 재생성합니다. 수정은 src/tools/protein-timing.mjs 에서. -->
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>단백질 섭취량·분배 계산기 — 하루 g/kg + 끼니별 배분 (근거 논문 표기)</title>
+<meta name="description" content="체중과 목표(유지·근성장·감량)에 따른 하루 단백질 목표량을 계산하고, 끼니당 0.4g/kg 기준으로 식사 횟수에 맞춰 분배합니다. 닭가슴살·달걀·우유 등 식품 환산량도 함께 보여줍니다." />
+<link rel="canonical" href="https://fitcalc-kr.vercel.app/protein-timing/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="FitCalc 운동 계산기" />
+<meta property="og:title" content="단백질 섭취량·분배 계산기 — 하루 g/kg + 끼니별 배분 (근거 논문 표기)" />
+<meta property="og:description" content="체중과 목표(유지·근성장·감량)에 따른 하루 단백질 목표량을 계산하고, 끼니당 0.4g/kg 기준으로 식사 횟수에 맞춰 분배합니다. 닭가슴살·달걀·우유 등 식품 환산량도 함께 보여줍니다." />
+<meta property="og:url" content="https://fitcalc-kr.vercel.app/protein-timing/" />
+<meta name="twitter:card" content="summary" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💪</text></svg>">
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"단백질 섭취 분배 계산기","url":"https://fitcalc-kr.vercel.app/protein-timing/","description":"체중과 목표(유지·근성장·감량)에 따른 하루 단백질 목표량을 계산하고, 끼니당 0.4g/kg 기준으로 식사 횟수에 맞춰 분배합니다. 닭가슴살·달걀·우유 등 식품 환산량도 함께 보여줍니다.","applicationCategory":"HealthApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"isAccessibleForFree":true},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"단백질은 많이 먹을수록 좋은가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. Morton 등(2018) 메타분석에서 근비대 이득은 약 1.6 g/kg/일 에서 정체되었습니다. 그 이상은 추가 이득이 뚜렷하지 않으며 칼로리·비용 부담만 커집니다."}},{"@type":"Question","name":"운동 직후 30분 '골든타임'을 지켜야 하나요?","acceptedAnswer":{"@type":"Answer","text":"과거의 통념만큼 좁지 않다는 것이 최근 견해입니다. 하루 총량과 끼니별 분배가 더 중요하며, 운동 전후 몇 시간 내에 단백질을 섭취하면 충분하다고 봅니다."}},{"@type":"Question","name":"한 끼에 40g 이상은 흡수가 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"흡수 자체가 막히는 것은 아니지만, 근단백 합성 자극 측면에서 끼니당 약 0.4 g/kg 를 넘으면 추가 효과가 줄어드는 것으로 보고됩니다. 그래서 여러 끼니 분배를 권합니다."}},{"@type":"Question","name":"감량 중인데 왜 단백질을 늘리나요?","acceptedAnswer":{"@type":"Answer","text":"칼로리를 줄이면 근육도 함께 빠지기 쉽습니다. 단백질 비율을 높이면 근손실을 줄이고 포만감도 커져 감량 유지에 유리합니다."}},{"@type":"Question","name":"보충제를 꼭 먹어야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 식품으로 목표량을 채울 수 있다면 보충제는 필요 없습니다. 다만 목표가 높거나 식사 준비가 어려울 때 유청 단백질은 편리한 수단입니다."}},{"@type":"Question","name":"신장에 부담되지 않나요?","acceptedAnswer":{"@type":"Answer","text":"건강한 성인에서 고단백 섭취가 신장을 손상시킨다는 근거는 부족합니다. 다만 신장 질환이 있다면 반드시 의료진 지시를 따라야 합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FitCalc 운동 계산기","item":"https://fitcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"단백질 섭취 분배 계산기","item":"https://fitcalc-kr.vercel.app/protein-timing/"}]}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb no-print" aria-label="breadcrumb"><a href="../">FitCalc 운동 계산기</a> <span class="sep">›</span> <span class="c-cur">단백질 섭취 분배 계산기</span></nav>
+  <header class="hero">
+    <div class="emoji" aria-hidden="true">🥚</div>
+    <h1>단백질 섭취 분배 계산기</h1>
+    <p class="lead">하루 몇 g? 한 끼에 몇 g? 체중과 목표로 계산하고 식품으로 환산해 드립니다.</p>
+  </header>
+  <div class="notice no-print"><strong>⚠ 참고용 안내</strong> — 이 결과는 일반적인 공식·공개 자료에 따른 <b>참고용 추정</b>이며 개인차가 큽니다. 의료·진단 정보가 아니며, 운동 중 통증·어지럼 등 이상 증상이 있으면 즉시 중단하고 의사·전문 트레이너 등 전문가와 상담하세요.</div>
+
+  <section class="tool">
+    <h2>입력</h2>
+    <div class="grid2">
+      <div class="field">
+        <label for="wt">체중 (kg)</label>
+        <input type="number" id="wt" inputmode="decimal" min="20" max="250" step="0.1" value="70" />
+      </div>
+      <div class="field">
+        <label for="meals">하루 식사 횟수</label>
+        <select id="meals">
+          <option value="3">3끼</option>
+          <option value="4" selected>4끼 (간식 포함)</option>
+          <option value="5">5끼</option>
+          <option value="6">6끼</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="goal">목표</label>
+      <select id="goal"></select>
+      <span class="hint" id="goalHint"></span>
+    </div>
+    <div class="field">
+      <label for="custom">직접 지정 (g/kg, 선택)</label>
+      <input type="number" id="custom" inputmode="decimal" min="0.5" max="3.5" step="0.05" placeholder="비우면 목표 기준값 사용" />
+    </div>
+    <div class="btnrow"><button class="btn" id="calcBtn" type="button">단백질 계산하기</button></div>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <h2>계산 결과</h2>
+    <p class="big"><span id="dayOut">-</span> <small>g / 하루</small></p>
+    <div class="kv"><span class="k">적용 기준</span><span class="v" id="basisOut">-</span></div>
+    <div class="kv"><span class="k">한 끼 목표</span><span class="v" id="mealOut">-</span></div>
+    <div class="kv"><span class="k">끼니당 상한 참고 (0.4 g/kg)</span><span class="v" id="capOut">-</span></div>
+    <div class="rt-scroll">
+      <table class="rt"><caption class="hint" style="text-align:left;padding:4px 0">끼니별 분배 예시</caption>
+        <thead><tr><th>끼니</th><th class="num">목표 단백질</th><th>비고</th></tr></thead>
+        <tbody id="mBody"></tbody>
+      </table>
+    </div>
+    <div class="rt-scroll">
+      <table class="rt"><caption class="hint" style="text-align:left;padding:4px 0">한 끼 목표를 채우려면 (단일 식품 기준 환산)</caption>
+        <thead><tr><th>식품</th><th class="num">단백질</th><th class="num">한 끼 분량 환산</th></tr></thead>
+        <tbody id="fBody"></tbody>
+      </table>
+    </div>
+    <p class="hint" style="margin-top:10px">※ 신장 질환이 있거나 단백질 섭취 제한을 처방받은 경우에는 이 계산을 따르지 말고 반드시 의료진과 상담하세요.</p>
+  </section>
+  <section class="ad-box no-print" id="adBox" hidden aria-label="광고"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins></section>
+  <section class="about no-print">
+    <h2>소개</h2>
+    <p>근육 합성에는 하루 총 단백질량이 가장 중요하지만, <b>한 번에 몰아 먹는 것보다 여러 끼니에 나누는 편</b>이 유리하다는 연구가 많습니다. 이 계산기는 두 가지를 한 번에 계산합니다 — 목표에 맞는 하루 총량과, 식사 횟수에 맞춘 끼니별 분배량입니다.</p>
+    <p>하루 목표량은 Morton 등(2018)의 메타분석을 기준으로 삼았습니다. 근력 운동을 하는 사람에서 근비대 이득은 약 <b>1.6 g/kg/일</b> 부근에서 정체되기 시작하며(상한 신뢰구간 약 2.2), 감량기에는 근손실을 줄이기 위해 더 높게 잡습니다.</p>
+    <p>끼니당 분배는 Schoenfeld & Aragon(2018)이 제시한 <b>끼니당 약 0.4 g/kg × 4끼</b> 권고를 참고 상한으로 표시합니다. 한 끼 목표가 이 값을 크게 넘으면 식사 횟수를 늘리는 편이 효율적입니다.</p>
+    <h2>사용법</h2><ol><li>체중과 하루 식사 횟수를 입력합니다.</li><li>목표(유지 / 근성장 / 감량기 고단백)를 고릅니다. 각 기준값의 근거 논문은 하단 출처에 있습니다.</li><li>코치·영양사에게 받은 값이 있다면 g/kg 를 직접 지정하세요.</li><li>끼니별 분배표와 식품 환산표로 실제 식단을 짭니다.</li><li>운동 후 한 끼를 특별히 늘리기보다, 하루 총량을 채우면서 끼니 간격을 고르게 두는 것이 우선입니다.</li></ol>
+    <h2>자주 묻는 질문</h2><div class="qa"><p class="q">Q. 단백질은 많이 먹을수록 좋은가요?</p><p class="a">A. 아닙니다. Morton 등(2018) 메타분석에서 근비대 이득은 약 1.6 g/kg/일 에서 정체되었습니다. 그 이상은 추가 이득이 뚜렷하지 않으며 칼로리·비용 부담만 커집니다.</p></div><div class="qa"><p class="q">Q. 운동 직후 30분 '골든타임'을 지켜야 하나요?</p><p class="a">A. 과거의 통념만큼 좁지 않다는 것이 최근 견해입니다. 하루 총량과 끼니별 분배가 더 중요하며, 운동 전후 몇 시간 내에 단백질을 섭취하면 충분하다고 봅니다.</p></div><div class="qa"><p class="q">Q. 한 끼에 40g 이상은 흡수가 안 되나요?</p><p class="a">A. 흡수 자체가 막히는 것은 아니지만, 근단백 합성 자극 측면에서 끼니당 약 0.4 g/kg 를 넘으면 추가 효과가 줄어드는 것으로 보고됩니다. 그래서 여러 끼니 분배를 권합니다.</p></div><div class="qa"><p class="q">Q. 감량 중인데 왜 단백질을 늘리나요?</p><p class="a">A. 칼로리를 줄이면 근육도 함께 빠지기 쉽습니다. 단백질 비율을 높이면 근손실을 줄이고 포만감도 커져 감량 유지에 유리합니다.</p></div><div class="qa"><p class="q">Q. 보충제를 꼭 먹어야 하나요?</p><p class="a">A. 아니요. 식품으로 목표량을 채울 수 있다면 보충제는 필요 없습니다. 다만 목표가 높거나 식사 준비가 어려울 때 유청 단백질은 편리한 수단입니다.</p></div><div class="qa"><p class="q">Q. 신장에 부담되지 않나요?</p><p class="a">A. 건강한 성인에서 고단백 섭취가 신장을 손상시킨다는 근거는 부족합니다. 다만 신장 질환이 있다면 반드시 의료진 지시를 따라야 합니다.</p></div>
+    <div class="edbox no-print"><p class="ed-by"><strong>수치 출처 · 확인일 2026-08-19</strong></p><p class="ed-src"><a href="https://pubmed.ncbi.nlm.nih.gov/28698222/" target="_blank" rel="noopener">Morton RW et al. 2018 — 단백질 보충과 근비대 메타분석 (BJSM)</a> · <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-018-0215-1" target="_blank" rel="noopener">Schoenfeld &amp; Aragon 2018 — 끼니당 단백질 분배 (JISSN)</a> · <a href="https://fdc.nal.usda.gov/" target="_blank" rel="noopener">식품 단백질 함량 — USDA FoodData Central</a></p></div>
+  </section>
+  <section class="related no-print"><h2>관련 도구</h2><div class="rel-grid"><a class="rel" href="../workout-log/"><span class="re">📝</span>운동 기록장 (주간 볼륨)</a><a class="rel" href="../one-rm/"><span class="re">🏋️</span>1RM 계산기 (5공식 비교)</a><a class="rel" href="../calorie-burn/"><span class="re">🔥</span>소모 칼로리 계산기 (MET)</a><a class="rel" href="https://tomatoeggcat.com/protein-calc/" target="_blank" rel="noopener"><span class="re">🔗</span>TomatoEggCat 단백질 계산기</a><a class="rel" href="https://tomatoeggcat.com/bmr-tdee-calc/" target="_blank" rel="noopener"><span class="re">🔗</span>TomatoEggCat BMR·TDEE 계산기</a><a class="rel" href="https://tomatoeggcat.com/bmi/" target="_blank" rel="noopener"><span class="re">🔗</span>TomatoEggCat BMI 계산기</a></div></section>
+  <footer class="no-print">
+  <p style="margin:0 0 8px">💪 <a href="../">FitCalc 운동 계산기</a> — 러닝·헬스 계산기 모음 (무료 · 서버 저장 없음)</p>
+  <p style="margin:0"><a href="../">홈</a>·<a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+</footer>
+</div>
+<script type="module">
+import { DAILY_TARGETS, PER_MEAL, FOOD_EXAMPLES } from "../data/protein.mjs";
+import { $, showAd, fmt } from "../assets/app.mjs";
+
+const sel = $("#goal");
+sel.innerHTML = DAILY_TARGETS.map((t, i) => '<option value="' + t.id + '"' + (i === 1 ? " selected" : "") + ">" + t.name + " (" + t.gPerKg.value + " g/kg)</option>").join("");
+function syncHint() {
+  const t = DAILY_TARGETS.find((x) => x.id === sel.value);
+  $("#goalHint").textContent = t ? t.note : "";
+}
+sel.addEventListener("change", syncHint); syncHint();
+
+function run() {
+  const wt = parseFloat($("#wt").value);
+  if (!isFinite(wt) || wt <= 0) { alert("체중을 확인해 주세요."); return; }
+  const meals = parseInt($("#meals").value, 10) || 4;
+  const t = DAILY_TARGETS.find((x) => x.id === sel.value) || DAILY_TARGETS[1];
+  const custom = parseFloat($("#custom").value);
+  const gPerKg = isFinite(custom) && custom > 0 ? custom : t.gPerKg.value;
+  const day = wt * gPerKg;
+  const per = day / meals;
+  const cap = wt * PER_MEAL.value;
+
+  $("#dayOut").textContent = fmt(day, 0);
+  $("#basisOut").textContent = (isFinite(custom) && custom > 0 ? "직접 지정" : t.name) + " · " + fmt(gPerKg, 2) + " g/kg × " + fmt(wt, 1) + "kg";
+  $("#mealOut").textContent = fmt(per, 1) + " g × " + meals + "끼";
+  $("#capOut").innerHTML = fmt(cap, 1) + " g" + (per > cap * 1.15 ? ' <span class="badge todo">한 끼 목표가 참고 상한을 넘습니다 — 식사 횟수를 늘려 보세요</span>' : ' <span class="badge ok">적정 범위</span>');
+
+  const names = ["아침", "점심", "저녁", "간식/야식", "추가 1", "추가 2"];
+  const notes = ["기상 후 첫 끼 — 밤사이 공복을 끊습니다", "가장 채우기 쉬운 끼니", "취침 전 마지막 주요 끼니", "운동 전후에 배치하면 좋습니다", "", ""];
+  let list = [];
+  for (let i = 0; i < meals; i++) list.push({ n: names[i] || "끼니 " + (i + 1), g: per, note: notes[i] || "" });
+  $("#mBody").innerHTML = list.map((m) => "<tr><td>" + m.n + "</td><td class=\"num\">" + fmt(m.g, 1) + " g</td><td>" + m.note + "</td></tr>").join("");
+  $("#fBody").innerHTML = FOOD_EXAMPLES
+    .map((f) => "<tr><td>" + f.name + "</td><td class=\"num\">" + f.protein.value + " g</td><td class=\"num\">약 " + fmt(per / f.protein.value, 1) + "인분</td></tr>")
+    .join("");
+  $("#resultBox").hidden = false;
+  showAd();
+}
+$("#calcBtn").addEventListener("click", run);
+for (const id of ["#wt", "#custom"]) $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") run(); });
+</script>
+</body>
+</html>

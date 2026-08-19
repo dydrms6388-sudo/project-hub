@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>연비 계산기 — 주유 기록 누적과 연비 추이 그래프</title>
+<meta name="description" content="주행거리와 주유량만 넣으면 실연비(km/L)와 100km당 연료량, 1km당 비용을 계산합니다. 주유할 때마다 기록하면 평균 연비와 추이 그래프가 쌓이고 CSV로 내보낼 수 있습니다. 기록은 내 브라우저에만 저장됩니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/fuel-economy/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="연비 계산기 — 기록하면 그래프까지" />
+<meta property="og:description" content="주행거리와 주유량만 넣으면 실연비(km/L)와 100km당 연료량, 1km당 비용을 계산합니다. 주유할 때마다 기록하면 평균 연비와 추이 그래프가 쌓이고 CSV로 내보낼 수 있습니다. 기록은 내 브라우저에만 저장됩니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/fuel-economy/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"연비 계산기","description":"주행거리와 주유량만 넣으면 실연비(km/L)와 100km당 연료량, 1km당 비용을 계산합니다. 주유할 때마다 기록하면 평균 연비와 추이 그래프가 쌓이고 CSV로 내보낼 수 있습니다. 기록은 내 브라우저에만 저장됩니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/fuel-economy/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"연비 기록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"사용 중인 브라우저의 localStorage에만 저장됩니다. 서버로 전송되거나 저장되지 않으므로 기기나 브라우저를 바꾸면 보이지 않습니다. CSV 내보내기로 백업할 수 있습니다."}},{"@type":"Question","name":"km/L과 L/100km 중 어느 쪽이 정확한가요?","acceptedAnswer":{"@type":"Answer","text":"둘 다 같은 값의 다른 표현입니다. km/L은 높을수록 좋고 L/100km는 낮을수록 좋습니다. 연료비 비교에는 L/100km가 직관적이어서 함께 표시합니다."}},{"@type":"Question","name":"겨울에 연비가 떨어지는 게 정상인가요?","acceptedAnswer":{"@type":"Answer","text":"일반적입니다. 냉간 시동 구간이 길어지고 공기 밀도·타이어 압력·공조 부하가 달라져 같은 차라도 계절별 편차가 생깁니다. 그래서 한 번의 값보다 누적 평균과 추이가 더 유용합니다."}},{"@type":"Question","name":"정확도를 높이려면 어떻게 해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"같은 주유소, 같은 주유기, 자동 정지 시점까지만 넣는 방식으로 조건을 통일하고 최소 3~5회 이상 기록해 평균을 보세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"연비 계산기","item":"https://carcalc-kr.vercel.app/fuel-economy/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">연비 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">⛽</div>
+    <h1>연비 계산기</h1>
+    <p class="lead">이번 주유의 실연비를 계산하고, <strong>주유할 때마다 기록</strong>하면 연비 추이 그래프가 쌓입니다. 서버 저장 없음.</p>
+  </div>
+
+  <div class="card">
+    <div class="row2">
+      <div class="field"><label for="date">주유일</label><input type="date" id="date" /></div>
+      <div class="field"><label for="km">주행거리 <span class="hint">km · 트립 미터</span></label><input type="number" id="km" inputmode="decimal" step="0.1" placeholder="450" value="450" /></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="lit">주유량 <span class="hint">L</span></label><input type="number" id="lit" inputmode="decimal" step="0.01" placeholder="38.5" value="38.5" /></div>
+      <div class="field"><label for="price">유가 <span class="hint">원/L · 선택</span></label><input type="number" id="price" inputmode="numeric" placeholder="1700" value="1700" /></div>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="go" type="button">연비 계산</button>
+      <button class="btn ghost" id="save" type="button">＋ 기록에 저장</button>
+    </div>
+  </div>
+  <div class="result" id="out" hidden></div>
+
+  <section class="about" id="logSec">
+    <h2>내 주유 기록</h2>
+    <div id="logBox"></div>
+    <div class="btnrow">
+      <button class="btn ghost" id="csv" type="button">CSV 내보내기</button>
+      <button class="btn danger" id="clear" type="button">기록 전체 삭제</button>
+    </div>
+    <p class="disclaimer">입력한 값은 <strong>서버로 전송되지 않고</strong> 브라우저 안에서만 계산됩니다. 기록은 이 브라우저의 localStorage에만 저장되며(<strong>서버 저장 없음</strong>) 기기·브라우저를 바꾸면 보이지 않습니다. CSV로 내보내 백업하세요.</p>
+  </section>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>계기판 연비와 실연비가 다른 이유</h2>
+    <p>계기판에 뜨는 평균 연비는 차가 추정한 값이고, 실제로 넣은 기름과 달린 거리로 계산한 <strong>만탱크 실연비</strong>가 진짜입니다. 방법은 간단합니다. 주유구가 자동으로 멈출 때까지 가득 채우고 트립 미터를 0으로 초기화한 뒤, 다음 주유 때 다시 가득 채우면서 그때의 주행거리와 주유량을 나누면 됩니다.</p>
+    <p>한 번의 측정만으로는 정확하지 않습니다. 주유기 자동 정지 시점, 노면 경사, 그날의 정체 정도에 따라 오차가 생기기 때문입니다. 그래서 이 계산기는 기록을 누적해 <strong>누적 주행거리 ÷ 누적 주유량</strong>으로 평균을 내고, 추이 그래프로 계절별·운전 습관별 변화를 볼 수 있게 했습니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li>주유 시 <strong>가득 주유</strong>하고 트립 미터를 초기화합니다.</li>
+      <li>다음 주유 때 <strong>주행거리(트립)</strong>와 <strong>주유량(L)</strong>, 리터당 유가를 입력합니다.</li>
+      <li>"＋ 기록에 저장"을 누르면 그래프와 누적 평균이 갱신됩니다.</li>
+      <li>백업이 필요하면 <strong>CSV 내보내기</strong>로 파일을 받아두세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 연비 기록은 어디에 저장되나요?</p><p class="a">사용 중인 브라우저의 localStorage에만 저장됩니다. 서버로 전송되거나 저장되지 않으므로 기기나 브라우저를 바꾸면 보이지 않습니다. CSV 내보내기로 백업할 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. km/L과 L/100km 중 어느 쪽이 정확한가요?</p><p class="a">둘 다 같은 값의 다른 표현입니다. km/L은 높을수록 좋고 L/100km는 낮을수록 좋습니다. 연료비 비교에는 L/100km가 직관적이어서 함께 표시합니다.</p></div>
+    <div class="qa"><p class="q">Q. 겨울에 연비가 떨어지는 게 정상인가요?</p><p class="a">일반적입니다. 냉간 시동 구간이 길어지고 공기 밀도·타이어 압력·공조 부하가 달라져 같은 차라도 계절별 편차가 생깁니다. 그래서 한 번의 값보다 누적 평균과 추이가 더 유용합니다.</p></div>
+    <div class="qa"><p class="q">Q. 정확도를 높이려면 어떻게 해야 하나요?</p><p class="a">같은 주유소, 같은 주유기, 자동 정지 시점까지만 넣는 방식으로 조건을 통일하고 최소 3~5회 이상 기록해 평균을 보세요.</p></div>
+    <h2>데이터 출처와 확인일</h2>
+    <p class="src"><a href="https://www.opinet.co.kr" target="_blank" rel="noopener">오피넷 — 실시간 유가 조회</a><br />데이터 확인일: 2026-08-19</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 주유 방식·측정 조건에 따라 회차별 편차가 큽니다. 누적 평균을 기준으로 보세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-yeonbigak/" target="_blank" rel="noopener"><span class="ic">⛽</span>연비각 — 연비 기록장</a>
+      <a class="rel" href="../fuel-cost/"><span class="ic">🛣️</span>유류비 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-maintenance-cycle/" target="_blank" rel="noopener"><span class="ic">🔩</span>차량 소모품 교체주기 가이드</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { fuelEconomy } from "../lib/calc.mjs";
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+const KEY = 'cc-fuel-logs';
+let logs = C.lsGet(KEY, []);
+$('date').value = new Date().toISOString().slice(0, 10);
+
+function current() {
+  const km = C.num($('km')), lit = C.num($('lit')), price = C.num($('price'));
+  return { d: $('date').value || new Date().toISOString().slice(0, 10), km: km, l: lit, p: price, e: fuelEconomy(km, lit) };
+}
+function calc() {
+  const c = current();
+  if (c.km <= 0 || c.l <= 0) { alert('주행거리와 주유량을 입력하세요.'); return null; }
+  const per100 = 100 / c.e;
+  const cost = c.p > 0 ? c.p * c.l : 0;
+  C.result('out', {
+    big: c.e.toFixed(2) + ' km/L',
+    sub: C.fmt(c.km) + 'km 주행 · ' + c.l + 'L 주유 기준 실연비',
+    rows: [
+      ['100km당 연료', per100.toFixed(2) + ' L'],
+      c.p > 0 ? ['이번 주유비', C.won(cost)] : null,
+      c.p > 0 ? ['1km당 연료비', (c.p / c.e).toFixed(1) + '원'] : null,
+      c.p > 0 ? ['1만km당 연료비', C.won(c.p / c.e * 10000)] : null,
+      ['실연비', c.e.toFixed(2) + ' km/L', 'total'],
+    ],
+    foot: C.steps([
+      '연비 = 주행거리 ÷ 주유량 = ' + C.fmt(c.km) + ' ÷ ' + c.l + ' = ' + c.e.toFixed(3) + ' km/L',
+      '100km당 연료량 = 100 ÷ 연비 = ' + per100.toFixed(2) + ' L',
+      c.p > 0 ? '1km당 연료비 = 유가 ÷ 연비 = ' + C.fmt(c.p) + ' ÷ ' + c.e.toFixed(2) + ' = ' + (c.p / c.e).toFixed(1) + '원' : '유가를 넣으면 1km당 비용까지 계산됩니다.',
+    ]),
+  });
+  return c;
+}
+function save() {
+  const c = calc();
+  if (!c) return;
+  logs.push({ d: c.d, km: c.km, l: c.l, p: c.p });
+  logs.sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : 0; });
+  C.lsSet(KEY, logs);
+  render();
+  $('logSec').scrollIntoView({ behavior: 'smooth' });
+}
+function chart(rs) {
+  if (rs.length < 2) return '<p class="src">기록이 2개 이상 쌓이면 연비 추이 그래프가 그려집니다.</p>';
+  const W = 640, H = 220, PL = 46, PR = 14, PT = 16, PB = 30;
+  const vals = rs.map(function (r) { return r.e; });
+  let mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+  if (mx - mn < 1) { mn = mn - 0.5; mx = mx + 0.5; }
+  const pad = (mx - mn) * 0.12; mn = Math.max(0, mn - pad); mx = mx + pad;
+  const X = function (i) { return PL + (W - PL - PR) * (i / (rs.length - 1)); };
+  const Y = function (v) { return PT + (H - PT - PB) * (1 - (v - mn) / (mx - mn)); };
+  let g = '';
+  for (let i = 0; i <= 4; i++) {
+    const v = mn + (mx - mn) * i / 4, y = Y(v);
+    g += '<line class="grid" x1="' + PL + '" y1="' + y.toFixed(1) + '" x2="' + (W - PR) + '" y2="' + y.toFixed(1) + '" />';
+    g += '<text x="' + (PL - 6) + '" y="' + (y + 3.5).toFixed(1) + '" text-anchor="end">' + v.toFixed(1) + '</text>';
+  }
+  let d = '', dots = '';
+  rs.forEach(function (r, i) {
+    const x = X(i).toFixed(1), y = Y(r.e).toFixed(1);
+    d += (i === 0 ? 'M' : 'L') + x + ' ' + y + ' ';
+    dots += '<circle class="dot" cx="' + x + '" cy="' + y + '" r="3"><title>' + r.d + ' · ' + r.e.toFixed(2) + 'km/L</title></circle>';
+  });
+  const first = rs[0].d, last = rs[rs.length - 1].d;
+  return '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="연비 추이 그래프">' + g +
+    '<line class="axis" x1="' + PL + '" y1="' + (H - PB) + '" x2="' + (W - PR) + '" y2="' + (H - PB) + '" />' +
+    '<path class="line" d="' + d.trim() + '" />' + dots +
+    '<text x="' + PL + '" y="' + (H - 10) + '">' + first + '</text>' +
+    '<text x="' + (W - PR) + '" y="' + (H - 10) + '" text-anchor="end">' + last + '</text>' +
+    '<text x="' + (PL - 6) + '" y="' + (PT - 4) + '" text-anchor="end">km/L</text></svg>';
+}
+function render() {
+  const box = $('logBox');
+  if (!logs.length) { box.innerHTML = '<p class="src">아직 기록이 없습니다. 위에서 값을 넣고 "＋ 기록에 저장"을 누르면 여기에 쌓입니다.</p>'; return; }
+  const rs = logs.map(function (r) { return { d: r.d, km: r.km, l: r.l, p: r.p, e: fuelEconomy(r.km, r.l) }; });
+  const totKm = rs.reduce(function (s, r) { return s + r.km; }, 0);
+  const totL = rs.reduce(function (s, r) { return s + r.l; }, 0);
+  const totCost = rs.reduce(function (s, r) { return s + (r.p > 0 ? r.p * r.l : 0); }, 0);
+  const avg = totL > 0 ? totKm / totL : 0;
+  const es = rs.map(function (r) { return r.e; });
+  const rows = rs.slice().reverse().map(function (r) {
+    return [r.d, C.fmt(r.km), r.l.toFixed(2), r.p > 0 ? C.fmt(r.p) : '-', r.e.toFixed(2)];
+  });
+  box.innerHTML = chart(rs) +
+    '<table class="kv"><tbody>' +
+    '<tr><th>기록 수</th><td>' + rs.length + '회</td></tr>' +
+    '<tr><th>누적 주행 / 주유</th><td>' + C.fmt(totKm) + 'km / ' + totL.toFixed(1) + 'L</td></tr>' +
+    '<tr><th>최고 / 최저 연비</th><td>' + Math.max.apply(null, es).toFixed(2) + ' / ' + Math.min.apply(null, es).toFixed(2) + ' km/L</td></tr>' +
+    (totCost > 0 ? '<tr><th>누적 주유비</th><td>' + C.won(totCost) + '</td></tr>' : '') +
+    '<tr class="total"><th>누적 평균 연비</th><td>' + avg.toFixed(2) + ' km/L</td></tr>' +
+    '</tbody></table>' +
+    C.tbl(['주유일', '주행(km)', '주유(L)', '유가', '연비(km/L)'], rows);
+}
+$('go').addEventListener('click', calc);
+$('save').addEventListener('click', save);
+$('csv').addEventListener('click', function () {
+  if (!logs.length) { alert('내보낼 기록이 없습니다.'); return; }
+  const rows = [['주유일', '주행거리(km)', '주유량(L)', '유가(원/L)', '연비(km/L)']];
+  for (const r of logs) rows.push([r.d, r.km, r.l, r.p || '', fuelEconomy(r.km, r.l).toFixed(3)]);
+  C.downloadCsv('carcalc-fuel-log.csv', rows);
+});
+$('clear').addEventListener('click', function () {
+  if (!confirm('저장된 주유 기록을 모두 삭제할까요? 되돌릴 수 없습니다.')) return;
+  logs = []; C.lsSet(KEY, logs); render();
+});
+render();
+</script>
+</body>
+</html>

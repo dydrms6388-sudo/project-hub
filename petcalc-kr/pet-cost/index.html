@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>반려동물 양육비 계산기 — 월·연간·평생 비용 추산 | PetCalc</title>
+<meta name="description" content="사료·간식·위생용품·미용·예방·검진 등 항목별 금액을 직접 고쳐 월 양육비와 연간·평생 예상 비용을 계산합니다. 기본값은 KB 한국 반려동물 보고서의 월평균 양육비를 참고한 편집용 수치입니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/pet-cost/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="반려동물 양육비 계산기 — 월·연간·평생 비용 추산 | PetCalc">
+<meta property="og:description" content="사료·간식·위생용품·미용·예방·검진 등 항목별 금액을 직접 고쳐 월 양육비와 연간·평생 예상 비용을 계산합니다. 기본값은 KB 한국 반려동물 보고서의 월평균 양육비를 참고한 편집용 수치입니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/pet-cost/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"반려동물 양육비 계산기 — 월·연간·평생 비용 추산 | PetCalc","description":"사료·간식·위생용품·미용·예방·검진 등 항목별 금액을 직접 고쳐 월 양육비와 연간·평생 예상 비용을 계산합니다. 기본값은 KB 한국 반려동물 보고서의 월평균 양육비를 참고한 편집용 수치입니다.","url":"https://petcalc-kr.vercel.app/pet-cost/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"치료비는 왜 기본값에 없나요?","acceptedAnswer":{"@type":"Answer","text":"치료비는 나이·질환·병원에 따라 편차가 너무 커서 평균값을 넣으면 오히려 오해를 줍니다. 대신 결과에 표시되는 ‘의료 적립’을 참고해 매달 따로 모아 두는 방식을 권합니다."}},{"@type":"Question","name":"강아지와 고양이 중 어느 쪽이 더 드나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 미용·산책용품이 필요한 강아지 쪽 고정비가 큰 편이고, 고양이는 모래·화장실 관련 비용이 꾸준히 듭니다. 결국 개체의 건강 상태가 총액을 좌우합니다."}},{"@type":"Question","name":"다묘·다견 가정은 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"사료·모래처럼 마릿수에 비례하는 항목은 곱해서 넣고, 미용·검진은 각각 계산해 합산하세요. 마릿수만큼 단순 배가 되지는 않습니다."}},{"@type":"Question","name":"계산 결과가 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 입력값은 브라우저 화면에서만 쓰이고 서버로 전송되거나 저장되지 않습니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"양육비 계산기","item":"https://petcalc-kr.vercel.app/pet-cost/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">양육비 계산기</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">💰</div>
+  <h1>반려동물 양육비 계산기</h1>
+  <p class="lead">항목별 금액을 우리 집 기준으로 고치면 월·연간·남은 기간 총액을 계산합니다.</p>
+</header>
+
+
+<section class="card">
+  <h2>월 지출 항목 <span class="hint">(원 단위, 직접 수정)</span></h2>
+  <div class="field"><label for="c_food">사료</label><input type="number" id="c_food" min="0" step="1000" inputmode="numeric" value="60000"></div>
+  <div class="field"><label for="c_snack">간식·영양제</label><input type="number" id="c_snack" min="0" step="1000" inputmode="numeric" value="30000"></div>
+  <div class="field"><label for="c_litter">위생용품(배변패드·모래)</label><input type="number" id="c_litter" min="0" step="1000" inputmode="numeric" value="20000"></div>
+  <div class="field"><label for="c_grooming">미용·목욕</label><input type="number" id="c_grooming" min="0" step="1000" inputmode="numeric" value="20000"></div>
+  <div class="field"><label for="c_toy">장난감·용품</label><input type="number" id="c_toy" min="0" step="1000" inputmode="numeric" value="10000"></div>
+  <div class="field"><label for="c_prevention">예방(심장사상충·외부기생충)</label><input type="number" id="c_prevention" min="0" step="1000" inputmode="numeric" value="15000"></div>
+  <div class="field"><label for="c_checkup">정기검진·의료 적립</label><input type="number" id="c_checkup" min="0" step="1000" inputmode="numeric" value="30000"></div>
+  <div class="field"><label for="c_etc">기타(호텔·유치원 등)</label><input type="number" id="c_etc" min="0" step="1000" inputmode="numeric" value="0"></div>
+  <div class="row2">
+    <div class="field"><label for="yr">앞으로 함께할 기간(년)</label><input type="number" id="yr" min="1" max="25" step="1" value="10" inputmode="numeric"></div>
+    <div class="field"><label for="init">초기 비용 <span class="hint">중성화·용품 등</span></label><input type="number" id="init" min="0" step="10000" inputmode="numeric" value="500000"></div>
+  </div>
+  <button class="btn" id="go" type="button">양육비 계산하기</button>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>계산 결과</h2>
+  <p class="big" id="big"></p>
+  <div id="lines"></div>
+  <div class="rt-wrap"><table class="rt"><thead><tr><th>항목</th><th>월</th><th>연</th><th>비중</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <p class="src">치료비·수술비 등 예기치 못한 지출은 포함되어 있지 않습니다. 실제 지출은 이보다 커질 수 있습니다.</p>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>양육비는 어디에 얼마나 드나요?</h2>
+<p>정기적으로 나가는 돈은 사료·간식·위생용품·미용·예방약·정기검진 정도로 나뉩니다. 여기에 예기치 못한 <b>치료비</b>가 얹히는데, 이 부분이 가장 큰 변동 요인입니다. 기본값은 국내 조사에서 보고된 월평균 양육비를 참고해 넣은 <b>편집용 숫자</b>이므로, 실제 영수증을 보며 고쳐 쓰는 것이 정확합니다.</p>
+<h3>기본값의 근거</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>항목</th><th>기본값(월)</th></tr></thead><tbody>
+<tr><td>사료</td><td>60,000원</td></tr><tr><td>간식·영양제</td><td>30,000원</td></tr><tr><td>위생용품(배변패드·모래)</td><td>20,000원</td></tr><tr><td>미용·목욕</td><td>20,000원</td></tr><tr><td>장난감·용품</td><td>10,000원</td></tr><tr><td>예방(심장사상충·외부기생충)</td><td>15,000원</td></tr><tr><td>정기검진·의료 적립</td><td>30,000원</td></tr><tr><td>기타(호텔·유치원 등)</td><td>0원</td></tr>
+</tbody></table></div>
+<h2>사용법</h2>
+<ol>
+<li>최근 3개월 영수증·카드 내역을 보고 항목별 금액을 고칩니다.</li>
+<li>남은 예상 기간(년)을 넣으면 총액이 나옵니다. 나이 계산기로 기대 수명을 확인해 보세요.</li>
+<li>결과의 “의료 적립 권장”처럼 매달 일정액을 따로 모아 두면 갑작스러운 수술비 부담을 줄일 수 있습니다.</li>
+</ol>
+<h2>지출을 줄이는 현실적인 순서</h2>
+<ul>
+<li><b>비만 예방</b>이 가장 큰 절약입니다. 관절·당뇨·심장 문제의 치료비를 줄여 줍니다.</li>
+<li>예방(심장사상충·구충)은 아끼면 오히려 치료비가 커지는 대표적인 항목입니다.</li>
+<li>사료는 가격보다 하루 급여 열량 기준으로 비교해야 실제 단가를 알 수 있습니다.</li>
+<li>정기검진으로 조기에 발견하면 치료 기간과 비용이 크게 줄어드는 경우가 많습니다.</li>
+</ul>
+<p class="notice">이 페이지는 특정 보험·금융 상품을 비교하거나 추천하지 않습니다. 상품 가입 여부는 스스로 판단하시고, 필요하면 담당 수의사와 진료 계획을 먼저 상의하세요.</p>
+<p class="src">출처: KB 2023 한국 반려동물 보고서 기준 반려가구 월평균 양육비는 약 15.4만원(치료비 제외). 위 항목별 금액은 이를 참고한 편집용 기본값. — <a href="https://www.kbfg.com/kbresearch/" rel="nofollow noopener" target="_blank">https://www.kbfg.com/kbresearch/</a> (확인일 2026-08-19)</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 치료비는 왜 기본값에 없나요?</p><p class="a">치료비는 나이·질환·병원에 따라 편차가 너무 커서 평균값을 넣으면 오히려 오해를 줍니다. 대신 결과에 표시되는 ‘의료 적립’을 참고해 매달 따로 모아 두는 방식을 권합니다.</p></div>
+<div class="qa"><p class="q">Q. 강아지와 고양이 중 어느 쪽이 더 드나요?</p><p class="a">일반적으로 미용·산책용품이 필요한 강아지 쪽 고정비가 큰 편이고, 고양이는 모래·화장실 관련 비용이 꾸준히 듭니다. 결국 개체의 건강 상태가 총액을 좌우합니다.</p></div>
+<div class="qa"><p class="q">Q. 다묘·다견 가정은 어떻게 계산하나요?</p><p class="a">사료·모래처럼 마릿수에 비례하는 항목은 곱해서 넣고, 미용·검진은 각각 계산해 합산하세요. 마릿수만큼 단순 배가 되지는 않습니다.</p></div>
+<div class="qa"><p class="q">Q. 계산 결과가 저장되나요?</p><p class="a">아니요. 입력값은 브라우저 화면에서만 쓰이고 서버로 전송되거나 저장되지 않습니다.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../weight-log/index.html"><span class="ic">📈</span><span>체중 기록·그래프</span></a>
+      <a class="rel" href="../vaccine/index.html"><span class="ic">💉</span><span>예방접종 스케줄</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-vet-cost/" rel="noopener"><span class="ic">🏥</span><span>동물병원 진료비 참고</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-meal-calc/" rel="noopener"><span class="ic">🍚</span><span>반려동물 사료량 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-slimpet/" rel="noopener"><span class="ic">⚖️</span><span>반려동물 다이어트 도우미</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var K=[{"key":"food","label":"사료"},{"key":"snack","label":"간식·영양제"},{"key":"litter","label":"위생용품(배변패드·모래)"},{"key":"grooming","label":"미용·목욕"},{"key":"toy","label":"장난감·용품"},{"key":"prevention","label":"예방(심장사상충·외부기생충)"},{"key":"checkup","label":"정기검진·의료 적립"},{"key":"etc","label":"기타(호텔·유치원 등)"}];
+pcQ('go').addEventListener('click',function(){
+  var tot=0, vals=[];
+  K.forEach(function(k){
+    var v=pcNum('c_'+k.key); if(!isFinite(v)||v<0) v=0;
+    vals.push({label:k.label,v:v}); tot+=v;
+  });
+  var yr=pcNum('yr'); if(!isFinite(yr)||yr<1) yr=1;
+  var init=pcNum('init'); if(!isFinite(init)||init<0) init=0;
+  var year=tot*12, life=year*yr+init;
+  pcQ('big').innerHTML='월 <b>'+pcFmt(tot)+'원</b>';
+  pcQ('lines').innerHTML=
+    '<div class="res-line"><span class="k">연간 예상</span><span class="v">'+pcFmt(year)+'원</span></div>'+
+    '<div class="res-line"><span class="k">'+yr+'년 합계 (초기 비용 포함)</span><span class="v">'+pcFmt(life)+'원</span></div>'+
+    '<div class="res-line"><span class="k">하루 평균</span><span class="v">'+pcFmt(Math.round(tot*12/365))+'원</span></div>'+
+    '<div class="res-line"><span class="k">의료 적립 권장(월 지출의 20%)</span><span class="v">'+pcFmt(Math.round(tot*0.2))+'원/월</span></div>';
+  vals.sort(function(a,b){return b.v-a.v;});
+  pcQ('tb').innerHTML=vals.map(function(x){
+    return '<tr><td>'+x.label+'</td><td>'+pcFmt(x.v)+'원</td><td>'+pcFmt(x.v*12)+'원</td><td>'+(tot?((x.v/tot)*100).toFixed(0):'0')+'%</td></tr>';
+  }).join('');
+  pcShow('res');
+});
+})();
+</script>
+
+</body>
+</html>

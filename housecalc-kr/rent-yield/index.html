@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>임대수익률 계산기 — 표면·실질(레버리지) 수익률 동시 계산</title>
+<meta name="description" content="매매가·보증금·월세로 표면수익률을 구하고, 대출 이자와 취득 부대비용·운영비까지 반영한 실질수익률(자기자본 대비)을 함께 계산합니다. 월세 수익형 부동산 검토에 쓰는 기본 지표를 산식과 함께 보여줍니다." />
+<link rel="canonical" href="https://housecalc-kr.vercel.app/rent-yield/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="부동산 계산기 허브" />
+<meta property="og:title" content="임대수익률 계산기 (실질 수익률 포함)" />
+<meta property="og:description" content="매매가·보증금·월세로 표면수익률을 구하고, 대출 이자와 취득 부대비용·운영비까지 반영한 실질수익률(자기자본 대비)을 함께 계산합니다. 월세 수익형 부동산 검토에 쓰는 기본 지표를 산식과 함께 보여줍니다." />
+<meta property="og:url" content="https://housecalc-kr.vercel.app/rent-yield/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script defer src="../assets/common.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"임대수익률 계산기","description":"매매가·보증금·월세로 표면수익률을 구하고, 대출 이자와 취득 부대비용·운영비까지 반영한 실질수익률(자기자본 대비)을 함께 계산합니다. 월세 수익형 부동산 검토에 쓰는 기본 지표를 산식과 함께 보여줍니다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://housecalc-kr.vercel.app/rent-yield/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"왜 매매가에서 보증금을 빼나요?","acceptedAnswer":{"@type":"Answer","text":"보증금은 임차인에게 받은 돈이라 실제 투입 자본이 줄어드는 효과가 있기 때문입니다. 다만 계약 종료 시 돌려줘야 할 부채이므로 매도 계획과 함께 봐야 합니다."}},{"@type":"Question","name":"대출을 많이 받으면 수익률이 올라가나요?","acceptedAnswer":{"@type":"Answer","text":"대출금리가 표면수익률보다 낮을 때만 그렇습니다. 금리가 더 높으면 레버리지를 키울수록 실질수익률이 낮아집니다. 금리를 바꿔 가며 확인해 보세요."}},{"@type":"Question","name":"세금은 반영되나요?","acceptedAnswer":{"@type":"Answer","text":"재산세·종부세·임대소득세는 반영되지 않습니다. 보유세는 보유세 계산기로 따로 구해 월 환산해 운영비에 넣으면 더 현실적인 숫자가 됩니다."}},{"@type":"Question","name":"공실은 어떻게 반영하나요?","acceptedAnswer":{"@type":"Answer","text":"1년 중 한 달 공실을 가정하면 연 월세가 약 8% 줄어듭니다. 운영비에 월세의 8% 정도를 더하는 방식으로 보수적으로 계산할 수 있습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://housecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"임대수익률 계산기","item":"https://housecalc-kr.vercel.app/rent-yield/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🏠 부동산 계산기 허브</a> <span class="sep">›</span> <span>임대수익률 계산기</span></nav>
+  <p class="topnotice"><strong>고지</strong> — 이 사이트의 모든 계산은 <strong>참고용 추정이며 실제 세액·한도는 위택스·국세청·금융기관에서 확인</strong>해야 합니다.
+  세율·한도·요율은 법령 개정과 정책 변경으로 수시로 바뀌며, 개별 사정(감면·특례·심사 기준)에 따라 결과가 달라집니다.
+  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> ·
+  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a> ·
+  <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a></p>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📈</div>
+    <h1>임대수익률 계산기</h1>
+    <p class="lead">표면수익률은 광고용, 판단 기준은 <strong>내 돈 대비 실질수익률</strong>입니다.</p>
+  </div>
+
+  <section class="panel">
+    <h2>물건 정보</h2>
+    <div class="row2">
+      <div>
+        <label for="price">매매가 <span class="opt">(만원)</span></label>
+        <input type="text" id="price" data-comma value="20,000" />
+        <p class="src" id="priceEcho"></p>
+      </div>
+      <div>
+        <label for="deposit">임대 보증금 <span class="opt">(만원)</span></label>
+        <input type="text" id="deposit" data-comma value="1,000" />
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label for="monthly">월세 <span class="opt">(만원)</span></label>
+        <input type="text" id="monthly" data-comma value="70" />
+      </div>
+      <div>
+        <label for="expense">월 운영비 <span class="opt">(만원, 관리·수선·보험)</span></label>
+        <input type="text" id="expense" data-comma value="5" />
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>대출과 부대비용</h2>
+    <div class="row2">
+      <div>
+        <label for="loan">대출금액 <span class="opt">(만원)</span></label>
+        <input type="text" id="loan" data-comma value="10,000" />
+      </div>
+      <div>
+        <label for="loanRate">대출금리 <span class="opt">(%, 이자만)</span></label>
+        <input type="number" id="loanRate" step="0.01" value="4.5" />
+      </div>
+    </div>
+    <label for="extra">취득 부대비용 <span class="opt">(만원, 취득세·중개보수·등기 등)</span></label>
+    <input type="text" id="extra" data-comma value="0" />
+    <p class="note">부대비용은 <a href="../move-in-cost/">입주 총비용 계산기</a>에서 계산한 금액을 넣으면 자기자본이 정확해집니다. 공실률·재산세는 이 계산에 포함되지 않으니 운영비에 월 환산해 넣으세요.</p>
+    <div class="btnrow"><button class="btn" id="go">수익률 계산하기</button></div>
+  </section>
+  
+  <section class="result" id="result" hidden aria-live="polite">
+    <p class="sub">계산 결과 (참고용 추정)</p>
+    <p class="big" id="big"></p>
+    <p class="sub" id="sub"></p>
+    <div id="detail"></div>
+  </section>
+
+  <div class="adbox" id="adbox" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>표면수익률과 실질수익률</h2>
+    <p><strong>표면수익률</strong>은 연 월세를 (매매가 − 보증금)으로 나눈 값입니다. 매물 광고에 적힌 수익률은 대부분 이것이며, 대출 이자도 세금도 공실도 빠져 있습니다.</p>
+    <p><strong>실질수익률</strong>은 실제로 들어간 내 돈, 즉 매매가에서 보증금과 대출을 빼고 취득 부대비용을 더한 금액을 분모로 씁니다. 분자에서는 대출 이자와 운영비를 뺍니다. 대출금리가 표면수익률보다 높으면 레버리지를 쓸수록 실질수익률이 <strong>떨어진다</strong>는 사실도 이 계산에서 바로 드러납니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>매매가·보증금·월세를 입력합니다.</li>
+      <li>관리비 자부담·수선충당·화재보험 등 월 운영비를 넣습니다. 공실 위험은 월세의 5~10%를 운영비에 더해 보수적으로 잡는 방법이 있습니다.</li>
+      <li>대출금액과 금리를 넣습니다(이자만 계산, 원금 상환은 수익률이 아니라 현금흐름 문제입니다).</li>
+      <li>취득세·중개보수·등기비용 합계를 부대비용에 넣으면 자기자본 기준이 정확해집니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 왜 매매가에서 보증금을 빼나요?</p><p class="a">보증금은 임차인에게 받은 돈이라 실제 투입 자본이 줄어드는 효과가 있기 때문입니다. 다만 계약 종료 시 돌려줘야 할 부채이므로 매도 계획과 함께 봐야 합니다.</p></div>
+    <div class="qa"><p class="q">Q. 대출을 많이 받으면 수익률이 올라가나요?</p><p class="a">대출금리가 표면수익률보다 낮을 때만 그렇습니다. 금리가 더 높으면 레버리지를 키울수록 실질수익률이 낮아집니다. 금리를 바꿔 가며 확인해 보세요.</p></div>
+    <div class="qa"><p class="q">Q. 세금은 반영되나요?</p><p class="a">재산세·종부세·임대소득세는 반영되지 않습니다. 보유세는 보유세 계산기로 따로 구해 월 환산해 운영비에 넣으면 더 현실적인 숫자가 됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 공실은 어떻게 반영하나요?</p><p class="a">1년 중 한 달 공실을 가정하면 연 월세가 약 8% 줄어듭니다. 운영비에 월세의 8% 정도를 더하는 방식으로 보수적으로 계산할 수 있습니다.</p></div>
+    <h2>계산에 쓰인 값과 출처</h2>
+    <div class="tbwrap"><table class="tb">
+      <thead><tr><th>항목</th><th>값</th><th>근거</th><th>확인일</th></tr></thead>
+      <tbody>
+        <tr><td>재산세 표준세율(참고)</td><td>보유세는 별도 계산 필요</td><td><a href="https://www.law.go.kr/법령/지방세법/제111조" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>중개보수 요율(참고)</td><td>부대비용 산정 시 사용</td><td><a href="https://www.law.go.kr/법령/공인중개사법시행규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note warn">이 계산기의 결과는 <strong>참고용 추정치</strong>이며 실제 부과·승인 금액을 확정하지 않습니다.
+    세금은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>(지방세)·<a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a>(국세),
+    대출 한도는 거래 금융기관, 등기 비용은 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 반드시 확인하세요.
+    이 사이트는 이름·연락처·주민등록번호 등 개인정보를 수집하지 않으며 모든 계산은 브라우저 안에서만 이뤄집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 계산기</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../holding-tax/"><span>🏛️</span> 보유세 계산기</a>
+      <a class="rel" href="../move-in-cost/"><span>📦</span> 입주 총비용 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-monthly-convert/" target="_blank" rel="noopener"><span>🔄</span> 전월세 전환 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/capital-gains-tax/" target="_blank" rel="noopener"><span>📊</span> 양도세 시뮬레이터 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">부동산 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { rentYield } from "../assets/calc.mjs";
+import { $, raw, man, txt, on, won, manwon, eok, pctStr, fbox, srcLine, setHtml, setText, showResult, echo, chips } from "../assets/ui.mjs";
+echo("price", "priceEcho");
+$("go").addEventListener("click", function () {
+  var price = man("price"), dep = man("deposit"), mo = man("monthly"), exp = man("expense");
+  var loan = man("loan"), lr = raw("loanRate"), extra = man("extra");
+  if (price <= 0 || mo <= 0) { setText("big", "매매가와 월세를 입력하세요"); setText("sub", ""); setHtml("detail", ""); showResult(); return; }
+  var r = rentYield({ price: price, deposit: dep, monthly: mo, loan: loan, loanRatePct: lr, expenseMonthly: exp });
+  var invested = price - dep - loan + extra;
+  var netAnnual = mo * 12 - exp * 12 - loan * lr / 100;
+  var netPct = invested > 0 ? netAnnual / invested * 100 : NaN;
+  var rows = [
+    ["연 월세 수입 = 월세 × 12", won(mo * 12)],
+    ["표면수익률 = 연 월세 ÷ (매매가 − 보증금) × 100", pctStr(r.gross, 2)],
+    ["연 운영비 = 월 운영비 × 12", "− " + won(exp * 12)],
+    ["연 대출이자 = 대출 " + eok(loan) + " × " + pctStr(lr, 2), "− " + won(loan * lr / 100)],
+    ["연 순수익", won(netAnnual)],
+    ["투입 자기자본 = 매매가 − 보증금 − 대출 + 부대비용", won(invested)],
+    ["실질수익률 = 연 순수익 ÷ 자기자본 × 100", pctStr(netPct, 2)],
+    ["월 현금흐름 = (월세 − 운영비 − 월 이자)", won(mo - exp - loan * lr / 100 / 12)]
+  ];
+  setText("big", pctStr(netPct, 2));
+  setText("sub", "표면 " + pctStr(r.gross, 2) + " · 자기자본 " + eok(invested) + " 기준 실질수익률");
+  setHtml("detail", fbox("산출 과정", rows, "재산세·종부세·임대소득세와 공실은 반영되지 않았습니다. 대출은 이자만 계산했고 원금 상환은 현금흐름에서 별도로 고려해야 합니다."));
+  showResult();
+});
+</script>
+</body>
+</html>

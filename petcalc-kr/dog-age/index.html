@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>강아지 나이 계산기 — 체구별 사람 나이 환산 | PetCalc</title>
+<meta name="description" content="우리 강아지 나이를 사람 나이로 환산합니다. 단순 ×7이 아니라 소형·중형·대형 체구별 환산표(AKC 기준)를 사용해 생활 단계까지 함께 알려드립니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/dog-age/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="강아지 나이 계산기 — 체구별 사람 나이 환산 | PetCalc">
+<meta property="og:description" content="우리 강아지 나이를 사람 나이로 환산합니다. 단순 ×7이 아니라 소형·중형·대형 체구별 환산표(AKC 기준)를 사용해 생활 단계까지 함께 알려드립니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/dog-age/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"강아지 나이 계산기 — 체구별 사람 나이 환산 | PetCalc","description":"우리 강아지 나이를 사람 나이로 환산합니다. 단순 ×7이 아니라 소형·중형·대형 체구별 환산표(AKC 기준)를 사용해 생활 단계까지 함께 알려드립니다.","url":"https://petcalc-kr.vercel.app/dog-age/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"강아지 1살은 사람 나이로 몇 살인가요?","acceptedAnswer":{"@type":"Answer","text":"체구와 관계없이 약 15세로 봅니다. 두 살이 되면 약 24세, 그 이후부터 체구별로 매년 4~5세씩 더해집니다."}},{"@type":"Question","name":"생년월일을 모르면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"입양 시 추정 월령이나 치아·활동성으로 병원에서 추정한 나이를 년 단위(예: 3.5)로 입력하세요. 추정값이라도 생활 단계 판단에는 충분합니다."}},{"@type":"Question","name":"초대형견도 대형견으로 고르면 되나요?","acceptedAnswer":{"@type":"Answer","text":"네, 이 표에서는 대형견을 고르면 됩니다. 다만 40kg을 크게 넘는 초대형견은 표보다 더 빨리 노화하는 경향이 있어, 결과보다 한두 살 위로 생각하는 편이 안전합니다."}},{"@type":"Question","name":"노령견 검진은 얼마나 자주 받나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 성견은 연 1회, 노령기에 들어서면 6개월마다 검진을 권합니다. 구체적인 주기는 지병 여부에 따라 수의사와 상의하세요."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"강아지 나이 계산기","item":"https://petcalc-kr.vercel.app/dog-age/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">강아지 나이 계산기</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">🐕</div>
+  <h1>강아지 나이 계산기</h1>
+  <p class="lead">생년월일 또는 나이와 체구를 넣으면 사람 나이로 환산합니다. 단순 ×7 공식보다 정확한 체구별 환산표를 씁니다.</p>
+</header>
+<p class="notice warn"><b>참고용이며 진단이 아닙니다.</b> 이 페이지의 계산·정보는 일반적인 기준을 안내할 뿐이며, 개체의 건강 상태를 판단하지 않습니다. 증상이 있거나 결정을 내려야 한다면 반드시 <b>수의사와 상담하세요</b>.</p>
+<p class="notice">같은 나이·체중이라도 품종, 중성화 여부, 활동량, 지병에 따라 결과가 달라집니다. <b>개체차가 있습니다</b> — 수치는 출발점으로만 쓰세요.</p>
+<section class="card">
+  <h2>강아지 정보</h2>
+  <div class="field"><label for="bd">생년월일 <span class="hint">(모르면 비우고 아래 나이만 입력)</span></label><input type="date" id="bd"></div>
+  <div class="field"><label for="ag">나이(년) <span class="hint">예: 3.5 = 3년 6개월</span></label><input type="number" id="ag" step="0.1" min="0" max="30" inputmode="decimal" placeholder="3.5"></div>
+  <div class="field"><label>체구 <span class="hint">성견 기준 몸무게</span></label>
+    <div class="seg" id="sz">
+      <button type="button" data-v="small" aria-pressed="true">소형견<br>9.5kg 미만</button>
+      <button type="button" data-v="medium" aria-pressed="false">중형견<br>9.5~22kg</button>
+      <button type="button" data-v="large" aria-pressed="false">대형견<br>23kg 이상</button>
+    </div>
+  </div>
+  <button class="btn" id="go" type="button">사람 나이로 환산하기</button>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>환산 결과</h2>
+  <p class="big" id="big"></p>
+  <div id="lines"></div>
+  <p class="src" id="warn"></p>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>강아지 나이, 왜 ×7이 아닌가요?</h2>
+<p>“개 나이 ×7 = 사람 나이”는 계산하기 쉬워 널리 퍼졌지만 실제 노화 곡선과는 맞지 않습니다. 강아지는 첫 1년에 사람의 약 15세에 해당하는 성장을 하고, 두 번째 해에 다시 9세 정도가 더해집니다. 그 뒤부터는 <b>체구가 클수록 매년 더 빠르게</b> 나이를 먹습니다. 그래서 이 계산기는 체구를 나눠 환산합니다.</p>
+<h3>체구별 환산표</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>강아지 나이</th><th>소형견</th><th>중형견</th><th>대형견</th></tr></thead><tbody>
+<tr><td>1살</td><td>15세</td><td>15세</td><td>15세</td></tr><tr><td>2살</td><td>24세</td><td>24세</td><td>24세</td></tr><tr><td>4살</td><td>32세</td><td>32세</td><td>32세</td></tr><tr><td>6살</td><td>40세</td><td>42세</td><td>45세</td></tr><tr><td>8살</td><td>48세</td><td>51세</td><td>55세</td></tr><tr><td>10살</td><td>56세</td><td>60세</td><td>66세</td></tr><tr><td>12살</td><td>64세</td><td>69세</td><td>77세</td></tr><tr><td>14살</td><td>72세</td><td>78세</td><td>88세</td></tr><tr><td>16살</td><td>80세</td><td>87세</td><td>99세</td></tr>
+</tbody></table></div>
+<h2>사용법</h2>
+<ol>
+<li>생년월일을 알면 날짜만 넣으세요. 모르면 대략적인 나이(년)를 숫자로 입력합니다.</li>
+<li>성견 기준 몸무게로 체구를 고릅니다. 아직 성장 중이라면 그 품종의 예상 성견 체중으로 고르세요.</li>
+<li>결과의 ‘생활 단계’를 보고 검진 주기와 사료(퍼피/성견/노령) 단계를 점검하세요.</li>
+</ol>
+<h2>노령기 신호 체크</h2>
+<ul>
+<li>산책을 예전만큼 반기지 않거나 계단을 피한다</li>
+<li>밤에 서성이거나 부르는 소리에 반응이 느려졌다</li>
+<li>체중이 이유 없이 줄거나 늘었다, 물 마시는 양이 늘었다</li>
+</ul>
+<p>이런 변화는 나이 탓으로만 넘기지 말고 검진에서 확인하는 것이 좋습니다.</p>
+<p class="src">출처: AKC 환산 차트 기준. 첫 1년 ≈ 사람 15세, 2년째 ≈ +9세, 이후 체구별로 매년 +4~5세씩. 초대형견은 대형견보다 노화가 더 빠를 수 있음. — <a href="https://www.akc.org/expert-advice/health/how-to-calculate-dog-years-to-human-years/" rel="nofollow noopener" target="_blank">https://www.akc.org/expert-advice/health/how-to-calculate-dog-years-to-human-years/</a> (확인일 2026-08-19)</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 강아지 1살은 사람 나이로 몇 살인가요?</p><p class="a">체구와 관계없이 약 15세로 봅니다. 두 살이 되면 약 24세, 그 이후부터 체구별로 매년 4~5세씩 더해집니다.</p></div>
+<div class="qa"><p class="q">Q. 생년월일을 모르면 어떻게 하나요?</p><p class="a">입양 시 추정 월령이나 치아·활동성으로 병원에서 추정한 나이를 년 단위(예: 3.5)로 입력하세요. 추정값이라도 생활 단계 판단에는 충분합니다.</p></div>
+<div class="qa"><p class="q">Q. 초대형견도 대형견으로 고르면 되나요?</p><p class="a">네, 이 표에서는 대형견을 고르면 됩니다. 다만 40kg을 크게 넘는 초대형견은 표보다 더 빨리 노화하는 경향이 있어, 결과보다 한두 살 위로 생각하는 편이 안전합니다.</p></div>
+<div class="qa"><p class="q">Q. 노령견 검진은 얼마나 자주 받나요?</p><p class="a">일반적으로 성견은 연 1회, 노령기에 들어서면 6개월마다 검진을 권합니다. 구체적인 주기는 지병 여부에 따라 수의사와 상의하세요.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../food-amount/index.html"><span class="ic">🍚</span><span>사료 급여량 계산기</span></a>
+      <a class="rel" href="../vaccine/index.html"><span class="ic">💉</span><span>예방접종 스케줄</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-age-calc/" rel="noopener"><span class="ic">🐾</span><span>반려동물 나이 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-meal-calc/" rel="noopener"><span class="ic">🍚</span><span>반려동물 사료량 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dog-personality-test/" rel="noopener"><span class="ic">🐶</span><span>강아지 성격 테스트</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var T={"small":[null,15,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80],"medium":[null,15,24,28,32,36,42,47,51,56,60,65,69,74,78,83,87],"large":[null,15,24,28,32,36,45,50,55,61,66,72,77,82,88,93,99]};
+var L={"small":"소형견 (9.5kg 미만)","medium":"중형견 (9.5~22kg)","large":"대형견 (23kg 이상)"};
+var size='small';
+pcSeg('sz',function(v){size=v;});
+function human(y){
+  var t=T[size];
+  if(y<1) return Math.round(15*y);
+  if(y>=16){var step=t[16]-t[15];return Math.round(t[16]+(y-16)*step);}
+  var lo=Math.floor(y),hi=lo+1;
+  return Math.round(t[lo]+(t[hi]-t[lo])*(y-lo));
+}
+function stage(y){
+  if(y<1) return '퍼피(성장기)';
+  if(y<2) return '청년기';
+  var sr = size==='large'?6:(size==='medium'?8:10);
+  if(y<sr) return '성견(안정기)';
+  return '노령기 — 반기 건강검진 권장';
+}
+function ageFromBirth(v){
+  var b=new Date(v+'T00:00:00');
+  if(isNaN(b.getTime())) return NaN;
+  var now=new Date();
+  var d=(now-b)/86400000;
+  return d<0?NaN:d/365.25;
+}
+pcQ('go').addEventListener('click',function(){
+  var bv=pcQ('bd').value, y=NaN, from='';
+  if(bv){ y=ageFromBirth(bv); from='생년월일 기준'; }
+  if(!isFinite(y)){ y=pcNum('ag'); from='입력한 나이 기준'; }
+  if(!isFinite(y)||y<=0||y>30){ alert('나이 또는 생년월일을 확인해 주세요. (0~30년)'); return; }
+  var h=human(y);
+  pcQ('big').innerHTML='사람 나이로 약 <b>'+h+'세</b>';
+  var yy=Math.floor(y), mm=Math.round((y-yy)*12);
+  if(mm===12){yy+=1;mm=0;}
+  pcQ('lines').innerHTML=
+    '<div class="res-line"><span class="k">강아지 나이</span><span class="v">'+yy+'년 '+mm+'개월 ('+from+')</span></div>'+
+    '<div class="res-line"><span class="k">체구 분류</span><span class="v">'+L[size]+'</span></div>'+
+    '<div class="res-line"><span class="k">생활 단계</span><span class="v">'+stage(y)+'</span></div>'+
+    '<div class="res-line"><span class="k">1년 뒤</span><span class="v">사람 나이 약 '+human(Math.min(30,y+1))+'세</span></div>';
+  pcQ('warn').textContent='같은 나이라도 품종·중성화 여부·체형에 따라 노화 속도가 다릅니다. 초대형견은 대형견보다 더 빨리 노화하는 경향이 있습니다.';
+  pcShow('res');
+});
+})();
+</script>
+
+</body>
+</html>

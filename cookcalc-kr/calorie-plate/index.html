@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>한 끼 칼로리 계산기 — 음식 120종 골라 담아 합산</title>
+<meta name="description" content="오늘 점심은 몇 kcal? 밥·면·국·반찬·분식·간식 등 120종의 1회 제공량 열량을 골라 담아 합산하고, 한 끼 목표 열량 대비 비율을 보여줍니다. 재미·참고용 정보입니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/calorie-plate/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="한 끼 칼로리 계산기 — 골라 담아 합산" />
+<meta property="og:description" content="오늘 점심은 몇 kcal? 밥·면·국·반찬·분식·간식 등 120종의 1회 제공량 열량을 골라 담아 합산하고, 한 끼 목표 열량 대비 비율을 보여줍니다. 재미·참고용 정보입니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/calorie-plate/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"한 끼 칼로리 계산기","description":"오늘 점심은 몇 kcal? 밥·면·국·반찬·분식·간식 등 120종의 1회 제공량 열량을 골라 담아 합산하고, 한 끼 목표 열량 대비 비율을 보여줍니다. 재미·참고용 정보입니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/calorie-plate/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"표시 열량이 실제와 다른 것 같아요.","acceptedAnswer":{"@type":"Answer","text":"1회 제공량 기준의 근사값이라 조리법·가게·양에 따라 30% 이상 차이가 날 수 있습니다. 정확한 값이 필요하면 제품 포장의 영양성분 표시나 식약처 식품영양성분 데이터베이스를 확인하세요."}},{"@type":"Question","name":"하루 권장 열량은 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"성별·나이·활동량에 따라 다릅니다. 일반적으로 성인 남성 2,400~2,600kcal, 여성 1,900~2,100kcal 범위를 기준으로 안내하지만, 개인의 상황에 따라 달라지므로 전문가 상담이 필요합니다."}},{"@type":"Question","name":"다이어트에 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"대략적인 방향을 잡는 데에는 도움이 되지만, 이 도구는 재미·참고용입니다. 체중 감량이나 질환 관리를 위한 식단은 의사·영양사와 상의하세요."}},{"@type":"Question","name":"음식이 목록에 없어요.","acceptedAnswer":{"@type":"Answer","text":"확실하지 않은 값은 싣지 않았기 때문입니다. 비슷한 음식으로 가늠하거나 제품 포장의 영양성분 표시를 참고하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"한 끼 칼로리","item":"https://cookcalc-kr.vercel.app/calorie-plate/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>한 끼 칼로리</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🍽️</div>
+    <h1>한 끼 칼로리 계산기</h1>
+    <p class="lead">먹은 음식을 <strong>골라 담기만</strong> 하면 한 끼 합계가 나옵니다. 목표 대비 비율도 함께 봅니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>음식 담기</h2>
+    <label class="f">음식 검색·선택
+      <input type="search" id="q" placeholder="예: 김치찌개, 라면, 아메리카노" autocomplete="off" />
+    </label>
+    <div id="sugg" class="chips"></div>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">한 끼 목표 열량 <span class="u">(kcal)</span>
+        <input type="number" id="target" inputmode="decimal" min="100" step="50" value="700" />
+      </label>
+      <label class="f">인분 배수 <span class="u">(1인분 = 1)</span>
+        <input type="number" id="mult" inputmode="decimal" min="0.25" step="0.25" value="1" />
+      </label>
+    </div>
+    <div class="rowlist" id="plate"></div>
+    <button class="btn" id="calcBtn">합계 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>합계</h2>
+      <p class="big">한 끼 <span class="num" id="sumOut"></span></p>
+      <div class="bar"><span id="barIn" style="width:0%"></span></div>
+      <p class="note" id="pctOut"></p>
+      <div id="tableOut"></div>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>칼로리 표를 어떻게 쓰면 좋을까</h2>
+    <p>같은 김치찌개라도 고기 양과 기름에 따라 열량이 두 배 가까이 차이 납니다. 그래서 이 표의 값은 <strong>일반적인 1회 제공량의 근사</strong>이고, 정확한 수치가 아니라 <strong>상대적인 비교</strong>에 쓰는 것이 맞습니다. 어제 점심과 오늘 점심 중 어느 쪽이 무거웠는지, 라면 대신 국수를 고르면 얼마나 차이 나는지를 가늠하는 용도입니다.</p>
+    <p>또 하나, 열량만으로 식사의 좋고 나쁨을 판단할 수는 없습니다. 같은 500kcal라도 단백질과 채소가 들어간 한 끼와 과자 한 봉지는 포만감과 영양이 전혀 다릅니다. 이 계산기는 <strong>재미·참고용</strong>이며 의료·영양 처방의 근거가 아닙니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>검색창에 음식 이름을 입력하면 아래에 후보가 나옵니다. 눌러서 접시에 담습니다.</li>
+      <li>여러 개를 담을 수 있고, 각 항목의 ✕를 눌러 뺄 수 있습니다.</li>
+      <li>많이 먹었다면 인분 배수를 1.5나 2로 올립니다.</li>
+      <li>합계와 목표 대비 비율을 확인합니다. 성인 한 끼 목표는 대략 600~800kcal 사이로 잡는 경우가 많습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 표시 열량이 실제와 다른 것 같아요.</p><p class="a">1회 제공량 기준의 근사값이라 조리법·가게·양에 따라 30% 이상 차이가 날 수 있습니다. 정확한 값이 필요하면 제품 포장의 영양성분 표시나 식약처 식품영양성분 데이터베이스를 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 하루 권장 열량은 얼마인가요?</p><p class="a">성별·나이·활동량에 따라 다릅니다. 일반적으로 성인 남성 2,400~2,600kcal, 여성 1,900~2,100kcal 범위를 기준으로 안내하지만, 개인의 상황에 따라 달라지므로 전문가 상담이 필요합니다.</p></div>
+    <div class="qa"><p class="q">Q. 다이어트에 쓸 수 있나요?</p><p class="a">대략적인 방향을 잡는 데에는 도움이 되지만, 이 도구는 재미·참고용입니다. 체중 감량이나 질환 관리를 위한 식단은 의사·영양사와 상의하세요.</p></div>
+    <div class="qa"><p class="q">Q. 음식이 목록에 없어요.</p><p class="a">확실하지 않은 값은 싣지 않았기 때문입니다. 비슷한 음식으로 가늠하거나 제품 포장의 영양성분 표시를 참고하세요.</p></div>
+    <h2>데이터 기준</h2>
+    <p class="note">열량 값은 <a href="https://various.foodsafetykorea.go.kr/nutrient/" target="_blank" rel="noopener">식품의약품안전처 식품영양성분 데이터베이스</a> 공개 자료 기준의
+    <strong>일반적인 1회 제공량 근사값</strong>입니다(전 항목 출처·확인일 표기, 데이터 확인일 2026-08-19).
+    조리법·가게·제품에 따라 차이가 크므로 <span class="badge warn">참고용</span>으로만 사용하세요.</p>
+    <p class="disclaimer">본 계산 결과는 <strong>재미·참고용</strong>이며 의학적·영양학적 진단이나 처방이 아닙니다.
+    열량은 조리법과 양에 따라 크게 달라지므로 정확한 값은 제품 표시를 확인하시고, 체중·질환 관리를 위한 식단은 의사·영양사와 상의하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../storage/"><span class="e">🧊</span> 식재료 보관기간</a>
+      <a class="rel" href="../unit-convert/"><span class="e">🥄</span> 계량 단위 변환기</a>
+      <a class="rel" href="https://tomatoeggcat.com/fridge-recipe/" target="_blank" rel="noopener"><span class="e">🧊</span> 냉장고 재료 레시피 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/naengpa/" target="_blank" rel="noopener"><span class="e">🍳</span> 냉장고 파먹기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { CALORIES } from "../data/calories.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+const plate = [];
+const q = $("q"), sugg = $("sugg");
+function renderSugg() {
+  const v = q.value.trim().toLowerCase();
+  const list = (v ? CALORIES.filter((c) => c.name.toLowerCase().includes(v)) : CALORIES).slice(0, 18);
+  sugg.innerHTML = "";
+  for (const c of list) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip";
+    b.textContent = c.name + " " + c.value + "kcal";
+    b.addEventListener("click", () => { plate.push(c); renderPlate(); });
+    sugg.appendChild(b);
+  }
+}
+function renderPlate() {
+  $("plate").innerHTML = "";
+  plate.forEach((c, i) => {
+    const row = document.createElement("div");
+    row.className = "row";
+    const nm = document.createElement("span");
+    nm.className = "nm";
+    nm.textContent = c.name + " (" + c.serving + ")";
+    const val = document.createElement("span");
+    val.textContent = c.value + "kcal";
+    const x = document.createElement("button");
+    x.type = "button"; x.className = "x"; x.textContent = "✕";
+    x.addEventListener("click", () => { plate.splice(i, 1); renderPlate(); });
+    row.appendChild(nm); row.appendChild(val); row.appendChild(x);
+    $("plate").appendChild(row);
+  });
+}
+q.addEventListener("input", renderSugg);
+renderSugg();
+$("calcBtn").addEventListener("click", () => {
+  const m = num($("mult"), 1);
+  const total = plate.reduce((s, c) => s + c.value, 0) * m;
+  const target = num($("target"), 700);
+  $("sumOut").textContent = fmt(total) + "kcal";
+  const pct = target > 0 ? (total / target) * 100 : 0;
+  $("barIn").style.width = Math.min(100, pct) + "%";
+  $("pctOut").textContent = "한 끼 목표 " + fmt(target) + "kcal 대비 " + fmt(pct) + "%" + (pct > 100 ? " (초과)" : "");
+  $("tableOut").innerHTML = kv(plate.map((c) => [c.name + " (" + c.serving + ")", fmt(c.value * m) + "kcal"]).concat([["합계", fmt(total) + "kcal"]]));
+  $("srcOut").innerHTML = srcBox("데이터 출처", [{ text: CALORIES[0].source, checkedAt: CALORIES[0].checkedAt }]);
+  show("resultBox");
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

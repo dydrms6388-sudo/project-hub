@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>대기전력 계산기 — 플러그 뽑으면 1년에 얼마 아낄까</title>
+<meta name="description" content="셋톱박스·공유기·전자레인지 등 대기전력 기기의 소비전력을 합산해 월·연간 사용량과 절감액을 누진 구간까지 반영해 계산합니다." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/standby-power/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="대기전력 계산기 — 플러그 뽑으면 1년에 얼마 아낄까" />
+<meta property="og:description" content="셋톱박스·공유기·전자레인지 등 대기전력 기기의 소비전력을 합산해 월·연간 사용량과 절감액을 누진 구간까지 반영해 계산합니다." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/standby-power/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"대기전력 계산기","description":"셋톱박스·공유기·전자레인지 등 대기전력 기기의 소비전력을 합산해 월·연간 사용량과 절감액을 누진 구간까지 반영해 계산합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/standby-power/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"공유기도 뽑는 게 좋나요?","acceptedAnswer":{"@type":"Answer","text":"인터넷 공유기와 모뎀은 항상 연결돼 있어야 하는 기기라 차단을 권하지 않습니다. 대신 잘 쓰지 않는 시간대(외출·취침)에 타이머 콘센트로 제어하는 방법이 있습니다."}},{"@type":"Question","name":"TV를 뽑으면 설정이 초기화되지 않나요?","acceptedAnswer":{"@type":"Answer","text":"최신 TV는 대기전력이 1W 이하로 낮고 뽑았다 꽂으면 채널 검색 등이 필요할 수 있어 실익이 크지 않습니다. 오래된 셋톱박스나 오디오, 사용하지 않는 방의 기기부터 차단하는 편이 효율적입니다."}},{"@type":"Question","name":"냉장고나 비데도 차단 대상인가요?","acceptedAnswer":{"@type":"Answer","text":"냉장고는 차단 대상이 아닙니다. 비데는 저장식 온수를 유지하는 제품의 대기 소비가 큰 편이라 절전 모드나 순간온수식 사용을 검토할 만합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"대기전력 계산기","item":"https://billcalc-kr.vercel.app/standby-power/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <span>대기전력 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🔋</div>
+    <h1>대기전력 계산기</h1>
+    <p class="lead">꺼둬도 새는 전기를 기기별로 합산해 <strong>월·연간 절감액</strong>을 계산합니다. 값은 모두 수정할 수 있습니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>우리 집 대기전력 기기</h2>
+    <div class="tbl-scroll"><table class="tbl" id="stbTable">
+      <thead><tr><th>기기</th><th>대기전력(W)</th><th>대수</th></tr></thead>
+      <tbody id="stbBody"></tbody>
+    </table></div>
+    <p class="note" id="srcNote"></p>
+    <label class="f" style="margin-top:12px">현재 월 사용량 <span class="u">(kWh · 누진 반영용)</span>
+      <input type="number" id="baseKwh" inputmode="decimal" min="0" step="1" value="300" />
+    </label>
+    <div class="grid2">
+      <label class="f">계산 월 <span class="u">(7~8월 하계 구간)</span>
+        <select id="month"></select>
+      </label>
+      <label class="f">계약 종류
+        <select id="voltage"><option value="low">저압 (대부분 가정)</option><option value="high">고압 (아파트 일괄계약)</option></select>
+      </label>
+    </div>
+    <details class="adv">
+      <summary>고급 설정 — 연료비조정·기금 요율 직접 수정</summary>
+      <div class="grid2">
+        <label class="f">연료비조정요금 <span class="u">(원/kWh, 한도 ±5)</span>
+          <input type="number" id="fuelAdj" step="0.1" value="5" />
+        </label>
+        <label class="f">전력산업기반기금 <span class="u">(%, 2025.7부터 2.7)</span>
+          <input type="number" id="fundRate" step="0.1" value="2.7" />
+        </label>
+      </div>
+    </details>
+    <button class="btn" id="calcBtn">대기전력 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">모두 차단하면 1년에 <span class="num" id="totalOut"></span></p>
+      <p class="note">대기전력 합계 <strong id="wOut"></strong> · 월 <span id="mOut"></span> · 연 <span id="yOut"></span></p>
+      <div id="cmpOut"></div>
+      <p class="note">※ 공유기·냉장고처럼 항상 켜둬야 하는 기기는 차단 대상에서 빼고 계산하세요(대수를 0으로).</p>
+    </div>
+    <div class="card">
+      <h2>대기전력 차단 후 요금 산출 과정</h2>
+      <div id="tableOut"></div>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>대기전력은 정말 무시 못 할까?</h2>
+    <p>개별 기기의 대기전력은 1~15W로 작지만, 24시간 365일 켜져 있다는 점이 다릅니다. 12W짜리 셋톱박스 하나만 해도 1년이면 약 105kWh — 웬만한 가전 하나를 더 쓰는 셈입니다. 여기에 누진제가 붙으면 사용량이 많은 집일수록 같은 1kWh의 값이 더 비싸집니다.</p>
+    <p>다만 최신 기기는 대기전력 저감 기준(대체로 1W 이하)을 맞춰 나오기 때문에 오래된 기기일수록 효과가 큽니다. 이 계산기의 기본값은 참고 범위이며, 대기전력 측정 콘센트로 실측한 값이 있으면 그 값을 넣으세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>집에 있는 기기의 대수를 조정합니다(없으면 0).</li>
+      <li>실측값이 있으면 대기전력(W)을 직접 수정합니다.</li>
+      <li>현재 월 사용량을 넣으면 누진 단계를 반영한 절감액이 계산됩니다.</li>
+      <li>결과의 연간 절감액을 보고 멀티탭 스위치·타이머 콘센트 도입을 판단하세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 공유기도 뽑는 게 좋나요?</p><p class="a">인터넷 공유기와 모뎀은 항상 연결돼 있어야 하는 기기라 차단을 권하지 않습니다. 대신 잘 쓰지 않는 시간대(외출·취침)에 타이머 콘센트로 제어하는 방법이 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. TV를 뽑으면 설정이 초기화되지 않나요?</p><p class="a">최신 TV는 대기전력이 1W 이하로 낮고 뽑았다 꽂으면 채널 검색 등이 필요할 수 있어 실익이 크지 않습니다. 오래된 셋톱박스나 오디오, 사용하지 않는 방의 기기부터 차단하는 편이 효율적입니다.</p></div>
+    <div class="qa"><p class="q">Q. 냉장고나 비데도 차단 대상인가요?</p><p class="a">냉장고는 차단 대상이 아닙니다. 비데는 저장식 온수를 유지하는 제품의 대기 소비가 큰 편이라 절전 모드나 순간온수식 사용을 검토할 만합니다.</p></div>
+    <h2>요금표 기준일과 출처</h2>
+    <p class="note">전기요금 단가는 <strong>2023년 5월 16일 개정 기준</strong>의 주택용 전력 요금표를 사용합니다(데이터 확인일 2026-08-19).
+    연료비조정요금은 분기마다, 전력산업기반기금 요율은 제도 개정에 따라 바뀌므로
+    최신 단가는 <a href="https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp" target="_blank" rel="noopener">한국전력 사이버지점 요금표</a>에서 확인하고,
+    고지서 값과 다르면 각 계산기의 <strong>고급 설정</strong>에서 직접 수정해 계산하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../appliance-cost/"><span class="e">🔌</span> 가전제품 전기요금</a>
+      <a class="rel" href="../save-simulator/"><span class="e">📉</span> 절약 시뮬레이터</a>
+      <a class="rel" href="../electric-bill/"><span class="e">⚡</span> 전기요금 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { calcBill } from "../lib/elec.mjs";
+import { STANDBY_ITEMS, STANDBY_SOURCE } from "../data/misc.mjs";
+import { won, num, fmt, kwhFmt, showAd, initTheme, billTableHtml, tariffSourceHtml } from "../assets/app.mjs";
+const $ = (id) => document.getElementById(id);
+const monthSel = $("month");
+const nowM = new Date().getMonth() + 1;
+for (let m = 1; m <= 12; m++) { const o = document.createElement("option"); o.value = m; o.textContent = m + "월" + (m === 7 || m === 8 ? " (하계)" : ""); if (m === nowM) o.selected = true; monthSel.appendChild(o); }
+const body = $("stbBody");
+for (const it of STANDBY_ITEMS) {
+  const tr = document.createElement("tr");
+  tr.innerHTML = '<td>' + it.name + (it.note ? ' <span class="mut">' + it.note + '</span>' : '') + '</td>' +
+    '<td><input type="number" step="0.1" min="0" value="' + it.w + '" data-w="' + it.slug + '" style="max-width:96px" /></td>' +
+    '<td><input type="number" step="1" min="0" value="1" data-q="' + it.slug + '" style="max-width:72px" /></td>';
+  body.appendChild(tr);
+}
+$("srcNote").innerHTML = "참고 출처: " + STANDBY_SOURCE.name + " · " + STANDBY_SOURCE.note;
+$("calcBtn").addEventListener("click", () => {
+  let watt = 0;
+  const rows = [];
+  for (const it of STANDBY_ITEMS) {
+    const w = num(document.querySelector('[data-w="' + it.slug + '"]'), it.w);
+    const q = Math.max(0, num(document.querySelector('[data-q="' + it.slug + '"]'), 0));
+    if (q > 0) { watt += w * q; rows.push({ name: it.name, w: w * q, kwh: (w * q * 24 * 365) / 1000 }); }
+  }
+  const monthKwh = (watt * 24 * 30) / 1000;
+  const yearKwh = (watt * 24 * 365) / 1000;
+  const base = num($("baseKwh"), 300);
+  const opts = { month: +monthSel.value, voltage: $("voltage").value, fuelAdj: num($("fuelAdj"), 5), fundRate: num($("fundRate"), 2.7) / 100 };
+  const before = calcBill(base, opts);
+  const after = calcBill(Math.max(0, base - monthKwh), opts);
+  const save = before.total - after.total;
+  $("totalOut").textContent = won(save * 12);
+  $("wOut").textContent = fmt(watt) + "W";
+  $("mOut").textContent = kwhFmt(monthKwh) + " / " + won(save);
+  $("yOut").textContent = kwhFmt(yearKwh);
+  rows.sort((a, b) => b.kwh - a.kwh);
+  const perKwh = monthKwh > 0 ? save / monthKwh : 0;
+  $("cmpOut").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>기기</th><th>연간 사용량</th><th>연간 요금</th></tr></thead><tbody>' +
+    rows.map((r) => '<tr><td>' + r.name + ' <span class="mut">' + fmt(r.w) + 'W</span></td><td>' + kwhFmt(r.kwh) + '</td><td>' + won(r.kwh * perKwh) + '</td></tr>').join('') +
+    '<tr class="sum"><td>합계 (차단 시 절감)</td><td>' + kwhFmt(yearKwh) + '</td><td>' + won(save * 12) + '</td></tr>' +
+    '</tbody></table></div><div class="note">현재 사용량 ' + kwhFmt(base) + ' 기준 1kWh당 실질 단가 ' + fmt(perKwh) + '원으로 배분했습니다. 누진 ' + before.tier + '단계 → ' + after.tier + '단계.</div>';
+  $("tableOut").innerHTML = billTableHtml(after);
+  $("srcOut").innerHTML = tariffSourceHtml();
+  $("resultBox").hidden = false;
+  showAd();
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

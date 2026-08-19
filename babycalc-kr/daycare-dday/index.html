@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>어린이집 입소 D-day 계산기 — 대기 우선순위 점수 함께 보기 | BabyCalc</title>
+<meta name="description" content="어린이집 입소 희망일까지 남은 D-day와 아기의 입소 시점 월령을 계산하고, 아이사랑 입소대기 우선순위 항목을 체크해 예상 점수를 확인합니다. 배점은 연도별 보육사업안내 개정에 따라 달라집니다.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/daycare-dday/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="어린이집 입소 D-day + 우선순위 점수">
+<meta property="og:description" content="입소 희망일 D-day와 대기 우선순위 항목 점수를 한 번에.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/daycare-dday/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"어린이집 입소 D-day 계산기","applicationCategory":"LifestyleApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"어린이집 입소 희망일까지 남은 D-day와 아기의 입소 시점 월령을 계산하고, 아이사랑 입소대기 우선순위 항목을 체크해 예상 점수를 확인합니다. 배점은 연도별 보육사업안내 개정에 따라 달라집니다.","url":"https://babycalc-kr.vercel.app/daycare-dday/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"맞벌이면 무조건 1순위인가요?","acceptedAnswer":{"@type":"Answer","text":"맞벌이는 대표적인 1순위 항목으로 안내되지만, 항목과 배점은 해당 연도 보육사업안내와 지자체 운영 기준에 따라 달라질 수 있습니다. 반드시 아이사랑 포털과 관할 지자체에서 확인하세요."}},{"@type":"Question","name":"점수가 같으면 어떻게 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"동점일 때는 신청일이 빠른 순 등 세부 기준이 적용되는 것이 일반적입니다. 구체적인 규칙은 어린이집·지자체마다 다를 수 있습니다."}},{"@type":"Question","name":"몇 개월부터 보낼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"어린이집은 0세반부터 운영되지만 반 편성과 정원은 시설마다 다릅니다. 만 나이 기준으로 반이 나뉘며, 3월 학기 기준으로 반이 올라갑니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"어린이집 입소","item":"https://babycalc-kr.vercel.app/daycare-dday/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">어린이집 입소</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🏫</div>
+    <h1>어린이집 입소 D-day 계산기</h1>
+    <p class="lead">입소 희망일까지 며칠 남았는지, 우선순위 항목은 몇 점인지 함께 확인해 보세요.</p>
+  </div>
+  <p class="med-notice">⚠ 우선순위 배점은 <strong>연도별 「보육사업안내」 개정</strong>에 따라 달라집니다. 실제 대기 순번은 <a href="https://www.childcare.go.kr" target="_blank" rel="noopener">아이사랑 포털</a>에서 확인하세요. 이 페이지는 참고용입니다.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>입소 정보</h2>
+    <div class="row2">
+      <div class="field">
+        <label for="birth">아기 생년월일</label>
+        <input type="date" id="birth" required>
+      </div>
+      <div class="field">
+        <label for="target">입소 희망일</label>
+        <input type="date" id="target" required>
+      </div>
+    </div>
+    <h2 style="margin-top:16px">우선순위 항목 (해당하는 항목 체크)</h2>
+    <div id="pribox">
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="basic" data-points="100"><span class="chk-tx">국민기초생활수급자·차상위계층 등 법정 저소득층<span class="chk-sub">1순위 · 100점 (배점 확인 필요)</span></span></label>
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="single" data-points="100"><span class="chk-tx">한부모가족·조손가족의 영유아<span class="chk-sub">1순위 · 100점 (배점 확인 필요)</span></span></label>
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="dual" data-points="100"><span class="chk-tx">맞벌이 가구(부모 모두 취업·구직 등)<span class="chk-sub">1순위 · 100점 (배점 확인 필요)</span></span></label>
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="disab-child" data-points="100"><span class="chk-tx">장애아 또는 장애부모(정도가 심한 장애)의 자녀<span class="chk-sub">1순위 · 100점 (배점 확인 필요)</span></span></label>
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="multi" data-points="100"><span class="chk-tx">다자녀 가구(자녀 수 기준은 지자체·연도별 확인)<span class="chk-sub">1순위 · 100점 (배점 확인 필요)</span></span></label>
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="sibling" data-points="100"><span class="chk-tx">형제·자매가 같은 어린이집에 재원 중<span class="chk-sub">1순위 · 100점 (배점 확인 필요)</span></span></label>
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="multicultural" data-points="100"><span class="chk-tx">다문화가족의 영유아(요건 확인)<span class="chk-sub">1순위 · 100점 (배점 확인 필요)</span></span></label>
+      <label class="chk-item"><input type="checkbox" class="pri" data-id="second-rank" data-points="50"><span class="chk-tx">기타 2순위 해당(한부모·조손 외 부양, 산업단지 입주기업 종사자 등 — 안내문 확인)<span class="chk-sub">2순위 · 50점 (배점 확인 필요)</span></span></label>
+    </div>
+    <button class="btn" type="submit" style="margin-top:12px">계산하기</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>계산 결과</h2>
+    <p class="res-big" id="ddayBig">—</p>
+    <p class="res-sub" id="ddaySub"></p>
+    <div class="kv"><span class="k">입소 시점 월령</span><span class="v" id="kAge">—</span></div>
+    <div class="kv"><span class="k">해당 반 (일반적 구분)</span><span class="v" id="kClass">—</span></div>
+    <div class="kv"><span class="k">예상 우선순위 점수</span><span class="v" id="kScore">—</span></div>
+    <div id="priList"></div>
+    <p class="res-sub" style="margin-top:12px">점수는 체크한 항목의 배점을 단순 합산한 <strong>참고값</strong>입니다 <span class="badge todo">확인 필요</span>. 실제 배점·합산 규칙은 해당 연도 보육사업안내와 지자체 기준을 따릅니다.</p>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>입소 대기는 어떻게 정해지나요?</h2>
+    <p>어린이집 입소 대기는 <strong>아이사랑 포털(childcare.go.kr)</strong>에서 신청하고, 보건복지부 「보육사업안내」의 우선순위 기준에 따라 순번이 정해집니다. 1순위 항목(맞벌이·다자녀·형제자매 재원 등)은 각 100점, 2순위 항목은 50점으로 합산하는 방식이 널리 알려져 있으나, <strong>항목과 배점은 개정될 수 있습니다</strong>.</p><p>같은 점수일 때는 신청일이 빠른 순 등 세부 기준이 적용되고, 국공립·직장·민간 등 어린이집 유형에 따라 별도 우선순위가 있습니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>아기 생년월일과 입소 희망일을 입력합니다.</li><li>해당하는 우선순위 항목을 체크합니다.</li><li>입소 시점의 월령과 예상 점수를 확인하고, 실제 신청은 아이사랑 포털에서 진행하세요.</li></ol>
+
+    <h2>알아 두면 좋은 점</h2>
+    <ul><li>1순위 항목은 중복 시 합산되는 것이 원칙이나, 연도별 보육사업안내의 예외 규정이 있다.</li><li>국공립·직장·민간 등 어린이집 유형에 따라 별도 우선순위(직장어린이집의 종사자 자녀 등)가 있다.</li><li>실제 대기 순번은 아이사랑 포털(childcare.go.kr)에서 신청·확인해야 한다.</li></ul><h2>대기 신청 팁</h2><ul><li>대기 신청은 <strong>여러 곳에 동시에</strong> 넣을 수 있습니다(가능 개수는 포털 기준 확인).</li><li>3월 신학기 전후로 자리가 가장 많이 나므로 역산해서 미리 신청해 두는 편이 좋습니다.</li><li>신청 후에도 정보가 바뀌면(맞벌이 시작 등) 갱신해야 점수에 반영됩니다.</li><li>입소 확정 후에는 필요 서류(재직증명서·가족관계증명서 등)를 기한 내 제출해야 합니다.</li></ul>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 맞벌이면 무조건 1순위인가요?</p><p class="a">맞벌이는 대표적인 1순위 항목으로 안내되지만, 항목과 배점은 해당 연도 보육사업안내와 지자체 운영 기준에 따라 달라질 수 있습니다. 반드시 아이사랑 포털과 관할 지자체에서 확인하세요.</p></div>
+      <div class="qa"><p class="q">Q. 점수가 같으면 어떻게 정해지나요?</p><p class="a">동점일 때는 신청일이 빠른 순 등 세부 기준이 적용되는 것이 일반적입니다. 구체적인 규칙은 어린이집·지자체마다 다를 수 있습니다.</p></div>
+      <div class="qa"><p class="q">Q. 몇 개월부터 보낼 수 있나요?</p><p class="a">어린이집은 0세반부터 운영되지만 반 편성과 정원은 시설마다 다릅니다. 만 나이 기준으로 반이 나뉘며, 3월 학기 기준으로 반이 올라갑니다.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 보건복지부 보육사업안내 · 아이사랑 입소대기 점수 안내 — <a href="https://www.childcare.go.kr" target="_blank" rel="noopener">childcare.go.kr</a> (확인일 2026-08-19). 배점표는 최신 연도 「보육사업안내」와 대조가 필요한 <span class="badge todo">확인 필요</span> 상태입니다.</div>
+
+    <p class="disclaimer">입소 점수 계산은 참고용이며 실제 심사 결과가 아닙니다. 신청·심사는 아이사랑 포털과 관할 지자체 기준을 따릅니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../months-age/"><span class="ic">📅</span>아기 개월수 계산기</a>
+      <a class="rel" href="../baby-cost/"><span class="ic">💰</span>육아 비용 계산기</a>
+      <a class="rel" href="../vaccine-schedule/"><span class="ic">💉</span>예방접종 일정표</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/baby-vaccine-schedule/"><span class="ic">🍅</span>예방접종 도우미 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { mkDate, babyAge, diffDays, fmtDateKo } from '../assets/calc.mjs';
+import { PRIORITY_ITEMS } from '../data/daycare.mjs';
+const $ = (s) => document.querySelector(s);
+const BKEY = 'bc-baby-birth';
+const KEY = 'bc-daycare';
+
+function classOf(m) {
+  if (m < 12) return '0세반 (만 0세)';
+  if (m < 24) return '1세반 (만 1세)';
+  if (m < 36) return '2세반 (만 2세)';
+  if (m < 48) return '3세반 (만 3세)';
+  return '4세반 이상';
+}
+
+function calc(birth, target, ids) {
+  const today = new Date();
+  const d = diffDays(today, target);
+  $('#ddayBig').textContent = d > 0 ? '입소까지 D-' + d : (d === 0 ? '입소일 오늘 🎉' : '입소일에서 D+' + (-d));
+  $('#ddaySub').textContent = fmtDateKo(target) + ' 입소 희망 기준';
+  const a = babyAge(birth, target);
+  if (a) {
+    $('#kAge').textContent = a.months + '개월 ' + a.days + '일';
+    $('#kClass').textContent = classOf(a.months);
+  } else {
+    $('#kAge').textContent = '—'; $('#kClass').textContent = '—';
+  }
+  const hits = PRIORITY_ITEMS.filter((p) => ids.indexOf(p.id) >= 0);
+  const score = hits.reduce((s, p) => s + p.points, 0);
+  $('#kScore').innerHTML = score + '점 <span class="badge todo">확인 필요</span>';
+  $('#priList').innerHTML = hits.length
+    ? '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>해당 항목</th><th>순위</th><th>배점</th></tr></thead><tbody>' +
+      hits.map((h) => '<tr><td>' + h.label + '</td><td>' + h.rank + '순위</td><td>' + h.points + '점</td></tr>').join('') +
+      '</tbody></table></div>'
+    : '<p class="res-sub">체크한 우선순위 항목이 없습니다. 일반 신청으로 대기하게 됩니다.</p>';
+  bcShowResult('result');
+}
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const b = $('#birth').value, t = $('#target').value;
+  if (!b || !t) return;
+  const ids = Array.prototype.map.call(document.querySelectorAll('.pri:checked'), (c) => c.dataset.id);
+  bcStore.set(BKEY, b);
+  bcStore.set(KEY, { t, ids });
+  calc(mkDate(b), mkDate(t), ids);
+});
+
+const sb = bcStore.get(BKEY, null);
+if (sb) $('#birth').value = sb;
+const sd = bcStore.get(KEY, null);
+if (sd && sd.t) {
+  $('#target').value = sd.t;
+  (sd.ids || []).forEach((id) => {
+    const el = document.querySelector('.pri[data-id="' + id + '"]');
+    if (el) el.checked = true;
+  });
+  if (sb) calc(mkDate(sb), mkDate(sd.t), sd.ids || []);
+}
+</script>
+</body>
+</html>

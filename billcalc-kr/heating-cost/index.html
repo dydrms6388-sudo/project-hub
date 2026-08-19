@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>난방비 계산기 — 전기난방 vs 가스보일러 요금 비교</title>
+<meta name="description" content="전기히터·전기장판·온수매트의 전기요금 증가액(누진 반영)과 가스보일러 도시가스 요금을 같은 화면에서 비교합니다. 가스 단가는 지역 고시값을 직접 입력합니다." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/heating-cost/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="난방비 계산기 — 전기난방 vs 가스보일러 요금 비교" />
+<meta property="og:description" content="전기히터·전기장판·온수매트의 전기요금 증가액(누진 반영)과 가스보일러 도시가스 요금을 같은 화면에서 비교합니다. 가스 단가는 지역 고시값을 직접 입력합니다." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/heating-cost/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"난방비 비교 계산기","description":"전기히터·전기장판·온수매트의 전기요금 증가액(누진 반영)과 가스보일러 도시가스 요금을 같은 화면에서 비교합니다. 가스 단가는 지역 고시값을 직접 입력합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/heating-cost/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"가스 단가를 왜 미리 넣어두지 않았나요?","acceptedAnswer":{"@type":"Answer","text":"도시가스 소매 단가는 지역 도시가스사별·용도별·시기별로 달라 전국 공통값이 없습니다. 확신할 수 없는 숫자를 기본값으로 넣으면 계산 결과 전체가 틀리기 때문에, 고지서 값을 직접 입력하도록 했습니다."}},{"@type":"Question","name":"전기장판은 전기난방인데도 왜 싸게 나오나요?","acceptedAnswer":{"@type":"Answer","text":"전기장판은 150W 안팎으로 히터의 10분의 1 수준이고, 공기 전체가 아니라 몸에 닿는 면만 데우기 때문입니다. 실내 전체를 데우는 히터와 국소 난방을 같은 조건에서 비교할 때는 체감 난방 범위가 다르다는 점을 감안하세요."}},{"@type":"Question","name":"가스보일러 열효율은 반영되나요?","acceptedAnswer":{"@type":"Answer","text":"이 계산기는 입력한 가스 사용량(㎥)에 대한 요금을 그대로 계산합니다. 같은 열량 기준으로 엄밀히 비교하려면 보일러 효율(대략 80~95%)을 감안해야 하며, 결과 하단에 안내로 표시됩니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"난방비 비교","item":"https://billcalc-kr.vercel.app/heating-cost/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <span>난방비 비교</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🔥</div>
+    <h1>난방비 비교 계산기</h1>
+    <p class="lead">전기난방은 <strong>누진 구간 이동</strong>까지, 가스난방은 <strong>지역 단가</strong>를 넣어 한 달 난방비를 비교합니다.</p>
+  </div>
+
+  <section class="card" aria-label="전기난방 입력">
+    <h2>1. 전기 난방기기</h2>
+    <div class="grid2">
+      <label class="f">기기 종류
+        <select id="preset">
+          <option value="1500">전기히터·온풍기 (약 1,500W)</option>
+          <option value="150">전기장판 더블 (약 150W)</option>
+          <option value="240">온수매트 (약 240W)</option>
+          <option value="1500">전기 라디에이터 (약 1,500W)</option>
+          <option value="">직접 입력</option>
+        </select>
+      </label>
+      <label class="f">소비전력 <span class="u">(W)</span>
+        <input type="number" id="watt" inputmode="decimal" min="0" step="10" value="1500" />
+      </label>
+      <label class="f">하루 사용 시간 <span class="u">(시간)</span>
+        <input type="number" id="hours" inputmode="decimal" min="0" step="0.5" value="5" />
+      </label>
+      <label class="f">한 달 사용 일수 <span class="u">(일)</span>
+        <input type="number" id="days" inputmode="decimal" min="0" max="31" step="1" value="30" />
+      </label>
+    </div>
+    <label class="f" style="margin-top:12px">난방기기 제외 월 사용량 <span class="u">(kWh)</span>
+      <input type="number" id="baseKwh" inputmode="decimal" min="0" step="1" value="300" />
+    </label>
+    <div class="grid2">
+      <label class="f">계산 월 <span class="u">(7~8월 하계 구간)</span>
+        <select id="month"></select>
+      </label>
+      <label class="f">계약 종류
+        <select id="voltage"><option value="low">저압 (대부분 가정)</option><option value="high">고압 (아파트 일괄계약)</option></select>
+      </label>
+    </div>
+    <details class="adv">
+      <summary>고급 설정 — 연료비조정·기금 요율 직접 수정</summary>
+      <div class="grid2">
+        <label class="f">연료비조정요금 <span class="u">(원/kWh, 한도 ±5)</span>
+          <input type="number" id="fuelAdj" step="0.1" value="5" />
+        </label>
+        <label class="f">전력산업기반기금 <span class="u">(%, 2025.7부터 2.7)</span>
+          <input type="number" id="fundRate" step="0.1" value="2.7" />
+        </label>
+      </div>
+    </details>
+  </section>
+
+  <section class="card" aria-label="가스난방 입력">
+    <h2>2. 가스보일러 <span class="badge warn">단가 확인 필요</span></h2>
+    <div class="grid2">
+      <label class="f">월 도시가스 사용량 <span class="u">(㎥)</span>
+        <input type="number" id="m3" inputmode="decimal" min="0" step="1" value="100" />
+      </label>
+      <label class="f">단가 <span class="u">(원/MJ · 고지서 값)</span>
+        <input type="number" id="price" inputmode="decimal" min="0" step="0.01" value="" placeholder="예: 20.00" />
+      </label>
+      <label class="f">평균열량 <span class="u">(MJ/㎥ · 고지서 값)</span>
+        <input type="number" id="factor" inputmode="decimal" min="1" step="0.1" value="42.7" />
+      </label>
+      <label class="f">월 기본요금 <span class="u">(원)</span>
+        <input type="number" id="baseCharge" inputmode="decimal" min="0" step="10" value="1000" />
+      </label>
+    </div>
+    <p class="note">도시가스 단가·기본요금은 지역 도시가스사가 고시하므로 전국 공통값이 없습니다. 값을 지어내지 않고 <strong>고지서에 적힌 숫자를 그대로 입력</strong>하도록 비워 두었습니다.</p>
+    <button class="btn" id="calcBtn">난방비 비교하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>비교 결과</h2>
+      <p class="big" id="verdict"></p>
+      <div id="cmpOut"></div>
+      <p class="note">※ 전기난방은 전기에너지가 그대로 열이 되지만(효율 100%), 가스보일러는 배기 손실이 있어 실제 열효율은 80~95% 수준입니다. 같은 열량을 내려면 가스 사용량이 조금 더 필요합니다.</p>
+    </div>
+    <div class="card">
+      <h2>전기요금 산출 과정 (난방기기 포함)</h2>
+      <div id="tableOut"></div>
+    </div>
+    <div id="srcOut"></div>
+    <div id="gasSrcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>전기난방이 비싼 이유</h2>
+    <p>1kWh의 열을 만드는 데 드는 돈만 놓고 보면 도시가스가 전기보다 훨씬 쌉니다. 전기는 발전소에서 만든 에너지를 다시 열로 바꾸는 구조라 단가 자체가 높고, 여기에 누진제가 붙어 겨울철 사용량이 늘어날수록 1kWh당 실질 단가가 계속 올라갑니다. 반면 도시가스는 누진 구조가 아니라 사용량에 비례합니다.</p>
+    <p>그래서 "전기히터 하나쯤이야" 하고 켠 1,500W 기기를 하루 5시간 쓰면 월 225kWh — 웬만한 가구의 한 달 사용량이 두 배가 되면서 누진 3단계로 올라갑니다. 이 계산기는 그 증가액을 가스요금과 나란히 보여줍니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>전기 난방기기의 종류·사용 시간과, 난방기기를 제외한 월 사용량을 입력합니다.</li>
+      <li>가스 고지서에서 단가(원/MJ)·평균열량(MJ/㎥)·기본요금을 찾아 그대로 입력합니다.</li>
+      <li>비교 결과에서 어느 쪽이 얼마나 저렴한지, 전기요금은 누진 몇 단계로 올라가는지 확인합니다.</li>
+      <li>가스 단가를 모르면 지역 도시가스사 링크에서 확인하세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 가스 단가를 왜 미리 넣어두지 않았나요?</p><p class="a">도시가스 소매 단가는 지역 도시가스사별·용도별·시기별로 달라 전국 공통값이 없습니다. 확신할 수 없는 숫자를 기본값으로 넣으면 계산 결과 전체가 틀리기 때문에, 고지서 값을 직접 입력하도록 했습니다.</p></div>
+    <div class="qa"><p class="q">Q. 전기장판은 전기난방인데도 왜 싸게 나오나요?</p><p class="a">전기장판은 150W 안팎으로 히터의 10분의 1 수준이고, 공기 전체가 아니라 몸에 닿는 면만 데우기 때문입니다. 실내 전체를 데우는 히터와 국소 난방을 같은 조건에서 비교할 때는 체감 난방 범위가 다르다는 점을 감안하세요.</p></div>
+    <div class="qa"><p class="q">Q. 가스보일러 열효율은 반영되나요?</p><p class="a">이 계산기는 입력한 가스 사용량(㎥)에 대한 요금을 그대로 계산합니다. 같은 열량 기준으로 엄밀히 비교하려면 보일러 효율(대략 80~95%)을 감안해야 하며, 결과 하단에 안내로 표시됩니다.</p></div>
+    <h2>요금표 기준일과 출처</h2>
+    <p class="note">전기요금 단가는 <strong>2023년 5월 16일 개정 기준</strong>의 주택용 전력 요금표를 사용합니다(데이터 확인일 2026-08-19).
+    연료비조정요금은 분기마다, 전력산업기반기금 요율은 제도 개정에 따라 바뀌므로
+    최신 단가는 <a href="https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp" target="_blank" rel="noopener">한국전력 사이버지점 요금표</a>에서 확인하고,
+    고지서 값과 다르면 각 계산기의 <strong>고급 설정</strong>에서 직접 수정해 계산하세요.</p>
+    <h2>도시가스 단가 기준</h2>
+    <p class="note">도시가스 소매 단가(원/MJ)·기본요금·평균열량(MJ/㎥)은 <strong>지역 도시가스사가 각각 고시</strong>하므로
+    전국 공통값이 없습니다. 이 사이트는 단가를 임의로 넣지 않고 <span class="badge warn">확인 필요</span> 표시와 함께
+    직접 입력받습니다. 내 지역 단가는
+    <a href="https://www.citygas.or.kr" target="_blank" rel="noopener">한국도시가스협회</a>에서 지역사를 찾아 확인하거나
+    고지서의 단가·평균열량을 그대로 입력하세요. (데이터 확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../gas-unit/"><span class="e">🔵</span> 도시가스 단위 변환</a>
+      <a class="rel" href="../electric-bill/"><span class="e">⚡</span> 전기요금 계산기</a>
+      <a class="rel" href="../save-simulator/"><span class="e">📉</span> 절약 시뮬레이터</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { calcDelta, kwhOf } from "../lib/elec.mjs";
+import { calcGasBill, m3ToKwh } from "../lib/gas.mjs";
+import { GAS } from "../data/gas.mjs";
+import { won, num, fmt, kwhFmt, showAd, initTheme, billTableHtml, tariffSourceHtml, gasSourceHtml } from "../assets/app.mjs";
+const $ = (id) => document.getElementById(id);
+const monthSel = $("month");
+const nowM = new Date().getMonth() + 1;
+for (let m = 1; m <= 12; m++) { const o = document.createElement("option"); o.value = m; o.textContent = m + "월" + (m === 7 || m === 8 ? " (하계)" : ""); if (m === nowM) o.selected = true; monthSel.appendChild(o); }
+$("preset").addEventListener("change", (e) => { if (e.target.value) $("watt").value = e.target.value; });
+$("calcBtn").addEventListener("click", () => {
+  const add = kwhOf(num($("watt"), 1500), num($("hours"), 5), num($("days"), 30));
+  const base = num($("baseKwh"), 300);
+  const opts = { month: +monthSel.value, voltage: $("voltage").value, fuelAdj: num($("fuelAdj"), 5), fundRate: num($("fundRate"), 2.7) / 100 };
+  const d = calcDelta(base, add, opts);
+  const price = num($("price"), 0);
+  const factor = num($("factor"), GAS.heatFactor.value);
+  const m3 = num($("m3"), 0);
+  const g = calcGasBill(m3, price, { baseCharge: num($("baseCharge"), 0), factor });
+  const gasKwh = m3ToKwh(m3, factor);
+  const rows = [
+    ['전기난방 추가 사용량', kwhFmt(add), '누진 ' + d.before.tier + '단계 → ' + d.after.tier + '단계'],
+    ['전기요금 증가액', won(d.delta), '1kWh당 ' + fmt(d.avgPerKwh) + '원'],
+    ['가스 사용량', fmt(m3) + '㎥', kwhFmt(gasKwh) + ' 상당 열량'],
+    ['가스요금 (부가세 포함)', won(g.total), price > 0 ? '단가 ' + price + '원/MJ' : '단가 미입력'],
+  ];
+  $("cmpOut").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>항목</th><th>값</th><th>비고</th></tr></thead><tbody>' +
+    rows.map((r) => '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td class="mut">' + r[2] + '</td></tr>').join('') +
+    '<tr class="sum"><td>차액</td><td>' + won(Math.abs(d.delta - g.total)) + '</td><td class="mut">' + (price > 0 ? (d.delta > g.total ? '가스난방이 저렴' : '전기난방이 저렴') : '가스 단가 입력 필요') + '</td></tr>' +
+    '</tbody></table></div>';
+  $("verdict").innerHTML = price > 0
+    ? '전기난방 <span class="num">' + won(d.delta) + '</span> vs 가스난방 <span class="num">' + won(g.total) + '</span>'
+    : '전기난방 증가액 <span class="num">' + won(d.delta) + '</span> <span class="badge warn">가스 단가 확인 필요</span>';
+  $("tableOut").innerHTML = billTableHtml(d.after);
+  $("srcOut").innerHTML = tariffSourceHtml();
+  $("gasSrcOut").innerHTML = gasSourceHtml(GAS.retailPrice.links);
+  $("resultBox").hidden = false;
+  showAd();
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

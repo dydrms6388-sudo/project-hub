@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>로밍 vs 유심 vs 이심 비용 비교 — 직접 입력해 1인 1일 요금 비교</title>
+<meta name="description" content="통신사 로밍, 현지 유심, eSIM, 포켓와이파이의 요금을 직접 입력하면 여행 기간·인원 기준으로 1인당 총액과 하루당 요금을 나란히 비교합니다. 요금제는 수시로 바뀌므로 값을 저장하지 않고 입력받습니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/roaming/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="로밍·유심·이심 비용 비교" />
+<meta property="og:description" content="통신사 로밍, 현지 유심, eSIM, 포켓와이파이의 요금을 직접 입력하면 여행 기간·인원 기준으로 1인당 총액과 하루당 요금을 나란히 비교합니다. 요금제는 수시로 바뀌므로 값을 저장하지 않고 입력받습니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/roaming/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"로밍·유심 비용 비교","description":"통신사 로밍, 현지 유심, eSIM, 포켓와이파이의 요금을 직접 입력하면 여행 기간·인원 기준으로 1인당 총액과 하루당 요금을 나란히 비교합니다. 요금제는 수시로 바뀌므로 값을 저장하지 않고 입력받습니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/roaming/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"왜 요금제 목록이 미리 들어 있지 않나요?","acceptedAnswer":{"@type":"Answer","text":"로밍·유심 요금은 프로모션에 따라 자주 바뀌어, 잘못된 값을 미리 넣어 두면 오히려 잘못된 결정을 유도하기 때문입니다. 확인한 가격을 직접 넣어 비교하는 방식이 정확합니다."}},{"@type":"Question","name":"이심(eSIM)은 어떤 기기에서 되나요?","acceptedAnswer":{"@type":"Answer","text":"최근 스마트폰 상당수가 지원하지만 모델·통신사 정책에 따라 다르고 국내 개통 기기 중 일부는 제약이 있습니다. 반드시 본인 기기의 지원 여부를 먼저 확인하세요."}},{"@type":"Question","name":"한국 번호로 오는 문자를 받아야 합니다.","acceptedAnswer":{"@type":"Answer","text":"데이터 전용 유심으로 갈아 끼우면 한국 번호 수신이 끊깁니다. 듀얼심(물리심+이심)으로 한국 번호를 살려 두거나 통신사 로밍을 쓰는 방식을 고려하세요. 구체적인 조건은 통신사에 확인해야 합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"로밍 vs 유심 비교","item":"https://tripcalc-kr.vercel.app/roaming/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>로밍 vs 유심 비교</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📶</div>
+    <h1>로밍·유심 비용 비교</h1>
+    <p class="lead">요금제는 수시로 바뀌므로 <strong>본인이 본 가격을 그대로 입력</strong>해 비교합니다. 1인 1일 기준으로 환산해 줍니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>여행 조건</h2>
+    <div class="grid2">
+      <label class="f">여행 기간 <span class="u">(일)</span><input type="number" id="days" min="1" max="90" value="5" /></label>
+      <label class="f">인원 <span class="u">(명)</span><input type="number" id="people" min="1" max="20" value="2" /></label>
+    </div>
+    <p class="note">포켓와이파이처럼 <strong>여러 명이 함께 쓰는</strong> 방식은 인원수로 나눠 1인당 요금을 계산합니다.</p>
+  </section>
+
+  <section class="card" aria-label="요금 입력">
+    <h2>비교할 요금 입력</h2>
+    <div id="rows"></div>
+    <button class="btn" id="goBtn" type="button">비교하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>비교 결과</h2>
+      <p class="big">가장 저렴 <span class="num" id="best">-</span></p>
+      <div id="tbl"></div>
+      <p class="note">데이터 용량·속도 제한·통화 가능 여부가 다르므로 <strong>가격만으로 결정하지 마세요</strong>. 현지 번호가 필요한지(택시·배달 앱 인증), 테더링이 되는지도 함께 확인하세요.</p>
+      <div class="share"><button class="btn2" id="copyBtn" type="button">📋 결과 복사</button></div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>요금제를 저장하지 않는 이유</h2>
+  <p>로밍·유심·이심 요금은 통신사 프로모션과 판매처에 따라 수시로 바뀝니다. 어제 맞았던 가격표가 오늘은 틀린 정보가 되고, 틀린 가격표를 그대로 믿고 결제하면 손해가 발생합니다. 그래서 이 도구는 요금 데이터를 저장하지 않고 <strong>이용자가 실제로 본 가격</strong>을 입력받아 비교만 합니다.</p>
+  <p>비교의 핵심은 <strong>단위를 통일하는 것</strong>입니다. 로밍은 하루 단위, 유심은 기간 패키지, 포켓와이파이는 기기당 하루 단위로 팔리기 때문에 그대로 보면 어느 쪽이 싼지 알기 어렵습니다. 여기서는 모두 "1인 총액"과 "1인 1일"로 환산합니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>여행 기간과 인원을 입력합니다.</li>
+    <li>비교하려는 방식의 요금을 넣습니다. 요금 단위(하루당 / 전체 기간 / 기기당 하루)를 정확히 고르는 것이 중요합니다.</li>
+    <li>포켓와이파이처럼 여러 명이 공유하는 방식은 "인원수로 나눔"에 체크합니다.</li>
+    <li>결과에서 1인 총액과 1인 1일 요금을 비교합니다.</li>
+  </ol>
+  <h2>가격 말고 확인해야 할 것</h2>
+  <ul>
+    <li><strong>현지 번호가 필요한가</strong> — 현지 택시·배달·간편결제 앱은 SMS 인증을 요구하는 경우가 많습니다. 이심·유심은 현지 번호가 생기지만 데이터 전용 상품은 아닐 수 있습니다.</li>
+    <li><strong>한국 번호 수신이 필요한가</strong> — 은행·본인인증 문자를 받아야 한다면 한국 번호를 살려 두는 로밍이나 듀얼심 이심이 유리합니다.</li>
+    <li><strong>테더링 허용 여부</strong>와 <strong>속도 제한 조건</strong>(일정 용량 초과 후 속도 저하)을 확인하세요.</li>
+    <li>포켓와이파이는 <strong>기기 배터리</strong>와 반납 절차가 변수입니다. 일행이 흩어지면 한 명만 인터넷을 쓰게 됩니다.</li>
+  </ul>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 왜 요금제 목록이 미리 들어 있지 않나요?</p><p class="a">로밍·유심 요금은 프로모션에 따라 자주 바뀌어, 잘못된 값을 미리 넣어 두면 오히려 잘못된 결정을 유도하기 때문입니다. 확인한 가격을 직접 넣어 비교하는 방식이 정확합니다.</p></div>
+    <div class="qa"><p class="q">Q. 이심(eSIM)은 어떤 기기에서 되나요?</p><p class="a">최근 스마트폰 상당수가 지원하지만 모델·통신사 정책에 따라 다르고 국내 개통 기기 중 일부는 제약이 있습니다. 반드시 본인 기기의 지원 여부를 먼저 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 한국 번호로 오는 문자를 받아야 합니다.</p><p class="a">데이터 전용 유심으로 갈아 끼우면 한국 번호 수신이 끊깁니다. 듀얼심(물리심+이심)으로 한국 번호를 살려 두거나 통신사 로밍을 쓰는 방식을 고려하세요. 구체적인 조건은 통신사에 확인해야 합니다.</p></div>
+    
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 요금·조건은 통신사와 판매처에 따라 다르며 이 사이트는 어떤 상품도 추천하거나 판매하지 않습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/china-travel/" target="_blank" rel="noopener"><span class="e">🇨🇳</span> 중국여행 준비 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, won, copyText } from "../assets/app.mjs";
+const PLANS = [
+  { id: "roaming", n: "📱 통신사 로밍", per: "day", share: false, ph: 9900 },
+  { id: "esim", n: "📶 eSIM", per: "total", share: false, ph: 15000 },
+  { id: "sim", n: "💳 현지 유심", per: "total", share: false, ph: 20000 },
+  { id: "pocket", n: "📡 포켓와이파이", per: "day", share: true, ph: 6000 },
+];
+const PER = [["day", "하루당"], ["total", "전체 기간"]];
+$("rows").innerHTML = PLANS.map((p) =>
+  '<div class="grid3" style="margin-top:10px"><label class="f">' + esc(p.n) + '<input type="number" id="a_' + p.id + '" min="0" value="' + p.ph + '" /></label>' +
+  '<label class="f">요금 단위<select id="p_' + p.id + '">' + PER.map((x) => '<option value="' + x[0] + '"' + (x[0] === p.per ? " selected" : "") + ">" + x[1] + "</option>").join("") + "</select></label>" +
+  '<label class="f">인원수로 나눔<select id="s_' + p.id + '"><option value="0"' + (p.share ? "" : " selected") + ">아니오 (1인 1개)</option><option value=\"1\"" + (p.share ? " selected" : "") + ">예 (함께 사용)</option></select></label></div>").join("");
+let lastTxt = "";
+$("goBtn").addEventListener("click", () => {
+  const days = Math.max(1, +$("days").value || 1);
+  const people = Math.max(1, +$("people").value || 1);
+  const rows = PLANS.map((p) => {
+    const amt = Number($("a_" + p.id).value) || 0;
+    const per = $("p_" + p.id).value;
+    const share = $("s_" + p.id).value === "1";
+    const groupTotal = (per === "day" ? amt * days : amt) * (share ? 1 : people);
+    return { n: p.n, groupTotal, perPerson: groupTotal / people, perPersonDay: groupTotal / people / days, amt };
+  }).filter((r) => r.amt > 0);
+  if (!rows.length) { alert("요금을 하나 이상 입력하세요."); return; }
+  const sorted = [...rows].sort((a, b) => a.perPerson - b.perPerson);
+  const best = sorted[0];
+  $("resultBox").hidden = false;
+  $("best").textContent = best.n.replace(/^\S+\s/, "") + " · 1인 " + won(best.perPerson);
+  $("tbl").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>방식</th><th>일행 전체</th><th>1인 총액</th><th>1인 1일</th></tr></thead><tbody>' +
+    sorted.map((r) => "<tr" + (r === best ? ' class="sum"' : "") + "><td>" + esc(r.n) + "</td><td>" + won(r.groupTotal) + "</td><td>" + won(r.perPerson) + "</td><td>" + won(r.perPersonDay) + "</td></tr>").join("") +
+    "</tbody></table></div>";
+  lastTxt = days + "일 " + people + "명 기준 최저 " + best.n + " 1인 " + won(best.perPerson);
+  showAd();
+});
+$("copyBtn").addEventListener("click", () => copyText(lastTxt + " (tripcalc-kr.vercel.app/roaming)"));
+
+</script>
+</body>
+</html>

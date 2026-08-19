@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>가전제품별 전기요금 — 소비전력 참고표와 계산기 모음</title>
+<meta name="description" content="에어컨·냉장고·건조기·게이밍 PC 등 가전 60종의 참고 소비전력(W)과 월 사용량을 한눈에 보고, 기기별 전기요금 계산 페이지로 이동합니다." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/appliance/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="가전제품별 전기요금 — 소비전력 참고표와 계산기 모음" />
+<meta property="og:description" content="에어컨·냉장고·건조기·게이밍 PC 등 가전 60종의 참고 소비전력(W)과 월 사용량을 한눈에 보고, 기기별 전기요금 계산 페이지로 이동합니다." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/appliance/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"가전제품별 전기요금 계산기 모음","description":"에어컨·냉장고·건조기·게이밍 PC 등 가전 60종의 참고 소비전력(W)과 월 사용량을 한눈에 보고, 기기별 전기요금 계산 페이지로 이동합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/appliance/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"소비전력이 같으면 요금도 같은가요?","acceptedAnswer":{"@type":"Answer","text":"사용 시간이 같다면 사용량은 같지만, 요금은 우리 집의 기존 사용량에 따라 달라집니다. 누진 3단계에 걸친 집에서는 같은 10kWh라도 1단계인 집보다 세 배 가까이 비쌉니다."}},{"@type":"Question","name":"에너지소비효율 1등급이면 얼마나 아끼나요?","acceptedAnswer":{"@type":"Answer","text":"제품군마다 다르지만 5등급 대비 30~40% 정도 소비전력이 낮은 경우가 많습니다. 표의 참고 범위 중 낮은 쪽 값을 넣어 계산하면 대략적인 차이를 확인할 수 있습니다."}},{"@type":"Question","name":"목록에 없는 기기는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"가전제품 전기요금 계산기에서 소비전력(W)과 사용 시간을 직접 넣어 계산할 수 있습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"가전제품별 전기요금","item":"https://billcalc-kr.vercel.app/appliance/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <span>가전제품별 전기요금</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📚</div>
+    <h1>가전제품별 전기요금</h1>
+    <p class="lead">가전 <strong>60종</strong>의 참고 소비전력과 월 사용량. 기기 이름을 누르면 누진 반영 계산기가 열립니다.</p>
+  </div>
+
+  <section class="card">
+    <h2>보는 방법</h2>
+    <p class="note">"대표 소비전력"은 일반적인 제품의 참고값이며 괄호 안은 참고 범위입니다. "월 사용량"은 표에 적힌 하루 사용 시간 기준으로 30일 환산한 값입니다. 실제 요금은 우리 집 기존 사용량에 따라 누진 단계가 달라지므로, 각 기기 페이지에서 기존 사용량을 함께 넣어 계산하세요.</p>
+  </section>
+  <section class="about" style="margin-top:8px">
+    <h2>냉방·공기</h2>
+    <p class="note">여름철 사용량을 좌우하는 냉방·공기질 가전입니다. 사용 시간이 길어 누진 구간을 밀어 올리기 쉽습니다.</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>기기</th><th>대표 소비전력</th><th>하루 사용 기준 월 사용량</th></tr></thead>
+      <tbody><tr><td><a href="air-conditioner/">에어컨 (벽걸이)</a></td><td>800W <span class="mut">(500~1200)</span></td><td>144kWh <span class="mut">(6h/일)</span></td></tr><tr><td><a href="stand-air-conditioner/">에어컨 (스탠드)</a></td><td>1800W <span class="mut">(1300~2500)</span></td><td>324kWh <span class="mut">(6h/일)</span></td></tr><tr><td><a href="electric-fan/">선풍기</a></td><td>45W <span class="mut">(30~70)</span></td><td>10.8kWh <span class="mut">(8h/일)</span></td></tr><tr><td><a href="circulator/">서큘레이터</a></td><td>35W <span class="mut">(25~60)</span></td><td>8.4kWh <span class="mut">(8h/일)</span></td></tr><tr><td><a href="air-purifier/">공기청정기</a></td><td>30W <span class="mut">(10~60)</span></td><td>21.6kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="dehumidifier/">제습기</a></td><td>250W <span class="mut">(180~350)</span></td><td>45kWh <span class="mut">(6h/일)</span></td></tr><tr><td><a href="humidifier/">가습기 (초음파식)</a></td><td>30W <span class="mut">(15~45)</span></td><td>7.2kWh <span class="mut">(8h/일)</span></td></tr></tbody>
+    </table></div>
+    <h2>주방</h2>
+    <p class="note">주방 가전은 순간 소비전력이 크지만 사용 시간이 짧은 기기와, 24시간 돌아가는 기기가 섞여 있습니다.</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>기기</th><th>대표 소비전력</th><th>하루 사용 기준 월 사용량</th></tr></thead>
+      <tbody><tr><td><a href="refrigerator/">냉장고 (양문형)</a></td><td>40W <span class="mut">(25~80)</span></td><td>28.8kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="kimchi-refrigerator/">김치냉장고</a></td><td>35W <span class="mut">(20~60)</span></td><td>25.2kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="freezer/">냉동고</a></td><td>45W <span class="mut">(30~80)</span></td><td>32.4kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="wine-cellar/">와인셀러</a></td><td>50W <span class="mut">(30~90)</span></td><td>36kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="microwave/">전자레인지</a></td><td>1100W <span class="mut">(700~1300)</span></td><td>6.6kWh <span class="mut">(0.2h/일)</span></td></tr><tr><td><a href="electric-oven/">전기오븐</a></td><td>2000W <span class="mut">(1500~3000)</span></td><td>18kWh <span class="mut">(0.3h/일)</span></td></tr><tr><td><a href="airfryer/">에어프라이어</a></td><td>1500W <span class="mut">(1200~1800)</span></td><td>18kWh <span class="mut">(0.4h/일)</span></td></tr><tr><td><a href="induction/">인덕션 (1구 사용)</a></td><td>1800W <span class="mut">(1200~3000)</span></td><td>54kWh <span class="mut">(1h/일)</span></td></tr><tr><td><a href="electric-kettle/">전기포트</a></td><td>1800W <span class="mut">(1500~2200)</span></td><td>8.1kWh <span class="mut">(0.15h/일)</span></td></tr><tr><td><a href="rice-cooker-cook/">전기밥솥 (취사)</a></td><td>1000W <span class="mut">(900~1400)</span></td><td>15kWh <span class="mut">(0.5h/일)</span></td></tr><tr><td><a href="rice-cooker-warm/">전기밥솥 (보온)</a></td><td>100W <span class="mut">(70~150)</span></td><td>30kWh <span class="mut">(10h/일)</span></td></tr><tr><td><a href="dishwasher/">식기세척기</a></td><td>1200W <span class="mut">(1000~1500)</span></td><td>36kWh <span class="mut">(1h/일)</span></td></tr><tr><td><a href="coffee-machine/">커피머신</a></td><td>1300W <span class="mut">(1000~1500)</span></td><td>5.9kWh <span class="mut">(0.15h/일)</span></td></tr><tr><td><a href="toaster/">토스터</a></td><td>900W <span class="mut">(700~1200)</span></td><td>2.7kWh <span class="mut">(0.1h/일)</span></td></tr><tr><td><a href="blender/">믹서기</a></td><td>400W <span class="mut">(300~600)</span></td><td>0.6kWh <span class="mut">(0.05h/일)</span></td></tr><tr><td><a href="water-purifier/">냉온정수기</a></td><td>50W <span class="mut">(30~100)</span></td><td>36kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="electric-grill/">전기그릴</a></td><td>1400W <span class="mut">(1200~1600)</span></td><td>12.6kWh <span class="mut">(0.3h/일)</span></td></tr><tr><td><a href="food-dehydrator/">식품건조기</a></td><td>500W <span class="mut">(350~700)</span></td><td>90kWh <span class="mut">(6h/일)</span></td></tr></tbody>
+    </table></div>
+    <h2>세탁·의류</h2>
+    <p class="note">세탁·건조 가전은 물을 데우거나 히터를 쓰는 구간에서 전력이 몰립니다.</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>기기</th><th>대표 소비전력</th><th>하루 사용 기준 월 사용량</th></tr></thead>
+      <tbody><tr><td><a href="washing-machine/">세탁기 (통돌이)</a></td><td>500W <span class="mut">(300~700)</span></td><td>10.5kWh <span class="mut">(0.7h/일)</span></td></tr><tr><td><a href="drum-washer/">드럼세탁기</a></td><td>700W <span class="mut">(200~2000)</span></td><td>14.7kWh <span class="mut">(0.7h/일)</span></td></tr><tr><td><a href="dryer/">의류건조기 (히트펌프)</a></td><td>1000W <span class="mut">(600~1500)</span></td><td>24kWh <span class="mut">(0.8h/일)</span></td></tr><tr><td><a href="styler/">의류관리기</a></td><td>200W <span class="mut">(150~300)</span></td><td>6kWh <span class="mut">(1h/일)</span></td></tr><tr><td><a href="iron/">다리미</a></td><td>1500W <span class="mut">(1000~2000)</span></td><td>9kWh <span class="mut">(0.2h/일)</span></td></tr></tbody>
+    </table></div>
+    <h2>IT·미디어</h2>
+    <p class="note">IT·미디어 기기는 개별 소비전력이 작아도 늘 켜져 있어 합치면 무시하기 어렵습니다.</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>기기</th><th>대표 소비전력</th><th>하루 사용 기준 월 사용량</th></tr></thead>
+      <tbody><tr><td><a href="tv-55/">TV (55인치)</a></td><td>120W <span class="mut">(80~180)</span></td><td>18kWh <span class="mut">(5h/일)</span></td></tr><tr><td><a href="tv-75/">TV (75인치 이상)</a></td><td>200W <span class="mut">(150~350)</span></td><td>30kWh <span class="mut">(5h/일)</span></td></tr><tr><td><a href="desktop-pc/">데스크톱 PC</a></td><td>150W <span class="mut">(80~400)</span></td><td>18kWh <span class="mut">(4h/일)</span></td></tr><tr><td><a href="gaming-pc/">게이밍 PC</a></td><td>400W <span class="mut">(250~700)</span></td><td>36kWh <span class="mut">(3h/일)</span></td></tr><tr><td><a href="laptop/">노트북</a></td><td>40W <span class="mut">(20~90)</span></td><td>6kWh <span class="mut">(5h/일)</span></td></tr><tr><td><a href="monitor/">모니터 (27인치)</a></td><td>30W <span class="mut">(20~50)</span></td><td>4.5kWh <span class="mut">(5h/일)</span></td></tr><tr><td><a href="game-console/">게임 콘솔</a></td><td>150W <span class="mut">(80~220)</span></td><td>9kWh <span class="mut">(2h/일)</span></td></tr><tr><td><a href="router/">인터넷 공유기</a></td><td>8W <span class="mut">(5~15)</span></td><td>5.8kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="settop-box/">셋톱박스</a></td><td>15W <span class="mut">(8~20)</span></td><td>10.8kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="ai-speaker/">AI 스피커</a></td><td>5W <span class="mut">(3~10)</span></td><td>3.6kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="printer/">프린터 (가정용)</a></td><td>30W <span class="mut">(20~60)</span></td><td>0.2kWh <span class="mut">(0.2h/일)</span></td></tr><tr><td><a href="cctv-cam/">홈캠·CCTV</a></td><td>5W <span class="mut">(3~10)</span></td><td>3.6kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="phone-charger/">스마트폰 충전기</a></td><td>10W <span class="mut">(5~25)</span></td><td>0.6kWh <span class="mut">(2h/일)</span></td></tr></tbody>
+    </table></div>
+    <h2>난방·온수</h2>
+    <p class="note">겨울철 요금 급등의 주범입니다. 전기로 열을 만드는 기기는 예외 없이 소비전력이 큽니다.</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>기기</th><th>대표 소비전력</th><th>하루 사용 기준 월 사용량</th></tr></thead>
+      <tbody><tr><td><a href="electric-heater/">전기히터·온풍기</a></td><td>1500W <span class="mut">(1000~2000)</span></td><td>180kWh <span class="mut">(4h/일)</span></td></tr><tr><td><a href="electric-mat/">전기장판 (더블)</a></td><td>150W <span class="mut">(100~250)</span></td><td>36kWh <span class="mut">(8h/일)</span></td></tr><tr><td><a href="electric-blanket/">전기요 (싱글)</a></td><td>60W <span class="mut">(40~100)</span></td><td>14.4kWh <span class="mut">(8h/일)</span></td></tr><tr><td><a href="water-mat/">온수매트</a></td><td>240W <span class="mut">(200~300)</span></td><td>57.6kWh <span class="mut">(8h/일)</span></td></tr><tr><td><a href="radiator/">전기 라디에이터</a></td><td>1500W <span class="mut">(1000~2000)</span></td><td>225kWh <span class="mut">(5h/일)</span></td></tr><tr><td><a href="boiler-pump/">보일러 (전기 소비분)</a></td><td>80W <span class="mut">(60~150)</span></td><td>12kWh <span class="mut">(5h/일)</span></td></tr><tr><td><a href="water-heater/">전기온수기 (저장식)</a></td><td>2000W <span class="mut">(1500~3000)</span></td><td>90kWh <span class="mut">(1.5h/일)</span></td></tr><tr><td><a href="bidet/">비데 (온수·변좌 유지)</a></td><td>30W <span class="mut">(15~60)</span></td><td>21.6kWh <span class="mut">(24h/일)</span></td></tr></tbody>
+    </table></div>
+    <h2>생활·기타</h2>
+    <p class="note">생활 가전은 사용 빈도에 따라 요금 영향이 크게 달라집니다.</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>기기</th><th>대표 소비전력</th><th>하루 사용 기준 월 사용량</th></tr></thead>
+      <tbody><tr><td><a href="vacuum/">청소기 (유선)</a></td><td>1000W <span class="mut">(600~1500)</span></td><td>6kWh <span class="mut">(0.2h/일)</span></td></tr><tr><td><a href="robot-vacuum/">로봇청소기</a></td><td>30W <span class="mut">(20~50)</span></td><td>0.9kWh <span class="mut">(1h/일)</span></td></tr><tr><td><a href="hair-dryer/">헤어드라이어</a></td><td>1500W <span class="mut">(1000~2200)</span></td><td>6.8kWh <span class="mut">(0.15h/일)</span></td></tr><tr><td><a href="massage-chair/">안마의자</a></td><td>150W <span class="mut">(100~250)</span></td><td>2.3kWh <span class="mut">(0.5h/일)</span></td></tr><tr><td><a href="treadmill/">러닝머신</a></td><td>800W <span class="mut">(500~1500)</span></td><td>16.8kWh <span class="mut">(0.7h/일)</span></td></tr><tr><td><a href="aquarium/">어항 (히터+여과기)</a></td><td>60W <span class="mut">(30~150)</span></td><td>43.2kWh <span class="mut">(24h/일)</span></td></tr><tr><td><a href="ebike-charger/">전기자전거·킥보드 충전</a></td><td>150W <span class="mut">(100~300)</span></td><td>13.5kWh <span class="mut">(3h/일)</span></td></tr><tr><td><a href="led-stand/">LED 스탠드</a></td><td>10W <span class="mut">(5~20)</span></td><td>1.5kWh <span class="mut">(5h/일)</span></td></tr><tr><td><a href="living-light/">거실 LED 조명</a></td><td>50W <span class="mut">(30~100)</span></td><td>9kWh <span class="mut">(6h/일)</span></td></tr></tbody>
+    </table></div>
+  </section>
+
+
+  <section class="about">
+    <h2>소비전력 표를 볼 때 주의할 점</h2>
+    <p>같은 이름의 가전이라도 용량·연식·에너지소비효율등급에 따라 소비전력이 두세 배 차이 납니다. 이 표의 값은 제품 선택의 출발점이며, 정확한 계산에는 제품 라벨의 값을 쓰는 것이 가장 좋습니다. 특히 냉장고·에어컨처럼 압축기가 켜졌다 꺼지는 기기는 정격 소비전력이 실제 평균보다 훨씬 높게 표시됩니다.</p>
+    <h2>요금을 줄이는 순서</h2>
+    <ol>
+      <li>소비전력(W) × 사용 시간이 큰 기기부터 찾습니다. 표의 월 사용량 열이 그 기준입니다.</li>
+      <li>상시 가동 기기(냉장고·셋톱박스·정수기)는 시간을 줄일 수 없으므로 효율이 높은 제품 교체나 대기전력 차단이 답입니다.</li>
+      <li>고출력·단시간 기기(전기포트·헤어드라이어)는 요금 영향이 생각보다 작습니다.</li>
+      <li>난방 기기는 예외 없이 큽니다. 겨울철 사용량이 뛰는 원인 1순위입니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 소비전력이 같으면 요금도 같은가요?</p><p class="a">사용 시간이 같다면 사용량은 같지만, 요금은 우리 집의 기존 사용량에 따라 달라집니다. 누진 3단계에 걸친 집에서는 같은 10kWh라도 1단계인 집보다 세 배 가까이 비쌉니다.</p></div>
+    <div class="qa"><p class="q">Q. 에너지소비효율 1등급이면 얼마나 아끼나요?</p><p class="a">제품군마다 다르지만 5등급 대비 30~40% 정도 소비전력이 낮은 경우가 많습니다. 표의 참고 범위 중 낮은 쪽 값을 넣어 계산하면 대략적인 차이를 확인할 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 목록에 없는 기기는 어떻게 계산하나요?</p><p class="a">가전제품 전기요금 계산기에서 소비전력(W)과 사용 시간을 직접 넣어 계산할 수 있습니다.</p></div>
+    <h2>요금표 기준일과 출처</h2>
+    <p class="note">전기요금 단가는 <strong>2023년 5월 16일 개정 기준</strong>의 주택용 전력 요금표를 사용합니다(데이터 확인일 2026-08-19).
+    연료비조정요금은 분기마다, 전력산업기반기금 요율은 제도 개정에 따라 바뀌므로
+    최신 단가는 <a href="https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp" target="_blank" rel="noopener">한국전력 사이버지점 요금표</a>에서 확인하고,
+    고지서 값과 다르면 각 계산기의 <strong>고급 설정</strong>에서 직접 수정해 계산하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 소비전력 참고값은 한국에너지공단 효율등급 제품정보·제조사 사양표를 참고한 범위입니다.
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../appliance-cost/"><span class="e">🔌</span> 가전제품 전기요금 계산기</a>
+      <a class="rel" href="../standby-power/"><span class="e">🔋</span> 대기전력 계산기</a>
+      <a class="rel" href="../electric-bill/"><span class="e">⚡</span> 전기요금 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

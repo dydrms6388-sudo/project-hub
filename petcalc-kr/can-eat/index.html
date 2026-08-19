@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>강아지·고양이 먹어도 되는 음식 검색 — 가능·주의·금지 | PetCalc</title>
+<meta name="description" content="강아지 64가지, 고양이 58가지 사람 음식을 가능·주의·금지로 정리했습니다. 재료 이름으로 검색하면 이유와 근거 출처까지 바로 확인할 수 있습니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/can-eat/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="강아지·고양이 먹어도 되는 음식 검색 — 가능·주의·금지 | PetCalc">
+<meta property="og:description" content="강아지 64가지, 고양이 58가지 사람 음식을 가능·주의·금지로 정리했습니다. 재료 이름으로 검색하면 이유와 근거 출처까지 바로 확인할 수 있습니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/can-eat/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"강아지·고양이 먹어도 되는 음식 검색 — 가능·주의·금지 | PetCalc","description":"강아지 64가지, 고양이 58가지 사람 음식을 가능·주의·금지로 정리했습니다. 재료 이름으로 검색하면 이유와 근거 출처까지 바로 확인할 수 있습니다.","url":"https://petcalc-kr.vercel.app/can-eat/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"목록에 없는 음식은 줘도 되나요?","acceptedAnswer":{"@type":"Answer","text":"수록되지 않았다는 것은 “안전이 확인됐다”는 뜻이 아니라 “확실한 근거를 찾지 못했다”는 뜻입니다. 확실하지 않으면 주지 않는 쪽이 안전하고, 필요하면 수의사에게 확인하세요."}},{"@type":"Question","name":"조금 먹었는데 괜찮아 보이면 지켜봐도 되나요?","acceptedAnswer":{"@type":"Answer","text":"초콜릿·자일리톨·양파·포도처럼 금지로 표시된 음식은 증상이 늦게 나타납니다. 증상이 없어도 먹은 양과 시각을 알려 병원 판단을 받으세요."}},{"@type":"Question","name":"강아지에게 괜찮은데 고양이에게 위험한 음식도 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 고양이는 완전 육식동물이라 대사 방식이 달라 같은 음식도 결론이 다를 수 있습니다. 대상 탭을 꼭 맞게 선택해 확인하세요."}},{"@type":"Question","name":"사료에 들어 있는 재료인데 왜 주의인가요?","acceptedAnswer":{"@type":"Answer","text":"사료에는 가공·배합 과정에서 안전한 형태와 양으로 들어갑니다. 집에서 통째로 주는 것과는 조건이 다릅니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"먹어도 되는 음식","item":"https://petcalc-kr.vercel.app/can-eat/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">먹어도 되는 음식</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">🥗</div>
+  <h1>먹어도 되는 음식 검색</h1>
+  <p class="lead">재료 이름을 검색해 보세요. 강아지 64종 · 고양이 58종을 가능/주의/금지로 정리했습니다.</p>
+</header>
+<p class="notice warn"><b>참고용이며 진단이 아닙니다.</b> 이 페이지의 계산·정보는 일반적인 기준을 안내할 뿐이며, 개체의 건강 상태를 판단하지 않습니다. 증상이 있거나 결정을 내려야 한다면 반드시 <b>수의사와 상담하세요</b>.</p>
+
+<section class="card">
+  <h2>검색</h2>
+  <div class="field"><label>대상</label>
+    <div class="seg" id="sp">
+      <button type="button" data-v="dog" aria-pressed="true">🐕 강아지</button>
+      <button type="button" data-v="cat" aria-pressed="false">🐈 고양이</button>
+    </div>
+  </div>
+  <div class="field"><label for="q">재료 이름 <span class="hint">예: 포도, 닭가슴살</span></label><input type="text" id="q" placeholder="재료 이름을 입력하세요" autocomplete="off"></div>
+  <div class="field"><label>결론으로 좁히기</label>
+    <div class="seg" id="vd">
+      <button type="button" data-v="all" aria-pressed="true">전체</button>
+      <button type="button" data-v="ok" aria-pressed="false">가능</button>
+      <button type="button" data-v="caution" aria-pressed="false">주의</button>
+      <button type="button" data-v="danger" aria-pressed="false">금지</button>
+    </div>
+  </div>
+</section>
+<section class="result" id="res">
+  <div class="card">
+    <h2>결과 <span class="hint" id="cnt"></span></h2>
+    <div id="out"></div>
+  </div>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>가능·주의·금지는 어떻게 나눴나요?</h2>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>표시</th><th>뜻</th></tr></thead><tbody>
+<tr><td><span class="badge ok">가능</span></td><td>손질·조리 조건을 지키면 간식으로 줄 수 있는 음식</td></tr>
+<tr><td><span class="badge caution">주의</span></td><td>독성은 없지만 양·부위·조리법에 조건이 붙거나, 개체에 따라 문제가 되는 음식</td></tr>
+<tr><td><span class="badge danger">금지</span></td><td>소량으로도 중독·응급을 일으킬 수 있어 주면 안 되는 음식</td></tr>
+</tbody></table></div>
+<p>수록 기준은 “개수”가 아니라 “확실함”입니다. 수의학적으로 결론이 갈리는 항목은 넣지 않았습니다.</p>
+<h3>수록 현황</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>대상</th><th>가능</th><th>주의</th><th>금지</th><th>합계</th></tr></thead><tbody>
+<tr><td>🐕 강아지</td><td>22</td><td>27</td><td>15</td><td>64</td></tr>
+<tr><td>🐈 고양이</td><td>19</td><td>25</td><td>14</td><td>58</td></tr>
+</tbody></table></div>
+<p><a href="../dog/can-eat/index.html">강아지 전체 목록 보기</a> · <a href="../cat/can-eat/index.html">고양이 전체 목록 보기</a></p>
+<h2>공통 원칙 4가지</h2>
+<ol>
+<li><b>간식은 하루 총 열량의 10% 이내.</b> 나머지는 균형 잡힌 사료로 채워야 합니다.</li>
+<li><b>양념은 전부 빼세요.</b> 소금·마늘·양파 양념이 든 음식은 재료 자체가 안전해도 위험해집니다.</li>
+<li><b>처음 주는 음식은 소량부터.</b> 12~24시간 동안 구토·설사·가려움이 없는지 확인합니다.</li>
+<li><b>씨·심·뼈·껍질은 제거.</b> 중독이 아니라 폐색으로 응급 수술을 하는 경우가 많습니다.</li>
+</ol>
+<p class="notice warn">이미 먹은 뒤 증상이 있다면 검색보다 <b>병원 연락이 먼저</b>입니다. 먹은 종류·양·시각을 기록해 두세요.</p>
+<p class="src">출처: 확실한 수의학 근거가 있는 항목만 수록. 같은 음식이라도 양·조리법·개체(알레르기, 지병)에 따라 결과가 다를 수 있음. — <a href="https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets" rel="nofollow noopener" target="_blank">https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets</a> (확인일 2026-08-19)</p>
+<p class="src">출처: 고양이는 완전 육식동물이라 사람 음식은 어디까지나 간식(총 하루 열량의 10% 이내)입니다. 확실한 근거가 있는 항목만 수록했으며, 같은 음식도 양·조리법·개체(지병·알레르기)에 따라 결과가 달라집니다. — <a href="https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics" rel="nofollow noopener" target="_blank">https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics</a> (확인일 2026-08-19)</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 목록에 없는 음식은 줘도 되나요?</p><p class="a">수록되지 않았다는 것은 “안전이 확인됐다”는 뜻이 아니라 “확실한 근거를 찾지 못했다”는 뜻입니다. 확실하지 않으면 주지 않는 쪽이 안전하고, 필요하면 수의사에게 확인하세요.</p></div>
+<div class="qa"><p class="q">Q. 조금 먹었는데 괜찮아 보이면 지켜봐도 되나요?</p><p class="a">초콜릿·자일리톨·양파·포도처럼 금지로 표시된 음식은 증상이 늦게 나타납니다. 증상이 없어도 먹은 양과 시각을 알려 병원 판단을 받으세요.</p></div>
+<div class="qa"><p class="q">Q. 강아지에게 괜찮은데 고양이에게 위험한 음식도 있나요?</p><p class="a">네. 고양이는 완전 육식동물이라 대사 방식이 달라 같은 음식도 결론이 다를 수 있습니다. 대상 탭을 꼭 맞게 선택해 확인하세요.</p></div>
+<div class="qa"><p class="q">Q. 사료에 들어 있는 재료인데 왜 주의인가요?</p><p class="a">사료에는 가공·배합 과정에서 안전한 형태와 양으로 들어갑니다. 집에서 통째로 주는 것과는 조건이 다릅니다.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../food-amount/index.html"><span class="ic">🍚</span><span>사료 급여량 계산기</span></a>
+      <a class="rel" href="../vet-consult/index.html"><span class="ic">🏥</span><span>수의사 상담 안내</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-petsafe/" rel="noopener"><span class="ic">⚠️</span><span>반려동물 위험물 체크</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-meal-calc/" rel="noopener"><span class="ic">🍚</span><span>반려동물 사료량 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-vet-cost/" rel="noopener"><span class="ic">🏥</span><span>동물병원 진료비 참고</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var D={"dog":[{"s":"chocolate","n":"초콜릿","v":"danger","m":"테오브로민·카페인 중독 — 절대 금지"},{"s":"grape","n":"포도","v":"danger","m":"급성 신부전 위험 — 소량도 금지"},{"s":"raisin","n":"건포도","v":"danger","m":"포도와 동일한 신부전 위험 — 농축되어 더 위험"},{"s":"onion","n":"양파","v":"danger","m":"적혈구 파괴 → 용혈성 빈혈 — 익혀도 독성"},{"s":"garlic","n":"마늘","v":"danger","m":"양파와 같은 파속 식물 — g당 독성은 더 강함"},{"s":"green-onion","n":"파(대파·쪽파)","v":"danger","m":"파속 식물 — 용혈성 빈혈 위험"},{"s":"chives","n":"부추","v":"danger","m":"파속 식물 — 빈혈 위험"},{"s":"xylitol","n":"자일리톨","v":"danger","m":"급격한 저혈당·간부전 — 극소량도 응급"},{"s":"macadamia","n":"마카다미아","v":"danger","m":"뒷다리 쇠약·구토·고체온 — 금지"},{"s":"alcohol","n":"술(알코올)","v":"danger","m":"중추신경 억제 — 소량도 위험"},{"s":"coffee","n":"커피(카페인)","v":"danger","m":"카페인 중독 — 심박 증가·경련"},{"s":"raw-dough","n":"생 빵 반죽(효모)","v":"danger","m":"위 안에서 팽창 + 알코올 생성"},{"s":"cooked-bone","n":"익힌 뼈(닭뼈 등)","v":"danger","m":"날카롭게 부서져 천공·폐색 위험"},{"s":"nutmeg","n":"넛맥(육두구)","v":"danger","m":"미리스티신 독성 — 방향감각 상실·경련"},{"s":"wild-mushroom","n":"야생 버섯","v":"danger","m":"종에 따라 간부전 등 치명적"},{"s":"avocado","n":"아보카도","v":"caution","m":"페르신·고지방·씨앗 폐색 — 권장하지 않음"},{"s":"cherry","n":"체리","v":"caution","m":"과육만 소량 가능 — 씨·줄기·잎은 독성"},{"s":"tomato","n":"토마토","v":"caution","m":"빨갛게 익은 과육만 소량 — 녹색 부분 금지"},{"s":"potato","n":"감자","v":"caution","m":"완전히 익힌 것만 — 생감자·싹은 솔라닌 독성"},{"s":"milk","n":"우유","v":"caution","m":"유당 소화 능력 부족 — 설사 유발 가능"},{"s":"cheese","n":"치즈","v":"caution","m":"소량은 가능하나 고지방·고염분"},{"s":"almond","n":"아몬드","v":"caution","m":"소화 어려움·기도 막힘·고지방 — 권장하지 않음"},{"s":"walnut","n":"호두","v":"caution","m":"고지방 + 곰팡이 핀 호두는 신경 독성 — 권장하지 않음"},{"s":"peanut-butter","n":"땅콩버터","v":"caution","m":"자일리톨 무첨가·무염 제품만 소량"},{"s":"shrimp","n":"새우","v":"caution","m":"완전히 익혀 껍질·꼬리 제거 후 소량"},{"s":"squid","n":"오징어","v":"caution","m":"익힌 살 소량만 — 생것·건오징어는 피하기"},{"s":"raw-fish","n":"생선회(날생선)","v":"caution","m":"기생충·세균 위험 — 익혀서 주기"},{"s":"raw-egg","n":"생계란","v":"caution","m":"살모넬라·아비딘 — 익힌 계란 권장"},{"s":"liver","n":"간(소간·닭간)","v":"caution","m":"가끔 소량은 좋지만 과다 시 비타민A 과잉증"},{"s":"ham","n":"햄·소시지","v":"caution","m":"고염분·고지방·첨가물 — 권장하지 않음"},{"s":"tuna-can","n":"참치캔(사람용)","v":"caution","m":"염분·기름·수은 — 가끔 소량만"},{"s":"bread","n":"빵(식빵)","v":"caution","m":"플레인 빵 소량만 — 건포도·초코·마늘빵 금지"},{"s":"honey","n":"꿀","v":"caution","m":"성견 소량 가능 — 강아지(유견)·당분 주의"},{"s":"orange","n":"오렌지·귤","v":"caution","m":"과육 소량 가능 — 껍질·씨는 피하기"},{"s":"corn","n":"옥수수","v":"caution","m":"알갱이는 가능 — 옥수수심(속대)은 폐색 위험"},{"s":"persimmon","n":"감","v":"caution","m":"잘 익은 과육 소량 — 씨·꼭지는 폐색 위험"},{"s":"spinach","n":"시금치","v":"caution","m":"소량 가능 — 옥살산 때문에 신장·결석 이력 주의"},{"s":"broccoli","n":"브로콜리","v":"caution","m":"소량 가능 — 다량은 위장 자극"},{"s":"yogurt","n":"요거트","v":"caution","m":"무가당 플레인만 소량 — 유당·감미료 주의"},{"s":"salty-snack","n":"짠 과자·라면","v":"caution","m":"고염분 — 갈증·나트륨 과잉 위험"},{"s":"mango","n":"망고","v":"caution","m":"껍질·씨 제거한 과육만 소량"},{"s":"tofu","n":"두부","v":"caution","m":"소량 가능 — 가스·배탈, 간이 안 된 것만"},{"s":"apple","n":"사과","v":"ok","m":"씨·심 제거 후 급여 가능"},{"s":"banana","n":"바나나","v":"ok","m":"소량 간식으로 가능 — 당분 주의"},{"s":"blueberry","n":"블루베리","v":"ok","m":"대표적인 안전 간식"},{"s":"strawberry","n":"딸기","v":"ok","m":"꼭지 떼고 소량 가능"},{"s":"watermelon","n":"수박","v":"ok","m":"씨·껍질 제거 후 가능 — 여름 수분 보충"},{"s":"pear","n":"배","v":"ok","m":"씨·심 제거 후 소량 가능"},{"s":"melon","n":"멜론·참외","v":"ok","m":"씨·껍질 제거 후 소량 가능"},{"s":"pineapple","n":"파인애플","v":"ok","m":"생과육 소량 가능"},{"s":"carrot","n":"당근","v":"ok","m":"저칼로리 안전 간식"},{"s":"cucumber","n":"오이","v":"ok","m":"수분 많은 저칼로리 간식"},{"s":"cabbage","n":"양배추","v":"ok","m":"소량 가능 — 가스 찰 수 있음"},{"s":"pumpkin","n":"호박(단호박)","v":"ok","m":"소화에 좋은 안전 채소"},{"s":"sweet-potato","n":"고구마","v":"ok","m":"익혀서 소량 — 인기 간식이지만 열량 주의"},{"s":"bell-pepper","n":"파프리카","v":"ok","m":"씨·꼭지 제거 후 가능"},{"s":"zucchini","n":"애호박","v":"ok","m":"저칼로리 안전 채소"},{"s":"chicken","n":"닭가슴살","v":"ok","m":"익힌 무염 살코기 — 대표 단백질 간식"},{"s":"beef","n":"소고기","v":"ok","m":"익힌 무염 살코기 가능"},{"s":"pork","n":"돼지고기","v":"ok","m":"완전히 익힌 무염 살코기만"},{"s":"salmon","n":"연어","v":"ok","m":"완전히 익힌 연어 — 오메가3 공급"},{"s":"egg","n":"계란(익힌 것)","v":"ok","m":"삶은 계란 — 좋은 단백질 간식"},{"s":"rice","n":"쌀밥","v":"ok","m":"흰쌀밥 소량 가능 — 배탈 시 처방식 대용 아님"},{"s":"oatmeal","n":"오트밀","v":"ok","m":"무가당으로 익혀서 소량 가능"}],"cat":[{"s":"chocolate","n":"초콜릿","v":"danger","m":"테오브로민·카페인 중독 — 절대 금지"},{"s":"onion","n":"양파","v":"danger","m":"적혈구 파괴 → 용혈성 빈혈. 고양이는 개보다 더 민감"},{"s":"garlic","n":"마늘","v":"danger","m":"파속 식물 — 같은 무게면 양파보다 독성이 강함"},{"s":"green-onion","n":"파(대파·쪽파)","v":"danger","m":"파속 식물 — 용혈성 빈혈 위험"},{"s":"chives","n":"부추","v":"danger","m":"파속 식물 — 빈혈 위험"},{"s":"grape","n":"포도","v":"danger","m":"신장 손상 위험 — 주지 마세요"},{"s":"raisin","n":"건포도","v":"danger","m":"포도가 농축된 형태 — 금지"},{"s":"alcohol","n":"술(알코올)","v":"danger","m":"중추신경 억제 — 아주 적은 양도 위험"},{"s":"coffee","n":"커피(카페인)","v":"danger","m":"카페인 중독 — 심박 증가·떨림·경련"},{"s":"raw-dough","n":"생 빵 반죽(효모)","v":"danger","m":"위에서 팽창 + 알코올 생성"},{"s":"cooked-bone","n":"익힌 뼈(닭뼈 등)","v":"danger","m":"날카롭게 쪼개져 천공·폐색 위험"},{"s":"fish-bone","n":"생선 가시","v":"danger","m":"구강·식도·장 손상 위험"},{"s":"wild-mushroom","n":"야생 버섯","v":"danger","m":"종에 따라 간부전 등 치명적"},{"s":"lily","n":"백합(꽃·잎·꽃가루)","v":"danger","m":"고양이 특유의 급성 신부전 — 음식은 아니지만 최우선 경고"},{"s":"xylitol","n":"자일리톨","v":"caution","m":"개에서 치명적 — 고양이는 근거가 적지만 피할 것"},{"s":"milk","n":"우유","v":"caution","m":"대부분의 성묘는 유당 소화 못 함 — 설사 유발"},{"s":"cheese","n":"치즈","v":"caution","m":"소량은 가능하나 유당·염분·지방 부담"},{"s":"yogurt","n":"요거트","v":"caution","m":"무가당 플레인만 아주 소량"},{"s":"raw-fish","n":"생선회(날생선)","v":"caution","m":"티아민 분해효소·기생충 — 익혀서 주기"},{"s":"tuna-can","n":"참치캔(사람용)","v":"caution","m":"중독성 있게 좋아하지만 편식·수은·염분 문제"},{"s":"raw-egg","n":"생계란","v":"caution","m":"살모넬라·아비딘 — 익혀서 주기"},{"s":"shrimp","n":"새우","v":"caution","m":"익힌 살만 소량 — 껍질·꼬리 제거"},{"s":"squid","n":"오징어","v":"caution","m":"익힌 살 소량만 — 건오징어·양념은 금지"},{"s":"liver","n":"간(닭간·소간)","v":"caution","m":"가끔 소량은 좋지만 상습 급여는 비타민A 과잉증"},{"s":"ham","n":"햄·소시지","v":"caution","m":"고염분·고지방·양념 — 권장하지 않음"},{"s":"salty-snack","n":"짠 과자·라면","v":"caution","m":"나트륨 과잉 — 갈증·구토"},{"s":"bread","n":"빵(식빵)","v":"caution","m":"플레인 빵 아주 소량 — 영양가 없음"},{"s":"dog-food","n":"강아지 사료","v":"caution","m":"한두 번은 괜찮지만 지속 급여는 결핍 유발"},{"s":"macadamia","n":"마카다미아","v":"caution","m":"개에서 확인된 독성 — 고양이도 피할 것"},{"s":"almond","n":"아몬드","v":"caution","m":"소화 어려움·기도 막힘·고지방"},{"s":"walnut","n":"호두","v":"caution","m":"고지방 + 곰팡이 핀 것은 신경 독성"},{"s":"avocado","n":"아보카도","v":"caution","m":"페르신·고지방·씨 폐색 — 권장하지 않음"},{"s":"tomato","n":"토마토","v":"caution","m":"익은 과육 소량만 — 줄기·잎·덜 익은 것 금지"},{"s":"potato","n":"감자","v":"caution","m":"완전히 익힌 것만 — 생감자·싹·녹색 부분 금지"},{"s":"spinach","n":"시금치","v":"caution","m":"소량 가능 — 요로결석·신장 이력이면 금지"},{"s":"seasoned-gim","n":"조미김","v":"caution","m":"기름·소금 범벅 — 무염 김만 아주 소량"},{"s":"tofu","n":"두부","v":"caution","m":"간 안 된 두부 소량 — 주식은 될 수 없음"},{"s":"honey","n":"꿀","v":"caution","m":"필요 없는 당분 — 아주 소량 외 권장 안 함"},{"s":"raw-meat","n":"생고기(생식)","v":"caution","m":"세균·기생충 위험 — 익혀 주는 것이 안전"},{"s":"chicken","n":"닭가슴살","v":"ok","m":"익힌 무염 살코기 — 가장 무난한 간식"},{"s":"beef","n":"소고기","v":"ok","m":"익힌 기름기 적은 살코기 가능"},{"s":"pork","n":"돼지고기","v":"ok","m":"완전히 익힌 무염 살코기만"},{"s":"salmon","n":"연어","v":"ok","m":"완전히 익힌 연어 — 오메가3 공급"},{"s":"egg","n":"계란(익힌 것)","v":"ok","m":"삶은 계란 — 좋은 단백질 간식"},{"s":"pumpkin","n":"호박(단호박)","v":"ok","m":"익힌 호박 — 변 상태 관리에 흔히 사용"},{"s":"carrot","n":"당근","v":"ok","m":"익혀서 소량 — 저칼로리"},{"s":"cucumber","n":"오이","v":"ok","m":"수분 많은 저칼로리 간식"},{"s":"zucchini","n":"애호박","v":"ok","m":"익혀 주면 소화 잘 되는 채소"},{"s":"peas","n":"완두콩","v":"ok","m":"시판 사료에도 쓰이는 안전한 재료"},{"s":"broccoli","n":"브로콜리","v":"ok","m":"데쳐서 소량 가능"},{"s":"blueberry","n":"블루베리","v":"ok","m":"안전한 과일 — 몇 알만"},{"s":"watermelon","n":"수박","v":"ok","m":"씨·껍질 제거한 과육 소량"},{"s":"melon","n":"멜론·참외","v":"ok","m":"씨·껍질 제거 후 소량 가능"},{"s":"apple","n":"사과","v":"ok","m":"씨·심 제거 후 과육 소량"},{"s":"banana","n":"바나나","v":"ok","m":"소량 가능 — 당분 때문에 아주 조금만"},{"s":"strawberry","n":"딸기","v":"ok","m":"꼭지 떼고 소량 가능"},{"s":"rice","n":"쌀밥","v":"ok","m":"간 안 된 흰쌀밥 소량 가능"},{"s":"oatmeal","n":"오트밀","v":"ok","m":"물로 익힌 무가당만 소량"}]};
+var W={"ok":{"word":"가능","cls":"ok","label":"먹어도 되는 편"},"caution":{"word":"주의","cls":"caution","label":"조건부·소량만"},"danger":{"word":"금지","cls":"danger","label":"먹이면 안 됨"}};
+var REL='../';
+var sp='dog', vd='all';
+function render(){
+  var q=(pcQ('q').value||'').trim();
+  var list=D[sp].filter(function(i){
+    if(vd!=='all'&&i.v!==vd) return false;
+    if(q&&i.n.indexOf(q)<0&&i.s.indexOf(q.toLowerCase())<0) return false;
+    return true;
+  });
+  var order={danger:0,caution:1,ok:2};
+  list.sort(function(a,b){return order[a.v]-order[b.v]||a.n.localeCompare(b.n,'ko');});
+  pcQ('cnt').textContent='· '+list.length+'개';
+  if(!list.length){ pcQ('out').innerHTML='<p class="src">검색 결과가 없습니다. 다른 이름으로 찾아보거나, 확실하지 않은 음식은 주지 말고 수의사에게 문의하세요.</p>'; return; }
+  pcQ('out').innerHTML=list.map(function(i){
+    return '<a class="rel" style="margin-bottom:8px" href="'+REL+sp+'/can-eat/'+i.s+'/index.html">'+
+      '<span class="badge '+W[i.v].cls+'">'+W[i.v].word+'</span>'+
+      '<span><b>'+i.n+'</b><br><span style="font-size:12.5px;color:var(--muted2)">'+i.m+'</span></span></a>';
+  }).join('');
+}
+pcSeg('sp',function(v){sp=v;render();});
+pcSeg('vd',function(v){vd=v;render();});
+pcQ('q').addEventListener('input',render);
+render();
+if(window.pcShowAd) window.pcShowAd();
+})();
+</script>
+
+</body>
+</html>

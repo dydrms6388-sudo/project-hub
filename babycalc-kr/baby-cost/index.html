@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>육아 비용 계산기 — 월 지출과 부모급여·아동수당 차감 | BabyCalc</title>
+<meta name="description" content="분유·기저귀·의류 등 월 지출을 입력하고 아기 월령을 넣으면 부모급여·아동수당 등 정부 지원금을 뺀 실제 부담액을 계산합니다. 지원금 금액은 연도별로 달라지므로 복지로에서 확인이 필요합니다.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/baby-cost/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="육아 비용 계산기 — 지원금 빼면 얼마?">
+<meta property="og:description" content="월 지출 입력 → 부모급여·아동수당 차감 후 실부담액 계산.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/baby-cost/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"육아 비용 계산기","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"분유·기저귀·의류 등 월 지출을 입력하고 아기 월령을 넣으면 부모급여·아동수당 등 정부 지원금을 뺀 실제 부담액을 계산합니다. 지원금 금액은 연도별로 달라지므로 복지로에서 확인이 필요합니다.","url":"https://babycalc-kr.vercel.app/baby-cost/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"부모급여와 아동수당을 함께 받을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"두 제도는 별개로 운영되어 중복 수급이 가능하다고 안내됩니다. 다만 요건과 금액은 연도별로 달라질 수 있으니 복지로에서 확인하세요."}},{"@type":"Question","name":"어린이집에 다니면 부모급여는 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"어린이집을 이용하면 보육료 바우처로 지원되고, 부모급여에서 그만큼 차감되는 방식으로 안내됩니다. 실제 수령액은 이용 여부에 따라 달라집니다."}},{"@type":"Question","name":"금액이 실제와 다른데요?","acceptedAnswer":{"@type":"Answer","text":"이 계산기의 지원금은 2025년 기준으로 확인된 값이며 이후 개정을 반영하지 못했을 수 있습니다. 신청 전 반드시 복지로나 주민센터에서 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"육아 비용","item":"https://babycalc-kr.vercel.app/baby-cost/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">육아 비용</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">💰</div>
+    <h1>육아 비용 계산기</h1>
+    <p class="lead">한 달에 얼마나 들까요? 지출을 적어 보고 지원금을 뺀 실제 부담액을 확인해 보세요.</p>
+  </div>
+  <p class="med-notice">⚠ 지원금 금액·지급 요건은 <strong>매년 달라질 수 있습니다</strong>. 신청 전 <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener">복지로</a>에서 반드시 확인하세요. 이 페이지는 참고용이며 금융·행정 자문이 아닙니다.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>아기 정보</h2>
+    <div class="field">
+      <label for="month">아기 월령 (개월)</label>
+      <input type="number" id="month" min="0" max="95" step="1" required placeholder="예: 8">
+      <p class="hint">지원금 해당 여부를 판단하는 데만 사용합니다.</p>
+    </div>
+    <h2 style="margin-top:16px">월 지출 항목 (원)</h2>
+    <div class="row2">
+      <div class="field"><label for="c-formula">분유·수유용품</label><input type="number" class="cost" id="c-formula" data-id="formula" data-name="분유·수유용품" min="0" step="1000" placeholder="0"><p class="hint">분유 월 2~4캔 등</p></div>
+      <div class="field"><label for="c-diaper">기저귀·물티슈</label><input type="number" class="cost" id="c-diaper" data-id="diaper" data-name="기저귀·물티슈" min="0" step="1000" placeholder="0"></div>
+      <div class="field"><label for="c-weaning">이유식 재료·용품</label><input type="number" class="cost" id="c-weaning" data-id="weaning" data-name="이유식 재료·용품" min="0" step="1000" placeholder="0"></div>
+      <div class="field"><label for="c-clothes">의류·잡화</label><input type="number" class="cost" id="c-clothes" data-id="clothes" data-name="의류·잡화" min="0" step="1000" placeholder="0"><p class="hint">계절별 편차 큼</p></div>
+      <div class="field"><label for="c-medical">병원·약·영양제</label><input type="number" class="cost" id="c-medical" data-id="medical" data-name="병원·약·영양제" min="0" step="1000" placeholder="0"></div>
+      <div class="field"><label for="c-toys">장난감·도서</label><input type="number" class="cost" id="c-toys" data-id="toys" data-name="장난감·도서" min="0" step="1000" placeholder="0"></div>
+      <div class="field"><label for="c-care">돌봄·기관 비용</label><input type="number" class="cost" id="c-care" data-id="care" data-name="돌봄·기관 비용" min="0" step="1000" placeholder="0"><p class="hint">어린이집 특별활동비 등</p></div>
+      <div class="field"><label for="c-insurance">태아·어린이보험</label><input type="number" class="cost" id="c-insurance" data-id="insurance" data-name="태아·어린이보험" min="0" step="1000" placeholder="0"></div>
+      <div class="field"><label for="c-etc">기타</label><input type="number" class="cost" id="c-etc" data-id="etc" data-name="기타" min="0" step="1000" placeholder="0"><p class="hint">사진·외출 등</p></div>
+    </div>
+    <button class="btn" type="submit">계산하기</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>계산 결과</h2>
+    <p class="res-big" id="netBig">—</p>
+    <p class="res-sub" id="netSub">지원금을 뺀 월 실부담액</p>
+    <div class="kv"><span class="k">월 지출 합계</span><span class="v" id="kOut">—</span></div>
+    <div class="kv"><span class="k">월 지원금 합계</span><span class="v" id="kIn">—</span></div>
+    <div class="kv"><span class="k">연간 환산 실부담</span><span class="v" id="kYear">—</span></div>
+    <div id="breakdown"></div>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" id="csvBtn">내역 CSV 내보내기</button>
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+      <button class="btn sm danger" type="button" id="clearBtn">입력 전체 삭제</button>
+    </div>
+    <p class="local-note">✅ 입력한 금액은 이 브라우저(localStorage)에만 저장됩니다. <strong>서버 저장 없음.</strong></p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>어떻게 계산하나요?</h2>
+    <p>입력한 <strong>월 지출 합계</strong>에서, 아기 월령에 해당하는 <strong>월 지원금</strong>(부모급여·아동수당)을 빼서 실부담액을 계산합니다. 첫만남이용권처럼 일시금으로 받는 항목은 월 계산에 넣지 않고 따로 표시합니다.</p><p>지원금 금액은 <span class="badge todo">확인 필요</span> 상태입니다 — 2025년 기준으로 확인된 값이며 이후 개정 여부를 대조하지 못했습니다. 실제 수령액은 어린이집·유치원 이용 여부(보육료 바우처 차감)에 따라서도 달라집니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>아기 월령을 입력합니다(지원금 해당 여부 판단용).</li><li>한 달 지출을 항목별로 적습니다. 모르는 항목은 비워 두어도 됩니다.</li><li>지원금을 뺀 실부담액과 연간 환산액을 확인하고, 내역은 CSV로 내보낼 수 있습니다.</li></ol>
+
+    <h2>정부 지원금 (참고)</h2>
+    <div class="tbl-scroll"><table class="tbl"><thead><tr><th>지원</th><th>금액</th><th>내용</th><th>근거</th></tr></thead><tbody>
+        <tr><td>부모급여 (0~11개월)</td><td>1,000,000원 / 월</td><td>2025년 기준 월 100만원(0세). 어린이집 이용 시 보육료 바우처로 차감 지급.</td><td><span class="badge todo">2026년 금액 확인 필요</span></td></tr>
+        <tr><td>부모급여 (12~23개월)</td><td>500,000원 / 월</td><td>2025년 기준 월 50만원(1세).</td><td><span class="badge todo">2026년 금액 확인 필요</span></td></tr>
+        <tr><td>아동수당 (만 8세 미만)</td><td>100,000원 / 월</td><td>월 10만원. 부모급여와 중복 수급 가능.</td><td><span class="badge todo">2026년 지급 연령·금액 확인 필요</span></td></tr>
+        <tr><td>첫만남이용권 (일시금)</td><td>2,000,000원 (일시금)</td><td>첫째 200만원, 둘째 이상 300만원 바우처(2025년 기준).</td><td><span class="badge todo">2026년 금액 확인 필요</span></td></tr>
+      </tbody></table></div><p>이 밖에도 지자체별 출산·양육 지원금, 아이돌봄서비스, 전기요금 할인 등 별도 제도가 있습니다. 거주 지역 기준은 관할 주민센터나 복지로에서 확인하세요.</p><h2>지출을 줄이는 현실적인 방법</h2><ul><li>기저귀·분유는 사용량이 안정된 뒤에 대용량으로 사는 편이 낭비가 적습니다.</li><li>옷·장난감은 성장 속도가 빨라 대여·중고 활용 여지가 큽니다.</li><li>예방접종은 국가예방접종 지원 대상이면 지정 의료기관에서 무료입니다.</li><li>영유아 건강검진은 시기별 무료이며, 놓치면 자비 부담이 될 수 있습니다.</li></ul>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 부모급여와 아동수당을 함께 받을 수 있나요?</p><p class="a">두 제도는 별개로 운영되어 중복 수급이 가능하다고 안내됩니다. 다만 요건과 금액은 연도별로 달라질 수 있으니 복지로에서 확인하세요.</p></div>
+      <div class="qa"><p class="q">Q. 어린이집에 다니면 부모급여는 어떻게 되나요?</p><p class="a">어린이집을 이용하면 보육료 바우처로 지원되고, 부모급여에서 그만큼 차감되는 방식으로 안내됩니다. 실제 수령액은 이용 여부에 따라 달라집니다.</p></div>
+      <div class="qa"><p class="q">Q. 금액이 실제와 다른데요?</p><p class="a">이 계산기의 지원금은 2025년 기준으로 확인된 값이며 이후 개정을 반영하지 못했을 수 있습니다. 신청 전 반드시 복지로나 주민센터에서 확인하세요.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 복지로(보건복지부) — 부모급여·아동수당·첫만남이용권 — <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener">bokjiro.go.kr</a> (확인일 2026-08-19). 금액은 2025년 기준 확인값이며 <strong>이후 연도 개정 여부는 확인 필요</strong>합니다. 월 지출 프리셋은 통계값이 아니라 입력 편의를 위한 항목 목록입니다.</div>
+
+    <p class="disclaimer">비용·지원금 계산은 참고용이며 금융·행정 자문이 아닙니다. 지원금 수급 자격과 금액은 반드시 복지로 및 관할 기관에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../daycare-dday/"><span class="ic">🏫</span>어린이집 입소 D-day</a>
+      <a class="rel" href="../diaper-size/"><span class="ic">🧷</span>기저귀 사이즈 찾기</a>
+      <a class="rel" href="../formula-amount/"><span class="ic">🍼</span>분유 수유량 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/due-date-calc/"><span class="ic">🍅</span>출산 예정일 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { SUPPORTS } from '../data/cost.mjs';
+const $ = (s) => document.querySelector(s);
+const KEY = 'bc-cost';
+const won = (n) => n.toLocaleString('ko-KR') + '원';
+
+function monthlySupports(m) {
+  const out = [];
+  SUPPORTS.forEach((s) => {
+    if (s.id === 'parent-benefit-0' && m <= 11) out.push(s);
+    else if (s.id === 'parent-benefit-1' && m >= 12 && m <= 23) out.push(s);
+    else if (s.id === 'child-allowance' && m < 96) out.push(s);
+  });
+  return out;
+}
+
+function calc(month, vals) {
+  let out = 0;
+  const rows = [];
+  document.querySelectorAll('.cost').forEach((el) => {
+    const v = parseInt(el.value, 10) || 0;
+    if (v > 0) rows.push({ name: el.dataset.name, v });
+    out += v;
+  });
+  const sup = monthlySupports(month);
+  const inSum = sup.reduce((s, x) => s + (x.monthly || 0), 0);
+  const net = out - inSum;
+  $('#netBig').textContent = (net >= 0 ? '' : '+') + won(Math.abs(net)) + (net >= 0 ? '' : ' 여유');
+  $('#netSub').textContent = '생후 ' + month + '개월 기준 · 월 지출에서 월 지원금을 뺀 값';
+  $('#kOut').textContent = won(out);
+  $('#kIn').textContent = won(inSum);
+  $('#kYear').textContent = won(net * 12);
+  const once = SUPPORTS.find((s) => s.once);
+  $('#breakdown').innerHTML =
+    '<h2 style="font-size:15px;margin-top:16px">적용된 지원금</h2>' +
+    (sup.length
+      ? '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>지원</th><th>월 금액</th><th>근거</th></tr></thead><tbody>' +
+        sup.map((s) => '<tr><td>' + s.name + '</td><td>' + won(s.monthly) + '</td><td><span class="badge todo">확인 필요</span></td></tr>').join('') +
+        '</tbody></table></div>'
+      : '<p class="res-sub">해당하는 월 지원금이 없습니다.</p>') +
+    (once ? '<p class="res-sub">※ ' + once.name + '은 일시금이라 월 계산에 포함하지 않았습니다 (' + once.note + ').</p>' : '') +
+    (rows.length
+      ? '<h2 style="font-size:15px;margin-top:16px">지출 내역</h2><div class="tbl-scroll"><table class="tbl"><thead><tr><th>항목</th><th>금액</th><th>비중</th></tr></thead><tbody>' +
+        rows.map((r) => '<tr><td>' + r.name + '</td><td>' + won(r.v) + '</td><td>' + (out ? Math.round(r.v / out * 100) : 0) + '%</td></tr>').join('') +
+        '</tbody></table></div>'
+      : '');
+  bcShowResult('result');
+}
+
+function readVals() {
+  const v = { month: parseInt($('#month').value, 10) || 0, items: {} };
+  document.querySelectorAll('.cost').forEach((el) => { v.items[el.dataset.id] = parseInt(el.value, 10) || 0; });
+  return v;
+}
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const m = parseInt($('#month').value, 10);
+  if (isNaN(m)) return;
+  bcStore.set(KEY, readVals());
+  calc(m);
+});
+$('#csvBtn').addEventListener('click', () => {
+  const lines = ['구분,항목,금액'];
+  document.querySelectorAll('.cost').forEach((el) => {
+    const v = parseInt(el.value, 10) || 0;
+    if (v > 0) lines.push(['지출', el.dataset.name, v].map(bcCsvCell).join(','));
+  });
+  monthlySupports(parseInt($('#month').value, 10) || 0).forEach((s) => lines.push(['지원금', s.name, s.monthly].map(bcCsvCell).join(',')));
+  bcDownload('baby-cost.csv', '\ufeff' + lines.join('\n'), 'text/csv');
+});
+$('#clearBtn').addEventListener('click', () => {
+  if (confirm('입력한 금액을 모두 삭제할까요? (이 브라우저에서만 삭제됩니다)')) {
+    bcStore.del(KEY);
+    document.querySelectorAll('.cost').forEach((el) => { el.value = ''; });
+  }
+});
+
+const saved = bcStore.get(KEY, null);
+if (saved) {
+  if (saved.month) $('#month').value = saved.month;
+  Object.keys(saved.items || {}).forEach((k) => {
+    const el = document.querySelector('.cost[data-id="' + k + '"]');
+    if (el && saved.items[k]) el.value = saved.items[k];
+  });
+  if (saved.month) calc(saved.month);
+}
+</script>
+</body>
+</html>

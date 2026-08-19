@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>전기요금 계산기 — 누진세 구간·항목별 산출 과정 전부 표시</title>
+<meta name="description" content="월 사용량 kWh만 입력하면 주택용 전기요금을 기본요금·전력량요금(누진 3단계)·기후환경요금·연료비조정요금·부가세·전력기금까지 항목별로 계산합니다. 하계(7~8월) 누진 완화 구간 자동 적용." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/electric-bill/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="전기요금 계산기 — 누진세 항목별 산출" />
+<meta property="og:description" content="월 사용량 kWh만 입력하면 주택용 전기요금을 기본요금·전력량요금(누진 3단계)·기후환경요금·연료비조정요금·부가세·전력기금까지 항목별로 계산합니다. 하계(7~8월) 누진 완화 구간 자동 적용." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/electric-bill/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"전기요금 계산기","description":"월 사용량 kWh만 입력하면 주택용 전기요금을 기본요금·전력량요금(누진 3단계)·기후환경요금·연료비조정요금·부가세·전력기금까지 항목별로 계산합니다. 하계(7~8월) 누진 완화 구간 자동 적용.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/electric-bill/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"누진 구간을 조금 넘으면 요금이 확 뛰나요?","acceptedAnswer":{"@type":"Answer","text":"초과분에만 높은 단가가 적용되지만, 구간이 올라가면 기본요금 자체도 함께 뛰기 때문에(예: 저압 1,600원 → 7,300원) 경계 근처에서는 몇 kWh 차이로 수천 원이 달라질 수 있습니다."}},{"@type":"Question","name":"검침일이 달라도 계산이 맞나요?","acceptedAnswer":{"@type":"Answer","text":"검침 주기가 월과 어긋나면 하계·기타계절 요금이 날짜 비례로 혼합 적용됩니다. 이 계산기는 한 계절 기준의 근사치이므로 계절이 바뀌는 달에는 실제와 차이가 있을 수 있습니다."}},{"@type":"Question","name":"연료비조정요금은 왜 직접 수정할 수 있게 했나요?","acceptedAnswer":{"@type":"Answer","text":"분기마다 ±5원/kWh 한도에서 조정되는 항목이라서입니다. 고지서에 표기된 값이 다르면 고급 설정에서 바꿔 계산하세요."}},{"@type":"Question","name":"1,000kWh 넘게 쓰면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"하계(7~8월)·동계(12~2월)에는 1,000kWh 초과분에 슈퍼유저 요금(저압 736.2원/kWh)이 적용됩니다. 이 계산기도 자동 반영합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"전기요금 계산기","item":"https://billcalc-kr.vercel.app/electric-bill/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <span>전기요금 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">⚡</div>
+    <h1>전기요금 계산기</h1>
+    <p class="lead">월 사용량(kWh)만 넣으면 누진 3단계·하계 완화 구간·부가세·전력기금까지 <strong>산출 과정을 전부</strong> 보여드립니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>사용량 입력</h2>
+    <div class="grid2">
+      <label class="f">월 사용량 <span class="u">(kWh)</span>
+        <input type="number" id="kwh" inputmode="decimal" min="0" step="1" value="350" />
+      </label>
+      <label class="f">계산 월 <span class="u">(하계 7~8월 자동 반영)</span>
+        <select id="month"></select>
+      </label>
+    </div>
+    <div style="margin-top:12px">
+      <span class="f" style="display:block">계약 종류</span>
+      <div class="seg" id="voltSeg" role="group" aria-label="계약 종류">
+        <button type="button" data-v="low" aria-pressed="true">저압 (대부분 가정)</button>
+        <button type="button" data-v="high" aria-pressed="false">고압 (아파트 일괄계약)</button>
+      </div>
+    </div>
+    <details class="adv">
+      <summary>고급 설정 — 연료비조정·기금 요율 직접 수정</summary>
+      <div class="grid2">
+        <label class="f">연료비조정요금 <span class="u">(원/kWh, 한도 ±5)</span>
+          <input type="number" id="fuelAdj" step="0.1" value="5" />
+        </label>
+        <label class="f">전력산업기반기금 <span class="u">(%, 2025.7부터 2.7)</span>
+          <input type="number" id="fundRate" step="0.1" value="2.7" />
+        </label>
+      </div>
+    </details>
+    <button class="btn" id="calcBtn">전기요금 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">예상 청구금액 <span class="num" id="totalOut"></span></p>
+      <p class="note" id="tierOut"></p>
+      <div id="tableOut"></div>
+      <p class="note">※ 복지할인·필수공제 등 개별 할인 미반영. 검침일에 따라 두 계절 요금이 일할 혼합될 수 있어 실제 고지서와 다를 수 있습니다.</p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>이 계산기는 무엇을 하나요?</h2>
+    <p>주택용 전기요금은 단순히 "사용량 × 단가"가 아닙니다. 누진 3단계 전력량요금에 구간별 기본요금, 기후환경요금, 연료비조정요금이 더해지고, 그 합계에 부가가치세 10%와 전력산업기반기금이 붙어 최종 청구금액이 됩니다. 이 계산기는 그 과정을 항목별로 전부 펼쳐 보여주기 때문에, 고지서의 어떤 항목이 왜 그 금액인지 그대로 대조할 수 있습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>고지서 또는 한전 앱에서 이번 달 사용량(kWh)을 확인해 입력합니다.</li>
+      <li>계산 월을 고릅니다 — 7·8월은 하계 완화 구간(300/450kWh)이 자동 적용됩니다.</li>
+      <li>저압/고압을 선택합니다. 아파트 관리비에 전기요금이 포함돼 나오면 대부분 고압(단지 일괄계약)입니다.</li>
+      <li>결과에서 항목별 산출 과정과 예상 청구금액을 확인합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 누진 구간을 조금 넘으면 요금이 확 뛰나요?</p><p class="a">초과분에만 높은 단가가 적용되지만, 구간이 올라가면 기본요금 자체도 함께 뛰기 때문에(예: 저압 1,600원 → 7,300원) 경계 근처에서는 몇 kWh 차이로 수천 원이 달라질 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 검침일이 달라도 계산이 맞나요?</p><p class="a">검침 주기가 월과 어긋나면 하계·기타계절 요금이 날짜 비례로 혼합 적용됩니다. 이 계산기는 한 계절 기준의 근사치이므로 계절이 바뀌는 달에는 실제와 차이가 있을 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 연료비조정요금은 왜 직접 수정할 수 있게 했나요?</p><p class="a">분기마다 ±5원/kWh 한도에서 조정되는 항목이라서입니다. 고지서에 표기된 값이 다르면 고급 설정에서 바꿔 계산하세요.</p></div>
+    <div class="qa"><p class="q">Q. 1,000kWh 넘게 쓰면 어떻게 되나요?</p><p class="a">하계(7~8월)·동계(12~2월)에는 1,000kWh 초과분에 슈퍼유저 요금(저압 736.2원/kWh)이 적용됩니다. 이 계산기도 자동 반영합니다.</p></div>
+    <h2>요금표 기준일과 출처</h2>
+    <p class="note">전기요금 단가는 <strong>2023년 5월 16일 개정 기준</strong>의 주택용 전력 요금표를 사용합니다(데이터 확인일 2026-08-19).
+    연료비조정요금은 분기마다, 전력산업기반기금 요율은 제도 개정에 따라 바뀌므로
+    최신 단가는 <a href="https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp" target="_blank" rel="noopener">한국전력 사이버지점 요금표</a>에서 확인하고,
+    고지서 값과 다르면 각 계산기의 <strong>고급 설정</strong>에서 직접 수정해 계산하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../ac-cost/"><span class="e">❄️</span> 에어컨 전기요금 계산기</a>
+      <a class="rel" href="../save-simulator/"><span class="e">📉</span> 전기요금 절약 시뮬레이터</a>
+      <a class="rel" href="../bill-reader/"><span class="e">📄</span> 고지서 보는 법·검산</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { calcBill } from "../lib/elec.mjs";
+import { won, num, showAd, initTheme, segInit, billTableHtml, tariffSourceHtml } from "../assets/app.mjs";
+const $ = (id) => document.getElementById(id);
+const monthSel = $("month");
+const nowM = new Date().getMonth() + 1;
+for (let m = 1; m <= 12; m++) { const o = document.createElement("option"); o.value = m; o.textContent = m + "월" + (m === 7 || m === 8 ? " (하계)" : ""); if (m === nowM) o.selected = true; monthSel.appendChild(o); }
+let voltage = "low";
+segInit($("voltSeg"), (v) => { voltage = v; });
+$("calcBtn").addEventListener("click", () => {
+  const r = calcBill(num($("kwh")), { month: +monthSel.value, voltage, fuelAdj: num($("fuelAdj"), 5), fundRate: num($("fundRate"), 2.7) / 100 });
+  $("totalOut").textContent = won(r.total);
+  $("tierOut").textContent = (r.isSummer ? "하계(7~8월) 완화 구간" : "기타계절 구간") + " 적용 · 누진 " + r.tier + "단계 (경계 " + r.brackets[0] + "/" + r.brackets[1] + "kWh) · " + r.voltageLabel;
+  $("tableOut").innerHTML = billTableHtml(r);
+  $("srcOut").innerHTML = tariffSourceHtml();
+  $("resultBox").hidden = false;
+  showAd();
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

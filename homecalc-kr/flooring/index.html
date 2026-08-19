@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>장판·마루 자재 계산기 — 바닥 면적별 박스 수 | 홈캘크</title>
+<meta name="description" content="바닥 면적(㎡ 또는 평)과 제품 박스당 시공 면적을 넣으면 필요한 마루 박스 수를 계산합니다. 일자 시공 5%·헤링본 12% 등 로스율 조정 가능. 장판(롤 재단)은 필요 ㎡로 표시." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/flooring/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪵</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="장판·마루 박스 수 계산기" />
+<meta property="og:description" content="바닥 면적(㎡ 또는 평)과 제품 박스당 시공 면적을 넣으면 필요한 마루 박스 수를 계산합니다. 일자 시공 5%·헤링본 12% 등 로스율 조정 가능. 장판(롤 재단)은 필요 ㎡로 표시." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/flooring/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"장판·마루 계산기","url":"https://homecalc-kr.vercel.app/flooring/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"바닥 면적(㎡ 또는 평)과 제품 박스당 시공 면적을 넣으면 필요한 마루 박스 수를 계산합니다. 일자 시공 5%·헤링본 12% 등 로스율 조정 가능. 장판(롤 재단)은 필요 ㎡로 표시."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"박스당 시공 면적은 어디서 확인하나요?","acceptedAnswer":{"@type":"Answer","text":"제품 상세페이지나 박스 옆면에 '시공면적 ○㎡' 형태로 표기됩니다. 강마루는 대개 1.5㎡ 안팎이지만 제품마다 다릅니다."}},{"@type":"Question","name":"로스율은 얼마로 잡아야 하나요?","acceptedAnswer":{"@type":"Answer","text":"일자 시공은 5% 내외, 헤링본·대각선 등 패턴 시공은 10~15%를 잡는 것이 일반적인 관행입니다. 방이 좁고 굴곡이 많을수록 크게 잡습니다."}},{"@type":"Question","name":"기존 바닥 철거 비용도 나오나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 도구는 자재량만 계산합니다. 철거·평탄화 작업 비용은 시공사 견적을 받아야 합니다."}},{"@type":"Question","name":"면적을 평으로 넣으면 어떻게 환산되나요?","acceptedAnswer":{"@type":"Answer","text":"1평 = 3.305785㎡로 환산한 뒤 계산합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"장판·마루 계산기","item":"https://homecalc-kr.vercel.app/flooring/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">장판·마루 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🪵</div>
+    <h1>장판·마루 계산기</h1>
+    <p class="lead">바닥 면적에 시공 로스율을 더해 <strong>필요한 마루 박스 수</strong>를 계산합니다. 장판은 재단 기준 ㎡로 안내합니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>바닥 면적 입력</h2>
+    <div class="grid2">
+      <label class="f">면적
+        <input type="number" id="area" inputmode="decimal" step="any" min="0" value="59" />
+      </label>
+      <label class="f">면적 단위
+        <select id="unit"><option value="m2">㎡ (제곱미터)</option><option value="py">평</option></select>
+      </label>
+      <label class="f">제품 종류
+        <select id="prod"></select>
+      </label>
+      <label class="f">박스당 시공 면적 (㎡) <span class="hint" id="boxHint"></span>
+        <input type="number" id="box" inputmode="decimal" step="any" min="0" />
+      </label>
+      <label class="f">시공 로스율 <span class="hint">— 조정 가능</span>
+        <select id="loss">
+          <option value="0.05">일자 시공 +5% (관행)</option>
+          <option value="0.12">헤링본·패턴 +12% (관행)</option>
+          <option value="0.08">복잡한 구조 +8%</option>
+          <option value="0.15">대각선·큰 패턴 +15%</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">필요 자재량 계산</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>마루는 박스 단위로 판매되고 박스마다 시공 면적(㎡)이 다릅니다. 여기에 재단·파손 로스를 더해야 실제 구매량이 나옵니다. 이 계산기는 면적을 평/㎡ 어느 쪽으로 넣어도 되고, 제품 상세에 적힌 박스당 시공 면적을 직접 입력해 정확도를 높일 수 있습니다.</p>
+    <p>장판(모노륨)처럼 폭 1.8m 롤로 재단하는 제품은 박스 개념이 없어 필요 ㎡와 재단 길이 감만 안내합니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>바닥 면적을 ㎡ 또는 평으로 입력합니다. (전용면적 중 실제 시공할 방/거실 면적)</li>
+      <li>제품 종류를 고르면 박스당 시공 면적이 자동으로 채워집니다. 구매 제품 값으로 수정하세요.</li>
+      <li>시공 방식에 맞는 로스율을 고르고 계산합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 박스당 시공 면적은 어디서 확인하나요?</p><p class="a">제품 상세페이지나 박스 옆면에 '시공면적 ○㎡' 형태로 표기됩니다. 강마루는 대개 1.5㎡ 안팎이지만 제품마다 다릅니다.</p></div>
+    <div class="qa"><p class="q">Q. 로스율은 얼마로 잡아야 하나요?</p><p class="a">일자 시공은 5% 내외, 헤링본·대각선 등 패턴 시공은 10~15%를 잡는 것이 일반적인 관행입니다. 방이 좁고 굴곡이 많을수록 크게 잡습니다.</p></div>
+    <div class="qa"><p class="q">Q. 기존 바닥 철거 비용도 나오나요?</p><p class="a">아니요. 이 도구는 자재량만 계산합니다. 철거·평탄화 작업 비용은 시공사 견적을 받아야 합니다.</p></div>
+    <div class="qa"><p class="q">Q. 면적을 평으로 넣으면 어떻게 환산되나요?</p><p class="a">1평 = 3.305785㎡로 환산한 뒤 계산합니다.</p></div>
+<p class="note">이 계산은 <strong>업계 일반 관행값</strong>을 사용한 <strong>참고용</strong> 결과입니다. 제품 라벨·시방서 표기가 있으면 그 값을 직접 입력하세요. 실제 시공 전에는 시공사 실측 견적이 우선합니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../wallpaper/"><span class="ic">🧻</span>도배 자재 계산기</a>
+      <a class="rel" href="../tile/"><span class="ic">🧱</span>타일 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong/" rel="noopener"><span class="ic">📐</span>평수 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-isagak/" rel="noopener"><span class="ic">📦</span>이사각 — 이사 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { flooringCalc, pyeongToM2 } from "../lib/calc.mjs";
+const PRODUCTS = [{"id":"gangmaru","name":"강마루/강화마루 (1박스 ≈ 1.5㎡)","boxCoverageM2":1.5},{"id":"wonmaru","name":"원목/온돌마루 (1박스 ≈ 1.0㎡)","boxCoverageM2":1},{"id":"jangpan-roll","name":"장판(모노륨) 폭 1.8m 롤 — ㎡ 단위 재단","boxCoverageM2":null}];
+const $ = (id) => document.getElementById(id);
+const sel = $("prod");
+PRODUCTS.forEach((p, i) => { const o = document.createElement("option"); o.value = i; o.textContent = p.name; sel.appendChild(o); });
+function syncBox() {
+  const p = PRODUCTS[+sel.value];
+  if (p.boxCoverageM2 == null) {
+    $("box").value = ""; $("box").disabled = true;
+    $("boxHint").textContent = "— 롤 재단 제품(박스 없음)";
+  } else {
+    $("box").disabled = false; $("box").value = p.boxCoverageM2;
+    $("boxHint").textContent = "— 제품 표기값으로 수정";
+  }
+}
+sel.addEventListener("change", syncBox);
+syncBox();
+$("calcBtn").addEventListener("click", () => {
+  const v = parseFloat($("area").value);
+  if (!isFinite(v) || v <= 0) { hcToast("면적을 입력하세요"); return; }
+  const areaM2 = $("unit").value === "py" ? pyeongToM2(v) : v;
+  const lossRate = parseFloat($("loss").value);
+  const p = PRODUCTS[+sel.value];
+  const boxCoverageM2 = p.boxCoverageM2 == null ? 0 : parseFloat($("box").value);
+  const r = flooringCalc({ areaM2, boxCoverageM2, lossRate });
+  $("resultBox").hidden = false;
+  if (p.boxCoverageM2 == null) {
+    $("resMain").innerHTML = "필요 자재 <span>" + hcFmt(r.needArea, 2) + "㎡</span> <small>(폭 1.8m 롤 기준 약 " + hcFmt(r.needArea / 1.8, 1) + "m 길이)</small>";
+    $("resSub").textContent = "바닥 " + hcFmt(areaM2, 2) + "㎡ + 로스 " + Math.round(lossRate * 100) + "% — 장판은 방 폭에 맞춰 재단하므로 실측 후 여유 길이를 더해 주문하세요.";
+    $("resFormula").textContent = "필요 면적 = " + hcFmt(areaM2, 2) + "㎡ × " + (1 + lossRate).toFixed(2);
+  } else {
+    if (!isFinite(boxCoverageM2) || boxCoverageM2 <= 0) { hcToast("박스당 시공 면적을 입력하세요"); return; }
+    $("resMain").innerHTML = "약 <span>" + r.boxes + "박스</span> <small>(" + p.name + ")</small>";
+    $("resSub").textContent = "바닥 " + hcFmt(areaM2, 2) + "㎡ → 로스 " + Math.round(lossRate * 100) + "% 포함 " + hcFmt(r.needArea, 2) + "㎡ ÷ 박스당 " + boxCoverageM2 + "㎡ (총 시공 가능 " + hcFmt(r.boxes * boxCoverageM2, 2) + "㎡)";
+    $("resFormula").textContent = "박스 수 = 올림( " + hcFmt(areaM2, 2) + "㎡ × " + (1 + lossRate).toFixed(2) + " ÷ " + boxCoverageM2 + "㎡ )";
+  }
+  $("srcLine").innerHTML = "박스 규격·로스율: 업계 일반 관행(참고용, 제품 표기 우선) · 확인일 2026-08-19 <span class=\"badge todo\">확인 필요</span>";
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>

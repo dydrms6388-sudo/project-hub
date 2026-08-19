@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>기저귀 사이즈 계산기 — 체중으로 보는 사이즈 구간과 교체 신호 | BabyCalc</title>
+<meta name="description" content="아기 체중을 입력하면 해당하는 기저귀 사이즈 구간(NB·S·M·L·XL)을 알려 드립니다. 브랜드마다 실제 구간이 다르므로 공식 사이즈표 확인이 필요하며, 사이즈를 올려야 하는 신호도 함께 정리했습니다.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/diaper-size/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="기저귀 사이즈 계산기 — 몇 단계 써야 할까">
+<meta property="og:description" content="체중으로 보는 기저귀 사이즈 구간과 교체 신호 정리.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/diaper-size/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"기저귀 사이즈 계산기","applicationCategory":"LifestyleApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"아기 체중을 입력하면 해당하는 기저귀 사이즈 구간(NB·S·M·L·XL)을 알려 드립니다. 브랜드마다 실제 구간이 다르므로 공식 사이즈표 확인이 필요하며, 사이즈를 올려야 하는 신호도 함께 정리했습니다.","url":"https://babycalc-kr.vercel.app/diaper-size/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"체중이 두 사이즈에 걸쳐요.","acceptedAnswer":{"@type":"Answer","text":"두 사이즈 모두 사용 가능한 구간입니다. 자국이 남거나 자주 샌다면 큰 쪽을, 헐거워 새는 느낌이면 작은 쪽을 선택하세요. 밤에는 한 단계 큰 사이즈를 쓰는 경우도 많습니다."}},{"@type":"Question","name":"팬티형은 언제부터 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"정해진 시점은 없고, 뒤집기·기기가 활발해져 눕혀 채우기 어려워질 때 넘어가는 경우가 많습니다. 두 형태를 함께 쓰기도 합니다."}},{"@type":"Question","name":"브랜드를 바꾸면 사이즈도 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"네, 같은 표기라도 실제 크기가 다를 수 있습니다. 브랜드를 바꿀 때는 대용량을 사기 전에 소량으로 먼저 시험해 보세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"기저귀 사이즈","item":"https://babycalc-kr.vercel.app/diaper-size/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">기저귀 사이즈</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧷</div>
+    <h1>기저귀 사이즈 계산기</h1>
+    <p class="lead">지금 체중이면 몇 단계일까요? 일반 참고 구간과 사이즈를 올려야 하는 신호를 알려 드려요.</p>
+  </div>
+  <p class="med-notice">⚠ 브랜드·제품별 실제 사이즈 구간은 서로 다릅니다. 구매 전 <strong>제조사 공식 사이즈표</strong>를 반드시 확인하세요. 이 페이지는 참고용입니다.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>아기 체중</h2>
+    <div class="row2">
+      <div class="field">
+        <label for="kg">체중 (kg)</label>
+        <input type="number" id="kg" min="1" max="30" step="0.1" required placeholder="예: 8.5">
+      </div>
+      <div class="field">
+        <label for="type">사용 형태</label>
+        <select id="type">
+          <option value="tape">밴드형(테이프)</option>
+          <option value="pants">팬티형</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" type="submit">사이즈 찾기</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>추천 사이즈</h2>
+    <p class="res-big" id="sizeBig">—</p>
+    <p class="res-sub" id="sizeSub"></p>
+    <div id="sizeList"></div>
+    <p class="res-sub" id="typeNote" style="margin-top:10px"></p>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>사이즈는 어떻게 고르나요?</h2>
+    <p>기저귀 사이즈는 <strong>체중 구간</strong>을 기준으로 나뉩니다. 다만 같은 "M"이라도 브랜드마다 커버하는 체중과 실제 크기가 달라, 아래 표는 <span class="badge todo">확인 필요</span> 상태의 <strong>일반 참고 구간</strong>입니다. 최종 확인은 제조사 공식 사이즈표에서 하세요.</p><p>체중이 두 구간에 걸칠 때는 <strong>허벅지·허리 둘레와 활동량</strong>을 함께 봅니다. 같은 체중이라도 통통한 허벅지라면 큰 사이즈가 새는 일이 적습니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>최근에 잰 체중을 입력합니다.</li><li>해당하는 사이즈 구간이 표시됩니다(겹치는 구간은 모두 표시).</li><li>아래 교체 신호를 보고 지금 사이즈가 맞는지 점검하세요.</li></ol>
+
+    <h2>일반 참고 사이즈 구간</h2>
+    <div class="tbl-scroll"><table class="tbl"><thead><tr><th>사이즈</th><th>참고 체중</th><th>근거</th></tr></thead><tbody>
+        <tr><td><strong>신생아(NB)</strong></td><td>약 4.5kg까지</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td><strong>소형(S)</strong></td><td>약 3~7kg</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td><strong>중형(M)</strong></td><td>약 6~11kg</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td><strong>대형(L)</strong></td><td>약 9~14kg</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td><strong>특대형(XL)</strong></td><td>약 12~17kg</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td><strong>점보(XXL)</strong></td><td>약 15kg 이상</td><td><span class="badge todo">확인 필요</span></td></tr>
+      </tbody></table></div><h2>사이즈를 올릴 때가 됐다는 신호</h2>
+    <ul><li>허벅지·허리에 붉은 자국이 남으면 한 단계 올릴 때가 됐다는 신호.</li><li>체중이 구간에 걸치면 활동량이 많은 아기는 큰 사이즈가 새는 일이 적은 편.</li><li>밤 기저귀는 흡수량 기준으로 한 단계 크게 쓰는 경우가 많다.</li><li>같은 표기 사이즈라도 브랜드마다 실제 크기가 달라 샘플로 먼저 테스트 권장.</li></ul><h2>새는 이유는 사이즈만이 아니에요</h2><ul><li>허리 밴드가 배꼽 아래로 내려가 있으면 위로 올려 채웁니다.</li><li>다리 안쪽 주름(프릴)이 안으로 말려 있으면 밖으로 펴 줍니다.</li><li>테이프를 너무 헐겁게 채우면 옆으로 샙니다.</li><li>흡수량을 넘긴 경우라면 사이즈보다 교체 주기를 줄이는 것이 답입니다.</li></ul>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 체중이 두 사이즈에 걸쳐요.</p><p class="a">두 사이즈 모두 사용 가능한 구간입니다. 자국이 남거나 자주 샌다면 큰 쪽을, 헐거워 새는 느낌이면 작은 쪽을 선택하세요. 밤에는 한 단계 큰 사이즈를 쓰는 경우도 많습니다.</p></div>
+      <div class="qa"><p class="q">Q. 팬티형은 언제부터 쓰나요?</p><p class="a">정해진 시점은 없고, 뒤집기·기기가 활발해져 눕혀 채우기 어려워질 때 넘어가는 경우가 많습니다. 두 형태를 함께 쓰기도 합니다.</p></div>
+      <div class="qa"><p class="q">Q. 브랜드를 바꾸면 사이즈도 바뀌나요?</p><p class="a">네, 같은 표기라도 실제 크기가 다를 수 있습니다. 브랜드를 바꿀 때는 대용량을 사기 전에 소량으로 먼저 시험해 보세요.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 브랜드 공통 관행 기준 일반 참고 구간 (브랜드 공식표 확인 필요) (확인일 2026-08-19). 표의 구간은 브랜드 공통 관행 수준의 일반 참고값으로 <span class="badge todo">확인 필요</span> 상태이며, 브랜드별 공식 사이즈표와는 다를 수 있습니다.</div>
+
+    <p class="disclaimer">기저귀 사이즈 안내는 참고용입니다. 피부 발진·자극이 지속되면 소아과 전문의와 상담하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../growth-percentile/"><span class="ic">📈</span>성장 백분위 계산기</a>
+      <a class="rel" href="../baby-cost/"><span class="ic">💰</span>육아 비용 계산기</a>
+      <a class="rel" href="../months-age/"><span class="ic">📅</span>아기 개월수 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/due-date-calc/"><span class="ic">🍅</span>출산 예정일 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { GENERIC_SIZES } from '../data/diaper.mjs';
+const $ = (s) => document.querySelector(s);
+const KEY = 'bc-diaper-kg';
+
+function calc(kg, type) {
+  const hits = GENERIC_SIZES.filter((s) => kg >= s.min && kg <= s.max);
+  if (!hits.length) {
+    $('#sizeBig').textContent = '해당 구간 없음';
+    $('#sizeSub').textContent = '체중 ' + kg + 'kg — 일반 참고 구간을 벗어났습니다. 제조사 공식 사이즈표를 확인하세요.';
+    $('#sizeList').innerHTML = '';
+  } else {
+    $('#sizeBig').innerHTML = hits.map((h) => h.size).join(' 또는 ') + ' <span class="badge todo">확인 필요</span>';
+    $('#sizeSub').textContent = '체중 ' + kg + 'kg 기준 일반 참고 구간 · 브랜드 공식 사이즈표가 우선입니다.';
+    $('#sizeList').innerHTML = hits.map((h) =>
+      '<div class="kv"><span class="k">' + h.size + '</span><span class="v">' + h.note + '</span></div>').join('');
+  }
+  $('#typeNote').textContent = type === 'pants'
+    ? '팬티형은 같은 표기라도 밴드형보다 작게 느껴지는 경우가 있어, 활동량이 많으면 한 단계 크게 쓰기도 합니다.'
+    : '밴드형은 테이프 위치를 좌우 대칭으로 채우고 다리 주름을 밖으로 펴 주면 새는 것을 크게 줄일 수 있습니다.';
+  bcShowResult('result');
+}
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const kg = parseFloat($('#kg').value);
+  if (!(kg > 0)) return;
+  bcStore.set(KEY, kg);
+  calc(kg, $('#type').value);
+});
+
+const saved = bcStore.get(KEY, null);
+if (saved) { $('#kg').value = saved; calc(saved, $('#type').value); }
+</script>
+</body>
+</html>

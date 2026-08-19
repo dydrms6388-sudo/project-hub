@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>가구 배치 시뮬레이터 — 방 치수에 가구 드래그 배치 | 홈캘크</title>
+<meta name="description" content="방 가로·세로(cm)를 넣고 침대·소파·책상 등 가구를 손가락이나 마우스로 끌어 배치해 보세요. 겹침·벽 넘침을 자동 판정하고 배치도를 PNG로 저장하거나 링크로 공유할 수 있습니다." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/furniture-fit/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛋️</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="가구 배치 시뮬레이터 (모바일 터치 지원)" />
+<meta property="og:description" content="방 가로·세로(cm)를 넣고 침대·소파·책상 등 가구를 손가락이나 마우스로 끌어 배치해 보세요. 겹침·벽 넘침을 자동 판정하고 배치도를 PNG로 저장하거나 링크로 공유할 수 있습니다." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/furniture-fit/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"가구 배치 시뮬레이터","url":"https://homecalc-kr.vercel.app/furniture-fit/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"방 가로·세로(cm)를 넣고 침대·소파·책상 등 가구를 손가락이나 마우스로 끌어 배치해 보세요. 겹침·벽 넘침을 자동 판정하고 배치도를 PNG로 저장하거나 링크로 공유할 수 있습니다."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"휴대폰에서도 되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 터치 드래그를 지원합니다. 가구를 손가락으로 눌러 끌면 이동하고, 화면 밖으로는 나가지 않습니다."}},{"@type":"Question","name":"배치를 저장할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"배치 상태는 주소창 링크(#p=…)에 담깁니다. 링크 복사 버튼으로 주소를 복사해 두면 나중에 같은 배치를 그대로 열 수 있고, 가족에게 공유할 수도 있습니다. 서버에는 아무것도 저장되지 않습니다."}},{"@type":"Question","name":"가구가 겹치면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"겹친 가구는 빨간 테두리로 표시되고 요약에 겹침 개수가 나옵니다. 맞닿기만 한 상태(간격 0)는 겹침으로 보지 않습니다."}},{"@type":"Question","name":"통로는 얼마나 남겨야 하나요?","acceptedAnswer":{"@type":"Answer","text":"성인 한 명이 지나가려면 약 60cm, 두 명이 교차하려면 90~110cm 정도를 확보하는 것이 일반적입니다. 서랍·문 여는 공간도 별도로 필요합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"가구 배치 시뮬레이터","item":"https://homecalc-kr.vercel.app/furniture-fit/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap wide">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">가구 배치 시뮬레이터</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🛋️</div>
+    <h1>가구 배치 시뮬레이터</h1>
+    <p class="lead">방 치수에 가구를 <strong>드래그</strong>해 배치해 보세요. 모바일 터치도 지원하며, 배치도를 이미지로 저장하거나 링크로 공유할 수 있습니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>방 크기와 가구</h2>
+    <div class="grid2">
+      <label class="f">방 가로 (cm)
+        <input type="number" id="roomW" inputmode="numeric" step="1" min="50" value="400" />
+      </label>
+      <label class="f">방 세로 (cm)
+        <input type="number" id="roomH" inputmode="numeric" step="1" min="50" value="300" />
+      </label>
+      <label class="f">가구 프리셋 <span class="hint">— 치수는 추가 후 수정 가능</span>
+        <select id="preset"></select>
+      </label>
+      <label class="f">가구 이름 <span class="hint">— 직접 입력 시 사용</span>
+        <input type="text" id="customName" maxlength="12" placeholder="예: 피아노" />
+      </label>
+    </div>
+    <div class="chips">
+      <button class="chip" type="button" id="addBtn">＋ 가구 추가</button>
+      <button class="chip" type="button" id="rotBtn">↻ 선택 회전</button>
+      <button class="chip" type="button" id="delBtn">🗑 선택 삭제</button>
+      <button class="chip" type="button" id="clrBtn">전체 지우기</button>
+      <button class="chip" type="button" id="roomBtn">방 크기 적용</button>
+    </div>
+    <canvas class="canvas-box" id="cv" width="720" height="540" role="img" aria-label="방 평면도 — 가구를 끌어 배치합니다"></canvas>
+    <p class="sub" id="hint">가구를 손가락이나 마우스로 끌어 옮기세요. 벽 밖으로는 나가지 않고, 서로 겹치면 빨간 테두리로 표시됩니다.</p>
+    <div class="grid2" id="selBox" hidden>
+      <label class="f">선택 가구 가로 (cm)
+        <input type="number" id="selW" inputmode="numeric" step="1" min="5" />
+      </label>
+      <label class="f">선택 가구 세로 (cm)
+        <input type="number" id="selH" inputmode="numeric" step="1" min="5" />
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">배치 요약 · 저장 / 공유</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <div class="chips">
+        <button class="chip" type="button" id="pngBtn">🖼 배치도 PNG 저장</button>
+        <button class="chip" type="button" id="linkBtn">🔗 배치 링크 복사</button>
+      </div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>이사 전 가장 궁금한 것은 "지금 쓰는 침대와 소파가 새 방에 들어갈까"입니다. 이 시뮬레이터는 방 가로·세로(cm)를 격자 평면도로 그리고, 가구를 실제 치수 비율로 올려 드래그 배치해 볼 수 있게 해 줍니다. 가구가 벽을 넘어가면 자동으로 벽 안쪽에 붙고, 가구끼리 겹치면 빨간 테두리로 알려 줍니다.</p>
+    <p>프리셋 치수는 국내 유통 <strong>일반 치수(참고용)</strong>입니다. 실제 제품의 가로·세로를 재서 선택 후 직접 수정하면 정확도가 올라갑니다. 문이 열리는 반경, 서랍을 빼는 공간, 통로 폭(성인 통행 약 60cm 이상)도 함께 고려하세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>방 가로·세로를 cm로 입력하고 <strong>방 크기 적용</strong>을 누릅니다. (예: 3.6m × 3.0m → 360 × 300)</li>
+      <li>프리셋에서 가구를 고르고 <strong>가구 추가</strong>. 추가된 가구를 드래그해 원하는 자리에 놓습니다.</li>
+      <li>가구를 탭/클릭해 선택한 뒤 가로·세로를 실제 제품 치수로 수정하거나, 회전 버튼으로 90° 돌립니다.</li>
+      <li><strong>배치 요약</strong>을 누르면 점유 면적·겹침 여부가 나오고, 배치도를 PNG로 저장하거나 링크를 복사해 공유할 수 있습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 휴대폰에서도 되나요?</p><p class="a">네. 터치 드래그를 지원합니다. 가구를 손가락으로 눌러 끌면 이동하고, 화면 밖으로는 나가지 않습니다.</p></div>
+    <div class="qa"><p class="q">Q. 배치를 저장할 수 있나요?</p><p class="a">배치 상태는 주소창 링크(#p=…)에 담깁니다. 링크 복사 버튼으로 주소를 복사해 두면 나중에 같은 배치를 그대로 열 수 있고, 가족에게 공유할 수도 있습니다. 서버에는 아무것도 저장되지 않습니다.</p></div>
+    <div class="qa"><p class="q">Q. 가구가 겹치면 어떻게 되나요?</p><p class="a">겹친 가구는 빨간 테두리로 표시되고 요약에 겹침 개수가 나옵니다. 맞닿기만 한 상태(간격 0)는 겹침으로 보지 않습니다.</p></div>
+    <div class="qa"><p class="q">Q. 통로는 얼마나 남겨야 하나요?</p><p class="a">성인 한 명이 지나가려면 약 60cm, 두 명이 교차하려면 90~110cm 정도를 확보하는 것이 일반적입니다. 서랍·문 여는 공간도 별도로 필요합니다.</p></div>
+<p class="note">프리셋 치수는 국내 유통 일반 치수(참고용)이며 제품마다 다릅니다. 실제 가구의 가로·세로·높이를 재서 입력하세요. 천장 높이·문틀 폭 때문에 평면상 들어가도 반입이 어려울 수 있습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../pyeong/"><span class="ic">📐</span>평수 계산기</a>
+      <a class="rel" href="../moving-check/"><span class="ic">✅</span>이사 체크리스트</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-isagak/" rel="noopener"><span class="ic">📦</span>이사각 — 이사 준비 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-converter-plus/" rel="noopener"><span class="ic">📏</span>평수 변환 플러스 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { clampToRoom, rotateRect, anyCollision, m2ToPyeong } from "../lib/calc.mjs";
+const PRESETS = [{"id":"bed-s","name":"싱글 침대","w":100,"h":200,"color":"#7aa2ff"},{"id":"bed-ss","name":"슈퍼싱글 침대","w":110,"h":200,"color":"#7aa2ff"},{"id":"bed-q","name":"퀸 침대","w":150,"h":200,"color":"#7aa2ff"},{"id":"bed-k","name":"킹 침대","w":160,"h":200,"color":"#7aa2ff"},{"id":"sofa-2","name":"2인 소파","w":160,"h":90,"color":"#f0a35e"},{"id":"sofa-3","name":"3인 소파","w":200,"h":90,"color":"#f0a35e"},{"id":"desk","name":"책상","w":120,"h":60,"color":"#9ee7c8"},{"id":"table-4","name":"4인 식탁","w":120,"h":80,"color":"#9ee7c8"},{"id":"wardrobe","name":"옷장(2문)","w":100,"h":60,"color":"#caa8f5"},{"id":"drawer","name":"서랍장","w":80,"h":45,"color":"#caa8f5"},{"id":"bookshelf","name":"책장","w":80,"h":30,"color":"#caa8f5"},{"id":"fridge","name":"냉장고(양문형)","w":91,"h":75,"color":"#8fd3f4"},{"id":"washer","name":"세탁기(드럼)","w":65,"h":70,"color":"#8fd3f4"},{"id":"tv","name":"TV 거실장","w":150,"h":40,"color":"#f2c94c"},{"id":"vanity","name":"화장대","w":90,"h":40,"color":"#f2c94c"}];
+const $ = (id) => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+let room = { w: 400, h: 300 };
+let items = [];
+let sel = -1, drag = null, scale = 1;
+
+const enc = (s) => btoa(String.fromCharCode.apply(null, Array.from(new TextEncoder().encode(s))));
+const dec = (s) => new TextDecoder().decode(Uint8Array.from(atob(s), (c) => c.charCodeAt(0)));
+
+const psel = $("preset");
+PRESETS.forEach((p, i) => { const o = document.createElement("option"); o.value = i; o.textContent = p.name + " (" + p.w + "×" + p.h + ")"; psel.appendChild(o); });
+
+function fitCanvas() {
+  const box = cv.parentElement;
+  const cs = getComputedStyle(box);
+  const avail = box.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+  const cssW = Math.max(240, Math.min(avail, 860));
+  const cssH = Math.max(160, Math.round(cssW * room.h / room.w));
+  const dpr = window.devicePixelRatio || 1;
+  cv.style.width = cssW + "px";
+  cv.style.height = cssH + "px";
+  cv.width = Math.round(cssW * dpr);
+  cv.height = Math.round(cssH * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  scale = cssW / room.w;
+  draw();
+}
+function css(name, fallback) {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return v || fallback;
+}
+function paint(c, W, H, s, withMark) {
+  c.clearRect(0, 0, W, H);
+  c.fillStyle = css("--panel3", "#111");
+  c.fillRect(0, 0, W, H);
+  c.strokeStyle = css("--line2", "#2a2a2a");
+  c.lineWidth = 1;
+  for (let x = 0; x <= room.w; x += 50) { c.beginPath(); c.moveTo(x * s, 0); c.lineTo(x * s, H); c.stroke(); }
+  for (let y = 0; y <= room.h; y += 50) { c.beginPath(); c.moveTo(0, y * s); c.lineTo(W, y * s); c.stroke(); }
+  c.strokeStyle = css("--acc2", "#10b981");
+  c.lineWidth = 2;
+  c.strokeRect(1, 1, W - 2, H - 2);
+  items.forEach((it, i) => {
+    const bad = anyCollision(items, i);
+    c.fillStyle = it.color;
+    c.globalAlpha = 0.85;
+    c.fillRect(it.x * s, it.y * s, it.w * s, it.h * s);
+    c.globalAlpha = 1;
+    c.lineWidth = i === sel ? 3 : 2;
+    c.strokeStyle = bad ? "#f87171" : (i === sel ? "#ffffff" : "rgba(0,0,0,.45)");
+    c.strokeRect(it.x * s, it.y * s, it.w * s, it.h * s);
+    c.fillStyle = "#10241d";
+    c.font = "600 11px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+    c.fillText(it.name, it.x * s + 5, it.y * s + 14);
+    c.fillText(it.w + "×" + it.h, it.x * s + 5, it.y * s + 27);
+  });
+  c.fillStyle = css("--muted", "#6b7280");
+  c.font = "11px -apple-system,'Noto Sans KR',sans-serif";
+  c.fillText("가로 " + room.w + "cm × 세로 " + room.h + "cm · 격자 50cm", 6, H - 8);
+  if (withMark) {
+    const mark = "homecalc-kr.vercel.app/furniture-fit";
+    c.fillStyle = "rgba(120,140,160,.9)";
+    c.font = "13px -apple-system,'Noto Sans KR',sans-serif";
+    c.fillText(mark, Math.max(6, W - c.measureText(mark).width - 8), 20);
+  }
+}
+function draw() {
+  paint(ctx, parseFloat(cv.style.width), parseFloat(cv.style.height), scale, false);
+}
+function toCm(clientX, clientY) {
+  const r = cv.getBoundingClientRect();
+  const s = r.width > 0 ? r.width / room.w : scale;
+  return { x: (clientX - r.left) / s, y: (clientY - r.top) / s };
+}
+function pickAt(x, y) {
+  for (let i = items.length - 1; i >= 0; i--) {
+    const it = items[i];
+    if (x >= it.x && x <= it.x + it.w && y >= it.y && y <= it.y + it.h) return i;
+  }
+  return -1;
+}
+function syncSel() {
+  if (sel < 0) { $("selBox").hidden = true; return; }
+  $("selBox").hidden = false;
+  $("selW").value = items[sel].w;
+  $("selH").value = items[sel].h;
+}
+function startAt(x, y) {
+  const i = pickAt(x, y);
+  sel = i;
+  drag = i >= 0 ? { dx: x - items[i].x, dy: y - items[i].y } : null;
+  syncSel(); draw();
+}
+function moveAt(x, y) {
+  if (sel < 0 || !drag) return;
+  const it = items[sel];
+  const moved = clampToRoom({ x: x - drag.dx, y: y - drag.dy, w: it.w, h: it.h }, room);
+  it.x = Math.round(moved.x); it.y = Math.round(moved.y);
+  draw();
+}
+function endAt() { if (drag) { drag = null; saveHash(); } }
+
+cv.addEventListener("mousedown", (e) => { const p = toCm(e.clientX, e.clientY); startAt(p.x, p.y); });
+window.addEventListener("mousemove", (e) => { if (drag) { const p = toCm(e.clientX, e.clientY); moveAt(p.x, p.y); } });
+window.addEventListener("mouseup", endAt);
+cv.addEventListener("touchstart", (e) => {
+  const t = e.touches[0]; if (!t) return;
+  const p = toCm(t.clientX, t.clientY);
+  startAt(p.x, p.y);
+  if (sel >= 0) e.preventDefault();
+}, { passive: false });
+cv.addEventListener("touchmove", (e) => {
+  const t = e.touches[0]; if (!t || !drag) return;
+  const p = toCm(t.clientX, t.clientY);
+  moveAt(p.x, p.y);
+  e.preventDefault();
+}, { passive: false });
+cv.addEventListener("touchend", (e) => { endAt(); }, { passive: false });
+cv.addEventListener("touchcancel", endAt, { passive: false });
+
+$("addBtn").addEventListener("click", () => {
+  const p = PRESETS[+psel.value];
+  const nm = ($("customName").value || "").trim() || p.name;
+  const it = { name: nm.slice(0, 12), x: 0, y: 0, w: p.w, h: p.h, color: p.color };
+  const step = 20;
+  for (let k = 0; k < 400; k++) {
+    it.x = (k * step) % Math.max(1, room.w - it.w + step);
+    it.y = Math.floor((k * step) / Math.max(1, room.w - it.w + step)) * step;
+    const c = clampToRoom(it, room);
+    it.x = c.x; it.y = c.y;
+    items.push(it);
+    if (!anyCollision(items, items.length - 1)) { items.pop(); break; }
+    items.pop();
+  }
+  items.push(it);
+  sel = items.length - 1;
+  syncSel(); draw(); saveHash();
+});
+$("rotBtn").addEventListener("click", () => {
+  if (sel < 0) { hcToast("먼저 가구를 선택하세요"); return; }
+  const r = clampToRoom(rotateRect(items[sel]), room);
+  items[sel] = r;
+  syncSel(); draw(); saveHash();
+});
+$("delBtn").addEventListener("click", () => {
+  if (sel < 0) { hcToast("먼저 가구를 선택하세요"); return; }
+  items.splice(sel, 1); sel = -1; syncSel(); draw(); saveHash();
+});
+$("clrBtn").addEventListener("click", () => { items = []; sel = -1; syncSel(); draw(); saveHash(); });
+$("roomBtn").addEventListener("click", () => {
+  const w = parseInt($("roomW").value, 10), h = parseInt($("roomH").value, 10);
+  if (!(w > 50) || !(h > 50)) { hcToast("방 크기를 cm 단위로 입력하세요 (예: 400)"); return; }
+  room = { w: w, h: h };
+  items = items.map((it) => clampToRoom(it, room));
+  fitCanvas(); saveHash();
+});
+function onSize() {
+  if (sel < 0) return;
+  const w = parseInt($("selW").value, 10), h = parseInt($("selH").value, 10);
+  if (w > 0) items[sel].w = w;
+  if (h > 0) items[sel].h = h;
+  items[sel] = clampToRoom(items[sel], room);
+  draw(); saveHash();
+}
+$("selW").addEventListener("change", onSize);
+$("selH").addEventListener("change", onSize);
+
+function saveHash() {
+  const s = { r: [room.w, room.h], i: items.map((it) => [it.name, Math.round(it.x), Math.round(it.y), it.w, it.h, it.color]) };
+  try { history.replaceState(null, "", "#p=" + enc(JSON.stringify(s))); } catch (e) {}
+}
+function loadHash() {
+  const m = (location.hash || "").match(/#p=(.+)$/);
+  if (!m) return false;
+  try {
+    const s = JSON.parse(dec(m[1]));
+    room = { w: s.r[0], h: s.r[1] };
+    items = (s.i || []).map((a) => ({ name: a[0], x: a[1], y: a[2], w: a[3], h: a[4], color: a[5] }));
+    $("roomW").value = room.w; $("roomH").value = room.h;
+    return true;
+  } catch (e) { return false; }
+}
+$("calcBtn").addEventListener("click", () => {
+  const roomM2 = room.w * room.h / 10000;
+  const useM2 = items.reduce((s, it) => s + it.w * it.h, 0) / 10000;
+  let over = 0;
+  items.forEach((it, i) => { if (anyCollision(items, i)) over++; });
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = "방 <span>" + hcFmt(roomM2, 2) + "㎡</span> <small>(" + hcFmt(m2ToPyeong(roomM2), 1) + "평) · 가구 점유 " + hcFmt(roomM2 ? useM2 / roomM2 * 100 : 0, 0) + "%</small>";
+  $("resSub").textContent = "가구 " + items.length + "개 · 점유 면적 " + hcFmt(useM2, 2) + "㎡ · 남는 바닥 " + hcFmt(Math.max(0, roomM2 - useM2), 2) + "㎡"
+    + (over ? " · ⚠ 겹치는 가구 " + over + "개" : " · 겹침 없음");
+  $("resFormula").textContent = items.length
+    ? items.map((it) => it.name + " " + it.w + "×" + it.h + "cm @(" + Math.round(it.x) + "," + Math.round(it.y) + ")").join(" / ")
+    : "가구를 추가하면 목록이 표시됩니다.";
+  $("srcLine").innerHTML = "프리셋 치수: 국내 유통 일반 치수(참고용, 실제 제품 제원 확인) · 확인일 2026-08-19 <span class=\"badge practice\">관행값</span> · 배치는 링크(#p=)에만 담기며 서버 저장 없음";
+  hcShowResultAd();
+});
+$("pngBtn").addEventListener("click", () => {
+  const s2 = Math.min(3, Math.max(1, 1200 / room.w));
+  const off = document.createElement("canvas");
+  off.width = Math.round(room.w * s2);
+  off.height = Math.round(room.h * s2);
+  const c2 = off.getContext("2d");
+  paint(c2, off.width, off.height, s2, true);
+  const a = document.createElement("a");
+  a.download = "homecalc-room-layout.png";
+  a.href = off.toDataURL("image/png");
+  document.body.appendChild(a); a.click(); a.remove();
+  hcToast("배치도 이미지를 저장했습니다");
+});
+$("linkBtn").addEventListener("click", () => {
+  saveHash();
+  const url = location.href;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => hcToast("배치 링크를 복사했습니다"), () => hcToast("복사 실패 — 주소창을 직접 복사하세요"));
+  } else { hcToast("주소창의 링크를 복사해 공유하세요"); }
+});
+window.addEventListener("resize", fitCanvas);
+if (!loadHash()) {
+  const bed = PRESETS.find((p) => p.id === "bed-q");
+  items.push({ name: bed.name, x: 0, y: 0, w: bed.w, h: bed.h, color: bed.color });
+}
+fitCanvas();
+syncSel();
+</script>
+</body>
+</html>
