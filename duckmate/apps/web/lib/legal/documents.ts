@@ -82,9 +82,6 @@ function isUnfilled(value: string): boolean {
   return value.includes("[TODO_사업자정보");
 }
 
-/** display() 가 돌려주는 플레이스홀더 상수도 같은 규칙으로 취급한다. */
-void TODO_PLACEHOLDER;
-
 function substitute(source: string, missing: Set<string>): string {
   return source.replace(/\{\{([A-Z_]+)\}\}/g, (_match, name: string) => {
     const value = PLACEHOLDER_VALUES[name];
