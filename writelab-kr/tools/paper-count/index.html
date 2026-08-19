@@ -1,0 +1,108 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>원고지 계산기 — 200자/400자 장수 계산 | writelab</title>
+<meta name="description" content="글을 붙여 넣으면 200자·400자 원고지로 몇 장인지 계산하고, 첫 장을 실제 칸에 배치해 보여 줍니다. 들여쓰기와 줄바꿈 규칙도 함께 안내합니다.">
+<meta property="og:title" content="원고지 계산기 — 200자/400자 장수 계산 | writelab">
+<meta property="og:description" content="글을 붙여 넣으면 200자·400자 원고지로 몇 장인지 계산하고, 첫 장을 실제 칸에 배치해 보여 줍니다. 들여쓰기와 줄바꿈 규칙도 함께 안내합니다.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"원고지 계산기","description":"글을 붙여 넣으면 200자·400자 원고지로 몇 장인지 계산하고, 첫 장을 실제 칸에 배치해 보여 줍니다. 들여쓰기와 줄바꿈 규칙도 함께 안내합니다.","url":"https://writelab-kr.vercel.app/tools/paper-count/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"원고지 칸 계산은 어떤 규칙을 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 널리 쓰이는 관례를 따릅니다. (1) 글자·공백·문장부호는 각각 한 칸, (2) 문단이 시작될 때 첫 칸을 비움, (3) 한 줄은 20칸, (4) 200자 원고지는 10줄, 400자 원고지는 20줄. 다만 세부 규칙(문장부호를 줄 끝에서 어떻게 처리하는지, 숫자를 한 칸에 두 자씩 쓰는지 등)은 기관·과제마다 다르므로 계산 결과는 근사치로 보세요."}},{"@type":"Question","name":"숫자와 알파벳은 어떻게 세나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 모든 문자를 한 칸으로 계산합니다. 손으로 쓰는 원고지에서는 아라비아 숫자와 알파벳 소문자를 한 칸에 두 자씩 쓰는 관례가 있어, 숫자가 많은 글은 실제 장수가 이 계산보다 적게 나올 수 있습니다."}},{"@type":"Question","name":"제목과 이름 줄도 계산에 들어가나요?","acceptedAnswer":{"@type":"Answer","text":"들어가지 않습니다. 본문만 계산합니다. 제목·소속·이름을 원고지 첫 부분에 쓰는 양식이라면 보통 2~4줄이 더 필요하므로 여유를 두세요."}},{"@type":"Question","name":"글자수와 원고지 장수가 왜 딱 맞지 않나요?","acceptedAnswer":{"@type":"Answer","text":"줄바꿈 때문입니다. 문단이 바뀌면 남은 칸을 비우고 새 줄에서 시작하므로, 문단이 많을수록 같은 글자수라도 장수가 늘어납니다. 계산 결과의 \"빈 칸\" 항목에서 그 양을 확인할 수 있습니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"원고지 계산기","item":"https://writelab-kr.vercel.app/tools/paper-count/"}]}</script>
+<header class="site"><div class="wrap nav">
+<a class="brand" href="../../index.html">write<span>lab</span></a>
+<a class="hublink" href="../../index.html">도구 전체 보기</a>
+</div></header>
+<main class="wrap">
+<h1>원고지 계산기</h1>
+<p class="sub">문단 구분과 들여쓰기를 반영해 200자·400자 원고지 장수를 계산하고 첫 장을 칸으로 보여 줍니다.</p>
+
+<div class="card">
+  <label for="src">글 붙여넣기</label>
+  <textarea id="src" placeholder="글을 붙여 넣으면 원고지 장수를 계산합니다."></textarea>
+  <div class="row">
+    <label style="display:flex;align-items:center;gap:6px;font-weight:600"><input type="radio" name="kind" value="200" checked> 200자 원고지(20칸 × 10줄)</label>
+    <label style="display:flex;align-items:center;gap:6px;font-weight:600"><input type="radio" name="kind" value="400"> 400자 원고지(20칸 × 20줄)</label>
+    <label style="display:flex;align-items:center;gap:6px;font-weight:600"><input type="checkbox" id="indent" checked> 문단 첫 칸 비우기</label>
+    <button class="btn sm" id="clear" type="button">지우기</button>
+  </div>
+  <div class="stat-grid" id="stats"></div>
+  <h3>첫 장 미리보기</h3>
+  <div class="grid200" id="grid"></div>
+  <p class="mini" id="gridnote"></p>
+  <div class="notice">원고지 세부 규칙은 기관·과제마다 다를 수 있습니다. 제출처의 지침이 있으면 그 기준을 우선하세요.</div>
+</div>
+<!-- ad-slot -->
+<section class="prose">
+<h2>글자수만으로는 원고지 장수를 알 수 없습니다</h2>
+<p>"200자 원고지 5장 이내"라는 조건을 받으면 1,000자를 쓰면 된다고 생각하기 쉽습니다. 그런데 원고지는 문단이 바뀔 때마다 남은 칸을 비우고 새 줄에서 시작하고, 문단 첫 칸도 비웁니다. 그래서 문단이 여섯 개인 1,000자 글은 실제로 5장을 넘길 수 있습니다. 반대로 문단을 한두 개로 묶으면 같은 글자수가 4장 반에 들어갑니다.</p>
+<p>이 도구는 문단 구분과 들여쓰기를 반영해 필요한 줄 수와 장수를 계산합니다. 총 칸 수, 채운 칸, 빈 칸을 함께 보여 주므로 어디서 칸이 낭비되는지 알 수 있습니다. 첫 장은 실제 원고지 모양으로 배치해 보여 주어, 문단 나누기를 바꿨을 때 어떻게 달라지는지 눈으로 확인할 수 있습니다.</p>
+<p>손으로 쓰는 원고지에는 숫자를 한 칸에 두 자씩 적는 관례 등 세부 규칙이 더 있습니다. 이 계산은 모든 문자를 한 칸으로 두는 단순 기준이므로, 분량이 아슬아슬할 때는 한 장 정도 여유를 두는 편이 안전합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>글을 붙여 넣습니다.</li>
+<li>200자·400자 중 제출 양식에 맞는 원고지를 고릅니다.</li>
+<li>문단 첫 칸 비우기 옵션을 제출처 기준에 맞춰 켜거나 끕니다.</li>
+<li>장수가 넘치면 문단 수를 줄이거나 문장을 압축합니다. 글자수 자체를 줄이려면 <a href="../char-count/">자소서 글자수 세기</a>를 함께 쓰세요.</li>
+</ol>
+</section>
+<section class="faq"><h2>자주 묻는 질문</h2><details><summary>원고지 칸 계산은 어떤 규칙을 쓰나요?</summary><div class="prose"><p>이 도구는 널리 쓰이는 관례를 따릅니다. (1) 글자·공백·문장부호는 각각 한 칸, (2) 문단이 시작될 때 첫 칸을 비움, (3) 한 줄은 20칸, (4) 200자 원고지는 10줄, 400자 원고지는 20줄. 다만 세부 규칙(문장부호를 줄 끝에서 어떻게 처리하는지, 숫자를 한 칸에 두 자씩 쓰는지 등)은 기관·과제마다 다르므로 계산 결과는 근사치로 보세요.</p></div></details><details><summary>숫자와 알파벳은 어떻게 세나요?</summary><div class="prose"><p>이 도구는 모든 문자를 한 칸으로 계산합니다. 손으로 쓰는 원고지에서는 아라비아 숫자와 알파벳 소문자를 한 칸에 두 자씩 쓰는 관례가 있어, 숫자가 많은 글은 실제 장수가 이 계산보다 적게 나올 수 있습니다.</p></div></details><details><summary>제목과 이름 줄도 계산에 들어가나요?</summary><div class="prose"><p>들어가지 않습니다. 본문만 계산합니다. 제목·소속·이름을 원고지 첫 부분에 쓰는 양식이라면 보통 2~4줄이 더 필요하므로 여유를 두세요.</p></div></details><details><summary>글자수와 원고지 장수가 왜 딱 맞지 않나요?</summary><div class="prose"><p>줄바꿈 때문입니다. 문단이 바뀌면 남은 칸을 비우고 새 줄에서 시작하므로, 문단이 많을수록 같은 글자수라도 장수가 늘어납니다. 계산 결과의 "빈 칸" 항목에서 그 양을 확인할 수 있습니다.</p></div></details></section>
+<p class="mini">함께 쓰면 좋은 도구: <a href="../char-count/">자소서 글자수 세기</a> · <a href="../sentence-check/">문장 길이 분석</a> · <a href="../readability/">가독성 점수</a></p>
+</main>
+<footer class="site"><div class="wrap">
+<ul class="foot-links"><li><a href="../../tools/char-count/">자소서 글자수 세기</a></li><li><a href="../../tools/sentence-check/">문장 길이 분석</a></li><li><a href="../../tools/repeat-words/">반복 단어 찾기</a></li><li><a href="../../tools/banned-words/">자소서 금칙어 체크</a></li><li><a href="../../tools/spacing-basic/">띄어쓰기 기본 검사</a></li><li><a href="../../tools/text-compare/">글 비교</a></li><li><a href="../../tools/readability/">가독성 점수</a></li><li><a href="../../tools/outline/">자소서 개요 만들기</a></li><li><a href="../../tools/keyword-density/">키워드 밀도</a></li><li><a href="../../tools/paper-count/">원고지 계산기</a></li><li><a href="../../tools/resume-date/">경력 기간 계산기</a></li><li><a href="../../guide/jasoso-char-limit/">자소서 글자수 기준 확인하는 방법</a></li><li><a href="../../guide/common-mistakes/">자소서에서 자주 하는 실수</a></li><li><a href="../../privacy.html">개인정보처리방침</a></li><li><a href="../../terms.html">이용약관</a></li></ul>
+<p class="mini">writelab — 자소서·글쓰기 도구 모음. 모든 계산은 사용자의 브라우저에서만 실행되며, 입력한 글은 어디에도 전송·저장되지 않습니다.</p>
+<p class="mini">© 2026 writelab</p>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function(){
+  var COLS=20;
+  var src=document.getElementById('src'), stats=document.getElementById('stats'),
+      grid=document.getElementById('grid'), note=document.getElementById('gridnote'), indent=document.getElementById('indent');
+  function kind(){ var r=document.querySelector('input[name=kind]:checked'); return r?parseInt(r.value,10):200; }
+  function layout(){
+    var text=WL.norm(src.value);
+    var paras=text.split(/\n/).map(function(p){return p.replace(/\s+$/,'');});
+    var lines=[], filled=0;
+    paras.forEach(function(p,pi){
+      if(p==='' && paras.length>1 && pi>0 && paras[pi-1]===''){ lines.push([]); return; }
+      var chars=Array.from(p);
+      if(!chars.length){ if(paras.length===1) return; lines.push([]); return; }
+      var cur=[];
+      if(indent.checked) cur.push(null);
+      chars.forEach(function(ch){
+        if(cur.length===COLS){ lines.push(cur); cur=[]; }
+        cur.push(ch); filled++;
+      });
+      lines.push(cur);
+    });
+    return {lines:lines, filled:filled};
+  }
+  function run(){
+    var k=kind(), rowsPer=k/COLS, L=layout();
+    var lineCount=L.lines.length;
+    var pages=Math.max(0,Math.ceil(lineCount/rowsPer));
+    var cells=pages*k, empty=cells-L.filled;
+    var st=WL.charStats(src.value);
+    stats.innerHTML=[['원고지 장수',pages+'장'],['필요한 줄 수',lineCount+'줄'],['채운 칸',WL.fmt(L.filled)+'칸'],
+      ['빈 칸',WL.fmt(Math.max(0,empty))+'칸'],['공백 포함 글자수',WL.fmt(st.incl)+'자'],['문단 수',st.paraCount+'개']]
+      .map(function(x){return '<div class="stat"><b>'+x[1]+'</b><small>'+x[0]+'</small></div>';}).join('');
+    var first=L.lines.slice(0,rowsPer), html='';
+    for(var r=0;r<rowsPer;r++){
+      var line=first[r]||[];
+      for(var c=0;c<COLS;c++){
+        var ch=line[c];
+        html+= (ch===undefined||ch===null) ? '<span class="empty"></span>' : '<span>'+WL.esc(ch)+'</span>';
+      }
+    }
+    grid.innerHTML=html;
+    note.textContent='첫 장('+k+'자 원고지, '+COLS+'칸 × '+rowsPer+'줄) 배치입니다.'+(pages>1?(' 전체 '+pages+'장 중 1장만 표시합니다.'):'');
+  }
+  src.addEventListener('input',WL.debounce(run,140));
+  indent.addEventListener('change',run);
+  WL.$$('input[name=kind]').forEach(function(r){ r.addEventListener('change',run); });
+  document.getElementById('clear').addEventListener('click',function(){src.value='';run();src.focus();});
+  run();
+})();</script>
