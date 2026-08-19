@@ -42,7 +42,11 @@
 :root{color-scheme:dark;--acc:#f0abfc;--acc2:#e879f9;--e1:#f0abfc;--e2:#c084fc;--p1:#fff1fa;--p2:#ffe3f4;--ink:#4a1d3f;--seal:#db2777}
 *{box-sizing:border-box}
 body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
-.wrap{max-width:680px;margin:0 auto;padding:22px 18px 64px}
+.wrap{max-width:680px;margin:0 auto;padding:22px 18px 64px;--stick:10px}
+/* 유입 배너가 sticky 로 떠 있는 동안에는 scrollIntoView 가 그 높이만큼 비켜 가야
+   편지 첫 줄이 배너 뒤로 숨지 않는다 (커스텀 속성은 자손으로 상속된다) */
+.inbound.show~*{--stick:96px}
+.sect,.card,#letterWrap,#previewCard{scroll-margin-top:var(--stick)}
 a{color:var(--acc)}
 .nav{font-size:13px;color:#6b7280;margin-bottom:14px}
 .nav a{color:#7aa2ff;text-decoration:none}
@@ -76,16 +80,20 @@ button{margin:0;font-family:inherit}
 .warnbox{font-size:13px;color:#fcd34d;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.32);border-radius:12px;padding:12px 14px;margin-top:4px}
 .warnbox b{color:#fde68a}
 /* ── 봉투 ── */
-.stage{display:flex;flex-direction:column;align-items:center;padding:6px 0 2px}
-.env{position:relative;width:min(300px,82vw);height:calc(min(300px,82vw)*.66);perspective:900px;margin:6px 0 4px}
+/* 봉투가 열릴 때 뚜껑이 위로 젖혀지므로 그만큼 위쪽 여백을 미리 확보한다.
+   장식 레이어는 전부 pointer-events:none — 젖혀진 뚜껑이 위쪽 버튼의 클릭을 가로채면 안 된다. */
+.stage{display:flex;flex-direction:column;align-items:center;padding:10px 0 2px}
+.stage.tall{padding-top:56px}   /* 열리는 봉투만 뚜껑이 젖혀질 위쪽 공간을 예약한다 */
+.env{position:relative;width:min(300px,82vw);height:calc(min(300px,82vw)*.66);perspective:900px;margin:0 0 4px;cursor:pointer}
+.env>*{pointer-events:none}
 .envBack{position:absolute;inset:0;border-radius:12px;background:linear-gradient(150deg,var(--e1),var(--e2));box-shadow:0 16px 40px rgba(0,0,0,.55)}
 .envPaper{position:absolute;left:8%;right:8%;top:8%;height:84%;border-radius:8px;background:linear-gradient(160deg,var(--p1),var(--p2));transform:translateY(14%) scale(.96);opacity:0;transition:transform .8s .45s cubic-bezier(.2,.8,.2,1),opacity .5s .45s}
-.envFront{position:absolute;inset:0;border-radius:12px;background:linear-gradient(160deg,var(--e2),var(--e1));clip-path:polygon(0 34%,50% 76%,100% 34%,100% 100%,0 100%)}
-.envFlap{position:absolute;left:0;top:0;width:100%;height:66%;background:linear-gradient(180deg,var(--e1),var(--e2));clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transform:rotateX(0deg);transition:transform .95s cubic-bezier(.5,-0.2,.3,1.2);border-radius:12px 12px 0 0}
-.seal{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.5),transparent 55%),var(--seal);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 14px rgba(0,0,0,.45);transition:.5s;z-index:3}
-.env.open .envFlap{transform:rotateX(-176deg)}
+.envFront{position:absolute;inset:0;border-radius:12px;background:linear-gradient(160deg,var(--e2),var(--e1));clip-path:polygon(0 34%,50% 76%,100% 34%,100% 100%,0 100%);z-index:2}
+.envFlap{position:absolute;left:0;top:0;width:100%;height:66%;background:linear-gradient(180deg,var(--e1),var(--e2));clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transform:rotateX(0deg);transition:transform .95s cubic-bezier(.5,-0.15,.3,1.1),opacity .4s .5s;border-radius:12px 12px 0 0;z-index:1}
+.seal{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.5),transparent 55%),var(--seal);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 14px rgba(0,0,0,.45);transition:.5s;z-index:4}
+.env.open .envFlap{transform:rotateX(-112deg);opacity:0}
 .env.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(24deg)}
-.env.open .envPaper{transform:translateY(-26%) scale(1);opacity:1}
+.env.open .envPaper{transform:translateY(-30%) scale(1);opacity:1;z-index:3}
 .envnote{font-size:13px;color:#9ca3af;text-align:center;margin:8px 0 0}
 /* ── 카운트다운 ── */
 .cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;margin:16px 0 4px}
@@ -171,7 +179,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 
     <div class="field">
       <label for="bodyIn">편지 본문</label>
-      <textarea id="bodyIn" maxlength="1500" placeholder="그날의 너에게 하고 싶은 말을 적어 보세요. 지금 무슨 생각을 하는지, 무엇이 두려운지, 어떤 하루를 보내고 있는지."></textarea>
+      <textarea id="bodyIn" placeholder="그날의 너에게 하고 싶은 말을 적어 보세요. 지금 무슨 생각을 하는지, 무엇이 두려운지, 어떤 하루를 보내고 있는지."></textarea>
       <div class="meter" id="meter">
         <span><b id="charCnt">0</b>/1,500자</span>
         <span class="bar"><i id="meterBar"></i></span>
@@ -196,7 +204,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   </div>
 
   <div class="card" id="previewCard" style="display:none">
-    <div class="stage">
+    <div class="stage tall">
       <div class="env" id="pvEnv"><div class="envBack"></div><div class="envPaper"></div><div class="envFront"></div><div class="envFlap"></div><div class="seal">🕰️</div></div>
       <p class="envnote" id="pvNote">미리보기</p>
     </div>
@@ -258,7 +266,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 <!-- ══ 열람(열람일 이후) ══ -->
 <section class="sect" id="scOpened">
   <div class="card" id="openCard">
-    <div class="stage">
+    <div class="stage tall">
       <div class="env" id="opEnv"><div class="envBack"></div><div class="envPaper"></div><div class="envFront"></div><div class="envFlap"></div><div class="seal">✉️</div></div>
       <p class="envnote" id="opNote">봉인이 풀렸어요. 봉투를 눌러 편지를 꺼내 보세요.</p>
       <button class="cta" id="btnOpen" style="margin-top:12px">편지 열기</button>
@@ -1003,9 +1011,17 @@ function tcIcs(u, url, nowMs) {
     $("#btnMake").disabled = !sz.ok;
     return sz;
   }
-  /* 1,500자 본문을 매 타건마다 압축하지 않도록 살짝 미룬다 */
+  /* 1,500자 본문을 매 타건마다 압축하지 않도록 살짝 미룬다.
+     상한은 maxlength(UTF-16 단위)가 아니라 코드포인트로 센다 — 이모지 하나를
+     2자로 세면 카운터(1,421)와 실제 차단 지점(1,500)이 어긋나기 때문이다. */
   function queueMeter() {
-    $("#charCnt").textContent = tcBodyLen($("#bodyIn").value);
+    var ta = $("#bodyIn");
+    if (tcBodyLen(ta.value) > TC_MAX_BODY) {
+      ta.value = tcClampBody(ta.value);
+      try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (e) {}
+      SK.toast("편지 본문은 " + TC_MAX_BODY.toLocaleString("ko-KR") + "자까지 담을 수 있어요");
+    }
+    $("#charCnt").textContent = tcBodyLen(ta.value);
     clearTimeout(meterT);
     meterT = setTimeout(updateMeter, 140);
   }

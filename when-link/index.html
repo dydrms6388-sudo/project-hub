@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="robots" content="index,follow" />
+<meta name="robots" content="noindex,follow" />
 <meta name="theme-color" content="#0a0a0a" />
 <title>약속시간 링크 — 서버 없이 링크만 넘겨 모두 되는 시간 찾기 | TomatoEggCat</title>
 <meta name="description" content="후보 날짜와 시간대를 정해 링크를 만들고 단톡방에 넘기면, 각자 가능한 시간을 칠한 새 링크가 돌아옵니다. 마지막 링크 하나에 모두의 히트맵과 추천 시간 3개가 모이고, 확정한 시간은 .ics 캘린더 파일로 바로 저장됩니다. 가입도 서버도 없이 최대 7일 20명." />
@@ -762,8 +762,9 @@ var WL = (function () {
     var av = avail(st), P = av.length;
     if (!P) return [];
     var sp = spd(st), D = st.d.length;
-    var minL = Math.max(1, Math.round(60 / st.s));
-    if (minL > sp) minL = sp;
+    /* 길이 하한은 1칸. "1시간 이상"으로 막으면 전원이 30분만 겹치는 시간대가
+       추천에서 통째로 사라진다. 길이는 하한이 아니라 동점자 정렬로 반영한다. */
+    var minL = 1;
     var maxL = Math.min(sp, Math.round(240 / st.s));
     var cands = [], d, i, L, k;
     for (d = 0; d < D; d++) {
