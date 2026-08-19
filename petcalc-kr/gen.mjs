@@ -207,7 +207,7 @@ ${related || ""}
 </main>
 <script src="${rel}assets/app.js"></script>
 ${script ? "<script>\n" + script + "\n</script>" : ""}
-${ad === "eager" ? "<script>window.pcShowAd&&window.pcShowAd();</script>" : ""}
+${ad === "eager" ? "<script>try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}</script>" : ""}
 </body>
 </html>
 `;
@@ -1463,7 +1463,10 @@ ${src1(`${ko} · ${it.name} 판단 근거`, it.source, it.checkedAt)}`,
               ? "안전한 양이 정해져 있지 않습니다. 증상이 없더라도 먹은 양과 시각을 확인해 병원에 문의하세요."
               : "간식으로 하루 총 열량의 10%를 넘지 않는 선에서 소량만 주세요. 처음이라면 한 조각으로 시작해 반응을 확인합니다.",
         },
-        { q: `${it.name}을(를) 줄 때 무엇을 조심하나요?`, a: esc(it.tip) },
+        {
+          q: it.verdict === "danger" ? `${it.name} 관련해서 무엇을 주의해야 하나요?` : `${it.name}을(를) 줄 때 무엇을 조심하나요?`,
+          a: esc(it.tip),
+        },
         { q: "이 정보는 어디에 근거하나요?", a: `공개된 수의학 지침·중독 정보 자료를 근거로 정리했으며, 이 항목의 출처는 페이지 하단에 링크로 표시했습니다(확인일 ${it.checkedAt}). 다만 개체 상태에 따른 판단은 수의사 진료가 필요합니다.` },
       ],
       related: relatedBlock(`${sp}/can-eat/${it.slug}`, ["petSafe", "petMeal", "petVetCost"], [
@@ -1629,7 +1632,7 @@ buildPage({
   emoji: "📘",
   kind: "article",
   lead: "얼마나, 몇 번, 어떻게 줄지 정하는 기본 순서를 정리했습니다. 계산은 급여량 계산기와 함께 보세요.",
-  crumbs: cr({ name: "가이드", href: "index.html" }, { name: "강아지 사료 기본" }),
+  crumbs: cr({ name: "가이드", href: "guide/index.html" }, { name: "강아지 사료 기본" }),
   health: true,
   individual: true,
   ad: "eager",
@@ -1700,7 +1703,7 @@ buildPage({
   emoji: "📋",
   kind: "article",
   lead: "데려오기 전 준비물부터 첫 2주 적응, 병원 일정까지 순서대로 확인하세요.",
-  crumbs: cr({ name: "가이드", href: "index.html" }, { name: "첫 고양이 체크리스트" }),
+  crumbs: cr({ name: "가이드", href: "guide/index.html" }, { name: "첫 고양이 체크리스트" }),
   health: true,
   ad: "eager",
   bodyHtml: `<section class="card">
@@ -1944,9 +1947,16 @@ ${BREEDS.slice(0, 12).map((b) => `    <a class="chip" href="breed/${b.slug}/inde
 /* ---------------- 17) sitemap · robots ---------------- */
 const priorityOf = (d) => (d === "" ? "1.0" : d.split("/").length === 1 ? "0.9" : d.split("/").length === 2 ? "0.7" : "0.6");
 const today = "2026-08-19";
+const sorted = PAGES.slice().sort((a, b) => {
+  if (a === b) return 0;
+  if (a === "") return -1;
+  if (b === "") return 1;
+  const da = a.split("/").length, db = b.split("/").length;
+  return da - db || a.localeCompare(b);
+});
 const sitemap =
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-  PAGES.map((d) => `  <url><loc>${canonOf(d)}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${priorityOf(d)}</priority></url>`).join("\n") +
+  sorted.map((d) => `  <url><loc>${canonOf(d)}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${priorityOf(d)}</priority></url>`).join("\n") +
   "\n</urlset>\n";
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemap, "utf8");
 
