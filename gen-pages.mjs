@@ -86,7 +86,10 @@ const BUILTIN_CATS = [
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
-const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab"]);
+const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab",
+  // 팩3 생애단계 버티컬 허브 — 별도 Vercel 프로젝트(root=폴더)로 배포하는 자립형 정적 미니사이트. 손수 관리, 생성기 무관.
+  "familyday-kr", "babycalc-kr", "petcalc-kr", "billcalc-kr", "carcalc-kr",
+  "cookcalc-kr", "homecalc-kr", "fitcalc-kr", "tripcalc-kr", "housecalc-kr"]);
 
 // ── 애드센스 집중 전략: 실질 콘텐츠를 갖춘 핵심 도구만 검색 색인 ──
 // 여기 없는 도구는 <meta robots noindex,follow> + sitemap 제외(기능은 그대로 동작).
