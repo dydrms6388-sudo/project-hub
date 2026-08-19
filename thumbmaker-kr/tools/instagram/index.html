@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인스타 게시물 만들기 — 무료·로그인 없음 | 썸메이커</title>
+<meta name="description" content="인스타 게시물 만들기 무료 에디터. 1080×1080 정사각, 1080×1350(4:5) 프리셋과 한글 폰트·템플릿으로 감성 카드뉴스·게시물 이미지를 만들고 PNG로 저장하세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"인스타 게시물 만들기 — 썸메이커","applicationCategory":"DesignApplication","operatingSystem":"Web","description":"인스타 게시물 만들기 무료 에디터. 1080×1080 정사각, 1080×1350(4:5) 프리셋과 한글 폰트·템플릿으로 감성 카드뉴스·게시물 이미지를 만들고 PNG로 저장하세요.","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"인스타 게시물 이미지 크기는 몇으로 해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"정사각형은 1080×1080, 세로형은 1080×1350(4:5)이 표준입니다. 세로형이 피드에서 더 큰 면적을 차지해 도달에 유리한 경우가 많습니다. 이 도구는 두 크기를 프리셋으로 제공합니다."}},{"@type":"Question","name":"만든 이미지를 상업 계정에 써도 되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 결과물에 워터마크가 없고 내장 폰트가 모두 오픈 라이선스라 상업적 이용이 가능합니다. 단, 직접 업로드한 사진·로고의 저작권은 사용자 본인에게 책임이 있습니다."}},{"@type":"Question","name":"카드뉴스 여러 장을 같은 디자인으로 만들 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"저장 버튼으로 프로젝트를 JSON 파일로 내보낸 뒤, 열기로 다시 불러와 문구만 바꾸는 방식을 추천합니다. 작업 내용은 브라우저에도 자동 저장됩니다."}},{"@type":"Question","name":"업로드하면 인스타에서 화질이 떨어져 보여요.","acceptedAnswer":{"@type":"Answer","text":"인스타그램은 업로드 시 이미지를 다시 압축합니다. 원본을 PNG 또는 고품질 JPG(품질 90 이상)로 저장하고, 글자는 너무 가늘지 않은 폰트를 쓰면 압축 후에도 선명하게 보입니다."}},{"@type":"Question","name":"사진이 서버로 올라가나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 모든 편집은 브라우저 안에서만 이루어지고 이미지가 외부로 전송되지 않습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"썸메이커","item":"https://thumbmaker-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"인스타 게시물 만들기","item":"https://thumbmaker-kr.vercel.app/tools/instagram/"}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="logo" href="../../index.html">🎨 썸메이커<span class="dot">.</span><small style="font-weight:600;color:var(--sub)">thumbmaker-kr</small></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../../tools/youtube/index.html">유튜브</a>
+    <a href="../../tools/instagram/index.html">인스타</a>
+    <a href="../../tools/meme/index.html">짤</a>
+    <a href="../../index.html#tools">전체 도구</a>
+    <a href="../../guide/youtube-thumbnail-size/index.html">크기 가이드</a>
+    <a href="../../fonts.html">폰트</a>
+  </nav>
+</div></header>
+
+<main class="wrap-wide">
+  <nav aria-label="현재 위치" style="font-size:.8rem;color:var(--sub);margin-top:14px"><a href="../../index.html">홈</a> › 인스타 게시물 만들기</nav>
+  <h1>인스타 게시물 만들기</h1>
+  <p class="lead">정사각(1080×1080)과 4:5 세로(1080×1350) 프리셋을 지원합니다. 템플릿으로 시작해 문구와 색만 바꿔보세요.</p>
+  <div id="editor"></div>
+  <!-- ad-slot -->
+  <div class="wrap" style="padding:0">
+  <section class="content">
+    <h2>인스타 게시물 만들기 — 이 도구 소개</h2>
+    <p>인스타그램 피드 이미지는 <strong>정사각 1080×1080</strong> 또는 화면을 더 크게 차지하는 <strong>4:5 세로형 1080×1350</strong>이 표준입니다. 이 도구는 두 크기를 셀렉트 박스 하나로 오가며, 카드뉴스 표지·공지 이미지·이벤트 안내·감성 글귀 게시물을 브라우저에서 바로 만들 수 있는 무료 에디터입니다.</p>
+<p>그라데이션 배경, 폴라로이드 프레임, 체크리스트 카드 같은 템플릿이 준비되어 있고, 나눔손글씨 펜·주아 같은 감성 한글 폰트를 골라 쓸 수 있습니다. 사진을 올려 프레임 위에 배치하고, 계정 아이디를 워터마크처럼 하단에 넣는 것도 텍스트 요소 하나면 됩니다.</p>
+<p>완성본은 PNG로 저장하면 무손실 화질로, JPG로 저장하면 가벼운 용량으로 받을 수 있습니다. 인스타그램 업로드 시 앱이 다시 압축하므로 원본은 선명하게 만드는 것이 좋습니다. 2x 배율로 내보내면 확대·인쇄용으로도 쓸 수 있는 2160픽셀 이미지가 됩니다.</p>
+    <h2>카드뉴스 여러 장 만들기</h2>
+<p>여러 장짜리 카드뉴스를 만들 때는 첫 장을 완성한 뒤 <b>저장(JSON)</b>으로 프로젝트 파일을 받아 두세요. 이후 문구만 바꿔 저장을 반복하면 같은 디자인의 시리즈를 빠르게 만들 수 있습니다. 배경·제목 위치를 통일하면 피드 그리드에서 훨씬 정돈되어 보입니다.</p>
+<p>글자 수는 한 장에 두세 줄 이내가 좋습니다. 본문이 길다면 글씨를 줄이는 대신 장 수를 늘리는 편이 모바일에서 읽기 좋습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+<li>툴바 오른쪽 크기 선택에서 <b>정사각(1080×1080)</b> 또는 <b>4:5(1080×1350)</b>를 고릅니다.</li>
+<li><b>🎨 템플릿</b>에서 디자인을 고르고, 텍스트를 눌러 문구를 내 내용으로 바꿉니다.</li>
+<li><b>배경</b> 패널에서 단색/그라데이션 색을 브랜드 색에 맞게 조절합니다.</li>
+<li>사진이 필요하면 <b>🖼 이미지</b>로 올리고 드래그·핸들로 배치합니다.</li>
+<li><b>내보내기</b>에서 PNG(고화질) 또는 JPG(가벼움)를 골라 저장합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+<details><summary>인스타 게시물 이미지 크기는 몇으로 해야 하나요?</summary><p>정사각형은 1080×1080, 세로형은 1080×1350(4:5)이 표준입니다. 세로형이 피드에서 더 큰 면적을 차지해 도달에 유리한 경우가 많습니다. 이 도구는 두 크기를 프리셋으로 제공합니다.</p></details>
+<details><summary>만든 이미지를 상업 계정에 써도 되나요?</summary><p>네. 결과물에 워터마크가 없고 내장 폰트가 모두 오픈 라이선스라 상업적 이용이 가능합니다. 단, 직접 업로드한 사진·로고의 저작권은 사용자 본인에게 책임이 있습니다.</p></details>
+<details><summary>카드뉴스 여러 장을 같은 디자인으로 만들 수 있나요?</summary><p>저장 버튼으로 프로젝트를 JSON 파일로 내보낸 뒤, 열기로 다시 불러와 문구만 바꾸는 방식을 추천합니다. 작업 내용은 브라우저에도 자동 저장됩니다.</p></details>
+<details><summary>업로드하면 인스타에서 화질이 떨어져 보여요.</summary><p>인스타그램은 업로드 시 이미지를 다시 압축합니다. 원본을 PNG 또는 고품질 JPG(품질 90 이상)로 저장하고, 글자는 너무 가늘지 않은 폰트를 쓰면 압축 후에도 선명하게 보입니다.</p></details>
+<details><summary>사진이 서버로 올라가나요?</summary><p>아니요. 모든 편집은 브라우저 안에서만 이루어지고 이미지가 외부로 전송되지 않습니다.</p></details>
+    </div>
+    <p class="notice">이 도구의 모든 처리(이미지 편집·저장)는 사용자의 브라우저 안에서만 이루어지며, 어떤 파일이나 개인정보도 서버로 전송되지 않습니다. 업로드하는 이미지·문구의 저작권과 초상권은 사용자 본인에게 책임이 있습니다.</p>
+  </section>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="cols">
+    <div><h4>만들기 도구</h4><ul>
+      <li><a href="../../tools/youtube/index.html">유튜브 썸네일 만들기</a></li>
+      <li><a href="../../tools/instagram/index.html">인스타 게시물 만들기</a></li>
+      <li><a href="../../tools/story/index.html">인스타 스토리 만들기</a></li>
+      <li><a href="../../tools/blog/index.html">블로그 대표 이미지 만들기</a></li>
+      <li><a href="../../tools/meme/index.html">짤 만들기</a></li>
+      <li><a href="../../tools/quote-card/index.html">명언 카드 만들기</a></li>
+      <li><a href="../../tools/og-image/index.html">OG 이미지 만들기</a></li>
+      <li><a href="../../tools/profile/index.html">프로필 사진 만들기</a></li>
+      <li><a href="../../tools/banner/index.html">유튜브 배너 만들기</a></li>
+      <li><a href="../../tools/kakao-cover/index.html">카톡 배경 만들기</a></li>
+      <li><a href="../../tools/text-image/index.html">글씨 이미지 만들기</a></li>
+      <li><a href="../../tools/sticker/index.html">스티커 만들기</a></li>
+    </ul></div>
+    <div><h4>안내</h4><ul>
+      <li><a href="../../guide/youtube-thumbnail-size/index.html">플랫폼별 썸네일 권장 크기</a></li>
+      <li><a href="../../guide/thumbnail-tips/index.html">클릭을 부르는 썸네일 팁</a></li>
+      <li><a href="../../fonts.html">제공 폰트 및 라이선스</a></li>
+      <li><a href="../../privacy.html">개인정보처리방침</a></li>
+      <li><a href="../../terms.html">이용약관</a></li>
+    </ul></div>
+    <div><h4>썸메이커</h4>
+      <p style="margin:0;max-width:320px">로그인 없이, 워터마크 없이 쓰는 한국어 썸네일·짤 에디터.
+      모든 작업은 브라우저 안에서만 처리되며 이미지가 서버로 전송되지 않습니다.</p></div>
+  </div>
+  <div class="copy">© <span data-year>2026</span> 썸메이커 (thumbmaker-kr) · 모든 도구 무료</div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/templates.js"></script>
+<script src="../../assets/editor.js"></script>
+<script>
+(function(){
+  var preset = {slug:'instagram',sizes:[{label:'1080×1080 (정사각)',w:1080,h:1080},{label:'1080×1350 (4:5 세로)',w:1080,h:1350}],templateCats:['instagram','quote-card','story'],starterTpl:'ig-gradient-pop'};
+  if (preset.starterTpl && window.TM_TEMPLATES) {
+    var tpl = window.TM_TEMPLATES.filter(function(t){return t.id===preset.starterTpl;})[0];
+    if (tpl) preset.starter = function(ed){ ed.state = ed._templateState(tpl); };
+  }
+  window.__ed = new ThumbEditor(document.getElementById('editor'), preset);
+})();
+</script>
+</body>
+</html>

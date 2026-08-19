@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수업 시간 계산기 - 학기 총 수업시간 · 결석 가능 횟수 | 스터디룸</title>
+<meta name="description" content="수업 시간 계산기. 주당 수업 횟수와 학기 주수로 총 수업시간을 계산하고, 출석 인정 기준(2/3, 3/4 등)에 따라 F를 면하는 최대 결석 가능 횟수를 알려 드립니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../gpa/">학점 계산기</a><a href="../timetable/">시간표</a><a href="../exam-dday/">시험 디데이</a><a href="../grade-calc/">내신 등급</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 수업 시간 계산기</nav>
+<div class="page-h">
+  <h1>수업 시간 계산기</h1>
+  <p>학기 총 수업시간과 출석 기준에 따른 결석 가능 횟수를 계산합니다.</p>
+</div>
+
+<section class="card">
+  <div class="grid3">
+    <div class="field"><label class="f">학기 주수</label>
+      <select id="fWeeks"><option>14</option><option selected>15</option><option>16</option></select></div>
+    <div class="field"><label class="f">주당 수업 횟수</label>
+      <select id="fPerWeek"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div>
+    <div class="field"><label class="f">1회 수업 시간 (분)</label>
+      <select id="fMin"><option>50</option><option selected>75</option><option>90</option><option>100</option><option>110</option><option>120</option><option>150</option><option>180</option></select></div>
+  </div>
+  <div class="field"><label class="f">출석 인정 기준 (이만큼 이상 출석해야 성적 인정)</label>
+    <select id="fReq">
+      <option value="0.6667" selected>총 수업의 2/3 이상 (가장 흔한 기준)</option>
+      <option value="0.75">총 수업의 3/4 이상</option>
+      <option value="0.8">총 수업의 80% 이상</option>
+      <option value="0.9">총 수업의 90% 이상</option>
+    </select></div>
+  <button class="btn btn-p" id="btnCalc">계산하기</button>
+  <div class="result-box" id="out" style="display:none"></div>
+  <p class="note">출석 인정 기준과 지각 처리(지각 3회 = 결석 1회 등)는 대학·과목마다 다릅니다. 참고용이며
+  정확한 기준은 소속 학교 학칙과 강의계획서를 확인하세요.</p>
+  <!-- ad-slot -->
+</section>
+
+<article class="prose">
+  <h2>수업 시간 계산기 소개</h2>
+  <p>"이 수업 몇 번까지 빠져도 F가 아닐까?"는 모든 대학생이 한 번쯤 검색하는 질문입니다. 이 계산기는 학기
+  주수, 주당 수업 횟수, 1회 수업 시간을 입력하면 학기 전체 수업 횟수와 총 수업시간을 계산하고, 학교의 출석
+  인정 기준(보통 총 수업시수의 2/3 또는 3/4 이상 출석)에 따라 <b>성적을 인정받으면서 결석할 수 있는 최대
+  횟수</b>를 알려 줍니다.</p>
+  <p>많은 대학이 "총 수업시수의 1/3 초과 결석 시 F(또는 성적 불인정)" 규정을 두고 있지만, 3/4 출석을
+  요구하는 학교, 지각 누적을 결석으로 환산하는 과목, 교수 재량 기준이 더 엄격한 과목도 많습니다. 결과는
+  어디까지나 참고용으로 활용하고, 실제 기준은 학칙·강의계획서로 확인하세요.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>학기 주수(보통 15주)와 주당 수업 횟수, 1회 수업 시간을 선택합니다.</li>
+    <li>학교 학칙의 출석 인정 기준을 선택합니다(모르면 가장 흔한 2/3 기준).</li>
+    <li>계산하기를 누르면 총 수업 횟수·시간과 최대 결석 가능 횟수가 표시됩니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>결석 가능 횟수가 소수점으로 나오면 어떻게 보나요?</summary>
+      <div class="a">이 계산기는 내림 처리한 정수를 보여 줍니다. 예를 들어 총 30회 수업에 2/3 기준이면
+      결석 허용은 10회입니다. 10회까지는 인정, 11회부터 불인정(1/3 초과)입니다.</div></details>
+    <details><summary>지각은 어떻게 계산하나요?</summary>
+      <div class="a">"지각 3회 = 결석 1회"처럼 환산하는 과목이 많지만 규정은 과목마다 다릅니다. 지각이
+      잦다면 환산된 결석 수를 결과의 허용 횟수와 비교해 보세요.</div></details>
+    <details><summary>공결(공식 결석)도 결석에 포함되나요?</summary>
+      <div class="a">군 훈련, 병원 입원, 경조사 등 증빙이 있는 공결은 대부분 출석으로 인정되거나 별도 처리
+      됩니다. 학교 양식에 따라 기한 내 증빙을 제출해야 하니 미리 학과 사무실에 문의하세요.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"수업 시간 계산기","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"학기 총 수업시간과 출석 기준별 결석 가능 횟수 계산기"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"결석 가능 횟수는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"총 수업 횟수에 (1-출석 인정 비율)을 곱해 내림한 값입니다. 예: 30회 수업, 2/3 기준이면 10회."}},
+{"@type":"Question","name":"지각은 어떻게 처리되나요?","acceptedAnswer":{"@type":"Answer","text":"지각 3회를 결석 1회로 환산하는 과목이 많으나 규정은 과목마다 다릅니다."}},
+{"@type":"Question","name":"공결도 결석인가요?","acceptedAnswer":{"@type":"Answer","text":"증빙이 있는 공결은 대부분 출석 인정 또는 별도 처리되며 학교 규정 확인이 필요합니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"수업 시간 계산기","item":"https://studyroom-kr.vercel.app/tools/class-time/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+$('btnCalc').onclick=function(){
+  var w=+$('fWeeks').value, n=+$('fPerWeek').value, m=+$('fMin').value, req=+$('fReq').value;
+  var sessions=w*n;
+  var totalMin=sessions*m;
+  var hours=Math.floor(totalMin/60), mins=totalMin%60;
+  var mustAttend=Math.ceil(sessions*req - 1e-9);
+  var canMiss=sessions-mustAttend;
+  var reqLabel=$('fReq').options[$('fReq').selectedIndex].text;
+  $('out').innerHTML=
+    '<div class="stat-grid">'
+    +'<div class="stat"><div class="k">학기 총 수업 횟수</div><div class="v">'+sessions+'회</div></div>'
+    +'<div class="stat"><div class="k">학기 총 수업시간</div><div class="v">'+hours+'시간'+(mins?' '+mins+'분':'')+'</div></div>'
+    +'<div class="stat"><div class="k">최소 출석 횟수</div><div class="v">'+mustAttend+'회</div></div>'
+    +'<div class="stat"><div class="k">최대 결석 가능</div><div class="v" style="color:var(--brand)">'+canMiss+'회</div></div>'
+    +'</div>'
+    +'<p style="margin:12px 0 0;font-size:14px">'+reqLabel.replace(/ \(.*\)/,'')+' 기준으로, <b>'+canMiss+'회</b>까지 결석해도 출석 요건을 충족합니다. '
+    +'<b>'+(canMiss+1)+'회</b> 결석부터는 성적이 인정되지 않을 수 있습니다.</p>';
+  $('out').style.display='block';
+};
+})();
+</script>
+</body>
+</html>

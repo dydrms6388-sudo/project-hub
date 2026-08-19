@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GIF 만들기 - 이미지 여러 장을 움짤로</title>
+<meta name="description" content="GIF 만들기: 이미지 여러 장을 올려 프레임 간격을 정하면 움직이는 GIF 완성. 순서 변경, 크기 제한, 미리보기. 서버 업로드 없는 무료 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"GIF 만들기","description":"GIF 만들기: 이미지 여러 장을 올려 프레임 간격을 정하면 움직이는 GIF 완성. 순서 변경, 크기 제한, 미리보기. 서버 업로드 없는 무료 도구.","url":"https://imagelab-kr.vercel.app/tools/gif-maker/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"프레임 간격은 어느 정도가 좋나요?","acceptedAnswer":{"@type":"Answer","text":"슬라이드쇼 느낌은 500~1000ms, 자연스러운 애니메이션은 60~120ms가 적당합니다. 30ms 미만은 브라우저·플랫폼에서 무시될 수 있어 최소 30ms로 제한됩니다."}},{"@type":"Question","name":"GIF 화질이 원본보다 나빠 보여요.","acceptedAnswer":{"@type":"Answer","text":"GIF는 프레임당 최대 256색만 표현하는 오래된 형식이라 사진처럼 색이 풍부한 이미지는 계단 현상이 생깁니다. 화질이 중요하면 프레임 수를 줄이거나 그림·스크린샷 위주로 사용하세요."}},{"@type":"Question","name":"동영상을 GIF로 바꿀 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 이미지→GIF 전용입니다. 동영상에서 장면을 캡처한 뒤 캡처 이미지를 올리는 방식으로 활용할 수 있습니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"GIF 만들기","item":"https://imagelab-kr.vercel.app/tools/gif-maker/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › GIF 만들기</nav>
+<h1>GIF 만들기</h1>
+<p class="lead">이미지 여러 장을 순서대로 이어 움직이는 GIF를 만듭니다. 프레임 간격·크기 조절 가능.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>GIF 프레임이 될 이미지들을 선택하세요</strong>
+  클릭하여 파일 선택 (여러 장 가능) · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*" multiple>
+</div>
+<ul class="flist" id="list"></ul>
+<div id="panel" style="display:none">
+<p class="notice-warn" id="needMore" style="display:none">GIF를 만들려면 이미지가 2장 이상 필요합니다.</p>
+<div class="field-row">
+  <label for="delay">프레임 간격 (ms)</label>
+  <input type="number" id="delay" value="500" min="30" step="10" style="max-width:120px" inputmode="numeric">
+  <label for="maxw">최대 너비</label>
+  <select id="maxw" style="max-width:140px"><option value="320">320px</option><option value="480" selected>480px</option><option value="640">640px</option><option value="960">960px</option></select>
+  <label for="bg">여백 색</label><input type="color" id="bg" value="#ffffff">
+</div>
+<div class="btn-row"><button class="btn btn-primary" id="run" disabled>GIF 만들기</button></div>
+<div class="prog" id="prog" style="display:none"><i></i></div>
+<p class="status" id="status"></p>
+<div id="result" style="display:none">
+  <h3>미리보기</h3>
+  <img id="pv" alt="생성된 GIF 미리보기" style="border:1px solid var(--line);border-radius:10px">
+  <div class="btn-row"><button class="btn btn-primary" id="dl">GIF 다운로드</button></div>
+</div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>GIF 만들기 소개</h2>
+<p>GIF 만들기 도구는 사진·이미지 여러 장을 순서대로 이어 움직이는 GIF(움짤)를 만듭니다. 프레임 간격(밀리초)을 조절해 빠르게 넘어가는 애니메이션도, 천천히 바뀌는 슬라이드쇼도 만들 수 있습니다.</p>
+<p>프레임 크기가 서로 달라도 첫 번째 이미지 비율에 맞춰 자동 배치되며 남는 부분은 지정한 여백 색으로 채워집니다. GIF는 256색 제한이 있는 형식이라 사진에서는 색 띠가 생길 수 있고, 용량이 커질 수 있으니 최대 너비를 480px 정도로 유지하는 것을 권장합니다. 인코딩은 gif.js 라이브러리로 브라우저 안에서 처리됩니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>이미지 2장 이상 선택</li>
+<li>↑↓로 순서 조정, 프레임 간격(ms)과 최대 너비 설정</li>
+<li>「GIF 만들기」 클릭 후 인코딩 완료 대기</li>
+<li>미리보기 확인 후 다운로드</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>프레임 간격은 어느 정도가 좋나요?</summary><p>슬라이드쇼 느낌은 500~1000ms, 자연스러운 애니메이션은 60~120ms가 적당합니다. 30ms 미만은 브라우저·플랫폼에서 무시될 수 있어 최소 30ms로 제한됩니다.</p></details>
+<details class="faq"><summary>GIF 화질이 원본보다 나빠 보여요.</summary><p>GIF는 프레임당 최대 256색만 표현하는 오래된 형식이라 사진처럼 색이 풍부한 이미지는 계단 현상이 생깁니다. 화질이 중요하면 프레임 수를 줄이거나 그림·스크린샷 위주로 사용하세요.</p></details>
+<details class="faq"><summary>동영상을 GIF로 바꿀 수 있나요?</summary><p>이 도구는 이미지→GIF 전용입니다. 동영상에서 장면을 캡처한 뒤 캡처 이미지를 올리는 방식으로 활용할 수 있습니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var items = []; // {file, img}
+  var workerURL = null;
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    for (var i = 0; i < fs.length; i++) {
+      items.push({ file: fs[i], img: await IL.loadImage(fs[i]) });
+    }
+    renderList();
+  });
+
+  function renderList() {
+    var list = $('list'); list.innerHTML = '';
+    items.forEach(function (it, i) {
+      var li = document.createElement('li');
+      var img = new Image(); img.className = 'thumb'; img.src = URL.createObjectURL(it.file);
+      img.onload = function(){ URL.revokeObjectURL(img.src); };
+      var meta = document.createElement('div'); meta.className = 'meta';
+      meta.innerHTML = '<b></b>';
+      meta.querySelector('b').textContent = (i + 1) + '번 프레임 · ' + it.file.name;
+      var up = document.createElement('button'); up.className = 'btn btn-sm'; up.textContent = '↑';
+      var dn = document.createElement('button'); dn.className = 'btn btn-sm'; dn.textContent = '↓';
+      var del = document.createElement('button'); del.className = 'btn btn-sm'; del.textContent = '삭제';
+      up.onclick = function () { if (i > 0) { items.splice(i - 1, 0, items.splice(i, 1)[0]); renderList(); } };
+      dn.onclick = function () { if (i < items.length - 1) { items.splice(i + 1, 0, items.splice(i, 1)[0]); renderList(); } };
+      del.onclick = function () { items.splice(i, 1); renderList(); };
+      li.appendChild(img); li.appendChild(meta); li.appendChild(up); li.appendChild(dn); li.appendChild(del);
+      list.appendChild(li);
+    });
+    $('panel').style.display = items.length ? '' : 'none';
+    $('run').disabled = items.length < 2;
+    $('needMore').style.display = (items.length === 1) ? '' : 'none';
+  }
+
+  /* gif.js 워커는 교차 출처 제한 때문에 스크립트를 받아 Blob URL로 사용 */
+  async function getWorkerURL() {
+    if (workerURL) return workerURL;
+    var res = await fetch('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js');
+    if (!res.ok) throw new Error('GIF 워커 스크립트를 불러오지 못했습니다 (네트워크 확인)');
+    var text = await res.text();
+    workerURL = URL.createObjectURL(new Blob([text], { type: 'application/javascript' }));
+    return workerURL;
+  }
+
+  $('run').addEventListener('click', async function () {
+    if (typeof GIF === 'undefined') {
+      $('status').textContent = 'GIF 라이브러리(gif.js CDN)를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.';
+      return;
+    }
+    $('run').disabled = true;
+    var delay = Math.max(30, parseInt($('delay').value, 10) || 500);
+    var maxW = parseInt($('maxw').value, 10);
+    var bg = $('bg').value;
+    var bar = $('prog').querySelector('i');
+    $('prog').style.display = '';
+    $('status').textContent = 'GIF 인코딩 준비 중…';
+    try {
+      var wurl = await getWorkerURL();
+      /* 프레임 크기: 첫 이미지 비율 기준, 최대 너비 제한 */
+      var first = items[0].img;
+      var w = Math.min(maxW, IL.imgW(first));
+      var h = Math.round(w * IL.imgH(first) / IL.imgW(first));
+      var gif = new GIF({ workers: 2, quality: 10, width: w, height: h, workerScript: wurl });
+      items.forEach(function (it) {
+        var c = IL.canvasOf(w, h), ctx = c.getContext('2d');
+        ctx.imageSmoothingQuality = 'high';
+        ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+        /* contain 배치 */
+        var s = Math.min(w / IL.imgW(it.img), h / IL.imgH(it.img));
+        var dw = IL.imgW(it.img) * s, dh = IL.imgH(it.img) * s;
+        ctx.drawImage(it.img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+        gif.addFrame(c, { delay: delay, copy: true });
+      });
+      gif.on('progress', function (p) {
+        bar.style.width = Math.round(p * 100) + '%';
+        $('status').textContent = '인코딩 중… ' + Math.round(p * 100) + '%';
+      });
+      gif.on('finished', function (blob) {
+        bar.style.width = '100%';
+        $('status').textContent = '완료! (' + IL.fmtBytes(blob.size) + ')';
+        var url = URL.createObjectURL(blob);
+        $('pv').src = url;
+        $('result').style.display = '';
+        $('dl').onclick = function () {
+          IL.download(blob, IL.outName(items[0].file.name, 'animated', 'gif'));
+        };
+        $('run').disabled = false;
+      });
+      gif.render();
+    } catch (e) {
+      $('status').textContent = '오류: ' + e.message;
+      $('run').disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

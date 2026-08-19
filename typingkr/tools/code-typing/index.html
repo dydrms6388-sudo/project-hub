@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코딩 타자 연습 - JS/Python 코드 타이핑 | typingkr</title>
+<meta name="description" content="자바스크립트·파이썬 코드 스니펫으로 하는 코딩 타자 연습. 괄호, 따옴표, 특수문자 입력 속도를 올리고 결과 카드를 이미지로 저장하세요. 무료, 설치 없음.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"코딩 타자 연습",
+"url":"https://typingkr.vercel.app/tools/code-typing/","applicationCategory":"EducationalApplication",
+"operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+"description":"JavaScript와 Python 스니펫으로 특수문자·기호 타이핑을 연습하는 무료 도구."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"typingkr","item":"https://typingkr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"코딩 타자 연습","item":"https://typingkr.vercel.app/tools/code-typing/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"코딩 타자는 일반 타자와 무엇이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"괄호·중괄호·따옴표·세미콜론 같은 특수문자의 비중이 훨씬 높습니다. 이 기호들은 새끼손가락 담당이 많아 별도의 연습이 필요합니다."}},
+{"@type":"Question","name":"줄바꿈과 들여쓰기는 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"⏎ 표시에서 Enter 키를 누르고, 들여쓰기는 스페이스로 입력합니다. Tab 키를 누르면 공백 4칸이 입력됩니다."}},
+{"@type":"Question","name":"스니펫은 어디서 가져온 건가요?","acceptedAnswer":{"@type":"Answer","text":"모두 이 사이트에서 자체 작성한 짧은 예제 코드입니다. 특정 프로젝트의 소스 코드가 아닙니다."}}]}
+</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">타자연습<span class="dot">·</span>typingkr</a>
+  <span class="head-sp"></span>
+  <button id="soundBtn" class="iconbtn" type="button">🔇 소리 끔</button>
+  <button id="themeBtn" class="iconbtn" type="button" aria-label="다크/라이트 테마 전환">🌙</button>
+</div></header>
+
+<main class="wrap">
+  <h1>코딩 타자 연습</h1>
+  <p class="hint">자체 작성 JS/Python 스니펫으로 괄호·따옴표·기호 입력을 단련합니다. ⏎ 는 Enter, 들여쓰기는 스페이스(Tab = 공백 4칸)입니다.</p>
+
+  <div class="mobile-note">📱 코드 입력 연습은 <b>PC 키보드를 권장</b>합니다.</div>
+
+  <div class="card">
+    <div class="chips" id="langChips">
+      <button class="chip on" data-l="codeJS">JavaScript</button>
+      <button class="chip" data-l="codePY">Python</button>
+    </div>
+  </div>
+
+  <div class="statbar">
+    <div class="stat"><b id="stCpm">0</b><span>타/분</span></div>
+    <div class="stat"><b id="stAcc" class="ok">100%</b><span>정확도</span></div>
+    <div class="stat"><b id="stItem">0/10</b><span>진행</span></div>
+  </div>
+  <div class="progress"><i id="pbar"></i></div>
+
+  <div id="playArea">
+    <div class="target mono" id="target" aria-live="polite"></div>
+    <textarea class="typebox mono" id="input" rows="4" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="여기에 코드를 그대로 입력하세요 (영문 입력 상태 확인)"></textarea>
+  </div>
+
+  <div id="resultArea" class="card result-card" style="display:none">
+    <h2 style="margin-top:0">연습 완료! 🎉</h2>
+    <div id="cardBox"></div>
+    <div class="row" style="justify-content:center;margin-top:14px">
+      <button class="btn" id="saveBtn" type="button">결과 카드 PNG 저장</button>
+      <button class="btn ghost" id="againBtn" type="button">다시 연습</button>
+    </div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="prose">
+    <h2>코딩 타자 연습 소개</h2>
+    <p>개발자의 타이핑은 일반 문장과 통계적으로 완전히 다릅니다. <code>{}</code>, <code>()</code>,
+    <code>=&gt;</code>, <code>''</code> 같은 기호가 끊임없이 등장하고, 대부분 새끼손가락과 Shift
+    조합이 필요합니다. 이 연습기는 변수 선언, 배열 메서드, 조건문·반복문, 함수 정의 등 실무에서
+    가장 자주 치는 패턴을 자체 작성 스니펫으로 담았습니다.</p>
+    <p>여러 줄 스니펫에서는 줄 끝의 ⏎ 표시에서 Enter를 누르면 됩니다. Python 모드는 4칸
+    들여쓰기까지 그대로 입력해야 하므로, 들여쓰기 감각을 함께 기를 수 있습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>언어(JavaScript/Python)를 고릅니다. 한 세트는 10개 스니펫입니다.</li>
+      <li>입력 상태를 영문으로 두고 화면의 코드를 그대로 따라 입력합니다.</li>
+      <li>자동 완성 없는 순수 입력이므로, 에디터 밖에서도 흔들리지 않는 기호 감각이 생깁니다.</li>
+    </ol>
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      <details><summary>세미콜론까지 정확히 쳐야 하나요?</summary><p>네. 화면에 표시된 문자와 정확히 일치해야 정답 처리됩니다. 기호 하나까지 근육 기억으로 만드는 것이 목적입니다.</p></details>
+      <details><summary>다른 언어도 추가되나요?</summary><p>현재는 JS와 Python 두 언어를 제공합니다. 다른 언어 문법도 기호 구성이 비슷해 연습 효과가 이어집니다.</p></details>
+      <details><summary>타수 기준이 한글과 같나요?</summary><p>코드는 모두 영문·기호라 글자 1개 = 1타입니다. 개발자 채용에서 흔히 보는 WPM으로는 타/분 ÷ 5 로 환산하세요.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <nav>
+    <a href="../korean-typing/">한글 타자 연습</a>
+    <a href="../english-typing/">영타 연습</a>
+    <a href="../typing-test/">타자 속도 측정</a>
+    <a href="../keyboard-layout/">두벌식 자판</a>
+    <a href="../number-typing/">숫자 키패드</a>
+    <a href="../kids-typing/">어린이 타자</a>
+    <a href="../custom-text/">내 글로 연습</a>
+    <a href="../../guide/typing-tips/">타자 팁 가이드</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© typingkr · tomatoeggcat.com</p>
+</div></footer>
+
+<script src="../../assets/hangul.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/engine.js"></script>
+<script src="../../assets/data/sentences/code.js"></script>
+<script>
+(function () {
+  'use strict';
+  var D = window.TKDATA;
+  var $ = function (id) { return document.getElementById(id); };
+  var lang = 'codeJS', queue = [], idx = 0, TOTAL = 10;
+
+  function build() {
+    queue = TK.shuffle(D[lang]).slice(0, TOTAL);
+    idx = 0;
+  }
+  function updateItem() {
+    $('stItem').textContent = Math.min(idx, TOTAL) + '/' + TOTAL;
+    $('pbar').style.width = Math.min(idx / TOTAL, 1) * 100 + '%';
+  }
+  function start() {
+    build();
+    engine.resetSession();
+    $('resultArea').style.display = 'none';
+    $('playArea').style.display = '';
+    updateItem();
+    engine.setText(queue[0]);
+  }
+  function finish() {
+    var s = engine.stats(0, 0, 0);
+    $('playArea').style.display = 'none';
+    var cv = TK.drawResultCard({
+      title: '코딩 타자 연습 결과',
+      sub: (lang === 'codeJS' ? 'JavaScript' : 'Python') + ' · ' + TOTAL + '개 스니펫',
+      stats: [
+        { label: '타/분', value: s.cpm },
+        { label: 'WPM', value: Math.round(s.cpm / 5) },
+        { label: '정확도', value: s.acc + '%' }
+      ],
+      footer: s.acc >= 97 ? 'Clean coder! ✨' : 'Compile warning: 오타 주의 🐛'
+    });
+    var box = $('cardBox');
+    box.textContent = '';
+    box.appendChild(cv);
+    $('resultArea').style.display = '';
+    $('saveBtn').onclick = function () { TK.downloadCanvas(cv, 'typingkr-code.png'); };
+  }
+
+  var engine = new TK.Engine({
+    targetEl: $('target'),
+    inputEl: $('input'),
+    onProgress: function (s) {
+      $('stCpm').textContent = s.cpm;
+      $('stAcc').textContent = s.acc + '%';
+      $('stAcc').classList.toggle('ok', s.acc >= 95);
+    },
+    onLineDone: function () {
+      TK.doneSound();
+      idx++; updateItem();
+      if (idx >= TOTAL) return finish();
+      engine.setText(queue[idx]);
+    },
+    onType: TK.clickSound,
+    onError: TK.errorSound
+  });
+
+  // Tab = 공백 4칸 (포커스 이탈 방지)
+  $('input').addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var el = e.target, s = el.selectionStart, v = el.value;
+      el.value = v.slice(0, s) + '    ' + v.slice(el.selectionEnd);
+      el.selectionStart = el.selectionEnd = s + 4;
+      engine.grade();
+    }
+  });
+
+  $('langChips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    lang = b.getAttribute('data-l');
+    var btns = $('langChips').querySelectorAll('.chip');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i] === b);
+    start();
+  });
+  $('againBtn').addEventListener('click', start);
+
+  TK.bindSoundToggle('soundBtn');
+  start();
+})();
+</script>
+</body>
+</html>

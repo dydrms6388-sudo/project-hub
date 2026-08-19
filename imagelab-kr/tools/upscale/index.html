@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진 화질 좋게 하기 - AI 업스케일 2배 (브라우저 로컬)</title>
+<meta name="description" content="사진 화질 좋게 하기: AI 초해상도 모델(Swin2SR)을 브라우저에 내려받아 로컬에서 2배 업스케일. 전후 비교 슬라이더 제공. 사진은 서버로 전송되지 않습니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사진 화질 좋게 하기","description":"사진 화질 좋게 하기: AI 초해상도 모델(Swin2SR)을 브라우저에 내려받아 로컬에서 2배 업스케일. 전후 비교 슬라이더 제공. 사진은 서버로 전송되지 않습니다.","url":"https://imagelab-kr.vercel.app/tools/upscale/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"화질을 원본(찍었을 때)으로 되돌릴 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 압축이나 축소로 이미 사라진 정보는 어떤 기술로도 복원되지 않습니다. AI는 \"있었을 법한\" 픽셀을 추정해 채울 뿐이므로, 결과물은 자연스러워 보여도 원본과 다를 수 있습니다. 신원 확인·증거 등 정확성이 중요한 용도로는 사용하지 마세요."}},{"@type":"Question","name":"왜 1024px 제한이 있나요?","acceptedAnswer":{"@type":"Answer","text":"초해상도 모델은 연산량이 매우 커서 큰 이미지는 브라우저 메모리를 초과하거나 수십 분이 걸릴 수 있습니다. 긴 변 1024px를 넘으면 자동 축소 후 처리하며, 빠른 결과를 원하면 512px 이하를 권장합니다."}},{"@type":"Question","name":"4배 확대도 되나요?","acceptedAnswer":{"@type":"Answer","text":"현재는 브라우저에서 무리 없이 도는 경량 2배 모델만 제공합니다. 2배 결과를 다시 올려 한 번 더 처리하면 4배에 가까운 크기를 얻을 수 있지만 인공적인 느낌이 강해질 수 있습니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"사진 화질 좋게 하기","item":"https://imagelab-kr.vercel.app/tools/upscale/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 사진 화질 좋게 하기</nav>
+<h1>사진 화질 좋게 하기 <span class="badge badge-exp">실험적 · PC 권장</span></h1>
+<p class="lead">AI 초해상도 모델로 사진을 2배 키우면서 세부를 보완합니다. 기기 안에서만 처리됩니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+<p class="notice-warn"><b>실험적 기능 · PC 권장</b> — 최초 사용 시 AI 모델을 내려받으며(이후 캐시),
+처리에는 기기 성능에 따라 수 초~수 분이 걸립니다. <b>작은 이미지(긴 변 512px 이하)를 권장</b>하며,
+1024px를 넘는 이미지는 1024px로 축소 후 처리됩니다. <span id="dev"></span></p>
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<p class="notice-warn" id="capNote" style="display:none">이 이미지는 1024px를 초과하여 1024px로 축소한 뒤 2배 확대됩니다.</p>
+<div id="panel" style="display:none">
+<div class="btn-row"><button class="btn btn-primary" id="run">2배 업스케일 시작</button></div>
+<div class="prog" id="prog" style="display:none"><i></i></div>
+<p class="status" id="status"></p>
+<div class="notice-warn" id="err" style="display:none"></div>
+<div id="result" style="display:none">
+  <h3>비교: 단순 확대 vs AI 초해상도</h3>
+  <div id="cmp"></div>
+  <div class="btn-row"><button class="btn btn-primary" id="dl">PNG 저장</button></div>
+</div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>사진 화질 좋게 하기 소개</h2>
+<p>사진 화질 좋게 하기(AI 업스케일) 도구는 초해상도 모델 Swin2SR(경량 x2)을 이용해 사진을 가로·세로 2배로 키우면서 경계와 질감을 보완합니다. 모델을 브라우저에 내려받아 기기 안에서만 추론하므로 사진이 서버로 전송되지 않으며, WebGPU를 지원하는 브라우저에서는 그래픽 가속으로 더 빠르게 동작합니다.</p>
+<p>한 가지 분명히 할 점: AI 초해상도는 원본에 없는 정보를 "그럴듯하게 추정해서" 채우는 기술이지, 사라진 정보를 복원하는 기술이 아닙니다. 흐릿한 글자가 정확한 글자로 돌아오거나, 뭉개진 얼굴이 실제 그 사람 얼굴로 복원되지는 않습니다. 자세한 원리는 아래 가이드 문서를 참고하세요.</p>
+<p>완료 후에는 단순 확대본과 AI 결과를 비교 슬라이더로 나란히 볼 수 있어 개선 정도를 직접 확인할 수 있습니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택 (긴 변 512px 이하 권장)</li>
+<li>「2배 업스케일 시작」 클릭 — 최초 1회 모델 다운로드</li>
+<li>비교 슬라이더로 단순 확대와 비교</li>
+<li>PNG로 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>화질을 원본(찍었을 때)으로 되돌릴 수 있나요?</summary><p>아니요. 압축이나 축소로 이미 사라진 정보는 어떤 기술로도 복원되지 않습니다. AI는 "있었을 법한" 픽셀을 추정해 채울 뿐이므로, 결과물은 자연스러워 보여도 원본과 다를 수 있습니다. 신원 확인·증거 등 정확성이 중요한 용도로는 사용하지 마세요.</p></details>
+<details class="faq"><summary>왜 1024px 제한이 있나요?</summary><p>초해상도 모델은 연산량이 매우 커서 큰 이미지는 브라우저 메모리를 초과하거나 수십 분이 걸릴 수 있습니다. 긴 변 1024px를 넘으면 자동 축소 후 처리하며, 빠른 결과를 원하면 512px 이하를 권장합니다.</p></details>
+<details class="faq"><summary>4배 확대도 되나요?</summary><p>현재는 브라우저에서 무리 없이 도는 경량 2배 모델만 제공합니다. 2배 결과를 다시 올려 한 번 더 처리하면 4배에 가까운 크기를 얻을 수 있지만 인공적인 느낌이 강해질 수 있습니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script type="module">
+/* 실험적 기능: @huggingface/transformers (CDN ESM) + Swin2SR x2 초해상도 로컬 추론 */
+const $ = (id) => document.getElementById(id);
+let file = null, img = null, upscaler = null;
+let resultBlob = null;
+
+IL.bindDrop($('drop'), $('fin'), async (fs) => {
+  file = fs[0];
+  img = await IL.loadImage(file);
+  const w = IL.imgW(img), h = IL.imgH(img);
+  $('drop').querySelector('strong').textContent = file.name + ' (' + w + '×' + h + ')';
+  $('panel').style.display = '';
+  $('capNote').style.display = Math.max(w, h) > 1024 ? '' : 'none';
+});
+
+function setProgress(pct, text) {
+  $('prog').style.display = '';
+  $('prog').querySelector('i').style.width = pct + '%';
+  $('status').textContent = text;
+}
+
+async function loadPipe() {
+  if (upscaler) return;
+  const { pipeline } = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3');
+  const seen = {};
+  const cb = (p) => {
+    if (p.status === 'progress' && p.file) {
+      seen[p.file] = p.progress || 0;
+      const vals = Object.values(seen);
+      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      setProgress(Math.round(avg), '모델 다운로드 중… ' + Math.round(avg) + '% (최초 1회, 이후 캐시 사용)');
+    }
+  };
+  const modelId = 'Xenova/swin2SR-lightweight-x2-64';
+  try {
+    upscaler = await pipeline('image-to-image', modelId, { device: 'webgpu', progress_callback: cb });
+    $('dev').textContent = '가속: WebGPU';
+  } catch (e) {
+    upscaler = await pipeline('image-to-image', modelId, { progress_callback: cb });
+    $('dev').textContent = '가속: WASM (느릴 수 있음)';
+  }
+}
+
+$('run').addEventListener('click', async () => {
+  if (!file) return;
+  $('run').disabled = true;
+  $('err').style.display = 'none';
+  try {
+    setProgress(2, '모델 준비 중…');
+    await loadPipe();
+
+    /* 입력 제한: 긴 변 1024px (초과 시 자동 축소 후 처리) */
+    let w = IL.imgW(img), h = IL.imgH(img);
+    const cap = 1024;
+    if (Math.max(w, h) > cap) {
+      const s = cap / Math.max(w, h);
+      w = Math.round(w * s); h = Math.round(h * s);
+    }
+    const src = IL.canvasOf(w, h);
+    src.getContext('2d').drawImage(img, 0, 0, w, h);
+    const url = URL.createObjectURL(await IL.toBlob(src, 'image/png'));
+
+    setProgress(100, '초해상도 처리 중… (' + w + '×' + h + ' → ' + w * 2 + '×' + h * 2 + ', 기기 성능에 따라 수 초~수 분)');
+    const t0 = performance.now();
+    const output = await upscaler(url);
+    URL.revokeObjectURL(url);
+    const sec = ((performance.now() - t0) / 1000).toFixed(1);
+
+    /* RawImage → canvas */
+    const oc = IL.canvasOf(output.width, output.height);
+    const octx = oc.getContext('2d');
+    const id = octx.createImageData(output.width, output.height);
+    const ch = output.channels;
+    for (let i = 0; i < output.width * output.height; i++) {
+      id.data[i * 4] = output.data[i * ch];
+      id.data[i * 4 + 1] = output.data[i * ch + 1];
+      id.data[i * 4 + 2] = output.data[i * ch + 2];
+      id.data[i * 4 + 3] = 255;
+    }
+    octx.putImageData(id, 0, 0);
+    resultBlob = await IL.toBlob(oc, 'image/png');
+
+    /* 비교: 원본을 단순 2배 확대한 것 vs AI 결과 */
+    const naive = IL.canvasOf(output.width, output.height);
+    const nctx = naive.getContext('2d');
+    nctx.imageSmoothingQuality = 'high';
+    nctx.drawImage(src, 0, 0, output.width, output.height);
+    const naiveBlob = await IL.toBlob(naive, 'image/png');
+    IL.compareSlider($('cmp'), URL.createObjectURL(naiveBlob), URL.createObjectURL(resultBlob),
+      '단순 확대', 'AI 초해상도');
+
+    $('result').style.display = '';
+    $('prog').style.display = 'none';
+    $('status').textContent = '완료! ' + output.width + '×' + output.height + 'px (' + sec + '초 소요)';
+  } catch (e) {
+    console.error(e);
+    $('prog').style.display = 'none';
+    $('status').textContent = '';
+    $('err').style.display = '';
+    $('err').innerHTML =
+      '<b>초해상도 처리에 실패했습니다.</b><br>' +
+      '가능한 원인: ① 인터넷 연결 문제로 모델을 받지 못함 ' +
+      '② 기기 메모리 부족(모바일에서 자주 발생 — PC 이용 권장) ' +
+      '③ 이미지가 너무 큼(512px 이하 권장).<br>' +
+      '<span style="color:var(--sub);font-size:.82rem">오류: ' +
+      String(e && e.message || e).slice(0, 200).replace(/</g, '&lt;') + '</span>';
+  }
+  $('run').disabled = false;
+});
+
+$('dl').addEventListener('click', () => {
+  if (resultBlob) IL.download(resultBlob, IL.outName(file.name, 'x2', 'png'));
+});
+</script>
+</body>
+</html>

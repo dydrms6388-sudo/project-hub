@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>픽셀화 모자이크 - 사진 부분 모자이크 처리</title>
+<meta name="description" content="픽셀화·모자이크: 드래그로 영역을 선택하면 즉시 모자이크 처리. 픽셀 크기 조절, 여러 영역, 실행 취소 지원. 서버 업로드 없는 무료 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"픽셀화·모자이크","description":"픽셀화·모자이크: 드래그로 영역을 선택하면 즉시 모자이크 처리. 픽셀 크기 조절, 여러 영역, 실행 취소 지원. 서버 업로드 없는 무료 도구.","url":"https://imagelab-kr.vercel.app/tools/pixelate/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"모자이크를 나중에 되돌릴 수 있나요? 다른 사람이 복원할 수는요?","acceptedAnswer":{"@type":"Answer","text":"저장 전에는 실행 취소가 가능하지만, 저장된 파일은 모자이크된 픽셀만 남고 원본 정보가 포함되지 않아 복원할 수 없습니다. 개인정보 보호 목적에 적합합니다. 단, 픽셀 크기를 너무 작게 하면 글자 등이 유추될 수 있으니 충분히 크게 설정하세요."}},{"@type":"Question","name":"픽셀 크기는 어느 정도가 적당한가요?","acceptedAnswer":{"@type":"Answer","text":"가리는 대상의 크기에 따라 다르지만, 대상 한 변이 모자이크 4~6칸 이하로 덮이는 정도(예: 200px 폭 얼굴이면 30px 이상)를 권장합니다."}},{"@type":"Question","name":"영역을 잘못 지정했어요.","acceptedAnswer":{"@type":"Answer","text":"「실행 취소」 버튼으로 최근 10단계까지 되돌릴 수 있고, 「원본으로」를 누르면 처음부터 다시 시작합니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"픽셀화·모자이크","item":"https://imagelab-kr.vercel.app/tools/pixelate/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 픽셀화·모자이크</nav>
+<h1>픽셀화·모자이크</h1>
+<p class="lead">가리고 싶은 부분을 드래그하면 그 영역이 즉시 모자이크 처리됩니다. 여러 영역 가능, 실행 취소 지원.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<div class="field"><label>모자이크 픽셀 크기 <span id="pxv">16px</span></label><input type="range" id="px" min="4" max="60" value="16"></div>
+<div class="btn-row">
+  <button class="btn btn-sm" id="undo" disabled>↩ 실행 취소</button>
+  <button class="btn btn-sm" id="all">전체 적용</button>
+  <button class="btn btn-sm" id="reset">원본으로</button>
+</div>
+<div class="stage" id="stage" style="position:relative">
+  <canvas id="pv" style="cursor:crosshair;touch-action:none"></canvas>
+  <div id="rubber" style="display:none;position:absolute;border:2px dashed var(--brand);background:rgba(14,165,164,.12);pointer-events:none"></div>
+</div>
+<p class="status">드래그해서 모자이크할 영역을 지정하세요. 놓는 순간 적용됩니다.</p>
+<div class="btn-row"><button class="btn btn-primary" id="dl">PNG 저장</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>픽셀화·모자이크 소개</h2>
+<p>픽셀화·모자이크 도구는 사진에서 가리고 싶은 부분(번호판, 이름, 주소, 다른 사람 등)을 드래그로 지정하면 그 영역만 모자이크 처리합니다. 픽셀 크기를 조절해 뭉개짐 정도를 정할 수 있고, 여러 영역을 연속으로 처리할 수 있으며 실행 취소도 지원합니다.</p>
+<p>모자이크는 해당 영역을 크게 축소했다가 다시 확대하는 방식으로, 원본 정보가 결과물에 남지 않습니다. 처리된 이미지는 원본 해상도 그대로 PNG로 저장됩니다. 얼굴을 붓으로 문질러 가리고 싶다면 「얼굴 모자이크」 도구가 더 편리합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택</li>
+<li>픽셀 크기 설정</li>
+<li>가릴 부분을 드래그 (여러 번 가능)</li>
+<li>실수하면 「실행 취소」, 완료 후 PNG 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>모자이크를 나중에 되돌릴 수 있나요? 다른 사람이 복원할 수는요?</summary><p>저장 전에는 실행 취소가 가능하지만, 저장된 파일은 모자이크된 픽셀만 남고 원본 정보가 포함되지 않아 복원할 수 없습니다. 개인정보 보호 목적에 적합합니다. 단, 픽셀 크기를 너무 작게 하면 글자 등이 유추될 수 있으니 충분히 크게 설정하세요.</p></details>
+<details class="faq"><summary>픽셀 크기는 어느 정도가 적당한가요?</summary><p>가리는 대상의 크기에 따라 다르지만, 대상 한 변이 모자이크 4~6칸 이하로 덮이는 정도(예: 200px 폭 얼굴이면 30px 이상)를 권장합니다.</p></details>
+<details class="faq"><summary>영역을 잘못 지정했어요.</summary><p>「실행 취소」 버튼으로 최근 10단계까지 되돌릴 수 있고, 「원본으로」를 누르면 처음부터 다시 시작합니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var img = null, fileName = '', scale = 1;
+  var work = null; // 원본 해상도 작업 캔버스
+  var undoStack = [];
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    fileName = fs[0].name;
+    img = await IL.loadImage(fs[0]);
+    work = IL.canvasOf(IL.imgW(img), IL.imgH(img));
+    work.getContext('2d').drawImage(img, 0, 0);
+    undoStack = [];
+    $('panel').style.display = '';
+    fit(); draw();
+  });
+
+  $('px').addEventListener('input', function () { $('pxv').textContent = $('px').value + 'px'; });
+
+  function fit() {
+    var pv = $('pv');
+    var maxW = $('stage').clientWidth - 2 || 700;
+    scale = Math.min(1, maxW / work.width, 560 / work.height);
+    pv.width = Math.round(work.width * scale);
+    pv.height = Math.round(work.height * scale);
+  }
+  function draw() {
+    var pv = $('pv'), ctx = pv.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.clearRect(0, 0, pv.width, pv.height);
+    ctx.drawImage(work, 0, 0, pv.width, pv.height);
+  }
+
+  function pushUndo() {
+    if (undoStack.length >= 10) undoStack.shift();
+    var s = IL.canvasOf(work.width, work.height);
+    s.getContext('2d').drawImage(work, 0, 0);
+    undoStack.push(s);
+    $('undo').disabled = false;
+  }
+  $('undo').onclick = function () {
+    var s = undoStack.pop();
+    if (s) { work.getContext('2d').clearRect(0,0,work.width,work.height); work.getContext('2d').drawImage(s, 0, 0); draw(); }
+    $('undo').disabled = undoStack.length === 0;
+  };
+  $('reset').onclick = function () {
+    if (!img) return;
+    pushUndo();
+    var ctx = work.getContext('2d');
+    ctx.clearRect(0, 0, work.width, work.height);
+    ctx.drawImage(img, 0, 0);
+    draw();
+  };
+
+  /* 영역 모자이크: 해당 영역을 축소→확대(스무딩 off) */
+  function pixelateRect(x, y, w, h) {
+    var size = Math.max(4, parseInt($('px').value, 10));
+    x = Math.max(0, Math.round(x)); y = Math.max(0, Math.round(y));
+    w = Math.min(work.width - x, Math.round(w)); h = Math.min(work.height - y, Math.round(h));
+    if (w < 2 || h < 2) return;
+    var sw = Math.max(1, Math.round(w / size)), sh = Math.max(1, Math.round(h / size));
+    var small = IL.canvasOf(sw, sh), sctx = small.getContext('2d');
+    sctx.imageSmoothingEnabled = true;
+    sctx.drawImage(work, x, y, w, h, 0, 0, sw, sh);
+    var wctx = work.getContext('2d');
+    wctx.imageSmoothingEnabled = false;
+    wctx.drawImage(small, 0, 0, sw, sh, x, y, w, h);
+    wctx.imageSmoothingEnabled = true;
+  }
+
+  /* 드래그로 사각 영역 선택 */
+  var dragStart = null, rubber = $('rubber');
+  var pv = $('pv');
+  function pos(e) {
+    var r = pv.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / scale, y: (e.clientY - r.top) / scale };
+  }
+  pv.addEventListener('pointerdown', function (e) {
+    if (!work) return;
+    e.preventDefault();
+    pv.setPointerCapture(e.pointerId);
+    dragStart = pos(e);
+  });
+  pv.addEventListener('pointermove', function (e) {
+    if (!dragStart) return;
+    var p = pos(e);
+    var x = Math.min(dragStart.x, p.x) * scale, y = Math.min(dragStart.y, p.y) * scale;
+    var w = Math.abs(p.x - dragStart.x) * scale, h = Math.abs(p.y - dragStart.y) * scale;
+    rubber.style.display = 'block';
+    rubber.style.left = x + 'px'; rubber.style.top = y + 'px';
+    rubber.style.width = w + 'px'; rubber.style.height = h + 'px';
+  });
+  pv.addEventListener('pointerup', function (e) {
+    if (!dragStart) return;
+    var p = pos(e);
+    rubber.style.display = 'none';
+    var x = Math.min(dragStart.x, p.x), y = Math.min(dragStart.y, p.y);
+    var w = Math.abs(p.x - dragStart.x), h = Math.abs(p.y - dragStart.y);
+    dragStart = null;
+    if (w > 3 && h > 3) {
+      pushUndo();
+      pixelateRect(x, y, w, h);
+      draw();
+    }
+  });
+
+  $('all').onclick = function () {
+    if (!work) return;
+    pushUndo();
+    pixelateRect(0, 0, work.width, work.height);
+    draw();
+  };
+
+  $('dl').addEventListener('click', async function () {
+    if (!work) return;
+    IL.download(await IL.toBlob(work, 'image/png'), IL.outName(fileName, 'pixelate', 'png'));
+  });
+  window.addEventListener('resize', function () { if (work) { fit(); draw(); } });
+})();
+</script>
+</body>
+</html>

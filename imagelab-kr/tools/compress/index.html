@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진 용량 줄이기 - 이미지 압축 (무료·설치 없음)</title>
+<meta name="description" content="사진 용량 줄이기: 품질 슬라이더 또는 목표 용량(KB) 지정으로 JPG·WEBP 일괄 압축. 전후 비교 슬라이더 제공, 서버 업로드 없이 브라우저에서 처리.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사진 용량 줄이기","description":"사진 용량 줄이기: 품질 슬라이더 또는 목표 용량(KB) 지정으로 JPG·WEBP 일괄 압축. 전후 비교 슬라이더 제공, 서버 업로드 없이 브라우저에서 처리.","url":"https://imagelab-kr.vercel.app/tools/compress/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"압축하면 화질이 얼마나 나빠지나요?","acceptedAnswer":{"@type":"Answer","text":"JPG·WEBP는 손실 압축이라 품질을 낮출수록 세밀한 부분이 뭉개집니다. 다만 품질 70~85% 구간은 용량이 크게 줄면서도 화면으로는 차이를 느끼기 어려운 경우가 많습니다. 전/후 비교 슬라이더로 직접 확인해 보세요."}},{"@type":"Question","name":"압축한 사진의 화질을 원본으로 되돌릴 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 손실 압축으로 버려진 정보는 복구할 수 없습니다. 원본 파일은 삭제하지 말고 따로 보관하는 것을 권장합니다."}},{"@type":"Question","name":"사진이 서버에 업로드되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 모든 압축은 사용자의 브라우저(기기) 안에서만 처리되며, 사진이 외부로 전송되지 않습니다."}},{"@type":"Question","name":"PNG로도 저장할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"PNG는 무손실 형식이라 품질 조절로 용량을 줄이기 어렵습니다. 용량 절감이 목적이라면 JPG 또는 WEBP를 권장하며, 형식만 바꾸려면 「이미지 변환」 도구를 이용하세요."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"사진 용량 줄이기","item":"https://imagelab-kr.vercel.app/tools/compress/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 사진 용량 줄이기</nav>
+<h1>사진 용량 줄이기</h1>
+<p class="lead">품질을 직접 고르거나 목표 용량(KB)을 지정하면 알아서 맞춰 드립니다. 여러 장 일괄 처리 가능.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지 여러 장을 선택하거나 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 (여러 장 가능) · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*" multiple>
+</div>
+<p class="status" id="cnt"></p>
+<ul class="flist" id="list"></ul>
+<div class="field-row">
+  <label><input type="radio" name="mode" value="q" checked> 품질 직접 지정</label>
+  <label><input type="radio" name="mode" value="t"> 목표 용량 지정</label>
+</div>
+<div class="field" id="qBox">
+  <label>품질 <span id="qv">80%</span></label>
+  <input type="range" id="q" min="0.1" max="0.95" step="0.05" value="0.8">
+</div>
+<div class="field" id="tBox" style="display:none">
+  <label>목표 용량 (KB)</label>
+  <input type="number" id="t" value="200" min="10" step="10" inputmode="numeric">
+  <p class="status">지정한 용량 이하가 되도록 품질을 자동 탐색하고, 부족하면 해상도를 단계적으로 줄입니다.</p>
+</div>
+<div class="field-row">
+  <label for="fmt">저장 형식</label>
+  <select id="fmt" style="max-width:200px"><option value="jpg">JPG</option><option value="webp">WEBP (더 작음)</option></select>
+</div>
+<div class="btn-row"><button class="btn btn-primary" id="run" disabled>압축하기</button>
+<button class="btn" id="zipAll" style="display:none">전체 ZIP 다운로드</button></div>
+<div class="prog" id="prog" style="display:none"><i></i></div>
+<p class="status" id="status"></p>
+<p class="notice-warn" id="miss" style="display:none"></p>
+<ul class="flist" id="out"></ul>
+<div id="cmpWrap" style="display:none"><h3>전/후 비교 (첫 번째 사진)</h3><div id="cmp"></div>
+<p class="status">가운데 손잡이를 좌우로 움직여 원본과 압축본을 비교하세요.</p></div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>사진 용량 줄이기 소개</h2>
+<p>사진 용량 줄이기는 카카오톡·이메일 첨부, 게시판 업로드 용량 제한, 홈페이지 로딩 속도 개선 등 일상에서 가장 자주 필요한 이미지 작업입니다. 이 도구는 프로그램 설치 없이 브라우저 안에서 JPG 또는 WEBP 형식으로 사진을 압축하며, 사진이 서버로 전송되지 않아 개인 사진도 안심하고 사용할 수 있습니다.</p>
+<p>품질(%)을 직접 지정하는 방식과 목표 용량(KB)을 지정하는 방식을 모두 지원합니다. 목표 용량 모드에서는 품질 값을 이진 탐색으로 자동 조절해 지정한 용량 이하로 맞추고, 최저 품질로도 부족하면 해상도를 단계적으로 줄여 목표를 달성합니다. 여러 장을 한 번에 올리면 일괄 압축 후 ZIP으로 받을 수 있습니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진을 여러 장 선택하거나 끌어다 놓기</li>
+<li>품질 직접 지정 또는 목표 용량(KB) 지정 선택</li>
+<li>JPG/WEBP 형식 선택 후 「압축하기」 클릭</li>
+<li>전/후 비교 슬라이더로 화질 확인 후 개별 다운로드 또는 전체 ZIP 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>압축하면 화질이 얼마나 나빠지나요?</summary><p>JPG·WEBP는 손실 압축이라 품질을 낮출수록 세밀한 부분이 뭉개집니다. 다만 품질 70~85% 구간은 용량이 크게 줄면서도 화면으로는 차이를 느끼기 어려운 경우가 많습니다. 전/후 비교 슬라이더로 직접 확인해 보세요.</p></details>
+<details class="faq"><summary>압축한 사진의 화질을 원본으로 되돌릴 수 있나요?</summary><p>아니요. 손실 압축으로 버려진 정보는 복구할 수 없습니다. 원본 파일은 삭제하지 말고 따로 보관하는 것을 권장합니다.</p></details>
+<details class="faq"><summary>사진이 서버에 업로드되나요?</summary><p>아니요. 모든 압축은 사용자의 브라우저(기기) 안에서만 처리되며, 사진이 외부로 전송되지 않습니다.</p></details>
+<details class="faq"><summary>PNG로도 저장할 수 있나요?</summary><p>PNG는 무손실 형식이라 품질 조절로 용량을 줄이기 어렵습니다. 용량 절감이 목적이라면 JPG 또는 WEBP를 권장하며, 형식만 바꾸려면 「이미지 변환」 도구를 이용하세요.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var files = [];
+  var $ = function (id) { return document.getElementById(id); };
+  var drop = $('drop'), fin = $('fin'), list = $('list'), runBtn = $('run'), zipBtn = $('zipAll');
+  var results = []; // {name, blob, origSize}
+
+  IL.bindDrop(drop, fin, function (fs) {
+    files = files.concat(fs);
+    renderList();
+  });
+
+  function renderList() {
+    list.innerHTML = '';
+    files.forEach(function (f, i) {
+      var li = document.createElement('li');
+      var img = new Image(); img.className = 'thumb'; img.src = URL.createObjectURL(f);
+      img.onload = function(){ URL.revokeObjectURL(img.src); };
+      var meta = document.createElement('div'); meta.className = 'meta';
+      meta.innerHTML = '<b></b>' + IL.fmtBytes(f.size);
+      meta.querySelector('b').textContent = f.name;
+      var del = document.createElement('button'); del.className = 'btn btn-sm'; del.textContent = '삭제';
+      del.onclick = function () { files.splice(i, 1); renderList(); };
+      li.appendChild(img); li.appendChild(meta); li.appendChild(del);
+      list.appendChild(li);
+    });
+    runBtn.disabled = files.length === 0;
+    $('cnt').textContent = files.length ? files.length + '장 선택됨' : '';
+  }
+
+  document.querySelectorAll('input[name=mode]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      $('qBox').style.display = r.value === 'q' && r.checked ? '' : 'none';
+      $('tBox').style.display = r.value === 't' && r.checked ? '' : 'none';
+    });
+  });
+  $('q').addEventListener('input', function () { $('qv').textContent = Math.round($('q').value * 100) + '%'; });
+
+  async function encode(canvas, type, q) {
+    return IL.toBlob(canvas, type, q);
+  }
+
+  /* 목표 용량: 품질 이진탐색 → 그래도 크면 해상도 단계적 축소 */
+  async function compressToTarget(img, type, targetBytes) {
+    var scale = 1, best = null;
+    for (var round = 0; round < 5; round++) {
+      var w = IL.imgW(img) * scale, h = IL.imgH(img) * scale;
+      var c = IL.canvasOf(w, h), ctx = c.getContext('2d');
+      ctx.imageSmoothingQuality = 'high';
+      if (type === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); }
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      var lo = 0.05, hi = 0.95, fit = null;
+      for (var i = 0; i < 7; i++) {
+        var mid = (lo + hi) / 2;
+        var b = await encode(c, type, mid);
+        if (b.size <= targetBytes) { fit = b; lo = mid; } else { hi = mid; }
+      }
+      if (fit) return fit;
+      best = await encode(c, type, 0.05);
+      if (best.size <= targetBytes) return best;
+      scale *= 0.75; // 최저 품질로도 초과 → 해상도 축소 후 재시도
+    }
+    return best;
+  }
+
+  async function compressOne(file, opts) {
+    var img = await IL.loadImage(file);
+    var type = opts.format === 'webp' ? 'image/webp' : 'image/jpeg';
+    var blob;
+    if (opts.mode === 't') {
+      blob = await compressToTarget(img, type, opts.targetKB * 1024);
+    } else {
+      var c = IL.canvasOf(IL.imgW(img), IL.imgH(img)), ctx = c.getContext('2d');
+      if (type === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); }
+      ctx.drawImage(img, 0, 0);
+      blob = await encode(c, type, opts.quality);
+    }
+    if (img.close) img.close();
+    return blob;
+  }
+
+  runBtn.addEventListener('click', async function () {
+    var mode = document.querySelector('input[name=mode]:checked').value;
+    var opts = {
+      mode: mode,
+      quality: parseFloat($('q').value),
+      targetKB: Math.max(10, parseInt($('t').value, 10) || 200),
+      format: $('fmt').value
+    };
+    runBtn.disabled = true;
+    var out = $('out'); out.innerHTML = '';
+    results = [];
+    var missed = 0;
+    $('miss').style.display = 'none';
+    var prog = $('prog'), bar = prog.querySelector('i');
+    prog.style.display = '';
+    var ext = opts.format === 'webp' ? 'webp' : 'jpg';
+    try {
+      for (var i = 0; i < files.length; i++) {
+        $('status').textContent = (i + 1) + ' / ' + files.length + ' 처리 중… (' + files[i].name + ')';
+        bar.style.width = ((i) / files.length * 100) + '%';
+        var blob = await compressOne(files[i], opts);
+        if (opts.mode === 't' && blob.size > opts.targetKB * 1024) missed++;
+        var name = IL.outName(files[i].name, 'compressed', ext);
+        results.push({ name: name, blob: blob, origSize: files[i].size, origFile: files[i] });
+        var li = document.createElement('li');
+        var pct = Math.round((1 - blob.size / files[i].size) * 100);
+        var meta = document.createElement('div'); meta.className = 'meta';
+        meta.innerHTML = '<b></b>' + IL.fmtBytes(files[i].size) + ' → ' + IL.fmtBytes(blob.size) +
+          ' <span class="' + (pct >= 0 ? 'saved' : 'grew') + '">(' + (pct >= 0 ? '-' + pct : '+' + (-pct)) + '%)</span>';
+        meta.querySelector('b').textContent = name;
+        var dl = document.createElement('button'); dl.className = 'btn btn-sm btn-primary'; dl.textContent = '다운로드';
+        (function (b, n) { dl.onclick = function () { IL.download(b, n); }; })(blob, name);
+        li.appendChild(meta); li.appendChild(dl);
+        out.appendChild(li);
+      }
+      bar.style.width = '100%';
+      $('status').textContent = '완료! ' + results.length + '장 압축됨';
+      if (missed > 0) {
+        $('miss').style.display = '';
+        $('miss').textContent = missed + '장은 목표 용량(' + opts.targetKB +
+          'KB)까지 줄이지 못했습니다. 최저 품질과 해상도 축소를 모두 적용한 결과입니다. ' +
+          '목표 용량을 조금 올리거나, 「이미지 크기 조절」로 해상도를 먼저 줄인 뒤 다시 시도해 보세요.';
+      }
+      zipBtn.style.display = results.length > 1 ? '' : 'none';
+      /* 첫 장 전/후 비교 슬라이더 */
+      if (results.length) {
+        var r0 = results[0];
+        $('cmpWrap').style.display = '';
+        IL.compareSlider($('cmp'), URL.createObjectURL(r0.origFile), URL.createObjectURL(r0.blob),
+          '원본 ' + IL.fmtBytes(r0.origSize), '압축 ' + IL.fmtBytes(r0.blob.size));
+      }
+    } catch (e) {
+      $('status').textContent = '오류: ' + e.message;
+    }
+    runBtn.disabled = false;
+  });
+
+  zipBtn.addEventListener('click', async function () {
+    var entries = [];
+    for (var i = 0; i < results.length; i++) {
+      entries.push({ name: results[i].name, data: new Uint8Array(await results[i].blob.arrayBuffer()) });
+    }
+    IL.download(IL.makeZip(entries), 'compressed-images.zip');
+  });
+})();
+</script>
+</body>
+</html>

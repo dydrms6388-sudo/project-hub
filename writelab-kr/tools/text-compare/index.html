@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>글 비교 — 두 버전 diff, 수정 전후 비교 | writelab</title>
+<meta name="description" content="수정 전후 자소서를 붙여 넣으면 어절 단위로 비교해 추가된 부분과 삭제된 부분을 색으로 보여 줍니다. 첨삭 결과를 한눈에 확인하세요.">
+<meta property="og:title" content="글 비교 — 두 버전 diff, 수정 전후 비교 | writelab">
+<meta property="og:description" content="수정 전후 자소서를 붙여 넣으면 어절 단위로 비교해 추가된 부분과 삭제된 부분을 색으로 보여 줍니다. 첨삭 결과를 한눈에 확인하세요.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"글 비교","description":"수정 전후 자소서를 붙여 넣으면 어절 단위로 비교해 추가된 부분과 삭제된 부분을 색으로 보여 줍니다. 첨삭 결과를 한눈에 확인하세요.","url":"https://writelab-kr.vercel.app/tools/text-compare/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"비교 단위가 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"공백으로 나눈 어절 단위입니다. 한국어는 어절 안에서 조사만 바뀌는 일이 많은데, 글자 단위로 비교하면 변경 표시가 지나치게 잘게 쪼개져 읽기 어렵습니다. 그래서 어절 단위 LCS(최장 공통 부분 수열)로 비교해 어절이 통째로 추가·삭제된 것으로 표시합니다."}},{"@type":"Question","name":"유사도는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"유사도 = 2 × 공통 어절 수 ÷ (원본 어절 수 + 수정본 어절 수) × 100 입니다. 두 글이 완전히 같으면 100%가 됩니다. 문장 순서만 크게 바뀐 경우에는 공통 어절이 줄어 유사도가 낮게 나올 수 있습니다."}},{"@type":"Question","name":"긴 글도 비교할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"수천 어절 규모까지는 브라우저에서 바로 처리됩니다. 다만 비교는 두 글 길이의 곱에 비례하므로, 양쪽이 모두 아주 길면 계산량이 급격히 늘어납니다. 한계를 넘으면 안내 메시지가 표시되니 문항 단위로 나눠 비교하세요."}},{"@type":"Question","name":"첨삭받은 글과 내 글을 비교해도 되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 두 글 모두 브라우저 안에서만 처리되고 전송되지 않습니다. 다만 다른 사람의 글을 그대로 옮겨 쓰는 것은 표절이 될 수 있으니, 표현을 확인하는 용도로만 쓰세요."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"글 비교","item":"https://writelab-kr.vercel.app/tools/text-compare/"}]}</script>
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+<a class="brand" href="../../index.html">write<span>lab</span></a>
+<a class="hublink" href="../../index.html">도구 전체 보기</a>
+</div></header>
+<main class="wrap">
+<h1>글 비교</h1>
+<p class="sub">두 버전을 어절 단위 LCS로 비교해 삭제·추가된 부분을 색으로 표시하고 유사도를 계산합니다.</p>
+
+<div class="card">
+  <div class="row" style="gap:12px;align-items:stretch;flex-wrap:wrap">
+    <div style="flex:1;min-width:260px"><label for="a">원본(수정 전)</label><textarea id="a" class="short" placeholder="수정 전 글"></textarea></div>
+    <div style="flex:1;min-width:260px"><label for="b">수정본(수정 후)</label><textarea id="b" class="short" placeholder="수정 후 글"></textarea></div>
+  </div>
+  <div class="row">
+    <button class="btn primary" id="run" type="button">비교하기</button>
+    <button class="btn sm" id="swap" type="button">양쪽 바꾸기</button>
+    <button class="btn sm" id="clear" type="button">지우기</button>
+    <label style="display:flex;align-items:center;gap:6px;font-weight:600"><input type="checkbox" id="onlyDiff"> 변경된 부분만 보기</label>
+  </div>
+  <div class="stat-grid" id="stats"></div>
+  <h3>비교 결과</h3>
+  <p class="mini"><del>붉은 취소선</del> = 원본에만 있던 부분 · <ins>초록 배경</ins> = 수정본에서 추가된 부분</p>
+  <div class="preview" id="out"></div>
+</div>
+<!-- ad-slot -->
+<section class="prose">
+<h2>고친 곳이 정확히 어디인지 확인하기</h2>
+<p>자소서는 보통 다섯 번 이상 고칩니다. 그런데 세 번째 수정본을 보다가 "두 번째가 더 나았던 것 같은데" 싶은 순간이 옵니다. 두 버전을 나란히 놓고 눈으로 비교하면 문장 순서가 조금만 바뀌어도 찾기 어렵습니다. 이 도구는 두 글을 어절 단위로 비교해 삭제된 부분과 추가된 부분을 색으로 표시합니다.</p>
+<p>비교 방식은 어절 단위 LCS(최장 공통 부분 수열)입니다. 두 글에서 순서를 유지하며 겹치는 가장 긴 어절 배열을 찾고, 그 밖의 어절을 삭제 또는 추가로 표시합니다. 외부 라이브러리를 쓰지 않고 직접 구현했으며 계산은 브라우저에서만 이루어집니다.</p>
+<p>첨삭 전후를 비교하거나, 글자수를 줄이는 과정에서 실수로 핵심 문장이 사라지지 않았는지 확인할 때 쓰면 편합니다. "변경된 부분만 보기"를 켜면 바뀐 구간과 그 앞뒤 어절만 남겨 빠르게 확인할 수 있습니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>왼쪽에 수정 전 글, 오른쪽에 수정 후 글을 붙여 넣습니다.</li>
+<li>"비교하기"를 누릅니다.</li>
+<li>삭제된 부분과 추가된 부분을 확인하고, 실수로 빠진 내용이 없는지 봅니다.</li>
+<li>유사도가 지나치게 높으면(95% 이상) 사실상 거의 고치지 않은 것이므로, 표현만 바꾸는 수정에 머물지 않았는지 점검하세요.</li>
+</ol>
+</section>
+<section class="faq"><h2>자주 묻는 질문</h2><details><summary>비교 단위가 어떻게 되나요?</summary><div class="prose"><p>공백으로 나눈 어절 단위입니다. 한국어는 어절 안에서 조사만 바뀌는 일이 많은데, 글자 단위로 비교하면 변경 표시가 지나치게 잘게 쪼개져 읽기 어렵습니다. 그래서 어절 단위 LCS(최장 공통 부분 수열)로 비교해 어절이 통째로 추가·삭제된 것으로 표시합니다.</p></div></details><details><summary>유사도는 어떻게 계산하나요?</summary><div class="prose"><p>유사도 = 2 × 공통 어절 수 ÷ (원본 어절 수 + 수정본 어절 수) × 100 입니다. 두 글이 완전히 같으면 100%가 됩니다. 문장 순서만 크게 바뀐 경우에는 공통 어절이 줄어 유사도가 낮게 나올 수 있습니다.</p></div></details><details><summary>긴 글도 비교할 수 있나요?</summary><div class="prose"><p>수천 어절 규모까지는 브라우저에서 바로 처리됩니다. 다만 비교는 두 글 길이의 곱에 비례하므로, 양쪽이 모두 아주 길면 계산량이 급격히 늘어납니다. 한계를 넘으면 안내 메시지가 표시되니 문항 단위로 나눠 비교하세요.</p></div></details><details><summary>첨삭받은 글과 내 글을 비교해도 되나요?</summary><div class="prose"><p>네. 두 글 모두 브라우저 안에서만 처리되고 전송되지 않습니다. 다만 다른 사람의 글을 그대로 옮겨 쓰는 것은 표절이 될 수 있으니, 표현을 확인하는 용도로만 쓰세요.</p></div></details></section>
+<p class="mini">함께 쓰면 좋은 도구: <a href="../char-count/">자소서 글자수 세기</a> · <a href="../banned-words/">자소서 금칙어 체크</a> · <a href="../sentence-check/">문장 길이 분석</a></p>
+</main>
+<footer class="site"><div class="wrap">
+<ul class="foot-links"><li><a href="../../tools/char-count/">자소서 글자수 세기</a></li><li><a href="../../tools/sentence-check/">문장 길이 분석</a></li><li><a href="../../tools/repeat-words/">반복 단어 찾기</a></li><li><a href="../../tools/banned-words/">자소서 금칙어 체크</a></li><li><a href="../../tools/spacing-basic/">띄어쓰기 기본 검사</a></li><li><a href="../../tools/text-compare/">글 비교</a></li><li><a href="../../tools/readability/">가독성 점수</a></li><li><a href="../../tools/outline/">자소서 개요 만들기</a></li><li><a href="../../tools/keyword-density/">키워드 밀도</a></li><li><a href="../../tools/paper-count/">원고지 계산기</a></li><li><a href="../../tools/resume-date/">경력 기간 계산기</a></li><li><a href="../../guide/jasoso-char-limit/">자소서 글자수 기준 확인하는 방법</a></li><li><a href="../../guide/common-mistakes/">자소서에서 자주 하는 실수</a></li><li><a href="../../privacy.html">개인정보처리방침</a></li><li><a href="../../terms.html">이용약관</a></li></ul>
+<p class="mini">writelab — 자소서·글쓰기 도구 모음. 모든 계산은 사용자의 브라우저에서만 실행되며, 입력한 글은 어디에도 전송·저장되지 않습니다.</p>
+<p class="mini">© 2026 writelab</p>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function(){
+  var A=document.getElementById('a'), B=document.getElementById('b'), out=document.getElementById('out'),
+      stats=document.getElementById('stats'), onlyDiff=document.getElementById('onlyDiff');
+  function toks(t){ return WL.norm(t).split(/(\s+)/).filter(function(x){return x!=='';}); }
+  function run(){
+    var ta=toks(A.value), tb=toks(B.value);
+    var wa=ta.filter(function(x){return !/^\s+$/.test(x);}), wb=tb.filter(function(x){return !/^\s+$/.test(x);});
+    if(!wa.length && !wb.length){ out.innerHTML='<span class="mini">양쪽에 글을 넣고 비교하기를 누르세요.</span>'; stats.innerHTML=''; return; }
+    var ops=WL.lcsDiff(wa,wb);
+    if(!ops){ out.innerHTML='<span class="mini">두 글이 너무 길어 한 번에 비교할 수 없습니다. 문항 단위로 나눠 비교하세요.</span>'; stats.innerHTML=''; return; }
+    var eq=0,del=0,ins=0;
+    ops.forEach(function(o){ if(o.t==='eq')eq++; else if(o.t==='del')del++; else ins++; });
+    var sim=(wa.length+wb.length)?Math.round(2*eq/(wa.length+wb.length)*1000)/10:0;
+    stats.innerHTML=[['원본 어절',wa.length],['수정본 어절',wb.length],['유지',eq],['삭제',del],['추가',ins],['유사도',sim+'%']]
+      .map(function(x){return '<div class="stat"><b>'+(typeof x[1]==='number'?WL.fmt(x[1]):x[1])+'</b><small>'+x[0]+'</small></div>';}).join('');
+    var show=ops;
+    if(onlyDiff.checked){
+      var keepIdx={};
+      ops.forEach(function(o,i){ if(o.t!=='eq'){ for(var k=i-3;k<=i+3;k++) keepIdx[k]=1; } });
+      show=ops.map(function(o,i){ return keepIdx[i]?o:null; });
+    }
+    var html='', gap=false;
+    show.forEach(function(o){
+      if(!o){ if(!gap){ html+=' <span class="mini">…</span> '; gap=true; } return; }
+      gap=false;
+      if(o.t==='eq') html+=WL.esc(o.v)+' ';
+      else if(o.t==='del') html+='<del>'+WL.esc(o.v)+'</del> ';
+      else html+='<ins>'+WL.esc(o.v)+'</ins> ';
+    });
+    out.innerHTML=html||'<span class="mini">차이가 없습니다.</span>';
+  }
+  document.getElementById('run').addEventListener('click',run);
+  onlyDiff.addEventListener('change',run);
+  document.getElementById('swap').addEventListener('click',function(){ var t=A.value; A.value=B.value; B.value=t; run(); });
+  document.getElementById('clear').addEventListener('click',function(){ A.value=''; B.value=''; run(); });
+  out.innerHTML='<span class="mini">양쪽에 글을 넣고 비교하기를 누르세요.</span>';
+})();</script>
+</body>
+</html>
