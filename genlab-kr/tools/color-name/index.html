@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>색상 이름 생성기 — HEX 색상의 한글 색이름 찾기 (223색 표)</title>
+<meta name="description" content="HEX 색상코드를 넣으면 가장 가까운 한글 색이름을 찾아 줍니다. 자체 작성 223색 한글 색이름 표, CIE Lab 색차(ΔE) 기준 근접색 5개, 랜덤 색 생성과 전체 색이름 표를 제공합니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"색상 이름 생성기","description":"HEX 색상코드를 넣으면 가장 가까운 한글 색이름을 찾아 줍니다. 자체 작성 223색 한글 색이름 표, CIE Lab 색차(ΔE) 기준 근접색 5개, 랜덤 색 생성과 전체 색이름 표를 제공합니다.","url":"https://genlab-kr.vercel.app/tools/color-name/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"색이름 223개는 어디서 온 데이터인가요?","acceptedAnswer":{"@type":"Answer","text":"전통색·관용색 이름을 참고해 직접 정리한 자체 표입니다. HEX 값은 통용되는 근사치이며 KS 등 표준 규격값이 아닙니다."}},{"@type":"Question","name":"왜 RGB 거리가 아니라 Lab 색차를 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"RGB 공간에서 수치상 같은 거리라도 사람 눈에는 색상에 따라 차이가 다르게 느껴집니다. Lab은 인지 균등성을 목표로 설계된 공간이라, 가까운 색이름을 찾는 데 훨씬 자연스러운 결과가 나옵니다."}},{"@type":"Question","name":"RGB나 HSL 값으로 넣을 수도 있나요?","acceptedAnswer":{"@type":"Answer","text":"현재는 HEX 입력과 색 선택기를 지원합니다. 결과에는 RGB 값을 함께 표시하므로 반대 방향 확인은 가능합니다."}},{"@type":"Question","name":"같은 HEX인데 화면마다 색이 달라 보입니다.","acceptedAnswer":{"@type":"Answer","text":"모니터 색역·보정 상태에 따라 표시 색이 달라집니다. 인쇄용이라면 CMYK 변환과 색 교정이 별도로 필요하므로, 이 표의 이름은 화면 작업 소통용으로 쓰는 것이 적절합니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GenLab 생성기 허브","item":"https://genlab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"색상 이름 생성기","item":"https://genlab-kr.vercel.app/tools/color-name/"}]}</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+  <a class="logo" href="../../"><span class="dot"></span>GenLab 생성기 허브</a>
+  <nav><a href="../../#tools">전체 도구</a><a href="../../guide/password-safety/">가이드</a></nav>
+</div></header>
+<main class="wrap">
+<p class="crumb"><a href="../../">홈</a> › 색상 이름 생성기</p>
+<h1>색상 이름 생성기</h1>
+<p class="lead">HEX 코드를 넣으면 <strong>한글 색이름 223개</strong> 표에서 가장 가까운 이름을 찾아 드립니다. 거리 계산은 사람 눈의 인지에 가까운 CIE Lab 색차(ΔE)를 씁니다.</p>
+<section class="card">
+  <div class="row">
+    <div><label for="hexIn">HEX 색상코드</label>
+      <input type="text" id="hexIn" value="#7C3AED" autocomplete="off" spellcheck="false" placeholder="#RRGGBB"></div>
+    <div><label for="picker">색 고르기</label>
+      <input type="color" id="picker" value="#7c3aed" style="width:100%;height:46px;padding:2px;border:1px solid var(--line);border-radius:10px;background:#fff"></div>
+  </div>
+  <div class="btn-row">
+    <button id="btnFind" class="main">한글 색이름 찾기</button>
+    <button id="btnRandom" class="btn-sub">랜덤 색</button>
+  </div>
+  <div class="result">
+    <div id="mainOut" class="result-big" style="padding:0;overflow:hidden">
+      <div id="bigSwatch" style="height:96px;background:#7C3AED"></div>
+      <div style="padding:14px 12px">
+        <div id="bigName">–</div>
+        <div class="hint" id="bigMeta" style="font-size:.85rem;font-weight:400"></div>
+      </div>
+    </div>
+    <div class="btn-row"><button id="btnCopyName" class="btn-sub btn-sm">색이름 복사</button><button id="btnCopyHex" class="btn-sub btn-sm">HEX 복사</button></div>
+    <h3>가까운 색이름 5개</h3>
+    <div class="swatch-grid" id="near"></div>
+  </div>
+</section>
+<section class="card">
+  <h2 style="margin-top:0">한글 색이름 전체 표 <span class="hint" id="totalCount"></span></h2>
+  <label for="filter">이름으로 찾기</label>
+  <input type="search" id="filter" placeholder="예: 하늘, 감, 먹" autocomplete="off">
+  <div class="swatch-grid" id="all"></div>
+</section>
+<!-- ad-slot -->
+<article class="content">
+<h2>색상 이름 생성기 소개</h2>
+<p>디자인 시안에서 <code>#C93A40</code>이라고 적으면 아무 그림도 떠오르지 않지만, "동백색"이라고 하면 대화가 훨씬 빨라집니다. 이 도구는 HEX 색상코드를 넣으면 직접 작성한 <strong>한글 색이름 223색 표</strong>에서 가장 가까운 이름을 찾아 줍니다. 빨강·분홍 계열부터 전통색 계열(치자색, 쪽빛, 갈매색), 무채색 계열(백자색, 잿빛, 차콜색)까지 폭넓게 담았습니다.</p>
+<h2>거리 계산 방식</h2>
+<p>가장 가까운 색을 찾는 계산은 RGB 값의 단순 차이로 하지 않습니다. RGB 공간의 거리는 사람 눈이 느끼는 차이와 어긋나기 때문입니다(초록 계열은 둔감하고 파랑 계열은 민감합니다). 그래서 sRGB 값을 <strong>CIE Lab</strong> 공간으로 변환한 뒤 유클리드 거리(ΔE, CIE76)를 계산합니다.</p>
+<div class="formula">
+sRGB → 선형 RGB(감마 보정 해제) → XYZ(D65 백색점) → Lab<br>
+ΔE = √( (L₁−L₂)² + (a₁−a₂)² + (b₁−b₂)² )<br><br>
+ΔE 2 미만: 거의 같은 색 · 6 미만: 매우 비슷 · 12 미만: 같은 계열 · 그 이상: 가장 가까운 이름일 뿐 차이가 눈에 보임
+</div>
+<p>표에 담긴 223색의 HEX 값은 관용적으로 통용되는 근사치입니다. 전통색은 염료·직물에 따라 실제 색이 조금씩 다르기 때문에 표준 규격값으로 보기보다는 소통을 위한 이름표로 사용하는 것이 적절합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>HEX 코드를 입력하거나 색 선택기로 색을 고릅니다.</li>
+<li>가장 가까운 한글 색이름과 함께, 근접색 5개를 색차 순으로 보여줍니다.</li>
+<li>"랜덤 색" 버튼으로 새 색을 뽑아 이름을 확인할 수도 있습니다.</li>
+<li>아래 전체 표에서 이름으로 검색하면 원하는 색의 HEX를 바로 찾을 수 있습니다.</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details><summary>색이름 223개는 어디서 온 데이터인가요?</summary><div class="a"><p>전통색·관용색 이름을 참고해 직접 정리한 자체 표입니다. HEX 값은 통용되는 근사치이며 KS 등 표준 규격값이 아닙니다.</p></div></details>
+<details><summary>왜 RGB 거리가 아니라 Lab 색차를 쓰나요?</summary><div class="a"><p>RGB 공간에서 수치상 같은 거리라도 사람 눈에는 색상에 따라 차이가 다르게 느껴집니다. Lab은 인지 균등성을 목표로 설계된 공간이라, 가까운 색이름을 찾는 데 훨씬 자연스러운 결과가 나옵니다.</p></div></details>
+<details><summary>RGB나 HSL 값으로 넣을 수도 있나요?</summary><div class="a"><p>현재는 HEX 입력과 색 선택기를 지원합니다. 결과에는 RGB 값을 함께 표시하므로 반대 방향 확인은 가능합니다.</p></div></details>
+<details><summary>같은 HEX인데 화면마다 색이 달라 보입니다.</summary><div class="a"><p>모니터 색역·보정 상태에 따라 표시 색이 달라집니다. 인쇄용이라면 CMYK 변환과 색 교정이 별도로 필요하므로, 이 표의 이름은 화면 작업 소통용으로 쓰는 것이 적절합니다.</p></div></details>
+</article>
+</main>
+<footer class="site-foot"><div class="wrap">
+  <div class="cols">
+    <div>
+      <h4>GenLab의 다른 생성기</h4>
+      <ul>
+        <li><a href="../../tools/password/">비밀번호 생성기</a></li>
+        <li><a href="../../tools/nickname/">닉네임 생성기</a></li>
+        <li><a href="../../tools/username/">아이디 생성기</a></li>
+        <li><a href="../../tools/random-name/">랜덤 이름 생성기</a></li>
+        <li><a href="../../tools/team-name/">팀 이름 생성기</a></li>
+        <li><a href="../../tools/lorem-korean/">한글 로렘 입숨</a></li>
+        <li><a href="../../tools/uuid/">UUID 생성기</a></li>
+        <li><a href="../../tools/random-number/">난수 생성기</a></li>
+        <li><a href="../../tools/band-name/">가게 이름 생성기</a></li>
+        <li><a href="../../tools/hashtag/">해시태그 생성기</a></li>
+        <li><a href="../../tools/email-alias/">임시 이메일 아이디 아이디어</a></li>
+        <li><a href="../../tools/color-name/" aria-current="page">색상 이름 생성기</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>안내</h4>
+      <ul style="columns:1">
+        <li><a href="../../guide/password-safety/">안전한 비밀번호 만들기 가이드</a></li>
+        <li><a href="../../privacy.html">개인정보처리방침</a></li>
+        <li><a href="../../terms.html">이용약관</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal">모든 생성·계산은 방문자의 브라우저 안에서만 실행되며 입력값은 서버로 전송되지 않습니다.<br>© 2026 GenLab 생성기 허브</div>
+</div></footer>
+<script src="../../assets/data/colors.js"></script>
+<script src="../../assets/common.js"></script>
+<script>
+(function(){
+var $=G.$;
+var C=window.GENLAB_COLORS;
+/* sRGB → CIE Lab (D65) */
+function hexToRgb(h){
+  h=h.trim().replace(/^#/,'');
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(!/^[0-9a-fA-F]{6}$/.test(h))return null;
+  return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];
+}
+function toLab(rgb){
+  var c=rgb.map(function(v){
+    v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);
+  });
+  var x=(c[0]*0.4124+c[1]*0.3576+c[2]*0.1805)/0.95047;
+  var y=(c[0]*0.2126+c[1]*0.7152+c[2]*0.0722)/1.0;
+  var z=(c[0]*0.0193+c[1]*0.1192+c[2]*0.9505)/1.08883;
+  function f(t){return t>0.008856?Math.pow(t,1/3):(7.787*t+16/116);}
+  var fx=f(x),fy=f(y),fz=f(z);
+  return [116*fy-16,500*(fx-fy),200*(fy-fz)];
+}
+var TABLE=C.map(function(c){return{name:c[0],hex:c[1],lab:toLab(hexToRgb(c[1]))};});
+function deltaE(a,b){
+  var dl=a[0]-b[0],da=a[1]-b[1],db=a[2]-b[2];
+  return Math.sqrt(dl*dl+da*da+db*db);
+}
+function nearest(hex,k){
+  var rgb=hexToRgb(hex);if(!rgb)return null;
+  var lab=toLab(rgb);
+  return TABLE.map(function(t){return{name:t.name,hex:t.hex,d:deltaE(lab,t.lab)};})
+    .sort(function(a,b){return a.d-b.d;}).slice(0,k);
+}
+function swatchHtml(list){
+  return list.map(function(t){
+    return '<div class="swatch" data-hex="'+t.hex+'" title="'+G.esc(t.name)+' '+t.hex+'">'+
+      '<div class="c" style="background:'+t.hex+'"></div>'+
+      '<div class="n">'+G.esc(t.name)+'</div><div class="h">'+t.hex+'</div></div>';
+  }).join('');
+}
+var cur={name:'',hex:''};
+function show(hex){
+  var list=nearest(hex,5);
+  if(!list){G.toast('HEX 형식을 확인하세요 (예: #A1B2C3)');return;}
+  var rgb=hexToRgb(hex);
+  var up='#'+rgb.map(function(v){return v.toString(16).padStart(2,'0');}).join('').toUpperCase();
+  cur={name:list[0].name,hex:up};
+  $('#bigSwatch').style.background=up;
+  $('#bigName').textContent=list[0].name;
+  var d=list[0].d;
+  var acc=d<2?'거의 일치':d<6?'매우 비슷':d<12?'비슷한 계열':'가장 가까운 이름';
+  $('#bigMeta').textContent=up+' · RGB('+rgb.join(', ')+') · '+acc+' (색차 ΔE '+d.toFixed(1)+')';
+  $('#near').innerHTML=swatchHtml(list);
+  $('#hexIn').value=up;
+  $('#picker').value=up.toLowerCase();
+}
+$('#btnFind').addEventListener('click',function(){show($('#hexIn').value);});
+$('#hexIn').addEventListener('keydown',function(e){if(e.key==='Enter')show(this.value);});
+$('#picker').addEventListener('input',function(){show(this.value);});
+$('#btnRandom').addEventListener('click',function(){
+  var b=new Uint8Array(3);crypto.getRandomValues(b);
+  show('#'+[b[0],b[1],b[2]].map(function(v){return v.toString(16).padStart(2,'0');}).join(''));
+});
+$('#btnCopyName').addEventListener('click',function(){if(cur.name)G.copy(cur.name,'색이름을 복사했습니다');});
+$('#btnCopyHex').addEventListener('click',function(){if(cur.hex)G.copy(cur.hex,'HEX를 복사했습니다');});
+document.addEventListener('click',function(e){
+  var s=e.target.closest('.swatch');if(!s)return;
+  show(s.dataset.hex);
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+$('#totalCount').textContent='— 총 '+C.length+'색';
+function renderAll(q){
+  var list=TABLE;
+  if(q)list=TABLE.filter(function(t){return t.name.indexOf(q)>=0||t.hex.toLowerCase().indexOf(q.toLowerCase())>=0;});
+  $('#all').innerHTML=list.length?swatchHtml(list):'<p class="empty">검색 결과가 없습니다.</p>';
+}
+$('#filter').addEventListener('input',function(){renderAll(this.value.trim());});
+renderAll('');
+show('#7C3AED');
+})();
+</script>
+</body>
+</html>

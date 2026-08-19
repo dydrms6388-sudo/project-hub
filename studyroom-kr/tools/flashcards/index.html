@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>암기 카드 만들기 - 간격 반복 학습 · 엑셀 붙여넣기 | 스터디룸</title>
+<meta name="description" content="무료 암기 카드(플래시카드) 웹앱. 카드 세트 만들기, 간격 반복(SRS) 복습, 엑셀·CSV 붙여넣기 가져오기, 세트 공유 링크까지. 영어 단어·한자·전공 용어 암기에.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<style>
+.set-item{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:8px;background:var(--card);cursor:pointer}
+.set-item:hover{border-color:var(--brand)}
+.set-item .nm{font-weight:800;flex:1}
+.set-item .cnt{font-size:12px;color:var(--sub)}
+.due-badge{font-size:11px;font-weight:800;color:#fff;background:var(--brand);border-radius:99px;padding:2px 8px}
+.flash{min-height:220px;border:2px solid var(--line);border-radius:16px;display:flex;align-items:center;justify-content:center;
+padding:24px;font-size:22px;font-weight:700;text-align:center;cursor:pointer;background:var(--card);word-break:break-all;user-select:none}
+.flash.back{border-color:var(--brand);background:#f5f6ff}
+.flash small{display:block;font-size:12px;color:var(--sub);font-weight:600;margin-top:10px}
+.grade-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.grade-row .btn{min-height:52px;flex-direction:column;gap:0;font-size:14px}
+.grade-row .btn small{font-size:11px;font-weight:600;color:var(--sub)}
+.card-line{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.card-line input{min-height:42px;font-size:14px}
+.card-line .rm{border:none;background:none;color:#cbd5e1;font-size:16px;cursor:pointer}
+.card-line .rm:hover{color:var(--bad)}
+.view{display:none}.view.on{display:block}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../pomodoro/">뽀모도로</a><a href="../study-timer/">공부 시간</a><a href="../timetable/">시간표</a><a href="../word-count/">글자수</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 암기 카드</nav>
+<div class="page-h">
+  <h1>암기 카드</h1>
+  <p>카드 세트를 만들고 간격 반복으로 복습하세요. 엑셀에서 붙여넣기로 한 번에 가져올 수 있습니다.</p>
+</div>
+
+<div class="share-banner no-print" id="sharedBanner" style="display:none">
+  공유된 카드 세트 <b id="sharedName"></b> (<span id="sharedCnt"></span>장)를 받았어요.
+  <div class="btn-row">
+    <button class="btn btn-p btn-sm" id="btnAdopt">내 세트로 저장</button>
+    <button class="btn btn-sm" id="btnFresh">무시하고 내 세트 보기</button>
+  </div>
+</div>
+
+<!-- 세트 목록 -->
+<section class="view on" id="viewList">
+  <section class="card">
+    <h2>내 카드 세트</h2>
+    <div id="setList"></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <input type="text" id="fSetName" maxlength="24" placeholder="새 세트 이름 (예: 영단어 Day1)" style="flex:1">
+      <button class="btn btn-p" id="btnAddSet">만들기</button>
+    </div>
+  </section>
+</section>
+
+<!-- 세트 편집 -->
+<section class="view" id="viewEdit">
+  <section class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <h2 id="editTitle" style="margin:0">세트 편집</h2>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm" id="btnBack">← 목록</button>
+        <button class="btn btn-sm" id="btnShareSet">🔗 공유</button>
+        <button class="btn btn-sm btn-danger" id="btnDelSet">세트 삭제</button>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-p" id="btnStudy">▶ 복습 시작 (<span id="dueCnt">0</span>장)</button>
+      <button class="btn" id="btnStudyAll">전체 카드 훑어보기</button>
+    </div>
+  </section>
+  <section class="card">
+    <h2>카드 (<span id="cardCnt">0</span>장)</h2>
+    <div id="cardList"></div>
+    <div class="card-line" style="margin-top:10px">
+      <input type="text" id="fFront" maxlength="80" placeholder="앞면 (예: apple)">
+      <input type="text" id="fBackI" maxlength="80" placeholder="뒷면 (예: 사과)">
+      <button class="btn btn-sm btn-p" id="btnAddCard">추가</button>
+    </div>
+    <h3>엑셀·CSV에서 붙여넣기</h3>
+    <textarea id="pasteArea" placeholder="엑셀에서 두 열(앞면·뒷면)을 복사해 여기에 붙여넣으세요.&#10;또는 '앞면[탭]뒷면' / '앞면,뒷면' 형식 한 줄에 한 카드."></textarea>
+    <button class="btn" id="btnImport" style="margin-top:8px">가져오기</button>
+  </section>
+</section>
+
+<!-- 복습 -->
+<section class="view" id="viewStudy">
+  <section class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;color:var(--sub);font-weight:700" id="studyProgress"></span>
+      <button class="btn btn-sm" id="btnQuit">복습 종료</button>
+    </div>
+    <div class="flash" id="flashCard" style="margin-top:12px"></div>
+    <div class="grade-row" id="gradeRow" style="display:none">
+      <button class="btn" data-g="0" style="color:var(--bad)">다시<small>&lt;10분</small></button>
+      <button class="btn" data-g="1" style="color:var(--warn)">어려움<small id="ivHard"></small></button>
+      <button class="btn" data-g="2" style="color:var(--brand)">보통<small id="ivGood"></small></button>
+      <button class="btn" data-g="3" style="color:var(--ok)">쉬움<small id="ivEasy"></small></button>
+    </div>
+    <p class="note no-print" id="tapHint">카드를 누르면 뒷면이 보입니다.</p>
+  </section>
+  <div id="studyDone" class="card" style="display:none;text-align:center">
+    <p style="font-size:20px;font-weight:800;margin:8px 0">오늘 복습 완료! 🎉</p>
+    <p style="color:var(--sub);font-size:14px">간격 반복 일정에 따라 내일 이후 복습할 카드가 다시 나타납니다.</p>
+    <button class="btn btn-p" id="btnDone">세트로 돌아가기</button>
+  </div>
+</section>
+
+<section class="card no-print"><!-- ad-slot --></section>
+
+<article class="prose">
+  <h2>암기 카드(플래시카드)와 간격 반복</h2>
+  <p>영어 단어, 한자, 전공 용어처럼 "외워야 이기는" 과목에는 플래시카드만 한 도구가 없습니다. 이 앱은 종이
+  단어장 대신 브라우저에서 카드 세트를 만들고, <b>간격 반복(Spaced Repetition)</b> 방식으로 복습 일정을
+  자동 관리해 줍니다. 쉬웠던 카드는 점점 긴 간격(1일 → 3일 → 일주일…)으로, 틀린 카드는 바로 다시
+  나타나 잊어버리기 직전에 복습하게 됩니다.</p>
+  <p>이미 엑셀이나 스프레드시트에 단어 목록이 있다면 두 열을 복사해 <b>붙여넣기 가져오기</b>로 한 번에
+  카드로 만들 수 있습니다. 세트는 공유 링크로 친구에게 보낼 수 있어 스터디 그룹이 같은 단어장을 나눠 쓰기
+  좋습니다. 데이터는 모두 브라우저에만 저장됩니다.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>세트를 만들고 카드를 추가합니다(직접 입력 또는 엑셀 붙여넣기).</li>
+    <li><b>복습 시작</b>을 누르면 오늘 복습할 카드만 골라 보여 줍니다.</li>
+    <li>카드를 눌러 정답을 확인하고 <b>다시/어려움/보통/쉬움</b> 중 하나를 선택합니다.</li>
+    <li>선택에 따라 다음 복습 간격이 자동으로 조절됩니다. 매일 들어와 밀린 카드만 처리하면 됩니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>복습 간격은 어떻게 정해지나요?</summary>
+      <div class="a">널리 쓰이는 SM-2 알고리즘을 단순화해 사용합니다. 새 카드를 "보통"으로 넘기면 1일 뒤,
+      그다음은 카드마다 저장된 배율(기본 2.5배)만큼 간격이 늘어납니다. "쉬움"은 간격을 더 크게, "어려움"은
+      조금만 늘리고 배율을 낮추며, "다시"를 누르면 간격이 초기화되어 같은 세션에서 다시 나옵니다.</div></details>
+    <details><summary>엑셀 붙여넣기는 어떤 형식이어야 하나요?</summary>
+      <div class="a">엑셀·구글 시트에서 두 열(앞면, 뒷면)을 복사하면 탭으로 구분된 텍스트가 되는데 그대로
+      붙여넣으면 됩니다. "단어,뜻"처럼 쉼표로 구분된 CSV 텍스트도 인식합니다. 한 줄이 카드 한 장입니다.</div></details>
+    <details><summary>친구와 세트를 공유할 수 있나요?</summary>
+      <div class="a">세트 화면의 공유 버튼을 누르면 카드 내용이 담긴 링크가 복사됩니다. 링크를 연 사람은
+      "내 세트로 저장"을 눌러 자기 브라우저로 가져갈 수 있고, 이후 복습 기록은 각자 따로 관리됩니다.</div></details>
+    <details><summary>카드가 너무 많이 밀렸어요.</summary>
+      <div class="a">밀린 카드는 한 번에 몰아서 하기보다 매일 조금씩 처리하는 게 효과적입니다. 급할 때는
+      "전체 카드 훑어보기"로 일정과 무관하게 전체를 빠르게 넘겨볼 수도 있습니다(이 모드는 복습 일정에
+      영향을 주지 않습니다).</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"암기 카드","applicationCategory":"EducationalApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"간격 반복 플래시카드 웹앱. 엑셀 붙여넣기 가져오기, 세트 공유 링크 지원"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"복습 간격은 어떻게 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"SM-2 알고리즘을 단순화해 사용하며 평가(다시/어려움/보통/쉬움)에 따라 다음 복습 간격이 자동 조절됩니다."}},
+{"@type":"Question","name":"엑셀 붙여넣기는 어떤 형식인가요?","acceptedAnswer":{"@type":"Answer","text":"두 열(앞면·뒷면)을 복사한 탭 구분 텍스트 또는 쉼표 구분 CSV 텍스트를 인식합니다."}},
+{"@type":"Question","name":"세트를 공유할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"카드 내용이 담긴 공유 링크를 복사해 보낼 수 있으며 받은 사람은 내 세트로 저장해 사용합니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"암기 카드","item":"https://studyroom-kr.vercel.app/tools/flashcards/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+
+/* sets: [{id,name,cards:[{id,f,b,iv,ef,due,reps}]}]  due='YYYY-MM-DD' */
+var sets=SR.load('fc_sets',[]);
+var curSet=null, queue=[], qi=0, browseMode=false, flipped=false;
+var sharedSet=null;
+
+function persist(){ SR.save('fc_sets',sets); }
+function today(){ return SR.ymd(new Date()); }
+function dueCards(set){
+  var t=today();
+  return set.cards.filter(function(c){ return !c.due || c.due<=t; });
+}
+function show(view){
+  ['viewList','viewEdit','viewStudy'].forEach(function(v){
+    $(v).classList.toggle('on',v===view);
+  });
+}
+
+/* ---------- 공유 수신 ---------- */
+var sp=SR.shareParam();
+if(sp){
+  var d=SR.dec(sp);
+  if(d && d.v===1 && d.name && Array.isArray(d.cards) && d.cards.length){
+    sharedSet={name:String(d.name).slice(0,24), cards:d.cards.slice(0,500).map(function(c){
+      return {id:SR.uid(),f:String(c[0]).slice(0,80),b:String(c[1]||'').slice(0,80),iv:0,ef:2.5,due:'',reps:0};
+    })};
+    $('sharedBanner').style.display='block';
+    $('sharedName').textContent=sharedSet.name;
+    $('sharedCnt').textContent=sharedSet.cards.length;
+  }
+}
+$('btnAdopt').onclick=function(){
+  if(!sharedSet) return;
+  sets.push({id:SR.uid(),name:sharedSet.name,cards:sharedSet.cards});
+  persist();
+  $('sharedBanner').style.display='none';
+  history.replaceState(null,'',location.pathname);
+  SR.toast('세트를 저장했습니다'); renderList();
+};
+$('btnFresh').onclick=function(){
+  $('sharedBanner').style.display='none';
+  history.replaceState(null,'',location.pathname);
+};
+
+/* ---------- 세트 목록 ---------- */
+function renderList(){
+  var h='';
+  sets.forEach(function(s){
+    var due=dueCards(s).length;
+    h+='<div class="set-item" data-id="'+s.id+'">'
+      +'<span class="nm">'+SR.esc(s.name)+'</span>'
+      +(due?'<span class="due-badge">복습 '+due+'</span>':'')
+      +'<span class="cnt">'+s.cards.length+'장</span></div>';
+  });
+  $('setList').innerHTML=h||'<p class="note">아직 세트가 없습니다. 아래에서 첫 세트를 만들어 보세요.</p>';
+}
+$('setList').addEventListener('click',function(e){
+  var el=e.target.closest('.set-item'); if(!el) return;
+  curSet=sets.find(function(s){return s.id===el.dataset.id});
+  renderEdit(); show('viewEdit');
+});
+$('btnAddSet').onclick=function(){
+  var name=$('fSetName').value.trim();
+  if(!name){ SR.toast('세트 이름을 입력하세요'); return; }
+  var s={id:SR.uid(),name:name,cards:[]};
+  sets.push(s); persist();
+  $('fSetName').value='';
+  curSet=s; renderEdit(); show('viewEdit');
+};
+
+/* ---------- 세트 편집 ---------- */
+function renderEdit(){
+  $('editTitle').textContent=curSet.name;
+  $('cardCnt').textContent=curSet.cards.length;
+  $('dueCnt').textContent=dueCards(curSet).length;
+  var h='';
+  curSet.cards.forEach(function(c,i){
+    h+='<div class="card-line" data-i="'+i+'">'
+      +'<input type="text" value="'+SR.esc(c.f)+'" data-k="f" maxlength="80">'
+      +'<input type="text" value="'+SR.esc(c.b)+'" data-k="b" maxlength="80">'
+      +'<button class="rm" aria-label="카드 삭제">✕</button></div>';
+  });
+  $('cardList').innerHTML=h||'<p class="note">카드를 추가하세요.</p>';
+}
+$('cardList').addEventListener('input',function(e){
+  var line=e.target.closest('.card-line'); if(!line) return;
+  curSet.cards[+line.dataset.i][e.target.dataset.k]=e.target.value;
+  persist();
+});
+$('cardList').addEventListener('click',function(e){
+  if(!e.target.classList.contains('rm')) return;
+  curSet.cards.splice(+e.target.closest('.card-line').dataset.i,1);
+  persist(); renderEdit();
+});
+$('btnAddCard').onclick=function(){
+  var f=$('fFront').value.trim(), b=$('fBackI').value.trim();
+  if(!f){ SR.toast('앞면을 입력하세요'); return; }
+  curSet.cards.push({id:SR.uid(),f:f,b:b,iv:0,ef:2.5,due:'',reps:0});
+  persist(); $('fFront').value=''; $('fBackI').value='';
+  $('fFront').focus(); renderEdit();
+};
+$('fBackI').addEventListener('keydown',function(e){ if(e.key==='Enter') $('btnAddCard').click(); });
+$('btnImport').onclick=function(){
+  var txt=$('pasteArea').value.trim();
+  if(!txt){ SR.toast('붙여넣을 내용이 없습니다'); return; }
+  var n=0;
+  txt.split(/\r?\n/).forEach(function(line){
+    line=line.trim(); if(!line) return;
+    var parts=line.indexOf('\t')>=0?line.split('\t'):line.split(',');
+    var f=(parts[0]||'').trim(), b=(parts.slice(1).join(',')||'').trim();
+    if(!f) return;
+    curSet.cards.push({id:SR.uid(),f:f.slice(0,80),b:b.slice(0,80),iv:0,ef:2.5,due:'',reps:0});
+    n++;
+  });
+  persist(); $('pasteArea').value='';
+  SR.toast(n+'장 가져왔습니다'); renderEdit();
+};
+$('btnBack').onclick=function(){ renderList(); show('viewList'); };
+$('btnDelSet').onclick=function(){
+  if(!confirm('"'+curSet.name+'" 세트를 삭제할까요?')) return;
+  sets=sets.filter(function(s){return s!==curSet});
+  persist(); renderList(); show('viewList');
+};
+$('btnShareSet').onclick=function(){
+  if(!curSet.cards.length){ SR.toast('카드가 없는 세트는 공유할 수 없습니다'); return; }
+  var url=SR.shareUrl({v:1,name:curSet.name,cards:curSet.cards.map(function(c){return [c.f,c.b]})});
+  if(url.length>7500){ SR.toast('카드가 너무 많아 링크가 깁니다. 세트를 나눠 주세요'); return; }
+  SR.copy(url,'세트 공유 링크가 복사되었습니다');
+};
+
+/* ---------- 복습 (SM-2 단순화) ---------- */
+function startStudy(all){
+  browseMode=!!all;
+  queue = all ? curSet.cards.slice() : dueCards(curSet);
+  if(!queue.length){ SR.toast('지금 복습할 카드가 없습니다'); return; }
+  qi=0; flipped=false;
+  $('studyDone').style.display='none';
+  document.querySelector('#viewStudy .card').style.display='block';
+  show('viewStudy'); renderStudy();
+}
+$('btnStudy').onclick=function(){ startStudy(false); };
+$('btnStudyAll').onclick=function(){ startStudy(true); };
+$('btnQuit').onclick=$('btnDone').onclick=function(){ renderEdit(); show('viewEdit'); };
+
+function renderStudy(){
+  if(qi>=queue.length){
+    document.querySelector('#viewStudy .card').style.display='none';
+    $('studyDone').style.display='block'; return;
+  }
+  var c=queue[qi];
+  $('studyProgress').textContent=(qi+1)+' / '+queue.length+(browseMode?' (훑어보기)':'');
+  var el=$('flashCard');
+  el.classList.toggle('back',flipped);
+  el.innerHTML=flipped
+    ? SR.esc(c.b||'(뒷면 없음)')+'<small>'+SR.esc(c.f)+'</small>'
+    : SR.esc(c.f)+'<small>누르면 정답 확인</small>';
+  $('gradeRow').style.display=(flipped&&!browseMode)?'grid':'none';
+  $('tapHint').style.display=flipped?'none':'block';
+  if(flipped&&!browseMode){
+    $('ivHard').textContent=fmtIv(nextIv(c,1));
+    $('ivGood').textContent=fmtIv(nextIv(c,2));
+    $('ivEasy').textContent=fmtIv(nextIv(c,3));
+  }
+}
+$('flashCard').addEventListener('click',function(){
+  if(browseMode&&flipped){ qi++; flipped=false; renderStudy(); return; }
+  flipped=!flipped; renderStudy();
+});
+function nextIv(c,g){
+  var iv=c.iv||0, ef=c.ef||2.5;
+  if(g===1) return Math.max(1,Math.round(iv*1.2))||1;
+  if(g===2) return iv?Math.round(iv*ef):1;
+  return iv?Math.round(iv*ef*1.3):3;
+}
+function fmtIv(d){ return d>=30?Math.round(d/30)+'개월':d+'일'; }
+$('gradeRow').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  var g=+b.dataset.g, c=queue[qi];
+  if(g===0){
+    c.iv=0; c.reps=0; c.due=today();
+    c.ef=Math.max(1.3,(c.ef||2.5)-0.2);
+    queue.push(c);                       /* 같은 세션에서 다시 */
+  }else{
+    var iv=nextIv(c,g);
+    if(g===1) c.ef=Math.max(1.3,(c.ef||2.5)-0.15);
+    if(g===3) c.ef=Math.min(3.0,(c.ef||2.5)+0.15);
+    c.iv=iv; c.reps=(c.reps||0)+1;
+    var d=new Date(); d.setDate(d.getDate()+iv);
+    c.due=SR.ymd(d);
+  }
+  persist();
+  qi++; flipped=false; renderStudy();
+});
+
+renderList();
+})();
+</script>
+</body>
+</html>

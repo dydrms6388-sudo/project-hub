@@ -1,0 +1,43 @@
+# lottolab-kr 로또 회차 데이터 자동 갱신
+name: lotto-draws-update
+
+on:
+  schedule:
+    # 매주 토요일 21:40 KST = 토요일 12:40 UTC (추첨 20:35 KST 이후 결과 공개 시간대)
+    - cron: "40 12 * * 6"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lotto-draws-update
+  cancel-in-progress: false
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch new draws
+        run: node lottolab-kr/scripts/fetch-draws.mjs
+
+      - name: Commit updated draws.json
+        run: |
+          if git diff --quiet -- lottolab-kr/data/draws.json; then
+            echo "no changes — nothing to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lottolab-kr/data/draws.json
+          LATEST=$(node -e "const d=require('./lottolab-kr/data/draws.json');console.log(d.length?d[d.length-1].round:'none')")
+          git commit -m "data(lottolab-kr): update draws.json to round ${LATEST} [skip ci]"
+          git push

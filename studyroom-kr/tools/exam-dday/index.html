@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시험 디데이 계산기 - D-day 위젯 카드 · 배경화면 만들기 | 스터디룸</title>
+<meta name="description" content="시험 디데이 계산기. 중간고사·기말고사·수능·자격증 시험일을 등록하면 D-day 카드로 보여주고, 아이폰 배경화면용 디데이 이미지까지 만들어 드립니다. 무료, 자동 저장.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<style>
+.dcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.dcard{border-radius:16px;padding:18px;color:#fff;position:relative;overflow:hidden;min-height:120px;
+display:flex;flex-direction:column;justify-content:space-between}
+.dcard .nm{font-weight:800;font-size:15px;word-break:keep-all}
+.dcard .dd{font-size:34px;font-weight:800;letter-spacing:-.02em;margin-top:6px}
+.dcard .dt{font-size:12px;opacity:.85}
+.dcard .x{position:absolute;top:8px;right:10px;background:rgba(255,255,255,.25);border:none;color:#fff;
+width:26px;height:26px;border-radius:99px;cursor:pointer;font-size:13px;line-height:1}
+.dcard.past{filter:grayscale(.5);opacity:.75}
+#previewBox{display:none;text-align:center;margin-top:12px}
+#previewBox canvas{max-width:260px;border:1px solid var(--line);border-radius:12px}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../timetable/">시간표</a><a href="../gpa/">학점 계산기</a><a href="../pomodoro/">뽀모도로</a><a href="../study-timer/">공부 시간</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 시험 디데이</nav>
+<div class="page-h">
+  <h1>시험 디데이</h1>
+  <p>시험일을 등록하면 D-day 카드로 계산해 주고, 배경화면용 디데이 이미지도 만들어 드립니다.</p>
+</div>
+
+<div class="share-banner no-print" id="sharedBanner" style="display:none">
+  <b>공유된 디데이 목록</b>을 보고 있어요.
+  <div class="btn-row">
+    <button class="btn btn-p btn-sm" id="btnAdopt">내 디데이에 추가</button>
+    <button class="btn btn-sm" id="btnFresh">나도 만들어보기</button>
+  </div>
+</div>
+
+<section class="card">
+  <h2>시험 추가</h2>
+  <div class="grid3">
+    <div class="field" style="grid-column:span 2"><label class="f">시험 이름</label>
+      <input type="text" id="fName" maxlength="24" placeholder="예: 2학기 중간고사 / 정보처리기사 필기"></div>
+    <div class="field"><label class="f">날짜</label><input type="date" id="fDate"></div>
+  </div>
+  <button class="btn btn-p" id="btnAdd">+ 디데이 추가</button>
+</section>
+
+<section class="card">
+  <h2>내 디데이</h2>
+  <div class="dcards" id="cardArea"></div>
+  <p class="note" id="emptyMsg" style="display:none">아직 등록한 시험이 없습니다. 위에서 시험을 추가해 보세요.</p>
+</section>
+
+<section class="card no-print">
+  <h2>배경화면 이미지 만들기</h2>
+  <div class="grid3">
+    <div class="field"><label class="f">메인으로 표시할 시험</label><select id="imgMain"></select></div>
+    <div class="field"><label class="f">비율</label>
+      <select id="imgPreset">
+        <option value="phone">아이폰 배경화면 (9:19.5)</option>
+        <option value="square">정사각 (SNS용)</option>
+      </select></div>
+    <div class="field"><label class="f">테마</label>
+      <select id="imgTheme">
+        <option value="dark">다크</option>
+        <option value="light">라이트</option>
+        <option value="grad">퍼플 그라데이션</option>
+      </select></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-p" id="btnImg">🖼️ PNG로 저장</button>
+    <button class="btn" id="btnPreview">미리보기</button>
+    <button class="btn" id="btnShare">🔗 목록 공유 링크</button>
+  </div>
+  <div id="previewBox"></div>
+  <p class="note">메인 시험이 크게, 나머지 시험은 아래에 목록으로 함께 그려집니다. 다운로드가 안 되는
+  브라우저에서는 새 탭에 이미지가 열립니다.</p>
+  <!-- ad-slot -->
+</section>
+
+<article class="prose">
+  <h2>시험 디데이 계산기 소개</h2>
+  <p>중간고사·기말고사·수능·자격증·편입 시험까지, 다가오는 시험을 등록하면 남은 날짜를 D-day 형식으로
+  계산해 주는 도구입니다. 여러 시험을 동시에 등록할 수 있고, 날짜가 가까운 순서로 자동 정렬되며 지난 시험은
+  D+ 형식으로 표시됩니다. 등록한 목록은 브라우저에 자동 저장되어 매일 들어와서 확인하는 위젯처럼 쓸 수
+  있습니다.</p>
+  <p>공부 자극이 필요하다면 <b>배경화면 이미지 만들기</b>를 활용해 보세요. 아이폰 배경화면 비율(9:19.5)로
+  D-day가 크게 박힌 이미지를 만들어 잠금화면에 걸어두면 폰을 열 때마다 남은 날짜가 보입니다. 디데이 계산은
+  자정(0시) 기준이며, 시험 당일은 D-day로 표시됩니다.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>시험 이름과 날짜를 입력하고 <b>디데이 추가</b>를 누릅니다. 여러 개 등록 가능합니다.</li>
+    <li>카드에서 남은 날짜를 확인합니다. 카드 우측 상단 ✕로 삭제할 수 있습니다.</li>
+    <li>배경화면 만들기에서 메인 시험·비율·테마를 고르고 PNG로 저장하세요.</li>
+    <li>공유 링크를 복사하면 친구도 같은 디데이 목록을 볼 수 있습니다(스터디 그룹용).</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>D-day 계산 기준이 어떻게 되나요?</summary>
+      <div class="a">날짜(자정) 기준입니다. 오늘이 시험일이면 D-day, 내일이면 D-1로 표시됩니다. 시간 단위가
+      아닌 날짜 단위로 계산하므로 오후에 확인해도 값이 달라지지 않습니다.</div></details>
+    <details><summary>등록한 시험이 사라지지 않나요?</summary>
+      <div class="a">브라우저 localStorage에 자동 저장되어 재방문 시 그대로 남아 있습니다. 다만 브라우저
+      데이터 삭제 시 함께 지워지니, 중요한 목록은 공유 링크를 만들어 메모해 두면 백업이 됩니다.</div></details>
+    <details><summary>배경화면 이미지가 아이폰 화면에 딱 맞나요?</summary>
+      <div class="a">9:19.5 비율(1170×2532px)로 생성되어 최근 아이폰 잠금화면에 맞습니다. 위쪽에는 시계가
+      가리지 않도록 여백을 두고 D-day를 중앙에 배치했습니다. 안드로이드에서도 세로 배경화면으로 사용할 수
+      있습니다.</div></details>
+    <details><summary>알림(푸시)도 오나요?</summary>
+      <div class="a">이 도구는 서버 없이 동작하는 웹페이지라 푸시 알림은 제공하지 않습니다. 대신 배경화면
+      이미지를 걸어두거나, 홈 화면에 이 페이지를 추가해 두면 빠르게 확인할 수 있습니다.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"시험 디데이 계산기","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"여러 시험 D-day 관리, 배경화면용 디데이 이미지 생성 무료 도구"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"D-day 계산 기준이 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"날짜(자정) 기준으로 계산하며, 시험 당일은 D-day, 하루 전은 D-1로 표시됩니다."}},
+{"@type":"Question","name":"등록한 시험이 사라지지 않나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저 localStorage에 자동 저장되어 재방문 시 유지됩니다. 브라우저 데이터 삭제 시에는 지워집니다."}},
+{"@type":"Question","name":"배경화면 이미지 비율은 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"아이폰 잠금화면에 맞는 9:19.5(1170×2532px) 비율과 정사각 비율을 지원합니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"시험 디데이","item":"https://studyroom-kr.vercel.app/tools/exam-dday/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+var GRADS=[
+ ['#6366f1','#8b5cf6'],['#f43f5e','#fb7185'],['#0ea5e9','#38bdf8'],
+ ['#f59e0b','#fbbf24'],['#10b981','#34d399'],['#8b5cf6','#d946ef'],
+ ['#ef4444','#f97316'],['#14b8a6','#22d3ee']
+];
+var exams=SR.load('exams',[]);
+var shared=false, sharedList=null;
+
+var sp=SR.shareParam();
+if(sp){
+  var d=SR.dec(sp);
+  if(d && d.v===1 && Array.isArray(d.exams)){
+    sharedList=d.exams.map(function(e){return {id:SR.uid(),name:String(e[0]).slice(0,24),date:e[1]};})
+      .filter(function(e){return /^\d{4}-\d{2}-\d{2}$/.test(e.date);});
+    if(sharedList.length){ shared=true; $('sharedBanner').style.display='block'; }
+  }
+}
+function list(){ return shared?sharedList:exams; }
+function persist(){ SR.save('exams',exams); }
+
+function ddayNum(dateStr){ return SR.daysBetween(new Date(), SR.parseYmd(dateStr)); }
+function ddayLabel(n){ return n===0?'D-day':(n>0?'D-'+n:'D+'+(-n)); }
+
+function render(){
+  var arr=list().slice().sort(function(a,b){return ddayNum(b.date)-ddayNum(a.date)});
+  /* 다가오는 순: 남은 날 적은 순 → 미래 먼저, 과거 뒤 */
+  arr.sort(function(a,b){
+    var x=ddayNum(a.date),y=ddayNum(b.date);
+    var px=x<0?1:0, py=y<0?1:0;
+    if(px!==py) return px-py;
+    return px? y-x : x-y;
+  });
+  var h='';
+  arr.forEach(function(e,i){
+    var n=ddayNum(e.date);
+    var g=GRADS[i%GRADS.length];
+    h+='<div class="dcard'+(n<0?' past':'')+'" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">'
+      +(shared?'':'<button class="x" data-id="'+e.id+'" aria-label="삭제">✕</button>')
+      +'<div class="nm">'+SR.esc(e.name)+'</div>'
+      +'<div><div class="dd">'+ddayLabel(n)+'</div>'
+      +'<div class="dt">'+SR.fmtKo(SR.parseYmd(e.date))+'</div></div></div>';
+  });
+  $('cardArea').innerHTML=h;
+  $('emptyMsg').style.display=arr.length?'none':'block';
+  /* 이미지 셀렉트 */
+  var sel='';
+  arr.filter(function(e){return ddayNum(e.date)>=0}).forEach(function(e){
+    sel+='<option value="'+e.id+'">'+SR.esc(e.name)+' ('+ddayLabel(ddayNum(e.date))+')</option>';
+  });
+  arr.filter(function(e){return ddayNum(e.date)<0}).forEach(function(e){
+    sel+='<option value="'+e.id+'">'+SR.esc(e.name)+' (지남)</option>';
+  });
+  $('imgMain').innerHTML=sel||'<option value="">등록된 시험 없음</option>';
+}
+$('cardArea').addEventListener('click',function(e){
+  var b=e.target.closest('.x'); if(!b) return;
+  var i=exams.findIndex(function(x){return x.id===b.dataset.id});
+  if(i>=0){ exams.splice(i,1); persist(); render(); }
+});
+$('btnAdd').onclick=function(){
+  var name=$('fName').value.trim(), date=$('fDate').value;
+  if(!name){ SR.toast('시험 이름을 입력하세요'); return; }
+  if(!date){ SR.toast('날짜를 선택하세요'); return; }
+  if(shared){ shared=false; $('sharedBanner').style.display='none'; history.replaceState(null,'',location.pathname); }
+  exams.push({id:SR.uid(),name:name,date:date});
+  persist(); $('fName').value='';
+  SR.toast(ddayLabel(ddayNum(date))+' 추가!');
+  render();
+};
+$('btnAdopt').onclick=function(){
+  sharedList.forEach(function(e){
+    if(!exams.some(function(x){return x.name===e.name&&x.date===e.date})) exams.push(e);
+  });
+  persist(); shared=false;
+  $('sharedBanner').style.display='none';
+  history.replaceState(null,'',location.pathname);
+  SR.toast('내 디데이에 추가했습니다'); render();
+};
+$('btnFresh').onclick=function(){
+  shared=false; $('sharedBanner').style.display='none';
+  history.replaceState(null,'',location.pathname); render();
+};
+$('btnShare').onclick=function(){
+  var arr=list();
+  if(!arr.length){ SR.toast('먼저 시험을 추가하세요'); return; }
+  SR.copy(SR.shareUrl({v:1,exams:arr.map(function(e){return [e.name,e.date]})}),'공유 링크가 복사되었습니다');
+};
+
+/* ---------- 배경화면 캔버스 ---------- */
+function draw(){
+  var arr=list();
+  var main=arr.find(function(e){return e.id===$('imgMain').value})||arr[0];
+  if(!main) return null;
+  var preset=$('imgPreset').value, theme=$('imgTheme').value;
+  var W,H;
+  if(preset==='phone'){ W=1170; H=2532; } else { W=1200; H=1200; }
+  var cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  var ctx=cv.getContext('2d');
+  var g=ctx.createLinearGradient(0,0,W,H);
+  var ink,sub2;
+  if(theme==='light'){ g.addColorStop(0,'#f8fafc'); g.addColorStop(1,'#e0e7ff'); ink='#1e293b'; sub2='#64748b'; }
+  else if(theme==='grad'){ g.addColorStop(0,'#4c1d95'); g.addColorStop(1,'#be185d'); ink='#ffffff'; sub2='rgba(255,255,255,.75)'; }
+  else { g.addColorStop(0,'#0f172a'); g.addColorStop(1,'#1e1b4b'); ink='#f1f5f9'; sub2='#94a3b8'; }
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+  var cy = preset==='phone'? H*0.42 : H*0.44;
+  var n=ddayNum(main.date);
+  ctx.textAlign='center';
+  ctx.fillStyle=sub2;
+  ctx.font='700 44px Pretendard, "Noto Sans KR", sans-serif';
+  ctx.fillText(main.name, W/2, cy-150);
+  ctx.fillStyle=ink;
+  ctx.font='800 '+(preset==='phone'?230:200)+'px Pretendard, "Noto Sans KR", sans-serif';
+  ctx.fillText(ddayLabel(n), W/2, cy+60);
+  ctx.fillStyle=sub2;
+  ctx.font='600 40px Pretendard, "Noto Sans KR", sans-serif';
+  ctx.fillText(SR.fmtKo(SR.parseYmd(main.date)), W/2, cy+160);
+
+  /* 나머지 목록 */
+  var others=arr.filter(function(e){return e!==main && ddayNum(e.date)>=0}).slice(0,4);
+  var y=cy+320;
+  others.forEach(function(e){
+    var bw=W-260;
+    SR.rr(ctx,130,y,bw,86,20);
+    ctx.fillStyle= theme==='light'?'rgba(255,255,255,.8)':'rgba(255,255,255,.10)';
+    ctx.fill();
+    ctx.fillStyle=ink;
+    ctx.font='700 34px Pretendard, "Noto Sans KR", sans-serif';
+    ctx.textAlign='left';
+    var nm=e.name.length>12?e.name.slice(0,12)+'…':e.name;
+    ctx.fillText(nm, 160, y+55);
+    ctx.textAlign='right';
+    ctx.fillText(ddayLabel(ddayNum(e.date)), 130+bw-30, y+55);
+    ctx.textAlign='center';
+    y+=106;
+  });
+  ctx.fillStyle= theme==='light'?'#a5adba':'rgba(255,255,255,.35)';
+  ctx.font='600 26px Pretendard, "Noto Sans KR", sans-serif';
+  ctx.fillText('스터디룸 · 시험 디데이', W/2, H-(preset==='phone'?170:60));
+  return cv;
+}
+$('btnImg').onclick=function(){
+  var cv=draw();
+  if(!cv){ SR.toast('먼저 시험을 추가하세요'); return; }
+  SR.saveCanvas(cv,'exam-dday.png');
+};
+$('btnPreview').onclick=function(){
+  var cv=draw();
+  if(!cv){ SR.toast('먼저 시험을 추가하세요'); return; }
+  var box=$('previewBox'); box.innerHTML=''; box.appendChild(cv); box.style.display='block';
+};
+
+/* 기본 날짜: 오늘+30일 */
+(function(){
+  var d=new Date(); d.setDate(d.getDate()+30);
+  $('fDate').value=SR.ymd(d);
+})();
+render();
+})();
+</script>
+</body>
+</html>

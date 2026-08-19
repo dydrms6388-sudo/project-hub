@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>두벌식 자판 익히기 - 한글 키보드 배열 연습 | typingkr</title>
+<meta name="description" content="두벌식 한글 자판 배열을 화면 키보드로 익히는 무료 도구. 키를 누르면 실시간으로 위치가 표시되고, 자리 연습 드릴과 세벌식 자판 안내까지 제공합니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"두벌식 자판 익히기",
+"url":"https://typingkr.vercel.app/tools/keyboard-layout/","applicationCategory":"EducationalApplication",
+"operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+"description":"두벌식 자판 배열 학습 도구. 화면 키보드 하이라이트, 실시간 키 표시, 자리 연습 드릴."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"typingkr","item":"https://typingkr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"두벌식 자판 익히기","item":"https://typingkr.vercel.app/tools/keyboard-layout/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"두벌식과 세벌식의 차이는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"두벌식은 자음·모음 두 벌로 나눈 표준 배열이고, 세벌식은 초성·중성·종성 세 벌로 나눈 배열입니다. 국내 표준이자 대부분의 기기 기본값은 두벌식입니다."}},
+{"@type":"Question","name":"쌍자음은 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"ㄲㄸㅃㅆㅉ와 ㅒㅖ는 해당 키를 Shift와 함께 누릅니다. 화면 키보드의 오른쪽 위 작은 글자가 Shift 조합입니다."}},
+{"@type":"Question","name":"기본자리는 어디인가요?","acceptedAnswer":{"@type":"Answer","text":"왼손은 ㅁㄴㅇㄹ(ASDF), 오른손은 ㅓㅏㅣ(JKL)와 ㅗ(H)입니다. F와 J 키의 돌기에 검지를 올리는 것이 시작 자세입니다."}}]}
+</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">타자연습<span class="dot">·</span>typingkr</a>
+  <span class="head-sp"></span>
+  <button id="soundBtn" class="iconbtn" type="button">🔇 소리 끔</button>
+  <button id="themeBtn" class="iconbtn" type="button" aria-label="다크/라이트 테마 전환">🌙</button>
+</div></header>
+
+<main class="wrap">
+  <h1>두벌식 자판 익히기</h1>
+  <p class="hint">아래 입력창에 아무 키나 눌러 보세요. 화면 키보드에 눌린 키가 실시간으로 표시됩니다. 밑줄 표시가 있는 키가 <b>기본자리</b>입니다.</p>
+
+  <div class="mobile-note">📱 자판 학습은 <b>PC 키보드</b>가 필요합니다. 모바일에서는 배열 그림만 참고하세요.</div>
+
+  <div class="card">
+    <input type="text" id="freeInput" class="typebox" placeholder="여기를 클릭하고 키를 눌러 보세요 (한/영 아무거나)" autocomplete="off">
+    <div id="kbdBox"></div>
+    <p class="hint">오른쪽 위 작은 글자 = <span class="kbadge">Shift</span> 조합 (예: Shift+ㄱ = ㄲ) · 키 아래 작은 글자 = 영문 자판</p>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">자리 연습 드릴</h2>
+    <div class="chips" id="rowChips">
+      <button class="chip on" data-row="home">기본자리</button>
+      <button class="chip" data-row="top">윗줄</button>
+      <button class="chip" data-row="bottom">아랫줄</button>
+      <button class="chip" data-row="all">전체</button>
+    </div>
+    <div class="statbar">
+      <div class="stat"><b id="stCpm">0</b><span>타/분</span></div>
+      <div class="stat"><b id="stAcc" class="ok">100%</b><span>정확도</span></div>
+      <div class="stat"><b id="stItem">0/5</b><span>진행</span></div>
+    </div>
+    <div id="playArea">
+      <div class="target" id="target" aria-live="polite"></div>
+      <textarea class="typebox" id="input" rows="1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="파란 키를 보며 따라 입력하세요"></textarea>
+    </div>
+    <div id="doneMsg" style="display:none">
+      <p style="font-weight:700;color:var(--ok)">드릴 완료! 🎉 <span id="doneStat"></span></p>
+      <button class="btn sm" id="againBtn" type="button">다시 하기</button>
+    </div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="prose">
+    <h2>두벌식 자판이란?</h2>
+    <p>두벌식은 한글 자모를 자음 한 벌, 모음 한 벌 — 모두 <b>두 벌</b>로 나눠 배치한 자판입니다.
+    1982년 국가 표준으로 지정되어 지금까지 PC, 스마트폰 등 대부분의 기기에서 기본 한글 자판으로
+    쓰입니다. 왼손이 자음, 오른손이 모음을 맡는 구조라 좌우 손이 번갈아 움직이며 리듬감 있게
+    입력할 수 있습니다.</p>
+    <p>배열의 핵심은 <b>기본자리(가운데 줄)</b>입니다. 왼손 검지부터 새끼손가락까지
+    ㄹ·ㅇ·ㄴ·ㅁ(F·D·S·A), 오른손은 ㅗ·ㅓ·ㅏ·ㅣ(H·J·K·L)를 담당합니다. 자주 쓰는 자모가
+    기본자리와 그 주변에 몰려 있어, 기본자리만 정확히 익혀도 체감 속도가 크게 오릅니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>위 입력창에서 자유롭게 키를 눌러 배열을 눈으로 익힙니다.</li>
+      <li>자리 연습 드릴에서 기본자리 → 윗줄 → 아랫줄 → 전체 순서로 연습합니다. 화면 키보드가 다음에 누를 키를 파란색으로 보여줍니다.</li>
+      <li>익숙해지면 <a href="../korean-typing/">한글 타자 연습</a>의 낱말·문장 모드로 넘어가세요.</li>
+    </ol>
+    <h2 id="sebeolsik">세벌식 자판 안내</h2>
+    <p>세벌식은 한글 창제 원리처럼 글자를 <b>초성·중성·종성 세 벌</b>로 나눠 배치한 자판입니다.
+    공병우 박사가 고안한 배열(390, 최종 등)이 대표적입니다. 받침이 독립된 키에 있어 같은 글자를
+    입력할 때 손가락 이동이 적고, 도리깨질 치듯 연속 타건이 가능해 숙련 시 피로가 적고 속도가
+    빠르다는 장점이 있습니다.</p>
+    <p>다만 표준이 아니어서 운영체제에서 별도로 설정해야 하고, 배우는 데 시간이 더 걸리며,
+    공용 PC에서는 쓰기 어렵다는 현실적 제약이 있습니다. 처음 타자를 배운다면 <b>표준인
+    두벌식</b>을 먼저 익히고, 장시간 타이핑이 많아 손목 부담을 줄이고 싶은 분이 세벌식을
+    도전해 보는 것을 권합니다. 세벌식 전환은 Windows·macOS의 입력기 설정에서 "세벌식 390" 또는
+    "세벌식 최종"을 선택하면 됩니다. (이 사이트의 연습 엔진은 두벌식 기준입니다.)</p>
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      <details><summary>독수리 타법을 고치려면 어떻게 하나요?</summary><p>속도가 잠시 떨어지더라도 모든 손가락을 기본자리에 두고, 각 손가락이 담당하는 키만 누르는 연습을 1~2주 꾸준히 하는 것이 가장 빠른 길입니다. 화면을 보고 치는 습관도 함께 들이세요.</p></details>
+      <details><summary>ㅘ, ㅢ 같은 복합 모음은 키가 없나요?</summary><p>네, 두벌식에는 복합 모음 키가 없습니다. ㅗ+ㅏ, ㅡ+ㅣ처럼 구성 모음을 차례로 누르면 입력기가 자동으로 합쳐 줍니다.</p></details>
+      <details><summary>겹받침은 어떻게 입력하나요?</summary><p>ㄳ은 ㄱ 다음 ㅅ, ㅄ은 ㅂ 다음 ㅅ처럼 구성 자음을 순서대로 누르면 됩니다. 타수도 두 타로 계산됩니다.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <nav>
+    <a href="../korean-typing/">한글 타자 연습</a>
+    <a href="../english-typing/">영타 연습</a>
+    <a href="../typing-test/">타자 속도 측정</a>
+    <a href="../number-typing/">숫자 키패드</a>
+    <a href="../code-typing/">코딩 타자</a>
+    <a href="../kids-typing/">어린이 타자</a>
+    <a href="../custom-text/">내 글로 연습</a>
+    <a href="../../guide/typing-tips/">타자 팁 가이드</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© typingkr · tomatoeggcat.com</p>
+</div></footer>
+
+<script src="../../assets/hangul.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/engine.js"></script>
+<script src="../../assets/keyboard.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+
+  var kbd = TK.Keyboard($('kbdBox'));
+
+  // 실시간 물리 키 표시
+  var free = $('freeInput');
+  free.addEventListener('keydown', function (e) { kbd.pressPhysical(e.key, true); });
+  free.addEventListener('keyup', function (e) { kbd.pressPhysical(e.key, false); });
+  free.addEventListener('blur', function () { kbd.highlight(null); });
+
+  // 자리 연습 드릴 (한글 타자 연습과 공유하는 컴포넌트/엔진)
+  var JARI = {
+    home: ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],
+    top: ['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],
+    bottom: ['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ'],
+    all: null
+  };
+  JARI.all = JARI.home.concat(JARI.top, JARI.bottom);
+
+  var row = 'home', queue = [], idx = 0, TOTAL = 5;
+  var drillActive = false;
+
+  function line(pool) {
+    var out = [];
+    for (var i = 0; i < 11; i++) out.push(TK.pick(pool));
+    return out.join(' ');
+  }
+  function build() {
+    queue = [];
+    for (var i = 0; i < TOTAL; i++) queue.push(line(JARI[row]));
+    idx = 0;
+  }
+  function updateItem() { $('stItem').textContent = Math.min(idx, TOTAL) + '/' + TOTAL; }
+
+  var engine = new TK.Engine({
+    targetEl: $('target'),
+    inputEl: $('input'),
+    jamoMode: true,
+    onProgress: function (s) {
+      $('stCpm').textContent = s.cpm;
+      $('stAcc').textContent = s.acc + '%';
+      $('stAcc').classList.toggle('ok', s.acc >= 95);
+    },
+    onLineDone: function () {
+      TK.doneSound();
+      idx++; updateItem();
+      if (idx >= TOTAL) {
+        var s = engine.stats(0, 0, 0);
+        $('playArea').style.display = 'none';
+        $('doneStat').textContent = s.cpm + '타/분 · 정확도 ' + s.acc + '%';
+        $('doneMsg').style.display = '';
+        kbd.highlight(null);
+        return;
+      }
+      engine.setText(queue[idx]);
+    },
+    onKeyHint: function (j) { if (drillActive) kbd.highlight(j); },
+    onType: TK.clickSound,
+    onError: TK.errorSound
+  });
+
+  // 드릴 입력창에 포커스가 있을 때만 힌트 하이라이트
+  $('input').addEventListener('focus', function () { drillActive = true; if (!engine.done) engine.grade(); });
+  $('input').addEventListener('blur', function () { drillActive = false; });
+
+  function start() {
+    build();
+    engine.resetSession();
+    $('doneMsg').style.display = 'none';
+    $('playArea').style.display = '';
+    updateItem();
+    engine.setText(queue[0]);
+  }
+
+  $('rowChips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    row = b.getAttribute('data-row');
+    var btns = $('rowChips').querySelectorAll('.chip');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i] === b);
+    start();
+  });
+  $('againBtn').addEventListener('click', start);
+  $('input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') e.preventDefault();
+  });
+
+  TK.bindSoundToggle('soundBtn');
+  start();
+})();
+</script>
+</body>
+</html>

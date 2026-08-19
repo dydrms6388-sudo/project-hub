@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>살아온 날 계산기 — 태어난 지 며칠, 다음 1만 일 기념일 | DateLab</title>
+<meta name="description" content="태어난 지 며칠째인지 계산합니다. 살아온 주·개월·시간과 다음 1000일 단위 기념일(만 1만 일, 2만 일)이 언제인지도 알려드립니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"살아온 날 계산기","description":"태어난 지 며칠째인지 계산합니다. 살아온 주·개월·시간과 다음 1000일 단위 기념일(만 1만 일, 2만 일)이 언제인지도 알려드립니다.","url":"https://datelab-kr.vercel.app/tools/age-in-days/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"만 1만 일은 몇 살쯤인가요?","acceptedAnswer":{"@type":"Answer","text":"약 27.4년, 즉 만 27세 4~5개월 무렵입니다. 2만 일은 약 54.8년, 3만 일은 약 82.1년입니다."}},{"@type":"Question","name":"백일은 태어난 날을 포함해서 세나요?","acceptedAnswer":{"@type":"Answer","text":"네, 한국의 백일 셈법은 태어난 날을 1일로 포함합니다. 「태어난 날을 1일로」 옵션을 켜면 같은 방식으로 계산합니다."}},{"@type":"Question","name":"시간 단위는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"일수에 24를 곱한 값으로, 출생 시각은 고려하지 않은 자정 기준 근사값입니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://datelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"살아온 날 계산기","item":"https://datelab-kr.vercel.app/tools/age-in-days/"}]}</script>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="../../">Date<b>Lab</b> 날짜랩</a>
+    <nav class="head-nav">
+      <a href="../../tools/korean-age/">만나이</a>
+      <a href="../../tools/dday/">디데이</a>
+      <a href="../../tools/holidays/">공휴일</a>
+      <a href="../../tools/lunar/">음력</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <nav class="crumb"><a href="../../">홈</a> › 살아온 날 계산기</nav>
+    
+<h1>살아온 날 계산기</h1>
+<p class="lead">태어난 날부터 오늘까지 <strong>며칠을 살았는지</strong> 계산합니다. 다음 만 1,000일 단위 기념일도 함께 보여드립니다.</p>
+<div class="card">
+  <div class="row2">
+    <div class="field"><label for="birth">생년월일</label><input type="date" id="birth" min="1900-01-01"></div>
+    <div class="field"><label for="asof">기준일 (기본: 오늘)</label><input type="date" id="asof"></div>
+  </div>
+  <div class="field"><label style="font-weight:400;font-size:14px"><input type="checkbox" id="incl" style="width:auto"> 태어난 날을 1일로 포함해서 세기</label></div>
+  <button class="btn" id="calc">계산하기</button>
+  <div class="result" id="result">
+    <div class="res-hero"><div class="big" id="out"></div><div class="cap" id="outCap"></div></div>
+    <div class="stat-grid">
+      <div class="stat"><div class="v" id="sWeeks"></div><div class="k">주 단위</div></div>
+      <div class="stat"><div class="v" id="sMonths"></div><div class="k">개월 (만)</div></div>
+      <div class="stat"><div class="v" id="sHours"></div><div class="k">시간</div></div>
+      <div class="stat"><div class="v" id="sAge"></div><div class="k">만 나이</div></div>
+    </div>
+    <h3>다가오는 1,000일 단위 기념일</h3>
+    <div class="tbl-scroll"><table id="mtbl">
+      <thead><tr><th>기념일</th><th>날짜</th><th>요일</th><th>D-day</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </div>
+</div>
+<section class="content">
+<h2>1만 일, 2만 일… 특별한 숫자의 날</h2>
+<p>살아온 날 수는 나이와는 다른 재미가 있습니다. 만 1만 일은 대략 27년 4~5개월쯤(약 27.4년), 2만 일은 54년 9개월쯤에 찾아옵니다. 아기의 백일처럼, 만 일수 기념일을 챙기는 것도 특별한 이벤트가 됩니다.</p>
+<p>계산 방식은 두 가지입니다. 기본은 태어난 날을 0일로 두고 자정 기준 경과 일수를 세는 방식이고, 「태어난 날을 1일로」 옵션을 켜면 백일 셈법처럼 출생일을 포함해 셉니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>생년월일을 입력합니다. 기준일을 바꾸면 특정 날짜 시점의 일수를 계산합니다.</li>
+<li>결과에서 살아온 날·주·개월·시간과 다음 1,000일 단위 기념일 3개를 확인하세요.</li>
+</ol>
+</section>
+    <!-- ad-slot -->
+    
+<section class="content">
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>만 1만 일은 몇 살쯤인가요?</summary><p>약 27.4년, 즉 만 27세 4~5개월 무렵입니다. 2만 일은 약 54.8년, 3만 일은 약 82.1년입니다.</p></details>
+<details class="faq"><summary>백일은 태어난 날을 포함해서 세나요?</summary><p>네, 한국의 백일 셈법은 태어난 날을 1일로 포함합니다. 「태어난 날을 1일로」 옵션을 켜면 같은 방식으로 계산합니다.</p></details>
+<details class="faq"><summary>시간 단위는 어떻게 계산하나요?</summary><p>일수에 24를 곱한 값으로, 출생 시각은 고려하지 않은 자정 기준 근사값입니다.</p></details>
+</section>
+  </div>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+<a href="../../tools/korean-age/">만나이 계산기</a>
+<a href="../../tools/dday/">디데이 계산기</a>
+<a href="../../tools/anniversary/">100일 계산기</a>
+<a href="../../tools/lunar/">음력 변환기</a>
+<a href="../../tools/holidays/">2026년 공휴일</a>
+<a href="../../tools/workdays/">근무일 계산기</a>
+<a href="../../tools/date-diff/">날짜 계산기</a>
+<a href="../../tools/zodiac/">띠 계산기</a>
+<a href="../../tools/week-number/">몇 주차 계산기</a>
+<a href="../../tools/age-in-days/">살아온 날 계산기</a>
+<a href="../../tools/retirement/">정년 퇴직일 계산기</a>
+<a href="../../tools/military/">전역일 계산기</a>
+    </div>
+    <div class="cols">
+<a href="../../guide/korean-age-2023/">만 나이 통일법 총정리</a>
+<a href="../../guide/holidays-2026/">2026년 공휴일 총정리</a>
+    </div>
+    <p>모든 계산은 사용자의 브라우저 안에서만 실행되며, 입력한 값은 서버로 전송·저장되지 않습니다.</p>
+    <div class="legal">
+      <a href="../../privacy.html">개인정보처리방침</a>
+      <a href="../../terms.html">이용약관</a>
+      <span>© 2026 DateLab 날짜랩</span>
+    </div>
+  </div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script>
+
+(function(){
+var $=DL.$;
+$('#asof').value=DL.toIso(DL.today());
+$('#calc').addEventListener('click',function(){
+  var b=$('#birth').value;if(!b){alert('생년월일을 입력해 주세요.');return;}
+  var birth=DL.fromIso(b),asof=DL.fromIso($('#asof').value||DL.toIso(DL.today()));
+  if(birth>asof){alert('생년월일이 기준일보다 늦습니다.');return;}
+  var incl=$('#incl').checked?1:0;
+  var days=DL.diffDays(birth,asof)+incl;
+  var fa=DL.fullAge(birth,asof);
+  $('#out').textContent=DL.numComma(days)+'일째';
+  $('#outCap').textContent=DL.fmtKo(birth)+' 출생 · '+DL.fmtKo(asof)+' 기준'+(incl?' · 출생일=1일':'');
+  $('#sWeeks').textContent=DL.numComma(Math.floor(days/7))+'주';
+  $('#sMonths').textContent=DL.numComma(fa.years*12+fa.months)+'개월';
+  $('#sHours').textContent=DL.numComma(days*24)+'시간';
+  $('#sAge').textContent='만 '+fa.years+'세';
+  var tb=$('#mtbl tbody');tb.innerHTML='';
+  var nextK=Math.floor(days/1000)+1;
+  for(var i=0;i<3;i++){
+    var n=(nextK+i)*1000;
+    var date=DL.addDays(birth,n-incl);
+    var dd=DL.diffDays(DL.today(),date);
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>만 '+DL.numComma(n)+'일</td><td>'+DL.fmtKo(date,false)+'</td><td>'+DL.WEEKDAYS[date.getDay()]+'</td><td>'+(dd>0?'D-'+dd:(dd===0?'오늘!':dd+'일 지남'))+'</td>';
+    tb.appendChild(tr);
+  }
+  $('#result').classList.add('show');
+});
+})();
+</script>
+</body>
+</html>
