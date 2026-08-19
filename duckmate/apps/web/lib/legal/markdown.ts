@@ -7,7 +7,7 @@
 //
 // 지원 문법 (약관 6종이 실제로 쓰는 것만):
 //   #~#### 헤딩(+ 조항 앵커 id) · 문단 · 표(GFM 파이프) · 인용문(>) ·
-//   순서/비순서 목록(1단 중첩) · 수평선(---) · **굵게** · `코드` · [링크](url)
+//   순서/비순서 목록(1단 중첩) · 코드 펜스(```) · 수평선(---) · **굵게** · `코드` · [링크](url)
 //
 // 보안: 원문은 우리가 소유한 md 파일뿐이지만, 렌더 전 항상 HTML 이스케이프 후
 // 인라인 규칙만 다시 태그로 바꾼다(원문 HTML 통과 없음).
@@ -114,6 +114,24 @@ export function renderMarkdown(source: string): MarkdownResult {
     if (trimmed === "") {
       flushParagraph();
       i += 1;
+      continue;
+    }
+
+    // 코드 펜스 (환불 계산식 등 — 줄바꿈 보존이 필요한 블록)
+    if (trimmed.startsWith("```")) {
+      flushParagraph();
+      i += 1;
+      const block: string[] = [];
+      while (i < lines.length && !(lines[i] ?? "").trim().startsWith("```")) {
+        block.push(lines[i] ?? "");
+        i += 1;
+      }
+      i += 1; // 닫는 펜스
+      out.push(
+        '<pre class="my-4 overflow-x-auto rounded-xl border border-line bg-surface p-4 text-body-sm"><code>' +
+          escapeHtml(block.join("\n")) +
+          "</code></pre>",
+      );
       continue;
     }
 

@@ -162,7 +162,7 @@ function toMeta(slug: LegalSlug, data: Record<string, string | boolean>): LegalD
   };
 }
 
-let warned = false;
+const warnedSlugs = new Set<string>();
 
 /** 문서 1건 로드 + 치환 + HTML 변환. 없으면 null (라우트는 notFound 처리). */
 export async function getLegalDoc(slug: LegalSlug): Promise<LegalDoc | null> {
@@ -175,10 +175,10 @@ export async function getLegalDoc(slug: LegalSlug): Promise<LegalDoc | null> {
   const { renderMarkdown } = await import("./markdown");
   const { html, headings } = renderMarkdown(substituted);
 
-  if (missing.size > 0 && !warned) {
-    warned = true;
+  if (missing.size > 0 && !warnedSlugs.has(slug)) {
+    warnedSlugs.add(slug);
     console.warn(
-      `⚠️  [duckmate/legal] 사업자 정보 플레이스홀더 미입력: ${[...missing].join(", ")} — apps/company/config/company.ts (스펙 §0-4: 경고만, 빌드 차단 없음)`,
+      `⚠️  [duckmate/legal] ${slug}.md 플레이스홀더 미입력: ${[...missing].join(", ")} — apps/company/config/company.ts (스펙 §0-4: 경고만, 빌드 차단 없음)`,
     );
   }
 
