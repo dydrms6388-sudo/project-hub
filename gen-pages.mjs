@@ -86,7 +86,7 @@ const BUILTIN_CATS = [
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
-const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab"]);
+const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab", "sites", "preview"]);
 
 // ── 애드센스 집중 전략: 실질 콘텐츠를 갖춘 핵심 도구만 검색 색인 ──
 // 여기 없는 도구는 <meta robots noindex,follow> + sitemap 제외(기능은 그대로 동작).
