@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>요리 동시 타이머 — 여러 개를 한 화면에서, 알림음 포함</title>
+<meta name="description" content="라면 끓이면서 계란 삶고 에어프라이어까지 — 여러 타이머를 한 화면에서 동시에 돌리고 끝나면 알림음으로 알려 줍니다. 설치 없이 브라우저에서 바로 사용하며 자주 쓰는 프리셋을 제공합니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/timer-multi/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="요리 동시 타이머 — 여러 개 동시 실행" />
+<meta property="og:description" content="라면 끓이면서 계란 삶고 에어프라이어까지 — 여러 타이머를 한 화면에서 동시에 돌리고 끝나면 알림음으로 알려 줍니다. 설치 없이 브라우저에서 바로 사용하며 자주 쓰는 프리셋을 제공합니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/timer-multi/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"요리 동시 타이머","description":"라면 끓이면서 계란 삶고 에어프라이어까지 — 여러 타이머를 한 화면에서 동시에 돌리고 끝나면 알림음으로 알려 줍니다. 설치 없이 브라우저에서 바로 사용하며 자주 쓰는 프리셋을 제공합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/timer-multi/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"소리가 안 나요.","acceptedAnswer":{"@type":"Answer","text":"브라우저는 사용자가 화면을 한 번이라도 누르기 전에는 소리를 재생하지 않습니다. '알림음 테스트'를 한 번 누르면 이후 알림이 정상적으로 울립니다. 기기 음소거 여부도 확인하세요."}},{"@type":"Question","name":"다른 앱을 보고 있어도 되나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저가 백그라운드로 가면 타이머 갱신 주기가 느려질 수 있지만, 이 타이머는 종료 시각을 기준으로 계산하므로 돌아왔을 때 남은 시간이 정확합니다. 다만 알림음은 화면이 꺼져 있으면 울리지 않을 수 있습니다."}},{"@type":"Question","name":"타이머 개수 제한이 있나요?","acceptedAnswer":{"@type":"Answer","text":"제한은 없지만 화면에서 관리하기 좋은 수는 4~5개입니다. 끝난 타이머는 '끝난 타이머 정리'로 한 번에 지울 수 있습니다."}},{"@type":"Question","name":"새로고침하면 사라지나요?","acceptedAnswer":{"@type":"Answer","text":"네. 이 도구는 아무 데이터도 저장하지 않으므로 새로고침하면 초기화됩니다. 조리 중에는 탭을 닫지 마세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"동시 타이머","item":"https://cookcalc-kr.vercel.app/timer-multi/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>동시 타이머</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">⏲️</div>
+    <h1>요리 동시 타이머</h1>
+    <p class="lead">타이머 <strong>여러 개를 한 화면에서</strong> 동시에. 끝나면 소리로 알려 드립니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>타이머 추가</h2>
+    <div class="grid3">
+      <label class="f">이름
+        <input type="text" id="tname" value="라면" maxlength="20" />
+      </label>
+      <label class="f">분
+        <input type="number" id="tmin" inputmode="numeric" min="0" max="180" step="1" value="4" />
+      </label>
+      <label class="f">초
+        <input type="number" id="tsec" inputmode="numeric" min="0" max="59" step="5" value="30" />
+      </label>
+    </div>
+    <div class="chips" id="preset" role="group" aria-label="프리셋">
+      <button type="button" class="chip" data-n="라면" data-s="270">라면 4:30</button>
+      <button type="button" class="chip" data-n="반숙 계란" data-s="420">반숙 계란 7:00</button>
+      <button type="button" class="chip" data-n="완숙 계란" data-s="720">완숙 계란 12:00</button>
+      <button type="button" class="chip" data-n="파스타" data-s="480">파스타 8:00</button>
+      <button type="button" class="chip" data-n="에어프라이어" data-s="900">에어프라이어 15:00</button>
+      <button type="button" class="chip" data-n="밥 뜸들이기" data-s="600">뜸 10:00</button>
+      <button type="button" class="chip" data-n="핸드드립" data-s="180">핸드드립 3:00</button>
+      <button type="button" class="chip" data-n="프렌치프레스" data-s="240">프렌치프레스 4:00</button>
+    </div>
+    <button class="btn" id="addBtn">타이머 시작</button>
+    <p class="note">알림음은 브라우저의 WebAudio로 직접 만들어 재생합니다(외부 파일·서버 없음). 화면을 켜 둔 상태에서 가장 정확하며, 절전으로 화면이 꺼지면 알림이 늦어질 수 있습니다.</p>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>실행 중인 타이머</h2>
+      <div id="timers"></div>
+      <div class="stack">
+        <button class="btn2" id="soundTest" type="button">🔔 알림음 테스트</button>
+        <button class="btn2" id="clearBtn" type="button">🗑️ 끝난 타이머 정리</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>주방에서 타이머가 하나로 부족한 이유</h2>
+    <p>실제 조리는 거의 항상 동시 작업입니다. 면을 삶는 4분 30초 동안 계란을 7분 타이머로 올리고, 그 사이 에어프라이어가 15분을 돌립니다. 휴대폰 기본 타이머는 하나만 되는 경우가 많아 매번 다시 맞추다 시간을 놓칩니다.</p>
+    <p>이 타이머는 여러 개를 한 화면에 세로로 쌓아 두고 각각 독립적으로 돌립니다. 끝나면 화면 표시가 바뀌고 알림음이 세 번 울립니다. 설치가 필요 없고 입력한 내용은 서버로 전송되지 않습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>프리셋 버튼을 누르면 이름과 시간이 자동으로 채워집니다(직접 입력도 됩니다).</li>
+      <li>"타이머 시작"을 누르면 목록에 추가되고 바로 카운트다운이 시작됩니다.</li>
+      <li>각 타이머는 일시정지·+1분·삭제를 개별로 조작할 수 있습니다.</li>
+      <li>처음 한 번은 "알림음 테스트"를 눌러 소리가 나는지 확인하세요. 브라우저 정책상 사용자가 화면을 한 번 눌러야 소리가 재생됩니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 소리가 안 나요.</p><p class="a">브라우저는 사용자가 화면을 한 번이라도 누르기 전에는 소리를 재생하지 않습니다. '알림음 테스트'를 한 번 누르면 이후 알림이 정상적으로 울립니다. 기기 음소거 여부도 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 다른 앱을 보고 있어도 되나요?</p><p class="a">브라우저가 백그라운드로 가면 타이머 갱신 주기가 느려질 수 있지만, 이 타이머는 종료 시각을 기준으로 계산하므로 돌아왔을 때 남은 시간이 정확합니다. 다만 알림음은 화면이 꺼져 있으면 울리지 않을 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 타이머 개수 제한이 있나요?</p><p class="a">제한은 없지만 화면에서 관리하기 좋은 수는 4~5개입니다. 끝난 타이머는 '끝난 타이머 정리'로 한 번에 지울 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 새로고침하면 사라지나요?</p><p class="a">네. 이 도구는 아무 데이터도 저장하지 않으므로 새로고침하면 초기화됩니다. 조리 중에는 탭을 닫지 마세요.</p></div>
+    <h2>프리셋 기준</h2>
+    <p class="note">프리셋 시간(라면 4분 30초, 반숙 계란 7분 등)은 <strong>일반적인 관행값</strong>입니다(확인일 2026-08-19).
+    계란 크기·물 양·화력·기기에 따라 달라지므로 <span class="badge warn">참고용</span>으로 쓰고 취향에 맞게 조절하세요.</p>
+    <p class="disclaimer">본 계산 결과는 <strong>참고용 추정치</strong>입니다. 타이머 정확도는 브라우저·기기 상태에 따라 달라질 수 있습니다.
+    재료의 상태·계량 방법·기기 차이에 따라 실제 결과가 달라질 수 있으며, 진단·의료·영양 처방의 근거로 사용할 수 없습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../airfryer/"><span class="e">🍟</span> 에어프라이어 변환</a>
+      <a class="rel" href="../rice-water/"><span class="e">🍚</span> 밥물 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/airfryer-time/" target="_blank" rel="noopener"><span class="e">🍟</span> 에어프라이어 시간표 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/home-cafe-recipe/" target="_blank" rel="noopener"><span class="e">☕</span> 홈카페 레시피 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+const list = [];
+document.querySelectorAll("#preset .chip").forEach((c) => c.addEventListener("click", () => {
+  $("tname").value = c.dataset.n;
+  const s = +c.dataset.s;
+  $("tmin").value = Math.floor(s / 60);
+  $("tsec").value = s % 60;
+}));
+function render() {
+  const box = $("timers");
+  box.innerHTML = "";
+  list.forEach((t, i) => {
+    const left = t.paused ? t.remain : Math.max(0, (t.endAt - Date.now()) / 1000);
+    const done = left <= 0.05;
+    const el = document.createElement("div");
+    el.className = "timer" + (done ? " done" : "");
+    const nm = document.createElement("div");
+    nm.className = "tname"; nm.textContent = t.name + (done ? " — 완료!" : t.paused ? " (일시정지)" : "");
+    const tl = document.createElement("div");
+    tl.className = "tleft"; tl.textContent = mmss(left);
+    const row = document.createElement("div");
+    row.className = "trow";
+    const mk = (label, fn) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn2"; b.textContent = label; b.addEventListener("click", fn); return b; };
+    if (!done) {
+      row.appendChild(mk(t.paused ? "▶ 계속" : "⏸ 일시정지", () => {
+        if (t.paused) { t.endAt = Date.now() + t.remain * 1000; t.paused = false; }
+        else { t.remain = Math.max(0, (t.endAt - Date.now()) / 1000); t.paused = true; }
+        render();
+      }));
+      row.appendChild(mk("+1분", () => { if (t.paused) t.remain += 60; else t.endAt += 60000; render(); }));
+    }
+    row.appendChild(mk("삭제", () => { list.splice(i, 1); render(); }));
+    el.appendChild(nm); el.appendChild(tl); el.appendChild(row);
+    box.appendChild(el);
+    if (done && !t.rung) { t.rung = true; beep(3); }
+  });
+}
+$("addBtn").addEventListener("click", () => {
+  const secs = Math.round(num($("tmin"), 0) * 60 + num($("tsec"), 0));
+  if (secs <= 0) return;
+  list.push({ name: ($("tname").value || "타이머").slice(0, 20), endAt: Date.now() + secs * 1000, remain: secs, paused: false, rung: false });
+  show("resultBox");
+  render();
+});
+$("soundTest").addEventListener("click", () => beep(1));
+$("clearBtn").addEventListener("click", () => {
+  for (let i = list.length - 1; i >= 0; i--) {
+    const left = list[i].paused ? list[i].remain : (list[i].endAt - Date.now()) / 1000;
+    if (left <= 0.05) list.splice(i, 1);
+  }
+  render();
+});
+setInterval(() => { if (list.length) render(); }, 250);
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

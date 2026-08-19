@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>팥 1컵은 몇 g? — 컵·큰술·작은술 g 환산표</title>
+<meta name="description" content="팥 1컵(200ml)은 약 160g, 1큰술은 약 12g, 1작은술은 약 4g입니다. 밀도 0.8g/ml 기준으로 1/4컵부터 1kg 역환산까지 정리한 팥 계량표입니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/convert/pat/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="팥 계량 환산표 — 1컵 160g" />
+<meta property="og:description" content="팥 1컵(200ml)은 약 160g, 1큰술은 약 12g, 1작은술은 약 4g입니다. 밀도 0.8g/ml 기준으로 1/4컵부터 1kg 역환산까지 정리한 팥 계량표입니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/convert/pat/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"팥 계량 환산기","description":"팥 1컵(200ml)은 약 160g, 1큰술은 약 12g, 1작은술은 약 4g입니다. 밀도 0.8g/ml 기준으로 1/4컵부터 1kg 역환산까지 정리한 팥 계량표입니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/convert/pat/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"팥 1큰술은 몇 g인가요?","acceptedAnswer":{"@type":"Answer","text":"약 12g입니다(1큰술 = 15ml, 밀도 0.8 g/ml 기준). 계량스푼이 아닌 밥숟가락으로 뜨면 대개 10~12ml 정도라 이보다 적게 들어갑니다."}},{"@type":"Question","name":"팥 100g은 몇 컵인가요?","acceptedAnswer":{"@type":"Answer","text":"약 0.625컵 (125ml)입니다. 반대로 1컵은 약 160g입니다."}},{"@type":"Question","name":"표의 값과 실제 무게가 다릅니다.","acceptedAnswer":{"@type":"Answer","text":"이 표의 밀도는 평평하게 깎아 담은 기준의 근사값입니다. 마른 팥 담는 방법, 제품, 온도에 따라 ±10~20% 차이가 날 수 있으니 정확한 값이 필요하면 저울을 쓰세요."}},{"@type":"Question","name":"미국 레시피의 1컵과 같나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 한국 계량컵은 200ml, 미국은 약 240ml입니다. 미국 레시피의 팥 1컵은 약 192g에 해당합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"재료별 계량표","item":"https://cookcalc-kr.vercel.app/convert/"},{"@type":"ListItem","position":3,"name":"팥","item":"https://cookcalc-kr.vercel.app/convert/pat/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <a href="../../convert/">재료별 계량표</a> <span class="sep">›</span> <span>팥</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🥄</div>
+    <h1>팥 계량 환산표</h1>
+    <p class="lead"><strong>팥 1컵 = 약 160g</strong> · 1큰술 = 약 12g · 1작은술 = 약 4g</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>팥 수량 환산</h2>
+    <div class="grid2">
+      <label class="f">수량
+        <input type="number" id="qty" inputmode="decimal" min="0" step="0.25" value="1" />
+      </label>
+      <label class="f">단위
+        <select id="unit">
+          <option value="컵">컵 (200ml)</option>
+          <option value="큰술">큰술 (15ml)</option>
+          <option value="작은술">작은술 (5ml)</option>
+          <option value="ml">ml</option>
+          <option value="g">g</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn" id="calcBtn">팥 환산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>환산 결과</h2>
+      <p class="big"><span id="fromOut"></span> = <span class="num" id="gramOut"></span></p>
+      <div id="tableOut"></div>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <section class="card">
+    <h2>팥 부피 → 무게 환산표</h2>
+    <div><div class="kv"><span>1컵 (200ml)</span><b>160g</b></div><div class="kv"><span>3/4컵 (150ml)</span><b>120g</b></div><div class="kv"><span>1/2컵 (100ml)</span><b>80g</b></div><div class="kv"><span>1/3컵 (약 67ml)</span><b>53.3g</b></div><div class="kv"><span>1/4컵 (50ml)</span><b>40g</b></div><div class="kv"><span>1큰술 (15ml)</span><b>12g</b></div><div class="kv"><span>1/2큰술 (7.5ml)</span><b>6g</b></div><div class="kv"><span>1작은술 (5ml)</span><b>4g</b></div><div class="kv"><span>1/2작은술 (2.5ml)</span><b>2g</b></div><div class="kv"><span>100ml</span><b>80g</b></div></div>
+    <h2 style="margin-top:18px">무게 → 부피 (역환산)</h2>
+    <div><div class="kv"><span>100g</span><b>0.625컵 (125ml)</b></div><div class="kv"><span>200g</span><b>1.25컵 (250ml)</b></div><div class="kv"><span>500g</span><b>3.125컵 (625ml)</b></div><div class="kv"><span>1kg</span><b>6.25컵 (1250ml)</b></div></div>
+    <p class="note">밀도 0.8 g/ml 기준 · 1컵 200ml · 1큰술 15ml · 1작은술 5ml · 마른 팥</p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>팥는 1컵에 몇 g일까</h2>
+    <p>팥의 밀도는 약 <strong>0.8 g/ml</strong>입니다. 물(1.0)과 비교하면 가벼운 편이며, 그래서 한국 표준 계량컵 1컵(200ml)에 담으면 약 <strong>160g</strong>이 됩니다. 레시피에 "팥 1컵"이라고 적혀 있는데 저울로 계량하고 싶다면 이 값을 쓰면 됩니다.</p>
+    <p>곡물은 낟알 사이 공간 때문에 밀도가 일정한 편이지만 품종·수분에 따라 조금씩 달라집니다. 쌀은 밥솥 계량컵(180ml)과 요리용 계량컵(200ml)이 다르니 주의하세요.</p>
+    <h2>이 표를 쓰는 법</h2>
+    <ol>
+      <li>레시피가 컵·큰술로 적혀 있고 저울을 쓰고 싶다면 위쪽 "부피 → 무게" 표를 봅니다.</li>
+      <li>팥를 g으로 사 왔는데 몇 컵인지 알고 싶다면 아래쪽 역환산 표를 봅니다.</li>
+      <li>표에 없는 수량은 위의 계산기에 직접 넣으면 바로 환산됩니다.</li>
+      <li>제과·제빵처럼 비율이 중요한 작업에서는 저울 계량이 가장 확실합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 팥 1큰술은 몇 g인가요?</p><p class="a">약 12g입니다(1큰술 = 15ml, 밀도 0.8 g/ml 기준). 계량스푼이 아닌 밥숟가락으로 뜨면 대개 10~12ml 정도라 이보다 적게 들어갑니다.</p></div>
+    <div class="qa"><p class="q">Q. 팥 100g은 몇 컵인가요?</p><p class="a">약 0.625컵 (125ml)입니다. 반대로 1컵은 약 160g입니다.</p></div>
+    <div class="qa"><p class="q">Q. 표의 값과 실제 무게가 다릅니다.</p><p class="a">이 표의 밀도는 평평하게 깎아 담은 기준의 근사값입니다. 마른 팥 담는 방법, 제품, 온도에 따라 ±10~20% 차이가 날 수 있으니 정확한 값이 필요하면 저울을 쓰세요.</p></div>
+    <div class="qa"><p class="q">Q. 미국 레시피의 1컵과 같나요?</p><p class="a">아닙니다. 한국 계량컵은 200ml, 미국은 약 240ml입니다. 미국 레시피의 팥 1컵은 약 192g에 해당합니다.</p></div>
+    <h2>계량 기준과 데이터 출처</h2>
+    <p class="note">이 사이트의 계량 기준은 <strong>1컵 = 200ml(한국 표준 계량컵) · 1큰술 = 15ml · 1작은술 = 5ml</strong> 입니다.
+    미국 레시피의 1컵(240ml)과 다르므로 해외 레시피를 그대로 옮길 때는 주의하세요.
+    재료별 g 환산은 밀도(g/ml)를 곱해 계산하며, 밀도값은 국내 계량 관행을 물 비중 대비로 정리한 <strong>근사값</strong>입니다
+    (전 항목 출처·확인일 표기, 데이터 확인일 2026-08-19). 눌러 담기·수북이 담기 등 담는 방법에 따라 ±10~20% 차이가 날 수 있어,
+    제과·제빵처럼 정밀도가 필요한 작업은 <strong>저울 계량</strong>을 권합니다.</p>
+    <p class="disclaimer">본 계산 결과는 <strong>참고용 추정치</strong>입니다. 밀도값은 계량 관행에 근거한 근사값입니다.
+    재료의 상태·계량 방법·기기 차이에 따라 실제 결과가 달라질 수 있으며, 진단·의료·영양 처방의 근거로 사용할 수 없습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../../unit-convert/"><span class="e">🥄</span> 계량 단위 변환기</a>
+      <a class="rel" href="../../recipe-scale/"><span class="e">📝</span> 레시피 배수 계산</a>
+      <a class="rel" href="https://tomatoeggcat.com/fridge-recipe/" target="_blank" rel="noopener"><span class="e">🧊</span> 냉장고 재료 레시피 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/seasonal-food/" target="_blank" rel="noopener"><span class="e">🥬</span> 제철 음식 달력 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../../privacy.html">개인정보처리방침</a>·<a href="../../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { toGram, fromGram } from "../../lib/cook.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../../assets/app.mjs";
+const D = 0.8, NAME = "팥";
+$("calcBtn").addEventListener("click", () => {
+  const qty = num($("qty"), 1), unit = $("unit").value;
+  const gram = toGram(qty, unit, D);
+  $("fromOut").textContent = NAME + " " + fmt(qty, 2) + unit;
+  $("gramOut").textContent = g(gram);
+  $("tableOut").innerHTML = kv([
+    ["부피", ml(gram / D)],
+    ["컵 (200ml)", fmt(fromGram(gram, "컵", D), 2) + "컵"],
+    ["큰술 (15ml)", fmt(fromGram(gram, "큰술", D), 1) + "큰술"],
+    ["작은술 (5ml)", fmt(fromGram(gram, "작은술", D), 1) + "작은술"],
+    ["무게", g(gram)],
+  ]);
+  $("srcOut").innerHTML = srcBox("계량 기준", [
+    { text: NAME + " 밀도 " + D + " g/ml — 자체 환산 기준(1컵=200ml·1큰술=15ml·1작은술=5ml, 국내 계량 관행 근사)", checkedAt: "2026-08-19" },
+  ]);
+  show("resultBox");
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

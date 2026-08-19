@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>유류비 계산기 — 거리·연비·유가로 왕복 기름값과 톨비까지</title>
+<meta name="description" content="주행 거리와 차량 연비, 리터당 유가를 넣으면 필요한 연료량과 기름값을 계산합니다. 왕복 여부와 통행료를 함께 반영하고, 연비가 1km/L 달라질 때 비용이 얼마나 변하는지도 보여줍니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/fuel-cost/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="유류비 계산기 — 왕복 기름값" />
+<meta property="og:description" content="주행 거리와 차량 연비, 리터당 유가를 넣으면 필요한 연료량과 기름값을 계산합니다. 왕복 여부와 통행료를 함께 반영하고, 연비가 1km/L 달라질 때 비용이 얼마나 변하는지도 보여줍니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/fuel-cost/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"유류비 계산기","description":"주행 거리와 차량 연비, 리터당 유가를 넣으면 필요한 연료량과 기름값을 계산합니다. 왕복 여부와 통행료를 함께 반영하고, 연비가 1km/L 달라질 때 비용이 얼마나 변하는지도 보여줍니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/fuel-cost/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"고속도로와 시내 중 어느 연비를 넣어야 하나요?","acceptedAnswer":{"@type":"Answer","text":"장거리 고속 주행이라면 고속 연비, 시내 위주라면 시내 연비를 넣는 편이 정확합니다. 혼합이라면 실측 누적 평균을 쓰세요."}},{"@type":"Question","name":"유가는 어디서 확인하나요?","acceptedAnswer":{"@type":"Answer","text":"한국석유공사 오피넷(opinet.co.kr)에서 지역별·주유소별 실시간 가격을 확인할 수 있습니다. 이 계산기는 외부 API를 쓰지 않으므로 값을 직접 입력합니다."}},{"@type":"Question","name":"전기차도 계산할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"연비 자리에 전비(km/kWh), 유가 자리에 충전 단가(원/kWh)를 넣으면 같은 방식으로 충전비가 계산됩니다. 전기차와 내연기관 비교는 전기차 유지비 비교 도구를 이용하세요."}},{"@type":"Question","name":"왜 실제 주유비와 차이가 나나요?","acceptedAnswer":{"@type":"Answer","text":"에어컨 사용, 정체, 짐 무게, 타이어 공기압, 급가속 습관에 따라 실연비가 달라지기 때문입니다. 여유 있게 10% 정도를 더 잡아두면 안전합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"유류비 계산기","item":"https://carcalc-kr.vercel.app/fuel-cost/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">유류비 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🛣️</div>
+    <h1>유류비 계산기</h1>
+    <p class="lead">이번 주행에 기름값이 얼마나 들까. <strong>거리·연비·유가·톨비</strong>만 넣으면 왕복까지 한 번에 계산합니다.</p>
+  </div>
+
+  <div class="card">
+    <div class="row2">
+      <div class="field"><label for="km">편도 거리 <span class="hint">km</span></label><input type="number" id="km" inputmode="decimal" step="0.1" placeholder="250" value="250" /></div>
+      <div class="field"><label for="kpl">차량 연비 <span class="hint">km/L</span></label><input type="number" id="kpl" inputmode="decimal" step="0.1" placeholder="12" value="12" /></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="price">유가 <span class="hint">원/L</span></label><input type="number" id="price" inputmode="numeric" placeholder="1700" value="1700" /></div>
+      <div class="field"><label for="toll">편도 통행료 <span class="hint">원 · 선택</span></label><input type="number" id="toll" inputmode="numeric" placeholder="9000" value="9000" /></div>
+    </div>
+    <div class="field">
+      <label class="chk"><input type="checkbox" id="rt" checked /> 왕복으로 계산</label>
+    </div>
+    <button class="btn full" id="go" type="button">유류비 계산하기</button>
+  </div>
+  <div class="result" id="out" hidden></div>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>기름값은 거리보다 연비가 가른다</h2>
+    <p>같은 거리를 달려도 연비가 8km/L인 차와 16km/L인 차는 연료비가 정확히 두 배 차이 납니다. 유가가 100원 오르는 것보다 연비가 2km/L 떨어지는 쪽이 지갑에 더 아픈 경우가 많습니다. 이 계산기는 그 감각을 숫자로 확인할 수 있도록, 연비가 1km/L 낮았을 때의 비용도 함께 보여줍니다.</p>
+    <p>고속도로 장거리에서는 <strong>통행료</strong>도 무시하기 어렵습니다. 편도 통행료를 넣으면 왕복 기준으로 합산해 실제 지출에 가까운 총액을 계산합니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li>내비게이션이 알려주는 <strong>편도 거리</strong>를 입력합니다.</li>
+      <li><strong>연비</strong>는 계기판 값보다 실측 평균이 정확합니다. 모르면 연비 계산기로 먼저 구해보세요.</li>
+      <li><strong>유가</strong>는 오피넷에서 현재 지역 평균을 확인해 넣으면 좋습니다.</li>
+      <li>왕복 체크와 통행료를 넣으면 실제 지출 총액이 나옵니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 고속도로와 시내 중 어느 연비를 넣어야 하나요?</p><p class="a">장거리 고속 주행이라면 고속 연비, 시내 위주라면 시내 연비를 넣는 편이 정확합니다. 혼합이라면 실측 누적 평균을 쓰세요.</p></div>
+    <div class="qa"><p class="q">Q. 유가는 어디서 확인하나요?</p><p class="a">한국석유공사 오피넷(opinet.co.kr)에서 지역별·주유소별 실시간 가격을 확인할 수 있습니다. 이 계산기는 외부 API를 쓰지 않으므로 값을 직접 입력합니다.</p></div>
+    <div class="qa"><p class="q">Q. 전기차도 계산할 수 있나요?</p><p class="a">연비 자리에 전비(km/kWh), 유가 자리에 충전 단가(원/kWh)를 넣으면 같은 방식으로 충전비가 계산됩니다. 전기차와 내연기관 비교는 전기차 유지비 비교 도구를 이용하세요.</p></div>
+    <div class="qa"><p class="q">Q. 왜 실제 주유비와 차이가 나나요?</p><p class="a">에어컨 사용, 정체, 짐 무게, 타이어 공기압, 급가속 습관에 따라 실연비가 달라지기 때문입니다. 여유 있게 10% 정도를 더 잡아두면 안전합니다.</p></div>
+    <h2>데이터 출처와 확인일</h2>
+    <p class="src"><a href="https://www.opinet.co.kr" target="_blank" rel="noopener">오피넷 — 실시간 유가 조회</a><br />데이터 확인일: 2026-08-19</p>
+    <h2>고정 값으로 넣지 않은 항목 <span class="badge todo">확인 필요</span></h2>
+    <ul>
+      <li><strong>현재 적용 중인 탄력세율(유류세 한시 인하율)</strong> — 인하율·적용 기한이 자주 바뀌어 값을 고정 기재하지 않는다. 기획재정부 보도자료·오피넷 참조. <a href="https://www.opinet.co.kr" target="_blank" rel="noopener">확인처</a></li>
+    </ul>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 실제 연비는 주행 조건에 따라 크게 달라집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../trip-share/"><span class="ic">🧮</span>여행 기름값 N빵 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-yeonbigak/" target="_blank" rel="noopener"><span class="ic">⛽</span>연비각 — 연비 기록장</a>
+      <a class="rel" href="../ev-vs-ice/"><span class="ic">🔌</span>전기차 유지비 비교</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-maintenance-cycle/" target="_blank" rel="noopener"><span class="ic">🔩</span>차량 소모품 교체주기 가이드</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { fuelCost } from "../lib/calc.mjs";
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+function run() {
+  const km = C.num($('km')), kpl = C.num($('kpl')), price = C.num($('price')), toll = C.num($('toll'));
+  const rt = $('rt').checked;
+  if (km <= 0 || kpl <= 0 || price <= 0) { alert('거리·연비·유가를 모두 입력하세요.'); return; }
+  const r = fuelCost({ km: km, kmPerL: kpl, pricePerL: price, roundTrip: rt, toll: toll });
+  const worse = fuelCost({ km: km, kmPerL: Math.max(1, kpl - 1), pricePerL: price, roundTrip: rt, toll: 0 });
+  C.result('out', {
+    big: C.won(r.total),
+    sub: (rt ? '왕복 ' : '편도 ') + C.fmt(r.dist) + 'km 기준 (연료 + 통행료)',
+    rows: [
+      ['총 주행거리', C.fmt(r.dist) + ' km'],
+      ['필요 연료량', r.liters.toFixed(2) + ' L'],
+      ['연료비', C.won(r.fuel)],
+      toll > 0 ? ['통행료', C.won(r.toll)] : null,
+      ['1km당 비용', (r.total / r.dist).toFixed(1) + '원'],
+      ['합계', C.won(r.total), 'total'],
+    ],
+    foot: C.steps([
+      '총 거리 = ' + C.fmt(km) + 'km' + (rt ? ' × 2(왕복) = ' + C.fmt(r.dist) + 'km' : ''),
+      '연료량 = 총 거리 ÷ 연비 = ' + C.fmt(r.dist) + ' ÷ ' + kpl + ' = ' + r.liters.toFixed(2) + 'L',
+      '연료비 = 연료량 × 유가 = ' + r.liters.toFixed(2) + ' × ' + C.fmt(price) + ' = ' + C.won(r.fuel),
+      toll > 0 ? '통행료 = ' + C.fmt(toll) + '원' + (rt ? ' × 2 = ' + C.won(r.toll) : '') : '통행료 미입력',
+      '연비가 1km/L 낮은 ' + Math.max(1, kpl - 1) + 'km/L 차라면 연료비는 ' + C.won(worse.fuel) + ' (차이 ' + C.won(worse.fuel - r.fuel) + ')',
+    ]),
+  });
+}
+$('go').addEventListener('click', run);
+</script>
+</body>
+</html>

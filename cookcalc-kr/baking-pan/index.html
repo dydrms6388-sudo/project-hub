@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>베이킹 팬 크기 변환 계산기 — 부피 기준 재료 배수 환산</title>
+<meta name="description" content="원형 1호 레시피를 2호 팬으로, 원형을 사각팬으로 옮길 때 재료를 몇 배로 해야 할까? 팬의 실제 부피(원형 πr²h, 사각 w×l×h)를 기준으로 배수를 계산하고 재료 목록까지 한 번에 환산합니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/baking-pan/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="베이킹 팬 변환 계산기 — 부피 기준" />
+<meta property="og:description" content="원형 1호 레시피를 2호 팬으로, 원형을 사각팬으로 옮길 때 재료를 몇 배로 해야 할까? 팬의 실제 부피(원형 πr²h, 사각 w×l×h)를 기준으로 배수를 계산하고 재료 목록까지 한 번에 환산합니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/baking-pan/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"베이킹 팬 변환 계산기","description":"원형 1호 레시피를 2호 팬으로, 원형을 사각팬으로 옮길 때 재료를 몇 배로 해야 할까? 팬의 실제 부피(원형 πr²h, 사각 w×l×h)를 기준으로 배수를 계산하고 재료 목록까지 한 번에 환산합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/baking-pan/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"굽는 시간은 얼마나 바꿔야 하나요?","acceptedAnswer":{"@type":"Answer","text":"반죽의 높이가 비슷하면 시간 변화가 크지 않지만, 팬이 커져 반죽이 두꺼워지면 시간이 늘어납니다. 대체로 온도를 10℃ 낮추고 시간을 10~20% 늘린 뒤 꼬치로 확인하는 방식이 안전합니다."}},{"@type":"Question","name":"팬 높이까지 반죽을 채워도 되나요?","acceptedAnswer":{"@type":"Answer","text":"보통 팬 높이의 60~70%까지만 채웁니다. 베이킹파우더나 달걀 거품으로 부풀기 때문에 가득 채우면 넘칩니다. 이 계산기의 부피는 팬 전체 부피이므로 실제 반죽은 그 60~70%로 보세요."}},{"@type":"Question","name":"시폰팬처럼 가운데 구멍이 있으면요?","acceptedAnswer":{"@type":"Answer","text":"가운데 기둥 부피만큼 빠지므로 실제 용량은 계산값보다 10~15% 적습니다. 정확히 하려면 팬에 물을 채워 ml를 재는 것이 가장 확실합니다."}},{"@type":"Question","name":"국내 호수 표기는 무슨 뜻인가요?","acceptedAnswer":{"@type":"Answer","text":"원형 케이크 팬의 관행 표기로 1호가 지름 15cm, 2호가 18cm, 3호가 21cm입니다. 제조사에 따라 ±1cm 차이가 있을 수 있으니 실제 치수를 재는 편이 정확합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"베이킹 팬 변환","item":"https://cookcalc-kr.vercel.app/baking-pan/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>베이킹 팬 변환</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🎂</div>
+    <h1>베이킹 팬 변환 계산기</h1>
+    <p class="lead">지름이 아니라 <strong>부피</strong>로 계산해야 맞습니다. 15cm → 18cm는 1.2배가 아니라 <strong>1.44배</strong>입니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>팬 선택</h2>
+    <div class="grid2">
+      <label class="f">원래 레시피의 팬
+        <select id="from"><option value="round1" selected>원형 1호 (지름 15cm)</option><option value="round2">원형 2호 (지름 18cm)</option><option value="round3">원형 3호 (지름 21cm)</option><option value="square15">정사각 15cm</option><option value="square18">정사각 18cm</option><option value="pound">파운드팬(중, 21×9×8cm)</option><option value="custom">직접 입력</option></select>
+      </label>
+      <label class="f">사용할 팬
+        <select id="to"><option value="round1">원형 1호 (지름 15cm)</option><option value="round2" selected>원형 2호 (지름 18cm)</option><option value="round3">원형 3호 (지름 21cm)</option><option value="square15">정사각 15cm</option><option value="square18">정사각 18cm</option><option value="pound">파운드팬(중, 21×9×8cm)</option><option value="custom">직접 입력</option></select>
+      </label>
+    </div>
+    <details class="adv" id="customBox">
+      <summary>직접 입력 — 팬 치수 (cm)</summary>
+      <div class="grid3" style="margin-top:10px">
+        <label class="f">원래 팬 지름/가로
+          <input type="number" id="fa" inputmode="decimal" min="1" step="0.5" value="15" />
+        </label>
+        <label class="f">원래 팬 세로 <span class="u">(사각만)</span>
+          <input type="number" id="fb" inputmode="decimal" min="0" step="0.5" value="0" />
+        </label>
+        <label class="f">원래 팬 높이
+          <input type="number" id="fh" inputmode="decimal" min="1" step="0.5" value="7" />
+        </label>
+        <label class="f">새 팬 지름/가로
+          <input type="number" id="ta" inputmode="decimal" min="1" step="0.5" value="18" />
+        </label>
+        <label class="f">새 팬 세로 <span class="u">(사각만)</span>
+          <input type="number" id="tb" inputmode="decimal" min="0" step="0.5" value="0" />
+        </label>
+        <label class="f">새 팬 높이
+          <input type="number" id="th" inputmode="decimal" min="1" step="0.5" value="7" />
+        </label>
+      </div>
+      <p class="note">세로를 0으로 두면 원형(지름 기준)으로 계산합니다.</p>
+    </details>
+    <label class="f" style="margin-top:14px">재료 목록 <span class="u">(선택 — 붙여넣으면 함께 환산)</span>
+      <textarea id="src" spellcheck="false" style="min-height:110px">박력분 100g
+설탕 90g
+달걀 2개
+버터 90g
+우유 2큰술</textarea>
+    </label>
+    <button class="btn" id="calcBtn">팬 변환 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>변환 결과</h2>
+      <p class="big">재료 배수 <span class="num" id="ratioOut"></span></p>
+      <div id="tableOut"></div>
+      <p class="note" id="noteOut"></p>
+    </div>
+    <div class="card" id="listCard" hidden>
+      <h2>재료 환산</h2>
+      <div id="listOut"></div>
+      <p class="note">달걀처럼 개수로 세는 재료는 소수가 나오면 무게로 나누세요(큰 달걀 1개 ≈ 50~55g, 껍질 제외).</p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>지름 1.2배는 부피 1.44배</h2>
+    <p>팬을 바꿀 때 흔한 실수는 지름 비율을 그대로 재료 배수로 쓰는 것입니다. 원형 팬의 부피는 <strong>π × 반지름² × 높이</strong>이므로 지름이 15cm에서 18cm로 1.2배가 되면 부피는 1.2²= <strong>1.44배</strong>가 됩니다. 1.2배로 반죽을 만들면 높이가 낮은 케이크가 나옵니다.</p>
+    <p>이 계산기는 원형과 사각을 같은 부피 기준으로 비교하므로, 1호 원형 레시피를 15cm 정사각 팬이나 파운드팬으로 옮기는 것도 계산됩니다. 반죽 높이를 그대로 유지하고 싶다면 팬 높이도 함께 맞춰 입력하세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>원래 레시피가 쓰는 팬과 실제로 사용할 팬을 고릅니다(목록에 없으면 "직접 입력").</li>
+      <li>재료 목록을 붙여넣으면 배수가 적용된 목록이 함께 나옵니다.</li>
+      <li>결과의 배수를 재료에 곱합니다. 반죽 양이 늘면 굽는 시간도 조정이 필요합니다.</li>
+      <li>큰 팬으로 갈수록 온도를 10℃ 정도 낮추고 시간을 늘리는 편이 속까지 잘 익습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 굽는 시간은 얼마나 바꿔야 하나요?</p><p class="a">반죽의 높이가 비슷하면 시간 변화가 크지 않지만, 팬이 커져 반죽이 두꺼워지면 시간이 늘어납니다. 대체로 온도를 10℃ 낮추고 시간을 10~20% 늘린 뒤 꼬치로 확인하는 방식이 안전합니다.</p></div>
+    <div class="qa"><p class="q">Q. 팬 높이까지 반죽을 채워도 되나요?</p><p class="a">보통 팬 높이의 60~70%까지만 채웁니다. 베이킹파우더나 달걀 거품으로 부풀기 때문에 가득 채우면 넘칩니다. 이 계산기의 부피는 팬 전체 부피이므로 실제 반죽은 그 60~70%로 보세요.</p></div>
+    <div class="qa"><p class="q">Q. 시폰팬처럼 가운데 구멍이 있으면요?</p><p class="a">가운데 기둥 부피만큼 빠지므로 실제 용량은 계산값보다 10~15% 적습니다. 정확히 하려면 팬에 물을 채워 ml를 재는 것이 가장 확실합니다.</p></div>
+    <div class="qa"><p class="q">Q. 국내 호수 표기는 무슨 뜻인가요?</p><p class="a">원형 케이크 팬의 관행 표기로 1호가 지름 15cm, 2호가 18cm, 3호가 21cm입니다. 제조사에 따라 ±1cm 차이가 있을 수 있으니 실제 치수를 재는 편이 정확합니다.</p></div>
+    <h2>계산 기준</h2>
+    <p class="note">원형 팬 부피 = π × (지름/2)² × 높이, 사각 팬 부피 = 가로 × 세로 × 높이(단위 cm, 1cm³ = 1ml)로 계산합니다.
+    팬 프리셋 치수는 국내 호수 관행값(출처: 자체 정리, 확인일 2026-08-19)이며 제조사별로 차이가 있을 수 있습니다 <span class="badge warn">참고용</span>.</p>
+    <p class="disclaimer">본 계산 결과는 <strong>참고용 추정치</strong>입니다. 팬 실제 용량은 물을 채워 ml로 재는 것이 가장 정확합니다.
+    재료의 상태·계량 방법·기기 차이에 따라 실제 결과가 달라질 수 있으며, 진단·의료·영양 처방의 근거로 사용할 수 없습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../unit-convert/"><span class="e">🥄</span> 계량 단위 변환기</a>
+      <a class="rel" href="../recipe-scale/"><span class="e">📝</span> 레시피 배수 계산</a>
+      <a class="rel" href="https://tomatoeggcat.com/home-cafe-recipe/" target="_blank" rel="noopener"><span class="e">☕</span> 홈카페 레시피 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/fridge-recipe/" target="_blank" rel="noopener"><span class="e">🧊</span> 냉장고 재료 레시피 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { PANS } from "../data/misc.mjs";
+import { panVolume, scaleList, fmtQty, round } from "../lib/cook.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+function pick(which) {
+  const key = $(which).value;
+  if (key !== "custom") return PANS.find((p) => p.key === key);
+  const a = num($(which === "from" ? "fa" : "ta"), 15);
+  const b = num($(which === "from" ? "fb" : "tb"), 0);
+  const h = num($(which === "from" ? "fh" : "th"), 7);
+  return b > 0
+    ? { name: "직접 입력 " + a + "×" + b + "×" + h + "cm", shape: "rect", w: a, l: b, h: h }
+    : { name: "직접 입력 원형 지름 " + a + "cm", shape: "round", d: a, h: h };
+}
+function syncCustom() {
+  $("customBox").open = $("from").value === "custom" || $("to").value === "custom";
+}
+$("from").addEventListener("change", syncCustom);
+$("to").addEventListener("change", syncCustom);
+$("calcBtn").addEventListener("click", () => {
+  const a = pick("from"), b = pick("to");
+  const va = panVolume(a), vb = panVolume(b);
+  const k = vb / va;
+  $("ratioOut").textContent = "×" + fmt(k, 2);
+  $("tableOut").innerHTML = kv([
+    ["원래 팬", a.name],
+    ["원래 팬 부피", ml(va)],
+    ["사용할 팬", b.name],
+    ["사용할 팬 부피", ml(vb)],
+    ["재료 배수", "×" + fmt(k, 3)],
+    ["권장 반죽량", "팬 부피의 60~70% → 약 " + ml(vb * 0.65)],
+  ]);
+  $("noteOut").textContent = k > 1.15 ? "팬이 커졌습니다. 온도를 10℃ 낮추고 시간을 10~20% 늘린 뒤 꼬치로 확인하세요."
+    : k < 0.87 ? "팬이 작아졌습니다. 반죽이 넘치지 않도록 60~70%만 채우고 남은 반죽은 머핀틀에 나눠 구우세요."
+    : "부피 차이가 크지 않아 굽는 조건은 거의 그대로 두어도 됩니다.";
+  const rows = scaleList($("src").value, k);
+  const html = [];
+  for (const r of rows) {
+    if (r.qty == null) { html.push('<div class="kv"><span>' + r.raw + '</span><b class="mut">수량 없음</b></div>'); continue; }
+    let right = fmtQty(r.qty) + r.unit;
+    if (r.gram != null) right += ' <span class="mut">(' + fmt(r.gram, 1) + 'g)</span>';
+    html.push('<div class="kv"><span>' + r.name + ' <span class="mut">' + fmtQty(r.qty / k) + r.unit + '</span></span><b>' + right + '</b></div>');
+  }
+  $("listOut").innerHTML = html.join("");
+  $("listCard").hidden = html.length === 0;
+  $("srcOut").innerHTML = srcBox("계산 기준", [
+    { text: "원형 πr²h · 사각 w×l×h (1cm³ = 1ml)", checkedAt: "2026-08-19" },
+    { text: "팬 프리셋 치수 — 국내 호수 관행값(참고용)", checkedAt: "2026-08-19" },
+  ]);
+  show("resultBox");
+});
+syncCustom();
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>자동차 할부 계산기 — 원리금균등·원금균등 상환 스케줄 전체</title>
+<meta name="description" content="차량가와 선수금, 연이율, 할부 개월수를 넣으면 월 납입금과 총이자, 회차별 원금·이자·잔액 스케줄을 전부 보여줍니다. 원리금균등과 원금균등을 비교하고 CSV로 내보낼 수 있습니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/loan/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="자동차 할부 계산기 — 상환 스케줄" />
+<meta property="og:description" content="차량가와 선수금, 연이율, 할부 개월수를 넣으면 월 납입금과 총이자, 회차별 원금·이자·잔액 스케줄을 전부 보여줍니다. 원리금균등과 원금균등을 비교하고 CSV로 내보낼 수 있습니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/loan/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"할부 계산기","description":"차량가와 선수금, 연이율, 할부 개월수를 넣으면 월 납입금과 총이자, 회차별 원금·이자·잔액 스케줄을 전부 보여줍니다. 원리금균등과 원금균등을 비교하고 CSV로 내보낼 수 있습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/loan/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"월 납입금이 계약서와 조금 다릅니다.","acceptedAnswer":{"@type":"Answer","text":"금융사마다 원 단위 처리 방식(반올림·절상), 이자 계산 기준일, 취급수수료 포함 여부가 달라 소액 차이가 납니다. 이 계산기는 월 단위 복리 기준 표준 산식(원리금균등)을 사용합니다."}},{"@type":"Question","name":"선수금을 늘리면 얼마나 이득인가요?","acceptedAnswer":{"@type":"Answer","text":"이자는 남은 원금에 붙기 때문에 선수금을 늘리면 총이자가 비례해 줄어듭니다. 값을 바꿔가며 총이자 항목을 비교해 보세요."}},{"@type":"Question","name":"유예할부(잔가보장형)도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"이 계산기는 만기 잔존원금이 0이 되는 표준 할부만 계산합니다. 유예할부는 만기에 목돈이 남으므로 리스·렌트 vs 구매 비교 도구에서 잔가를 넣어 비교해 보세요."}},{"@type":"Question","name":"중도상환하면 이자가 줄어드나요?","acceptedAnswer":{"@type":"Answer","text":"남은 기간의 이자는 줄지만 중도상환수수료가 붙을 수 있습니다. 스케줄 표의 해당 회차 잔액이 중도상환 시 갚아야 할 원금입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"할부 계산기","item":"https://carcalc-kr.vercel.app/loan/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">할부 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">💳</div>
+    <h1>자동차 할부 계산기</h1>
+    <p class="lead">월 납입금 하나가 아니라 <strong>1회차부터 마지막 회차까지 원금·이자·잔액</strong>을 전부 펼쳐 보여줍니다.</p>
+  </div>
+
+  <div class="card">
+    <div class="row2">
+      <div class="field"><label for="price">차량 가격 <span class="hint">원</span></label><input type="number" id="price" inputmode="numeric" placeholder="40000000" value="40000000" /></div>
+      <div class="field"><label for="down">선수금 <span class="hint">원</span></label><input type="number" id="down" inputmode="numeric" placeholder="10000000" value="10000000" /></div>
+    </div>
+    <div class="row3">
+      <div class="field"><label for="rate">연이율 <span class="hint">%</span></label><input type="number" id="rate" step="0.01" placeholder="5.9" value="5.9" /></div>
+      <div class="field"><label for="months">할부 기간 <span class="hint">개월</span></label><input type="number" id="months" inputmode="numeric" placeholder="60" value="60" /></div>
+      <div class="field"><label for="method">상환 방식</label>
+        <select id="method"><option value="equalPayment">원리금균등</option><option value="equalPrincipal">원금균등</option></select>
+      </div>
+    </div>
+    <button class="btn full" id="go" type="button">할부금 계산하기</button>
+  </div>
+  <div class="result" id="out" hidden></div>
+  <section class="about" id="schSec" hidden>
+    <h2>회차별 상환 스케줄</h2>
+    <div id="sch"></div>
+    <div class="btnrow"><button class="btn ghost" id="csv" type="button">CSV 내보내기</button></div>
+  </section>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>원리금균등과 원금균등, 무엇이 다른가</h2>
+    <p><strong>원리금균등</strong>은 매달 내는 금액이 같습니다. 초반에는 이자 비중이 크고 뒤로 갈수록 원금 비중이 커집니다. 매달 지출이 일정해 예산 짜기가 편하지만 원금이 천천히 줄어드는 만큼 총이자가 조금 더 많습니다.</p>
+    <p><strong>원금균등</strong>은 매달 갚는 원금이 같고 이자는 남은 잔액에 붙습니다. 그래서 첫 달 납입금이 가장 크고 매달 조금씩 줄어듭니다. 초반 부담을 견딜 수 있다면 총이자는 원리금균등보다 적습니다. 이 계산기는 두 방식의 총이자 차이를 함께 보여줍니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li><strong>차량 가격</strong>과 <strong>선수금</strong>을 넣습니다. 취득세·보험료는 별도이므로 따로 준비해야 합니다.</li>
+      <li>계약서의 <strong>연이율</strong>과 <strong>할부 개월수</strong>를 입력합니다.</li>
+      <li>상환 방식을 바꿔가며 총이자 차이를 비교하세요.</li>
+      <li>회차별 스케줄은 CSV로 내보내 가계부에 붙여 쓸 수 있습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 월 납입금이 계약서와 조금 다릅니다.</p><p class="a">금융사마다 원 단위 처리 방식(반올림·절상), 이자 계산 기준일, 취급수수료 포함 여부가 달라 소액 차이가 납니다. 이 계산기는 월 단위 복리 기준 표준 산식(원리금균등)을 사용합니다.</p></div>
+    <div class="qa"><p class="q">Q. 선수금을 늘리면 얼마나 이득인가요?</p><p class="a">이자는 남은 원금에 붙기 때문에 선수금을 늘리면 총이자가 비례해 줄어듭니다. 값을 바꿔가며 총이자 항목을 비교해 보세요.</p></div>
+    <div class="qa"><p class="q">Q. 유예할부(잔가보장형)도 계산되나요?</p><p class="a">이 계산기는 만기 잔존원금이 0이 되는 표준 할부만 계산합니다. 유예할부는 만기에 목돈이 남으므로 리스·렌트 vs 구매 비교 도구에서 잔가를 넣어 비교해 보세요.</p></div>
+    <div class="qa"><p class="q">Q. 중도상환하면 이자가 줄어드나요?</p><p class="a">남은 기간의 이자는 줄지만 중도상환수수료가 붙을 수 있습니다. 스케줄 표의 해당 회차 잔액이 중도상환 시 갚아야 할 원금입니다.</p></div>
+    <h2>계산 기준</h2>
+    <p class="src">월 이율 = 연이율 ÷ 12, 원리금균등 = P × i ÷ (1 − (1+i)^-n) 표준 산식. 회차별 원 단위는 반올림하고 마지막 회차에서 잔액을 정리합니다. 취급수수료·인지세·중도상환수수료는 포함하지 않습니다. (확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 실제 승인 금리·수수료는 금융사 심사 결과에 따라 달라집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/loan-refi-calc/" target="_blank" rel="noopener"><span class="ic">🔁</span>대출 갈아타기 계산기</a>
+      <a class="rel" href="../lease-vs-buy/"><span class="ic">⚖️</span>리스·렌트 vs 구매 비교</a>
+      <a class="rel" href="../acquisition/"><span class="ic">🏷️</span>취등록세 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-insurance-rider/" target="_blank" rel="noopener"><span class="ic">🛡️</span>자동차보험 특약 점검</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { loanSchedule } from "../lib/calc.mjs";
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+let last = null;
+function run() {
+  const price = C.num($('price')), down = C.num($('down'));
+  const rate = C.num($('rate')) / 100, months = Math.round(C.num($('months')));
+  const method = $('method').value;
+  const principal = price - down;
+  if (principal <= 0) { alert('선수금이 차량 가격보다 크거나 같습니다.'); return; }
+  if (months <= 0 || months > 120) { alert('할부 기간을 1~120개월 사이로 입력하세요.'); return; }
+  const r = loanSchedule({ principal: principal, annualRate: rate, months: months, method: method });
+  const other = loanSchedule({ principal: principal, annualRate: rate, months: months, method: method === 'equalPayment' ? 'equalPrincipal' : 'equalPayment' });
+  last = r;
+  const lastRow = r.rows[r.rows.length - 1];
+  C.result('out', {
+    big: C.won(r.firstPay) + (method === 'equalPrincipal' ? ' → ' + C.won(lastRow.pay) : ' / 월'),
+    sub: method === 'equalPayment' ? months + '개월 원리금균등 · 매월 같은 금액' : months + '개월 원금균등 · 1회차 ' + C.won(r.firstPay) + ', 마지막 ' + C.won(lastRow.pay),
+    rows: [
+      ['할부 원금 (차량가 − 선수금)', C.won(principal)],
+      ['총 이자', C.won(r.totalInterest)],
+      ['총 상환액 (원금+이자)', C.won(r.totalPay)],
+      ['선수금 포함 총 지출', C.won(down + r.totalPay), 'total'],
+      [method === 'equalPayment' ? '원금균등으로 바꾸면 총이자' : '원리금균등으로 바꾸면 총이자', C.won(other.totalInterest) + ' (' + (other.totalInterest > r.totalInterest ? '+' : '') + C.won(other.totalInterest - r.totalInterest) + ')'],
+    ],
+    foot: C.steps([
+      '할부 원금 = ' + C.won(price) + ' − ' + C.won(down) + ' = ' + C.won(principal),
+      '월 이율 = 연 ' + (rate * 100).toFixed(2) + '% ÷ 12 = ' + (rate / 12 * 100).toFixed(4) + '%',
+      method === 'equalPayment'
+        ? '원리금균등 월납입금 = 원금 × 월이율 ÷ (1 − (1+월이율)^-' + months + ') = ' + C.won(r.firstPay)
+        : '원금균등 매월 원금 = ' + C.won(Math.floor(principal / months)) + ' + 잔액 × 월이율(이자)',
+      '총이자 = 총 상환액 − 원금 = ' + C.won(r.totalPay) + ' − ' + C.won(principal) + ' = ' + C.won(r.totalInterest),
+    ]),
+  });
+  $('schSec').hidden = false;
+  $('sch').innerHTML = C.tbl(['회차', '납입금', '원금', '이자', '잔액'],
+    r.rows.map(function (x) { return [x.m + '회', C.won(x.pay), C.won(x.principalPart), C.won(x.interest), C.won(x.balance)]; }));
+}
+$('go').addEventListener('click', run);
+$('csv').addEventListener('click', function () {
+  if (!last) { alert('먼저 계산해 주세요.'); return; }
+  const rows = [['회차', '납입금', '원금', '이자', '잔액']];
+  for (const x of last.rows) rows.push([x.m, x.pay, x.principalPart, x.interest, x.balance]);
+  rows.push(['합계', last.totalPay, last.totalPrincipal, last.totalInterest, 0]);
+  C.downloadCsv('carcalc-loan-schedule.csv', rows);
+});
+</script>
+</body>
+</html>

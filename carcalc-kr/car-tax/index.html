@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>자동차세 계산기 — 배기량·차령 경감·연납 할인까지 산식 공개</title>
+<meta name="description" content="배기량(cc)과 차령만 넣으면 자동차세 본세·지방교육세 30%·차령 경감·연납 공제까지 계산해 산출 과정을 한 줄씩 보여줍니다. 전기차·영업용·승용 외 차종 직접 입력도 지원합니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/car-tax/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="자동차세 계산기 — 산식까지 보여주는" />
+<meta property="og:description" content="배기량(cc)과 차령만 넣으면 자동차세 본세·지방교육세 30%·차령 경감·연납 공제까지 계산해 산출 과정을 한 줄씩 보여줍니다. 전기차·영업용·승용 외 차종 직접 입력도 지원합니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/car-tax/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"자동차세 계산기","description":"배기량(cc)과 차령만 넣으면 자동차세 본세·지방교육세 30%·차령 경감·연납 공제까지 계산해 산출 과정을 한 줄씩 보여줍니다. 전기차·영업용·승용 외 차종 직접 입력도 지원합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/car-tax/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"1,600cc를 넘으면 세금이 얼마나 뛰나요?","acceptedAnswer":{"@type":"Answer","text":"1,600cc는 cc당 140원, 1,601cc부터는 cc당 200원이 적용됩니다. 1,600cc는 본세 224,000원이지만 1,601cc는 320,200원으로, 1cc 차이에 본세가 약 9만6천원 늘어납니다. 지방교육세 30%까지 더하면 격차는 더 커집니다."}},{"@type":"Question","name":"차령 경감은 언제부터 얼마나 되나요?","acceptedAnswer":{"@type":"Answer","text":"승용차는 차령 3년차부터 매년 5%p씩 경감되어 4년차 10%, 5년차 15% 식으로 늘고 12년차 이후 50%로 고정됩니다. 이 계산기는 이 규칙을 그대로 적용합니다."}},{"@type":"Question","name":"연납 할인은 몇 %인가요?","acceptedAnswer":{"@type":"Answer","text":"연세액 일시납부 공제는 2025년 이후 5%이며, 공제액은 연세액 × 5% × (남은 기간 일수 ÷ 365)로 계산됩니다. 1월에 신청하면 334일분이 적용돼 실질 공제율이 약 4.6%가 되고, 9월 신청은 92일분이라 1%대로 줄어듭니다."}},{"@type":"Question","name":"전기차도 자동차세를 내나요?","acceptedAnswer":{"@type":"Answer","text":"냅니다. 배기량이 없어 '그 밖의 승용자동차'로 분류되어 비영업용 기준 연 10만원 정액에 지방교육세 30%를 더해 13만원이 부과됩니다. 여기에도 차령 경감이 적용됩니다."}},{"@type":"Question","name":"계산 결과가 고지서와 다릅니다.","acceptedAnswer":{"@type":"Answer","text":"10원 미만 절사 처리, 지자체별 감면(다자녀·국가유공자 등), 연중 취득·이전에 따른 일할 계산 때문에 차이가 날 수 있습니다. 최종 금액은 위택스나 관할 지자체에서 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"자동차세 계산기","item":"https://carcalc-kr.vercel.app/car-tax/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">자동차세 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧾</div>
+    <h1>자동차세 계산기</h1>
+    <p class="lead">숫자 하나만 던지지 않습니다. <strong>cc × 세율 → 차령 경감 → 지방교육세 → 연납 공제</strong>까지 계산 과정을 전부 펼쳐 보여줍니다.</p>
+  </div>
+
+  <p class="notice">⚠ 이 계산기는 <strong>참고용 추정</strong>입니다. 정확한 세액은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>·관할 지자체(시군구청 세무과)에서 확인하세요. 아래 결과에는 <strong>산출 과정(산식)</strong>을 그대로 표시합니다.</p>
+  <div class="card">
+    <div class="field">
+      <label for="cc">배기량 <span class="hint">cc — 자동차등록증에 표기</span></label>
+      <input type="number" id="cc" inputmode="numeric" placeholder="1598" value="1598" />
+    </div>
+    <div class="field">
+      <label class="chk"><input type="checkbox" id="isEv" /> 전기·수소차 (배기량 없는 "그 밖의 승용자동차")</label>
+    </div>
+    <div class="field">
+      <label>용도</label>
+      <div class="seg">
+        <label><input type="radio" name="use" value="nonbusiness" checked />비영업용 (자가용)</label>
+        <label><input type="radio" name="use" value="business" />영업용</label>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="age">차령 <span class="hint">년차 (최초등록 후)</span></label>
+        <input type="number" id="age" inputmode="numeric" min="1" value="1" />
+      </div>
+      <div class="field">
+        <label for="prepay">연납(일시납) 신청</label>
+        <select id="prepay"></select>
+      </div>
+    </div>
+    <button class="btn full" id="go" type="button">자동차세 계산하기</button>
+  </div>
+
+  <details class="card">
+    <summary>승합·화물·특수차 — 본세 직접 입력 <span class="badge todo">확인 필요</span></summary>
+    <p class="src">승용 외 차종의 세율표는 아직 출처 대조를 마치지 않아 계산기에 넣지 않았습니다. 고지서·위택스 모의계산의 <strong>본세(자동차세) 연세액</strong>을 아래에 넣으면 지방교육세와 연납 공제만 계산합니다.</p>
+    <div class="field">
+      <label for="manual">본세 연세액 직접 입력 <span class="hint">원 · 비우면 무시</span></label>
+      <input type="number" id="manual" inputmode="numeric" placeholder="예: 65000" />
+    </div>
+  </details>
+
+  <div class="result" id="out" hidden></div>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>자동차세는 어떻게 정해지나</h2>
+    <p>비영업용 승용차의 자동차세는 <strong>배기량(cc)에 cc당 세율을 곱한 금액</strong>이 출발점입니다. 지방세법 제127조는 1,000cc 이하 80원, 1,600cc 이하 140원, 그 초과 200원으로 정하고 있어 1,600cc를 1cc라도 넘으면 cc당 세율이 한 단계 뛰어오릅니다. 같은 "2.0 가솔린"이라도 1,598cc와 1,999cc의 세금 차이가 큰 이유입니다.</p>
+    <p>여기에 두 가지가 더 붙습니다. 하나는 <strong>지방교육세</strong>로 본세의 30%가 자동 가산되고, 다른 하나는 <strong>차령 경감</strong>입니다. 차령 3년차부터 매년 5%p씩 세금이 깎여 12년차 이후에는 절반이 됩니다. 전기차·수소차처럼 배기량이 없는 승용차는 배기량 대신 정액(비영업용 10만원)이 적용되고, 여기에도 지방교육세 30%가 붙습니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li>자동차등록증의 <strong>배기량(cc)</strong>을 입력합니다. 전기·수소차는 체크박스를 선택하세요.</li>
+      <li>최초등록일 기준 <strong>차령</strong>을 년차로 입력합니다(등록 첫 해가 1년차).</li>
+      <li>1·3·6·9월 <strong>연납</strong>을 신청할 계획이면 해당 월을 고르면 공제액까지 계산됩니다.</li>
+      <li>결과의 "산출 과정"에서 어느 단계에서 얼마가 붙고 깎였는지 확인하세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 1,600cc를 넘으면 세금이 얼마나 뛰나요?</p><p class="a">1,600cc는 cc당 140원, 1,601cc부터는 cc당 200원이 적용됩니다. 1,600cc는 본세 224,000원이지만 1,601cc는 320,200원으로, 1cc 차이에 본세가 약 9만6천원 늘어납니다. 지방교육세 30%까지 더하면 격차는 더 커집니다.</p></div>
+    <div class="qa"><p class="q">Q. 차령 경감은 언제부터 얼마나 되나요?</p><p class="a">승용차는 차령 3년차부터 매년 5%p씩 경감되어 4년차 10%, 5년차 15% 식으로 늘고 12년차 이후 50%로 고정됩니다. 이 계산기는 이 규칙을 그대로 적용합니다.</p></div>
+    <div class="qa"><p class="q">Q. 연납 할인은 몇 %인가요?</p><p class="a">연세액 일시납부 공제는 2025년 이후 5%이며, 공제액은 연세액 × 5% × (남은 기간 일수 ÷ 365)로 계산됩니다. 1월에 신청하면 334일분이 적용돼 실질 공제율이 약 4.6%가 되고, 9월 신청은 92일분이라 1%대로 줄어듭니다.</p></div>
+    <div class="qa"><p class="q">Q. 전기차도 자동차세를 내나요?</p><p class="a">냅니다. 배기량이 없어 '그 밖의 승용자동차'로 분류되어 비영업용 기준 연 10만원 정액에 지방교육세 30%를 더해 13만원이 부과됩니다. 여기에도 차령 경감이 적용됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 계산 결과가 고지서와 다릅니다.</p><p class="a">10원 미만 절사 처리, 지자체별 감면(다자녀·국가유공자 등), 연중 취득·이전에 따른 일할 계산 때문에 차이가 날 수 있습니다. 최종 금액은 위택스나 관할 지자체에서 확인하세요.</p></div>
+    <h2>아직 넣지 않은 항목 <span class="badge todo">확인 필요</span></h2>
+    <ul>
+      <li><strong>승합·화물·특수차 세율표</strong> — 승용 외 차종 세율은 아직 출처 대조 전이라 계산기에서 제외. 위택스 모의계산 이용 권장. <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">확인처</a></li>
+    </ul>
+    <h2>데이터 출처와 확인일</h2>
+    <p class="src"><a href="https://www.law.go.kr/법령/지방세법/제127조" target="_blank" rel="noopener">지방세법 제127조 (자동차세 세율)</a> · <a href="https://www.law.go.kr/법령/지방세법/제128조" target="_blank" rel="noopener">지방세법 제128조 (납기와 징수방법)</a> · <a href="https://www.law.go.kr/법령/지방세법시행령/제125조" target="_blank" rel="noopener">지방세법 시행령 제125조 (연세액 일시납부 공제)</a> · <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스 (실제 세액 조회·납부)</a><br />데이터 확인일: 2026-08-19</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 정확한 세액은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> 또는 관할 지자체에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../acquisition/"><span class="ic">🏷️</span>자동차 취등록세 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-insurance-rider/" target="_blank" rel="noopener"><span class="ic">🛡️</span>자동차보험 특약 점검</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-maintenance-cycle/" target="_blank" rel="noopener"><span class="ic">🔩</span>차량 소모품 교체주기 가이드</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { carTax, floor10 } from "../lib/calc.mjs";
+import { PREPAY_DISCOUNT, EDUCATION_TAX_RATE } from "../data/car-tax.mjs";
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+const per = PREPAY_DISCOUNT.periods.value;
+const sel = $('prepay');
+const o0 = document.createElement('option'); o0.value = ''; o0.textContent = '연납 안 함 (6월·12월 분납)'; sel.appendChild(o0);
+for (const k of Object.keys(per)) { const o = document.createElement('option'); o.value = k; o.textContent = per[k].label; sel.appendChild(o); }
+$('isEv').addEventListener('change', function () { $('cc').disabled = this.checked; });
+function run() {
+  const manual = C.num($('manual'));
+  const ev = $('isEv').checked;
+  const cc = ev ? 0 : C.num($('cc'));
+  const use = document.querySelector('input[name=use]:checked').value;
+  const age = Math.max(1, Math.round(C.num($('age')) || 1));
+  const pmv = $('prepay').value;
+  const pm = pmv ? parseInt(pmv, 10) : null;
+  if (manual <= 0 && !ev && cc <= 0) { alert('배기량(cc)을 입력하거나 전기·수소차를 선택하세요.'); return; }
+  const st = [];
+  let r;
+  if (manual > 0) {
+    const mainTax = floor10(manual);
+    const educTax = use === 'nonbusiness' ? floor10(mainTax * EDUCATION_TAX_RATE.value) : 0;
+    const annualTotal = mainTax + educTax;
+    let prepayDiscount = 0;
+    if (pm) prepayDiscount = floor10(annualTotal * PREPAY_DISCOUNT.rate.value * (per[pm].days / 365));
+    r = { mainTax: mainTax, educTax: educTax, annualTotal: annualTotal, prepayDiscount: prepayDiscount, prepayPaid: annualTotal - prepayDiscount, reduction: 0 };
+    st.push('직접 입력한 본세 연세액 = ' + C.won(mainTax) + ' (승용 외 차종은 차령 경감 규정이 달라 미적용)');
+  } else {
+    r = carTax({ cc: cc, use: use, ageYears: age, prepayMonth: pm });
+    st.push(ev ? '그 밖의 승용자동차(전기·수소) 정액 세액 = ' + C.won(r.raw)
+               : '과세표준 = ' + C.fmt(cc) + 'cc × ' + r.perCc + '원/cc = ' + C.won(r.raw));
+    if (r.reduction > 0) st.push('차령 경감 = ' + Math.round(r.reduction * 100) + '% (3년차부터 매년 5%p, 최대 50%) → 본세 ' + C.won(r.mainTax));
+    else st.push('차령 ' + age + '년차 → 경감 없음(3년차부터 적용). 본세 ' + C.won(r.mainTax));
+  }
+  st.push(use === 'nonbusiness' ? '지방교육세 = 본세 × 30% = ' + C.won(r.educTax) : '영업용 승용자동차분은 지방교육세 비과세 → 0원');
+  st.push('연세액 = 본세 + 지방교육세 = ' + C.won(r.annualTotal));
+  if (pm) st.push('연납 공제 = 연세액 × 5% × (' + per[pm].days + '일 ÷ 365) = ' + C.won(r.prepayDiscount) + ' → 실제 납부액 ' + C.won(r.prepayPaid));
+  const half = floor10(r.annualTotal / 2);
+  C.result('out', {
+    big: C.won(r.prepayPaid),
+    sub: pm ? '연납 신청 시 1회 납부액입니다.' : '연납을 하지 않으면 6월·12월에 각 ' + C.won(half) + ' 안팎으로 나눠 부과됩니다.',
+    rows: [
+      ['자동차세 본세', C.won(r.mainTax)],
+      ['지방교육세 (30%)', C.won(r.educTax)],
+      ['연세액 합계', C.won(r.annualTotal)],
+      pm ? ['연납 공제', '-' + C.won(r.prepayDiscount)] : null,
+      ['최종 납부액', C.won(r.prepayPaid), 'total'],
+    ],
+    foot: C.steps(st) + '<p class="src">10원 미만은 절사해 표시합니다. 지자체 고지서와 수십 원 차이가 날 수 있습니다.</p>',
+  });
+}
+$('go').addEventListener('click', run);
+</script>
+</body>
+</html>

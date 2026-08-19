@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>식재료 보관기간 검색 — 냉장·냉동·실온 113종</title>
+<meta name="description" content="삼겹살은 냉장 며칠? 두부는 개봉 후 얼마나? 육류·해산물·채소·유제품 등 113종의 실온·냉장·냉동 보관기간을 검색하고, 구입일을 넣으면 남은 기간을 계산합니다. 일반 권고 범위 기준의 참고용 정보입니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/storage/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="식재료 보관기간 — 냉장·냉동 며칠까지?" />
+<meta property="og:description" content="삼겹살은 냉장 며칠? 두부는 개봉 후 얼마나? 육류·해산물·채소·유제품 등 113종의 실온·냉장·냉동 보관기간을 검색하고, 구입일을 넣으면 남은 기간을 계산합니다. 일반 권고 범위 기준의 참고용 정보입니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/storage/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"식재료 보관기간","description":"삼겹살은 냉장 며칠? 두부는 개봉 후 얼마나? 육류·해산물·채소·유제품 등 113종의 실온·냉장·냉동 보관기간을 검색하고, 구입일을 넣으면 남은 기간을 계산합니다. 일반 권고 범위 기준의 참고용 정보입니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/storage/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"유통기한이 지났는데 먹어도 되나요?","acceptedAnswer":{"@type":"Answer","text":"유통기한은 판매 가능 기한이고 소비기한은 섭취 가능 기한입니다. 2023년부터 국내 표시는 소비기한으로 바뀌었습니다. 표시가 있는 제품은 표시를 우선하고, 이 표는 포장에 기한 표시가 없는 신선식품이나 개봉 후 기간을 가늠할 때 쓰세요."}},{"@type":"Question","name":"한 번 녹인 고기를 다시 얼려도 되나요?","acceptedAnswer":{"@type":"Answer","text":"권장하지 않습니다. 해동 과정에서 온도가 올라가며 세균이 증식하고, 재냉동하면 조직이 망가져 맛도 떨어집니다. 냉장고에서 천천히 해동해 아직 차가운 상태라면 하루 안에 조리하는 편이 안전합니다."}},{"@type":"Question","name":"냉동실에 넣으면 얼마나 오래 두어도 되나요?","acceptedAnswer":{"@type":"Answer","text":"−18℃ 이하에서는 미생물이 증식하지 못하므로 안전 측면에서는 오래 갑니다. 다만 지방 산패와 냉동상으로 맛이 떨어지므로 이 표의 기간은 '품질 유지 기간'으로 보시고, 공기를 뺀 밀봉 포장으로 보관 기간을 늘리세요."}},{"@type":"Question","name":"냉장고 어디에 두는 게 좋나요?","acceptedAnswer":{"@type":"Answer","text":"가장 차가운 최하단 안쪽이 육류·생선 자리이고, 문 쪽은 온도 변화가 커 음료나 소스에 적합합니다. 채소는 전용 칸의 습도 유지가 중요하고, 달걀은 문 쪽 대신 안쪽 선반이 좋습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"식재료 보관기간","item":"https://cookcalc-kr.vercel.app/storage/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>식재료 보관기간</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧊</div>
+    <h1>식재료 보관기간</h1>
+    <p class="lead">재료 이름으로 검색하면 <strong>실온·냉장·냉동</strong> 권장 기간을 보여줍니다. <span class="badge warn">보관 상태에 따라 다름</span></p>
+  </div>
+
+  <section class="card" aria-label="검색">
+    <h2>재료 검색</h2>
+    <label class="f">재료 이름
+      <input type="search" id="q" placeholder="예: 삼겹살, 두부, 우유, 감자" autocomplete="off" />
+    </label>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">구입·개봉일 <span class="u">(선택 — 남은 기간 계산)</span>
+        <input type="date" id="buyDate" />
+      </label>
+      <label class="f">보관 방법
+        <select id="place"><option value="fridge">냉장</option><option value="frozen">냉동</option><option value="room">실온</option></select>
+      </label>
+    </div>
+    <button class="btn" id="calcBtn">남은 기간 계산</button>
+    <p class="note" id="calcNote" style="margin-top:8px">검색어와 일치하는 재료가 있을 때 구입일 기준 남은 기간을 계산합니다.</p>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>보관 기간 <span class="pill" id="nameOut"></span></h2>
+      <div id="tableOut"></div>
+      <p class="note" id="tipOut"></p>
+      <p id="linkOut" style="margin-top:10px"></p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <section class="card">
+    <h2>전체 목록 <span class="pill">113종</span></h2>
+    <div id="listBox">
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">육류 <span class="mut">(12)</span></h3>
+    <div class="rowlist"><div class="row" data-n="소고기"><span class="nm"><a href="sogogi/">소고기</a></span><span class="mut">냉장 3~5일</span></div><div class="row" data-n="소고기다짐육"><span class="nm"><a href="sogogidajimyuk/">소고기다짐육</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="돼지고기"><span class="nm"><a href="dwaejigogi/">돼지고기</a></span><span class="mut">냉장 3~5일</span></div><div class="row" data-n="돼지고기다짐육"><span class="nm"><a href="dwaejigogidajimyuk/">돼지고기다짐육</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="닭고기"><span class="nm"><a href="dakgogi/">닭고기</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="닭가슴살"><span class="nm"><a href="dakgaseumsal/">닭가슴살</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="베이컨"><span class="nm"><a href="beikeon/">베이컨</a></span><span class="mut">냉장 개봉 후 7일</span></div><div class="row" data-n="소시지"><span class="nm"><a href="sosiji/">소시지</a></span><span class="mut">냉장 개봉 후 7일</span></div><div class="row" data-n="햄"><span class="nm"><a href="haem/">햄</a></span><span class="mut">냉장 개봉 후 3~5일</span></div><div class="row" data-n="조리한고기"><span class="nm"><a href="jorihangogi/">조리한고기</a></span><span class="mut">냉장 3~4일</span></div><div class="row" data-n="양고기"><span class="nm"><a href="yanggogi/">양고기</a></span><span class="mut">냉장 3~5일</span></div><div class="row" data-n="오리고기"><span class="nm"><a href="origogi/">오리고기</a></span><span class="mut">냉장 1~2일</span></div></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">해산물 <span class="mut">(14)</span></h3>
+    <div class="rowlist"><div class="row" data-n="흰살생선"><span class="nm"><a href="huinsalsaengseon/">흰살생선</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="고등어"><span class="nm"><a href="godeungeo/">고등어</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="연어"><span class="nm"><a href="yeoneo/">연어</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="갈치"><span class="nm"><a href="galchi/">갈치</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="새우"><span class="nm"><a href="saeu/">새우</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="오징어"><span class="nm"><a href="ojingeo/">오징어</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="낙지"><span class="nm"><a href="nakji/">낙지</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="조개"><span class="nm"><a href="jogae/">조개</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="굴"><span class="nm"><a href="gul/">굴</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="게"><span class="nm"><a href="ge/">게</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="훈제연어"><span class="nm"><a href="hunjeyeoneo/">훈제연어</a></span><span class="mut">냉장 개봉 후 3~5일</span></div><div class="row" data-n="건멸치"><span class="nm"><a href="geonmyeolchi/">건멸치</a></span><span class="mut">냉장 3개월</span></div><div class="row" data-n="어묵"><span class="nm"><a href="eomuk/">어묵</a></span><span class="mut">냉장 개봉 후 2~3일</span></div><div class="row" data-n="맛살"><span class="nm"><a href="matsal/">맛살</a></span><span class="mut">냉장 개봉 후 2~3일</span></div></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">유제품·달걀 <span class="mut">(11)</span></h3>
+    <div class="rowlist"><div class="row" data-n="우유"><span class="nm"><a href="uyu/">우유</a></span><span class="mut">냉장 개봉 후 1~3일</span></div><div class="row" data-n="달걀"><span class="nm"><a href="dalgyal/">달걀</a></span><span class="mut">냉장 3~5주</span></div><div class="row" data-n="삶은달걀"><span class="nm"><a href="sameundalgyal/">삶은달걀</a></span><span class="mut">냉장 1주</span></div><div class="row" data-n="버터"><span class="nm"><a href="beoteo/">버터</a></span><span class="mut">냉장 1~3개월</span></div><div class="row" data-n="치즈슬라이스"><span class="nm"><a href="chijeuseulraiseu/">치즈슬라이스</a></span><span class="mut">냉장 개봉 후 2~3주</span></div><div class="row" data-n="경성치즈"><span class="nm"><a href="gyeongseongchijeu/">경성치즈</a></span><span class="mut">냉장 개봉 후 3~4주</span></div><div class="row" data-n="크림치즈"><span class="nm"><a href="keurimchijeu/">크림치즈</a></span><span class="mut">냉장 개봉 후 2주</span></div><div class="row" data-n="생크림"><span class="nm"><a href="saengkeurim/">생크림</a></span><span class="mut">냉장 개봉 후 2~3일</span></div><div class="row" data-n="요거트"><span class="nm"><a href="yogeoteu/">요거트</a></span><span class="mut">냉장 1~2주</span></div><div class="row" data-n="두부"><span class="nm"><a href="dubu/">두부</a></span><span class="mut">냉장 개봉 후 2~3일</span></div><div class="row" data-n="아이스크림"><span class="nm"><a href="aiseukeurim/">아이스크림</a></span><span class="mut">냉동 2~4개월</span></div></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">채소 <span class="mut">(26)</span></h3>
+    <div class="rowlist"><div class="row" data-n="상추"><span class="nm"><a href="sangchu/">상추</a></span><span class="mut">냉장 3~7일</span></div><div class="row" data-n="시금치"><span class="nm"><a href="sigeumchi/">시금치</a></span><span class="mut">냉장 3~5일</span></div><div class="row" data-n="깻잎"><span class="nm"><a href="kkaetip/">깻잎</a></span><span class="mut">냉장 5~7일</span></div><div class="row" data-n="대파"><span class="nm"><a href="daepa/">대파</a></span><span class="mut">냉장 1~2주</span></div><div class="row" data-n="양파"><span class="nm"><a href="yangpa/">양파</a></span><span class="mut">냉장 깐 것 1~2주</span></div><div class="row" data-n="마늘"><span class="nm"><a href="maneul/">마늘</a></span><span class="mut">냉장 깐마늘 1~2주</span></div><div class="row" data-n="생강"><span class="nm"><a href="saenggang/">생강</a></span><span class="mut">냉장 2~3주</span></div><div class="row" data-n="감자"><span class="nm"><a href="gamja/">감자</a></span><span class="mut">실온 서늘·어두운 곳 1~2개월</span></div><div class="row" data-n="고구마"><span class="nm"><a href="goguma/">고구마</a></span><span class="mut">실온 서늘한 곳 1~2주</span></div><div class="row" data-n="당근"><span class="nm"><a href="danggeun/">당근</a></span><span class="mut">냉장 2~3주</span></div><div class="row" data-n="오이"><span class="nm"><a href="oi/">오이</a></span><span class="mut">냉장 1주</span></div><div class="row" data-n="애호박"><span class="nm"><a href="aehobak/">애호박</a></span><span class="mut">냉장 1주</span></div><div class="row" data-n="가지"><span class="nm"><a href="gaji/">가지</a></span><span class="mut">냉장 5~7일</span></div><div class="row" data-n="브로콜리"><span class="nm"><a href="beurokolri/">브로콜리</a></span><span class="mut">냉장 3~5일</span></div><div class="row" data-n="콩나물"><span class="nm"><a href="kongnamul/">콩나물</a></span><span class="mut">냉장 2~3일</span></div><div class="row" data-n="숙주"><span class="nm"><a href="sukju/">숙주</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="버섯"><span class="nm"><a href="beoseot/">버섯</a></span><span class="mut">냉장 5~7일</span></div><div class="row" data-n="배추"><span class="nm"><a href="baechu/">배추</a></span><span class="mut">냉장 2주</span></div><div class="row" data-n="무"><span class="nm"><a href="mu/">무</a></span><span class="mut">냉장 2주</span></div><div class="row" data-n="파프리카"><span class="nm"><a href="papeurika/">파프리카</a></span><span class="mut">냉장 1~2주</span></div><div class="row" data-n="고추"><span class="nm"><a href="gochu/">고추</a></span><span class="mut">냉장 1~2주</span></div><div class="row" data-n="토마토"><span class="nm"><a href="tomato/">토마토</a></span><span class="mut">냉장 완숙 후 1주</span></div><div class="row" data-n="아보카도"><span class="nm"><a href="abokado/">아보카도</a></span><span class="mut">냉장 익은 것 3~5일</span></div><div class="row" data-n="옥수수"><span class="nm"><a href="oksusu/">옥수수</a></span><span class="mut">냉장 1~3일</span></div><div class="row" data-n="단호박"><span class="nm"><a href="danhobak/">단호박</a></span><span class="mut">냉장 자른 것 5일</span></div><div class="row" data-n="샐러드채소"><span class="nm"><a href="saelreodeuchaeso/">샐러드채소</a></span><span class="mut">냉장 개봉 후 3~5일</span></div></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">과일 <span class="mut">(15)</span></h3>
+    <div class="rowlist"><div class="row" data-n="사과"><span class="nm"><a href="sagwa/">사과</a></span><span class="mut">냉장 3~4주</span></div><div class="row" data-n="배"><span class="nm"><a href="bae/">배</a></span><span class="mut">냉장 2~3주</span></div><div class="row" data-n="바나나"><span class="nm"><a href="banana/">바나나</a></span><span class="mut">실온 실온 3~5일</span></div><div class="row" data-n="딸기"><span class="nm"><a href="ttalgi/">딸기</a></span><span class="mut">냉장 3~5일</span></div><div class="row" data-n="포도"><span class="nm"><a href="podo/">포도</a></span><span class="mut">냉장 1~2주</span></div><div class="row" data-n="귤"><span class="nm"><a href="gyul/">귤</a></span><span class="mut">냉장 2~3주</span></div><div class="row" data-n="오렌지"><span class="nm"><a href="orenji/">오렌지</a></span><span class="mut">냉장 2~3주</span></div><div class="row" data-n="레몬"><span class="nm"><a href="remon/">레몬</a></span><span class="mut">냉장 3~4주</span></div><div class="row" data-n="수박"><span class="nm"><a href="subak/">수박</a></span><span class="mut">냉장 자른 것 3~4일</span></div><div class="row" data-n="멜론"><span class="nm"><a href="melron/">멜론</a></span><span class="mut">냉장 자른 것 3~4일</span></div><div class="row" data-n="복숭아"><span class="nm"><a href="boksunga/">복숭아</a></span><span class="mut">냉장 3~5일</span></div><div class="row" data-n="키위"><span class="nm"><a href="kiwi/">키위</a></span><span class="mut">냉장 1~2주</span></div><div class="row" data-n="블루베리"><span class="nm"><a href="beulruberi/">블루베리</a></span><span class="mut">냉장 1~2주</span></div><div class="row" data-n="망고"><span class="nm"><a href="manggo/">망고</a></span><span class="mut">냉장 익은 것 5일</span></div><div class="row" data-n="감"><span class="nm"><a href="gam/">감</a></span><span class="mut">냉장 1~2주</span></div></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">곡물·건조 <span class="mut">(10)</span></h3>
+    <div class="rowlist"><div class="row" data-n="쌀"><span class="nm"><a href="ssal/">쌀</a></span><span class="mut">냉장 장기 보관 권장</span></div><div class="row" data-n="밀가루"><span class="nm"><a href="milgaru/">밀가루</a></span><span class="mut">냉장 1년</span></div><div class="row" data-n="파스타면"><span class="nm"><a href="paseutamyeon/">파스타면</a></span><span class="mut">실온 1~2년</span></div><div class="row" data-n="소면"><span class="nm"><a href="somyeon/">소면</a></span><span class="mut">실온 1년</span></div><div class="row" data-n="당면"><span class="nm"><a href="dangmyeon/">당면</a></span><span class="mut">실온 1년</span></div><div class="row" data-n="견과류"><span class="nm"><a href="gyeongwaryu/">견과류</a></span><span class="mut">냉장 6개월</span></div><div class="row" data-n="김"><span class="nm"><a href="gim/">김</a></span><span class="mut">실온 밀폐 1개월</span></div><div class="row" data-n="미역"><span class="nm"><a href="miyeok/">미역</a></span><span class="mut">실온 건조 상태 1년</span></div><div class="row" data-n="오트밀시리얼"><span class="nm"><a href="oteumilsirieol/">오트밀시리얼</a></span><span class="mut">실온 개봉 후 밀폐 2~3개월</span></div><div class="row" data-n="커피원두"><span class="nm"><a href="keopiwondu/">커피원두</a></span><span class="mut">실온 밀폐 2~4주</span></div></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">양념·소스 <span class="mut">(11)</span></h3>
+    <div class="rowlist"><div class="row" data-n="간장"><span class="nm"><a href="ganjang/">간장</a></span><span class="mut">냉장 개봉 후 6개월~1년</span></div><div class="row" data-n="된장"><span class="nm"><a href="doenjang/">된장</a></span><span class="mut">냉장 개봉 후 6개월~1년</span></div><div class="row" data-n="고추장"><span class="nm"><a href="gochujang/">고추장</a></span><span class="mut">냉장 개봉 후 6개월~1년</span></div><div class="row" data-n="케첩"><span class="nm"><a href="kecheop/">케첩</a></span><span class="mut">냉장 개봉 후 6개월</span></div><div class="row" data-n="마요네즈"><span class="nm"><a href="mayonejeu/">마요네즈</a></span><span class="mut">냉장 개봉 후 2~3개월</span></div><div class="row" data-n="굴소스"><span class="nm"><a href="gulsoseu/">굴소스</a></span><span class="mut">냉장 개봉 후 3~6개월</span></div><div class="row" data-n="잼"><span class="nm"><a href="jaem/">잼</a></span><span class="mut">냉장 개봉 후 1개월</span></div><div class="row" data-n="꿀"><span class="nm"><a href="kkul/">꿀</a></span><span class="mut">실온 실온 장기 보관 가능</span></div><div class="row" data-n="식용유"><span class="nm"><a href="sikyongyu/">식용유</a></span><span class="mut">실온 개봉 후 어두운 곳 1~2개월</span></div><div class="row" data-n="참기름"><span class="nm"><a href="chamgireum/">참기름</a></span><span class="mut">실온 어두운 곳 6개월</span></div><div class="row" data-n="고춧가루"><span class="nm"><a href="gochutgaru/">고춧가루</a></span><span class="mut">냉장 6개월</span></div></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">조리식품 <span class="mut">(14)</span></h3>
+    <div class="rowlist"><div class="row" data-n="밥"><span class="nm"><a href="bap/">밥</a></span><span class="mut">냉장 1일</span></div><div class="row" data-n="국찌개"><span class="nm"><a href="gukjjigae/">국찌개</a></span><span class="mut">냉장 2~3일</span></div><div class="row" data-n="카레"><span class="nm"><a href="kare/">카레</a></span><span class="mut">냉장 2~3일</span></div><div class="row" data-n="볶음밥"><span class="nm"><a href="bokeumbap/">볶음밥</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="튀김"><span class="nm"><a href="twigim/">튀김</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="피자"><span class="nm"><a href="pija/">피자</a></span><span class="mut">냉장 3~4일</span></div><div class="row" data-n="치킨"><span class="nm"><a href="chikin/">치킨</a></span><span class="mut">냉장 3~4일</span></div><div class="row" data-n="샌드위치"><span class="nm"><a href="saendeuwichi/">샌드위치</a></span><span class="mut">냉장 1~2일</span></div><div class="row" data-n="만두"><span class="nm"><a href="mandu/">만두</a></span><span class="mut">냉장 해동 후 1~2일</span></div><div class="row" data-n="식빵"><span class="nm"><a href="sikppang/">식빵</a></span><span class="mut">실온 실온 2~3일</span></div><div class="row" data-n="떡"><span class="nm"><a href="tteok/">떡</a></span><span class="mut">실온 당일</span></div><div class="row" data-n="김치"><span class="nm"><a href="gimchi/">김치</a></span><span class="mut">냉장 숙성도에 따라 수개월</span></div><div class="row" data-n="오렌지주스"><span class="nm"><a href="orenjijuseu/">오렌지주스</a></span><span class="mut">냉장 개봉 후 7~10일</span></div><div class="row" data-n="두부면"><span class="nm"><a href="dubumyeon/">두부면</a></span><span class="mut">냉장 개봉 후 2~3일</span></div></div>
+    </div>
+    <p class="note" id="empty" hidden>검색 결과가 없습니다. 다른 이름으로 찾아보세요.</p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>"며칠까지 괜찮나"에 정답이 없는 이유</h2>
+    <p>보관기간 표는 <strong>품질이 유지되는 일반적인 범위</strong>이지 안전을 보장하는 선이 아닙니다. 같은 삼겹살이라도 정육점에서 그날 썬 것과 며칠 진열된 것, 냉장고 문 쪽에 둔 것과 안쪽 최하단에 둔 것은 실제 수명이 크게 다릅니다. 냉장고 문 쪽은 여닫을 때마다 온도가 오르내려 가장 불리한 자리입니다.</p>
+    <p>그래서 이 표는 기간을 <strong>판단의 출발점</strong>으로만 쓰시길 권합니다. 냉동은 세균 증식을 멈추므로 표시된 기간은 대개 "맛과 식감이 유지되는" 기간이고, 그 이후에도 안전상 문제가 없는 경우가 많지만 냉동상(수분 손실)으로 맛이 떨어집니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>재료 이름을 검색합니다. 아래 목록이 실시간으로 걸러집니다.</li>
+      <li>구입일 또는 개봉일을 넣고 보관 방법을 고른 뒤 "남은 기간 계산"을 누릅니다.</li>
+      <li>결과에서 실온·냉장·냉동 각각의 권장 기간과 보관 요령을 확인합니다.</li>
+      <li>재료 이름을 누르면 그 재료만 다룬 상세 페이지로 이동합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 유통기한이 지났는데 먹어도 되나요?</p><p class="a">유통기한은 판매 가능 기한이고 소비기한은 섭취 가능 기한입니다. 2023년부터 국내 표시는 소비기한으로 바뀌었습니다. 표시가 있는 제품은 표시를 우선하고, 이 표는 포장에 기한 표시가 없는 신선식품이나 개봉 후 기간을 가늠할 때 쓰세요.</p></div>
+    <div class="qa"><p class="q">Q. 한 번 녹인 고기를 다시 얼려도 되나요?</p><p class="a">권장하지 않습니다. 해동 과정에서 온도가 올라가며 세균이 증식하고, 재냉동하면 조직이 망가져 맛도 떨어집니다. 냉장고에서 천천히 해동해 아직 차가운 상태라면 하루 안에 조리하는 편이 안전합니다.</p></div>
+    <div class="qa"><p class="q">Q. 냉동실에 넣으면 얼마나 오래 두어도 되나요?</p><p class="a">−18℃ 이하에서는 미생물이 증식하지 못하므로 안전 측면에서는 오래 갑니다. 다만 지방 산패와 냉동상으로 맛이 떨어지므로 이 표의 기간은 '품질 유지 기간'으로 보시고, 공기를 뺀 밀봉 포장으로 보관 기간을 늘리세요.</p></div>
+    <div class="qa"><p class="q">Q. 냉장고 어디에 두는 게 좋나요?</p><p class="a">가장 차가운 최하단 안쪽이 육류·생선 자리이고, 문 쪽은 온도 변화가 커 음료나 소스에 적합합니다. 채소는 전용 칸의 습도 유지가 중요하고, 달걀은 문 쪽 대신 안쪽 선반이 좋습니다.</p></div>
+    <h2>데이터 기준</h2>
+    <p class="note">보관기간은 <a href="https://www.foodsafety.gov/keep-food-safe/foodkeeper-app" target="_blank" rel="noopener">FoodKeeper</a>와
+    <a href="https://www.foodsafetykorea.go.kr" target="_blank" rel="noopener">식품안전나라</a> 등에서 공통적으로 안내하는
+    가정 보관 시 <strong>품질 유지 기간의 일반 권고 범위</strong>를 종합한 값입니다(전 항목 출처·확인일 표기, 데이터 확인일 2026-08-19).
+    <span class="badge warn">보관 상태에 따라 다름</span> — 냉장고 온도(0~4℃ 권장), 포장 상태, 구입 시 신선도에 따라 실제 기간은 크게 달라집니다.</p>
+    <p class="disclaimer">본 결과는 <strong>참고용</strong>이며 식품의 안전을 보증하지 않습니다.
+    보관 기간은 구입 시 신선도·포장·냉장고 온도에 따라 크게 달라지므로 <strong>보관 상태에 따라 다름</strong>을 전제로 보시고,
+    제품에 표시된 소비기한·유통기한이 있으면 표시를 우선하세요. 냄새·색·점액 등 이상이 있으면 기간과 무관하게 폐기하고,
+    육류·가금류·달걀·해산물은 반드시 속까지 완전히 익혀 드세요. 자세한 기준은
+    <a href="https://www.foodsafetykorea.go.kr" target="_blank" rel="noopener">식품안전나라</a>를 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../calorie-plate/"><span class="e">🍽️</span> 한 끼 칼로리</a>
+      <a class="rel" href="../airfryer/"><span class="e">🍟</span> 에어프라이어 변환</a>
+      <a class="rel" href="https://tomatoeggcat.com/fridge-recipe/" target="_blank" rel="noopener"><span class="e">🧊</span> 냉장고 재료 레시피 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/naengpa/" target="_blank" rel="noopener"><span class="e">🍳</span> 냉장고 파먹기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/seasonal-food/" target="_blank" rel="noopener"><span class="e">🥬</span> 제철 음식 달력 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { STORAGE } from "../data/storage.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+const DATA = STORAGE;
+const SLUG = {"소고기":"sogogi","소고기다짐육":"sogogidajimyuk","돼지고기":"dwaejigogi","돼지고기다짐육":"dwaejigogidajimyuk","닭고기":"dakgogi","닭가슴살":"dakgaseumsal","베이컨":"beikeon","소시지":"sosiji","햄":"haem","조리한고기":"jorihangogi","양고기":"yanggogi","오리고기":"origogi","흰살생선":"huinsalsaengseon","고등어":"godeungeo","연어":"yeoneo","갈치":"galchi","새우":"saeu","오징어":"ojingeo","낙지":"nakji","조개":"jogae","굴":"gul","게":"ge","훈제연어":"hunjeyeoneo","건멸치":"geonmyeolchi","어묵":"eomuk","맛살":"matsal","우유":"uyu","달걀":"dalgyal","삶은달걀":"sameundalgyal","버터":"beoteo","치즈슬라이스":"chijeuseulraiseu","경성치즈":"gyeongseongchijeu","크림치즈":"keurimchijeu","생크림":"saengkeurim","요거트":"yogeoteu","두부":"dubu","아이스크림":"aiseukeurim","상추":"sangchu","시금치":"sigeumchi","깻잎":"kkaetip","대파":"daepa","양파":"yangpa","마늘":"maneul","생강":"saenggang","감자":"gamja","고구마":"goguma","당근":"danggeun","오이":"oi","애호박":"aehobak","가지":"gaji","브로콜리":"beurokolri","콩나물":"kongnamul","숙주":"sukju","버섯":"beoseot","배추":"baechu","무":"mu","파프리카":"papeurika","고추":"gochu","토마토":"tomato","아보카도":"abokado","옥수수":"oksusu","단호박":"danhobak","샐러드채소":"saelreodeuchaeso","사과":"sagwa","배":"bae","바나나":"banana","딸기":"ttalgi","포도":"podo","귤":"gyul","오렌지":"orenji","레몬":"remon","수박":"subak","멜론":"melron","복숭아":"boksunga","키위":"kiwi","블루베리":"beulruberi","망고":"manggo","감":"gam","쌀":"ssal","밀가루":"milgaru","파스타면":"paseutamyeon","소면":"somyeon","당면":"dangmyeon","견과류":"gyeongwaryu","김":"gim","미역":"miyeok","오트밀시리얼":"oteumilsirieol","커피원두":"keopiwondu","간장":"ganjang","된장":"doenjang","고추장":"gochujang","케첩":"kecheop","마요네즈":"mayonejeu","굴소스":"gulsoseu","잼":"jaem","꿀":"kkul","식용유":"sikyongyu","참기름":"chamgireum","고춧가루":"gochutgaru","밥":"bap","국찌개":"gukjjigae","카레":"kare","볶음밥":"bokeumbap","튀김":"twigim","피자":"pija","치킨":"chikin","샌드위치":"saendeuwichi","만두":"mandu","식빵":"sikppang","떡":"tteok","김치":"gimchi","오렌지주스":"orenjijuseu","두부면":"dubumyeon"};
+const q = $("q");
+function filter() {
+  const v = q.value.trim().toLowerCase();
+  let hit = 0;
+  for (const row of document.querySelectorAll("#listBox .row")) {
+    const on = !v || (row.dataset.n || "").toLowerCase().includes(v);
+    row.style.display = on ? "" : "none";
+    if (on) hit++;
+  }
+  for (const h of document.querySelectorAll("#listBox h3")) {
+    const list = h.nextElementSibling;
+    const any = [...list.querySelectorAll(".row")].some((r) => r.style.display !== "none");
+    h.style.display = any ? "" : "none";
+    list.style.display = any ? "" : "none";
+  }
+  $("empty").hidden = hit > 0;
+}
+q.addEventListener("input", filter);
+function parseDays(s) {
+  if (!s) return null;
+  const m = String(s).match(/(\d+)\s*(?:~\s*(\d+))?\s*(일|개월|주|년)/);
+  if (!m) return null;
+  const lo = +m[1], hi = m[2] ? +m[2] : +m[1];
+  const mul = m[3] === "일" ? 1 : m[3] === "주" ? 7 : m[3] === "개월" ? 30 : 365;
+  return { lo: lo * mul, hi: hi * mul };
+}
+$("calcBtn").addEventListener("click", () => {
+  const v = q.value.trim();
+  const item = DATA.find((d) => d.name === v) || DATA.find((d) => v && d.name.includes(v)) || null;
+  if (!item) { $("calcNote").textContent = "일치하는 재료를 찾지 못했습니다. 목록에서 이름을 확인해 주세요."; return; }
+  $("calcNote").textContent = "";
+  $("nameOut").textContent = item.name;
+  const rows = [
+    ["실온", item.value.room || "권장하지 않음"],
+    ["냉장", item.value.fridge || "해당 없음"],
+    ["냉동", item.value.frozen || "권장하지 않음"],
+  ];
+  const place = $("place").value;
+  const label = place === "fridge" ? "냉장" : place === "frozen" ? "냉동" : "실온";
+  const span = parseDays(item.value[place]);
+  const dv = $("buyDate").value;
+  if (dv && span) {
+    const days = Math.floor((Date.now() - new Date(dv + "T00:00:00").getTime()) / 86400000);
+    const left = span.hi - days;
+    rows.push([label + " 보관 경과", days + "일"]);
+    rows.push([label + " 권장 잔여", left >= 0 ? "약 " + Math.max(0, span.lo - days) + "~" + left + "일" : "권장 기간 초과 (" + (-left) + "일)"]);
+  } else if (dv) {
+    rows.push([label + " 잔여 계산", "기간 표기를 숫자로 읽을 수 없어 생략"]);
+  }
+  $("tableOut").innerHTML = kv(rows);
+  $("tipOut").textContent = (item.tip ? item.tip + " · " : "") + "보관 상태에 따라 다릅니다. 표시된 소비기한이 있으면 표시를 우선하세요.";
+  const link = SLUG[item.name];
+  $("linkOut").innerHTML = link ? '<a href="../storage/' + link + '/">' + item.name + ' 상세 보관법 →</a>' : "";
+  $("srcOut").innerHTML = srcBox("데이터 출처", [{ text: item.source, checkedAt: item.checkedAt }]);
+  show("resultBox");
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

@@ -129,3 +129,30 @@ footer{margin-top:48px;text-align:center;color:var(--muted);font-size:12px;borde
 footer a{color:var(--link);margin:0 7px;text-decoration:none}
 footer a:hover{text-decoration:underline}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* 산출 과정 블록 */
+.steps{margin:14px 0 0;background:var(--panel3);border:1px solid var(--line3);border-radius:10px;padding:12px 14px}
+.steps-t{margin:0 0 6px;font-size:12.5px;font-weight:800;color:var(--muted2);letter-spacing:.04em}
+.steps ol{margin:0;padding-left:20px;color:var(--tx3);font-size:13.5px;line-height:1.75}
+.steps li{margin:3px 0;font-variant-numeric:tabular-nums}
+.badge.bad{background:color-mix(in srgb,var(--danger) 16%,transparent);color:var(--danger);border:1px solid color-mix(in srgb,var(--danger) 45%,transparent)}
+.badge.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 45%,transparent)}
+.chk{display:flex;align-items:center;gap:8px;font-weight:600!important}
+.chk input{width:auto;flex:0 0 auto}
+details.card summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--txs)}
+details.card[open] summary{margin-bottom:12px}
+.fine-nums{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0 0}
+@media (max-width:520px){.fine-nums{grid-template-columns:1fr}}
+.fine-num{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px;text-align:center}
+.fine-num .l{font-size:12px;color:var(--muted2);margin:0}
+.fine-num .v{font-size:20px;font-weight:900;color:var(--acc);margin:4px 0 0;font-variant-numeric:tabular-nums}
+.fine-num .v.na{color:var(--muted);font-size:15px}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 0}
+.filters button{border:1px solid var(--line2);background:var(--panel3);color:var(--tx2);border-radius:999px;padding:6px 13px;font-size:13px;font-family:inherit;cursor:pointer}
+.filters button[aria-pressed=true]{border-color:var(--acc2);color:var(--acc);background:color-mix(in srgb,var(--acc2) 12%,transparent);font-weight:700}
+.catlist{margin:18px 0 0}
+.catlist h3{margin:16px 0 6px}
+.catlist ul{margin:0;padding-left:20px}
+.catlist li{margin:4px 0;font-size:14.5px}
+.catlist a{color:var(--link);text-decoration:none}
+.catlist a:hover{text-decoration:underline}

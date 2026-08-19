@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>염지 계산기 — 습식·건식 브라인 소금·설탕 양과 시간</title>
+<meta name="description" content="닭가슴살·삼겹살을 촉촉하게 만드는 염지 계산기. 고기 무게를 넣으면 습식 브라인의 물·소금·설탕 양과 건식 염지의 소금 비율, 부위별 권장 시간을 계산합니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/brine/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="염지(브라인) 계산기" />
+<meta property="og:description" content="닭가슴살·삼겹살을 촉촉하게 만드는 염지 계산기. 고기 무게를 넣으면 습식 브라인의 물·소금·설탕 양과 건식 염지의 소금 비율, 부위별 권장 시간을 계산합니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/brine/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"염지(브라인) 계산기","description":"닭가슴살·삼겹살을 촉촉하게 만드는 염지 계산기. 고기 무게를 넣으면 습식 브라인의 물·소금·설탕 양과 건식 염지의 소금 비율, 부위별 권장 시간을 계산합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/brine/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"너무 오래 담그면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"권장 시간을 크게 넘기면 짜지고 조직이 물러져 햄 같은 식감이 됩니다. 얇은 닭가슴살을 하룻밤 담그는 것은 과합니다. 부위가 얇을수록 시간을 짧게 잡으세요."}},{"@type":"Question","name":"염지 후 헹궈야 하나요?","acceptedAnswer":{"@type":"Answer","text":"습식은 표면 염분을 씻어내기 위해 가볍게 헹구고 키친타월로 물기를 완전히 제거합니다. 건식은 소금이 대부분 흡수되므로 헹구지 않고 표면만 닦아도 됩니다."}},{"@type":"Question","name":"설탕은 왜 넣나요?","acceptedAnswer":{"@type":"Answer","text":"짠맛의 균형을 잡고 가열 시 표면 갈변(캐러멜화)을 도와 색과 향이 좋아집니다. 다만 설탕이 많으면 타기 쉬우니 소금의 절반 정도로 제한하고, 센 불 구이에서는 줄이세요."}},{"@type":"Question","name":"냉장고 밖에서 염지해도 되나요?","acceptedAnswer":{"@type":"Answer","text":"안 됩니다. 실온 염지는 세균이 증식하기 좋은 조건입니다. 반드시 냉장(0~4℃)에서 진행하고, 사용한 염지액은 재사용하지 말고 버리세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"염지 계산기","item":"https://cookcalc-kr.vercel.app/brine/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>염지 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧂</div>
+    <h1>염지 계산기</h1>
+    <p class="lead">고기 무게만 넣으면 <strong>물·소금·설탕 양과 염지 시간</strong>을 계산합니다. 퍽퍽한 닭가슴살의 해법입니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>고기와 방식 선택</h2>
+    <div class="grid2">
+      <label class="f">고기 무게 <span class="u">(g)</span>
+        <input type="number" id="meat" inputmode="decimal" min="50" step="50" value="600" />
+      </label>
+      <label class="f">부위 <span class="u">(권장 시간 참고)</span>
+        <select id="cut"><option value="0">닭가슴살·안심</option><option value="1">닭다리·닭날개</option><option value="2">통닭(1kg 내외)</option><option value="3">돼지 두툼한 구이용(3cm)</option><option value="4">돼지 통목살·통삼겹</option></select>
+      </label>
+    </div>
+    <div style="margin-top:12px">
+      <span class="f" style="display:block">염지 방식</span>
+      <div class="seg" id="wSeg" role="group" aria-label="염지 방식">
+        <button type="button" data-v="wet" aria-pressed="true">습식 (소금물에 담그기)</button>
+        <button type="button" data-v="dry" aria-pressed="false">건식 (표면에 문지르기)</button>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">소금 비율 <span class="u">(% · 습식=물 대비, 건식=고기 대비)</span>
+        <input type="number" id="saltPct" inputmode="decimal" min="0.5" step="0.1" value="6" />
+      </label>
+      <label class="f">설탕 비율 <span class="u">(% · 0이면 생략)</span>
+        <input type="number" id="sugarPct" inputmode="decimal" min="0" step="0.1" value="3" />
+      </label>
+    </div>
+    <button class="btn" id="calcBtn">염지 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>염지 계산 결과</h2>
+      <p class="big"><span class="num" id="mainOut"></span></p>
+      <div id="tableOut"></div>
+      <p class="note" id="noteOut"></p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>염지가 하는 일</h2>
+    <p>소금물에 담근 고기는 단순히 간이 배는 것이 아닙니다. 소금이 근육 단백질의 구조를 느슨하게 만들어 <strong>수분을 더 많이 붙잡게</strong> 하고, 그 결과 가열 과정에서 빠져나가는 육즙이 줄어듭니다. 닭가슴살처럼 지방이 적어 조금만 오래 익혀도 퍽퍽해지는 부위에서 차이가 가장 큽니다.</p>
+    <p>습식은 물에 소금을 풀어 담그는 방식으로 실패가 적고, 건식은 고기 표면에 소금을 직접 문질러 냉장고에서 재우는 방식으로 물이 섞이지 않아 풍미가 진해집니다. 굽기 전에는 표면 물기를 완전히 닦아야 갈색이 제대로 납니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>고기 무게(g)와 부위를 고릅니다.</li>
+      <li>습식/건식을 선택하면 기본 비율이 자동으로 바뀝니다.</li>
+      <li>결과의 물·소금·설탕 양을 섞어 고기가 잠기도록 담그거나(습식), 표면에 고루 문지릅니다(건식).</li>
+      <li>냉장고에서 권장 시간만큼 두고, 꺼낸 뒤 표면을 헹구고 물기를 닦아 조리합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 너무 오래 담그면 어떻게 되나요?</p><p class="a">권장 시간을 크게 넘기면 짜지고 조직이 물러져 햄 같은 식감이 됩니다. 얇은 닭가슴살을 하룻밤 담그는 것은 과합니다. 부위가 얇을수록 시간을 짧게 잡으세요.</p></div>
+    <div class="qa"><p class="q">Q. 염지 후 헹궈야 하나요?</p><p class="a">습식은 표면 염분을 씻어내기 위해 가볍게 헹구고 키친타월로 물기를 완전히 제거합니다. 건식은 소금이 대부분 흡수되므로 헹구지 않고 표면만 닦아도 됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 설탕은 왜 넣나요?</p><p class="a">짠맛의 균형을 잡고 가열 시 표면 갈변(캐러멜화)을 도와 색과 향이 좋아집니다. 다만 설탕이 많으면 타기 쉬우니 소금의 절반 정도로 제한하고, 센 불 구이에서는 줄이세요.</p></div>
+    <div class="qa"><p class="q">Q. 냉장고 밖에서 염지해도 되나요?</p><p class="a">안 됩니다. 실온 염지는 세균이 증식하기 좋은 조건입니다. 반드시 냉장(0~4℃)에서 진행하고, 사용한 염지액은 재사용하지 말고 버리세요.</p></div>
+    <h2>기준값</h2>
+    <p class="note">습식은 물 = 고기 무게와 동량, 소금 = 물 무게의 6%(5~7% 관행), 설탕 = 3%,
+    건식은 소금 = 고기 무게의 1.2%(1~1.5%)를 기본으로 합니다(출처: 자체 정리, 확인일 2026-08-19).
+    <span class="badge warn">참고용</span> 부위 두께와 취향에 따라 조정하세요.</p>
+    <p class="disclaimer">본 결과는 <strong>참고용</strong>이며 식품의 안전을 보증하지 않습니다.
+    보관 기간은 구입 시 신선도·포장·냉장고 온도에 따라 크게 달라지므로 <strong>보관 상태에 따라 다름</strong>을 전제로 보시고,
+    제품에 표시된 소비기한·유통기한이 있으면 표시를 우선하세요. 냄새·색·점액 등 이상이 있으면 기간과 무관하게 폐기하고,
+    육류·가금류·달걀·해산물은 반드시 속까지 완전히 익혀 드세요. 자세한 기준은
+    <a href="https://www.foodsafetykorea.go.kr" target="_blank" rel="noopener">식품안전나라</a>를 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../airfryer/"><span class="e">🍟</span> 에어프라이어 변환</a>
+      <a class="rel" href="../kimchi-salt/"><span class="e">🥬</span> 김치 절임 계산</a>
+      <a class="rel" href="https://tomatoeggcat.com/airfryer-time/" target="_blank" rel="noopener"><span class="e">🍟</span> 에어프라이어 시간표 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/fridge-recipe/" target="_blank" rel="noopener"><span class="e">🧊</span> 냉장고 재료 레시피 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { BRINE } from "../data/misc.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+let way = "wet";
+function preset() {
+  $("saltPct").value = way === "wet" ? BRINE.wet.saltPct.value : BRINE.dry.saltPct.value;
+  $("sugarPct").value = way === "wet" ? BRINE.wet.sugarPct.value : BRINE.dry.sugarPct.value;
+}
+segInit($("wSeg"), (v) => { way = v; preset(); });
+$("calcBtn").addEventListener("click", () => {
+  const meat = num($("meat"), 600);
+  const sp = num($("saltPct"), 6) / 100, up = num($("sugarPct"), 3) / 100;
+  const cut = BRINE.times[+$("cut").value];
+  const rows = [["고기", fmt(meat) + "g"], ["방식", way === "wet" ? "습식 브라인" : "건식 염지"]];
+  let main;
+  if (way === "wet") {
+    const water = meat * BRINE.wet.waterPerMeat.value;
+    const salt = water * sp, sugar = water * up;
+    main = "소금 " + fmt(salt, 1) + "g + 물 " + ml(water);
+    rows.push(["물", ml(water) + " (고기와 동량, 잠길 만큼)"]);
+    rows.push(["소금", fmt(salt, 1) + "g (물의 " + fmt(sp * 100, 1) + "%)"]);
+    if (up > 0) rows.push(["설탕", fmt(sugar, 1) + "g (물의 " + fmt(up * 100, 1) + "%)"]);
+    rows.push(["총 염지액", ml(water) + " + 소금·설탕"]);
+  } else {
+    const salt = meat * sp, sugar = meat * up;
+    main = "소금 " + fmt(salt, 1) + "g";
+    rows.push(["소금", fmt(salt, 1) + "g (고기의 " + fmt(sp * 100, 1) + "%)"]);
+    if (up > 0) rows.push(["설탕", fmt(sugar, 1) + "g (고기의 " + fmt(up * 100, 1) + "%)"]);
+    rows.push(["방법", "표면에 고루 문지른 뒤 랩 없이 냉장 (표면이 마르며 풍미 ↑)"]);
+  }
+  rows.push(["권장 시간", cut.name + " · " + cut.time]);
+  rows.push(["보관 온도", "냉장 0~4℃ (실온 염지 금지)"]);
+  $("mainOut").textContent = main;
+  $("tableOut").innerHTML = kv(rows);
+  $("noteOut").textContent = "염지 후 표면 물기를 완전히 닦아야 겉이 제대로 갈색으로 구워집니다. 사용한 염지액은 재사용하지 말고 버리세요.";
+  $("srcOut").innerHTML = srcBox("기준값 출처", [
+    { text: (way === "wet" ? "습식 비율 — " + BRINE.wet.saltPct.note : "건식 비율 — " + BRINE.dry.saltPct.note) + " / " + BRINE.wet.saltPct.source, checkedAt: BRINE.wet.saltPct.checkedAt },
+    { text: cut.name + " 권장 시간 " + cut.time + " — " + cut.source, checkedAt: cut.checkedAt },
+  ]);
+  show("resultBox");
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

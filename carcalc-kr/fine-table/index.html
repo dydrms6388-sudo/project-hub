@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>과태료·범칙금 조회표 — 위반유형 36종 금액·벌점 한눈에</title>
+<meta name="description" content="속도위반·신호위반·주정차·스쿨존·안전띠 등 승용차 기준 위반유형 36종의 과태료와 범칙금, 벌점을 한 표에서 검색합니다. 과태료와 범칙금이 왜 다른지, 자진납부 감경은 어떻게 적용되는지도 함께 정리했습니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/fine-table/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="과태료·범칙금 조회표 — 위반유형별 금액" />
+<meta property="og:description" content="속도위반·신호위반·주정차·스쿨존·안전띠 등 승용차 기준 위반유형 36종의 과태료와 범칙금, 벌점을 한 표에서 검색합니다. 과태료와 범칙금이 왜 다른지, 자진납부 감경은 어떻게 적용되는지도 함께 정리했습니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/fine-table/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"과태료·범칙금 조회표","description":"속도위반·신호위반·주정차·스쿨존·안전띠 등 승용차 기준 위반유형 36종의 과태료와 범칙금, 벌점을 한 표에서 검색합니다. 과태료와 범칙금이 왜 다른지, 자진납부 감경은 어떻게 적용되는지도 함께 정리했습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/fine-table/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"과태료와 범칙금 중 무엇을 내야 하나요?","acceptedAnswer":{"@type":"Answer","text":"무인 단속으로 고지서를 받았다면 보통 과태료와 범칙금 중 선택할 수 있게 안내됩니다. 과태료는 금액이 조금 더 비싸지만 벌점이 없고, 범칙금은 싸지만 벌점이 부과되어 누적 시 면허 정지로 이어질 수 있습니다."}},{"@type":"Question","name":"벌점은 언제 사라지나요?","acceptedAnswer":{"@type":"Answer","text":"벌점은 처분 벌점으로 누적 관리되며 1년간 40점 이상이면 면허 정지 대상입니다. 위반 없이 1년이 지나면 소멸하는 등 관리 규정이 있으므로 경찰청 교통민원24에서 본인 누적 상태를 확인하는 것이 정확합니다."}},{"@type":"Question","name":"스쿨존은 왜 금액이 두 배인가요?","acceptedAnswer":{"@type":"Answer","text":"어린이보호구역에서는 오전 8시부터 오후 8시 사이 위반에 대해 가중 처분이 적용되기 때문입니다. 이 표의 어린이보호구역 항목은 가중된 금액입니다."}},{"@type":"Question","name":"이 표의 금액이 제 고지서와 다릅니다.","acceptedAnswer":{"@type":"Answer","text":"차종(승합·화물·이륜), 위반 시각, 자진납부 감경, 가산금 여부에 따라 달라집니다. 실제 부과액은 경찰청 교통민원24에서 본인 건으로 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"과태료·범칙금 조회표","item":"https://carcalc-kr.vercel.app/fine-table/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">과태료·범칙금 조회표</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🚨</div>
+    <h1>과태료·범칙금 조회표</h1>
+    <p class="lead">승용차 기준 위반유형 <strong>36종</strong>의 과태료·범칙금·벌점을 한 표에 모았습니다. 항목을 누르면 상세 설명으로 이동합니다.</p>
+  </div>
+
+  <p class="notice">⚠ 이 표는 <strong>승용차 기준 참고용</strong>입니다. 승합·화물·이륜차는 금액이 다릅니다. 실제 단속 내역과 납부 금액은 <a href="https://www.efine.go.kr" target="_blank" rel="noopener">경찰청 교통민원24(이파인)</a>에서 확인하세요.</p>
+  <div class="card">
+    <div class="field">
+      <label for="q">위반유형 검색</label>
+      <input type="text" id="q" placeholder="예: 신호, 속도, 주정차, 스쿨존" autocomplete="off" />
+    </div>
+    <div class="filters" id="cats">
+      <button type="button" data-c="" aria-pressed="true">전체</button>
+      <button type="button" data-c="속도위반" aria-pressed="false">속도위반</button>
+      <button type="button" data-c="어린이보호구역" aria-pressed="false">어린이보호구역</button>
+      <button type="button" data-c="신호·지시" aria-pressed="false">신호·지시</button>
+      <button type="button" data-c="주정차" aria-pressed="false">주정차</button>
+      <button type="button" data-c="운전 중 주의분산" aria-pressed="false">운전 중 주의분산</button>
+      <button type="button" data-c="안전띠" aria-pressed="false">안전띠</button>
+      <button type="button" data-c="차로·통행" aria-pressed="false">차로·통행</button>
+      <button type="button" data-c="안전운전" aria-pressed="false">안전운전</button>
+      <button type="button" data-c="보행자 보호" aria-pressed="false">보행자 보호</button>
+      <button type="button" data-c="형사처벌" aria-pressed="false">형사처벌</button>
+    </div>
+  </div>
+  <div class="tblwrap">
+    <table class="tbl" id="ftbl">
+      <thead><tr><th>위반유형</th><th>과태료</th><th>범칙금</th><th>벌점</th></tr></thead>
+      <tbody>
+      <tr data-cat="속도위반" data-name="속도위반 20km/h 이하">
+        <td><a href="../fine/speed-20/">속도위반 20km/h 이하</a><br /><span class="src">속도위반</span></td>
+        <td class="num">40,000원</td>
+        <td class="num">30,000원</td>
+        <td class="num">0점</td>
+      </tr>
+      <tr data-cat="속도위반" data-name="속도위반 20~40km/h">
+        <td><a href="../fine/speed-20-40/">속도위반 20~40km/h</a><br /><span class="src">속도위반</span></td>
+        <td class="num">70,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">15점</td>
+      </tr>
+      <tr data-cat="속도위반" data-name="속도위반 40~60km/h">
+        <td><a href="../fine/speed-40-60/">속도위반 40~60km/h</a><br /><span class="src">속도위반</span></td>
+        <td class="num">100,000원</td>
+        <td class="num">90,000원</td>
+        <td class="num">30점</td>
+      </tr>
+      <tr data-cat="속도위반" data-name="속도위반 60km/h 초과">
+        <td><a href="../fine/speed-60/">속도위반 60km/h 초과</a><br /><span class="src">속도위반</span></td>
+        <td class="num">130,000원</td>
+        <td class="num">120,000원</td>
+        <td class="num">60점</td>
+      </tr>
+      <tr data-cat="어린이보호구역" data-name="스쿨존 속도위반 20km/h 이하">
+        <td><a href="../fine/school-speed-20/">스쿨존 속도위반 20km/h 이하</a><br /><span class="src">어린이보호구역</span></td>
+        <td class="num">70,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">15점</td>
+      </tr>
+      <tr data-cat="어린이보호구역" data-name="스쿨존 속도위반 20~40km/h">
+        <td><a href="../fine/school-speed-20-40/">스쿨존 속도위반 20~40km/h</a><br /><span class="src">어린이보호구역</span></td>
+        <td class="num">100,000원</td>
+        <td class="num">90,000원</td>
+        <td class="num">30점</td>
+      </tr>
+      <tr data-cat="어린이보호구역" data-name="스쿨존 속도위반 40~60km/h">
+        <td><a href="../fine/school-speed-40-60/">스쿨존 속도위반 40~60km/h</a><br /><span class="src">어린이보호구역</span></td>
+        <td class="num">130,000원</td>
+        <td class="num">120,000원</td>
+        <td class="num">60점</td>
+      </tr>
+      <tr data-cat="어린이보호구역" data-name="스쿨존 속도위반 60km/h 초과">
+        <td><a href="../fine/school-speed-60/">스쿨존 속도위반 60km/h 초과</a><br /><span class="src">어린이보호구역</span></td>
+        <td class="num">160,000원</td>
+        <td class="num">150,000원</td>
+        <td class="num">120점</td>
+      </tr>
+      <tr data-cat="어린이보호구역" data-name="스쿨존 신호·지시 위반">
+        <td><a href="../fine/school-signal/">스쿨존 신호·지시 위반</a><br /><span class="src">어린이보호구역</span></td>
+        <td class="num">130,000원</td>
+        <td class="num">120,000원</td>
+        <td class="num">30점</td>
+      </tr>
+      <tr data-cat="어린이보호구역" data-name="스쿨존 주정차 위반">
+        <td><a href="../fine/parking-school/">스쿨존 주정차 위반</a><br /><span class="src">어린이보호구역</span></td>
+        <td class="num">120,000원</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr data-cat="신호·지시" data-name="신호·지시 위반">
+        <td><a href="../fine/signal/">신호·지시 위반</a><br /><span class="src">신호·지시</span></td>
+        <td class="num">70,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">15점</td>
+      </tr>
+      <tr data-cat="신호·지시" data-name="중앙선 침범">
+        <td><a href="../fine/center-line/">중앙선 침범</a><br /><span class="src">신호·지시</span></td>
+        <td class="num">90,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">30점</td>
+      </tr>
+      <tr data-cat="신호·지시" data-name="불법 유턴(지시 위반)">
+        <td><a href="../fine/illegal-uturn/">불법 유턴(지시 위반)</a><br /><span class="src">신호·지시</span></td>
+        <td class="num">70,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">15점</td>
+      </tr>
+      <tr data-cat="주정차" data-name="주정차 위반 (일반)">
+        <td><a href="../fine/parking/">주정차 위반 (일반)</a><br /><span class="src">주정차</span></td>
+        <td class="num">40,000원</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr data-cat="주정차" data-name="소방시설 5m 이내 주정차">
+        <td><a href="../fine/parking-fire/">소방시설 5m 이내 주정차</a><br /><span class="src">주정차</span></td>
+        <td class="num">80,000원</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr data-cat="운전 중 주의분산" data-name="운전 중 휴대전화 사용">
+        <td><a href="../fine/phone/">운전 중 휴대전화 사용</a><br /><span class="src">운전 중 주의분산</span></td>
+        <td class="num">-</td>
+        <td class="num">60,000원</td>
+        <td class="num">15점</td>
+      </tr>
+      <tr data-cat="운전 중 주의분산" data-name="운전 중 영상표시장치 시청·조작">
+        <td><a href="../fine/video/">운전 중 영상표시장치 시청·조작</a><br /><span class="src">운전 중 주의분산</span></td>
+        <td class="num">-</td>
+        <td class="num">60,000원</td>
+        <td class="num">15점</td>
+      </tr>
+      <tr data-cat="안전띠" data-name="운전자 안전띠 미착용">
+        <td><a href="../fine/seatbelt-driver/">운전자 안전띠 미착용</a><br /><span class="src">안전띠</span></td>
+        <td class="num">-</td>
+        <td class="num">30,000원</td>
+        <td class="num">0점</td>
+      </tr>
+      <tr data-cat="안전띠" data-name="동승자 안전띠 미착용">
+        <td><a href="../fine/seatbelt-passenger/">동승자 안전띠 미착용</a><br /><span class="src">안전띠</span></td>
+        <td class="num">30,000원</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr data-cat="안전띠" data-name="유아용 카시트 미사용">
+        <td><a href="../fine/child-seat/">유아용 카시트 미사용</a><br /><span class="src">안전띠</span></td>
+        <td class="num">60,000원</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr data-cat="차로·통행" data-name="끼어들기 위반">
+        <td><a href="../fine/cut-in/">끼어들기 위반</a><br /><span class="src">차로·통행</span></td>
+        <td class="num">-</td>
+        <td class="num">30,000원</td>
+        <td class="num">0점</td>
+      </tr>
+      <tr data-cat="차로·통행" data-name="지정차로 통행 위반">
+        <td><a href="../fine/lane/">지정차로 통행 위반</a><br /><span class="src">차로·통행</span></td>
+        <td class="num">-</td>
+        <td class="num">30,000원</td>
+        <td class="num">10점</td>
+      </tr>
+      <tr data-cat="차로·통행" data-name="고속도로 갓길 통행">
+        <td><a href="../fine/shoulder/">고속도로 갓길 통행</a><br /><span class="src">차로·통행</span></td>
+        <td class="num">90,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">30점</td>
+      </tr>
+      <tr data-cat="차로·통행" data-name="고속도로 버스전용차로 위반">
+        <td><a href="../fine/bus-lane-highway/">고속도로 버스전용차로 위반</a><br /><span class="src">차로·통행</span></td>
+        <td class="num">90,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">30점</td>
+      </tr>
+      <tr data-cat="차로·통행" data-name="일반도로 버스전용차로 위반">
+        <td><a href="../fine/bus-lane-city/">일반도로 버스전용차로 위반</a><br /><span class="src">차로·통행</span></td>
+        <td class="num">50,000원</td>
+        <td class="num">40,000원</td>
+        <td class="num">10점</td>
+      </tr>
+      <tr data-cat="차로·통행" data-name="교차로 통행방법 위반(꼬리물기 등)">
+        <td><a href="../fine/intersection/">교차로 통행방법 위반(꼬리물기 등)</a><br /><span class="src">차로·통행</span></td>
+        <td class="num">-</td>
+        <td class="num">40,000원</td>
+        <td class="num">0점</td>
+      </tr>
+      <tr data-cat="차로·통행" data-name="앞지르기 방법·금지 위반">
+        <td><a href="../fine/overtake/">앞지르기 방법·금지 위반</a><br /><span class="src">차로·통행</span></td>
+        <td class="num">-</td>
+        <td class="num">60,000원</td>
+        <td class="num">10점</td>
+      </tr>
+      <tr data-cat="안전운전" data-name="안전거리 미확보 (일반도로)">
+        <td><a href="../fine/distance/">안전거리 미확보 (일반도로)</a><br /><span class="src">안전운전</span></td>
+        <td class="num">-</td>
+        <td class="num">20,000원</td>
+        <td class="num">10점</td>
+      </tr>
+      <tr data-cat="안전운전" data-name="안전거리 미확보 (고속도로)">
+        <td><a href="../fine/distance-highway/">안전거리 미확보 (고속도로)</a><br /><span class="src">안전운전</span></td>
+        <td class="num">-</td>
+        <td class="num">50,000원</td>
+        <td class="num">10점</td>
+      </tr>
+      <tr data-cat="안전운전" data-name="방향지시등(깜빡이) 미점등">
+        <td><a href="../fine/turn-signal/">방향지시등(깜빡이) 미점등</a><br /><span class="src">안전운전</span></td>
+        <td class="num">-</td>
+        <td class="num">30,000원</td>
+        <td class="num">0점</td>
+      </tr>
+      <tr data-cat="안전운전" data-name="야간 등화 점등 불이행">
+        <td><a href="../fine/headlight/">야간 등화 점등 불이행</a><br /><span class="src">안전운전</span></td>
+        <td class="num">-</td>
+        <td class="num">20,000원</td>
+        <td class="num">0점</td>
+      </tr>
+      <tr data-cat="안전운전" data-name="고인 물 튀김 피해">
+        <td><a href="../fine/splash/">고인 물 튀김 피해</a><br /><span class="src">안전운전</span></td>
+        <td class="num">-</td>
+        <td class="num">20,000원</td>
+        <td class="num">0점</td>
+      </tr>
+      <tr data-cat="보행자 보호" data-name="횡단보도 보행자 보호의무 위반">
+        <td><a href="../fine/crosswalk/">횡단보도 보행자 보호의무 위반</a><br /><span class="src">보행자 보호</span></td>
+        <td class="num">70,000원</td>
+        <td class="num">60,000원</td>
+        <td class="num">10점</td>
+      </tr>
+      <tr data-cat="보행자 보호" data-name="어린이통학버스 특별보호 위반">
+        <td><a href="../fine/school-bus/">어린이통학버스 특별보호 위반</a><br /><span class="src">보행자 보호</span></td>
+        <td class="num">-</td>
+        <td class="num">90,000원</td>
+        <td class="num">30점</td>
+      </tr>
+      <tr data-cat="형사처벌" data-name="음주운전">
+        <td><a href="../fine/drunk/">음주운전</a><br /><span class="src">형사처벌</span></td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr data-cat="형사처벌" data-name="무면허 운전">
+        <td><a href="../fine/no-license/">무면허 운전</a><br /><span class="src">형사처벌</span></td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src" id="cnt"></p>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>과태료와 범칙금은 무엇이 다른가</h2>
+    <p>같은 위반이라도 <strong>어떻게 적발됐는지</strong>에 따라 처분이 갈립니다. 무인 단속 카메라에 찍히면 운전자가 누구인지 특정할 수 없으므로 차량 소유주에게 <strong>과태료</strong>가 부과되고 벌점은 없습니다. 반면 경찰관에게 현장에서 적발되면 운전자 본인에게 <strong>범칙금</strong>이 부과되고 <strong>벌점</strong>이 함께 매겨질 수 있습니다.</p>
+    <p>표를 보면 대체로 과태료가 범칙금보다 1만원 정도 비쌉니다. 그럼에도 많은 사람이 과태료를 택하는 이유는 벌점이 붙지 않아 보험료 할증과 면허 정지에서 자유롭기 때문입니다. 벌점은 1년간 40점 이상이면 면허 정지 대상이 됩니다.</p>
+    <h2>자진납부 감경</h2>
+    <p>과태료는 의견 제출 기한 안에 자진납부하면 질서위반행위규제법에 따라 <strong>20% 감경</strong>을 받을 수 있습니다. 반대로 납부 기한을 넘기면 가산금이 붙습니다. 고지서를 받았다면 기한부터 확인하는 것이 이득입니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li>검색창에 <strong>위반유형 키워드</strong>(신호, 속도, 주정차 등)를 넣으면 표가 즉시 걸러집니다.</li>
+      <li>카테고리 버튼으로 속도위반·어린이보호구역·주정차 등 묶음별로 볼 수 있습니다.</li>
+      <li>위반유형 이름을 누르면 해당 항목의 상세 설명 페이지로 이동합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 과태료와 범칙금 중 무엇을 내야 하나요?</p><p class="a">무인 단속으로 고지서를 받았다면 보통 과태료와 범칙금 중 선택할 수 있게 안내됩니다. 과태료는 금액이 조금 더 비싸지만 벌점이 없고, 범칙금은 싸지만 벌점이 부과되어 누적 시 면허 정지로 이어질 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 벌점은 언제 사라지나요?</p><p class="a">벌점은 처분 벌점으로 누적 관리되며 1년간 40점 이상이면 면허 정지 대상입니다. 위반 없이 1년이 지나면 소멸하는 등 관리 규정이 있으므로 경찰청 교통민원24에서 본인 누적 상태를 확인하는 것이 정확합니다.</p></div>
+    <div class="qa"><p class="q">Q. 스쿨존은 왜 금액이 두 배인가요?</p><p class="a">어린이보호구역에서는 오전 8시부터 오후 8시 사이 위반에 대해 가중 처분이 적용되기 때문입니다. 이 표의 어린이보호구역 항목은 가중된 금액입니다.</p></div>
+    <div class="qa"><p class="q">Q. 이 표의 금액이 제 고지서와 다릅니다.</p><p class="a">차종(승합·화물·이륜), 위반 시각, 자진납부 감경, 가산금 여부에 따라 달라집니다. 실제 부과액은 경찰청 교통민원24에서 본인 건으로 확인하세요.</p></div>
+    <h2>데이터 출처와 확인일</h2>
+    <p class="src"><a href="https://www.law.go.kr/법령/도로교통법시행령" target="_blank" rel="noopener">도로교통법 시행령 [별표 6]·[별표 8]</a> · <a href="https://www.law.go.kr/법령/도로교통법시행규칙" target="_blank" rel="noopener">도로교통법 시행규칙 [별표 28] (벌점)</a> · <a href="https://www.law.go.kr/법령/도로교통법" target="_blank" rel="noopener">도로교통법</a> · <a href="https://www.efine.go.kr" target="_blank" rel="noopener">경찰청 교통민원24(이파인) — 실제 단속·고지 조회</a><br />데이터 확인일: 2026-08-19</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 실제 부과 내역은 <a href="https://www.efine.go.kr" target="_blank" rel="noopener">경찰청 교통민원24</a>에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-driving-test/" target="_blank" rel="noopener"><span class="ic">📝</span>운전면허 필기 모의고사</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-insurance-rider/" target="_blank" rel="noopener"><span class="ic">🛡️</span>자동차보험 특약 점검</a>
+      <a class="rel" href="../car-tax/"><span class="ic">🧾</span>자동차세 계산기</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+const rows = Array.from(document.querySelectorAll('#ftbl tbody tr'));
+let cat = '';
+function apply() {
+  const q = $('q').value.trim();
+  let n = 0;
+  for (const tr of rows) {
+    const okC = !cat || tr.dataset.cat === cat;
+    const okQ = !q || tr.dataset.name.indexOf(q) >= 0 || tr.dataset.cat.indexOf(q) >= 0;
+    const show = okC && okQ;
+    tr.hidden = !show;
+    if (show) n++;
+  }
+  $('cnt').textContent = '표시 중: ' + n + '건 / 전체 ' + rows.length + '건';
+}
+$('q').addEventListener('input', apply);
+for (const b of document.querySelectorAll('#cats button')) {
+  b.addEventListener('click', function () {
+    cat = this.dataset.c;
+    for (const x of document.querySelectorAll('#cats button')) x.setAttribute('aria-pressed', String(x === this));
+    apply();
+  });
+}
+apply();
+C.showAd();
+</script>
+</body>
+</html>

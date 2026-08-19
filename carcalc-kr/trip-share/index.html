@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>여행 기름값 N빵 계산기 — 기름값·톨비·주차비를 인원수로</title>
+<meta name="description" content="거리와 연비, 유가, 통행료, 기타 비용을 넣으면 왕복 총액과 1인당 정산 금액을 계산합니다. 운전자 몫을 빼고 나누는 옵션과 정산 문구 복사 기능을 제공합니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/trip-share/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="여행 기름값 N빵 계산기" />
+<meta property="og:description" content="거리와 연비, 유가, 통행료, 기타 비용을 넣으면 왕복 총액과 1인당 정산 금액을 계산합니다. 운전자 몫을 빼고 나누는 옵션과 정산 문구 복사 기능을 제공합니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/trip-share/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"여행 기름값 N빵","description":"거리와 연비, 유가, 통행료, 기타 비용을 넣으면 왕복 총액과 1인당 정산 금액을 계산합니다. 운전자 몫을 빼고 나누는 옵션과 정산 문구 복사 기능을 제공합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/trip-share/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"운전자도 기름값을 내야 하나요?","acceptedAnswer":{"@type":"Answer","text":"정해진 규칙은 없습니다. 차량 감가·보험·정비 부담과 운전 노동을 고려해 운전자를 제외하는 경우가 많습니다. 이 계산기는 두 방식 모두 지원하니 미리 합의한 쪽으로 계산하세요."}},{"@type":"Question","name":"왜 100원 단위로 올리나요?","acceptedAnswer":{"@type":"Answer","text":"10원 단위까지 나누면 송금하기 번거롭기 때문입니다. 올림 처리로 총액보다 조금 더 걷히는 금액은 보통 간식비 등으로 처리합니다."}},{"@type":"Question","name":"연비를 모르면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"국산 준중형 가솔린은 대체로 11~13km/L, 중형 SUV는 9~11km/L 근처입니다. 정확한 값은 연비 계산기로 실측 평균을 구해두면 다음부터 편합니다."}},{"@type":"Question","name":"전기차 여행도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"연비 자리에 전비(km/kWh), 유가 자리에 충전 단가(원/kWh)를 넣으면 그대로 계산됩니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"여행 기름값 N빵","item":"https://carcalc-kr.vercel.app/trip-share/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">여행 기름값 N빵</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧮</div>
+    <h1>여행 기름값 N빵 계산기</h1>
+    <p class="lead">"기름값 얼마씩 보내면 돼?" — <strong>거리·연비·유가·톨비</strong>를 넣으면 1인당 금액과 정산 문구까지 나옵니다.</p>
+  </div>
+
+  <div class="card">
+    <div class="row2">
+      <div class="field"><label for="km">편도 거리 <span class="hint">km</span></label><input type="number" id="km" inputmode="decimal" step="0.1" value="220" /></div>
+      <div class="field"><label for="kpl">연비 <span class="hint">km/L</span></label><input type="number" id="kpl" inputmode="decimal" step="0.1" value="11" /></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="price">유가 <span class="hint">원/L</span></label><input type="number" id="price" inputmode="numeric" value="1700" /></div>
+      <div class="field"><label for="toll">편도 통행료 <span class="hint">원</span></label><input type="number" id="toll" inputmode="numeric" value="11000" /></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="etc">기타 비용 <span class="hint">원 · 주차비 등</span></label><input type="number" id="etc" inputmode="numeric" value="10000" /></div>
+      <div class="field"><label for="n">인원 <span class="hint">명 (운전자 포함)</span></label><input type="number" id="n" inputmode="numeric" min="1" value="4" /></div>
+    </div>
+    <div class="field"><label class="chk"><input type="checkbox" id="rt" checked /> 왕복으로 계산</label></div>
+    <div class="field"><label class="chk"><input type="checkbox" id="free" /> 운전자는 정산에서 제외 (나머지가 나눠 부담)</label></div>
+    <button class="btn full" id="go" type="button">N빵 계산하기</button>
+  </div>
+  <div class="result" id="out" hidden></div>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>기름값 정산, 왜 매번 애매한가</h2>
+    <p>주유소에서 결제한 금액 전부가 이번 여행에 쓴 기름값은 아닙니다. 가득 채운 기름 중 일부는 다음 주행에 쓰이기 때문입니다. 그래서 정확한 정산은 <strong>이번 여행에서 실제로 소모한 연료량</strong>을 기준으로 해야 합니다. 이 계산기는 주행거리를 연비로 나눠 소모 연료량을 구하고 여기에 유가를 곱하는 방식으로 계산합니다.</p>
+    <p>통행료와 주차비까지 합치고 인원수로 나누면 정산액이 나옵니다. 운전자는 차량 감가와 운전 노동을 부담하므로 정산에서 빼는 문화도 흔합니다. 그 경우도 체크박스 하나로 계산됩니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li>내비게이션 기준 <strong>편도 거리</strong>를 넣고 왕복 여부를 체크합니다.</li>
+      <li><strong>연비</strong>는 실측 평균이 정확합니다. 짐과 인원이 많으면 실제 연비는 조금 떨어집니다.</li>
+      <li>통행료·주차비 등을 넣고 인원수를 지정하면 1인당 금액이 100원 단위로 올림되어 나옵니다.</li>
+      <li><strong>정산 문구 복사</strong>를 눌러 단체 채팅방에 그대로 붙여넣으세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 운전자도 기름값을 내야 하나요?</p><p class="a">정해진 규칙은 없습니다. 차량 감가·보험·정비 부담과 운전 노동을 고려해 운전자를 제외하는 경우가 많습니다. 이 계산기는 두 방식 모두 지원하니 미리 합의한 쪽으로 계산하세요.</p></div>
+    <div class="qa"><p class="q">Q. 왜 100원 단위로 올리나요?</p><p class="a">10원 단위까지 나누면 송금하기 번거롭기 때문입니다. 올림 처리로 총액보다 조금 더 걷히는 금액은 보통 간식비 등으로 처리합니다.</p></div>
+    <div class="qa"><p class="q">Q. 연비를 모르면 어떻게 하나요?</p><p class="a">국산 준중형 가솔린은 대체로 11~13km/L, 중형 SUV는 9~11km/L 근처입니다. 정확한 값은 연비 계산기로 실측 평균을 구해두면 다음부터 편합니다.</p></div>
+    <div class="qa"><p class="q">Q. 전기차 여행도 계산되나요?</p><p class="a">연비 자리에 전비(km/kWh), 유가 자리에 충전 단가(원/kWh)를 넣으면 그대로 계산됩니다.</p></div>
+    <h2>데이터 출처와 확인일</h2>
+    <p class="src"><a href="https://www.opinet.co.kr" target="_blank" rel="noopener">오피넷 — 실시간 유가 조회</a> · <a href="https://www.ex.co.kr" target="_blank" rel="noopener">한국도로공사 통행료 조회</a><br />데이터 확인일: 2026-08-19</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 실제 연료 소모는 짐 무게·정체·에어컨 사용에 따라 달라집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../fuel-cost/"><span class="ic">🛣️</span>유류비 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-yeonbigak/" target="_blank" rel="noopener"><span class="ic">⛽</span>연비각 — 연비 기록장</a>
+      <a class="rel" href="../fuel-economy/"><span class="ic">⛽</span>연비 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-maintenance-cycle/" target="_blank" rel="noopener"><span class="ic">🔩</span>차량 소모품 교체주기 가이드</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { fuelCost } from "../lib/calc.mjs";
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+let msg = '';
+function run() {
+  const km = C.num($('km')), kpl = C.num($('kpl')), price = C.num($('price'));
+  const toll = C.num($('toll')), etc = C.num($('etc'));
+  const n = Math.max(1, Math.round(C.num($('n'))));
+  const rt = $('rt').checked, free = $('free').checked;
+  if (km <= 0 || kpl <= 0 || price <= 0) { alert('거리·연비·유가를 입력하세요.'); return; }
+  const f = fuelCost({ km: km, kmPerL: kpl, pricePerL: price, roundTrip: rt, toll: toll });
+  const total = f.total + etc;
+  const payers = free ? Math.max(1, n - 1) : n;
+  const each = Math.ceil(total / payers / 100) * 100;
+  msg = '[여행 정산] ' + (rt ? '왕복 ' : '편도 ') + C.fmt(f.dist) + 'km\n' +
+    '· 기름값 ' + C.won(f.fuel) + ' (' + f.liters.toFixed(1) + 'L × ' + C.fmt(price) + '원)\n' +
+    (f.toll > 0 ? '· 통행료 ' + C.won(f.toll) + '\n' : '') +
+    (etc > 0 ? '· 기타 ' + C.won(etc) + '\n' : '') +
+    '· 합계 ' + C.won(total) + ' ÷ ' + payers + '명 = 1인당 ' + C.won(each) + (free ? ' (운전자 제외)' : '');
+  C.result('out', {
+    big: C.won(each) + ' / 1인',
+    sub: '총 ' + C.won(total) + ' ÷ ' + payers + '명 (100원 단위 올림)',
+    rows: [
+      ['총 주행거리', C.fmt(f.dist) + ' km'],
+      ['기름값', C.won(f.fuel) + ' — ' + f.liters.toFixed(1) + 'L'],
+      f.toll > 0 ? ['통행료', C.won(f.toll)] : null,
+      etc > 0 ? ['기타 비용', C.won(etc)] : null,
+      ['합계', C.won(total)],
+      ['1인당 정산액', C.won(each), 'total'],
+    ],
+    foot: C.steps([
+      '기름값 = ' + C.fmt(f.dist) + 'km ÷ ' + kpl + 'km/L × ' + C.fmt(price) + '원 = ' + C.won(f.fuel),
+      '합계 = 기름값 + 통행료 + 기타 = ' + C.won(total),
+      '1인당 = ' + C.won(total) + ' ÷ ' + payers + '명 = ' + C.won(total / payers) + ' → 100원 단위 올림 ' + C.won(each),
+      free ? '운전자를 제외해 ' + payers + '명이 나눠 부담합니다.' : '운전자를 포함한 ' + payers + '명이 균등 부담합니다.',
+    ]) + '<div class="btnrow"><button class="btn ghost" id="copy" type="button">정산 문구 복사</button></div>',
+  });
+  document.getElementById('copy').addEventListener('click', function () { C.copyText(this, msg); });
+}
+$('go').addEventListener('click', run);
+</script>
+</body>
+</html>

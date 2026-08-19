@@ -54,5 +54,47 @@ window.CC = (function () {
     }
   }
 
-  return { $, $$, fmt, won, esc, num, showAd, downloadCsv, lsGet, lsSet, copyText };
+
+  // 결과 박스 렌더 (모든 계산기 공통) — 결과 표시 후에만 광고 노출
+  function result(elId, o) {
+    const el = typeof elId === "string" ? document.getElementById(elId) : elId;
+    if (!el) return null;
+    let h = "";
+    if (o.big) h += '<p class="big">' + o.big + "</p>";
+    if (o.sub) h += '<p class="sub">' + o.sub + "</p>";
+    const rows = (o.rows || []).filter(Boolean);
+    if (rows.length) {
+      h += '<table class="kv"><tbody>';
+      for (const r of rows) {
+        h += "<tr" + (r[2] === "total" ? ' class="total"' : "") + "><th>" + r[0] + "</th><td>" + r[1] + "</td></tr>";
+      }
+      h += "</tbody></table>";
+    }
+    if (o.foot) h += o.foot;
+    el.innerHTML = h;
+    el.hidden = false;
+    showAd();
+    return el;
+  }
+
+  // 산출 과정(산식) 블록
+  function steps(lines) {
+    return '<div class="steps"><p class="steps-t">산출 과정</p><ol>' +
+      lines.map((l) => "<li>" + l + "</li>").join("") + "</ol></div>";
+  }
+
+  // 스크롤 가능한 표
+  function tbl(headers, rows) {
+    let h = '<div class="tblwrap"><table class="tbl"><thead><tr>';
+    for (const t of headers) h += "<th>" + t + "</th>";
+    h += "</tr></thead><tbody>";
+    for (const r of rows) {
+      h += "<tr>";
+      for (let i = 0; i < r.length; i++) h += "<td" + (i > 0 ? ' class="num"' : "") + ">" + r[i] + "</td>";
+      h += "</tr>";
+    }
+    return h + "</tbody></table></div>";
+  }
+
+  return { $, $$, fmt, won, esc, num, showAd, downloadCsv, lsGet, lsSet, copyText, result, steps, tbl };
 })();
