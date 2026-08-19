@@ -21,15 +21,15 @@
 | D2-6 | stub 프로덕션 감시 | `IDENTITY_VERIFIER=stub` + `NODE_ENV=production` 이면 **경고 로그 1회** (기동 차단은 안 함 — 심사 기간 중 의도적 사용 가능성). 화이트리스트 바이패스 사용은 audit_logs `meta.bypass=true` 로 전량 추적 | B3 오픈이슈 6 (심사 바이패스 보안 통제) |
 | D2-7 | 회원가입 직후 스텝 | `signUpWithAge` 성공(세션 발급) 시 `region_code` 저장 + `onboarding_step='phone'` 으로 전진 — 연령 스텝은 가입 폼에 통합돼 있으므로 별도 age 저장 액션 없음 | 12_flows §2.1 (age 는 가입 직후 첫 화면) |
 
-### 미결 — 오케스트레이터/D1 에스컬레이션
+### 미결 → 확정 이력
 
-1. **CI 중복(1인 1계정) 미구현**: A5 §1.1 Lv2 는 "CI 중복 시 기존 계정 안내"를 요구하지만 현재 스키마에 CI 해시 저장처가 없다(`blocked_hashes` 는 제재 전용). `profiles.ci_hash` (unique, service 전용 컬럼) 또는 `identity_verifications` 테이블 추가가 필요 — **D1 후속 마이그레이션 결정 요청**. 추가 전까지 Lv2 승급은 CI 중복을 검사하지 않는다.
-2. **휴대폰 OTP 발송/검증 자체가 미구현**: Supabase Auth phone provider 또는 SMS 어댑터 선택이 필요(번호당 1계정 강제 포함). `promotePhoneVerified(userId, phone)` 는 "OTP 검증 성공 후" 호출되는 승급 함수만 제공 — OTP 플로우는 E1+오케스트레이터 결정 후 `app/api/auth/phone/**` 로 추가 예정.
+1. **CI 중복(1인 1계정) — 확정·구현 완료**: 오케스트레이터가 `identity_hashes` 테이블 신설(마이그레이션 **00007** — `profile_id pk → profiles cascade`, `ci_hash` unique, RLS enable + 정책 없음 + revoke all = **service role 전용**). `promoteIdentityVerified` 가 blocked_hashes 통과 후 `ci_hash` 중복을 조회해 **타 프로필에 이미 매핑된 CI 면 `CI_ALREADY_REGISTERED`(HTTP 409) 로 승급 거부**(audit `verify.ci.duplicate` 기록), 동일 프로필 재인증은 통과·upsert. `uq_identity_hashes_ci`(23505) 가 동시성 레이스의 최후 방어선.
+2. **휴대폰 OTP 발송/검증 자체가 미구현 (미결 유지)**: Supabase Auth phone provider 또는 SMS 어댑터 선택이 필요(번호당 1계정 강제 포함). `promotePhoneVerified(userId, phone)` 는 "OTP 검증 성공 후" 호출되는 승급 함수만 제공 — OTP 플로우는 E1+오케스트레이터 결정 후 `app/api/auth/phone/**` 로 추가 예정.
 
 ### middleware.ts 변경 요청 (오케스트레이터 소유 — D2 는 수정하지 않았음)
 
-1. `PUBLIC_PATHS` 에 **`/signup` 누락** — 현재 비로그인 가입 페이지가 `/login` 으로 리다이렉트된다. 추가 필요.
-2. `/api/**` 경로는 비로그인 시 `/login` 으로 **리다이렉트하지 말고 401 JSON** 을 반환하도록 분기 요청 (fetch 호출이 HTML 을 받게 됨). `/api/auth/verify-identity` 는 자체적으로 401 을 내지만 미들웨어가 먼저 가로챈다.
+1. ✅ **반영 완료(오케스트레이터)** — `PUBLIC_PATHS` 에 `/signup` 추가됨.
+2. ✅ **반영 완료(오케스트레이터)** — `/api/**` 는 비로그인 시 `/login` 리다이렉트 대신 401 JSON 반환.
 3. `/onboarding/age` 만 PUBLIC 인 현재 구성은 유지 가능 — 가입 폼이 연령을 포함하므로 `/onboarding/age` 화면은 사실상 사용되지 않을 수 있음(E1 판단).
 
 ### env 추가분 (.env.example 은 오케스트레이터 소유 — 추가 요청)
@@ -47,7 +47,7 @@ REVIEW_BYPASS_EMAILS=         # 심사용 바이패스 이메일 쉼표 구분 (
 stateDiagram-v2
     [*] --> Lv0 : signUpWithAge()\n만19세 이중검증 + handle_new_user\n(미달 = 가입 트랜잭션 롤백)
     Lv0 --> Lv1 : promotePhoneVerified()\nSMS OTP 성공 · phone 해시 블랙리스트 통과
-    Lv1 --> Lv2 : promoteIdentityVerified()\nCI 확보 · ci 해시 블랙리스트 통과\n· PASS 생년월일 덮어쓰기\n→ 보류 매칭 자동 성립(D1-9 트리거)
+    Lv1 --> Lv2 : promoteIdentityVerified()\nCI 확보 · ci 블랙리스트 통과\n· 1인 1계정(identity_hashes, 00007)\n· PASS 생년월일 덮어쓰기\n→ 보류 매칭 자동 성립(D1-9 트리거)
     Lv2 --> Lv3 : 사진 검수 승인 (★D8 소관)
     Lv3 --> Lv2 : 사진 전체 반려/삭제 강등 (★D8 소관)
 
@@ -114,7 +114,7 @@ interface IdentityVerifier {
 | `GET /api/auth/verify-identity?token=…` | 브라우저 이동 | stub/E2E 콜백 — 처리 후 `/verify?status=success\|<code>` 복귀 |
 | `requireUser` `requireOnboardingDone` `requireVerifyLevel(n)` `requireAdmin` (`lib/auth/guards.ts`) | 서버 컴포넌트(레이아웃) | 3층 가드의 2층. `(main)/layout`→`requireOnboardingDone`, chat 계열→`requireVerifyLevel(2)`, `(admin)/layout`→`requireAdmin` |
 
-confirm 에러 코드: `VERIFY_FAILED`(400) `CI_BLOCKED`/`UNDERAGE`/`PHONE_BLOCKED`(403) `VERIFIER_NOT_CONFIGURED`(503).
+confirm 에러 코드: `VERIFY_FAILED`(400) `CI_BLOCKED`/`UNDERAGE`/`PHONE_BLOCKED`(403) `CI_ALREADY_REGISTERED`(409 — 기존 계정 로그인 안내, 12_flows §2.2 와 동일하게 계정 존재 사실 외 정보 비노출) `VERIFIER_NOT_CONFIGURED`(503).
 
 ## 5. 스토리지 경로 규약 (00006_storage.sql)
 

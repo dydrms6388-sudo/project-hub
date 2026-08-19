@@ -60,7 +60,8 @@ async function runConfirm(
   });
 
   if (!promotion.ok) {
-    const status = promotion.code === "DB_ERROR" ? 500 : 403;
+    const status =
+      promotion.code === "DB_ERROR" ? 500 : promotion.code === "CI_ALREADY_REGISTERED" ? 409 : 403;
     return { status, body: { ok: false, code: promotion.code, message: promotion.message } };
   }
   return { status: 200, body: { ok: true, verifyLevel: promotion.verifyLevel } };

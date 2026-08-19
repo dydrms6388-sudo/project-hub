@@ -26,6 +26,7 @@ export type ActionErrorCode =
   | "VERIFY_LEVEL_REQUIRED" // dating 모드 등 Lv 미달
   | "PHONE_BLOCKED" // 영구정지 재가입 차단 (blocked_hashes 히트)
   | "CI_BLOCKED" // 영구정지 재가입 차단 (blocked_hashes 히트)
+  | "CI_ALREADY_REGISTERED" // 1인 1계정 — CI 가 다른 프로필에 이미 등록됨 (identity_hashes, 00007)
   | "VERIFIER_NOT_CONFIGURED" // PortOne 실키 미구성 (Phase 4 전)
   | "VERIFY_FAILED" // 본인인증 실패/거부
   | "DB_ERROR";
