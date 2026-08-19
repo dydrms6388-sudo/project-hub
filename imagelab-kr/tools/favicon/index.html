@@ -171,11 +171,13 @@
     return new Uint8Array(buf);
   }
 
+  /* 사용자 사이트 루트 기준 경로 (이 사이트의 리소스 링크가 아니라 안내용 코드 문자열) */
+  var R = '/';
   var SNIPPET = [
-    '<link rel="icon" href="/favicon.ico" sizes="48x48">',
-    '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">',
-    '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">',
-    '<link rel="apple-touch-icon" href="/apple-touch-icon.png">'
+    '<link rel="icon" href=' + JSON.stringify(R + 'favicon.ico') + ' sizes="48x48">',
+    '<link rel="icon" type="image/png" sizes="32x32" href=' + JSON.stringify(R + 'favicon-32x32.png') + '>',
+    '<link rel="icon" type="image/png" sizes="16x16" href=' + JSON.stringify(R + 'favicon-16x16.png') + '>',
+    '<link rel="apple-touch-icon" href=' + JSON.stringify(R + 'apple-touch-icon.png') + '>'
   ].join('\n');
   $('snippet').textContent = SNIPPET;
   $('copySnip').onclick = function () {

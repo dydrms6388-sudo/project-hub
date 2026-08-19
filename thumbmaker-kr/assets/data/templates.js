@@ -197,5 +197,39 @@ window.TM_TEMPLATES = [
       { type: 'text', text: '매주 수·토 업로드', rx: 0.5, ry: 0.56, size: 0.045, font: 'Pretendard', weight: 700, color: '#cbd5e1' },
       { type: 'shape', shape: 'line', rx: 0.5, ry: 0.51, rw: 0.14, rh: 0.004, fill: '#f43f5e' }
     ]
+  },
+  {
+    id: 'text-gradient-fill', name: '두 줄 강조 글씨 (투명)', cat: ['text-image', 'sticker'],
+    bg: { type: 'transparent' },
+    objects: [
+      { type: 'text', text: '이거\n실화냐', rx: 0.5, ry: 0.5, size: 0.26, font: 'Black Han Sans', color: '#fde047', stroke: '#0f172a', strokeW: 0.028, lineHeight: 1.05, shadow: true }
+    ]
+  },
+  {
+    id: 'text-handwrite-sign', name: '손글씨 서명 (투명)', cat: ['text-image', 'profile'],
+    bg: { type: 'transparent' },
+    objects: [
+      { type: 'text', text: '오늘도 감사합니다', rx: 0.5, ry: 0.44, size: 0.16, font: 'Nanum Pen Script', color: '#1e293b', rot: -4 },
+      { type: 'shape', shape: 'line', rx: 0.5, ry: 0.62, rw: 0.5, rh: 0.01, fill: '#e11d48', rot: -4 }
+    ]
+  },
+  {
+    id: 'meme-reaction-box', name: '리액션 박스 짤', cat: ['meme', 'instagram'],
+    bg: { type: 'solid', color: '#fafaf9' },
+    objects: [
+      { type: 'shape', shape: 'rect', rx: 0.5, ry: 0.3, rw: 0.84, rh: 0.3, fill: '#ffffff', stroke: '#111827', strokeW: 0.01, radius: 0.04 },
+      { type: 'text', text: '나: 딱 10분만 볼게', rx: 0.5, ry: 0.3, size: 0.062, font: 'Pretendard', weight: 800, color: '#111827', memeId: 'meme-top' },
+      { type: 'emoji', char: '🤯', rx: 0.5, ry: 0.6, size: 0.24 },
+      { type: 'text', text: '3시간 후...', rx: 0.5, ry: 0.87, size: 0.085, font: 'Do Hyeon', color: '#e11d48', memeId: 'meme-bottom' }
+    ]
+  },
+  {
+    id: 'sticker-speech', name: '말풍선 스티커 (투명)', cat: ['sticker', 'text-image', 'meme'],
+    bg: { type: 'transparent' },
+    objects: [
+      { type: 'shape', shape: 'rect', rx: 0.5, ry: 0.44, rw: 0.9, rh: 0.5, fill: '#ffffff', stroke: '#111827', strokeW: 0.018, radius: 0.12 },
+      { type: 'shape', shape: 'rect', rx: 0.36, ry: 0.72, rw: 0.16, rh: 0.16, fill: '#ffffff', stroke: '#111827', strokeW: 0.018, rot: 45 },
+      { type: 'text', text: '좋아요!', rx: 0.5, ry: 0.43, size: 0.15, font: 'Jua', color: '#111827' }
+    ]
   }
 ];
