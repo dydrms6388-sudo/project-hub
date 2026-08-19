@@ -2,9 +2,10 @@
 // 실행: node billcalc-kr/tests/run.mjs
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
+import { Script } from "node:vm";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { calcBill, calcDelta, kwhOf } from "../lib/elec.mjs";
+import { calcBill, calcDelta, kwhOf, naiveDelta, calcSaving } from "../lib/elec.mjs";
 import { m3ToKwh, kwhToM3, m3ToMj, mjToM3, mjToKwh, kwhToMj, calcGasBill } from "../lib/gas.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -218,6 +219,143 @@ t("광고: 계산기 페이지에 adsbygoogle 유닛 1개(결과 하단)만 존�
     const html = readFileSync(f, "utf8");
     const units = (html.match(/<ins class="adsbygoogle"/g) || []).length;
     assert.ok(units <= 1, `${f}: 광고 유닛 ${units}개 (최대 1)`);
+  }
+});
+
+
+/* ── 2-b. 누진 이동 시 "단순 곱셈"보다 실제 증가액이 큰가 ───── */
+t("에어컨: 1→2단계 이동 시 단순 곱셈보다 실제 증가액이 큼 (180+100kWh)", () => {
+  const opts = { month: 5, voltage: "low" };
+  const d = calcDelta(180, 100, opts);
+  const n = naiveDelta(180, 100, opts);
+  assert.equal(n.tier, 1);
+  assert.equal(n.perKwh, 134);        // 120.0 + 9 + 5
+  assert.equal(n.amount, 15100);      // 13,400 + 1,340 + 360
+  assert.equal(d.delta, 24410);
+  assert.ok(d.delta > n.amount, "구간 이동 시 실제 증가액 > 단순 곱셈");
+  assert.ok(d.delta - n.amount > 9000, "차액 확인: " + (d.delta - n.amount));
+});
+
+t("에어컨: 2→3단계 이동 시 단순 곱셈보다 큼 (하계 400+100kWh)", () => {
+  const opts = { month: 7, voltage: "low" };
+  const d = calcDelta(400, 100, opts);
+  const n = naiveDelta(400, 100, opts);
+  assert.equal(n.tier, 2);
+  assert.equal(n.perKwh, 228.6);      // 214.6 + 9 + 5
+  assert.equal(n.amount, 25756);      // 22,860 + 2,286 + 610
+  assert.equal(d.delta, 37420);
+  assert.ok(d.delta > n.amount);
+});
+
+t("에어컨: 기타계절 380+100kWh(2→3단계) 단순 곱셈 대비 초과", () => {
+  const opts = { month: 9, voltage: "low" };
+  const d = calcDelta(380, 100, opts);
+  const n = naiveDelta(380, 100, opts);
+  assert.equal(d.before.tier, 2);
+  assert.equal(d.after.tier, 3);
+  assert.equal(d.tierMoved, true);
+  assert.ok(d.delta > n.amount, `${d.delta} > ${n.amount}`);
+  // 고압 계약에서도 동일한 성질이 유지되어야 함
+  const h = { month: 9, voltage: "high" };
+  assert.ok(calcDelta(380, 100, h).delta > naiveDelta(380, 100, h).amount);
+});
+
+t("절약: 사용량을 줄이면 누진 하향 이동으로 절감액이 단가×kWh보다 큼", () => {
+  const opts = { month: 10, voltage: "low" };
+  const s = calcSaving(410, 20, opts);   // 3단계 → 2단계
+  assert.equal(s.before.tier, 3);
+  assert.equal(s.after.tier, 2);
+  assert.equal(s.tierMoved, true);
+  assert.ok(s.saving > 20 * 307.3 * 1.1, "3단계 단가 단순 곱셈보다 절감액이 커야 함: " + s.saving);
+  const none = calcSaving(300, 20, opts); // 구간 유지
+  assert.equal(none.tierMoved, false);
+  assert.ok(none.saving < s.saving);
+});
+
+/* ── 7. 생성물 구조 검사 ────────────────────────────────────── */
+const TOOL_SLUGS = ["electric-bill", "ac-cost", "appliance-cost", "standby-power", "heating-cost",
+  "gas-unit", "solar-home", "ev-charging", "bill-reader", "save-simulator"];
+
+t(`페이지 생성: 도구 10종 + 허브 + 가전 롱테일 + 정책 (총 ${files.length})`, () => {
+  for (const s of TOOL_SLUGS) assert.ok(existsSync(join(ROOT, s, "index.html")), "누락: " + s);
+  assert.ok(existsSync(join(ROOT, "index.html")), "허브 index.html 누락");
+  assert.ok(existsSync(join(ROOT, "appliance", "index.html")), "가전 목록 누락");
+  assert.ok(existsSync(join(ROOT, "privacy.html")) && existsSync(join(ROOT, "terms.html")));
+  assert.ok(existsSync(join(ROOT, "robots.txt")));
+  const longtail = readdirSync(join(ROOT, "appliance")).filter((n) => statSync(join(ROOT, "appliance", n)).isDirectory());
+  assert.ok(longtail.length >= 50, "가전 롱테일 페이지 수: " + longtail.length);
+  assert.equal(files.length, 1 + TOOL_SLUGS.length + 1 + longtail.length + 2);
+});
+
+t("SEO: 페이지별 고유 title/description + JSON-LD 3종", () => {
+  const titles = new Set(), descs = new Set();
+  for (const f of files) {
+    const html = readFileSync(f, "utf8");
+    const ti = html.match(/<title>([^<]+)<\/title>/)[1];
+    const de = html.match(/<meta name="description" content="([^"]+)"/)[1];
+    assert.ok(!titles.has(ti), "중복 title: " + ti);
+    assert.ok(!descs.has(de), "중복 description: " + de);
+    titles.add(ti); descs.add(de);
+    assert.ok(html.includes('"@type":"BreadcrumbList"'), f + ": BreadcrumbList 없음");
+    const isPolicy = f.endsWith("privacy.html") || f.endsWith("terms.html");
+    if (!isPolicy) {
+      assert.ok(html.includes('"@type":"SoftwareApplication"'), f + ": SoftwareApplication 없음");
+      assert.ok(html.includes('"@type":"FAQPage"'), f + ": FAQPage 없음");
+    }
+    assert.ok(html.includes('rel="canonical" href="https://billcalc-kr.vercel.app/'), f + ": canonical 없음");
+  }
+});
+
+t("요금 기준일·출처 표기 + TomatoEggCat 크로스링크", () => {
+  for (const s of TOOL_SLUGS) {
+    const html = readFileSync(join(ROOT, s, "index.html"), "utf8");
+    const hasBasis = html.includes("2023년 5월 16일 개정 기준") || html.includes("지역 도시가스사가 각각 고시");
+    assert.ok(hasBasis, s + ": 요금표 기준일 표기 없음");
+    assert.ok(html.includes("cyber.kepco.co.kr") || html.includes("citygas.or.kr"), s + ": 출처 URL 없음");
+    assert.ok(html.includes("https://tomatoeggcat.com/electric-bill-calc/"), s + ": 크로스링크 누락(electric-bill-calc)");
+    assert.ok(html.includes("https://tomatoeggcat.com/pyeong-electric/"), s + ": 크로스링크 누락(pyeong-electric)");
+  }
+});
+
+t("광고: 입력 화면 노출 금지(기본 hidden) + head 로더 존재", () => {
+  for (const f of files) {
+    const html = readFileSync(f, "utf8");
+    if (!html.includes('class="adsbygoogle"')) continue;
+    assert.ok(/<div class="ad-wrap" id="adWrap" hidden>/.test(html), f + ": 광고 컨테이너가 기본 노출 상태");
+    assert.ok(html.includes('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106'), f + ": head 로더 없음");
+    assert.ok(html.includes('data-ad-client="ca-pub-5567719201265106"'), f + ": ad client 불일치");
+  }
+});
+
+t("인라인 모듈 스크립트 문법 검사", async () => {
+  for (const f of files) {
+    const html = readFileSync(f, "utf8");
+    for (const m of html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)) {
+      const code = m[1].replace(/^import [^\n]*;$/gm, "");
+      try { new Script(code, { filename: f }); }
+      catch (e) { assert.fail(f + " 스크립트 문법 오류: " + e.message); }
+    }
+  }
+});
+
+t("결과: 전기요금 계산 페이지는 항목별 산출 표(billTableHtml)를 출력", () => {
+  for (const f of files) {
+    const html = readFileSync(f, "utf8");
+    if (!/lib\/elec\.mjs/.test(html)) continue;
+    assert.ok(html.includes("billTableHtml("), f + ": 항목별 산출 표 미출력");
+  }
+  // 표는 런타임 생성이므로 공용 헬퍼(assets/app.mjs)에서 항목 존재를 검증
+  const helper = readFileSync(join(ROOT, "assets", "app.mjs"), "utf8");
+  for (const item of ["기본요금", "전력량요금", "기후환경요금", "연료비조정요금", "부가가치세", "전력산업기반기금", "전기요금계"]) {
+    assert.ok(helper.includes(item), "billTableHtml 항목 누락: " + item);
+  }
+});
+
+t("JSON-LD 파싱 가능 (전 페이지)", () => {
+  for (const f of files) {
+    const m = readFileSync(f, "utf8").match(/<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/);
+    assert.ok(m, f + ": JSON-LD 블록 없음");
+    JSON.parse(m[1]);
   }
 });
 

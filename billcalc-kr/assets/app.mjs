@@ -73,3 +73,66 @@ export const num = (el, dflt = 0) => {
   const v = parseFloat(String(el.value).replace(/,/g, ""));
   return Number.isFinite(v) ? v : dflt;
 };
+
+/** "확인 필요" 배지 */
+export const warnBadge = (t = "확인 필요") => `<span class="badge warn">${t}</span>`;
+
+/** 증가액(누진 구간 이동) 비교 테이블 — ac-cost / appliance-cost 공용 */
+export function deltaTableHtml(d, naive, label = "추가 기기") {
+  const moved = d.tierMoved
+    ? `<div class="alert">⚠ 누진 <strong>${d.before.tier}단계 → ${d.after.tier}단계</strong>로 올라갔습니다. 기본요금과 단가가 함께 뛰기 때문에 "사용량 × 단가"보다 실제 증가액이 큽니다.</div>`
+    : `<div class="note">누진 단계는 ${d.before.tier}단계로 유지됩니다.</div>`;
+  const gap = naive ? d.delta - naive.amount : 0;
+  const naiveRow = naive
+    ? `<tr><td>단순 곱셈 추정 <span class="mut">(${d.addKwh.toFixed(1)}kWh × ${naive.perKwh.toFixed(1)}원, ${naive.tier}단계 단가)</span></td><td>${won(naive.amount)}</td></tr>
+       <tr class="sum"><td>누진 이동으로 인한 <strong>추가 부담</strong></td><td>${gap >= 0 ? "+" : ""}${won(gap)}</td></tr>`
+    : "";
+  return `${moved}<div class="tbl-scroll"><table class="tbl">
+    <thead><tr><th>구분</th><th>금액</th></tr></thead><tbody>
+    <tr><td>기존 사용량 <span class="mut">${kwhFmt(d.before.kwh)}</span> 청구액</td><td>${won(d.before.total)}</td></tr>
+    <tr><td>${label} 포함 <span class="mut">${kwhFmt(d.after.kwh)}</span> 청구액</td><td>${won(d.after.total)}</td></tr>
+    <tr class="sum"><td>실제 증가액 <span class="mut">(+${kwhFmt(d.addKwh)})</span></td><td>${won(d.delta)}</td></tr>
+    <tr><td>1kWh당 실질 부담</td><td>${d.addKwh > 0 ? fmt(d.avgPerKwh) + "원" : "-"}</td></tr>
+    ${naiveRow}
+  </tbody></table></div>`;
+}
+
+/** 의존성 0 SVG 라인 차트. pts:[{x,y}], marks:[{x,y,label,color}] */
+export function chartSvg({ pts, marks = [], w = 640, h = 280, xUnit = "kWh", yFmt = (v) => fmt(v / 10000) + "만원" }) {
+  const pad = { l: 58, r: 18, t: 18, b: 40 };
+  const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs) || 1;
+  const y1 = Math.max(...ys) * 1.1 || 1;
+  const X = (v) => pad.l + ((v - x0) / (x1 - x0 || 1)) * (w - pad.l - pad.r);
+  const Y = (v) => h - pad.b - (v / y1) * (h - pad.t - pad.b);
+  const line = pts.map((p, i) => (i ? "L" : "M") + X(p.x).toFixed(1) + " " + Y(p.y).toFixed(1)).join(" ");
+  let grid = "";
+  for (let i = 0; i <= 4; i++) {
+    const v = (y1 / 4) * i, y = Y(v);
+    grid += `<line x1="${pad.l}" y1="${y.toFixed(1)}" x2="${w - pad.r}" y2="${y.toFixed(1)}" stroke="var(--line2)" stroke-width="1"/>`;
+    grid += `<text x="${pad.l - 8}" y="${(y + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--muted)">${yFmt(v)}</text>`;
+  }
+  for (let i = 0; i <= 4; i++) {
+    const v = x0 + ((x1 - x0) / 4) * i, x = X(v);
+    grid += `<text x="${x.toFixed(1)}" y="${h - 14}" text-anchor="middle" font-size="11" fill="var(--muted)">${fmt(v)}</text>`;
+  }
+  grid += `<text x="${w - pad.r}" y="${h - 2}" text-anchor="end" font-size="11" fill="var(--muted)">사용량(${xUnit})</text>`;
+  let mk = "";
+  for (const m of marks) {
+    const x = X(m.x), y = Y(m.y), c = m.color || "var(--acc)";
+    mk += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x.toFixed(1)}" y2="${h - pad.b}" stroke="${c}" stroke-dasharray="3 3" stroke-width="1"/>`;
+    mk += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${c}"/>`;
+    mk += `<text x="${Math.min(x + 8, w - pad.r - 4).toFixed(1)}" y="${(y - 10).toFixed(1)}" text-anchor="${x > w * 0.7 ? "end" : "start"}" font-size="12" font-weight="700" fill="${c}">${m.label}</text>`;
+  }
+  return `<div class="chart-scroll"><svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="사용량별 예상 청구금액 곡선">
+    ${grid}<path d="${line}" fill="none" stroke="var(--acc2)" stroke-width="2.5" stroke-linejoin="round"/>${mk}
+  </svg></div>`;
+}
+
+/** 도시가스 출처·기준 안내 박스 */
+export function gasSourceHtml(links = []) {
+  const ls = links.map((l) => `<a href="${l.url}" target="_blank" rel="noopener">${l.name}</a>`).join(" · ");
+  return `<div class="srcbox"><strong>도시가스 단가는 지역 도시가스사 고시값</strong>이라 전국 공통 단가가 없습니다.
+  고지서의 "단가(원/MJ)"·"평균열량(MJ/㎥)"·"기본요금"을 그대로 입력하면 정확합니다.
+  단위 환산(1kWh = 3.6MJ)은 국제 단위 정의값입니다.<br>${ls}</div>`;
+}

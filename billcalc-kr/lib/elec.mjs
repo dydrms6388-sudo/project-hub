@@ -84,3 +84,29 @@ export function calcDelta(baseKwh, addKwh, opts = {}) {
 export function kwhOf(watt, hoursPerDay, days = 30) {
   return (Math.max(0, watt) * Math.max(0, hoursPerDay) * Math.max(0, days)) / 1000;
 }
+
+/**
+ * "단순 곱셈" 추정치 — 누진 구간 이동을 무시하고, 추가 전 사용량이 속한 구간의
+ * 단가로만 추가 사용량을 곱했을 때의 금액. 실제 증가액(calcDelta)과 비교용.
+ */
+export function naiveDelta(baseKwh, addKwh, opts = {}) {
+  const { voltage = "low", tariff = TARIFF } = opts;
+  const fuelAdj = opts.fuelAdj ?? tariff.fuelAdj.value;
+  const climate = opts.climate ?? tariff.climate.value;
+  const fundRate = opts.fundRate ?? tariff.fund.value;
+  const before = calcBill(baseKwh, opts);
+  const rate = tariff[voltage].energy.value[before.tier - 1];
+  const perKwh = rate + climate + fuelAdj;
+  const supply = Math.floor(Math.max(0, addKwh) * perKwh);
+  const vat = Math.round(supply * tariff.vat.value);
+  const fund = Math.floor((supply * fundRate) / 10) * 10;
+  return { tier: before.tier, rate, perKwh, supply, vat, fund, amount: supply + vat + fund };
+}
+
+/** 사용량을 줄였을 때의 절감액(누진 구간 하향 이동 반영) */
+export function calcSaving(baseKwh, cutKwh, opts = {}) {
+  const cut = Math.min(Math.max(0, cutKwh), Math.max(0, baseKwh));
+  const before = calcBill(baseKwh, opts);
+  const after = calcBill(baseKwh - cut, opts);
+  return { before, after, cutKwh: cut, saving: before.total - after.total, tierMoved: after.tier !== before.tier };
+}
