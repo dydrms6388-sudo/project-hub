@@ -7,7 +7,11 @@
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "e2e": "turbo run e2e"
+    "e2e": "turbo run e2e",
+    "gate": "node scripts/check-indexing.mjs && node scripts/check-a11y-tokens.mjs && node scripts/check-secrets.mjs",
+    "gate:indexing": "node scripts/check-indexing.mjs",
+    "gate:a11y": "node scripts/check-a11y-tokens.mjs",
+    "gate:secrets": "node scripts/check-secrets.mjs"
   },
   "devDependencies": {
     "turbo": "^2.5.0"
