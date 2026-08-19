@@ -70,9 +70,27 @@ node sites/make-preview-index.mjs        # preview/index.html 목차 생성
    | 변수 | 용도 |
    |---|---|
    | `NEXT_PUBLIC_ADSENSE_CLIENT` | 애드센스 승인 후 설정. 없으면 광고 슬롯이 height 0 으로 렌더된다 |
-   | `CROSS_ORIGIN_ISOLATION` | `1` 이면 COOP/COEP 헤더를 켠다. **`clipforge` 만 필요** |
+   | `CROSS_ORIGIN_ISOLATION` | `clipforge` 전용. **기본값이 켜짐이라 보통 설정할 필요 없다.** 애드센스 등이 COEP 에 막히면 `0` 으로 끈다 |
 
 **5. 10개 반복.** 2~5번을 프로젝트마다 반복한다.
+
+### Root Directory 표 (그대로 복사해 쓰면 된다)
+
+| Vercel 프로젝트명 | Root Directory | 도구 | 비고 |
+|---|---|---:|---|
+| `aitidy` | `sites/aitidy` | 10 | |
+| `pickfair` | `sites/pickfair` | 10 | |
+| `photolab-kr` | `sites/photolab-kr` | 10 | |
+| `bodycalc` | `sites/bodycalc` | 12 | |
+| `moneycalc-kr` | `sites/moneycalc-kr` | 14 | ⚠️ 요율 검증 후 라이브 |
+| `pdfroom` | `sites/pdfroom` | 12 | |
+| `idphoto-kr` | `sites/idphoto-kr` | 8 | ⚠️ 규격 검증 후 라이브 |
+| `clipforge` | `sites/clipforge` | 12 | COOP/COEP 헤더 자동 적용 |
+| `dictate-kr` | `sites/dictate-kr` | 6 | 모델 런타임 다운로드 |
+| `docmind-local` | `sites/docmind-local` | 5 | WebGPU 필수 |
+
+Framework Preset 은 전부 **Next.js** 로 자동 감지된다. Build/Install Command 는 건드리지 않는다.
+`clipforge` 의 COOP/COEP 는 `sites/clipforge/vercel.json` 에 들어 있어 별도 설정이 필요 없다.
 
 ### 배포 후 체크리스트 (사이트마다)
 - [ ] 프로덕션 URL 열림, 도메인 연결
