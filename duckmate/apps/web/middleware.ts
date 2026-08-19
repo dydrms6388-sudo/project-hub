@@ -5,6 +5,10 @@ type CookieToSet = { name: string; value: string; options?: CookieOptions };
 
 const PUBLIC_PATHS = ["/", "/legal", "/auth", "/onboarding/age", "/login", "/signup"];
 
+// 서비스워커는 비로그인 상태에서도 200 으로 내려가야 한다 (D7 규약).
+// matcher 가 .js 를 제외하지 않으므로 여기서 통과시킨다.
+const PUBLIC_FILES = new Set(["/sw.js", "/manifest.webmanifest"]);
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -34,9 +38,9 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isPublic = PUBLIC_PATHS.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`)
-  );
+  const isPublic =
+    PUBLIC_FILES.has(pathname) ||
+    PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
   // API 는 리다이렉트 대신 401 (D2 규약) — 각 Route Handler 가 최종 인가를 재검증한다.
   if (!user && pathname.startsWith("/api")) {
