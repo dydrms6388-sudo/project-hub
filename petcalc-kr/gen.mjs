@@ -18,6 +18,7 @@ import { BREEDS, BREED_META, SIZE_LABEL } from "./data/breeds.mjs";
 const SITE_ORIGIN = "https://petcalc-kr.vercel.app";
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PAGES = [];
+const T0 = Date.now();
 let WARN = 0;
 
 /* ---------------- 유틸 ---------------- */
@@ -1219,3 +1220,745 @@ buildPage({
     { name: "체중 기록·그래프", href: "weight-log/index.html", ic: "📈" },
   ]),
 });
+
+/* ---------------- 11) can-eat 통합 검색 도구 ---------------- */
+const CE = { dog: DOG_CANEAT, cat: CAT_CANEAT };
+const ceLite = (sp) => CE[sp].items.map((i) => ({ s: i.slug, n: i.name, v: i.verdict, m: i.summary }));
+const countBy = (sp, v) => CE[sp].items.filter((i) => i.verdict === v).length;
+
+buildPage({
+  dir: "can-eat",
+  title: "강아지·고양이 먹어도 되는 음식 검색 — 가능·주의·금지 | PetCalc",
+  desc: `강아지 ${DOG_CANEAT.items.length}가지, 고양이 ${CAT_CANEAT.items.length}가지 사람 음식을 가능·주의·금지로 정리했습니다. 재료 이름으로 검색하면 이유와 근거 출처까지 바로 확인할 수 있습니다.`,
+  h1: "먹어도 되는 음식 검색",
+  emoji: "🥗",
+  lead: `재료 이름을 검색해 보세요. 강아지 ${DOG_CANEAT.items.length}종 · 고양이 ${CAT_CANEAT.items.length}종을 가능/주의/금지로 정리했습니다.`,
+  crumbs: cr({ name: "먹어도 되는 음식" }),
+  health: true,
+  ad: "lazy",
+  bodyHtml: `<section class="card">
+  <h2>검색</h2>
+  <div class="field"><label>대상</label>
+    <div class="seg" id="sp">
+      <button type="button" data-v="dog" aria-pressed="true">🐕 강아지</button>
+      <button type="button" data-v="cat" aria-pressed="false">🐈 고양이</button>
+    </div>
+  </div>
+  <div class="field"><label for="q">재료 이름 <span class="hint">예: 포도, 닭가슴살</span></label><input type="text" id="q" placeholder="재료 이름을 입력하세요" autocomplete="off"></div>
+  <div class="field"><label>결론으로 좁히기</label>
+    <div class="seg" id="vd">
+      <button type="button" data-v="all" aria-pressed="true">전체</button>
+      <button type="button" data-v="ok" aria-pressed="false">가능</button>
+      <button type="button" data-v="caution" aria-pressed="false">주의</button>
+      <button type="button" data-v="danger" aria-pressed="false">금지</button>
+    </div>
+  </div>
+</section>
+<section class="result" id="res">
+  <div class="card">
+    <h2>결과 <span class="hint" id="cnt"></span></h2>
+    <div id="out"></div>
+  </div>
+</section>`,
+  script: `(function(){
+var D=` + J({ dog: ceLite("dog"), cat: ceLite("cat") }) + `;
+var W=` + J(VERDICT) + `;
+var REL='../';
+var sp='dog', vd='all';
+function render(){
+  var q=(pcQ('q').value||'').trim();
+  var list=D[sp].filter(function(i){
+    if(vd!=='all'&&i.v!==vd) return false;
+    if(q&&i.n.indexOf(q)<0&&i.s.indexOf(q.toLowerCase())<0) return false;
+    return true;
+  });
+  var order={danger:0,caution:1,ok:2};
+  list.sort(function(a,b){return order[a.v]-order[b.v]||a.n.localeCompare(b.n,'ko');});
+  pcQ('cnt').textContent='· '+list.length+'개';
+  if(!list.length){ pcQ('out').innerHTML='<p class="src">검색 결과가 없습니다. 다른 이름으로 찾아보거나, 확실하지 않은 음식은 주지 말고 수의사에게 문의하세요.</p>'; return; }
+  pcQ('out').innerHTML=list.map(function(i){
+    return '<a class="rel" style="margin-bottom:8px" href="'+REL+sp+'/can-eat/'+i.s+'/index.html">'+
+      '<span class="badge '+W[i.v].cls+'">'+W[i.v].word+'</span>'+
+      '<span><b>'+i.n+'</b><br><span style="font-size:12.5px;color:var(--muted2)">'+i.m+'</span></span></a>';
+  }).join('');
+}
+pcSeg('sp',function(v){sp=v;render();});
+pcSeg('vd',function(v){vd=v;render();});
+pcQ('q').addEventListener('input',render);
+render();
+if(window.pcShowAd) window.pcShowAd();
+})();`,
+  aboutHtml: `<h2>가능·주의·금지는 어떻게 나눴나요?</h2>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>표시</th><th>뜻</th></tr></thead><tbody>
+<tr><td><span class="badge ok">가능</span></td><td>손질·조리 조건을 지키면 간식으로 줄 수 있는 음식</td></tr>
+<tr><td><span class="badge caution">주의</span></td><td>독성은 없지만 양·부위·조리법에 조건이 붙거나, 개체에 따라 문제가 되는 음식</td></tr>
+<tr><td><span class="badge danger">금지</span></td><td>소량으로도 중독·응급을 일으킬 수 있어 주면 안 되는 음식</td></tr>
+</tbody></table></div>
+<p>수록 기준은 “개수”가 아니라 “확실함”입니다. 수의학적으로 결론이 갈리는 항목은 넣지 않았습니다.</p>
+<h3>수록 현황</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>대상</th><th>가능</th><th>주의</th><th>금지</th><th>합계</th></tr></thead><tbody>
+<tr><td>🐕 강아지</td><td>${countBy("dog", "ok")}</td><td>${countBy("dog", "caution")}</td><td>${countBy("dog", "danger")}</td><td>${DOG_CANEAT.items.length}</td></tr>
+<tr><td>🐈 고양이</td><td>${countBy("cat", "ok")}</td><td>${countBy("cat", "caution")}</td><td>${countBy("cat", "danger")}</td><td>${CAT_CANEAT.items.length}</td></tr>
+</tbody></table></div>
+<p><a href="../dog/can-eat/index.html">강아지 전체 목록 보기</a> · <a href="../cat/can-eat/index.html">고양이 전체 목록 보기</a></p>
+<h2>공통 원칙 4가지</h2>
+<ol>
+<li><b>간식은 하루 총 열량의 10% 이내.</b> 나머지는 균형 잡힌 사료로 채워야 합니다.</li>
+<li><b>양념은 전부 빼세요.</b> 소금·마늘·양파 양념이 든 음식은 재료 자체가 안전해도 위험해집니다.</li>
+<li><b>처음 주는 음식은 소량부터.</b> 12~24시간 동안 구토·설사·가려움이 없는지 확인합니다.</li>
+<li><b>씨·심·뼈·껍질은 제거.</b> 중독이 아니라 폐색으로 응급 수술을 하는 경우가 많습니다.</li>
+</ol>
+<p class="notice warn">이미 먹은 뒤 증상이 있다면 검색보다 <b>병원 연락이 먼저</b>입니다. 먹은 종류·양·시각을 기록해 두세요.</p>
+${src1(DOG_CANEAT.meta.note, DOG_CANEAT.meta.source, DOG_CANEAT.meta.checkedAt)}
+${src1(CAT_CANEAT.meta.note, CAT_CANEAT.meta.source, CAT_CANEAT.meta.checkedAt)}`,
+  faq: [
+    { q: "목록에 없는 음식은 줘도 되나요?", a: "수록되지 않았다는 것은 “안전이 확인됐다”는 뜻이 아니라 “확실한 근거를 찾지 못했다”는 뜻입니다. 확실하지 않으면 주지 않는 쪽이 안전하고, 필요하면 수의사에게 확인하세요." },
+    { q: "조금 먹었는데 괜찮아 보이면 지켜봐도 되나요?", a: "초콜릿·자일리톨·양파·포도처럼 금지로 표시된 음식은 증상이 늦게 나타납니다. 증상이 없어도 먹은 양과 시각을 알려 병원 판단을 받으세요." },
+    { q: "강아지에게 괜찮은데 고양이에게 위험한 음식도 있나요?", a: "네. 고양이는 완전 육식동물이라 대사 방식이 달라 같은 음식도 결론이 다를 수 있습니다. 대상 탭을 꼭 맞게 선택해 확인하세요." },
+    { q: "사료에 들어 있는 재료인데 왜 주의인가요?", a: "사료에는 가공·배합 과정에서 안전한 형태와 양으로 들어갑니다. 집에서 통째로 주는 것과는 조건이 다릅니다." },
+  ],
+  related: relatedBlock("can-eat", ["petSafe", "petMeal", "petVetCost"], [
+    { name: "사료 급여량 계산기", href: "food-amount/index.html", ic: "🍚" },
+    { name: "수의사 상담 안내", href: "vet-consult/index.html", ic: "🏥" },
+  ]),
+});
+
+/* ---------------- 12) can-eat 종별 목록 + 롱테일 상세 ---------------- */
+const SPK = { dog: "강아지", cat: "고양이" };
+["dog", "cat"].forEach((sp) => {
+  const items = CE[sp].items;
+  const ko = SPK[sp];
+  const listByVerdict = (v) =>
+    items
+      .filter((i) => i.verdict === v)
+      .map((i) => `<a class="chip ${v}" href="${i.slug}/index.html">${esc(i.name)}</a>`)
+      .join("\n      ");
+
+  buildPage({
+    dir: `${sp}/can-eat`,
+    title: `${ko}가 먹어도 되는 음식 전체 목록 ${items.length}가지 | PetCalc`,
+    desc: `${ko}에게 줄 수 있는 음식과 절대 주면 안 되는 음식을 가능 ${countBy(sp, "ok")}종·주의 ${countBy(sp, "caution")}종·금지 ${countBy(sp, "danger")}종으로 정리했습니다. 재료를 눌러 이유와 출처를 확인하세요.`,
+    h1: `${ko}가 먹어도 되는 음식 목록`,
+    emoji: sp === "dog" ? "🐕" : "🐈",
+    kind: "article",
+    lead: `${ko} 기준으로 정리한 사람 음식 ${items.length}가지. 재료를 누르면 이유·주의점·출처를 볼 수 있습니다.`,
+    crumbs: cr({ name: "먹어도 되는 음식", href: "can-eat/index.html" }, { name: `${ko} 목록` }),
+    health: true,
+    ad: "eager",
+    bodyHtml: `<section class="card">
+  <h2><span class="badge danger">금지</span> 절대 주면 안 되는 음식 (${countBy(sp, "danger")})</h2>
+  <div class="chip-list">
+      ${listByVerdict("danger")}
+  </div>
+</section>
+<section class="card">
+  <h2><span class="badge caution">주의</span> 조건을 지켜야 하는 음식 (${countBy(sp, "caution")})</h2>
+  <div class="chip-list">
+      ${listByVerdict("caution")}
+  </div>
+</section>
+<section class="card">
+  <h2><span class="badge ok">가능</span> 간식으로 줄 수 있는 음식 (${countBy(sp, "ok")})</h2>
+  <div class="chip-list">
+      ${listByVerdict("ok")}
+  </div>
+</section>`,
+    aboutHtml: `<h2>${ko}에게 사람 음식을 줄 때 지킬 것</h2>
+<ul>
+<li>간식·사람 음식은 <b>하루 총 열량의 10% 이내</b>로 제한합니다.</li>
+<li>소금·설탕·기름·양념은 모두 빼고, 조리는 삶기·찌기로 합니다.</li>
+<li>새로운 음식은 <b>한 번에 한 가지</b>만, 소량으로 시작해 반응을 봅니다.</li>
+<li>씨·심·뼈·껍질은 제거합니다. 폐색은 중독만큼 흔한 응급 원인입니다.</li>
+${sp === "cat"
+  ? "<li>고양이는 완전 육식동물이라 채소·과일이 <b>영양상 필수는 아닙니다</b>. 호기심 수준의 소량이면 충분합니다.</li>"
+  : "<li>알레르기가 있는 강아지도 많습니다. 가려움·귀 염증이 반복되면 급여 목록을 수의사와 점검하세요.</li>"}
+</ul>
+<p><a href="../../can-eat/index.html">재료 이름으로 검색하기</a> · <a href="../../${sp === "dog" ? "cat" : "dog"}/can-eat/index.html">${sp === "dog" ? "고양이" : "강아지"} 목록 보기</a></p>
+${src1(CE[sp].meta.note, CE[sp].meta.source, CE[sp].meta.checkedAt)}`,
+    faq: [
+      { q: `${ko}에게 가장 위험한 음식은 무엇인가요?`, a: `이 목록의 금지 항목은 모두 소량으로도 문제가 될 수 있습니다. 그중에서도 ${sp === "dog" ? "초콜릿, 포도·건포도, 양파·마늘, 자일리톨" : "양파·마늘, 백합, 초콜릿, 포도"}은 응급으로 이어지는 대표적인 원인입니다.` },
+      { q: "목록에 없는 재료는 어떻게 확인하나요?", a: "확실한 근거가 있는 항목만 수록했기 때문에 목록에 없는 음식은 “안전 확인됨”이 아닙니다. 판단이 서지 않으면 주지 말고 병원에 문의하세요." },
+      { q: "익히면 안전해지는 음식도 있나요?", a: "감자·고기·생선처럼 가열로 위험이 줄어드는 것도 있지만, 양파·마늘은 익혀도 독성이 사라지지 않습니다. 항목별 설명을 확인하세요." },
+      { q: "얼마나 자주 줘도 되나요?", a: "가능으로 표시된 음식도 매일 주는 주식이 아니라 간식입니다. 주 2~3회, 소량이면 충분합니다." },
+    ],
+    related: relatedBlock(`${sp}/can-eat`, ["petSafe", "petMeal", "petVetCost"], [
+      { name: "재료 검색하기", href: "can-eat/index.html", ic: "🥗" },
+      { name: "사료 급여량 계산기", href: "food-amount/index.html", ic: "🍚" },
+    ]),
+  });
+
+  // 롱테일 상세 페이지
+  items.forEach((it, idx) => {
+    const V = VERDICT[it.verdict];
+    const others = items.filter((x) => x.slug !== it.slug);
+    const near = [];
+    for (let k = 1; near.length < 8 && k <= others.length; k++) {
+      near.push(others[(idx + k) % others.length]);
+    }
+    const chips = near
+      .map((x) => `<a class="chip ${x.verdict}" href="../${x.slug}/index.html">${esc(x.name)} · ${VERDICT[x.verdict].word}</a>`)
+      .join("\n    ");
+
+    buildPage({
+      dir: `${sp}/can-eat/${it.slug}`,
+      title: `${ko}가 ${it.name} 먹어도 되나요? — ${V.word} | PetCalc`,
+      desc: `${ko}와 ${it.name}: ${it.summary}. ${String(it.reason).slice(0, 70)}… 이유와 대처법, 근거 출처를 확인하세요.`,
+      h1: `${ko}가 ${it.name} 먹어도 되나요?`,
+      emoji: sp === "dog" ? "🐕" : "🐈",
+      kind: "article",
+      lead: esc(it.summary),
+      crumbs: cr(
+        { name: "먹어도 되는 음식", href: "can-eat/index.html" },
+        { name: `${ko} 목록`, href: `${sp}/can-eat/index.html` },
+        { name: it.name }
+      ),
+      health: true,
+      ad: "eager",
+      bodyHtml: `<div class="verdict ${V.cls}">
+  <div class="v-word">${V.word}</div>
+  <div class="v-sub">${ko} · ${esc(it.name)} — ${esc(V.label)}</div>
+</div>
+<section class="card">
+  <h2>왜 그런가요?</h2>
+  <p style="color:var(--tx2);font-size:15px;margin:0 0 12px">${esc(it.reason)}</p>
+  <div class="res-line"><span class="k">결론</span><span class="v"><span class="badge ${V.cls}">${V.word}</span></span></div>
+  <div class="res-line"><span class="k">한 줄 요약</span><span class="v">${esc(it.summary)}</span></div>
+  <div class="res-line"><span class="k">이렇게 하세요</span><span class="v">${esc(it.tip)}</span></div>
+</section>
+${
+  it.verdict === "danger"
+    ? `<section class="card"><h2>이미 먹었다면</h2>
+<ol style="color:var(--tx2);font-size:14.5px;padding-left:20px;margin:0">
+<li>먹은 <b>양·시각·형태</b>를 적어 두고, 남은 포장지가 있으면 챙깁니다.</li>
+<li>임의로 토하게 하지 말고 <b>병원에 먼저 전화</b>해 지시를 받습니다.</li>
+<li>증상이 없어도 연락하세요. 중독 증상은 몇 시간 뒤에 나타나는 경우가 많습니다.</li>
+</ol>
+<p class="src">가까운 야간 응급 동물병원 번호를 미리 저장해 두면 대응이 빨라집니다.</p></section>`
+    : `<section class="card"><h2>줄 때 지킬 것</h2>
+<ul style="color:var(--tx2);font-size:14.5px;padding-left:20px;margin:0">
+<li>양념(소금·설탕·기름·마늘·양파)은 모두 빼고 조리합니다.</li>
+<li>처음에는 아주 소량만 주고 12~24시간 반응을 봅니다.</li>
+<li>간식은 하루 총 열량의 10% 이내로 제한합니다.</li>
+<li>씨·심·껍질·뼈는 제거해 폐색 위험을 없앱니다.</li>
+</ul></section>`
+}`,
+      aboutHtml: `<h2>다른 재료도 확인해 보세요</h2>
+<div class="chip-list">
+    ${chips}
+</div>
+<p style="margin-top:14px"><a href="../index.html">${ko} 전체 목록 보기</a> · <a href="../../../can-eat/index.html">재료 이름으로 검색</a>${
+        CE[sp === "dog" ? "cat" : "dog"].items.some((x) => x.slug === it.slug)
+          ? ` · <a href="../../../${sp === "dog" ? "cat" : "dog"}/can-eat/${it.slug}/index.html">${sp === "dog" ? "고양이" : "강아지"}는 어떨까?</a>`
+          : ""
+      }</p>
+<h2>기억할 점</h2>
+<p>같은 음식이라도 <b>양·조리법·개체 상태</b>에 따라 결과가 달라집니다. 지병(신장·췌장·심장 질환)이 있거나 약을 먹고 있다면 사람 음식은 수의사와 상의한 뒤 결정하세요.</p>
+${src1(`${ko} · ${it.name} 판단 근거`, it.source, it.checkedAt)}`,
+      faq: [
+        { q: `${ko}가 ${it.name} 먹어도 되나요?`, a: `결론은 <b>${V.word}</b>입니다. ${esc(it.summary)}.` },
+        {
+          q: it.verdict === "danger" ? `${it.name}을(를) 조금 먹었는데 괜찮을까요?` : `${it.name}은(는) 얼마나 줘도 되나요?`,
+          a:
+            it.verdict === "danger"
+              ? "안전한 양이 정해져 있지 않습니다. 증상이 없더라도 먹은 양과 시각을 확인해 병원에 문의하세요."
+              : "간식으로 하루 총 열량의 10%를 넘지 않는 선에서 소량만 주세요. 처음이라면 한 조각으로 시작해 반응을 확인합니다.",
+        },
+        { q: `${it.name}을(를) 줄 때 무엇을 조심하나요?`, a: esc(it.tip) },
+        { q: "이 정보는 어디에 근거하나요?", a: `공개된 수의학 지침·중독 정보 자료를 근거로 정리했으며, 이 항목의 출처는 페이지 하단에 링크로 표시했습니다(확인일 ${it.checkedAt}). 다만 개체 상태에 따른 판단은 수의사 진료가 필요합니다.` },
+      ],
+      related: relatedBlock(`${sp}/can-eat/${it.slug}`, ["petSafe", "petMeal", "petVetCost"], [
+        { name: "먹어도 되는 음식 검색", href: "can-eat/index.html", ic: "🥗" },
+        { name: "수의사 상담 안내", href: "vet-consult/index.html", ic: "🏥" },
+      ]),
+    });
+  });
+});
+
+/* ---------------- 13) 견종 백과 (허브 + 롱테일) ---------------- */
+const breedRow = (b) =>
+  `<tr><td><a href="${b.slug}/index.html">${esc(b.name)}</a></td><td>${SIZE_LABEL[b.size]}</td><td>${b.weightKg[0]}~${b.weightKg[1]}kg</td><td>${b.lifespan[0]}~${b.lifespan[1]}년</td></tr>`;
+
+buildPage({
+  dir: "breed",
+  title: `견종 정보 백과 ${BREEDS.length}종 — 체중·평균 수명·주의 질환 | PetCalc`,
+  desc: `말티즈·푸들·포메라니안부터 골든 리트리버까지 잘 알려진 견종 ${BREEDS.length}종의 체중 범위, 평균 수명, 성향, 호발 질환을 정리했습니다. 견종을 골라 상세 정보를 확인하세요.`,
+  h1: "견종 정보 백과",
+  emoji: "📚",
+  lead: `잘 알려진 견종 ${BREEDS.length}종의 체중·수명·성향·주의할 질환을 한눈에. 견종 이름을 눌러 상세 페이지로 이동하세요.`,
+  crumbs: cr({ name: "견종 백과" }),
+  health: true,
+  ad: "lazy",
+  bodyHtml: `<section class="card">
+  <h2>견종 찾기</h2>
+  <div class="field"><label for="q">견종 이름 <span class="hint">한글 또는 영문</span></label><input type="text" id="q" placeholder="예: 말티즈, poodle" autocomplete="off"></div>
+  <div class="field"><label>크기</label>
+    <div class="seg" id="sz">
+      <button type="button" data-v="all" aria-pressed="true">전체</button>
+      <button type="button" data-v="small" aria-pressed="false">소형견</button>
+      <button type="button" data-v="medium" aria-pressed="false">중형견</button>
+      <button type="button" data-v="large" aria-pressed="false">대형견</button>
+    </div>
+  </div>
+</section>
+<section class="result" id="res">
+  <div class="card">
+    <h2>목록 <span class="hint" id="cnt"></span></h2>
+    <div class="chip-list" id="out"></div>
+  </div>
+</section>`,
+  script: `(function(){
+var B=` + J(BREEDS.map((b) => ({ s: b.slug, n: b.name, e: b.nameEn, z: b.size, w: b.weightKg, l: b.lifespan }))) + `;
+var L=` + J(SIZE_LABEL) + `;
+var sz='all';
+function render(){
+  var q=(pcQ('q').value||'').trim().toLowerCase();
+  var list=B.filter(function(b){
+    if(sz!=='all'&&b.z!==sz) return false;
+    if(q&&b.n.toLowerCase().indexOf(q)<0&&b.e.toLowerCase().indexOf(q)<0) return false;
+    return true;
+  });
+  pcQ('cnt').textContent='· '+list.length+'종';
+  pcQ('out').innerHTML = list.length
+    ? list.map(function(b){return '<a class="chip" href="'+b.s+'/index.html">'+b.n+' <span style="color:var(--muted)">'+L[b.z]+' · '+b.l[0]+'~'+b.l[1]+'년</span></a>';}).join('')
+    : '<p class="src">검색 결과가 없습니다. 다른 이름으로 찾아보세요.</p>';
+}
+pcSeg('sz',function(v){sz=v;render();});
+pcQ('q').addEventListener('input',render);
+render();
+if(window.pcShowAd) window.pcShowAd();
+})();`,
+  aboutHtml: `<h2>견종 정보를 어떻게 읽어야 하나요?</h2>
+<p>여기 적힌 체중·수명은 견종 표준에서 이야기하는 <b>일반적인 범위</b>입니다. 실제로는 혈통, 중성화 여부, 식단, 운동량, 치과 관리에 따라 개체별로 크게 달라집니다. “호발 질환”도 그 견종에서 상대적으로 자주 보고된다는 뜻이지, 반드시 걸린다는 의미가 아닙니다.</p>
+<h3>전체 목록</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>견종</th><th>크기</th><th>체중</th><th>평균 수명</th></tr></thead><tbody>
+${BREEDS.slice().sort((a, b) => a.name.localeCompare(b.name, "ko")).map(breedRow).join("")}
+</tbody></table></div>
+<h2>입양 전 확인하면 좋은 것</h2>
+<ul>
+<li><b>운동량</b>: 보더콜리·허스키처럼 하루 운동이 많이 필요한 견종은 생활 패턴과 맞아야 합니다.</li>
+<li><b>미용 비용</b>: 푸들·비숑처럼 털이 계속 자라는 견종은 4~8주마다 미용비가 듭니다.</li>
+<li><b>호발 질환</b>: 미리 알면 조기 검진과 생활 관리(계단 제한, 체중 관리)로 위험을 줄일 수 있습니다.</li>
+<li><b>기후</b>: 단두종과 이중모 견종은 한국 여름에 특히 취약합니다.</li>
+</ul>
+${src1(BREED_META.note, BREED_META.source, BREED_META.checkedAt)}`,
+  faq: [
+    { q: "믹스견은 어떻게 참고하나요?", a: "체형이 비슷한 견종 두세 개를 함께 보고 중간값으로 생각하면 도움이 됩니다. 체구는 성견 체중을 기준으로 판단하세요." },
+    { q: "평균 수명은 얼마나 믿을 수 있나요?", a: "견종 표준의 일반 범위이며, 실제 수명은 체중 관리·치과 관리·정기검진에 크게 좌우됩니다. 특히 비만 예방은 수명과 직결됩니다." },
+    { q: "호발 질환이 있으면 입양하지 말아야 하나요?", a: "그렇지 않습니다. 알고 대비하면 조기 발견과 관리가 쉬워집니다. 해당 질환의 초기 신호를 익혀 두는 것이 더 중요합니다." },
+    { q: "여기 없는 견종은 어디서 확인하나요?", a: "근거 자료가 확실한 견종만 수록했습니다. 목록에 없다면 담당 수의사나 공신력 있는 견종 단체 자료를 참고하세요." },
+  ],
+  related: relatedBlock("breed", ["dogPersonality", "petAge", "petMeal"], [
+    { name: "강아지 나이 계산기", href: "dog-age/index.html", ic: "🐕" },
+    { name: "사료 급여량 계산기", href: "food-amount/index.html", ic: "🍚" },
+  ]),
+});
+
+BREEDS.forEach((b, i) => {
+  const near = [];
+  const pool = BREEDS.filter((x) => x.slug !== b.slug);
+  const same = pool.filter((x) => x.size === b.size);
+  const rest = pool.filter((x) => x.size !== b.size);
+  [...same, ...rest].slice(0, 8).forEach((x) => near.push(x));
+  const chips = near.map((x) => `<a class="chip" href="../${x.slug}/index.html">${esc(x.name)}</a>`).join("\n    ");
+  const midW = ((b.weightKg[0] + b.weightKg[1]) / 2).toFixed(1);
+  const rerMid = Math.round(70 * Math.pow((b.weightKg[0] + b.weightKg[1]) / 2, 0.75));
+
+  buildPage({
+    dir: `breed/${b.slug}`,
+    title: `${b.name} 특징 정리 — 체중 ${b.weightKg[0]}~${b.weightKg[1]}kg · 평균 수명 ${b.lifespan[0]}~${b.lifespan[1]}년 | PetCalc`,
+    desc: `${b.name}(${b.nameEn})의 크기, 체중 범위, 평균 수명, 성향과 관리 포인트, 자주 보고되는 질환을 정리했습니다. ${esc(b.traits)}`,
+    h1: `${b.name} 특징과 관리 포인트`,
+    emoji: "🐶",
+    kind: "article",
+    lead: esc(b.traits),
+    crumbs: cr({ name: "견종 백과", href: "breed/index.html" }, { name: b.name }),
+    health: true,
+    ad: "eager",
+    bodyHtml: `<section class="card">
+  <h2>기본 정보</h2>
+  <div class="res-line"><span class="k">영문명</span><span class="v">${esc(b.nameEn)}</span></div>
+  <div class="res-line"><span class="k">크기 분류</span><span class="v">${SIZE_LABEL[b.size]}</span></div>
+  <div class="res-line"><span class="k">체중 범위</span><span class="v">${b.weightKg[0]} ~ ${b.weightKg[1]} kg</span></div>
+  <div class="res-line"><span class="k">평균 수명</span><span class="v">${b.lifespan[0]} ~ ${b.lifespan[1]} 년</span></div>
+  <div class="res-line"><span class="k">중간 체중 기준 RER</span><span class="v">약 ${rerMid} kcal/일 (${midW}kg)</span></div>
+</section>
+<section class="card">
+  <h2>성향과 관리</h2>
+  <p style="color:var(--tx2);font-size:15px;margin:0 0 10px"><b>성향</b> — ${esc(b.traits)}</p>
+  <p style="color:var(--tx2);font-size:15px;margin:0"><b>관리 포인트</b> — ${esc(b.care)}</p>
+</section>
+<section class="card">
+  <h2>자주 보고되는 질환</h2>
+  <ul style="color:var(--tx2);font-size:14.5px;padding-left:20px;margin:0">
+    ${b.concerns.map((c) => `<li>${esc(c)}</li>`).join("\n    ")}
+  </ul>
+  <p class="src">해당 견종에서 상대적으로 자주 보고되는 질환일 뿐, 반드시 발생한다는 뜻이 아닙니다. 진단은 수의사만 할 수 있습니다.</p>
+</section>`,
+    aboutHtml: `<h2>${b.name}와(과) 함께 쓰면 좋은 계산</h2>
+<ul>
+<li><a href="../../dog-age/index.html">강아지 나이 계산기</a> — 체구를 <b>${SIZE_LABEL[b.size]}</b>으로 선택하면 됩니다.</li>
+<li><a href="../../food-amount/index.html">사료 급여량 계산기</a> — 체중 ${midW}kg 기준 RER은 약 ${rerMid}kcal이며, 여기에 중성화·활동량 계수를 곱한 값이 하루 목표 열량입니다.</li>
+<li><a href="../../weight-log/index.html">체중 기록</a> — 표준 체중 범위(${b.weightKg[0]}~${b.weightKg[1]}kg) 안에서 유지되는지 확인해 보세요.</li>
+</ul>
+<h2>비슷하거나 함께 많이 찾는 견종</h2>
+<div class="chip-list">
+    ${chips}
+</div>
+<p style="margin-top:14px"><a href="../index.html">견종 백과 전체 목록</a></p>
+${src1(`${b.name} (${b.nameEn}) 견종 표준 정보`, b.source, b.checkedAt)}
+${src1("견종별 호발 질환 일반 정보", b.sourceDisease, b.checkedAt)}`,
+    faq: [
+      { q: `${b.name}의 평균 수명은 어느 정도인가요?`, a: `일반적으로 ${b.lifespan[0]}~${b.lifespan[1]}년으로 봅니다. 체중 관리와 치과 관리, 정기검진 여부에 따라 개체별 차이가 큽니다.` },
+      { q: `${b.name}의 적정 체중은 몇 kg인가요?`, a: `견종 표준상 ${b.weightKg[0]}~${b.weightKg[1]}kg 범위입니다. 다만 숫자보다 체형(BCS)이 중요하며, 갈비뼈가 보이지 않지만 가볍게 만져지는 상태가 이상적입니다.` },
+      { q: `${b.name}를 키울 때 가장 신경 쓸 점은?`, a: esc(b.care) },
+      { q: `${b.name}가 잘 걸리는 병이 있나요?`, a: `${b.concerns.join(", ")} 등이 상대적으로 자주 보고됩니다. 예방보다 조기 발견이 중요하므로 정기검진에서 관련 항목을 챙기세요.` },
+    ],
+    related: relatedBlock(`breed/${b.slug}`, ["dogPersonality", "petAge", "petMeal"], [
+      { name: "견종 백과", href: "breed/index.html", ic: "📚" },
+      { name: "강아지가 먹어도 되는 음식", href: "dog/can-eat/index.html", ic: "🥗" },
+    ]),
+  });
+});
+
+/* ---------------- 14) 콘텐츠 가이드 ---------------- */
+buildPage({
+  dir: "guide/dog-food-basics",
+  title: "강아지 사료 기본 가이드 — 하루 몇 kcal, 몇 g, 몇 번? | PetCalc",
+  desc: "강아지 사료 급여의 기본을 정리했습니다. RER·MER로 하루 열량 정하기, 사료 라벨 읽는 법, 급여 횟수, 간식 10% 규칙, 사료 바꾸는 7~10일 전환법까지 순서대로 설명합니다.",
+  h1: "강아지 사료 기본 가이드",
+  emoji: "📘",
+  kind: "article",
+  lead: "얼마나, 몇 번, 어떻게 줄지 정하는 기본 순서를 정리했습니다. 계산은 급여량 계산기와 함께 보세요.",
+  crumbs: cr({ name: "가이드", href: "index.html" }, { name: "강아지 사료 기본" }),
+  health: true,
+  individual: true,
+  ad: "eager",
+  bodyHtml: `<section class="card">
+  <h2>3분 요약</h2>
+  <ol style="color:var(--tx2);font-size:14.5px;padding-left:20px;margin:0">
+    <li>하루 필요 열량 = <b>70 × 체중(kg)<sup>0.75</sup> × 생활 단계 계수</b></li>
+    <li>사료 봉투의 <b>100g당 kcal</b>로 나눠 그램으로 환산</li>
+    <li>성견은 하루 <b>2회</b>로 나눠 급여, 어린 강아지는 3~4회</li>
+    <li>간식은 하루 총 열량의 <b>10% 이내</b>, 그만큼 사료를 줄이기</li>
+    <li>사료를 바꿀 때는 <b>7~10일</b>에 걸쳐 비율을 옮기기</li>
+  </ol>
+  <p style="margin-top:14px"><a class="btn sub" href="../../food-amount/index.html">급여량 계산기로 계산하기 →</a></p>
+</section>`,
+  aboutHtml: `<h2>1. 하루 열량부터 정합니다</h2>
+<p>사료량은 “몇 컵”이 아니라 <b>열량</b>에서 출발합니다. 쉬고 있을 때 필요한 열량(RER)은 <code>70 × 체중<sup>0.75</sup></code>이고, 여기에 생활 단계 계수를 곱한 값(MER)이 하루 목표입니다. 예를 들어 중성화한 8kg 성견이라면 RER 약 333kcal에 1.6을 곱해 하루 약 533kcal가 기준이 됩니다.</p>
+<h2>2. 사료 라벨 읽기</h2>
+<ul>
+<li><b>kcal/kg 또는 100g당 kcal</b>: 열량을 그램으로 바꿀 때 쓰는 가장 중요한 숫자입니다. kcal/kg을 10으로 나누면 100g당 값이 됩니다.</li>
+<li><b>급여 권장량 표</b>: 넓은 범위를 제시하므로 시작점으로만 쓰고, 체중 변화로 조정합니다.</li>
+<li><b>단계 표시(퍼피/성견/전연령)</b>: 성장기에는 성장기용을 써야 칼슘·인 균형이 맞습니다.</li>
+<li><b>보증성분</b>: 조단백·조지방은 최소값, 조섬유·수분은 최대값입니다. 제품 간 비교는 같은 수분 기준으로 해야 정확합니다.</li>
+</ul>
+<h2>3. 몇 번에 나눠 줄까요?</h2>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>시기</th><th>급여 횟수</th><th>메모</th></tr></thead><tbody>
+<tr><td>생후 2~4개월</td><td>하루 3~4회</td><td>저혈당 예방을 위해 자주 나눠 줍니다</td></tr>
+<tr><td>생후 4~12개월</td><td>하루 2~3회</td><td>성장 속도에 맞춰 양을 조절합니다</td></tr>
+<tr><td>성견</td><td>하루 2회</td><td>대형견은 한 번에 많은 양을 피합니다</td></tr>
+<tr><td>노령견</td><td>하루 2~3회</td><td>소화 부담을 줄이려면 나눠 급여</td></tr>
+</tbody></table></div>
+<h2>4. 간식 10% 규칙</h2>
+<p>간식·훈련용 보상·사람 음식은 모두 합쳐 하루 총 열량의 10%를 넘지 않게 합니다. 하루 500kcal가 목표라면 간식은 50kcal까지이고, 그만큼 사료를 줄여야 총량이 맞습니다. 훈련량이 많은 날에는 사료 알갱이 일부를 보상으로 쓰는 방법이 편리합니다.</p>
+<h2>5. 사료 바꾸기 (7~10일 전환)</h2>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>일차</th><th>새 사료</th><th>기존 사료</th></tr></thead><tbody>
+<tr><td>1~2일</td><td>25%</td><td>75%</td></tr>
+<tr><td>3~4일</td><td>50%</td><td>50%</td></tr>
+<tr><td>5~6일</td><td>75%</td><td>25%</td></tr>
+<tr><td>7일 이후</td><td>100%</td><td>-</td></tr>
+</tbody></table></div>
+<p>설사·구토가 생기면 이전 비율로 하루 이틀 되돌린 뒤 더 천천히 진행합니다. 위장이 예민한 개는 14일에 걸쳐 바꾸기도 합니다.</p>
+<h2>6. 자주 하는 실수</h2>
+<ul>
+<li>계량컵을 눈대중으로 쓰기 — <b>주방 저울</b>로 그램을 재는 편이 훨씬 정확합니다.</li>
+<li>봉투 권장량을 그대로 유지하며 체중 변화를 보지 않기</li>
+<li>사람 음식으로 “조금씩” 채우다 하루 총 열량이 20~30% 초과되기</li>
+<li>감량한다며 하루 두 끼를 한 끼로 줄이기 — 총량을 줄이되 횟수는 유지하는 편이 낫습니다.</li>
+</ul>
+<p class="notice warn">신장·심장·췌장 질환, 알레르기, 당뇨가 있는 경우에는 이 일반 지침보다 <b>처방식과 수의사 지침이 우선</b>합니다.</p>
+${src1(RER_FORMULA.value, RER_FORMULA.source, RER_FORMULA.checkedAt)}
+${src1("WSAVA Global Nutrition Guidelines", MER_FACTORS.meta.source, MER_FACTORS.meta.checkedAt)}`,
+  faq: [
+    { q: "사료를 계량컵으로 줘도 되나요?", a: "가능하지만 알갱이 크기와 담는 방식에 따라 오차가 10~20%까지 납니다. 감량 중이거나 소형견이라면 저울로 그램을 재는 편이 안전합니다." },
+    { q: "자율 급식(하루 종일 두기)은 어떤가요?", a: "먹는 양을 알 수 없어 비만과 식욕 저하를 놓치기 쉽습니다. 정해진 시간에 정해진 양을 주고 15~20분 뒤 치우는 방식을 권합니다." },
+    { q: "습식 사료를 섞어도 되나요?", a: "됩니다. 다만 각각의 100g당 kcal로 열량을 따로 계산해 합산해야 총량이 맞습니다. 습식은 수분이 많아 같은 무게라도 열량이 낮습니다." },
+    { q: "체중이 그대로인데 살이 쪄 보여요.", a: "근육이 줄고 지방이 늘면 체중은 같아도 체형이 달라집니다. 체중 기록과 함께 BCS(체형 점수)를 함께 확인하세요." },
+  ],
+  related: relatedBlock("guide/dog-food-basics", ["petMeal", "slimPet", "petAge"], [
+    { name: "사료 급여량 계산기", href: "food-amount/index.html", ic: "🍚" },
+    { name: "강아지가 먹어도 되는 음식", href: "dog/can-eat/index.html", ic: "🥗" },
+  ]),
+});
+
+buildPage({
+  dir: "guide/first-cat-checklist",
+  title: "첫 고양이 준비 체크리스트 — 데려오기 전·후 할 일 | PetCalc",
+  desc: "처음 고양이를 맞이할 때 필요한 준비물, 화장실 개수 규칙, 첫 병원 방문과 접종·중성화 일정, 집 안 위험물 제거, 적응 기간에 하지 말아야 할 일을 순서대로 정리했습니다.",
+  h1: "첫 고양이 준비 체크리스트",
+  emoji: "📋",
+  kind: "article",
+  lead: "데려오기 전 준비물부터 첫 2주 적응, 병원 일정까지 순서대로 확인하세요.",
+  crumbs: cr({ name: "가이드", href: "index.html" }, { name: "첫 고양이 체크리스트" }),
+  health: true,
+  ad: "eager",
+  bodyHtml: `<section class="card">
+  <h2>데려오기 전 준비물</h2>
+  <div class="rt-wrap"><table class="rt"><thead><tr><th>준비물</th><th>기준</th></tr></thead><tbody>
+  <tr><td>화장실</td><td><b>고양이 수 + 1개</b>. 몸길이 1.5배 크기, 뚜껑 없는 형태부터 시작</td></tr>
+  <tr><td>모래</td><td>기존에 쓰던 종류로 시작해 바꾸려면 천천히 섞어 전환</td></tr>
+  <tr><td>사료·물그릇</td><td>화장실과 떨어진 곳에. 얕고 넓은 그릇이 수염 부담이 적음</td></tr>
+  <tr><td>이동장</td><td>위가 열리는 형태가 병원에서 꺼내기 편함. 평소 집처럼 열어 두기</td></tr>
+  <tr><td>스크래처</td><td>세로형·가로형 각각 두고 선호를 확인</td></tr>
+  <tr><td>숨을 곳</td><td>박스·캣터널 등. 첫 며칠은 숨는 것이 정상</td></tr>
+  <tr><td>수직 공간</td><td>캣타워나 선반. 고양이는 높이로 안정감을 얻음</td></tr>
+  </tbody></table></div>
+</section>
+<section class="card">
+  <h2>집 안 위험물 먼저 치우기</h2>
+  <ul style="color:var(--tx2);font-size:14.5px;padding-left:20px;margin:0">
+    <li><b>백합·원추리</b> 등 백합속 식물 — 꽃가루만으로도 급성 신부전 위험. 집에 두지 않습니다.</li>
+    <li>실·끈·머리끈·낚싯줄 — 삼키면 장을 잘라 응급 수술이 필요할 수 있습니다.</li>
+    <li>사람 약(특히 아세트아미노펜), 방향제·에센셜 오일, 부동액</li>
+    <li>세탁기·건조기 문 열어 두기, 방충망 고정, 베란다 추락 방지</li>
+    <li>양파·마늘이 든 음식과 초콜릿을 식탁에 두지 않기</li>
+  </ul>
+  <p style="margin-top:12px"><a href="../../cat/can-eat/index.html">고양이가 먹으면 안 되는 음식 목록 보기 →</a></p>
+</section>`,
+  aboutHtml: `<h2>첫 2주 적응 순서</h2>
+<ol>
+<li><b>1~3일차</b>: 작은 방 하나에서만 지내게 합니다. 화장실·물·사료·숨을 곳을 모두 그 방에 두고, 억지로 안지 않습니다.</li>
+<li><b>4~7일차</b>: 밥 먹을 때 같은 공간에 조용히 있어 주며 존재에 익숙해지게 합니다. 낚싯대 장난감으로 짧게 놀아 줍니다.</li>
+<li><b>2주차</b>: 문을 열어 집 전체를 탐색하게 합니다. 이때도 숨을 곳은 남겨 둡니다.</li>
+</ol>
+<p>먹지 않고 숨어만 있는 상태가 <b>24시간 이상</b> 이어지면 병원에 연락하세요. 고양이는 굶는 기간이 길어지면 간에 무리가 갑니다.</p>
+<h2>병원 일정</h2>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>시기</th><th>할 일</th></tr></thead><tbody>
+<tr><td>데려온 뒤 3~7일 이내</td><td>첫 건강검진, 기생충·전염병(FIV/FeLV) 확인 상담</td></tr>
+<tr><td>생후 6~16주</td><td>종합백신(FVRCP) 2~4주 간격 접종, 마지막 차수는 16주 이후</td></tr>
+<tr><td>수의사 상담 후</td><td>광견병 등 추가 접종, 심장사상충 월별 예방 시작</td></tr>
+<tr><td>성 성숙 전후</td><td>중성화 시기 상담 (체중·건강 상태에 따라 결정)</td></tr>
+</tbody></table></div>
+<p><a href="../../vaccine/index.html">생년월일로 접종 일정 계산하기 →</a></p>
+<h2>사료와 물</h2>
+<ul>
+<li>기존에 먹던 사료를 먼저 유지하고, 바꾸려면 <b>7~10일</b>에 걸쳐 섞어 전환합니다.</li>
+<li>고양이는 물을 적게 마시는 편이라 물그릇을 여러 곳에 두고, 습식 사료를 병행하면 수분 섭취에 도움이 됩니다.</li>
+<li>하루 필요 열량은 <a href="../../food-amount/index.html">급여량 계산기</a>에서 확인할 수 있습니다.</li>
+</ul>
+<h2>하지 말아야 할 것</h2>
+<ul>
+<li>첫날부터 목욕시키기 — 스트레스가 큽니다. 필요할 때만, 그리고 적응 후에 합니다.</li>
+<li>손으로 놀아 주기 — 손을 사냥감으로 학습하면 나중에 무는 습관이 됩니다.</li>
+<li>혼내기 — 고양이는 처벌로 학습하지 않고 사람을 피하게 됩니다. 환경을 바꿔 주는 방식이 효과적입니다.</li>
+<li>화장실 위치를 자주 바꾸기 — 배변 실수의 흔한 원인입니다.</li>
+</ul>
+<p class="notice warn">배뇨를 힘들어하거나 화장실을 들락거리는데 소변이 나오지 않으면 <b>즉시 병원</b>으로 가세요. 특히 수컷 고양이의 요도 폐색은 응급입니다.</p>`,
+  faq: [
+    { q: "화장실은 정말 마릿수+1개가 필요한가요?", a: "권장 기준입니다. 개수가 부족하면 배변 실수나 참는 습관이 생길 수 있습니다. 공간이 좁다면 최소한 서로 다른 위치에 두 개를 두세요." },
+    { q: "며칠째 숨어만 있는데 괜찮나요?", a: "며칠 숨는 것은 흔합니다. 다만 24시간 이상 먹지 않거나, 소변·대변이 전혀 없으면 병원에 연락해야 합니다." },
+    { q: "기존 고양이가 있는데 어떻게 소개하나요?", a: "냄새 교환 → 문 사이로 짧은 만남 → 짧은 대면 순서로 1~4주에 걸쳐 천천히 진행합니다. 처음부터 같은 공간에 두는 것은 피하세요." },
+    { q: "중성화는 꼭 해야 하나요?", a: "발정 스트레스와 일부 생식기 질환 위험을 줄여 일반적으로 권장됩니다. 시기와 방법은 체중·건강 상태를 보고 수의사와 결정하세요." },
+  ],
+  related: relatedBlock("guide/first-cat-checklist", ["petSafe", "petAge", "petVetCost"], [
+    { name: "고양이 나이 계산기", href: "cat-age/index.html", ic: "🐈" },
+    { name: "예방접종 스케줄", href: "vaccine/index.html", ic: "💉" },
+  ]),
+});
+
+/* ---------------- 15) 가이드 목록 · 약관 · 개인정보 ---------------- */
+buildPage({
+  dir: "guide",
+  title: "반려동물 가이드 — 사료·첫 입양 준비 | PetCalc",
+  desc: "강아지 사료 급여의 기본과 첫 고양이 준비 체크리스트 등 계산기와 함께 보면 좋은 안내 글 모음입니다.",
+  h1: "반려동물 가이드",
+  emoji: "📚",
+  kind: "article",
+  lead: "계산기 결과를 실제 생활에 적용할 때 참고할 안내 글입니다.",
+  crumbs: cr({ name: "가이드" }),
+  ad: "none",
+  bodyHtml: `<div class="tool-grid">
+  <a class="tool" href="dog-food-basics/index.html"><div class="t-ic">📘</div><div class="t-name">강아지 사료 기본 가이드</div><div class="t-desc">하루 열량 정하기, 라벨 읽는 법, 급여 횟수, 사료 전환 7~10일</div></a>
+  <a class="tool" href="first-cat-checklist/index.html"><div class="t-ic">📋</div><div class="t-name">첫 고양이 준비 체크리스트</div><div class="t-desc">준비물, 화장실 개수, 위험물 제거, 첫 2주 적응과 병원 일정</div></a>
+</div>`,
+  aboutHtml: `<h2>가이드를 쓰는 순서</h2>
+<ol>
+<li>계산기로 숫자를 먼저 확인합니다(나이·급여량·일정).</li>
+<li>가이드에서 그 숫자를 실제 생활에 어떻게 적용할지 확인합니다.</li>
+<li>변화가 필요하면 2~4주 단위로 조정하고, 체중 기록으로 결과를 확인합니다.</li>
+</ol>`,
+  faq: [
+    { q: "가이드 내용은 어디에 근거하나요?", a: "공개된 수의영양·예방의학 지침과 공신력 있는 단체 자료를 참고했고, 각 글 하단에 출처 링크와 확인일을 표시했습니다." },
+    { q: "우리 아이에게 바로 적용해도 되나요?", a: "일반적인 기준이므로 지병이 있거나 처방식을 먹는 경우에는 수의사 지침이 우선입니다." },
+  ],
+  related: relatedBlock("guide", ["petMeal", "petAge", "petSafe"], [
+    { name: "사료 급여량 계산기", href: "food-amount/index.html", ic: "🍚" },
+    { name: "먹어도 되는 음식 검색", href: "can-eat/index.html", ic: "🥗" },
+  ]),
+});
+
+buildPage({
+  dir: "privacy",
+  title: "개인정보처리방침 | PetCalc 반려동물 계산기",
+  desc: "PetCalc은 이름·연락처 등 개인정보를 수집하지 않습니다. 입력값은 브라우저에서만 처리되며, 체중 기록은 이용자 기기(localStorage)에만 저장됩니다. 광고 쿠키에 관한 안내를 포함합니다.",
+  h1: "개인정보처리방침",
+  emoji: "🔒",
+  kind: "article",
+  lead: "무엇을 수집하지 않는지, 저장은 어디에 되는지 명확히 밝힙니다.",
+  crumbs: cr({ name: "개인정보처리방침" }),
+  ad: "none",
+  bodyHtml: "",
+  aboutHtml: `<h2>1. 수집하지 않는 정보</h2>
+<p>PetCalc은 회원가입이 없으며 <b>이름·전화번호·주민등록번호·이메일·주소 등 개인을 식별할 수 있는 정보를 수집하지 않습니다</b>. 계산기에 입력하는 체중·나이·날짜 등은 브라우저 안에서만 계산에 쓰이고 서버로 전송되지 않습니다.</p>
+<h2>2. 브라우저 저장(localStorage)</h2>
+<p>체중 기록 도구는 이용자가 입력한 날짜·체중·별명을 <b>이용자의 브라우저 저장 공간에만</b> 보관합니다. 운영자는 이 데이터에 접근할 수 없습니다. 브라우저 데이터를 삭제하거나 도구의 “전체 삭제” 버튼을 누르면 즉시 사라집니다.</p>
+<h2>3. 광고와 쿠키</h2>
+<p>이 사이트는 Google AdSense 광고를 게재합니다. Google을 포함한 제3자 광고 제공자는 쿠키를 사용해 이용자의 이 사이트 및 다른 사이트 방문 기록을 바탕으로 광고를 게재할 수 있습니다. 이용자는 <a href="https://adssettings.google.com/" rel="nofollow noopener" target="_blank">Google 광고 설정</a>에서 맞춤 광고를 해제할 수 있고, <a href="https://www.aboutads.info/choices/" rel="nofollow noopener" target="_blank">aboutads.info</a>에서도 관련 설정을 변경할 수 있습니다.</p>
+<h2>4. 접속 기록</h2>
+<p>사이트가 배포된 호스팅 서비스는 서비스 운영·보안 목적으로 접속 로그(IP·접속 시각·브라우저 정보 등)를 자체 정책에 따라 처리할 수 있습니다. 운영자는 이 로그를 이용해 개인을 식별하려 시도하지 않습니다.</p>
+<h2>5. 아동의 개인정보</h2>
+<p>이 사이트는 만 14세 미만 아동을 대상으로 하지 않으며, 어떤 연령대의 개인정보도 별도로 수집하지 않습니다.</p>
+<h2>6. 정책 변경</h2>
+<p>정책이 바뀌면 이 페이지에 변경 내용을 반영합니다. 최종 업데이트: 2026-08-19.</p>`,
+  faq: [
+    { q: "입력한 체중이 서버에 저장되나요?", a: "저장되지 않습니다. 모든 계산은 브라우저에서 실행되며, 체중 기록만 이용자 기기의 localStorage에 남습니다." },
+    { q: "저장된 기록을 지우려면 어떻게 하나요?", a: "체중 기록 도구의 “전체 삭제” 버튼을 누르거나 브라우저의 사이트 데이터 삭제 기능을 사용하면 즉시 삭제됩니다." },
+  ],
+  related: relatedBlock("privacy", ["petAge"], [{ name: "이용약관", href: "terms/index.html", ic: "📄" }]),
+});
+
+buildPage({
+  dir: "terms",
+  title: "이용약관 | PetCalc 반려동물 계산기",
+  desc: "PetCalc 이용약관입니다. 제공 정보는 참고용이며 수의학적 진단·처방을 대신하지 않습니다. 책임의 한계와 저작권, 외부 링크에 관한 안내를 포함합니다.",
+  h1: "이용약관",
+  emoji: "📄",
+  kind: "article",
+  lead: "이 사이트의 정보를 어떤 범위에서 쓸 수 있는지 안내합니다.",
+  crumbs: cr({ name: "이용약관" }),
+  ad: "none",
+  bodyHtml: "",
+  aboutHtml: `<h2>1. 서비스의 성격</h2>
+<p>PetCalc은 반려동물 관련 계산과 일반 정보를 제공하는 무료 도구입니다. 제공되는 모든 내용은 <b>참고용</b>이며, 수의학적 진단·치료·처방을 대신하지 않습니다.</p>
+<h2>2. 의료적 판단에 관한 고지</h2>
+<p>계산 결과와 정보는 공개된 지침을 바탕으로 한 일반적 기준이며, 개별 동물의 상태를 반영하지 않습니다. 건강에 관한 결정은 반드시 <b>수의사와 상담</b>한 뒤 내려야 합니다. 이 사이트는 약물 용량을 계산하거나 처방 정보를 제공하지 않습니다.</p>
+<h2>3. 책임의 한계</h2>
+<p>운영자는 정보의 정확성을 위해 노력하지만, 내용의 완전성이나 특정 목적에의 적합성을 보증하지 않습니다. 이용자가 이 사이트의 정보를 이용해 내린 판단과 그 결과에 대해 운영자는 법이 허용하는 범위에서 책임을 지지 않습니다.</p>
+<h2>4. 저작권</h2>
+<p>사이트의 텍스트·구성·코드에 대한 권리는 운영자에게 있습니다. 인용 시 출처와 링크를 함께 표시해 주세요. 각 데이터의 근거가 되는 외부 자료의 권리는 해당 기관에 있습니다.</p>
+<h2>5. 외부 링크</h2>
+<p>출처 표기와 관련 도구 안내를 위해 외부 사이트로 연결되는 링크가 있습니다. 외부 사이트의 내용과 정책에 대해서는 운영자가 책임지지 않습니다.</p>
+<h2>6. 광고</h2>
+<p>이 사이트는 광고 수익으로 운영됩니다. 광고 내용은 광고 제공자가 결정하며, 운영자가 특정 상품이나 서비스를 보증하지 않습니다. 반려동물 보험을 포함한 금융상품을 비교하거나 추천하지 않습니다.</p>
+<h2>7. 약관 변경</h2>
+<p>약관이 변경되면 이 페이지에 반영합니다. 최종 업데이트: 2026-08-19.</p>`,
+  faq: [
+    { q: "계산 결과를 병원에 제출해도 되나요?", a: "상담 자료로 활용하는 것은 좋지만, 진단이나 처방의 근거로는 사용할 수 없습니다." },
+    { q: "내용을 블로그에 인용해도 되나요?", a: "출처와 페이지 링크를 함께 표시하면 인용할 수 있습니다. 전체 복제는 허용되지 않습니다." },
+  ],
+  related: relatedBlock("terms", ["petAge"], [{ name: "개인정보처리방침", href: "privacy/index.html", ic: "🔒" }]),
+});
+
+/* ---------------- 16) 허브 홈 ---------------- */
+const TOOL_CARDS = [
+  { href: "dog-age/index.html", ic: "🐕", n: "강아지 나이 계산기", d: "체구별 환산표로 사람 나이와 생활 단계를 계산" },
+  { href: "cat-age/index.html", ic: "🐈", n: "고양이 나이 계산기", d: "1살=15세 기준 환산과 키튼~노묘 단계 안내" },
+  { href: "food-amount/index.html", ic: "🍚", n: "사료 급여량 계산기", d: "RER·MER로 하루 kcal와 급여 그램까지" },
+  { href: "vaccine/index.html", ic: "💉", n: "예방접종 스케줄", d: "생년월일로 접종일 계산 + 심장사상충 .ics" },
+  { href: "weight-log/index.html", ic: "📈", n: "체중 기록·그래프", d: "브라우저 저장, CSV 내보내기, BCS 안내" },
+  { href: "can-eat/index.html", ic: "🥗", n: "먹어도 되는 음식", d: `강아지 ${DOG_CANEAT.items.length}종·고양이 ${CAT_CANEAT.items.length}종 가능/주의/금지` },
+  { href: "breed/index.html", ic: "📚", n: "견종 정보 백과", d: `${BREEDS.length}종의 체중·수명·호발 질환` },
+  { href: "pregnancy/index.html", ic: "🐾", n: "임신·출산 예정일", d: "교배일 기준 63일과 확인 시점 일정" },
+  { href: "heat-cycle/index.html", ic: "🌙", n: "발정 주기 계산기", d: "고양이 다음 발정 시기 예상" },
+  { href: "pet-cost/index.html", ic: "💰", n: "양육비 계산기", d: "항목별 편집으로 월·연간·평생 비용" },
+  { href: "name-gen/index.html", ic: "✨", n: "이름 짓기", d: "한글·먹을거리·자연·외국풍 사전에서 추천" },
+  { href: "vet-consult/index.html", ic: "🏥", n: "수의사 상담 안내", d: "약 용량은 계산하지 않습니다 · 응급 신호 정리" },
+];
+
+buildPage({
+  dir: "",
+  title: "PetCalc — 강아지·고양이 계산기 모음 (나이·사료량·접종·체중)",
+  desc: `반려동물 계산기 ${TOOL_CARDS.length}종을 한곳에. 강아지·고양이 나이 환산, RER·MER 사료 급여량, 예방접종 스케줄과 .ics, 체중 기록 그래프, 먹어도 되는 음식 ${DOG_CANEAT.items.length + CAT_CANEAT.items.length}종, 견종 ${BREEDS.length}종 정보까지 모두 무료로 제공합니다.`,
+  h1: "PetCalc 반려동물 계산기",
+  emoji: "🐾",
+  lead: "나이·사료량·접종 일정·체중 기록까지. 설치도 가입도 없이 브라우저에서 바로 계산합니다.",
+  crumbs: [{ name: "홈" }],
+  health: true,
+  ad: "none",
+  bodyHtml: `<div class="tool-grid">
+${TOOL_CARDS.map((t) => `  <a class="tool" href="${t.href}"><div class="t-ic">${t.ic}</div><div class="t-name">${esc(t.n)}</div><div class="t-desc">${esc(t.d)}</div></a>`).join("\n")}
+</div>
+<section class="card">
+  <h2>많이 찾는 음식</h2>
+  <div class="chip-list">
+${DOG_CANEAT.items.filter((i) => i.verdict === "danger").slice(0, 6).map((i) => `    <a class="chip danger" href="dog/can-eat/${i.slug}/index.html">강아지 ${esc(i.name)}</a>`).join("\n")}
+${CAT_CANEAT.items.filter((i) => i.verdict === "danger").slice(0, 4).map((i) => `    <a class="chip danger" href="cat/can-eat/${i.slug}/index.html">고양이 ${esc(i.name)}</a>`).join("\n")}
+${DOG_CANEAT.items.filter((i) => i.verdict === "ok").slice(0, 4).map((i) => `    <a class="chip ok" href="dog/can-eat/${i.slug}/index.html">강아지 ${esc(i.name)}</a>`).join("\n")}
+  </div>
+  <p style="margin-top:12px"><a href="dog/can-eat/index.html">강아지 전체 목록</a> · <a href="cat/can-eat/index.html">고양이 전체 목록</a></p>
+</section>
+<section class="card">
+  <h2>많이 찾는 견종</h2>
+  <div class="chip-list">
+${BREEDS.slice(0, 12).map((b) => `    <a class="chip" href="breed/${b.slug}/index.html">${esc(b.name)}</a>`).join("\n")}
+  </div>
+  <p style="margin-top:12px"><a href="breed/index.html">견종 백과 전체 보기</a></p>
+</section>
+<section class="card">
+  <h2>가이드</h2>
+  <div class="tool-grid">
+    <a class="tool" href="guide/dog-food-basics/index.html"><div class="t-ic">📘</div><div class="t-name">강아지 사료 기본 가이드</div><div class="t-desc">열량 계산부터 사료 전환까지 순서대로</div></a>
+    <a class="tool" href="guide/first-cat-checklist/index.html"><div class="t-ic">📋</div><div class="t-name">첫 고양이 준비 체크리스트</div><div class="t-desc">준비물·위험물·첫 2주 적응·병원 일정</div></a>
+  </div>
+</section>`,
+  aboutHtml: `<h2>PetCalc은 어떤 사이트인가요?</h2>
+<p>반려동물을 키우며 자주 찾게 되는 계산과 확인을 한곳에 모은 무료 도구 모음입니다. 모든 계산은 <b>브라우저에서만</b> 이뤄지고 입력값은 서버로 전송되지 않습니다. 가입도, 앱 설치도 필요 없습니다.</p>
+<h2>이 사이트가 지키는 원칙</h2>
+<ul>
+<li><b>진단하지 않습니다.</b> 건강 관련 페이지에는 항상 수의사 상담 안내를 함께 표시합니다.</li>
+<li><b>약 용량을 계산하지 않습니다.</b> 대신 <a href="vet-consult/index.html">언제 병원에 가야 하는지</a>를 정리했습니다.</li>
+<li><b>근거를 밝힙니다.</b> 각 데이터에는 출처 링크와 확인일이 붙어 있습니다.</li>
+<li><b>개인정보를 받지 않습니다.</b> 이름·연락처를 묻는 입력창이 없습니다.</li>
+<li><b>보험·금융 상품을 비교하거나 추천하지 않습니다.</b></li>
+</ul>
+<h2>이렇게 쓰면 좋습니다</h2>
+<ol>
+<li>입양 직후 — <a href="vaccine/index.html">접종 스케줄</a>을 만들고 캘린더에 등록합니다.</li>
+<li>매달 — <a href="weight-log/index.html">체중을 기록</a>하고 그래프로 흐름을 봅니다.</li>
+<li>사료를 바꿀 때 — <a href="food-amount/index.html">급여량</a>을 다시 계산합니다.</li>
+<li>사람 음식을 주기 전 — <a href="can-eat/index.html">먹어도 되는지</a> 먼저 확인합니다.</li>
+</ol>`,
+  faq: [
+    { q: "정말 무료인가요?", a: "네. 모든 도구는 무료이며 회원가입이 없습니다. 사이트 운영은 광고 수익으로 이뤄집니다." },
+    { q: "입력한 정보가 저장되나요?", a: "계산 입력값은 저장되지 않습니다. 체중 기록만 이용자 브라우저에 저장되며 서버로 전송되지 않습니다." },
+    { q: "정보의 출처는 어디인가요?", a: "각 페이지 하단에 근거 자료의 링크와 확인일을 표시했습니다. 수의학 지침·중독 정보 기관·견종 단체의 공개 자료를 참고했습니다." },
+    { q: "이 계산 결과로 진료를 대신할 수 있나요?", a: "아니요. 모든 내용은 참고용이며 진단이 아닙니다. 증상이 있다면 수의사에게 진료를 받으세요." },
+  ],
+  related: relatedBlock("", ["petAge", "petMeal", "petVetCost"], [
+    { name: "먹어도 되는 음식 검색", href: "can-eat/index.html", ic: "🥗" },
+    { name: "견종 정보 백과", href: "breed/index.html", ic: "📚" },
+  ]),
+});
+
+/* ---------------- 17) sitemap · robots ---------------- */
+const priorityOf = (d) => (d === "" ? "1.0" : d.split("/").length === 1 ? "0.9" : d.split("/").length === 2 ? "0.7" : "0.6");
+const today = "2026-08-19";
+const sitemap =
+  '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+  PAGES.map((d) => `  <url><loc>${canonOf(d)}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${priorityOf(d)}</priority></url>`).join("\n") +
+  "\n</urlset>\n";
+fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemap, "utf8");
+
+fs.writeFileSync(
+  path.join(ROOT, "robots.txt"),
+  `User-agent: *\nAllow: /\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`,
+  "utf8"
+);
+
+const ms = Date.now() - T0;
+console.log(`생성 완료: ${PAGES.length}개 페이지 · sitemap.xml · robots.txt`);
+console.log(`  - can-eat 롱테일: 강아지 ${DOG_CANEAT.items.length} + 고양이 ${CAT_CANEAT.items.length} = ${DOG_CANEAT.items.length + CAT_CANEAT.items.length}`);
+console.log(`  - 견종 롱테일: ${BREEDS.length}`);
+console.log(`  - 빌드 시간: ${ms}ms · 경고 ${WARN}건`);
+if (WARN > 0) process.exitCode = 1;
