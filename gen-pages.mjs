@@ -87,6 +87,9 @@ const BUILTIN_CATS = [
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab",
+  // 팩2 자립형 마이크로사이트 (각자 별도 Vercel 프로젝트 root 예정, 손으로 관리)
+  "datelab-kr", "genlab-kr", "studyroom-kr", "typingkr", "lottolab-kr",
+  "typelab-kr", "talkstat", "writelab-kr", "imagelab-kr", "thumbmaker-kr",
   // 팩3 생애단계 버티컬 허브 — 별도 Vercel 프로젝트(root=폴더)로 배포하는 자립형 정적 미니사이트. 손수 관리, 생성기 무관.
   "familyday-kr", "babycalc-kr", "petcalc-kr", "billcalc-kr", "carcalc-kr",
   "cookcalc-kr", "homecalc-kr", "fitcalc-kr", "tripcalc-kr", "housecalc-kr"]);

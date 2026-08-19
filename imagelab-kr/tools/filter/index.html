@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진 필터 - 밝기·대비·채도 보정 (프리셋 12종)</title>
+<meta name="description" content="사진 필터: 밝기, 대비, 채도, 세피아, 색온도, 비네팅 슬라이더와 흑백·시네마·빈티지 등 프리셋 12종. 서버 업로드 없는 무료 보정 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사진 필터","description":"사진 필터: 밝기, 대비, 채도, 세피아, 색온도, 비네팅 슬라이더와 흑백·시네마·빈티지 등 프리셋 12종. 서버 업로드 없는 무료 보정 도구.","url":"https://imagelab-kr.vercel.app/tools/filter/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"필터를 적용한 뒤 원본으로 되돌릴 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"저장 전이라면 「원본」 프리셋을 누르면 됩니다. 저장한 파일은 보정이 이미 픽셀에 반영된 상태라 원본으로 복원되지 않으니, 원본 파일을 따로 보관하세요."}},{"@type":"Question","name":"인물 사진에 어울리는 프리셋은 뭔가요?","acceptedAnswer":{"@type":"Answer","text":"「부드럽게」나 「따뜻한 톤」이 피부 톤을 자연스럽게 만들어 무난합니다. 「선명하게」는 풍경·음식 사진에 잘 맞습니다."}},{"@type":"Question","name":"보정해도 화질이 떨어지지 않나요?","acceptedAnswer":{"@type":"Answer","text":"보정 자체는 원본 해상도에서 이루어집니다. 다만 JPG로 저장하면 재압축이 한 번 일어나므로, 반복 편집할 계획이면 PNG로 저장하세요."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"사진 필터","item":"https://imagelab-kr.vercel.app/tools/filter/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 사진 필터</nav>
+<h1>사진 필터</h1>
+<p class="lead">슬라이더 6종(밝기·대비·채도·세피아·색온도·비네팅)과 프리셋 12종으로 사진을 보정합니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<h3 style="margin-top:0">프리셋</h3>
+<div class="btn-row" id="presets"></div>
+<div class="grid2">
+  <div class="field"><label>밝기 <span id="brightv"></span></label><input type="range" id="bright" min="50" max="150" value="100"></div>
+  <div class="field"><label>대비 <span id="contrastv"></span></label><input type="range" id="contrast" min="50" max="150" value="100"></div>
+  <div class="field"><label>채도 <span id="satv"></span></label><input type="range" id="sat" min="0" max="200" value="100"></div>
+  <div class="field"><label>세피아 <span id="sepiav"></span></label><input type="range" id="sepia" min="0" max="100" value="0"></div>
+  <div class="field"><label>색온도 <span id="tempv"></span></label><input type="range" id="temp" min="-50" max="50" value="0"></div>
+  <div class="field"><label>비네팅 <span id="vigv"></span></label><input type="range" id="vig" min="0" max="100" value="0"></div>
+</div>
+<div class="stage" id="stage"><canvas id="pv"></canvas></div>
+<div class="btn-row"><button class="btn btn-primary" id="dlJpg">JPG 저장</button><button class="btn" id="dlPng">PNG 저장</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>사진 필터 소개</h2>
+<p>사진 필터 도구는 밝기·대비·채도·세피아·색온도·비네팅 여섯 가지 요소를 슬라이더로 조절해 사진 분위기를 바꿉니다. 흑백, 세피아, 시네마, 빈티지, 무디 등 자주 쓰는 조합을 담은 프리셋 12종이 준비되어 있어 클릭 한 번으로 적용한 뒤 세부 조정할 수 있습니다.</p>
+<p>색온도를 올리면 따뜻한(주황) 톤, 내리면 차가운(파랑) 톤이 되고, 비네팅은 가장자리를 어둡게 해 시선을 중앙으로 모읍니다. 모든 조정은 미리보기에 즉시 반영되고 저장은 원본 해상도로 처리됩니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택</li>
+<li>프리셋을 골라 기본 분위기 적용</li>
+<li>슬라이더로 세부 조정</li>
+<li>JPG 또는 PNG로 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>필터를 적용한 뒤 원본으로 되돌릴 수 있나요?</summary><p>저장 전이라면 「원본」 프리셋을 누르면 됩니다. 저장한 파일은 보정이 이미 픽셀에 반영된 상태라 원본으로 복원되지 않으니, 원본 파일을 따로 보관하세요.</p></details>
+<details class="faq"><summary>인물 사진에 어울리는 프리셋은 뭔가요?</summary><p>「부드럽게」나 「따뜻한 톤」이 피부 톤을 자연스럽게 만들어 무난합니다. 「선명하게」는 풍경·음식 사진에 잘 맞습니다.</p></details>
+<details class="faq"><summary>보정해도 화질이 떨어지지 않나요?</summary><p>보정 자체는 원본 해상도에서 이루어집니다. 다만 JPG로 저장하면 재압축이 한 번 일어나므로, 반복 편집할 계획이면 PNG로 저장하세요.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var img = null, fileName = '';
+  var P = { bright: 100, contrast: 100, sat: 100, sepia: 0, temp: 0, vig: 0 };
+  var PRESETS = [
+    { n: '원본', p: { bright: 100, contrast: 100, sat: 100, sepia: 0, temp: 0, vig: 0 } },
+    { n: '선명하게', p: { bright: 103, contrast: 118, sat: 112, sepia: 0, temp: 0, vig: 0 } },
+    { n: '부드럽게', p: { bright: 106, contrast: 90, sat: 92, sepia: 0, temp: 5, vig: 0 } },
+    { n: '흑백', p: { bright: 102, contrast: 110, sat: 0, sepia: 0, temp: 0, vig: 15 } },
+    { n: '세피아', p: { bright: 102, contrast: 96, sat: 80, sepia: 65, temp: 10, vig: 20 } },
+    { n: '시네마', p: { bright: 96, contrast: 122, sat: 88, sepia: 10, temp: -12, vig: 35 } },
+    { n: '차가운 톤', p: { bright: 101, contrast: 104, sat: 96, sepia: 0, temp: -30, vig: 0 } },
+    { n: '따뜻한 톤', p: { bright: 103, contrast: 102, sat: 104, sepia: 6, temp: 28, vig: 0 } },
+    { n: '빈티지', p: { bright: 104, contrast: 88, sat: 72, sepia: 35, temp: 15, vig: 40 } },
+    { n: '화사하게', p: { bright: 112, contrast: 105, sat: 118, sepia: 0, temp: 8, vig: 0 } },
+    { n: '무디 (Moody)', p: { bright: 90, contrast: 115, sat: 82, sepia: 8, temp: -8, vig: 45 } },
+    { n: '드라마틱', p: { bright: 95, contrast: 135, sat: 105, sepia: 0, temp: -5, vig: 55 } }
+  ];
+
+  var pr = $('presets');
+  PRESETS.forEach(function (ps, i) {
+    var b = document.createElement('button'); b.className = 'chip'; b.textContent = ps.n;
+    if (i === 0) b.classList.add('on');
+    b.onclick = function () {
+      pr.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('on'); });
+      b.classList.add('on');
+      P = Object.assign({}, ps.p);
+      syncSliders(); render();
+    };
+    pr.appendChild(b);
+  });
+
+  var SLIDERS = [
+    ['bright', '밝기'], ['contrast', '대비'], ['sat', '채도'], ['sepia', '세피아'], ['temp', '색온도'], ['vig', '비네팅']
+  ];
+  function syncSliders() {
+    SLIDERS.forEach(function (s) {
+      $(s[0]).value = P[s[0]];
+      $(s[0] + 'v').textContent = P[s[0]] + (s[0] === 'temp' ? '' : '%');
+    });
+  }
+  SLIDERS.forEach(function (s) {
+    $(s[0]).addEventListener('input', function () {
+      P[s[0]] = +$(s[0]).value;
+      $(s[0] + 'v').textContent = P[s[0]] + (s[0] === 'temp' ? '' : '%');
+      render();
+    });
+  });
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    fileName = fs[0].name;
+    img = await IL.loadImage(fs[0]);
+    $('panel').style.display = '';
+    syncSliders();
+    render();
+  });
+
+  function apply(c) {
+    var ctx = c.getContext('2d');
+    ctx.filter = 'brightness(' + P.bright + '%) contrast(' + P.contrast + '%) saturate(' + P.sat + '%) sepia(' + P.sepia + '%)';
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    ctx.filter = 'none';
+    /* 색온도: soft-light 오버레이 */
+    if (P.temp !== 0) {
+      ctx.globalCompositeOperation = 'soft-light';
+      ctx.globalAlpha = Math.min(0.85, Math.abs(P.temp) / 55);
+      ctx.fillStyle = P.temp > 0 ? '#ff9a3c' : '#3c7dff';
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    /* 비네팅 */
+    if (P.vig > 0) {
+      var g = ctx.createRadialGradient(c.width / 2, c.height / 2, Math.min(c.width, c.height) * 0.35,
+        c.width / 2, c.height / 2, Math.hypot(c.width, c.height) / 2);
+      g.addColorStop(0, 'rgba(0,0,0,0)');
+      g.addColorStop(1, 'rgba(0,0,0,' + (P.vig / 100 * 0.75) + ')');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, c.width, c.height);
+    }
+    return c;
+  }
+
+  function render() {
+    if (!img) return;
+    var pv = $('pv');
+    var maxW = $('stage').clientWidth - 2 || 700;
+    var s = Math.min(1, maxW / IL.imgW(img), 560 / IL.imgH(img));
+    pv.width = Math.round(IL.imgW(img) * s);
+    pv.height = Math.round(IL.imgH(img) * s);
+    pv.getContext('2d').imageSmoothingQuality = 'high';
+    apply(pv);
+  }
+
+  $('dlPng').addEventListener('click', async function () {
+    if (!img) return;
+    var c = apply(IL.canvasOf(IL.imgW(img), IL.imgH(img)));
+    IL.download(await IL.toBlob(c, 'image/png'), IL.outName(fileName, 'filter', 'png'));
+  });
+  $('dlJpg').addEventListener('click', async function () {
+    if (!img) return;
+    var c = apply(IL.canvasOf(IL.imgW(img), IL.imgH(img)));
+    var c2 = IL.canvasOf(c.width, c.height), ctx = c2.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c2.width, c2.height); ctx.drawImage(c, 0, 0);
+    IL.download(await IL.toBlob(c2, 'image/jpeg', 0.92), IL.outName(fileName, 'filter', 'jpg'));
+  });
+  window.addEventListener('resize', render);
+})();
+</script>
+</body>
+</html>

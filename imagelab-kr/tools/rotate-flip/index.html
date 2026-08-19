@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>이미지 회전 반전 - 사진 돌리기·뒤집기</title>
+<meta name="description" content="이미지 회전 반전: 90도·180도 회전, 좌우 반전(거울), 상하 반전을 클릭 한 번으로. 서버 업로드 없는 무료 브라우저 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"이미지 회전 반전","description":"이미지 회전 반전: 90도·180도 회전, 좌우 반전(거울), 상하 반전을 클릭 한 번으로. 서버 업로드 없는 무료 브라우저 도구.","url":"https://imagelab-kr.vercel.app/tools/rotate-flip/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"회전하면 화질이 나빠지나요?","acceptedAnswer":{"@type":"Answer","text":"90도 단위 회전과 반전은 픽셀을 그대로 재배치하므로 화질 손실이 없습니다. 단, JPG로 저장하면 저장 과정에서 재압축이 한 번 일어납니다. 무손실을 원하면 PNG로 저장하세요."}},{"@type":"Question","name":"사진이 자동으로 눕는 이유는 뭔가요?","acceptedAnswer":{"@type":"Answer","text":"스마트폰 사진에는 촬영 방향(EXIF Orientation)이 기록되는데, 일부 프로그램이 이를 무시해서 생기는 현상입니다. 이 도구로 회전을 확정해 저장하면 어디서든 같은 방향으로 보입니다."}},{"@type":"Question","name":"임의 각도(예: 15도) 회전도 되나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 90도 단위 회전 전용입니다. 임의 각도 회전은 여백 처리와 보간으로 화질이 변하기 때문에 목적이 다른 도구로 분리되어 있습니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"이미지 회전 반전","item":"https://imagelab-kr.vercel.app/tools/rotate-flip/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 이미지 회전 반전</nav>
+<h1>이미지 회전 반전</h1>
+<p class="lead">90°/180° 회전, 좌우(거울)·상하 반전을 클릭 한 번으로 처리합니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<div class="btn-row">
+  <button class="btn" id="ccw">⟲ 왼쪽 90°</button><button class="btn" id="cw">⟳ 오른쪽 90°</button>
+  <button class="btn" id="half">180°</button><button class="btn" id="flipH">↔ 좌우 반전</button>
+  <button class="btn" id="flipV">↕ 상하 반전</button><button class="btn" id="reset">원래대로</button>
+</div>
+<p class="status" id="dim"></p>
+<div class="stage checker"><canvas id="pv"></canvas></div>
+<div class="btn-row"><button class="btn btn-primary" id="dl">PNG 저장</button><button class="btn" id="dlJpg">JPG 저장</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>이미지 회전 반전 소개</h2>
+<p>스마트폰으로 찍은 사진이 옆으로 눕거나 거꾸로 보일 때, 셀카가 거울처럼 뒤집혀 보일 때 사용하는 도구입니다. 90도 단위 회전과 좌우·상하 반전을 조합해 원하는 방향으로 맞출 수 있습니다.</p>
+<p>회전·반전은 픽셀 정보를 재배치하는 작업이라 화질 손실이 없으며, 결과는 PNG(무손실) 또는 JPG로 저장할 수 있습니다. 스마트폰 사진의 EXIF 회전 정보도 불러올 때 자동 반영됩니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택</li>
+<li>회전·반전 버튼을 눌러 방향 맞추기 (여러 번 조합 가능)</li>
+<li>PNG 또는 JPG로 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>회전하면 화질이 나빠지나요?</summary><p>90도 단위 회전과 반전은 픽셀을 그대로 재배치하므로 화질 손실이 없습니다. 단, JPG로 저장하면 저장 과정에서 재압축이 한 번 일어납니다. 무손실을 원하면 PNG로 저장하세요.</p></details>
+<details class="faq"><summary>사진이 자동으로 눕는 이유는 뭔가요?</summary><p>스마트폰 사진에는 촬영 방향(EXIF Orientation)이 기록되는데, 일부 프로그램이 이를 무시해서 생기는 현상입니다. 이 도구로 회전을 확정해 저장하면 어디서든 같은 방향으로 보입니다.</p></details>
+<details class="faq"><summary>임의 각도(예: 15도) 회전도 되나요?</summary><p>이 도구는 90도 단위 회전 전용입니다. 임의 각도 회전은 여백 처리와 보간으로 화질이 변하기 때문에 목적이 다른 도구로 분리되어 있습니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var img = null, fileName = '', angle = 0, fx = 1, fy = 1;
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    fileName = fs[0].name;
+    img = await IL.loadImage(fs[0]);
+    angle = 0; fx = 1; fy = 1;
+    $('panel').style.display = '';
+    render();
+  });
+
+  function render() {
+    if (!img) return;
+    var w = IL.imgW(img), h = IL.imgH(img);
+    var rot90 = angle % 180 !== 0;
+    var c = $('pv');
+    c.width = rot90 ? h : w;
+    c.height = rot90 ? w : h;
+    var ctx = c.getContext('2d');
+    ctx.save();
+    ctx.translate(c.width / 2, c.height / 2);
+    ctx.rotate(angle * Math.PI / 180);
+    ctx.scale(fx, fy);
+    ctx.drawImage(img, -w / 2, -h / 2);
+    ctx.restore();
+    $('dim').textContent = c.width + ' × ' + c.height + ' px · 회전 ' + angle + '° · ' +
+      (fx < 0 ? '좌우반전 ' : '') + (fy < 0 ? '상하반전' : '') || '';
+  }
+
+  $('ccw').onclick = function () { angle = (angle + 270) % 360; render(); };
+  $('cw').onclick = function () { angle = (angle + 90) % 360; render(); };
+  $('half').onclick = function () { angle = (angle + 180) % 360; render(); };
+  $('flipH').onclick = function () { fx *= -1; render(); };
+  $('flipV').onclick = function () { fy *= -1; render(); };
+  $('reset').onclick = function () { angle = 0; fx = 1; fy = 1; render(); };
+
+  $('dl').addEventListener('click', async function () {
+    if (!img) return;
+    var blob = await IL.toBlob($('pv'), 'image/png');
+    IL.download(blob, IL.outName(fileName, 'rotated', 'png'));
+  });
+  $('dlJpg').addEventListener('click', async function () {
+    if (!img) return;
+    var src = $('pv');
+    var c = IL.canvasOf(src.width, src.height), ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(src, 0, 0);
+    var blob = await IL.toBlob(c, 'image/jpeg', 0.92);
+    IL.download(blob, IL.outName(fileName, 'rotated', 'jpg'));
+  });
+})();
+</script>
+</body>
+</html>

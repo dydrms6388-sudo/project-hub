@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>뽀모도로 타이머 - 25분 집중 타이머, 오늘 기록 그래프 | 스터디룸</title>
+<meta name="description" content="무료 뽀모도로 타이머. 25분 집중·5분 휴식 사이클, 시간 커스텀, 알림음, 오늘 집중 기록과 최근 7일 그래프까지. 설치 없이 브라우저에서 바로 시작하세요.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<style>
+.timer-card{text-align:center;padding:32px 20px}
+.ring{position:relative;width:260px;height:260px;margin:0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .time{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .time b{font-size:52px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ring .time span{font-size:14px;font-weight:700;color:var(--sub)}
+.phase-focus .time span{color:var(--brand)}
+.phase-break .time span{color:var(--ok)}
+.cycle-dots{display:flex;gap:6px;justify-content:center;margin:14px 0 4px}
+.cycle-dots i{width:10px;height:10px;border-radius:99px;background:#e2e8f0}
+.cycle-dots i.done{background:var(--brand)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px;padding:0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.bar-col .bar{width:100%;max-width:38px;background:linear-gradient(180deg,var(--brand),var(--brand2));border-radius:6px 6px 2px 2px;min-height:2px}
+.bar-col .lb{font-size:11px;color:var(--sub);font-weight:700}
+.bar-col .vv{font-size:10px;color:var(--sub)}
+.bar-col.today .lb{color:var(--brand)}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../study-timer/">공부 시간</a><a href="../timetable/">시간표</a><a href="../exam-dday/">시험 디데이</a><a href="../flashcards/">암기 카드</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 뽀모도로 타이머</nav>
+<div class="page-h">
+  <h1>뽀모도로 타이머</h1>
+  <p>25분 집중 + 5분 휴식. 사이클을 돌리며 오늘의 집중 기록을 자동으로 쌓아 줍니다.</p>
+</div>
+
+<section class="card timer-card phase-focus" id="timerCard">
+  <div class="ring">
+    <svg width="260" height="260" viewBox="0 0 260 260">
+      <circle cx="130" cy="130" r="118" fill="none" stroke="#eef0f4" stroke-width="14"/>
+      <circle id="prog" cx="130" cy="130" r="118" fill="none" stroke="var(--brand)" stroke-width="14"
+        stroke-linecap="round" stroke-dasharray="741.4" stroke-dashoffset="0"/>
+    </svg>
+    <div class="time"><b id="clock">25:00</b><span id="phaseLabel">집중 시간</span></div>
+  </div>
+  <div class="cycle-dots" id="dots"></div>
+  <div style="font-size:13px;color:var(--sub)" id="cycleInfo"></div>
+  <div class="btn-row" style="justify-content:center">
+    <button class="btn btn-p" id="btnStart" style="min-width:130px">시작</button>
+    <button class="btn" id="btnSkip">건너뛰기</button>
+    <button class="btn" id="btnReset">리셋</button>
+  </div>
+</section>
+
+<section class="card no-print">
+  <h2>설정</h2>
+  <div class="grid4">
+    <div class="field"><label class="f">집중 (분)</label><input type="number" id="setFocus" min="1" max="120" value="25"></div>
+    <div class="field"><label class="f">짧은 휴식 (분)</label><input type="number" id="setShort" min="1" max="60" value="5"></div>
+    <div class="field"><label class="f">긴 휴식 (분)</label><input type="number" id="setLong" min="1" max="60" value="15"></div>
+    <div class="field"><label class="f">긴 휴식 주기</label><select id="setEvery"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+  </div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <label class="check"><input type="checkbox" id="setSound" checked> 알림음</label>
+    <label class="check"><input type="checkbox" id="setAuto"> 다음 단계 자동 시작</label>
+  </div>
+</section>
+
+<section class="card">
+  <h2>오늘의 기록</h2>
+  <div class="stat-grid">
+    <div class="stat"><div class="k">오늘 완료한 뽀모도로</div><div class="v" id="stToday">0개</div></div>
+    <div class="stat"><div class="k">오늘 집중 시간</div><div class="v" id="stMin">0분</div></div>
+    <div class="stat"><div class="k">최근 7일 합계</div><div class="v" id="stWeek">0분</div></div>
+  </div>
+  <h3>최근 7일 집중 시간</h3>
+  <div class="bars" id="chart"></div>
+  <div class="btn-row"><button class="btn btn-sm btn-danger" id="btnClearLog">기록 지우기</button></div>
+  <!-- ad-slot -->
+</section>
+
+<article class="prose">
+  <h2>뽀모도로 기법이란?</h2>
+  <p>뽀모도로 기법은 <b>25분 집중 + 5분 휴식</b>을 1세트(뽀모도로)로 반복하는 시간 관리 방법입니다.
+  "그냥 오래 앉아 있기"보다 짧고 명확한 마감이 반복되기 때문에 집중을 시작하기 쉽고, 휴식이 규칙적으로
+  보장되어 지치지 않고 오래 공부할 수 있습니다. 보통 4세트마다 15~30분의 긴 휴식을 넣습니다.</p>
+  <p>이 타이머는 집중/휴식 시간과 긴 휴식 주기를 자유롭게 바꿀 수 있고, 단계가 끝나면 알림음으로
+  알려 줍니다. 완료한 뽀모도로는 날짜별로 자동 기록되어 오늘 얼마나 집중했는지, 최근 7일간 흐름이
+  어땠는지 그래프로 확인할 수 있습니다. 모든 기록은 브라우저에만 저장됩니다.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>필요하면 설정에서 집중/휴식 시간을 조절합니다. (기본 25/5/15분, 4세트마다 긴 휴식)</li>
+    <li><b>시작</b>을 누르고 집중합니다. 탭을 벗어나도 시간은 정확히 흘러갑니다.</li>
+    <li>알림음이 울리면 휴식하세요. "자동 시작"을 켜면 휴식 타이머가 바로 이어집니다.</li>
+    <li>집중 단계를 끝까지 마치면 오늘의 기록에 자동으로 쌓입니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>탭을 닫거나 화면이 꺼지면 타이머가 멈추나요?</summary>
+      <div class="a">탭이 백그라운드로 가도 종료 시각 기준으로 계산하므로 시간이 밀리지 않습니다. 다만 탭을
+      완전히 닫으면 진행 중이던 타이머는 사라집니다(완료된 기록은 저장됨). 공부하는 동안은 탭을 열어 두세요.</div></details>
+    <details><summary>25분이 너무 길거나 짧으면 어떻게 하나요?</summary>
+      <div class="a">설정에서 1~120분까지 자유롭게 바꿀 수 있습니다. 처음이라면 15분부터 시작해 익숙해지면
+      늘리는 방법, 수학 문제풀이처럼 몰입이 필요한 과목은 50분 집중 + 10분 휴식으로 쓰는 방법이 흔합니다.</div></details>
+    <details><summary>알림음이 안 들려요.</summary>
+      <div class="a">브라우저 정책상 페이지와 한 번은 상호작용(시작 버튼 클릭)해야 소리가 재생됩니다. 시작
+      버튼을 눌러 타이머를 켰다면 정상적으로 울립니다. 무음 모드(아이폰 측면 스위치)에서는 기기 설정에 따라
+      소리가 나지 않을 수 있습니다.</div></details>
+    <details><summary>기록은 어디에 저장되나요?</summary>
+      <div class="a">브라우저 localStorage에 날짜별 완료 개수와 분 단위 합계만 저장합니다. 서버 전송이 없고,
+      기록 지우기 버튼으로 언제든 삭제할 수 있습니다.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"뽀모도로 타이머","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"25/5 커스텀 뽀모도로 타이머, 알림음, 일별 집중 기록 그래프"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"탭이 백그라운드면 타이머가 밀리나요?","acceptedAnswer":{"@type":"Answer","text":"종료 시각 기준으로 계산하므로 백그라운드에서도 시간이 밀리지 않습니다."}},
+{"@type":"Question","name":"집중 시간을 바꿀 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"집중·휴식·긴 휴식 시간을 1~120분 범위에서 자유롭게 설정할 수 있습니다."}},
+{"@type":"Question","name":"기록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저 localStorage에만 저장되며 서버로 전송되지 않습니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"뽀모도로 타이머","item":"https://studyroom-kr.vercel.app/tools/pomodoro/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+var CIRC=741.4;
+
+var cfg=SR.load('pomo_cfg',{focus:25,short:5,long:15,every:4,sound:true,auto:false});
+$('setFocus').value=cfg.focus; $('setShort').value=cfg.short; $('setLong').value=cfg.long;
+$('setEvery').value=String(cfg.every); $('setSound').checked=cfg.sound; $('setAuto').checked=cfg.auto;
+['setFocus','setShort','setLong','setEvery','setSound','setAuto'].forEach(function(id){
+  $(id).addEventListener('change',function(){
+    cfg={focus:clampI($('setFocus'),1,120,25),short:clampI($('setShort'),1,60,5),
+      long:clampI($('setLong'),1,60,15),every:+$('setEvery').value,
+      sound:$('setSound').checked,auto:$('setAuto').checked};
+    SR.save('pomo_cfg',cfg);
+    if(!running) resetPhase();
+  });
+});
+function clampI(el,min,max,def){
+  var v=parseInt(el.value,10);
+  if(isNaN(v)) v=def;
+  v=Math.max(min,Math.min(max,v));
+  el.value=v; return v;
+}
+
+/* ---------- 기록 ---------- */
+var log=SR.load('pomo_log',{}); /* {'2026-08-19':{n:3,min:75}} */
+function addRecord(minutes){
+  var k=SR.ymd(new Date());
+  if(!log[k]) log[k]={n:0,min:0};
+  log[k].n++; log[k].min+=minutes;
+  SR.save('pomo_log',log);
+  renderStats();
+}
+function renderStats(){
+  var today=log[SR.ymd(new Date())]||{n:0,min:0};
+  $('stToday').textContent=today.n+'개';
+  $('stMin').textContent=today.min+'분';
+  var bars='',week=0,max=1,days=[];
+  for(var i=6;i>=0;i--){
+    var d=new Date(); d.setDate(d.getDate()-i);
+    var k=SR.ymd(d), v=(log[k]||{min:0}).min;
+    week+=v; max=Math.max(max,v);
+    days.push({d:d,v:v,today:i===0});
+  }
+  $('stWeek').textContent=week+'분';
+  days.forEach(function(o){
+    bars+='<div class="bar-col'+(o.today?' today':'')+'">'
+      +'<span class="vv">'+(o.v||'')+'</span>'
+      +'<div class="bar" style="height:'+Math.round(o.v/max*100)+'%"></div>'
+      +'<span class="lb">'+(o.today?'오늘':(o.d.getMonth()+1)+'/'+o.d.getDate())+'</span></div>';
+  });
+  $('chart').innerHTML=bars;
+}
+$('btnClearLog').onclick=function(){
+  if(!confirm('집중 기록을 모두 지울까요?')) return;
+  log={}; SR.save('pomo_log',log); renderStats();
+};
+
+/* ---------- 타이머 엔진 ---------- */
+var phase='focus';       /* focus | short | long */
+var doneFocus=0;         /* 이번 긴휴식 주기 내 완료 수 */
+var running=false, endAt=0, remainMs=0, tick=null;
+
+function phaseMin(){ return phase==='focus'?cfg.focus:(phase==='short'?cfg.short:cfg.long); }
+function phaseName(){ return phase==='focus'?'집중 시간':(phase==='short'?'짧은 휴식':'긴 휴식'); }
+function fmt(ms){
+  var s=Math.max(0,Math.ceil(ms/1000));
+  return SR.pad2(Math.floor(s/60))+':'+SR.pad2(s%60);
+}
+function paint(){
+  var total=phaseMin()*60000;
+  var left=running?Math.max(0,endAt-Date.now()):remainMs;
+  $('clock').textContent=fmt(left);
+  $('phaseLabel').textContent=phaseName();
+  $('prog').style.strokeDashoffset=String(CIRC*(1-left/total));
+  $('prog').setAttribute('stroke', phase==='focus'?'var(--brand)':'var(--ok)');
+  $('timerCard').className='card timer-card '+(phase==='focus'?'phase-focus':'phase-break');
+  document.title=(running?fmt(left)+' · ':'')+phaseName()+' | 뽀모도로 타이머';
+  var dots='';
+  for(var i=0;i<cfg.every;i++) dots+='<i class="'+(i<doneFocus?'done':'')+'"></i>';
+  $('dots').innerHTML=dots;
+  $('cycleInfo').textContent='긴 휴식까지 '+(cfg.every-doneFocus)+'개 남음';
+}
+function resetPhase(){
+  remainMs=phaseMin()*60000; paint();
+}
+function start(){
+  running=true;
+  endAt=Date.now()+(remainMs||phaseMin()*60000);
+  $('btnStart').textContent='일시정지';
+  tick=setInterval(function(){
+    if(Date.now()>=endAt){ complete(); return; }
+    paint();
+  },250);
+  paint();
+}
+function pause(){
+  running=false; remainMs=Math.max(0,endAt-Date.now());
+  clearInterval(tick); $('btnStart').textContent='계속';
+  paint();
+}
+function complete(){
+  clearInterval(tick); running=false;
+  if(cfg.sound) beep(phase==='focus');
+  if(phase==='focus'){
+    addRecord(cfg.focus);
+    doneFocus++;
+    if(doneFocus>=cfg.every){ phase='long'; doneFocus=0; SR.toast('수고했어요! 긴 휴식 시간입니다 🎉'); }
+    else { phase='short'; SR.toast('집중 완료! 잠깐 쉬어 가세요'); }
+  }else{
+    phase='focus'; SR.toast('휴식 끝! 다시 집중해 볼까요');
+  }
+  remainMs=phaseMin()*60000;
+  $('btnStart').textContent='시작';
+  paint();
+  if(cfg.auto) start();
+}
+$('btnStart').onclick=function(){ running?pause():start(); };
+$('btnSkip').onclick=function(){
+  if(!confirm('현재 단계를 건너뛸까요? (집중 단계는 기록되지 않습니다)')) return;
+  clearInterval(tick); running=false;
+  if(phase==='focus'){ doneFocus++; phase=(doneFocus>=cfg.every)?'long':'short'; if(doneFocus>=cfg.every) doneFocus=0; }
+  else phase='focus';
+  remainMs=phaseMin()*60000; $('btnStart').textContent='시작'; paint();
+};
+$('btnReset').onclick=function(){
+  clearInterval(tick); running=false;
+  phase='focus'; doneFocus=0; remainMs=cfg.focus*60000;
+  $('btnStart').textContent='시작'; paint();
+};
+
+/* ---------- 알림음 (Web Audio) ---------- */
+var actx=null;
+function beep(isFocusEnd){
+  try{
+    if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended') actx.resume();
+    var notes=isFocusEnd?[523.25,659.25,783.99]:[783.99,659.25,523.25];
+    notes.forEach(function(f,i){
+      var o=actx.createOscillator(), g=actx.createGain();
+      o.type='sine'; o.frequency.value=f;
+      o.connect(g); g.connect(actx.destination);
+      var t=actx.currentTime+i*0.18;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.3,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);
+      o.start(t); o.stop(t+0.2);
+    });
+  }catch(e){}
+}
+
+resetPhase();
+renderStats();
+})();
+</script>
+</body>
+</html>
