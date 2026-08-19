@@ -163,3 +163,50 @@ export function rentYield({ price, deposit = 0, monthly, loan = 0, loanRatePct =
   const net = invested > 0 ? (annualRent - annualInterest) / invested * 100 : NaN;
   return { gross, net, invested, annualRent, annualInterest };
 }
+
+/* ---------- 대출 상환 스케줄 (loan-compare / affordability 공용) ---------- */
+// 원리금균등: paidMonths 회차 납입 후 잔액
+export function remainingBalance(principal, annualRatePct, months, paidMonths) {
+  const r = annualRatePct / 100 / 12;
+  const k = Math.min(Math.max(0, paidMonths), months);
+  if (k >= months) return 0;
+  if (r === 0) return principal * (1 - k / months);
+  const pay = monthlyPayment(principal, annualRatePct, months);
+  return principal * Math.pow(1 + r, k) - pay * (Math.pow(1 + r, k) - 1) / r;
+}
+// 원리금균등: k회차까지 누적 이자
+export function cumulativeInterest(principal, annualRatePct, months, paidMonths) {
+  const k = Math.min(Math.max(0, paidMonths), months);
+  const pay = monthlyPayment(principal, annualRatePct, months);
+  const bal = remainingBalance(principal, annualRatePct, months, k);
+  return pay * k - (principal - bal);
+}
+// 원금균등: 매월 원금 일정, 이자는 잔액 기준 체감
+export function equalPrincipal(principal, annualRatePct, months) {
+  const r = annualRatePct / 100 / 12;
+  const per = principal / months;
+  return {
+    principalPerMonth: per,
+    firstPayment: per + principal * r,
+    lastPayment: per + per * r,
+    totalInterest: principal * r * (months + 1) / 2,
+  };
+}
+export function equalPrincipalBalance(principal, months, paidMonths) {
+  const k = Math.min(Math.max(0, paidMonths), months);
+  return principal * (1 - k / months);
+}
+export function equalPrincipalCumInterest(principal, annualRatePct, months, paidMonths) {
+  const r = annualRatePct / 100 / 12;
+  const per = principal / months;
+  const k = Math.min(Math.max(0, paidMonths), months);
+  // Σ_{i=0}^{k-1} (principal - per*i) * r
+  return r * (principal * k - per * k * (k - 1) / 2);
+}
+// 중도상환수수료: 잔액 × 요율 × (잔여 면제기간/면제기간) — 슬라이딩(체감) 방식 선택
+export function prepayFee(balance, feePct, { sliding = true, exemptMonths = 36, paidMonths = 0 } = {}) {
+  if (balance <= 0 || feePct <= 0) return 0;
+  if (!sliding) return balance * feePct / 100;
+  const left = Math.max(0, exemptMonths - paidMonths);
+  return balance * feePct / 100 * (left / exemptMonths);
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>청약 가점 계산기 — 무주택기간·부양가족·통장 84점 만점 산식</title>
+<meta name="description" content="주택공급에 관한 규칙 별표1의 가점 산식 그대로 무주택기간(최대 32점), 부양가족 수(최대 35점), 청약통장 가입기간(최대 17점)을 계산해 84점 만점 기준 총점과 항목별 점수를 보여줍니다." />
+<link rel="canonical" href="https://housecalc-kr.vercel.app/subscription/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="부동산 계산기 허브" />
+<meta property="og:title" content="청약 가점 계산기 (84점 만점)" />
+<meta property="og:description" content="주택공급에 관한 규칙 별표1의 가점 산식 그대로 무주택기간(최대 32점), 부양가족 수(최대 35점), 청약통장 가입기간(최대 17점)을 계산해 84점 만점 기준 총점과 항목별 점수를 보여줍니다." />
+<meta property="og:url" content="https://housecalc-kr.vercel.app/subscription/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script defer src="../assets/common.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"청약 가점 계산기 (84점)","description":"주택공급에 관한 규칙 별표1의 가점 산식 그대로 무주택기간(최대 32점), 부양가족 수(최대 35점), 청약통장 가입기간(최대 17점)을 계산해 84점 만점 기준 총점과 항목별 점수를 보여줍니다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://housecalc-kr.vercel.app/subscription/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"84점 만점은 어떤 경우인가요?","acceptedAnswer":{"@type":"Answer","text":"무주택기간 15년 이상(32점) + 부양가족 6명 이상(35점) + 청약통장 15년 이상(17점)이 모두 충족될 때입니다."}},{"@type":"Question","name":"무주택기간은 언제부터 세나요?","acceptedAnswer":{"@type":"Answer","text":"만 30세가 된 날부터이며, 30세 이전에 혼인했다면 혼인신고일부터입니다. 과거에 집이 있었다면 처분한 날부터 다시 계산합니다."}},{"@type":"Question","name":"부양가족에 부모님도 포함되나요?","acceptedAnswer":{"@type":"Answer","text":"직계존속은 청약자가 세대주이고 3년 이상 계속 등본에 등재되어 있어야 인정되는 등 요건이 있습니다. 요건을 잘못 판단해 부적격 처리되는 사례가 많습니다."}},{"@type":"Question","name":"가점이 낮으면 방법이 없나요?","acceptedAnswer":{"@type":"Answer","text":"추첨제 물량, 특별공급(신혼부부·생애최초·다자녀 등), 무순위 청약 등 다른 경로가 있습니다. 가점은 단지·평형별 경쟁률에 따라 당첨선이 크게 다릅니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://housecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"청약 가점 계산기","item":"https://housecalc-kr.vercel.app/subscription/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🏠 부동산 계산기 허브</a> <span class="sep">›</span> <span>청약 가점 계산기</span></nav>
+  <p class="topnotice"><strong>고지</strong> — 이 사이트의 모든 계산은 <strong>참고용 추정이며 실제 세액·한도는 위택스·국세청·금융기관에서 확인</strong>해야 합니다.
+  세율·한도·요율은 법령 개정과 정책 변경으로 수시로 바뀌며, 개별 사정(감면·특례·심사 기준)에 따라 결과가 달라집니다.
+  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> ·
+  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a> ·
+  <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a></p>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🎯</div>
+    <h1>청약 가점 계산기</h1>
+    <p class="lead">무주택기간 <strong>32</strong> + 부양가족 <strong>35</strong> + 통장 <strong>17</strong> = 84점. 각 항목이 어떻게 채워지는지 표로 보여드립니다.</p>
+  </div>
+
+  <section class="panel">
+    <h2>가점 항목 입력</h2>
+    <label><input type="checkbox" id="hasHouse" /> 세대 구성원 중 주택 소유자가 있다 (무주택기간 0점)</label>
+    <div class="row3">
+      <div>
+        <label for="noHouseYears">무주택기간 <span class="opt">(년)</span></label>
+        <input type="number" id="noHouseYears" step="0.5" min="0" max="30" value="10" />
+      </div>
+      <div>
+        <label for="dependents">부양가족 수 <span class="opt">(명, 본인 제외)</span></label>
+        <input type="number" id="dependents" step="1" min="0" max="10" value="2" />
+      </div>
+      <div>
+        <label for="accountYears">청약통장 가입기간 <span class="opt">(년)</span></label>
+        <input type="number" id="accountYears" step="0.5" min="0" max="30" value="8" />
+      </div>
+    </div>
+    <p class="note">무주택기간은 <strong>만 30세가 된 날</strong>(그 전에 혼인했다면 혼인신고일)부터 계산합니다. 부양가족은 주민등록등본상 세대원 중 배우자·직계존속(3년 이상 등재)·직계비속(미혼, 만 30세 미만 등 요건) 기준입니다.</p>
+    <div class="btnrow"><button class="btn" id="go">가점 계산하기</button></div>
+  </section>
+  
+  <section class="result" id="result" hidden aria-live="polite">
+    <p class="sub">계산 결과 (참고용 추정)</p>
+    <p class="big" id="big"></p>
+    <p class="sub" id="sub"></p>
+    <div id="detail"></div>
+  </section>
+
+  <div class="adbox" id="adbox" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>가점제는 어떻게 채워지나</h2>
+    <p>민영주택 일반공급의 가점제는 세 항목의 합으로 84점 만점입니다. 무주택기간은 1년 미만 2점에서 시작해 1년마다 2점씩 올라 15년 이상이면 32점, 부양가족은 0명 5점에서 1명마다 5점씩 올라 6명 이상이면 35점, 청약통장 가입기간은 6개월 미만 1점에서 시작해 15년 이상이면 17점입니다.</p>
+    <p>가장 크게 벌어지는 항목은 <strong>부양가족</strong>입니다. 한 명 차이가 5점이라 무주택기간 2년 반을 한 번에 뒤집습니다. 다만 부양가족 요건(등본 등재 기간, 직계비속 연령·혼인 여부)은 까다로우니 청약홈 자료로 반드시 확인하세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>세대 내 주택 소유 여부를 체크합니다. 유주택이면 무주택기간 점수는 0점입니다.</li>
+      <li>무주택기간을 연 단위로 입력합니다(만 30세 또는 혼인신고일 기산).</li>
+      <li>부양가족 수는 본인을 뺀 인원입니다.</li>
+      <li>청약통장 가입기간을 연 단위로 입력하면 항목별 점수와 총점이 나옵니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 84점 만점은 어떤 경우인가요?</p><p class="a">무주택기간 15년 이상(32점) + 부양가족 6명 이상(35점) + 청약통장 15년 이상(17점)이 모두 충족될 때입니다.</p></div>
+    <div class="qa"><p class="q">Q. 무주택기간은 언제부터 세나요?</p><p class="a">만 30세가 된 날부터이며, 30세 이전에 혼인했다면 혼인신고일부터입니다. 과거에 집이 있었다면 처분한 날부터 다시 계산합니다.</p></div>
+    <div class="qa"><p class="q">Q. 부양가족에 부모님도 포함되나요?</p><p class="a">직계존속은 청약자가 세대주이고 3년 이상 계속 등본에 등재되어 있어야 인정되는 등 요건이 있습니다. 요건을 잘못 판단해 부적격 처리되는 사례가 많습니다.</p></div>
+    <div class="qa"><p class="q">Q. 가점이 낮으면 방법이 없나요?</p><p class="a">추첨제 물량, 특별공급(신혼부부·생애최초·다자녀 등), 무순위 청약 등 다른 경로가 있습니다. 가점은 단지·평형별 경쟁률에 따라 당첨선이 크게 다릅니다.</p></div>
+    <h2>계산에 쓰인 값과 출처</h2>
+    <div class="tbwrap"><table class="tb">
+      <thead><tr><th>항목</th><th>값</th><th>근거</th><th>확인일</th></tr></thead>
+      <tbody>
+        <tr><td>무주택기간 배점</td><td>최대 32점 (1년 미만 2점, 1년당 +2)</td><td><a href="https://www.law.go.kr/법령/주택공급에관한규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>부양가족 배점</td><td>최대 35점 (0명 5점, 1명당 +5)</td><td><a href="https://www.law.go.kr/법령/주택공급에관한규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>청약통장 배점</td><td>최대 17점 (6개월 미만 1점)</td><td><a href="https://www.law.go.kr/법령/주택공급에관한규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>총점</td><td>84점 만점</td><td><a href="https://www.law.go.kr/법령/주택공급에관한규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note warn">이 계산기의 결과는 <strong>참고용 추정치</strong>이며 실제 부과·승인 금액을 확정하지 않습니다.
+    세금은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>(지방세)·<a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a>(국세),
+    대출 한도는 거래 금융기관, 등기 비용은 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 반드시 확인하세요.
+    이 사이트는 이름·연락처·주민등록번호 등 개인정보를 수집하지 않으며 모든 계산은 브라우저 안에서만 이뤄집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 계산기</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../affordability/"><span>🏡</span> 내 집 마련 예산 계산기</a>
+      <a class="rel" href="../acquisition-tax/"><span>🧾</span> 취득세 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/cheongyak-score-calc/" target="_blank" rel="noopener"><span>🎯</span> 청약 가점 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/dsr/" target="_blank" rel="noopener"><span>📉</span> DSR 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">부동산 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { subscriptionScore } from "../assets/calc.mjs";
+import { subscription } from "../data/subscription.mjs";
+import { $, raw, man, txt, on, won, manwon, eok, pctStr, fbox, srcLine, setHtml, setText, showResult, echo, chips } from "../assets/ui.mjs";
+$("go").addEventListener("click", function () {
+  var s = subscriptionScore({ noHouseYears: raw("noHouseYears"), hasHouse: on("hasHouse"), dependents: raw("dependents"), accountYears: raw("accountYears") });
+  setText("big", s.total + "점 / 84점");
+  setText("sub", "무주택 " + s.noHousePts + " + 부양가족 " + s.dependentsPts + " + 통장 " + s.accountPts);
+  var rows = [
+    ["① 무주택기간 " + (on("hasHouse") ? "(유주택 → 0점)" : raw("noHouseYears") + "년"), s.noHousePts + "점 / 32점"],
+    ["② 부양가족 " + raw("dependents") + "명 (본인 제외)", s.dependentsPts + "점 / 35점"],
+    ["③ 청약통장 " + raw("accountYears") + "년", s.accountPts + "점 / 17점"],
+    ["총점 ①+②+③", s.total + "점 / 84점"]
+  ];
+  setHtml("detail", fbox("산출 과정", rows, "부양가족·무주택기간 인정 요건은 청약홈 기준으로 반드시 확인하세요. 요건 착오로 인한 부적격 당첨은 일정 기간 청약이 제한됩니다.")
+    + srcLine("무주택기간", subscription.noHousePeriod)
+    + srcLine("부양가족", subscription.dependents)
+    + srcLine("청약통장", subscription.accountPeriod));
+  showResult();
+});
+</script>
+</body>
+</html>
