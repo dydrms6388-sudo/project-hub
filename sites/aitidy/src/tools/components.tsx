@@ -17,9 +17,18 @@ function Loading() {
 
 /**
  * slug → 컴포넌트 맵.
- * 무거운 라이브러리는 여기서 dynamic import 되므로 페이지 진입 전에는 로드되지 않는다.
- * 새 도구를 추가하면 registry.ts 와 이 맵 두 곳 모두에 등록해야 한다.
+ * 무거운 라이브러리(xlsx, diff)는 각 컴포넌트 안에서 다시 await import 되므로
+ * 이 맵을 통해 페이지에 진입해도 실제 동작 전에는 내려받지 않는다.
  */
 export const componentMap: Record<string, ComponentType> = {
-  sample: dynamic(() => import("./impl/sample"), { ssr: false, loading: Loading }),
+  "markdown-remove": dynamic(() => import("./impl/markdown-remove"), { ssr: false, loading: Loading }),
+  "table-to-excel": dynamic(() => import("./impl/table-to-excel"), { ssr: false, loading: Loading }),
+  "kakao-format": dynamic(() => import("./impl/kakao-format"), { ssr: false, loading: Loading }),
+  "notion-paste": dynamic(() => import("./impl/notion-paste"), { ssr: false, loading: Loading }),
+  "code-extract": dynamic(() => import("./impl/code-extract"), { ssr: false, loading: Loading }),
+  "emoji-remove": dynamic(() => import("./impl/emoji-remove"), { ssr: false, loading: Loading }),
+  "text-diff": dynamic(() => import("./impl/text-diff"), { ssr: false, loading: Loading }),
+  "word-count": dynamic(() => import("./impl/word-count"), { ssr: false, loading: Loading }),
+  "json-pretty": dynamic(() => import("./impl/json-pretty"), { ssr: false, loading: Loading }),
+  "prompt-cleaner": dynamic(() => import("./impl/prompt-cleaner"), { ssr: false, loading: Loading }),
 };

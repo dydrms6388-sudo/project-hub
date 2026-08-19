@@ -134,7 +134,7 @@ export default function MarkdownRemove() {
       options={
         <div className="space-y-2.5">
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">목록 기호</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">목록 기호</span>
             <Radio
               name="md-list"
               value={list}
@@ -147,7 +147,7 @@ export default function MarkdownRemove() {
             />
           </OptionRow>
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">표</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">표</span>
             <Radio
               name="md-table"
               value={table}
@@ -160,7 +160,7 @@ export default function MarkdownRemove() {
             />
           </OptionRow>
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">링크</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">링크</span>
             <Radio
               name="md-link"
               value={link}

@@ -20,7 +20,7 @@ export default function ToolsIndex() {
           <ul className="space-y-2">
             {g.items.map((t) => (
               <li key={t.slug}>
-                <Link href={`/tools/${t.slug}/`} className="text-blue-700 hover:underline">
+                <Link href={`/tools/${t.slug}/`} className="text-violet-700 hover:underline">
                   {t.h1}
                 </Link>
                 <span className="ml-2 text-sm text-slate-500">{t.description}</span>

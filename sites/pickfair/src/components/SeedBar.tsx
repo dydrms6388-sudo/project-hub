@@ -56,7 +56,7 @@ export default function SeedBar<D>({
         <Btn onClick={share} ariaLabel="결과 링크 공유하기">
           결과 링크 공유
         </Btn>
-        <CopyButton value={() => s.shareUrl} label="링크 복사" />
+        <CopyButton value={() => s.shareUrl || window.location.href} label="링크 복사" />
         <Btn variant="soft" onClick={onRerun ?? s.rerun} ariaLabel="새로운 seed 로 다시 뽑기">
           새로 뽑기
         </Btn>

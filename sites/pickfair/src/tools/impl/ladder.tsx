@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SeedBar, { BrokenBadge, ReplayBadge } from "@/components/SeedBar";
 import { Btn, Field, Notice, Panel, ToolLoading } from "@/components/ui";
 import { parseNames, sanitizeStrings } from "@/lib/names";
-import { rngFromSeed } from "@/lib/rng";
+import { buildLadder, traceLadder } from "@/lib/draws";
 import { useSeedState } from "@/lib/seedstate";
 
 type D = { n: string[]; p: string[] };
@@ -20,39 +20,6 @@ function validate(raw: unknown): D | null {
   if (n.length < 2 || n.length > MAX) return null;
   if (p.length !== n.length) return null;
   return { n, p };
-}
-
-/** seed 로부터 사다리 가로줄을 결정론적으로 만든다 */
-function buildLadder(seed: string, cols: number) {
-  const rnd = rngFromSeed(seed, "ladder");
-  const rows = Math.min(30, Math.max(9, cols * 2 + 1));
-  const rungs: boolean[][] = [];
-  for (let r = 0; r < rows; r++) {
-    const row: boolean[] = new Array(Math.max(0, cols - 1)).fill(false);
-    for (let i = 0; i < cols - 1; i++) {
-      if (i > 0 && row[i - 1]) continue; // 같은 행에서 가로줄이 붙지 않게
-      if (rnd() < 0.45) row[i] = true;
-    }
-    rungs.push(row);
-  }
-  return { rows, rungs };
-}
-
-/** 한 참가자의 경로를 따라 내려가며 도착 칸을 구한다 */
-function trace(rungs: boolean[][], start: number) {
-  const steps: { row: number; from: number; to: number }[] = [];
-  let c = start;
-  for (let r = 0; r < rungs.length; r++) {
-    const row = rungs[r];
-    if (c > 0 && row[c - 1]) {
-      steps.push({ row: r, from: c, to: c - 1 });
-      c -= 1;
-    } else if (c < row.length && row[c]) {
-      steps.push({ row: r, from: c, to: c + 1 });
-      c += 1;
-    }
-  }
-  return { end: c, steps };
 }
 
 const MX = 26;
@@ -78,9 +45,14 @@ export default function Ladder() {
   const cols = d ? d.n.length : 0;
   const ladder = useMemo(() => (d ? buildLadder(s.seed, cols) : null), [d, s.seed, cols]);
 
+  // 공유 링크로 들어온 경우엔 결과를 바로 볼 수 있어야 한다
+  useEffect(() => {
+    if (s.replay && d) setRevealed(new Set(d.n.map((_, i) => i)));
+  }, [s.replay, d]);
+
   const results = useMemo(() => {
     if (!d || !ladder) return [];
-    return d.n.map((_, i) => trace(ladder.rungs, i).end);
+    return d.n.map((_, i) => traceLadder(ladder.rungs, i).end);
   }, [d, ladder]);
 
   function start() {
@@ -167,7 +139,7 @@ export default function Ladder() {
 
   const activePath = (() => {
     if (active == null || !ladder) return "";
-    const { steps } = trace(ladder.rungs, active);
+    const { steps } = traceLadder(ladder.rungs, active);
     let c = active;
     const pts: [number, number][] = [[x(c), TOP - 16]];
     for (const st of steps) {

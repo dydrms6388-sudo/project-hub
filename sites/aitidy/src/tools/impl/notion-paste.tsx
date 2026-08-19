@@ -105,7 +105,7 @@ export default function NotionPaste() {
       options={
         <div className="space-y-2.5">
           <OptionRow>
-            <span className="w-28 shrink-0 font-medium">헤딩 레벨</span>
+            <span className="w-full shrink-0 font-medium sm:w-28">헤딩 레벨</span>
             <Radio
               name="np-shift"
               value={shift}

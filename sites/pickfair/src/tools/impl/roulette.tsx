@@ -5,7 +5,7 @@ import SeedBar, { BrokenBadge, ReplayBadge } from "@/components/SeedBar";
 import { Btn, Field, Notice, Panel, ToolLoading } from "@/components/ui";
 import { celebrate } from "@/lib/confetti";
 import { sanitizeStrings } from "@/lib/names";
-import { rngFromSeed, weightedIndex } from "@/lib/rng";
+import { spinRoulette } from "@/lib/draws";
 import { useSeedState } from "@/lib/seedstate";
 
 type D = { it: string[]; w: number[] };
@@ -73,7 +73,7 @@ export default function Roulette() {
 
   const winner = useMemo(() => {
     if (!d) return -1;
-    return weightedIndex(d.w, rngFromSeed(s.seed, "roulette"));
+    return spinRoulette(s.seed, d.w);
   }, [d, s.seed]);
 
   const target = useMemo(() => {

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import SeedBar, { BrokenBadge, ReplayBadge } from "@/components/SeedBar";
 import { Btn, Field, Notice, NumberInput, Panel, ToolLoading } from "@/components/ui";
 import { parseNames, sanitizeStrings } from "@/lib/names";
-import { rngFromSeed, shuffle } from "@/lib/rng";
+import { splitTeams } from "@/lib/draws";
 import { useSeedState } from "@/lib/seedstate";
 
 type D = { n: string[]; k: number; sz: number[] | null; fb: [string, string][] };
@@ -35,70 +35,6 @@ function validate(raw: unknown): D | null {
   return { n, k, sz, fb };
 }
 
-/** 팀 정원 계산 — 지정값이 없으면 균등 분배(나머지는 seed 로 정한 팀에) */
-function capacities(d: D, seed: string): number[] {
-  if (d.sz) {
-    const total = d.sz.reduce((a, b) => a + b, 0);
-    if (total >= d.n.length) return d.sz.slice();
-  }
-  const base = Math.floor(d.n.length / d.k);
-  const rest = d.n.length - base * d.k;
-  const caps = new Array(d.k).fill(base);
-  const order = shuffle(
-    Array.from({ length: d.k }, (_, i) => i),
-    rngFromSeed(seed, "team-caps"),
-  );
-  for (let i = 0; i < rest; i++) caps[order[i]] += 1;
-  return caps;
-}
-
-type Assign = { teams: string[][]; constrained: boolean; tries: number };
-
-function assign(d: D, seed: string): Assign {
-  const caps = capacities(d, seed);
-  const rnd = rngFromSeed(seed, "team-split");
-  const forbid = new Map<string, Set<string>>();
-  for (const [a, b] of d.fb) {
-    if (a === b) continue;
-    if (!forbid.has(a)) forbid.set(a, new Set());
-    if (!forbid.has(b)) forbid.set(b, new Set());
-    forbid.get(a)!.add(b);
-    forbid.get(b)!.add(a);
-  }
-
-  const MAX_TRY = 400;
-  for (let t = 0; t < MAX_TRY; t++) {
-    const order = shuffle(d.n, rnd);
-    const teams: string[][] = Array.from({ length: d.k }, () => []);
-    let ok = true;
-    for (const person of order) {
-      const enemies = forbid.get(person);
-      // 남은 자리가 가장 많은 팀부터 채워 균형을 유지한다
-      const cand = teams
-        .map((tm, i) => ({ i, room: caps[i] - tm.length, tm }))
-        .filter((c) => c.room > 0 && (!enemies || !c.tm.some((m) => enemies.has(m))))
-        .sort((a, b) => b.room - a.room);
-      if (cand.length === 0) {
-        ok = false;
-        break;
-      }
-      const best = cand.filter((c) => c.room === cand[0].room);
-      teams[best[Math.floor(rnd() * best.length)].i].push(person);
-    }
-    if (ok) return { teams, constrained: true, tries: t + 1 };
-  }
-
-  // 제약을 만족하는 배정을 못 찾음 → 제약 없이 배정하고 사실대로 알린다
-  const order = shuffle(d.n, rngFromSeed(seed, "team-fallback"));
-  const teams: string[][] = Array.from({ length: d.k }, () => []);
-  let idx = 0;
-  for (let i = 0; i < d.k; i++) {
-    for (let j = 0; j < caps[i] && idx < order.length; j++) teams[i].push(order[idx++]);
-  }
-  while (idx < order.length) teams[idx % d.k].push(order[idx++]);
-  return { teams, constrained: false, tries: MAX_TRY };
-}
-
 export default function TeamSplit() {
   const s = useSeedState<D>(validate);
   const [namesText, setNamesText] = useState("가영\n나윤\n다온\n라온\n민서\n서준\n하준\n지우");
@@ -112,7 +48,7 @@ export default function TeamSplit() {
 
   const names = useMemo(() => parseNames(namesText, MAXN), [namesText]);
   const d = s.data;
-  const result = useMemo(() => (d ? assign(d, s.seed) : null), [d, s.seed]);
+  const result = useMemo(() => (d ? splitTeams(d, s.seed) : null), [d, s.seed]);
 
   function setTeamCount(v: number) {
     const nk = Math.max(2, Math.min(MAXK, v));

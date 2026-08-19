@@ -88,7 +88,7 @@ export default function CodeExtract() {
       options={
         <div className="space-y-2.5">
           <OptionRow>
-            <span className="w-20 shrink-0 font-medium">언어 필터</span>
+            <span className="w-full shrink-0 font-medium sm:w-20">언어 필터</span>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}

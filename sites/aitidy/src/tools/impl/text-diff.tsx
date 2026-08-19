@@ -80,7 +80,7 @@ export default function TextDiff() {
       <div className="rounded-xl border border-slate-200 bg-white p-3">
         <div className="space-y-2.5">
           <OptionRow>
-            <span className="w-20 shrink-0 font-medium">비교 단위</span>
+            <span className="w-full shrink-0 font-medium sm:w-20">비교 단위</span>
             <Radio
               name="td-mode"
               value={mode}

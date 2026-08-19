@@ -112,7 +112,7 @@ export default function WordCount() {
       options={
         <div className="space-y-2.5">
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">자소서 기준</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">자소서 기준</span>
             <span className="flex flex-wrap gap-1.5">
               {PRESETS.map((p) => (
                 <button

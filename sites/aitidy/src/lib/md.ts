@@ -29,7 +29,11 @@ export function parseCodeBlocks(src: string): CodeBlock[] {
       open.buf.push(line);
     }
   }
-  if (open && open.buf.length) out.push({ lang: open.lang, code: open.buf.join("\n"), index: out.length });
+  // 닫는 펜스 없이 답변이 잘린 경우에도 마지막 블록을 살린다(끝의 빈 줄은 버린다).
+  if (open) {
+    while (open.buf.length && open.buf[open.buf.length - 1].trim() === "") open.buf.pop();
+    if (open.buf.length) out.push({ lang: open.lang, code: open.buf.join("\n"), index: out.length });
+  }
   return out;
 }
 

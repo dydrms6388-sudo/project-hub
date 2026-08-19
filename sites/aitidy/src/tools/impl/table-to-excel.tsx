@@ -122,7 +122,7 @@ export default function TableToExcel() {
             <Check checked={strip} onChange={setStrip} label="셀 안 마크다운 기호 제거(**굵게** 등)" />
           </OptionRow>
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">표 여러 개</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">표 여러 개</span>
             <Radio
               name="tx-mode"
               value={mode}

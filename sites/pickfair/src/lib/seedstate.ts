@@ -12,6 +12,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { buildHash, parseHash } from "./hashurl";
 import { newSeed } from "./rng";
 
 type LZ = typeof import("lz-string");
@@ -45,13 +46,8 @@ export type SeedState<D> = {
 
 function readHash(): { seed: string; d: string } | null {
   if (typeof window === "undefined") return null;
-  const raw = window.location.hash.replace(/^#/, "");
-  if (!raw) return null;
-  const params = new URLSearchParams(raw);
-  const seed = params.get("s");
-  const d = params.get("d");
-  if (!seed) return null;
-  return { seed, d: d ?? "" };
+  const parsed = parseHash(window.location.hash);
+  return parsed ? { seed: parsed.seed, d: parsed.data } : null;
 }
 
 function absUrl(hash: string): string {
@@ -102,6 +98,8 @@ export function useSeedState<D>(validate: (raw: unknown) => D | null): SeedState
   }, []);
 
   useEffect(() => {
+    // 인코딩이 필요한 순간에 지연되지 않도록 미리 받아 둔다(초기 번들에는 없음)
+    void lz();
     void syncFromHash();
     const onNav = () => void syncFromHash();
     window.addEventListener("hashchange", onNav);
@@ -123,7 +121,7 @@ export function useSeedState<D>(validate: (raw: unknown) => D | null): SeedState
     void (async () => {
       const { compressToEncodedURIComponent } = await lz();
       const d = compressToEncodedURIComponent(JSON.stringify(data));
-      const hash = `#s=${encodeURIComponent(s)}&d=${d}`;
+      const hash = buildHash(s, d);
       window.history.pushState(null, "", `${window.location.pathname}${window.location.search}${hash}`);
       setState((prev) => (prev.seed === s ? { ...prev, hash } : prev));
     })();

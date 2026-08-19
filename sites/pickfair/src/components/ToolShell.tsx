@@ -65,7 +65,7 @@ export default function ToolShell({ tool }: { tool: ToolMeta }) {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="text-blue-600 hover:underline"
+                  className="text-violet-700 hover:underline"
                 >
                   {s.label} ↗
                 </a>
@@ -88,7 +88,7 @@ export default function ToolShell({ tool }: { tool: ToolMeta }) {
               <Link
                 key={r.slug}
                 href={`/tools/${r.slug}/`}
-                className="rounded-xl border border-slate-200 p-4 transition hover:border-blue-400 hover:bg-blue-50/40"
+                className="rounded-xl border border-slate-200 p-4 transition hover:border-violet-400 hover:bg-violet-50/40"
               >
                 <span className="block font-semibold text-slate-800">{r.h1}</span>
                 <span className="mt-1 block text-sm text-slate-500">{r.description}</span>

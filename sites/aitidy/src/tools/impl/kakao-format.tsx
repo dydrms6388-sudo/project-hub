@@ -144,7 +144,7 @@ export default function KakaoFormat() {
       options={
         <div className="space-y-2.5">
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">굵게</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">굵게</span>
             <Radio
               name="kk-bold"
               value={bold}
@@ -157,7 +157,7 @@ export default function KakaoFormat() {
             />
           </OptionRow>
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">제목</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">제목</span>
             <Radio
               name="kk-head"
               value={head}

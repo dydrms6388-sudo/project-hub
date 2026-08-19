@@ -67,7 +67,7 @@ export default function EmojiRemove() {
       options={
         <div className="space-y-2.5">
           <OptionRow>
-            <span className="w-24 shrink-0 font-medium">제거 범위</span>
+            <span className="w-full shrink-0 font-medium sm:w-24">제거 범위</span>
             <Radio
               name="er-mode"
               value={mode}
