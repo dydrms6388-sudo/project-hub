@@ -1,0 +1,114 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>반복 단어 찾기 — 자소서 중복 표현 검사 | writelab</title>
+<meta name="description" content="글에서 같은 단어가 몇 번 반복되는지 세어 줍니다. 조사를 떼어 낸 근사 비교로 "경험을/경험이"까지 함께 묶어 확인하고 본문에서 바로 하이라이트하세요.">
+<meta property="og:title" content="반복 단어 찾기 — 자소서 중복 표현 검사 | writelab">
+<meta property="og:description" content="글에서 같은 단어가 몇 번 반복되는지 세어 줍니다. 조사를 떼어 낸 근사 비교로 "경험을/경험이"까지 함께 묶어 확인하고 본문에서 바로 하이라이트하세요.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"반복 단어 찾기","description":"글에서 같은 단어가 몇 번 반복되는지 세어 줍니다. 조사를 떼어 낸 근사 비교로 \"경험을/경험이\"까지 함께 묶어 확인하고 본문에서 바로 하이라이트하세요.","url":"https://writelab-kr.vercel.app/tools/repeat-words/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"\"경험을\"과 \"경험이\"를 같은 단어로 세는 건가요?","acceptedAnswer":{"@type":"Answer","text":"\"조사 제거\" 옵션을 켜면 그렇습니다. 어절 끝에 붙은 조사(은/는/이/가/을/를/의/에/에서/으로/부터/까지 등)를 규칙으로 떼어 내 대표형으로 묶어 셉니다. 형태소 분석기가 아니라 목록 기반 근사이므로, 조사와 모양이 같은 어미가 붙은 경우에는 잘못 묶일 수 있습니다. 옵션을 끄면 글자 그대로 비교합니다."}},{"@type":"Question","name":"같은 단어를 몇 번까지 쓰면 괜찮나요?","acceptedAnswer":{"@type":"Answer","text":"글자수 대비로 판단하는 편이 낫습니다. 500자 안에서 같은 명사가 5번 넘게 나오면 대개 눈에 걸립니다. 다만 직무 키워드는 반복이 오히려 필요할 수 있으므로, 반복을 줄일 대상은 \"저는·경험·통해·생각·노력\" 같은 일반어부터 고르세요."}},{"@type":"Question","name":"반복을 줄이면 문장이 어색해집니다.","acceptedAnswer":{"@type":"Answer","text":"같은 뜻의 다른 단어로 바꾸는 것보다, 반복된 단어가 들어간 문장 자체를 합치거나 지우는 편이 자연스럽습니다. 특히 \"저는\"과 \"제가\"는 대부분 지워도 뜻이 통합니다."}},{"@type":"Question","name":"하이라이트는 어디에 표시되나요?","acceptedAnswer":{"@type":"Answer","text":"표에서 단어를 누르면 아래 본문 미리보기에서 해당 단어가 모두 표시됩니다. 어느 문단에 몰려 있는지 확인하는 데 쓰세요."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"반복 단어 찾기","item":"https://writelab-kr.vercel.app/tools/repeat-words/"}]}</script>
+<header class="site"><div class="wrap nav">
+<a class="brand" href="../../index.html">write<span>lab</span></a>
+<a class="hublink" href="../../index.html">도구 전체 보기</a>
+</div></header>
+<main class="wrap">
+<h1>반복 단어 찾기</h1>
+<p class="sub">어절을 세어 반복되는 단어를 찾고, 조사를 떼어 낸 대표형으로 묶어 실제 반복량을 보여 줍니다.</p>
+
+<div class="card">
+  <label for="src">분석할 글</label>
+  <textarea id="src" placeholder="글을 붙여 넣으면 반복되는 단어를 세어 줍니다."></textarea>
+  <div class="row">
+    <label for="minc">최소 반복</label><input type="number" id="minc" value="3" min="2" max="30" style="width:80px">
+    <label for="minl">최소 글자</label><input type="number" id="minl" value="2" min="1" max="6" style="width:80px">
+    <label style="display:flex;align-items:center;gap:6px;font-weight:600"><input type="checkbox" id="josa" checked> 조사 제거(근사)</label>
+    <button class="btn sm" id="clear" type="button">지우기</button>
+  </div>
+  <div class="stat-grid" id="stats"></div>
+  <h3>반복 단어</h3>
+  <div class="table-scroll"><table id="tab"><thead><tr><th>단어</th><th>횟수</th><th>어절 대비</th><th>실제 표기</th></tr></thead><tbody></tbody></table></div>
+  <h3>본문에서 위치 보기</h3>
+  <div class="preview" id="prev"></div>
+</div>
+<!-- ad-slot -->
+<section class="prose">
+<h2>같은 단어가 반복되면 글이 짧아 보입니다</h2>
+<p>자소서를 여러 번 고치다 보면 특정 단어가 눈에 띄게 늘어납니다. "경험", "통해", "노력", "저는", "생각합니다" 같은 말이 문단마다 나오면 내용이 실제로 반복되지 않아도 어휘가 빈약해 보이고, 읽는 사람은 앞에서 읽은 문장을 다시 읽는 듯한 느낌을 받습니다. 반대로 직무와 직결된 키워드는 반복이 필요합니다. 그래서 반복 자체가 아니라 "무엇이 반복되는지"를 봐야 합니다.</p>
+<p>이 도구는 글을 어절로 나눈 뒤 조사를 떼어 낸 대표형으로 묶어 반복 횟수를 셉니다. "경험을·경험이·경험은"이 모두 "경험"으로 합쳐지므로, 실제 체감되는 반복량을 확인할 수 있습니다. 조사 제거는 목록 기반 근사이므로 원래 표기도 함께 보여 주어 잘못 묶인 경우를 확인할 수 있게 했습니다.</p>
+<p>표에서 단어를 누르면 본문에서 그 단어가 모두 표시됩니다. 한 문단에 세 번 이상 몰려 있다면 그 문단부터 손보세요.</p>
+<h2>사용법</h2>
+<ol>
+<li>글을 붙여 넣습니다.</li>
+<li>최소 반복 횟수(기본 3회)와 최소 글자수(기본 2자)로 목록을 좁힙니다. 1자 단어까지 보려면 최소 글자를 1로 낮추세요.</li>
+<li>표에서 일반어(저는·경험·통해 등)를 먼저 골라 문장을 합치거나 지웁니다.</li>
+<li>단어를 눌러 본문에서 위치를 확인하고, 한 문단에 몰린 반복을 우선 정리합니다.</li>
+</ol>
+</section>
+<section class="faq"><h2>자주 묻는 질문</h2><details><summary>"경험을"과 "경험이"를 같은 단어로 세는 건가요?</summary><div class="prose"><p>"조사 제거" 옵션을 켜면 그렇습니다. 어절 끝에 붙은 조사(은/는/이/가/을/를/의/에/에서/으로/부터/까지 등)를 규칙으로 떼어 내 대표형으로 묶어 셉니다. 형태소 분석기가 아니라 목록 기반 근사이므로, 조사와 모양이 같은 어미가 붙은 경우에는 잘못 묶일 수 있습니다. 옵션을 끄면 글자 그대로 비교합니다.</p></div></details><details><summary>같은 단어를 몇 번까지 쓰면 괜찮나요?</summary><div class="prose"><p>글자수 대비로 판단하는 편이 낫습니다. 500자 안에서 같은 명사가 5번 넘게 나오면 대개 눈에 걸립니다. 다만 직무 키워드는 반복이 오히려 필요할 수 있으므로, 반복을 줄일 대상은 "저는·경험·통해·생각·노력" 같은 일반어부터 고르세요.</p></div></details><details><summary>반복을 줄이면 문장이 어색해집니다.</summary><div class="prose"><p>같은 뜻의 다른 단어로 바꾸는 것보다, 반복된 단어가 들어간 문장 자체를 합치거나 지우는 편이 자연스럽습니다. 특히 "저는"과 "제가"는 대부분 지워도 뜻이 통합니다.</p></div></details><details><summary>하이라이트는 어디에 표시되나요?</summary><div class="prose"><p>표에서 단어를 누르면 아래 본문 미리보기에서 해당 단어가 모두 표시됩니다. 어느 문단에 몰려 있는지 확인하는 데 쓰세요.</p></div></details></section>
+<p class="mini">함께 쓰면 좋은 도구: <a href="../banned-words/">자소서 금칙어 체크</a> · <a href="../keyword-density/">키워드 밀도</a> · <a href="../sentence-check/">문장 길이 분석</a></p>
+</main>
+<footer class="site"><div class="wrap">
+<ul class="foot-links"><li><a href="../../tools/char-count/">자소서 글자수 세기</a></li><li><a href="../../tools/sentence-check/">문장 길이 분석</a></li><li><a href="../../tools/repeat-words/">반복 단어 찾기</a></li><li><a href="../../tools/banned-words/">자소서 금칙어 체크</a></li><li><a href="../../tools/spacing-basic/">띄어쓰기 기본 검사</a></li><li><a href="../../tools/text-compare/">글 비교</a></li><li><a href="../../tools/readability/">가독성 점수</a></li><li><a href="../../tools/outline/">자소서 개요 만들기</a></li><li><a href="../../tools/keyword-density/">키워드 밀도</a></li><li><a href="../../tools/paper-count/">원고지 계산기</a></li><li><a href="../../tools/resume-date/">경력 기간 계산기</a></li><li><a href="../../guide/jasoso-char-limit/">자소서 글자수 기준 확인하는 방법</a></li><li><a href="../../guide/common-mistakes/">자소서에서 자주 하는 실수</a></li><li><a href="../../privacy.html">개인정보처리방침</a></li><li><a href="../../terms.html">이용약관</a></li></ul>
+<p class="mini">writelab — 자소서·글쓰기 도구 모음. 모든 계산은 사용자의 브라우저에서만 실행되며, 입력한 글은 어디에도 전송·저장되지 않습니다.</p>
+<p class="mini">© 2026 writelab</p>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function(){
+  var src=document.getElementById('src'), tab=document.querySelector('#tab tbody'), stats=document.getElementById('stats'),
+      prev=document.getElementById('prev'), minc=document.getElementById('minc'), minl=document.getElementById('minl'), josa=document.getElementById('josa');
+  var sel=null, groups=[];
+  function run(){
+    var text=WL.norm(src.value), toks=WL.tokenize(text);
+    var mc=parseInt(minc.value,10)||3, ml=parseInt(minl.value,10)||2;
+    var map={};
+    toks.forEach(function(w){
+      var key=josa.checked?WL.stripJosa(w):w;
+      if(Array.from(key).length<ml) return;
+      if(!map[key]) map[key]={key:key,n:0,forms:{}};
+      map[key].n++; map[key].forms[w]=(map[key].forms[w]||0)+1;
+    });
+    groups=Object.keys(map).map(function(k){return map[k];}).filter(function(g){return g.n>=mc;})
+      .sort(function(a,b){return b.n-a.n||a.key.localeCompare(b.key);});
+    var uniq=Object.keys(map).length;
+    stats.innerHTML=[['총 어절',toks.length],['서로 다른 단어',uniq],
+      ['반복 단어(기준 이상)',groups.length],['어휘 다양도',toks.length?(Math.round(uniq/toks.length*1000)/10+'%'):'0%']]
+      .map(function(x){return '<div class="stat"><b>'+(typeof x[1]==='number'?WL.fmt(x[1]):x[1])+'</b><small>'+x[0]+'</small></div>';}).join('');
+    tab.innerHTML=groups.length?groups.map(function(g,i){
+      var forms=Object.keys(g.forms).sort(function(a,b){return g.forms[b]-g.forms[a];})
+        .map(function(f){return WL.esc(f)+'('+g.forms[f]+')';}).join(', ');
+      var pct=toks.length?Math.round(g.n/toks.length*1000)/10:0;
+      var cls=g.n>=8?'badge b-bad':(g.n>=5?'badge b-warn':'badge');
+      return '<tr><td><button class="btn sm" data-i="'+i+'" type="button">'+WL.esc(g.key)+'</button></td>'+
+        '<td><span class="'+cls+'">'+g.n+'회</span></td><td>'+pct+'%</td><td class="mini">'+forms+'</td></tr>';
+    }).join(''):'<tr><td colspan="4" class="mini">기준 이상 반복된 단어가 없습니다.</td></tr>';
+    draw(text);
+  }
+  function draw(text){
+    text=text===undefined?WL.norm(src.value):text;
+    if(!text.trim()){ prev.innerHTML='<span class="mini">본문 미리보기가 여기에 표시됩니다.</span>'; return; }
+    if(sel===null){ prev.innerHTML='<span class="mini">표에서 단어를 누르면 본문에서 위치를 표시합니다.</span>'; return; }
+    var g=groups[sel]; if(!g){ prev.textContent=text; return; }
+    var forms=Object.keys(g.forms).sort(function(a,b){return b.length-a.length;});
+    var out='', i=0;
+    outer: while(i<text.length){
+      for(var k=0;k<forms.length;k++){
+        var f=forms[k];
+        if(text.substr(i,f.length)===f){ out+='<mark class="m-rep">'+WL.esc(f)+'</mark>'; i+=f.length; continue outer; }
+      }
+      out+=WL.esc(text[i]); i++;
+    }
+    prev.innerHTML=out;
+  }
+  tab.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-i]'); if(!b) return;
+    sel=parseInt(b.getAttribute('data-i'),10); draw();
+  });
+  [src,minc,minl].forEach(function(el){ el.addEventListener('input',WL.debounce(function(){sel=null;run();},150)); });
+  josa.addEventListener('change',function(){sel=null;run();});
+  document.getElementById('clear').addEventListener('click',function(){src.value='';sel=null;run();src.focus();});
+  run();
+})();</script>

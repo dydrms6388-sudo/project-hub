@@ -1,0 +1,89 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문장 길이 분석 — 긴 문장 찾기, 평균 문장 길이 | writelab</title>
+<meta name="description" content="문장별 글자수를 분석해 60자를 넘는 긴 문장을 찾아냅니다. 평균·최장 문장 길이와 길이 분포로 읽기 쉬운 자소서를 만드세요.">
+<meta property="og:title" content="문장 길이 분석 — 긴 문장 찾기, 평균 문장 길이 | writelab">
+<meta property="og:description" content="문장별 글자수를 분석해 60자를 넘는 긴 문장을 찾아냅니다. 평균·최장 문장 길이와 길이 분포로 읽기 쉬운 자소서를 만드세요.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"문장 길이 분석","description":"문장별 글자수를 분석해 60자를 넘는 긴 문장을 찾아냅니다. 평균·최장 문장 길이와 길이 분포로 읽기 쉬운 자소서를 만드세요.","url":"https://writelab-kr.vercel.app/tools/sentence-check/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"문장이 몇 자를 넘으면 긴 문장인가요?","acceptedAnswer":{"@type":"Answer","text":"절대적인 기준은 없습니다. 다만 한 문장에 주어와 서술어가 두 벌 이상 들어가면 읽는 사람이 되돌아가서 다시 읽게 되는데, 한국어 자소서에서는 대략 60자를 넘어가면서 그런 문장이 늘어납니다. 그래서 기본 기준을 60자로 두었고, 필요하면 40~100자 사이로 바꿀 수 있게 했습니다."}},{"@type":"Question","name":"문장 분리는 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"마침표·물음표·느낌표·줄임표와 줄바꿈을 기준으로 나눕니다. 규칙 기반 근사이므로 \"3.5%\"처럼 숫자 사이의 점이나 \"예: 등\"처럼 특수한 표기에서는 실제와 다르게 나뉠 수 있습니다. 숫자가 아주 정확해야 하는 용도라면 직접 확인하세요."}},{"@type":"Question","name":"긴 문장은 어떻게 줄이면 되나요?","acceptedAnswer":{"@type":"Answer","text":"가장 쉬운 방법은 \"그래서·하지만·때문에\" 같은 접속 지점에서 문장을 끊는 것입니다. 그리고 한 문장에는 하나의 사실만 담습니다. \"~하였고, ~하였으며, ~하여\" 처럼 연결어미가 세 번 이상 이어지면 거의 항상 두 문장으로 나눌 수 있습니다."}},{"@type":"Question","name":"짧은 문장만 쓰면 좋은 건가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 모든 문장이 20자 이하로 짧으면 글이 끊기고 개조식처럼 읽힙니다. 이 도구가 길이 분포를 함께 보여 주는 이유가 그것입니다. 짧은 문장과 중간 길이 문장이 섞여 있고, 아주 긴 문장이 없는 상태가 읽기 좋습니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"문장 길이 분석","item":"https://writelab-kr.vercel.app/tools/sentence-check/"}]}</script>
+<header class="site"><div class="wrap nav">
+<a class="brand" href="../../index.html">write<span>lab</span></a>
+<a class="hublink" href="../../index.html">도구 전체 보기</a>
+</div></header>
+<main class="wrap">
+<h1>문장 길이 분석</h1>
+<p class="sub">문장별 글자수와 길이 분포를 계산하고, 기준을 넘는 긴 문장을 찾아 표시합니다.</p>
+
+<div class="card">
+  <label for="src">분석할 글</label>
+  <textarea id="src" placeholder="글을 붙여 넣으면 문장별 길이를 분석합니다."></textarea>
+  <div class="row">
+    <label for="lim">긴 문장 기준</label>
+    <input type="number" id="lim" value="60" min="30" max="150" step="5" style="width:100px"><span class="mini">자 초과</span>
+    <button class="btn sm" id="clear" type="button">지우기</button>
+  </div>
+  <div class="stat-grid" id="stats"></div>
+  <h3>길이 분포</h3>
+  <div class="bars" id="dist"></div>
+  <h3>문장별 목록</h3>
+  <div id="list"></div>
+</div>
+<!-- ad-slot -->
+<section class="prose">
+<h2>긴 문장 하나가 자소서 전체를 어렵게 만듭니다</h2>
+<p>자소서를 소리 내어 읽다가 숨이 차는 지점이 있다면 그 문장은 거의 예외 없이 너무 깁니다. 경험을 빠짐없이 설명하려다 보면 "~하였고, ~하였으며, ~함으로써 ~할 수 있었습니다"처럼 절이 계속 이어지고, 그러면 정작 강조하려던 결과가 문장 끝에 묻힙니다. 읽는 사람은 한 문항에 30초도 쓰지 않기 때문에, 문장이 길수록 핵심이 전달될 확률이 떨어집니다.</p>
+<p>이 도구는 글을 문장 단위로 잘라 각 문장의 길이를 재고, 기준(기본 60자)을 넘는 문장을 붉게 표시합니다. 평균 길이와 최장 문장, 그리고 길이 분포를 함께 보여 주므로 "전반적으로 긴 편인지" 아니면 "특정 문장 두세 개만 문제인지"를 구분할 수 있습니다. 대체로 후자가 많고, 그 두세 문장만 쪼개도 글이 눈에 띄게 읽기 쉬워집니다.</p>
+<p>기준 값은 바꿀 수 있습니다. 개조식 보고서라면 40자, 서술형 자기소개서라면 60~70자 정도를 기준으로 두고 확인하면 무리가 없습니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>글을 붙여 넣습니다. 입력하는 대로 즉시 분석됩니다.</li>
+<li>기준 글자수를 정합니다. 기본값은 60자입니다.</li>
+<li>붉게 표시된 문장을 접속 지점에서 두 문장으로 나눕니다.</li>
+<li>분포 그래프에서 20자 이하 문장이 지나치게 많지 않은지도 함께 확인합니다.</li>
+</ol>
+</section>
+<section class="faq"><h2>자주 묻는 질문</h2><details><summary>문장이 몇 자를 넘으면 긴 문장인가요?</summary><div class="prose"><p>절대적인 기준은 없습니다. 다만 한 문장에 주어와 서술어가 두 벌 이상 들어가면 읽는 사람이 되돌아가서 다시 읽게 되는데, 한국어 자소서에서는 대략 60자를 넘어가면서 그런 문장이 늘어납니다. 그래서 기본 기준을 60자로 두었고, 필요하면 40~100자 사이로 바꿀 수 있게 했습니다.</p></div></details><details><summary>문장 분리는 어떻게 하나요?</summary><div class="prose"><p>마침표·물음표·느낌표·줄임표와 줄바꿈을 기준으로 나눕니다. 규칙 기반 근사이므로 "3.5%"처럼 숫자 사이의 점이나 "예: 등"처럼 특수한 표기에서는 실제와 다르게 나뉠 수 있습니다. 숫자가 아주 정확해야 하는 용도라면 직접 확인하세요.</p></div></details><details><summary>긴 문장은 어떻게 줄이면 되나요?</summary><div class="prose"><p>가장 쉬운 방법은 "그래서·하지만·때문에" 같은 접속 지점에서 문장을 끊는 것입니다. 그리고 한 문장에는 하나의 사실만 담습니다. "~하였고, ~하였으며, ~하여" 처럼 연결어미가 세 번 이상 이어지면 거의 항상 두 문장으로 나눌 수 있습니다.</p></div></details><details><summary>짧은 문장만 쓰면 좋은 건가요?</summary><div class="prose"><p>아닙니다. 모든 문장이 20자 이하로 짧으면 글이 끊기고 개조식처럼 읽힙니다. 이 도구가 길이 분포를 함께 보여 주는 이유가 그것입니다. 짧은 문장과 중간 길이 문장이 섞여 있고, 아주 긴 문장이 없는 상태가 읽기 좋습니다.</p></div></details></section>
+<p class="mini">함께 쓰면 좋은 도구: <a href="../char-count/">자소서 글자수 세기</a> · <a href="../readability/">가독성 점수</a> · <a href="../banned-words/">자소서 금칙어 체크</a></p>
+</main>
+<footer class="site"><div class="wrap">
+<ul class="foot-links"><li><a href="../../tools/char-count/">자소서 글자수 세기</a></li><li><a href="../../tools/sentence-check/">문장 길이 분석</a></li><li><a href="../../tools/repeat-words/">반복 단어 찾기</a></li><li><a href="../../tools/banned-words/">자소서 금칙어 체크</a></li><li><a href="../../tools/spacing-basic/">띄어쓰기 기본 검사</a></li><li><a href="../../tools/text-compare/">글 비교</a></li><li><a href="../../tools/readability/">가독성 점수</a></li><li><a href="../../tools/outline/">자소서 개요 만들기</a></li><li><a href="../../tools/keyword-density/">키워드 밀도</a></li><li><a href="../../tools/paper-count/">원고지 계산기</a></li><li><a href="../../tools/resume-date/">경력 기간 계산기</a></li><li><a href="../../guide/jasoso-char-limit/">자소서 글자수 기준 확인하는 방법</a></li><li><a href="../../guide/common-mistakes/">자소서에서 자주 하는 실수</a></li><li><a href="../../privacy.html">개인정보처리방침</a></li><li><a href="../../terms.html">이용약관</a></li></ul>
+<p class="mini">writelab — 자소서·글쓰기 도구 모음. 모든 계산은 사용자의 브라우저에서만 실행되며, 입력한 글은 어디에도 전송·저장되지 않습니다.</p>
+<p class="mini">© 2026 writelab</p>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function(){
+  var src=document.getElementById('src'), lim=document.getElementById('lim'),
+      stats=document.getElementById('stats'), dist=document.getElementById('dist'), list=document.getElementById('list');
+  var BINS=[[0,20,'20자 이하'],[21,40,'21~40자'],[41,60,'41~60자'],[61,80,'61~80자'],[81,100,'81~100자'],[101,99999,'101자 이상']];
+  function run(){
+    var text=WL.norm(src.value), L=parseInt(lim.value,10)||60;
+    var ss=WL.splitSentences(text);
+    if(!ss.length){ stats.innerHTML=''; dist.innerHTML=''; list.innerHTML='<p class="mini">글을 입력하면 문장별 결과가 표시됩니다.</p>'; return; }
+    var lens=ss.map(function(s){ return Array.from(s).length; });
+    var sum=lens.reduce(function(a,b){return a+b;},0);
+    var avg=Math.round(sum/lens.length*10)/10, max=Math.max.apply(null,lens), min=Math.min.apply(null,lens);
+    var over=lens.filter(function(n){return n>L;}).length;
+    stats.innerHTML=[['문장 수',ss.length,'개'],['평균 길이',avg,'자'],['최장 문장',max,'자'],['최단 문장',min,'자'],
+      [L+'자 초과',over,'개'],['초과 비율',Math.round(over/ss.length*1000)/10,'%']]
+      .map(function(x){ return '<div class="stat"><b>'+WL.fmt(x[1])+'</b><small>'+x[0]+' ('+x[2]+')</small></div>'; }).join('');
+    var counts=BINS.map(function(b){ return lens.filter(function(n){return n>=b[0]&&n<=b[1];}).length; });
+    var mx=Math.max.apply(null,counts)||1;
+    dist.innerHTML=BINS.map(function(b,i){
+      return '<div class="bar"><span>'+b[2]+'</span><i style="width:'+Math.round(counts[i]/mx*100)+'%"></i><span class="right">'+counts[i]+'개</span></div>';
+    }).join('');
+    list.innerHTML=ss.map(function(s,i){
+      var n=lens[i], cls=n>L?'badge b-bad':(n>L*0.75?'badge b-warn':'badge b-ok');
+      var txt=n>L?('<mark class="m-long">'+WL.esc(s)+'</mark>'):WL.esc(s);
+      return '<div class="sent"><span class="len '+cls+'">'+n+'자</span><span>'+txt+'</span></div>';
+    }).join('');
+  }
+  src.addEventListener('input',WL.debounce(run,140));
+  lim.addEventListener('input',WL.debounce(run,140));
+  document.getElementById('clear').addEventListener('click',function(){src.value='';run();src.focus();});
+  run();
+})();</script>

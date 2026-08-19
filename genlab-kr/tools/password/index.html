@@ -64,11 +64,13 @@ L = 비밀번호 길이, N = 사용된 문자 종류의 문자 수 합(소문자
 감점(흔한 패턴 페널티):<br>
 · 오름/내림차순 연속 문자열 3자 이상(abc, 321 등) — 1곳당 −8bit<br>
 · 같은 문자 3회 이상 반복(aaa 등) — 1곳당 −8bit<br>
-· 키보드 행 패턴 4자 이상(qwer, asdf 등) — 1곳당 −10bit<br><br>
+· 키보드 행 패턴 4자 이상(qwer, asdf 등) — 1곳당 −10bit<br>
+· 흔한 비밀번호·약한 단어 포함(password, qwerty, dkssud 등 70개 목록) — 단어 길이 × 4bit(최대 −28bit), 가장 긴 일치 1건만<br><br>
 등급: 28bit 미만 매우 약함 · 36bit 미만 약함 · 60bit 미만 보통 · 80bit 미만 강함 · 80bit 이상 매우 강함<br>
 해독 예상 시간은 초당 100억 회를 시도하는 오프라인 GPU 공격을 가정한 값(2ᴱ ÷ 10¹⁰초)입니다.
 </div>
-<p>이 산식은 무작위 생성 비밀번호에 잘 맞는 추정치입니다. 사람이 직접 만든 비밀번호는 사전 단어·생일 등 여기서 잡지 못하는 패턴이 있을 수 있어 실제 강도는 표시보다 낮을 수 있습니다. 자세한 기준은 <a href="../../guide/password-safety/">안전한 비밀번호 만들기 가이드(NIST 기준)</a>를 참고하세요.</p>
+<p>흔한 단어 감점에는 실제로 가장 많이 쓰이는 비밀번호 70개 목록을 사용합니다(<code>password</code>, <code>qwerty</code>, 한글 단어를 영타로 친 <code>dkssud</code> 등). 부분 문자열로 검사하므로 <code>password1!</code>처럼 뒤에 숫자·기호를 붙인 변형도 걸립니다. 이 목록은 유출 비밀번호 데이터베이스 전체가 아니므로, 감점이 없다고 해서 유출 목록에 없다는 뜻은 아닙니다.</p>
+<p>이 산식은 무작위 생성 비밀번호에 잘 맞는 추정치입니다. 사람이 직접 만든 비밀번호는 생일·이름 등 여기서 잡지 못하는 패턴이 있을 수 있어 실제 강도는 표시보다 낮을 수 있습니다. 자세한 기준은 <a href="../../guide/password-safety/">안전한 비밀번호 만들기 가이드(NIST 기준)</a>를 참고하세요.</p>
 <h2>사용법</h2>
 <ol>
 <li>길이를 정합니다. 중요한 계정이라면 16자 이상을 권장합니다.</li>
@@ -113,7 +115,7 @@ L = 비밀번호 길이, N = 사용된 문자 종류의 문자 수 합(소문자
   </div>
   <div class="legal">모든 생성·계산은 방문자의 브라우저 안에서만 실행되며 입력값은 서버로 전송되지 않습니다.<br>© 2026 GenLab 생성기 허브</div>
 </div></footer>
-
+<script src="../../assets/data/weakpw.js"></script>
 <script src="../../assets/common.js"></script>
 <script>
 (function(){
@@ -185,6 +187,15 @@ function strength(pw){
     }
   }
   if(kb){pen+=10*kb;detail.push('키보드 행 패턴 '+kb+'곳 −'+(10*kb)+'bit');}
+  // 4) 흔한 비밀번호·약한 단어 포함 (가장 긴 일치 1건만 감점)
+  var W=window.GENLAB_WEAKPW||[],hit='';
+  for(var w=0;w<W.length;w++){
+    if(low.indexOf(W[w])>=0&&W[w].length>hit.length)hit=W[w];
+  }
+  if(hit){
+    var wp=Math.min(28,hit.length*4);
+    pen+=wp;detail.push('흔한 단어 "'+hit+'" 포함 −'+wp+'bit');
+  }
   bits=Math.max(1,bits-pen);
   var level=bits<28?0:bits<36?1:bits<60?2:bits<80?3:4;
   var labels=['매우 약함','약함','보통','강함','매우 강함'];
