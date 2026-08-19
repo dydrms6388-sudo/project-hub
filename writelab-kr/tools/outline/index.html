@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>자소서 개요 만들기 — STAR 템플릿, 글자수 배분 | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"자소서 개요 만들기","description":"STAR(상황·과제·행동·결과) 템플릿으로 자소서 개요를 잡고, 총 글자수를 단계별로 자동 배분합니다. 마크다운으로 내보내 바로 초고를 쓰세요.","url":"https://writelab-kr.vercel.app/tools/outline/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"STAR가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"Situation(상황), Task(과제), Action(행동), Result(결과)의 앞 글자입니다. 경험을 설명할 때 배경 → 내가 맡은 문제 → 실제로 한 행동 → 결과 순서로 쓰면, 읽는 사람이 \"무엇을 했는지\"를 놓치지 않습니다. 자소서에서 가장 많이 비는 칸은 대개 Action과 Result입니다."}},{"@type":"Question","name":"글자수 배분 비율은 왜 행동(A)이 가장 큰가요?","acceptedAnswer":{"@type":"Answer","text":"상황 설명이 길어지고 정작 본인이 한 일이 두 줄로 끝나는 자소서가 많기 때문입니다. 기본값은 상황 15% · 과제 15% · 행동 45% · 결과 25%로 두었습니다. 비율은 직접 바꿀 수 있고, 합이 100%가 아니어도 입력한 비율대로 배분해 계산합니다."}},{"@type":"Question","name":"마크다운으로 내보내면 어디에 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"노션·옵시디언·깃허브·메모 앱에 그대로 붙여 넣을 수 있는 텍스트 형식입니다. 문항 제목이 제목(##)으로, STAR 각 단계가 소제목으로 정리되어 초고를 쓸 때 그대로 채워 넣기 좋습니다."}},{"@type":"Question","name":"입력한 내용이 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"\"이 브라우저에 임시 저장\"을 켠 경우에만 이 기기의 localStorage에 저장됩니다. 서버로 전송되지 않으며, 옵션을 끄면 저장된 내용도 지워집니다."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"자소서 개요 만들기","item":"https://writelab-kr.vercel.app/tools/outline/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -145,3 +150,5 @@
   if(saved&&saved.k&&saved.list&&saved.list.length){ keep.checked=true; state.list=saved.list; } else { state.list=[blank()]; }
   render();
 })();</script>
+</body>
+</html>

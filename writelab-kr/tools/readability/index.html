@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>가독성 점수 — 자소서 읽기 쉬움 측정(산식 공개) | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"가독성 점수","description":"문장 길이, 어절 길이, 한자어·수식어 비율을 가중 합산해 0~100점 가독성 점수를 계산합니다. 사용한 산식을 페이지에 그대로 공개합니다.","url":"https://writelab-kr.vercel.app/tools/readability/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"점수는 무엇을 뜻하나요?","acceptedAnswer":{"@type":"Answer","text":"읽기 쉬움의 정도를 100점 만점으로 환산한 값입니다. 글의 좋고 나쁨이나 합격 가능성을 뜻하지 않습니다. 문장이 짧고, 어절이 지나치게 길지 않고, 딱딱한 한자어투가 적을수록 점수가 높아집니다. 산식을 아래에 그대로 공개했으니 계산 근거를 직접 확인하세요."}},{"@type":"Question","name":"한자어투 비율은 어떻게 판단하나요?","acceptedAnswer":{"@type":"Answer","text":"형태소 분석 없이, 공문서·보고서에서 자주 쓰이는 한자어투 표현 목록(제고·도모·감안·강구·소요·부합 등)과 대조해 셉니다. 사전에 없는 한자어는 잡히지 않으므로 지표는 참고용입니다. 목록은 아래 표에 모두 공개되어 있습니다."}},{"@type":"Question","name":"점수가 낮으면 자소서를 다 고쳐야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 세부 점수 중 어떤 항목에서 감점이 컸는지만 보세요. 문장 길이에서 크게 깎였다면 긴 문장 두세 개만 나누면 되고, 한자어투에서 깎였다면 몇 단어를 쉬운 말로 바꾸는 것으로 충분합니다."}},{"@type":"Question","name":"점수가 높으면 좋은 자소서인가요?","acceptedAnswer":{"@type":"Answer","text":"읽기 쉬운 글일 뿐입니다. 내용의 구체성, 직무 적합성, 사실 근거는 이 점수로 측정되지 않습니다. 가독성은 필요조건이지 충분조건이 아닙니다."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"가독성 점수","item":"https://writelab-kr.vercel.app/tools/readability/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -119,3 +124,5 @@ P3 (한자어투 감점, 최대 25) = 한자어투 비율(%) × 3.5<br><br>
   document.getElementById('clear').addEventListener('click',function(){src.value='';run();src.focus();});
   run();
 })();</script>
+</body>
+</html>

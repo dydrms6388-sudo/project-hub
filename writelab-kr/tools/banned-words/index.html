@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>자소서 금칙어 체크 — 상투어·과장어 검사 | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"자소서 금칙어 체크","description":"자체 제작한 상투어·과장어·비표준어 사전으로 자소서를 검사합니다. 왜 문제인지와 어떻게 바꿀지 대안까지 함께 보여 줍니다.","url":"https://writelab-kr.vercel.app/tools/banned-words/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"금칙어 사전은 어떤 기준으로 만들었나요?","acceptedAnswer":{"@type":"Answer","text":"writelab이 직접 작성한 목록입니다. (1) 여러 자소서에 반복돼 변별력이 없는 상투어, (2) 근거 없이 단정·과장해 신뢰를 떨어뜨리는 표현, (3) 표준어 규정·맞춤법에 어긋나는 표기, (4) 뜻을 흐리는 모호·습관 표현 네 갈래로 나눠 정리했고, 항목마다 왜 문제인지와 어떻게 바꿀지를 함께 적었습니다."}},{"@type":"Question","name":"검출된 표현은 무조건 지워야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 표준어·맞춤법 오류로 표시된 항목은 고치는 편이 좋지만, 상투어와 모호 표현은 문맥에 따라 남겨도 되는 경우가 있습니다. 예를 들어 \"좌우명\"은 그 자체가 문제가 아니라 좌우명만 말하고 근거가 없을 때 문제가 됩니다. 각 항목의 이유를 읽고 판단하세요."}},{"@type":"Question","name":"왜 표현 하나하나에 대안이 붙어 있나요?","acceptedAnswer":{"@type":"Answer","text":"상투어를 지우기만 하면 글자수가 비고 내용도 약해집니다. 대체로 필요한 것은 삭제가 아니라 교체입니다. \"책임감이 강합니다\"를 지우는 대신 책임지고 끝까지 해낸 사건 하나를 넣는 식입니다. 그래서 항목마다 그 자리를 무엇으로 채울지 방향을 함께 제시합니다."}},{"@type":"Question","name":"검사 결과가 서버에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"저장되지 않습니다. 사전은 정적 자바스크립트 파일로 브라우저에 내려오고, 검사는 전부 브라우저 안에서 실행됩니다. 외부 API를 호출하지 않으므로 글이 밖으로 나가지 않습니다."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"자소서 금칙어 체크","item":"https://writelab-kr.vercel.app/tools/banned-words/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -158,3 +163,5 @@
   filters.addEventListener('click',function(){ setTimeout(dict,0); });
   run(); dict();
 })();</script>
+</body>
+</html>

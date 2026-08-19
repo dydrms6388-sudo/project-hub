@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>경력 기간 계산기 — 입퇴사일로 총 경력 년월 계산 | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"경력 기간 계산기","description":"회사별 입사일·퇴사일을 입력하면 총 경력을 년·월로 합산합니다. 여러 회사 합산, 중복 재직 기간 처리 규칙까지 명시해 계산 근거를 확인할 수 있습니다.","url":"https://writelab-kr.vercel.app/tools/resume-date/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"같은 기간에 두 회사를 다녔으면 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"기본값인 \"중복 기간 제거\"에서는 겹치는 날을 한 번만 셉니다. 여러 기간을 날짜 구간으로 합집합 처리한 뒤 총 일수를 구하는 방식입니다. \"단순 합산\"을 고르면 각 회사 기간을 그대로 더하므로 겹친 기간이 두 번 계산됩니다. 이력서 경력 합계에는 보통 중복을 제거한 값을 씁니다."}},{"@type":"Question","name":"같은 달에 퇴사하고 입사한 경우는요?","acceptedAnswer":{"@type":"Answer","text":"이 도구의 기본 계산은 월이 아니라 날짜(일수)를 기준으로 하므로, 3월 15일 퇴사 후 3월 16일 입사처럼 같은 달에 이어진 경우에도 하루도 겹치거나 빠지지 않고 합산됩니다. 반면 함께 표시되는 \"월 경계 기준\" 값은 입사월부터 퇴사월까지 월 단위로 세기 때문에 같은 달이 양쪽에서 각각 계산되어, 일수 기준보다 최대 1개월 정도 크게 나올 수 있습니다. 두 값이 다를 때는 어떤 기준으로 적었는지 밝히면 됩니다."}},{"@type":"Question","name":"퇴사일도 재직 기간에 넣나요?","acceptedAnswer":{"@type":"Answer","text":"기본값은 \"퇴사일 포함\"입니다. 예를 들어 2024-01-01 입사, 2024-01-31 퇴사면 31일로 계산합니다. 회사마다 퇴사일을 마지막 근무일로 보거나 그다음 날로 보는 차이가 있어 옵션으로 바꿀 수 있게 했습니다. 하루 차이가 개월 수를 바꾸는 경우는 드물지만, 경력 요건이 딱 맞아떨어질 때는 증명서 기준을 확인하세요."}},{"@type":"Question","name":"입력한 회사명이 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"저장되지 않습니다. 계산은 브라우저 안에서만 이루어지고 새로 고치면 모두 사라집니다. 이 도구는 이름·연락처 같은 개인 식별 정보를 입력받지 않습니다."}},{"@type":"Question","name":"경력 인정 기준은 회사마다 다르지 않나요?","acceptedAnswer":{"@type":"Answer","text":"다릅니다. 수습·인턴·계약직 기간을 인정하는 범위, 휴직 기간 처리, 유사 직무 인정 여부는 채용 공고와 내부 규정에 따라 달라집니다. 이 계산은 참고용이며, 지원 자격이 걸린 경우에는 반드시 공고와 담당 부서 안내를 확인하세요."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"경력 기간 계산기","item":"https://writelab-kr.vercel.app/tools/resume-date/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -149,3 +154,5 @@
   rows.push({name:'',start:'',end:'',now:false});
   render();
 })();</script>
+</body>
+</html>

@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>글 비교 — 두 버전 diff, 수정 전후 비교 | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"글 비교","description":"수정 전후 자소서를 붙여 넣으면 어절 단위로 비교해 추가된 부분과 삭제된 부분을 색으로 보여 줍니다. 첨삭 결과를 한눈에 확인하세요.","url":"https://writelab-kr.vercel.app/tools/text-compare/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"비교 단위가 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"공백으로 나눈 어절 단위입니다. 한국어는 어절 안에서 조사만 바뀌는 일이 많은데, 글자 단위로 비교하면 변경 표시가 지나치게 잘게 쪼개져 읽기 어렵습니다. 그래서 어절 단위 LCS(최장 공통 부분 수열)로 비교해 어절이 통째로 추가·삭제된 것으로 표시합니다."}},{"@type":"Question","name":"유사도는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"유사도 = 2 × 공통 어절 수 ÷ (원본 어절 수 + 수정본 어절 수) × 100 입니다. 두 글이 완전히 같으면 100%가 됩니다. 문장 순서만 크게 바뀐 경우에는 공통 어절이 줄어 유사도가 낮게 나올 수 있습니다."}},{"@type":"Question","name":"긴 글도 비교할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"수천 어절 규모까지는 브라우저에서 바로 처리됩니다. 다만 비교는 두 글 길이의 곱에 비례하므로, 양쪽이 모두 아주 길면 계산량이 급격히 늘어납니다. 한계를 넘으면 안내 메시지가 표시되니 문항 단위로 나눠 비교하세요."}},{"@type":"Question","name":"첨삭받은 글과 내 글을 비교해도 되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 두 글 모두 브라우저 안에서만 처리되고 전송되지 않습니다. 다만 다른 사람의 글을 그대로 옮겨 쓰는 것은 표절이 될 수 있으니, 표현을 확인하는 용도로만 쓰세요."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"글 비교","item":"https://writelab-kr.vercel.app/tools/text-compare/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -95,3 +100,5 @@
   document.getElementById('clear').addEventListener('click',function(){ A.value=''; B.value=''; run(); });
   out.innerHTML='<span class="mini">양쪽에 글을 넣고 비교하기를 누르세요.</span>';
 })();</script>
+</body>
+</html>

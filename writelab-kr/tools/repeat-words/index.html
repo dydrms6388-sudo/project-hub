@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>반복 단어 찾기 — 자소서 중복 표현 검사 | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"반복 단어 찾기","description":"글에서 같은 단어가 몇 번 반복되는지 세어 줍니다. 조사를 떼어 낸 근사 비교로 \"경험을/경험이\"까지 함께 묶어 확인하고 본문에서 바로 하이라이트하세요.","url":"https://writelab-kr.vercel.app/tools/repeat-words/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"\"경험을\"과 \"경험이\"를 같은 단어로 세는 건가요?","acceptedAnswer":{"@type":"Answer","text":"\"조사 제거\" 옵션을 켜면 그렇습니다. 어절 끝에 붙은 조사(은/는/이/가/을/를/의/에/에서/으로/부터/까지 등)를 규칙으로 떼어 내 대표형으로 묶어 셉니다. 형태소 분석기가 아니라 목록 기반 근사이므로, 조사와 모양이 같은 어미가 붙은 경우에는 잘못 묶일 수 있습니다. 옵션을 끄면 글자 그대로 비교합니다."}},{"@type":"Question","name":"같은 단어를 몇 번까지 쓰면 괜찮나요?","acceptedAnswer":{"@type":"Answer","text":"글자수 대비로 판단하는 편이 낫습니다. 500자 안에서 같은 명사가 5번 넘게 나오면 대개 눈에 걸립니다. 다만 직무 키워드는 반복이 오히려 필요할 수 있으므로, 반복을 줄일 대상은 \"저는·경험·통해·생각·노력\" 같은 일반어부터 고르세요."}},{"@type":"Question","name":"반복을 줄이면 문장이 어색해집니다.","acceptedAnswer":{"@type":"Answer","text":"같은 뜻의 다른 단어로 바꾸는 것보다, 반복된 단어가 들어간 문장 자체를 합치거나 지우는 편이 자연스럽습니다. 특히 \"저는\"과 \"제가\"는 대부분 지워도 뜻이 통합니다."}},{"@type":"Question","name":"하이라이트는 어디에 표시되나요?","acceptedAnswer":{"@type":"Answer","text":"표에서 단어를 누르면 아래 본문 미리보기에서 해당 단어가 모두 표시됩니다. 어느 문단에 몰려 있는지 확인하는 데 쓰세요."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"반복 단어 찾기","item":"https://writelab-kr.vercel.app/tools/repeat-words/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -112,3 +117,5 @@
   document.getElementById('clear').addEventListener('click',function(){src.value='';sel=null;run();src.focus();});
   run();
 })();</script>
+</body>
+</html>

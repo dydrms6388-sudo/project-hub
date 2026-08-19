@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>문장 길이 분석 — 긴 문장 찾기, 평균 문장 길이 | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"문장 길이 분석","description":"문장별 글자수를 분석해 60자를 넘는 긴 문장을 찾아냅니다. 평균·최장 문장 길이와 길이 분포로 읽기 쉬운 자소서를 만드세요.","url":"https://writelab-kr.vercel.app/tools/sentence-check/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"문장이 몇 자를 넘으면 긴 문장인가요?","acceptedAnswer":{"@type":"Answer","text":"절대적인 기준은 없습니다. 다만 한 문장에 주어와 서술어가 두 벌 이상 들어가면 읽는 사람이 되돌아가서 다시 읽게 되는데, 한국어 자소서에서는 대략 60자를 넘어가면서 그런 문장이 늘어납니다. 그래서 기본 기준을 60자로 두었고, 필요하면 40~100자 사이로 바꿀 수 있게 했습니다."}},{"@type":"Question","name":"문장 분리는 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"마침표·물음표·느낌표·줄임표와 줄바꿈을 기준으로 나눕니다. 규칙 기반 근사이므로 \"3.5%\"처럼 숫자 사이의 점이나 \"예: 등\"처럼 특수한 표기에서는 실제와 다르게 나뉠 수 있습니다. 숫자가 아주 정확해야 하는 용도라면 직접 확인하세요."}},{"@type":"Question","name":"긴 문장은 어떻게 줄이면 되나요?","acceptedAnswer":{"@type":"Answer","text":"가장 쉬운 방법은 \"그래서·하지만·때문에\" 같은 접속 지점에서 문장을 끊는 것입니다. 그리고 한 문장에는 하나의 사실만 담습니다. \"~하였고, ~하였으며, ~하여\" 처럼 연결어미가 세 번 이상 이어지면 거의 항상 두 문장으로 나눌 수 있습니다."}},{"@type":"Question","name":"짧은 문장만 쓰면 좋은 건가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 모든 문장이 20자 이하로 짧으면 글이 끊기고 개조식처럼 읽힙니다. 이 도구가 길이 분포를 함께 보여 주는 이유가 그것입니다. 짧은 문장과 중간 길이 문장이 섞여 있고, 아주 긴 문장이 없는 상태가 읽기 좋습니다."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"문장 길이 분석","item":"https://writelab-kr.vercel.app/tools/sentence-check/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -87,3 +92,5 @@
   document.getElementById('clear').addEventListener('click',function(){src.value='';run();src.focus();});
   run();
 })();</script>
+</body>
+</html>

@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>키워드 밀도 — 자소서 직무 키워드 등장 횟수 | writelab</title>
@@ -10,6 +13,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"키워드 밀도","description":"채용 공고의 직무 키워드를 입력하면 자소서에서 몇 번, 어느 비율로 등장하는지 계산합니다. 빠진 키워드와 과하게 반복된 키워드를 함께 확인하세요.","url":"https://writelab-kr.vercel.app/tools/keyword-density/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"밀도는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"밀도(%) = 키워드 등장 횟수 ÷ 전체 어절 수 × 100 입니다. 어절 수는 공백으로 나눈 단위입니다. 등장 횟수는 문자열 단위로 세므로 \"데이터\"는 \"데이터베이스\" 안에서도 1회로 잡힙니다. 낱말 단위로만 세고 싶다면 키워드를 조사까지 포함해 입력하거나 결과의 문맥을 확인하세요."}},{"@type":"Question","name":"키워드를 몇 번쯤 넣는 게 좋을까요?","acceptedAnswer":{"@type":"Answer","text":"자소서는 검색 엔진이 읽는 글이 아니므로 정해진 최적 밀도는 없습니다. 다만 채용 공고의 핵심 키워드가 문항 전체에서 한 번도 나오지 않으면 직무 이해를 보여 주기 어렵고, 반대로 한 문단에 같은 키워드가 네 번 이상 나오면 억지로 끼워 넣은 것처럼 읽힙니다. 이 도구는 0.5~2% 구간을 참고용 적정 범위로 표시합니다."}},{"@type":"Question","name":"키워드는 어디서 가져오나요?","acceptedAnswer":{"@type":"Answer","text":"지원하는 공고의 직무 기술서(주요 업무·자격 요건)에서 그대로 뽑는 것이 가장 정확합니다. 공고에 쓰인 단어를 그대로 쓰면 읽는 사람이 대응 관계를 바로 확인할 수 있습니다."}},{"@type":"Question","name":"입력한 공고 내용이 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"저장되지 않습니다. 계산은 브라우저 안에서만 이루어지고 새로 고치면 사라집니다."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"키워드 밀도","item":"https://writelab-kr.vercel.app/tools/keyword-density/"}]}</script>
+</head>
+<body>
 <header class="site"><div class="wrap nav">
 <a class="brand" href="../../index.html">write<span>lab</span></a>
 <a class="hublink" href="../../index.html">도구 전체 보기</a>
@@ -105,3 +110,5 @@
   document.getElementById('clear').addEventListener('click',function(){ kw.value=''; src.value=''; sel=null; run(); });
   run();
 })();</script>
+</body>
+</html>
