@@ -21,7 +21,7 @@ export function BlurredLikers({ count, slots = 3 }: BlurredLikersProps) {
         <span
           key={i}
           aria-hidden="true"
-          className="size-12 rounded-full bg-primary-tint blur-[6px]"
+          className="size-12 rounded-full bg-primary-tint blur-sm"
         />
       ))}
       {count > visible && (
