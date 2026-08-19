@@ -722,6 +722,9 @@ var WL = (function () {
       var e = st.p[k];
       if (!Array.isArray(e) || e.length !== 2) return false;
       if (typeof e[0] !== "string" || typeof e[1] !== "string") return false;
+      // 닉네임은 입력할 때만 정제하면 손으로 만든 링크가 그대로 렌더된다.
+      // 링크를 읽는 이 길목에서 한 번 더 12자로 정제한다.
+      e[0] = SK.nick(e[0], "익명");
     }
     if (st.c !== undefined) {
       if (!Array.isArray(st.c) || st.c.length !== 3) return false;
