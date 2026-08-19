@@ -45,8 +45,8 @@ body.cb{--acc:#60a5fa;--acc2:#93c5fd;--ok:#3b82f6;--mid:#f59e0b;--ink:#08203f}
 body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;-webkit-text-size-adjust:100%}
 .wrap{max-width:720px;margin:0 auto;padding:20px 16px 64px}
 a{color:var(--acc)}
-.nav{font-size:13px;color:#6b7280;margin-bottom:14px}
-.nav a{color:#7aa2ff;text-decoration:none}
+.nav{font-size:13px;color:#6b7280;margin-bottom:4px}
+.nav a{color:#7aa2ff;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 6px;margin-left:-6px}
 h1{font-size:25px;font-weight:800;margin:0 0 4px}
 h1 .rd{color:var(--acc);font-variant-numeric:tabular-nums}
 .lead{color:#9ca3af;margin:0 0 14px;font-size:14.5px}
@@ -168,8 +168,10 @@ h3{font-size:16px;margin:20px 0 6px;color:var(--acc2)}
 .faq p{margin:0;color:#b9b9b9;font-size:14px}
 .disc{font-size:12.5px;color:#6b7280;background:#141414;border:1px solid #232323;border-radius:12px;padding:12px 14px;margin-top:14px}
 footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
-footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
-@media(max-width:380px){.tab{font-size:13px}.opts button{font-size:14px}}
+footer a{color:#7aa2ff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 10px}
+/* 자모 자판은 시스템 한글 자판과 같이 한 줄 10키 — 좁은 화면에서 카드 여백을 넘어 최대 폭을 확보한다 */
+@media(max-width:430px){.kbd{margin-left:-14px;margin-right:-14px}.krow{gap:3px}.key{padding:6px 0}}
+@media(max-width:380px){.tab{font-size:13px}.opts button{font-size:14px}.key{font-size:15px}}
 </style>
 </head>
 <body>
