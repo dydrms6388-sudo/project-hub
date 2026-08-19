@@ -117,7 +117,7 @@ ${head({ title: tool.title, desc: tool.desc, path: `/${tool.slug}/`, jsonld: jso
   <header class="hero">
     <div class="emoji" aria-hidden="true">${tool.emoji}</div>
     <h1>${esc(tool.name)}</h1>
-    <p class="lead">${esc(tool.lead || tool.desc)}</p>
+    <p class="lead">${tool.lead || esc(tool.desc)}</p>
   </header>
   ${HEALTH_NOTICE}
 ${tool.body}
