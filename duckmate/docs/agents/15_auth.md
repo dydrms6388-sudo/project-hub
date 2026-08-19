@@ -97,11 +97,12 @@ interface IdentityVerifier {
 | 구현 | 활성 조건 | 동작 |
 |---|---|---|
 | `PortOneVerifier` | 기본값 | PORTONE_* env 없으면 `IDENTITY_VERIFIER_NOT_CONFIGURED` 에러. **실연동은 Phase 4** — 지금은 어댑터 뼈대만 |
-| `StubVerifier` | `IDENTITY_VERIFIER=stub` **또는** 이메일이 `REVIEW_BYPASS_EMAILS` 화이트리스트에 있음 | 항상 성공. 결정적 CI `STUB-CI-{userId}` · birthDate `1995-01-01`. 프로덕션 + env stub 이면 경고 로그 |
+| `StubVerifier` | `IDENTITY_VERIFIER=stub` **또는** 이메일이 `REVIEW_BYPASS_EMAILS` 화이트리스트에 있음 | 항상 성공. 결정적 CI `STUB-CI-{userId}`. **birthDate 는 반환하지 않는다**(연령의 진실 원천이 아니므로 — G2-01). 실 프로덕션(`NODE_ENV=production` **이고** `VERCEL_ENV=production`)에서 env stub 이 선택되면 **경고가 아니라 예외로 차단**한다. 심사 바이패스 화이트리스트만 예외(B3 R2) |
 
 - 선택은 `getIdentityVerifier(email?)` 팩토리 한 곳 — 직접 `new` 금지.
 - **CI 원문은 어디에도 저장 금지**: `verify.ts` 가 sha256 해시 후 즉시 폐기(audit·blocked_hashes 는 해시만).
 - 승급 함수(`promotePhoneVerified`/`promoteIdentityVerified`)는 `lib/auth/verify.ts` — service role 전용, 클라이언트 import 시 런타임 예외.
+- `promoteIdentityVerified` 는 `trusted: boolean` 을 받는다. **`trusted=true`(PortOne)일 때만** `profiles.birth_date` 를 기관 값으로 덮어쓰고, stub 경로(`trusted=false`)는 `verify_level` 만 올린다 — 만 19세 판정은 가입 시 신고 생년월일로 계속 수행된다 (G2-01).
 
 ## 4. E1(온보딩 UI)이 호출할 API 목록
 

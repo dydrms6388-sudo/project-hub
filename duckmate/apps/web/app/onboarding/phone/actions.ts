@@ -49,7 +49,17 @@ export async function confirmPhoneVerification(
   } = await supabase.auth.getUser();
   if (!user) return fail("AUTH_REQUIRED", "로그인이 필요해요.");
 
-  const verifier = getIdentityVerifier(user.email);
+  // 프로덕션에서 IDENTITY_VERIFIER=stub 이면 팩토리가 throw 한다 (G2-01) —
+  // Server Action 은 throw 대신 코드 반환이 규약이므로 여기서 흡수한다.
+  let verifier;
+  try {
+    verifier = getIdentityVerifier(user.email);
+  } catch {
+    return fail(
+      "VERIFIER_NOT_CONFIGURED",
+      "문자 인증 연동을 준비하고 있어요. 잠시 뒤에 다시 시도해 주세요."
+    );
+  }
   if (verifier.name !== "stub") {
     return fail(
       "VERIFIER_NOT_CONFIGURED",

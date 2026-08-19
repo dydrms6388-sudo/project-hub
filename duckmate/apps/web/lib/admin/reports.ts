@@ -7,9 +7,12 @@
 //   - evidence(원문 스냅샷)는 service role 전용 — 열람 자체를 audit_logs 에 남긴다.
 //   - 조치: 기각(DISMISSED) 또는 제재 부과(ACTIONED + sanctions 생성).
 //     레벨 5(영구정지)는 4-eyes: 부승인 어드민 검증 필수 (A5 §6-④).
-//   - "resolve_report" DB 함수는 존재하지 않는다(00004 확인) — 본 모듈이
-//     service role 다중 문장으로 동일 계약을 집행한다. 순서: 신고 확정 →
-//     제재 insert → 영구정지 파생 처리. 각 단계 audit 기록.
+//   - ⚠ 조치 확정은 **00010 의 resolve_report() RPC 단일 경로**로 수행한다
+//     (G2-05). 이전 구현은 "resolve_report 는 존재하지 않는다"는 잘못된 전제로
+//     다중 UPDATE 를 직접 수행했고, 그 결과 **기각(DISMISS) 시 자동 임시 제재
+//     (AUTO_P0_FREEZE 등)가 REVOKED 로 해제되지 않아** 무고 신고로 걸린 72h
+//     제재가 그대로 집행됐다(A5 §3.2 위반). RPC 안에 4-eyes·SLA 기록·자동 제재
+//     해제·level 5 파생 처리(banned + CI 블랙리스트)가 모두 들어 있다.
 // =============================================================================
 
 import type {
@@ -23,9 +26,7 @@ import {
   adminAudit,
   adminDb,
   adminFail,
-  applyPermanentBan,
   requireAdminActor,
-  sanctionEndsAt,
   verifyCoApprover,
   type AdminResult,
 } from "./service";
@@ -179,8 +180,8 @@ export interface ResolveReportInput {
 }
 
 /**
- * 신고 조치 확정 (A5 §6-④).
- *  - dismiss: status=DISMISSED + 사유 audit.
+ * 신고 조치 확정 (A5 §6-④) — 00010 `resolve_report()` RPC 위임 (G2-05).
+ *  - dismiss: status=DISMISSED + **이 신고가 부과한 자동 임시 제재 REVOKED**.
  *  - sanction: sanctions 생성 → 레벨 5 는 banned + CI 블랙리스트 → status=ACTIONED.
  *  - 통보(⑤ NOTIFIED)는 D7 알림 파이프라인 소관 — 여기서는 ACTIONED 까지만.
  */
@@ -204,81 +205,87 @@ export async function resolveReport(
     return adminFail("ALREADY_HANDLED", "이미 종결된 신고예요.");
   }
 
-  const now = new Date().toISOString();
-
-  // ---- 기각 ----
-  if (input.decision === "dismiss") {
-    const { error: upErr } = await db
-      .from("reports")
-      .update({ status: "DISMISSED", handled_by: ctx.profile.id, handled_at: now })
-      .eq("id", input.reportId);
-    if (upErr) return adminFail("DB_ERROR", upErr.message);
-
-    await adminAudit(ctx.profile.id, "admin.report.dismiss", `report:${input.reportId}`, {
-      reason,
-      reason_code: report.reason_code,
-    });
-    return { ok: true, data: { sanctionId: null } };
-  }
-
-  // ---- 제재 부과 ----
-  const level = input.sanctionLevel;
-  if (!level || level < 1 || level > 5) {
-    return adminFail("INVALID_INPUT", "제재 레벨(1~5)을 선택해 주세요.");
-  }
-  if (!report.target_id) {
-    return adminFail("TARGET_MISSING", "신고 대상 프로필이 없어요(탈퇴 등). 기각으로 종결해 주세요.");
-  }
-
-  // 레벨 5 = 4-eyes (A5 §6-④: 어드민 2인 승인)
+  // 레벨 5 = 4-eyes (A5 §6-④: 어드민 2인 승인). 닉네임 → id 해석은 여기서,
+  // 실제 강제는 RPC 안에서도 한 번 더 이루어진다(양쪽 모두 필요).
   let coApproverId: string | null = null;
-  if (level === 5) {
-    if (!input.coApproverNickname?.trim()) {
-      return adminFail("FOUR_EYES_REQUIRED", "영구정지는 부승인 어드민 닉네임이 필요해요 (2인 승인).");
+  let level: SanctionLevel | null = null;
+
+  if (input.decision === "sanction") {
+    level = input.sanctionLevel ?? null;
+    if (!level || level < 1 || level > 5) {
+      return adminFail("INVALID_INPUT", "제재 레벨(1~5)을 선택해 주세요.");
     }
-    const co = await verifyCoApprover(ctx.profile.id, input.coApproverNickname);
-    if (!co.ok) return co;
-    coApproverId = co.data.coApproverId;
+    if (!report.target_id) {
+      return adminFail("TARGET_MISSING", "신고 대상 프로필이 없어요(탈퇴 등). 기각으로 종결해 주세요.");
+    }
+    if (level === 5) {
+      if (!input.coApproverNickname?.trim()) {
+        return adminFail("FOUR_EYES_REQUIRED", "영구정지는 부승인 어드민 닉네임이 필요해요 (2인 승인).");
+      }
+      const co = await verifyCoApprover(ctx.profile.id, input.coApproverNickname);
+      if (!co.ok) return co;
+      coApproverId = co.data.coApproverId;
+    }
   }
 
-  // 1) 제재 생성
-  const { data: sanction, error: sErr } = await db
-    .from("sanctions")
-    .insert({
-      profile_id: report.target_id,
-      level,
-      reason,
-      report_id: input.reportId,
-      status: "ACTIVE",
-      appeal_status: "NONE",
-      starts_at: now,
-      ends_at: sanctionEndsAt(level),
-      created_by: ctx.profile.id,
-    })
-    .select("id")
-    .single();
-  if (sErr) return adminFail("DB_ERROR", sErr.message);
-  const sanctionId = (sanction as { id: string }).id;
+  const action = input.decision === "dismiss" ? "DISMISS" : `LEVEL_${level}`;
 
-  // 2) 레벨 5 파생 처리 (banned + CI 해시 블랙리스트)
-  if (level === 5) {
-    await applyPermanentBan(report.target_id, sanctionId);
-  }
-
-  // 3) 신고 종결
-  const { error: upErr } = await db
-    .from("reports")
-    .update({ status: "ACTIONED", handled_by: ctx.profile.id, handled_at: now })
-    .eq("id", input.reportId);
-  if (upErr) return adminFail("DB_ERROR", upErr.message);
-
-  await adminAudit(ctx.profile.id, "admin.report.resolve", `report:${input.reportId}`, {
-    sanction_id: sanctionId,
-    sanction_level: level,
-    target_profile_id: report.target_id,
-    reason,
-    co_approver_id: coApproverId, // 레벨 5 4-eyes 증적
+  // ---- 조치 확정 = resolve_report() RPC 단일 호출 (G2-05) ----
+  //   RPC 가 수행하는 것: 상태 전이 검증 → 어드민 자격 → 4-eyes(level 5) →
+  //   **이 신고가 만든 자동 임시 제재 REVOKED** → 제재 insert(또는 기각) →
+  //   level 5 파생(banned + blocked_hashes) → reports 종결 → SLA 감사기록.
+  const { data, error: rpcError } = await db.rpc("resolve_report", {
+    p_report_id: input.reportId,
+    p_action: action,
+    p_admin_id: ctx.profile.id,
+    p_reason: reason,
+    p_second_admin_id: coApproverId,
   });
+  if (rpcError) return mapResolveReportError(rpcError.message);
+
+  const sanctionId = ((data as { sanction_id?: string | null } | null)?.sanction_id ?? null) as
+    | string
+    | null;
+
+  // 어드민 조치 감사(admin.* 접두 — 21_admin 규약). RPC 도 moderation.resolve_report
+  // 를 남기므로 두 로그가 쌍으로 남는다(어드민 화면 조회는 admin.* 기준).
+  await adminAudit(
+    ctx.profile.id,
+    input.decision === "dismiss" ? "admin.report.dismiss" : "admin.report.resolve",
+    `report:${input.reportId}`,
+    {
+      sanction_id: sanctionId,
+      sanction_level: level,
+      target_profile_id: report.target_id,
+      reason_code: report.reason_code,
+      reason,
+      co_approver_id: coApproverId, // 레벨 5 4-eyes 증적
+      via: "resolve_report_rpc",
+    }
+  );
 
   return { ok: true, data: { sanctionId } };
+}
+
+/** resolve_report() 가 raise 하는 DUCKMATE_* 예외를 AdminResult 코드로 매핑 */
+function mapResolveReportError(message: string): AdminResult<never> {
+  if (message.includes("DUCKMATE_REPORT_NOT_FOUND")) {
+    return adminFail("NOT_FOUND", "신고를 찾을 수 없어요.");
+  }
+  if (message.includes("DUCKMATE_REPORT_ALREADY_RESOLVED")) {
+    return adminFail("ALREADY_HANDLED", "이미 종결된 신고예요.");
+  }
+  if (message.includes("DUCKMATE_RESOLVE_TARGET_GONE")) {
+    return adminFail("TARGET_MISSING", "신고 대상 프로필이 없어요(탈퇴 등). 기각으로 종결해 주세요.");
+  }
+  if (message.includes("DUCKMATE_RESOLVE_4EYES")) {
+    return adminFail("FOUR_EYES_REQUIRED", "영구정지는 다른 활성 어드민 1인의 추가 승인이 필요해요.");
+  }
+  if (message.includes("DUCKMATE_RESOLVE_NOT_ADMIN")) {
+    return adminFail("INVALID_INPUT", "어드민 권한을 확인할 수 없어요.");
+  }
+  if (message.includes("DUCKMATE_RESOLVE_INVALID_ACTION")) {
+    return adminFail("INVALID_INPUT", "처리 유형이 올바르지 않아요.");
+  }
+  return adminFail("DB_ERROR", message);
 }

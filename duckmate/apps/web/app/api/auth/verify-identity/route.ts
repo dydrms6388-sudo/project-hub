@@ -33,7 +33,14 @@ async function runConfirm(
   email: string | null | undefined,
   payload: Record<string, unknown>
 ): Promise<{ status: number; body: Record<string, unknown> }> {
-  const verifier = getIdentityVerifier(email);
+  // 프로덕션 stub 차단(G2-01)은 팩토리에서 throw 로 나온다 — 503 으로 매핑.
+  let verifier;
+  try {
+    verifier = getIdentityVerifier(email);
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "verifier error";
+    return { status: 503, body: { ok: false, code: "VERIFIER_NOT_CONFIGURED", message } };
+  }
 
   let result;
   try {
@@ -44,7 +51,10 @@ async function runConfirm(
     return { status: 503, body: { ok: false, code, message } };
   }
 
-  if (!result.ok || !result.ci || !result.birthDate) {
+  // G2-01(b): 생년월일은 **신뢰 출처(PortOne/PASS)** 응답에서만 요구·사용한다.
+  //   stub 은 birthDate 를 반환하지 않으므로 여기서 필수로 걸면 안 된다.
+  const trusted = verifier.name === "portone";
+  if (!result.ok || !result.ci || (trusted && !result.birthDate)) {
     return {
       status: 400,
       body: { ok: false, code: "VERIFY_FAILED", message: result.reason ?? "본인인증에 실패했어요." },
@@ -53,7 +63,8 @@ async function runConfirm(
 
   const promotion = await promoteIdentityVerified(userId, {
     ci: result.ci,
-    birthDate: result.birthDate,
+    birthDate: result.birthDate ?? null,
+    trusted,
     phone: result.phone,
     // 화이트리스트 이메일이 Stub 경로를 탄 경우 감사로그에 bypass 표기 (B3 오픈이슈 6)
     bypass: verifier.name === "stub" && isReviewBypassEmail(email),

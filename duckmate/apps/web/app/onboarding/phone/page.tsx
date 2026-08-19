@@ -19,7 +19,14 @@ export default async function PhonePage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const stubMode = getIdentityVerifier(user?.email).name === "stub";
+  // 프로덕션 stub 차단(G2-01)으로 팩토리가 throw 할 수 있다 — 화면은 렌더되어야 하므로
+  // 여기서는 "stub 아님"으로 간주한다(실제 인증 시도는 액션에서 코드로 거부된다).
+  let stubMode = false;
+  try {
+    stubMode = getIdentityVerifier(user?.email).name === "stub";
+  } catch {
+    stubMode = false;
+  }
 
   return (
     <section data-testid="onboarding-step-phone">

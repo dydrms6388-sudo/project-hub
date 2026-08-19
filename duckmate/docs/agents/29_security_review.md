@@ -661,3 +661,178 @@ definer 함수는 전부 `revoke execute … from public, anon, authenticated`
 3. `AUTO_P0_FREEZE` 범위 축소 + 신고자 총량 리밋 동작 확인
 4. `resolveReport` → `resolve_report()` RPC 이관 후, 기각 시 자동 제재가 `REVOKED` 되는지 확인
 5. push endpoint 화이트리스트 적용 후 비허용 호스트 등록이 거부되는지 확인
+
+---
+
+## 조치 결과 (오케스트레이터 지시로 반영)
+
+> 반영일 2026-08-19 · 대상 = §A Blocker 6건. 아래 외 항목(§B Phase 2 이월분)은
+> 이번 커밋에서 다루지 않았다. G2 가 "양호"로 판정한 영역(Realtime broadcast
+> 화이트리스트, RLS 전수 활성, service role 경계, `messages`/`reports.evidence`
+> 컬럼 권한)은 **의도적으로 무수정**이다.
+>
+> 신규 마이그레이션은 `supabase/migrations/00014_security_hardening.sql` 하나로 모았다.
+
+| ID | 처리 | 요약 |
+|---|:---:|---|
+| G2-01 | **수정** | 프로덕션 stub 하드 페일 + stub 의 `birth_date` 주입 제거 |
+| G2-02 | **수정** | `likes` 클라이언트 쓰기 권한 회수 + 발신을 service role 경로로 단일화 |
+| G2-03 | **수정** | `appeals` 클라이언트 쓰기 권한 회수, 접수는 `submit_appeal()` 만 |
+| G2-04 | **수정** | 신고자 단위 상한 3종(앱 2 + DB 트리거 1) 신설 |
+| G2-05 | **수정** | `resolve_report()` / `resolve_appeal()` RPC 로 이관 |
+| G2-07 | **수정** | endpoint 호스트 화이트리스트 3중(앱 스키마 · DB CHECK · 발송 시점) |
+| G2-11 | (동반) | 금전 경로라 같은 마이그레이션에서 `refund_requests` 컬럼 권한도 확정 |
+
+### G2-01 [Critical] StubVerifier — **수정**
+
+- `apps/web/lib/auth/identity-verifier.ts`
+  - `isProductionRuntime()` 신설: `NODE_ENV=production` **이고** `VERCEL_ENV=production`
+    일 때만 실 프로덕션으로 본다(프리뷰·스테이징 빌드 오탐 방지. 자체 호스팅은
+    `PRODUCTION_RUNTIME=1` 로 강제 표시). 이 조건에서 `IDENTITY_VERIFIER=stub` 이
+    선택되면 **경고 로그가 아니라 `STUB_VERIFIER_FORBIDDEN_IN_PRODUCTION` 예외**로 차단한다.
+  - **`REVIEW_BYPASS_EMAILS` 화이트리스트 판정을 차단보다 앞으로** 옮겨, 스토어 심사
+    계정은 프로덕션에서도 stub 경로를 계속 탈 수 있다(B3 R2 요구사항 유지).
+  - `StubVerifier.confirmVerification` 이 **`birthDate` 를 반환하지 않는다.**
+- `apps/web/lib/auth/verify.ts`
+  - `promoteIdentityVerified` 에 `trusted: boolean` 추가. `trusted=true`(PortOne)일 때만
+    `profiles.birth_date` 를 덮어쓰고, stub 경로는 **가입 시 사용자가 입력한 값을 유지**한다.
+    만 19세 판정도 그 값으로 수행한다. 감사로그에 `trusted_source` 를 남긴다.
+- 호출부: `app/api/auth/verify-identity/route.ts`(팩토리 예외 → 503 `VERIFIER_NOT_CONFIGURED`,
+  `birthDate` 필수 조건을 trusted 일 때로 한정), `app/onboarding/phone/actions.ts`,
+  `app/onboarding/phone/page.tsx` 가 예외를 흡수한다. `.env.example` 에
+  `IDENTITY_VERIFIER` / `REVIEW_BYPASS_EMAILS` 를 명시.
+
+**"어느 쪽이 옳은가" 판단 근거 (지시사항 ①②):** 둘 다 구현하되 **발신처 제거(stub 이
+birth_date 를 만들지 않음)를 1차**, **소비처 신뢰 판정(`trusted` 플래그)을 2차 방어선**으로 뒀다.
+stub 은 실명확인 기관이 아니므로 생년월일에 대한 권위가 애초에 없다 — 값을 만들지 않는 쪽이
+"소비처마다 이 값을 믿어도 되는가"를 매번 판단하게 두는 것보다 오류에 강하다. 다만 발신처만
+고치면 훗날 다른 어댑터가 값을 되돌려줄 때 같은 결함이 재발하므로, verify.ts 쪽에도
+`trusted` 없이는 덮어쓰지 않는 규칙을 남겼다. 근거는 두 파일 주석에 기록했다.
+
+**남는 성질:** 프로덕션에서 PortOne 미구현 상태로 배포하면 아무도 Lv1/Lv2 가 될 수 없다
+(§7.1 문제 2). 이는 **의도된 fail-closed** 다 — 미성년 통과보다 기능 정지가 낫다.
+PortOne 실연동(Phase 4→1 승격) 또는 채팅·데이팅 모드 비활성 출시는 여전히 오케스트레이터
+결정사항이며, 이번 수정은 그 결정을 강제로 드러나게 만드는 역할을 한다.
+
+### G2-02 [High] likes 컬럼 권한 — **수정**
+
+- `00014`: `revoke insert, update, delete on public.likes from anon, authenticated;`
+  + 사문화된 `likes_insert_own` 정책 제거.
+- `00014`: `can_send_like(p_from, p_to)` security definer 함수 신설.
+  RLS 정책이 하던 `can_engage()` + `can_view_profile()` 판정을 `auth.uid()` 비의존 형태로
+  재구현한 것(발신자 active·Lv1+·만19세+·level2+ 제재 없음 / 수신자 active·Lv1+·level3+
+  제재 없음 / 양방향 차단 없음). 프로필 상태 탐지 오라클이 되지 않도록 클라이언트 execute 는 회수.
+- `apps/web/lib/matching/queries.ts#sendLike`: insert 를 **세션 클라이언트 → service role**
+  로 교체하고, insert 직전에 `can_send_like` 를 호출한다. Lv1 일 3회·슈퍼라이크 잔액 검사는
+  기존 그대로 이 함수 안에 있으므로, 이제 **좋아요 발신 경로가 서버 1곳으로 단일화**된다.
+  되돌리기(rewind)의 delete 는 이미 service role 경유였다(무수정).
+- `MatchingResult` 계약·에러 코드(`LIKE_LIMIT`/`SUPERLIKE_EMPTY`/`TARGET_NOT_AVAILABLE`) 불변.
+
+### G2-03 [High] appeals 컬럼 권한 — **수정**
+
+- `00014`: `revoke insert, update, delete on public.appeals from anon, authenticated;`
+  + `appeals_insert_own` 정책 제거. 조회 정책 `appeals_select_own` 은 유지.
+- **"본인 제출 body 만 grant" 대신 전면 회수를 택한 근거**: appeals 행은 반드시
+  `sanctions.appeal_status='PENDING'` 동기화와 함께 만들어져야 하는데 컬럼 grant 로는 그
+  원자성을 강제할 수 없다. 정식 경로인 `submit_appeal()`(00010, security definer,
+  `authenticated` execute 보유)이 body 길이·30일 창·건당 1회를 모두 검증하며, security
+  definer 라 테이블 권한 회수의 영향을 받지 않는다. 앱 경로(`lib/moderation/actions.ts`)는
+  이미 이 RPC 만 쓴다 — **호출부 수정 불필요**.
+
+### G2-04 [High] 신고 레이트 리밋 — **수정** (3중)
+
+정책 정합성(05_trust_safety §2 "무고성 신고 방지")을 기준으로 아래 3개를 나눠 넣었다.
+A5 §3.2 의 `AUTO_P0_FREEZE` **룰 자체(P0 1건 → 임시조치)는 바꾸지 않았다** — 스펙 변경은
+정책 소유자 결정이 필요하고, 여기서는 "1계정이 다수를 자동으로 침묵시키는" 증폭만 끊는다.
+
+1. **DB(우회 불가) — `00014` 의 `apply_auto_sanctions()` 재정의**: 신고자가 24h 내에
+   이미 **서로 다른 대상 3명**을 신고했다면, 그 이후 신고는 `AUTO_P0_FREEZE` 를 유발하지
+   못한다. 신고 자체는 정상 접수되고 **P0 우선순위와 1시간 SLA 는 그대로** 유지되므로
+   (= 큐 강등이지 무시가 아님) 안전 기준을 낮추지 않는다. 억제 사실은
+   `audit_logs.action='moderation.auto_sanction_suppressed'` 로 남는다.
+   서로 다른 신고자 3인의 합의가 전제인 `AUTO_3REPORTS` 는 단독 계정 공격이 아니므로 면제.
+2. **앱 — `lib/moderation/service.ts` 신고자당 24h 총량**: 서로 다른 대상
+   `REPORTER_MAX_TARGETS_24H = 10` 건 초과 시 `RATE_LIMITED`. A5 에 수치 규정이 없어
+   신설했다(정상 이용자가 하루 10명 넘게 신고할 상황은 실질적으로 없고, 초과 시에도
+   고객센터 경로가 남는다).
+3. **앱 — 남용 이력(A5 §2 명문, 그동안 미집행)**: 30일 내 기각(DISMISSED)
+   `REPORTER_MAX_DISMISSED_30D = 5` 건 이상이면 신고 접수를 제한한다.
+- 신고자 단위 집계용 인덱스 `idx_reports_reporter_time` 추가.
+
+**이월**: §9.1 권고 1(“AUTO_P0_FREEZE 를 해당 매칭 한정으로 축소”)은 A5 §3.2 문언과
+현행 전역 제재 구현의 차이를 조정하는 **정책 결정**이라 이번 범위에서 제외했다.
+위 1)이 그 사이의 실효 리스크(대량 침묵)를 막는 보상 통제다.
+
+### G2-05 [High] resolve_report RPC 미사용 — **수정**
+
+- `apps/web/lib/admin/reports.ts#resolveReport`: 다중 UPDATE 를 폐기하고
+  `db.rpc("resolve_report", { p_report_id, p_action, p_admin_id, p_reason, p_second_admin_id })`
+  단일 호출로 교체. 이로써 **기각 시 자동 임시 제재의 `REVOKED` 대체**(00010:193-197),
+  4-eyes 재검증, SLA 충족 여부 기록, level 5 파생 처리(banned + `blocked_hashes`)가
+  모두 DB 안에서 원자적으로 수행된다. `DUCKMATE_*` 예외는 `mapResolveReportError()` 가
+  기존 `AdminErrorCode`(NOT_FOUND / ALREADY_HANDLED / TARGET_MISSING / FOUR_EYES_REQUIRED)
+  로 매핑하므로 **화면 계약은 불변**이다. 부승인자 닉네임 → id 해석은 앱에 남기고
+  (에러 문구 품질), 강제는 RPC 안에서도 반복된다.
+- 파일 상단의 **"resolve_report DB 함수는 존재하지 않는다(00004 확인)"는 잘못된 주석**을
+  사실에 맞게 교체했다(G2 지적대로 00010 에 실재).
+- `apps/web/lib/admin/appeals.ts#decideAppeal`: 동일하게 `resolve_appeal()` RPC 로 교체.
+  기존 구현은 `appeals` UPDATE + `sanctions` UPDATE 를 직접 수행해, RPC 안의
+  level 5 계정 복구·`blocked_hashes` 회수·처리기한 감사기록이 부분적으로만 재현되고 있었다.
+- 두 함수 모두 `admin.*` 접두 감사로그(21_admin 규약)는 유지하고 `via: "*_rpc"` 를 덧붙였다.
+
+### G2-07 [High] push_tokens.endpoint 무검증 — **수정** (3중)
+
+허용 호스트: `fcm.googleapis.com`, `android.googleapis.com`, `*.push.services.mozilla.com`,
+`*.push.apple.com`(= `web.push.apple.com`), `*.notify.windows.com`. `https:` 강제,
+사용자정보(`user:pass@`)·포트 지정 불허.
+
+1. **등록 시점** — `apps/web/lib/notifications/schemas.ts` 에 `isAllowedPushEndpoint()` +
+   `pushSubscriptionSchema.endpoint` refine. 위반 시 `INVALID_INPUT` 으로 거부되며
+   `/api/push` POST 는 400 을 반환한다.
+2. **DB CHECK** — `00014` 의 `push_tokens_endpoint_allowed`.
+   `push_token_endpoint(token)`(JSON 파싱 실패 시 null)과
+   `push_endpoint_host_allowed(endpoint)` 두 immutable 함수로 구성. 제약 추가 전에
+   비허용 endpoint 를 가진 기존 행을 삭제한다(그대로 두면 SSRF 벡터가 남는다).
+   `platform<>'web'` 행(FCM 토큰 문자열)은 검사 대상 외.
+3. **발송 시점** — `supabase/functions/push-dispatch/webpush.ts#sendWebPush` 가 fetch
+   직전에 같은 판정을 수행하고, 비허용이면 `gone:true` 로 돌려 토큰을 자동 비활성화시킨다.
+- 해제(`unregisterPushTokenSchema`)에는 화이트리스트를 걸지 않았다 — 과거에 저장된
+  비허용 endpoint 를 유저가 스스로 정리할 수 있어야 하기 때문(수신거부는 항상 허용).
+
+### 동반 조치 (G2-11, Phase 3 금전 경로 예방)
+
+`00014`: `refund_requests` 쓰기 권한 회수 + `grant insert (user_id, payment_ref, reason)`.
+`status`·`amount`·`handled_by` 는 service role 전용이 된다. D6 이 환불 큐를 붙이기 전에
+차단해두는 편이 안전하다는 §2.7 권고를 그대로 반영했다.
+
+### 검증
+
+- `pnpm --filter @duckmate/web exec tsc --noEmit --incremental false` → 에러 0
+- `pnpm build` (web · company) → 성공
+- `pnpm gate` (indexing / a11y-tokens / secrets) → 통과
+  (`CMP-404-CONFLICT` 경고 1건은 이번 수정과 무관한 기존 경고)
+- SQL 은 실행 검증 불가 → `00002`(테이블·컬럼), `00003`(정책·컬럼 권한·헬퍼 함수 정의),
+  `00010`(`resolve_report`/`resolve_appeal`/`submit_appeal` 시그니처·예외 문자열)을 직접
+  대조해 정합성을 확인했다. 특히 (a) `resolve_report(uuid,text,uuid,text,uuid)` 인자명이
+  `p_report_id/p_action/p_admin_id/p_reason/p_second_admin_id` 로 RPC 호출과 일치,
+  (b) `resolve_appeal(uuid,text,uuid,text)` 동일 확인, (c) `can_send_like` 가 참조하는
+  `profiles`/`sanctions`/`blocks` 컬럼이 00002 정의와 일치, (d) `apply_auto_sanctions()`
+  재정의가 기존 트리거 `trg_reports_auto_sanctions` 를 그대로 재사용함을 확인했다.
+
+### 남은 리스크 / 다음 단계
+
+1. **PortOne 미구현**(§7.1 문제 2)은 코드로 해결되지 않는다. 이제 프로덕션에서 stub 이
+   막히므로, 실연동 승격 또는 "본인인증 필요 기능 비활성 출시" 중 하나를 **배포 전에
+   결정**해야 한다 — 오케스트레이터 판단 사항.
+2. `AUTO_P0_FREEZE` 의 집행 범위(전역 level 2 vs A5 §3.2 "해당 매칭 한정")는 여전히
+   스펙 초과 상태다. 24h 대상 3명 게이트가 보상 통제일 뿐 근본 해소는 아니다.
+3. Phase 2 이월 항목은 그대로 유효하다: G2-06(선언식 4-eyes), G2-08(`mode`/
+   `onboarding_step`), G2-09(`matches.status` 역전이 — 언매치 UI 를 켜기 전 필수),
+   G2-10(좋아요 페이월), G2-12~G2-28.
+4. `likes` 쓰기 차단으로 좋아요 발신이 서버 경로에만 의존하게 됐다 — 그 경로의 장애가
+   곧 기능 정지다. 반대로 한도·잔액 검사와 insert 사이에 트랜잭션이 없다는 점(동시 요청
+   시 한도 초과 가능)은 그대로 남으므로, 완전 해소는 §2.2 권고대로 `send_like()` 단일
+   RPC 화가 필요하다.
+5. 신고 상한 수치(24h 10건 / 30일 기각 5건 / 자동제재 대상 3명)는 실데이터가 없는 상태의
+   추정치다. 운영 개시 후 `moderation.auto_sanction_suppressed` 와 `RATE_LIMITED` 빈도를
+   보고 조정할 것.

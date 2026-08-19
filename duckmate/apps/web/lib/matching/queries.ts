@@ -259,6 +259,11 @@ export interface SendLikeData {
 }
 
 /**
+ * ⚠ 보안 (G2-02): `likes` 는 00014 에서 클라이언트 INSERT/UPDATE/DELETE 권한이
+ * revoke 되었다. 좋아요 발신은 **이 함수(서버 경로)만** 가능하며, 여기서
+ * 한도·잔액을 검사한 뒤 service role 로 insert 한다. RLS 가 하던 자격 검사는
+ * can_send_like() RPC 로 대체 수행한다.
+ *
  * 한도 규칙:
  * - Lv1 + type='like' → KST 서비스 데이 기준 일 3회 (service role 카운트,
  *   idx_likes_from_time). Lv2+ 는 무제한 (무제한 스와이프 아님 — 큐 자체가 일 N명).
@@ -310,8 +315,24 @@ export async function sendLike(
     }
   }
 
-  // --- 좋아요 insert (유저 세션 — RLS likes_insert_own: can_engage + can_view) ---
-  const { error: insError } = await supabase
+  // --- 발신 자격 확인 (00014 can_send_like — can_engage + can_view_profile 동형) ---
+  //   G2-02: likes 는 클라이언트 직접 INSERT 권한이 revoke 되었고(00014), 여기서
+  //   service role 로 insert 한다. 그러면 RLS 정책(likes_insert_own)이 하던
+  //   자격 검사가 우회되므로, 같은 판정을 명시 RPC 로 먼저 수행한다.
+  //   (auth.uid() 에 의존하지 않도록 from/to 를 인자로 받는 함수를 별도로 둔다)
+  {
+    const { data: allowed, error: chkError } = await service.rpc("can_send_like", {
+      p_from: profileId,
+      p_to: targetId,
+    });
+    if (chkError) return fail("DB_ERROR", chkError.message);
+    if (allowed !== true) {
+      return fail("TARGET_NOT_AVAILABLE", "지금은 이 상대에게 보낼 수 없어요.");
+    }
+  }
+
+  // --- 좋아요 insert (service role — 클라이언트 직접 INSERT 는 00014 에서 차단) ---
+  const { error: insError } = await service
     .from("likes")
     .insert({ from_id: profileId, to_id: targetId, type });
   if (insError) {

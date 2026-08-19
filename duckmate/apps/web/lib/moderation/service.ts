@@ -50,9 +50,34 @@ async function getOwnProfileId(): Promise<{ userId: string; profileId: string } 
   return { userId: user.id, profileId: (profile as { id: string }).id };
 }
 
+// ---------------------------------------------------------------------------
+// [G2-04] 신고자 단위 남용 방지 상한
+//
+// 기존에는 (신고자, 대상) 24h 1회 제한밖에 없어, 계정 1개로 임의 다수를 각각
+// P0 로 신고해 대상마다 AUTO_P0_FREEZE(72h 발신 정지)를 유발할 수 있었다.
+//
+// 정책 근거(05_trust_safety §2 "무고성 신고 방지"):
+//   · "동일 신고자→동일 대상 중복 신고는 병합"        → 기존 24h 1회 유지
+//   · "신고 남용(30일 내 기각 5건)은 신고 기능 30일 제한" → 아래 ②로 신규 집행
+//   · 24h 총량 상한은 A5 에 수치 규정이 없어 신설한다(①). 정상 이용자가 하루에
+//     10명 넘게 신고할 상황은 실질적으로 없고(A5 §2 는 "대화·프로필 단위 신고"),
+//     넘더라도 고객센터 경로가 남으므로 안전 상한으로 충분하다.
+//
+// 자동 제재까지 유발할 수 있는 대상 수(24h 3명)는 DB 트리거
+// apply_auto_sanctions()(00014)가 별도로 제한한다 — 앱 경로를 우회해도 유효하도록.
+// ---------------------------------------------------------------------------
+
+/** 신고자 1인이 24시간에 신고할 수 있는 서로 다른 대상 수 상한 */
+export const REPORTER_MAX_TARGETS_24H = 10;
+/** 30일 내 기각(DISMISSED) 이 이 수를 넘으면 신고 접수를 30일간 제한 (A5 §2) */
+export const REPORTER_MAX_DISMISSED_30D = 5;
+
 /**
  * 신고 접수 코어 — Server Action(submitReport)과 POST /api/reports 가 동일 호출.
- * 레이트 리밋: 동일 신고자→동일 대상 24h 1회 (초과분은 병합 — 새 행을 만들지 않는다).
+ * 레이트 리밋:
+ *   1) 동일 신고자→동일 대상 24h 1회 (초과분은 병합 — 새 행을 만들지 않는다)
+ *   2) 신고자당 24h 서로 다른 대상 REPORTER_MAX_TARGETS_24H 건 (G2-04)
+ *   3) 30일 내 기각 REPORTER_MAX_DISMISSED_30D 건 이상 → 30일 신고 제한 (A5 §2)
  */
 export async function submitReportCore(input: unknown): Promise<ModerationResult<SubmitReportData>> {
   assertServiceContext();
@@ -102,6 +127,46 @@ export async function submitReportCore(input: unknown): Promise<ModerationResult
     .gte("created_at", since);
   if ((count ?? 0) > 0) {
     return modFail("RATE_LIMITED", "이미 접수된 신고가 있어요. 기존 신고에 병합해 처리 중이에요.");
+  }
+
+  // [G2-04] ① 신고자 단위 24h 총량 — 서로 다른 대상 기준 (대상당 1행이므로 행 수 = 대상 수)
+  {
+    const { data: recent, error: recentError } = await service
+      .from("reports")
+      .select("target_id")
+      .eq("reporter_id", me.profileId)
+      .gte("created_at", since)
+      .limit(200);
+    if (recentError) return modFail("DB_ERROR", recentError.message);
+    const distinctTargets = new Set(
+      (recent ?? [])
+        .map((r) => (r as { target_id: string | null }).target_id)
+        .filter((v): v is string => !!v),
+    );
+    if (distinctTargets.size >= REPORTER_MAX_TARGETS_24H) {
+      return modFail(
+        "RATE_LIMITED",
+        "하루에 접수할 수 있는 신고 수를 넘었어요. 급한 안전 문제는 고객센터로 알려 주세요.",
+      );
+    }
+  }
+
+  // [G2-04] ② 남용 이력 — 30일 내 기각 5건 이상이면 30일간 접수 제한 (A5 §2)
+  {
+    const since30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const { count: dismissed, error: dismissError } = await service
+      .from("reports")
+      .select("id", { count: "exact", head: true })
+      .eq("reporter_id", me.profileId)
+      .eq("status", "DISMISSED")
+      .gte("handled_at", since30d);
+    if (dismissError) return modFail("DB_ERROR", dismissError.message);
+    if ((dismissed ?? 0) >= REPORTER_MAX_DISMISSED_30D) {
+      return modFail(
+        "RATE_LIMITED",
+        "최근 신고가 반복해서 기각되어 신고 기능이 일시적으로 제한됐어요. 고객센터로 문의해 주세요.",
+      );
+    }
   }
 
   // 접수 (service role — triage/auto_sanctions 트리거가 insert 시점에 동작)

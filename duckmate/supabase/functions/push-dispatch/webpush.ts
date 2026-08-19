@@ -14,6 +14,33 @@ export interface WebPushSubscription {
   keys: { p256dh: string; auth: string };
 }
 
+// ---------------------------------------------------------------------------
+// [G2-07] endpoint 호스트 화이트리스트 — 발송 시점 2차 방어
+//   등록 시점(apps/web/lib/notifications/schemas.ts)과 DB CHECK(00014)에 더해,
+//   실제 fetch 직전에도 목적지를 확인한다. 셋 중 하나라도 우회되면 SSRF 가 되므로
+//   "요청을 보내는 곳"에서의 검사가 최종 방어선이다.
+// ---------------------------------------------------------------------------
+const ALLOWED_PUSH_ENDPOINT_HOSTS = [
+  "fcm.googleapis.com",
+  "android.googleapis.com",
+  "push.services.mozilla.com",
+  "push.apple.com",
+  "notify.windows.com",
+];
+
+export function isAllowedPushEndpoint(raw: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== "https:") return false;
+  if (url.username || url.password || url.port) return false;
+  const host = url.hostname.toLowerCase().replace(/\.$/, "");
+  return ALLOWED_PUSH_ENDPOINT_HOSTS.some((a) => host === a || host.endsWith(`.${a}`));
+}
+
 export interface WebPushResult {
   ok: boolean;
   status: number;
@@ -175,6 +202,10 @@ export async function sendWebPush(
   vapid: VapidConfig,
   ttlSeconds = 12 * 3600
 ): Promise<WebPushResult> {
+  // 화이트리스트 밖 목적지는 발송하지 않고 "만료(gone)"로 처리해 토큰을 정리한다.
+  if (!isAllowedPushEndpoint(subscription.endpoint)) {
+    return { ok: false, status: 0, gone: true, error: "endpoint host not allowed" };
+  }
   try {
     const body = await encryptPayload(
       utf8(payloadJson),

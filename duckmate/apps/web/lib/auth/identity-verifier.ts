@@ -4,7 +4,9 @@
 // - PortOneVerifier: 포트원(PASS/다날) 어댑터 뼈대. 실키 없으면 "미구성" 에러만
 //   던진다 — 실연동은 Phase 4 (B3 §준비물, .env PORTONE_*).
 // - StubVerifier: 개발/E2E 용. env IDENTITY_VERIFIER=stub 일 때 활성.
-//   항상 성공 + 결정적 테스트 CI 반환. 프로덕션에서 stub 이면 기동 시 경고.
+//   항상 성공 + 결정적 테스트 CI 반환. **프로덕션(NODE_ENV=production 이고
+//   VERCEL_ENV=production)에서는 선택 자체가 에러로 차단된다** (G2-01).
+//   또한 stub 은 birth_date 를 반환하지 않는다 — 연령의 진실 원천이 아니므로.
 // - 심사 바이패스(B3 결정사항 공통-2 / R2): REVIEW_BYPASS_EMAILS 화이트리스트에
 //   등록된 이메일은 프로덕션에서도 Stub 경로를 탄다. 사용 시 반드시 audit_logs 에
 //   기록할 것(verify.ts 승급부에서 meta.bypass=true 로 남긴다).
@@ -92,7 +94,14 @@ export class StubVerifier implements IdentityVerifier {
       ok: true,
       // 유저별 결정적 테스트 CI — E2E 재실행에도 동일 값 (blocked_hashes 테스트 가능)
       ci: `STUB-CI-${userId}`,
-      birthDate: "1995-01-01", // 항상 성인
+      // ⚠ G2-01(b) 조치: stub 은 birthDate 를 반환하지 않는다.
+      //   근거 — stub 은 PASS/실명확인 기관이 아니므로 생년월일에 대한 권위가 없다.
+      //   과거 구현은 "1995-01-01"(항상 성인)을 반환했고 verify.ts 가 그 값으로
+      //   profiles.birth_date 를 덮어써, 가입 시 미성년이 성인으로 세탁되며
+      //   만 19세 3중 게이트의 게이트 2·3 이 동시에 무력화됐다. 값을 아예 만들지
+      //   않는 쪽(발신처에서 제거)이, 소비처마다 "신뢰 가능한 출처인가"를 판단하게
+      //   두는 것보다 안전하다. 신뢰 출처 판정은 verify.ts 의 trusted 플래그가
+      //   2차 방어선으로 함께 수행한다.
       phone: "01000000000",
     };
   }
@@ -112,30 +121,45 @@ export function isReviewBypassEmail(email: string | null | undefined): boolean {
   return list.includes(email.toLowerCase());
 }
 
-let warnedStubInProduction = false;
+/**
+ * 실 프로덕션 런타임 판정 (G2-01(a)).
+ * `NODE_ENV=production` 만으로는 프리뷰·스테이징 빌드까지 잡히므로, Vercel 의
+ * 배포 환경 구분(`VERCEL_ENV`)까지 함께 본다 — 둘 다 production 일 때만 "실서비스".
+ * (VERCEL_ENV 가 없는 자체 호스팅 프로덕션은 PRODUCTION_RUNTIME=1 로 강제 표시)
+ */
+export function isProductionRuntime(): boolean {
+  if (process.env.PRODUCTION_RUNTIME === "1") return true;
+  return process.env.NODE_ENV === "production" && process.env.VERCEL_ENV === "production";
+}
+
+/** 프로덕션에서 stub 이 선택됐을 때 던지는 에러 코드 — 호출부가 503 으로 매핑 */
+export const STUB_FORBIDDEN_ERROR =
+  "STUB_VERIFIER_FORBIDDEN_IN_PRODUCTION: IDENTITY_VERIFIER=stub 은 프로덕션에서 사용할 수 없다 " +
+  "(만 19세 확인이 무효화됨). PortOne 실연동을 켜거나 배포 env 를 수정할 것.";
 
 /**
  * 활성 verifier 선택:
- *   1) IDENTITY_VERIFIER=stub → StubVerifier (프로덕션이면 경고 로그 — 1회)
- *   2) email 이 REVIEW_BYPASS_EMAILS 에 있으면 → StubVerifier (심사 바이패스,
- *      프로덕션에서도 허용 — 호출부가 audit_logs 에 bypass 기록)
+ *   1) email 이 REVIEW_BYPASS_EMAILS 에 있으면 → StubVerifier
+ *      (B3 R2 스토어 심사용 — 프로덕션에서도 예외적으로 허용. 호출부가
+ *       audit_logs 에 bypass=true 로 기록하고, verify.ts 가 birth_date 를
+ *       덮어쓰지 않으므로 연령 게이트는 가입 신고값 기준으로 유지된다)
+ *   2) IDENTITY_VERIFIER=stub → StubVerifier.
+ *      단 **실 프로덕션에서는 경고가 아니라 예외로 차단**한다 (G2-01(a)).
  *   3) 그 외 → PortOneVerifier (미구성 시 호출 시점에 에러)
  */
 export function getIdentityVerifier(email?: string | null): IdentityVerifier {
   assertServerRuntime();
 
-  if (process.env.IDENTITY_VERIFIER === "stub") {
-    if (process.env.NODE_ENV === "production" && !warnedStubInProduction) {
-      warnedStubInProduction = true;
-      console.warn(
-        "[duckmate:auth] ⚠ IDENTITY_VERIFIER=stub 가 프로덕션에서 활성화되어 있다. " +
-          "본인인증이 무조건 통과된다 — 배포 env 를 즉시 확인할 것."
-      );
-    }
+  // (1) 심사 바이패스 화이트리스트는 프로덕션 차단보다 앞에서 판정한다 — B3 요구사항.
+  if (isReviewBypassEmail(email)) {
     return new StubVerifier();
   }
 
-  if (isReviewBypassEmail(email)) {
+  if (process.env.IDENTITY_VERIFIER === "stub") {
+    if (isProductionRuntime()) {
+      // 경고 로그로는 아무도 막히지 않는다 → 기동 자체를 실패시킨다.
+      throw new Error(STUB_FORBIDDEN_ERROR);
+    }
     return new StubVerifier();
   }
 

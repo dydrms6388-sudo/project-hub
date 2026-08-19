@@ -13,7 +13,9 @@
 //               - blocked_hashes(ci) 조회로 영구정지 재가입 차단 (A5 §3.1 level 5)
 //               - identity_hashes(00007) 조회로 1인 1계정 강제 — 타 프로필에 등록된
 //                 CI 면 CI_ALREADY_REGISTERED 거부, 통과 시 upsert 후 승급
-//               - PASS 생년월일로 birth_date 덮어쓰기 (진실의 원천)
+//               - PASS 생년월일로 birth_date 덮어쓰기 (진실의 원천) —
+//                 ⚠ 신뢰 출처(trusted=true, PortOne)일 때만. stub 경로는 덮어쓰지 않고
+//                   가입 시 신고 생년월일로 만 19세를 판정한다 (G2-01)
 //               - 만 19세 미만 → 즉시 status=banned + 파기 큐 등록(audit_log) (A5 §1.3-2)
 //               - Lv2 도달 update 만으로 보류 매칭이 자동 성립된다 (D1-9 트리거 —
 //                 여기서 try_create_match 를 직접 호출하지 않는다)
@@ -125,7 +127,22 @@ export async function promotePhoneVerified(userId: string, phone: string): Promi
 // ---------------------------------------------------------------------------
 export async function promoteIdentityVerified(
   userId: string,
-  input: { ci: string; birthDate: string; phone?: string; bypass?: boolean }
+  input: {
+    ci: string;
+    /** 인증기관이 반환한 생년월일. **trusted 일 때만 의미가 있다** */
+    birthDate?: string | null;
+    /**
+     * G2-01(b): 이 birthDate 가 "진실의 원천"인지 여부.
+     * true = PASS/PortOne 등 실 본인확인 기관 응답 → profiles.birth_date 덮어쓰기.
+     * false = StubVerifier(개발·E2E·심사 바이패스) → 덮어쓰지 않고, 연령 판정도
+     *         가입 시 사용자가 입력한 profiles.birth_date 로 수행한다.
+     *         (stub 이 자기 마음대로 성인 생년월일을 주입해 만 19세 게이트를
+     *          지워버리던 경로를 차단한다)
+     */
+    trusted: boolean;
+    phone?: string;
+    bypass?: boolean;
+  }
 ): Promise<PromotionResult> {
   assertServiceContext();
 
@@ -172,7 +189,13 @@ export async function promoteIdentityVerified(
   //    ※ profiles.birth_date CHECK 가 미성년 저장을 막으므로 덮어쓰기 전에 판정한다.
   //    실제 개인정보 파기 실행은 D5/D7 의 파기 잡이 audit_logs 의
   //    action='verify.underage.purge_queued' 를 큐로 소비한다(규약).
-  if (calcAge(input.birthDate) < 19) {
+  //    신뢰 출처(PASS)가 아니면 기관 생년월일이 없으므로 가입 신고값으로 판정한다.
+  const trustedBirthDate = input.trusted && input.birthDate ? input.birthDate : null;
+  const effectiveBirthDate = trustedBirthDate ?? profile.birth_date;
+  if (!effectiveBirthDate) {
+    return { ok: false, code: "UNDERAGE", message: "만 19세 이상만 이용할 수 있어요." };
+  }
+  if (calcAge(effectiveBirthDate) < 19) {
     await supabase.from("profiles").update({ status: "banned" }).eq("id", profile.id);
     await writeAuditLog(profile.id, "verify.underage.purge_queued", `profile:${profile.id}`, {
       reason: "PASS 생년월일 만 19세 미만 — 계정 정지 + 데이터 파기 큐",
@@ -200,11 +223,16 @@ export async function promoteIdentityVerified(
   }
 
   // 5) 승급 + PASS 생년월일 덮어쓰기 (자기신고와 불일치해도 성인이면 PASS 값으로 계속)
+  //    ⚠ G2-01(b): 덮어쓰기는 **신뢰 출처(trusted)일 때만** 한다. stub 경로는
+  //      verify_level 만 올리고 birth_date 는 가입 시 값을 그대로 유지한다 —
+  //      런타임 게이트 3(is_active_member 의 만 19세 판정)이 계속 살아 있게 하려는 것.
   //    verify_level 은 단조 유지: 이미 3이면 3 유지 (사진 뱃지 보존)
   const nextLevel = Math.max(profile.verify_level, 2);
+  const profileUpdate: Record<string, unknown> = { verify_level: nextLevel };
+  if (trustedBirthDate) profileUpdate.birth_date = trustedBirthDate;
   const { error } = await supabase
     .from("profiles")
-    .update({ verify_level: nextLevel, birth_date: input.birthDate })
+    .update(profileUpdate)
     .eq("id", profile.id);
   if (error) return { ok: false, code: "DB_ERROR", message: error.message };
   // ↑ 이 update 가 Lv2 도달이면 trg_profiles_verify_match 트리거가 보류 매칭을
@@ -212,7 +240,8 @@ export async function promoteIdentityVerified(
 
   await writeAuditLog(profile.id, "verify.level2", `profile:${profile.id}`, {
     ci_hash: ciHash, // 원문 미저장 (identity_hashes 등록 해시와 동일)
-    birth_date_overwritten: input.birthDate !== profile.birth_date,
+    trusted_source: input.trusted === true, // false = stub 경로 (연령 미검증)
+    birth_date_overwritten: trustedBirthDate !== null && trustedBirthDate !== profile.birth_date,
     bypass: input.bypass === true, // 심사 바이패스 경로 감사 추적 (B3 오픈이슈 6)
   });
 
