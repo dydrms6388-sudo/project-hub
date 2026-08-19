@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사료 급여량 계산기 — RER·MER 하루 칼로리와 그램 | PetCalc</title>
+<meta name="description" content="체중과 생활 단계로 강아지·고양이의 하루 필요 열량(RER 70×체중^0.75, MER 계수)을 계산하고, 사료 100g당 칼로리를 넣으면 하루·끼니당 급여량(g)까지 환산합니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/food-amount/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="사료 급여량 계산기 — RER·MER 하루 칼로리와 그램 | PetCalc">
+<meta property="og:description" content="체중과 생활 단계로 강아지·고양이의 하루 필요 열량(RER 70×체중^0.75, MER 계수)을 계산하고, 사료 100g당 칼로리를 넣으면 하루·끼니당 급여량(g)까지 환산합니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/food-amount/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사료 급여량 계산기 — RER·MER 하루 칼로리와 그램 | PetCalc","description":"체중과 생활 단계로 강아지·고양이의 하루 필요 열량(RER 70×체중^0.75, MER 계수)을 계산하고, 사료 100g당 칼로리를 넣으면 하루·끼니당 급여량(g)까지 환산합니다.","url":"https://petcalc-kr.vercel.app/food-amount/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"사료 봉투의 권장량과 왜 다른가요?","acceptedAnswer":{"@type":"Answer","text":"봉투 권장량은 평균적인 활동량을 가정한 넓은 범위입니다. 중성화한 실내 반려동물은 그보다 적게 필요한 경우가 많아, 계산값과 체중 변화를 함께 보고 조절하는 것이 좋습니다."}},{"@type":"Question","name":"kcal/kg만 적혀 있으면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"10으로 나누면 100g당 kcal가 됩니다. 예를 들어 3,600kcal/kg이면 100g당 360kcal입니다."}},{"@type":"Question","name":"하루 몇 번 나눠 주는 게 좋나요?","acceptedAnswer":{"@type":"Answer","text":"성견·성묘는 보통 2회, 어린 개체는 3~4회로 나눕니다. 대형견은 식후 위염전 위험 때문에 한 번에 많은 양을 주지 않는 편이 좋습니다."}},{"@type":"Question","name":"습식과 건식을 섞으면 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"각각의 100g당 kcal로 열량을 따로 계산해 더하면 됩니다. 습식은 수분이 많아 100g당 칼로리가 낮은 편입니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"사료 급여량 계산기","item":"https://petcalc-kr.vercel.app/food-amount/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">사료 급여량 계산기</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">🍚</div>
+  <h1>사료 급여량 계산기</h1>
+  <p class="lead">표준 수의영양학 공식(RER = 70 × 체중^0.75)으로 하루 필요 열량을 구하고, 사료 칼로리를 넣으면 그램으로 바꿔 드립니다.</p>
+</header>
+<p class="notice warn"><b>참고용이며 진단이 아닙니다.</b> 이 페이지의 계산·정보는 일반적인 기준을 안내할 뿐이며, 개체의 건강 상태를 판단하지 않습니다. 증상이 있거나 결정을 내려야 한다면 반드시 <b>수의사와 상담하세요</b>.</p>
+<p class="notice">같은 나이·체중이라도 품종, 중성화 여부, 활동량, 지병에 따라 결과가 달라집니다. <b>개체차가 있습니다</b> — 수치는 출발점으로만 쓰세요.</p>
+<section class="card">
+  <h2>기본 정보</h2>
+  <div class="field"><label>종류</label>
+    <div class="seg" id="sp">
+      <button type="button" data-v="dog" aria-pressed="true">🐕 강아지</button>
+      <button type="button" data-v="cat" aria-pressed="false">🐈 고양이</button>
+    </div>
+  </div>
+  <div class="field"><label for="w">체중(kg) <span class="hint">감량/증량 중이면 목표(이상) 체중</span></label><input type="number" id="w" step="0.1" min="0.3" max="120" inputmode="decimal" placeholder="5.2"></div>
+  <div class="field"><label for="st">생활 단계 · 상태</label><select id="st"></select></div>
+  <div class="row2">
+    <div class="field"><label for="kc">사료 100g당 kcal <span class="hint">선택</span></label><input type="number" id="kc" step="1" min="50" max="800" inputmode="numeric" placeholder="예: 360"></div>
+    <div class="field"><label for="me">하루 급여 횟수</label><input type="number" id="me" step="1" min="1" max="6" inputmode="numeric" value="2"></div>
+  </div>
+  <button class="btn" id="go" type="button">하루 급여량 계산</button>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>계산 결과</h2>
+  <p class="big" id="big"></p>
+  <div id="lines"></div>
+  <p class="src" id="warn"></p>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>RER과 MER이 뭔가요?</h2>
+<p><b>RER(Resting Energy Requirement)</b>은 아무것도 하지 않고 쉬고 있을 때 필요한 최소 열량입니다. 표준 공식은 <code>RER = 70 × (체중kg)<sup>0.75</sup></code>입니다. 여기에 나이·중성화 여부·활동량에 따른 계수를 곱한 값이 <b>MER(하루 유지 열량)</b>이고, 실제 급여 기준이 됩니다.</p>
+<p>예를 들어 체중 5kg이면 RER은 약 234kcal이고, 중성화한 성견(× 1.6)이라면 하루 약 375kcal가 기준이 됩니다.</p>
+<h3>강아지 계수표</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>상태</th><th>계수</th><th>비고</th></tr></thead><tbody><tr><td>강아지 (생후 0~4개월)</td><td>× 3</td><td>-</td></tr><tr><td>강아지 (4개월~성견 전)</td><td>× 2</td><td>-</td></tr><tr><td>중성화한 성견</td><td>× 1.6</td><td>-</td></tr><tr><td>중성화 안 한 성견</td><td>× 1.8</td><td>-</td></tr><tr><td>비활동적 / 비만 경향</td><td>× 1.3</td><td>OSU 표 기준 1.2~1.4 범위의 중간값</td></tr><tr><td>체중 감량 중</td><td>× 1</td><td>이상 체중 기준 RER × 1.0</td></tr><tr><td>체중 증량 필요</td><td>× 1.5</td><td>OSU 표 기준 1.2~1.8 범위의 중간값, 이상 체중 기준</td></tr><tr><td>활동량 많음 / 사역견</td><td>× 2.5</td><td>OSU 표 기준 2.0~5.0 범위의 보수적 값</td></tr></tbody></table></div>
+<h3>고양이 계수표</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>상태</th><th>계수</th><th>비고</th></tr></thead><tbody><tr><td>새끼 고양이 (1살 미만)</td><td>× 2.5</td><td>-</td></tr><tr><td>중성화한 성묘</td><td>× 1.2</td><td>-</td></tr><tr><td>중성화 안 한 성묘</td><td>× 1.4</td><td>-</td></tr><tr><td>비활동적 / 비만 경향</td><td>× 1</td><td>-</td></tr><tr><td>체중 감량 중</td><td>× 0.8</td><td>이상 체중 기준 RER × 0.8</td></tr><tr><td>체중 증량 필요</td><td>× 1.4</td><td>OSU 표 기준 1.2~1.8 범위 내 보수적 값, 이상 체중 기준</td></tr></tbody></table></div>
+<h2>사용법</h2>
+<ol>
+<li>종류를 고르고 <b>현재 체중</b>을 입력합니다. 감량·증량 중이라면 목표 체중을 넣어야 계산이 맞습니다.</li>
+<li>중성화 여부와 활동량에 맞는 생활 단계를 고릅니다.</li>
+<li>사료 봉투 뒷면의 “100g당 kcal”(또는 kcal/kg ÷ 10)를 입력하면 그램으로 환산됩니다.</li>
+<li>2~4주 뒤 체중을 다시 재고 변화가 없으면 10% 범위에서 조절합니다.</li>
+</ol>
+<h2>주의할 점</h2>
+<ul>
+<li>간식·영양제는 하루 총 열량의 <b>10% 이내</b>로 유지하고, 그만큼 사료를 줄여야 합니다.</li>
+<li>감량은 주당 체중의 1~2%가 안전한 속도입니다. 급격한 절식은 특히 고양이에게 지방간 위험이 있습니다.</li>
+<li>신장병·심장병·당뇨 등 처방식을 먹는 경우 이 계산보다 <b>수의사 지침이 우선</b>합니다.</li>
+</ul>
+<p class="src">출처: RER = 70 × (체중kg)^0.75 / MER 계수표 — <a href="https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator" rel="nofollow noopener" target="_blank">https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator</a> (확인일 2026-08-19)</p>
+<p class="src">출처: WSAVA Global Nutrition Guidelines — <a href="https://wsava.org/global-guidelines/global-nutrition-guidelines/" rel="nofollow noopener" target="_blank">https://wsava.org/global-guidelines/global-nutrition-guidelines/</a> (확인일 2026-08-19)</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 사료 봉투의 권장량과 왜 다른가요?</p><p class="a">봉투 권장량은 평균적인 활동량을 가정한 넓은 범위입니다. 중성화한 실내 반려동물은 그보다 적게 필요한 경우가 많아, 계산값과 체중 변화를 함께 보고 조절하는 것이 좋습니다.</p></div>
+<div class="qa"><p class="q">Q. kcal/kg만 적혀 있으면 어떻게 하나요?</p><p class="a">10으로 나누면 100g당 kcal가 됩니다. 예를 들어 3,600kcal/kg이면 100g당 360kcal입니다.</p></div>
+<div class="qa"><p class="q">Q. 하루 몇 번 나눠 주는 게 좋나요?</p><p class="a">성견·성묘는 보통 2회, 어린 개체는 3~4회로 나눕니다. 대형견은 식후 위염전 위험 때문에 한 번에 많은 양을 주지 않는 편이 좋습니다.</p></div>
+<div class="qa"><p class="q">Q. 습식과 건식을 섞으면 어떻게 계산하나요?</p><p class="a">각각의 100g당 kcal로 열량을 따로 계산해 더하면 됩니다. 습식은 수분이 많아 100g당 칼로리가 낮은 편입니다.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../weight-log/index.html"><span class="ic">📈</span><span>체중 기록·그래프</span></a>
+      <a class="rel" href="../guide/dog-food-basics/index.html"><span class="ic">📘</span><span>강아지 사료 기본 가이드</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-meal-calc/" rel="noopener"><span class="ic">🍚</span><span>반려동물 사료량 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-slimpet/" rel="noopener"><span class="ic">⚖️</span><span>반려동물 다이어트 도우미</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-age-calc/" rel="noopener"><span class="ic">🐾</span><span>반려동물 나이 계산기</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var F={"dog":[{"key":"puppy_young","label":"강아지 (생후 0~4개월)","factor":3,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"puppy_older","label":"강아지 (4개월~성견 전)","factor":2,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"neutered_adult","label":"중성화한 성견","factor":1.6,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"intact_adult","label":"중성화 안 한 성견","factor":1.8,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"inactive","label":"비활동적 / 비만 경향","factor":1.3,"note":"OSU 표 기준 1.2~1.4 범위의 중간값","source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"weight_loss","label":"체중 감량 중","factor":1,"note":"이상 체중 기준 RER × 1.0","source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"weight_gain","label":"체중 증량 필요","factor":1.5,"note":"OSU 표 기준 1.2~1.8 범위의 중간값, 이상 체중 기준","source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"active_work","label":"활동량 많음 / 사역견","factor":2.5,"note":"OSU 표 기준 2.0~5.0 범위의 보수적 값","source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"}],"cat":[{"key":"kitten","label":"새끼 고양이 (1살 미만)","factor":2.5,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"neutered_adult","label":"중성화한 성묘","factor":1.2,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"intact_adult","label":"중성화 안 한 성묘","factor":1.4,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"inactive","label":"비활동적 / 비만 경향","factor":1,"source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"weight_loss","label":"체중 감량 중","factor":0.8,"note":"이상 체중 기준 RER × 0.8","source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"},{"key":"weight_gain","label":"체중 증량 필요","factor":1.4,"note":"OSU 표 기준 1.2~1.8 범위 내 보수적 값, 이상 체중 기준","source":"https://vet.osu.edu/vmc/companion/our-services/nutrition-support-service/basic-calorie-calculator","checkedAt":"2026-08-19"}]};
+var sp='dog';
+function fill(){
+  var s=pcQ('st'); s.innerHTML='';
+  F[sp].forEach(function(f){
+    var o=document.createElement('option');
+    o.value=f.factor; o.textContent=f.label+' (× '+f.factor+')';
+    s.appendChild(o);
+  });
+  s.selectedIndex = sp==='dog'?2:1;
+}
+pcSeg('sp',function(v){sp=v;fill();});
+fill();
+function rer(w){return 70*Math.pow(w,0.75);}
+pcQ('go').addEventListener('click',function(){
+  var w=pcNum('w');
+  if(!isFinite(w)||w<=0||w>120){alert('체중을 확인해 주세요. (0.3~120kg)');return;}
+  var f=parseFloat(pcQ('st').value);
+  var R=rer(w), M=R*f;
+  var kc=pcNum('kc'), me=pcNum('me'); if(!isFinite(me)||me<1){me=2;}
+  pcQ('big').innerHTML='하루 <b>'+pcFmt(Math.round(M))+' kcal</b>';
+  var h='<div class="res-line"><span class="k">RER (휴식기 에너지 요구량)</span><span class="v">'+pcFmt(Math.round(R))+' kcal</span></div>'+
+    '<div class="res-line"><span class="k">적용 계수</span><span class="v">× '+f+'</span></div>'+
+    '<div class="res-line"><span class="k">MER (하루 유지 열량)</span><span class="v">'+pcFmt(Math.round(M))+' kcal</span></div>';
+  if(isFinite(kc)&&kc>0){
+    var g=M/kc*100;
+    h+='<div class="res-line"><span class="k">하루 급여량</span><span class="v">약 '+pcFmt(g,0)+' g</span></div>'+
+       '<div class="res-line"><span class="k">1끼당 ('+me+'회 기준)</span><span class="v">약 '+pcFmt(g/me,0)+' g</span></div>'+
+       '<div class="res-line"><span class="k">간식 허용량 (10% 이내)</span><span class="v">'+pcFmt(Math.round(M*0.1))+' kcal 이하</span></div>';
+  } else {
+    h+='<div class="res-line"><span class="k">그램 환산</span><span class="v">사료 100g당 kcal를 입력하면 표시됩니다</span></div>';
+  }
+  pcQ('lines').innerHTML=h;
+  pcQ('warn').textContent='계산값은 출발점입니다. 2~4주 간격으로 체중과 체형(BCS)을 확인해 10%씩 조절하고, 질병·임신·수유 중이라면 반드시 수의사 지침을 따르세요.';
+  pcShow('res');
+});
+})();
+</script>
+
+</body>
+</html>

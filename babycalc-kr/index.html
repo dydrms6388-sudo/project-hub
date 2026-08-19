@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>BabyCalc — 육아 계산기 허브 | 예방접종·성장 백분위·이유식·수면</title>
+<meta name="description" content="아기 생년월일 하나로 예방접종 일정, 개월수·교정연령, 성장 백분위, 분유량, 이유식 단계, 수면 스케줄, 발열 대처, 육아 비용까지. 설치·가입 없이 브라우저에서 바로 쓰는 무료 육아 계산기 12종.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="BabyCalc — 육아 계산기 허브">
+<meta property="og:description" content="예방접종·성장 백분위·이유식·수면·발열까지 육아 계산기 12종을 한곳에서.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="./assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"BabyCalc 육아 계산기 허브","url":"https://babycalc-kr.vercel.app/","inLanguage":"ko-KR","description":"아기 생년월일 하나로 예방접종 일정, 개월수·교정연령, 성장 백분위, 분유량, 이유식 단계, 수면 스케줄, 발열 대처, 육아 비용까지. 설치·가입 없이 브라우저에서 바로 쓰는 무료 육아 계산기 12종."},{"@type":"ItemList","name":"육아 계산기 목록","itemListElement":[{"@type":"ListItem","position":1,"name":"예방접종 일정표","url":"https://babycalc-kr.vercel.app/vaccine-schedule/"},{"@type":"ListItem","position":2,"name":"아기 개월수 계산기","url":"https://babycalc-kr.vercel.app/months-age/"},{"@type":"ListItem","position":3,"name":"성장 백분위 계산기","url":"https://babycalc-kr.vercel.app/growth-percentile/"},{"@type":"ListItem","position":4,"name":"분유 수유량 계산기","url":"https://babycalc-kr.vercel.app/formula-amount/"},{"@type":"ListItem","position":5,"name":"이유식 단계 계산기","url":"https://babycalc-kr.vercel.app/weaning-stage/"},{"@type":"ListItem","position":6,"name":"수면 스케줄 만들기","url":"https://babycalc-kr.vercel.app/sleep-schedule/"},{"@type":"ListItem","position":7,"name":"아기 발열 대처 가이드","url":"https://babycalc-kr.vercel.app/fever-guide/"},{"@type":"ListItem","position":8,"name":"기저귀 사이즈 찾기","url":"https://babycalc-kr.vercel.app/diaper-size/"},{"@type":"ListItem","position":9,"name":"어린이집 입소 D-day","url":"https://babycalc-kr.vercel.app/daycare-dday/"},{"@type":"ListItem","position":10,"name":"육아 비용 계산기","url":"https://babycalc-kr.vercel.app/baby-cost/"},{"@type":"ListItem","position":11,"name":"아기 이름 느낌 체크","url":"https://babycalc-kr.vercel.app/name-check/"},{"@type":"ListItem","position":12,"name":"발달 이정표 체크","url":"https://babycalc-kr.vercel.app/milestone/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"입력한 아기 정보는 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"서버로 전송되지 않습니다. 접종 체크·성장 기록 등 일부 기능은 사용 중인 브라우저의 localStorage에만 저장되며, 각 페이지의 \"기록 전체 삭제\" 버튼이나 브라우저 데이터 삭제로 지울 수 있습니다."}},{"@type":"Question","name":"의료 상담을 대신할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 모든 페이지는 참고용 계산·정보 제공이며 진단이 아닙니다. 아이의 건강 상태에 대한 판단은 소아과 전문의와 상담하세요."}},{"@type":"Question","name":"무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네, 전부 무료입니다. 운영 비용은 결과 화면 하단의 광고로 충당합니다."}}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">👶</div>
+    <h1>BabyCalc 육아 계산기 허브</h1>
+    <p class="lead">아기 생년월일 하나면 충분해요. 접종 일정부터 이유식·수면·비용까지, 설치 없이 바로 쓰는 무료 계산기 12종.</p>
+  </div>
+  <p class="med-notice">⚠ 이 페이지는 <strong>참고용이며 진단이 아닙니다</strong>. 아이의 건강·발달과 관련한 판단은 반드시 <strong>소아과 전문의와 상담</strong>하세요.</p>
+
+  <div class="tool-grid">
+      <a class="tool-card" href="./vaccine-schedule/"><div class="t-emoji" aria-hidden="true">💉</div><p class="t-name">예방접종 일정표</p><p class="t-desc">생년월일로 접종 시기·D-day, .ics 내보내기</p></a>
+      <a class="tool-card" href="./months-age/"><div class="t-emoji" aria-hidden="true">📅</div><p class="t-name">아기 개월수 계산기</p><p class="t-desc">개월·주·일수와 이른둥이 교정연령까지</p></a>
+      <a class="tool-card" href="./growth-percentile/"><div class="t-emoji" aria-hidden="true">📈</div><p class="t-name">성장 백분위 계산기</p><p class="t-desc">LMS z점수로 백분위 + 표준곡선 그래프</p></a>
+      <a class="tool-card" href="./formula-amount/"><div class="t-emoji" aria-hidden="true">🍼</div><p class="t-name">분유 수유량 계산기</p><p class="t-desc">체중 기준 하루 총량과 1회 수유량 참고 범위</p></a>
+      <a class="tool-card" href="./weaning-stage/"><div class="t-emoji" aria-hidden="true">🥣</div><p class="t-name">이유식 단계 계산기</p><p class="t-desc">지금 단계와 재료별 시작 시기 60종</p></a>
+      <a class="tool-card" href="./sleep-schedule/"><div class="t-emoji" aria-hidden="true">😴</div><p class="t-name">수면 스케줄 만들기</p><p class="t-desc">월령별 권장 수면시간과 낮잠 타임라인</p></a>
+      <a class="tool-card" href="./fever-guide/"><div class="t-emoji" aria-hidden="true">🌡️</div><p class="t-name">아기 발열 대처 가이드</p><p class="t-desc">월령·체온·증상으로 보는 진료 판단 기준</p></a>
+      <a class="tool-card" href="./diaper-size/"><div class="t-emoji" aria-hidden="true">🧷</div><p class="t-name">기저귀 사이즈 찾기</p><p class="t-desc">체중으로 보는 사이즈 구간과 교체 신호</p></a>
+      <a class="tool-card" href="./daycare-dday/"><div class="t-emoji" aria-hidden="true">🏫</div><p class="t-name">어린이집 입소 D-day</p><p class="t-desc">입소일 D-day와 우선순위 점수 계산</p></a>
+      <a class="tool-card" href="./baby-cost/"><div class="t-emoji" aria-hidden="true">💰</div><p class="t-name">육아 비용 계산기</p><p class="t-desc">월 지출과 부모급여·아동수당 차감 계산</p></a>
+      <a class="tool-card" href="./name-check/"><div class="t-emoji" aria-hidden="true">✨</div><p class="t-name">아기 이름 느낌 체크</p><p class="t-desc">오락용 이름 분석 — 작명·사주 아님</p></a>
+      <a class="tool-card" href="./milestone/"><div class="t-emoji" aria-hidden="true">🧸</div><p class="t-name">발달 이정표 체크</p><p class="t-desc">월령별 대표 발달 항목 체크리스트</p></a>
+    </div>
+
+  <section class="about" style="margin-top:36px">
+    <h2>가이드</h2>
+  </section>
+  <div class="tool-grid" style="margin-top:12px">
+      <a class="tool-card" href="./guide/vaccine-2026/"><div class="t-emoji" aria-hidden="true">💉</div><p class="t-name">아기 예방접종 총정리</p><p class="t-desc">표준일정 한눈에 보기 · 접종 전후 주의사항 · 지연 시 대처</p></a>
+      <a class="tool-card" href="./guide/weaning-start/"><div class="t-emoji" aria-hidden="true">🥄</div><p class="t-name">이유식 시작 가이드</p><p class="t-desc">언제 시작할까 · 첫 재료 · 하루 흐름 · 돌 전 금지 음식</p></a>
+    </div>
+
+  <section class="card">
+    <h2>많이 찾는 이유식 재료</h2>
+    <div class="rel-grid">
+      <a class="rel" href="./weaning-stage/rice/"><span class="ic">🥄</span>쌀 언제부터?</a>
+      <a class="rel" href="./weaning-stage/beef/"><span class="ic">🥄</span>소고기 언제부터?</a>
+      <a class="rel" href="./weaning-stage/egg-yolk/"><span class="ic">🥄</span>달걀 노른자 언제부터?</a>
+      <a class="rel" href="./weaning-stage/honey/"><span class="ic">🥄</span>꿀 언제부터?</a>
+      <a class="rel" href="./weaning-stage/milk/"><span class="ic">🥄</span>생우유 언제부터?</a>
+      <a class="rel" href="./weaning-stage/strawberry/"><span class="ic">🥄</span>딸기 언제부터?</a>
+      <a class="rel" href="./weaning-stage/peanut/"><span class="ic">🥄</span>땅콩 언제부터?</a>
+      <a class="rel" href="./weaning-stage/tofu/"><span class="ic">🥄</span>두부 언제부터?</a>
+    </div>
+    <p class="local-note">전체 59종 재료는 <a href="./weaning-stage/">이유식 단계 계산기</a>에서 검색할 수 있어요.</p>
+  </section>
+
+  
+
+  <section class="about">
+    <h2>BabyCalc은 어떤 곳인가요?</h2>
+    <p>BabyCalc은 <strong>0~36개월 아기를 키우며 자주 검색하게 되는 계산</strong>을 한곳에 모은 무료 도구 모음입니다. 모든 계산은 여러분의 브라우저 안에서만 이뤄지고, 입력한 값은 서버로 전송되지 않습니다. 회원가입도, 앱 설치도 필요 없습니다.</p><p>수치의 근거가 되는 자료는 페이지마다 <strong>출처와 확인일</strong>을 함께 적었습니다. 공식 표준이 아닌 일반적 육아 안내 수준의 정보에는 <span class="badge todo">확인 필요</span> 배지를 달아 구분합니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>위 카드에서 필요한 계산기를 고릅니다.</li><li>생년월일 등 최소한의 값만 입력하면 결과가 바로 나옵니다.</li><li>접종 체크·성장 기록·발달 체크는 브라우저에 저장되고, CSV·JSON·캘린더(.ics)로 내보낼 수 있습니다.</li></ol>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 입력한 아기 정보는 어디에 저장되나요?</p><p class="a">서버로 전송되지 않습니다. 접종 체크·성장 기록 등 일부 기능은 사용 중인 브라우저의 localStorage에만 저장되며, 각 페이지의 "기록 전체 삭제" 버튼이나 브라우저 데이터 삭제로 지울 수 있습니다.</p></div>
+      <div class="qa"><p class="q">Q. 의료 상담을 대신할 수 있나요?</p><p class="a">아니요. 모든 페이지는 참고용 계산·정보 제공이며 진단이 아닙니다. 아이의 건강 상태에 대한 판단은 소아과 전문의와 상담하세요.</p></div>
+      <div class="qa"><p class="q">Q. 무료인가요?</p><p class="a">네, 전부 무료입니다. 운영 비용은 결과 화면 하단의 광고로 충당합니다.</p></div>
+
+    <p class="disclaimer">BabyCalc의 모든 계산기는 참고용입니다. 진단·의료 자문·법률 자문이 아니며, 지원금·제도 관련 금액은 신청 전 반드시 공식 기관에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/baby-vaccine-schedule/"><span class="ic">🍅</span>예방접종 도우미 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/due-date-calc/"><span class="ic">🍅</span>출산 예정일 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-taemyeong/"><span class="ic">🍅</span>태명 짓기</a>
+      <a class="rel" href="https://tomatoeggcat.com/ovulation-calendar/"><span class="ic">🍅</span>배란일 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="./">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="./privacy.html">개인정보처리방침</a>·<a href="./terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="./assets/app.js"></script>
+
+</body>
+</html>

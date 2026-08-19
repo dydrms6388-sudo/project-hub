@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>반려동물 이름 짓기 — 한글·먹을거리·자연·외국풍 이름 추천 | PetCalc</title>
+<meta name="description" content="강아지·고양이 이름을 스타일별로 추천합니다. 한글 감성, 먹을거리, 자연, 외국풍 사전과 글자 조합 방식 중에서 고르면 매번 새로운 후보 8개를 보여 줍니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/name-gen/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="반려동물 이름 짓기 — 한글·먹을거리·자연·외국풍 이름 추천 | PetCalc">
+<meta property="og:description" content="강아지·고양이 이름을 스타일별로 추천합니다. 한글 감성, 먹을거리, 자연, 외국풍 사전과 글자 조합 방식 중에서 고르면 매번 새로운 후보 8개를 보여 줍니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/name-gen/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"반려동물 이름 짓기 — 한글·먹을거리·자연·외국풍 이름 추천 | PetCalc","description":"강아지·고양이 이름을 스타일별로 추천합니다. 한글 감성, 먹을거리, 자연, 외국풍 사전과 글자 조합 방식 중에서 고르면 매번 새로운 후보 8개를 보여 줍니다.","url":"https://petcalc-kr.vercel.app/name-gen/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"이름을 도중에 바꿔도 되나요?","acceptedAnswer":{"@type":"Answer","text":"가능합니다. 새 이름을 부를 때마다 간식·칭찬을 함께 주면 보통 며칠에서 몇 주 안에 반응하게 됩니다."}},{"@type":"Question","name":"형제·자매 이름은 어떻게 짓나요?","acceptedAnswer":{"@type":"Answer","text":"같은 사전에서 두 개를 뽑아 어감을 맞추면 자연스럽습니다. 다만 두 이름의 소리가 너무 비슷하면 부를 때 헷갈리므로 첫소리를 다르게 하는 편이 좋습니다."}},{"@type":"Question","name":"등록 이름과 부르는 이름이 달라도 되나요?","acceptedAnswer":{"@type":"Answer","text":"동물등록증에 적는 이름과 집에서 부르는 애칭이 달라도 문제는 없습니다. 다만 병원 기록과 등록 정보는 같게 관리하는 편이 편합니다."}},{"@type":"Question","name":"이 결과는 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 뽑은 이름은 화면에만 표시되고 어디에도 저장되지 않습니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"이름 짓기","item":"https://petcalc-kr.vercel.app/name-gen/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">이름 짓기</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">✨</div>
+  <h1>반려동물 이름 짓기</h1>
+  <p class="lead">스타일을 고르고 버튼을 누르면 이름 후보 8개를 뽑아 드립니다. 마음에 드는 이름은 눌러서 복사하세요.</p>
+</header>
+
+
+<section class="card">
+  <h2>스타일 고르기</h2>
+  <div class="field"><label>사전</label>
+    <div class="seg" id="st">
+      <button type="button" data-v="all" aria-pressed="true">전체</button>
+      <button type="button" data-v="soft" aria-pressed="false">🌱 한글 감성</button>
+      <button type="button" data-v="food" aria-pressed="false">🍡 먹을거리</button>
+      <button type="button" data-v="nature" aria-pressed="false">🌿 자연</button>
+      <button type="button" data-v="global" aria-pressed="false">✈️ 외국풍</button>
+      <button type="button" data-v="mix" aria-pressed="false">🔤 글자 조합</button>
+    </div>
+  </div>
+  <div class="field"><label for="ex">피하고 싶은 글자 <span class="hint">선택 · 예: 코</span></label><input type="text" id="ex" maxlength="10" placeholder="입력한 글자가 들어간 이름은 제외합니다"></div>
+  <button class="btn" id="go" type="button">이름 뽑기</button>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>이름 후보</h2>
+  <div class="chip-list" id="out"></div>
+  <p class="src" id="msg">이름을 누르면 복사됩니다. 마음에 들 때까지 다시 뽑아 보세요.</p>
+  <button class="btn sub" id="again" type="button">🎲 다시 뽑기</button>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>부르기 좋은 이름의 조건</h2>
+<ul>
+<li><b>2~3글자</b>가 부르기 쉽고 반려동물이 알아듣기 좋습니다.</li>
+<li>“안 돼”, “이리 와” 같은 <b>지시어와 소리가 겹치지 않게</b> 하세요. 훈련이 훨씬 수월해집니다.</li>
+<li>받침이 적고 모음이 또렷한 이름이 멀리서도 잘 전달됩니다.</li>
+<li>병원 접수나 산책 중에 부를 이름이라는 점도 한 번 생각해 보세요.</li>
+</ul>
+<h2>사전 구성</h2>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>스타일</th><th>느낌</th><th>예시</th></tr></thead><tbody>
+<tr><td>🌱 한글 감성</td><td>36개 수록</td><td>콩이, 별이, 봄이, 달이, 솜이 …</td></tr><tr><td>🍡 먹을거리</td><td>30개 수록</td><td>두부, 모찌, 단호박, 감자, 고구마 …</td></tr><tr><td>🌿 자연</td><td>30개 수록</td><td>바람, 안개, 은하, 별빛, 초원 …</td></tr><tr><td>✈️ 외국풍</td><td>30개 수록</td><td>루나, 코코, 벨라, 밀로, 오레오 …</td></tr>
+<tr><td>🔤 글자 조합</td><td>앞말 20개 × 뒷말 15개</td><td>몽실이, 토미 …</td></tr>
+</tbody></table></div>
+<h2>사용법</h2>
+<ol>
+<li>원하는 스타일을 고릅니다. “전체”는 모든 사전에서 섞어 뽑습니다.</li>
+<li>가족 이름과 겹치는 글자가 있다면 제외 글자에 넣으세요.</li>
+<li>후보를 눌러 복사한 뒤, 며칠 불러 보고 반응이 좋은 이름을 고르면 좋습니다.</li>
+</ol>
+<p class="notice">이 도구는 재미와 아이디어를 주기 위한 것입니다. 이름 추천에는 어떤 의학적·성격적 의미도 없습니다.</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 이름을 도중에 바꿔도 되나요?</p><p class="a">가능합니다. 새 이름을 부를 때마다 간식·칭찬을 함께 주면 보통 며칠에서 몇 주 안에 반응하게 됩니다.</p></div>
+<div class="qa"><p class="q">Q. 형제·자매 이름은 어떻게 짓나요?</p><p class="a">같은 사전에서 두 개를 뽑아 어감을 맞추면 자연스럽습니다. 다만 두 이름의 소리가 너무 비슷하면 부를 때 헷갈리므로 첫소리를 다르게 하는 편이 좋습니다.</p></div>
+<div class="qa"><p class="q">Q. 등록 이름과 부르는 이름이 달라도 되나요?</p><p class="a">동물등록증에 적는 이름과 집에서 부르는 애칭이 달라도 문제는 없습니다. 다만 병원 기록과 등록 정보는 같게 관리하는 편이 편합니다.</p></div>
+<div class="qa"><p class="q">Q. 이 결과는 저장되나요?</p><p class="a">아니요. 뽑은 이름은 화면에만 표시되고 어디에도 저장되지 않습니다.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../breed/index.html"><span class="ic">📚</span><span>견종 정보 백과</span></a>
+      <a class="rel" href="../dog-age/index.html"><span class="ic">🐕</span><span>강아지 나이 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dog-personality-test/" rel="noopener"><span class="ic">🐶</span><span>강아지 성격 테스트</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-age-calc/" rel="noopener"><span class="ic">🐾</span><span>반려동물 나이 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-petsafe/" rel="noopener"><span class="ic">⚠️</span><span>반려동물 위험물 체크</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var P={"soft":["콩이","별이","봄이","달이","솜이","하늘","구름","바다","노을","이슬","보리","밤이","산이","여울","아침","새벽","가온","다온","라온","하루","소리","미르","나래","초롱","방울","소담","도담","단비","가람","누리","서리","은솔","한울","해온","별하","윤슬"],"food":["두부","모찌","단호박","감자","고구마","만두","초코","크림","라떼","쿠키","참깨","젤리","완두","호두","우유","바닐라","카스테라","곶감","누룽지","김밥","단팥","브라우니","슈크림","떡볶이","마카롱","치즈","시루","팥빙","곤약","미숫가루"],"nature":["바람","안개","은하","별빛","초원","이끼","단풍","솔이","자갈","물결","눈꽃","햇살","무지개","여름","겨울","도토리","솔방울","파도","모래","산호","수풀","안개꽃","청산","백호","노루","하양","까망","노랑","오로라","보름"],"global":["루나","코코","벨라","밀로","오레오","시나몬","모카","레오","티나","하니","미미","쿠퍼","올리브","헤이즐","재즈","마일로","라라","노아","니코","소피","루비","재스퍼","피치","토토","포포","올리","마루","키키","바닐","체리"]};
+var PRE=["몽","보","꼬","토","두","루","모","쫑","방","나","다","소","하","미","코","포","단","봉","쿠","동"], SUF=["실이","리","미","봉이","순이","동이","결이","롱이","삐","니","치","뽕이","동","꼬미","달이"];
+var mode='all';
+pcSeg('st',function(v){mode=v;});
+function pick(){
+  var ex=(pcQ('ex').value||'').trim();
+  var pool=[];
+  if(mode==='mix'){
+    for(var i=0;i<PRE.length;i++) for(var j=0;j<SUF.length;j++) pool.push(PRE[i]+SUF[j]);
+  } else if(mode==='all'){
+    Object.keys(P).forEach(function(k){pool=pool.concat(P[k]);});
+  } else { pool=P[mode].slice(); }
+  if(ex){ pool=pool.filter(function(n){ for(var i=0;i<ex.length;i++){ if(ex[i]!==' '&&n.indexOf(ex[i])>=0) return false; } return true; }); }
+  var out=[];
+  var copy=pool.slice();
+  while(out.length<8&&copy.length){
+    var i=Math.floor(Math.random()*copy.length);
+    out.push(copy.splice(i,1)[0]);
+  }
+  pcQ('out').innerHTML=out.map(function(n){return '<button type="button" class="chip" data-n="'+n+'">'+n+'</button>';}).join('');
+  pcQ('msg').textContent = out.length? '이름을 누르면 복사됩니다. 마음에 들 때까지 다시 뽑아 보세요.' : '조건에 맞는 이름이 없습니다. 제외 글자를 줄여 보세요.';
+  pcShow('res');
+}
+pcQ('go').addEventListener('click',pick);
+pcQ('again').addEventListener('click',pick);
+pcQ('out').addEventListener('click',function(e){
+  var b=e.target.closest?e.target.closest('button'):null;
+  if(!b||!b.getAttribute('data-n'))return;
+  var n=b.getAttribute('data-n');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(n).then(function(){pcQ('msg').textContent='"'+n+'" 복사했습니다.';},function(){pcQ('msg').textContent='복사에 실패했습니다. 직접 입력해 주세요.';});
+  } else { pcQ('msg').textContent='이 브라우저는 자동 복사를 지원하지 않습니다: '+n; }
+});
+})();
+</script>
+
+</body>
+</html>
