@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Apple SD Gothic Neo",
+    "Noto Sans KR", sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* details 기본 마커 제거 (FAQ 아코디언) */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ── 픽페어 애니메이션 (framer-motion 대신 CSS/SVG 로 처리) ───────────── */
+@keyframes pf-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.pf-trace {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pf-draw 1.5s ease-in-out forwards;
+}
+
+@keyframes pf-pop {
+  0% { transform: scale(0.86); opacity: 0; }
+  60% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.pf-pop { animation: pf-pop 0.36s ease-out both; }
+
+@keyframes pf-shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-9deg); }
+  75% { transform: rotate(9deg); }
+}
+.pf-shake { animation: pf-shake 0.45s ease-in-out infinite; }
+
+@keyframes pf-pull {
+  from { transform: translateY(26px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.pf-pull { animation: pf-pull 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-trace { animation-duration: 0.01ms; stroke-dashoffset: 0; }
+  .pf-pop, .pf-shake, .pf-pull { animation: none !important; }
+}
+
+/* 인쇄용 — 자리 배치표 */
+@media print {
+  header, footer, .pf-noprint { display: none !important; }
+  .pf-print-only { display: block !important; }
+  body { background: #fff; }
+}
