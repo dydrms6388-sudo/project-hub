@@ -81,7 +81,20 @@ let reqCounter = 0;
  */
 export function useWhisper() {
   const [state, setState] = useState<EngineState>(initialState);
-  const [segments, setSegments] = useState<Segment[]>([]);
+  const [segments, setSegmentsRaw] = useState<Segment[]>([]);
+  /**
+   * 실시간 모드는 워커 콜백·MediaRecorder 콜백 안에서 결과를 이어 붙인다.
+   * 그 콜백들은 녹음 시작 시점의 클로저를 붙잡고 있어 state 값이 낡는다.
+   * 항상 최신 목록을 가리키는 ref 를 따로 두고, run() 은 이쪽만 읽는다.
+   */
+  const segmentsRef = useRef<Segment[]>([]);
+  const setSegments = useCallback((next: Segment[] | ((prev: Segment[]) => Segment[])) => {
+    setSegmentsRaw((prev) => {
+      const v = typeof next === "function" ? (next as (p: Segment[]) => Segment[])(prev) : next;
+      segmentsRef.current = v;
+      return v;
+    });
+  }, []);
 
   const workerRef = useRef<Worker | null>(null);
   const detachRef = useRef<(() => void) | null>(null);
@@ -244,7 +257,7 @@ export function useWhisper() {
       busyRef.current = true;
 
       const plan = planSegments(opts.pcm, opts.sampleRate, { maxSec: opts.maxSec ?? 30 });
-      const base = opts.append ? segments : [];
+      const base = opts.append ? segmentsRef.current : [];
 
       setState((s) => ({
         ...s,
@@ -287,7 +300,7 @@ export function useWhisper() {
         );
       });
     },
-    [caps.backend, ensureWorker, segments],
+    [caps.backend, ensureWorker, setSegments],
   );
 
   const abort = useCallback(() => {

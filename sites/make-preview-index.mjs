@@ -19,7 +19,13 @@ const pick = (src, key) => {
 const esc = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-const countTools = (src) => (src.match(/^\s{4}slug:\s*"/gm) || []).length;
+/** export 된 /tools/<slug>/ 디렉터리 수 = 실제 라이브 도구 수.
+ *  registry 를 정규식으로 세면 spec 주도형 사이트(idphoto-kr)를 놓친다. */
+const countTools = (slug) => {
+  const d = join(PREVIEW, slug, "tools");
+  if (!existsSync(d)) return 0;
+  return readdirSync(d).filter((f) => statSync(join(d, f)).isDirectory()).length;
+};
 
 const dirs = existsSync(PREVIEW)
   ? readdirSync(PREVIEW).filter((d) => statSync(join(PREVIEW, d)).isDirectory()).sort()
@@ -27,15 +33,13 @@ const dirs = existsSync(PREVIEW)
 
 const sites = dirs.map((slug) => {
   const cfgPath = join(SITES, slug, "src", "site.config.ts");
-  const regPath = join(SITES, slug, "src", "tools", "registry.ts");
   const cfg = existsSync(cfgPath) ? readFileSync(cfgPath, "utf8") : "";
-  const reg = existsSync(regPath) ? readFileSync(regPath, "utf8") : "";
   return {
     slug,
     name: pick(cfg, "name") || slug,
     description: pick(cfg, "description") || "",
     domain: pick(cfg, "domain") || `${slug}.vercel.app`,
-    tools: countTools(reg),
+    tools: countTools(slug),
   };
 });
 
@@ -83,9 +87,17 @@ writeFileSync(
     <h1>도구 사이트 선배포 프리뷰</h1>
     <p class="lead">각 사이트는 독립된 Next.js 앱이며, 최종적으로는 각자의 Vercel 프로젝트 · 도메인으로 배포됩니다.</p>
     <div class="warn">
-      이 페이지는 <strong>동작 확인용 정적 export</strong> 입니다. 하위 경로(<code>/preview/&lt;사이트&gt;/</code>)에서 서빙되며
-      검색엔진에는 노출하지 않습니다. 응답 헤더가 필요한 기능(예: SharedArrayBuffer 멀티스레드)은
-      여기서 동작하지 않고 단일 스레드로 폴백합니다 — 개별 Vercel 프로젝트 배포에서는 정상 동작합니다.
+      이 페이지는 <strong>레이아웃·콘텐츠 확인용 정적 export</strong> 입니다.
+      하위 경로(<code>/preview/&lt;사이트&gt;/</code>)에서 서빙되며 검색엔진에는 노출하지 않습니다.
+      <br><br>
+      아래 두 가지는 <strong>프리뷰에서만 동작하지 않습니다.</strong> 각 사이트를 개별 Vercel 프로젝트로
+      배포하면 정상 동작합니다.
+      <br>
+      · <strong>멀티스레드 영상 처리</strong>(clipforge) — COOP/COEP 응답 헤더가 하위 경로 정적 서빙에서는
+      켜지지 않아 단일 스레드로 폴백합니다.
+      <br>
+      · <strong>AI 모델 실행</strong>(dictate-kr · docmind-local · idphoto-kr 배경 제거) — 22MB 짜리
+      onnxruntime 바이너리를 리포에 커밋하지 않았기 때문입니다. 크롭·규격·다운로드 등 나머지 기능은 그대로 동작합니다.
     </div>
     <div class="grid">
 ${cards}

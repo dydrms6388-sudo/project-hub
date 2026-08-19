@@ -44,6 +44,10 @@ for p in "${PROJECTS[@]}"; do
   fi
 done
 
+# 모델 실행 런타임 자산(onnxruntime wasm / transformers·web-llm 벤더 청크) 제거.
+# 프리뷰에서는 어차피 못 돌리고, 리포를 수십 MB 불리며 시크릿 스캐닝 오탐까지 낸다.
+node "$SITES/prune-preview.mjs"
+
 echo
 echo "성공(${#ok[@]}): ${ok[*]:-없음}"
 echo "실패(${#fail[@]}): ${fail[*]:-없음}"
