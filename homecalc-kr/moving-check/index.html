@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>이사 체크리스트 — D-30부터 전입신고까지 단계별 | 홈캘크</title>
+<meta name="description" content="이사 D-30, D-14, D-7, D-1, 당일, 이사 후 14일까지 해야 할 일을 단계별로 정리한 체크리스트입니다. 체크 상태는 이 브라우저에만 저장되며 전입신고·확정일자 등 공식 안내 링크를 함께 제공합니다." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/moving-check/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="이사 체크리스트 (D-30 ~ 이사 후)" />
+<meta property="og:description" content="이사 D-30, D-14, D-7, D-1, 당일, 이사 후 14일까지 해야 할 일을 단계별로 정리한 체크리스트입니다. 체크 상태는 이 브라우저에만 저장되며 전입신고·확정일자 등 공식 안내 링크를 함께 제공합니다." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/moving-check/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"이사 체크리스트","url":"https://homecalc-kr.vercel.app/moving-check/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"이사 D-30, D-14, D-7, D-1, 당일, 이사 후 14일까지 해야 할 일을 단계별로 정리한 체크리스트입니다. 체크 상태는 이 브라우저에만 저장되며 전입신고·확정일자 등 공식 안내 링크를 함께 제공합니다."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"체크한 내용이 다른 기기에서도 보이나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 서버 저장이 없어 이 브라우저에만 남습니다. 시크릿 모드나 다른 기기에서는 새로 시작됩니다."}},{"@type":"Question","name":"전입신고는 언제까지 해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"주민등록법상 전입한 날부터 14일 이내에 신고해야 합니다. 정부24에서 온라인으로도 가능합니다."}},{"@type":"Question","name":"확정일자는 왜 받아야 하나요?","acceptedAnswer":{"@type":"Answer","text":"임차인이 보증금 우선변제권을 확보하려면 전입신고와 함께 확정일자를 받아 두는 것이 안전합니다. 자세한 요건은 법령·전문가 상담으로 확인하세요."}},{"@type":"Question","name":"장기수선충당금은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"아파트 관리비에 포함되어 임차인이 납부했지만 원칙적으로 소유자 부담인 항목으로, 퇴거 시 정산·반환을 요청하는 것이 일반적입니다. 계약 조건에 따라 다를 수 있습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"이사 체크리스트","item":"https://homecalc-kr.vercel.app/moving-check/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">이사 체크리스트</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">✅</div>
+    <h1>이사 체크리스트</h1>
+    <p class="lead">D-30부터 이사 후 전입신고까지 <strong>단계별 할 일</strong>을 체크하며 준비하세요. 체크 상태는 이 브라우저에만 저장됩니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>준비 진행 상황</h2>
+    <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+    <p class="sub" id="progTxt">0 / 0 완료</p>
+    <div id="list"></div>
+    <div class="chips">
+      <button class="chip" type="button" id="resetBtn">↺ 체크 초기화</button>
+      <button class="chip" type="button" id="sumBtn">📋 진행 요약 보기</button>
+    </div>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>이사는 날짜가 정해지는 순간부터 할 일이 쏟아집니다. 이 체크리스트는 D-30(업체 비교·퇴거 통보)부터 이사 당일 계량기 검침, 이사 후 14일 이내 전입신고까지 순서대로 정리했습니다. 항목을 누르면 완료 처리되고 진행률이 표시됩니다.</p>
+    <p class="note">✅ 체크 상태는 <strong>이 브라우저의 localStorage</strong>에만 저장됩니다. 서버로 전송하거나 계정에 저장하지 않으므로, 브라우저 데이터를 지우거나 다른 기기에서 열면 초기화됩니다.</p>
+    <h2>공식 절차 안내 링크</h2>
+    <ul>
+      <li><a href="https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000016" rel="noopener">전입신고 (이사 후 14일 이내)</a> — 정부24</li>
+      <li><a href="https://service.epost.go.kr" rel="noopener">우편물 주거이전 서비스</a> — 우체국</li>
+      <li><a href="http://www.iros.go.kr" rel="noopener">확정일자 (인터넷등기소/주민센터)</a> — 대법원 인터넷등기소</li>
+      <li><a href="https://www.gov.kr" rel="noopener">대형폐기물 배출 신고</a> — 정부24(지자체별 신고)</li>
+      <li><a href="https://www.15990903.or.kr" rel="noopener">폐가전 무상 방문수거 (1599-0903)</a> — E-순환거버넌스</li>
+      <li><a href="https://cyber.kepco.co.kr" rel="noopener">전기 사용자 명의변경·정산 (한전 123)</a> — 한국전력</li>
+    </ul>
+    <h2>사용법</h2>
+    <ol>
+      <li>이사 일정이 정해지면 D-30 단계부터 위에서 아래로 확인합니다.</li>
+      <li>완료한 항목을 탭하면 체크되고 진행률 막대가 올라갑니다.</li>
+      <li>다음 이사 때는 <strong>체크 초기화</strong>로 전부 되돌릴 수 있습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 체크한 내용이 다른 기기에서도 보이나요?</p><p class="a">아니요. 서버 저장이 없어 이 브라우저에만 남습니다. 시크릿 모드나 다른 기기에서는 새로 시작됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 전입신고는 언제까지 해야 하나요?</p><p class="a">주민등록법상 전입한 날부터 14일 이내에 신고해야 합니다. 정부24에서 온라인으로도 가능합니다.</p></div>
+    <div class="qa"><p class="q">Q. 확정일자는 왜 받아야 하나요?</p><p class="a">임차인이 보증금 우선변제권을 확보하려면 전입신고와 함께 확정일자를 받아 두는 것이 안전합니다. 자세한 요건은 법령·전문가 상담으로 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 장기수선충당금은 무엇인가요?</p><p class="a">아파트 관리비에 포함되어 임차인이 납부했지만 원칙적으로 소유자 부담인 항목으로, 퇴거 시 정산·반환을 요청하는 것이 일반적입니다. 계약 조건에 따라 다를 수 있습니다.</p></div>
+<p class="note">체크리스트 항목은 일반적인 이사 준비 관행을 정리한 <strong>참고 자료</strong>입니다. 전입신고·확정일자 등 법정 절차의 요건과 기한은 위 공식 링크에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../moving-cost/"><span class="ic">🚚</span>이사 견적 항목 계산기</a>
+      <a class="rel" href="../furniture-fit/"><span class="ic">🛋️</span>가구 배치 시뮬레이터</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-isagak/" rel="noopener"><span class="ic">📦</span>이사각 — 이사 준비 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/moving-cost-calc/" rel="noopener"><span class="ic">🚚</span>이사 비용 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+const DATA = [{"phase":"D-30~D-21","items":["이사 날짜 확정, 손 없는 날/월말 여부 확인 (요금 차이 큼)","이사업체 3곳 이상 방문견적 비교 (허가업체 여부 확인)","집주인/관리사무소에 퇴거 통보 (계약서 통보 기한 확인)","안 쓰는 짐 정리 — 중고 판매/기부/대형폐기물 신고"]},{"phase":"D-14","items":["포장이사/반포장 범위 확정, 계약서·피해보상 약관 확인","에어컨·정수기 이전 설치 예약","인터넷·TV 이전 설치 신청 (통신사)","새집 도배/장판/입주청소 일정 예약"]},{"phase":"D-7","items":["우체국 주거이전 서비스 신청 (우편물 새 주소 전송)","은행·카드·보험 주소 변경","도시가스 전출 접수 (지역 도시가스사)","대형폐기물 배출 신고, 폐가전 무상수거 예약"]},{"phase":"D-1","items":["냉장고 정리·성에 제거, 세탁기 물빼기","귀중품·서류는 직접 운반할 가방에 분리","관리비 정산 예약, 장기수선충당금 반환 확인(임차인)","엘리베이터 사용 예약 (양쪽 관리사무소)"]},{"phase":"D-Day","items":["짐 싣기 전후 파손 여부 사진 촬영","전기·가스·수도 계량기 검침값 촬영, 요금 정산","잔금·보증금 처리 확인 후 열쇠 인계","새집 짐 배치 확인 후 잔금 지불, 파손 즉시 고지"]},{"phase":"이사 후 14일 이내","items":["전입신고 (정부24 또는 주민센터) — 14일 이내 의무","확정일자 받기 (임차인, 전입신고와 함께)","자동차 주소 변경(전입신고 시 연계), 운전면허 주소 확인","아이 전학·어린이집 변경 신고"]}];
+const KEY = "hc-moving-check";
+const $ = (id) => document.getElementById(id);
+let done = {};
+try { done = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { done = {}; }
+const total = DATA.reduce((s, p) => s + p.items.length, 0);
+const list = $("list");
+DATA.forEach((ph, pi) => {
+  const wrap = document.createElement("div");
+  wrap.className = "chk-phase";
+  const h = document.createElement("h3");
+  h.textContent = ph.phase;
+  wrap.appendChild(h);
+  ph.items.forEach((text, ii) => {
+    const id = pi + "-" + ii;
+    const lab = document.createElement("label");
+    lab.className = "chk" + (done[id] ? " done" : "");
+    const cb = document.createElement("input");
+    cb.type = "checkbox"; cb.checked = !!done[id];
+    cb.addEventListener("change", () => {
+      if (cb.checked) done[id] = 1; else delete done[id];
+      lab.classList.toggle("done", cb.checked);
+      try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {}
+      render();
+      summary();
+    });
+    const sp = document.createElement("span");
+    sp.textContent = text;
+    lab.appendChild(cb); lab.appendChild(sp);
+    wrap.appendChild(lab);
+  });
+  list.appendChild(wrap);
+});
+function count() { return Object.keys(done).length; }
+function render() {
+  const c = count();
+  $("progBar").style.width = (total ? c / total * 100 : 0) + "%";
+  $("progTxt").textContent = c + " / " + total + " 완료 (" + Math.round(total ? c / total * 100 : 0) + "%)";
+}
+function summary() {
+  const c = count();
+  if (!c) return;
+  $("resultBox").hidden = false;
+  const remain = DATA.map((ph, pi) => {
+    const left = ph.items.filter((_, ii) => !done[pi + "-" + ii]).length;
+    return left ? ph.phase + " " + left + "건" : null;
+  }).filter(Boolean);
+  $("resMain").innerHTML = "진행률 <span>" + Math.round(c / total * 100) + "%</span> <small>(" + c + "/" + total + ")</small>";
+  $("resSub").textContent = remain.length ? "남은 항목: " + remain.join(" · ") : "모든 항목을 완료했습니다. 이사 준비 끝!";
+  $("resFormula").textContent = "체크 상태는 이 브라우저(localStorage)에만 저장되며 서버로 전송·저장하지 않습니다.";
+  $("srcLine").innerHTML = "절차 항목의 근거는 위 공식 링크(정부24·우체국·인터넷등기소 등) 참조 · 확인일 2026-08-19";
+  hcShowResultAd();
+}
+$("resetBtn").addEventListener("click", () => {
+  done = {};
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  list.querySelectorAll("input[type=checkbox]").forEach((cb) => { cb.checked = false; cb.parentElement.classList.remove("done"); });
+  render();
+  $("resultBox").hidden = true;
+  hcToast("체크를 모두 초기화했습니다");
+});
+$("sumBtn").addEventListener("click", () => {
+  if (!count()) { hcToast("완료한 항목을 먼저 체크하세요"); return; }
+  summary();
+});
+render();
+if (count()) summary();
+</script>
+</body>
+</html>

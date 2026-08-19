@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>조명 밝기(루멘) 계산기 — 방 크기·용도별 필요 lm | 홈캘크</title>
+<meta name="description" content="방 면적과 용도별 권장 조도(lx)로 필요한 총 광속(루멘)과 전구 개수를 광속법으로 계산합니다. 조명률·보수율 조정 가능, LED 방등·거실등 프리셋 제공." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/lighting/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="조명 밝기(루멘) 계산기" />
+<meta property="og:description" content="방 면적과 용도별 권장 조도(lx)로 필요한 총 광속(루멘)과 전구 개수를 광속법으로 계산합니다. 조명률·보수율 조정 가능, LED 방등·거실등 프리셋 제공." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/lighting/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"조명 밝기 계산기","url":"https://homecalc-kr.vercel.app/lighting/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"방 면적과 용도별 권장 조도(lx)로 필요한 총 광속(루멘)과 전구 개수를 광속법으로 계산합니다. 조명률·보수율 조정 가능, LED 방등·거실등 프리셋 제공."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"권장 조도는 어디 기준인가요?","acceptedAnswer":{"@type":"Answer","text":"KS A 3011(조도 기준)에서 통용되는 범위를 참고했습니다. 표준 원문은 유료 열람이라 이 사이트의 값은 통용 인용값이며 확인 필요 표시를 함께 둡니다."}},{"@type":"Question","name":"거실등 하나로 충분한가요?","acceptedAnswer":{"@type":"Answer","text":"면적이 넓으면 하나로는 균일도가 떨어집니다. 총 루멘을 맞추더라도 다운라이트·간접조명으로 나누어 배치하는 편이 눈이 편합니다."}},{"@type":"Question","name":"책상 조명도 이걸로 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"책상면 조도(600~1000lx)는 방 전체 조명이 아니라 스탠드로 보강하는 것이 일반적입니다. 전반 조명은 200~300lx로 두고 국부 조명을 더하세요."}},{"@type":"Question","name":"조명률·보수율을 모르면?","acceptedAnswer":{"@type":"Answer","text":"일반 가정은 조명률 0.6, 보수율 0.8 정도로 두면 무난합니다. 천장이 어둡거나 높으면 조명률을 낮춰 잡으세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"조명 밝기 계산기","item":"https://homecalc-kr.vercel.app/lighting/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">조명 밝기 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">💡</div>
+    <h1>조명 밝기 계산기</h1>
+    <p class="lead">방 면적 × 권장 조도(lx)를 <strong>광속법</strong>으로 환산해 필요한 루멘(lm)과 전구 개수를 계산합니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>공간 조건 입력</h2>
+    <div class="grid2">
+      <label class="f">면적
+        <input type="number" id="area" inputmode="decimal" step="any" min="0" value="20" />
+      </label>
+      <label class="f">면적 단위
+        <select id="unit"><option value="m2">㎡ (제곱미터)</option><option value="py">평</option></select>
+      </label>
+      <label class="f">공간 용도
+        <select id="room"></select>
+      </label>
+      <label class="f">목표 조도 (lx) <span class="hint">— 직접 조정 가능</span>
+        <input type="number" id="lux" inputmode="decimal" step="any" min="1" value="200" />
+      </label>
+      <label class="f">조명률 <span class="hint">— 0.5~0.7</span>
+        <input type="number" id="util" inputmode="decimal" step="0.05" min="0.1" max="1" value="0.6" />
+      </label>
+      <label class="f">보수율 <span class="hint">— 0.7~0.8</span>
+        <input type="number" id="maint" inputmode="decimal" step="0.05" min="0.1" max="1" value="0.8" />
+      </label>
+      <label class="f">조명 기구 프리셋
+        <select id="bulb"></select>
+      </label>
+      <label class="f">기구 1개 광속 (lm) <span class="hint">— 제품 표기 우선</span>
+        <input type="number" id="lm" inputmode="decimal" step="any" min="1" value="4500" />
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">필요 밝기 계산</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>조명은 와트(W)가 아니라 <strong>루멘(lm)</strong>으로 밝기를 봅니다. LED 시대에는 같은 10W라도 광속이 크게 다르기 때문입니다. 이 계산기는 조명 설계에서 쓰는 광속법(필요 광속 = 조도 × 면적 ÷ (조명률 × 보수율))으로 방 전체에 필요한 총 루멘과 기구 개수를 계산합니다.</p>
+    <p>조명률은 기구 종류와 천장·벽 반사율에 따른 손실을, 보수율은 시간이 지나며 먼지·감광으로 밝기가 떨어지는 것을 보정하는 계수입니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>면적을 ㎡ 또는 평으로 입력합니다.</li>
+      <li>공간 용도를 고르면 권장 조도 범위의 중간값이 자동으로 채워집니다. 밝게 쓰고 싶으면 값을 올리세요.</li>
+      <li>기구 프리셋을 고르거나 제품에 적힌 광속(lm)을 입력하면 필요한 개수가 나옵니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 권장 조도는 어디 기준인가요?</p><p class="a">KS A 3011(조도 기준)에서 통용되는 범위를 참고했습니다. 표준 원문은 유료 열람이라 이 사이트의 값은 통용 인용값이며 확인 필요 표시를 함께 둡니다.</p></div>
+    <div class="qa"><p class="q">Q. 거실등 하나로 충분한가요?</p><p class="a">면적이 넓으면 하나로는 균일도가 떨어집니다. 총 루멘을 맞추더라도 다운라이트·간접조명으로 나누어 배치하는 편이 눈이 편합니다.</p></div>
+    <div class="qa"><p class="q">Q. 책상 조명도 이걸로 계산하나요?</p><p class="a">책상면 조도(600~1000lx)는 방 전체 조명이 아니라 스탠드로 보강하는 것이 일반적입니다. 전반 조명은 200~300lx로 두고 국부 조명을 더하세요.</p></div>
+    <div class="qa"><p class="q">Q. 조명률·보수율을 모르면?</p><p class="a">일반 가정은 조명률 0.6, 보수율 0.8 정도로 두면 무난합니다. 천장이 어둡거나 높으면 조명률을 낮춰 잡으세요.</p></div>
+<p class="note">권장 조도는 KS A 3011의 통용 인용값이며 원문 대조 확인이 필요한 항목입니다 <span class="badge todo">확인 필요</span>. 조명률·보수율은 설계 관행값(참고용)입니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../pyeong/"><span class="ic">📐</span>평수 계산기</a>
+      <a class="rel" href="../ac-size/"><span class="ic">❄️</span>에어컨 평수 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" rel="noopener"><span class="ic">⚡</span>평형별 전기요금 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong/" rel="noopener"><span class="ic">📐</span>평수 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { lightingCalc, pyeongToM2 } from "../lib/calc.mjs";
+const ROOMS = [{"id":"living","name":"거실(전반)","lux":[150,300]},{"id":"bedroom","name":"침실(전반)","lux":[100,200]},{"id":"kitchen","name":"주방(작업면)","lux":[300,600]},{"id":"study","name":"서재·공부방(책상면)","lux":[600,1000]},{"id":"bath","name":"욕실·세면대","lux":[150,300]},{"id":"entry","name":"현관·복도","lux":[60,150]}];
+const BULBS = [{"name":"LED 전구 8W","lm":800},{"name":"LED 전구 12W","lm":1200},{"name":"LED 방등 50W","lm":4500},{"name":"LED 거실등 100W","lm":9000},{"name":"형광등 30W(대체형)","lm":2400}];
+const $ = (id) => document.getElementById(id);
+const rsel = $("room"), bsel = $("bulb");
+ROOMS.forEach((r, i) => { const o = document.createElement("option"); o.value = i; o.textContent = r.name + " (" + r.lux[0] + "~" + r.lux[1] + "lx)"; rsel.appendChild(o); });
+BULBS.forEach((b, i) => { const o = document.createElement("option"); o.value = i; o.textContent = b.name + " · " + b.lm + "lm"; bsel.appendChild(o); });
+bsel.value = 2; $("lm").value = BULBS[2].lm;
+function syncLux() { const r = ROOMS[+rsel.value]; $("lux").value = Math.round((r.lux[0] + r.lux[1]) / 2); }
+rsel.addEventListener("change", syncLux);
+bsel.addEventListener("change", () => { $("lm").value = BULBS[+bsel.value].lm; });
+syncLux();
+$("calcBtn").addEventListener("click", () => {
+  const v = parseFloat($("area").value);
+  const lux = parseFloat($("lux").value);
+  const utilization = parseFloat($("util").value);
+  const maintenance = parseFloat($("maint").value);
+  const bulbLm = parseFloat($("lm").value);
+  if (!isFinite(v) || v <= 0 || !isFinite(lux) || lux <= 0 || !isFinite(bulbLm) || bulbLm <= 0) { hcToast("면적·조도·광속을 입력하세요"); return; }
+  if (!(utilization > 0) || !(maintenance > 0)) { hcToast("조명률과 보수율은 0보다 커야 합니다"); return; }
+  const areaM2 = $("unit").value === "py" ? pyeongToM2(v) : v;
+  const r = lightingCalc({ areaM2, lux, utilization, maintenance, bulbLm });
+  const rm = ROOMS[+rsel.value];
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = "필요 광속 <span>" + hcFmt(r.lumens) + "lm</span> <small>· 기구 " + r.bulbs + "개</small>";
+  $("resSub").textContent = rm.name + " 권장 조도 " + rm.lux[0] + "~" + rm.lux[1] + "lx 중 " + lux + "lx 적용 · 면적 " + hcFmt(areaM2, 2) + "㎡ · 기구 " + hcFmt(bulbLm) + "lm 기준";
+  $("resFormula").textContent = "필요 광속 = 조도 " + lux + "lx × 면적 " + hcFmt(areaM2, 2) + "㎡ ÷ (조명률 " + utilization + " × 보수율 " + maintenance + ")";
+  $("srcLine").innerHTML = "권장 조도: KS A 3011 통용 인용값 <span class=\"badge todo\">확인 필요</span> · 조명률·보수율: 설계 관행값(참고용) · 확인일 2026-08-19 · <a href=\"https://standard.go.kr\" rel=\"noopener\">e나라 표준인증</a>";
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>

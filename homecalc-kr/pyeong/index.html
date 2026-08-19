@@ -7,28 +7,19 @@
 <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
 <script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <title>평수 계산기 — 평↔제곱미터(㎡) 변환, 전용·공급면적 | 홈캘크</title>
-<meta name="description" content="평을 제곱미터로, ㎡를 평으로 즉시 변환합니다. 1평=3.305785㎡(계량법 관용 환산). 전용면적·공급면적 차이와 평형별(10~60평) 상세 페이지 제공." />
+<meta name="description" content="평을 제곱미터로, ㎡를 평으로 즉시 변환합니다. 1평=3.305785㎡(계량법 관용 환산 400/121). 전용면적·공급면적 차이 정리와 10~60평 평형별 상세 페이지 제공." />
 <link rel="canonical" href="https://homecalc-kr.vercel.app/pyeong/" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="홈캘크 HomeCalc" />
-<meta property="og:title" content="평수 계산기 — 평↔㎡ 변환" />
-<meta property="og:description" content="1평=3.305785㎡. 평↔제곱미터 즉시 변환과 전용·공급면적 개념 정리." />
+<meta property="og:title" content="평수 계산기 — 평↔㎡ 즉시 변환" />
+<meta property="og:description" content="평을 제곱미터로, ㎡를 평으로 즉시 변환합니다. 1평=3.305785㎡(계량법 관용 환산 400/121). 전용면적·공급면적 차이 정리와 10~60평 평형별 상세 페이지 제공." />
 <meta property="og:url" content="https://homecalc-kr.vercel.app/pyeong/" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="../assets/style.css" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[
- {"@type":"SoftwareApplication","name":"평수 계산기","url":"https://homecalc-kr.vercel.app/pyeong/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"평↔제곱미터 변환 계산기"},
- {"@type":"FAQPage","mainEntity":[
-  {"@type":"Question","name":"1평은 몇 제곱미터인가요?","acceptedAnswer":{"@type":"Answer","text":"1평은 400/121㎡ = 약 3.305785㎡입니다. 계량에 관한 법률상 법정 단위는 ㎡이고 평은 관용 단위입니다."}},
-  {"@type":"Question","name":"전용면적과 공급면적은 무엇이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"전용면적은 현관 안쪽의 실제 거주 공간이고, 공급면적은 전용면적에 계단·복도 등 주거공용면적을 더한 값입니다. '몇 평형'이라는 표기는 대개 공급면적 기준입니다."}},
-  {"@type":"Question","name":"34평형이 전용 84㎡인 이유는?","acceptedAnswer":{"@type":"Answer","text":"공급면적 약 112㎡(≈34평) 아파트의 전용면적이 84㎡ 안팎인 경우가 많아 '34평형=전용 84㎡'가 관행 표기로 굳어졌습니다. 단지마다 전용률이 달라 정확한 값은 등기·분양 자료를 확인해야 합니다."}}]},
- {"@type":"BreadcrumbList","itemListElement":[
-  {"@type":"ListItem","position":1,"name":"홈캘크","item":"https://homecalc-kr.vercel.app/"},
-  {"@type":"ListItem","position":2,"name":"평수 계산기","item":"https://homecalc-kr.vercel.app/pyeong/"}]}
-]}
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"평수 계산기","url":"https://homecalc-kr.vercel.app/pyeong/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"평을 제곱미터로, ㎡를 평으로 즉시 변환합니다. 1평=3.305785㎡(계량법 관용 환산 400/121). 전용면적·공급면적 차이 정리와 10~60평 평형별 상세 페이지 제공."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"1평은 정확히 몇 ㎡인가요?","acceptedAnswer":{"@type":"Answer","text":"400/121㎡ = 3.3057851…㎡입니다. 실무에서는 3.3058 또는 3.305785로 계산합니다."}},{"@type":"Question","name":"부동산 광고에는 왜 ㎡만 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"계량에 관한 법률상 법정 단위가 ㎡이기 때문입니다. '평'은 거래 관행상 병기되는 관용 단위입니다."}},{"@type":"Question","name":"34평형이 전용 84㎡인 이유는?","acceptedAnswer":{"@type":"Answer","text":"공급면적 약 112㎡(≈34평) 아파트의 전용면적이 84㎡ 안팎인 경우가 많아 '34평형=전용 84㎡'가 관행 표기로 굳어졌습니다. 단지마다 전용률이 달라 정확한 값은 분양 자료·건축물대장을 확인해야 합니다."}},{"@type":"Question","name":"땅(대지) 평수도 같은 환산인가요?","acceptedAnswer":{"@type":"Answer","text":"네, 토지·건물 모두 1평 = 3.305785㎡ 동일 환산입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"평수 계산기","item":"https://homecalc-kr.vercel.app/pyeong/"}]}]}
 </script>
 </head>
 <body>
@@ -55,11 +46,11 @@
       </label>
     </div>
     <p class="sub">어느 쪽이든 입력하면 반대쪽이 바로 계산됩니다.</p>
-    <div class="result" id="resultBox" hidden>
+    <div class="result" id="resultBox" hidden aria-live="polite">
       <p class="big" id="resMain">—</p>
       <p class="sub" id="resSub"></p>
-      <div class="formula">1평 = 400/121㎡ = 3.305785…㎡ · ㎡ = 평 × 3.305785 · 평 = ㎡ ÷ 3.305785</div>
-      <p class="src">출처: <a href="https://www.law.go.kr/법령/계량에관한법률" target="_blank" rel="noopener">계량에 관한 법률</a>(법정 단위 ㎡) · 확인일 2026-08-19</p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
       <div class="ad-slot" id="adSlot" hidden>
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
       </div>
@@ -68,30 +59,29 @@
 
   <section class="about">
     <h2>평형별 상세 페이지</h2>
-    <p>자주 찾는 평형은 전용·공급 개념과 함께 별도 페이지로 정리했습니다.</p>
-    <div class="chips" id="pyLinks">
-      <a class="chip" href="10/">10평</a><a class="chip" href="15/">15평</a><a class="chip" href="18/">18평</a><a class="chip" href="20/">20평</a><a class="chip" href="24/">24평</a><a class="chip" href="25/">25평</a><a class="chip" href="30/">30평</a><a class="chip" href="32/">32평</a><a class="chip" href="33/">33평</a><a class="chip" href="34/">34평</a><a class="chip" href="38/">38평</a><a class="chip" href="40/">40평</a><a class="chip" href="45/">45평</a><a class="chip" href="50/">50평</a><a class="chip" href="60/">60평</a>
-    </div>
-
+    <p>자주 찾는 평형은 전용·공급면적 대응과 함께 별도 페이지로 정리했습니다.</p>
+    <div class="chips"><a class="chip" href="../pyeong/10/">10평</a><a class="chip" href="../pyeong/12/">12평</a><a class="chip" href="../pyeong/15/">15평</a><a class="chip" href="../pyeong/17/">17평</a><a class="chip" href="../pyeong/18/">18평</a><a class="chip" href="../pyeong/20/">20평</a><a class="chip" href="../pyeong/21/">21평</a><a class="chip" href="../pyeong/23/">23평</a><a class="chip" href="../pyeong/24/">24평</a><a class="chip" href="../pyeong/25/">25평</a><a class="chip" href="../pyeong/26/">26평</a><a class="chip" href="../pyeong/28/">28평</a><a class="chip" href="../pyeong/30/">30평</a><a class="chip" href="../pyeong/32/">32평</a><a class="chip" href="../pyeong/33/">33평</a><a class="chip" href="../pyeong/34/">34평</a><a class="chip" href="../pyeong/35/">35평</a><a class="chip" href="../pyeong/38/">38평</a><a class="chip" href="../pyeong/40/">40평</a><a class="chip" href="../pyeong/43/">43평</a><a class="chip" href="../pyeong/45/">45평</a><a class="chip" href="../pyeong/48/">48평</a><a class="chip" href="../pyeong/50/">50평</a><a class="chip" href="../pyeong/55/">55평</a><a class="chip" href="../pyeong/60/">60평</a></div>
+    <h2>소개</h2>
+    <p>부동산 광고와 등기부는 ㎡로, 실제 대화는 "몇 평"으로 하다 보니 매번 환산이 필요합니다. 이 계산기는 1평 = 400/121㎡ = 3.305785㎡ 관용 환산으로 양방향 변환하고, 전용률(전용면적÷공급면적) 참고 범위까지 함께 보여줍니다.</p>
     <h2>전용면적·공급면적·계약면적</h2>
     <ul>
-      <li><strong>전용면적</strong>: 현관문 안쪽, 우리 집 식구만 쓰는 공간. 등기부와 청약 자격의 기준.</li>
-      <li><strong>공급면적</strong>: 전용면적 + 주거공용면적(계단·복도·엘리베이터 홀). "○○평형" 표기의 근거.</li>
-      <li><strong>계약면적</strong>: 공급면적 + 기타공용면적(주차장·관리실 등). 오피스텔 분양 표기에 자주 쓰임.</li>
+      <li><strong>전용면적</strong> — 현관문 안쪽, 우리 집 식구만 쓰는 공간. 등기부와 청약 자격의 기준.</li>
+      <li><strong>공급면적</strong> — 전용면적 + 주거공용면적(계단·복도·엘리베이터 홀). "○○평형" 표기의 근거.</li>
+      <li><strong>계약면적</strong> — 공급면적 + 기타공용면적(주차장·관리실 등). 오피스텔 분양 표기에 자주 쓰임.</li>
     </ul>
     <p>같은 "25평형"이라도 단지 전용률(통상 72~85%)에 따라 실사용 면적이 다르므로, 정확한 값은 분양 카탈로그나 건축물대장을 확인하세요.</p>
-
     <h2>사용법</h2>
     <ol>
       <li>평 또는 ㎡ 한쪽에 숫자를 입력합니다.</li>
-      <li>반대 단위 값과 전용률 참고 범위가 즉시 표시됩니다.</li>
+      <li>반대 단위 값과 전용면적 참고 범위가 즉시 표시됩니다.</li>
       <li>평형별 페이지에서 해당 평형의 상세 설명을 확인합니다.</li>
     </ol>
-
     <h2>자주 묻는 질문</h2>
-    <div class="qa"><p class="q">Q. 1평은 정확히 몇 ㎡인가요?</p><p class="a">A. 400/121㎡ = 3.3057851…㎡입니다. 실무에서는 3.3058 또는 3.305785로 계산합니다.</p></div>
-    <div class="qa"><p class="q">Q. 부동산 광고에는 왜 ㎡만 쓰나요?</p><p class="a">A. 계량에 관한 법률상 법정 단위가 ㎡이기 때문입니다. '평'은 거래 관행상 병기되는 관용 단위입니다.</p></div>
-    <div class="qa"><p class="q">Q. 땅(대지) 평수도 같은 환산인가요?</p><p class="a">A. 네, 토지·건물 모두 1평=3.305785㎡ 동일 환산입니다.</p></div>
+    <div class="qa"><p class="q">Q. 1평은 정확히 몇 ㎡인가요?</p><p class="a">400/121㎡ = 3.3057851…㎡입니다. 실무에서는 3.3058 또는 3.305785로 계산합니다.</p></div>
+    <div class="qa"><p class="q">Q. 부동산 광고에는 왜 ㎡만 쓰나요?</p><p class="a">계량에 관한 법률상 법정 단위가 ㎡이기 때문입니다. '평'은 거래 관행상 병기되는 관용 단위입니다.</p></div>
+    <div class="qa"><p class="q">Q. 34평형이 전용 84㎡인 이유는?</p><p class="a">공급면적 약 112㎡(≈34평) 아파트의 전용면적이 84㎡ 안팎인 경우가 많아 '34평형=전용 84㎡'가 관행 표기로 굳어졌습니다. 단지마다 전용률이 달라 정확한 값은 분양 자료·건축물대장을 확인해야 합니다.</p></div>
+    <div class="qa"><p class="q">Q. 땅(대지) 평수도 같은 환산인가요?</p><p class="a">네, 토지·건물 모두 1평 = 3.305785㎡ 동일 환산입니다.</p></div>
+
   </section>
 
   <section class="related">
@@ -114,15 +104,16 @@
 <script type="module">
 import { pyeongToM2, m2ToPyeong } from "../lib/calc.mjs";
 const $ = (id) => document.getElementById(id);
-const box = $("resultBox"), main = $("resMain"), sub = $("resSub");
+const box = $("resultBox");
 function show(py, m2, from) {
   box.hidden = false;
-  if (from === "py") {
-    main.innerHTML = `${hcFmt(py, 4)}평 = <span>${hcFmt(m2, 4)}㎡</span>`;
-  } else {
-    main.innerHTML = `${hcFmt(m2, 4)}㎡ = <span>${hcFmt(py, 4)}평</span>`;
-  }
-  sub.textContent = `전용률 75~85% 가정 시 공급 ${hcFmt(py,1)}평의 전용면적은 약 ${hcFmt(m2*0.75,1)}~${hcFmt(m2*0.85,1)}㎡ 수준입니다 (참고용).`;
+  $("resMain").innerHTML = from === "py"
+    ? hcFmt(py, 4) + "평 = <span>" + hcFmt(m2, 4) + "㎡</span>"
+    : hcFmt(m2, 4) + "㎡ = <span>" + hcFmt(py, 4) + "평</span>";
+  $("resSub").textContent = "공급면적 기준일 때 전용률 " + Math.round(0.72 * 100) + "~" + Math.round(0.85 * 100) + "% 가정 시 전용면적은 약 "
+    + hcFmt(m2 * 0.72, 1) + "~" + hcFmt(m2 * 0.85, 1) + "㎡ 수준입니다 (참고용).";
+  $("resFormula").textContent = "㎡ = 평 × 3.305785 · 평 = ㎡ ÷ 3.305785 (1평 = 400/121㎡)";
+  $("srcLine").innerHTML = "출처: <a href=\"https://www.law.go.kr/법령/계량에관한법률\" rel=\"noopener\">계량에 관한 법률</a>(법정 단위 ㎡) · 1평 = 400/121㎡ · 확인일 2026-08-19";
   hcShowResultAd();
 }
 $("inPy").addEventListener("input", (e) => {

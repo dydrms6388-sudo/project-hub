@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>커튼 치수·원단량 계산기 — 주름 배수와 폭 수 | 홈캘크</title>
+<meta name="description" content="창 폭과 주름 배수(1.5~2.5배), 원단 폭(110/140/150cm)을 넣으면 필요한 커튼 폭 수와 원단 길이를 계산합니다. 좌우 여유·상하 시접 조정 가능." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/curtain/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪟</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="커튼 치수·원단량 계산기" />
+<meta property="og:description" content="창 폭과 주름 배수(1.5~2.5배), 원단 폭(110/140/150cm)을 넣으면 필요한 커튼 폭 수와 원단 길이를 계산합니다. 좌우 여유·상하 시접 조정 가능." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/curtain/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"커튼 치수 계산기","url":"https://homecalc-kr.vercel.app/curtain/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"창 폭과 주름 배수(1.5~2.5배), 원단 폭(110/140/150cm)을 넣으면 필요한 커튼 폭 수와 원단 길이를 계산합니다. 좌우 여유·상하 시접 조정 가능."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"주름 배수는 얼마가 적당한가요?","acceptedAnswer":{"@type":"Answer","text":"일반 커튼은 2배가 표준입니다. 원단이 두껍거나 예산을 아낄 때는 1.5배, 풍성한 느낌을 원하면 2.5배를 씁니다."}},{"@type":"Question","name":"좌우 여유는 왜 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"커튼을 닫았을 때 빛샘을 막고 봉 끝까지 덮기 위해 한쪽 5~15cm 정도 여유를 둡니다."}},{"@type":"Question","name":"바닥에 끌리게 하려면?","acceptedAnswer":{"@type":"Answer","text":"봉 위치에서 바닥까지 길이에 2~5cm를 더해 '살짝 끌림' 연출을 합니다. 반대로 바닥에서 1~2cm 띄우면 청소가 편합니다."}},{"@type":"Question","name":"원단 길이 계산에 무늬 맞춤이 반영되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 무늬(리피트) 맞춤이 필요한 원단은 폭마다 리피트 길이만큼 추가로 필요합니다. 제작처에 리피트 값을 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"커튼 치수 계산기","item":"https://homecalc-kr.vercel.app/curtain/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">커튼 치수 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🪟</div>
+    <h1>커튼 치수 계산기</h1>
+    <p class="lead">창 폭 × <strong>주름 배수</strong>에 좌우 여유를 더해 필요한 원단 폭 수와 총 길이를 계산합니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>창·원단 치수 입력</h2>
+    <div class="grid2">
+      <label class="f">창(또는 커튼봉) 폭 (cm)
+        <input type="number" id="winW" inputmode="decimal" step="any" min="0" value="200" />
+      </label>
+      <label class="f">커튼 길이 (cm) <span class="hint">— 봉~바닥/창틀</span>
+        <input type="number" id="len" inputmode="decimal" step="any" min="0" value="230" />
+      </label>
+      <label class="f">주름 배수 <span class="hint">— 조정 가능</span>
+        <select id="full">
+          <option value="1.5">1.5배 (약한 주름·절약형)</option>
+          <option value="2" selected>2.0배 (일반)</option>
+          <option value="2.5">2.5배 (풍성한 주름)</option>
+        </select>
+      </label>
+      <label class="f">원단 폭 (cm)
+        <select id="fabW"><option value="110">110cm</option><option value="140" selected>140cm</option><option value="150">150cm</option><option value="280">280cm (광폭)</option></select>
+      </label>
+      <label class="f">좌우 여유 (cm, 한쪽)
+        <input type="number" id="side" inputmode="decimal" step="any" min="0" value="10" />
+      </label>
+      <label class="f">상하 시접 (cm)
+        <input type="number" id="hem" inputmode="decimal" step="any" min="0" value="25" />
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">원단량 계산하기</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>커튼은 창 폭 그대로 만들면 주름이 서지 않습니다. 보통 창 폭의 1.5~2.5배 원단을 사용하는데, 이를 <strong>주름 배수(fullness)</strong>라고 합니다. 이 계산기는 필요한 총 폭을 구한 뒤 원단 폭으로 나눠 몇 폭이 필요한지, 그리고 시접을 포함한 총 원단 길이를 계산합니다.</p>
+    <p>암막 커튼은 무게 때문에 2배 이상을 권하는 경우가 많고, 쉬어(속커튼)는 1.5~2배로도 충분합니다. 실제 제작은 봉·레일 방식(핀형/봉집형)에 따라 시접이 달라집니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>커튼봉 길이(또는 창 폭)를 cm로 입력합니다. 봉이 창보다 좌우로 길게 나오면 봉 기준이 정확합니다.</li>
+      <li>커튼 길이(봉 고리 아래부터 바닥 또는 창틀 아래까지)를 입력합니다.</li>
+      <li>주름 배수와 원단 폭을 고르면 필요한 폭 수와 총 원단 길이(m)가 나옵니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 주름 배수는 얼마가 적당한가요?</p><p class="a">일반 커튼은 2배가 표준입니다. 원단이 두껍거나 예산을 아낄 때는 1.5배, 풍성한 느낌을 원하면 2.5배를 씁니다.</p></div>
+    <div class="qa"><p class="q">Q. 좌우 여유는 왜 필요한가요?</p><p class="a">커튼을 닫았을 때 빛샘을 막고 봉 끝까지 덮기 위해 한쪽 5~15cm 정도 여유를 둡니다.</p></div>
+    <div class="qa"><p class="q">Q. 바닥에 끌리게 하려면?</p><p class="a">봉 위치에서 바닥까지 길이에 2~5cm를 더해 '살짝 끌림' 연출을 합니다. 반대로 바닥에서 1~2cm 띄우면 청소가 편합니다.</p></div>
+    <div class="qa"><p class="q">Q. 원단 길이 계산에 무늬 맞춤이 반영되나요?</p><p class="a">아니요. 무늬(리피트) 맞춤이 필요한 원단은 폭마다 리피트 길이만큼 추가로 필요합니다. 제작처에 리피트 값을 확인하세요.</p></div>
+<p class="note">이 계산은 <strong>업계 일반 관행값</strong>을 사용한 <strong>참고용</strong> 결과입니다. 제품 라벨·시방서 표기가 있으면 그 값을 직접 입력하세요. 실제 시공 전에는 시공사 실측 견적이 우선합니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../paint/"><span class="ic">🎨</span>페인트 양 계산기</a>
+      <a class="rel" href="../furniture-fit/"><span class="ic">🛋️</span>가구 배치 시뮬레이터</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong/" rel="noopener"><span class="ic">📐</span>평수 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-isagak/" rel="noopener"><span class="ic">📦</span>이사각 — 이사 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { curtainCalc } from "../lib/calc.mjs";
+const $ = (id) => document.getElementById(id);
+$("calcBtn").addEventListener("click", () => {
+  const windowWcm = parseFloat($("winW").value);
+  const lengthCm = parseFloat($("len").value);
+  const fullness = parseFloat($("full").value);
+  const fabricWcm = parseFloat($("fabW").value);
+  const sideAllowCm = parseFloat($("side").value) || 0;
+  const hemAllowCm = parseFloat($("hem").value) || 0;
+  if (!isFinite(windowWcm) || windowWcm <= 0 || !isFinite(lengthCm) || lengthCm <= 0) { hcToast("창 폭과 커튼 길이를 입력하세요"); return; }
+  const r = curtainCalc({ windowWcm, fullness, fabricWcm, sideAllowCm, lengthCm, hemAllowCm });
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = "원단 <span>" + r.panels + "폭</span> · 총 <span>" + hcFmt(r.totalFabricM, 2) + "m</span>";
+  $("resSub").textContent = "필요 총 폭 " + hcFmt(r.neededWidth, 0) + "cm (창 " + windowWcm + "cm × " + fullness + "배 + 좌우 " + sideAllowCm + "cm×2) ÷ 원단 폭 " + fabricWcm + "cm · 재단 길이 " + hcFmt(r.cutLengthCm, 0) + "cm(시접 포함) × " + r.panels + "폭";
+  $("resFormula").textContent = "폭 수 = 올림( (창 폭 × 주름 배수 + 좌우 여유×2) ÷ 원단 폭 ) · 총 원단 = 폭 수 × (커튼 길이 + 상하 시접)";
+  $("srcLine").innerHTML = "주름 배수·시접: 커튼 업계 일반 관행(참고용) · 확인일 2026-08-19 <span class=\"badge practice\">관행값</span>";
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>
