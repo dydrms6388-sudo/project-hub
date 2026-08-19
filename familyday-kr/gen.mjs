@@ -39,6 +39,19 @@ const esc = (s) => String(s == null ? "" : s)
   .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 const jsonld = (o) => JSON.stringify(o).replace(/</g, "\\u003c");
 const won = (n) => Number(n).toLocaleString("ko-KR") + "원";
+/** 받침 유무에 따라 조사를 고른다. pair 예: "은는", "이가", "을를" */
+function josa(word, pair) {
+  const ch = String(word).trim().slice(-1);
+  const code = ch.charCodeAt(0);
+  if (code < 0xac00 || code > 0xd7a3) return pair[0] + "(" + pair[1] + ")";
+  return (code - 0xac00) % 28 !== 0 ? pair[0] : pair[1];
+}
+/** 제목용 짧은 촌수 표기 (괄호 중첩 방지) */
+function chonShort(r) {
+  if (r.spouse) return "무촌·배우자";
+  if (r.chon === 0) return "무촌";
+  return r.chon + "촌" + (r.affinal ? "·인척" : "");
+}
 const manwon = (n) => (n % 10000 === 0 ? `${n / 10000}만 원` : Number(n).toLocaleString("ko-KR") + "원");
 
 function write(rel, content) {
@@ -83,11 +96,7 @@ function shell(p) {
   const pre = prefixOf(p.out);
   const url = urlOf(p.out);
   const crumbs = [{ name: "홈", rel: pre, abs: SITE_ORIGIN + "/" }].concat(p.crumbs || []);
-  const crumbHtml = crumbs.map((c, i) =>
-    i === crumbs.length - 1 && p.out !== "index.html"
-      ? `<span>${esc(c.name)}</span>`
-      : `<a href="${c.rel}">${esc(c.name)}</a>`
-  ).join('<span class="sep">›</span>') +
+  const crumbHtml = crumbs.map((c) => `<a href="${c.rel}">${esc(c.name)}</a>`).join('<span class="sep">›</span>') +
     (p.out === "index.html" ? "" : `<span class="sep">›</span><span>${esc(p.h1)}</span>`);
 
   const graph = [];
@@ -157,7 +166,7 @@ function shell(p) {
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="${pre}assets/style.css" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E${encodeURIComponent(p.emoji || "🏮").replace(/%/g, "%25")}%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E${encodeURIComponent(p.emoji || "🏮")}%3C/text%3E%3C/svg%3E" />
 <script type="application/ld+json">${jsonld({ "@context": "https://schema.org", "@graph": graph })}</script>
 ${p.extraHead || ""}</head>
 <body>
@@ -871,8 +880,9 @@ ${tableOf(["상황", "절의 종류", "횟수"], [
 
 /* 절 그림 (SVG, 빌드 시 정적 생성) */
 function bowFigure(title, steps, poses) {
+  const W = 120 * poses.length;
   return `<section class="panel"><h3 style="margin-top:0">${esc(title)}</h3>
-<svg class="fig" viewBox="0 0 480 150" role="img" aria-label="${esc(title)} 순서 그림">
+<svg class="fig" viewBox="0 0 ${W} 150" role="img" aria-label="${esc(title)} 그림" style="max-width:${W}px">
 <style>
 .bl{fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .bh{fill:currentColor}
@@ -944,9 +954,9 @@ function buildFamilyTitleLongtail() {
 
     emit({
       out: `family-title/${c.slug}/index.html`, emoji: "📖", priority: "0.6",
-      title: `${c.phrase}은 뭐라고 부르나요? — ${short} (${c.chonLabel}) | 가족의 날`,
+      title: `${c.phrase}${josa(c.phrase, "은는")} 뭐라고 부르나요? — ${short} (${chonShort(c.chon)}) | 가족의 날`,
       h1: `${c.phrase} = ${short}`,
-      desc: `${c.phrase}은(는) ${c.name}이며 나와는 ${c.chonLabel} 관계입니다. 부를 때와 가리킬 때 쓰는 말, 촌수를 세는 순서, 헷갈리기 쉬운 점을 정리했습니다.`,
+      desc: `${c.phrase} — 정식 명칭은 ${c.name}, 나와는 ${c.chonLabel} 관계입니다. 부를 때와 가리킬 때 쓰는 말, 촌수를 세는 순서, 헷갈리기 쉬운 점까지 한 페이지에 정리했습니다.`,
       lead: `${esc(c.phrase)} — 정식 명칭은 <b>${esc(c.name)}</b>, 나와는 <b>${esc(c.chonLabel)}</b> 관계입니다.`,
       crumbs: [{ name: "가족 호칭 사전", rel: "../", abs: SITE_ORIGIN + "/family-title/" }],
       introHtml: `<section class="result">
@@ -969,7 +979,7 @@ ${DISCLAIM_REGION}</section>`,
 <p class="src"><a href="../">${esc(c.group)} 호칭 전체 보기 →</a></p>
 ${srcLine(KINSHIP_META)}</section>`,
       faq: [
-        { q: `${c.phrase}은 나와 몇 촌인가요?`, a: `${c.chonLabel}입니다. ${c.chon.affinal ? "배우자를 거쳐 이어지므로 혈족이 아닌 인척으로 봅니다." : "부모와 자식 사이를 1촌으로 세어 올라갔다 내려온 수를 더한 값입니다."}` },
+        { q: `${c.phrase}${josa(c.phrase, "은는")} 나와 몇 촌인가요?`, a: `${c.chonLabel}입니다. ${c.chon.affinal ? "배우자를 거쳐 이어지므로 혈족이 아닌 인척으로 봅니다." : "부모와 자식 사이를 1촌으로 세어 올라갔다 내려온 수를 더한 값입니다."}` },
         { q: "지역마다 부르는 말이 다른가요?", a: "다릅니다. 같은 관계라도 지역·가문·세대에 따라 다른 말을 씁니다. 이 페이지는 국립국어원 『표준 언어 예절』 기준의 일반적 안내이며, 집안에서 쓰는 말이 있다면 그 말이 우선입니다." },
         { q: "부를 때와 가리킬 때가 왜 다른가요?", a: "부르는 말(호칭어)은 당사자 앞에서 쓰는 말이고, 가리키는 말(지칭어)은 제3자에게 설명할 때 쓰는 말이기 때문입니다. 두 말이 같은 관계도 있고 다른 관계도 있습니다." },
       ],
@@ -996,6 +1006,13 @@ function buildHolidayLongtail() {
       const lun = solarToLunar(y, m, d);
       const badge = h.needsCheck ? ` <span class="badge warn">확인 필요</span>` : "";
       const others = def.arr.filter((x) => x.year !== h.year);
+      // 표의 날짜와 천문 계산 결과를 대조해 그대로 노출한다
+      const calcG = lunarToSolar(h.year, def.key === "seollal" ? 1 : 8, def.key === "seollal" ? 1 : 15);
+      const calcStr = calcG ? `${calcG.y}-${String(calcG.m).padStart(2, "0")}-${String(calcG.d).padStart(2, "0")}` : null;
+      const crossCheck = !calcStr ? ""
+        : calcStr === h.date
+          ? `<p class="note">이 사이트의 천문 계산(삭 시각 기준, 한국 표준시)으로도 <b>${h.date}</b>가 나왔습니다.</p>`
+          : `<p class="note warn"><b>날짜가 갈리는 해입니다.</b> 정리해 둔 표의 값은 ${h.date}이지만, 천문 계산(삭 시각 기준, 한국 표준시)으로는 <b>${calcStr}</b>가 나옵니다. 삭이 자정 근처에 드는 해에는 이런 차이가 생길 수 있으니 <a href="${KASI_URL}" target="_blank" rel="noopener nofollow">한국천문연구원 음양력 변환기</a>로 반드시 확인하세요.</p>`;
       emit({
         out: `holiday-dday/${def.key}/${h.year}/index.html`, emoji: def.emoji, priority: "0.6",
         title: `${h.year}년 ${def.name}은 언제? ${h.date} (${dow}요일) 연휴 정리 | 가족의 날`,
@@ -1008,6 +1025,7 @@ function buildHolidayLongtail() {
 <div class="sub">${def.name} · ${dow}요일 · ${def.lunar}${badge}</div>
 </section>
 <div id="cnt" class="panel2" style="text-align:center" aria-live="polite"></div>
+${crossCheck}
 ${h.needsCheck ? `<p class="note warn"><span class="badge warn">확인 필요</span> 이 날짜는 한국천문연구원 음양력 변환으로 최종 확인하지 못한 값입니다. 항공권·기차표 예약처럼 중요한 결정 전에는 <a href="${KASI_URL}" target="_blank" rel="noopener nofollow">공식 변환기</a>와 정부 공휴일 공고로 확인하세요.</p>` : ""}`,
         bodyHtml: `<section><h2>${h.year}년 ${def.name} 연휴</h2>
 ${tableOf(["구분", "날짜", "요일"], [
