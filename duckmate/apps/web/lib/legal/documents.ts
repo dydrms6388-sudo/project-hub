@@ -14,7 +14,7 @@
 
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { company } from "../../../company/config/company";
+import { TODO_PLACEHOLDER, company, display } from "../../../company/config/company";
 
 export const LEGAL_SLUGS = [
   "terms",
@@ -64,23 +64,26 @@ export interface LegalDoc extends LegalDocMeta {
 // ---------------------------------------------------------------------------
 
 const PLACEHOLDER_VALUES: Record<string, string> = {
-  COMPANY_NAME: company.legalName,
-  SERVICE_NAME: company.serviceName,
-  CEO_NAME: company.ceo,
-  BIZ_REG_NO: company.bizRegNo,
-  MAIL_ORDER_NO: company.mailOrderNo,
-  ADDRESS: company.address,
-  PRIVACY_OFFICER: company.privacyOfficer,
-  YOUTH_OFFICER: company.youthOfficer,
-  CONTACT_EMAIL: company.contactEmail,
-  // 시행일·리전 국가는 company.ts 관리 항목이 아니다 — 확정 전까지 TODO 노출.
-  EFFECTIVE_DATE: "[TODO_사업자정보:시행일]",
-  SUPABASE_REGION_COUNTRY: "[TODO_사업자정보:서비스_리전_국가]",
+  COMPANY_NAME: display(company.legalName),
+  SERVICE_NAME: display(company.serviceName),
+  CEO_NAME: display(company.ceoName),
+  BIZ_REG_NO: display(company.bizRegNo),
+  MAIL_ORDER_NO: display(company.mailOrderNo),
+  ADDRESS: display(company.address),
+  PRIVACY_OFFICER: display(company.privacyOfficer.name),
+  YOUTH_OFFICER: display(company.youthOfficer.name),
+  CONTACT_EMAIL: display(company.contactEmail),
+  // 시행일·서비스 리전 국가는 company.ts 관리 항목이 아니다 — 확정 전까지 TODO 노출.
+  EFFECTIVE_DATE: TODO_PLACEHOLDER,
+  SUPABASE_REGION_COUNTRY: TODO_PLACEHOLDER,
 };
 
 function isUnfilled(value: string): boolean {
   return value.includes("[TODO_사업자정보");
 }
+
+/** display() 가 돌려주는 플레이스홀더 상수도 같은 규칙으로 취급한다. */
+void TODO_PLACEHOLDER;
 
 function substitute(source: string, missing: Set<string>): string {
   return source.replace(/\{\{([A-Z_]+)\}\}/g, (_match, name: string) => {
