@@ -455,8 +455,9 @@ create trigger trg_game_sessions_updated_at
   before update on public.game_sessions
   for each row execute function public.set_updated_at();
 
+-- 기본 jsonb_ops: RLS 의 participants ? 'profile_id' 존재 연산자를 지원
 create index idx_game_sessions_participants
-  on public.game_sessions using gin (participants jsonb_path_ops);
+  on public.game_sessions using gin (participants);
 
 -- =============================================================================
 -- 20. quests / quest_progress — 퀘스트 (Phase 2 대비, 시드는 비활성)
