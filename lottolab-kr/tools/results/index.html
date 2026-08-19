@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로또 당첨번호 조회 — 최신 회차·회차별 검색</title>
+<meta name="description" content="로또 6/45 당첨번호 조회. 최신 회차 당첨번호와 보너스 번호, 1등 당첨금·당첨자 수를 확인하고 회차 번호로 과거 결과를 검색하세요. 매주 토요일 자동 갱신.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<script type="application/ld+json">
+[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"로또 당첨번호 조회","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://lottolab-kr.vercel.app/tools/results/","description":"로또 6/45 회차별 당첨번호와 1등 당첨금 조회 도구. 매주 토요일 자동 갱신."},
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"로또랩","item":"https://lottolab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"로또 당첨번호 조회","item":"https://lottolab-kr.vercel.app/tools/results/"}]},
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"당첨번호는 언제 갱신되나요?","acceptedAnswer":{"@type":"Answer","text":"매주 토요일 추첨(20시 35분경) 이후 자동으로 갱신됩니다. 갱신 직후에는 반영까지 다소 시간이 걸릴 수 있으며, 실물 복권 확인은 반드시 동행복권 공식 채널을 기준으로 하세요."}},
+{"@type":"Question","name":"과거 회차도 볼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 회차 번호를 입력해 검색하거나 주소에 ?round=회차 형식으로 접근하면 1회차부터 수집된 모든 회차를 조회할 수 있습니다."}},
+{"@type":"Question","name":"이 페이지의 결과로 당첨금을 청구할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 페이지는 참고용 정보이며, 당첨 확인과 당첨금 지급은 동행복권 공식 사이트와 판매점·농협은행 등 공식 절차를 통해서만 진행됩니다."}}]}]
+</script>
+</head>
+<body>
+<div class="legal-banner"><div class="wrap">⚠️ 당첨 보장 없음 — 표시되는 정보는 과거 추첨 결과의 요약이며, 미래 당첨번호를 예측하지 않습니다. 실제 당첨 확인은 공식 채널 기준.</div></div>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">🍀 로또<em>랩</em></a>
+  <nav><a href="../generator/">번호 생성</a><a href="../checker/">당첨 확인</a><a href="../stats/">통계</a></nav>
+</div></header>
+
+<main class="wrap">
+  <h1>로또 당첨번호 조회</h1>
+  <p class="lead">최신 회차 당첨번호와 1등 당첨금을 확인하고, 회차 번호로 과거 결과를 검색하세요.</p>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label for="roundInput">회차 검색</label>
+        <input type="number" id="roundInput" min="1" step="1" placeholder="예: 1100" inputmode="numeric">
+      </div>
+      <div style="flex:0 0 auto;display:flex;align-items:flex-end">
+        <button class="btn" id="searchBtn">조회</button>
+      </div>
+    </div>
+    <div class="result-box" id="mainResult"></div>
+  </div>
+  <!-- ad-slot -->
+
+  <div class="card">
+    <h2 style="margin-top:0">최근 회차</h2>
+    <div class="tbl-scroll"><table class="tbl" id="recentTbl">
+      <thead><tr><th>회차</th><th>추첨일</th><th>당첨번호</th><th>1등 당첨금</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <div id="recentEmpty"></div>
+  </div>
+
+  <section class="content">
+    <h2>당첨번호 조회 안내</h2>
+    <p>이 페이지는 로또 6/45의 회차별 당첨번호(본번호 6개 + 보너스 번호), 추첨일, 1등 당첨금과 당첨자 수를 보여줍니다. 데이터는 매주 토요일 추첨 이후 자동으로 수집·갱신되며, 별도의 회원가입이나 입력 정보 없이 누구나 무료로 조회할 수 있습니다.</p>
+    <p>회차 검색창에 회차 번호를 입력하면 해당 회차 결과가 바로 표시되고, 주소창에 <code>?round=회차번호</code>를 붙여 특정 회차 페이지를 링크로 공유할 수도 있습니다. 아래 최근 회차 표에서는 최신 10회차의 결과를 한눈에 볼 수 있습니다.</p>
+    <p>주의: 실물 복권의 당첨 여부 확인과 당첨금 수령은 반드시 동행복권 공식 사이트·판매점 등 공식 절차를 통해 진행하세요. 이 페이지는 참고용 요약 정보입니다.</p>
+
+    <h2>사용법</h2>
+    <ol>
+      <li>페이지를 열면 수집된 가장 최신 회차의 결과가 자동으로 표시됩니다.</li>
+      <li>과거 회차를 보려면 회차 번호를 입력하고 <b>조회</b>를 누르세요.</li>
+      <li>내 번호의 등수까지 확인하려면 <a href="../checker/">로또 당첨 확인</a> 도구를 이용하세요.</li>
+    </ol>
+
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>당첨번호는 언제 갱신되나요?</summary><p>매주 토요일 추첨(20시 35분경) 이후 자동 갱신됩니다. 갱신 직후에는 반영까지 다소 시간이 걸릴 수 있습니다.</p></details>
+      <details><summary>과거 회차도 볼 수 있나요?</summary><p>네. 회차 번호로 검색하거나 주소에 <code>?round=회차</code>를 붙이면 수집된 모든 회차를 조회할 수 있습니다.</p></details>
+      <details><summary>이 페이지 결과로 당첨금을 청구할 수 있나요?</summary><p>아니요. 당첨 확인·지급은 동행복권 공식 절차로만 가능합니다. 이 페이지는 참고용입니다.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../generator/">로또 번호 생성기</a><a href="../checker/">당첨 확인</a><a href="../stats/">번호 통계</a><a href="../pattern/">조합 분석</a><a href="../simulator/">확률 체험</a><a href="../pension/">연금복권 생성기</a><a href="../dream/">번호 뽑기(재미)</a><a href="../../guide/lotto-tax/">로또 세금 가이드</a>
+  </div>
+  <div class="foot-links"><a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a></div>
+  <div class="foot-legal">본 사이트는 동행복권·복권위원회와 무관한 개인 운영 정보 사이트이며, 복권 판매·구매 중개를 하지 않습니다. 당첨을 보장하지 않으며 모든 통계는 과거 추첨 결과의 요약입니다. 과도한 복권 구매는 도박 문제로 이어질 수 있습니다 — 상담: 한국도박문제예방치유원 1336.<br>© 2026 LottoLab</div>
+</div></footer>
+
+<script>
+(function(){
+  'use strict';
+  var $ = LL.$;
+  var draws = [];
+
+  function drawCardHTML(d){
+    return '<h2 style="margin:18px 0 4px">제' + d.round + '회 (' + d.date + ' 추첨)</h2>' +
+      '<div style="margin:10px 0">' + LL.ballLineHTML(d.numbers, d.bonus) + '</div>' +
+      '<div class="stat-cards" style="margin-top:14px">' +
+        '<div class="sc"><b>' + LL.comma(d.firstPrize) + '원</b><span>1등 1인당 당첨금</span></div>' +
+        '<div class="sc"><b>' + LL.comma(d.firstWinners) + '명</b><span>1등 당첨자 수</span></div>' +
+      '</div>' +
+      '<p class="muted" style="margin-top:10px">보너스 번호는 2등(5개 일치 + 보너스) 판정에만 사용됩니다.</p>';
+  }
+
+  function showRound(r){
+    var d = draws.find(function(x){ return x.round === r; });
+    var box = $('#mainResult');
+    if (!d){
+      box.innerHTML = '<div class="empty-data">제' + r + '회 데이터가 아직 없습니다. 수집된 범위: ' +
+        (draws.length ? '1~' + draws[draws.length-1].round + '회' : '없음') + '</div>';
+      return;
+    }
+    box.innerHTML = drawCardHTML(d);
+  }
+
+  LL.loadDraws().then(function(list){
+    draws = list;
+    if (!draws.length){
+      $('#mainResult').innerHTML = LL.emptyDataHTML('추첨이 끝나면 이곳에 최신 회차 당첨번호가 표시됩니다.');
+      $('#recentEmpty').innerHTML = LL.emptyDataHTML();
+      return;
+    }
+    var q = parseInt(LL.qs('round'), 10);
+    showRound(q >= 1 ? q : draws[draws.length-1].round);
+    if (q >= 1) $('#roundInput').value = q;
+
+    var tbody = $('#recentTbl tbody');
+    tbody.innerHTML = draws.slice(-10).reverse().map(function(d){
+      return '<tr><td><a href="?round=' + d.round + '">' + d.round + '회</a></td><td>' + d.date + '</td>' +
+        '<td>' + LL.ballLineHTML(d.numbers, d.bonus, true) + '</td>' +
+        '<td>' + LL.comma(d.firstPrize) + '원</td></tr>';
+    }).join('');
+  });
+
+  function doSearch(){
+    var r = parseInt($('#roundInput').value, 10);
+    if (!(r >= 1)) return;
+    if (history.replaceState) history.replaceState(null, '', '?round=' + r);
+    showRound(r);
+  }
+  $('#searchBtn').addEventListener('click', doSearch);
+  $('#roundInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') doSearch(); });
+})();
+</script>
+</body>
+</html>
