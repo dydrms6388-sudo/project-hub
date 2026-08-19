@@ -84,7 +84,7 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .filebtn{display:block;text-align:center;padding:13px;border-radius:13px;background:#181818;color:#d4d4d4;border:1px solid #303030;font-size:15px;font-weight:700;cursor:pointer;min-height:48px}
 /* 꾸미기 */
 .pvhost{display:flex;justify-content:center;padding:10px;border-radius:14px;background:#0d0d0d;border:1px solid #2b2b2b}
-#pv{display:block;max-width:100%;touch-action:none;border-radius:6px}
+#pv{display:block;max-width:100%;touch-action:pan-y;border-radius:6px}
 .tabs{display:flex;gap:6px;margin:14px 0 10px;overflow-x:auto;padding-bottom:2px}
 .tab{flex:0 0 auto;width:auto;padding:9px 14px;border-radius:999px;background:#141414;color:#a8adb7;border:1px solid #2e2e2e;font-size:13.5px;font-weight:700;min-height:42px}
 .tab.on{background:rgba(251,113,133,.16);border-color:var(--acc);color:#fecdd3}
@@ -1205,7 +1205,7 @@ if (typeof module !== "undefined" && module.exports) module.exports = SK;
       var L = layoutCells(state.layout);
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var maxW = Math.max(140, (pvhost.clientWidth || 320) - 20);
-      var maxH = Math.min(window.innerHeight * 0.6, 640);
+      var maxH = Math.min(window.innerHeight * 0.68, 700);
       var cssW = Math.min(maxW, maxH * L.W / L.H);
       var cssH = cssW * L.H / L.W;
       pv.style.width = cssW + "px"; pv.style.height = cssH + "px";
@@ -1317,9 +1317,13 @@ if (typeof module !== "undefined" && module.exports) module.exports = SK;
       SK.toast("스티커를 놓았어요. 미리보기에서 드래그해 옮기세요");
     }
     function hitSticker(p) {
+      /* 세로 스트립 미리보기는 화면에서 아주 좁다(1200px 가 130px 남짓).
+         손가락으로 집을 수 있도록 최소 22 CSS px 만큼의 여유를 스트립 좌표로 환산해 더한다. */
+      var r = pv.getBoundingClientRect();
+      var pad = r.width > 0 ? 22 * (layoutCells(state.layout).W / r.width) : 0;
       for (var i = stickers.length - 1; i >= 0; i--) {
-        var s = stickers[i];
-        if (Math.abs(p.x - s.x) <= s.s * 0.7 && Math.abs(p.y - s.y) <= s.s * 0.7) return i;
+        var s = stickers[i], slop = Math.max(s.s * 0.7, pad);
+        if (Math.abs(p.x - s.x) <= slop && Math.abs(p.y - s.y) <= slop) return i;
       }
       return -1;
     }
