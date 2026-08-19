@@ -1322,3 +1322,785 @@ async function run() {
 $("goBtn").addEventListener("click", run);
 `,
 },
+{
+  slug: "flight-time", emoji: "✈️", nav: "비행시간·거리",
+  hubName: "비행시간·거리 계산기", hubDesc: "공항 두 곳의 대권거리로 비행시간을 추정하고 도착 현지 시각까지 계산합니다.",
+  title: "비행시간·거리 계산기 — 대권거리 기반 추정과 도착 현지 시각",
+  ogTitle: "비행시간·거리 계산기",
+  desc: "공항 두 곳을 고르면 대권거리(km)를 계산하고 예상 비행시간과 도착지 현지 시각을 알려줍니다. 인천-뉴욕처럼 시차가 큰 노선의 도착 날짜·요일까지 확인할 수 있습니다. 대권거리 기반 추정치입니다.",
+  h1: "비행시간·거리 계산기",
+  lead: `공항 두 곳만 고르면 <strong>거리·예상 비행시간·도착 현지 시각</strong>이 한 번에 나옵니다.`,
+  body: `
+  <section class="card" aria-label="입력">
+    <h2>노선 선택</h2>
+    <div class="grid2">
+      <label class="f">출발 공항 <select id="dep"></select></label>
+      <label class="f">도착 공항 <select id="arr"></select></label>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">출발 날짜 <input type="date" id="date" /></label>
+      <label class="f">출발 시각 <span class="u">(출발지 현지)</span><input type="time" id="time" value="10:00" /></label>
+    </div>
+    <div class="row"><button class="btn2" id="swapBtn" type="button">⇅ 출발·도착 바꾸기</button></div>
+    <button class="btn" id="goBtn" type="button">비행시간 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">예상 비행시간 <span class="num" id="hOut">-</span></p>
+      <dl class="kv" id="sum"></dl>
+      <p class="note">대권거리 기반 <strong>추정치</strong>입니다. 실제 항로는 대권거리보다 길고, 편서풍 때문에 동쪽으로 갈 때가 서쪽으로 갈 때보다 대체로 빠릅니다.</p>
+      <div class="share"><button class="btn2" id="copyBtn" type="button">📋 결과 복사</button></div>
+    </div>
+  </section>`,
+  intro: `<h2>지도 위 직선이 실제 항로는 아니다</h2>
+  <p>인천에서 뉴욕까지의 거리를 평면 지도에서 재면 실제보다 훨씬 멀게 나옵니다. 지구는 구체라서 두 지점의 최단 경로는 <strong>대권(great circle)</strong>, 즉 지구 중심을 지나는 평면이 표면과 만나는 원호입니다. 인천-뉴욕 노선이 북극 근처를 지나는 것도 그것이 최단 경로이기 때문입니다.</p>
+  <p>이 계산기는 공항 좌표로 대권거리를 구하고, 거리 구간별 평균 순항 속도와 이착륙·지상활주 시간을 더해 비행시간을 추정합니다. 실제 스케줄과는 보통 10% 안쪽에서 차이가 나며, 영공 우회나 강한 맞바람이 있으면 더 벌어집니다.</p>`,
+  howto: `<h2>사용법</h2>
+  <ol>
+    <li>출발·도착 공항을 IATA 코드나 도시 이름으로 고릅니다.</li>
+    <li>출발 날짜와 <strong>출발지 현지 시각</strong>을 넣습니다.</li>
+    <li>"비행시간 계산하기"를 누르면 거리·예상 비행시간과 함께 <strong>도착지 현지 날짜·시각</strong>이 나옵니다. 날짜가 바뀌면 함께 표시됩니다.</li>
+  </ol>`,
+  faq: [
+    { q: "실제 항공사 시간표와 차이가 납니다.", a: "대권거리를 기준으로 한 추정치이기 때문입니다. 실제 항로는 항공로·관제·영공 우회로 더 길고, 제트기류 영향으로 같은 노선도 방향에 따라 1시간 이상 차이가 납니다. 정확한 시간은 항공사 시간표를 확인하세요." },
+    { q: "도착 시각이 출발 시각보다 이른 것으로 나옵니다.", a: "시차 때문입니다. 예를 들어 인천에서 아침에 출발해 미국 서부에 같은 날 아침에 도착하는 일은 실제로 일어납니다. 결과에 도착지 현지 날짜와 요일을 함께 표시하니 확인하세요." },
+    { q: "경유 노선도 계산되나요?", a: "직항 기준 대권거리만 계산합니다. 경유편은 각 구간을 따로 계산한 뒤 환승 대기시간을 더해 보세요." },
+  ],
+  basis: GEO_BOX,
+  disclaimer: DISC("비행시간은 대권거리 기반 추정치이며 실제 운항 시간표와 다를 수 있습니다."),
+  related: [T.pin, T.budget],
+  script: `
+import { $, showAd, esc, fillSelect, copyText, fmt } from "__U__assets/app.mjs";
+import { haversine, flightHours, hoursToKo } from "__U__lib/geo.mjs";
+import { offsetMinutes, diffHours, diffLabel, localParts } from "__U__lib/tz.mjs";
+const A = ${AIRDATA_JSON};
+const OPTS = ${AIR_JSON};
+fillSelect($("dep"), OPTS, "ICN");
+fillSelect($("arr"), OPTS, "JFK");
+function pad(n) { return String(n).padStart(2, "0"); }
+const t0 = new Date();
+$("date").value = t0.getFullYear() + "-" + pad(t0.getMonth() + 1) + "-" + pad(t0.getDate());
+$("swapBtn").addEventListener("click", () => { const a = $("dep").value; $("dep").value = $("arr").value; $("arr").value = a; });
+let lastTxt = "";
+$("goBtn").addEventListener("click", () => {
+  const d = A[$("dep").value], r = A[$("arr").value];
+  if (!d || !r || $("dep").value === $("arr").value) { alert("서로 다른 공항을 골라주세요."); return; }
+  const km = haversine(d.lat, d.lon, r.lat, r.lon);
+  const h = flightHours(km);
+  const [y, m, da] = $("date").value.split("-").map(Number);
+  const [hh, mi] = $("time").value.split(":").map(Number);
+  const naive = Date.UTC(y, m - 1, da, hh, mi);
+  const depUtc = new Date(naive - offsetMinutes(d.tz, new Date(naive)) * 60000);
+  const arrUtc = new Date(depUtc.getTime() + h * 3600000);
+  const p = localParts(r.tz, arrUtc);
+  const dayDiff = Math.round((Date.UTC(p.y, p.m - 1, p.d) - Date.UTC(y, m - 1, da)) / 86400000);
+  $("resultBox").hidden = false;
+  $("hOut").textContent = hoursToKo(h);
+  $("sum").innerHTML =
+    "<dt>대권거리</dt><dd>약 " + fmt(km) + " km (" + fmt(km * 0.539957) + " NM)</dd>" +
+    "<dt>노선</dt><dd>" + esc($("dep").value + " " + d.c) + " → " + esc($("arr").value + " " + r.c) + "</dd>" +
+    "<dt>시차</dt><dd>" + esc(diffLabel(diffHours(d.tz, r.tz, depUtc))) + "</dd>" +
+    "<dt>도착 현지 시각</dt><dd>" + p.y + "-" + pad(p.m) + "-" + pad(p.d) + " (" + p.wd + ") " + pad(p.h) + ":" + pad(p.mi) +
+      (dayDiff === 0 ? "" : dayDiff > 0 ? " <span class=\\"badge warn\\">+" + dayDiff + "일</span>" : " <span class=\\"badge warn\\">" + dayDiff + "일</span>") + "</dd>";
+  lastTxt = $("dep").value + "→" + $("arr").value + " 약 " + fmt(km) + "km · 예상 " + hoursToKo(h);
+  showAd();
+});
+$("copyBtn").addEventListener("click", () => copyText(lastTxt + " (추정치, tripcalc-kr.vercel.app/flight-time)"));
+`,
+},
+{
+  slug: "roaming", emoji: "📶", nav: "로밍 vs 유심 비교",
+  hubName: "로밍·유심 비용 비교", hubDesc: "로밍·현지유심·이심·포켓와이파이 요금을 직접 넣어 1일·1인 기준으로 비교합니다.",
+  title: "로밍 vs 유심 vs 이심 비용 비교 — 직접 입력해 1인 1일 요금 비교",
+  ogTitle: "로밍·유심·이심 비용 비교",
+  desc: "통신사 로밍, 현지 유심, eSIM, 포켓와이파이의 요금을 직접 입력하면 여행 기간·인원 기준으로 1인당 총액과 하루당 요금을 나란히 비교합니다. 요금제는 수시로 바뀌므로 값을 저장하지 않고 입력받습니다.",
+  h1: "로밍·유심 비용 비교",
+  lead: `요금제는 수시로 바뀌므로 <strong>본인이 본 가격을 그대로 입력</strong>해 비교합니다. 1인 1일 기준으로 환산해 줍니다.`,
+  body: `
+  <section class="card" aria-label="입력">
+    <h2>여행 조건</h2>
+    <div class="grid2">
+      <label class="f">여행 기간 <span class="u">(일)</span><input type="number" id="days" min="1" max="90" value="5" /></label>
+      <label class="f">인원 <span class="u">(명)</span><input type="number" id="people" min="1" max="20" value="2" /></label>
+    </div>
+    <p class="note">포켓와이파이처럼 <strong>여러 명이 함께 쓰는</strong> 방식은 인원수로 나눠 1인당 요금을 계산합니다.</p>
+  </section>
+
+  <section class="card" aria-label="요금 입력">
+    <h2>비교할 요금 입력</h2>
+    <div id="rows"></div>
+    <button class="btn" id="goBtn" type="button">비교하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>비교 결과</h2>
+      <p class="big">가장 저렴 <span class="num" id="best">-</span></p>
+      <div id="tbl"></div>
+      <p class="note">데이터 용량·속도 제한·통화 가능 여부가 다르므로 <strong>가격만으로 결정하지 마세요</strong>. 현지 번호가 필요한지(택시·배달 앱 인증), 테더링이 되는지도 함께 확인하세요.</p>
+      <div class="share"><button class="btn2" id="copyBtn" type="button">📋 결과 복사</button></div>
+    </div>
+  </section>`,
+  intro: `<h2>요금제를 저장하지 않는 이유</h2>
+  <p>로밍·유심·이심 요금은 통신사 프로모션과 판매처에 따라 수시로 바뀝니다. 어제 맞았던 가격표가 오늘은 틀린 정보가 되고, 틀린 가격표를 그대로 믿고 결제하면 손해가 발생합니다. 그래서 이 도구는 요금 데이터를 저장하지 않고 <strong>이용자가 실제로 본 가격</strong>을 입력받아 비교만 합니다.</p>
+  <p>비교의 핵심은 <strong>단위를 통일하는 것</strong>입니다. 로밍은 하루 단위, 유심은 기간 패키지, 포켓와이파이는 기기당 하루 단위로 팔리기 때문에 그대로 보면 어느 쪽이 싼지 알기 어렵습니다. 여기서는 모두 "1인 총액"과 "1인 1일"로 환산합니다.</p>`,
+  howto: `<h2>사용법</h2>
+  <ol>
+    <li>여행 기간과 인원을 입력합니다.</li>
+    <li>비교하려는 방식의 요금을 넣습니다. 요금 단위(하루당 / 전체 기간 / 기기당 하루)를 정확히 고르는 것이 중요합니다.</li>
+    <li>포켓와이파이처럼 여러 명이 공유하는 방식은 "인원수로 나눔"에 체크합니다.</li>
+    <li>결과에서 1인 총액과 1인 1일 요금을 비교합니다.</li>
+  </ol>
+  <h2>가격 말고 확인해야 할 것</h2>
+  <ul>
+    <li><strong>현지 번호가 필요한가</strong> — 현지 택시·배달·간편결제 앱은 SMS 인증을 요구하는 경우가 많습니다. 이심·유심은 현지 번호가 생기지만 데이터 전용 상품은 아닐 수 있습니다.</li>
+    <li><strong>한국 번호 수신이 필요한가</strong> — 은행·본인인증 문자를 받아야 한다면 한국 번호를 살려 두는 로밍이나 듀얼심 이심이 유리합니다.</li>
+    <li><strong>테더링 허용 여부</strong>와 <strong>속도 제한 조건</strong>(일정 용량 초과 후 속도 저하)을 확인하세요.</li>
+    <li>포켓와이파이는 <strong>기기 배터리</strong>와 반납 절차가 변수입니다. 일행이 흩어지면 한 명만 인터넷을 쓰게 됩니다.</li>
+  </ul>`,
+  faq: [
+    { q: "왜 요금제 목록이 미리 들어 있지 않나요?", a: "로밍·유심 요금은 프로모션에 따라 자주 바뀌어, 잘못된 값을 미리 넣어 두면 오히려 잘못된 결정을 유도하기 때문입니다. 확인한 가격을 직접 넣어 비교하는 방식이 정확합니다." },
+    { q: "이심(eSIM)은 어떤 기기에서 되나요?", a: "최근 스마트폰 상당수가 지원하지만 모델·통신사 정책에 따라 다르고 국내 개통 기기 중 일부는 제약이 있습니다. 반드시 본인 기기의 지원 여부를 먼저 확인하세요." },
+    { q: "한국 번호로 오는 문자를 받아야 합니다.", a: "데이터 전용 유심으로 갈아 끼우면 한국 번호 수신이 끊깁니다. 듀얼심(물리심+이심)으로 한국 번호를 살려 두거나 통신사 로밍을 쓰는 방식을 고려하세요. 구체적인 조건은 통신사에 확인해야 합니다." },
+  ],
+  disclaimer: DISC("요금·조건은 통신사와 판매처에 따라 다르며 이 사이트는 어떤 상품도 추천하거나 판매하지 않습니다."),
+  related: [T.china, T.budget],
+  script: `
+import { $, showAd, esc, won, copyText } from "__U__assets/app.mjs";
+const PLANS = [
+  { id: "roaming", n: "📱 통신사 로밍", per: "day", share: false, ph: 9900 },
+  { id: "esim", n: "📶 eSIM", per: "total", share: false, ph: 15000 },
+  { id: "sim", n: "💳 현지 유심", per: "total", share: false, ph: 20000 },
+  { id: "pocket", n: "📡 포켓와이파이", per: "day", share: true, ph: 6000 },
+];
+const PER = [["day", "하루당"], ["total", "전체 기간"]];
+$("rows").innerHTML = PLANS.map((p) =>
+  '<div class="grid3" style="margin-top:10px"><label class="f">' + esc(p.n) + '<input type="number" id="a_' + p.id + '" min="0" value="' + p.ph + '" /></label>' +
+  '<label class="f">요금 단위<select id="p_' + p.id + '">' + PER.map((x) => '<option value="' + x[0] + '"' + (x[0] === p.per ? " selected" : "") + ">" + x[1] + "</option>").join("") + "</select></label>" +
+  '<label class="f">인원수로 나눔<select id="s_' + p.id + '"><option value="0"' + (p.share ? "" : " selected") + ">아니오 (1인 1개)</option><option value=\\"1\\"" + (p.share ? " selected" : "") + ">예 (함께 사용)</option></select></label></div>").join("");
+let lastTxt = "";
+$("goBtn").addEventListener("click", () => {
+  const days = Math.max(1, +$("days").value || 1);
+  const people = Math.max(1, +$("people").value || 1);
+  const rows = PLANS.map((p) => {
+    const amt = Number($("a_" + p.id).value) || 0;
+    const per = $("p_" + p.id).value;
+    const share = $("s_" + p.id).value === "1";
+    const groupTotal = (per === "day" ? amt * days : amt) * (share ? 1 : people);
+    return { n: p.n, groupTotal, perPerson: groupTotal / people, perPersonDay: groupTotal / people / days, amt };
+  }).filter((r) => r.amt > 0);
+  if (!rows.length) { alert("요금을 하나 이상 입력하세요."); return; }
+  const sorted = [...rows].sort((a, b) => a.perPerson - b.perPerson);
+  const best = sorted[0];
+  $("resultBox").hidden = false;
+  $("best").textContent = best.n.replace(/^\\S+\\s/, "") + " · 1인 " + won(best.perPerson);
+  $("tbl").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>방식</th><th>일행 전체</th><th>1인 총액</th><th>1인 1일</th></tr></thead><tbody>' +
+    sorted.map((r) => "<tr" + (r === best ? ' class="sum"' : "") + "><td>" + esc(r.n) + "</td><td>" + won(r.groupTotal) + "</td><td>" + won(r.perPerson) + "</td><td>" + won(r.perPersonDay) + "</td></tr>").join("") +
+    "</tbody></table></div>";
+  lastTxt = days + "일 " + people + "명 기준 최저 " + best.n + " 1인 " + won(best.perPerson);
+  showAd();
+});
+$("copyBtn").addEventListener("click", () => copyText(lastTxt + " (tripcalc-kr.vercel.app/roaming)"));
+`,
+},
+{
+  slug: "itinerary", emoji: "🗓️", nav: "여행 일정표 만들기",
+  hubName: "여행 일정표 만들기", hubDesc: "날짜별 일정을 넣어 표를 만들고, 인쇄(PDF 저장)·이미지 저장·링크 공유까지.",
+  title: "여행 일정표 만들기 — 날짜별 일정 표·인쇄용 PDF 저장",
+  ogTitle: "여행 일정표 만들기",
+  desc: "여행 시작일과 기간을 넣고 날짜별 일정을 추가하면 보기 좋은 일정표가 만들어집니다. 인쇄(PDF로 저장) 레이아웃, 결과 카드 이미지 저장, 링크 공유, 텍스트 내보내기를 지원하며 저장은 브라우저에만 합니다.",
+  h1: "여행 일정표 만들기",
+  lead: `날짜별 일정을 넣으면 <strong>인쇄해서 들고 다닐 수 있는 일정표</strong>가 됩니다. 링크로 공유도 됩니다.`,
+  body: `
+  <div id="ctaBox" hidden></div>
+  <section class="card noprint" aria-label="입력">
+    <h2>여행 기본 정보</h2>
+    <div class="grid3">
+      <label class="f">여행 제목 <input type="text" id="title" value="도쿄 여행" maxlength="40" /></label>
+      <label class="f">시작일 <input type="date" id="start" /></label>
+      <label class="f">기간 <span class="u">(일)</span><input type="number" id="days" min="1" max="30" value="4" /></label>
+    </div>
+    <h2 style="margin-top:18px">일정 추가</h2>
+    <div class="grid3">
+      <label class="f">몇째 날 <select id="dayNo"></select></label>
+      <label class="f">시각 <input type="time" id="at" value="10:00" /></label>
+      <label class="f">내용 <input type="text" id="what" placeholder="예: 아사쿠사 센소지" maxlength="60" /></label>
+    </div>
+    <button class="btn" id="addBtn" type="button">➕ 일정 추가</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2 id="planTitle">일정표</h2>
+      <div class="itin" id="itin"></div>
+      ${NO_SERVER}
+      <div class="share noprint">
+        <button class="btn2" id="printBtn" type="button">🖨️ 인쇄 / PDF 저장</button>
+        <button class="btn2" id="pngBtn" type="button">🖼️ 이미지로 저장</button>
+        <button class="btn2" id="linkBtn" type="button">🔗 링크 복사</button>
+        <button class="btn2" id="textBtn" type="button">📋 텍스트 복사</button>
+        <button class="btn2" id="expBtn" type="button">⬇️ 파일로 내보내기</button>
+        <button class="btn2" id="shareBtn" type="button">📤 공유</button>
+        <button class="btn2" id="clearBtn" type="button">🗑️ 저장 기록 전체 삭제</button>
+      </div>
+      <canvas id="cardCv" class="cardimg" hidden></canvas>
+    </div>
+  </section>`,
+  intro: `<h2>일정표는 결국 "종이로 들고 다닐 수 있어야" 쓸모 있다</h2>
+  <p>여행 일정을 메신저 대화나 메모 앱에 흩어 두면 정작 현지에서 찾기 어렵습니다. 배터리가 없거나 데이터가 안 될 때도 있습니다. 그래서 이 도구는 화면에서 만든 일정표를 <strong>그대로 인쇄</strong>할 수 있게 만들었습니다. 인쇄 화면에서는 광고·버튼·메뉴가 모두 사라지고 일정만 남습니다. 브라우저의 "PDF로 저장"을 고르면 파일로도 남습니다.</p>
+  <p>동행과 공유할 때는 링크 하나면 됩니다. 일정 내용이 링크 안에 담겨 있어 서버에 저장하지 않고도 상대방 화면에 같은 일정표가 뜹니다.</p>`,
+  howto: `<h2>사용법</h2>
+  <ol>
+    <li>여행 제목·시작일·기간을 입력합니다.</li>
+    <li>몇째 날인지 고르고 시각과 내용을 넣어 "일정 추가"를 누릅니다. 시각순으로 자동 정렬됩니다.</li>
+    <li>각 항목 오른쪽 ✕ 로 삭제할 수 있습니다.</li>
+    <li>"인쇄 / PDF 저장"을 누르면 일정만 남은 인쇄 화면이 나옵니다. 대상에서 "PDF로 저장"을 고르면 파일이 됩니다.</li>
+    <li>"링크 복사"로 동행에게 공유하고, "이미지로 저장"으로 요약 카드를 저장할 수 있습니다.</li>
+  </ol>`,
+  faq: [
+    { q: "일정이 서버에 저장되나요?", a: "아닙니다. 이 브라우저의 localStorage에만 저장되고, 공유 링크에는 일정 내용이 링크 자체에 인코딩되어 담깁니다. 서버에는 아무것도 남지 않습니다." },
+    { q: "링크가 너무 깁니다.", a: "일정 내용을 서버 없이 담기 위해 링크 안에 인코딩하기 때문입니다. 일정이 많을수록 길어집니다. 메신저로 보낼 때는 문제가 없습니다." },
+    { q: "PDF로 저장하려면?", a: "'인쇄 / PDF 저장' 버튼을 누른 뒤 인쇄 대화상자의 대상에서 'PDF로 저장'을 고르세요. 인쇄 레이아웃에서는 광고·버튼이 제외됩니다." },
+    { q: "지도나 예약 정보도 넣을 수 있나요?", a: "현재는 시각과 내용 텍스트만 지원합니다. 예약번호처럼 짧은 정보는 내용란에 함께 적어 두면 인쇄물에 같이 나옵니다. 여권번호 등 민감한 정보는 넣지 마세요." },
+  ],
+  disclaimer: DISC("여권번호·카드번호 등 민감한 개인정보는 입력하지 마세요. 공유 링크에 그대로 담깁니다."),
+  related: [T.pin, T.packing, T.budget],
+  script: `
+import { $, showAd, esc, copyText, store, download, readR, shareUrl, sharedCta, wireShare, toast, drawCard, saveCanvas } from "__U__assets/app.mjs";
+const S = store("tc-itin-v1");
+function pad(n) { return String(n).padStart(2, "0"); }
+const t0 = new Date();
+$("start").value = t0.getFullYear() + "-" + pad(t0.getMonth() + 1) + "-" + pad(t0.getDate());
+let evs = [];
+const shared = readR();
+const init = shared || S.load(null);
+if (init) { $("title").value = init.title || "여행"; $("start").value = init.start || $("start").value; $("days").value = init.days || 4; evs = init.evs || []; }
+if (shared) sharedCta($("ctaBox"), "나도 일정표 만들기");
+function fillDays() {
+  const n = Math.max(1, +$("days").value || 1);
+  $("dayNo").innerHTML = Array.from({ length: n }, (_, i) => "<option value=\\"" + (i + 1) + "\\">" + (i + 1) + "일차</option>").join("");
+}
+$("days").addEventListener("change", () => { fillDays(); render(); });
+fillDays();
+function stateOf() { return { title: $("title").value, start: $("start").value, days: +$("days").value || 1, evs }; }
+function dateOf(i) {
+  const [y, m, d] = $("start").value.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d + i));
+  const wd = ["일", "월", "화", "수", "목", "금", "토"][dt.getUTCDay()];
+  return (dt.getUTCMonth() + 1) + "/" + dt.getUTCDate() + " (" + wd + ")";
+}
+function render() {
+  const st = stateOf();
+  $("resultBox").hidden = false;
+  $("planTitle").textContent = st.title + " · " + st.days + "일 일정표";
+  let html = "";
+  for (let i = 0; i < st.days; i++) {
+    const list = evs.filter((e) => e.d === i + 1).sort((a, b) => a.t.localeCompare(b.t));
+    html += '<div class="d"><h3>' + (i + 1) + "일차 · " + dateOf(i) + "</h3>" +
+      (list.length ? list.map((e) => {
+        const idx = evs.indexOf(e);
+        return '<div class="ev"><span class="t">' + esc(e.t) + '</span><span>' + esc(e.w) + '</span><button class="x noprint" data-i="' + idx + '" type="button" aria-label="삭제">✕</button></div>';
+      }).join("") : '<p class="note" style="margin:0">아직 일정이 없습니다.</p>') + "</div>";
+  }
+  $("itin").innerHTML = html;
+  [...$("itin").querySelectorAll(".x")].forEach((b) => b.addEventListener("click", () => { evs.splice(+b.dataset.i, 1); S.save(stateOf()); render(); }));
+  S.save(st);
+}
+$("addBtn").addEventListener("click", () => {
+  const w = $("what").value.trim();
+  if (!w) { alert("일정 내용을 입력하세요."); return; }
+  evs.push({ d: +$("dayNo").value, t: $("at").value, w });
+  $("what").value = "";
+  render();
+  showAd();
+});
+function asText() {
+  const st = stateOf();
+  let s = st.title + " (" + st.days + "일)\\n";
+  for (let i = 0; i < st.days; i++) {
+    s += "\\n[" + (i + 1) + "일차 " + dateOf(i) + "]\\n";
+    const list = evs.filter((e) => e.d === i + 1).sort((a, b) => a.t.localeCompare(b.t));
+    s += list.length ? list.map((e) => "  " + e.t + "  " + e.w).join("\\n") + "\\n" : "  (일정 없음)\\n";
+  }
+  return s;
+}
+$("printBtn").addEventListener("click", () => window.print());
+$("textBtn").addEventListener("click", () => copyText(asText()));
+$("expBtn").addEventListener("click", () => download("itinerary.txt", asText()));
+$("clearBtn").addEventListener("click", () => { S.clear(); evs = []; render(); toast("저장 기록을 삭제했습니다"); });
+$("pngBtn").addEventListener("click", () => {
+  const st = stateOf();
+  const lines = [];
+  for (let i = 0; i < Math.min(st.days, 5); i++) {
+    const list = evs.filter((e) => e.d === i + 1).sort((a, b) => a.t.localeCompare(b.t));
+    lines.push("· " + (i + 1) + "일차 " + dateOf(i) + " — " + (list.length ? list.slice(0, 2).map((e) => e.t + " " + e.w).join(", ") : "자유"));
+  }
+  const cv = drawCard({ title: st.title, big: st.days + "일 일정", lines, slug: "itinerary" });
+  const box = $("cardCv");
+  box.hidden = false;
+  box.width = cv.width; box.height = cv.height;
+  box.getContext("2d").drawImage(cv, 0, 0);
+  saveCanvas(cv, "itinerary.png");
+});
+wireShare({
+  linkBtn: $("linkBtn"), textBtn: null, xBtn: null, shareBtn: $("shareBtn"),
+  getUrl: () => shareUrl(stateOf()),
+  getText: () => stateOf().title + " " + stateOf().days + "일 일정표",
+  title: "여행 일정표",
+});
+if (init) { render(); showAd(); }
+`,
+},
+];
+
+/* ── 롱테일 1: 통화쌍 페이지 ────────────────────────────────── */
+const PAIR_CUR = FX_CUR.filter((c) => c.code !== "KRW");
+const PAIRS = [];
+for (const c of PAIR_CUR) { PAIRS.push([c.code, "KRW"]); PAIRS.push(["KRW", c.code]); }
+
+function curInfo(code) {
+  return CUR_BY[code] || { nameKo: code, flag: "💱", countries: [] };
+}
+
+function pairPage([from, to]) {
+  const f = curInfo(from), t = curInfo(to);
+  const slug = `${from.toLowerCase()}-${to.toLowerCase()}`;
+  const fName = `${f.nameKo}(${from})`, tName = `${t.nameKo}(${to})`;
+  const cList = (from === "KRW" ? t : f).countries.slice(0, 4).join("·");
+  const sample = from === "KRW" ? [1000, 10000, 50000, 100000] : [1, 10, 100, 1000];
+  const isKrwOut = to === "KRW";
+  return {
+    path: `currency/${slug}/`, emoji: `${f.flag}${t.flag}`, ad: true,
+    title: `${fName} → ${tName} 환율 계산기 — ${sample[2].toLocaleString("ko-KR")}${from === "KRW" ? "원" : from}은 얼마?`,
+    ogTitle: `${from}/${to} 환율 계산기`,
+    desc: `${fName}를 ${tName}로 환산합니다. ${cList ? cList + " 여행·구매 시 " : ""}${sample.map((s) => s.toLocaleString("ko-KR")).join("·")} ${from} 단위 환산표를 함께 보여주며, 환율은 공개 API에서 불러와 24시간 캐시합니다. 참고용이며 은행 고시 환율이 아닙니다.`,
+    h1: `${from} → ${to} 환율`,
+    appName: `${from}/${to} 환율 계산기`,
+    lead: `${f.flag} <strong>${fName}</strong>를 ${t.flag} <strong>${tName}</strong>로 환산합니다. 열자마자 오늘 환율로 계산됩니다.`,
+    crumbs: [
+      { name: "환율 계산기", item: `${SITE_ORIGIN}/currency/`, rel: "currency/" },
+      { name: `${from}/${to}`, item: `${SITE_ORIGIN}/currency/${slug}/` },
+    ],
+    body: `
+  <section class="card" aria-label="입력">
+    <h2>${fName} 금액</h2>
+    <label class="f">금액 <span class="u">(${from})</span>
+      <input type="number" id="amt" inputmode="decimal" min="0" step="any" value="${sample[2]}" />
+    </label>
+    <button class="btn" id="goBtn" type="button">${to}로 환산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>환산 결과</h2>
+      <p class="big"><span class="num" id="out">-</span></p>
+      <div id="rateLines"></div>
+      <div id="quickTbl"></div>
+      <p class="note" id="fxStatus"></p>
+      <div class="share">
+        <button class="btn2" id="copyBtn" type="button">📋 결과 복사</button>
+        <a class="btn2" href="../">💱 다른 통화로 계산하기</a>
+        <a class="btn2" href="../${to.toLowerCase()}-${from.toLowerCase()}/">⇅ ${to} → ${from}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-label="다른 통화쌍">
+    <h2>다른 통화쌍</h2>
+    <div class="chips">
+      ${PAIR_CUR.filter((c) => c.code !== from && c.code !== to).slice(0, 10).map((c) =>
+        `<a class="chip" href="../${c.code.toLowerCase()}-krw/">${c.flag} ${c.code}→KRW</a>`).join("\n      ")}
+    </div>
+  </section>`,
+    intro: `<h2>${fName} 환율, 이 페이지만 열어 두면 됩니다</h2>
+    <p>${from === "KRW"
+      ? `원화를 ${tName}로 바꿀 때 얼마가 되는지 계산합니다. ${cList ? cList + " 여행을 준비하면서 " : ""}예산을 현지 통화 기준으로 잡을 때 유용합니다.`
+      : `${cList ? cList + " 등에서 쓰는 " : ""}${fName}를 원화로 환산합니다. 현지 가격표를 보고 "이게 우리 돈으로 얼마지?"를 바로 확인할 때 쓰세요.`}
+    페이지를 열면 자동으로 최신 기준환율을 불러오고, 네트워크가 안 되면 마지막으로 받아온 환율로 계산한 뒤 그 사실을 화면에 표시합니다.</p>
+    <p>표시되는 값은 <strong>기준환율</strong>입니다. 실제 은행·환전소·카드 결제에는 스프레드와 수수료가 붙기 때문에 ${isKrwOut ? "실제로 손에 쥐는 원화" : "실제 결제되는 금액"}은 이보다 불리합니다. 대략적인 감을 잡는 용도로 쓰세요.</p>`,
+    howto: `<h2>사용법</h2>
+    <ol>
+      <li>금액을 넣고 "${to}로 환산하기"를 누릅니다.</li>
+      <li>1 ${from} 기준 환율과 역환율(1 ${to} = ? ${from})이 함께 표시됩니다.</li>
+      <li>아래 단위별 표(${sample.map((s) => s.toLocaleString("ko-KR")).join(", ")} ${from})로 자릿수 감각을 잡을 수 있습니다.</li>
+    </ol>`,
+    faq: [
+      { q: `${from} 환율은 얼마나 자주 갱신되나요?`, a: "유럽중앙은행 기준환율을 제공하는 공개 API를 사용하며 영업일 기준으로 하루 한 번 갱신됩니다. 브라우저에는 24시간 캐시되고, 상단 계산기의 새로고침으로 즉시 다시 받아올 수 있습니다." },
+      { q: "은행에서 환전하면 이 금액을 받나요?", a: "아닙니다. 기준환율이며 실제 환전에는 스프레드와 수수료가 붙습니다. 참고용이며 은행 고시 환율이 아닙니다." },
+      { q: "인터넷이 안 되는 곳에서도 계산되나요?", a: "한 번이라도 이 사이트에서 환율을 받아온 적이 있으면 저장된 값으로 계산하고 '마지막으로 받아온 환율'이라고 표시합니다." },
+    ],
+    basis: FX_BOX,
+    related: [T.budget, T.split],
+    script: `
+import { $, showAd, esc, copyText } from "__U__assets/app.mjs";
+import { getRates, rateOf, fxFmt, fetchedLabel, FX_DISCLAIMER } from "__U__lib/fx.mjs";
+const FROM = "${from}", TO = "${to}";
+const UNITS = ${JSON.stringify(sample)};
+async function run() {
+  $("resultBox").hidden = false;
+  $("fxStatus").innerHTML = "환율을 불러오는 중…";
+  const st = await getRates(FROM);
+  const r = rateOf(st, FROM, TO);
+  $("fxStatus").innerHTML = st.ok
+    ? (st.stale ? "<strong>마지막으로 받아온 환율</strong>을 사용 중입니다. " + esc(st.message) + " " : "") +
+      "출처: " + esc(st.src || "저장된 값") + (st.date ? " · 기준일 " + esc(st.date) : "") + " · 받아온 시각 " + esc(fetchedLabel(st)) + "<br />" + FX_DISCLAIMER
+    : "⚠ " + esc(st.message);
+  if (r == null) { $("out").textContent = "-"; showAd(); return; }
+  const a = Number($("amt").value) || 0;
+  $("out").textContent = fxFmt(a * r, TO) + " " + TO;
+  $("rateLines").innerHTML =
+    '<div class="fxline"><span>1 ' + FROM + "</span><b>" + fxFmt(r, TO) + " " + TO + "</b></div>" +
+    '<div class="fxline"><span>1 ' + TO + "</span><b>" + fxFmt(1 / r, FROM) + " " + FROM + "</b></div>";
+  $("quickTbl").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>' + FROM + "</th><th>" + TO + "</th></tr></thead><tbody>" +
+    UNITS.map((u) => "<tr><td>" + u.toLocaleString("ko-KR") + "</td><td>" + fxFmt(u * r, TO) + "</td></tr>").join("") + "</tbody></table></div>";
+  showAd();
+}
+$("goBtn").addEventListener("click", run);
+$("copyBtn").addEventListener("click", () => copyText($("amt").value + " " + FROM + " = " + $("out").textContent + " (tripcalc-kr.vercel.app/currency/" + FROM.toLowerCase() + "-" + TO.toLowerCase() + ")"));
+run();
+`,
+  };
+}
+
+/* ── 롱테일 2: 국가별 카드 ──────────────────────────────────── */
+function countryPage(c) {
+  const plugs = c.voltage.plugs.join(", ");
+  const koPlug = KOREA.voltage.plugs;
+  const samePlug = c.voltage.plugs.some((p) => koPlug.includes(p));
+  const vNum = (String(c.voltage.value).match(/\d+/g) || ["220"]).map(Number);
+  const sameVolt = vNum.some((v) => Math.abs(v - 220) <= 20);
+  const verdict = samePlug && sameVolt ? "한국 플러그를 그대로 꽂을 수 있습니다" : sameVolt ? "전압은 비슷하지만 플러그 어댑터가 필요합니다" : "전압이 달라 기기 표기(100-240V 여부) 확인이 필요합니다";
+  return {
+    path: `country/${c.slug}/`, emoji: c.flag, ad: true,
+    title: `${c.nameKo} 여행 기본정보 — 전압 ${c.voltage.value}·플러그 ${plugs}형·시차·팁`,
+    ogTitle: `${c.nameKo} 전압·플러그·시차 정보`,
+    desc: `${c.nameKo} 여행에 필요한 전압(${c.voltage.value} ${c.voltage.freq})과 콘센트 플러그 ${plugs}형, 통화(${c.currency.code} ${c.currency.nameKo}), 한국과의 시차, 팁 관행을 한 장에 정리했습니다. 비자·입국요건은 외교부 해외안전여행에서 확인하세요.`,
+    h1: `${c.nameKo} 여행 기본정보`,
+    appName: `${c.nameKo} 여행 정보 카드`,
+    lead: `${c.flag} <strong>${c.nameKo}</strong>의 전압·플러그·시차·통화·팁 관행을 한 장에 정리했습니다.`,
+    crumbs: [
+      { name: "나라별 정보", item: `${SITE_ORIGIN}/country/`, rel: "country/" },
+      { name: c.nameKo, item: `${SITE_ORIGIN}/country/${c.slug}/` },
+    ],
+    body: `
+  <section class="card" aria-label="기본 정보">
+    <h2>${c.flag} ${c.nameKo} 한눈에</h2>
+    <dl class="kv">
+      <dt>전압 / 주파수</dt><dd>${c.voltage.value} / ${c.voltage.freq}</dd>
+      <dt>콘센트 플러그</dt><dd>${plugs}형</dd>
+      <dt>통화</dt><dd>${c.currency.code} · ${c.currency.nameKo}</dd>
+      <dt>표준시</dt><dd>${c.tz.zone} (UTC${c.tz.utcBase}${c.tz.dst ? ", 서머타임 시행" : ""})</dd>
+      <dt>팁 관행</dt><dd>${c.tip.pct ? c.tip.pct[0] + "~" + c.tip.pct[1] + "%" : "관행 없음"}</dd>
+    </dl>
+    ${c.tz.note ? `<p class="note">⏱ ${c.tz.note}</p>` : ""}
+    <button class="btn" id="goBtn" type="button">지금 현지 시각·시차 보기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>지금 ${c.nameKo}</h2>
+      <div id="clock"></div>
+      <p class="note" id="tzNote"></p>
+    </div>
+    <div class="card">
+      <h2>전기 기기 사용</h2>
+      <p class="big"><span class="num" style="font-size:20px">${verdict}</span></p>
+      <p class="note">한국은 ${KOREA.voltage.value} ${KOREA.voltage.freq}, ${koPlug.join("/")}형입니다. 휴대폰·노트북 충전기는 대부분 프리볼트(100-240V)라 플러그 어댑터만으로 충분하지만,
+      드라이어·고데기처럼 열을 내는 기기는 전압 표기를 반드시 확인하세요. 자세한 판정은 <a href="../../voltage/">전압·플러그 확인</a>에서 기기별로 볼 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h2>팁 관행</h2>
+      <p>${esc(c.tip.summary)}</p>
+      <p class="note">${esc(c.tip.note)} 계산은 <a href="../../tip-calc/">나라별 팁 계산기</a>에서.</p>
+    </div>
+  </section>
+
+  <section class="card" aria-label="관련 계산">
+    <h2>${c.nameKo} 여행에 쓰는 계산기</h2>
+    <div class="chips">
+      ${c.currency.apiSupported && FRANKFURTER_CODES.includes(c.currency.code)
+        ? `<a class="chip" href="../../currency/${c.currency.code.toLowerCase()}-krw/">💱 ${c.currency.code}→KRW 환율</a>`
+        : `<a class="chip" href="../../currency/">💱 환율 계산기</a>`}
+      <a class="chip" href="../../timezone/">🕐 시차 계산</a>
+      <a class="chip" href="../../voltage/">🔌 전압 확인</a>
+      <a class="chip" href="../../packing-list/">🎒 짐 목록</a>
+      <a class="chip" href="../../duty-free/">🛃 면세 한도</a>
+    </div>
+  </section>`,
+    intro: `<h2>${c.nameKo} 갈 때 미리 확인하면 좋은 것들</h2>
+    <p>${c.nameKo}의 전기는 <strong>${c.voltage.value} ${c.voltage.freq}</strong>이고 콘센트는 <strong>${plugs}형</strong>입니다. ${samePlug
+      ? "한국에서 쓰는 플러그와 모양이 호환되는 타입이 포함돼 있어 어댑터 없이 꽂히는 경우가 많습니다."
+      : "한국 플러그(C/F형)와 모양이 달라 플러그 어댑터가 필요합니다."} ${sameVolt
+      ? "전압도 한국과 비슷해 대부분의 기기를 그대로 쓸 수 있습니다."
+      : "전압이 한국과 달라, 100-240V 프리볼트 표기가 없는 기기는 사용을 피하는 것이 안전합니다."}</p>
+    <p>표준시는 <code>${c.tz.zone}</code>(UTC${c.tz.utcBase})입니다. ${c.tz.dst
+      ? "서머타임을 시행하므로 계절에 따라 한국과의 시차가 1시간 달라집니다."
+      : "서머타임을 시행하지 않아 연중 시차가 일정합니다."} 이 페이지의 "지금 현지 시각" 버튼은 시차표를 쓰지 않고 브라우저의 IANA 타임존 데이터로 계산하므로 항상 현재 기준으로 맞습니다.</p>
+    <p>통화는 <strong>${c.currency.code}(${c.currency.nameKo})</strong>입니다. ${c.currency.apiSupported
+      ? "환율은 공개 API로 조회할 수 있어 이 사이트의 환율 계산기에서 원화 환산이 가능합니다."
+      : "무료 공개 환율 API가 지원하지 않는 통화라 이 사이트에서는 환율을 표시하지 않습니다. 임의의 값을 넣는 대신 표시하지 않는 쪽을 택했습니다."}</p>`,
+    howto: `<h2>출발 전 체크리스트</h2>
+    <ul>
+      <li>충전기·어댑터에 <strong>100-240V</strong> 표기가 있는지 확인 (없으면 변압기 필요)</li>
+      <li>${plugs}형 플러그를 지원하는 멀티 어댑터 준비</li>
+      <li>${c.currency.code} 환전 또는 해외결제 카드 준비</li>
+      <li>한국과의 시차를 확인해 도착 첫날 일정 조정</li>
+      <li>비자·입국요건은 외교부 해외안전여행에서 최신 확인</li>
+    </ul>
+    ${VISA_BOX}`,
+    faq: [
+      { q: `${c.nameKo}에서 한국 충전기를 그대로 쓸 수 있나요?`, a: `${c.nameKo}는 ${c.voltage.value} ${c.voltage.freq}, ${plugs}형 콘센트를 사용합니다. ${verdict}. 휴대폰·노트북 충전기는 대부분 100-240V 프리볼트라 플러그 모양만 맞추면 되지만, 기기 본체의 전압 표기를 반드시 확인하세요.` },
+      { q: `${c.nameKo}와 한국의 시차는 얼마인가요?`, a: `${c.nameKo}의 표준시는 ${c.tz.zone}(UTC${c.tz.utcBase})입니다. ${c.tz.dst ? "서머타임을 시행하므로 시기에 따라 시차가 달라집니다. 이 페이지의 버튼을 누르면 현재 시각 기준으로 정확한 시차를 계산합니다." : "서머타임이 없어 한국(UTC+9)과의 시차가 연중 일정합니다."}` },
+      { q: `${c.nameKo}에서 팁을 줘야 하나요?`, a: c.tip.summary + " 이는 일반적인 관행 요약이며 정답이 아닙니다. 계산서의 봉사료 표기를 먼저 확인하세요." },
+      { q: `${c.nameKo} 비자가 필요한가요?`, a: "비자·입국요건은 국적·여권 종류·방문 목적에 따라 다르고 수시로 바뀌므로 이 사이트에서는 안내하지 않습니다. 외교부 해외안전여행(0404.go.kr)에서 반드시 최신 정보를 확인하세요." },
+    ],
+    basis: `<h2>데이터 출처와 확인일</h2>
+    <p class="note">전압·플러그: <a href="${c.voltage.source}" target="_blank" rel="noopener">IEC World Plugs</a> (확인일 ${c.voltage.checkedAt}) ·
+    타임존: <a href="${c.tz.source}" target="_blank" rel="noopener">IANA tzdb</a> (확인일 ${c.tz.checkedAt}) ·
+    통화 코드: <a href="${c.currency.source}" target="_blank" rel="noopener">ISO 4217</a> (확인일 ${c.currency.checkedAt}) ·
+    팁 관행: 일반 관행 요약(참고용, 확인일 ${c.tip.checkedAt}) ·
+    비자: <a href="${VISA_LINK}" target="_blank" rel="noopener">외교부 해외안전여행</a></p>`,
+    disclaimer: DISC("현지 사정·건물 연식에 따라 콘센트와 전압이 다를 수 있습니다."),
+    related: [T.pin, T.packing, T.budget],
+    script: `
+import { $, showAd, esc } from "__U__assets/app.mjs";
+import { offsetMinutes, offsetLabel, diffHours, diffLabel, localParts, isDst } from "__U__lib/tz.mjs";
+const TZ = "${c.tz.zone}", NAME = "${c.nameKo}";
+let timer = null;
+function tick() {
+  const now = new Date();
+  const p = localParts(TZ, now);
+  const d = diffHours("Asia/Seoul", TZ, now);
+  const k = localParts("Asia/Seoul", now);
+  $("clock").innerHTML = '<div class="clock"><div><div class="city">' + NAME + (isDst(TZ, now) ? ' <span class="badge ok">서머타임</span>' : "") +
+    '</div><div class="zone">' + TZ + " · UTC" + offsetLabel(offsetMinutes(TZ, now)) + '</div></div>' +
+    '<div><div class="time">' + String(p.h).padStart(2, "0") + ":" + String(p.mi).padStart(2, "0") + '</div><div class="day">' + p.m + "/" + p.d + " (" + p.wd + ")</div></div></div>" +
+    '<div class="clock"><div><div class="city">대한민국 서울</div><div class="zone">Asia/Seoul · UTC+09:00</div></div>' +
+    '<div><div class="time">' + String(k.h).padStart(2, "0") + ":" + String(k.mi).padStart(2, "0") + '</div><div class="day">' + k.m + "/" + k.d + " (" + k.wd + ")</div></div></div>";
+  $("tzNote").textContent = "한국 기준 " + diffLabel(d) + " — 시차는 IANA 타임존 데이터로 계산해 서머타임이 자동 반영됩니다.";
+}
+$("goBtn").addEventListener("click", () => {
+  $("resultBox").hidden = false;
+  tick();
+  if (!timer) timer = setInterval(tick, 1000);
+  showAd();
+});
+`,
+  };
+}
+
+function countryIndexPage() {
+  const rows = COUNTRIES.map((c) =>
+    `<tr><td><a href="${c.slug}/">${c.flag} ${esc(c.nameKo)}</a></td><td>${esc(c.voltage.value)}</td><td>${c.voltage.plugs.join(",")}형</td><td>${c.currency.code}</td><td class="mut">UTC${c.tz.utcBase}${c.tz.dst ? " (DST)" : ""}</td></tr>`).join("\n      ");
+  return {
+    path: "country/", emoji: "🌏", ad: false,
+    title: `나라별 여행 기본정보 ${COUNTRIES.length}개국 — 전압·플러그·시차·통화 한눈에`,
+    ogTitle: "나라별 전압·플러그·시차·통화",
+    desc: `${COUNTRIES.length}개국의 전압·콘센트 플러그 타입·통화·표준시를 표 하나로 비교합니다. 나라를 누르면 한국과의 시차, 기기 사용 가능 여부, 팁 관행까지 정리된 카드로 이동합니다.`,
+    h1: "나라별 여행 기본정보",
+    appName: "나라별 여행 정보",
+    lead: `${COUNTRIES.length}개국의 <strong>전압·플러그·통화·표준시</strong>를 한 표에서 비교하세요.`,
+    crumbs: [{ name: "나라별 정보", item: `${SITE_ORIGIN}/country/` }],
+    body: `
+  <section class="card">
+    <h2>전체 ${COUNTRIES.length}개국</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>나라</th><th>전압</th><th>플러그</th><th>통화</th><th>표준시</th></tr></thead>
+      <tbody>
+      ${rows}
+      </tbody>
+    </table></div>
+  </section>`,
+    intro: `<h2>여행 준비의 첫 세 가지: 전기, 시간, 돈</h2>
+    <p>목적지가 정해지면 가장 먼저 확인해야 할 것은 화려한 관광지가 아니라 <strong>전기·시간·돈</strong>입니다. 콘센트 모양을 모르면 첫날 밤 휴대폰이 꺼지고, 시차를 착각하면 첫 일정을 놓치며, 통화를 모르면 환전 계획을 세울 수 없습니다.</p>
+    <p>이 표는 그 세 가지를 한 화면에 모았습니다. 나라 이름을 누르면 한국과의 실시간 시차, 한국 기기 사용 가능 여부, 팁 관행까지 정리된 개별 페이지로 이동합니다.</p>`,
+    howto: `<h2>표 보는 법</h2>
+    <ul>
+      <li><strong>전압</strong> — 100~127V 계열은 한국(220V)과 다릅니다. 프리볼트가 아닌 기기는 사용 불가입니다.</li>
+      <li><strong>플러그</strong> — 한국은 C/F형입니다. 다른 문자가 적혀 있으면 어댑터가 필요합니다.</li>
+      <li><strong>표준시</strong> — UTC 기준 오프셋입니다. (DST)는 서머타임 시행국으로, 시기에 따라 한국과의 시차가 1시간 달라집니다.</li>
+    </ul>
+    ${VISA_BOX}`,
+    faq: [
+      { q: "한 나라 안에서 전압이 다를 수도 있나요?", a: "네. 브라질처럼 지역에 따라 127V와 220V를 함께 쓰는 나라가 있고, 오래된 건물과 새 건물의 콘센트가 다른 경우도 있습니다. 숙소 안내를 함께 확인하세요." },
+      { q: "표에 없는 나라는 어떻게 확인하나요?", a: "현재 55개국을 다루고 있습니다. 없는 나라는 IEC World Plugs와 IANA 타임존 데이터베이스에서 직접 확인할 수 있습니다." },
+      { q: "비자 정보는 왜 없나요?", a: "비자·입국요건은 국적과 방문 목적에 따라 다르고 수시로 바뀌어, 잘못된 정보가 곧바로 입국 거부로 이어질 수 있습니다. 그래서 이 사이트는 직접 기재하지 않고 외교부 해외안전여행 링크만 제공합니다." },
+    ],
+    basis: `<h2>데이터 출처</h2>
+    <p class="note">전압·플러그 <a href="https://www.iec.ch/world-plugs" target="_blank" rel="noopener">IEC World Plugs</a>,
+    타임존 <a href="https://www.iana.org/time-zones" target="_blank" rel="noopener">IANA tzdb</a>,
+    통화 코드 <a href="https://www.iso.org/iso-4217-currency-codes.html" target="_blank" rel="noopener">ISO 4217</a> 기준. 확인일 ${CHECKED_AT}.</p>`,
+    related: [T.pin, T.china],
+  };
+}
+
+/* ── 허브 · 정책 페이지 ─────────────────────────────────────── */
+function hubPage() {
+  const cards = TOOLS.map((t) => `<a class="tool" href="${t.slug}/"><div class="t-e">${t.emoji}</div><div class="t-n">${t.hubName}</div><div class="t-d">${t.hubDesc}</div></a>`).join("\n      ");
+  const icnJfk = Math.round(distanceBetween(findAirport("ICN"), findAirport("JFK")));
+  return {
+    path: "", emoji: "🧳", ad: false,
+    title: "해외여행 계산기 허브 — 환율·시차·짐·예산·면세 한도까지",
+    desc: `환율, 세계 시차, 국제 회의 시간, 짐 싸기 목록, 여행 예산과 N빵 정산, 나라별 팁, 전압·플러그, 시차적응, 면세 한도, 비행시간, 로밍 비교, 일정표까지 해외여행에 필요한 계산을 한곳에 모은 무료 도구 모음입니다. 설치 없이 브라우저에서 바로 씁니다.`,
+    h1: "해외여행 계산기",
+    appName: SITE_NAME,
+    lead: `환율·시차·짐·예산·면세 한도까지. <strong>설치 없이</strong> 브라우저에서 바로 계산하고, 계산 근거와 출처를 함께 보여줍니다.`,
+    crumbs: [],
+    body: `
+  <div class="tool-grid">
+      ${cards}
+      <a class="tool" href="country/"><div class="t-e">🌏</div><div class="t-n">나라별 여행 기본정보</div><div class="t-d">${COUNTRIES.length}개국의 전압·플러그·통화·표준시를 한 표로. 나라별 상세 카드 제공.</div></a>
+  </div>`,
+    intro: `<h2>여행 준비의 계산을 한곳에</h2>
+    <p>해외여행을 준비하다 보면 검색 탭이 열 개씩 열립니다. 환율 하나, 시차 하나, 콘센트 모양 하나, 면세 한도 하나. 이 사이트는 그 계산들을 한곳에 모으되, <strong>숫자만 던지지 않는 것</strong>을 원칙으로 만들었습니다. 어떤 기준으로 계산했는지, 출처가 어디인지, 언제 확인한 값인지를 화면에 함께 적습니다.</p>
+    <p>두 번째 원칙은 <strong>모르는 것은 지어내지 않는다</strong>입니다. 비자·입국요건은 국적과 목적에 따라 다르고 수시로 바뀌므로 이 사이트에서 직접 기재하지 않고 외교부 해외안전여행 링크만 제공합니다. 자진신고 감면 한도액처럼 개정 이력이 있는 값은 "확인 필요" 표시와 함께 직접 입력하도록 두었습니다. 무료 공개 환율 API가 지원하지 않는 통화는 임의의 값을 넣는 대신 아예 표시하지 않습니다.</p>
+    <p>세 번째 원칙은 <strong>입력값을 서버로 보내지 않는 것</strong>입니다. 모든 계산은 브라우저 안에서 이뤄집니다. 환율을 불러올 때만 공개 API에 요청하며, 그때도 이용자의 입력값은 전송되지 않습니다. 짐 목록·예산·일정표의 저장 기능은 이 브라우저의 localStorage만 사용하고, 전체 삭제 버튼을 항상 함께 둡니다.</p>`,
+    howto: `<h2>이런 질문에 답합니다</h2>
+    <ul>
+      <li>100달러는 지금 몇 원인가? 비행기 안에서도 계산할 수 있나?</li>
+      <li>서울·런던·뉴욕이 함께 회의할 수 있는 시간이 하루에 있기는 한가?</li>
+      <li>겨울 유럽 7일, 뭘 챙겨야 빠뜨리지 않을까?</li>
+      <li>2명 5일 도쿄 여행, 1인당 예산은 얼마이고 정산은 누가 누구에게?</li>
+      <li>이 나라에서 팁을 줘야 하나, 준다면 몇 퍼센트인가?</li>
+      <li>내 고데기를 가져가면 쓸 수 있나, 어댑터만 있으면 되나?</li>
+      <li>800달러를 넘게 샀는데 세금이 얼마나 나오나? 자진신고하면 얼마 줄어드나?</li>
+      <li>인천에서 뉴욕까지 ${icnJfk.toLocaleString("ko-KR")}km, 몇 시간 걸리고 현지 도착 시각은?</li>
+      <li>로밍이 나은가 유심이 나은가, 우리 일행 기준으로는?</li>
+      <li>일정표를 인쇄해서 들고 다니려면?</li>
+    </ul>`,
+    faq: [
+      { q: "회원가입이나 앱 설치가 필요한가요?", a: "필요 없습니다. 모든 도구는 브라우저에서 바로 동작하며 개인정보를 수집하지 않습니다." },
+      { q: "입력한 값이 서버에 저장되나요?", a: "아닙니다. 계산은 모두 브라우저 안에서 이뤄집니다. 저장 기능이 있는 도구는 이 브라우저의 localStorage만 사용하며 전체 삭제 버튼을 함께 제공합니다." },
+      { q: "환율은 어디서 가져오나요?", a: "키가 필요 없는 공개 API(Frankfurter, 유럽중앙은행 기준환율)를 브라우저에서 직접 호출하고 24시간 캐시합니다. 실패하면 보조 공개 엔드포인트를 시도하고, 그것도 안 되면 마지막으로 저장된 환율을 표시합니다. 참고용이며 은행 고시 환율이 아닙니다." },
+      { q: "비자 정보는 왜 없나요?", a: "비자·입국요건은 국적·여권 종류·방문 목적에 따라 다르고 수시로 바뀌어 잘못된 정보의 위험이 큽니다. 그래서 직접 기재하지 않고 외교부 해외안전여행(0404.go.kr) 링크만 제공합니다." },
+      { q: "계산 결과를 그대로 믿어도 되나요?", a: "참고용 추정치입니다. 특히 비행시간(대권거리 기반 추정), 면세 세액(대표 간이세율 적용), 팁 관행(일반 관행 요약)은 실제와 차이가 날 수 있습니다. 각 페이지에 근거와 한계를 적어 두었으니 함께 읽어 주세요." },
+    ],
+    basis: `${VISA_BOX}\n    ${FX_BOX}`,
+    disclaimer: DISC("특히 비자·입국요건, 세관 신고, 항공 규정은 공식 기관 안내를 우선하세요."),
+    related: [T.budget, T.packing, T.split, T.china, T.pin],
+  };
+}
+
+const POLICY = [
+  {
+    path: "privacy.html", emoji: "🔒", ad: false, app: false,
+    title: `개인정보처리방침 — ${SITE_NAME}`,
+    desc: "본 사이트는 개인정보를 수집하지 않습니다. 계산은 모두 브라우저에서 처리되며, 저장 기능은 localStorage만 사용합니다. 환율 조회 시 외부 공개 API 호출과 광고 쿠키에 대해 안내합니다.",
+    h1: "개인정보처리방침", lead: "입력값은 서버로 전송되지 않습니다.",
+    crumbs: [{ name: "개인정보처리방침", item: `${SITE_ORIGIN}/privacy.html` }],
+    body: `
+  <section class="about" style="margin-top:8px">
+    <h2>1. 수집하는 개인정보</h2>
+    <p>본 사이트는 회원가입 절차가 없으며 이름·연락처·이메일·여권번호·주민등록번호 등 개인을 식별할 수 있는 정보를 일절 수집하지 않습니다. 계산기에 입력하는 금액·날짜·도시 등의 값은 브라우저 안에서만 처리되며 운영자의 서버로 전송되거나 저장되지 않습니다(운영자는 별도의 서버를 두고 있지 않습니다).</p>
+    <h2>2. 브라우저 저장소(localStorage) 사용</h2>
+    <p>다음 기능은 이용자 편의를 위해 이 브라우저의 localStorage에 값을 저장합니다. 서버 전송은 없으며, 각 도구의 "저장 기록 전체 삭제" 버튼이나 브라우저 설정으로 언제든 삭제할 수 있습니다.</p>
+    <ul>
+      <li>화면 테마(밝은/어두운) 설정</li>
+      <li>짐 싸기 목록의 조건과 체크 상태</li>
+      <li>여행 예산 입력값(직접 "저장"을 누른 경우)</li>
+      <li>여행 일정표의 일정 내용</li>
+      <li>환율 계산기가 받아온 환율 값과 받아온 시각(24시간 캐시)</li>
+    </ul>
+    <h2>3. 외부 API 호출(환율)</h2>
+    <p>환율 계산 기능은 이용자의 브라우저에서 공개 환율 API(api.frankfurter.dev, 실패 시 open.er-api.com)에 직접 요청을 보냅니다. 이 요청에는 조회할 통화 코드만 포함되며 이용자가 입력한 금액이나 그 밖의 정보는 전송되지 않습니다. 다만 요청 과정에서 해당 서비스 제공자에게 접속 IP 등 통상적인 네트워크 정보가 전달될 수 있습니다.</p>
+    <h2>4. 쿠키와 광고</h2>
+    <p>본 사이트는 Google AdSense를 통해 광고를 게재합니다. Google을 포함한 제3자 광고 사업자는 쿠키를 사용하여 이용자의 이전 방문 기록을 바탕으로 광고를 게재할 수 있습니다. 이용자는 <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google 광고 설정</a>에서 맞춤 광고를 비활성화할 수 있으며, <a href="https://www.aboutads.info" target="_blank" rel="noopener">www.aboutads.info</a>에서 제3자 사업자의 쿠키 사용을 거부할 수 있습니다. 광고는 계산 결과가 표시된 이후 결과 하단에만 노출됩니다.</p>
+    <h2>5. 공유 링크에 담기는 정보</h2>
+    <p>짐 목록·예산·일정표의 "링크 복사" 기능은 입력 내용을 링크 주소 자체에 인코딩합니다. 서버에 저장되지는 않지만 <strong>링크를 받은 사람은 그 내용을 볼 수 있으므로</strong>, 여권번호·카드번호 등 민감한 정보는 입력하지 마시기 바랍니다.</p>
+    <h2>6. 접속 분석</h2>
+    <p>호스팅 사업자가 제공하는 기본적인 접속 통계(방문 수, 페이지 조회 수 등)가 집계될 수 있으며, 이는 개인을 식별하지 않는 형태입니다.</p>
+    <h2>7. 문의</h2>
+    <p>개인정보 관련 문의는 <a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a>을 통해 연락하실 수 있습니다.</p>
+    <p class="note">시행일: ${TODAY}</p>
+  </section>`,
+    about: false,
+  },
+  {
+    path: "terms.html", emoji: "📜", ad: false, app: false,
+    title: `이용약관 — ${SITE_NAME}`,
+    desc: "본 사이트가 제공하는 여행 계산 결과의 성격과 책임 범위, 데이터 출처와 저작권에 관한 안내입니다. 계산 결과는 참고용 추정치입니다.",
+    h1: "이용약관", lead: "계산 결과는 참고용 추정치입니다.",
+    crumbs: [{ name: "이용약관", item: `${SITE_ORIGIN}/terms.html` }],
+    body: `
+  <section class="about" style="margin-top:8px">
+    <h2>1. 서비스의 성격</h2>
+    <p>본 사이트는 해외여행에 필요한 계산(환율·시차·거리·예산·면세 한도 등)을 공개 데이터와 이용자가 입력한 값에 근거해 수행하는 무료 도구입니다. 모든 결과는 <strong>참고용 추정치</strong>이며 어떤 확정 정보도 보증하지 않습니다.</p>
+    <h2>2. 비자·입국요건에 관한 고지</h2>
+    <p>본 사이트는 비자 필요 여부, 체류 가능 기간, 전자여행허가 등 <strong>입국요건을 직접 안내하지 않습니다</strong>. 해당 정보는 국적·여권 종류·방문 목적에 따라 다르고 수시로 변경되므로, 반드시 <a href="${VISA_LINK}" target="_blank" rel="noopener">외교부 해외안전여행</a> 및 목적지 국가의 공식 기관에서 확인하시기 바랍니다.</p>
+    <h2>3. 환율 정보</h2>
+    <p>환율은 제3자가 제공하는 공개 API의 기준환율을 그대로 표시하며, 은행 고시 환율이 아닙니다. 실제 환전·결제 금액은 스프레드와 수수료에 따라 달라집니다. 환율 제공 서비스의 중단·오류로 인한 손해에 대해 운영자는 책임지지 않습니다.</p>
+    <h2>4. 면세·세관 관련 정보</h2>
+    <p>면세 한도와 세액 계산은 관세청이 공개한 여행자 휴대품 기준을 참고한 <strong>추정</strong>이며, 품목별 세율·과세환율·개별소비세 적용 여부에 따라 실제 세액은 달라집니다. 확정 세액은 관세청 또는 입국 세관에서 확인하시기 바랍니다.</p>
+    <h2>5. 비행시간·거리</h2>
+    <p>거리와 비행시간은 공항 좌표를 이용한 대권거리 기반 추정치입니다. 실제 항로·운항 시간과 다를 수 있으므로 항공사 시간표를 확인하시기 바랍니다.</p>
+    <h2>6. 책임의 한계</h2>
+    <p>이용자가 본 사이트의 결과에 근거해 내린 판단과 그 결과에 대해 운영자는 법적 책임을 지지 않습니다. 항공권 구매, 세관 신고, 예산 집행 등 중요한 결정은 반드시 공식 기관과 사업자의 안내로 확인하시기 바랍니다.</p>
+    <h2>7. 저작권</h2>
+    <p>본 사이트의 문서·계산 로직·디자인에 대한 권리는 운영자에게 있습니다. 인용한 공공 데이터 및 제3자 데이터의 권리는 각 제공 기관에 있습니다.</p>
+    <h2>8. 광고</h2>
+    <p>본 사이트는 Google AdSense 광고를 게재하며, 광고 내용에 대한 책임은 광고주에게 있습니다. 광고는 계산 결과가 표시된 이후 결과 하단에만 노출됩니다.</p>
+    <p class="note">시행일: ${TODAY}</p>
+  </section>`,
+    about: false,
+  },
+];
+
+/* ── 페이지 조립 ────────────────────────────────────────────── */
+const pages = [];
+pages.push(hubPage());
+for (const t of TOOLS) {
+  pages.push({
+    path: `${t.slug}/`, emoji: t.emoji, title: t.title, ogTitle: t.ogTitle, desc: t.desc,
+    h1: t.h1, appName: t.hubName, lead: t.lead,
+    crumbs: [{ name: t.nav, item: `${SITE_ORIGIN}/${t.slug}/` }],
+    body: t.body, intro: t.intro, howto: t.howto, faq: t.faq,
+    basis: t.basis, disclaimer: t.disclaimer || DISC(),
+    script: t.script,
+    related: t.related,
+  });
+}
+pages.push(countryIndexPage());
+for (const c of COUNTRIES) pages.push(countryPage(c));
+for (const p of PAIRS) pages.push(pairPage(p));
+for (const p of POLICY) pages.push(p);
+
+/* ── 쓰기 ───────────────────────────────────────────────────── */
+let written = 0;
+for (const p of pages) {
+  const file = join(ROOT, p.path === "" ? "index.html" : p.path.endsWith("/") ? p.path + "index.html" : p.path);
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, shell(p), "utf8");
+  written++;
+}
+
+/* sitemap */
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${pages.map((p) => {
+  const loc = SITE_ORIGIN + "/" + p.path;
+  const deep = p.path.split("/").filter(Boolean).length > 1;
+  const pr = p.path === "" ? "1.0" : p.path.endsWith(".html") ? "0.3" : deep ? "0.5" : "0.8";
+  return `  <url><loc>${loc}</loc><lastmod>${TODAY}</lastmod><changefreq>${p.path.startsWith("currency") ? "daily" : "monthly"}</changefreq><priority>${pr}</priority></url>`;
+}).join("\n")}
+</urlset>
+`;
+writeFileSync(join(ROOT, "sitemap.xml"), sitemap, "utf8");
+
+/* robots */
+writeFileSync(join(ROOT, "robots.txt"), `User-agent: *
+Allow: /
+
+Sitemap: ${SITE_ORIGIN}/sitemap.xml
+`, "utf8");
+
+/* 고아 디렉터리 경고 */
+const known = new Set(pages.filter((p) => p.path.endsWith("/") && p.path).map((p) => p.path.split("/")[0]));
+const RESERVED = new Set(["assets", "data", "lib", "tests", "node_modules"]);
+const orphans = readdirSync(ROOT).filter((n) => statSync(join(ROOT, n)).isDirectory() && !known.has(n) && !RESERVED.has(n));
+
+const nTool = TOOLS.length, nCountry = COUNTRIES.length, nPair = PAIRS.length;
+console.log(`생성 완료: HTML ${written}개 (허브 1 · 도구 ${nTool} · 국가 목록 1 · 국가 롱테일 ${nCountry} · 통화쌍 롱테일 ${nPair} · 정책 ${POLICY.length})`);
+console.log(`sitemap.xml: ${pages.length} URL · robots.txt · SITE_ORIGIN=${SITE_ORIGIN}`);
+if (orphans.length) console.log("⚠ 생성 대상이 아닌 폴더:", orphans.join(", "));
