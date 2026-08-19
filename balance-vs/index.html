@@ -1330,8 +1330,16 @@ bind("meToo", function () {
   $("inbound").className = "inbound";
   showScreen("scPick");
 });
-bind("modeSolo", function () { app.inA = null; startQuiz("solo", false); });
-bind("modeDuo", function () { app.inA = null; startQuiz("duo", false); });
+/* 혼자 하기 = 초대를 명시적으로 포기하는 선택이므로 inA 를 비운다.
+   친구와 하기 = 초대받은 상태(inA)면 그대로 유지해야 대결 결과가 나온다. */
+bind("modeSolo", function () {
+  if (app.inA) { app.inA = null; SK.clearState(); $("inbound").className = "inbound"; }
+  startQuiz("solo", false);
+});
+bind("modeDuo", function () {
+  if (app.inA) $("inbound").className = "inbound";   // 초대자 답은 유지, 배너만 접는다
+  startQuiz("duo", false);
+});
 
 /* ── 결과 카드 PNG ── */
 bind("saveBtn", function () {

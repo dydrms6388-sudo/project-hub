@@ -80,7 +80,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .eitem .esub{font-size:12.5px;color:#8b93a1;margin-top:2px}
 .eitem .amt{font-size:15px;font-weight:800;color:var(--acc2);font-variant-numeric:tabular-nums;white-space:nowrap}
 .iact{display:flex;gap:6px}
-.iact button{width:auto;padding:8px 10px;min-height:38px;font-size:12.5px;font-weight:700;background:#151b24;color:#9fb4cf;border:1px solid #2a3646;border-radius:9px}
+.iact button{width:auto;padding:8px 12px;min-height:44px;font-size:12.5px;font-weight:700;background:#151b24;color:#9fb4cf;border:1px solid #2a3646;border-radius:9px}
 .empty{font-size:13.5px;color:#6b7280;text-align:center;padding:18px 4px}
 .result{display:none}
 .tot{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--bd);padding-bottom:12px;margin-bottom:14px}
@@ -98,7 +98,8 @@ table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:
 th,td{padding:9px 6px;border-bottom:1px solid #202020;text-align:right}
 th:first-child,td:first-child{text-align:left}
 th{color:#8b93a1;font-size:12px;font-weight:700;border-bottom-color:#2c2c2c}
-tr.me td{background:rgba(96,165,250,.10);color:#dbeafe}
+tr.me td{background:rgba(96,165,250,.14);color:#dbeafe}
+tr.me td:first-child{box-shadow:inset 3px 0 0 var(--acc);font-weight:800}
 td.pos{color:#6ee7b7;font-weight:700}
 td.neg{color:#fca5a5;font-weight:700}
 .foot{font-size:12.5px;color:#6b7280;background:#121212;border:1px solid #222;border-radius:12px;padding:11px 13px;margin-top:12px}
@@ -168,7 +169,7 @@ footer a{color:var(--acc2);margin:0 6px;text-decoration:none}
     <button class="seg" data-mode="1">지정금액</button>
     <button class="seg" data-mode="2">비율</button>
   </div>
-  <div class="lb" style="margin-top:4px">참여자 <em><button class="mini ghost" id="exAll" style="min-height:34px;padding:6px 12px;font-size:12.5px">전체 선택 / 해제</button></em></div>
+  <div class="lb" style="margin-top:4px">참여자 <em><button class="mini ghost" id="exAll" style="min-height:44px;padding:8px 14px;font-size:12.5px">전체 선택 / 해제</button></em></div>
   <div class="chips" id="exPart"></div>
   <div id="exVals" style="margin-top:10px"></div>
   <p class="hint" id="exHint">참여자를 고른 뒤 금액을 균등하게 나눕니다.</p>
@@ -1144,7 +1145,8 @@ function exportCsv() {
     for (j = 0; j < rows[i].length; j++) line.push(csvCell(rows[i][j]));
     out.push(line.join(","));
   }
-  var text = "\\uFEFF" + out.join("\r\n");
+  /* 엑셀 한글 깨짐 방지용 UTF-8 BOM (U+FEFF) — 보이지 않는 문자 대신 charCode 로 명시 */
+  var text = String.fromCharCode(65279) + out.join("\r\n");
   try {
     var blob = new Blob([text], { type: "text/csv;charset=utf-8" });
     var url = URL.createObjectURL(blob);

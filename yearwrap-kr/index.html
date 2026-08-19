@@ -758,7 +758,6 @@ var APP = (function () {
   var TOP = 340, BOT = 1700, AREA = BOT - TOP;
   var FF_SANS = '-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif';
   var FF_SERIF = 'Georgia,"Times New Roman","Apple SD Gothic Neo","Noto Serif KR",serif';
-  var SLUG = "yearwrap-kr";
   var WM = "tomatoeggcat.com/yearwrap-kr";
 
   /* 문항별 최대 글자수 (a[] 인덱스와 동일) */
@@ -1298,7 +1297,7 @@ var APP = (function () {
   /* ---- 렌더 ---- */
   function ensureSlots(n) {
     var strip = $("strip");
-    if (strip.childNodes.length === n) return;
+    if (strip.childNodes.length === n && cvs.length >= n) return;
     while (strip.firstChild) strip.removeChild(strip.firstChild);
     for (var i = 0; i < n; i++) {
       if (!cvs[i]) cvs[i] = document.createElement("canvas");
