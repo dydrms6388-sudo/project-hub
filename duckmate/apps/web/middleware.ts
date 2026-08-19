@@ -12,9 +12,18 @@ const PUBLIC_FILES = new Set(["/sw.js", "/manifest.webmanifest"]);
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Supabase 미구성 환경(정적 페이지만 확인하는 E2E·프리뷰)에서는 세션 검사를 건너뛴다.
+  // 보호 라우트의 실제 인가는 레이아웃 가드(guards.ts)와 RLS 가 담당하므로 안전하다.
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return response;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
