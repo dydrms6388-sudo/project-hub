@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>랜덤 이름 생성기 — 한국 이름 만들기 (성별·시대 느낌 선택)</title>
+<meta name="description" content="한국 성씨 빈도표와 시대별 이름 음절표(70~00년대 느낌)를 조합해 자연스러운 한국 이름을 생성합니다. 소설 캐릭터, 시나리오, 더미 데이터용. 성별·시대·시드 옵션 지원.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"랜덤 이름 생성기","description":"한국 성씨 빈도표와 시대별 이름 음절표(70~00년대 느낌)를 조합해 자연스러운 한국 이름을 생성합니다. 소설 캐릭터, 시나리오, 더미 데이터용. 성별·시대·시드 옵션 지원.","url":"https://genlab-kr.vercel.app/tools/random-name/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"실존 인물 이름이 나올 수도 있나요?","acceptedAnswer":{"@type":"Answer","text":"흔한 성씨와 흔한 음절의 조합이므로 동명이인은 얼마든지 나올 수 있습니다. 이 도구는 특정 인물 데이터를 전혀 쓰지 않으며, 일치는 순전히 우연입니다. 실존 인물을 지칭하는 용도로 사용하지 마세요."}},{"@type":"Question","name":"성씨는 어떤 기준으로 나오나요?","acceptedAnswer":{"@type":"Answer","text":"통계청 인구주택총조사에 나타난 성씨 분포를 참고해 만든 근사 빈도표(60개 성씨)를 가중치로 사용합니다. 실제 인구 비율처럼 김·이·박·최·정 순으로 자주 등장합니다."}},{"@type":"Question","name":"시대별 느낌은 얼마나 정확한가요?","acceptedAnswer":{"@type":"Answer","text":"연대별로 흔했던 음절을 정리한 \"느낌\" 수준의 데이터입니다. 공식 통계의 인기 이름 순위표를 그대로 옮긴 것이 아니므로, 창작·더미 데이터 용도에 맞는 참고용으로 봐주세요."}},{"@type":"Question","name":"아기 이름 짓기에 써도 되나요?","acceptedAnswer":{"@type":"Answer","text":"아이디어를 얻는 용도로는 좋습니다. 다만 무작위 조합이므로 한자 의미·발음·항렬 같은 요소는 전혀 고려되지 않습니다. 실제 작명에는 참고용으로만 쓰세요."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GenLab 생성기 허브","item":"https://genlab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"랜덤 이름 생성기","item":"https://genlab-kr.vercel.app/tools/random-name/"}]}</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+  <a class="logo" href="../../"><span class="dot"></span>GenLab 생성기 허브</a>
+  <nav><a href="../../#tools">전체 도구</a><a href="../../guide/password-safety/">가이드</a></nav>
+</div></header>
+<main class="wrap">
+<p class="crumb"><a href="../../">홈</a> › 랜덤 이름 생성기</p>
+<h1>랜덤 이름 생성기</h1>
+<p class="lead">성씨 60개 빈도표 × 시대별 음절표로 "진짜 있을 법한" 한국 이름을 만듭니다. 소설·시나리오 속 인물, 서비스 테스트용 더미 데이터에 쓰세요.</p>
+<section class="card">
+  <div class="row">
+    <div><label>성별</label>
+      <div class="chips" id="genderChips">
+        <button data-v="m" class="on">남자</button>
+        <button data-v="f">여자</button>
+        <button data-v="any">랜덤</button>
+      </div></div>
+  </div>
+  <label>시대 느낌</label>
+  <div class="chips" id="eraChips">
+    <button data-v="70">70년대생</button>
+    <button data-v="80">80년대생</button>
+    <button data-v="90" class="on">90년대생</button>
+    <button data-v="00">00년대생</button>
+  </div>
+  <div class="row">
+    <div><label for="cnt">개수</label>
+      <select id="cnt"><option>5</option><option selected>10</option><option>20</option></select></div>
+    <div><label for="seed">시드 <span class="hint">(선택)</span></label>
+      <input type="text" id="seed" autocomplete="off" placeholder="같은 시드는 같은 결과"></div>
+  </div>
+  <div class="checks">
+    <label><input type="checkbox" id="single">가끔 외자 이름 섞기</label>
+    <label><input type="checkbox" id="roman">로마자 표기 같이 보기</label>
+  </div>
+  <div class="btn-row"><button id="btnGen" class="main">이름 생성</button><button id="btnCopyAll" class="btn-sub">전체 복사</button></div>
+  <div class="result"><ul class="result-list" id="list"></ul><p class="empty" id="emptyMsg">옵션을 고르고 생성 버튼을 누르세요.</p></div>
+  <p class="fun-note">무작위 조합 결과이며 특정 실존 인물과 무관합니다. 동명이인이 나올 수 있습니다.</p>
+</section>
+<!-- ad-slot -->
+<article class="content">
+<h2>랜덤 이름 생성기 소개</h2>
+<p>소설이나 시나리오의 등장인물, 서비스 화면에 넣을 더미 데이터, 보드게임 캐릭터 — 그럴듯한 한국 이름이 여러 개 필요한 순간은 생각보다 많습니다. 이 랜덤 이름 생성기는 두 가지 자체 데이터를 조합합니다. 하나는 통계청 인구주택총조사의 성씨 분포를 참고해 만든 <strong>성씨 60개 빈도표</strong>(김·이·박이 실제 비율대로 자주 나옵니다), 다른 하나는 연대별로 흔했던 이름 음절을 정리한 <strong>시대별 음절표</strong>입니다.</p>
+<p>시대 옵션은 "그 연대에 태어난 사람 이름 느낌"을 냅니다. 70년대생을 고르면 ○철·○숙 같은 조합이, 00년대생을 고르면 서연·도윤 같은 조합이 자주 나옵니다. 음절표는 특정 인물 목록이 아니라 흔히 쓰이는 음절의 조합이므로, 생성된 이름이 실존 인물과 같아도 우연의 일치입니다.</p>
+<p>시드를 입력하면 같은 옵션에서 항상 같은 목록이 나오므로, 팀원과 같은 더미 데이터를 공유하거나 문서에 재현 가능한 예시를 넣을 때 편리합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>성별과 시대 느낌을 선택합니다.</li>
+<li>필요한 개수를 정하고 생성 버튼을 누릅니다.</li>
+<li>"외자 이름 섞기"를 켜면 약 5~6개 중 1개꼴로 외자 이름(김준, 이솔 등)이 섞입니다.</li>
+<li>로마자 표기를 켜면 명단·자막용 영문 표기를 함께 보여줍니다.</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details><summary>실존 인물 이름이 나올 수도 있나요?</summary><div class="a"><p>흔한 성씨와 흔한 음절의 조합이므로 동명이인은 얼마든지 나올 수 있습니다. 이 도구는 특정 인물 데이터를 전혀 쓰지 않으며, 일치는 순전히 우연입니다. 실존 인물을 지칭하는 용도로 사용하지 마세요.</p></div></details>
+<details><summary>성씨는 어떤 기준으로 나오나요?</summary><div class="a"><p>통계청 인구주택총조사에 나타난 성씨 분포를 참고해 만든 근사 빈도표(60개 성씨)를 가중치로 사용합니다. 실제 인구 비율처럼 김·이·박·최·정 순으로 자주 등장합니다.</p></div></details>
+<details><summary>시대별 느낌은 얼마나 정확한가요?</summary><div class="a"><p>연대별로 흔했던 음절을 정리한 "느낌" 수준의 데이터입니다. 공식 통계의 인기 이름 순위표를 그대로 옮긴 것이 아니므로, 창작·더미 데이터 용도에 맞는 참고용으로 봐주세요.</p></div></details>
+<details><summary>아기 이름 짓기에 써도 되나요?</summary><div class="a"><p>아이디어를 얻는 용도로는 좋습니다. 다만 무작위 조합이므로 한자 의미·발음·항렬 같은 요소는 전혀 고려되지 않습니다. 실제 작명에는 참고용으로만 쓰세요.</p></div></details>
+</article>
+</main>
+<footer class="site-foot"><div class="wrap">
+  <div class="cols">
+    <div>
+      <h4>GenLab의 다른 생성기</h4>
+      <ul>
+        <li><a href="../../tools/password/">비밀번호 생성기</a></li>
+        <li><a href="../../tools/nickname/">닉네임 생성기</a></li>
+        <li><a href="../../tools/username/">아이디 생성기</a></li>
+        <li><a href="../../tools/random-name/" aria-current="page">랜덤 이름 생성기</a></li>
+        <li><a href="../../tools/team-name/">팀 이름 생성기</a></li>
+        <li><a href="../../tools/lorem-korean/">한글 로렘 입숨</a></li>
+        <li><a href="../../tools/uuid/">UUID 생성기</a></li>
+        <li><a href="../../tools/random-number/">난수 생성기</a></li>
+        <li><a href="../../tools/band-name/">가게 이름 생성기</a></li>
+        <li><a href="../../tools/hashtag/">해시태그 생성기</a></li>
+        <li><a href="../../tools/email-alias/">임시 이메일 아이디 아이디어</a></li>
+        <li><a href="../../tools/color-name/">색상 이름 생성기</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>안내</h4>
+      <ul style="columns:1">
+        <li><a href="../../guide/password-safety/">안전한 비밀번호 만들기 가이드</a></li>
+        <li><a href="../../privacy.html">개인정보처리방침</a></li>
+        <li><a href="../../terms.html">이용약관</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal">모든 생성·계산은 방문자의 브라우저 안에서만 실행되며 입력값은 서버로 전송되지 않습니다.<br>© 2026 GenLab 생성기 허브</div>
+</div></footer>
+<script src="../../assets/data/names.js"></script>
+<script src="../../assets/common.js"></script>
+<script>
+(function(){
+var $=G.$;
+var D=window.GENLAB_NAMES;
+var gender='m',era='90',current=[];
+/* 성씨 가중치 누적표 */
+var cum=[],total=0;
+D.SURNAMES.forEach(function(s){total+=s[1];cum.push([total,s[0]]);});
+function pickSurname(rng){
+  var x=rng()*total;
+  for(var i=0;i<cum.length;i++)if(x<cum[i][0])return cum[i][1];
+  return cum[cum.length-1][1];
+}
+function bindChips(id,cb){
+  $(id).addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    G.$$(id+' button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');cb(b.dataset.v);
+  });
+}
+bindChips('#genderChips',function(v){gender=v;});
+bindChips('#eraChips',function(v){era=v;});
+function genOne(rng){
+  var g=gender==='any'?(rng()<0.5?'m':'f'):gender;
+  var sur=pickSurname(rng);
+  var given;
+  if($('#single').checked&&rng()<0.18){
+    given=G.pick(rng,D.SINGLE[g]);
+  }else{
+    var syl=D.SYL[g+era];
+    var f=G.pick(rng,syl.f),l=G.pick(rng,syl.l),tries=0;
+    while(f===l&&tries<10){l=G.pick(rng,syl.l);tries++;}
+    given=f+l;
+  }
+  return{name:sur+given,g:g};
+}
+$('#btnGen').addEventListener('click',function(){
+  var rng=G.makeRng($('#seed').value);
+  var n=parseInt($('#cnt').value,10);
+  var seen={},out=[],tries=0;
+  while(out.length<n&&tries<400){
+    tries++;
+    var r=genOne(rng);
+    if(seen[r.name])continue;
+    seen[r.name]=1;out.push(r);
+  }
+  current=out.map(function(r){return r.name;});
+  var showR=$('#roman').checked;
+  var ul=$('#list');ul.innerHTML='';
+  out.forEach(function(r,i){
+    var rom='';
+    if(showR){
+      var s=G.romanize(r.name[0]),gv=G.romanize(r.name.slice(1));
+      rom='<span class="hint" style="display:block;font-size:.78rem;font-weight:400">'+G.esc(s.charAt(0).toUpperCase()+s.slice(1)+' '+gv.charAt(0).toUpperCase()+gv.slice(1))+'</span>';
+    }
+    var tag='<span class="hint" style="font-size:.75rem">'+(r.g==='m'?'남':'여')+'</span>';
+    var li=document.createElement('li');
+    li.innerHTML='<span class="val">'+G.esc(r.name)+rom+'</span>'+tag+'<button class="btn-sm btn-sub" data-i="'+i+'">복사</button>';
+    ul.appendChild(li);
+  });
+  $('#emptyMsg').style.display=out.length?'none':'';
+});
+$('#list').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  G.copy(current[parseInt(b.dataset.i,10)]);
+});
+$('#btnCopyAll').addEventListener('click',function(){
+  if(!current.length){G.toast('먼저 생성하세요');return;}
+  G.copy(current.join('\n'));
+});
+})();
+</script>
+</body>
+</html>

@@ -79,6 +79,7 @@ function ThumbEditor(mount, preset) {
   if (!restored && preset.starter) preset.starter(this);
   this._bgToUI(); this._syncMemeInputs();
   this._preloadFonts();
+  this.select(null);          // 초기 레이어/속성 패널 렌더 (템플릿 스타터 반영)
   this.pushHistory();
   this.render();
   if (restored) this.toast('이전 작업을 불러왔어요. 처음부터 시작하려면 [새로]를 누르세요.');
