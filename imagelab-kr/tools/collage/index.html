@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진 합치기 - 여러 장을 한 장으로 (콜라주)</title>
+<meta name="description" content="사진 합치기: 여러 장을 그리드·가로·세로로 배치해 한 장으로. 간격과 배경색 조절, 순서 변경. 서버 업로드 없는 무료 콜라주 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사진 합치기","description":"사진 합치기: 여러 장을 그리드·가로·세로로 배치해 한 장으로. 간격과 배경색 조절, 순서 변경. 서버 업로드 없는 무료 콜라주 도구.","url":"https://imagelab-kr.vercel.app/tools/collage/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"사진 비율이 달라도 되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 그리드는 정사각 칸에 중앙 기준으로 잘라 넣고, 가로 한 줄은 높이를, 세로 한 줄은 너비를 맞춰 비율을 유지한 채 배치합니다."}},{"@type":"Question","name":"몇 장까지 합칠 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"정해진 제한은 없지만 결과 이미지가 매우 커지면 기기 메모리에 따라 실패할 수 있습니다. 수십 장 이상이면 칸 크기를 300px로 낮추는 것을 권장합니다."}},{"@type":"Question","name":"결과물 크기는 어떻게 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"칸 크기(300/500/800px)와 사진 수, 간격에 따라 자동 계산되며 미리보기 아래에 최종 픽셀 크기가 표시됩니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"사진 합치기","item":"https://imagelab-kr.vercel.app/tools/collage/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 사진 합치기</nav>
+<h1>사진 합치기</h1>
+<p class="lead">여러 장을 그리드/가로/세로로 이어 붙여 한 장으로 만듭니다. 간격·배경색 조절 가능.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지 여러 장을 선택하거나 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 (여러 장 가능) · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*" multiple>
+</div>
+<ul class="flist" id="list"></ul>
+<div id="panel" style="display:none">
+<div class="field-row">
+  <label for="layout">배치</label>
+  <select id="layout" style="max-width:160px"><option value="grid">그리드</option><option value="h">가로 한 줄</option><option value="v">세로 한 줄</option></select>
+  <span id="colsRow"><label for="cols">열 수</label>
+  <select id="cols" style="max-width:110px"><option value="auto">자동</option><option>2</option><option>3</option><option>4</option></select></span>
+  <label for="cell">칸 크기</label>
+  <select id="cell" style="max-width:130px"><option value="300">300px</option><option value="500" selected>500px</option><option value="800">800px</option></select>
+</div>
+<div class="field"><label>간격 <span id="gapv">10px</span></label><input type="range" id="gap" min="0" max="60" value="10"></div>
+<div class="field-row"><label for="bg">배경색</label><input type="color" id="bg" value="#ffffff">
+<label><input type="checkbox" id="transparent"> 투명 배경 (PNG)</label></div>
+<p class="status" id="dim"></p>
+<div class="stage checker"><canvas id="pv"></canvas></div>
+<div class="btn-row"><button class="btn btn-primary" id="dlPng">PNG 저장</button><button class="btn" id="dlJpg">JPG 저장</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>사진 합치기 소개</h2>
+<p>사진 합치기 도구는 여러 장의 사진을 한 장으로 이어 붙입니다. 정사각 칸에 배치하는 그리드, 높이를 맞춰 옆으로 붙이는 가로 한 줄, 너비를 맞춰 아래로 붙이는 세로 한 줄 세 가지 배치를 지원합니다.</p>
+<p>사진 사이 간격(0~60px)과 배경색을 자유롭게 정할 수 있고, 투명 배경 PNG로도 저장됩니다. 목록의 화살표 버튼으로 순서를 바꿀 수 있으며, 그리드 배치에서는 각 사진이 칸에 맞게 중앙 기준으로 잘려 들어갑니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 여러 장 선택 (2장 이상)</li>
+<li>배치 방식·열 수·칸 크기·간격·배경색 설정</li>
+<li>목록에서 ↑↓로 순서 조정</li>
+<li>PNG 또는 JPG로 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>사진 비율이 달라도 되나요?</summary><p>네. 그리드는 정사각 칸에 중앙 기준으로 잘라 넣고, 가로 한 줄은 높이를, 세로 한 줄은 너비를 맞춰 비율을 유지한 채 배치합니다.</p></details>
+<details class="faq"><summary>몇 장까지 합칠 수 있나요?</summary><p>정해진 제한은 없지만 결과 이미지가 매우 커지면 기기 메모리에 따라 실패할 수 있습니다. 수십 장 이상이면 칸 크기를 300px로 낮추는 것을 권장합니다.</p></details>
+<details class="faq"><summary>결과물 크기는 어떻게 정해지나요?</summary><p>칸 크기(300/500/800px)와 사진 수, 간격에 따라 자동 계산되며 미리보기 아래에 최종 픽셀 크기가 표시됩니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var items = []; // {file, img}
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    for (var i = 0; i < fs.length; i++) {
+      items.push({ file: fs[i], img: await IL.loadImage(fs[i]) });
+    }
+    renderList(); render();
+  });
+
+  function renderList() {
+    var list = $('list'); list.innerHTML = '';
+    items.forEach(function (it, i) {
+      var li = document.createElement('li');
+      var img = new Image(); img.className = 'thumb'; img.src = URL.createObjectURL(it.file);
+      img.onload = function(){ URL.revokeObjectURL(img.src); };
+      var meta = document.createElement('div'); meta.className = 'meta';
+      meta.innerHTML = '<b></b>';
+      meta.querySelector('b').textContent = (i + 1) + '. ' + it.file.name;
+      var up = document.createElement('button'); up.className = 'btn btn-sm'; up.textContent = '↑';
+      var dn = document.createElement('button'); dn.className = 'btn btn-sm'; dn.textContent = '↓';
+      var del = document.createElement('button'); del.className = 'btn btn-sm'; del.textContent = '삭제';
+      up.onclick = function () { if (i > 0) { items.splice(i - 1, 0, items.splice(i, 1)[0]); renderList(); render(); } };
+      dn.onclick = function () { if (i < items.length - 1) { items.splice(i + 1, 0, items.splice(i, 1)[0]); renderList(); render(); } };
+      del.onclick = function () { items.splice(i, 1); renderList(); render(); };
+      li.appendChild(img); li.appendChild(meta); li.appendChild(up); li.appendChild(dn); li.appendChild(del);
+      list.appendChild(li);
+    });
+    $('panel').style.display = items.length ? '' : 'none';
+  }
+
+  ['layout', 'cols', 'cell'].forEach(function (id) { $(id).addEventListener('change', render); });
+  $('gap').addEventListener('input', function () { $('gapv').textContent = $('gap').value + 'px'; render(); });
+  $('bg').addEventListener('input', render);
+  $('transparent').addEventListener('change', render);
+  $('layout').addEventListener('change', function () {
+    $('colsRow').style.display = $('layout').value === 'grid' ? '' : 'none';
+  });
+
+  function render() {
+    if (!items.length) return;
+    var layout = $('layout').value;
+    var gap = parseInt($('gap').value, 10);
+    var cell = parseInt($('cell').value, 10); // 기준 크기
+    var n = items.length;
+    var c, ctx;
+
+    if (layout === 'grid') {
+      var cols = $('cols').value === 'auto' ? Math.ceil(Math.sqrt(n)) : parseInt($('cols').value, 10);
+      cols = Math.min(cols, n);
+      var rows = Math.ceil(n / cols);
+      c = IL.canvasOf(cols * cell + gap * (cols + 1), rows * cell + gap * (rows + 1));
+      ctx = prep(c);
+      items.forEach(function (it, i) {
+        var col = i % cols, row = (i / cols) | 0;
+        drawCover(ctx, it.img, gap + col * (cell + gap), gap + row * (cell + gap), cell, cell);
+      });
+    } else if (layout === 'h') {
+      /* 가로: 같은 높이(cell)로 스케일 */
+      var widths = items.map(function (it) { return IL.imgW(it.img) * cell / IL.imgH(it.img); });
+      var total = widths.reduce(function (a, b) { return a + b; }, 0) + gap * (n + 1);
+      c = IL.canvasOf(total, cell + gap * 2);
+      ctx = prep(c);
+      var x = gap;
+      items.forEach(function (it, i) {
+        ctx.drawImage(it.img, x, gap, widths[i], cell);
+        x += widths[i] + gap;
+      });
+    } else {
+      /* 세로: 같은 너비(cell) */
+      var heights = items.map(function (it) { return IL.imgH(it.img) * cell / IL.imgW(it.img); });
+      var totalH = heights.reduce(function (a, b) { return a + b; }, 0) + gap * (n + 1);
+      c = IL.canvasOf(cell + gap * 2, totalH);
+      ctx = prep(c);
+      var y = gap;
+      items.forEach(function (it, i) {
+        ctx.drawImage(it.img, gap, y, cell, heights[i]);
+        y += heights[i] + gap;
+      });
+    }
+    var pv = $('pv'); pv.width = c.width; pv.height = c.height;
+    pv.getContext('2d').drawImage(c, 0, 0);
+    $('dim').textContent = c.width + ' × ' + c.height + ' px';
+    render._canvas = c;
+  }
+
+  function prep(c) {
+    var ctx = c.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    if (!$('transparent').checked) {
+      ctx.fillStyle = $('bg').value;
+      ctx.fillRect(0, 0, c.width, c.height);
+    }
+    return ctx;
+  }
+  function drawCover(ctx, img, x, y, w, h) {
+    var s = Math.max(w / IL.imgW(img), h / IL.imgH(img));
+    var sw = w / s, sh = h / s;
+    ctx.drawImage(img, (IL.imgW(img) - sw) / 2, (IL.imgH(img) - sh) / 2, sw, sh, x, y, w, h);
+  }
+
+  $('dlPng').addEventListener('click', async function () {
+    if (!render._canvas) return;
+    IL.download(await IL.toBlob(render._canvas, 'image/png'), 'collage.png');
+  });
+  $('dlJpg').addEventListener('click', async function () {
+    if (!render._canvas) return;
+    var src = render._canvas;
+    var c = IL.canvasOf(src.width, src.height), ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(src, 0, 0);
+    IL.download(await IL.toBlob(c, 'image/jpeg', 0.92), 'collage.jpg');
+  });
+})();
+</script>
+</body>
+</html>

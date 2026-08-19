@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인스타 스토리 만들기 — 무료·로그인 없음 | 썸메이커</title>
+<meta name="description" content="인스타 스토리 만들기 무료 에디터. 1080×1920 세로 캔버스에 한글 폰트·이모지·그라데이션 배경으로 스토리 이미지를 만들고 저장하세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"인스타 스토리 만들기 — 썸메이커","applicationCategory":"DesignApplication","operatingSystem":"Web","description":"인스타 스토리 만들기 무료 에디터. 1080×1920 세로 캔버스에 한글 폰트·이모지·그라데이션 배경으로 스토리 이미지를 만들고 저장하세요.","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"인스타 스토리 크기는 몇인가요?","acceptedAnswer":{"@type":"Answer","text":"1080×1920픽셀, 비율 9:16이 표준입니다. 이 비율이 아니면 업로드 시 잘리거나 여백이 생길 수 있습니다."}},{"@type":"Question","name":"스토리 위아래가 잘려 보여요.","acceptedAnswer":{"@type":"Answer","text":"스토리 화면 상단(프로필 영역)과 하단(답장 입력 영역)은 UI에 가려집니다. 텍스트는 세로 중앙 부근에 배치하세요."}},{"@type":"Question","name":"릴스 표지로도 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네, 릴스 커버도 같은 9:16 비율을 사용합니다. 다만 피드에서는 중앙 정사각 영역만 미리보기로 잘려 보이므로 핵심 문구를 중앙에 두는 것이 좋습니다."}},{"@type":"Question","name":"움직이는 스토리도 만들 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 정지 이미지 전용입니다. 애니메이션 효과는 인스타그램 앱의 GIF·스티커 기능을 활용하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"썸메이커","item":"https://thumbmaker-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"인스타 스토리 만들기","item":"https://thumbmaker-kr.vercel.app/tools/story/"}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="logo" href="../../index.html">🎨 썸메이커<span class="dot">.</span><small style="font-weight:600;color:var(--sub)">thumbmaker-kr</small></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../../tools/youtube/index.html">유튜브</a>
+    <a href="../../tools/instagram/index.html">인스타</a>
+    <a href="../../tools/meme/index.html">짤</a>
+    <a href="../../index.html#tools">전체 도구</a>
+    <a href="../../guide/youtube-thumbnail-size/index.html">크기 가이드</a>
+    <a href="../../fonts.html">폰트</a>
+  </nav>
+</div></header>
+
+<main class="wrap-wide">
+  <nav aria-label="현재 위치" style="font-size:.8rem;color:var(--sub);margin-top:14px"><a href="../../index.html">홈</a> › 인스타 스토리 만들기</nav>
+  <h1>인스타 스토리 만들기</h1>
+  <p class="lead">스토리·릴스 표지 표준인 1080×1920(9:16) 세로 캔버스입니다.</p>
+  <div id="editor"></div>
+  <!-- ad-slot -->
+  <div class="wrap" style="padding:0">
+  <section class="content">
+    <h2>인스타 스토리 만들기 — 이 도구 소개</h2>
+    <p>인스타그램 스토리와 릴스 표지의 표준 크기는 <strong>1080×1920픽셀(9:16)</strong>입니다. 이 도구는 세로 캔버스에 배경 그라데이션·텍스트·이모지·도형을 얹어 굿나잇 인사, 공지, 카운트다운 배경, 릴스 커버 같은 세로형 이미지를 만드는 무료 에디터입니다.</p>
+<p>스토리는 화면 위아래 일부가 프로필·답장 UI에 가려질 수 있으므로, 중요한 문구는 캔버스 세로 중앙 60% 안쪽에 배치하는 것이 안전합니다. 드래그하면 중앙 스냅 가이드가 표시되어 정가운데 배치가 쉽습니다.</p>
+    
+    <h2>사용법</h2>
+    <ol>
+<li><b>🎨 템플릿</b>에서 세로형 디자인을 고르거나 <b>배경</b> 패널에서 그라데이션을 직접 만듭니다.</li>
+<li><b>T 텍스트</b>로 문구를 넣고 손글씨·임팩트 폰트를 골라 분위기를 정합니다.</li>
+<li>중요한 내용은 화면 가운데 쪽에 두고, 위아래 가장자리는 비워 둡니다.</li>
+<li>PNG로 저장한 뒤 인스타그램 스토리에 업로드합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+<details><summary>인스타 스토리 크기는 몇인가요?</summary><p>1080×1920픽셀, 비율 9:16이 표준입니다. 이 비율이 아니면 업로드 시 잘리거나 여백이 생길 수 있습니다.</p></details>
+<details><summary>스토리 위아래가 잘려 보여요.</summary><p>스토리 화면 상단(프로필 영역)과 하단(답장 입력 영역)은 UI에 가려집니다. 텍스트는 세로 중앙 부근에 배치하세요.</p></details>
+<details><summary>릴스 표지로도 쓸 수 있나요?</summary><p>네, 릴스 커버도 같은 9:16 비율을 사용합니다. 다만 피드에서는 중앙 정사각 영역만 미리보기로 잘려 보이므로 핵심 문구를 중앙에 두는 것이 좋습니다.</p></details>
+<details><summary>움직이는 스토리도 만들 수 있나요?</summary><p>이 도구는 정지 이미지 전용입니다. 애니메이션 효과는 인스타그램 앱의 GIF·스티커 기능을 활용하세요.</p></details>
+    </div>
+    <p class="notice">이 도구의 모든 처리(이미지 편집·저장)는 사용자의 브라우저 안에서만 이루어지며, 어떤 파일이나 개인정보도 서버로 전송되지 않습니다. 업로드하는 이미지·문구의 저작권과 초상권은 사용자 본인에게 책임이 있습니다.</p>
+  </section>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="cols">
+    <div><h4>만들기 도구</h4><ul>
+      <li><a href="../../tools/youtube/index.html">유튜브 썸네일 만들기</a></li>
+      <li><a href="../../tools/instagram/index.html">인스타 게시물 만들기</a></li>
+      <li><a href="../../tools/story/index.html">인스타 스토리 만들기</a></li>
+      <li><a href="../../tools/blog/index.html">블로그 대표 이미지 만들기</a></li>
+      <li><a href="../../tools/meme/index.html">짤 만들기</a></li>
+      <li><a href="../../tools/quote-card/index.html">명언 카드 만들기</a></li>
+      <li><a href="../../tools/og-image/index.html">OG 이미지 만들기</a></li>
+      <li><a href="../../tools/profile/index.html">프로필 사진 만들기</a></li>
+      <li><a href="../../tools/banner/index.html">유튜브 배너 만들기</a></li>
+      <li><a href="../../tools/kakao-cover/index.html">카톡 배경 만들기</a></li>
+      <li><a href="../../tools/text-image/index.html">글씨 이미지 만들기</a></li>
+      <li><a href="../../tools/sticker/index.html">스티커 만들기</a></li>
+    </ul></div>
+    <div><h4>안내</h4><ul>
+      <li><a href="../../guide/youtube-thumbnail-size/index.html">플랫폼별 썸네일 권장 크기</a></li>
+      <li><a href="../../guide/thumbnail-tips/index.html">클릭을 부르는 썸네일 팁</a></li>
+      <li><a href="../../fonts.html">제공 폰트 및 라이선스</a></li>
+      <li><a href="../../privacy.html">개인정보처리방침</a></li>
+      <li><a href="../../terms.html">이용약관</a></li>
+    </ul></div>
+    <div><h4>썸메이커</h4>
+      <p style="margin:0;max-width:320px">로그인 없이, 워터마크 없이 쓰는 한국어 썸네일·짤 에디터.
+      모든 작업은 브라우저 안에서만 처리되며 이미지가 서버로 전송되지 않습니다.</p></div>
+  </div>
+  <div class="copy">© <span data-year>2026</span> 썸메이커 (thumbmaker-kr) · 모든 도구 무료</div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/templates.js"></script>
+<script src="../../assets/editor.js"></script>
+<script>
+(function(){
+  var preset = {slug:'story',sizes:[{label:'1080×1920 (9:16)',w:1080,h:1920}],templateCats:['story','kakao-cover','instagram'],starterTpl:'story-neon'};
+  if (preset.starterTpl && window.TM_TEMPLATES) {
+    var tpl = window.TM_TEMPLATES.filter(function(t){return t.id===preset.starterTpl;})[0];
+    if (tpl) preset.starter = function(ed){ ed.state = ed._templateState(tpl); };
+  }
+  new ThumbEditor(document.getElementById('editor'), preset);
+})();
+</script>
+</body>
+</html>

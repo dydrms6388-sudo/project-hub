@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>명언 카드 만들기 — 무료·로그인 없음 | 썸메이커</title>
+<meta name="description" content="명언 카드 만들기 무료 에디터. 내가 쓴 문구·좌우명을 명조체·손글씨 폰트의 감성 카드로. 1080×1080 인스타 규격 지원.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"명언 카드 만들기 — 썸메이커","applicationCategory":"DesignApplication","operatingSystem":"Web","description":"명언 카드 만들기 무료 에디터. 내가 쓴 문구·좌우명을 명조체·손글씨 폰트의 감성 카드로. 1080×1080 인스타 규격 지원.","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"유명한 명언을 넣어도 되나요?","acceptedAnswer":{"@type":"Answer","text":"고전 격언처럼 저작권이 만료된 문구는 괜찮지만, 생존 작가의 시·책 문장·노래 가사는 저작권 보호 대상입니다. 직접 쓴 문구 사용을 권장하며, 입력한 문구에 대한 책임은 사용자에게 있습니다."}},{"@type":"Question","name":"긴 문장이 카드 밖으로 나가요.","acceptedAnswer":{"@type":"Answer","text":"Enter로 줄을 나누고, 텍스트 크기를 줄이거나 모서리 핸들로 축소하세요. 정사각 카드는 3~5줄이 가장 보기 좋습니다."}},{"@type":"Question","name":"손글씨 느낌 폰트가 있나요?","acceptedAnswer":{"@type":"Answer","text":"네, 나눔손글씨 펜 폰트가 내장되어 있습니다. 파스텔 손글씨 템플릿이 이 폰트를 사용합니다."}},{"@type":"Question","name":"카드 여러 장을 시리즈로 만들 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"저장(JSON)으로 디자인을 보관해 두고 열기로 불러와 문구만 바꾸면 같은 디자인의 시리즈 카드를 만들 수 있습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"썸메이커","item":"https://thumbmaker-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"명언 카드 만들기","item":"https://thumbmaker-kr.vercel.app/tools/quote-card/"}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="logo" href="../../index.html">🎨 썸메이커<span class="dot">.</span><small style="font-weight:600;color:var(--sub)">thumbmaker-kr</small></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../../tools/youtube/index.html">유튜브</a>
+    <a href="../../tools/instagram/index.html">인스타</a>
+    <a href="../../tools/meme/index.html">짤</a>
+    <a href="../../index.html#tools">전체 도구</a>
+    <a href="../../guide/youtube-thumbnail-size/index.html">크기 가이드</a>
+    <a href="../../fonts.html">폰트</a>
+  </nav>
+</div></header>
+
+<main class="wrap-wide">
+  <nav aria-label="현재 위치" style="font-size:.8rem;color:var(--sub);margin-top:14px"><a href="../../index.html">홈</a> › 명언 카드 만들기</nav>
+  <h1>명언 카드 만들기</h1>
+  <p class="lead">직접 쓴 문구·좌우명·오늘의 다짐을 감성 카드로 만들어 보세요. 문구는 입력한 그대로만 사용됩니다.</p>
+  <div id="editor"></div>
+  <!-- ad-slot -->
+  <div class="wrap" style="padding:0">
+  <section class="content">
+    <h2>명언 카드 만들기 — 이 도구 소개</h2>
+    <p>좋은 문장은 이미지로 만들었을 때 더 오래 남습니다. 이 도구는 <strong>직접 쓰거나 저작권이 없는 문구</strong>를 명조체·손글씨 등 감성 한글 폰트로 얹어 명언 카드·글귀 이미지로 만들어 주는 에디터입니다. 문구 데이터는 제공하지 않으며, 입력한 텍스트만 사용됩니다 — 시·가사 등 타인의 저작물은 허락 없이 사용하지 마세요.</p>
+<p>나눔명조의 클래식 스타일, 다크 미니멀, 파스텔 손글씨 세 가지 결의 템플릿이 준비되어 있습니다. 인스타그램 규격(1080×1080, 4:5)이라 만든 카드를 바로 피드에 올릴 수 있고, 줄간격 조절로 여러 줄 문구도 안정적으로 배치됩니다.</p>
+    
+    <h2>사용법</h2>
+    <ol>
+<li>템플릿에서 카드 분위기(명조/다크/파스텔)를 고릅니다.</li>
+<li>가운데 텍스트를 선택해 내 문구로 바꿉니다. 줄바꿈은 Enter로 입력하세요.</li>
+<li>요소 패널에서 줄간격(1.5~1.8 권장)과 크기를 다듬습니다.</li>
+<li>출처 표기가 필요하면 하단 작은 텍스트를 수정하고, PNG로 저장합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+<details><summary>유명한 명언을 넣어도 되나요?</summary><p>고전 격언처럼 저작권이 만료된 문구는 괜찮지만, 생존 작가의 시·책 문장·노래 가사는 저작권 보호 대상입니다. 직접 쓴 문구 사용을 권장하며, 입력한 문구에 대한 책임은 사용자에게 있습니다.</p></details>
+<details><summary>긴 문장이 카드 밖으로 나가요.</summary><p>Enter로 줄을 나누고, 텍스트 크기를 줄이거나 모서리 핸들로 축소하세요. 정사각 카드는 3~5줄이 가장 보기 좋습니다.</p></details>
+<details><summary>손글씨 느낌 폰트가 있나요?</summary><p>네, 나눔손글씨 펜 폰트가 내장되어 있습니다. 파스텔 손글씨 템플릿이 이 폰트를 사용합니다.</p></details>
+<details><summary>카드 여러 장을 시리즈로 만들 수 있나요?</summary><p>저장(JSON)으로 디자인을 보관해 두고 열기로 불러와 문구만 바꾸면 같은 디자인의 시리즈 카드를 만들 수 있습니다.</p></details>
+    </div>
+    <p class="notice">이 도구의 모든 처리(이미지 편집·저장)는 사용자의 브라우저 안에서만 이루어지며, 어떤 파일이나 개인정보도 서버로 전송되지 않습니다. 업로드하는 이미지·문구의 저작권과 초상권은 사용자 본인에게 책임이 있습니다.</p>
+  </section>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="cols">
+    <div><h4>만들기 도구</h4><ul>
+      <li><a href="../../tools/youtube/index.html">유튜브 썸네일 만들기</a></li>
+      <li><a href="../../tools/instagram/index.html">인스타 게시물 만들기</a></li>
+      <li><a href="../../tools/story/index.html">인스타 스토리 만들기</a></li>
+      <li><a href="../../tools/blog/index.html">블로그 대표 이미지 만들기</a></li>
+      <li><a href="../../tools/meme/index.html">짤 만들기</a></li>
+      <li><a href="../../tools/quote-card/index.html">명언 카드 만들기</a></li>
+      <li><a href="../../tools/og-image/index.html">OG 이미지 만들기</a></li>
+      <li><a href="../../tools/profile/index.html">프로필 사진 만들기</a></li>
+      <li><a href="../../tools/banner/index.html">유튜브 배너 만들기</a></li>
+      <li><a href="../../tools/kakao-cover/index.html">카톡 배경 만들기</a></li>
+      <li><a href="../../tools/text-image/index.html">글씨 이미지 만들기</a></li>
+      <li><a href="../../tools/sticker/index.html">스티커 만들기</a></li>
+    </ul></div>
+    <div><h4>안내</h4><ul>
+      <li><a href="../../guide/youtube-thumbnail-size/index.html">플랫폼별 썸네일 권장 크기</a></li>
+      <li><a href="../../guide/thumbnail-tips/index.html">클릭을 부르는 썸네일 팁</a></li>
+      <li><a href="../../fonts.html">제공 폰트 및 라이선스</a></li>
+      <li><a href="../../privacy.html">개인정보처리방침</a></li>
+      <li><a href="../../terms.html">이용약관</a></li>
+    </ul></div>
+    <div><h4>썸메이커</h4>
+      <p style="margin:0;max-width:320px">로그인 없이, 워터마크 없이 쓰는 한국어 썸네일·짤 에디터.
+      모든 작업은 브라우저 안에서만 처리되며 이미지가 서버로 전송되지 않습니다.</p></div>
+  </div>
+  <div class="copy">© <span data-year>2026</span> 썸메이커 (thumbmaker-kr) · 모든 도구 무료</div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/templates.js"></script>
+<script src="../../assets/editor.js"></script>
+<script>
+(function(){
+  var preset = {slug:'quote-card',sizes:[{label:'1080×1080 (정사각)',w:1080,h:1080},{label:'1080×1350 (4:5)',w:1080,h:1350}],templateCats:['quote-card'],starterTpl:'quote-serif'};
+  if (preset.starterTpl && window.TM_TEMPLATES) {
+    var tpl = window.TM_TEMPLATES.filter(function(t){return t.id===preset.starterTpl;})[0];
+    if (tpl) preset.starter = function(ed){ ed.state = ed._templateState(tpl); };
+  }
+  new ThumbEditor(document.getElementById('editor'), preset);
+})();
+</script>
+</body>
+</html>

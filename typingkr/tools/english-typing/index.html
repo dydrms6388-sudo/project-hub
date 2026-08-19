@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>영타 연습 - 영문 타자 연습 무료 | typingkr</title>
+<meta name="description" content="웹에서 바로 하는 영타 연습. 영문 낱말과 문장을 입력하며 타수(타/분)와 정확도를 실시간 확인하고 결과 카드를 이미지로 저장하세요. 설치·로그인 없음.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"영타 연습",
+"url":"https://typingkr.vercel.app/tools/english-typing/","applicationCategory":"EducationalApplication",
+"operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+"description":"영문 낱말·문장 타자 연습기. 실시간 타수와 정확도, 오타 하이라이트, 결과 카드 저장."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"typingkr","item":"https://typingkr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"영타 연습","item":"https://typingkr.vercel.app/tools/english-typing/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"영타의 타수는 어떻게 세나요?","acceptedAnswer":{"@type":"Answer","text":"영문은 글자 하나가 1타입니다. 올바르게 입력한 글자 수를 경과 시간으로 나눠 타/분을 계산합니다."}},
+{"@type":"Question","name":"대소문자도 구분하나요?","acceptedAnswer":{"@type":"Answer","text":"네. 대문자는 Shift와 함께 입력해야 하며, 대소문자가 다르면 오타로 판정됩니다."}},
+{"@type":"Question","name":"영타 평균 속도는 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"영문 기준 일반 사용자는 150~250타/분(30~50WPM) 수준이며, 300타/분(60WPM) 이상이면 빠른 편입니다."}}]}
+</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">타자연습<span class="dot">·</span>typingkr</a>
+  <span class="head-sp"></span>
+  <button id="soundBtn" class="iconbtn" type="button">🔇 소리 끔</button>
+  <button id="themeBtn" class="iconbtn" type="button" aria-label="다크/라이트 테마 전환">🌙</button>
+</div></header>
+
+<main class="wrap">
+  <h1>영타 연습</h1>
+  <p class="hint">한글 타자와 같은 엔진으로 영문을 연습합니다. 영문은 글자 1개 = 1타이며, WPM(단어/분)은 타수 ÷ 5로 환산해 함께 보여줍니다.</p>
+
+  <div class="mobile-note">📱 정확한 연습에는 <b>PC 키보드를 권장</b>합니다. 모바일에서는 낱말 모드만 제공됩니다.</div>
+
+  <div class="card">
+    <div class="chips" id="modeChips">
+      <button class="chip on" data-mode="word">낱말</button>
+      <button class="chip pc-only" data-mode="sent">문장</button>
+    </div>
+  </div>
+
+  <div class="statbar">
+    <div class="stat"><b id="stCpm">0</b><span>타/분</span></div>
+    <div class="stat"><b id="stWpm">0</b><span>WPM</span></div>
+    <div class="stat"><b id="stAcc" class="ok">100%</b><span>정확도</span></div>
+    <div class="stat"><b id="stItem">0/0</b><span>진행</span></div>
+  </div>
+  <div class="progress"><i id="pbar"></i></div>
+
+  <div id="playArea">
+    <div class="target" id="target" aria-live="polite"></div>
+    <textarea class="typebox" id="input" rows="2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Click here and type the text above"></textarea>
+    <p class="hint">영문 입력 상태(한/영 키)를 확인하세요. <span class="kbadge">Esc</span> = 현재 줄 다시 입력</p>
+  </div>
+
+  <div id="resultArea" class="card result-card" style="display:none">
+    <h2 style="margin-top:0">연습 완료! 🎉</h2>
+    <div id="cardBox"></div>
+    <div class="row" style="justify-content:center;margin-top:14px">
+      <button class="btn" id="saveBtn" type="button">결과 카드 PNG 저장</button>
+      <button class="btn ghost" id="againBtn" type="button">다시 연습</button>
+    </div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="prose">
+    <h2>영타 연습 소개</h2>
+    <p>영문 타자는 한글과 자판 배열 감각이 달라 따로 연습이 필요합니다. 이 연습기는 전승 영어
+    속담과 자체 작성 문장으로 구성한 데이터로 기본 낱말부터 문장까지 연습할 수 있게 했습니다.
+    "The quick brown fox jumps over the lazy dog"처럼 알파벳 26자를 모두 포함하는 팬그램도
+    들어 있어 자판 전체를 고르게 연습할 수 있습니다.</p>
+    <p>속도 단위는 한글과 같은 타/분과 함께, 영타에서 널리 쓰는 WPM(Words Per Minute,
+    타수 ÷ 5)을 같이 표시합니다. 이력서에 쓸 수 있는 수준은 보통 40WPM(200타/분) 이상입니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>낱말 모드로 손을 풀고 문장 모드로 넘어가세요.</li>
+      <li>키보드의 한/영 키로 영문 입력 상태인지 확인한 뒤 입력을 시작합니다.</li>
+      <li>대문자는 반대쪽 손의 Shift를 누르는 습관을 들이면 리듬이 끊기지 않습니다.</li>
+    </ol>
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      <details><summary>WPM과 타/분은 어떤 관계인가요?</summary><p>영타에서는 5타를 1단어로 보아 WPM = 타/분 ÷ 5 로 환산합니다. 예: 250타/분 = 50WPM.</p></details>
+      <details><summary>문장 부호도 채점하나요?</summary><p>네. 마침표, 쉼표, 아포스트로피까지 모두 1타로 채점합니다. 실전 문서 작성과 같은 조건입니다.</p></details>
+      <details><summary>한글 타자와 병행해도 되나요?</summary><p>물론입니다. 자판을 오가는 것 자체가 한/영 전환 감각을 길러 줍니다. 하루 10분씩 번갈아 연습해 보세요.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <nav>
+    <a href="../korean-typing/">한글 타자 연습</a>
+    <a href="../typing-test/">타자 속도 측정</a>
+    <a href="../keyboard-layout/">두벌식 자판</a>
+    <a href="../number-typing/">숫자 키패드</a>
+    <a href="../code-typing/">코딩 타자</a>
+    <a href="../kids-typing/">어린이 타자</a>
+    <a href="../custom-text/">내 글로 연습</a>
+    <a href="../../guide/typing-tips/">타자 팁 가이드</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© typingkr · tomatoeggcat.com</p>
+</div></footer>
+
+<script src="../../assets/hangul.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/engine.js"></script>
+<script src="../../assets/data/sentences/english.js"></script>
+<script>
+(function () {
+  'use strict';
+  var D = window.TKDATA;
+  var $ = function (id) { return document.getElementById(id); };
+  var mobile = TK.isMobile();
+
+  var mode = 'word';
+  var queue = [], idx = 0, total = 0;
+  var engine;
+
+  function buildQueue() {
+    if (mode === 'word') queue = TK.shuffle(D.engWords).slice(0, mobile ? 10 : 15);
+    else queue = TK.shuffle(D.engSentences).slice(0, 8);
+    total = queue.length; idx = 0;
+  }
+  function updateItem() {
+    $('stItem').textContent = Math.min(idx, total) + '/' + total;
+    $('pbar').style.width = (total ? Math.min(idx / total, 1) * 100 : 0) + '%';
+  }
+  function start() {
+    buildQueue();
+    engine.resetSession();
+    $('resultArea').style.display = 'none';
+    $('playArea').style.display = '';
+    updateItem();
+    engine.setText(queue[0]);
+  }
+  function finish() {
+    var s = engine.stats(0, 0, 0);
+    $('playArea').style.display = 'none';
+    var cv = TK.drawResultCard({
+      title: 'English Typing 결과',
+      sub: (mode === 'word' ? '낱말' : '문장') + ' · ' + total + '개 완료',
+      stats: [
+        { label: '타/분', value: s.cpm },
+        { label: 'WPM', value: Math.round(s.cpm / 5) },
+        { label: '정확도', value: s.acc + '%' }
+      ],
+      footer: s.cpm >= 250 ? 'Great speed! ⚡' : 'Keep practicing! 🌱'
+    });
+    var box = $('cardBox');
+    box.textContent = '';
+    box.appendChild(cv);
+    $('resultArea').style.display = '';
+    $('saveBtn').onclick = function () { TK.downloadCanvas(cv, 'typingkr-english.png'); };
+  }
+
+  engine = new TK.Engine({
+    targetEl: $('target'),
+    inputEl: $('input'),
+    onProgress: function (s) {
+      $('stCpm').textContent = s.cpm;
+      $('stWpm').textContent = Math.round(s.cpm / 5);
+      $('stAcc').textContent = s.acc + '%';
+      $('stAcc').classList.toggle('ok', s.acc >= 95);
+    },
+    onLineDone: function () {
+      TK.doneSound();
+      idx++; updateItem();
+      if (idx >= total) return finish();
+      engine.setText(queue[idx]);
+    },
+    onType: TK.clickSound,
+    onError: TK.errorSound
+  });
+
+  $('modeChips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    mode = b.getAttribute('data-mode');
+    var btns = $('modeChips').querySelectorAll('.chip');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i] === b);
+    start();
+  });
+  $('againBtn').addEventListener('click', start);
+  $('input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') e.preventDefault();
+  });
+
+  TK.bindSoundToggle('soundBtn');
+  start();
+})();
+</script>
+</body>
+</html>

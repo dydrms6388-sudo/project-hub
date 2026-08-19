@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>카톡 단어 통계 — 자주 쓴 단어·이모지 분석 | TalkStat</title>
+<meta name="description" content="카카오톡 대화에서 자주 쓴 단어와 이모지, ㅋㅋ/ㅎㅎ 웃음 횟수를 집계합니다. 불용어는 제외하고 브라우저 안에서만 분석 — 서버 전송 없음.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"카톡 단어 통계","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"카카오톡 대화의 자주 쓴 단어·이모지·웃음 횟수를 브라우저에서만 집계하는 무료 도구","url":"https://talkstat.vercel.app/tools/word-cloud/"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TalkStat","item":"https://talkstat.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"카톡 단어 통계","item":"https://talkstat.vercel.app/tools/word-cloud/"}]},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"어떤 단어가 집계에서 빠지나요?","acceptedAnswer":{"@type":"Answer","text":"'그리고', '근데', '진짜'처럼 의미 구분에 도움이 안 되는 흔한 불용어와 한 글자 단어, URL은 제외합니다. ㅋㅋ·ㅎㅎ 같은 웃음 표현은 단어 목록 대신 별도 카운터로 집계합니다."}},
+{"@type":"Question","name":"이모티콘과 이모지는 어떻게 다르게 세나요?","acceptedAnswer":{"@type":"Answer","text":"카카오톡 스티커형 이모티콘은 내보내기 파일에 '이모티콘'이라는 표시로만 남아 개수만 셀 수 있고, 😂 같은 텍스트 이모지는 문자별로 빈도를 집계합니다."}},
+{"@type":"Question","name":"대화 내용이 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 모든 집계는 브라우저 안의 Web Worker에서 실행되고 네트워크 전송이 없습니다. 새로고침하면 파일 내용은 사라집니다."}}]}
+]}
+</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../../">Talk<b>Stat</b></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../analyze/">대화 분석</a>
+    <a href="../reply-time/">답장 속도</a>
+    <a href="./" aria-current="page">단어 통계</a>
+    <a href="../../guide/how-to-export-kakaotalk/">내보내기 방법</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="privacy-banner" role="note">
+    <span class="ico" aria-hidden="true">🔒</span>
+    <span>대화 내용은 서버로 전송되지 않습니다 — 브라우저 안에서만 분석됩니다.</span>
+  </div>
+
+  <h1>카톡 단어 통계</h1>
+  <p class="lead">우리 대화방에서 가장 많이 나온 단어는? 자주 쓴 단어·이모지·ㅋㅋ/ㅎㅎ 웃음 횟수를 한 번에 집계합니다.</p>
+
+  <section class="card">
+    <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="대화 파일 선택 또는 끌어다 놓기">
+      <p style="margin:0"><strong>여기를 눌러 파일 선택</strong> 또는 파일을 끌어다 놓기</p>
+      <p class="file-note">카카오톡 내보내기 .txt / .csv · 형식 자동 감지</p>
+    </div>
+    <input type="file" id="fileInput" accept=".txt,.csv,text/plain,text/csv" class="hidden">
+    <p id="errBox" class="err hidden" role="alert"></p>
+    <p id="busyBox" class="note hidden">분석 중입니다…</p>
+  </section>
+
+  <section id="results" class="hidden" aria-live="polite">
+    <h2>단어 통계 결과</h2>
+    <div class="card">
+      <h3 style="margin-top:0">단어 구름 <span class="note">(자주 쓸수록 크게 · 불용어 제외)</span></h3>
+      <div class="word-chips" id="cloudBox"></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">자주 쓴 단어 TOP 20</h3>
+      <div class="chart-box" id="wordBox"></div>
+      <details class="tblview"><summary>표로 보기 — 단어 빈도</summary>
+        <div style="overflow-x:auto"><table class="data" id="wordTable"></table></div>
+      </details>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">웃음 집계 <span class="note">(단어 목록과 별도)</span></h3>
+      <div class="stat-grid" id="laughTiles"></div>
+      <h3>자주 쓴 이모지</h3>
+      <div class="emoji-row" id="emojiBox"></div>
+      <h3>참여자별 최애 단어</h3>
+      <div style="overflow-x:auto"><table class="data" id="userWordTable"></table></div>
+    </div>
+    <p class="note">답장 속도·히트맵까지 보려면 <a href="../analyze/">카톡 대화 분석</a>을 이용하세요.</p>
+    <!-- ad-slot -->
+  </section>
+
+  <article class="article">
+    <h2>단어 통계로 보는 우리 대화</h2>
+    <p>이 도구는 카카오톡 대화 내보내기 파일에서 텍스트 메시지만 골라 단어 빈도를 셉니다. '근데', '그냥'처럼 어느 대화에나 나오는 불용어와 한 글자 단어, 링크(URL)는 제외해서 대화방의 개성이 드러나는 단어가 위로 올라오게 했습니다.</p>
+    <p>한국어 채팅의 상징인 ㅋㅋ와 ㅎㅎ는 단어 목록에 섞으면 항상 1위를 차지하므로 별도 카운터로 분리해 참여자별로 집계합니다. 😂 같은 텍스트 이모지는 문자 단위로 빈도를 세고, 카카오톡 스티커형 이모티콘은 개수만 집계합니다.</p>
+    <p>다른 도구와 마찬가지로 파일은 서버로 전송되지 않고 브라우저 메모리에서만 처리됩니다. 집계는 Web Worker에서 실행되어 큰 파일도 화면 멈춤 없이 분석됩니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li><a href="../../guide/how-to-export-kakaotalk/">카카오톡 대화 내보내기 방법</a>대로 대화를 파일로 저장합니다.</li>
+      <li>파일을 업로드 영역에 올리면 단어 구름과 TOP 20 차트가 바로 표시됩니다.</li>
+      <li>참여자별 최애 단어 표에서 서로의 말버릇을 비교해 보세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>조사가 붙은 단어("밥을", "밥이")가 따로 집계돼요.</summary><p>이 도구는 형태소 분석기 없이 띄어쓰기 기준으로 단어를 세기 때문에 조사가 붙은 형태가 따로 잡힐 수 있습니다. 흔한 불용어는 제거하지만 완전한 형태소 분석은 하지 않으므로 결과는 근사치로 봐 주세요.</p></details>
+      <details><summary>특정 단어가 안 보여요.</summary><p>한 글자 단어와 불용어 목록에 포함된 흔한 단어는 제외됩니다. 또한 사진·이모티콘·삭제된 메시지 등 텍스트가 아닌 메시지는 단어 집계에 들어가지 않습니다.</p></details>
+      <details><summary>결과를 저장하거나 공유할 수 있나요?</summary><p>화면을 캡처해 공유할 수 있고, 전체 분석 도구에서는 사실 지표를 담은 리포트 카드를 PNG로 저장할 수 있습니다. 별도의 서버 저장 기능은 없으며 원하는 경우에도 브라우저 localStorage에만 저장됩니다.</p></details>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer"><div class="wrap">
+  <nav aria-label="사이트 링크">
+    <a href="../analyze/">카톡 대화 분석</a>
+    <a href="../reply-time/">카톡 답장 속도 분석</a>
+    <a href="./">카톡 단어 통계</a>
+    <a href="../../guide/how-to-export-kakaotalk/">카카오톡 대화 내보내기 방법</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© 2026 TalkStat · 모든 분석은 사용자의 브라우저 안에서만 실행됩니다.</p>
+</div></footer>
+
+<script src="../../assets/parsers.js"></script>
+<script src="../../assets/analyzer.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/charts.js"></script>
+<script>
+(function () {
+  'use strict';
+  var TS = window.TalkStat, TC = window.TalkCharts;
+  var $ = function (id) { return document.getElementById(id); };
+  TS.attachTooltips(document);
+
+  function showErr(m) { var e = $('errBox'); e.textContent = m; e.classList.remove('hidden'); }
+
+  TS.wireUpload({
+    zoneId: 'dropzone', inputId: 'fileInput', onError: showErr,
+    onText: function (text, hint) {
+      $('errBox').classList.add('hidden');
+      $('busyBox').classList.remove('hidden');
+      TS.runAnalysis(text, hint).then(function (data) {
+        $('busyBox').classList.add('hidden');
+        render(data.result);
+      }).catch(function (err) {
+        $('busyBox').classList.add('hidden');
+        showErr(err.message || String(err));
+      });
+    }
+  });
+
+  function tile(lb, vl, sb) {
+    return '<div class="stat-tile"><div class="lb">' + TS.esc(lb) + '</div><div class="vl">' + vl + '</div>' +
+      (sb ? '<div class="sb">' + TS.esc(sb) + '</div>' : '') + '</div>';
+  }
+
+  function render(r) {
+    $('results').classList.remove('hidden');
+
+    // 단어 구름: 빈도에 비례한 글자 크기 칩 (0.9rem ~ 2rem)
+    var words = r.topWords;
+    if (words.length) {
+      var max = words[0].count, min = words[words.length - 1].count;
+      $('cloudBox').innerHTML = words.slice(0, 30).map(function (w) {
+        var ratio = max === min ? 1 : (w.count - min) / (max - min);
+        var size = (0.9 + ratio * 1.1).toFixed(2);
+        return '<span class="word-chip" style="font-size:' + size + 'rem" data-tip="' +
+          TS.esc(w.key + ' · ' + TS.fmtInt(w.count) + '회') + '">' + TS.esc(w.key) + '</span>';
+      }).join('');
+      $('wordBox').innerHTML = TC.wordBars(words, { limit: 20 });
+      var th = '<thead><tr><th>단어</th><th>횟수</th></tr></thead>';
+      $('wordTable').innerHTML = th + '<tbody>' + words.slice(0, 40).map(function (w) {
+        return '<tr><td>' + TS.esc(w.key) + '</td><td>' + TS.fmtInt(w.count) + '</td></tr>';
+      }).join('') + '</tbody>';
+    } else {
+      $('cloudBox').innerHTML = '<p class="note">집계할 단어가 없습니다.</p>';
+      $('wordBox').innerHTML = '';
+      $('wordTable').innerHTML = '';
+    }
+
+    $('laughTiles').innerHTML =
+      tile('ㅋㅋ (웃음)', TS.fmtInt(r.totals.laughK) + '<span style="font-size:.9rem">회</span>',
+        r.perUser.map(function (u) { return u.name + ' ' + TS.fmtInt(u.laughK); }).slice(0, 3).join(' · ')) +
+      tile('ㅎㅎ', TS.fmtInt(r.totals.laughH) + '<span style="font-size:.9rem">회</span>',
+        r.perUser.map(function (u) { return u.name + ' ' + TS.fmtInt(u.laughH); }).slice(0, 3).join(' · ')) +
+      tile('이모티콘', TS.fmtInt(r.perUser.reduce(function (s, u) { return s + u.emoticons; }, 0)) + '<span style="font-size:.9rem">개</span>', '스티커형') +
+      tile('텍스트 이모지', TS.fmtInt(r.perUser.reduce(function (s, u) { return s + u.emojis; }, 0)) + '<span style="font-size:.9rem">개</span>', '😀 등 문자');
+
+    $('emojiBox').innerHTML = r.topEmojis.length
+      ? r.topEmojis.slice(0, 15).map(function (e) {
+          return '<span class="em">' + TS.esc(e.key) + '<small>' + TS.fmtInt(e.count) + '</small></span>';
+        }).join('')
+      : '<p class="note">이모지가 없습니다.</p>';
+
+    var users = r.perUser.slice().sort(function (a, b) { return b.messages - a.messages; }).slice(0, 8);
+    var uh = '<thead><tr><th>참여자</th><th style="text-align:left">자주 쓴 단어 TOP 5</th></tr></thead>';
+    $('userWordTable').innerHTML = uh + '<tbody>' + users.map(function (u) {
+      var tops = u.topWords.slice(0, 5).map(function (w) { return TS.esc(w.key) + ' (' + TS.fmtInt(w.count) + ')'; }).join(', ');
+      return '<tr><td>' + TS.esc(u.name) + '</td><td style="text-align:left">' + (tops || '—') + '</td></tr>';
+    }).join('') + '</tbody>';
+
+    $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}());
+</script>
+</body>
+</html>
