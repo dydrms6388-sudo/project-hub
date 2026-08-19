@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내신 등급 계산기 - 9등급제 · 5등급제(2025 고1부터) 석차 백분율 계산 | 스터디룸</title>
+<meta name="description" content="내신 등급 계산기. 석차와 재적수를 입력하면 석차 백분율과 9등급제·5등급제 등급을 계산합니다. 등급별 인원수 표, 2025년 고1부터 적용되는 5등급제 안내 포함.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a><a href="../timetable/">시간표</a><a href="../class-time/">수업 시간</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 내신 등급 계산기</nav>
+<div class="page-h">
+  <h1>내신 등급 계산기</h1>
+  <p>석차와 재적수로 석차 백분율과 내신 등급(9등급제·5등급제)을 계산합니다.</p>
+</div>
+
+<section class="card">
+  <div class="seg" id="sysSeg">
+    <button data-s="9" class="on">9등급제</button>
+    <button data-s="5">5등급제 (2025 고1~)</button>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="field"><label class="f">내 석차 (동석차면 중간석차)</label><input type="number" id="fRank" min="1" placeholder="예: 27"></div>
+    <div class="field"><label class="f">과목 재적수 (수강자 수)</label><input type="number" id="fTotal" min="1" placeholder="예: 240"></div>
+  </div>
+  <button class="btn btn-p" id="btnCalc">등급 계산</button>
+  <div class="result-box" id="out" style="display:none"></div>
+  <p class="note">동석차가 있으면 학교생활기록부 기준(중간석차 백분율)에 따라 값이 달라질 수 있습니다.
+  정확한 등급은 학교에서 통지하는 성적표를 기준으로 확인하세요.</p>
+  <!-- ad-slot -->
+</section>
+
+<section class="card">
+  <h2>등급별 인원 기준표</h2>
+  <div class="field"><label class="f">재적수 기준 등급별 인원 보기 (선택)</label>
+    <input type="number" id="fT2" min="1" placeholder="재적수 입력 (예: 240)"></div>
+  <div class="tbl-scroll" id="tableArea"></div>
+</section>
+
+<article class="prose">
+  <h2>내신 등급은 이렇게 계산됩니다</h2>
+  <p>고등학교 내신 등급은 과목별 <b>석차 백분율(석차 ÷ 재적수 × 100)</b>을 정해진 비율 구간에 대응시켜
+  산출하는 상대평가 방식입니다. 기존 9등급제는 상위 4%까지 1등급, 11%까지 2등급으로 이어지는 누적 비율을
+  사용하며, 2025년 고등학교 1학년부터 적용되는 개편안(2028 대입 개편)에서는 5등급제(1등급 10%, 2등급 누적
+  34%, 3등급 누적 66%…)로 바뀌었습니다.</p>
+  <p>이 계산기는 석차와 재적수만 입력하면 석차 백분율과 등급을 바로 계산하고, 재적수를 기준으로 각 등급에
+  몇 명까지 들어가는지도 표로 보여 줍니다. 등급 비율은 교육부 학교생활기록 작성 지침에 따른 일반적인 기준을
+  사용하며, 학교별 동석차 처리 방식에 따라 실제 산출과 차이가 날 수 있습니다. <b>참고용이며 정확한 내용은
+  학교·교육청 등 공식 기관 안내를 확인하세요.</b></p>
+  <h3>사용법</h3>
+  <ol>
+    <li>9등급제(현 고2·고3) 또는 5등급제(2025년 고1부터)를 선택합니다.</li>
+    <li>과목 석차와 그 과목 수강자 수(재적수)를 입력합니다.</li>
+    <li>등급 계산을 누르면 석차 백분율과 등급, 다음 등급까지 필요한 석차가 표시됩니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>동석차(공동 석차)면 어떻게 입력하나요?</summary>
+      <div class="a">학생부 기준으로는 중간석차를 사용합니다. 예를 들어 5등이 3명이면 중간석차는 5+(3−1)/2 =
+      6등입니다. 이 값을 석차 칸에 입력하면 학교 산출 방식과 가장 가깝습니다.</div></details>
+    <details><summary>5등급제는 언제부터 적용되나요?</summary>
+      <div class="a">교육부 2028 대입 개편안에 따라 2025년 고등학교 신입생(2028학년도 대입 응시)부터 내신이
+      5등급 체계로 바뀌었습니다. 현 고2·고3은 기존 9등급제가 그대로 적용됩니다.</div></details>
+    <details><summary>백분율이 등급 경계에 딱 걸치면 어느 등급인가요?</summary>
+      <div class="a">누적 비율 "이하"까지 해당 등급입니다. 예를 들어 9등급제에서 석차 백분율이 정확히 4.00%면
+      1등급입니다. 이 계산기도 같은 기준(경계값 포함)으로 계산합니다.</div></details>
+    <details><summary>전 과목 평균 등급도 계산할 수 있나요?</summary>
+      <div class="a">평균 등급은 보통 (과목 등급 × 단위수)의 합 ÷ 총 단위수로 계산합니다. 이 페이지는 과목별
+      등급 산출용이며, 단위수 가중 평균은 성적표의 단위수를 곱해 직접 합산하면 됩니다.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"내신 등급 계산기","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"석차 백분율 기반 9등급제·5등급제 내신 등급 계산기"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"동석차면 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"학생부 기준 중간석차(동석차 시작 석차 + (동석차 인원-1)/2)를 입력하면 학교 산출 방식과 가장 가깝습니다."}},
+{"@type":"Question","name":"5등급제는 언제부터인가요?","acceptedAnswer":{"@type":"Answer","text":"2028 대입 개편에 따라 2025년 고등학교 신입생부터 5등급제가 적용됩니다."}},
+{"@type":"Question","name":"등급 경계값은 어느 등급인가요?","acceptedAnswer":{"@type":"Answer","text":"누적 비율 이하까지 해당 등급으로, 경계값을 포함해 계산합니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"내신 등급 계산기","item":"https://studyroom-kr.vercel.app/tools/grade-calc/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+var CUM9=[4,11,23,40,60,77,89,96,100];
+var CUM5=[10,34,66,90,100];
+var sys='9';
+function cums(){ return sys==='9'?CUM9:CUM5; }
+
+document.querySelectorAll('#sysSeg button').forEach(function(b){
+  b.addEventListener('click',function(){
+    sys=this.dataset.s;
+    document.querySelectorAll('#sysSeg button').forEach(function(x){x.classList.toggle('on',x===b)});
+    renderTable();
+    if($('out').style.display!=='none') calc();
+  });
+});
+function gradeOf(pct){
+  var c=cums();
+  for(var i=0;i<c.length;i++) if(pct<=c[i]) return i+1;
+  return c.length;
+}
+function calc(){
+  var r=parseFloat($('fRank').value), t=parseFloat($('fTotal').value);
+  if(!r||!t||r<1||t<1){ SR.toast('석차와 재적수를 입력하세요'); return; }
+  if(r>t){ SR.toast('석차가 재적수보다 클 수 없습니다'); return; }
+  var pct=r/t*100;
+  var g=gradeOf(pct);
+  var c=cums();
+  var html='석차 백분율 <span class="big-num">'+ (Math.round(pct*100)/100) +'%</span>'
+    +' → <span class="big-num">'+g+'등급</span>';
+  if(g>1){
+    var upCum=c[g-2];
+    var upRank=Math.floor(t*upCum/100);
+    html+='<p style="margin:10px 0 0;font-size:14px">'+(g-1)+'등급이 되려면 <b>'+upRank+'등 이내</b>(상위 '+upCum+'%)에 들어야 합니다.'
+      +' 현재보다 <b>'+(r-upRank)+'계단</b> 위입니다.</p>';
+  }else{
+    html+='<p style="margin:10px 0 0;font-size:14px;color:var(--ok)"><b>최고 등급입니다! 🎉</b></p>';
+  }
+  html+='<p style="margin:6px 0 0;font-size:13px;color:var(--sub)">'+sys+'등급제 · 재적 '+t+'명 중 '+r+'등 기준</p>';
+  $('out').innerHTML=html; $('out').style.display='block';
+  $('fT2').value=t; renderTable();
+}
+$('btnCalc').onclick=calc;
+function renderTable(){
+  var t=parseFloat($('fT2').value)||null;
+  var c=cums();
+  var h='<table class="tbl"><thead><tr><th>등급</th><th>비율</th><th>누적 비율</th>'+(t?'<th>재적 '+t+'명 기준 누적 인원</th>':'')+'</tr></thead><tbody>';
+  var prev=0;
+  c.forEach(function(cum,i){
+    h+='<tr><td><b>'+(i+1)+'등급</b></td><td>'+(Math.round((cum-prev)*100)/100)+'%</td><td>~'+cum+'%</td>'
+      +(t?'<td>'+Math.floor(t*cum/100)+'등까지</td>':'')+'</tr>';
+    prev=cum;
+  });
+  h+='</tbody></table>';
+  $('tableArea').innerHTML=h;
+}
+$('fT2').addEventListener('input',renderTable);
+renderTable();
+})();
+</script>
+</body>
+</html>

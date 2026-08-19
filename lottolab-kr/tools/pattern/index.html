@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로또 번호 조합 분석 — 합계·홀짝·연속수 특성 보기</title>
+<meta name="description" content="내 로또 번호 6개의 합계, 홀짝 비율, 고저 비율, 연속수, 구간 분포 특성을 분석하고 과거 당첨번호 분포와 비교합니다. 예측이 아닌 조합 특성 요약 도구입니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<script type="application/ld+json">
+[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"로또 번호 조합 분석","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://lottolab-kr.vercel.app/tools/pattern/","description":"내 로또 번호 6개의 합·홀짝·연속수·구간 분포 특성을 보여주는 분석 도구. 예측 기능 아님."},
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"로또랩","item":"https://lottolab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"로또 번호 조합 분석","item":"https://lottolab-kr.vercel.app/tools/pattern/"}]},
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"분석 결과가 좋으면 당첨 확률이 높은 건가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 도구는 조합의 모양(합계, 홀짝, 연속수 등)을 요약할 뿐이며, 어떤 모양이든 당첨 확률은 8,145,060분의 1로 동일합니다. 예측 도구가 아닙니다."}},
+{"@type":"Question","name":"과거 분포와 비교하는 이유는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"내 조합이 과거 당첨번호들 사이에서 흔한 모양인지 드문 모양인지 궁금해하는 분들이 많아서입니다. 흔한 모양이라고 미래에 유리한 것은 전혀 아니라는 점을 함께 표시합니다."}},
+{"@type":"Question","name":"연속수가 있으면 불리한가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 연속수가 포함된 조합도 다른 조합과 확률이 같습니다. 실제 추첨에서도 연속수는 드물지 않게 나옵니다."}}]}]
+</script>
+</head>
+<body>
+<div class="legal-banner"><div class="wrap">⚠️ 당첨 보장 없음 — 이 분석은 조합의 모양 요약일 뿐이며, 과거 비교 수치는 과거 결과 요약입니다. 미래 예측이 아닙니다.</div></div>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">🍀 로또<em>랩</em></a>
+  <nav><a href="../generator/">번호 생성</a><a href="../stats/">통계</a><a href="../checker/">당첨 확인</a></nav>
+</div></header>
+
+<main class="wrap">
+  <h1>로또 번호 조합 분석</h1>
+  <p class="lead">내 번호 6개의 합계·홀짝·고저·연속수·구간 분포를 요약합니다. <b>예측이 아닙니다.</b></p>
+
+  <div class="card">
+    <label>분석할 번호 6개 선택</label>
+    <div class="numgrid" id="grid"></div>
+    <p class="muted" id="pickState" style="margin:10px 0 0">선택 0 / 6</p>
+    <div class="btn-row">
+      <button class="btn" id="anaBtn" disabled>조합 분석</button>
+      <button class="btn ghost" id="clearBtn">초기화</button>
+    </div>
+    <div class="result-box" id="resultBox"></div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="content">
+    <h2>조합 분석이란?</h2>
+    <p>이 도구는 입력한 번호 6개의 "모양"을 여러 지표로 요약합니다. 여섯 숫자의 합계, 홀수와 짝수의 개수, 저구간(1~22)과 고구간(23~45)의 개수, 연속된 번호 쌍의 수, 그리고 다섯 번호대(1–9/10–19/20–29/30–39/40–45)별 분포를 보여줍니다. 회차 데이터가 수집되어 있으면 과거 당첨번호들과 비교해 내 조합의 합계가 어느 위치에 있는지, 같은 홀짝 구성이 과거에 몇 번 나왔는지도 함께 표시합니다.</p>
+    <p>다시 강조하지만 <strong>이 분석은 예측이 아닙니다.</strong> 로또에서 모든 조합의 당첨 확률은 정확히 같으므로, "흔한 모양"의 조합이 유리하지도, "드문 모양"이 불리하지도 않습니다. 이 도구의 쓸모는 내 번호의 특성을 객관적으로 확인하고, 무작위 조합이 실제로 어떤 모양 분포를 갖는지 이해하는 데 있습니다.</p>
+
+    <h2>사용법</h2>
+    <ol>
+      <li>번호판에서 분석할 번호 6개를 선택합니다.</li>
+      <li><b>조합 분석</b>을 누르면 합계·홀짝·고저·연속수·구간 분포가 즉시 표시됩니다.</li>
+      <li>회차 데이터가 있으면 과거 당첨번호 대비 비교(과거 데이터 요약)도 함께 나옵니다.</li>
+    </ol>
+
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>분석 점수가 좋으면 사도 되는 조합인가요?</summary><p>이 도구는 점수나 등급을 매기지 않습니다. 어떤 조합이든 확률이 같기 때문에 "좋은 조합"이라는 것은 존재하지 않으며, 특성 요약만 제공합니다.</p></details>
+      <details><summary>연속수가 있으면 피해야 하나요?</summary><p>아니요. 연속수 포함 조합도 확률은 동일하고, 실제 추첨에서도 연속수는 드물지 않게 등장합니다.</p></details>
+      <details><summary>합계는 어느 범위가 정상인가요?</summary><p>이론상 21~255가 모두 가능합니다. 무작위로 뽑으면 합계가 중앙(138 부근)에 몰리는 종 모양 분포가 되는데, 이는 수학적 성질일 뿐 특정 합계 구간을 노린다고 유리해지지 않습니다.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../generator/">로또 번호 생성기</a><a href="../results/">당첨번호 조회</a><a href="../checker/">당첨 확인</a><a href="../stats/">번호 통계</a><a href="../simulator/">확률 체험</a><a href="../pension/">연금복권 생성기</a><a href="../dream/">번호 뽑기(재미)</a><a href="../../guide/lotto-tax/">로또 세금 가이드</a>
+  </div>
+  <div class="foot-links"><a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a></div>
+  <div class="foot-legal">본 사이트는 동행복권·복권위원회와 무관한 개인 운영 정보 사이트이며, 복권 판매·구매 중개를 하지 않습니다. 당첨을 보장하지 않으며 모든 통계는 과거 추첨 결과의 요약입니다. 과도한 복권 구매는 도박 문제로 이어질 수 있습니다 — 상담: 한국도박문제예방치유원 1336.<br>© 2026 LottoLab</div>
+</div></footer>
+
+<script>
+(function(){
+  'use strict';
+  var $ = LL.$;
+  var picked = [];
+  var draws = [];
+
+  var grid = $('#grid');
+  for (var i=1;i<=45;i++){
+    var b = document.createElement('button');
+    b.type='button'; b.textContent=i; b.dataset.n=i;
+    grid.appendChild(b);
+  }
+  grid.addEventListener('click', function(e){
+    var btn = e.target.closest('button'); if(!btn) return;
+    var n = +btn.dataset.n;
+    var idx = picked.indexOf(n);
+    if (idx >= 0) picked.splice(idx,1);
+    else if (picked.length < 6) picked.push(n);
+    render();
+  });
+  function render(){
+    LL.$$('#grid button').forEach(function(b){
+      b.className = picked.indexOf(+b.dataset.n) >= 0 ? 'sel' : '';
+    });
+    $('#pickState').textContent = '선택 ' + picked.length + ' / 6';
+    $('#anaBtn').disabled = picked.length !== 6;
+  }
+  $('#clearBtn').addEventListener('click', function(){ picked = []; $('#resultBox').innerHTML=''; render(); });
+
+  LL.loadDraws().then(function(list){ draws = list; });
+
+  $('#anaBtn').addEventListener('click', function(){
+    var nums = picked.slice().sort(function(a,b){return a-b;});
+    var sum = nums.reduce(function(a,b){return a+b;}, 0);
+    var odd = nums.filter(function(n){return n%2;}).length;
+    var low = nums.filter(function(n){return n<=22;}).length;
+    var consec = 0;
+    for (var i=1;i<nums.length;i++) if (nums[i] === nums[i-1]+1) consec++;
+    var zones = [0,0,0,0,0];
+    nums.forEach(function(n){ zones[n<10?0:n<20?1:n<30?2:n<40?3:4]++; });
+
+    var html = '<h2 style="margin:16px 0 6px">분석 결과</h2>' +
+      '<div>' + LL.ballLineHTML(nums) + '</div>' +
+      '<div class="stat-cards" style="margin-top:14px">' +
+      '<div class="sc"><b>' + sum + '</b><span>합계 (가능 범위 21~255)</span></div>' +
+      '<div class="sc"><b>' + odd + ' : ' + (6-odd) + '</b><span>홀 : 짝</span></div>' +
+      '<div class="sc"><b>' + low + ' : ' + (6-low) + '</b><span>저(1~22) : 고(23~45)</span></div>' +
+      '<div class="sc"><b>' + consec + '쌍</b><span>연속수</span></div>' +
+      '</div>' +
+      '<p class="muted" style="margin-top:12px">번호대 분포 — 1–9: ' + zones[0] + '개 · 10–19: ' + zones[1] + '개 · 20–29: ' + zones[2] + '개 · 30–39: ' + zones[3] + '개 · 40–45: ' + zones[4] + '개</p>';
+
+    if (draws.length){
+      var sums = draws.map(function(d){ return d.numbers.reduce(function(a,b){return a+b;},0); });
+      var below = sums.filter(function(s){ return s < sum; }).length;
+      var pct = (below / sums.length * 100).toFixed(1);
+      var sameOdd = draws.filter(function(d){
+        return d.numbers.filter(function(n){return n%2;}).length === odd;
+      }).length;
+      html += '<div class="note">과거 데이터 요약 (' + draws.length + '회 기준): 내 조합의 합계 ' + sum + '는 과거 당첨번호 합계의 약 ' + pct + '% 지점에 위치합니다. 홀짝 ' + odd + ':' + (6-odd) + ' 구성은 과거 ' + sameOdd + '회(' + (sameOdd/draws.length*100).toFixed(1) + '%) 나왔습니다. — 이 비교는 요약일 뿐, 다음 회차 확률과 무관합니다.</div>';
+    } else {
+      html += '<div class="note">' + LL.EMPTY_MSG + ' — 데이터가 쌓이면 과거 당첨번호와의 비교(요약)도 표시됩니다.</div>';
+    }
+    html += '<p class="muted">⚠️ 모든 조합의 당첨 확률은 8,145,060분의 1로 동일합니다. 이 분석은 예측이 아닙니다.</p>';
+    $('#resultBox').innerHTML = html;
+  });
+})();
+</script>
+</body>
+</html>

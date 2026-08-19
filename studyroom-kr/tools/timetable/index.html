@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시간표 만들기 - 대학·중고등 시간표 제작, 이미지 저장 | 스터디룸</title>
+<meta name="description" content="무료 시간표 만들기. 대학(30분 단위)·중고등(교시) 모드, 과목 색 자동 배정, 아이폰 배경화면 비율 이미지 저장, 링크 공유까지. 설치·로그인 없이 브라우저에서 바로 만드세요.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<style>
+/* 시간표 그리드 */
+.tt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tt{min-width:520px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+.tt-head{display:grid;background:#f1f3f7;border-bottom:1px solid var(--line)}
+.tt-head div{padding:8px 2px;text-align:center;font-size:13px;font-weight:800;color:#475569}
+.tt-body{display:grid}
+.tt-times{position:relative;border-right:1px solid var(--line)}
+.tt-times span{position:absolute;right:6px;font-size:11px;color:#94a3b8;transform:translateY(-50%)}
+.tt-col{position:relative;border-right:1px solid #eef1f5}
+.tt-col:last-child{border-right:none}
+.tt-item{position:absolute;left:2px;right:2px;border-radius:8px;padding:4px 6px;font-size:12px;
+line-height:1.3;overflow:hidden;cursor:pointer;border-left:3px solid}
+.tt-item b{display:block;font-weight:800;word-break:break-all}
+.tt-item small{opacity:.75;font-size:11px}
+.tt-item:hover{filter:brightness(.96)}
+/* 교시 모드 표 */
+.tt-school{width:100%;min-width:520px;border-collapse:collapse;background:var(--card)}
+.tt-school th,.tt-school td{border:1px solid #eef1f5;padding:0;text-align:center;font-size:12px;height:52px}
+.tt-school th{background:#f1f3f7;font-size:13px;color:#475569;height:36px}
+.tt-school td .cell{width:100%;height:100%;min-height:52px;border:none;background:transparent;cursor:pointer;
+font-family:inherit;font-size:12px;line-height:1.3;padding:3px}
+.tt-school td .cell b{display:block;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 10px;
+border-radius:99px;border:1px solid var(--line);background:var(--card)}
+.chip i{width:10px;height:10px;border-radius:99px;display:inline-block}
+#previewBox{display:none;text-align:center;margin-top:12px}
+#previewBox canvas{max-width:280px;border:1px solid var(--line);border-radius:12px}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a><a href="../pomodoro/">뽀모도로</a><a href="../flashcards/">암기 카드</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 시간표 만들기</nav>
+<div class="page-h">
+  <h1>시간표 만들기</h1>
+  <p>대학·중고등 시간표를 만들고 이미지로 저장하세요. 아이폰 배경화면 비율 지원, 링크로 공유 가능.</p>
+</div>
+
+<div class="share-banner no-print" id="sharedBanner" style="display:none">
+  <b>공유된 시간표</b>를 보고 있어요. 내 브라우저에 저장하거나, 나만의 시간표를 새로 만들 수 있습니다.
+  <div class="btn-row">
+    <button class="btn btn-p btn-sm" id="btnAdopt">내 시간표로 저장</button>
+    <button class="btn btn-sm" id="btnFresh">나도 만들어보기</button>
+  </div>
+</div>
+
+<section class="card">
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+    <div class="seg" id="modeSeg">
+      <button data-m="uni" class="on">대학 (30분 단위)</button>
+      <button data-m="school">중·고등 (교시)</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap" id="optArea"></div>
+  </div>
+  <div class="field" style="margin-top:12px">
+    <input type="text" id="ttTitle" maxlength="30" placeholder="시간표 이름 (예: 2026-2학기 시간표)">
+  </div>
+</section>
+
+<section class="card">
+  <h2 id="formTitle">과목 추가</h2>
+  <div class="grid2">
+    <div class="field"><label class="f">과목명 *</label><input type="text" id="fName" maxlength="20" placeholder="예: 경영학원론"></div>
+    <div class="field"><label class="f">장소·선생님 (선택)</label><input type="text" id="fPlace" maxlength="20" placeholder="예: 301호 / 김OO"></div>
+  </div>
+  <div class="grid3">
+    <div class="field"><label class="f">요일</label><select id="fDay"></select></div>
+    <div class="field"><label class="f" id="lblStart">시작</label><select id="fStart"></select></div>
+    <div class="field"><label class="f" id="lblEnd">종료</label><select id="fEnd"></select></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-p" id="btnAdd">+ 시간표에 추가</button>
+    <button class="btn btn-danger" id="btnDel" style="display:none">삭제</button>
+    <button class="btn" id="btnCancel" style="display:none">취소</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2 style="display:flex;justify-content:space-between;align-items:center">내 시간표
+    <button class="btn btn-sm btn-danger no-print" id="btnClear">전체 지우기</button></h2>
+  <div class="tt-wrap" id="gridArea"></div>
+  <div class="chips" id="chipArea"></div>
+</section>
+
+<section class="card no-print">
+  <h2>이미지 저장 · 공유</h2>
+  <div class="grid2">
+    <div class="field"><label class="f">이미지 비율</label>
+      <select id="imgPreset">
+        <option value="basic">기본 (게시용 · 세로형)</option>
+        <option value="phone">아이폰 배경화면 (9:19.5)</option>
+        <option value="wide">가로형 (PC 바탕화면 16:10)</option>
+      </select></div>
+    <div class="field"><label class="f">테마</label>
+      <select id="imgTheme">
+        <option value="light">라이트</option>
+        <option value="dark">다크</option>
+      </select></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-p" id="btnImg">🖼️ PNG로 저장</button>
+    <button class="btn" id="btnPreview">미리보기</button>
+    <button class="btn" id="btnShare">🔗 공유 링크 복사</button>
+    <button class="btn" id="btnNative" style="display:none">📤 공유하기</button>
+  </div>
+  <div id="previewBox"></div>
+  <p class="note">이미지 저장이 안 되면(일부 인앱 브라우저) 새 탭에 이미지가 열립니다. 길게 눌러 저장하세요.
+  공유 링크에는 시간표 내용이 주소에 담겨 있어 서버 없이 그대로 복원됩니다.</p>
+  <!-- ad-slot -->
+</section>
+
+<article class="prose">
+  <h2>시간표 만들기, 이렇게 쓰세요</h2>
+  <p>개강하면 가장 먼저 하는 일이 시간표 정리입니다. 이 도구는 로그인이나 앱 설치 없이 브라우저에서 바로
+  시간표를 만들 수 있는 무료 시간표 제작기입니다. 대학생은 30분 단위 시간 모드로, 중·고등학생은 교시 모드로
+  전환해 쓸 수 있고, 과목을 추가하면 색이 자동으로 배정되어 보기 좋은 시간표가 완성됩니다.</p>
+  <p>완성한 시간표는 이미지(PNG)로 저장해 배경화면·프로필·커뮤니티에 올릴 수 있습니다. 특히
+  <strong>아이폰 배경화면 비율(9:19.5)</strong> 프리셋을 고르면 잠금화면에 딱 맞는 세로 이미지가 만들어집니다.
+  입력한 내용은 이 브라우저의 localStorage에만 저장되며 서버로 전송되지 않습니다.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>상단에서 <b>대학 / 중·고등</b> 모드를 선택하고, 표시 요일·시간 범위(또는 교시 수)를 조절합니다.</li>
+    <li>과목명·장소·요일·시간을 입력하고 <b>시간표에 추가</b>를 누릅니다. 같은 과목명은 같은 색으로 묶입니다.</li>
+    <li>표에서 과목 블록을 누르면 수정·삭제할 수 있습니다.</li>
+    <li><b>PNG로 저장</b>으로 이미지를 내려받거나, <b>공유 링크 복사</b>로 친구에게 시간표를 보낼 수 있습니다.
+    링크를 받은 사람은 똑같은 시간표를 바로 볼 수 있어요.</li>
+  </ol>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>시간표가 저장되나요? 다시 들어와도 남아 있나요?</summary>
+      <div class="a">네. 입력하는 즉시 사용 중인 브라우저의 localStorage에 자동 저장되어, 같은 브라우저로 다시
+      방문하면 그대로 복원됩니다. 다만 브라우저 데이터(사이트 데이터)를 삭제하면 함께 지워지니, 완성본은
+      이미지 저장이나 공유 링크로 백업해 두는 것을 추천합니다.</div></details>
+    <details><summary>아이폰(사파리)에서 이미지 저장이 되나요?</summary>
+      <div class="a">네. 저장 버튼을 누르면 PNG 파일이 다운로드됩니다. 일부 인앱 브라우저(카카오톡 등)에서는
+      다운로드가 제한될 수 있는데, 이 경우 새 탭에 이미지가 열리므로 이미지를 길게 눌러 "사진에 저장"을
+      선택하면 됩니다.</div></details>
+    <details><summary>공유 링크는 어떻게 작동하나요? 서버에 저장되나요?</summary>
+      <div class="a">서버에 저장되지 않습니다. 시간표 내용 전체가 링크 주소의 <code>?r=</code> 뒤에 인코딩되어
+      담기고, 링크를 연 브라우저에서 다시 풀어 그대로 그려줍니다. 링크만 있으면 언제든 같은 시간표를 볼 수
+      있고, 받은 사람이 "내 시간표로 저장"을 눌러 이어서 편집할 수도 있습니다.</div></details>
+    <details><summary>공강·야간 수업도 넣을 수 있나요?</summary>
+      <div class="a">대학 모드에서 표시 시간 범위를 8시~24시까지 조절할 수 있어 야간 강의도 넣을 수 있습니다.
+      토요일·일요일 수업이 있다면 표시 요일을 "월~토" 또는 "월~일"로 바꾸세요.</div></details>
+    <details><summary>과목 색을 직접 고를 수 있나요?</summary>
+      <div class="a">색은 과목명 기준으로 자동 배정됩니다(같은 과목 = 같은 색). 16색 팔레트를 순서대로 사용해
+      과목끼리 겹치지 않게 배정되므로 별도 설정 없이도 깔끔하게 구분됩니다.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"시간표 만들기","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"대학·중고등 시간표 제작, 이미지 저장, 공유 링크 지원 무료 웹 도구"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"시간표가 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"입력 즉시 브라우저 localStorage에 자동 저장되어 재방문 시 복원됩니다. 브라우저 데이터를 삭제하면 함께 지워집니다."}},
+{"@type":"Question","name":"아이폰 사파리에서 이미지 저장이 되나요?","acceptedAnswer":{"@type":"Answer","text":"네, PNG 다운로드를 지원하며 인앱 브라우저 등 제한 환경에서는 새 탭에 이미지가 열려 길게 눌러 저장할 수 있습니다."}},
+{"@type":"Question","name":"공유 링크는 서버에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 시간표 내용이 링크 주소에 인코딩되어 담기며 서버 저장 없이 링크만으로 복원됩니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"시간표 만들기","item":"https://studyroom-kr.vercel.app/tools/timetable/"}]}
+]}
+</script>
+
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+var DAY_FULL=['월','화','수','목','금','토','일'];
+
+/* ---------------- 상태 ---------------- */
+function blank(){return {v:1,mode:'uni',title:'',days:5,
+  uni:{sh:9,eh:19,items:[]}, school:{np:7,items:[]}};}
+var state = SR.load('timetable', null) || blank();
+var shared = false;          // 공유 링크 열람 모드
+var editingId = null;
+
+var sp = SR.shareParam();
+if(sp){
+  var decoded = SR.dec(sp);
+  if(decoded && decoded.v===1 && decoded.uni && decoded.school){
+    state = decoded; shared = true;
+    $('sharedBanner').style.display='block';
+  }
+}
+
+function persist(){ if(!shared) SR.save('timetable', state); }
+function cur(){ return state.mode==='uni' ? state.uni : state.school; }
+
+/* ---------------- 색 자동 배정 ---------------- */
+function colorFor(name){
+  var items = state.uni.items.concat(state.school.items);
+  for(var i=0;i<items.length;i++) if(items[i].name===name) return items[i].c;
+  var used={};
+  items.forEach(function(it){used[it.c]=1});
+  for(var k=0;k<SR.PALETTE.length;k++) if(!used[k]) return k;
+  return items.length % SR.PALETTE.length;
+}
+
+/* ---------------- 옵션 UI ---------------- */
+function renderOpts(){
+  var html='';
+  html+='<select id="optDays" style="min-height:40px;width:auto;font-size:14px">'
+    +[[5,'월~금'],[6,'월~토'],[7,'월~일']].map(function(o){
+      return '<option value="'+o[0]+'"'+(state.days===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select>';
+  if(state.mode==='uni'){
+    var sh='',eh='';
+    for(var h=7;h<=12;h++) sh+='<option value="'+h+'"'+(state.uni.sh===h?' selected':'')+'>'+h+'시부터</option>';
+    for(h=14;h<=24;h++) eh+='<option value="'+h+'"'+(state.uni.eh===h?' selected':'')+'>'+h+'시까지</option>';
+    html+='<select id="optSh" style="min-height:40px;width:auto;font-size:14px">'+sh+'</select>';
+    html+='<select id="optEh" style="min-height:40px;width:auto;font-size:14px">'+eh+'</select>';
+  }else{
+    var np='';
+    for(var p=5;p<=10;p++) np+='<option value="'+p+'"'+(state.school.np===p?' selected':'')+'>'+p+'교시까지</option>';
+    html+='<select id="optNp" style="min-height:40px;width:auto;font-size:14px">'+np+'</select>';
+  }
+  $('optArea').innerHTML=html;
+  $('optDays').onchange=function(){state.days=+this.value;persist();renderAll();};
+  if(state.mode==='uni'){
+    $('optSh').onchange=function(){state.uni.sh=+this.value;persist();renderAll();};
+    $('optEh').onchange=function(){state.uni.eh=+this.value;persist();renderAll();};
+  }else{
+    $('optNp').onchange=function(){state.school.np=+this.value;persist();renderAll();};
+  }
+}
+
+/* ---------------- 입력 폼 ---------------- */
+function t2s(min){ return Math.floor(min/60)+':'+SR.pad2(min%60); }
+function renderForm(prefDay, prefStart){
+  var dayHtml='';
+  for(var d=0;d<state.days;d++) dayHtml+='<option value="'+d+'"'+(prefDay===d?' selected':'')+'>'+DAY_FULL[d]+'요일</option>';
+  $('fDay').innerHTML=dayHtml;
+  if(state.mode==='uni'){
+    $('lblStart').textContent='시작 시각'; $('lblEnd').textContent='종료 시각';
+    var s='',e='';
+    var lo=state.uni.sh*60, hi=state.uni.eh*60;
+    for(var m=lo;m<hi;m+=30) s+='<option value="'+m+'"'+(prefStart===m?' selected':'')+'>'+t2s(m)+'</option>';
+    for(m=lo+30;m<=hi;m+=30) e+='<option value="'+m+'">'+t2s(m)+'</option>';
+    $('fStart').innerHTML=s; $('fEnd').innerHTML=e;
+    var st = prefStart!=null?prefStart:lo;
+    var defEnd = Math.min(st+90, hi);   /* 기본 1시간 30분 */
+    $('fEnd').value = String(defEnd);
+  }else{
+    $('lblStart').textContent='시작 교시'; $('lblEnd').textContent='종료 교시';
+    var s2='',e2='';
+    for(var p=1;p<=state.school.np;p++){
+      s2+='<option value="'+p+'"'+(prefStart===p?' selected':'')+'>'+p+'교시</option>';
+      e2+='<option value="'+p+'">'+p+'교시</option>';
+    }
+    $('fStart').innerHTML=s2; $('fEnd').innerHTML=e2;
+    $('fEnd').value = String(prefStart!=null?prefStart:1);
+  }
+}
+$('fStart').addEventListener('change',function(){
+  if(state.mode==='uni'){
+    var st=+this.value;
+    if(+$('fEnd').value<=st) $('fEnd').value=String(Math.min(st+90, state.uni.eh*60));
+  }else{
+    if(+$('fEnd').value<+this.value) $('fEnd').value=this.value;
+  }
+});
+
+function resetForm(){
+  editingId=null;
+  $('fName').value=''; $('fPlace').value='';
+  $('formTitle').textContent='과목 추가';
+  $('btnAdd').textContent='+ 시간표에 추가';
+  $('btnDel').style.display='none'; $('btnCancel').style.display='none';
+  renderForm();
+}
+
+function overlaps(a1,a2,b1,b2){ return a1<b2 && b1<a2; }
+
+$('btnAdd').onclick=function(){
+  var name=$('fName').value.trim();
+  if(!name){ SR.toast('과목명을 입력하세요'); $('fName').focus(); return; }
+  var day=+$('fDay').value, st=+$('fStart').value, et=+$('fEnd').value;
+  if(state.mode==='uni' && et<=st){ SR.toast('종료 시각이 시작보다 빠릅니다'); return; }
+  if(state.mode==='school' && et<st){ SR.toast('종료 교시가 시작보다 빠릅니다'); return; }
+  var c = colorFor(name);
+  var list = cur().items;
+  /* 겹침 확인 */
+  var s1=st, e1=state.mode==='uni'?et:et+1;
+  var clash = list.some(function(it){
+    if(it.id===editingId || it.day!==day) return false;
+    var s2=it.st, e2=state.mode==='uni'?it.et:it.et+1;
+    return overlaps(s1,e1,s2,e2);
+  });
+  if(clash && !confirm('같은 시간에 다른 과목이 있습니다. 그래도 추가할까요?')) return;
+
+  if(editingId){
+    var it = list.find(function(x){return x.id===editingId});
+    if(it){ it.name=name; it.place=$('fPlace').value.trim(); it.day=day; it.st=st; it.et=et; it.c=c; }
+    SR.toast('수정되었습니다');
+  }else{
+    list.push({id:SR.uid(),name:name,place:$('fPlace').value.trim(),day:day,st:st,et:et,c:c});
+    SR.toast('"'+name+'" 추가!');
+  }
+  if(shared){ shared=false; $('sharedBanner').style.display='none'; history.replaceState(null,'',location.pathname); }
+  persist(); resetForm(); renderAll();
+};
+$('btnCancel').onclick=resetForm;
+$('btnDel').onclick=function(){
+  var list=cur().items;
+  var i=list.findIndex(function(x){return x.id===editingId});
+  if(i>=0){ list.splice(i,1); persist(); }
+  resetForm(); renderAll();
+};
+
+function startEdit(id){
+  var it=cur().items.find(function(x){return x.id===id});
+  if(!it) return;
+  editingId=id;
+  renderForm(it.day, it.st);
+  $('fEnd').value=String(it.et);
+  $('fName').value=it.name; $('fPlace').value=it.place||'';
+  $('formTitle').textContent='과목 수정';
+  $('btnAdd').textContent='수정 저장';
+  $('btnDel').style.display=''; $('btnCancel').style.display='';
+  window.scrollTo({top:$('formTitle').getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'});
+}
+
+/* ---------------- 그리드 렌더 ---------------- */
+var HH=52; /* 1시간 px (대학) */
+function renderGrid(){
+  var area=$('gridArea');
+  if(state.mode==='school'){ renderSchool(area); return; }
+  var u=state.uni, hours=u.eh-u.sh;
+  var cols='44px repeat('+state.days+',1fr)';
+  var h='<div class="tt"><div class="tt-head" style="grid-template-columns:'+cols+'"><div></div>';
+  for(var d=0;d<state.days;d++) h+='<div>'+DAY_FULL[d]+'</div>';
+  h+='</div><div class="tt-body" style="grid-template-columns:'+cols+'">';
+  /* 시간 라벨 열 */
+  h+='<div class="tt-times" style="height:'+(hours*HH)+'px">';
+  for(var hr=u.sh;hr<u.eh;hr++) h+='<span style="top:'+((hr-u.sh)*HH)+'px">'+hr+'</span>';
+  h+='</div>';
+  var bgLines='repeating-linear-gradient(to bottom,transparent 0,transparent '+(HH-1)+'px,#eef1f5 '+(HH-1)+'px,#eef1f5 '+HH+'px)';
+  for(d=0;d<state.days;d++){
+    h+='<div class="tt-col" data-day="'+d+'" style="height:'+(hours*HH)+'px;background:'+bgLines+'">';
+    u.items.filter(function(it){return it.day===d}).forEach(function(it){
+      var top=(it.st-u.sh*60)/60*HH, ht=(it.et-it.st)/60*HH-2;
+      if(top<0||ht<=0) return;
+      var col=SR.PALETTE[it.c];
+      h+='<div class="tt-item" data-id="'+it.id+'" style="top:'+top+'px;height:'+ht+'px;background:'+SR.tint(col,.16)+';border-left-color:'+col+';color:#1e293b">'
+        +'<b>'+SR.esc(it.name)+'</b>'
+        +(ht>34&&it.place?'<small>'+SR.esc(it.place)+'</small>':'')
+        +(ht>50?'<small style="display:block">'+t2s(it.st)+'~'+t2s(it.et)+'</small>':'')
+        +'</div>';
+    });
+    h+='</div>';
+  }
+  h+='</div></div>';
+  area.innerHTML=h;
+  area.querySelectorAll('.tt-item').forEach(function(el){
+    el.addEventListener('click',function(ev){ev.stopPropagation();startEdit(this.dataset.id);});
+  });
+  area.querySelectorAll('.tt-col').forEach(function(el){
+    el.addEventListener('click',function(ev){
+      var rect=this.getBoundingClientRect();
+      var min=u.sh*60 + Math.floor((ev.clientY-rect.top)/HH*2)*30;
+      min=Math.max(u.sh*60, Math.min(min, u.eh*60-30));
+      resetForm(); renderForm(+this.dataset.day, min);
+      $('fName').focus();
+    });
+  });
+}
+function renderSchool(area){
+  var s=state.school;
+  var h='<table class="tt-school"><thead><tr><th style="width:44px">교시</th>';
+  for(var d=0;d<state.days;d++) h+='<th>'+DAY_FULL[d]+'</th>';
+  h+='</tr></thead><tbody>';
+  for(var p=1;p<=s.np;p++){
+    h+='<tr><th>'+p+'</th>';
+    for(d=0;d<state.days;d++){
+      var it=s.items.find(function(x){return x.day===d && p>=x.st && p<=x.et;});
+      if(it){
+        var col=SR.PALETTE[it.c];
+        var first=(p===it.st);
+        h+='<td style="background:'+SR.tint(col,.16)+'"><button class="cell" data-id="'+it.id+'" style="color:#1e293b">'
+          +(first?'<b>'+SR.esc(it.name)+'</b>'+(it.place?'<small>'+SR.esc(it.place)+'</small>':''):'')
+          +'</button></td>';
+      }else{
+        h+='<td><button class="cell" data-day="'+d+'" data-p="'+p+'" aria-label="'+DAY_FULL[d]+' '+p+'교시 추가"></button></td>';
+      }
+    }
+    h+='</tr>';
+  }
+  h+='</tbody></table>';
+  area.innerHTML=h;
+  area.querySelectorAll('.cell').forEach(function(el){
+    el.addEventListener('click',function(){
+      if(this.dataset.id) startEdit(this.dataset.id);
+      else{ resetForm(); renderForm(+this.dataset.day, +this.dataset.p); $('fName').focus(); }
+    });
+  });
+}
+function renderChips(){
+  var names={}, out='';
+  cur().items.forEach(function(it){ if(!(it.name in names)) names[it.name]=it.c; });
+  Object.keys(names).forEach(function(n){
+    out+='<span class="chip"><i style="background:'+SR.PALETTE[names[n]]+'"></i>'+SR.esc(n)+'</span>';
+  });
+  $('chipArea').innerHTML=out;
+}
+function renderAll(){ renderOpts(); renderGrid(); renderChips();
+  if(editingId==null) renderForm();
+  $('ttTitle').value=state.title||'';
+}
+
+/* ---------------- 모드 전환 ---------------- */
+document.querySelectorAll('#modeSeg button').forEach(function(b){
+  b.addEventListener('click',function(){
+    state.mode=this.dataset.m;
+    document.querySelectorAll('#modeSeg button').forEach(function(x){x.classList.toggle('on',x===b)});
+    persist(); resetForm(); renderAll();
+  });
+});
+function syncModeSeg(){
+  document.querySelectorAll('#modeSeg button').forEach(function(x){
+    x.classList.toggle('on', x.dataset.m===state.mode);
+  });
+}
+$('ttTitle').addEventListener('input',function(){ state.title=this.value; persist(); });
+$('btnClear').onclick=function(){
+  if(!confirm('현재 모드의 시간표를 모두 지울까요?')) return;
+  cur().items.length=0; persist(); resetForm(); renderAll();
+};
+
+/* ---------------- 공유 ---------------- */
+function packed(){
+  return {v:1,mode:state.mode,title:state.title,days:state.days,
+    uni:{sh:state.uni.sh,eh:state.uni.eh,items:state.uni.items},
+    school:{np:state.school.np,items:state.school.items}};
+}
+$('btnShare').onclick=function(){
+  if(!cur().items.length){ SR.toast('먼저 과목을 추가하세요'); return; }
+  SR.copy(SR.shareUrl(packed()),'공유 링크가 복사되었습니다');
+};
+if(navigator.share){
+  $('btnNative').style.display='';
+  $('btnNative').onclick=function(){
+    if(!cur().items.length){ SR.toast('먼저 과목을 추가하세요'); return; }
+    navigator.share({title:state.title||'내 시간표', url:SR.shareUrl(packed())}).catch(function(){});
+  };
+}
+$('btnAdopt').onclick=function(){
+  shared=false; SR.save('timetable', state);
+  $('sharedBanner').style.display='none';
+  history.replaceState(null,'',location.pathname);
+  SR.toast('내 시간표로 저장했습니다');
+};
+$('btnFresh').onclick=function(){
+  shared=false; state=SR.load('timetable',null)||blank();
+  $('sharedBanner').style.display='none';
+  history.replaceState(null,'',location.pathname);
+  syncModeSeg(); resetForm(); renderAll();
+};
+
+/* ---------------- 캔버스 이미지 ---------------- */
+function wrapText(ctx,text,maxW){
+  var lines=[],line='';
+  for(var i=0;i<text.length;i++){
+    var t=line+text[i];
+    if(ctx.measureText(t).width>maxW && line){ lines.push(line); line=text[i]; }
+    else line=t;
+    if(lines.length===2) break;
+  }
+  if(lines.length<2 && line) lines.push(line);
+  if(lines.length===2 && ctx.measureText(lines[1]).width>maxW){
+    while(lines[1].length && ctx.measureText(lines[1]+'…').width>maxW) lines[1]=lines[1].slice(0,-1);
+    lines[1]+='…';
+  }
+  return lines;
+}
+function drawTT(preset, theme){
+  var dark = theme==='dark';
+  var W,H,topPad,botPad;
+  if(preset==='phone'){ W=1170; H=2532; topPad=560; botPad=300; }
+  else if(preset==='wide'){ W=1920; H=1200; topPad=150; botPad=90; }
+  else { W=1080; topPad=150; botPad=110; H=0; }
+  var pad = preset==='wide'?90:64;
+  var isUni = state.mode==='uni';
+  var rows = isUni ? (state.uni.eh-state.uni.sh) : state.school.np;
+  var dayHeadH=64, timeW=88;
+  var rowH;
+  if(preset==='basic'){ rowH = isUni?96:120; H = topPad+dayHeadH+rows*rowH+botPad; }
+  else rowH = Math.floor((H-topPad-botPad-dayHeadH)/rows);
+
+  var cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  var ctx=cv.getContext('2d');
+  /* 배경 */
+  if(dark){
+    var g=ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'#0f172a'); g.addColorStop(1,'#1e1b4b');
+    ctx.fillStyle=g;
+  }else ctx.fillStyle='#f7f8fa';
+  ctx.fillRect(0,0,W,H);
+
+  var ink = dark?'#f1f5f9':'#1a202c';
+  var sub = dark?'#94a3b8':'#64748b';
+  var lineC= dark?'rgba(148,163,184,.22)':'#e2e8f0';
+  var cardBg = dark?'rgba(255,255,255,.05)':'#ffffff';
+
+  /* 제목 */
+  ctx.textAlign='center'; ctx.fillStyle=ink;
+  ctx.font='800 '+(preset==='wide'?52:56)+'px Pretendard, "Noto Sans KR", sans-serif';
+  ctx.fillText(state.title||'내 시간표', W/2, topPad-46);
+
+  /* 표 영역 */
+  var gx=pad, gy=topPad, gw=W-pad*2, gh=dayHeadH+rows*rowH;
+  SR.rr(ctx,gx,gy,gw,gh,24);
+  ctx.fillStyle=cardBg; ctx.fill();
+  ctx.strokeStyle=lineC; ctx.lineWidth=2; ctx.stroke();
+
+  var colW=(gw-timeW)/state.days;
+  /* 요일 헤더 */
+  ctx.font='800 30px Pretendard, "Noto Sans KR", sans-serif';
+  ctx.fillStyle=sub;
+  for(var d=0;d<state.days;d++)
+    ctx.fillText(DAY_FULL[d], gx+timeW+colW*d+colW/2, gy+dayHeadH/2+11);
+  /* 구분선 */
+  ctx.strokeStyle=lineC; ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(gx,gy+dayHeadH); ctx.lineTo(gx+gw,gy+dayHeadH);
+  for(d=0;d<=state.days;d++){ var x=gx+timeW+colW*d; ctx.moveTo(x,gy); ctx.lineTo(x,gy+gh); }
+  for(var r2=1;r2<rows;r2++){ var y=gy+dayHeadH+r2*rowH; ctx.moveTo(gx,y); ctx.lineTo(gx+gw,y); }
+  ctx.stroke();
+  /* 시간/교시 라벨 */
+  ctx.font='600 24px Pretendard, "Noto Sans KR", sans-serif'; ctx.fillStyle=sub;
+  for(r2=0;r2<rows;r2++){
+    var lab = isUni ? String(state.uni.sh+r2) : (r2+1)+'';
+    ctx.fillText(lab, gx+timeW/2, gy+dayHeadH+r2*rowH+(isUni?30:rowH/2+9));
+  }
+  /* 과목 블록 */
+  cur().items.forEach(function(it){
+    if(it.day>=state.days) return;
+    var x=gx+timeW+colW*it.day+6, w=colW-12, y0,h0;
+    if(isUni){
+      y0=gy+dayHeadH+(it.st-state.uni.sh*60)/60*rowH+4;
+      h0=(it.et-it.st)/60*rowH-8;
+      if(it.et<=state.uni.sh*60 || it.st>=state.uni.eh*60) return;
+    }else{
+      y0=gy+dayHeadH+(it.st-1)*rowH+4;
+      h0=(it.et-it.st+1)*rowH-8;
+    }
+    if(h0<=0) return;
+    var col=SR.PALETTE[it.c];
+    SR.rr(ctx,x,y0,w,h0,14);
+    if(dark){ ctx.fillStyle=col; ctx.fill(); }
+    else{
+      ctx.fillStyle=SR.tint(col,.18); ctx.fill();
+      ctx.fillStyle=col; SR.rr(ctx,x,y0,7,h0,3); ctx.fill();
+    }
+    var tx=x+w/2, textC = dark?'#fff':'#1e293b';
+    ctx.fillStyle=textC;
+    ctx.font='800 26px Pretendard, "Noto Sans KR", sans-serif';
+    var lines=wrapText(ctx,it.name,w-24);
+    var ty=y0+40;
+    lines.forEach(function(ln){ ctx.fillText(ln,tx,ty); ty+=32; });
+    if(it.place && h0>ty-y0+16){
+      ctx.font='600 22px Pretendard, "Noto Sans KR", sans-serif';
+      ctx.fillStyle=dark?'rgba(255,255,255,.8)':'#475569';
+      ctx.fillText(wrapText(ctx,it.place,w-24)[0]||'',tx,ty+2);
+    }
+  });
+  /* 워터마크 */
+  ctx.font='600 24px Pretendard, "Noto Sans KR", sans-serif';
+  ctx.fillStyle=dark?'rgba(255,255,255,.35)':'#a5adba';
+  ctx.fillText('스터디룸 · 시간표 만들기', W/2, H-(preset==='phone'?170:44));
+  return cv;
+}
+$('btnImg').onclick=function(){
+  if(!cur().items.length){ SR.toast('먼저 과목을 추가하세요'); return; }
+  var cv=drawTT($('imgPreset').value, $('imgTheme').value);
+  SR.saveCanvas(cv,(state.title||'timetable')+'.png');
+};
+$('btnPreview').onclick=function(){
+  if(!cur().items.length){ SR.toast('먼저 과목을 추가하세요'); return; }
+  var cv=drawTT($('imgPreset').value, $('imgTheme').value);
+  var box=$('previewBox'); box.innerHTML=''; box.appendChild(cv); box.style.display='block';
+};
+
+/* ---------------- 초기화 ---------------- */
+syncModeSeg();
+renderAll();
+})();
+</script>
+</body>
+</html>
