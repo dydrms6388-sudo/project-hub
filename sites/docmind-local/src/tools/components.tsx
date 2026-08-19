@@ -17,9 +17,17 @@ function Loading() {
 
 /**
  * slug → 컴포넌트 맵.
- * 무거운 라이브러리는 여기서 dynamic import 되므로 페이지 진입 전에는 로드되지 않는다.
- * 새 도구를 추가하면 registry.ts 와 이 맵 두 곳 모두에 등록해야 한다.
+ * 여기서 dynamic import 되므로 도구 페이지에 들어가기 전에는 로드되지 않는다.
+ * 그리고 web-llm / transformers / pdfjs / mammoth 는 이 컴포넌트들 안에서 다시
+ * await import 되므로, 사용자가 버튼을 누르기 전까지는 내려받지 않는다.
  */
 export const componentMap: Record<string, ComponentType> = {
-  sample: dynamic(() => import("./impl/sample"), { ssr: false, loading: Loading }),
+  summarize: dynamic(() => import("./impl/summarize"), { ssr: false, loading: Loading }),
+  ask: dynamic(() => import("./impl/ask"), { ssr: false, loading: Loading }),
+  keypoints: dynamic(() => import("./impl/keypoints"), { ssr: false, loading: Loading }),
+  "translate-summary": dynamic(() => import("./impl/translate-summary"), {
+    ssr: false,
+    loading: Loading,
+  }),
+  compare: dynamic(() => import("./impl/compare"), { ssr: false, loading: Loading }),
 };

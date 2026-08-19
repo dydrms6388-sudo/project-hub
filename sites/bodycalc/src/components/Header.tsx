@@ -10,7 +10,10 @@ export default function Header() {
         </Link>
         <nav className="flex items-center gap-4 text-sm text-slate-600">
           <Link href="/tools/" className="hover:text-slate-900">
-            전체 도구
+            전체 계산기
+          </Link>
+          <Link href="/guide/caffeine-and-sleep/" className="hover:text-slate-900">
+            가이드
           </Link>
         </nav>
       </div>

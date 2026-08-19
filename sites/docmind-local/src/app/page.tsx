@@ -9,7 +9,15 @@ export default function Home() {
       <h1 className="text-3xl font-bold tracking-tight text-slate-900">{site.name}</h1>
       <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-600">{site.description}</p>
       <p className="mt-2 text-sm text-slate-500">
-        🔒 설치·회원가입 없이 브라우저에서 바로 동작합니다. 입력한 내용은 서버로 전송되지 않습니다.
+        🔒 문서는 업로드되지 않습니다. AI 모델을 브라우저로 내려받아 내 PC의 그래픽카드에서 직접
+        실행합니다.
+      </p>
+      <p className="mt-3 rounded-lg bg-amber-50 p-3 text-sm leading-relaxed text-amber-900">
+        💻 <b>PC 크롬·엣지 권장.</b> WebGPU 를 지원하는 브라우저에서만 동작하며, 최초 1회 약 1GB
+        모델 다운로드가 필요합니다.{" "}
+        <Link href="/browser-support/" className="font-semibold underline">
+          지원 브라우저 확인하기
+        </Link>
       </p>
 
       {groups.map((g) => (

@@ -6,6 +6,7 @@ export default function Footer() {
     <footer className="mt-16 border-t border-slate-200 bg-slate-50">
       <div className="mx-auto w-full max-w-5xl px-4 py-8 text-sm text-slate-500">
         <nav className="flex flex-wrap gap-x-5 gap-y-2">
+          <Link href="/browser-support/" className="hover:text-slate-800">지원 브라우저 안내</Link>
           <Link href="/privacy/" className="hover:text-slate-800">개인정보처리방침</Link>
           <Link href="/terms/" className="hover:text-slate-800">이용약관</Link>
           <a href={`mailto:${site.email}`} className="hover:text-slate-800">문의</a>

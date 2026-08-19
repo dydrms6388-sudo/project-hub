@@ -104,3 +104,22 @@ export const isHeicName = (name: string) => HEIC_EXT.includes(extOf(name));
 
 /** 100장 이상이면 경고 */
 export const MANY_FILES = 100;
+
+/** 같은 이름이 겹치면 "-1", "-2" 를 붙여 유일하게 만든다 */
+export function uniqueName(taken: Set<string>, name: string): string {
+  if (!taken.has(name)) {
+    taken.add(name);
+    return name;
+  }
+  const i = name.lastIndexOf(".");
+  const stem = i > 0 ? name.slice(0, i) : name;
+  const ext = i > 0 ? name.slice(i) : "";
+  let n = 1;
+  let candidate = `${stem}-${n}${ext}`;
+  while (taken.has(candidate)) {
+    n += 1;
+    candidate = `${stem}-${n}${ext}`;
+  }
+  taken.add(candidate);
+  return candidate;
+}

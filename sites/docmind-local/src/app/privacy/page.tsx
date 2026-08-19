@@ -37,7 +37,26 @@ export default function Privacy() {
         </section>
 
         <section>
-          <h2 className="mb-2 text-lg font-bold text-slate-900">3. 쿠키 및 광고·분석 도구</h2>
+          <h2 className="mb-2 text-lg font-bold text-slate-900">
+            3. AI 모델 다운로드와 브라우저 저장소(IndexedDB · Cache Storage)
+          </h2>
+          <p>
+            이 사이트의 도구는 문서를 서버로 보내지 않는 대신, AI 모델 파일(약 1GB)을 이용자의
+            브라우저로 내려받아 실행합니다. 이때 모델 파일을 배포하는 외부 호스트(Hugging Face,
+            GitHub 등)에 <strong>파일 다운로드 요청</strong>이 발생하며, 해당 호스트는 자체 정책에 따라
+            접속 IP·시각 등의 서버 로그를 남길 수 있습니다. 이 요청에는{" "}
+            <strong>이용자의 문서 내용이나 질문이 일절 포함되지 않습니다.</strong>
+          </p>
+          <p className="mt-2">
+            내려받은 모델 파일은 브라우저의 <strong>Cache Storage</strong> 에, 문서에서 만들어진 검색용
+            벡터와 구간 텍스트는 <strong>IndexedDB</strong> 에 저장됩니다. 둘 다 이용자 기기에만
+            저장되며 외부로 전송되지 않습니다. 브라우저의 &lsquo;사이트 데이터 삭제&rsquo; 기능이나
+            도구 화면의 &lsquo;캐시 삭제&rsquo; 버튼으로 언제든지 지울 수 있습니다.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-2 text-lg font-bold text-slate-900">4. 쿠키 및 광고·분석 도구</h2>
           <p>
             사이트는 서비스 운영을 위해 다음의 제3자 서비스를 이용할 수 있으며, 이 과정에서 쿠키 또는
             유사 기술이 사용될 수 있습니다.
@@ -64,7 +83,7 @@ export default function Privacy() {
         </section>
 
         <section>
-          <h2 className="mb-2 text-lg font-bold text-slate-900">4. 개인정보의 제3자 제공 및 보유 기간</h2>
+          <h2 className="mb-2 text-lg font-bold text-slate-900">5. 개인정보의 제3자 제공 및 보유 기간</h2>
           <p>
             사이트는 개인정보를 수집하지 않으므로 제3자에게 제공하거나 위탁하는 개인정보가 없으며,
             별도로 보유·파기하는 개인정보 또한 없습니다.
@@ -72,14 +91,14 @@ export default function Privacy() {
         </section>
 
         <section>
-          <h2 className="mb-2 text-lg font-bold text-slate-900">5. 아동의 개인정보</h2>
+          <h2 className="mb-2 text-lg font-bold text-slate-900">6. 아동의 개인정보</h2>
           <p>
             사이트는 만 14세 미만 아동의 개인정보를 고의로 수집하지 않습니다.
           </p>
         </section>
 
         <section>
-          <h2 className="mb-2 text-lg font-bold text-slate-900">6. 문의처</h2>
+          <h2 className="mb-2 text-lg font-bold text-slate-900">7. 문의처</h2>
           <p>
             개인정보 처리에 관한 문의는{" "}
             <a href={`mailto:${site.email}`} className="text-blue-600 hover:underline">

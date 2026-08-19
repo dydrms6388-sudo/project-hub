@@ -440,8 +440,9 @@ export function mergeCues(lists: Cue[][], mode: MergeMode = "concat", gapMs = 0)
   let offset = 0;
   for (const list of lists) {
     if (list.length === 0) continue;
-    for (const c of list) out.push({ ...c, start: c.start + offset, end: c.end + offset });
-    offset = Math.max(...list.map((c) => c.end)) + offset === offset ? offset : out[out.length - 1].end + gapMs;
+    const norm = normalizeCues(list, { fixOverlap: false });
+    for (const c of norm) out.push({ ...c, start: c.start + offset, end: c.end + offset });
+    offset += totalDuration(norm) + gapMs;
   }
   return normalizeCues(out, { fixOverlap: false });
 }

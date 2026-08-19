@@ -17,9 +17,15 @@ function Loading() {
 
 /**
  * slug → 컴포넌트 맵.
- * 무거운 라이브러리는 여기서 dynamic import 되므로 페이지 진입 전에는 로드되지 않는다.
- * 새 도구를 추가하면 registry.ts 와 이 맵 두 곳 모두에 등록해야 한다.
+ * 여기서 dynamic import 되므로 페이지 진입 전에는 로드되지 않는다.
+ * Whisper 엔진(@huggingface/transformers)은 한 단계 더 안쪽 —
+ * src/workers/whisper.worker.ts 안의 await import() — 에서만 받아온다.
  */
 export const componentMap: Record<string, ComponentType> = {
-  sample: dynamic(() => import("./impl/sample"), { ssr: false, loading: Loading }),
+  transcribe: dynamic(() => import("./impl/transcribe"), { ssr: false, loading: Loading }),
+  live: dynamic(() => import("./impl/live"), { ssr: false, loading: Loading }),
+  "video-subtitle": dynamic(() => import("./impl/video-subtitle"), { ssr: false, loading: Loading }),
+  lecture: dynamic(() => import("./impl/lecture"), { ssr: false, loading: Loading }),
+  meeting: dynamic(() => import("./impl/meeting"), { ssr: false, loading: Loading }),
+  "compare-models": dynamic(() => import("./impl/compare-models"), { ssr: false, loading: Loading }),
 };

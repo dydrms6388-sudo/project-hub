@@ -37,6 +37,12 @@ export default function Terms() {
             <li>이용자는 관련 법령을 위반하는 목적으로 서비스를 이용해서는 안 됩니다.</li>
             <li>이용자는 타인의 저작권 등 권리를 침해하는 파일의 처리에 서비스를 이용해서는 안 됩니다.</li>
             <li>자동화된 수단으로 서비스에 과도한 부하를 유발하는 행위를 해서는 안 됩니다.</li>
+            <li>
+              [PDF 비밀번호 해제] 도구는 <strong>이용자 본인에게 정당한 권한이 있고 비밀번호를 이미 알고
+              있는 문서</strong>에만 사용해야 합니다. 타인의 저작물·기밀문서에 적용된 기술적 보호조치를
+              권한 없이 무력화하는 행위는 저작권법 및 정보통신망법 위반이 될 수 있으며, 그 책임은 이용자
+              본인에게 있습니다.
+            </li>
           </ul>
         </section>
 
@@ -62,7 +68,27 @@ export default function Terms() {
         </section>
 
         <section>
-          <h2 className="mb-2 text-lg font-bold text-slate-900">제6조 (문의)</h2>
+          <h2 className="mb-2 text-lg font-bold text-slate-900">제6조 (오픈소스 고지)</h2>
+          <p>
+            사이트는 다음의 오픈소스 소프트웨어를 이용자의 브라우저에서 실행합니다.
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-5">
+            <li>pdf-lib · @pdf-lib/fontkit — MIT License</li>
+            <li>Mozilla pdf.js — Apache License 2.0</li>
+            <li>qpdf (WebAssembly 빌드) — Apache License 2.0</li>
+            <li>JSZip — MIT / GPLv3 듀얼 라이선스</li>
+            <li>
+              Pretendard (한글 서브셋 임베딩용) — SIL Open Font License 1.1 (
+              <a href="/fonts/Pretendard-OFL-LICENSE.txt" className="text-blue-600 hover:underline">
+                라이선스 전문
+              </a>
+              )
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="mb-2 text-lg font-bold text-slate-900">제7조 (문의)</h2>
           <p>
             약관에 관한 문의는{" "}
             <a href={`mailto:${site.email}`} className="text-blue-600 hover:underline">

@@ -203,10 +203,7 @@ export function caffeineCurve(
   for (let t = anchorMin; t <= anchorMin + hours * 60; t += stepMin) {
     let sum = 0;
     for (const it of intakes) {
-      let start = hhmmToMin(it.hhmm);
-      // 기준 시각보다 이른 시:분은 같은 날로 보고, 그 이후로만 감쇠시킨다.
-      if (start < anchorMin) start += 0;
-      const dh = (t - start) / 60;
+      const dh = (t - hhmmToMin(it.hhmm)) / 60;
       if (dh >= 0) sum += caffeineRemaining(it.mg, dh, halfLifeH);
     }
     out.push({ t, mg: sum });
@@ -609,3 +606,18 @@ export function calorieWarnings(kcal: number): Warn[] {
 
 export const MEDICAL_DISCLAIMER =
   "이 계산기의 결과는 공개된 공식과 통계를 그대로 대입한 참고용 수치이며, 의학적 진단·처방·치료를 대신하지 않습니다. 개인의 건강 상태·복용 약·기저질환에 따라 결과의 의미가 달라질 수 있으므로 판단이 필요한 경우 반드시 의료 전문가와 상담하세요.";
+
+/* ------------------------------------------------------------------ */
+/* 입력 파싱 헬퍼                                                        */
+/* ------------------------------------------------------------------ */
+
+export const toNum = (s: string, fallback = 0): number => {
+  const v = parseFloat(s);
+  return Number.isFinite(v) ? v : fallback;
+};
+
+/** 1234.5 → "1,234.5" */
+export const fmt = (n: number, digits = 1): string =>
+  Number.isFinite(n)
+    ? round(n, digits).toLocaleString("ko-KR", { minimumFractionDigits: 0, maximumFractionDigits: digits })
+    : "—";

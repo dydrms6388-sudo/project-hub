@@ -17,9 +17,21 @@ function Loading() {
 
 /**
  * slug → 컴포넌트 맵.
- * 무거운 라이브러리는 여기서 dynamic import 되므로 페이지 진입 전에는 로드되지 않는다.
+ * pdf-lib / pdf.js / qpdf-wasm 같은 대형 의존성은 각 구현 안에서 다시
+ * `await import(...)` 로 받으므로, 이 dynamic import 만으로는 아직 내려오지 않는다.
  * 새 도구를 추가하면 registry.ts 와 이 맵 두 곳 모두에 등록해야 한다.
  */
 export const componentMap: Record<string, ComponentType> = {
-  sample: dynamic(() => import("./impl/sample"), { ssr: false, loading: Loading }),
+  merge: dynamic(() => import("./impl/merge"), { ssr: false, loading: Loading }),
+  split: dynamic(() => import("./impl/split"), { ssr: false, loading: Loading }),
+  rotate: dynamic(() => import("./impl/rotate"), { ssr: false, loading: Loading }),
+  "delete-pages": dynamic(() => import("./impl/delete-pages"), { ssr: false, loading: Loading }),
+  compress: dynamic(() => import("./impl/compress"), { ssr: false, loading: Loading }),
+  "img-to-pdf": dynamic(() => import("./impl/img-to-pdf"), { ssr: false, loading: Loading }),
+  "pdf-to-img": dynamic(() => import("./impl/pdf-to-img"), { ssr: false, loading: Loading }),
+  watermark: dynamic(() => import("./impl/watermark"), { ssr: false, loading: Loading }),
+  "page-numbers": dynamic(() => import("./impl/page-numbers"), { ssr: false, loading: Loading }),
+  "extract-text": dynamic(() => import("./impl/extract-text"), { ssr: false, loading: Loading }),
+  protect: dynamic(() => import("./impl/protect"), { ssr: false, loading: Loading }),
+  unlock: dynamic(() => import("./impl/unlock"), { ssr: false, loading: Loading }),
 };

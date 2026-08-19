@@ -1,13 +1,14 @@
 export const site = {
-  name: "도구 사이트",
-  shortName: "tool",
-  domain: "example.vercel.app",
-  url: "https://example.vercel.app",
-  description: "브라우저에서 바로 쓰는 무료 도구 모음.",
+  name: "독마인드",
+  shortName: "docmind",
+  domain: "docmind-local.vercel.app",
+  url: "https://docmind-local.vercel.app",
+  description:
+    "파일이 밖으로 나가지 않는 문서 요약·질문 도구. AI 모델을 브라우저로 내려받아 내 PC에서 직접 실행합니다.",
   email: "dydrms6388@gmail.com",
   locale: "ko_KR",
   /** 카테고리별 OG/뱃지 색 */
-  colors: { primary: "#2563eb", accent: "#0ea5e9" },
+  colors: { primary: "#4338ca", accent: "#6366f1" },
 } as const;
 
 /** STATIC_EXPORT 프리뷰에서 basePath 를 붙이기 위한 헬퍼 */
