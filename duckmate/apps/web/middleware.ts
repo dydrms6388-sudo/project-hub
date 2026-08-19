@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 type CookieToSet = { name: string; value: string; options?: CookieOptions };
 
-const PUBLIC_PATHS = ["/", "/legal", "/auth", "/onboarding/age", "/login"];
+const PUBLIC_PATHS = ["/", "/legal", "/auth", "/onboarding/age", "/login", "/signup"];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -37,6 +37,11 @@ export async function middleware(request: NextRequest) {
   const isPublic = PUBLIC_PATHS.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`)
   );
+
+  // API 는 리다이렉트 대신 401 (D2 규약) — 각 Route Handler 가 최종 인가를 재검증한다.
+  if (!user && pathname.startsWith("/api")) {
+    return NextResponse.json({ ok: false, code: "UNAUTHENTICATED" }, { status: 401 });
+  }
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();
