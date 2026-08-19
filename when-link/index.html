@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>약속시간 링크 — 서버 없이 링크만 넘겨 모두 되는 시간 찾기 | TomatoEggCat</title>
+<meta name="description" content="후보 날짜와 시간대를 정해 링크를 만들고 단톡방에 넘기면, 각자 가능한 시간을 칠한 새 링크가 돌아옵니다. 마지막 링크 하나에 모두의 히트맵과 추천 시간 3개가 모이고, 확정한 시간은 .ics 캘린더 파일로 바로 저장됩니다. 가입도 서버도 없이 최대 7일 20명." />
+<link rel="canonical" href="https://tomatoeggcat.com/when-link/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="약속시간 링크 — 링크만 넘기면 모두 되는 시간이 모인다" />
+<meta property="og:description" content="후보 날짜를 정해 링크를 만들고, 각자 가능한 시간을 칠해 새 링크를 넘기세요. 마지막 링크에 히트맵과 추천 시간이 모입니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/when-link/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="약속시간 링크 — 링크만 넘기면 모두 되는 시간이 모인다" />
+<meta name="twitter:description" content="가입 없이 링크 하나로 모두 되는 시간을 찾고 .ics 로 저장하세요." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"약속시간 링크","description":"후보 날짜와 시간대를 정해 링크를 만들면 각자 가능한 시간을 칠해 새 링크를 넘기고, 마지막 링크에 모두의 히트맵과 추천 시간이 모이는 서버 없는 약속 시간 조율 도구.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/when-link/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"서버도 로그인도 없는데 어떻게 여러 명의 응답이 모이나요?","acceptedAnswer":{"@type":"Answer","text":"모든 응답을 주소(URL) 안에 넣어 옮기기 때문입니다. 약속 제목과 후보 날짜, 시간 범위, 그리고 지금까지 참여한 사람들의 가능 시간 비트맵이 압축돼 주소 뒤의 값으로 들어갑니다. 링크를 연 사람이 자기 시간을 칠하고 저장하면 그 사람의 데이터가 더해진 새 주소가 만들어지고, 그 새 링크를 다시 단톡방에 넘기면 됩니다. 데이터베이스가 없으니 저장되는 곳도 없고, 링크를 지우면 그 약속도 사라집니다."}},
+{"@type":"Question","name":"링크가 왜 이렇게 길어지나요?","acceptedAnswer":{"@type":"Answer","text":"참여자가 늘수록 주소 안에 담기는 정보가 늘기 때문입니다. 다만 가능·불가능은 한 칸당 1비트로 저장하고 그 비트열을 base64 로 접어 넣기 때문에, 7일 30분 단위 196칸이라도 한 사람당 34자 남짓입니다. 20명이 모두 응답해도 주소는 대체로 2천 자를 넘지 않아 카카오톡이나 문자로 넘기는 데 문제가 없습니다. 그래도 길이가 위험 수위에 닿으면 앱이 미리 경고하고, 한계를 넘으면 저장을 막습니다."}},
+{"@type":"Question","name":"이미 응답했는데 시간을 바꾸고 싶어요.","acceptedAnswer":{"@type":"Answer","text":"가장 최근 링크를 다시 열고, 처음에 썼던 것과 같은 닉네임을 입력한 뒤 다시 칠하고 저장하면 됩니다. 닉네임이 같으면 새 응답이 덧붙지 않고 이전 응답을 덮어씁니다. 같은 기기라면 리믹스 버튼으로 지난번에 칠했던 모양을 그대로 불러와 한두 칸만 고쳐 다시 저장할 수도 있습니다. 다만 남이 이미 더 최신 링크를 만들었다면, 그 최신 링크에서 수정해야 다른 사람의 응답이 지워지지 않습니다."}},
+{"@type":"Question","name":"아이폰 사파리에서 드래그로 칠해지지 않고 화면만 움직여요.","acceptedAnswer":{"@type":"Answer","text":"칸 위에서는 브라우저의 기본 스크롤 동작을 꺼 두었기 때문에 정상적으로는 드래그 칠하기가 됩니다. 만약 화면만 움직인다면 화면 확대가 걸려 있거나 페이지가 아직 다 뜨지 않은 경우가 많습니다. 확대를 원래대로 돌리고 새로고침한 뒤, 칸을 짧게 누른 상태에서 손가락을 옮겨 보세요. 가로로 스크롤하고 싶을 때는 칸이 아니라 위쪽 날짜 머리줄이나 왼쪽 시간 열을 잡고 밀면 됩니다."}},
+{"@type":"Question","name":"확정한 시간을 캘린더에 넣을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"추천 시간 옆의 캘린더 저장 버튼을 누르면 .ics 파일이 내려받아집니다. 이 파일은 아이폰 캘린더, 구글 캘린더, 아웃룩이 모두 읽는 표준 형식이고, 한국 시간(KST)을 세계표준시(UTC)로 바꿔 기록하므로 해외에 있는 참여자의 캘린더에서도 같은 순간으로 표시됩니다. 파일을 열면 제목과 시작·종료 시각이 채워진 일정이 뜨고, 저장만 누르면 등록됩니다."}},
+{"@type":"Question","name":"개인정보가 남지 않나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 닉네임 외에 어떤 정보도 받지 않습니다. 이름 전체, 전화번호, 이메일, 계정 같은 항목은 입력란 자체가 없습니다. 닉네임도 12자로 잘려 저장되니 별명이나 이니셜을 쓰시길 권합니다. 다만 주소에 담긴 값은 암호가 아니라 누구나 풀어 볼 수 있는 형태이므로, 링크를 받은 사람은 참여자들의 닉네임과 가능 시간을 볼 수 있습니다. 민감한 일정 제목은 적지 마세요."}},
+{"@type":"Question","name":"몇 명, 며칠까지 되나요?","acceptedAnswer":{"@type":"Answer","text":"후보 날짜는 최대 7일, 하루 시간 범위는 최대 14시간, 슬롯은 30분 또는 60분 단위, 참여자는 최대 20명입니다. 이 한계는 주소 길이를 메신저가 안전하게 옮길 수 있는 범위로 유지하기 위한 것입니다. 인원이 더 많은 모임이라면 팀을 나눠 링크를 두 개 만들거나, 후보 날짜를 3일 정도로 좁혀 다시 돌리는 편이 응답률도 높습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"모임·약속","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"약속시간 링크","item":"https://tomatoeggcat.com/when-link/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#a78bfa;--acc2:#c4b5fd;--bd:#262626;--cd:#161616}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:14px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:25px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#a78bfa,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 18px;font-size:15px}
+.card{border:1px solid var(--bd);background:var(--cd);border-radius:18px;padding:18px;margin-bottom:16px}
+.card h2{font-size:17px;margin:0 0 12px}
+.lab{font-size:12px;font-weight:700;color:#8b8b96;letter-spacing:.03em;margin:14px 0 6px}
+.lab:first-child{margin-top:0}
+input[type=text]{width:100%;padding:13px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px;min-height:48px}
+input[type=text]:focus{outline:none;border-color:var(--acc)}
+select{padding:12px 10px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:15px;min-height:48px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#1a1033;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#1f1a2e;color:#c4b5fd;border:1px solid #3b3357;font-weight:700}
+button.mini{width:auto;padding:10px 14px;font-size:14px;min-height:44px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;background:#0f0f0f;color:#c9c9c9;border:1px solid #333;font-weight:700}
+.seg button.on{background:rgba(167,139,250,.16);border-color:var(--acc);color:#ddd6fe}
+/* 달력 */
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.calhead b{font-size:15px}
+.calhead button{width:44px;height:44px;min-height:44px;padding:0;background:#1f1a2e;color:#c4b5fd;border:1px solid #3b3357;font-size:16px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dw{text-align:center;font-size:11px;color:#8b8b96;font-weight:700;padding:2px 0}
+.cal .dy{height:44px;border-radius:10px;border:1px solid #2a2a2a;background:#0f0f0f;color:#c9c9c9;font-size:14px;font-weight:700;padding:0;min-height:44px}
+.cal .dy.off{visibility:hidden}
+.cal .dy:disabled{opacity:.22}
+.cal .dy.on{background:rgba(167,139,250,.2);border-color:var(--acc);color:#ede9fe}
+.picked{font-size:13px;color:#9ca3af;margin:10px 0 0}
+.picked b{color:var(--acc2)}
+/* 그리드 */
+.gwrap{overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:14px;background:#0f0f0f;max-height:68vh}
+.grid{display:grid;min-width:max-content;font-size:11px;position:relative}
+.grid .hd{position:sticky;top:0;z-index:2;background:#15151c;color:#c4b5fd;font-weight:700;text-align:center;padding:6px 2px;border-bottom:1px solid #2c2c36;line-height:1.25}
+.grid .hd b{display:block;font-size:12px;color:#ededed}
+.grid .hd.sat{color:#93c5fd}
+.grid .hd.sun{color:#fca5a5}
+.grid .corner{left:0;z-index:4}
+.grid .tl{position:sticky;left:0;z-index:1;background:#101018;color:#7c7c88;font-size:10px;text-align:right;padding:0 6px 0 4px;border-right:1px solid #2c2c36;display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums}
+.grid .c{border-right:1px solid #1c1c22;border-bottom:1px solid #1c1c22;background:#131318;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#e9d5ff}
+.grid .c.hr{border-bottom-color:#33333f}
+.paint .c{touch-action:none;cursor:pointer}
+.paint .c.on{background:#7c3aed;box-shadow:inset 0 0 0 1px #a78bfa}
+.heat .c{cursor:pointer}
+.heat .c.best{box-shadow:inset 0 0 0 2px #fbbf24}
+.ghint{font-size:12px;color:#7c7c88;margin:8px 0 0}
+/* 추천 */
+.rec{display:flex;align-items:center;gap:10px;border:1px solid var(--bd);background:#0f0f0f;border-radius:14px;padding:12px;margin-bottom:10px;flex-wrap:wrap}
+.rec .rk{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#1a1033;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.rec .rb{flex:1;min-width:150px}
+.rec .rt{font-size:15px;font-weight:800;color:#ededed}
+.rec .rs{font-size:12.5px;color:#9ca3af}
+.rec .ra{display:flex;gap:6px;width:100%}
+.rec .ra button{flex:1;font-size:13px;padding:11px 6px;min-height:44px}
+.fixed{background:linear-gradient(90deg,#2a1d4d,#3b2a63);border:1px solid #4c3d7a;border-radius:14px;padding:12px 14px;margin-bottom:12px;font-size:14.5px;color:#e9d5ff}
+.fixed b{color:#fff}
+.meta{font-size:13px;color:#9ca3af;margin:0 0 12px}
+.meta b{color:var(--acc2)}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-20px -16px 14px;padding:11px 16px;background:linear-gradient(90deg,#2a1d4d,#3b2a63);border-bottom:1px solid #4c3d7a}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:13.5px;color:#e9d5ff;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 16px;font-size:14px;min-height:44px}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.share button{font-size:14px;padding:13px 8px}
+.linkbox{display:flex;gap:8px;align-items:center;background:#0f0f0f;border:1px dashed #3b3357;border-radius:12px;padding:10px 12px;font-size:12px;color:#9ca3af;word-break:break-all;margin-top:10px}
+#pop{position:fixed;display:none;z-index:60;background:#15151c;border:1px solid #3b3357;border-radius:12px;padding:11px 13px;max-width:80vw;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+#pop .pt{font-weight:800;color:#ddd6fe;margin-bottom:4px}
+#pop .pok{color:#86efac}
+#pop .png{color:#fca5a5;margin-top:3px}
+.hidden{display:none !important}
+.ad{margin:22px 0}
+h2.sec{font-size:19px;margin:28px 0 10px}
+.about p{color:#d0d0d0;font-size:14.5px}
+.about ol,.about ul{color:#d0d0d0;font-size:14.5px;padding-left:20px}
+.about li{margin-bottom:7px}
+.faq{border-top:1px solid var(--bd);padding:13px 0}
+.faq b{display:block;margin-bottom:4px;color:#ededed}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.disc{font-size:12.5px;color:#8b8b96;background:#141414;border:1px solid #232323;border-radius:12px;padding:12px 14px;margin-top:14px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:#1f1a2e;color:#cdd6ff;padding:9px 13px;border-radius:999px;text-decoration:none;min-height:40px;display:inline-flex;align-items:center}
+footer{margin-top:34px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+@media(max-width:380px){.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span id="inboundMsg">친구가 <b>약속 시간</b>을 모으고 있어요.</span>
+  <button id="meToo">나도 해보기 →</button>
+</div>
+
+<div class="nav"><a href="/">← TomatoEggCat</a></div>
+<h1>🗓️ 약속시간 링크</h1>
+<p class="lead">후보 날짜를 정해 <b>링크</b>를 만들고 단톡방에 넘기세요. 각자 가능한 시간을 칠해 새 링크를 넘기면, 마지막 링크 하나에 <b>모두의 히트맵</b>과 추천 시간이 모입니다. 가입도 서버도 없습니다.</p>
+
+<!-- ① 만들기 -->
+<div class="card" id="createCard">
+  <h2>1. 약속 만들기</h2>
+
+  <div class="lab">약속 제목</div>
+  <input type="text" id="title" maxlength="20" placeholder="예: 3월 팀 회식, 스터디 2주차" />
+
+  <div class="lab">후보 날짜 (최대 7일)</div>
+  <div class="calhead">
+    <button id="calPrev" aria-label="이전 달">‹</button>
+    <b id="calLabel">—</b>
+    <button id="calNext" aria-label="다음 달">›</button>
+  </div>
+  <div class="cal" id="cal"></div>
+  <p class="picked">선택한 날짜 <b id="dCount">0</b>/7 · <span id="dList">아직 없음</span></p>
+
+  <div class="lab">시간 범위 (최대 14시간)</div>
+  <div class="row2">
+    <select id="hFrom" aria-label="시작 시각"></select>
+    <select id="hTo" aria-label="종료 시각"></select>
+  </div>
+
+  <div class="lab">슬롯 단위</div>
+  <div class="seg">
+    <button class="on" id="s30" data-s="30">30분</button>
+    <button id="s60" data-s="60">60분</button>
+  </div>
+
+  <div style="margin-top:16px"><button id="makeBtn">🔗 약속 링크 만들기</button></div>
+  <p class="ghint" id="createHint">최대 7일 × 14시간 × 20명까지 담을 수 있어요.</p>
+</div>
+
+<!-- ② 응답 -->
+<div class="card hidden" id="respondCard">
+  <h2 id="rTitle">약속</h2>
+  <p class="meta" id="rMeta"></p>
+
+  <div class="lab">닉네임 (12자 · 별명 권장)</div>
+  <input type="text" id="nick" maxlength="12" placeholder="예: 민수, 총무, 3팀장" autocomplete="off" />
+
+  <div class="lab">가능한 시간을 칠해주세요 (드래그)</div>
+  <div class="gwrap" id="paintWrap"></div>
+  <p class="ghint">칸을 누른 채 끌면 이어서 칠해집니다. 이미 칠한 칸에서 시작하면 지우기가 돼요. 가로로 넘길 때는 위쪽 날짜줄이나 왼쪽 시간열을 잡고 미세요. 날짜 머리를 톡 누르면 그 날 전체가 켜지고 꺼집니다.</p>
+  <div class="row" style="margin-top:10px">
+    <button class="ghost mini" id="clearBtn">🧹 전부 지우기</button>
+    <button class="ghost mini" id="remixBtn">🔁 지난 응답 불러오기(리믹스)</button>
+  </div>
+
+  <div style="margin-top:14px"><button id="saveBtn">💾 내 응답 저장하고 새 링크 만들기</button></div>
+  <p class="ghint" id="saveHint"></p>
+</div>
+
+<!-- ③ 결과 -->
+<div class="hidden" id="resultSec">
+  <div class="card">
+    <h2>2. 모두의 가능 시간</h2>
+    <div class="fixed hidden" id="fixedBox"></div>
+    <p class="meta" id="hMeta"></p>
+    <div class="gwrap heatw" id="heatWrap"></div>
+    <p class="ghint">색이 진할수록 가능한 사람이 많아요. 칸을 누르면 누가 되고 누가 안 되는지 보입니다.</p>
+
+    <h2 style="margin-top:20px">3. 추천 시간 TOP 3</h2>
+    <div id="recHost"></div>
+
+    <div class="lab">공유하기</div>
+    <div class="linkbox"><span id="curLink">—</span></div>
+    <div class="share">
+      <button class="ghost" id="copyLink">🔗 링크 복사</button>
+      <button class="ghost" id="copyText">📋 단톡방 텍스트</button>
+      <button class="ghost" id="shareX">𝕏 공유</button>
+      <button class="ghost" id="shareEtc">📤 공유하기</button>
+    </div>
+    <div style="margin-top:10px"><button id="pngBtn">📸 히트맵 카드 저장(PNG)</button></div>
+    <div style="margin-top:10px"><button class="ghost" id="newBtn">✨ 다른 약속 새로 만들기</button></div>
+  </div>
+
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<div class="about">
+  <h2 class="sec">약속 시간 잡기 링크란?</h2>
+  <p>약속시간 링크는 여러 사람이 모두 되는 시간을 찾는 과정을, 오직 <b>주소(URL) 하나</b>로 끝내는 도구입니다. 보통 이런 일은 단톡방에서 "나는 화요일 저녁만 돼", "나는 수요일 7시 이후"라는 말이 스무 번쯤 오간 뒤에야 겨우 정리되고, 그마저도 한 사람이 손으로 표를 그려 맞춰야 합니다. 전용 서비스를 쓰자니 회원가입을 시켜야 하고, 개인 일정을 낯선 서버에 올리는 것도 께름칙하죠. 이 도구는 그 중간을 노립니다. 약속 제목과 후보 날짜, 하루 중 살펴볼 시간 범위를 정하면 그 설정이 통째로 담긴 링크가 만들어집니다. 링크를 받은 사람은 아무것도 설치하거나 가입하지 않고, 표 위에서 손가락으로 가능한 시간을 쓱 칠한 다음 저장을 누릅니다. 그러면 자기 응답이 더해진 <b>새 링크</b>가 나오고, 그 링크를 다시 단톡방에 던지면 됩니다. 이렇게 링크가 사람을 한 명씩 거칠 때마다 데이터가 쌓이고, 마지막 링크를 여는 사람은 모두의 응답이 겹쳐진 히트맵과 추천 시간 세 개를 한눈에 보게 됩니다. 서버도 데이터베이스도 계정도 없기 때문에, 약속이 끝나고 링크를 지우면 그 기록도 함께 사라집니다. 남는 것은 캘린더에 넣은 일정 하나뿐입니다.</p>
+
+  <h2 class="sec">이렇게 사용하세요</h2>
+  <ol>
+    <li><b>만들기</b> — 약속 제목을 적고 달력에서 후보 날짜를 최대 7일까지 고릅니다. 하루 중 살펴볼 시간 범위(예: 18시~23시)와 30분·60분 슬롯 단위를 정한 뒤 링크를 만드세요. 범위를 좁게 잡을수록 응답이 빨라집니다.</li>
+    <li><b>칠하기</b> — 만든 사람이 먼저 자기 시간을 칠하는 게 좋습니다. 닉네임을 적고 표에서 가능한 칸을 끌어 칠한 다음 저장을 누르면, 내 응답이 담긴 새 링크가 만들어집니다.</li>
+    <li><b>넘기기</b> — 그 새 링크를 단톡방에 올리고 "칠하고 나온 링크를 다시 올려주세요" 한마디를 덧붙이세요. 다음 사람이 열어 칠하고 저장하면 링크가 또 갱신되고, 이렇게 마지막 사람까지 이어집니다.</li>
+    <li><b>확정하기</b> — 마지막 링크를 열면 히트맵과 추천 시간 세 개가 보입니다. 마음에 드는 시간을 확정하면 확정 표시가 붙은 링크가 만들어지고, 캘린더 저장 버튼으로 .ics 파일을 받아 각자 캘린더에 넣으면 끝입니다.</li>
+  </ol>
+
+  <h2 class="sec">이럴 때 좋아요</h2>
+  <ul>
+    <li><b>회식·팀 저녁</b> — 부서 회식은 "언제 되세요?"를 윗사람이 물으면 아무도 솔직하게 답하지 않는다는 게 문제입니다. 링크를 돌리면 각자 조용히 칠하기만 하면 되니 눈치 싸움이 줄고, 히트맵을 그대로 공지에 붙이면 "이 날은 세 명이 안 된다"는 근거가 눈에 보여 조율이 빨라집니다. 후보를 평일 저녁 18~22시로 좁히고 60분 단위로 두면 응답도 1분이면 끝납니다.</li>
+    <li><b>스터디·과제 모임</b> — 매주 시간이 바뀌는 스터디는 고정 요일을 못 잡는 게 정상입니다. 다음 주 월~금을 후보로 잡고 30분 단위로 돌리면, 두 시간 연속으로 비는 구간이 어디인지 추천 시간이 알려줍니다. 확정한 뒤 .ics 를 공유하면 지각 인원도 눈에 띄게 줄어듭니다. 매주 같은 설정으로 새 링크만 만들어 돌리면 운영도 간단합니다.</li>
+    <li><b>동아리·소모임</b> — 인원이 열 명을 넘어가면 전체가 되는 시간은 거의 없습니다. 이 도구는 "전원 가능"만 찾지 않고, 몇 명이 되는지와 연속으로 몇 칸이 비는지를 함께 따져 순위를 매기기 때문에 "8명 되는 두 시간"처럼 현실적인 답을 줍니다. 정기 모임은 인원이 가장 많은 시간대를 고정 슬롯으로 삼는 근거로 쓰기 좋습니다.</li>
+    <li><b>가족 모임·부모님 일정</b> — 앱 설치를 부탁하기 어려운 가족에게는 링크가 가장 편합니다. 카카오톡으로 링크를 보내면 바로 열려서 칠하고 저장만 하면 되고, 계정도 비밀번호도 필요 없습니다. 명절 방문이나 생신 식사처럼 이동 시간이 중요한 약속은 시간 범위를 넉넉히 10~20시로 두고 60분 단위로 잡으면 어르신도 헷갈리지 않습니다.</li>
+  </ul>
+
+  <h2 class="sec">알아두면 좋은 한계</h2>
+  <p>모든 데이터가 주소 안에 들어가기 때문에 담을 수 있는 양에 분명한 한계가 있습니다. 후보 날짜는 <b>최대 7일</b>, 하루 시간 범위는 <b>최대 14시간</b>, 슬롯은 <b>30분 또는 60분</b>, 참여자는 <b>최대 20명</b>입니다. 이 범위를 넘기면 링크가 메신저에서 잘릴 위험이 커지므로 앱이 미리 막습니다. 또 링크에 담긴 값은 암호가 아니라서, 링크를 가진 사람은 참여자 닉네임과 가능 시간을 볼 수 있습니다. 회사 기밀이나 민감한 일정 제목은 적지 마세요. 마지막으로 응답은 <b>가장 최신 링크에만</b> 쌓입니다. 두 사람이 같은 링크에서 동시에 칠해 각자 저장하면 나중에 올라온 링크에 앞사람 응답이 빠질 수 있으니, 항상 단톡방의 마지막 링크를 열어 칠하는 습관이 필요합니다. 이 도구는 일정 관리 서비스가 아니라 가볍게 시간을 모으는 참고용 보조 도구입니다.</p>
+
+  <h2 class="sec">자주 묻는 질문</h2>
+  <div class="faq"><b>서버도 로그인도 없는데 어떻게 여러 명의 응답이 모이나요?</b><p>모든 응답을 주소 안에 넣어 옮기기 때문입니다. 제목과 후보 날짜, 시간 범위, 참여자들의 가능 시간 비트맵이 압축돼 주소 뒤 값으로 들어가고, 새로 칠한 사람이 저장하면 자기 데이터가 더해진 새 주소가 만들어집니다. 데이터베이스가 없으니 저장되는 곳도 없고, 링크를 지우면 약속도 함께 사라집니다.</p></div>
+  <div class="faq"><b>링크가 왜 이렇게 길어지나요?</b><p>참여자가 늘수록 담기는 정보가 늘기 때문입니다. 다만 가능·불가능을 한 칸당 1비트로 접어 넣어서, 7일 30분 단위 196칸이라도 한 사람당 34자 남짓입니다. 20명이 다 응답해도 대체로 2천 자를 넘지 않습니다. 길이가 위험 수위에 닿으면 경고가 뜨고, 한계를 넘으면 저장을 막습니다.</p></div>
+  <div class="faq"><b>이미 응답했는데 시간을 바꾸고 싶어요.</b><p>최신 링크를 다시 열고 <b>처음과 같은 닉네임</b>으로 칠한 뒤 저장하면 이전 응답을 덮어씁니다. 같은 기기라면 리믹스 버튼으로 지난번 모양을 그대로 불러와 몇 칸만 고쳐 저장할 수도 있어요. 남이 더 최신 링크를 만들었다면 그 링크에서 수정해야 다른 사람 응답이 지워지지 않습니다.</p></div>
+  <div class="faq"><b>아이폰 사파리에서 드래그가 안 되고 화면만 움직여요.</b><p>칸 위에서는 브라우저 기본 스크롤을 꺼 두어 정상적으로는 칠해집니다. 화면만 움직인다면 확대가 걸려 있거나 페이지가 덜 뜬 경우가 많으니, 확대를 되돌리고 새로고침한 뒤 다시 시도해 보세요. 가로로 넘기고 싶을 때는 칸이 아니라 위쪽 날짜 머리줄이나 왼쪽 시간 열을 잡고 밀면 됩니다.</p></div>
+  <div class="faq"><b>확정한 시간을 캘린더에 넣을 수 있나요?</b><p>추천 시간 옆 캘린더 저장 버튼을 누르면 .ics 파일이 내려받아집니다. 아이폰 캘린더·구글 캘린더·아웃룩이 모두 읽는 표준 형식이고, 한국 시간을 세계표준시로 바꿔 기록하므로 해외 참여자의 캘린더에서도 같은 순간으로 뜹니다.</p></div>
+  <div class="faq"><b>개인정보가 남지 않나요?</b><p>닉네임 외에는 아무것도 받지 않습니다. 이름 전체·전화번호·이메일 입력란 자체가 없고, 닉네임도 12자로 잘립니다. 다만 주소에 담긴 값은 암호가 아니어서 링크를 가진 사람은 닉네임과 가능 시간을 볼 수 있으니, 민감한 제목은 적지 마세요.</p></div>
+  <div class="faq"><b>몇 명, 며칠까지 되나요?</b><p>후보 날짜 최대 7일, 하루 최대 14시간, 슬롯 30·60분, 참여자 최대 20명입니다. 주소 길이를 메신저가 안전하게 옮길 수 있는 범위로 유지하기 위한 한계입니다. 더 큰 모임이라면 팀을 나눠 링크를 두 개 만들거나 후보 날짜를 3일로 좁히는 편이 응답률도 높습니다.</p></div>
+
+  <p class="disc">이 도구는 일정 조율을 돕는 <b>참고용 보조 도구</b>이며, 추천 시간은 입력된 응답만으로 계산한 결과라 실제 참석을 보장하지 않습니다. 확정 전에는 반드시 참여자에게 한 번 더 확인해 주세요. 링크에 담긴 값은 암호화되지 않으니 민감한 정보는 넣지 마세요.</p>
+
+  <div class="more">
+    <a href="/nbbang-link/">💸 N빵링크</a>
+    <a href="/dday/">📅 디데이</a>
+    <a href="/shift-work-calendar/">🗂️ 교대근무 달력</a>
+    <a href="/lunch-picker/">🍽️ 점심 뭐먹지</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<div id="pop"></div>
+
+<script>
+"use strict";
+/* ────────────────────────────────────────────────────────────────
+   아래 SK 블록은 templates/share-kit.js 를 그대로 인라인한 것입니다.
+   ──────────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────────────────────
+   share-kit v1 — TomatoEggCat 공유·바이럴 엔진 (자기완결 · 외부 의존 0)
+
+   사용법: 각 앱의 <script> 최상단에 이 파일 내용을 **그대로 붙여넣는다**.
+   (앱은 단일 파일 완결형이어야 하고, 나중에 앱별 도메인으로 떼어내도
+    이 엔진이 함께 따라가야 하므로 공유 <script src>를 쓰지 않는다.)
+
+   제공 기능
+   - 상태 URL 인코딩: SK.enc / SK.dec  (UTF-8 안전 base64url + 선택적 LZW 압축)
+   - URL 상태 훅:     SK.readState / SK.writeState / SK.clearState / SK.stateUrl
+   - 용량 가드:       SK.sizeOf (8KB 경고 / 12KB 차단)
+   - 체인:            SK.appendChain
+   - 비트맵:          SK.bitsToStr / SK.strToBits  (밸런스·시간표처럼 0/1 대량 상태용)
+   - 결정론 난수:     SK.kstYMD / SK.dailySeed / SK.prng / SK.pick / SK.shuffle
+   - 이모지 격자:     SK.emojiGrid
+   - 공유 UI:         SK.copy / SK.toast / SK.share / SK.xUrl
+   - 결과 카드:       SK.card / SK.wrapText / SK.roundRect / SK.savePng / SK.sharePng
+   - 유틸:            SK.esc / SK.nick (닉네임 12자 정제) / SK.countdownToKstMidnight
+
+   상태 스키마 규칙: 객체 키 반복은 URL 낭비 → **배열 튜플**로 쓴다.
+     좋음  {v:1,a:["민수",[3,1,4,...]]}
+     나쁨  {version:1,me:{nickname:"민수",answers:[...]}}
+   ──────────────────────────────────────────────────────────────────────────── */
+var SK = (function () {
+  "use strict";
+
+  /* ── UTF-8 ↔ 바이트 ─────────────────────────────────────────── */
+  function utf8Bytes(str) {
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(str);
+    var esc = unescape(encodeURIComponent(str)), out = new Uint8Array(esc.length);
+    for (var i = 0; i < esc.length; i++) out[i] = esc.charCodeAt(i);
+    return out;
+  }
+  function bytesUtf8(bytes) {
+    if (typeof TextDecoder !== "undefined") return new TextDecoder().decode(bytes);
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return decodeURIComponent(escape(s));
+  }
+
+  /* ── base64url ──────────────────────────────────────────────── */
+  var B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  var B64I = (function () { var m = {}; for (var i = 0; i < 64; i++) m[B64[i]] = i; return m; })();
+  function b64uEnc(bytes) {
+    var out = "", i;
+    for (i = 0; i + 2 < bytes.length; i += 3) {
+      var n = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+      out += B64[(n >> 18) & 63] + B64[(n >> 12) & 63] + B64[(n >> 6) & 63] + B64[n & 63];
+    }
+    var rem = bytes.length - i;
+    if (rem === 1) {
+      var a = bytes[i] << 16;
+      out += B64[(a >> 18) & 63] + B64[(a >> 12) & 63];
+    } else if (rem === 2) {
+      var b = (bytes[i] << 16) | (bytes[i + 1] << 8);
+      out += B64[(b >> 18) & 63] + B64[(b >> 12) & 63] + B64[(b >> 6) & 63];
+    }
+    return out;
+  }
+  function b64uDec(str) {
+    var clean = String(str).replace(/[^A-Za-z0-9\-_]/g, "");
+    var full = Math.floor(clean.length / 4), rem = clean.length % 4;
+    if (rem === 1) throw new Error("bad base64url length");
+    var len = full * 3 + (rem === 2 ? 1 : rem === 3 ? 2 : 0);
+    var out = new Uint8Array(len), o = 0, i;
+    for (i = 0; i + 3 < clean.length; i += 4) {
+      var n = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6) | B64I[clean[i + 3]];
+      out[o++] = (n >> 16) & 255; out[o++] = (n >> 8) & 255; out[o++] = n & 255;
+    }
+    if (rem === 2) {
+      out[o++] = ((B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12)) >> 16 & 255;
+    } else if (rem === 3) {
+      var m = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6);
+      out[o++] = (m >> 16) & 255; out[o++] = (m >> 8) & 255;
+    }
+    return out;
+  }
+
+  /* ── LZW (바이트 단위, 16비트 코드) ─────────────────────────────
+     한글 본문처럼 긴 텍스트를 URL에 담을 때 쓴다. 압축이 이득이 아니면
+     enc()가 자동으로 무압축(prefix "1")을 고른다. ─────────────────── */
+  function codeOf(dict, w) { return w.length === 1 ? w.charCodeAt(0) : dict.get(w); }
+  function lzwEnc(bytes) {
+    if (!bytes.length) return new Uint8Array(0);
+    var dict = new Map(), next = 256, codes = [], w = String.fromCharCode(bytes[0]);
+    for (var i = 1; i < bytes.length; i++) {
+      var c = String.fromCharCode(bytes[i]), wc = w + c;
+      if (dict.has(wc)) { w = wc; continue; }
+      codes.push(codeOf(dict, w));
+      if (next < 65536) dict.set(wc, next++);
+      w = c;
+    }
+    codes.push(codeOf(dict, w));
+    var out = new Uint8Array(codes.length * 2);
+    for (var j = 0; j < codes.length; j++) { out[j * 2] = (codes[j] >> 8) & 255; out[j * 2 + 1] = codes[j] & 255; }
+    return out;
+  }
+  function lzwDec(buf) {
+    if (buf.length % 2 !== 0) throw new Error("bad lzw stream");
+    var codes = [], i;
+    for (i = 0; i < buf.length; i += 2) codes.push((buf[i] << 8) | buf[i + 1]);
+    if (!codes.length) return new Uint8Array(0);
+    var dict = [], next = 256;
+    for (i = 0; i < 256; i++) dict[i] = String.fromCharCode(i);
+    var w = dict[codes[0]];
+    if (w === undefined) throw new Error("bad lzw code");
+    var out = w;
+    for (i = 1; i < codes.length; i++) {
+      var k = codes[i], entry;
+      if (k < next && dict[k] !== undefined) entry = dict[k];
+      else if (k === next) entry = w + w.charAt(0);
+      else throw new Error("bad lzw code");
+      out += entry;
+      if (next < 65536) dict[next++] = w + entry.charAt(0);
+      w = entry;
+    }
+    var bytes = new Uint8Array(out.length);
+    for (i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+    return bytes;
+  }
+
+  /* ── 상태 인코딩 ─────────────────────────────────────────────
+     prefix "1" = 무압축, "2" = LZW. 두 형식 모두 dec()가 읽는다. ── */
+  function enc(obj) {
+    var raw = utf8Bytes(JSON.stringify(obj));
+    var plain = "1" + b64uEnc(raw);
+    if (raw.length < 120) return plain;
+    try {
+      var z = "2" + b64uEnc(lzwEnc(raw));
+      return z.length < plain.length ? z : plain;
+    } catch (e) { return plain; }
+  }
+  function dec(str) {
+    if (!str) return null;
+    try {
+      var s = String(str), tag = s.charAt(0), body = s.slice(1);
+      if (tag !== "1" && tag !== "2") { tag = "1"; body = s; } // v0 링크(무접두) 하위호환
+      var bytes = b64uDec(body);
+      if (tag === "2") bytes = lzwDec(bytes);
+      var val = JSON.parse(bytesUtf8(bytes));
+      return (val && typeof val === "object") ? val : null;
+    } catch (e) { return null; }
+  }
+
+  /* ── URL 상태 ────────────────────────────────────────────────── */
+  var KEY = "d";
+  function stateUrl(obj, key) {
+    return location.origin + location.pathname + "?" + (key || KEY) + "=" + enc(obj);
+  }
+  function readState(key) {
+    try { return dec(new URLSearchParams(location.search).get(key || KEY)); }
+    catch (e) { return null; }
+  }
+  function writeState(obj, key) {
+    try { history.replaceState(null, "", location.pathname + "?" + (key || KEY) + "=" + enc(obj)); } catch (e) {}
+  }
+  function clearState() {
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  }
+  /* 8KB 경고 / 12KB 차단. 반환 {bytes, ok, warn} */
+  function sizeOf(obj) {
+    var n = enc(obj).length;
+    return { bytes: n, ok: n <= 12288, warn: n > 8192 };
+  }
+  /* 체인 추가: 최대 인원·용량 초과 시 {ok:false, reason} */
+  function appendChain(list, entry, maxItems) {
+    var arr = (list || []).slice();
+    if (arr.length >= (maxItems || 20)) return { ok: false, reason: "max", list: arr };
+    arr.push(entry);
+    return { ok: true, list: arr };
+  }
+
+  /* ── 비트맵(0/1 대량 상태) ───────────────────────────────────── */
+  function bitsToStr(bits) {
+    var bytes = new Uint8Array(Math.ceil(bits.length / 8));
+    for (var i = 0; i < bits.length; i++) if (bits[i]) bytes[i >> 3] |= (128 >> (i & 7));
+    return b64uEnc(bytes);
+  }
+  function strToBits(str, n) {
+    var bytes = b64uDec(str), bits = [];
+    for (var i = 0; i < n; i++) bits.push(((bytes[i >> 3] || 0) >> (7 - (i & 7))) & 1);
+    return bits;
+  }
+
+  /* ── KST 날짜 · 결정론 난수 ──────────────────────────────────── */
+  var KST_MS = 9 * 3600 * 1000;
+  function kstDate(d) { return new Date((d ? d.getTime() : Date.now()) + KST_MS); }
+  /* KST 기준 YYYYMMDD 숫자 */
+  function kstYMD(d) {
+    var k = kstDate(d);
+    return k.getUTCFullYear() * 10000 + (k.getUTCMonth() + 1) * 100 + k.getUTCDate();
+  }
+  /* 기준일(YYYYMMDD)로부터 KST 며칠째인가 — 데일리 게임 회차 번호 */
+  function kstDayIndex(startYMD, d) {
+    var s = String(startYMD);
+    var start = Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8));
+    var k = kstDate(d);
+    var cur = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate());
+    return Math.round((cur - start) / 86400000);
+  }
+  function hash32(str) {
+    var h = 2166136261 >>> 0;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return h >>> 0;
+  }
+  function dailySeed(salt, d) { return hash32(kstYMD(d) + "|" + (salt || "")); }
+  function prng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), 1 | t);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function pick(rnd, arr) { return arr[Math.floor(rnd() * arr.length) % arr.length]; }
+  function shuffle(rnd, arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  /* KST 자정까지 남은 시간 {h,m,s,ms} */
+  function countdownToKstMidnight(d) {
+    var k = kstDate(d);
+    var ms = 86400000 - (k.getUTCHours() * 3600000 + k.getUTCMinutes() * 60000 + k.getUTCSeconds() * 1000 + k.getUTCMilliseconds());
+    return { ms: ms, h: Math.floor(ms / 3600000), m: Math.floor(ms / 60000) % 60, s: Math.floor(ms / 1000) % 60 };
+  }
+
+  /* ── 이모지 격자(데일리 공유용) ───────────────────────────────── */
+  function emojiGrid(rows, header) {
+    var body = rows.map(function (r) { return r.join(""); }).join("\n");
+    return (header ? header + "\n" : "") + body;
+  }
+
+  /* ── 문자열 유틸 ─────────────────────────────────────────────── */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  /* 닉네임: 12자 · 제어문자 제거. 개인정보(실명 강요) 금지 — 별명 안내는 UI에서. */
+  function nick(s, fallback) {
+    var raw = String(s == null ? "" : s), t = "";
+    for (var i = 0; i < raw.length && t.length < 12; i++) {
+      var cc = raw.charCodeAt(i);
+      if (cc < 32 || cc === 127) continue;              // 제어문자 제거
+      if ("<>&\"'\\".indexOf(raw[i]) >= 0) continue;      // HTML 위험 문자 제거
+      t += raw[i];
+    }
+    t = t.trim();
+    return t || (fallback || "익명");
+  }
+
+  /* ── 공유 UI ─────────────────────────────────────────────────── */
+  function toast(msg) {
+    var el = document.getElementById("sk-toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "sk-toast";
+      el.setAttribute("role", "status");
+      el.style.cssText = "position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);z-index:99;" +
+        "background:#101014;color:#f2f3f5;border:1px solid #33343c;border-radius:12px;padding:11px 16px;font-size:14px;" +
+        "font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.45);opacity:0;transition:.18s;pointer-events:none;max-width:88vw;text-align:center";
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    requestAnimationFrame(function () { el.style.opacity = "1"; el.style.transform = "translateX(-50%) translateY(0)"; });
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.style.opacity = "0"; el.style.transform = "translateX(-50%) translateY(8px)"; }, 1900);
+  }
+  function copy(text) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallback(); });
+    }
+    return Promise.resolve(fallback());
+  }
+  function share(opts) {
+    if (navigator.share) {
+      return navigator.share(opts).then(function () { return true; }, function () { return false; });
+    }
+    return copy(opts.url || opts.text || "").then(function (ok) {
+      if (ok) toast("링크를 복사했어요. 카톡·인스타에 붙여넣으세요");
+      return ok;
+    });
+  }
+  function xUrl(text, url) {
+    return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
+  }
+
+  /* ── 결과 카드(캔버스) ───────────────────────────────────────── */
+  var FONT = '-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif';
+  /* preset: "story"(1080×1920) | "square"(1080×1080) | "card"(1080×1350) */
+  function card(preset) {
+    var size = preset === "story" ? [1080, 1920] : preset === "square" ? [1080, 1080] : [1080, 1350];
+    var cv = document.createElement("canvas");
+    cv.width = size[0]; cv.height = size[1];
+    var ctx = cv.getContext("2d");
+    ctx.textBaseline = "top";
+    return { cv: cv, ctx: ctx, W: size[0], H: size[1], font: FONT };
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    var rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rr);
+    ctx.arcTo(x + w, y + h, x, y + h, rr);
+    ctx.arcTo(x, y + h, x, y, rr);
+    ctx.arcTo(x, y, x + w, y, rr);
+    ctx.closePath();
+  }
+  /* 줄바꿈 그리기 → 마지막 y 반환 */
+  function wrapText(ctx, text, x, y, maxW, lh, maxLines) {
+    var words = String(text).split(/(\s+)/), line = "", lines = [];
+    for (var i = 0; i < words.length; i++) {
+      var test = line + words[i];
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line.replace(/\s+$/, "")); line = words[i].replace(/^\s+/, ""); }
+      else line = test;
+    }
+    if (line.trim()) lines.push(line.replace(/\s+$/, ""));
+    /* 공백 없는 긴 한글 줄 대비: 글자 단위 재분할 */
+    var out = [];
+    for (var j = 0; j < lines.length; j++) {
+      var l = lines[j];
+      while (ctx.measureText(l).width > maxW && l.length > 1) {
+        var cut = l.length;
+        while (cut > 1 && ctx.measureText(l.slice(0, cut)).width > maxW) cut--;
+        out.push(l.slice(0, cut)); l = l.slice(cut);
+      }
+      out.push(l);
+    }
+    if (maxLines && out.length > maxLines) { out = out.slice(0, maxLines); out[maxLines - 1] = out[maxLines - 1].replace(/.$/, "…"); }
+    for (var k = 0; k < out.length; k++) ctx.fillText(out[k], x, y + k * lh);
+    return y + out.length * lh;
+  }
+  /* 하단 워터마크 — 도메인/앱 경로 (예: "tomatoeggcat.com/chemi-link") */
+  function watermark(ctx, W, H, label, color) {
+    ctx.font = "600 26px " + FONT;
+    ctx.fillStyle = color || "rgba(255,255,255,.42)";
+    ctx.textAlign = "center";
+    ctx.fillText(label, W / 2, H - 62);
+    ctx.textAlign = "left";
+  }
+  function savePng(cv, filename) {
+    try {
+      var a = document.createElement("a");
+      a.href = cv.toDataURL("image/png");
+      a.download = filename || "card.png";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      return true;
+    } catch (e) { return false; }
+  }
+  /* navigator.share(files) 우선 → 실패 시 PNG 다운로드 */
+  function sharePng(cv, filename, title) {
+    return new Promise(function (resolve) {
+      if (!cv.toBlob || !navigator.canShare) { resolve(savePng(cv, filename)); return; }
+      cv.toBlob(function (blob) {
+        if (!blob) { resolve(savePng(cv, filename)); return; }
+        try {
+          var file = new File([blob], filename || "card.png", { type: "image/png" });
+          if (navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: title || "" }).then(
+              function () { resolve(true); },
+              function () { resolve(savePng(cv, filename)); }
+            );
+            return;
+          }
+        } catch (e) {}
+        resolve(savePng(cv, filename));
+      }, "image/png");
+    });
+  }
+
+  return {
+    enc: enc, dec: dec,
+    stateUrl: stateUrl, readState: readState, writeState: writeState, clearState: clearState,
+    sizeOf: sizeOf, appendChain: appendChain,
+    bitsToStr: bitsToStr, strToBits: strToBits,
+    kstYMD: kstYMD, kstDayIndex: kstDayIndex, dailySeed: dailySeed, hash32: hash32,
+    prng: prng, pick: pick, shuffle: shuffle, countdownToKstMidnight: countdownToKstMidnight,
+    emojiGrid: emojiGrid, esc: esc, nick: nick,
+    toast: toast, copy: copy, share: share, xUrl: xUrl,
+    card: card, roundRect: roundRect, wrapText: wrapText, watermark: watermark,
+    savePng: savePng, sharePng: sharePng
+  };
+})();
+if (typeof module !== "undefined" && module.exports) module.exports = SK;
+
+/* WL:START — 순수 로직(DOM 비의존). node 검증에서 그대로 평가한다. */
+var WL = (function () {
+  var MAXD = 7, MAXP = 20, MAXH = 14;
+  var DOW = ["일", "월", "화", "수", "목", "금", "토"];
+
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function ymdParts(n) { n = +n; return { y: Math.floor(n / 10000), m: Math.floor(n / 100) % 100, d: n % 100 }; }
+  function ymdNum(y, m, d) { return y * 10000 + m * 100 + d; }
+  function ymdDow(n) { var p = ymdParts(n); return new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay(); }
+  function ymdShort(n) { var p = ymdParts(n); return p.m + "/" + p.d; }
+  function ymdFull(n) { var p = ymdParts(n); return p.m + "월 " + p.d + "일(" + DOW[ymdDow(n)] + ")"; }
+  function hhmm(mins) { return pad2(Math.floor(mins / 60)) + ":" + pad2(mins % 60); }
+  function durText(mins) {
+    var h = Math.floor(mins / 60), m = mins % 60;
+    return (h ? h + "시간" : "") + (m ? (h ? " " : "") + m + "분" : "");
+  }
+
+  /* 하루 슬롯 수 / 전체 비트 수 / i번째 슬롯 시작 분 */
+  function spd(st) { return Math.round((st.r[1] - st.r[0]) * 60 / st.s); }
+  function nbits(st) { return st.d.length * spd(st); }
+  function slotMin(st, i) { return st.r[0] * 60 + i * st.s; }
+
+  /* 링크로 들어온 값은 절대 믿지 않는다 */
+  function valid(st) {
+    if (!st || typeof st !== "object") return false;
+    if (st.v !== 1) return false;
+    if (typeof st.t !== "string" || st.t.length > 40) return false;
+    if (!Array.isArray(st.d) || st.d.length < 1 || st.d.length > MAXD) return false;
+    for (var i = 0; i < st.d.length; i++) {
+      var n = st.d[i];
+      if (typeof n !== "number" || !isFinite(n) || n < 19700101 || n > 29991231) return false;
+      var p = ymdParts(n);
+      if (p.m < 1 || p.m > 12 || p.d < 1 || p.d > 31) return false;
+    }
+    if (st.s !== 30 && st.s !== 60) return false;
+    if (!Array.isArray(st.r) || st.r.length !== 2) return false;
+    if (typeof st.r[0] !== "number" || typeof st.r[1] !== "number") return false;
+    if (st.r[0] < 0 || st.r[1] > 24 || st.r[1] <= st.r[0]) return false;
+    if (st.r[1] - st.r[0] > MAXH) return false;
+    if (!Array.isArray(st.p) || st.p.length > MAXP) return false;
+    for (var k = 0; k < st.p.length; k++) {
+      var e = st.p[k];
+      if (!Array.isArray(e) || e.length !== 2) return false;
+      if (typeof e[0] !== "string" || typeof e[1] !== "string") return false;
+      // 닉네임은 입력할 때만 정제하면 손으로 만든 링크가 그대로 렌더된다.
+      // 링크를 읽는 이 길목에서 한 번 더 12자로 정제한다.
+      e[0] = SK.nick(e[0], "익명");
+    }
+    if (st.c !== undefined) {
+      if (!Array.isArray(st.c) || st.c.length !== 3) return false;
+      if (st.c[0] < 0 || st.c[0] >= st.d.length) return false;
+      if (st.c[1] < 0 || st.c[1] >= spd(st)) return false;
+      if (st.c[2] < 1 || st.c[1] + st.c[2] > spd(st)) return false;
+    }
+    return true;
+  }
+
+  /* 참여자별 가능 비트 배열 */
+  function avail(st) {
+    var n = nbits(st), out = [], i;
+    for (i = 0; i < st.p.length; i++) {
+      var bits;
+      try { bits = SK.strToBits(st.p[i][1], n); }
+      catch (e) { bits = null; }
+      if (!bits) { bits = []; for (var j = 0; j < n; j++) bits.push(0); }
+      out.push(bits);
+    }
+    return out;
+  }
+
+  /* 칸별 가능 인원 수 */
+  function counts(st, av) {
+    av = av || avail(st);
+    var n = nbits(st), out = [], i, k;
+    for (i = 0; i < n; i++) {
+      var c = 0;
+      for (k = 0; k < av.length; k++) if (av[k][i]) c++;
+      out.push(c);
+    }
+    return out;
+  }
+
+  /* 추천: 인원 수 우선 → 연속 길이 → 이른 날짜 → 이른 시각. 완전 결정론. */
+  function recommend(st) {
+    var av = avail(st), P = av.length;
+    if (!P) return [];
+    var sp = spd(st), D = st.d.length;
+    /* 길이 하한은 1칸. "1시간 이상"으로 막으면 전원이 30분만 겹치는 시간대가
+       추천에서 통째로 사라진다. 길이는 하한이 아니라 동점자 정렬로 반영한다. */
+    var minL = 1;
+    var maxL = Math.min(sp, Math.round(240 / st.s));
+    var cands = [], d, i, L, k;
+    for (d = 0; d < D; d++) {
+      for (i = 0; i < sp; i++) {
+        var alive = [];
+        for (k = 0; k < P; k++) alive.push(k);
+        for (L = 1; i + L <= sp && L <= maxL; L++) {
+          var slot = d * sp + (i + L - 1);
+          var next = [];
+          for (k = 0; k < alive.length; k++) if (av[alive[k]][slot]) next.push(alive[k]);
+          alive = next;
+          if (!alive.length) break;
+          if (L >= minL) cands.push({ d: d, i: i, L: L, cnt: alive.length, who: alive.slice() });
+        }
+      }
+    }
+    cands.sort(function (a, b) {
+      if (b.cnt !== a.cnt) return b.cnt - a.cnt;   // 인원 많은 쪽
+      if (b.L !== a.L) return b.L - a.L;           // 길게 이어지는 쪽
+      if (a.d !== b.d) return a.d - b.d;           // 동수면 이른 날짜
+      return a.i - b.i;                            // 그래도 같으면 이른 시각
+    });
+    var out = [];
+    for (var c = 0; c < cands.length && out.length < 3; c++) {
+      var x = cands[c], ov = false;
+      for (var o = 0; o < out.length; o++) {
+        var y = out[o];
+        if (y.d === x.d && x.i < y.i + y.L && y.i < x.i + x.L) { ov = true; break; }
+      }
+      if (!ov) out.push(x);
+    }
+    return out;
+  }
+
+  /* ── .ics (KST → UTC 변환해 Z 형식으로 기록) ── */
+  function zstamp(ms) {
+    var t = new Date(ms);
+    return t.getUTCFullYear() + pad2(t.getUTCMonth() + 1) + pad2(t.getUTCDate()) + "T" +
+      pad2(t.getUTCHours()) + pad2(t.getUTCMinutes()) + pad2(t.getUTCSeconds()) + "Z";
+  }
+  function byteLen(s) {
+    try { return new TextEncoder().encode(s).length; }
+    catch (e) { return unescape(encodeURIComponent(s)).length; }
+  }
+  function icsEsc(s) {
+    return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+  }
+  /* RFC5545 75옥텟 접기 — 한글이 잘리지 않게 글자 경계에서만 자른다 */
+  function fold(line) {
+    if (byteLen(line) <= 73) return line;
+    var out = [], cur = "", i;
+    for (i = 0; i < line.length; i++) {
+      var lim = out.length ? 72 : 73;
+      if (byteLen(cur + line.charAt(i)) > lim) { out.push(cur); cur = line.charAt(i); }
+      else cur += line.charAt(i);
+    }
+    if (cur) out.push(cur);
+    return out.join("\r\n ");
+  }
+  /* KST 기준 (YYYYMMDD, 분) → UTC ms. -9시간은 Date.UTC 가 날짜까지 알아서 넘긴다. */
+  function kstToUtcMs(ymd, mins) {
+    var p = ymdParts(ymd);
+    return Date.UTC(p.y, p.m - 1, p.d, Math.floor(mins / 60) - 9, mins % 60, 0);
+  }
+  function buildIcs(st, rec, url, nowMs) {
+    var day = st.d[rec.d];
+    var s0 = slotMin(st, rec.i), s1 = s0 + rec.L * st.s;
+    var uid = "wl-" + SK.hash32(st.t + "|" + day + "|" + s0 + "|" + st.s).toString(36) +
+      "-" + day + "-" + s0 + "@tomatoeggcat.com";
+    var title = st.t || "약속";
+    var desc = "약속시간 링크에서 정한 시간입니다. 응답 " + st.p.length + "명 중 " + rec.cnt + "명 가능.";
+    var L = [];
+    L.push("BEGIN:VCALENDAR");
+    L.push("VERSION:2.0");
+    L.push("PRODID:-//TomatoEggCat//when-link//KO");
+    L.push("CALSCALE:GREGORIAN");
+    L.push("METHOD:PUBLISH");
+    L.push("BEGIN:VEVENT");
+    L.push("UID:" + uid);
+    L.push("DTSTAMP:" + zstamp(nowMs || Date.now()));
+    L.push("DTSTART:" + zstamp(kstToUtcMs(day, s0)));
+    L.push("DTEND:" + zstamp(kstToUtcMs(day, s1)));
+    L.push(fold("SUMMARY:" + icsEsc(title)));
+    L.push(fold("DESCRIPTION:" + icsEsc(desc)));
+    if (url) L.push(fold("URL:" + icsEsc(url)));
+    L.push("END:VEVENT");
+    L.push("END:VCALENDAR");
+    return L.join("\r\n") + "\r\n";
+  }
+
+  /* 제목 정제(제어문자·HTML 위험문자 제거, 20자) — 정규식 대신 charCode 비교 */
+  function cleanTitle(s, fallback) {
+    var raw = String(s == null ? "" : s), t = "";
+    for (var i = 0; i < raw.length && t.length < 20; i++) {
+      var cc = raw.charCodeAt(i);
+      if (cc < 32 || cc === 127) continue;
+      if ("<>&\"'\\".indexOf(raw.charAt(i)) >= 0) continue;
+      t += raw.charAt(i);
+    }
+    t = t.trim();
+    return t || (fallback || "우리 약속");
+  }
+  /* 같은 약속인지 식별하는 키(리믹스 프리필용) */
+  function keyOf(st) {
+    return SK.hash32(st.t + "|" + st.d.join(",") + "|" + st.s + "|" + st.r.join("-")).toString(36);
+  }
+
+  return {
+    MAXD: MAXD, MAXP: MAXP, MAXH: MAXH, DOW: DOW,
+    pad2: pad2, ymdParts: ymdParts, ymdNum: ymdNum, ymdDow: ymdDow,
+    ymdShort: ymdShort, ymdFull: ymdFull, hhmm: hhmm, durText: durText,
+    spd: spd, nbits: nbits, slotMin: slotMin, valid: valid,
+    avail: avail, counts: counts, recommend: recommend,
+    zstamp: zstamp, icsEsc: icsEsc, fold: fold, kstToUtcMs: kstToUtcMs, buildIcs: buildIcs,
+    cleanTitle: cleanTitle, keyOf: keyOf
+  };
+})();
+/* WL:END */
+
+/* ══════════════ UI ══════════════ */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var LSKEY = "tec:when-link:last";
+  var S = null;          // 현재 약속 상태
+  var myBits = null;     // 내가 칠하는 비트
+  var recs = [];         // 추천 TOP3
+  var arrived = false;   // 링크로 들어왔는가
+
+  /* ── 만들기 폼 ── */
+  var calY, calM, selDates = [], slotUnit = 30;
+
+  function todayYMD() { return SK.kstYMD(); }
+
+  function renderCal() {
+    var first = new Date(Date.UTC(calY, calM, 1));
+    var lead = first.getUTCDay();
+    var days = new Date(Date.UTC(calY, calM + 1, 0)).getUTCDate();
+    var today = todayYMD();
+    $("calLabel").textContent = calY + "년 " + (calM + 1) + "월";
+    var h = "", i;
+    for (i = 0; i < 7; i++) h += '<div class="dw">' + WL.DOW[i] + "</div>";
+    for (i = 0; i < lead; i++) h += '<button class="dy off" disabled></button>';
+    for (i = 1; i <= days; i++) {
+      var ymd = WL.ymdNum(calY, calM + 1, i);
+      var on = selDates.indexOf(ymd) >= 0;
+      var past = ymd < today;
+      h += '<button class="dy' + (on ? " on" : "") + '" data-ymd="' + ymd + '"' + (past ? " disabled" : "") + ">" + i + "</button>";
+    }
+    $("cal").innerHTML = h;
+    syncPicked();
+  }
+  function syncPicked() {
+    selDates.sort(function (a, b) { return a - b; });
+    $("dCount").textContent = selDates.length;
+    $("dList").textContent = selDates.length
+      ? selDates.map(function (n) { return WL.ymdShort(n) + "(" + WL.DOW[WL.ymdDow(n)] + ")"; }).join(", ")
+      : "아직 없음";
+  }
+  function initCreate() {
+    var t = WL.ymdParts(todayYMD());
+    calY = t.y; calM = t.m - 1;
+    var hf = $("hFrom"), ht = $("hTo"), i, o;
+    for (i = 0; i <= 23; i++) { o = document.createElement("option"); o.value = i; o.textContent = WL.pad2(i) + "시"; hf.appendChild(o); }
+    for (i = 1; i <= 24; i++) { o = document.createElement("option"); o.value = i; o.textContent = WL.pad2(i) + "시"; ht.appendChild(o); }
+    hf.value = "18"; ht.value = "23";
+    renderCal();
+  }
+  $("calPrev").addEventListener("click", function () { calM--; if (calM < 0) { calM = 11; calY--; } renderCal(); });
+  $("calNext").addEventListener("click", function () { calM++; if (calM > 11) { calM = 0; calY++; } renderCal(); });
+  $("cal").addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".dy") : null;
+    if (!b || b.disabled) return;
+    var ymd = +b.getAttribute("data-ymd");
+    var at = selDates.indexOf(ymd);
+    if (at >= 0) selDates.splice(at, 1);
+    else {
+      if (selDates.length >= WL.MAXD) { SK.toast("후보 날짜는 최대 7일까지예요"); return; }
+      selDates.push(ymd);
+    }
+    b.classList.toggle("on", at < 0);
+    syncPicked();
+  });
+  $("s30").addEventListener("click", function () { slotUnit = 30; $("s30").classList.add("on"); $("s60").classList.remove("on"); });
+  $("s60").addEventListener("click", function () { slotUnit = 60; $("s60").classList.add("on"); $("s30").classList.remove("on"); });
+
+  $("makeBtn").addEventListener("click", function () {
+    if (!selDates.length) { SK.toast("후보 날짜를 하나 이상 골라주세요"); return; }
+    var a = +$("hFrom").value, b = +$("hTo").value;
+    if (b <= a) { SK.toast("종료 시각이 시작보다 늦어야 해요"); return; }
+    if (b - a > WL.MAXH) { SK.toast("시간 범위는 최대 14시간까지예요"); return; }
+    var st = {
+      v: 1, t: WL.cleanTitle($("title").value, "우리 약속"),
+      d: selDates.slice().sort(function (x, y) { return x - y; }),
+      s: slotUnit, r: [a, b], p: []
+    };
+    if (!SK.sizeOf(st).ok) { SK.toast("설정이 너무 큽니다. 날짜를 줄여주세요"); return; }
+    SK.writeState(st);
+    boot(st, false);
+    SK.toast("링크를 만들었어요. 먼저 내 시간을 칠해보세요");
+    $("respondCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  /* ── 그리드 ── */
+  function gridHTML(kind, cellH, cellW, cellFn) {
+    var sp = WL.spd(S), D = S.d.length, d, i;
+    var h = '<div class="grid ' + kind + '" id="' + (kind === "paint" ? "paintGrid" : "heatGrid") +
+      '" style="grid-template-columns:54px repeat(' + D + "," + cellW + 'px)">';
+    h += '<div class="hd corner"></div>';
+    for (d = 0; d < D; d++) {
+      var w = WL.ymdDow(S.d[d]);
+      h += '<div class="hd' + (w === 0 ? " sun" : w === 6 ? " sat" : "") + '" data-col="' + d + '">' +
+        WL.DOW[w] + "<b>" + WL.ymdShort(S.d[d]) + "</b></div>";
+    }
+    for (i = 0; i < sp; i++) {
+      var mm = WL.slotMin(S, i);
+      h += '<div class="tl" style="height:' + cellH + 'px">' + (mm % 60 === 0 ? WL.hhmm(mm) : "") + "</div>";
+      for (d = 0; d < D; d++) h += cellFn(d * sp + i, d, i, mm, cellH);
+    }
+    return h + "</div>";
+  }
+  function cellW() { return S.d.length <= 4 ? 64 : 46; }
+
+  function renderPaint() {
+    $("paintWrap").innerHTML = gridHTML("paint", 30, cellW(), function (idx, d, i, mm, ch) {
+      return '<div class="c' + ((mm + S.s) % 60 === 0 ? " hr" : "") + (myBits[idx] ? " on" : "") +
+        '" data-i="' + idx + '" style="height:' + ch + 'px"></div>';
+    });
+    bindPaint();
+    updateSaveHint();
+  }
+  function syncPaint() {
+    var cs = document.querySelectorAll("#paintGrid .c");
+    for (var i = 0; i < cs.length; i++) {
+      var idx = +cs[i].getAttribute("data-i");
+      cs[i].classList.toggle("on", !!myBits[idx]);
+    }
+  }
+  function bindPaint() {
+    var g = $("paintGrid");
+    if (!g) return;
+    var painting = false, mode = 1;
+    function apply(cell) {
+      var idx = +cell.getAttribute("data-i");
+      if (myBits[idx] === mode) return;
+      myBits[idx] = mode;
+      cell.classList.toggle("on", mode === 1);
+    }
+    g.addEventListener("pointerdown", function (e) {
+      var cell = e.target && e.target.closest ? e.target.closest(".c") : null;
+      if (!cell) return;
+      painting = true;
+      mode = cell.classList.contains("on") ? 0 : 1;
+      try { g.setPointerCapture(e.pointerId); } catch (err) {}
+      apply(cell);
+      e.preventDefault();
+    });
+    g.addEventListener("pointermove", function (e) {
+      if (!painting) return;
+      var el = document.elementFromPoint(e.clientX, e.clientY);
+      var cell = el && el.closest ? el.closest(".c") : null;
+      if (cell && g.contains(cell)) apply(cell);
+      e.preventDefault();
+    });
+    function end(e) {
+      if (!painting) return;
+      painting = false;
+      try { g.releasePointerCapture(e.pointerId); } catch (err) {}
+      updateSaveHint();
+    }
+    g.addEventListener("pointerup", end);
+    g.addEventListener("pointercancel", end);
+    g.addEventListener("lostpointercapture", end);
+    /* 날짜 머리 탭 = 그 날 전체 토글 */
+    g.addEventListener("click", function (e) {
+      var hd = e.target && e.target.closest ? e.target.closest(".hd") : null;
+      if (!hd || hd.getAttribute("data-col") === null) return;
+      var d = +hd.getAttribute("data-col"), sp = WL.spd(S), k, all = true;
+      for (k = 0; k < sp; k++) if (!myBits[d * sp + k]) { all = false; break; }
+      for (k = 0; k < sp; k++) myBits[d * sp + k] = all ? 0 : 1;
+      syncPaint();
+      updateSaveHint();
+    });
+  }
+  function updateSaveHint() {
+    var n = 0;
+    for (var i = 0; i < myBits.length; i++) if (myBits[i]) n++;
+    var mins = n * S.s;
+    $("saveHint").textContent = n
+      ? "칠한 시간 " + n + "칸(" + WL.durText(mins) + ") · 현재 응답 " + S.p.length + "/20명"
+      : "아직 칠한 칸이 없어요 · 현재 응답 " + S.p.length + "/20명";
+  }
+
+  /* ── 히트맵 ── */
+  function renderHeat() {
+    var av = WL.avail(S), cnt = WL.counts(S, av), mx = 0, i;
+    for (i = 0; i < cnt.length; i++) if (cnt[i] > mx) mx = cnt[i];
+    var bestSet = {};
+    if (recs.length) {
+      var r0 = recs[0], sp0 = WL.spd(S);
+      for (i = 0; i < r0.L; i++) bestSet[r0.d * sp0 + r0.i + i] = 1;
+    }
+    $("heatWrap").innerHTML = gridHTML("heat", 26, cellW(), function (idx, d, i, mm, ch) {
+      var c = cnt[idx];
+      var bg = c === 0 ? "#131318" : "rgba(167,139,250," + (0.16 + 0.74 * (c / (mx || 1))).toFixed(3) + ")";
+      var col = c && c / (mx || 1) > 0.55 ? "#1a1033" : "#e9d5ff";
+      return '<div class="c' + ((mm + S.s) % 60 === 0 ? " hr" : "") + (bestSet[idx] ? " best" : "") +
+        '" data-i="' + idx + '" style="height:' + ch + "px;background:" + bg + ";color:" + col + '">' +
+        (c ? c : "") + "</div>";
+    });
+    var names = S.p.map(function (p) { return SK.esc(p[0]); }).join(" · ");
+    $("hMeta").innerHTML = "응답 <b>" + S.p.length + "</b>/20명" + (names ? " · " + names : " · 아직 아무도 칠하지 않았어요");
+  }
+
+  function showPop(cell, idx) {
+    var pop = $("pop"), sp = WL.spd(S), d = Math.floor(idx / sp), i = idx % sp;
+    var av = WL.avail(S), ok = [], ng = [], k;
+    for (k = 0; k < S.p.length; k++) (av[k][idx] ? ok : ng).push(S.p[k][0]);
+    var m0 = WL.slotMin(S, i);
+    var head = WL.ymdFull(S.d[d]) + " " + WL.hhmm(m0) + "~" + WL.hhmm(m0 + S.s);
+    pop.innerHTML = '<div class="pt">' + SK.esc(head) + "</div>" +
+      '<div class="pok">가능 ' + ok.length + "명: " + (ok.length ? SK.esc(ok.join("·")) : "없음") + "</div>" +
+      (ng.length ? '<div class="png">불가: ' + SK.esc(ng.join("·")) + "</div>" : "");
+    pop.style.display = "block";
+    pop.style.left = "0px"; pop.style.top = "0px";
+    var r = cell.getBoundingClientRect(), pr = pop.getBoundingClientRect();
+    var left = r.left + r.width / 2 - pr.width / 2;
+    if (left < 8) left = 8;
+    if (left + pr.width > window.innerWidth - 8) left = window.innerWidth - pr.width - 8;
+    var top = r.top - pr.height - 8;
+    if (top < 8) top = r.bottom + 8;
+    pop.style.left = left + "px";
+    pop.style.top = top + "px";
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (t && t.closest && (t.closest("#pop") || t.closest(".heat"))) return;
+    $("pop").style.display = "none";
+  });
+  $("heatWrap").addEventListener("click", function (e) {
+    var cell = e.target && e.target.closest ? e.target.closest(".c") : null;
+    if (!cell) return;
+    showPop(cell, +cell.getAttribute("data-i"));
+  });
+
+  /* ── 추천 TOP3 ── */
+  function renderRecs() {
+    recs = WL.recommend(S);
+    var host = $("recHost");
+    if (!recs.length) {
+      host.innerHTML = '<p class="ghint">아직 아무도 응답하지 않았어요. 위에서 가능한 시간을 칠하고 저장하면 추천이 만들어집니다.</p>';
+      return;
+    }
+    var av = WL.avail(S);
+    host.innerHTML = recs.map(function (r, n) {
+      var s0 = WL.slotMin(S, r.i), s1 = s0 + r.L * S.s;
+      var miss = [];
+      for (var k = 0; k < S.p.length; k++) if (r.who.indexOf(k) < 0) miss.push(S.p[k][0]);
+      return '<div class="rec"><span class="rk">' + (n + 1) + "</span>" +
+        '<div class="rb"><div class="rt">' + SK.esc(WL.ymdFull(S.d[r.d]) + " " + WL.hhmm(s0) + "~" + WL.hhmm(s1)) + "</div>" +
+        '<div class="rs">' + r.cnt + "/" + S.p.length + "명 가능 · " + WL.durText(r.L * S.s) +
+        (miss.length ? " · 불가 " + SK.esc(miss.join("·")) : " · 전원 가능") + "</div></div>" +
+        '<div class="ra"><button class="ghost" data-ics="' + n + '">📅 캘린더 저장</button>' +
+        '<button data-fix="' + n + '">✅ 이 시간 확정</button></div></div>';
+    }).join("");
+  }
+  $("recHost").addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest("button") : null;
+    if (!b) return;
+    if (b.getAttribute("data-ics") !== null) downloadIcs(recs[+b.getAttribute("data-ics")]);
+    else if (b.getAttribute("data-fix") !== null) confirmSlot(recs[+b.getAttribute("data-fix")]);
+  });
+
+  function downloadIcs(rec) {
+    if (!rec) return;
+    var text = WL.buildIcs(S, rec, SK.stateUrl(S));
+    try {
+      var blob = new Blob([text], { type: "text/calendar;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "when-link-" + S.d[rec.d] + ".ics";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+      SK.toast("캘린더 파일(.ics)을 저장했어요");
+    } catch (err) { SK.toast("이 브라우저에서는 파일 저장이 어려워요"); }
+  }
+  function confirmSlot(rec) {
+    if (!rec) return;
+    var next = { v: 1, t: S.t, d: S.d, s: S.s, r: S.r, p: S.p, c: [rec.d, rec.i, rec.L] };
+    if (!SK.sizeOf(next).ok) { SK.toast("링크가 너무 길어졌어요"); return; }
+    S = next;
+    SK.writeState(S);
+    renderAll();
+    SK.copy(SK.stateUrl(S)).then(function (ok) {
+      SK.toast(ok ? "확정 링크를 복사했어요. 단톡방에 공지하세요" : "확정했어요");
+    });
+  }
+  function renderFixed() {
+    var box = $("fixedBox");
+    if (!S.c) { box.classList.add("hidden"); return; }
+    var s0 = WL.slotMin(S, S.c[1]), s1 = s0 + S.c[2] * S.s;
+    box.classList.remove("hidden");
+    box.innerHTML = "✅ <b>확정: " + SK.esc(WL.ymdFull(S.d[S.c[0]]) + " " + WL.hhmm(s0) + "~" + WL.hhmm(s1)) +
+      "</b><br><span style=\"font-size:13px\">아래 추천 목록의 캘린더 저장 버튼으로 .ics 파일을 받아 각자 캘린더에 넣으세요.</span>";
+  }
+
+  /* ── 저장(응답 추가/덮어쓰기) ── */
+  $("saveBtn").addEventListener("click", function () {
+    var nk = SK.nick($("nick").value, "익명");
+    var any = false, i;
+    for (i = 0; i < myBits.length; i++) if (myBits[i]) { any = true; break; }
+    if (!any) { SK.toast("가능한 시간을 한 칸 이상 칠해주세요"); return; }
+    var bstr = SK.bitsToStr(myBits);
+    var list = S.p.slice(), found = -1;
+    for (i = 0; i < list.length; i++) if (list[i][0] === nk) found = i;
+    if (found >= 0) list[found] = [nk, bstr];
+    else {
+      var r = SK.appendChain(list, [nk, bstr], WL.MAXP);
+      if (!r.ok) { SK.toast("최대 20명까지 참여할 수 있어요"); return; }
+      list = r.list;
+    }
+    var next = { v: 1, t: S.t, d: S.d, s: S.s, r: S.r, p: list };
+    if (S.c) next.c = S.c;
+    var sz = SK.sizeOf(next);
+    if (!sz.ok) { SK.toast("링크가 너무 길어졌어요. 날짜나 인원을 줄여주세요"); return; }
+    if (sz.warn) SK.toast("링크가 길어지고 있어요(" + sz.bytes + "자). 인원을 조금만 더 받으세요");
+    try { localStorage.setItem(LSKEY, JSON.stringify({ k: WL.keyOf(S), n: nk, b: bstr })); } catch (err) {}
+    S = next;
+    SK.writeState(S);
+    renderAll();
+    SK.copy(SK.stateUrl(S)).then(function (ok) {
+      SK.toast(ok ? (found >= 0 ? "응답을 수정했어요. 새 링크 복사 완료" : "새 링크를 복사했어요. 단톡방에 붙여넣으세요")
+        : "저장했어요. 아래 링크를 복사해 넘겨주세요");
+    });
+    $("resultSec").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  $("clearBtn").addEventListener("click", function () {
+    for (var i = 0; i < myBits.length; i++) myBits[i] = 0;
+    syncPaint(); updateSaveHint();
+    SK.toast("전부 지웠어요");
+  });
+  /* 리믹스: 지난 응답 프리필 후 1클릭 재저장 */
+  $("remixBtn").addEventListener("click", function () {
+    if (!loadPrev(true)) SK.toast("이 기기에 저장된 지난 응답이 없어요");
+  });
+  function loadPrev(notify) {
+    var raw = null;
+    try { raw = localStorage.getItem(LSKEY); } catch (err) { raw = null; }
+    if (!raw) return false;
+    var o = null;
+    try { o = JSON.parse(raw); } catch (err) { return false; }
+    if (!o || o.k !== WL.keyOf(S) || typeof o.b !== "string") return false;
+    var bits;
+    try { bits = SK.strToBits(o.b, WL.nbits(S)); } catch (err) { return false; }
+    myBits = bits;
+    if (o.n) $("nick").value = o.n;
+    syncPaint(); updateSaveHint();
+    if (notify) SK.toast("지난 응답을 불러왔어요. 고쳐서 다시 저장하세요");
+    return true;
+  }
+
+  /* ── 공유 ── */
+  function curUrl() { return SK.stateUrl(S); }
+  function shareText() {
+    var days = S.d.map(function (n) { return WL.ymdShort(n); }).join(", ");
+    var lines = ["[" + S.t + "] 가능한 시간을 칠해주세요 🗓️"];
+    lines.push("후보 " + days + " · " + WL.pad2(S.r[0]) + "시~" + WL.pad2(S.r[1]) + "시 · " + S.s + "분 단위");
+    if (recs.length) {
+      var r = recs[0], s0 = WL.slotMin(S, r.i);
+      lines.push("현재 1위: " + WL.ymdFull(S.d[r.d]) + " " + WL.hhmm(s0) + "~" + WL.hhmm(s0 + r.L * S.s) + " (" + r.cnt + "/" + S.p.length + "명)");
+    }
+    lines.push("칠하고 나온 새 링크를 다시 올려주세요 👇");
+    lines.push(curUrl());
+    return lines.join("\n");
+  }
+  $("copyLink").addEventListener("click", function () {
+    SK.copy(curUrl()).then(function (ok) { SK.toast(ok ? "링크를 복사했어요. 카톡에 붙여넣으세요" : "복사에 실패했어요"); });
+  });
+  $("copyText").addEventListener("click", function () {
+    SK.copy(shareText()).then(function (ok) { SK.toast(ok ? "단톡방용 텍스트를 복사했어요" : "복사에 실패했어요"); });
+  });
+  $("shareX").addEventListener("click", function () {
+    window.open(SK.xUrl("[" + S.t + "] 가능한 시간을 칠해주세요 🗓️ 서버 없이 링크로 모으는 약속시간", curUrl()), "_blank", "noopener");
+  });
+  $("shareEtc").addEventListener("click", function () {
+    SK.share({ title: "약속시간 링크 · " + S.t, text: "가능한 시간을 칠하고 나온 새 링크를 다시 올려주세요", url: curUrl() });
+  });
+
+  /* ── PNG 히트맵 카드 ── */
+  $("pngBtn").addEventListener("click", function () {
+    var c = SK.card("card"), ctx = c.ctx, W = c.W, H = c.H, F = c.font;
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, "#2e1065"); g.addColorStop(0.5, "#4c1d95"); g.addColorStop(1, "#6d28d9");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#ddd6fe"; ctx.font = "700 30px " + F;
+    ctx.fillText("W H E N   L I N K", 80, 76);
+    ctx.fillStyle = "#ffffff"; ctx.font = "900 72px " + F;
+    var y = SK.wrapText(ctx, S.t, 80, 126, W - 160, 82, 2);
+    ctx.fillStyle = "#e9d5ff"; ctx.font = "600 32px " + F;
+    ctx.fillText("응답 " + S.p.length + "명 · " + WL.ymdShort(S.d[0]) + "~" + WL.ymdShort(S.d[S.d.length - 1]) +
+      " · " + WL.pad2(S.r[0]) + "-" + WL.pad2(S.r[1]) + "시", 80, y + 14);
+
+    /* 미니 히트맵 */
+    var av = WL.avail(S), cnt = WL.counts(S, av), sp = WL.spd(S), D = S.d.length, mx = 0, i, d;
+    for (i = 0; i < cnt.length; i++) if (cnt[i] > mx) mx = cnt[i];
+    var gx = 150, gy = y + 100, gw = W - 230, cw = Math.floor(gw / D), chh = Math.min(16, Math.floor(420 / sp));
+    ctx.font = "700 22px " + F;
+    for (d = 0; d < D; d++) {
+      ctx.fillStyle = "#ddd6fe"; ctx.textAlign = "center";
+      ctx.fillText(WL.ymdShort(S.d[d]), gx + cw * d + cw / 2, gy - 34);
+    }
+    ctx.textAlign = "right";
+    for (i = 0; i < sp; i++) {
+      if (WL.slotMin(S, i) % 120 === 0) {
+        ctx.fillStyle = "#c4b5fd";
+        ctx.fillText(WL.hhmm(WL.slotMin(S, i)), gx - 16, gy + chh * i - 4);
+      }
+      for (d = 0; d < D; d++) {
+        var c2 = cnt[d * sp + i];
+        ctx.fillStyle = c2 ? "rgba(255,255,255," + (0.14 + 0.8 * (c2 / (mx || 1))).toFixed(3) + ")" : "rgba(255,255,255,.06)";
+        ctx.fillRect(gx + cw * d + 1, gy + chh * i + 1, cw - 2, chh - 2);
+      }
+    }
+    ctx.textAlign = "left";
+
+    /* 추천 TOP3 */
+    var by = gy + chh * sp + 46;
+    ctx.fillStyle = "#ddd6fe"; ctx.font = "700 28px " + F;
+    ctx.fillText("추천 시간", 80, by);
+    by += 44;
+    ctx.font = "800 34px " + F;
+    if (recs.length) {
+      for (i = 0; i < recs.length; i++) {
+        var r = recs[i], s0 = WL.slotMin(S, r.i);
+        ctx.fillStyle = "rgba(255,255,255,.12)";
+        SK.roundRect(ctx, 72, by - 10, W - 144, 66, 18); ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText((i + 1) + ". " + WL.ymdFull(S.d[r.d]) + " " + WL.hhmm(s0) + "~" + WL.hhmm(s0 + r.L * S.s), 96, by);
+        ctx.fillStyle = "#ddd6fe"; ctx.font = "700 26px " + F;
+        ctx.textAlign = "right";
+        ctx.fillText(r.cnt + "/" + S.p.length + "명", W - 96, by + 6);
+        ctx.textAlign = "left"; ctx.font = "800 34px " + F;
+        by += 84;
+      }
+    } else {
+      ctx.fillStyle = "#e9d5ff"; ctx.font = "600 30px " + F;
+      ctx.fillText("아직 응답이 없어요", 80, by);
+    }
+    SK.watermark(ctx, W, H, "tomatoeggcat.com/when-link");
+    SK.sharePng(c.cv, "when-link.png", "약속시간 링크").then(function () { SK.toast("히트맵 카드를 저장했어요"); });
+  });
+
+  /* ── 화면 전환 ── */
+  function boot(st, fromLink) {
+    S = st;
+    arrived = !!fromLink;
+    var n = WL.nbits(S);
+    myBits = [];
+    for (var i = 0; i < n; i++) myBits.push(0);
+    $("createCard").classList.add("hidden");
+    $("respondCard").classList.remove("hidden");
+    $("resultSec").classList.remove("hidden");
+    $("rTitle").textContent = S.t;
+    $("rMeta").innerHTML = "후보 <b>" + S.d.length + "일</b> · " + WL.pad2(S.r[0]) + "시~" + WL.pad2(S.r[1]) +
+      "시 · <b>" + S.s + "분</b> 단위 · 응답 <b>" + S.p.length + "</b>/20명";
+    if (fromLink) {
+      $("inbound").classList.add("show");
+      $("inboundMsg").innerHTML = "<b>" + SK.esc(S.t) + "</b> 약속, 가능한 시간을 칠해주세요.";
+    }
+    loadPrev(false);
+    renderAll();
+  }
+  function renderAll() {
+    $("rMeta").innerHTML = "후보 <b>" + S.d.length + "일</b> · " + WL.pad2(S.r[0]) + "시~" + WL.pad2(S.r[1]) +
+      "시 · <b>" + S.s + "분</b> 단위 · 응답 <b>" + S.p.length + "</b>/20명";
+    renderPaint();
+    renderRecs();
+    renderHeat();
+    renderFixed();
+    $("curLink").textContent = curUrl();
+    $("pop").style.display = "none";
+  }
+  function showCreate(prefill) {
+    $("createCard").classList.remove("hidden");
+    $("respondCard").classList.add("hidden");
+    $("resultSec").classList.add("hidden");
+    $("inbound").classList.remove("show");
+    SK.clearState();
+    if (prefill && S) {
+      $("title").value = S.t;
+      selDates = S.d.slice();
+      $("hFrom").value = String(S.r[0]);
+      $("hTo").value = String(S.r[1]);
+      slotUnit = S.s;
+      $("s30").classList.toggle("on", S.s === 30);
+      $("s60").classList.toggle("on", S.s === 60);
+      var p = WL.ymdParts(S.d[0]); calY = p.y; calM = p.m - 1;
+    }
+    S = null;
+    renderCal();
+    $("createCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  $("meToo").addEventListener("click", function () { showCreate(false); });
+  $("newBtn").addEventListener("click", function () { showCreate(true); SK.toast("설정을 그대로 불러왔어요. 날짜만 바꿔 새로 만드세요"); });
+
+  /* ── 초기화 ── */
+  initCreate();
+  (function init() {
+    var raw = null;
+    try { raw = new URLSearchParams(location.search).get("d"); } catch (e) { raw = null; }
+    if (!raw) return;
+    var st = SK.readState();
+    if (st && WL.valid(st)) { boot(st, true); }
+    else SK.toast("링크가 손상됐어요. 새로 만들어 주세요");
+  })();
+})();
+</script>
+</body>
+</html>

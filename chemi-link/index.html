@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>케미링크 — 둘이 답해야 열리는 케미 테스트 | TomatoEggCat</title>
+<meta name="description" content="내가 20문항에 답하고 링크를 보내면, 상대가 답한 순간 우리 둘의 일치율과 관계 유형이 열립니다. 친구·연인·직장동료·가족 4가지 모드, 모드별 20문항, 16가지 관계 유형 카드. 로그인도 서버도 없이 링크 하나로 합쳐지는 재미용 케미 테스트." />
+<link rel="canonical" href="https://tomatoeggcat.com/chemi-link/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="케미링크 — 둘이 답해야 열리는 케미 테스트" />
+<meta property="og:description" content="내 답을 담은 링크를 보내면, 상대가 답한 순간 둘의 일치율과 관계 유형이 열려요. 친구·연인·직장동료·가족 4가지 모드." />
+<meta property="og:url" content="https://tomatoeggcat.com/chemi-link/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="케미링크 — 둘이 답해야 열리는 케미 테스트" />
+<meta name="twitter:description" content="링크를 보내면 상대가 답해야 결과가 열립니다. 일치율·축별 게이지·16가지 관계 유형 카드." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"케미링크","description":"내가 20문항에 답한 뒤 링크를 보내면 상대가 답해야 둘의 일치율과 관계 유형이 열리는 재미용 케미 테스트. 친구·연인·직장동료·가족 4가지 모드와 16가지 관계 유형 카드를 제공합니다.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/chemi-link/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"일치율은 어떻게 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"문항마다 두 사람의 답 차이를 봅니다. 답은 0부터 4까지의 정수라 차이는 최대 4이고, 문항 유사도는 1에서 (차이 나누기 4)를 뺀 값입니다. 20문항의 유사도를 평균한 값을 s라고 할 때 최종 일치율은 0.5 더하기 0.5 곱하기 사인(파이 곱하기 (s 빼기 0.5))을 백분율로 반올림한 값입니다. 이 곡선은 가운데에 몰리는 점수를 조금 더 벌려 보여 주기 위한 것이며, 두 사람이 모든 문항에 똑같이 답하면 100퍼센트, 모든 문항에서 정반대 끝을 고르면 0퍼센트가 됩니다. 난수는 전혀 쓰지 않습니다."}},
+{"@type":"Question","name":"서버도 로그인도 없는데 두 사람의 답이 어떻게 합쳐지나요?","acceptedAnswer":{"@type":"Answer","text":"모든 답이 주소 안에 들어갑니다. 먼저 답한 사람의 닉네임과 20개 답은 압축되어 주소 뒤 물음표 d 값으로 인코딩되고, 링크를 받은 사람이 답을 마치면 그 브라우저에서 두 사람 몫이 합쳐진 새 주소가 만들어집니다. 데이터베이스도 계정도 없고 답이 서버로 전송되지 않습니다. 그래서 결과 링크만 있으면 누가 열어도 똑같은 결과가 다시 그려집니다."}},
+{"@type":"Question","name":"이름이나 연락처 같은 개인정보를 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 화면에 부를 닉네임 하나만 받고 그것도 12자로 잘라 저장합니다. 실명, 전화번호, 이메일, 생년월일, 주민번호 같은 정보는 묻지 않고 입력란 자체가 없습니다. 닉네임은 주소 안에만 들어가므로 링크를 공유하는 상대만 볼 수 있습니다. 공개된 곳에 올릴 계획이라면 별명을 쓰는 편이 안전합니다."}},
+{"@type":"Question","name":"링크는 만료되나요?","acceptedAnswer":{"@type":"Answer","text":"만료되지 않습니다. 결과가 서버에 저장된 것이 아니라 주소 자체가 결과이기 때문에, 몇 달 뒤에 열어도 같은 화면이 다시 계산되어 나옵니다. 반대로 링크를 잃어버리면 복구할 방법도 없습니다. 마음에 드는 결과가 나왔다면 이미지로 저장해 두거나 링크를 메모해 두세요."}},
+{"@type":"Question","name":"링크를 열었는데 결과가 안 보여요.","acceptedAnswer":{"@type":"Answer","text":"주소가 중간에 잘렸을 가능성이 큽니다. 메신저나 커뮤니티가 긴 주소를 줄여 표시하면서 뒷부분이 사라지면 답 데이터가 깨져 초대 화면으로 돌아갑니다. 링크를 복사할 때는 주소 전체를 붙여넣고, 미리보기 카드가 아니라 주소 문자열 자체를 보내 주세요. 그래도 안 되면 상대에게 링크를 다시 받아 보세요."}},
+{"@type":"Question","name":"결과를 얼마나 믿어도 되나요?","acceptedAnswer":{"@type":"Answer","text":"재미로만 봐 주세요. 케미링크의 문항과 유형은 자체적으로 만든 놀이용 기준이며 심리 검사나 상담, 의학적 진단과는 아무 관계가 없습니다. 관계의 좋고 나쁨을 판정하지도 않습니다. 서로 다르게 나온 문항을 이야깃거리로 삼아 대화를 여는 용도로 쓰는 것이 가장 좋습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"엔터·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"케미링크","item":"https://tomatoeggcat.com/chemi-link/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#f472b6;--acc2:#fbcfe8;--acc3:#9d174d}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:22px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:14px}
+.nav a{color:#f9a8d4;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#f472b6,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 18px;font-size:15px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:18px;margin-bottom:16px}
+h2{font-size:19px;margin:30px 0 10px}
+h3{font-size:16px;margin:20px 0 8px;color:var(--acc2)}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#3b0620;font-size:16px;font-weight:800;cursor:pointer;min-height:48px;font-family:inherit}
+button.ghost{background:#241320;color:#fbcfe8;border:1px solid #4a2338;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.screen{display:none}
+.screen.on{display:block}
+/* inbound */
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-22px -18px 14px;padding:12px 18px;background:linear-gradient(90deg,#4a0d2a,#7a1746);border-bottom:1px solid #9d174d}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#fce7f3;flex:1;min-width:160px}
+.inbound button{width:auto;padding:10px 16px;font-size:14px}
+/* mode picker */
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode{background:#0f0f0f;border:1px solid #333;border-radius:14px;padding:14px 12px;text-align:left;color:#e5e5e5;cursor:pointer;min-height:88px;transition:.12s}
+.mode.on{border-color:var(--acc);background:rgba(244,114,182,.12)}
+.mode b{display:block;font-size:16px;margin-bottom:3px}
+.mode small{color:#9ca3af;font-size:12.5px;line-height:1.45;display:block}
+/* nick */
+input[type="text"]{width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px;font-family:inherit;min-height:48px}
+input[type="text"]:focus{outline:none;border-color:var(--acc)}
+.hint{font-size:12.5px;color:#6b7280;margin:8px 0 0}
+/* quiz */
+.bar{height:8px;background:#232323;border-radius:999px;overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#f472b6,#c084fc);width:0;transition:.2s}
+.qmeta{display:flex;justify-content:space-between;font-size:12.5px;color:#8b8b8b;margin-bottom:14px}
+.qmeta b{color:var(--acc2)}
+.qtext{font-size:19px;font-weight:800;margin:0 0 14px;word-break:keep-all;line-height:1.45}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{width:100%;text-align:left;background:#0f0f0f;border:1px solid #333;color:#dcdcdc;font-size:15px;font-weight:600;padding:13px 14px;border-radius:12px;min-height:48px;cursor:pointer}
+.opt.sel{border-color:var(--acc);background:rgba(244,114,182,.14);color:#fce7f3}
+.qnav{display:flex;gap:10px;margin-top:14px}
+.qnav button{font-size:14px;padding:12px}
+/* invite */
+.linkbox{background:#0f0f0f;border:1px dashed #4a2338;border-radius:12px;padding:12px;font-size:12.5px;color:#9ca3af;word-break:break-all;margin:12px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.grid2 button{font-size:14px;padding:13px 8px}
+.locked{background:linear-gradient(160deg,#3b0620,#7a1746);border-radius:16px;padding:22px 18px;text-align:center;border:1px solid #9d174d}
+.locked .lk{font-size:44px;margin-bottom:6px}
+.locked b{display:block;font-size:18px;margin-bottom:6px}
+.locked p{margin:0;color:#fbcfe8;font-size:14px}
+/* result */
+#cardView{background:linear-gradient(160deg,#4a044e 0%,#9d174d 48%,#f472b6 100%);border-radius:20px;padding:22px 20px;position:relative;overflow:hidden}
+#cardView:before{content:"";position:absolute;top:-70px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 70%);pointer-events:none}
+.ckicker{font-size:12px;font-weight:700;letter-spacing:.2em;color:#fbcfe8;margin:0 0 4px}
+.cpair{font-size:19px;font-weight:800;color:#fff;margin:0 0 12px}
+.pct{font-size:64px;font-weight:900;color:#fff;line-height:1;margin:0}
+.pctlab{font-size:13px;color:#fbcfe8;margin:2px 0 16px;font-weight:700}
+.tname{font-size:26px;font-weight:900;color:#fff;margin:0 0 4px;word-break:keep-all}
+.ttag{font-size:14.5px;color:#fce7f3;margin:0 0 14px}
+.legend{display:flex;gap:14px;font-size:12px;font-weight:700;color:#fce7f3;margin:0 0 10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.gauges{display:flex;flex-direction:column;gap:11px}
+.gauge{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px;font-size:11px;font-weight:700}
+.gauge .pl{color:#fbcfe8;text-align:right}
+.gauge .pr{color:#fbcfe8;text-align:left}
+.track{height:9px;background:rgba(255,255,255,.2);border-radius:999px;position:relative}
+.track i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(74,4,78,.5)}
+.track i.a{background:#fff}
+.track i.b{background:#67e8f9}
+.wm{position:absolute;bottom:10px;right:14px;font-size:11px;color:rgba(255,255,255,.55);font-weight:600}
+.box{background:#0f0f0f;border:1px solid #262626;border-radius:14px;padding:14px 16px;margin-top:14px}
+.box h4{margin:0 0 8px;font-size:14.5px}
+.box p{margin:0;font-size:14.5px;color:#dcdcdc}
+.box ul{margin:0;padding-left:18px}
+.box li{font-size:14px;color:#cbd5e1;margin-bottom:5px}
+.good h4{color:#86efac}.watch h4{color:#fca5a5}.acts h4{color:#93c5fd}
+.qcmp{list-style:none;margin:0;padding:0}
+.qcmp li{border-top:1px solid #232323;padding:9px 0;font-size:13.5px;color:#cbd5e1}
+.qcmp li:first-child{border-top:0}
+.qcmp b{display:block;color:#ededed;font-size:14px;margin-bottom:3px;font-weight:700}
+.qcmp em{font-style:normal;color:#9ca3af;font-size:12.5px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.dot.a{background:#f472b6}.dot.b{background:#38bdf8}
+.save{margin-top:14px;background:#fff;color:#9d174d}
+.ad{margin:22px 0}
+/* content */
+.about p{color:#d0d0d0;font-size:14.5px}
+.about ol,.about ul{color:#d0d0d0;font-size:14.5px;padding-left:20px}
+.about li{margin-bottom:6px}
+.tlist{display:grid;grid-template-columns:1fr;gap:0}
+.tlist div{border-top:1px solid #232323;padding:9px 0;font-size:14px;color:#b9b9b9}
+.tlist div:first-child{border-top:0}
+.tlist b{color:#ededed}
+.faq{border-top:1px solid #262626;padding:13px 0}
+.faq b{display:block;margin-bottom:4px;color:#ededed}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.disc{font-size:12.5px;color:#6b7280;background:#141414;border:1px solid #232323;border-radius:12px;padding:12px 14px;margin-top:14px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:#241320;color:#fbcfe8;padding:8px 13px;border-radius:999px;text-decoration:none}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#f9a8d4;margin:0 6px;text-decoration:none}
+@media(max-width:400px){.pct{font-size:54px}.tname{font-size:22px}.modes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span id="inboundMsg">친구가 케미 테스트를 보냈어요.</span>
+  <button id="meToo">나도 해보기 →</button>
+</div>
+
+<div class="nav"><a href="/">← TomatoEggCat</a> › 엔터·바이럴 › 케미링크</div>
+<h1>💞 케미링크</h1>
+<p class="lead">내가 20문항에 답하고 <b>링크를 보내면</b>, 상대가 답한 순간 <b>둘의 케미</b>가 열립니다. 나 혼자서는 결과를 볼 수 없어요.</p>
+
+<!-- 1. 모드 선택 -->
+<section class="screen on" id="sMode">
+  <div class="card">
+    <h3 style="margin-top:0">누구와 해볼까요?</h3>
+    <div class="modes" id="modeHost"></div>
+    <div style="margin-top:14px"><button id="modeNext" disabled>다음 →</button></div>
+    <p class="hint">모드마다 문항이 완전히 다릅니다. 상대는 내가 고른 모드의 같은 20문항에 답하게 돼요.</p>
+  </div>
+</section>
+
+<!-- 2. 닉네임 -->
+<section class="screen" id="sNick">
+  <div class="card">
+    <h3 style="margin-top:0">화면에 뭐라고 부를까요?</h3>
+    <input type="text" id="nickIn" maxlength="12" placeholder="닉네임 (최대 12자)" autocomplete="off" />
+    <p class="hint">별명이면 충분해요. 실명·전화번호·이메일 같은 개인정보는 묻지 않습니다.</p>
+    <div class="grid2">
+      <button class="ghost" id="nickBack">← 모드 다시</button>
+      <button id="nickNext">20문항 시작 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 문항 -->
+<section class="screen" id="sQuiz">
+  <div class="card">
+    <div class="bar"><i id="qbar"></i></div>
+    <div class="qmeta"><span id="qcount"><b>1</b> / 20</span><span id="qaxis">—</span></div>
+    <p class="qtext" id="qtext">—</p>
+    <div class="opts" id="qopts"></div>
+    <div class="qnav">
+      <button class="ghost" id="qback">← 이전 문항</button>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 초대 링크 (결과 잠금) -->
+<section class="screen" id="sInvite">
+  <div class="locked">
+    <div class="lk">🔒</div>
+    <b>아직 결과를 볼 수 없어요</b>
+    <p>상대가 같은 20문항에 답해야 둘의 일치율과 관계 유형이 열립니다. 아래 링크를 보내 주세요.</p>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3 style="margin-top:0">🔗 내 초대 링크</h3>
+    <div class="linkbox" id="inviteUrl">—</div>
+    <button id="ivCopy">링크 복사하기</button>
+    <div class="grid2">
+      <button class="ghost" id="ivText">📋 보낼 문구 복사</button>
+      <button class="ghost" id="ivShare">📤 공유하기</button>
+      <button class="ghost" id="ivX">𝕏 공유</button>
+      <button class="ghost" id="ivRestart">🔁 다시 하기</button>
+    </div>
+    <p class="hint">상대가 링크를 열고 답을 마치면, 상대 화면에 <b>결과 링크</b>가 생깁니다. 그 링크를 나에게 다시 보내 달라고 하면 나도 같은 결과를 볼 수 있어요.</p>
+  </div>
+</section>
+
+<!-- 5. 결과 -->
+<section class="screen" id="sResult">
+  <div id="cardView">
+    <p class="ckicker">CHEMI LINK</p>
+    <p class="cpair" id="rPair">—</p>
+    <p class="pct" id="rPct">—</p>
+    <p class="pctlab" id="rPctLab">우리 둘의 일치율</p>
+    <h2 class="tname" id="rName">—</h2>
+    <p class="ttag" id="rTag"></p>
+    <div class="legend"><span><i style="background:#fff"></i><span id="rLegA">A</span></span><span><i style="background:#67e8f9"></i><span id="rLegB">B</span></span></div>
+    <div class="gauges" id="rGauges"></div>
+    <div class="wm">tomatoeggcat.com/chemi-link</div>
+  </div>
+
+  <div class="box"><h4 id="rDescH">이 조합은</h4><p id="rDesc"></p></div>
+  <div class="box good"><h4>💚 잘 맞는 점</h4><ul id="rGood"></ul></div>
+  <div class="box watch"><h4>🚩 조심할 점</h4><ul id="rWatch"></ul></div>
+  <div class="box acts"><h4>🎯 이 조합에 추천하는 것</h4><ul id="rActs"></ul></div>
+  <div class="box"><h4>🤝 가장 비슷하게 답한 3문항</h4><ul class="qcmp" id="rSame"></ul></div>
+  <div class="box"><h4>🌗 가장 다르게 답한 3문항</h4><ul class="qcmp" id="rDiff"></ul></div>
+
+  <button class="save" id="saveBtn">📸 결과 카드 이미지로 저장</button>
+  <div class="grid2">
+    <button class="ghost" id="rCopy">🔗 결과 링크 복사</button>
+    <button class="ghost" id="rText">📋 텍스트 복사</button>
+    <button class="ghost" id="rX">𝕏 공유</button>
+    <button class="ghost" id="rShare">📤 공유하기</button>
+  </div>
+  <div class="grid2">
+    <button class="ghost" id="rReverse">↩️ 역으로 보내기</button>
+    <button class="ghost" id="rRemix">🔁 다시 하기</button>
+  </div>
+  <p class="hint" id="rHint"></p>
+
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</section>
+
+<div class="about">
+  <h2>케미 테스트란?</h2>
+  <p>케미링크는 <b>혼자서는 결과를 볼 수 없는</b> 관계 테스트입니다. 보통의 심리 테스트는 내가 답하면 그 자리에서 결과가 나오고, 공유는 그저 "나는 이렇게 나왔어"를 보여 주는 일에 그칩니다. 케미링크는 순서를 뒤집었습니다. 내가 20문항에 답하면 결과 대신 <b>잠긴 화면과 링크 하나</b>가 나오고, 그 링크를 받은 상대가 같은 20문항에 답한 순간에야 두 사람의 일치율과 관계 유형이 열립니다. 그래서 이 테스트는 답하는 행위보다 <b>보내는 행위</b>가 중심에 있습니다. 궁금해서라도 상대에게 링크를 보내게 되고, 링크를 받은 사람은 "뭐가 나왔길래"가 궁금해서 답을 마치게 되죠. 결과에는 단순한 점수만 있지 않습니다. 두 사람이 각각 어디쯤 서 있는지 보여 주는 다섯 개의 축 게이지, 가장 비슷하게 답한 세 문항과 가장 다르게 답한 세 문항, 그리고 16가지 중 하나로 정해지는 관계 유형 카드가 함께 나옵니다. 점수보다 <b>어디가 어떻게 달랐는지</b>가 훨씬 재미있는 이야깃거리가 되기 때문입니다.</p>
+
+  <h2>이렇게 하세요</h2>
+  <ol>
+    <li><b>모드를 고릅니다.</b> 친구·연인·직장동료·가족 중 하나를 고르면 그 관계에 맞는 20문항이 준비됩니다.</li>
+    <li><b>닉네임을 넣고 20문항에 답합니다.</b> 각 문항은 다섯 단계 중 하나를 고르는 방식이고, 진행바 아래 <b>이전 문항</b> 버튼으로 언제든 되돌아가 고칠 수 있습니다.</li>
+    <li><b>생성된 링크를 상대에게 보냅니다.</b> 이 시점에는 내 결과도 보이지 않습니다. 링크 복사, 보낼 문구 복사, 공유하기, X 공유 중 편한 방법을 쓰세요.</li>
+    <li><b>상대가 답을 마치면 결과가 열립니다.</b> 상대 화면에 두 사람 몫이 모두 담긴 결과 링크가 생기므로, 그 링크를 돌려받으면 나도 같은 결과를 봅니다. 결과 카드는 PNG로 저장할 수 있고, <b>역으로 보내기</b>로 이번엔 내가 먼저 답한 새 링크를 만들어 다른 사람에게 보낼 수도 있습니다.</li>
+  </ol>
+
+  <h2>4가지 모드 소개</h2>
+  <ul>
+    <li><b>🧡 친구</b> — 약속을 잡는 방식, 단톡방에서의 태도, 서운했을 때의 반응처럼 오래 본 사이에서만 드러나는 것들을 묻습니다. 여행 스타일과 총무 기질도 포함됩니다.</li>
+    <li><b>💗 연인</b> — 데이트 계획, 기념일, 연락과 표현의 양, 다툼이 생겼을 때의 첫 반응을 다룹니다. 전 연령이 편하게 답할 수 있는 생활 습관 위주의 문항만 담았습니다.</li>
+    <li><b>💙 직장동료</b> — 마감 관리, 회의에서의 발언, 피드백을 주는 방식, 협업이 어긋났을 때의 대처를 묻습니다. 함께 일하기 전에 서로의 작업 리듬을 맞춰 보기 좋습니다.</li>
+    <li><b>💛 가족</b> — 연락 주기, 표현의 양, 명절과 집안일, 잔소리에 대한 반응처럼 가까워서 오히려 말하지 않던 것들을 다룹니다.</li>
+  </ul>
+
+  <h2>다섯 개의 축</h2>
+  <p>모든 문항은 다섯 개의 축 중 하나에 속하고, 모드마다 축별로 정확히 네 문항씩 배치됩니다. <b>계획↔즉흥</b>은 시간과 약속을 다루는 방식, <b>표현↔절제</b>는 마음을 밖으로 꺼내는 정도, <b>활동↔휴식</b>은 함께 있을 때 쓰는 에너지의 양, <b>직관↔분석</b>은 결정을 내리는 회로, <b>직면↔회피</b>는 부딪혔을 때의 첫 반응을 봅니다. 결과 화면의 게이지는 두 사람을 같은 막대 위에 나란히 찍어 주기 때문에, 어느 축에서 얼마나 벌어져 있는지가 한눈에 보입니다. 관계 유형 카드는 이 중 계획·표현·활동·직면 네 축의 <b>둘의 평균 위치</b>로 정해지고, 직관↔분석 축은 게이지와 추천 활동에 반영됩니다.</p>
+
+  <h2>16가지 관계 유형 미리보기</h2>
+  <div class="tlist">
+    <div><b>🚀 직진 프로젝트 듀오</b> — 정해서 말하고, 움직여서 끝낸다</div>
+    <div><b>🎈 웃으며 미루는 러너</b> — 계획은 완벽, 껄끄러운 얘기만 다음 기회로</div>
+    <div><b>☕ 속 터놓는 카페 듀오</b> — 정해 둔 자리에 앉아 할 말은 다 한다</div>
+    <div><b>🍮 다정한 안전지대</b> — 편안함이 최우선, 갈등은 최후의 수단</div>
+    <div><b>⚙️ 말없는 실행 콤비</b> — 설명은 짧게, 결과로 증명한다</div>
+    <div><b>🧭 묵묵한 페이스메이커</b> — 각자 알아서 잘, 부딪힐 일은 만들지 않는다</div>
+    <div><b>📐 조용한 정리단</b> — 말수는 적지만 짚을 건 짚는다</div>
+    <div><b>🛋️ 고요한 루틴 짝꿍</b> — 같은 자리, 같은 속도로 오래가는 사이</div>
+    <div><b>🔥 불꽃 케미 콤비</b> — 지금 당장 만나서, 다 쏟아낸다</div>
+    <div><b>🎡 일단 놀고 보는 팀</b> — 고민은 나중에, 오늘은 재밌게</div>
+    <div><b>🍜 새벽 수다 듀오</b> — 갑자기 만나 오래 앉아 속을 뒤집는다</div>
+    <div><b>🫧 기분파 힐링 짝꿍</b> — 내킬 때 만나 아무 말 대잔치</div>
+    <div><b>🎯 말보다 행동 콤비</b> — 설명 없이 움직이고, 필요하면 바로 짚는다</div>
+    <div><b>🛹 흘러가는 대로 팀</b> — 약속도 감정도 느슨해서 편한 사이</div>
+    <div><b>🌙 느긋한 팩폭 듀오</b> — 평소엔 조용, 결정적일 때 한마디</div>
+    <div><b>🌫️ 무해한 방목 짝꿍</b> — 연락은 뜸해도 만나면 그대로</div>
+  </div>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>일치율은 어떻게 계산되나요?</b><p>문항마다 두 사람의 답 차이를 봅니다. 답은 0부터 4까지의 정수라 차이는 최대 4이고, 문항 유사도는 1 − (차이 ÷ 4)입니다. 20문항의 유사도를 평균한 값을 s라 하면 최종 일치율은 <b>0.5 + 0.5 × sin(π × (s − 0.5))</b>를 백분율로 반올림한 값이에요. 가운데에 몰리는 점수를 조금 더 벌려 보여 주기 위한 곡선이며, 모든 문항에 똑같이 답하면 100%, 모든 문항에서 정반대 끝을 고르면 0%가 됩니다. 난수는 전혀 쓰지 않습니다.</p></div>
+  <div class="faq"><b>서버도 로그인도 없는데 두 사람의 답이 어떻게 합쳐지나요?</b><p>모든 답이 주소 안에 들어갑니다. 먼저 답한 사람의 닉네임과 20개 답이 압축되어 주소 뒤 <code>?d=</code> 값이 되고, 링크를 받은 사람이 답을 마치면 그 브라우저에서 두 사람 몫이 합쳐진 새 주소가 만들어져요. 데이터베이스도 계정도 없고 답이 서버로 전송되지 않습니다. 그래서 결과 링크만 있으면 누가 열어도 똑같은 결과가 다시 그려집니다.</p></div>
+  <div class="faq"><b>이름이나 연락처 같은 개인정보를 입력하나요?</b><p>아니요. 화면에 부를 닉네임 하나만 받고 그것도 12자로 잘라 저장합니다. 실명·전화번호·이메일·생년월일·주민번호는 묻지 않고 입력란 자체가 없어요. 닉네임은 주소 안에만 들어가므로 링크를 받은 상대만 볼 수 있습니다. 공개된 곳에 올릴 생각이라면 별명을 쓰는 편이 안전합니다.</p></div>
+  <div class="faq"><b>링크는 만료되나요?</b><p>만료되지 않습니다. 결과가 서버에 저장된 게 아니라 주소 자체가 결과이기 때문에, 몇 달 뒤에 열어도 같은 화면이 다시 계산돼요. 반대로 링크를 잃어버리면 복구할 방법도 없으니, 마음에 드는 결과가 나왔다면 이미지로 저장해 두거나 링크를 메모해 두세요.</p></div>
+  <div class="faq"><b>링크를 열었는데 결과가 안 보여요.</b><p>주소가 중간에 잘렸을 가능성이 큽니다. 메신저나 커뮤니티가 긴 주소를 줄여 표시하면서 뒷부분이 사라지면 답 데이터가 깨져 초대 화면으로 돌아갑니다. 복사할 때는 미리보기 카드가 아니라 <b>주소 문자열 전체</b>를 붙여넣어 주세요. 그래도 안 되면 상대에게 링크를 다시 받아 보세요.</p></div>
+  <div class="faq"><b>같은 링크를 여러 사람이 열어도 되나요?</b><p>초대 링크는 여러 명이 열어도 됩니다. 다만 결과는 답한 사람 각자의 화면에서 따로 만들어지고 서로 합쳐지지 않아요. 한 링크에 담기는 건 언제나 두 사람뿐입니다. 여러 명과 해보고 싶다면 결과 화면의 <b>역으로 보내기</b>로 새 링크를 계속 만들어 보내면 됩니다.</p></div>
+  <div class="faq"><b>결과를 얼마나 믿어도 되나요?</b><p>재미로만 봐 주세요. 문항과 유형은 자체적으로 만든 놀이용 기준이고 심리 검사·상담·의학적 진단과는 아무 관계가 없습니다. 관계의 좋고 나쁨을 판정하지도 않아요. 다르게 나온 문항을 이야깃거리 삼아 대화를 여는 용도로 쓰는 것이 가장 좋습니다.</p></div>
+
+  <p class="disc">케미링크의 결과는 <b>재미용</b> 콘텐츠입니다. 심리 검사·상담·의학·법률·재무 등 어떤 전문적 조언도 아니며, 특정 관계의 지속이나 성공을 보장하거나 판정하지 않습니다. 문항과 유형은 모두 자체 제작한 놀이용 기준이니 가볍게 즐겨 주세요.</p>
+
+  <div class="more">
+    <a href="/taste-dna/">🧬 취향DNA</a>
+    <a href="/first-impress/">🪞 첫인상 프로파일러</a>
+    <a href="/tone-lab/">🎭 말투연구소</a>
+    <a href="/balance-pick/">⚖️ 밸런스픽</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<script>
+/* ────────────────────────────────────────────────────────────────────────────
+   share-kit v1 — TomatoEggCat 공유·바이럴 엔진 (자기완결 · 외부 의존 0)
+
+   사용법: 각 앱의 <script> 최상단에 이 파일 내용을 **그대로 붙여넣는다**.
+   (앱은 단일 파일 완결형이어야 하고, 나중에 앱별 도메인으로 떼어내도
+    이 엔진이 함께 따라가야 하므로 공유 <script src>를 쓰지 않는다.)
+
+   제공 기능
+   - 상태 URL 인코딩: SK.enc / SK.dec  (UTF-8 안전 base64url + 선택적 LZW 압축)
+   - URL 상태 훅:     SK.readState / SK.writeState / SK.clearState / SK.stateUrl
+   - 용량 가드:       SK.sizeOf (8KB 경고 / 12KB 차단)
+   - 체인:            SK.appendChain
+   - 비트맵:          SK.bitsToStr / SK.strToBits  (밸런스·시간표처럼 0/1 대량 상태용)
+   - 결정론 난수:     SK.kstYMD / SK.dailySeed / SK.prng / SK.pick / SK.shuffle
+   - 이모지 격자:     SK.emojiGrid
+   - 공유 UI:         SK.copy / SK.toast / SK.share / SK.xUrl
+   - 결과 카드:       SK.card / SK.wrapText / SK.roundRect / SK.savePng / SK.sharePng
+   - 유틸:            SK.esc / SK.nick (닉네임 12자 정제) / SK.countdownToKstMidnight
+
+   상태 스키마 규칙: 객체 키 반복은 URL 낭비 → **배열 튜플**로 쓴다.
+     좋음  {v:1,a:["민수",[3,1,4,...]]}
+     나쁨  {version:1,me:{nickname:"민수",answers:[...]}}
+   ──────────────────────────────────────────────────────────────────────────── */
+var SK = (function () {
+  "use strict";
+
+  /* ── UTF-8 ↔ 바이트 ─────────────────────────────────────────── */
+  function utf8Bytes(str) {
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(str);
+    var esc = unescape(encodeURIComponent(str)), out = new Uint8Array(esc.length);
+    for (var i = 0; i < esc.length; i++) out[i] = esc.charCodeAt(i);
+    return out;
+  }
+  function bytesUtf8(bytes) {
+    if (typeof TextDecoder !== "undefined") return new TextDecoder().decode(bytes);
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return decodeURIComponent(escape(s));
+  }
+
+  /* ── base64url ──────────────────────────────────────────────── */
+  var B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  var B64I = (function () { var m = {}; for (var i = 0; i < 64; i++) m[B64[i]] = i; return m; })();
+  function b64uEnc(bytes) {
+    var out = "", i;
+    for (i = 0; i + 2 < bytes.length; i += 3) {
+      var n = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+      out += B64[(n >> 18) & 63] + B64[(n >> 12) & 63] + B64[(n >> 6) & 63] + B64[n & 63];
+    }
+    var rem = bytes.length - i;
+    if (rem === 1) {
+      var a = bytes[i] << 16;
+      out += B64[(a >> 18) & 63] + B64[(a >> 12) & 63];
+    } else if (rem === 2) {
+      var b = (bytes[i] << 16) | (bytes[i + 1] << 8);
+      out += B64[(b >> 18) & 63] + B64[(b >> 12) & 63] + B64[(b >> 6) & 63];
+    }
+    return out;
+  }
+  function b64uDec(str) {
+    var clean = String(str).replace(/[^A-Za-z0-9\-_]/g, "");
+    var full = Math.floor(clean.length / 4), rem = clean.length % 4;
+    if (rem === 1) throw new Error("bad base64url length");
+    var len = full * 3 + (rem === 2 ? 1 : rem === 3 ? 2 : 0);
+    var out = new Uint8Array(len), o = 0, i;
+    for (i = 0; i + 3 < clean.length; i += 4) {
+      var n = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6) | B64I[clean[i + 3]];
+      out[o++] = (n >> 16) & 255; out[o++] = (n >> 8) & 255; out[o++] = n & 255;
+    }
+    if (rem === 2) {
+      out[o++] = ((B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12)) >> 16 & 255;
+    } else if (rem === 3) {
+      var m = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6);
+      out[o++] = (m >> 16) & 255; out[o++] = (m >> 8) & 255;
+    }
+    return out;
+  }
+
+  /* ── LZW (바이트 단위, 16비트 코드) ─────────────────────────────
+     한글 본문처럼 긴 텍스트를 URL에 담을 때 쓴다. 압축이 이득이 아니면
+     enc()가 자동으로 무압축(prefix "1")을 고른다. ─────────────────── */
+  function codeOf(dict, w) { return w.length === 1 ? w.charCodeAt(0) : dict.get(w); }
+  function lzwEnc(bytes) {
+    if (!bytes.length) return new Uint8Array(0);
+    var dict = new Map(), next = 256, codes = [], w = String.fromCharCode(bytes[0]);
+    for (var i = 1; i < bytes.length; i++) {
+      var c = String.fromCharCode(bytes[i]), wc = w + c;
+      if (dict.has(wc)) { w = wc; continue; }
+      codes.push(codeOf(dict, w));
+      if (next < 65536) dict.set(wc, next++);
+      w = c;
+    }
+    codes.push(codeOf(dict, w));
+    var out = new Uint8Array(codes.length * 2);
+    for (var j = 0; j < codes.length; j++) { out[j * 2] = (codes[j] >> 8) & 255; out[j * 2 + 1] = codes[j] & 255; }
+    return out;
+  }
+  function lzwDec(buf) {
+    if (buf.length % 2 !== 0) throw new Error("bad lzw stream");
+    var codes = [], i;
+    for (i = 0; i < buf.length; i += 2) codes.push((buf[i] << 8) | buf[i + 1]);
+    if (!codes.length) return new Uint8Array(0);
+    var dict = [], next = 256;
+    for (i = 0; i < 256; i++) dict[i] = String.fromCharCode(i);
+    var w = dict[codes[0]];
+    if (w === undefined) throw new Error("bad lzw code");
+    var out = w;
+    for (i = 1; i < codes.length; i++) {
+      var k = codes[i], entry;
+      if (k < next && dict[k] !== undefined) entry = dict[k];
+      else if (k === next) entry = w + w.charAt(0);
+      else throw new Error("bad lzw code");
+      out += entry;
+      if (next < 65536) dict[next++] = w + entry.charAt(0);
+      w = entry;
+    }
+    var bytes = new Uint8Array(out.length);
+    for (i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+    return bytes;
+  }
+
+  /* ── 상태 인코딩 ─────────────────────────────────────────────
+     prefix "1" = 무압축, "2" = LZW. 두 형식 모두 dec()가 읽는다. ── */
+  function enc(obj) {
+    var raw = utf8Bytes(JSON.stringify(obj));
+    var plain = "1" + b64uEnc(raw);
+    if (raw.length < 120) return plain;
+    try {
+      var z = "2" + b64uEnc(lzwEnc(raw));
+      return z.length < plain.length ? z : plain;
+    } catch (e) { return plain; }
+  }
+  function dec(str) {
+    if (!str) return null;
+    try {
+      var s = String(str), tag = s.charAt(0), body = s.slice(1);
+      if (tag !== "1" && tag !== "2") { tag = "1"; body = s; } // v0 링크(무접두) 하위호환
+      var bytes = b64uDec(body);
+      if (tag === "2") bytes = lzwDec(bytes);
+      var val = JSON.parse(bytesUtf8(bytes));
+      return (val && typeof val === "object") ? val : null;
+    } catch (e) { return null; }
+  }
+
+  /* ── URL 상태 ────────────────────────────────────────────────── */
+  var KEY = "d";
+  function stateUrl(obj, key) {
+    return location.origin + location.pathname + "?" + (key || KEY) + "=" + enc(obj);
+  }
+  function readState(key) {
+    try { return dec(new URLSearchParams(location.search).get(key || KEY)); }
+    catch (e) { return null; }
+  }
+  function writeState(obj, key) {
+    try { history.replaceState(null, "", location.pathname + "?" + (key || KEY) + "=" + enc(obj)); } catch (e) {}
+  }
+  function clearState() {
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  }
+  /* 8KB 경고 / 12KB 차단. 반환 {bytes, ok, warn} */
+  function sizeOf(obj) {
+    var n = enc(obj).length;
+    return { bytes: n, ok: n <= 12288, warn: n > 8192 };
+  }
+  /* 체인 추가: 최대 인원·용량 초과 시 {ok:false, reason} */
+  function appendChain(list, entry, maxItems) {
+    var arr = (list || []).slice();
+    if (arr.length >= (maxItems || 20)) return { ok: false, reason: "max", list: arr };
+    arr.push(entry);
+    return { ok: true, list: arr };
+  }
+
+  /* ── 비트맵(0/1 대량 상태) ───────────────────────────────────── */
+  function bitsToStr(bits) {
+    var bytes = new Uint8Array(Math.ceil(bits.length / 8));
+    for (var i = 0; i < bits.length; i++) if (bits[i]) bytes[i >> 3] |= (128 >> (i & 7));
+    return b64uEnc(bytes);
+  }
+  function strToBits(str, n) {
+    var bytes = b64uDec(str), bits = [];
+    for (var i = 0; i < n; i++) bits.push(((bytes[i >> 3] || 0) >> (7 - (i & 7))) & 1);
+    return bits;
+  }
+
+  /* ── KST 날짜 · 결정론 난수 ──────────────────────────────────── */
+  var KST_MS = 9 * 3600 * 1000;
+  function kstDate(d) { return new Date((d ? d.getTime() : Date.now()) + KST_MS); }
+  /* KST 기준 YYYYMMDD 숫자 */
+  function kstYMD(d) {
+    var k = kstDate(d);
+    return k.getUTCFullYear() * 10000 + (k.getUTCMonth() + 1) * 100 + k.getUTCDate();
+  }
+  /* 기준일(YYYYMMDD)로부터 KST 며칠째인가 — 데일리 게임 회차 번호 */
+  function kstDayIndex(startYMD, d) {
+    var s = String(startYMD);
+    var start = Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8));
+    var k = kstDate(d);
+    var cur = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate());
+    return Math.round((cur - start) / 86400000);
+  }
+  function hash32(str) {
+    var h = 2166136261 >>> 0;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return h >>> 0;
+  }
+  function dailySeed(salt, d) { return hash32(kstYMD(d) + "|" + (salt || "")); }
+  function prng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), 1 | t);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function pick(rnd, arr) { return arr[Math.floor(rnd() * arr.length) % arr.length]; }
+  function shuffle(rnd, arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  /* KST 자정까지 남은 시간 {h,m,s,ms} */
+  function countdownToKstMidnight(d) {
+    var k = kstDate(d);
+    var ms = 86400000 - (k.getUTCHours() * 3600000 + k.getUTCMinutes() * 60000 + k.getUTCSeconds() * 1000 + k.getUTCMilliseconds());
+    return { ms: ms, h: Math.floor(ms / 3600000), m: Math.floor(ms / 60000) % 60, s: Math.floor(ms / 1000) % 60 };
+  }
+
+  /* ── 이모지 격자(데일리 공유용) ───────────────────────────────── */
+  function emojiGrid(rows, header) {
+    var body = rows.map(function (r) { return r.join(""); }).join("\n");
+    return (header ? header + "\n" : "") + body;
+  }
+
+  /* ── 문자열 유틸 ─────────────────────────────────────────────── */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  /* 닉네임: 12자 · 제어문자 제거. 개인정보(실명 강요) 금지 — 별명 안내는 UI에서. */
+  function nick(s, fallback) {
+    var raw = String(s == null ? "" : s), t = "";
+    for (var i = 0; i < raw.length && t.length < 12; i++) {
+      var cc = raw.charCodeAt(i);
+      if (cc < 32 || cc === 127) continue;              // 제어문자 제거
+      if ("<>&\"'\\".indexOf(raw[i]) >= 0) continue;      // HTML 위험 문자 제거
+      t += raw[i];
+    }
+    t = t.trim();
+    return t || (fallback || "익명");
+  }
+
+  /* ── 공유 UI ─────────────────────────────────────────────────── */
+  function toast(msg) {
+    var el = document.getElementById("sk-toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "sk-toast";
+      el.setAttribute("role", "status");
+      el.style.cssText = "position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);z-index:99;" +
+        "background:#101014;color:#f2f3f5;border:1px solid #33343c;border-radius:12px;padding:11px 16px;font-size:14px;" +
+        "font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.45);opacity:0;transition:.18s;pointer-events:none;max-width:88vw;text-align:center";
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    requestAnimationFrame(function () { el.style.opacity = "1"; el.style.transform = "translateX(-50%) translateY(0)"; });
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.style.opacity = "0"; el.style.transform = "translateX(-50%) translateY(8px)"; }, 1900);
+  }
+  function copy(text) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallback(); });
+    }
+    return Promise.resolve(fallback());
+  }
+  function share(opts) {
+    if (navigator.share) {
+      return navigator.share(opts).then(function () { return true; }, function () { return false; });
+    }
+    return copy(opts.url || opts.text || "").then(function (ok) {
+      if (ok) toast("링크를 복사했어요. 카톡·인스타에 붙여넣으세요");
+      return ok;
+    });
+  }
+  function xUrl(text, url) {
+    return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
+  }
+
+  /* ── 결과 카드(캔버스) ───────────────────────────────────────── */
+  var FONT = '-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif';
+  /* preset: "story"(1080×1920) | "square"(1080×1080) | "card"(1080×1350) */
+  function card(preset) {
+    var size = preset === "story" ? [1080, 1920] : preset === "square" ? [1080, 1080] : [1080, 1350];
+    var cv = document.createElement("canvas");
+    cv.width = size[0]; cv.height = size[1];
+    var ctx = cv.getContext("2d");
+    ctx.textBaseline = "top";
+    return { cv: cv, ctx: ctx, W: size[0], H: size[1], font: FONT };
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    var rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rr);
+    ctx.arcTo(x + w, y + h, x, y + h, rr);
+    ctx.arcTo(x, y + h, x, y, rr);
+    ctx.arcTo(x, y, x + w, y, rr);
+    ctx.closePath();
+  }
+  /* 줄바꿈 그리기 → 마지막 y 반환 */
+  function wrapText(ctx, text, x, y, maxW, lh, maxLines) {
+    var words = String(text).split(/(\s+)/), line = "", lines = [];
+    for (var i = 0; i < words.length; i++) {
+      var test = line + words[i];
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line.replace(/\s+$/, "")); line = words[i].replace(/^\s+/, ""); }
+      else line = test;
+    }
+    if (line.trim()) lines.push(line.replace(/\s+$/, ""));
+    /* 공백 없는 긴 한글 줄 대비: 글자 단위 재분할 */
+    var out = [];
+    for (var j = 0; j < lines.length; j++) {
+      var l = lines[j];
+      while (ctx.measureText(l).width > maxW && l.length > 1) {
+        var cut = l.length;
+        while (cut > 1 && ctx.measureText(l.slice(0, cut)).width > maxW) cut--;
+        out.push(l.slice(0, cut)); l = l.slice(cut);
+      }
+      out.push(l);
+    }
+    if (maxLines && out.length > maxLines) { out = out.slice(0, maxLines); out[maxLines - 1] = out[maxLines - 1].replace(/.$/, "…"); }
+    for (var k = 0; k < out.length; k++) ctx.fillText(out[k], x, y + k * lh);
+    return y + out.length * lh;
+  }
+  /* 하단 워터마크 — 도메인/앱 경로 (예: "tomatoeggcat.com/chemi-link") */
+  function watermark(ctx, W, H, label, color) {
+    ctx.font = "600 26px " + FONT;
+    ctx.fillStyle = color || "rgba(255,255,255,.42)";
+    ctx.textAlign = "center";
+    ctx.fillText(label, W / 2, H - 62);
+    ctx.textAlign = "left";
+  }
+  function savePng(cv, filename) {
+    try {
+      var a = document.createElement("a");
+      a.href = cv.toDataURL("image/png");
+      a.download = filename || "card.png";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      return true;
+    } catch (e) { return false; }
+  }
+  /* navigator.share(files) 우선 → 실패 시 PNG 다운로드 */
+  function sharePng(cv, filename, title) {
+    return new Promise(function (resolve) {
+      if (!cv.toBlob || !navigator.canShare) { resolve(savePng(cv, filename)); return; }
+      cv.toBlob(function (blob) {
+        if (!blob) { resolve(savePng(cv, filename)); return; }
+        try {
+          var file = new File([blob], filename || "card.png", { type: "image/png" });
+          if (navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: title || "" }).then(
+              function () { resolve(true); },
+              function () { resolve(savePng(cv, filename)); }
+            );
+            return;
+          }
+        } catch (e) {}
+        resolve(savePng(cv, filename));
+      }, "image/png");
+    });
+  }
+
+  return {
+    enc: enc, dec: dec,
+    stateUrl: stateUrl, readState: readState, writeState: writeState, clearState: clearState,
+    sizeOf: sizeOf, appendChain: appendChain,
+    bitsToStr: bitsToStr, strToBits: strToBits,
+    kstYMD: kstYMD, kstDayIndex: kstDayIndex, dailySeed: dailySeed, hash32: hash32,
+    prng: prng, pick: pick, shuffle: shuffle, countdownToKstMidnight: countdownToKstMidnight,
+    emojiGrid: emojiGrid, esc: esc, nick: nick,
+    toast: toast, copy: copy, share: share, xUrl: xUrl,
+    card: card, roundRect: roundRect, wrapText: wrapText, watermark: watermark,
+    savePng: savePng, sharePng: sharePng
+  };
+})();
+if (typeof module !== "undefined" && module.exports) module.exports = SK;
+/* ══════════════════════════════════════════════════════════════
+   케미링크 앱 로직 — 5축 · 4모드 × 20문항 · 16 관계유형
+   ══════════════════════════════════════════════════════════════ */
+"use strict";
+
+/* 5개 축: 답 0 = 왼쪽 극, 4 = 오른쪽 극. 문항 i 의 축 = i % 5 */
+var AXES = [
+  { k: "리듬", L: "계획", R: "즉흥" },
+  { k: "온도", L: "표현", R: "절제" },
+  { k: "에너지", L: "활동", R: "휴식" },
+  { k: "판단", L: "직관", R: "분석" },
+  { k: "갈등", L: "직면", R: "회피" }
+];
+
+var MODES = [
+  { e: "🧡", n: "친구", d: "약속·여행·서운함까지, 오래 본 사이의 결" },
+  { e: "💗", n: "연인", d: "데이트·연락·다툼, 생활 습관 위주" },
+  { e: "💙", n: "직장동료", d: "마감·회의·피드백, 함께 일하는 리듬" },
+  { e: "💛", n: "가족", d: "연락·명절·잔소리, 가까워서 못 한 말" }
+];
+
+/* 문항: [질문, [선택지 5개]] — 축은 배열 순서(i%5)로 결정 */
+var QUESTIONS = [
+/* ── 0. 친구 ───────────────────────────────────────────── */
+[
+["주말에 만나기로 했을 때 나는",["몇 시에 뭘 할지 전날까지 정해 둔다","큰 틀만 정하고 세부는 당일에","반반이다","만나서 정하는 게 편하다","시간만 정하고 나머진 즉흥"]],
+["친구가 준 선물이 취향이 아닐 때",["표정에 바로 다 드러난다","고맙다고 한 뒤 솔직히 말한다","상황 봐서 말한다","티 안 내고 고맙다고만 한다","끝까지 아무 말 안 한다"]],
+["오랜만에 만난 날 코스는",["액티비티부터 꽉 채운다","가볍게 걷고 밥 먹기","밥 먹고 카페","카페에 오래 앉아 있기","집에서 뒹굴며 얘기"]],
+["새로 생긴 가게에 갈지 정할 때",["간판 느낌 좋으면 그냥 들어간다","대충 훑고 감으로 정한다","반반이다","리뷰를 몇 개 읽어 본다","평점·웨이팅·메뉴까지 다 찾아본다"]],
+["친구 말에 살짝 서운했을 때",["그 자리에서 바로 말한다","그날 안에 얘기한다","며칠 뒤에 꺼낸다","웬만하면 그냥 넘긴다","혼자 삭이고 잊는다"]],
+["여행 가면 일정표는",["시간 단위로 짠다","하루 단위로 짠다","핵심 몇 개만 정한다","숙소만 잡아 둔다","표만 있으면 된다"]],
+["웃긴 짤을 봤을 때",["바로 단톡에 던진다","자주 보내는 편","가끔 보낸다","혼자 보고 웃는다","거의 안 보낸다"]],
+["휴일에 갑자기 연락이 오면",["무조건 나간다","대체로 나간다","컨디션 보고 정한다","웬만하면 집에 있는다","약속 없으면 안 나간다"]],
+["친구가 고민 상담을 해 오면",["느낌대로 결론부터 말한다","직감을 먼저 말한다","둘 다 섞어 말한다","상황을 하나씩 따져 본다","장단점을 정리해 준다"]],
+["단톡에서 의견이 갈리면",["내 의견을 분명히 말한다","조심스럽게 말한다","눈치 보다 말한다","거의 끼지 않는다","조용히 읽고 만다"]],
+["약속 시간에 나는",["10분 전에 도착한다","정시에 맞춰 간다","가끔 늦는다","자주 5~10분 늦는다","늘 늦는 편이다"]],
+["고마운 마음은",["말로 꼭 표현한다","자주 표현한다","가끔 표현한다","행동으로만 보여 준다","말 안 해도 안다고 생각한다"]],
+["여행지에서 아침에는",["일찍 나가 다 본다","부지런히 움직인다","적당히 움직인다","늦게 나간다","숙소에서 쉬는 게 좋다"]],
+["메뉴를 고를 때",["끌리는 걸 3초 만에 고른다","금방 고른다","보통이다","비교하다 고른다","메뉴판을 다 읽고 고민한다"]],
+["친구가 약속을 자꾸 미루면",["직접 물어본다","돌려서 물어본다","한두 번 더 지켜본다","나도 슬쩍 거리를 둔다","아무 말 없이 넘긴다"]],
+["모임 총무는",["내가 자주 맡는다","필요하면 맡는다","돌아가며 맡는다","웬만하면 남에게 넘긴다","절대 안 맡는다"]],
+["속상한 일이 있으면",["바로 털어놓는다","곧 얘기한다","때가 되면 말한다","정리된 뒤에만 말한다","거의 말하지 않는다"]],
+["친구랑 놀 때 선호하는 건",["몸 쓰는 액티비티","많이 걷는 나들이","맛집 투어","영화·전시 관람","집에서 게임하며 수다"]],
+["여행 숙소를 고를 때",["사진 느낌만 보고 정한다","느낌 위주로 정한다","반반이다","후기를 확인한다","가격·위치를 표로 비교한다"]],
+["오해가 생겼을 때",["바로 전화한다","길게 메시지를 쓴다","짧게 한 번 언급한다","시간이 해결하길 기다린다","먼저 연락하지 않는다"]]
+],
+/* ── 1. 연인 ───────────────────────────────────────────── */
+[
+["데이트 계획은",["한 명이 코스를 다 짜 온다","대략적인 코스를 정해 온다","만날 곳만 정한다","만나서 검색해 정한다","발길 닿는 대로 간다"]],
+["좋아하는 마음은",["말로 자주 표현한다","자주 표현하는 편","가끔 표현한다","표현보다 행동으로 보여 준다","말하지 않아도 안다고 믿는다"]],
+["주말 데이트는",["새로운 곳으로 멀리 간다","나들이·산책 위주","맛집과 카페 위주","영화·전시 같은 실내","집에서 같이 쉬기"]],
+["같이 쓸 물건을 고를 때",["보자마자 예쁜 걸로 정한다","느낌 좋은 걸로 정한다","반반이다","후기를 좀 본다","가격·성능 비교표를 만든다"]],
+["서운한 일이 생기면",["바로 말한다","그날 안에 말한다","며칠 뒤에 말한다","웬만하면 넘어간다","말 없이 혼자 푼다"]],
+["기념일은",["몇 주 전부터 준비한다","며칠 전에 준비한다","당일에 챙긴다","생각나면 챙긴다","크게 챙기지 않는다"]],
+["하루 있었던 일은",["시시콜콜 다 말한다","웬만하면 다 말한다","중요한 것만 말한다","물어보면 말한다","거의 말하지 않는다"]],
+["여행을 가면",["아침부터 부지런히 돈다","일정 대부분을 소화한다","적당히 보고 온다","반은 숙소에서 쉰다","숙소가 곧 여행이다"]],
+["중요한 선택 앞에서",["느낌을 그대로 믿는다","대체로 직감을 따른다","반반이다","정보를 찾아본다","표로 정리해 비교한다"]],
+["의견이 부딪히면",["끝까지 얘기해 결론을 낸다","웬만하면 얘기해 푼다","시간을 두고 다시 꺼낸다","한 명이 양보하고 끝낸다","그냥 없던 일로 한다"]],
+["약속 시간에는",["항상 먼저 도착한다","정시에 맞춘다","가끔 늦는다","자주 늦는다","시간 개념이 느슨하다"]],
+["사진과 기록은",["찍고 바로 공유한다","자주 남긴다","가끔 남긴다","거의 안 남긴다","기억으로만 남긴다"]],
+["쉬는 날 이상적인 하루는",["둘 다 밖에서 하루 종일","오전 외출, 오후 휴식","점심 즈음 잠깐 외출","집에서 영화 보기","각자 조용히 쉬기"]],
+["여행지를 고르는 방식은",["사진 한 장 보고 정한다","분위기로 정한다","반반이다","블로그를 몇 개 본다","항공·숙소·동선까지 계산한다"]],
+["상대 기분이 안 좋아 보이면",["바로 왜 그런지 묻는다","조심스럽게 묻는다","기다렸다가 묻는다","혼자 풀 시간을 준다","모른 척해 준다"]],
+["함께 쓰는 돈은",["예산을 정해 둔다","대략 정해 둔다","그때그때 쓴다","쓰고 싶을 때 쓴다","계획 없이 쓴다"]],
+["칭찬은",["아낌없이 자주 한다","자주 하는 편","가끔 한다","쑥스러워 잘 못한다","거의 하지 않는다"]],
+["같이 하는 취미는",["운동·등산처럼 몸 쓰는 것","산책과 나들이","요리·베이킹","게임이나 드라마","각자 하고 옆에 있기"]],
+["약속 장소를 정할 때",["끌리는 곳으로 바로 정한다","느낌으로 정한다","반반이다","평점을 확인한다","동선·주차까지 계산한다"]],
+["오래 묵은 문제가 있으면",["날을 잡고 대화한다","자연스럽게 꺼낸다","가끔 언급만 한다","서로 안 건드린다","꺼내면 더 힘들다고 본다"]]
+],
+/* ── 2. 직장동료 ───────────────────────────────────────── */
+[
+["새 업무가 떨어지면",["일정부터 쪼개서 잡는다","할 일 목록을 만든다","대략 순서만 잡는다","급한 것부터 손댄다","일단 시작하고 본다"]],
+["회의에서 내 의견은",["바로 꺼낸다","웬만하면 말한다","분위기를 보고 말한다","묻지 않으면 안 한다","거의 말하지 않는다"]],
+["점심시간은",["멀리까지 걸어가 먹는다","밖에서 먹고 산책한다","근처에서 간단히 먹는다","자리에서 빠르게 먹는다","혼자 쉬는 시간으로 쓴다"]],
+["안이 두 개 있을 때",["감으로 하나 고른다","직감을 우선한다","반반이다","근거 자료를 본다","비교표를 만들어 정한다"]],
+["협업이 어긋나면",["바로 대화를 요청한다","그날 안에 말한다","며칠 지켜본다","돌려서 힌트만 준다","내가 떠안고 만다"]],
+["마감 관리는",["여유 있게 미리 끝낸다","하루 이틀 전에 끝낸다","마감 당일에 맞춘다","마감 직전에 몰아친다","자주 미룬다"]],
+["고맙거나 미안할 때",["바로 말이나 메시지로 전한다","자주 표현한다","가끔 표현한다","티 안 내고 넘어간다","마음속으로만 둔다"]],
+["회식이나 팀 모임은",["끝까지 즐긴다","웬만하면 참석한다","한 차만 하고 간다","가급적 빠진다","거의 가지 않는다"]],
+["문제 원인을 찾을 때",["직감으로 짚는다","경험으로 짚는다","반반이다","기록을 확인한다","데이터를 뜯어본다"]],
+["부당한 일이 생기면",["그 자리에서 말한다","정리해서 말한다","기회를 봐서 말한다","웬만하면 넘어간다","조용히 감수한다"]],
+["회의 전에 나는",["안건을 미리 정리해 공유한다","메모를 준비한다","자료를 대충 훑는다","들어가서 파악한다","준비 없이 들어간다"]],
+["잘한 동료에게",["공개적으로 칭찬한다","자주 칭찬한다","가끔 칭찬한다","속으로만 인정한다","따로 표현하지 않는다"]],
+["업무 외 시간에는",["스터디나 사이드 프로젝트","운동이나 취미 활동","가벼운 외출","집에서 휴식","아무것도 하지 않는다"]],
+["새 도구를 도입할 때",["일단 써 보고 판단한다","감으로 고른다","반반이다","후기와 사례를 본다","기능 비교표를 만든다"]],
+["피드백을 줄 때",["직설적으로 말한다","분명하게 말한다","완곡하게 말한다","좋은 말 위주로 한다","말하지 않는다"]],
+["메신저 확인은",["시간을 정해 확인한다","자주 확인한다","보이면 본다","몰아서 본다","놓칠 때가 많다"]],
+["스트레스를 받으면",["바로 티가 난다","가까운 사람에게 말한다","가끔 흘린다","티 안 내려 애쓴다","아무도 눈치채지 못한다"]],
+["근무 중 나는",["자주 돌아다닌다","가끔 움직인다","보통이다","거의 앉아 있다","하루 종일 자리에 있다"]],
+["일정을 산정할 때",["감으로 잡는다","경험치로 잡는다","반반이다","비슷한 사례를 찾는다","작업을 쪼개 계산한다"]],
+["갈등이 반복되면",["정식으로 문제를 제기한다","당사자와 대화한다","제3자에게 상의한다","거리를 둔다","참고 지나간다"]]
+],
+/* ── 3. 가족 ───────────────────────────────────────────── */
+[
+["가족 모임 날짜는",["몇 주 전에 정한다","일주일 전에 정한다","며칠 전에 정한다","전날에 정한다","당일에 연락한다"]],
+["고맙다·미안하다는 말은",["자주 한다","가끔 한다","특별한 날에만 한다","쑥스러워 잘 못한다","거의 하지 않는다"]],
+["가족과 보내는 하루는",["나들이나 여행을 간다","외식하고 산책한다","집 근처에서 식사한다","집에서 같이 TV를 본다","각자 방에서 쉰다"]],
+["집안 물건을 살 때",["보고 마음에 들면 산다","느낌으로 정한다","반반이다","후기를 확인한다","가격·성능을 비교한다"]],
+["가족에게 서운하면",["바로 말한다","그날 안에 말한다","며칠 뒤에 말한다","웬만하면 참는다","말하지 않는다"]],
+["명절이나 생일 준비는",["미리 계획을 세운다","대략 준비한다","며칠 전에 준비한다","당일에 챙긴다","챙기지 못할 때가 많다"]],
+["요즘 내 근황은",["묻지 않아도 다 말한다","웬만하면 공유한다","중요한 것만 말한다","물어보면 답한다","거의 말하지 않는다"]],
+["함께 있을 때 나는",["뭐라도 같이 하자고 한다","대화를 계속 이어 간다","적당히 어울린다","조용히 옆에 있는다","금방 방으로 들어간다"]],
+["가족 일을 결정할 때",["느낌으로 정한다","경험으로 정한다","반반이다","정보를 알아본다","꼼꼼히 따져 본다"]],
+["의견이 다르면",["끝까지 이야기한다","차분히 설득한다","시간을 두고 다시 꺼낸다","한 발 물러난다","말을 아낀다"]],
+["연락 주기는",["요일을 정해 연락한다","자주 연락한다","생각나면 연락한다","가끔 연락한다","먼저 하지 않는 편"]],
+["걱정되는 마음은",["바로 말한다","자주 표현한다","가끔 표현한다","잔소리로 나온다","속으로만 한다"]],
+["가족 여행이라면",["일정을 꽉 채운다","적당히 돌아다닌다","한두 곳만 본다","숙소 위주로 쉰다","여행보다 집이 좋다"]],
+["식사 메뉴를 정할 때",["끌리는 대로 정한다","대충 정한다","반반이다","의견을 물어 정한다","다 물어보고 조율한다"]],
+["잔소리를 들으면",["바로 반응한다","내 생각을 말한다","한 번은 듣고 말한다","듣고 넘긴다","대꾸하지 않는다"]],
+["집안일 분담은",["역할을 정해 둔다","대략 정해져 있다","상황 봐서 한다","눈에 띄는 사람이 한다","정해진 게 없다"]],
+["기쁜 일이 생기면",["제일 먼저 알린다","바로 알린다","나중에 말한다","물어보면 말한다","혼자 간직한다"]],
+["주말 아침에는",["일찍 일어나 움직인다","적당히 일어난다","느지막이 일어난다","늦잠을 잔다","오후까지 쉰다"]],
+["큰 지출을 결정할 때",["끌리면 바로 지른다","감으로 정한다","반반이다","알아보고 정한다","계산기부터 두드린다"]],
+["오래된 갈등은",["날을 잡아 이야기한다","자연스럽게 푼다","가끔 언급한다","건드리지 않는다","덮어 두는 게 낫다고 본다"]]
+]
+];
+/* 16 관계 유형 — 인덱스 = b0(계획0/즉흥1)*8 + b1(표현0/절제1)*4 + b2(활동0/휴식1)*2 + b3(직면0/회피1) */
+var TYPES = [
+{e:"🚀",n:"직진 프로젝트 듀오",t:"정해서 말하고, 움직여서 끝낸다",
+ d:"둘 다 미리 정해 두는 걸 좋아하고, 마음에 있는 말을 담아 두지 않는 조합이에요. 만나기 전에 이미 몇 시에 어디서 무엇을 할지 그림이 서 있고, 만나면 앉아 있기보다 계속 움직입니다. 문제가 생겨도 오래 끌지 않아요. 서운한 게 있으면 그날 안에 꺼내고, 꺼낸 김에 다음 규칙까지 정해 버리는 쪽이죠. 그래서 이 관계는 진도가 빠릅니다. 같이 무언가를 만들거나 변수 많은 일을 함께 해내는 데 특히 강해요. 다만 둘 다 액셀만 있고 브레이크가 없다는 게 유일한 약점입니다. 아무 계획 없이 쉬는 날을 일부러 만들어 두면 훨씬 오래갑니다.",
+ g:["계획이 어긋나도 곧바로 다시 짤 수 있다","말을 아끼지 않아 오해가 쌓일 틈이 없다","같이 시작한 일은 대체로 끝까지 간다"],
+ w:["둘 다 속도를 못 줄여 함께 지친다","솔직함이 세게 나가면 상처가 된다","쉬자는 말을 서로 눈치 보며 못 꺼낸다"]},
+{e:"🎈",n:"웃으며 미루는 러너",t:"계획은 완벽, 껄끄러운 얘기만 다음 기회로",
+ d:"약속을 잡는 실력도, 분위기를 띄우는 재주도 뛰어난 조합입니다. 만날 날짜는 몇 주 전에 정해지고, 만나면 웃음이 끊이지 않고, 하루를 알차게 씁니다. 그런데 딱 하나, 껄끄러운 주제 앞에서는 둘 다 약속이라도 한 듯 화제를 돌려요. '오늘은 좋은 날이니까'가 이 관계의 단골 문장이죠. 덕분에 함께 있는 시간은 늘 즐겁지만 미뤄 둔 이야기가 조용히 쌓입니다. 쌓인 게 한 번에 터지면 규모가 커지니, 분기에 한 번쯤은 불편한 얘기를 하는 날을 달력에 미리 넣어 두는 게 이 조합의 보험입니다.",
+ g:["같이 있는 시간의 만족도가 늘 높다","일정 조율에서 부딪힐 일이 거의 없다","서로의 기분을 빠르게 알아채고 띄워 준다"],
+ w:["미룬 대화가 한 번에 몰려서 터진다","'괜찮아'가 진심인지 확인이 안 된다","문제를 즐거움으로 덮는 습관이 생긴다"]},
+{e:"☕",n:"속 터놓는 카페 듀오",t:"정해 둔 자리에 앉아 할 말은 다 한다",
+ d:"이 조합의 만남은 대개 조용한 자리에서 시작합니다. 어디로 갈지는 미리 정해져 있고 굳이 여기저기 옮겨 다니지 않아요. 대신 앉으면 이야기가 깊어집니다. 둘 다 감정을 숨기지 않고, 이상하다 싶은 건 그 자리에서 확인하고 넘어가죠. 그래서 겉보기엔 잔잔한데 실제로는 서로에 대해 가장 많이 아는 관계가 됩니다. 주의할 점은 대화가 늘 진지 모드로 흐른다는 것. 아무 목적 없이 그냥 웃기만 하는 시간도 일부러 끼워 넣어야 관계가 무겁지 않게 유지됩니다.",
+ g:["말하지 않은 채 넘어가는 일이 거의 없다","조용한 자리에서 오래 이야기할 수 있다","약속이 어긋나 헛걸음할 일이 적다"],
+ w:["만남이 매번 상담처럼 무거워진다","새로운 자극이 부족해 지루해질 수 있다","진지한 말이 길어져 서로 지친다"]},
+{e:"🍮",n:"다정한 안전지대",t:"편안함이 최우선, 갈등은 최후의 수단",
+ d:"함께 있으면 마음이 놓이는 조합입니다. 만날 자리는 늘 익숙한 곳이고, 표현은 넉넉하고, 서로를 몰아세우지 않아요. 상대가 힘들어 보이면 캐묻기보다 그냥 옆에 있어 주는 쪽을 고릅니다. 이런 사이는 오래 갑니다. 다만 '괜히 분위기 깨지 말자'는 마음이 둘 다 강해서, 정작 정리해야 할 문제는 계속 뒤로 밀려요. 편안함이 목적이 되면 관계가 조금씩 얕아집니다. 일 년에 몇 번은 서로에게 바라는 걸 한 가지씩 말해 보는 자리를 만들어 보세요.",
+ g:["함께 있는 것만으로 회복되는 사이다","서로를 재촉하거나 몰아세우지 않는다","약속과 배려가 안정적으로 유지된다"],
+ w:["문제를 미루다 갑자기 멀어질 수 있다","솔직한 요구를 꺼내기 어려워진다","변화가 없어 관계가 정체된다"]},
+{e:"⚙️",n:"말없는 실행 콤비",t:"설명은 짧게, 결과로 증명한다",
+ d:"말이 길지 않은 대신 결과가 확실한 조합입니다. 둘 다 미리 준비하고, 감정을 길게 설명하지 않고, 일단 움직입니다. 그러다 문제가 보이면 돌려 말하지 않고 바로 짚어요. 그래서 함께 무언가를 진행하면 속도와 완성도가 동시에 나옵니다. 문제는 감정의 온도가 잘 드러나지 않는다는 점이에요. 서로 나쁜 뜻이 없는데도 짧은 말이 차갑게 들릴 수 있습니다. 잘한 일에 대해 한마디씩 짚어 주는 습관만 붙여도 이 조합의 체감 온도는 크게 달라집니다.",
+ g:["일이든 약속이든 확실하게 굴러간다","군더더기 없이 문제를 바로 정리한다","서로에게 과한 감정 노동을 요구하지 않는다"],
+ w:["짧은 말이 차갑게 오해받는다","괜찮은지 아닌지 서로 확인이 안 된다","칭찬과 인정이 부족해 서운함이 남는다"]},
+{e:"🧭",n:"묵묵한 페이스메이커",t:"각자 알아서 잘, 부딪힐 일은 만들지 않는다",
+ d:"서로의 영역을 존중하는 어른스러운 조합입니다. 각자 자기 몫을 미리 챙기고, 굳이 감정을 늘어놓지 않고, 부딪힐 만한 상황은 애초에 만들지 않아요. 함께 움직일 때도 상대의 속도를 억지로 바꾸려 들지 않습니다. 덕분에 스트레스가 적고 오래 유지되는 사이가 되죠. 대신 서로에 대해 아는 정보가 생각보다 적을 수 있습니다. 표현도 적고 문제 제기도 적으니 거리감이 조용히 벌어져요. 가끔은 계획에 없던 질문 하나를 던져 보는 게 이 관계엔 큰 사건이 됩니다.",
+ g:["서로의 시간과 방식을 존중한다","불필요한 감정 소모가 거의 없다","각자 맡은 일은 확실히 해낸다"],
+ w:["가까운데도 아는 것이 의외로 적다","불만이 표면에 드러나지 않는다","거리감이 조용히 벌어질 수 있다"]},
+{e:"📐",n:"조용한 정리단",t:"말수는 적지만 짚을 건 짚는다",
+ d:"평소엔 조용합니다. 만나도 요란하지 않고, 감정을 크게 드러내지도 않아요. 그런데 어긋난 지점이 생기면 이 조합은 반드시 정리하고 넘어갑니다. 목소리를 높이는 대신 정확한 문장으로 짚죠. 그래서 겉은 잔잔한데 속은 깔끔한 관계가 됩니다. 계획도 서 있고, 쉬는 시간도 충분하고, 미해결 과제도 남지 않아요. 주의할 점은 이 정확함이 때로 냉정하게 느껴진다는 것. 짚기 전에 '너를 탓하는 게 아니라'는 한 줄만 붙여도 받아들이는 온도가 완전히 달라집니다.",
+ g:["문제가 오래 방치되지 않는다","서로 조용한 시간을 편하게 공유한다","약속과 규칙이 잘 지켜진다"],
+ w:["지적이 차갑게 느껴질 때가 있다","감정보다 사실 위주라 서운함이 남는다","즐거운 이벤트가 부족해진다"]},
+{e:"🛋️",n:"고요한 루틴 짝꿍",t:"같은 자리, 같은 속도로 오래가는 사이",
+ d:"이 조합은 요란한 사건 없이 아주 오래 갑니다. 만나는 곳도 시간도 거의 정해져 있고, 서로 말을 많이 하지 않아도 불편하지 않고, 굳이 갈등을 만들지도 않아요. 함께 있는 시간의 대부분은 각자 편한 걸 하면서 흘러갑니다. 이런 관계는 지치지 않아서 강합니다. 다만 변화가 거의 없다 보니 어느 순간 서로의 근황을 모르게 되기도 해요. 새로운 이야기가 들어올 자리를 만들려면 일 년에 한 번은 평소 안 하던 걸 같이 해 보는 게 좋습니다.",
+ g:["오래 함께해도 서로 지치지 않는다","말없이 있어도 어색하지 않다","루틴이 안정적이라 신뢰가 쌓인다"],
+ w:["변화가 없어 관계가 정체된다","서로의 최근 상황을 잘 모른다","문제를 꺼낼 계기 자체가 없다"]},
+{e:"🔥",n:"불꽃 케미 콤비",t:"지금 당장 만나서, 다 쏟아낸다",
+ d:"연락이 오면 몇 시간 뒤에 만나고 있는 조합입니다. 계획은 대충, 감정은 그대로, 에너지는 최대치예요. 재미있는 게 생기면 바로 하고, 마음에 안 드는 게 생기면 바로 말합니다. 그래서 이 관계는 사건이 많습니다. 좋은 기억도 많고 부딪힌 기억도 많죠. 서로 뒤끝이 없어서 다음 날이면 또 웃고 있는 게 특징입니다. 다만 감정이 세게 오갈 때 말이 앞서기 쉬우니, 화가 났을 땐 한 박자 쉬고 말하기로 미리 약속해 두면 이 조합의 폭발력이 좋은 쪽으로만 쓰입니다.",
+ g:["함께 만드는 추억의 양이 압도적이다","서운함을 오래 담아 두지 않는다","즉흥 제안에 서로 잘 응한다"],
+ w:["감정이 격해지면 말이 앞선다","계획이 없어 중요한 일정이 밀린다","둘 다 쉬어야 할 때를 놓친다"]},
+{e:"🎡",n:"일단 놀고 보는 팀",t:"고민은 나중에, 오늘은 재밌게",
+ d:"만나면 무조건 재미있는 조합입니다. 약속은 즉흥적으로 잡히고, 표현은 시원시원하고, 하루를 알차게 씁니다. 대신 무거운 주제가 나오면 둘 다 자연스럽게 화제를 돌려요. 오늘의 분위기를 지키는 게 더 중요하다고 느끼기 때문이죠. 그래서 이 관계는 즐거움의 총량이 아주 크지만, 정작 필요한 대화는 계속 다음으로 밀립니다. 놀 때 놀더라도 헤어지기 전 5분만 남겨서 '요즘 어때?'를 진짜로 물어보는 습관을 들이면 훨씬 단단해집니다.",
+ g:["함께 있는 시간이 늘 유쾌하다","계획 없이도 하루가 잘 굴러간다","서로 기분을 빠르게 끌어올린다"],
+ w:["중요한 대화가 계속 미뤄진다","즐거움이 사라지면 만날 이유가 흐려진다","약속과 책임이 자주 밀린다"]},
+{e:"🍜",n:"새벽 수다 듀오",t:"갑자기 만나 오래 앉아 속을 뒤집는다",
+ d:"계획 없이 만나 몇 시간을 앉아 있는 조합입니다. 활동적으로 돌아다니기보다는 한자리에서 이야기를 길게 하고, 감정을 그대로 꺼내고, 이상한 부분은 그 자리에서 확인합니다. 그래서 서로에 대해 아는 게 정말 많아요. 남들에게 안 하는 이야기가 이 관계에서는 자연스럽게 나옵니다. 단점은 만남의 밀도가 너무 높아서 가끔 소진된다는 것. 그리고 즉흥적으로 만나다 보니 오래 못 볼 때는 아예 몇 달씩 비기도 합니다. 느슨한 정기 약속 하나를 두면 균형이 맞습니다.",
+ g:["깊은 이야기를 나눌 수 있는 몇 안 되는 사이","서로의 변화를 빠르게 알아챈다","숨기는 것이 거의 없다"],
+ w:["대화가 길어져 감정 소모가 크다","만남의 주기가 들쭉날쭉하다","무거운 이야기만 남을 수 있다"]},
+{e:"🫧",n:"기분파 힐링 짝꿍",t:"내킬 때 만나 아무 말 대잔치",
+ d:"부담이 없는 조합입니다. 약속은 그때그때 정해지고, 만나면 편한 자리에 앉아 쉬고, 표현은 넉넉하고, 서로를 몰아붙이지 않아요. 힘들 때 연락하고 싶은 사람이 서로에게 이 유형입니다. 무리하지 않기 때문에 관계가 잘 상하지 않죠. 다만 둘 다 갈등을 피하고 일정도 느슨해서, 오해가 생기면 풀지 못한 채로 시간이 흐르기 쉽습니다. 애매한 기류가 느껴질 때 가볍게라도 한 번 물어보는 것, 그것만 하면 이 조합은 거의 무적입니다.",
+ g:["부담 없이 자주 연락할 수 있다","서로에게 쉬어 가는 자리가 되어 준다","분위기가 상하는 일이 거의 없다"],
+ w:["오해가 생기면 그대로 방치된다","약속이 자주 흐지부지된다","서로에게 요구를 못 해 아쉬움이 남는다"]},
+{e:"🎯",n:"말보다 행동 콤비",t:"설명 없이 움직이고, 필요하면 바로 짚는다",
+ d:"말수는 적은데 실행은 빠른 조합입니다. 계획을 길게 세우지 않고 일단 움직이고, 감정을 늘어놓지 않고, 필요한 순간에는 정확하게 문제를 제기합니다. 그래서 함께 있으면 일이 척척 진행되지만 대화는 짧아요. 서로를 챙기는 방식도 말이 아니라 행동입니다. 조용히 뭔가를 대신 해 두는 식이죠. 이런 배려는 알아채기 어려우니 가끔은 '이거 네가 해 준 거지'라고 말로 확인해 주세요. 그 한마디가 이 조합에서는 긴 대화보다 큰 효과를 냅니다.",
+ g:["말보다 행동으로 확실히 챙긴다","즉흥 상황에서도 대처가 빠르다","문제를 오래 끌지 않는다"],
+ w:["배려가 표현되지 않아 묻힌다","대화가 짧아 오해가 생긴다","계획이 없어 놓치는 일정이 있다"]},
+{e:"🛹",n:"흘러가는 대로 팀",t:"약속도 감정도 느슨해서 편한 사이",
+ d:"강요가 없는 조합입니다. 약속을 미리 정하지도 않고, 감정을 크게 표현하지도 않고, 굳이 문제를 꺼내지도 않아요. 그런데도 만나면 잘 놀고 잘 움직입니다. 서로에게 기대하는 게 적어서 실망할 일도 적죠. 이 관계는 오래 방치해도 잘 상하지 않는다는 게 진짜 장점입니다. 반대로 말하면 관계가 저절로 깊어지지는 않아요. 한쪽이 힘든 시기를 지날 때 그 사실 자체를 모르고 지나갈 수 있습니다. 가끔 먼저 안부를 묻는 쪽이 되어 보세요.",
+ g:["서로에게 부담을 주지 않는다","오래 연락이 없어도 어색하지 않다","즉흥적인 활동에 잘 맞는다"],
+ w:["힘든 시기를 서로 모르고 지나간다","관계가 저절로 깊어지지 않는다","중요한 약속이 잘 지켜지지 않는다"]},
+{e:"🌙",n:"느긋한 팩폭 듀오",t:"평소엔 조용, 결정적일 때 한마디",
+ d:"평소에는 아주 느긋합니다. 계획도 없고, 말도 많지 않고, 만나면 대체로 앉아서 쉬어요. 그런데 정말 중요한 순간이 오면 이 조합은 회피하지 않습니다. 오래 지켜본 사람만 할 수 있는 정확한 한마디가 나오죠. 그 한마디 때문에 이 관계는 신뢰가 두껍습니다. 다만 평소 대화량이 적어서, 그 한마디가 갑작스럽고 세게 느껴질 수 있어요. 결정적인 말을 하기 전에 최근 근황을 먼저 묻는 것만으로도 훨씬 부드럽게 전달됩니다.",
+ g:["정말 필요한 순간에는 도망가지 않는다","서로 조용한 시간을 편하게 여긴다","기대가 적어 실망도 적다"],
+ w:["평소 대화가 적어 맥락이 부족하다","가끔 나오는 직언이 세게 느껴진다","함께하는 활동이 거의 없다"]},
+{e:"🌫️",n:"무해한 방목 짝꿍",t:"연락은 뜸해도 만나면 그대로",
+ d:"세상에서 가장 부담 없는 조합입니다. 약속을 미리 잡지도, 감정을 늘어놓지도, 갈등을 만들지도 않고, 만나면 조용히 쉽니다. 몇 달 만에 봐도 어제 본 것처럼 자연스러워요. 서로에게 아무것도 요구하지 않기 때문에 이 관계는 거의 상하지 않습니다. 대신 아무 일도 일어나지 않죠. 관계가 깊어지려면 누군가는 먼저 연락하고, 먼저 제안하고, 먼저 물어야 하는데 둘 다 그 역할을 잘 맡지 않습니다. 한 명이 용기를 내면 의외로 아주 좋은 사이가 됩니다.",
+ g:["오래 비워도 관계가 상하지 않는다","서로에게 아무 부담이 없다","만나면 편안함이 즉시 회복된다"],
+ w:["먼저 연락하는 사람이 없다","관계가 더 깊어지지 않는다","서로의 어려움을 알기 어렵다"]}
+];
+
+/* 모드별 추천 활동: ACTS[모드][축][극] (극 0=왼쪽, 1=오른쪽) */
+var ACTS = [
+[["다음 만남 날짜를 지금 달력에 같이 찍어 두기","'지금 나와' 한마디에 나가는 즉흥의 날 만들기"],
+ ["서로 좋아하는 점을 세 가지씩 말해 주기","말 대신 취향에 맞는 링크를 하나씩 보내기"],
+ ["볼링·클라이밍처럼 몸 쓰는 곳 한 번 가 보기","한 카페에 세 시간 앉아 있기 챌린지"],
+ ["메뉴판 안 보고 3초 안에 시키기 게임","가고 싶은 곳 목록을 만들어 점수 매기기"],
+ ["'요즘 나한테 서운한 거 하나' 서로 말해 보기","꺼내기 어려운 말은 메모로 남기는 규칙 정하기"]],
+[["다음 달 데이트 세 개를 지금 달력에 찍어 두기","도착해서 정하는 무계획 데이트 해 보기"],
+ ["좋아하는 이유를 다섯 개씩 적어 서로 읽어 주기","말없이 필요한 걸 하나씩 챙겨 주는 하루"],
+ ["안 가 본 동네를 걸어서 한 바퀴 돌기","각자 좋아하는 걸 하며 한 공간에 세 시간 있기"],
+ ["서로 메뉴를 골라 주고 군말 없이 먹기","가고 싶은 여행지 목록을 만들어 점수 매기기"],
+ ["아쉬운 점 하나씩 말하고 바로 대안 정하기","감정이 격해지면 30분 쉬고 다시 얘기하기"]],
+[["주 시작에 15분 싱크 미팅 고정하기","막히면 바로 5분 통화하는 룰 만들기"],
+ ["잘된 일은 팀 채널에 공개로 남기기","말 대신 문서로 정리해 공유하기"],
+ ["점심 먹고 같이 10분 걷기","회의 없는 집중 시간대를 서로 지켜 주기"],
+ ["고민되는 안은 30분 타임박스로 먼저 만들어 보기","결정 기준을 세 줄로 적고 시작하기"],
+ ["월 1회 개선하고 싶은 점 교환하기","불편한 건 이슈로 남겨 감정 빼고 다루기"]],
+[["다음 가족 모임 날짜를 오늘 정해 공유하기","생각날 때 짧게 전화하는 습관 만들기"],
+ ["고마웠던 일 하나를 말로 전하기","손편지나 메시지로 마음 남겨 두기"],
+ ["가까운 곳으로 반나절 나들이 가기","같이 영화 한 편 보고 아무 말 안 하기"],
+ ["메뉴는 가위바위보로 정하고 그냥 먹기","큰 지출은 표로 정리해 함께 보기"],
+ ["묵은 이야기 하나를 밥상에서 꺼내 보기","말이 어려우면 메시지로 먼저 운 떼기"]]
+];
+/* ══════════ 순수 계산부 (결정론 · 난수 없음) ══════════ */
+var QN = 20;
+
+/* 20개 답 → 5축 평균(0~4) */
+function axisAvg(ans) {
+  var s = [0, 0, 0, 0, 0], c = [0, 0, 0, 0, 0], i;
+  for (i = 0; i < QN; i++) { var a = i % 5; s[a] += ans[i]; c[a]++; }
+  for (i = 0; i < 5; i++) s[i] = s[i] / c[i];
+  return s;
+}
+
+/* 일치율: 문항 유사도 1-|a-b|/4 의 평균 s 를 0.5+0.5*sin(pi*(s-0.5)) 로 펼침 */
+function matchPct(a, b) {
+  var t = 0;
+  for (var i = 0; i < QN; i++) t += 1 - Math.abs(a[i] - b[i]) / 4;
+  var s = t / QN;
+  var v = 0.5 + 0.5 * Math.sin(Math.PI * (s - 0.5));
+  return Math.max(0, Math.min(100, Math.round(v * 100)));
+}
+
+/* 상태 스키마 검증 */
+function validAns(x) {
+  if (!Array.isArray(x) || x.length !== QN) return false;
+  for (var i = 0; i < QN; i++) {
+    var v = x[i];
+    if (typeof v !== "number" || !isFinite(v) || v < 0 || v > 4 || Math.floor(v) !== v) return false;
+  }
+  return true;
+}
+function validSide(p) { return Array.isArray(p) && p.length === 2 && typeof p[0] === "string" && validAns(p[1]); }
+function validState(st) {
+  if (!st || typeof st !== "object") return false;
+  if (st.v !== 1) return false;
+  if (typeof st.m !== "number" || st.m < 0 || st.m > 3 || Math.floor(st.m) !== st.m) return false;
+  if (!validSide(st.a)) return false;
+  if (st.b !== undefined && st.b !== null && !validSide(st.b)) return false;
+  return true;
+}
+
+/* 두 사람 상태 → 결과 객체 (완전 결정론) */
+function computePair(st) {
+  var mode = st.m, ansA = st.a[1], ansB = st.b[1];
+  var avA = axisAvg(ansA), avB = axisAvg(ansB), i;
+  var mid = [];
+  for (i = 0; i < 5; i++) mid.push((avA[i] + avB[i]) / 2);
+
+  var bits = [mid[0] > 2 ? 1 : 0, mid[1] > 2 ? 1 : 0, mid[2] > 2 ? 1 : 0, mid[4] > 2 ? 1 : 0];
+  var tIdx = bits[0] * 8 + bits[1] * 4 + bits[2] * 2 + bits[3];
+
+  /* 문항별 차이 */
+  var rows = [];
+  for (i = 0; i < QN; i++) rows.push({ i: i, dif: Math.abs(ansA[i] - ansB[i]) });
+  var same = rows.slice().sort(function (x, y) { return (x.dif - y.dif) || (x.i - y.i); }).slice(0, 3);
+  var diff = rows.slice().sort(function (x, y) { return (y.dif - x.dif) || (x.i - y.i); }).slice(0, 3);
+
+  /* 추천 활동: 중앙에서 가장 많이 벗어난 축 3개 */
+  var order = [0, 1, 2, 3, 4].sort(function (x, y) {
+    var dx = Math.abs(mid[x] - 2), dy = Math.abs(mid[y] - 2);
+    return (dy - dx) || (x - y);
+  });
+  var acts = [];
+  for (i = 0; i < 3; i++) {
+    var ax = order[i];
+    acts.push(ACTS[mode][ax][mid[ax] > 2 ? 1 : 0]);
+  }
+
+  return {
+    mode: mode, pct: matchPct(ansA, ansB),
+    avA: avA, avB: avB, mid: mid,
+    bits: bits, tIdx: tIdx, type: TYPES[tIdx],
+    same: same, diff: diff, acts: acts,
+    /* 위조된 링크 대비: 닉네임은 렌더 직전에 다시 12자로 정제한다 */
+    nickA: SK.nick(st.a[0], "익명1"), nickB: SK.nick(st.b[0], "익명2")
+  };
+}
+
+/* node 검증용 export (브라우저에서는 무시됨) */
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { SK: SK, AXES: AXES, MODES: MODES, QUESTIONS: QUESTIONS, TYPES: TYPES, ACTS: ACTS,
+    axisAvg: axisAvg, matchPct: matchPct, computePair: computePair, validState: validState };
+}
+/* ══════════ UI (브라우저 전용) ══════════ */
+if (typeof document !== "undefined") {
+
+var $ = function (id) { return document.getElementById(id); };
+var SCREENS = ["sMode", "sNick", "sQuiz", "sInvite", "sResult"];
+function show(id) {
+  for (var i = 0; i < SCREENS.length; i++) $(SCREENS[i]).classList.toggle("on", SCREENS[i] === id);
+}
+
+var mode = -1;          // 선택된 모드 인덱스
+var myNick = "";        // 내 닉네임
+var myAns = [];         // 내 답 (0~4)
+var step = 0;           // 현재 문항
+var invite = null;      // 상대(a)가 보낸 초대 상태
+var pair = null;        // 두 사람 상태
+var cur = null;         // 계산된 결과
+var prefill = null;     // 리믹스용 이전 답
+
+/* ── 모드 선택 ── */
+(function renderModes() {
+  var out = "";
+  for (var i = 0; i < MODES.length; i++) {
+    out += '<button type="button" class="mode" data-m="' + i + '"><b>' + MODES[i].e + " " + SK.esc(MODES[i].n) +
+      "</b><small>" + SK.esc(MODES[i].d) + "</small></button>";
+  }
+  $("modeHost").innerHTML = out;
+})();
+$("modeHost").addEventListener("click", function (e) {
+  var b = e.target.closest ? e.target.closest(".mode") : null;
+  if (!b) return;
+  mode = +b.getAttribute("data-m");
+  var list = document.querySelectorAll(".mode");
+  for (var i = 0; i < list.length; i++) list[i].classList.toggle("on", +list[i].getAttribute("data-m") === mode);
+  $("modeNext").disabled = false;
+});
+$("modeNext").addEventListener("click", function () {
+  if (mode < 0) return;
+  show("sNick");
+  $("nickIn").focus();
+});
+$("nickBack").addEventListener("click", function () { show("sMode"); });
+$("nickNext").addEventListener("click", function () { beginQuiz(); });
+$("nickIn").addEventListener("keydown", function (e) { if (e.key === "Enter") beginQuiz(); });
+
+/* ── 문항 진행 ── */
+function beginQuiz() {
+  myNick = SK.nick($("nickIn").value, invite ? "상대" : "나");
+  myAns = [];
+  for (var i = 0; i < QN; i++) myAns.push(prefill && prefill.length === QN ? prefill[i] : null);
+  step = 0;
+  show("sQuiz");
+  renderQ();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function renderQ() {
+  var q = QUESTIONS[mode][step], ax = AXES[step % 5];
+  $("qbar").style.width = ((step) / QN * 100) + "%";
+  $("qcount").innerHTML = "<b>" + (step + 1) + "</b> / " + QN;
+  $("qaxis").textContent = ax.L + " ↔ " + ax.R;
+  $("qtext").textContent = q[0];
+  var out = "";
+  for (var i = 0; i < 5; i++) {
+    out += '<button type="button" class="opt' + (myAns[step] === i ? " sel" : "") + '" data-v="' + i + '">' +
+      SK.esc(q[1][i]) + "</button>";
+  }
+  $("qopts").innerHTML = out;
+  $("qback").disabled = step === 0;
+}
+$("qopts").addEventListener("click", function (e) {
+  var b = e.target.closest ? e.target.closest(".opt") : null;
+  if (!b) return;
+  myAns[step] = +b.getAttribute("data-v");
+  if (step < QN - 1) { step++; renderQ(); }
+  else finishQuiz();
+});
+$("qback").addEventListener("click", function () {
+  if (step > 0) { step--; renderQ(); }
+});
+
+function finishQuiz() {
+  for (var i = 0; i < QN; i++) if (myAns[i] === null) { step = i; renderQ(); SK.toast("답하지 않은 문항이 있어요"); return; }
+  prefill = myAns.slice();
+  if (invite) {
+    var full = { v: 1, m: mode, a: invite.a, b: [myNick, myAns.slice()] };
+    if (!SK.sizeOf(full).ok) { SK.toast("링크가 너무 길어졌어요"); return; }
+    pair = full;
+    SK.writeState(full);
+    renderResult(full, "b");
+  } else {
+    var st = { v: 1, m: mode, a: [myNick, myAns.slice()] };
+    if (!SK.sizeOf(st).ok) { SK.toast("링크가 너무 길어졌어요"); return; }
+    showInvite(st);
+  }
+}
+
+/* ── 초대 링크 화면 (내 결과는 잠금) ── */
+var inviteUrl = "";
+function showInvite(st) {
+  inviteUrl = SK.stateUrl(st);
+  SK.writeState(st);
+  $("inviteUrl").textContent = inviteUrl;
+  show("sInvite");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function inviteText() {
+  return myNick + "님이 케미 테스트를 보냈어요 💞\n" + MODES[mode].n + " 모드 20문항에 답하면 우리 둘의 일치율이 열려요. 나는 이미 답했어요 👀\n" + inviteUrl;
+}
+$("ivCopy").addEventListener("click", function () {
+  SK.copy(inviteUrl).then(function (ok) { SK.toast(ok ? "링크를 복사했어요. 카톡·DM에 붙여넣으세요" : "복사에 실패했어요"); });
+});
+$("ivText").addEventListener("click", function () {
+  SK.copy(inviteText()).then(function (ok) { SK.toast(ok ? "보낼 문구를 복사했어요" : "복사에 실패했어요"); });
+});
+$("ivShare").addEventListener("click", function () {
+  SK.share({ title: "케미링크", text: myNick + "님이 케미 테스트를 보냈어요. 답하면 둘의 일치율이 열려요!", url: inviteUrl });
+});
+$("ivX").addEventListener("click", function () {
+  window.open(SK.xUrl("답해 줘야 결과가 열리는 케미 테스트 💞 " + MODES[mode].n + " 모드 20문항", inviteUrl), "_blank", "noopener");
+});
+$("ivRestart").addEventListener("click", function () {
+  prefill = myAns.slice();
+  beginQuiz();
+  SK.toast("이전 답이 그대로 채워졌어요. 고치고 새 링크를 만드세요");
+});
+/* ── 결과 화면 ── */
+var mySide = null;
+function pos(v) { return (v / 4 * 100).toFixed(1); }
+
+function renderResult(st, side) {
+  pair = st; mySide = side || null;
+  mode = st.m;
+  cur = computePair(st);
+  var t = cur.type, i;
+
+  $("rPair").textContent = cur.nickA + "  ✕  " + cur.nickB;
+  $("rPct").textContent = cur.pct + "%";
+  $("rPctLab").textContent = MODES[cur.mode].e + " " + MODES[cur.mode].n + " 모드 · 우리 둘의 일치율";
+  $("rName").textContent = t.e + " " + t.n;
+  $("rTag").textContent = t.t;
+  $("rLegA").textContent = cur.nickA;
+  $("rLegB").textContent = cur.nickB;
+
+  var g = "";
+  for (i = 0; i < 5; i++) {
+    g += '<div class="gauge"><span class="pl">' + AXES[i].L + '</span><span class="track">' +
+      '<i class="a" style="left:' + pos(cur.avA[i]) + '%"></i>' +
+      '<i class="b" style="left:' + pos(cur.avB[i]) + '%"></i>' +
+      '</span><span class="pr">' + AXES[i].R + "</span></div>";
+  }
+  $("rGauges").innerHTML = g;
+
+  $("rDescH").textContent = t.e + " " + t.n + " — 이런 조합이에요";
+  $("rDesc").textContent = t.d;
+  $("rGood").innerHTML = t.g.map(function (x) { return "<li>" + SK.esc(x) + "</li>"; }).join("");
+  $("rWatch").innerHTML = t.w.map(function (x) { return "<li>" + SK.esc(x) + "</li>"; }).join("");
+  $("rActs").innerHTML = cur.acts.map(function (x) { return "<li>" + SK.esc(x) + "</li>"; }).join("");
+
+  function rowHtml(r) {
+    var q = QUESTIONS[cur.mode][r.i];
+    return "<li><b>Q" + (r.i + 1) + ". " + SK.esc(q[0]) + "</b>" +
+      '<em><span class="dot a"></span>' + SK.esc(cur.nickA) + ": " + SK.esc(q[1][pair.a[1][r.i]]) + "</em><br>" +
+      '<em><span class="dot b"></span>' + SK.esc(cur.nickB) + ": " + SK.esc(q[1][pair.b[1][r.i]]) + "</em></li>";
+  }
+  $("rSame").innerHTML = cur.same.map(rowHtml).join("");
+  $("rDiff").innerHTML = cur.diff.map(rowHtml).join("");
+
+  $("rHint").textContent = side === "b"
+    ? "이 결과 링크를 " + cur.nickA + "님에게 보내 주세요. 그래야 상대도 같은 결과를 볼 수 있어요."
+    : "이 링크를 여는 사람은 누구나 같은 결과를 보게 됩니다.";
+
+  $("inbound").classList.add("show");
+  $("inboundMsg").innerHTML = "<b>" + SK.esc(cur.nickA) + "</b>님과 <b>" + SK.esc(cur.nickB) + "</b>님의 케미 결과예요. 당신의 케미는?";
+
+  show("sResult");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resultUrl() { return SK.stateUrl(pair); }
+function resultText() {
+  return "[케미링크] " + cur.nickA + " ✕ " + cur.nickB + " 일치율 " + cur.pct + "%\n" +
+    cur.type.e + " " + cur.type.n + " — " + cur.type.t + "\n" + resultUrl();
+}
+$("rCopy").addEventListener("click", function () {
+  SK.copy(resultUrl()).then(function (ok) { SK.toast(ok ? "결과 링크를 복사했어요" : "복사에 실패했어요"); });
+});
+$("rText").addEventListener("click", function () {
+  SK.copy(resultText()).then(function (ok) { SK.toast(ok ? "텍스트를 복사했어요" : "복사에 실패했어요"); });
+});
+$("rX").addEventListener("click", function () {
+  window.open(SK.xUrl("우리 둘의 케미 일치율 " + cur.pct + "% — " + cur.type.n + " 💞", resultUrl()), "_blank", "noopener");
+});
+$("rShare").addEventListener("click", function () {
+  SK.share({ title: "케미링크 결과", text: cur.nickA + " ✕ " + cur.nickB + " 일치율 " + cur.pct + "% · " + cur.type.n, url: resultUrl() });
+});
+
+/* 역으로 보내기: 내가 a 가 되어 새 체인 시작 */
+$("rReverse").addEventListener("click", function () {
+  var nk = null, an = null;
+  if (mySide === "b" && pair.b) { nk = SK.nick(pair.b[0], "익명2"); an = pair.b[1]; }
+  else if (prefill) { nk = myNick; an = prefill; }
+  if (!an) { resetAll(); SK.toast("먼저 20문항에 답하면 내 링크를 만들 수 있어요"); return; }
+  myNick = nk; myAns = an.slice(); prefill = an.slice(); invite = null;
+  $("inbound").classList.remove("show");
+  showInvite({ v: 1, m: mode, a: [myNick, myAns.slice()] });
+  SK.toast("내가 먼저 답한 새 링크를 만들었어요");
+});
+/* 리믹스: 이전 답 프리필 후 다시 하기 */
+$("rRemix").addEventListener("click", function () {
+  var an = (mySide === "b" && pair.b) ? pair.b[1] : prefill;
+  if (!an) { resetAll(); return; }
+  prefill = an.slice();
+  invite = null;
+  $("inbound").classList.remove("show");
+  $("nickIn").value = (mySide === "b" && pair.b) ? SK.nick(pair.b[0], "익명2") : myNick;
+  beginQuiz();
+  SK.toast("이전 답이 채워졌어요. 고쳐서 새 링크를 만드세요");
+});
+function resetAll() {
+  invite = null; pair = null; cur = null; mySide = null; prefill = null; mode = -1;
+  $("nickIn").value = "";
+  $("modeNext").disabled = true;
+  var list = document.querySelectorAll(".mode");
+  for (var i = 0; i < list.length; i++) list[i].classList.remove("on");
+  $("inbound").classList.remove("show");
+  SK.clearState();
+  show("sMode");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+$("meToo").addEventListener("click", function () { resetAll(); });
+/* ── 결과 카드(PNG) ── */
+$("saveBtn").addEventListener("click", function () {
+  if (!cur) return;
+  var c = SK.card("card"), ctx = c.ctx, W = c.W, H = c.H, F = c.font, i;
+  var bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, "#4a044e"); bg.addColorStop(0.5, "#9d174d"); bg.addColorStop(1, "#f472b6");
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  var rg = ctx.createRadialGradient(W - 170, 130, 10, W - 170, 130, 340);
+  rg.addColorStop(0, "rgba(255,255,255,.24)"); rg.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+
+  var PAD = 84;
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#fbcfe8"; ctx.font = "700 30px " + F;
+  ctx.fillText("C H E M I   L I N K", PAD, 78);
+  ctx.fillStyle = "#ffffff"; ctx.font = "800 50px " + F;
+  SK.wrapText(ctx, cur.nickA + "  ✕  " + cur.nickB, PAD, 132, W - PAD * 2, 60, 1);
+  ctx.fillStyle = "#fbcfe8"; ctx.font = "600 30px " + F;
+  ctx.fillText(MODES[cur.mode].n + " 모드 · 우리 둘의 일치율", PAD, 218);
+  ctx.fillStyle = "#ffffff"; ctx.font = "900 150px " + F;
+  ctx.fillText(cur.pct + "%", PAD, 262);
+
+  ctx.fillStyle = "rgba(255,255,255,.15)";
+  SK.roundRect(ctx, PAD, 470, W - PAD * 2, 224, 30); ctx.fill();
+  ctx.fillStyle = "#ffffff"; ctx.font = "900 52px " + F;
+  var ny = SK.wrapText(ctx, cur.type.e + " " + cur.type.n, PAD + 32, 502, W - PAD * 2 - 64, 62, 1);
+  ctx.fillStyle = "#fce7f3"; ctx.font = "500 32px " + F;
+  SK.wrapText(ctx, cur.type.t, PAD + 32, ny + 12, W - PAD * 2 - 64, 44, 2);
+
+  ctx.font = "700 26px " + F;
+  ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(PAD + 10, 742, 11, 0, 7); ctx.fill();
+  ctx.fillText(cur.nickA, PAD + 32, 730);
+  var wA = ctx.measureText(cur.nickA).width;
+  ctx.fillStyle = "#67e8f9"; ctx.beginPath(); ctx.arc(PAD + 82 + wA, 742, 11, 0, 7); ctx.fill();
+  ctx.fillStyle = "#ffffff"; ctx.fillText(cur.nickB, PAD + 104 + wA, 730);
+
+  var gy = 800, gx0 = PAD + 130, gw = W - PAD * 2 - 260;
+  for (i = 0; i < 5; i++) {
+    ctx.font = "700 26px " + F; ctx.fillStyle = "#fbcfe8";
+    ctx.textAlign = "right"; ctx.fillText(AXES[i].L, gx0 - 24, gy - 4);
+    ctx.textAlign = "left"; ctx.fillText(AXES[i].R, gx0 + gw + 24, gy - 4);
+    ctx.fillStyle = "rgba(255,255,255,.22)";
+    SK.roundRect(ctx, gx0, gy, gw, 18, 9); ctx.fill();
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath(); ctx.arc(gx0 + gw * (cur.avA[i] / 4), gy + 9, 15, 0, 7); ctx.fill();
+    ctx.fillStyle = "#67e8f9";
+    ctx.beginPath(); ctx.arc(gx0 + gw * (cur.avB[i] / 4), gy + 9, 15, 0, 7); ctx.fill();
+    gy += 88;
+  }
+  ctx.textAlign = "left";
+  ctx.fillStyle = "rgba(255,255,255,.7)"; ctx.font = "600 26px " + F;
+  ctx.fillText("재미로 보는 관계 테스트", PAD, H - 132);
+  SK.watermark(ctx, W, H, "tomatoeggcat.com/chemi-link");
+  SK.sharePng(c.cv, "chemi-link.png", "케미링크 결과").then(function () { SK.toast("결과 카드를 저장했어요"); });
+});
+
+/* ── 초기 로드 ── */
+(function init() {
+  var st = SK.readState();
+  if (st && validState(st)) {
+    mode = st.m;
+    if (st.b) { renderResult(st, null); return; }
+    invite = { v: 1, m: st.m, a: [SK.nick(st.a[0], "익명1"), st.a[1]] };
+    $("inbound").classList.add("show");
+    $("inboundMsg").innerHTML = "<b>" + SK.esc(invite.a[0]) + "</b>님이 케미 테스트를 보냈어요. 답해야 결과가 열려요!";
+    $("meToo").textContent = "새로 시작하기";
+    $("nickIn").placeholder = "닉네임 (최대 12자)";
+    show("sNick");
+    return;
+  }
+  if (st) SK.clearState();
+  show("sMode");
+})();
+
+}
+
+</script>
+</body>
+</html>

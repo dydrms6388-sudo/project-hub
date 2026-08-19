@@ -1,0 +1,1663 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>한글데일리 — 매일 한 판, 한글 데일리 게임 4종 (낱말·초성·시군구·국기) | TomatoEggCat</title>
+<meta name="description" content="하루에 한 번, 자모 단위로 채점하는 두 글자 낱말 맞히기·초성 퀴즈·시군구 거리 추리·국기 맞히기 네 가지를 한 페이지에서. 결과는 이모지 격자로 복사해 카톡과 커뮤니티에 바로 공유하고, 연속 기록과 시도 분포는 내 기기에만 저장됩니다. 색약 모드와 연습 모드 지원, 정답은 한국 시간 자정에 바뀝니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/hanguldaily/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="한글데일리 — 매일 한 판, 한글 데일리 게임 4종" />
+<meta property="og:description" content="낱말·초성·시군구·국기 네 가지 데일리 게임. 이모지 격자로 오늘의 기록을 공유해 보세요." />
+<meta property="og:url" content="https://tomatoeggcat.com/hanguldaily/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="한글데일리 — 매일 한 판, 한글 데일리 게임 4종" />
+<meta name="twitter:description" content="낱말·초성·시군구·국기 네 가지 데일리 게임. 오늘의 기록을 이모지 격자로 공유하세요." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"한글데일리","description":"자모 단위로 채점하는 두 글자 낱말 맞히기, 초성 퀴즈, 시군구 거리 추리, 국기 맞히기를 한 페이지에서 즐기는 한국어 데일리 게임 모음. 결과는 이모지 격자로 공유하고 기록은 기기에만 저장된다.","applicationCategory":"GameApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/hanguldaily/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"정답은 언제 바뀌나요?","acceptedAnswer":{"@type":"Answer","text":"한국 표준시(KST) 자정에 네 게임의 정답이 한꺼번에 바뀝니다. 기기 시계가 어느 나라 시간대로 맞춰져 있어도 계산은 항상 한국 시간을 기준으로 하기 때문에, 해외에서 접속해도 한국에 있는 친구와 같은 회차, 같은 정답을 풉니다. 화면 위쪽 카운트다운이 다음 회차까지 남은 시간을 초 단위로 보여 줍니다."}},
+{"@type":"Question","name":"왜 서버 없이 동작하나요?","acceptedAnswer":{"@type":"Answer","text":"한글데일리는 파일 한 개로 끝나는 정적 웹페이지입니다. 회차 번호는 시작일로부터 며칠이 지났는지를 세어 구하고, 정답은 미리 섞어 둔 고정 배열에서 그 번호로 꺼냅니다. 즉 모든 사람이 같은 계산을 각자 브라우저에서 수행하므로 서버도 데이터베이스도 필요하지 않습니다. 대신 순위표처럼 남의 기록을 모아 보여 주는 기능은 제공하지 못합니다."}},
+{"@type":"Question","name":"기록이 사라지는 경우가 있나요?","acceptedAnswer":{"@type":"Answer","text":"기록은 브라우저의 로컬 저장소에만 남습니다. 시크릿 모드로 접속하거나, 브라우저 방문 기록과 사이트 데이터를 지우거나, 다른 기기나 다른 브라우저로 접속하면 연속 기록과 시도 분포는 이어지지 않습니다. 계정이 없기 때문에 기기 사이 동기화도 되지 않습니다. 중요한 기록은 결과 카드를 이미지로 저장해 두시길 권합니다."}},
+{"@type":"Question","name":"사전에 없는 단어라고 거절당했어요.","acceptedAnswer":{"@type":"Answer","text":"낱말 게임은 자체적으로 추린 일상어 목록 안에서만 정답과 추측을 받습니다. 목록에 없는 낱말, 사람 이름이나 지명 같은 고유명사, 세 글자 이상인 말은 시도 횟수를 깎지 않고 흔들림 효과와 함께 되돌려 보냅니다. 표준어이지만 목록에 없는 말이 있을 수 있으며, 이는 사전을 통째로 담을 수 없는 정적 페이지의 한계입니다."}},
+{"@type":"Question","name":"이모지 격자가 깨져 보여요.","acceptedAnswer":{"@type":"Answer","text":"격자는 한 줄에 같은 개수의 네모 이모지만 넣고 공백이나 가변폭 문자를 섞지 않도록 만들었습니다. 그래도 어긋나 보인다면 붙여넣은 앱이 이모지를 글꼴로 대체했거나 줄바꿈을 자동으로 합친 경우입니다. 메모장에 한 번 붙여넣었다가 다시 복사하거나, 결과 카드 이미지를 저장해 올리면 어디서나 같은 모양으로 보입니다."}},
+{"@type":"Question","name":"정답이 미리 노출되지는 않나요?","acceptedAnswer":{"@type":"Answer","text":"정답 목록은 평문 대신 간단한 XOR 연산과 base64로 뒤섞어 저장하고 화면에서 필요할 때만 되돌립니다. 다만 이것은 암호가 아니라 어깨너머로 소스를 훑었을 때 정답이 그대로 읽히지 않게 하는 오락용 난독화입니다. 마음먹고 뜯어보면 알아낼 수 있으니, 스포일러 없이 즐기고 싶다면 개발자 도구를 열지 않는 편이 좋습니다. 공유 링크에는 격자와 시도 횟수만 담기고 정답 글자는 들어가지 않습니다."}},
+{"@type":"Question","name":"색약 모드와 연습 모드는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"색약 모드를 켜면 초록과 노랑 대신 파랑과 주황을 쓰는 팔레트로 바뀌고, 공유용 이모지도 같은 색 계열로 함께 바뀝니다. 설정은 이 기기에 저장되어 다음에 와도 유지됩니다. 연습 모드는 지난 회차를 골라 자유롭게 풀어 보는 기능으로, 오늘의 기록과 연속 기록에는 전혀 반영되지 않습니다."}},
+{"@type":"Question","name":"결과는 얼마나 믿을 만한가요?","acceptedAnswer":{"@type":"Answer","text":"한글데일리는 오락용 낱말 놀이입니다. 어휘력이나 지리 지식, 지능을 측정하는 검사가 아니며 어떤 진단이나 평가로도 쓸 수 없습니다. 시군구 게임의 좌표는 대략적인 중심점이라 실제 행정 경계나 도로 거리와는 차이가 있고, 국기 그림도 비율과 세부 문양을 단순화한 것입니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"게임·퀴즈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"한글데일리","item":"https://tomatoeggcat.com/hanguldaily/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#34d399;--acc2:#6ee7b7;--ok:#34d399;--mid:#fbbf24;--no:#3f3f46;--ink:#04231a}
+body.cb{--acc:#60a5fa;--acc2:#93c5fd;--ok:#3b82f6;--mid:#f59e0b;--ink:#08203f}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:4px}
+.nav a{color:#7aa2ff;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 6px;margin-left:-6px}
+h1{font-size:25px;font-weight:800;margin:0 0 4px}
+h1 .rd{color:var(--acc);font-variant-numeric:tabular-nums}
+.lead{color:#9ca3af;margin:0 0 14px;font-size:14.5px}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:18px;margin-bottom:16px}
+.topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cd{font-size:13px;color:#9ca3af}
+.cd b{color:var(--acc2);font-variant-numeric:tabular-nums}
+.tg{display:flex;gap:8px;flex-wrap:wrap}
+.tgb{min-height:44px;padding:9px 13px;font-size:13px;font-weight:700;background:#141414;color:#a1a1aa;border:1px solid #2c2c2c;border-radius:999px;cursor:pointer;width:auto}
+.tgb.on{background:rgba(52,211,153,.14);border-color:var(--acc);color:var(--acc2)}
+body.cb .tgb.on{background:rgba(96,165,250,.16)}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+.tab{min-height:52px;padding:8px 4px;font-size:14px;font-weight:800;background:#141414;color:#9ca3af;border:1px solid #262626;border-radius:14px;cursor:pointer;width:100%;line-height:1.25}
+.tab small{display:block;font-size:10.5px;font-weight:600;color:#6b7280;margin-top:2px}
+.tab.on{background:rgba(52,211,153,.13);border-color:var(--acc);color:var(--acc2)}
+.tab.on small{color:var(--acc)}
+body.cb .tab.on{background:rgba(96,165,250,.15)}
+button{margin:0;width:100%;padding:13px;border:0;border-radius:12px;background:var(--acc);color:var(--ink);font-size:16px;font-weight:800;cursor:pointer;min-height:46px;font-family:inherit}
+button.ghost{background:#191919;color:var(--acc2);border:1px solid #2e2e2e;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+input,select{font-family:inherit;font-size:16px;width:100%;padding:12px 13px;min-height:46px;border-radius:12px;border:1px solid #2e2e2e;background:#0f0f0f;color:#ededed}
+input:focus,select:focus{outline:2px solid var(--acc);outline-offset:0}
+.gmeta{font-size:13.5px;color:#9ca3af;margin:0 0 12px}
+.gmeta b{color:#ededed}
+.pane{display:none}
+.pane.on{display:block}
+.pill{display:inline-block;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;background:#20201f;color:#a3a3a3;border:1px solid #2e2e2e;margin-left:6px}
+.pill.prac{background:rgba(251,191,36,.14);border-color:#5b4a12;color:#fcd34d}
+/* ── 낱말 ── */
+.wgrid{display:grid;gap:7px;margin-bottom:14px}
+.wrow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.wrow.shake{animation:shk .42s}
+@keyframes shk{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+.wsyl{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.wc{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:min(6.5vw,23px);font-weight:800;border:1px solid #2c2c2c;background:#101010;border-radius:9px;color:#ededed}
+.wc.s2{background:var(--ok);border-color:var(--ok);color:var(--ink)}
+.wc.s1{background:var(--mid);border-color:var(--mid);color:#2a1c00}
+.wc.s0{background:#2c2c2c;border-color:#333;color:#8b8b8b}
+.wc.s3{background:#0c0c0c;border-color:#1c1c1c}
+.wc.cur{border-color:#4b4b4b}
+.kbd{display:grid;gap:6px;margin-top:12px}
+.krow{display:flex;gap:4px;justify-content:center}
+.key{flex:1 1 0;min-width:0;min-height:46px;padding:6px 2px;font-size:16px;font-weight:700;background:#232323;color:#ededed;border:0;border-radius:8px;cursor:pointer;width:auto}
+.key.wide{flex:1.8 1 0;font-size:13px;font-weight:800}
+.key.k2{background:var(--ok);color:var(--ink)}
+.key.k1{background:var(--mid);color:#2a1c00}
+.key.k0{background:#141414;color:#5f5f5f}
+/* ── 초성 ── */
+.cho{font-size:min(13vw,52px);font-weight:900;letter-spacing:.12em;text-align:center;color:var(--acc2);margin:6px 0 4px;word-break:break-all}
+.catg{text-align:center;font-size:13px;color:#9ca3af;margin-bottom:12px}
+.tries{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.try{display:flex;align-items:center;gap:8px;font-size:14px;background:#101010;border:1px solid #232323;border-radius:10px;padding:9px 12px}
+.try .x{color:#f87171;font-weight:800}
+.try .o{color:var(--acc);font-weight:800}
+body.cb .try .x{color:#fb923c}
+.hintbox{margin-top:10px;font-size:13.5px;color:#d4d4d8;background:#101010;border:1px solid #232323;border-radius:10px;padding:10px 12px}
+.hintbox div{margin-bottom:4px}
+.hintbox div:last-child{margin-bottom:0}
+.row2{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
+.row2 button{width:auto;padding:12px 18px}
+/* ── 시군구 ── */
+.gsl{display:flex;align-items:center;gap:10px;font-size:14px;background:#101010;border:1px solid #232323;border-radius:10px;padding:10px 12px}
+.gsl .nm{flex:1;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsl .km{color:#9ca3af;font-variant-numeric:tabular-nums;font-size:13px}
+.gsl .ar{font-size:17px}
+.bar{height:8px;border-radius:999px;background:#242424;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--acc)}
+.gsl .pr{font-weight:800;color:var(--acc2);font-variant-numeric:tabular-nums;font-size:13px;min-width:42px;text-align:right}
+/* ── 국기 ── */
+.flagbox{background:#0f0f0f;border:1px solid #262626;border-radius:14px;padding:16px;display:flex;justify-content:center}
+.flagbox svg{width:100%;max-width:300px;height:auto;border:1px solid rgba(255,255,255,.16);border-radius:4px;display:block}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.opts button{font-size:15px;padding:14px 6px}
+.opts button.right{background:var(--ok);color:var(--ink)}
+.opts button.wrong{background:#3a1616;color:#fca5a5}
+body.cb .opts button.wrong{background:#3a2a10;color:#fdba74}
+.prog{display:flex;gap:4px;margin-top:12px}
+.prog i{flex:1;height:6px;border-radius:999px;background:#242424}
+.prog i.g{background:var(--ok)}
+.prog i.r{background:#7f1d1d}
+body.cb .prog i.r{background:#7c4a11}
+/* ── 결과·공유 ── */
+.inbound{display:none;margin:0 0 16px;padding:13px 15px;background:linear-gradient(90deg,#0d2e24,#123c2f);border:1px solid #1d5b47;border-radius:14px}
+.inbound.show{display:block}
+.inbound p{margin:0 0 10px;font-size:14px;color:#a7f3d0}
+.inbound pre{margin:0 0 10px;font-size:16px;line-height:1.25;color:#ededed;font-family:inherit;white-space:pre-wrap}
+.result{display:none}
+.result.show{display:block}
+.rhead{font-size:20px;font-weight:800;margin:0 0 4px}
+.rsub{font-size:14px;color:#9ca3af;margin:0 0 12px}
+.grid{font-size:20px;line-height:1.3;margin:10px 0 14px;white-space:pre-wrap;word-break:keep-all}
+.ans{font-size:15px;color:#d4d4d8;background:#101010;border:1px solid #232323;border-radius:10px;padding:11px 13px;margin-bottom:12px}
+.ans b{color:var(--acc2)}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.share button{font-size:14px;padding:13px 6px}
+.nickrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-top:10px}
+.nickrow label{font-size:12.5px;color:#8b8b8b}
+.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 10px}
+.stat div{background:#101010;border:1px solid #232323;border-radius:12px;padding:10px 4px;text-align:center}
+.stat b{display:block;font-size:20px;font-weight:900;color:var(--acc2);font-variant-numeric:tabular-nums}
+.stat span{font-size:11px;color:#8b8b8b}
+.dist{display:flex;flex-direction:column;gap:5px}
+.dl{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:center;font-size:12px;color:#9ca3af}
+.dl i{display:block;height:20px;border-radius:5px;background:#2a2a2a;min-width:24px;text-align:right;color:#c9c9c9;font-size:11px;font-style:normal;font-weight:700;line-height:20px;padding-right:6px}
+.dl i.hi{background:var(--ok);color:var(--ink)}
+.ad{margin:22px 0;min-height:1px}
+h2{font-size:19px;margin:30px 0 10px}
+h3{font-size:16px;margin:20px 0 6px;color:var(--acc2)}
+.about p{color:#d0d0d0;font-size:14.5px}
+.about ul,.about ol{color:#d0d0d0;font-size:14.5px;padding-left:20px}
+.about li{margin-bottom:6px}
+.ex{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 12px}
+.ex span{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;font-weight:800;font-size:15px;background:#1a1a1a;border:1px solid #2c2c2c}
+.ex span.g{background:var(--ok);color:var(--ink);border-color:var(--ok)}
+.ex span.y{background:var(--mid);color:#2a1c00;border-color:var(--mid)}
+.ex span.n{background:#2c2c2c;color:#8b8b8b}
+.faq{border-top:1px solid #262626;padding:13px 0}
+.faq b{display:block;margin-bottom:4px;color:#ededed}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.disc{font-size:12.5px;color:#6b7280;background:#141414;border:1px solid #232323;border-radius:12px;padding:12px 14px;margin-top:14px}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 10px}
+/* 자모 자판은 시스템 한글 자판과 같이 한 줄 10키 — 좁은 화면에서 카드 여백을 넘어 최대 폭을 확보한다 */
+@media(max-width:430px){.kbd{margin-left:-14px;margin-right:-14px}.krow{gap:3px}.key{padding:6px 0}}
+@media(max-width:380px){.tab{font-size:13px}.opts button{font-size:14px}.key{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="nav"><a href="/">← TomatoEggCat</a></div>
+
+<div class="inbound" id="inbound">
+  <p id="inTxt"></p>
+  <pre id="inGrid"></pre>
+  <button id="inCta">나도 해보기</button>
+</div>
+
+<h1>한글데일리 <span class="rd" id="roundNo">#1</span></h1>
+<p class="lead">하루 한 판, 네 가지 한글 게임. 결과는 이모지 격자로 남고 정답은 한국 시간 자정에 바뀝니다.</p>
+
+<div class="topbar">
+  <div class="cd">다음 회차까지 <b id="cdown">--:--:--</b></div>
+  <div class="tg">
+    <button class="tgb" id="cbBtn" type="button" aria-pressed="false">색약 모드</button>
+    <button class="tgb" id="prBtn" type="button" aria-pressed="false">연습 모드</button>
+  </div>
+</div>
+
+<div id="pracBox" class="card" style="display:none">
+  <div class="gmeta"><b>연습 모드</b> — 지난 회차를 골라 자유롭게 풀어 봅니다. 오늘의 기록과 연속 기록에는 반영되지 않습니다.</div>
+  <div class="row2">
+    <input id="pracN" type="number" min="1" step="1" value="1" aria-label="연습할 회차 번호" />
+    <button class="ghost" id="pracGo" type="button">이 회차 풀기</button>
+  </div>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="tab" data-g="word" type="button">낱말<small>2글자</small></button>
+  <button class="tab" data-g="chosung" type="button">초성<small>ㅊㅅ</small></button>
+  <button class="tab" data-g="map" type="button">시군구<small>거리</small></button>
+  <button class="tab" data-g="flag" type="button">국기<small>10문제</small></button>
+</div>
+
+<!-- ── 낱말 ── -->
+<section class="pane" id="pane-word">
+  <div class="card">
+    <div class="gmeta"><b>오늘의 낱말</b> — 두 글자 단어를 6번 안에 맞혀 보세요. 채점은 초성·중성·종성 낱낱으로 이뤄집니다.<span class="pill prac" id="wPrac" style="display:none">연습</span></div>
+    <div class="wgrid" id="wGrid"></div>
+    <input id="wIme" type="text" maxlength="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="여기에 직접 입력하거나 아래 자판을 쓰세요" aria-label="낱말 입력" />
+    <div class="kbd" id="wKbd"></div>
+  </div>
+</section>
+
+<!-- ── 초성 ── -->
+<section class="pane" id="pane-chosung">
+  <div class="card">
+    <div class="gmeta"><b>초성 퀴즈</b> — 카테고리와 초성만 보고 5번 안에 맞혀 보세요. 힌트는 3단계까지 열립니다.<span class="pill prac" id="cPrac" style="display:none">연습</span></div>
+    <div class="catg" id="cCat"></div>
+    <div class="cho" id="cCho"></div>
+    <div class="row2">
+      <input id="cIn" type="text" autocomplete="off" spellcheck="false" placeholder="정답을 입력하세요" aria-label="초성 퀴즈 정답 입력" />
+      <button id="cGo" type="button">제출</button>
+    </div>
+    <button class="ghost" id="cHint" type="button" style="margin-top:8px">💡 힌트 열기 (0/3)</button>
+    <div class="hintbox" id="cHints" style="display:none"></div>
+    <div class="tries" id="cTries"></div>
+  </div>
+</section>
+
+<!-- ── 시군구 ── -->
+<section class="pane" id="pane-map">
+  <div class="card">
+    <div class="gmeta"><b>시군구 맞히기</b> — 전국 시·군·구 한 곳을 6번 안에. 추측할 때마다 직선 거리와 방향, 근접도를 알려 드립니다.<span class="pill prac" id="mPrac" style="display:none">연습</span></div>
+    <div class="row2">
+      <input id="mIn" type="text" list="mList" autocomplete="off" spellcheck="false" placeholder="예: 서울 종로구, 수원시, 해운대구" aria-label="시군구 입력" />
+      <button id="mGo" type="button">추측</button>
+    </div>
+    <datalist id="mList"></datalist>
+    <div class="tries" id="mTries"></div>
+  </div>
+</section>
+
+<!-- ── 국기 ── -->
+<section class="pane" id="pane-flag">
+  <div class="card">
+    <div class="gmeta"><b>국기 맞히기</b> — 직접 그린 국기 도형 10문제. 한 문제당 한 번만 고를 수 있습니다.<span class="pill prac" id="fPrac" style="display:none">연습</span></div>
+    <div class="catg" id="fQn"></div>
+    <div class="flagbox" id="fBox"></div>
+    <div class="opts" id="fOpts"></div>
+    <div class="prog" id="fProg"></div>
+  </div>
+</section>
+
+<!-- ── 결과 ── -->
+<section class="result" id="result">
+  <div class="card">
+    <h2 class="rhead" id="rHead" style="margin-top:0"></h2>
+    <p class="rsub" id="rSub"></p>
+    <div class="ans" id="rAns"></div>
+    <div class="grid" id="rGrid"></div>
+    <div class="share">
+      <button class="ghost" id="btnLink" type="button">🔗 링크 복사</button>
+      <button class="ghost" id="btnText" type="button">📋 격자 복사</button>
+      <button class="ghost" id="btnX" type="button">𝕏 로 공유</button>
+      <button class="ghost" id="btnShare" type="button">📤 공유하기</button>
+    </div>
+    <button id="btnPng" type="button" style="margin-top:8px">🖼️ 결과 카드 이미지 저장</button>
+    <button class="ghost" id="btnRemix" type="button" style="margin-top:8px">🔁 다시 하기 — 같은 게임 다른 회차 연습</button>
+    <div class="nickrow">
+      <input id="nickIn" type="text" maxlength="12" autocomplete="off" placeholder="공유용 별명 (선택, 12자)" aria-label="공유용 별명" />
+      <label>본명 말고 별명만</label>
+    </div>
+
+    <div class="stat" id="rStat"></div>
+    <div class="dist" id="rDist"></div>
+  </div>
+
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</section>
+
+<!-- ── 본문 ── -->
+<div class="about">
+
+<h2>한글데일리란?</h2>
+<p>한글데일리는 하루에 딱 한 판만 돌아가는 한국어 데일리 게임 모음입니다. 낱말·초성·시군구·국기 네 가지가 한 페이지 안에 탭으로 들어 있고, 네 게임 모두 한국 시간 자정을 기준으로 정답이 한꺼번에 갈립니다. 같은 날 접속한 사람은 서울에 있든 베를린에 있든 정확히 같은 문제를 받습니다. 그래서 정답을 맞혔는지 틀렸는지를 말로 설명할 필요 없이, 색칠된 네모만 붙여넣어도 대화가 시작됩니다.</p>
+<p>이 페이지에는 서버가 없습니다. 회차 번호는 서비스 시작일로부터 며칠이 지났는지를 세어 구하고, 정답은 미리 한 번 섞어 고정해 둔 배열에서 그 번호로 꺼냅니다. 무작위 추첨이 아니라 정해진 순서를 따라가는 방식이라 나중에 문항을 더 보태도 이미 지나간 회차의 정답이 흔들리지 않습니다. 기록 역시 어디에도 전송되지 않고 브라우저 저장소에만 남기 때문에 로그인도, 이메일 입력도, 개인정보 동의도 필요 없습니다. 대신 전체 순위표처럼 남의 기록을 모아 보여 주는 기능은 원리상 만들 수 없습니다.</p>
+<p>하루 한 판이라는 규칙은 답답해 보이지만 이 놀이의 핵심입니다. 무한히 다시 풀 수 있으면 실수 한 번이 아무 의미가 없어지고, 친구가 올린 격자를 보고도 감흥이 생기지 않습니다. 대신 지난 회차를 자유롭게 풀어 보고 싶은 사람을 위해 연습 모드를 따로 뒀습니다. 연습 모드에서 푼 판은 승률에도 연속 기록에도 들어가지 않으니 마음 놓고 감을 익히는 데 쓰시면 됩니다.</p>
+
+<h3>1. 오늘의 낱말 — 자모 단위 채점</h3>
+<p>두 글자짜리 일상어 하나를 여섯 번 안에 맞히는 게임입니다. 다른 낱말 게임과 다른 점은 채점 단위가 글자가 아니라 <b>자모</b>라는 것입니다. 한글 음절은 유니코드에서 <code>0xAC00 + 초성×588 + 중성×28 + 종성</code>이라는 규칙으로 만들어지므로, 반대로 계산하면 어떤 글자든 초성·중성·종성 세 조각으로 정확히 쪼갤 수 있습니다. 한글데일리는 두 글자를 여섯 칸으로 펼쳐 놓고 조각마다 따로 색을 칠합니다.</p>
+<ul>
+  <li><b>초록</b> — 그 자리에 그 자모가 정확히 있습니다.</li>
+  <li><b>노랑</b> — 정답 어딘가에 있는 자모지만 자리가 다릅니다.</li>
+  <li><b>회색</b> — 정답에 쓰이지 않은 자모입니다.</li>
+  <li><b>빈칸</b> — 받침을 넣지 않은 자리입니다. 정답에 받침이 있는지 없는지는 알려 주지 않습니다.</li>
+</ul>
+<p>예를 들어 정답이 <b>바다</b>일 때 <b>바지</b>를 냈다고 해 봅시다. 첫 글자 바는 ㅂ·ㅏ·(받침 없음)이라 앞 두 칸이 초록으로 켜집니다. 둘째 글자 지는 ㅈ·ㅣ인데 정답의 둘째 글자는 ㄷ·ㅏ이므로 ㅈ과 ㅣ 모두 회색입니다. 이번엔 정답 <b>가족</b>에 <b>족가</b>를 냈다면 ㅈ·ㅗ·ㄱ과 ㄱ·ㅏ가 전부 정답 안에 들어 있지만 자리가 어긋나 노랑으로 표시됩니다. 같은 자모가 정답에 한 번만 쓰였는데 추측에서 두 번 썼다면, 남는 쪽은 회색이 됩니다.</p>
+<p>입력은 두 가지를 모두 지원합니다. 휴대폰 자판이 익숙하면 화면 아래 자모 자판을 눌러 조합하면 되고, 컴퓨터에서 한글 입력기를 쓰고 있다면 입력칸에 그대로 타이핑해도 됩니다. 자모 자판은 겹받침과 겹모음을 자동으로 만들어 주며, 지우기를 누르면 마지막에 눌린 자모 하나씩 되돌립니다. 목록에 없는 낱말을 내면 시도 횟수를 깎지 않고 칸이 좌우로 흔들리며 되돌아옵니다.</p>
+
+<h3>2. 초성 퀴즈 — 힌트 3단계</h3>
+<p>음식, 영화 장르, 도시, 동물, 직업 다섯 갈래에서 하나가 나오고 초성만 주어집니다. 다섯 번 안에 정답을 적어야 하며, 띄어쓰기는 무시하고 채점합니다. 도무지 떠오르지 않으면 힌트 단추를 누르세요. 첫 단계는 글자 수, 둘째 단계는 그 문제만의 짧은 설명, 셋째 단계는 첫 글자를 통째로 열어 줍니다. 힌트를 써도 시도 횟수는 줄지 않지만, 몇 단계까지 열었는지가 공유 문구에 함께 적히니 힌트 없이 맞혔다면 그것도 자랑거리가 됩니다.</p>
+
+<h3>3. 시군구 맞히기 — 거리와 방향</h3>
+<p>전국 시·군·구 가운데 한 곳이 정답입니다. 아무 지역이나 적어 넣으면 그곳에서 정답까지의 직선 거리, 정답이 있는 여덟 방위 화살표, 그리고 근접도를 백분율로 돌려 줍니다. 거리는 지구를 구로 보고 계산하는 하버사인 공식을 씁니다. 예컨대 서울 도심에서 부산 도심까지는 약 325킬로미터로 나오는데, 실제 고속도로 거리(약 400킬로미터)보다 짧은 것은 도로가 아니라 직선을 재기 때문입니다. 좌표는 각 시·군·구의 대략적인 중심점이므로 넓은 군에서는 오차가 생길 수 있습니다. 여섯 번 안에 좁혀 보세요. 서울 종로구처럼 시도 이름을 붙여 적어도 되고, 겹치지 않는 이름이라면 해운대구처럼 짧게 적어도 됩니다.</p>
+
+<h3>4. 국기 맞히기 — 직접 그린 도형</h3>
+<p>국기 그림은 이미지 파일도, 이모지 국기도 아닙니다. 가로 줄무늬·세로 줄무늬·북유럽 십자·대각선 띠·좌상단 사각형·중앙 원반·초승달과 별 같은 도형 규칙을 데이터로 적어 두고 그 자리에서 도형을 그려 냅니다. 이모지 국기는 기기에 따라 두 글자 알파벳으로 깨져 보이는 일이 잦아 아예 쓰지 않았습니다. 4지선다 열 문제를 풀고 맞힌 개수를 공유합니다. 비율과 세부 문양은 알아볼 수 있는 선에서 단순화했으니 정확한 도안이 필요하면 각국 공식 자료를 확인하세요.</p>
+
+<h3>색약 모드와 연습 모드</h3>
+<p>색약 모드를 켜면 초록과 노랑 대신 파랑과 주황을 쓰는 팔레트로 화면 전체가 바뀝니다. 공유용 이모지도 파랑·주황 네모로 함께 바뀌므로 격자를 받아 보는 쪽도 같은 기준으로 읽을 수 있습니다. 설정은 이 브라우저에 저장되어 다음에 들어와도 유지됩니다. 연습 모드는 회차 번호를 직접 골라 지난 문제를 푸는 기능입니다. 연습으로 푼 판은 어떤 통계에도 잡히지 않고, 오늘의 정답도 미리 보여 주지 않습니다.</p>
+
+<h3>이모지 격자를 예쁘게 붙여넣는 법</h3>
+<p>격자는 한 줄에 같은 개수의 네모 이모지만 넣도록 만들었습니다. 공백이나 가변폭 문자가 섞이면 카카오톡처럼 글꼴 폭이 일정하지 않은 앱에서 줄이 어긋나기 때문입니다. 그래도 어색해 보인다면 결과 카드 이미지를 저장해 올리는 편이 확실합니다. 카드에는 색칠된 네모를 이모지가 아닌 도형으로 직접 그려 넣기 때문에 기기와 상관없이 같은 모양으로 보입니다.</p>
+
+<h2>자주 묻는 질문</h2>
+<div class="faq"><b>정답은 언제 바뀌나요?</b><p>한국 표준시 자정에 네 게임의 정답이 한꺼번에 바뀝니다. 기기 시계가 어느 시간대로 맞춰져 있든 계산은 항상 한국 시간을 기준으로 하므로, 해외에서 접속해도 한국 친구와 같은 회차를 풉니다. 화면 위 카운트다운이 다음 회차까지 남은 시간을 알려 줍니다.</p></div>
+<div class="faq"><b>왜 서버가 없나요?</b><p>정적 파일 하나로 끝나는 페이지이기 때문입니다. 회차와 정답을 모두 계산으로 구하므로 서버도 데이터베이스도 필요 없고, 접속 기록이 남지 않습니다. 대신 전체 순위표나 친구 목록처럼 남의 데이터를 모아야 하는 기능은 제공할 수 없습니다.</p></div>
+<div class="faq"><b>기록이 사라지는 경우가 있나요?</b><p>기록은 이 브라우저의 저장소에만 있습니다. 시크릿 모드로 열거나, 사이트 데이터를 지우거나, 다른 기기와 다른 브라우저로 접속하면 연속 기록이 이어지지 않습니다. 계정이 없어 기기 사이 동기화도 되지 않으니, 남기고 싶은 판은 결과 카드를 저장해 두세요.</p></div>
+<div class="faq"><b>사전에 없는 단어라고 거절당했어요.</b><p>낱말 게임은 자체적으로 추린 일상어 목록 안에서만 정답과 추측을 받습니다. 목록에 없는 말, 고유명사, 세 글자 이상인 말은 시도 횟수를 깎지 않고 되돌려 보냅니다. 표준어인데도 목록에 없는 말이 있을 수 있는데, 이는 사전을 통째로 담을 수 없는 정적 페이지의 한계입니다.</p></div>
+<div class="faq"><b>이모지 격자가 깨져 보여요.</b><p>붙여넣은 앱이 이모지를 다른 글꼴로 대체했거나 줄바꿈을 합친 경우입니다. 메모장에 한 번 붙여넣었다가 다시 복사하면 대개 해결되고, 결과 카드 이미지를 올리면 어디서나 같은 모양으로 보입니다.</p></div>
+<div class="faq"><b>정답이 미리 노출되지는 않나요?</b><p>정답 목록은 XOR 연산과 base64로 뒤섞어 저장하고 필요할 때만 되돌립니다. 다만 이것은 암호가 아니라 소스를 훑었을 때 정답이 그대로 읽히지 않게 하는 오락용 난독화입니다. 스포일러 없이 즐기고 싶다면 개발자 도구는 열지 마세요. 공유 링크에는 격자와 시도 횟수만 담기고 정답 글자는 들어가지 않습니다.</p></div>
+<div class="faq"><b>공유 링크에는 무엇이 들어 있나요?</b><p>게임 종류, 회차 번호, 시도 횟수, 색칠된 격자, 그리고 직접 적어 넣은 별명뿐입니다. 링크를 받은 사람에게는 격자만 보이고 정답은 보이지 않으므로 스포일러 걱정 없이 자랑할 수 있습니다. 이름·연락처 같은 개인정보는 어떤 항목으로도 받지 않습니다.</p></div>
+<div class="faq"><b>결과는 얼마나 믿을 만한가요?</b><p>한글데일리는 오락용 낱말 놀이입니다. 어휘력·지리 지식·지능을 재는 검사가 아니며 어떤 진단이나 평가로도 쓸 수 없습니다. 시군구 좌표는 대략적인 중심점이고 국기 그림도 단순화한 도형이라 실제와 차이가 있습니다.</p></div>
+
+<div class="disc">한글데일리는 재미로 즐기는 오락용 게임입니다. 문제와 낱말 목록은 직접 골라 담았고, 지명 좌표와 국기 도형은 공개된 사실 정보를 바탕으로 단순화했습니다. 학습·평가·진단 목적으로 사용하지 마세요. 기록은 이 기기에만 저장되며 어떤 개인정보도 수집하지 않습니다.</div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<script>
+/* ────────────────────────────────────────────────────────────────────────────
+   share-kit v1 — TomatoEggCat 공유·바이럴 엔진 (자기완결 · 외부 의존 0)
+
+   사용법: 각 앱의 <script> 최상단에 이 파일 내용을 **그대로 붙여넣는다**.
+   (앱은 단일 파일 완결형이어야 하고, 나중에 앱별 도메인으로 떼어내도
+    이 엔진이 함께 따라가야 하므로 공유 <script src>를 쓰지 않는다.)
+
+   제공 기능
+   - 상태 URL 인코딩: SK.enc / SK.dec  (UTF-8 안전 base64url + 선택적 LZW 압축)
+   - URL 상태 훅:     SK.readState / SK.writeState / SK.clearState / SK.stateUrl
+   - 용량 가드:       SK.sizeOf (8KB 경고 / 12KB 차단)
+   - 체인:            SK.appendChain
+   - 비트맵:          SK.bitsToStr / SK.strToBits  (밸런스·시간표처럼 0/1 대량 상태용)
+   - 결정론 난수:     SK.kstYMD / SK.dailySeed / SK.prng / SK.pick / SK.shuffle
+   - 이모지 격자:     SK.emojiGrid
+   - 공유 UI:         SK.copy / SK.toast / SK.share / SK.xUrl
+   - 결과 카드:       SK.card / SK.wrapText / SK.roundRect / SK.savePng / SK.sharePng
+   - 유틸:            SK.esc / SK.nick (닉네임 12자 정제) / SK.countdownToKstMidnight
+
+   상태 스키마 규칙: 객체 키 반복은 URL 낭비 → **배열 튜플**로 쓴다.
+     좋음  {v:1,a:["민수",[3,1,4,...]]}
+     나쁨  {version:1,me:{nickname:"민수",answers:[...]}}
+   ──────────────────────────────────────────────────────────────────────────── */
+var SK = (function () {
+  "use strict";
+
+  /* ── UTF-8 ↔ 바이트 ─────────────────────────────────────────── */
+  function utf8Bytes(str) {
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(str);
+    var esc = unescape(encodeURIComponent(str)), out = new Uint8Array(esc.length);
+    for (var i = 0; i < esc.length; i++) out[i] = esc.charCodeAt(i);
+    return out;
+  }
+  function bytesUtf8(bytes) {
+    if (typeof TextDecoder !== "undefined") return new TextDecoder().decode(bytes);
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return decodeURIComponent(escape(s));
+  }
+
+  /* ── base64url ──────────────────────────────────────────────── */
+  var B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  var B64I = (function () { var m = {}; for (var i = 0; i < 64; i++) m[B64[i]] = i; return m; })();
+  function b64uEnc(bytes) {
+    var out = "", i;
+    for (i = 0; i + 2 < bytes.length; i += 3) {
+      var n = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+      out += B64[(n >> 18) & 63] + B64[(n >> 12) & 63] + B64[(n >> 6) & 63] + B64[n & 63];
+    }
+    var rem = bytes.length - i;
+    if (rem === 1) {
+      var a = bytes[i] << 16;
+      out += B64[(a >> 18) & 63] + B64[(a >> 12) & 63];
+    } else if (rem === 2) {
+      var b = (bytes[i] << 16) | (bytes[i + 1] << 8);
+      out += B64[(b >> 18) & 63] + B64[(b >> 12) & 63] + B64[(b >> 6) & 63];
+    }
+    return out;
+  }
+  function b64uDec(str) {
+    var clean = String(str).replace(/[^A-Za-z0-9\-_]/g, "");
+    var full = Math.floor(clean.length / 4), rem = clean.length % 4;
+    if (rem === 1) throw new Error("bad base64url length");
+    var len = full * 3 + (rem === 2 ? 1 : rem === 3 ? 2 : 0);
+    var out = new Uint8Array(len), o = 0, i;
+    for (i = 0; i + 3 < clean.length; i += 4) {
+      var n = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6) | B64I[clean[i + 3]];
+      out[o++] = (n >> 16) & 255; out[o++] = (n >> 8) & 255; out[o++] = n & 255;
+    }
+    if (rem === 2) {
+      out[o++] = ((B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12)) >> 16 & 255;
+    } else if (rem === 3) {
+      var m = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6);
+      out[o++] = (m >> 16) & 255; out[o++] = (m >> 8) & 255;
+    }
+    return out;
+  }
+
+  /* ── LZW (바이트 단위, 16비트 코드) ─────────────────────────────
+     한글 본문처럼 긴 텍스트를 URL에 담을 때 쓴다. 압축이 이득이 아니면
+     enc()가 자동으로 무압축(prefix "1")을 고른다. ─────────────────── */
+  function codeOf(dict, w) { return w.length === 1 ? w.charCodeAt(0) : dict.get(w); }
+  function lzwEnc(bytes) {
+    if (!bytes.length) return new Uint8Array(0);
+    var dict = new Map(), next = 256, codes = [], w = String.fromCharCode(bytes[0]);
+    for (var i = 1; i < bytes.length; i++) {
+      var c = String.fromCharCode(bytes[i]), wc = w + c;
+      if (dict.has(wc)) { w = wc; continue; }
+      codes.push(codeOf(dict, w));
+      if (next < 65536) dict.set(wc, next++);
+      w = c;
+    }
+    codes.push(codeOf(dict, w));
+    var out = new Uint8Array(codes.length * 2);
+    for (var j = 0; j < codes.length; j++) { out[j * 2] = (codes[j] >> 8) & 255; out[j * 2 + 1] = codes[j] & 255; }
+    return out;
+  }
+  function lzwDec(buf) {
+    if (buf.length % 2 !== 0) throw new Error("bad lzw stream");
+    var codes = [], i;
+    for (i = 0; i < buf.length; i += 2) codes.push((buf[i] << 8) | buf[i + 1]);
+    if (!codes.length) return new Uint8Array(0);
+    var dict = [], next = 256;
+    for (i = 0; i < 256; i++) dict[i] = String.fromCharCode(i);
+    var w = dict[codes[0]];
+    if (w === undefined) throw new Error("bad lzw code");
+    var out = w;
+    for (i = 1; i < codes.length; i++) {
+      var k = codes[i], entry;
+      if (k < next && dict[k] !== undefined) entry = dict[k];
+      else if (k === next) entry = w + w.charAt(0);
+      else throw new Error("bad lzw code");
+      out += entry;
+      if (next < 65536) dict[next++] = w + entry.charAt(0);
+      w = entry;
+    }
+    var bytes = new Uint8Array(out.length);
+    for (i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+    return bytes;
+  }
+
+  /* ── 상태 인코딩 ─────────────────────────────────────────────
+     prefix "1" = 무압축, "2" = LZW. 두 형식 모두 dec()가 읽는다. ── */
+  function enc(obj) {
+    var raw = utf8Bytes(JSON.stringify(obj));
+    var plain = "1" + b64uEnc(raw);
+    if (raw.length < 120) return plain;
+    try {
+      var z = "2" + b64uEnc(lzwEnc(raw));
+      return z.length < plain.length ? z : plain;
+    } catch (e) { return plain; }
+  }
+  function dec(str) {
+    if (!str) return null;
+    try {
+      var s = String(str), tag = s.charAt(0), body = s.slice(1);
+      if (tag !== "1" && tag !== "2") { tag = "1"; body = s; } // v0 링크(무접두) 하위호환
+      var bytes = b64uDec(body);
+      if (tag === "2") bytes = lzwDec(bytes);
+      var val = JSON.parse(bytesUtf8(bytes));
+      return (val && typeof val === "object") ? val : null;
+    } catch (e) { return null; }
+  }
+
+  /* ── URL 상태 ────────────────────────────────────────────────── */
+  var KEY = "d";
+  function stateUrl(obj, key) {
+    return location.origin + location.pathname + "?" + (key || KEY) + "=" + enc(obj);
+  }
+  function readState(key) {
+    try { return dec(new URLSearchParams(location.search).get(key || KEY)); }
+    catch (e) { return null; }
+  }
+  function writeState(obj, key) {
+    try { history.replaceState(null, "", location.pathname + "?" + (key || KEY) + "=" + enc(obj)); } catch (e) {}
+  }
+  function clearState() {
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  }
+  /* 8KB 경고 / 12KB 차단. 반환 {bytes, ok, warn} */
+  function sizeOf(obj) {
+    var n = enc(obj).length;
+    return { bytes: n, ok: n <= 12288, warn: n > 8192 };
+  }
+  /* 체인 추가: 최대 인원·용량 초과 시 {ok:false, reason} */
+  function appendChain(list, entry, maxItems) {
+    var arr = (list || []).slice();
+    if (arr.length >= (maxItems || 20)) return { ok: false, reason: "max", list: arr };
+    arr.push(entry);
+    return { ok: true, list: arr };
+  }
+
+  /* ── 비트맵(0/1 대량 상태) ───────────────────────────────────── */
+  function bitsToStr(bits) {
+    var bytes = new Uint8Array(Math.ceil(bits.length / 8));
+    for (var i = 0; i < bits.length; i++) if (bits[i]) bytes[i >> 3] |= (128 >> (i & 7));
+    return b64uEnc(bytes);
+  }
+  function strToBits(str, n) {
+    var bytes = b64uDec(str), bits = [];
+    for (var i = 0; i < n; i++) bits.push(((bytes[i >> 3] || 0) >> (7 - (i & 7))) & 1);
+    return bits;
+  }
+
+  /* ── KST 날짜 · 결정론 난수 ──────────────────────────────────── */
+  var KST_MS = 9 * 3600 * 1000;
+  function kstDate(d) { return new Date((d ? d.getTime() : Date.now()) + KST_MS); }
+  /* KST 기준 YYYYMMDD 숫자 */
+  function kstYMD(d) {
+    var k = kstDate(d);
+    return k.getUTCFullYear() * 10000 + (k.getUTCMonth() + 1) * 100 + k.getUTCDate();
+  }
+  /* 기준일(YYYYMMDD)로부터 KST 며칠째인가 — 데일리 게임 회차 번호 */
+  function kstDayIndex(startYMD, d) {
+    var s = String(startYMD);
+    var start = Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8));
+    var k = kstDate(d);
+    var cur = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate());
+    return Math.round((cur - start) / 86400000);
+  }
+  function hash32(str) {
+    var h = 2166136261 >>> 0;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return h >>> 0;
+  }
+  function dailySeed(salt, d) { return hash32(kstYMD(d) + "|" + (salt || "")); }
+  function prng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), 1 | t);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function pick(rnd, arr) { return arr[Math.floor(rnd() * arr.length) % arr.length]; }
+  function shuffle(rnd, arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  /* KST 자정까지 남은 시간 {h,m,s,ms} */
+  function countdownToKstMidnight(d) {
+    var k = kstDate(d);
+    var ms = 86400000 - (k.getUTCHours() * 3600000 + k.getUTCMinutes() * 60000 + k.getUTCSeconds() * 1000 + k.getUTCMilliseconds());
+    return { ms: ms, h: Math.floor(ms / 3600000), m: Math.floor(ms / 60000) % 60, s: Math.floor(ms / 1000) % 60 };
+  }
+
+  /* ── 이모지 격자(데일리 공유용) ───────────────────────────────── */
+  function emojiGrid(rows, header) {
+    var body = rows.map(function (r) { return r.join(""); }).join("\n");
+    return (header ? header + "\n" : "") + body;
+  }
+
+  /* ── 문자열 유틸 ─────────────────────────────────────────────── */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  /* 닉네임: 12자 · 제어문자 제거. 개인정보(실명 강요) 금지 — 별명 안내는 UI에서. */
+  function nick(s, fallback) {
+    var raw = String(s == null ? "" : s), t = "";
+    for (var i = 0; i < raw.length && t.length < 12; i++) {
+      var cc = raw.charCodeAt(i);
+      if (cc < 32 || cc === 127) continue;              // 제어문자 제거
+      if ("<>&\"'\\".indexOf(raw[i]) >= 0) continue;      // HTML 위험 문자 제거
+      t += raw[i];
+    }
+    t = t.trim();
+    return t || (fallback || "익명");
+  }
+
+  /* ── 공유 UI ─────────────────────────────────────────────────── */
+  function toast(msg) {
+    var el = document.getElementById("sk-toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "sk-toast";
+      el.setAttribute("role", "status");
+      el.style.cssText = "position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);z-index:99;" +
+        "background:#101014;color:#f2f3f5;border:1px solid #33343c;border-radius:12px;padding:11px 16px;font-size:14px;" +
+        "font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.45);opacity:0;transition:.18s;pointer-events:none;max-width:88vw;text-align:center";
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    requestAnimationFrame(function () { el.style.opacity = "1"; el.style.transform = "translateX(-50%) translateY(0)"; });
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.style.opacity = "0"; el.style.transform = "translateX(-50%) translateY(8px)"; }, 1900);
+  }
+  function copy(text) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallback(); });
+    }
+    return Promise.resolve(fallback());
+  }
+  function share(opts) {
+    if (navigator.share) {
+      return navigator.share(opts).then(function () { return true; }, function () { return false; });
+    }
+    return copy(opts.url || opts.text || "").then(function (ok) {
+      if (ok) toast("링크를 복사했어요. 카톡·인스타에 붙여넣으세요");
+      return ok;
+    });
+  }
+  function xUrl(text, url) {
+    return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
+  }
+
+  /* ── 결과 카드(캔버스) ───────────────────────────────────────── */
+  var FONT = '-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif';
+  /* preset: "story"(1080×1920) | "square"(1080×1080) | "card"(1080×1350) */
+  function card(preset) {
+    var size = preset === "story" ? [1080, 1920] : preset === "square" ? [1080, 1080] : [1080, 1350];
+    var cv = document.createElement("canvas");
+    cv.width = size[0]; cv.height = size[1];
+    var ctx = cv.getContext("2d");
+    ctx.textBaseline = "top";
+    return { cv: cv, ctx: ctx, W: size[0], H: size[1], font: FONT };
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    var rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rr);
+    ctx.arcTo(x + w, y + h, x, y + h, rr);
+    ctx.arcTo(x, y + h, x, y, rr);
+    ctx.arcTo(x, y, x + w, y, rr);
+    ctx.closePath();
+  }
+  /* 줄바꿈 그리기 → 마지막 y 반환 */
+  function wrapText(ctx, text, x, y, maxW, lh, maxLines) {
+    var words = String(text).split(/(\s+)/), line = "", lines = [];
+    for (var i = 0; i < words.length; i++) {
+      var test = line + words[i];
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line.replace(/\s+$/, "")); line = words[i].replace(/^\s+/, ""); }
+      else line = test;
+    }
+    if (line.trim()) lines.push(line.replace(/\s+$/, ""));
+    /* 공백 없는 긴 한글 줄 대비: 글자 단위 재분할 */
+    var out = [];
+    for (var j = 0; j < lines.length; j++) {
+      var l = lines[j];
+      while (ctx.measureText(l).width > maxW && l.length > 1) {
+        var cut = l.length;
+        while (cut > 1 && ctx.measureText(l.slice(0, cut)).width > maxW) cut--;
+        out.push(l.slice(0, cut)); l = l.slice(cut);
+      }
+      out.push(l);
+    }
+    if (maxLines && out.length > maxLines) { out = out.slice(0, maxLines); out[maxLines - 1] = out[maxLines - 1].replace(/.$/, "…"); }
+    for (var k = 0; k < out.length; k++) ctx.fillText(out[k], x, y + k * lh);
+    return y + out.length * lh;
+  }
+  /* 하단 워터마크 — 도메인/앱 경로 (예: "tomatoeggcat.com/chemi-link") */
+  function watermark(ctx, W, H, label, color) {
+    ctx.font = "600 26px " + FONT;
+    ctx.fillStyle = color || "rgba(255,255,255,.42)";
+    ctx.textAlign = "center";
+    ctx.fillText(label, W / 2, H - 62);
+    ctx.textAlign = "left";
+  }
+  function savePng(cv, filename) {
+    try {
+      var a = document.createElement("a");
+      a.href = cv.toDataURL("image/png");
+      a.download = filename || "card.png";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      return true;
+    } catch (e) { return false; }
+  }
+  /* navigator.share(files) 우선 → 실패 시 PNG 다운로드 */
+  function sharePng(cv, filename, title) {
+    return new Promise(function (resolve) {
+      if (!cv.toBlob || !navigator.canShare) { resolve(savePng(cv, filename)); return; }
+      cv.toBlob(function (blob) {
+        if (!blob) { resolve(savePng(cv, filename)); return; }
+        try {
+          var file = new File([blob], filename || "card.png", { type: "image/png" });
+          if (navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: title || "" }).then(
+              function () { resolve(true); },
+              function () { resolve(savePng(cv, filename)); }
+            );
+            return;
+          }
+        } catch (e) {}
+        resolve(savePng(cv, filename));
+      }, "image/png");
+    });
+  }
+
+  return {
+    enc: enc, dec: dec,
+    stateUrl: stateUrl, readState: readState, writeState: writeState, clearState: clearState,
+    sizeOf: sizeOf, appendChain: appendChain,
+    bitsToStr: bitsToStr, strToBits: strToBits,
+    kstYMD: kstYMD, kstDayIndex: kstDayIndex, dailySeed: dailySeed, hash32: hash32,
+    prng: prng, pick: pick, shuffle: shuffle, countdownToKstMidnight: countdownToKstMidnight,
+    emojiGrid: emojiGrid, esc: esc, nick: nick,
+    toast: toast, copy: copy, share: share, xUrl: xUrl,
+    card: card, roundRect: roundRect, wrapText: wrapText, watermark: watermark,
+    savePng: savePng, sharePng: sharePng
+  };
+})();
+if (typeof module !== "undefined" && module.exports) module.exports = SK;
+
+</script>
+<script>
+"use strict";
+(function () {
+  /* ══════════ 난독화 해제 ══════════ */
+  var XK = "tec-hgd-2026";
+  function ux(s) {
+    var bin = atob(s), n = bin.length, b = new Uint8Array(n), i;
+    for (i = 0; i < n; i++) b[i] = (bin.charCodeAt(i) ^ XK.charCodeAt(i % XK.length)) & 255;
+    return JSON.parse(new TextDecoder().decode(b));
+  }
+  var WORDS = ux("L0eJmtCMwpEQHBDa4e2Jn9VFSA/ZgJva8sRBAUqM67Tes68UWEePs82My5UQHBDd2NGIi+ZFSA/erYbd0+1BAUqL+ZXfqKcUWEeInfyLw60QHBDa4e2Ir9xFSA/erqLa6MVBAUqK8ojYiIIUWEePjf2L/70QHBDdxuGPqcdFSA/eqoLa6MVBAUqL8pHerb4UWEePs8SMx6EQHBDczNWPu91FSA/epo7cwdFBAUqL/KXeuJIUWEeOrvWL77EQHBDd8uiIm+hFSA/erb7a//hBAUqL+Znesp4UWEeOuMiL+ZUQHBDa0+2IgdBFSA/egI/d2N1BAUqL1oDetr4UWEePjeiM4awQHBDa//mJnexFSA/ekrfa6dFBAUqL8ZHYhZ4UWEePuOyL3YUQHBDdwuWPs/hFSA/eqoba1OFBAUqMw6XZu4sUWEeIgdCLxLEQHBDb7fGPs81FSA/errfa/MVBAUqN1ZzekKcUWEeJnNiMwoEQHBDdxPGIs+RFSA/Zsqrd2NFBAUqK+bzZgIMUWEePrumL0rkQHBDa6MSJmPhFSA/eupbd//1BAUqL+ZnZlrYUWEePlMiK6L0QHBDcwfWPpsxFSA/Zspra6vVBAUqK4o3ZsY4UWEePt8GN3J0QHBDb5fmPjf1FSA/Yg7ba1O1BAUqN3J3erqIUWEeJmPiL+IwQHBDdwuWOrulFSA/Zl6La4OVBAUqL1ajes7MUWEePjtSL4qEQHBDd9vyPutVFSA/YgYbcxPBBAUqM66jetK4UWEeIudCN3J0QHBDb9sGPsexFSA/erbLb4uxBAUqM1ITZgqcUWEePusSMwqkQHBDa8umPtvhFSA/fpI7dwuVBAUqLx5Derb4UWEeOu+GM15gQHBDd9s2Oo9BFSA/ZuLrd2NlBAUqM4ZXZkJcUWEePr8SM+rwQHBDczeWInc1FSA/ZtYvaxM1BAUqK8bTYhaIUWEeIm+CM3bYQHBDa7MGIp/BFSA/ekKfd2N1BAUqLxZ3YgK4UWEePjNCL86gQHBDd3N2Ii8RFSA/es7vczfFBAUqM74XepoYUWEePtcyK/6kQHBDczNWIm+xFSA/epobd0d1BAUqK8bXZuqoUWEePt9iK6pUQHBDdwOyOpcRFSA/Yg4fdwuVBAUqLw63fpaoUWEePsNSN3J0QHBDa48mOu+FFSA/epbbdzcVBAUqN0K3eu54UWEeIm+iL86EQHBDb4fyPrvVFSA/Zl7ra6elBAUqM66neu64UWEePndCL/ZUQHBDdxu2OtdBFSA/ZvLLb7fFBAUqM9b3ZhrIUWEeJmMWK/bkQHBDb4dGInuhFSA/esp7a0+FBAUqK6pXel7IUWEeOp9GLw7gQHBDa4eGIvsxFSA/euJna6vVBAUqM74HZkJcUWEeIntyMyJEQHBDdxMGJldBFSA/YgLba//hBAUqN1K3erbYUWEeOtPyM0qkQHBDa7NKPs81FSA/epY/a8uhBAUqLxZ3eiYYUWEeIn+SMxKUQHBDaxsWOuPFFSA/fqIra/P1BAUqM1o3YgK4UWEeJn9iK/JEQHBDd3s2Is/BFSA/erara6vVBAUqK/qHeraoUWEeJmtGL+ogQHBDcx9COuMVFSA/for/cxthBAUqM1J3ehqYUWEeOuuCMwoEQHBDcw92Ip/BFSA/Zmabd3s1BAUqM5rXZibYUWEePu/mK6KEQHBDcxOWPp9xFSA/fs7PcwclBAUqM4q3erYYUWEePqfSLxL0QHBDd/vWIr+RFSA/Yg7bd6uVBAUqN1pDegIIUWEePjtSL+ZUQHBDa48iPr8RFSA/YgKLczNVBAUqLw6zep7cUWEePpfSN1KkQHBDb4eGOq91FSA/YjJ7d0slBAUqL77HYg7YUWEePpvWM3ZgQHBDcx9CPs81FSA/YgKfd2NlBAUqL4JXYg7YUWEeIptyL/rkQHBDa6emPuO1FSA/Zu5bd0slBAUqL4I3es68UWEeOteyN0K0QHBDa6vWIqOhFSA/epqPd0/VBAUqMyJnZvLIUWEePjtSL7okQHBDaxtGPsclFSA/eu5Lb7N1BAUqN1pDYiIIUWEeJn9iN15EQHBDd3NmPiuhFSA/eu67a6sBBAUqM56nes7oUWEePn/SL+ogQHBDcwcmIi+xFSA/Yg7bd/81BAUqN3J3egJoUWEeIoeiM75gQHBDa9/iOtPRFSA/Yg47a6dlBAUqL+rnZpKYUWEePt9iL5p0QHBDb8tCPs81FSA/fsZ7czNVBAUqM1LXel7IUWEePq+SN3KUQHBDczemPlPBFSA/Yg5Lb4sBBAUqL/bjerqIUWEeIr8aL+o0QHBDd9v2PsNxFSA/Zibbd/OFBAUqL7LTekK4UWEePuNSL1akQHBDa6MWOu+FFSA/etIra9+RBAUqN1K3erLYUWEePs82N1LwQHBDa8umIi8RFSA/Yg4fczNVBAUqL1anetr4UWEePmeCMxbAQHBDb+8mIouxFSA/es6/a8MVBAUqK7q3YibIUWEeInuiK/bkQHBDa9tWPnO1FSA/fs67a4vRBAUqL+ZnZhroUWEeIr/CM+ZEQHBDa/P2PtelFSA/Zl77d5fVBAUqK/bXYgo8UWEeIndiM5oAQHBDczeWPlPBFSA/elLLdzeFBAUqN3J3eiZoUWEePuNWN0YAQHBDd0+2Ip/BFSA/eu5Ld2N1BAUqK/qHesp4UWEePjtSM1IQQHBDb+OmIs/lFSA/el7LdwvBBAUqL3bXZl7oUWEePiuiM66kQHBDdzeGInehFSA/ei5bb4NlBAUqL4qHetJYUWEeIruyM3akQHBDb4fmPpvVFSA/eqLPb7fFBAUqLw6nZka4UWEePutiN3J0QHBDa7vGPsNRFSA/ep4Lb4eFBAUqL85net5IUWEeIm+yL7LUQHBDa/P2Puu1FSA/etqLd//1BAUqLxKnfqaYUWEeOoeSM66kQHBDa/P2PjehFSA/epobczc1BAUqM0q3ZmpoUWEeIotSLw60QHBDazc2IoehFSA/ep4bd08FBAUqM17zeq6IUWEePpsSL+ogQHBDd8d2Is/BFSA/YhZ/a/P1BAUqN15jeq6IUWEeIq+WN0YEQHBDd/82Pm/xFSA/ZgKbd/8BBAUqN1KXZibYUWEeOuPCMx4UQHBDcx8WJnfRFSA/YgLLa1dRBAUqL77HZsoYUWEePt9yM67QQHBDdzeGPt8FFSA/eqJbd0slBAUqL5oHZrr4UWEePmfOM0qUQHBDawvCPjfRFSA/fv7vb7fFBAUqK8YDYhZ4UWEeIndiM74EQHBDd3syOvPRFSA/fprXdzf5BAUqN05HegqoUWEeIr8iL8IUQHBDdx9GIi8RFSA/el7LcxPRBAUqM1LnZu5YUWEePm/2N0YEQHBDa9smJntRFSA/YhYLa6d1BAUqMzoXerqIUWEeIndiN0YEQHBDd2NmJnNxFSA/Zl5ba6dlBAUqL56XZgo8UWEeJnsiN3J0QHBDb7+2IjcBFSA/eu5LdxPlBAUqL/7nYiLsUWEePpfCN1ZkQHBDdzc2Is/BFSA/ZnIrb7fFBAUqN1oXeqooUWEePsPCL5oEQHBDa6d2PrvVFSA/es6/cxORBAUqLxLHZmpsUWEeIn+yL7okQHBDawvmJmtRFSA/frIba0+VBAUqMyJHYgKIUWEePuOCN1LEQHBDcx9mPs/hFSA/erqPcxOVBAUqM15jZv7YUWEePt/yMwoEQHBDd8dmIncVFSA/ZrY7d3dFBAUqL77DZu4sUWEePrumL+r0QHBDcxdWPt9BFSA/etJbb9/BBAUqN143ehqYUWEeInfCL1IEQHBDdx9GOuvBFSA/ft4bcw9lBAUqM1qXYgK4UWEePlPSN0YEQHBDd/O2PoNFFSA/fq7bdxNVBAUqL/IXZv7YUWEeIgtCL7I0QHBDa4eGJldhFSA/Zl7ra6eFBAUqLx5HZl6IUWEePmsCMy5UQHBDa/8GPpfBFSA/eiarcx9lBAUqL84HerqIUWEePsciMwoEQHBDd292Pq+RFSA/fqKfa1PlBAUqK+JnYgLIUWEePpvSN14UQHBDcwcmIvPhFSA/etJLd2NlBAUqLw73euosUWEePqdmN1oQQHBDd+/yIqcxFSA/YgLLdxMxBAUqM16nZmrcUWEeIouyL+ogQHBDa6vWPuthFSA/YiILa7M1BAUqN1L3erqIUWEePq/iK4pwQHBDb4fmInt1FSA/erqLd0slBcA==");
+  var BANK = ux("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");
+  var REG = ux("Lz5BwP3/j6Kr2oeGVklBx9raj6+aEh4FQUtTG19LVR8FHgUDRThPdkqM74HetK7cwclBAUqM6K3YhZ4UWFZWA1BUSBwACBwDR1Y+ATNFiKmu2oeaVklBx9z2iI6OEh4FQUtSGFpLVR8EHgoPKUk4D4Ty4MGwgN696EdPD4TRzcawmBAaR1NNGlFLVR8FHgIGRjhPdkqN0LzZmrfa//lBAUqN1pDYiIIUWFZUA1xQXAEDAgQYTFNWcEQ8RsCnmN6j/I/WnUpLRseAjdm03EdPHl1JVhoAHAMETEtXHV46SHYQ3LaqmNHrx93LRgEQ3LaqmP/bD0RUUwMGCAYaRVdUA1hUV3AeaxDdwuSJmMRFSA/ZvLLcwclBAVtSShUKBh4HRl1NGFBUOQFpEtiD2I7CrYLS1A8eEt6W8I7hhUpLVxgcAgIFWFRRGkZTUh5vHGkUmOfPwevmjpieEh4Un9PjwerXRgEBBRwHQVZPHFpfShQLAW8aL0ePu/mLx5Heu64UWEeJn9WN3J0QHAEBWlJbGERWVhocAAYAKUk4D4Tj3MGQtd696EdPD4Tj3MGQtRAaR1NNGVBLVR8FHgAOTThPdkqMyJnek47cwdVBAUqLxKnZhrMUWFZVA1hXUwEDAgUYQlNScEQ8RsCrvd6E6I/WnUpLRseCpd6t5EdPHl9JUhQFHAMEQ0tbFVE6SHYQ24S3ntDPD0RFjpmj3JGKVklQGEZWUxkeAQAAWlxSHzVLPw/ZhrPcwclBAUqL/pXesoIUWFZWA11fVwEDAgsYR1NScEQ8RsG2gdm03InosUpLRseAjdiOxEdPHl9JUB8eAQABWlRRGjVLPw/elKPcwclBAUqM6K3ekLYUWFZVA1tVUQEDAgUYQFdScEQ8RsGCjd6t5InosUpLRseAjdm03EdPHl1JVh8KHAMETEtVFVo6SHYQ3JSrmerqx93XRgEQ3ISfn9PiD0RUUgMFCAcaRVdUA11fVXAeaxDa4vSOouGN0Z0QHBDcxtiJldhFSB4FHgYPRklSH19JUBUKbR5tVo/arYTV+MG5rBAaVo/RkIPR5Q8eAwQYRVFPHFpfShwDBG8aL0ePn8WL8rzYhYIUWEePm8GM5oUQHAEAWlFWFERWVhscCAIEKUk4D4XyzMGkodiDxEdPD4LV2cawmBAaR1BNGFpLVR8FHgUEQThPdkqLwLzYhZ4UWEePqfSL/pUQHAEBWlBVGURWVhscCQsBKUk4D4Xy0MawmNiDxEdPD4TH4MawmBAaR1FNGF9USBwABhwDTVw+ATNFiLqe3JGKmO7/D0RFjp+P2oqGVklQGkZVXRUeAQABWlNQGjVLPw/fpZvaxvmJmNhFSA/Ygo/d9s1BAVtSShgEBx4HRl1NHF5ROQFpEtiG4Y7stILSyA8eEt6y6In5lUpLVxocBQEaRVdUA1lVUHAeaxDdwuWOouGN0YEQHBDa6d2Pn/RFSB4FHgcGQ0lSH15JUx8DbR5tVo7stILSyA8eEtiC5YnAkUpLVxgcAQYAWFRRG0ZeVh5vHGkUmMX2wfXqiKauEh4UmMXnxt7mRgEBBRwDQ0lSH15JXBgEbR5tVonEqYPo4MeHgBAaVonDqYPlzA8eAwYYQF1UAVlVUgMABgZrWD5Bwd7OiI6O3LmqVklBwd7Oj5uzEh4FQktaFFlLVR8FHgsEQjhPdkqLxLHegq7a//lBAUqL0oTZhrMUWFZUA1lUVwEDAgoYRVxScEQ8RsGstN690I/WnUpLRsGStNmA9UdPHl1JUhwKHAMEQ0tRFVE6SHYQ3Kq+mOfTx93XRgEQ3ISfn+fLD0RUUgMECAEaRVdVA1BTUXAeaxDcwdWPseyN0Z0QHBDd+OWJmMRFSB4EHgACR0lSH1BJURoBbR5tVonRsYTy7MG5rBAaVonVhIPlzA8eAwQYTFRWAVlVUwMDAQZrWD5Bxt7mjpieEh4Un9PjwerXRgEBBRwHTVJPHFpfShQLbR5tVoj5jITj1ceHgBAaVo/TuIT89A8eAwUYQFxRAVlVUwMLCAdrWD5BwfbCiKWq2oeGVklBwcjjj5uzEh4FQUtVGV9LVR8FHgcERThPdkqL/anek47cwdVBAUqLxKnZhrMUWFZWA1FXUQEDAgUYRVNRcEQ8RseCpdmA9Y/WgUpLRsG2rN6szEdPHl9JUhkeAQABWlVRGzVLPw/eq6La19mPpvRFSA/YgKfa7/VBAVtQSh4GAh4HRlJNFFo6SHYQ2oanmPPyweP7RgEQ3JKyn+fLD0RUUAMLBAMaRVdUA15eUnAeaxDa1uCIjPSN0YEQHBDa8PmPt9BFSB4FHgcBR0lSH15JXRoLbR5tVonHvILSyA8eEt6szInhnUpLVxgcBQUaRVdaA1tUVnAeaxDcxPCIr8CN0YEQHBDa8PmPt9BFSB4FHgcHQ0lSH19JVBkFbR5tVo7stIP29MGArN696EdPD4LV2ceKgBAaR1JNFFhTSBwABxwGQjhPdkqN0YHZka7cwclBAUqL4LHeqooUWFZUA1xeUQEDAgQYTF1bcEQ8RsCxrN6j/I/WnUpLRsGEmdm03EdPHl5JUxkEHAMEQktRFFA6SHYQ3LqqmNf/weP7RgEQ3JKyn+fLD0RUUAMLBQMaRVdUA1xfU3AeaxDa6d2PjfSN0Z0QHBDcxPCPtvhFSB4KHgIBWFRRFUZWU3AeaxDdwuWPusSN0Z0QHBDawsyIr8BFSB4EHgABQklSH15JXRxvHGkUntbnwf72jpieEh4UmPjbwdr7RgEBBxwDR1JPHFpRShoBCG8aL0eImeGK/bnYhYIUWEeJn9WM0qwQHAEAWl1aHkRWVhUcBwEFKUk4D4Tj+MeHnBAaVo7vrYTH4A8eAwQYR1BWAVlVUwMBCAZrWD5BwfDmjpmj2oeGVklBwcjjj6+aEh4FQUtRGl9LVR8EHgcHRjhPdkqM67TerqPcwclBAUqL4LHeqooUWFZUA11WVgEDAgQYTVE+ATNFjp6O3ICqmO7/D0RFjp+P2oqGVklQGkZTVhQeAQAAWlxbFTVLPw/ZtY7a9tWPpvRFSA/ehpvd9s1BAVtRShwKBx4HRlJNHVFeOQFpEtmawIn2pYLS1A8eEt6W8I7hhUpLVxkcCQsaRVdVA1xfVnAeaxDa6dGPn/SL77EQHBDcxtiJldhFSB4FHgABRklSH19JUB4HbR5tVo7QmYTj1ceHgBAaVonDqYPlzA8eAwYYQ1JSAVlVUwMCCG8aL0eJnf2Lw6nYhYIUWEePjeyM5oUQHAECWlNXH0RWVhscBwQBKUk4D4LS1MC9nN696EdPD4LV2ceKgBAaR1JNHl5WSBwABhwPR1A+ATNFiJ+f3LSXntDTD0RFjp+P24S3VklQG0ZTVxseAQAPWlVWGjVLPw/Zv6vd+OWIgdCN0YEQHBDa8PmPt9BFSB4FHgcBQElSH19JVBlvHGkUmOH/x93LRgEQ24S2mOfTD0RUUQMCCQoaRVdaA1hVUHAeaxDdx9GIjdGL77EQHBDawsyIr8BFSB4EHgEFR0lSH15JUhwBbR5tVo/XmYTl1MeHgBAaVonVhIPR5Q8eAwQYTFRWAVlVUwMFCAVrWD5Bwcz2jpieEh4UmPjbwdr7RgEBBxwCQ1FPHFpRShsAAm8aL0ePteCL1rHYhYIUWEeJn9WM0qwQHAEAWlNWFURWVhUcBAcFKUk4D4X+8MG6rNiDxEdPD4TH4MawmBAaR1BNHV5TSBwABhwPTFM+ATNFiaK73IKLntDTD0RFjp2n3KmmVklQGkZUUxweAQAOWlZacEQ8RsGoiN6R8I/WnUpLRseAjdmA9UdPHl5JXRQBHAMETUtXcEQ8Rsa9qdiD2EdPD4T63MGArBAaR1JNGV9TSBwABhwAQFY+ATNFjp2n3LaqntDPD0RFiKmu3KiOVklQGkZSURweAQAAWl1WcEQ8RsG6qN6yxY/WgUpLRsa+sNiD2EdPHl1JXBgKHAMETEtVHlk6SHYQ3KWGmMX/x93LRgEQ24S2mOfTD0RUUQMDBwQaRVdaA1hfOQFpEt6GyY7muILS1A8eEtiEyY7hhUpLVxgcBQYCWFRRFUZTXR9vHGkUmP3iwdr7iKauEh4Untfext7mRgEBBRwPQ1ZPHFpfShQBCW8aL0eIgtCL0rnfqbLcwclBAUqL+ZXegq4UWFZUA1xRVwEDAgQYQlA+ATNFiLeK25S/ntDTD0RFjp+P24S3VklQGkZTXBkeAQEGWlxTGzVLPw/etK7cw+WOosSL77EQHBDa1PmPjtRFSB4BHgADQElSH15JURtvHGkUmP/KwerXjpieEh4UmOH/wfLfRgEBBxwDR1dPHFpRShQLbR5tVon7rIPo/ceHgBAaVonVhIPR5Q8eAwQYRVJWAVlVUwMFBwRrWD5BwfX/j42L2oeGVklBx9raj6+aEh4FQUtQH1pLVR8KHgAARjhPdkqL7LHegI/cwdVBAUqLxKnZhrMUWFZWA1tQUAEDAgUYRVZbcEQ8RsCrpN6yxYnosUpLRseAjdiOxEdPHl9JVRQLHAMEQktbHlk6SHYQ3Kq3mPD3x93XRgEQ3JKyn+fLD0RUUAMKHAMEQktVFF86SHYQ272vntDPD0RFiLeK3LCGVklQGEZSVBgeAQAPWlFSGjVLPw/Yg7bd18SPpvRFSA/ehpvd9s1BAVtRSh8FBB4HRlJNH1xeOQFpEtiF1In1vITs+A8eEtiEyY/bnUpLVxocBgcOWFRRG0ZfVx9vHGkUmPjWwerXiKauEh4UmMXnxt7mRgEBBRwPQF1PHFpRShQHCG8aL0eJnNiLxLHeu64UWEeJn9WM5oUQHAECWl1bAVlVXAMEAgNrWD5BwO7SiLWz3LmqVklBx9raj6+aEh4FQEtbGFxLVR8KHgYFRzhPdkqN143etIPcwdVBAUqN1pDZspoUWFZXA1FQVwEDAgoYR1dRcEQ8RsGSpd6y1I/WnUpLRseCpd6t5EdPHl9JVxUDHAMETEtVG1k6SHYQ3ISumNf/weP7RgEQ2oKjmP7zD0RUUwMKCAMaRVdUA19UOQFpEtiC5YnAkYTs+A8eEtiEyY/bnUpLVxocBAAPWFRRGkZVURhvHGkUn+r6xvb/jpieEh4Un9PjwerXRgEBBRwERFBPHFpeSh0KBG8aL0eJldiL+ojYhYIUWEeIm+iL5p0QHAEDWldXGURWVhQcAgAEKUk4D4T65MC9udiD2EdPD4Tj+MGoiBAaR1JNG1hUSBwABhwPRlw+ATNFiLqC3ICqntDTD0RFjp+P2oqGVklQFUZXXRoeAQABWlVUGDVLPw/Yg5La8NSJmNhFSA/YgKfa7/VBAVtfSh4KAR4HRl1NGV5fOQFpEt6g5YnhnYTs+A8eEtiEyY7hhUpLVxgcAwEDWFRRFEZXVxpvHGkUmfDXwfLTj6Gy2oeaVklBxt7niK+CEh4FQUtSG1tLVR8LHgMAQDhPdkqM1K3epqPa//lBAUqN1pDZspoUWFZWA11XUAEDAgoYQ1FUcEQ8Rsa9tNmC/Y/WgUpLRsG2rN6szEdPHl9JUhsLHAMEQ0tTGV86SHYQ2oKjmOH/x93LRgEQ24S2mOfTD0RUUQMAAQAaRVdbA1FfV3AeaxDa9smPn/SL77EQHBDcxtiIr8BFSB4HHgIGQElSH1BJVBsGbR5tVo/XrYTy4ceHnBAaVonnsYT93A8eAwUYQFJbAVlVUgMLBQBrWD5BwezWj5uz2oeaVklBwez7iLeKEh4FQ0tWFVFLVR8FHgIHQzhPdkqL4ozfvL7cwclBAUqL4LHeqooUWFZUA11WUQEDAgUYRVVVcEQ8RsG0vd6C/InosUpLRseCpd6t5EdPHlBJVh0FHAMETEtWFFo6SHYQ27CentDPD0RFjpmj3JGKVklQGEZWVx4eAQAAWlxTHzVLPw/erara8NSJmNhFSA/Ygo/dwuRBAVtRSh4HAx4HRl1NG1FQOQFpEt+j7I7hhYTs+A8eEtiEyY/bnUpLVxocBQEPWFRRGkZVVRhvHGkUmPDrxuf+iKauEh4Untfext7mRgEBBhwDQl1PHFpfShoBbR5tVonHvILSyA8eEtmA9InhnUpLVxgcAQIAWFRRFEZXVx9vHGkUmOHSxuf+jpieEh4UmOH/wfLfRgEBBxwDQlZPHFpQSh0BB28aL0ePtemLx5Heu64UWEeJn9WM0qwQHAEAWl1TG0RWVhUcBgACKUk4D4T/3cGVtNiDxEdPD4T63MGArBAaR1JNGVxRSBwABhwAR1I+ATNFibSm3ICqntDTD0RFjp2n3KmmVklQFUZWVBseAQABWlJTFTVLPw/erb7a8NSJmNhFSA/ehpvdwuRBAVtRShQGHAMEQ0tVFDVLPw/epqPa4vSJmNhFSA/YgKfa7/VBAVtfSh0FBR4HRl1NG1leOQFpEtiP9InDsYTs+A8eEt6W8I7VrEpLVxgcCAICWFRRG0ZfXBxvHGkUmOH/x93LRgEQ3K+OmNf/D0RUUwMHBAcaRVdVA15QUnAeaxDa4e2Pr9iL77EQHBDcxtiJldhFSB4FHgEERklSH15JXB4DbR5tVo7QmYT65MeHgBAaVonVhIPR5Q8eAwQYQF1aAVlVUwMFAgtrWD5Bwc/jiI6O3LmqVklBx9raj6+aEh4FQUtSFURWVhUcAQIOKUk4D4Lf7MGSpdiD2EdPD4PR5MGwgBAaR1BNH1xUSBwACRwGTVc+ATNFiLuj3ICqntDPD0RFiKmu3KiOVklQGkZSVRoeAQAAWl1VGjVLPw/etK7a9tWPpvRFSA/ehpvd9s1BAVtRShoKBR4HRlNNGV06SHYQ3KWamO37weP7RgEQ3JKyn+fLD0RUUAMFBh4HRlJNG15VOQFpEtm57Y/WgUpLRsa+sN6W8EdPHl5JVxwAHAMEQ0tXGF06SHYQ3LaqmNf/x93XRgEQ3ISfn+fLD0RUUgMCCB4HRlNNG1FVOQFpEt6R8InRsYLS1A8eEt6A3Y7VrEpLVxscCAcDWFRRGkZTVxtvHGkUmOH/xuTnj4GK2oeaVklBwez7iLeKEh4FQ0tWGlFLVR8EHgsFQzhPdkqM5rXek47a//lBAUqLxKnZspoUWFZWA1hWUgEDAgQYQ1RScEQ8RsGnuN6g5YnosUpLRseAjdiOxEdPHl9JVxQGHAMEQktaGF86SHYQ3b2amNf/weP7RgEQ2oCLnt3TD0RUUwMKCQcaRVdUA1o6SHYQ27CentDPD0RFiLeK3LCGVklQGEZSUBkeAQAPWlZQcEQ8RsGAndm58I/WnUpLRseAjdmA9UdPHl1JUhkFHAMETEtUHlw6SHYQ3K+umMX2xt7niKauEh4Untfex9DXRgEBBxwBR11PHFpQSh0BBG8aL0ePjfSLx5Heu64UWEePjfSLx5EQHAEFWlBPHFpRShgBAW8aL0eOtOWL4JzYhYIUWEePm8GM5oUQHAEAWlNTHERWVhscBgQHKUk4D4Pi3MGpoNiD2EdPD4Tj+MGoiBAaR1JNG11TSBwABxwGQVM+ATNFiLWz3KmintDTD0RFjp2n3KmmVklQGkZWXBkeAQAOWlFVHzVLPw/Zv6vb4dGPpvRFSA/YgKfa7/VBAVtQShgABR4HRlxNHFlTOQFpEt6q1InnnILSyA8eEtm69InDqUpLVxscAwQEWFRRGkZUURtvHGkUn+7PwezWjpiCEh4Un+njx93LRgEBBRwBQ1BPHFpfShkBAW8aL0eJleCL1rHYhZ4UWEePqfSL/pUQHAEBWlFWGkRWVhscCAsAKUk4D4Tw1MG6qNiD2EdPD4T63MGArBAaR1JNGVlLVR8EHgQBTDhPdkqL5p3egp/cwdVBAUqN1pDZspoUWFZWA1xWUQEDAgUYTFJXcEQ8RseBhd6VyInosUpLRsGEmdm03EdPHl5JUBkFHAMEQ0tSHFE6SHYQ3b2/meb+weP7RgEQ2oCLnt3TD0RUUgMLCQAaRVdUA1lWV3AeaxDd+/yJmMRFSA/ZhrLa9tVBAVtSShwACR4HRlxNHVxSOQFpEtm03Ij2mYLS1A8eEtiEyY7hhUpLVxkcCAEOWFRRGkZfXR5vHGkUnt3rwerXjpiCEh4UmNPKxurPRgEBBhwHRFxPHFpQShkKCG8aL0eJnsiK+YjYhYIUWEePjeyM5oUQHAECWlNSHERWVhocAgoDKUk4D4Tj1cGRjNiDxEdPD4LV2caEsRAaR1BNFFleSBwACBwETFY+ATNFj4eb3b2amO7/D0RFiI2227CeVklQGUZfVR8eAQAAWlZaHzVLPw/YgLLb++yJmNhFSA/Ygo/czNVBAVtQShUBAR4HRlJNGFk6SHYQ3KqTmNf/x93XRgEQ3ISfn9PiD0RUUgMBAAQaRVdUA11QVXAeaxDd9s2JmMRFSA/ZvLLcwclBAVtSShUGBh4HRl1NGFFfOQFpEt6P1I/QjILS1A8eEtiEyY7VrEpLVxgcCQsAWFRRFUZTVB9vHGkUmMHyx93LRgEQ2762ntDPD0RUUQMKBgsaRVdbA15XUnAeaxDa9smOuPCN0YEQHBDdwuWPr9hFSB4HHgMGQUlSH1BJXRoHbR5tVo/WgYPI3MG5rBAaVo/RkIPR5Q8eAwQYRVdPHFpfSh4GBG8aL0eJnf2K/bnYhYIUWEePsNCL1rEQHAEBWlJXGkRWVhscBAoOKUk4D4Le5MCnhN696EdPD4LV2cawmBAaR1BNH1peSBwACBwOTThPdkqL/anZv7bcwdVBAUqLxKnZspoUWFZXA1tWVQEDAgQYQ1BWcEQ8RsGsld+r0Y/WnUpLRsGStNm03EdPHlxJUhUAHAMEQktaHV86SHYQ3Kq3n/bSwOfLjpieEh4UmOH/wfLfRgEBBxwDRlNPHFpRShULBm8aL0ePtemM6bjYhYIUWEeJn9WM0qwQHAEAWlFSGERWVhQcAwQAKUk4D4PR5MGArN696EdPD4LV2ceKgBAaR1JNGFhUSBwABhwBQlM+ATNFia6u24KHmO7/D0RFjp2n3KmmVklQGkZWUhkeAQAOWlxbGzVLPw/eqpva6d2PpvRFSA/Ygo/czNVBAVtQSh8GAR4HRlJNHF9fOQFpEtm03In1vITE2MG5rBAaVo/RkILf1A8eAwUYQlZVAVlVUwMAAQRrWD5Bx9nXiJ2P2oeGVklBx9raj6+aEh4FQUtVFV9LVR8FHgsGTThPdkqN1pDesoLa//lBAUqN1pDZhrMUWFZWA1BVUQEDAgoYQ1FScEQ8RseHnNmQ2InosUpLRseAjdiOxEdPHl9JURQGHAMEQ0tSHjVLPw/Yg5Ld1NyJmNhFSA/Ygo/dwuRBAVtSShoABh4HRl1NH15UOQFpEt6u9Y7sqYLSyA8eEtmA9InhnUpLVxgcAAsHWFRRFEZXUhVvHGkUntfewcvbiKauEh4Untfext7mRgEBBRwOQVNPHFpeSh8ABW8aL0eIr8CM67TYhZ4UWEePsNCL1rEQHAEBWlFXGkRWVhscBwEHKUk4D4LT9cGwgNiD2EdPD4LT9cGRjBAaR1BNHFxLVR8EHgUPQDhPdkqL56zek47a//lBAUqN1pDZhrMUWFZVA1xWVQEDAgoYRVBacEQ8RseGod6R8I/WgUpLRsG2rN6szEdPHl9JUR4KHAMEQ0tTFVo6SHYQ3K+umPz2weP7RgEQ2oCLnt3TD0RUUwMBBAcaRVdVA1FRXHAeaxDb4c2OouGN0Z0QHBDa1OGIr8BFSB4HHgIAQklSH15JURwFbR5tVo/arYXoyMG5rBAaVo/RkILf1A8eAwUYQlRWAVlVUgMFAQRrWD5Bwf3viKmD3LmqVklBx9rajpWCEh4FQ0tTHVBLVR8FHgAOKUk4D4PlzMGpoN696EdPD4TH4MaEsRAaR1BNGVlRSBwABxwFTThPdkqM6K3ZvafcwclBAUqM6K3ekLYUWFZVA1tTUwEDAgUYQFRWcEQ8RseCpdmQ/YnosUpLRseCpd6t5EdPHl9JUxgAHAMETEtbGl46SHYQ3Kq3mPPyx93XRgEQ2oCLn9PiD0RUUgMEBgUaRVdaA1lWVnAeaxDa/P2PtemN0YEQHBDdwuWPr9hFSB4HHgMCQUlSH1FJVRwBbR5tVonnsYLSyA8eEtm69I/WgUpLVxgcCAUEWFRRFUZSURRvHGkUntbCwezWjpiCEh4UmMXnxurPRgEBBRwETFdPHFpQSh8LAm8aL0eOosSK8YDeu64UWEeJn9WM0qwQHAEAWlVSFERWVhQcAwYFKUk4D4PR5MGwgN6R8I/WgUpLRsaEsN60xEdPHl1JVRsBHAMETUtTGFs6SHYQ3KqSmOfTweP7RgEQ2oCLnt3TD0RUUwMDBR4HRlJNHV9QOQFpEtm9wIn1vILS1A8eEt6W8I7hhUpLVxgcAwAHWFRRG0ZeXBVvHGkUmPvGwezWjpiCEh4UmMXnxurPRgEBBRwFRFdPHFpRShoKBW8aL0ePifmM+rzYhZ4UWEePqfSL/pUQHAEBWlNTG0RWVhocAAsFKUk4D4TVycGRjN696EdPD4TRzcaEsRAaR1NNG1xVSBwABxwCTFw+ATNFj6Kr2oeaVklBxuTnjpieEh4FQUtbFV9LVR8KHgQFQThPdkqL77HfrZfa//lBAUqN1pDYiIIUWFZUA1tfSBwABhwORFY+ATNFj5uy3Ke+ntDTD0RFiI2224S3VklQGEZQVx8eAQAAWlJQHjVLPw/ZnIrcxtiPpvRFSA/Ygo/dwuRBAVtRShgKBx4HRl1NHFBQOQFpEtm03I/WgUpLRsaEsN60xEdPHl1JVR4EHAMETUtTFVw6SHYQ2oeGmOfTweP7RgEQ3JKyn9PiD0RUUQMLBgoaRVdVA19UU3AeaxDaxsWPtviN0Z0QHBDcxPCPtvhFSB4KHgMCQ0lSH19JVxwBbR5tVo7ohYTx9ceHgBAaVonVhIPR5Q8eAwQYTV1WAVlVXAMBBgdrWD5Bxs/viaKe2oeaVklBwez7iLeKEh4FQ0tWG15LVR8EHgsGRjhPdkqL5pHegqva//lBAUqN1Ljeq6IUWFZUA1xSSBwACRwHQlA+ATNFiLuj2oeantDTD0RFjp2n3KmmVklQFUZWVQEDAgUYTVw+ATNFiKaS3Ke+ntDTD0RFiI2227CeVklQGUZfVxkeAQAAWlZWHzVLPw/euKra7/WPpvRFSA/Ygo/czNVBAVtQSh8EBB4HRlJNHVpeOQFpEt+6+InAkYTs+A8eEtiEyY/bnUpLVxocBwQaRVdVA19fOQFpEtiF1InTkILS1A8eEt6W8I7VrEpLVxgcBAEAWFRRG0ZQVB9vHGkUmMLnwf3vjpiCEh4UmMXnxt7mRgEBBRwBTVdPHFpQShkABW8aL0ePjeyLx5Heu64UWEePjeyM0qwQHAEDWl1RGURWVhocAQYOKUk4D4T93MGRjNiDxEdPD4T93MGwgBAaR1BNGFpVSBwACRwEQFc+ATNFj6aL3JWymO7/D0RFiJub27CeVklQG0ZfXQEDAgQYQlFVcDU=");
+  var FLAGS = ux("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");
+
+  /* ══════════ 한글 자모 ══════════ */
+  var CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+  var JUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
+  var JONG = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+  var VC = {"ㅗㅏ":"ㅘ","ㅗㅐ":"ㅙ","ㅗㅣ":"ㅚ","ㅜㅓ":"ㅝ","ㅜㅔ":"ㅞ","ㅜㅣ":"ㅟ","ㅡㅣ":"ㅢ"};
+  var JC = {"ㄱㅅ":"ㄳ","ㄴㅈ":"ㄵ","ㄴㅎ":"ㄶ","ㄹㄱ":"ㄺ","ㄹㅁ":"ㄻ","ㄹㅂ":"ㄼ","ㄹㅅ":"ㄽ","ㄹㅌ":"ㄾ","ㄹㅍ":"ㄿ","ㄹㅎ":"ㅀ","ㅂㅅ":"ㅄ"};
+  var JS = {"ㄳ":["ㄱ","ㅅ"],"ㄵ":["ㄴ","ㅈ"],"ㄶ":["ㄴ","ㅎ"],"ㄺ":["ㄹ","ㄱ"],"ㄻ":["ㄹ","ㅁ"],"ㄼ":["ㄹ","ㅂ"],"ㄽ":["ㄹ","ㅅ"],"ㄾ":["ㄹ","ㅌ"],"ㄿ":["ㄹ","ㅍ"],"ㅀ":["ㄹ","ㅎ"],"ㅄ":["ㅂ","ㅅ"]};
+
+  function isSyl(ch) { var c = ch.charCodeAt(0); return c >= 0xAC00 && c <= 0xD7A3; }
+  function decomp(ch) { var s = ch.charCodeAt(0) - 0xAC00; return [Math.floor(s / 588), Math.floor((s % 588) / 28), s % 28]; }
+  function comp(a, b, c) { return String.fromCharCode(0xAC00 + a * 588 + b * 28 + (c || 0)); }
+  /* 낱말 → 자모 슬롯 6칸 (받침 없으면 null) */
+  function slots(word) {
+    var out = [], i;
+    for (i = 0; i < word.length; i++) {
+      var d = decomp(word.charAt(i));
+      out.push(CHO[d[0]], JUNG[d[1]], d[2] ? JONG[d[2]] : null);
+    }
+    return out;
+  }
+  /* 2 = 자리·자모 일치, 1 = 있으나 자리 다름, 0 = 없음, 3 = 입력 안 함(빈칸) */
+  function judge(g, a) {
+    var res = [], pool = {}, i;
+    for (i = 0; i < a.length; i++) if (a[i] != null) pool[a[i]] = (pool[a[i]] || 0) + 1;
+    for (i = 0; i < g.length; i++) {
+      if (g[i] == null) { res[i] = 3; continue; }
+      if (g[i] === a[i]) { res[i] = 2; pool[g[i]]--; } else res[i] = -1;
+    }
+    for (i = 0; i < g.length; i++) {
+      if (res[i] !== -1) continue;
+      if (pool[g[i]] > 0) { res[i] = 1; pool[g[i]]--; } else res[i] = 0;
+    }
+    return res;
+  }
+  function chosungOf(s) {
+    var out = "", i;
+    for (i = 0; i < s.length; i++) {
+      var ch = s.charAt(i);
+      if (ch === " ") continue;
+      out += isSyl(ch) ? CHO[decomp(ch)[0]] : ch;
+    }
+    return out;
+  }
+
+  /* ══════════ 조합 오토마타 (자모 자판) ══════════ */
+  function symText(s) {
+    if (s.c >= 0 && s.v >= 0) return comp(s.c, s.v, s.f > 0 ? s.f : 0);
+    if (s.c >= 0) return CHO[s.c];
+    if (s.v >= 0) return JUNG[s.v];
+    return "";
+  }
+  function bufText(buf) { var t = "", i; for (i = 0; i < buf.length; i++) t += symText(buf[i]); return t; }
+  function bufFrom(str) {
+    var buf = [], i;
+    for (i = 0; i < str.length && buf.length < 2; i++) {
+      var ch = str.charAt(i);
+      if (isSyl(ch)) { var d = decomp(ch); buf.push({ c: d[0], v: d[1], f: d[2] }); }
+      else if (CHO.indexOf(ch) >= 0) buf.push({ c: CHO.indexOf(ch), v: -1, f: 0 });
+      else if (JUNG.indexOf(ch) >= 0) buf.push({ c: -1, v: JUNG.indexOf(ch), f: 0 });
+    }
+    return buf;
+  }
+  function bufAdd(buf, j) {
+    var last = buf.length ? buf[buf.length - 1] : null;
+    var vi = JUNG.indexOf(j);
+    if (vi >= 0) {
+      if (!last || (last.c < 0 && last.v < 0)) { if (buf.length < 2) buf.push({ c: -1, v: vi, f: 0 }); return buf; }
+      if (last.c >= 0 && last.v < 0) { last.v = vi; return buf; }
+      if (last.f > 0) {
+        if (buf.length >= 2) return buf;
+        var jn = JONG[last.f], sp = JS[jn];
+        if (sp) { last.f = JONG.indexOf(sp[0]); buf.push({ c: CHO.indexOf(sp[1]), v: vi, f: 0 }); }
+        else { var ci = CHO.indexOf(jn); if (ci < 0) return buf; last.f = 0; buf.push({ c: ci, v: vi, f: 0 }); }
+        return buf;
+      }
+      var cb = VC[JUNG[last.v] + j];
+      if (cb) { last.v = JUNG.indexOf(cb); return buf; }
+      if (buf.length < 2) buf.push({ c: -1, v: vi, f: 0 });
+      return buf;
+    }
+    var nci = CHO.indexOf(j), nji = JONG.indexOf(j);
+    function fresh() { if (buf.length < 2 && nci >= 0) buf.push({ c: nci, v: -1, f: 0 }); }
+    if (!last || (last.c < 0 && last.v < 0)) { fresh(); return buf; }
+    if (last.c >= 0 && last.v < 0) { fresh(); return buf; }
+    if (last.c < 0 && last.v >= 0) { fresh(); return buf; }
+    if (last.f > 0) {
+      var cj = JC[JONG[last.f] + j];
+      if (cj) { last.f = JONG.indexOf(cj); return buf; }
+      fresh(); return buf;
+    }
+    if (nji > 0) { last.f = nji; return buf; }
+    fresh(); return buf;
+  }
+  function bufDel(buf) {
+    if (!buf.length) return buf;
+    var last = buf[buf.length - 1];
+    if (last.f > 0) {
+      var sp = JS[JONG[last.f]];
+      last.f = sp ? JONG.indexOf(sp[0]) : 0;
+      return buf;
+    }
+    if (last.v >= 0) {
+      var jv = JUNG[last.v], k;
+      for (k in VC) if (VC[k] === jv) { last.v = JUNG.indexOf(k.charAt(0)); return buf; }
+      last.v = -1;
+      if (last.c < 0) buf.pop();
+      return buf;
+    }
+    buf.pop();
+    return buf;
+  }
+
+  /* ══════════ 거리 ══════════ */
+  var RAD = Math.PI / 180;
+  function hav(la1, lo1, la2, lo2) {
+    var dLa = (la2 - la1) * RAD, dLo = (lo2 - lo1) * RAD;
+    var h = Math.sin(dLa / 2) * Math.sin(dLa / 2) +
+      Math.cos(la1 * RAD) * Math.cos(la2 * RAD) * Math.sin(dLo / 2) * Math.sin(dLo / 2);
+    return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+  function bearing(la1, lo1, la2, lo2) {
+    var p1 = la1 * RAD, p2 = la2 * RAD, dl = (lo2 - lo1) * RAD;
+    var y = Math.sin(dl) * Math.cos(p2);
+    var x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+    return (Math.atan2(y, x) / RAD + 360) % 360;
+  }
+  var ARROW = ["⬆️","↗️","➡️","↘️","⬇️","↙️","⬅️","↖️"];
+  function arrowOf(d) { return ARROW[Math.round(d / 45) % 8]; }
+  function proxOf(km) { return Math.max(0, Math.round(100 * (1 - km / 600))); }
+  function mapDigit(km, hit) { return hit ? 4 : (proxOf(km) >= 92 ? 3 : proxOf(km) >= 80 ? 2 : proxOf(km) >= 55 ? 1 : 0); }
+
+  /* ══════════ 국기 렌더러 ══════════ */
+  function n2(v) { return Math.round(v * 100) / 100; }
+  function sr(x, y, w, h, c) { return '<rect x="' + n2(x) + '" y="' + n2(y) + '" width="' + n2(w) + '" height="' + n2(h) + '" fill="' + c + '"/>'; }
+  function sc(x, y, r, c) { return '<circle cx="' + n2(x) + '" cy="' + n2(y) + '" r="' + n2(r) + '" fill="' + c + '"/>'; }
+  function sp(pts, c) { return '<polygon points="' + pts + '" fill="' + c + '"/>'; }
+  function starPts(cx, cy, R, n, rot) {
+    var p = [], i;
+    for (i = 0; i < n * 2; i++) {
+      var ang = (Math.PI * i) / n - Math.PI / 2 + (rot || 0);
+      var rr = (i % 2 === 0) ? R : R * 0.4;
+      p.push(n2(cx + rr * Math.cos(ang)) + "," + n2(cy + rr * Math.sin(ang)));
+    }
+    return p.join(" ");
+  }
+  function bandsSvg(colors, w, horiz) {
+    var tot = 0, i, out = "", acc = 0;
+    for (i = 0; i < colors.length; i++) tot += (w ? w[i] : 1);
+    for (i = 0; i < colors.length; i++) {
+      var len = (horiz ? 200 : 300) * (w ? w[i] : 1) / tot;
+      out += horiz ? sr(0, acc, 300, len + 0.6, colors[i]) : sr(acc, 0, len + 0.6, 200, colors[i]);
+      acc += len;
+    }
+    return out;
+  }
+  function ovSvg(o) {
+    var x = (o.x == null ? 0.5 : o.x) * 300, y = (o.y == null ? 0.5 : o.y) * 200, R;
+    if (o.t === "disc") return sc(x, y, o.r * 200, o.c);
+    if (o.t === "ring") {
+      R = o.r * 200;
+      return '<circle cx="' + n2(x) + '" cy="' + n2(y) + '" r="' + n2(R) + '" fill="none" stroke="' + o.c + '" stroke-width="' + (o.w || 5) + '"/>' +
+        '<path d="M' + n2(x - R) + ',' + n2(y) + ' H' + n2(x + R) + ' M' + n2(x) + ',' + n2(y - R) + ' V' + n2(y + R) + '" stroke="' + o.c + '" stroke-width="3"/>';
+    }
+    if (o.t === "star") {
+      R = o.r * 200;
+      return o.hollow
+        ? '<polygon points="' + starPts(x, y, R, o.p || 5, 0) + '" fill="none" stroke="' + o.c + '" stroke-width="6"/>'
+        : sp(starPts(x, y, R, o.p || 5, 0), o.c);
+    }
+    if (o.t === "cs") {
+      R = o.r * 200;
+      return sc(x, y, R, o.c) + sc(x + R * 0.3, y, R * 0.84, o.bg) + sp(starPts(x + R * 1.55, y, R * 0.5, 5, 0), o.c);
+    }
+    if (o.t === "cross") {
+      var th = (o.t2 || 0.2) * 200, ln = (o.l || 0.6) * 200;
+      return sr(150 - th / 2, 100 - ln / 2, th, ln, o.c) + sr(150 - ln / 2, 100 - th / 2, ln, th, o.c);
+    }
+    if (o.t === "tri") return sp("0,0 " + n2(o.w * 300) + ",100 0,200", o.c);
+    if (o.t === "bar") return sr(0, 0, o.w * 300, 200, o.c);
+    return "";
+  }
+  function ctSvg(f) {
+    var s = bandsSvg(f.st, f.sw, true);
+    var cw = f.cwf * 300, ch = f.chf * 200, i, q;
+    if (cw <= 0) return s;
+    s += sr(0, 0, cw, ch, f.cc);
+    if (f.cm === "stars") {
+      for (i = 0; i < 9; i++) {
+        var cnt = (i % 2 === 0) ? 6 : 5;
+        for (q = 0; q < cnt; q++) {
+          var sx = cw * ((i % 2 === 0) ? (q + 0.5) / 6 : (q + 1) / 6);
+          s += sp(starPts(sx, ch * (i + 0.5) / 9, ch * 0.048, 5, 0), f.cmc);
+        }
+      }
+    } else if (f.cm === "star") {
+      s += sp(starPts(cw / 2, ch / 2, Math.min(cw, ch) * 0.33, 5, 0), f.cmc);
+    } else if (f.cm === "cross") {
+      s += sr(0, ch / 2 - cw * 0.09, cw, cw * 0.18, f.cmc) + sr(cw / 2 - cw * 0.09, 0, cw * 0.18, ch, f.cmc);
+    } else if (f.cm === "cs") {
+      s += ovSvg({ t: "cs", c: f.cmc, bg: f.cc, x: (cw * 0.42) / 300, y: (ch * 0.5) / 200, r: (ch * 0.3) / 200 });
+    }
+    return s;
+  }
+  function dgSvg(b) {
+    var s, d;
+    if (b.dir) { s = sp("0,0 300,0 300,200", b.a) + sp("0,0 0,200 300,200", b.b2); d = "M0,0 L300,200"; }
+    else { s = sp("0,0 300,0 0,200", b.a) + sp("300,0 300,200 0,200", b.b2); d = "M0,200 L300,0"; }
+    if (b.edge) s += '<path d="' + d + '" stroke="' + b.edge + '" stroke-width="66" fill="none"/>';
+    if (b.band) s += '<path d="' + d + '" stroke="' + b.band + '" stroke-width="46" fill="none"/>';
+    return s;
+  }
+  function ukSvg() {
+    var s = sr(0, 0, 300, 200, "#012169");
+    s += '<path d="M0,0 L300,200 M300,0 L0,200" stroke="#FFFFFF" stroke-width="42" fill="none"/>';
+    s += '<path d="M0,0 L300,200 M300,0 L0,200" stroke="#C8102E" stroke-width="20" fill="none"/>';
+    s += '<path d="M150,0 V200 M0,100 H300" stroke="#FFFFFF" stroke-width="60" fill="none"/>';
+    s += '<path d="M150,0 V200 M0,100 H300" stroke="#C8102E" stroke-width="34" fill="none"/>';
+    return s;
+  }
+  function krSvg() {
+    var R = 40, cx = 150, cy = 100, s = sr(0, 0, 300, 200, "#FFFFFF");
+    s += '<g transform="translate(' + cx + ',' + cy + ') rotate(-33.69)">';
+    s += '<path d="M -' + R + ',0 A ' + R + ' ' + R + ' 0 0 1 ' + R + ',0 Z" fill="#CD2E3A"/>';
+    s += '<path d="M -' + R + ',0 A ' + R + ' ' + R + ' 0 0 0 ' + R + ',0 Z" fill="#0047A0"/>';
+    s += sc(-R / 2, 0, R / 2, "#CD2E3A") + sc(R / 2, 0, R / 2, "#0047A0") + '</g>';
+    var g = [[-88, -58, [1, 1, 1]], [88, -58, [0, 1, 0]], [-88, 58, [1, 0, 1]], [88, 58, [0, 0, 0]]], i, k;
+    for (i = 0; i < g.length; i++) {
+      var px = cx + g[i][0], py = cy + g[i][1];
+      var ang = Math.atan2(py - cy, px - cx) / RAD;
+      s += '<g transform="translate(' + n2(px) + ',' + n2(py) + ') rotate(' + n2(ang) + ')">';
+      for (k = 0; k < 3; k++) {
+        var bx = 4 + k * 11;
+        s += g[i][2][k] ? sr(bx, -19, 7, 38, "#000000") : sr(bx, -19, 7, 15, "#000000") + sr(bx, 4, 7, 15, "#000000");
+      }
+      s += '</g>';
+    }
+    return s;
+  }
+  function flagSvg(f) {
+    var b = f.b, s;
+    if (b.t === "solid") s = sr(0, 0, 300, 200, b.c[0]);
+    else if (b.t === "hb") s = bandsSvg(b.c, b.w, true);
+    else if (b.t === "vb") s = bandsSvg(b.c, b.w, false);
+    else if (b.t === "nc") {
+      s = sr(0, 0, 300, 200, b.bg) + sr(0, 82, 300, 36, b.cross) + sr(92, 0, 36, 200, b.cross);
+      if (b.inner) s += sr(0, 92, 300, 16, b.inner) + sr(102, 0, 16, 200, b.inner);
+    }
+    else if (b.t === "dg") s = dgSvg(b);
+    else if (b.t === "ct") s = ctSvg(b);
+    else if (b.t === "uk") s = ukSvg();
+    else if (b.t === "kr") s = krSvg();
+    else s = sr(0, 0, 300, 200, "#333333");
+    if (f.o) for (var i = 0; i < f.o.length; i++) s += ovSvg(f.o[i]);
+    return '<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="국기 도형">' + s + '</svg>';
+  }
+
+  /* ══════════ 회차 · 저장소 ══════════ */
+  var START = 20260901;
+  function dayIndex(d) { return SK.kstDayIndex(START, d); }
+  function todayRound() { return dayIndex() + 1; }
+  function pick(arr, round) { var L = arr.length; return arr[(((round - 1) % L) + L) % L]; }
+
+  function LS() { try { return window.localStorage; } catch (e) { return null; } }
+  function load(k, dv) { var s = LS(); if (!s) return dv; try { var v = s.getItem(k); return v ? JSON.parse(v) : dv; } catch (e) { return dv; } }
+  function save(k, v) { var s = LS(); if (!s) return; try { s.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var GAMES = {
+    word: { label: "낱말", key: "hgd_word", max: 6 },
+    chosung: { label: "초성", key: "hgd_chosung", max: 5 },
+    map: { label: "시군구", key: "hgd_map", max: 6 },
+    flag: { label: "국기", key: "hgd_flag", max: 10 }
+  };
+  var ORDER = ["word", "chosung", "map", "flag"];
+  function stats(g) {
+    return load(GAMES[g].key, { played: 0, wins: 0, cur: 0, max: 0, lastWin: null, dist: {}, today: null });
+  }
+  function statsSave(g, st) { save(GAMES[g].key, st); }
+  function progKey(g) { return GAMES[g].key + "_p"; }
+
+  /* ══════════ 이모지 ══════════ */
+  var PAL = {
+    word: { n: ["⬜", "🟨", "🟩", "⬛"], c: ["⬜", "🟧", "🟦", "⬛"] },
+    qa: { n: ["🟥", "🟩"], c: ["🟧", "🟦"] },
+    map: { n: ["⬛", "🟥", "🟧", "🟨", "🟩"], c: ["⬛", "🟫", "🟪", "🟧", "🟦"] }
+  };
+  var CB = false;
+  function palOf(kind) { return CB ? PAL[kind].c : PAL[kind].n; }
+  function kindOf(g) { return g === "word" ? "word" : g === "map" ? "map" : "qa"; }
+  function rowsToEmoji(g, digits) {
+    var p = palOf(kindOf(g)), out = [], i, j;
+    for (i = 0; i < digits.length; i++) {
+      var row = [];
+      for (j = 0; j < digits[i].length; j++) row.push(p[+digits[i].charAt(j)] || "⬜");
+      out.push(row);
+    }
+    return out;
+  }
+
+  /* ══════════ 상태 ══════════ */
+  var S = {};
+  var cur = "word";
+  var practice = false;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function newState(g, round, prac) {
+    return { g: g, n: round, prac: !!prac, guesses: [], hints: 0, over: false, win: false };
+  }
+  function activeRound(g) { return S[g] ? S[g].n : todayRound(); }
+
+  /* ── 각 게임의 정답 ── */
+  function ansWord(n) { return pick(WORDS, n); }
+  function ansCho(n) { return pick(BANK, n); }
+  function ansReg(n) { return pick(REG, n); }
+  function flagQuiz(n) {
+    var rnd = SK.prng(SK.hash32("hgd-flag|" + n)), qs = [], i, guard;
+    for (i = 0; i < 10; i++) {
+      var idx = (((n * 10 + i) % FLAGS.length) + FLAGS.length) % FLAGS.length;
+      var ans = FLAGS[idx], opts = [ans.n];
+      guard = 0;
+      while (opts.length < 4 && guard++ < 400) {
+        var c = FLAGS[Math.floor(rnd() * FLAGS.length) % FLAGS.length].n;
+        if (opts.indexOf(c) < 0) opts.push(c);
+      }
+      qs.push({ f: ans, o: SK.shuffle(rnd, opts) });
+    }
+    return qs;
+  }
+
+  /* ── 지역 이름 유틸 ── */
+  var regFull = [], regShort = {};
+  (function () {
+    var i;
+    for (i = 0; i < REG.length; i++) {
+      var full = REG[i][1] + " " + REG[i][0];
+      regFull.push(full);
+      var s = REG[i][0];
+      if (regShort[s] === undefined) regShort[s] = i; else regShort[s] = -1;
+    }
+  })();
+  function normKey(s) { return String(s).replace(/\s+/g, ""); }
+  function findReg(text) {
+    var q = normKey(text), i;
+    if (!q) return -1;
+    for (i = 0; i < REG.length; i++) if (normKey(REG[i][1] + REG[i][0]) === q) return i;
+    if (regShort[q] !== undefined && regShort[q] >= 0) return regShort[q];
+    for (i = 0; i < REG.length; i++) if (normKey(REG[i][0]) === q) return i;
+    return -1;
+  }
+
+  /* ══════════ 채점 → 격자 digits ══════════ */
+  function digitsOf(g) {
+    var s = S[g], out = [], i;
+    if (g === "word") {
+      var a = slots(ansWord(s.n));
+      for (i = 0; i < s.guesses.length; i++) out.push(judge(slots(s.guesses[i]), a).join(""));
+      return out;
+    }
+    if (g === "chosung") {
+      var ca = ansCho(s.n), row = "";
+      for (i = 0; i < s.guesses.length; i++) row += (normKey(s.guesses[i]) === normKey(ca[0])) ? "1" : "0";
+      return row ? [row] : [];
+    }
+    if (g === "map") {
+      var ra = ansReg(s.n), r2 = "";
+      for (i = 0; i < s.guesses.length; i++) {
+        var gi = s.guesses[i], km = hav(REG[gi][2], REG[gi][3], ra[2], ra[3]);
+        r2 += String(mapDigit(km, REG[gi] === ra));
+      }
+      return r2 ? [r2] : [];
+    }
+    var qs = flagQuiz(s.n), a1 = "", a2 = "";
+    for (i = 0; i < s.guesses.length; i++) {
+      var ok = s.guesses[i] === qs[i].f.n ? "1" : "0";
+      if (i < 5) a1 += ok; else a2 += ok;
+    }
+    out = [];
+    if (a1) out.push(a1);
+    if (a2) out.push(a2);
+    return out;
+  }
+  function triesOf(g) {
+    var s = S[g];
+    if (g === "flag") { var d = digitsOf(g).join(""), c = 0, i; for (i = 0; i < d.length; i++) if (d.charAt(i) === "1") c++; return c; }
+    return s.guesses.length;
+  }
+  function headerOf(g) {
+    var s = S[g], t = triesOf(g), m = GAMES[g].max;
+    var score = (g === "flag") ? (t + "/10") : (s.win ? t + "/" + m : "X/" + m);
+    return "한글데일리 " + GAMES[g].label + " #" + s.n + " " + score;
+  }
+
+  /* ══════════ 렌더 ══════════ */
+  function renderTabs() {
+    var t = $("tabs").children, i;
+    for (i = 0; i < t.length; i++) t[i].className = "tab" + (t[i].getAttribute("data-g") === cur ? " on" : "");
+    for (i = 0; i < ORDER.length; i++) $("pane-" + ORDER[i]).className = "pane" + (ORDER[i] === cur ? " on" : "");
+    $("wPrac").style.display = $("cPrac").style.display = $("mPrac").style.display = $("fPrac").style.display =
+      (S[cur] && S[cur].prac) ? "" : "none";
+  }
+
+  /* ── 낱말 ── */
+  var wBuf = [];
+  var KEYS = [
+    ["ㅂ", "ㅈ", "ㄷ", "ㄱ", "ㅅ", "ㅛ", "ㅕ", "ㅑ", "ㅐ", "ㅔ"],
+    ["ㅁ", "ㄴ", "ㅇ", "ㄹ", "ㅎ", "ㅗ", "ㅓ", "ㅏ", "ㅣ"],
+    ["ㅋ", "ㅌ", "ㅊ", "ㅍ", "ㅠ", "ㅜ", "ㅡ"],
+    ["ㅃ", "ㅉ", "ㄸ", "ㄲ", "ㅆ", "ㅒ", "ㅖ"]
+  ];
+  function keyState() {
+    var s = S.word, a = slots(ansWord(s.n)), st = {}, i, j;
+    for (i = 0; i < s.guesses.length; i++) {
+      var gs = slots(s.guesses[i]), r = judge(gs, a);
+      for (j = 0; j < gs.length; j++) {
+        if (gs[j] == null) continue;
+        var parts = JS[gs[j]] ? JS[gs[j]] : [gs[j]], k;
+        for (k = 0; k < parts.length; k++) {
+          var ch = parts[k], v = r[j];
+          if (st[ch] === undefined || v > st[ch]) st[ch] = v;
+        }
+      }
+    }
+    return st;
+  }
+  function renderWord() {
+    var s = S.word, a = slots(ansWord(s.n)), html = "", i, j;
+    for (i = 0; i < 6; i++) {
+      var cells = [], marks = null, txt = ["", "", "", "", "", ""];
+      if (i < s.guesses.length) {
+        var gs = slots(s.guesses[i]);
+        marks = judge(gs, a);
+        for (j = 0; j < 6; j++) txt[j] = gs[j] || "";
+      } else if (i === s.guesses.length && !s.over) {
+        var b = wBuf, o = 0;
+        for (j = 0; j < b.length; j++) {
+          txt[o] = b[j].c >= 0 ? CHO[b[j].c] : "";
+          txt[o + 1] = b[j].v >= 0 ? JUNG[b[j].v] : "";
+          txt[o + 2] = b[j].f > 0 ? JONG[b[j].f] : "";
+          o += 3;
+        }
+      }
+      for (j = 0; j < 6; j++) {
+        var cls = "wc" + (marks ? " s" + marks[j] : (i === s.guesses.length && !s.over ? " cur" : ""));
+        cells.push('<div class="' + cls + '">' + SK.esc(txt[j]) + "</div>");
+      }
+      html += '<div class="wrow" id="wr' + i + '"><div class="wsyl">' + cells.slice(0, 3).join("") +
+        '</div><div class="wsyl">' + cells.slice(3).join("") + "</div></div>";
+    }
+    $("wGrid").innerHTML = html;
+    var ks = s.guesses.length ? keyState() : {};
+    var kh = "", r, c2;
+    for (r = 0; r < KEYS.length; r++) {
+      kh += '<div class="krow">';
+      for (c2 = 0; c2 < KEYS[r].length; c2++) {
+        var kk = KEYS[r][c2], cl = ks[kk] === undefined ? "" : " k" + ks[kk];
+        kh += '<button type="button" class="key' + cl + '" data-j="' + kk + '">' + kk + "</button>";
+      }
+      kh += "</div>";
+    }
+    kh += '<div class="krow"><button type="button" class="key wide" data-a="del">⌫ 지우기</button>' +
+      '<button type="button" class="key wide" data-a="go">입력 확인</button></div>';
+    $("wKbd").innerHTML = kh;
+    if (document.activeElement !== $("wIme")) $("wIme").value = bufText(wBuf);
+    $("wIme").disabled = s.over;
+  }
+  function wordSubmit() {
+    var s = S.word;
+    if (!s || s.over) return;
+    var w = bufText(wBuf);
+    if (w.length !== 2 || !isSyl(w.charAt(0)) || !isSyl(w.charAt(1)) || WORDS.indexOf(w) < 0) {
+      var row = $("wr" + s.guesses.length);
+      if (row) { row.classList.remove("shake"); void row.offsetWidth; row.classList.add("shake"); }
+      SK.toast(w.length !== 2 ? "두 글자 낱말을 입력하세요" : "목록에 없는 낱말이에요");
+      return;
+    }
+    s.guesses.push(w);
+    wBuf = [];
+    if (w === ansWord(s.n)) { s.win = true; s.over = true; }
+    else if (s.guesses.length >= 6) s.over = true;
+    afterMove("word");
+  }
+
+  /* ── 초성 ── */
+  function renderCho() {
+    var s = S.chosung, q = ansCho(s.n), i;
+    $("cCat").textContent = "카테고리 · " + q[1];
+    $("cCho").textContent = chosungOf(q[0]);
+    var h = "";
+    for (i = 0; i < s.guesses.length; i++) {
+      var ok = normKey(s.guesses[i]) === normKey(q[0]);
+      h += '<div class="try"><span class="' + (ok ? "o" : "x") + '">' + (ok ? "정답" : "오답") + "</span><span>" + SK.esc(s.guesses[i]) + "</span></div>";
+    }
+    $("cTries").innerHTML = h;
+    $("cHint").textContent = "💡 힌트 열기 (" + s.hints + "/3)";
+    $("cHint").disabled = s.hints >= 3 || s.over;
+    var hh = "";
+    if (s.hints >= 1) hh += "<div><b>1단계</b> · 정답은 " + normKey(q[0]).length + "글자입니다.</div>";
+    if (s.hints >= 2) hh += "<div><b>2단계</b> · " + SK.esc(q[2]) + "</div>";
+    if (s.hints >= 3) hh += "<div><b>3단계</b> · 첫 글자는 " + SK.esc(q[0].charAt(0)) + " 입니다.</div>";
+    $("cHints").style.display = s.hints ? "" : "none";
+    $("cHints").innerHTML = hh;
+    $("cIn").disabled = $("cGo").disabled = s.over;
+  }
+  function choSubmit() {
+    var s = S.chosung;
+    if (!s || s.over) return;
+    var q = ansCho(s.n), v = $("cIn").value.trim();
+    if (!v) return;
+    s.guesses.push(v.slice(0, 24));
+    $("cIn").value = "";
+    if (normKey(v) === normKey(q[0])) { s.win = true; s.over = true; }
+    else if (s.guesses.length >= 5) s.over = true;
+    afterMove("chosung");
+  }
+
+  /* ── 시군구 ── */
+  function renderMap() {
+    var s = S.map, a = ansReg(s.n), h = "", i;
+    for (i = 0; i < s.guesses.length; i++) {
+      var gi = s.guesses[i], g = REG[gi];
+      var km = hav(g[2], g[3], a[2], a[3]), pr = proxOf(km), hit = (g === a);
+      h += '<div class="gsl"><span class="nm">' + SK.esc(g[1] + " " + g[0]) + "</span>" +
+        '<span class="km">' + (hit ? "정답!" : km.toFixed(0) + "km") + "</span>" +
+        '<span class="ar">' + (hit ? "🎯" : arrowOf(bearing(g[2], g[3], a[2], a[3]))) + "</span>" +
+        '<span class="pr">' + pr + "%</span></div>" +
+        '<div class="bar"><i style="width:' + pr + '%"></i></div>';
+    }
+    $("mTries").innerHTML = h;
+    $("mIn").disabled = $("mGo").disabled = s.over;
+  }
+  function mapSubmit() {
+    var s = S.map;
+    if (!s || s.over) return;
+    var idx = findReg($("mIn").value);
+    if (idx < 0) { SK.toast("목록에 없는 지역이에요. 예: 서울 종로구"); return; }
+    if (s.guesses.indexOf(idx) >= 0) { SK.toast("이미 추측한 지역이에요"); return; }
+    s.guesses.push(idx);
+    $("mIn").value = "";
+    if (REG[idx] === ansReg(s.n)) { s.win = true; s.over = true; }
+    else if (s.guesses.length >= 6) s.over = true;
+    afterMove("map");
+  }
+
+  /* ── 국기 ── */
+  function renderFlag() {
+    var s = S.flag, qs = flagQuiz(s.n), qi = s.guesses.length, i;
+    if (qi >= 10) qi = 9;
+    var q = qs[qi];
+    $("fQn").textContent = "문제 " + (s.over ? 10 : qi + 1) + " / 10";
+    $("fBox").innerHTML = flagSvg(s.over ? qs[9].f : q.f);
+    var h = "";
+    for (i = 0; i < q.o.length; i++) h += '<button type="button" data-o="' + SK.esc(q.o[i]) + '">' + SK.esc(q.o[i]) + "</button>";
+    $("fOpts").innerHTML = s.over ? "" : h;
+    var ph = "";
+    for (i = 0; i < 10; i++) {
+      var cl = i < s.guesses.length ? (s.guesses[i] === qs[i].f.n ? " class=\"g\"" : " class=\"r\"") : "";
+      ph += "<i" + cl + "></i>";
+    }
+    $("fProg").innerHTML = ph;
+  }
+  function flagPick(name) {
+    var s = S.flag;
+    if (!s || s.over) return;
+    s.guesses.push(name);
+    if (s.guesses.length >= 10) { s.over = true; s.win = triesOf("flag") >= 6; }
+    afterMove("flag");
+  }
+
+  /* ══════════ 진행 저장 · 결과 ══════════ */
+  function saveProg(g) {
+    var s = S[g];
+    if (s.prac) return;
+    save(progKey(g), { d: SK.kstYMD(), n: s.n, guesses: s.guesses, hints: s.hints });
+  }
+  function recordDone(g) {
+    var s = S[g];
+    if (s.prac || s.n !== todayRound()) return;
+    var st = stats(g);
+    if (st.today && st.today.d === SK.kstYMD() && st.today.n === s.n) return;
+    var t = triesOf(g), dg = digitsOf(g);
+    st.played++;
+    if (s.win) {
+      st.wins++;
+      st.cur = (st.lastWin === s.n - 1) ? st.cur + 1 : 1;
+      st.lastWin = s.n;
+      if (st.cur > st.max) st.max = st.cur;
+    } else { st.cur = 0; st.lastWin = null; }
+    var dk = (g === "flag") ? String(t) : (s.win ? String(t) : "X");
+    st.dist[dk] = (st.dist[dk] || 0) + 1;
+    st.today = { d: SK.kstYMD(), n: s.n, win: s.win, t: t, s: dg, hints: s.hints };
+    statsSave(g, st);
+  }
+  function afterMove(g) {
+    renderGame(g);
+    saveProg(g);
+    if (S[g].over) { recordDone(g); showResult(g); }
+    else hideResult();
+  }
+  function renderGame(g) {
+    if (g === "word") renderWord();
+    else if (g === "chosung") renderCho();
+    else if (g === "map") renderMap();
+    else renderFlag();
+  }
+
+  var adPushed = false;
+  function hideResult() { $("result").className = "result"; }
+  function showResult(g) {
+    var s = S[g], dg = digitsOf(g), t = triesOf(g);
+    $("result").className = "result show";
+    var ttl;
+    if (g === "flag") ttl = "국기 " + t + "/10 정답";
+    else ttl = s.win ? GAMES[g].label + " 성공! " + t + "/" + GAMES[g].max : GAMES[g].label + " 실패 X/" + GAMES[g].max;
+    $("rHead").textContent = (s.prac ? "[연습] " : "") + ttl;
+    $("rSub").textContent = "한글데일리 " + GAMES[g].label + " #" + s.n + (s.prac ? " · 연습 모드 (기록에 반영되지 않습니다)" : "");
+    $("rAns").innerHTML = answerHtml(g);
+    $("rGrid").textContent = SK.emojiGrid(rowsToEmoji(g, dg), "");
+    renderStats(g);
+    if (!adPushed) {
+      adPushed = true;
+      try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+    }
+  }
+  function answerHtml(g) {
+    var s = S[g];
+    if (g === "word") return "정답은 <b>" + SK.esc(ansWord(s.n)) + "</b> 였습니다. 자모 여섯 칸으로 채점했어요.";
+    if (g === "chosung") { var q = ansCho(s.n); return "정답은 <b>" + SK.esc(q[0]) + "</b> (" + SK.esc(q[1]) + ") · 힌트 " + s.hints + "/3 사용"; }
+    if (g === "map") { var a = ansReg(s.n); return "정답은 <b>" + SK.esc(a[1] + " " + a[0]) + "</b> 였습니다."; }
+    var qs = flagQuiz(s.n), miss = [], i;
+    for (i = 0; i < s.guesses.length; i++) if (s.guesses[i] !== qs[i].f.n) miss.push(qs[i].f.n);
+    return miss.length ? "놓친 국기: <b>" + SK.esc(miss.join(", ")) + "</b>" : "열 문제 모두 맞혔습니다. <b>완벽!</b>";
+  }
+  function renderStats(g) {
+    var st = stats(g), rate = st.played ? Math.round((st.wins / st.played) * 100) : 0;
+    $("rStat").innerHTML =
+      "<div><b>" + st.played + "</b><span>플레이</span></div>" +
+      "<div><b>" + rate + "%</b><span>승률</span></div>" +
+      "<div><b>" + st.cur + "</b><span>연속</span></div>" +
+      "<div><b>" + st.max + "</b><span>최대 연속</span></div>";
+    var keys = [], i;
+    if (g === "flag") { for (i = 10; i >= 0; i--) keys.push(String(i)); }
+    else { for (i = 1; i <= GAMES[g].max; i++) keys.push(String(i)); keys.push("X"); }
+    var mx = 1;
+    for (i = 0; i < keys.length; i++) mx = Math.max(mx, st.dist[keys[i]] || 0);
+    var cw = (st.today && st.today.d === SK.kstYMD()) ? (g === "flag" ? String(st.today.t) : (st.today.win ? String(st.today.t) : "X")) : null;
+    var h = "";
+    for (i = 0; i < keys.length; i++) {
+      var v = st.dist[keys[i]] || 0, w = Math.max(9, Math.round((v / mx) * 100));
+      h += '<div class="dl"><span>' + keys[i] + '</span><i class="' + (keys[i] === cw ? "hi" : "") + '" style="width:' + w + '%">' + v + "</i></div>";
+    }
+    $("rDist").innerHTML = h;
+  }
+
+  /* ══════════ 공유 ══════════ */
+  function shareState() {
+    var g = cur, s = S[g];
+    var o = { v: 1, g: g, n: s.n, t: triesOf(g), w: s.win ? 1 : 0, s: digitsOf(g) };
+    var nk = $("nickIn").value.trim();
+    if (nk) o.k = SK.nick(nk, "");
+    return o;
+  }
+  function shareUrl() { return SK.stateUrl(shareState()); }
+  function shareText() {
+    var g = cur, dg = digitsOf(g);
+    var body = SK.emojiGrid(rowsToEmoji(g, dg), headerOf(g));
+    if (g === "chosung" && S[g].hints) body += "\n힌트 " + S[g].hints + "/3";
+    return body;
+  }
+  function drawCard() {
+    var g = cur, s = S[g], c = SK.card("card"), ctx = c.ctx, W = c.W, H = c.H;
+    var grd = ctx.createLinearGradient(0, 0, W, H);
+    grd.addColorStop(0, "#08130f"); grd.addColorStop(1, CB ? "#0b1b33" : "#0d2b22");
+    ctx.fillStyle = grd; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = CB ? "#93c5fd" : "#6ee7b7";
+    ctx.font = "800 40px " + c.font;
+    ctx.fillText("한글데일리 · " + GAMES[g].label, 80, 96);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 96px " + c.font;
+    var t = triesOf(g);
+    ctx.fillText("#" + s.n, 80, 158);
+    ctx.font = "900 78px " + c.font;
+    ctx.fillStyle = CB ? "#60a5fa" : "#34d399";
+    ctx.fillText(g === "flag" ? t + " / 10" : (s.win ? t + " / " + GAMES[g].max : "X / " + GAMES[g].max), 80, 272);
+    var dg = digitsOf(g), cols = 1, i, j;
+    for (i = 0; i < dg.length; i++) cols = Math.max(cols, dg[i].length);
+    var cell = Math.min(120, Math.floor((W - 160) / cols) - 12), gap = 12;
+    var y0 = 420;
+    var colors = CB ? ["#6b7280", "#f59e0b", "#3b82f6", "#1f2937", "#111827"] : ["#6b7280", "#fbbf24", "#34d399", "#1f2937", "#111827"];
+    var mapCol = CB ? ["#1f2937", "#78350f", "#a855f7", "#f59e0b", "#3b82f6"] : ["#1f2937", "#ef4444", "#f97316", "#fbbf24", "#34d399"];
+    var qaCol = CB ? ["#f59e0b", "#3b82f6"] : ["#ef4444", "#34d399"];
+    for (i = 0; i < dg.length; i++) {
+      for (j = 0; j < dg[i].length; j++) {
+        var d = +dg[i].charAt(j), col;
+        if (g === "word") col = colors[d];
+        else if (g === "map") col = mapCol[d];
+        else col = qaCol[d];
+        ctx.fillStyle = col;
+        SK.roundRect(ctx, 80 + j * (cell + gap), y0 + i * (cell + gap), cell, cell, 16);
+        ctx.fill();
+      }
+    }
+    ctx.fillStyle = "#d1d5db";
+    ctx.font = "600 34px " + c.font;
+    var nk = $("nickIn").value.trim();
+    SK.wrapText(ctx, (nk ? SK.nick(nk, "익명") + "님의 " : "") + "오늘의 기록 · 매일 자정 새 문제", 80, H - 210, W - 160, 46, 2);
+    SK.watermark(ctx, W, H, "tomatoeggcat.com/hanguldaily");
+    return c.cv;
+  }
+
+  /* ══════════ 시작 · 복원 ══════════ */
+  function startGame(g, round, prac) {
+    S[g] = newState(g, round, prac);
+    if (!prac) {
+      var p = load(progKey(g), null);
+      if (p && p.d === SK.kstYMD() && p.n === round && p.guesses) {
+        S[g].guesses = p.guesses.slice(0, GAMES[g].max);
+        S[g].hints = p.hints || 0;
+        replay(g);
+      }
+      var st = stats(g);
+      if (st.today && st.today.d === SK.kstYMD() && st.today.n === round) {
+        S[g].over = true;
+        S[g].win = !!st.today.win;
+      }
+    }
+    if (g === "word") wBuf = [];
+    renderGame(g);
+    if (S[g].over) { showResult(g); } else hideResult();
+  }
+  function replay(g) {
+    var s = S[g], i;
+    if (g === "word") {
+      var a = ansWord(s.n);
+      for (i = 0; i < s.guesses.length; i++) if (s.guesses[i] === a) { s.win = true; s.over = true; }
+      if (s.guesses.length >= 6) s.over = true;
+    } else if (g === "chosung") {
+      var q = ansCho(s.n);
+      for (i = 0; i < s.guesses.length; i++) if (normKey(s.guesses[i]) === normKey(q[0])) { s.win = true; s.over = true; }
+      if (s.guesses.length >= 5) s.over = true;
+    } else if (g === "map") {
+      var ra = ansReg(s.n);
+      for (i = 0; i < s.guesses.length; i++) if (REG[s.guesses[i]] === ra) { s.win = true; s.over = true; }
+      if (s.guesses.length >= 6) s.over = true;
+    } else {
+      if (s.guesses.length >= 10) { s.over = true; s.win = triesOf("flag") >= 6; }
+    }
+  }
+  function switchTab(g) {
+    cur = g;
+    renderTabs();
+    if (!S[g] || (!practice && S[g].prac) || (practice && !S[g].prac)) startGame(g, practice ? pracRound() : todayRound(), practice);
+    else { renderGame(g); if (S[g].over) showResult(g); else hideResult(); }
+    try { history.replaceState(null, "", location.pathname + "?g=" + g); } catch (e) {}
+  }
+  function pracRound() {
+    var v = parseInt($("pracN").value, 10);
+    if (!v || v < 1) v = 1;
+    return v;
+  }
+
+  /* ══════════ 유입(?d=) ══════════ */
+  function readInbound() {
+    var st = SK.readState();
+    if (!st || st.v !== 1 || !st.g || !GAMES[st.g] || !st.s || !st.s.length) return null;
+    var i;
+    for (i = 0; i < st.s.length; i++) if (typeof st.s[i] !== "string" || st.s[i].length > 12) return null;
+    if (typeof st.n !== "number") return null;
+    return st;
+  }
+
+  /* ══════════ 부팅 ══════════ */
+  function boot() {
+    CB = !!load("hgd_cb", false);
+    document.body.className = CB ? "cb" : "";
+    $("cbBtn").className = "tgb" + (CB ? " on" : "");
+    $("cbBtn").setAttribute("aria-pressed", CB ? "true" : "false");
+    $("nickIn").value = load("hgd_nick", "") || "";
+    $("roundNo").textContent = "#" + todayRound();
+    $("pracN").value = String(Math.max(1, todayRound()));
+    $("pracN").max = String(Math.max(1, todayRound()));
+
+    var dl = "", i;
+    for (i = 0; i < regFull.length; i++) dl += '<option value="' + SK.esc(regFull[i]) + '"></option>';
+    $("mList").innerHTML = dl;
+
+    var inb = readInbound();
+    var q = new URLSearchParams(location.search).get("g");
+    var g0 = (q && GAMES[q]) ? q : (inb ? inb.g : "word");
+    if (inb) {
+      var who = inb.k ? SK.nick(inb.k, "누군가") : "누군가";
+      $("inTxt").textContent = who + "님의 한글데일리 " + GAMES[inb.g].label + " #" + inb.n + " 기록 " +
+        (inb.g === "flag" ? inb.t + "/10" : (inb.w ? inb.t + "/" + GAMES[inb.g].max : "X/" + GAMES[inb.g].max)) +
+        " — 정답은 가려져 있어요.";
+      $("inGrid").textContent = SK.emojiGrid(rowsToEmoji(inb.g, inb.s), "");
+      $("inbound").className = "inbound show";
+    }
+    cur = g0;
+    renderTabs();
+    startGame(cur, todayRound(), false);
+    tick();
+    setInterval(tick, 1000);
+  }
+  function pad(v) { return (v < 10 ? "0" : "") + v; }
+  function tick() {
+    var c = SK.countdownToKstMidnight();
+    $("cdown").textContent = pad(c.h) + ":" + pad(c.m) + ":" + pad(c.s);
+  }
+
+  /* ══════════ 이벤트 ══════════ */
+  $("tabs").addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button[data-g]") : null;
+    if (b) switchTab(b.getAttribute("data-g"));
+  });
+  $("cbBtn").addEventListener("click", function () {
+    CB = !CB;
+    save("hgd_cb", CB);
+    document.body.className = CB ? "cb" : "";
+    this.className = "tgb" + (CB ? " on" : "");
+    this.setAttribute("aria-pressed", CB ? "true" : "false");
+    var inb = readInbound();
+    if (inb) $("inGrid").textContent = SK.emojiGrid(rowsToEmoji(inb.g, inb.s), "");
+    if (S[cur] && S[cur].over) showResult(cur);
+  });
+  $("prBtn").addEventListener("click", function () {
+    practice = !practice;
+    this.className = "tgb" + (practice ? " on" : "");
+    this.setAttribute("aria-pressed", practice ? "true" : "false");
+    $("pracBox").style.display = practice ? "" : "none";
+    startGame(cur, practice ? pracRound() : todayRound(), practice);
+    renderTabs();
+  });
+  $("pracGo").addEventListener("click", function () {
+    practice = true;
+    $("prBtn").className = "tgb on";
+    $("pracBox").style.display = "";
+    startGame(cur, pracRound(), true);
+    renderTabs();
+  });
+  $("wKbd").addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button") : null;
+    if (!b || !S.word || S.word.over) return;
+    var j = b.getAttribute("data-j"), a = b.getAttribute("data-a");
+    if (j) { wBuf = bufAdd(wBuf, j); renderWord(); }
+    else if (a === "del") { wBuf = bufDel(wBuf); renderWord(); }
+    else if (a === "go") wordSubmit();
+  });
+  $("wIme").addEventListener("input", function () {
+    if (!S.word || S.word.over) return;
+    wBuf = bufFrom(this.value);
+    renderWord();
+  });
+  $("wIme").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); wordSubmit(); } });
+  $("cGo").addEventListener("click", choSubmit);
+  $("cIn").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); choSubmit(); } });
+  $("cHint").addEventListener("click", function () {
+    var s = S.chosung;
+    if (!s || s.over || s.hints >= 3) return;
+    s.hints++;
+    renderCho();
+    saveProg("chosung");
+  });
+  $("mGo").addEventListener("click", mapSubmit);
+  $("mIn").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); mapSubmit(); } });
+  $("fOpts").addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button[data-o]") : null;
+    if (b) flagPick(b.getAttribute("data-o"));
+  });
+  $("inCta").addEventListener("click", function () {
+    var inb = readInbound();
+    SK.clearState();
+    $("inbound").className = "inbound";
+    if (inb && GAMES[inb.g]) switchTab(inb.g);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  $("nickIn").addEventListener("input", function () { save("hgd_nick", SK.nick(this.value, "")); });
+  $("btnLink").addEventListener("click", function () {
+    SK.copy(shareUrl()).then(function (ok) { SK.toast(ok ? "링크를 복사했어요. 카톡·인스타에 붙여넣으세요" : "복사에 실패했어요"); });
+  });
+  $("btnText").addEventListener("click", function () {
+    SK.copy(shareText() + "\n" + shareUrl()).then(function (ok) { SK.toast(ok ? "격자를 복사했어요" : "복사에 실패했어요"); });
+  });
+  $("btnX").addEventListener("click", function () { location.href = SK.xUrl(shareText(), shareUrl()); });
+  $("btnShare").addEventListener("click", function () {
+    SK.share({ title: "한글데일리", text: shareText(), url: shareUrl() });
+  });
+  $("btnPng").addEventListener("click", function () {
+    SK.sharePng(drawCard(), "hanguldaily-" + cur + "-" + S[cur].n + ".png", "한글데일리 결과");
+  });
+  $("btnRemix").addEventListener("click", function () {
+    practice = true;
+    $("prBtn").className = "tgb on";
+    $("pracBox").style.display = "";
+    var r = Math.max(1, activeRound(cur) - 1);
+    $("pracN").value = String(r);
+    startGame(cur, r, true);
+    renderTabs();
+    hideResult();
+    SK.toast("연습 모드로 #" + r + " 회차를 불러왔어요");
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
