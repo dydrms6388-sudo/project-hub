@@ -17,6 +17,8 @@ import {
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKED = "2026-08-19";
+const TOOL_SLUGS = ["unit-convert", "recipe-scale", "rice-water", "airfryer", "storage", "kimchi-salt",
+  "coffee-ratio", "brine", "sugar-syrup", "baking-pan", "calorie-plate", "timer-multi"];
 let pass = 0;
 const t = (name, fn) => { fn(); pass++; console.log("ok -", name); };
 
@@ -321,8 +323,6 @@ t("광고: 유닛 최대 1개 · 기본 hidden(입력 화면 노출 금지) · h
 });
 
 /* ── 구조·콘텐츠 검사 ───────────────────────────────────────── */
-const TOOL_SLUGS = ["unit-convert", "recipe-scale", "rice-water", "airfryer", "storage", "kimchi-salt",
-  "coffee-ratio", "brine", "sugar-syrup", "baking-pan", "calorie-plate", "timer-multi"];
 
 t(`페이지 생성: 도구 12종 + 허브 + 롱테일 3종 + 정책 (총 ${files.length})`, () => {
   for (const s of TOOL_SLUGS) assert.ok(existsSync(join(ROOT, s, "index.html")), "도구 누락: " + s);
