@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>도배 자재 계산기 — 벽지 몇 롤? 벽 치수로 계산 | 홈캘크</title>
+<meta name="description" content="벽 둘레와 천장 높이, 문·창문 제외 면적을 입력하면 무늬 맞춤 여유까지 반영해 벽지 롤 수를 계산합니다. 광폭합지·소폭합지 규격 지원, 참고용." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/wallpaper/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧻</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="도배 자재 계산기 — 벽지 몇 롤 필요할까" />
+<meta property="og:description" content="벽 치수·문/창 제외·무늬 여유율 반영 벽지 롤 수 계산 (참고용)." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/wallpaper/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"SoftwareApplication","name":"도배 자재 계산기","url":"https://homecalc-kr.vercel.app/wallpaper/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"벽 치수로 벽지 롤 수를 계산하는 도구"},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"벽지 1롤로 몇 ㎡를 도배할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"국내 유통 광폭합지·실크 벽지는 통상 폭 106cm × 길이 15.6m로 1롤당 약 16.5㎡, 소폭합지는 53cm × 12.5m로 약 6.6㎡입니다. 제조사마다 다르므로 제품 라벨을 확인하세요."}},
+  {"@type":"Question","name":"무늬 벽지는 왜 더 사야 하나요?","acceptedAnswer":{"@type":"Answer","text":"무늬(리피트)를 이어 맞추면서 잘라내는 부분이 생기기 때문입니다. 민무늬는 10%, 무늬 벽지는 15% 내외의 여유를 두는 것이 일반 관행입니다."}},
+  {"@type":"Question","name":"천장 도배 분량도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"천장을 함께 도배한다면 천장 면적(가로×세로)을 벽 면적에 더해 입력하거나, 문·창 제외 면적을 줄여서 반영할 수 있습니다."}}]},
+ {"@type":"BreadcrumbList","itemListElement":[
+  {"@type":"ListItem","position":1,"name":"홈캘크","item":"https://homecalc-kr.vercel.app/"},
+  {"@type":"ListItem","position":2,"name":"도배 자재 계산기","item":"https://homecalc-kr.vercel.app/wallpaper/"}]}
+]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">도배 자재 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧻</div>
+    <h1>도배 자재 계산기</h1>
+    <p class="lead">벽 둘레·높이와 문/창 제외 면적으로 벽지 롤 수를 계산합니다. <span class="badge practice">업계 일반 관행, 참고용</span></p>
+  </div>
+
+  <div class="card">
+    <h2>벽 치수 입력</h2>
+    <div class="grid2">
+      <label class="f">벽 둘레 합계 (m) <span class="hint">— 방 가로+세로 ×2</span>
+        <input type="number" id="perimeter" inputmode="decimal" step="any" min="0" placeholder="예: 18" />
+      </label>
+      <label class="f">천장 높이 (m)
+        <input type="number" id="height" inputmode="decimal" step="any" min="0" value="2.3" />
+      </label>
+      <label class="f">문·창문 등 제외 면적 (㎡)
+        <input type="number" id="openings" inputmode="decimal" step="any" min="0" value="0" placeholder="예: 문 1.6 + 창 2.4" />
+      </label>
+      <label class="f">벽지 규격 <span class="hint">— 제품 라벨 우선</span>
+        <select id="rollSpec"></select>
+      </label>
+      <label class="f">무늬 여유율
+        <select id="loss">
+          <option value="0.1">민무늬 (+10%)</option>
+          <option value="0.15">무늬 벽지 (+15%)</option>
+          <option value="0.05">최소 여유 (+5%)</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">롤 수 계산하기</button>
+
+    <div class="result" id="resultBox" hidden>
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>도배를 셀프로 하거나 자재만 따로 살 때 가장 헷갈리는 것이 "몇 롤을 사야 하나"입니다. 이 계산기는 벽 면적(둘레×높이)에서 문·창문 면적을 빼고, 재단·무늬 맞춤 여유율을 더해 필요한 롤 수를 올림으로 계산합니다.</p>
+    <p>벽지 규격과 여유율은 업계 일반 관행값이며 제조사·제품마다 다릅니다. 구매 전 제품 라벨의 폭·길이를 확인하고, 시공을 맡길 경우 시공사 실측 견적이 우선입니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>방의 가로·세로를 재서 둘레(=（가로+세로）×2)를 m 단위로 입력합니다.</li>
+      <li>천장 높이(통상 2.2~2.4m)와 문/창문 면적 합계를 입력합니다.</li>
+      <li>벽지 규격과 무늬 여유율을 고르고 계산 버튼을 누릅니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 실크 벽지와 합지 벽지 롤 수가 다른가요?</p><p class="a">A. 규격(폭 106cm)이 같다면 롤 수 계산은 동일합니다. 다만 실크는 부자재(부직포·본드)가 추가로 필요합니다.</p></div>
+    <div class="qa"><p class="q">Q. 문·창문 면적은 꼭 빼야 하나요?</p><p class="a">A. 작은 창 1~2개면 여유분으로 흡수되므로 빼지 않아도 큰 차이가 없지만, 발코니 창처럼 큰 개구부는 빼는 것이 정확합니다.</p></div>
+    <div class="qa"><p class="q">Q. 계산 결과대로 사면 모자라지 않나요?</p><p class="a">A. 여유율을 반영해 올림 계산하지만, 천장고가 불규칙하거나 무늬 리피트가 큰 제품은 1롤 정도 더 사 두는 것이 안전합니다. 본 결과는 참고용입니다.</p></div>
+    <p class="note">이 계산은 업계 일반 관행 규격·여유율을 사용한 <strong>참고용</strong>입니다. 실제 필요량은 제품 규격과 시공 방식에 따라 달라질 수 있습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../paint/"><span class="ic">🎨</span>페인트 양 계산기</a>
+      <a class="rel" href="../flooring/"><span class="ic">🪵</span>장판·마루 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong/" rel="noopener"><span class="ic">📐</span>평수 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-isagak/" rel="noopener"><span class="ic">📦</span>이사각 — 이사 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { wallpaperCalc } from "../lib/calc.mjs";
+import { WALLPAPER_ROLLS, WALLPAPER_LOSS } from "../data/materials.mjs";
+const $ = (id) => document.getElementById(id);
+const sel = $("rollSpec");
+WALLPAPER_ROLLS.value.forEach((r, i) => {
+  const o = document.createElement("option");
+  o.value = i; o.textContent = r.name;
+  sel.appendChild(o);
+});
+$("calcBtn").addEventListener("click", () => {
+  const perimeterM = parseFloat($("perimeter").value);
+  const heightM = parseFloat($("height").value);
+  const openingsM2 = parseFloat($("openings").value) || 0;
+  if (!isFinite(perimeterM) || !isFinite(heightM) || perimeterM <= 0 || heightM <= 0) { hcToast("벽 둘레와 높이를 입력하세요"); return; }
+  const spec = WALLPAPER_ROLLS.value[+sel.value];
+  const lossRate = parseFloat($("loss").value);
+  const r = wallpaperCalc({ perimeterM, heightM, openingsM2, rollWidthM: spec.widthM, rollLengthM: spec.lengthM, lossRate });
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = `벽지 약 <span>${r.rolls}롤</span> <small>(${spec.name})</small>`;
+  $("resSub").textContent = `도배 면적 ${hcFmt(r.wallArea,2)}㎡ → 여유 ${Math.round(lossRate*100)}% 포함 ${hcFmt(r.needArea,2)}㎡ ÷ 롤당 ${hcFmt(r.rollArea,2)}㎡`;
+  $("resFormula").textContent = `롤 수 = 올림( (둘레 ${perimeterM}m × 높이 ${heightM}m − 제외 ${openingsM2}㎡) × ${(1+lossRate).toFixed(2)} ÷ ${hcFmt(r.rollArea,3)}㎡ )`;
+  $("srcLine").innerHTML = `규격·여유율: 업계 일반 관행(참고용, 제품 라벨 우선) · 확인일 ${WALLPAPER_LOSS.checkedAt} <span class="badge todo">확인 필요</span>`;
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>
