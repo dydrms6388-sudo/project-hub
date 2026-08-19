@@ -1660,6 +1660,14 @@ const PAIR_CUR = FX_CUR.filter((c) => c.code !== "KRW");
 const PAIRS = [];
 for (const c of PAIR_CUR) { PAIRS.push([c.code, "KRW"]); PAIRS.push(["KRW", c.code]); }
 
+// 한글 받침 유무로 은/는 조사를 고른다(제목 문장 자연스럽게).
+function topic(word) {
+  const ch = String(word).trim().slice(-1);
+  const code = ch.charCodeAt(0);
+  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 === 0 ? "는" : "은";
+  return "0123456789".includes(ch) ? "은" : "는";
+}
+
 function curInfo(code) {
   return CUR_BY[code] || { nameKo: code, flag: "💱", countries: [] };
 }
@@ -1671,9 +1679,11 @@ function pairPage([from, to]) {
   const cList = (from === "KRW" ? t : f).countries.slice(0, 4).join("·");
   const sample = from === "KRW" ? [1000, 10000, 50000, 100000] : [1, 10, 100, 1000];
   const isKrwOut = to === "KRW";
+  const amtLabel = `${sample[2].toLocaleString("ko-KR")}${from === "KRW" ? "원" : f.nameKo}`;
+  const q = `${amtLabel}${topic(amtLabel)} ${to === "KRW" ? "몇 원" : "몇 " + t.nameKo}?`;
   return {
     path: `currency/${slug}/`, emoji: `${f.flag}${t.flag}`, ad: true,
-    title: `${fName} → ${tName} 환율 계산기 — ${sample[2].toLocaleString("ko-KR")}${from === "KRW" ? "원" : from}은 얼마?`,
+    title: `${fName} → ${tName} 환율 계산기 — ${q}`,
     ogTitle: `${from}/${to} 환율 계산기`,
     desc: `${fName}를 ${tName}로 환산합니다. ${cList ? cList + " 여행·구매 시 " : ""}${sample.map((s) => s.toLocaleString("ko-KR")).join("·")} ${from} 단위 환산표를 함께 보여주며, 환율은 공개 API에서 불러와 24시간 캐시합니다. 참고용이며 은행 고시 환율이 아닙니다.`,
     h1: `${from} → ${to} 환율`,
