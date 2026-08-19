@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OG 이미지 만들기 — 무료·로그인 없음 | 썸메이커</title>
+<meta name="description" content="OG 이미지 만들기 무료 에디터. 링크 공유 미리보기 표준 1200×630 캔버스에 제목·로고를 배치해 오픈그래프 이미지를 만드세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"OG 이미지 만들기 — 썸메이커","applicationCategory":"DesignApplication","operatingSystem":"Web","description":"OG 이미지 만들기 무료 에디터. 링크 공유 미리보기 표준 1200×630 캔버스에 제목·로고를 배치해 오픈그래프 이미지를 만드세요.","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"OG 이미지 크기는 왜 1200×630인가요?","acceptedAnswer":{"@type":"Answer","text":"페이스북 등 주요 플랫폼 개발자 문서가 권장하는 크기가 1200×630(비율 약 1.91:1)이며, 사실상 업계 표준입니다. 카카오톡·슬랙·트위터 큰 카드 미리보기도 이 비율과 잘 맞습니다."}},{"@type":"Question","name":"만든 이미지를 어떻게 사이트에 적용하나요?","acceptedAnswer":{"@type":"Answer","text":"이미지를 서버나 호스팅에 올린 뒤 HTML head에 <meta property=\"og:image\" content=\"이미지 주소\"> 태그를 추가하면 됩니다."}},{"@type":"Question","name":"미리보기가 갱신되지 않아요.","acceptedAnswer":{"@type":"Answer","text":"카카오톡·페이스북은 미리보기를 캐시합니다. 각 플랫폼의 캐시 초기화 도구(공유 디버거 등)를 사용하거나 이미지 주소를 바꿔 보세요."}},{"@type":"Question","name":"글자를 가장자리에 붙여도 되나요?","acceptedAnswer":{"@type":"Answer","text":"플랫폼에 따라 가장자리가 살짝 잘리거나 둥근 모서리로 가려질 수 있으니, 상하좌우 60픽셀 정도는 여백으로 비워 두는 것이 안전합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"썸메이커","item":"https://thumbmaker-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"OG 이미지 만들기","item":"https://thumbmaker-kr.vercel.app/tools/og-image/"}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="logo" href="../../index.html">🎨 썸메이커<span class="dot">.</span><small style="font-weight:600;color:var(--sub)">thumbmaker-kr</small></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../../tools/youtube/index.html">유튜브</a>
+    <a href="../../tools/instagram/index.html">인스타</a>
+    <a href="../../tools/meme/index.html">짤</a>
+    <a href="../../index.html#tools">전체 도구</a>
+    <a href="../../guide/youtube-thumbnail-size/index.html">크기 가이드</a>
+    <a href="../../fonts.html">폰트</a>
+  </nav>
+</div></header>
+
+<main class="wrap-wide">
+  <nav aria-label="현재 위치" style="font-size:.8rem;color:var(--sub);margin-top:14px"><a href="../../index.html">홈</a> › OG 이미지 만들기</nav>
+  <h1>OG 이미지 만들기</h1>
+  <p class="lead">카톡·슬랙·트위터 링크 미리보기에 쓰이는 오픈그래프 표준 1200×630 캔버스입니다.</p>
+  <div id="editor"></div>
+  <!-- ad-slot -->
+  <div class="wrap" style="padding:0">
+  <section class="content">
+    <h2>OG 이미지 만들기 — 이 도구 소개</h2>
+    <p>링크를 카카오톡·슬랙·페이스북에 붙였을 때 나오는 미리보기 이미지가 OG(오픈그래프) 이미지입니다. 표준 크기는 <strong>1200×630픽셀(1.91:1)</strong>로, 이 크기로 만들어 <code>og:image</code> 메타태그에 지정하면 대부분의 플랫폼에서 잘리지 않고 표시됩니다.</p>
+<p>이 도구는 1200×630 캔버스에 사이트명·글 제목·포인트 색상을 배치하는 데 맞춘 템플릿을 제공합니다. 블로그·뉴스레터·사이드 프로젝트 랜딩 페이지의 공유 이미지를 디자이너 없이 몇 분 만에 만들 수 있습니다.</p>
+    
+    <h2>사용법</h2>
+    <ol>
+<li>템플릿(테크 그리드/레프트 얼라인)을 적용합니다.</li>
+<li>사이트 이름·글 제목·도메인 텍스트를 내 것으로 바꿉니다.</li>
+<li>로고 이미지가 있으면 🖼 이미지로 올려 모서리에 배치합니다.</li>
+<li>PNG 또는 JPG로 저장한 뒤 사이트의 og:image로 지정합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+<details><summary>OG 이미지 크기는 왜 1200×630인가요?</summary><p>페이스북 등 주요 플랫폼 개발자 문서가 권장하는 크기가 1200×630(비율 약 1.91:1)이며, 사실상 업계 표준입니다. 카카오톡·슬랙·트위터 큰 카드 미리보기도 이 비율과 잘 맞습니다.</p></details>
+<details><summary>만든 이미지를 어떻게 사이트에 적용하나요?</summary><p>이미지를 서버나 호스팅에 올린 뒤 HTML head에 &lt;meta property="og:image" content="이미지 주소"> 태그를 추가하면 됩니다.</p></details>
+<details><summary>미리보기가 갱신되지 않아요.</summary><p>카카오톡·페이스북은 미리보기를 캐시합니다. 각 플랫폼의 캐시 초기화 도구(공유 디버거 등)를 사용하거나 이미지 주소를 바꿔 보세요.</p></details>
+<details><summary>글자를 가장자리에 붙여도 되나요?</summary><p>플랫폼에 따라 가장자리가 살짝 잘리거나 둥근 모서리로 가려질 수 있으니, 상하좌우 60픽셀 정도는 여백으로 비워 두는 것이 안전합니다.</p></details>
+    </div>
+    <p class="notice">이 도구의 모든 처리(이미지 편집·저장)는 사용자의 브라우저 안에서만 이루어지며, 어떤 파일이나 개인정보도 서버로 전송되지 않습니다. 업로드하는 이미지·문구의 저작권과 초상권은 사용자 본인에게 책임이 있습니다.</p>
+  </section>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="cols">
+    <div><h4>만들기 도구</h4><ul>
+      <li><a href="../../tools/youtube/index.html">유튜브 썸네일 만들기</a></li>
+      <li><a href="../../tools/instagram/index.html">인스타 게시물 만들기</a></li>
+      <li><a href="../../tools/story/index.html">인스타 스토리 만들기</a></li>
+      <li><a href="../../tools/blog/index.html">블로그 대표 이미지 만들기</a></li>
+      <li><a href="../../tools/meme/index.html">짤 만들기</a></li>
+      <li><a href="../../tools/quote-card/index.html">명언 카드 만들기</a></li>
+      <li><a href="../../tools/og-image/index.html">OG 이미지 만들기</a></li>
+      <li><a href="../../tools/profile/index.html">프로필 사진 만들기</a></li>
+      <li><a href="../../tools/banner/index.html">유튜브 배너 만들기</a></li>
+      <li><a href="../../tools/kakao-cover/index.html">카톡 배경 만들기</a></li>
+      <li><a href="../../tools/text-image/index.html">글씨 이미지 만들기</a></li>
+      <li><a href="../../tools/sticker/index.html">스티커 만들기</a></li>
+    </ul></div>
+    <div><h4>안내</h4><ul>
+      <li><a href="../../guide/youtube-thumbnail-size/index.html">플랫폼별 썸네일 권장 크기</a></li>
+      <li><a href="../../guide/thumbnail-tips/index.html">클릭을 부르는 썸네일 팁</a></li>
+      <li><a href="../../fonts.html">제공 폰트 및 라이선스</a></li>
+      <li><a href="../../privacy.html">개인정보처리방침</a></li>
+      <li><a href="../../terms.html">이용약관</a></li>
+    </ul></div>
+    <div><h4>썸메이커</h4>
+      <p style="margin:0;max-width:320px">로그인 없이, 워터마크 없이 쓰는 한국어 썸네일·짤 에디터.
+      모든 작업은 브라우저 안에서만 처리되며 이미지가 서버로 전송되지 않습니다.</p></div>
+  </div>
+  <div class="copy">© <span data-year>2026</span> 썸메이커 (thumbmaker-kr) · 모든 도구 무료</div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/templates.js"></script>
+<script src="../../assets/editor.js"></script>
+<script>
+(function(){
+  var preset = {slug:'og-image',sizes:[{label:'1200×630 (표준)',w:1200,h:630}],templateCats:['og-image','blog'],starterTpl:'og-tech'};
+  if (preset.starterTpl && window.TM_TEMPLATES) {
+    var tpl = window.TM_TEMPLATES.filter(function(t){return t.id===preset.starterTpl;})[0];
+    if (tpl) preset.starter = function(ed){ ed.state = ed._templateState(tpl); };
+  }
+  window.__ed = new ThumbEditor(document.getElementById('editor'), preset);
+})();
+</script>
+</body>
+</html>

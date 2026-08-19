@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로또 당첨 확인 — 내 번호 등수 판정기</title>
+<meta name="description" content="내 로또 번호 6개를 입력하고 회차를 선택하면 1등~5등 등수를 즉시 판정합니다. 여러 회차 한꺼번에 확인도 가능한 무료 로또 당첨 확인 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<script type="application/ld+json">
+[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"로또 당첨 확인","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://lottolab-kr.vercel.app/tools/checker/","description":"내 로또 번호 6개를 입력하면 선택한 회차 기준으로 1~5등 등수를 즉시 판정하는 도구."},
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"로또랩","item":"https://lottolab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"로또 당첨 확인","item":"https://lottolab-kr.vercel.app/tools/checker/"}]},
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"등수는 어떻게 판정되나요?","acceptedAnswer":{"@type":"Answer","text":"본번호 6개가 모두 일치하면 1등, 5개 일치에 보너스 번호까지 맞으면 2등, 5개 일치는 3등, 4개 일치는 4등, 3개 일치는 5등입니다. 2개 이하는 낙첨입니다."}},
+{"@type":"Question","name":"입력한 번호가 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"판정은 전부 브라우저 안에서 이루어지며 서버로 전송되지 않습니다. 편의를 위해 마지막 입력 번호를 이 브라우저의 localStorage에만 저장하며, 언제든 삭제할 수 있습니다."}},
+{"@type":"Question","name":"당첨되면 여기서 당첨금을 받을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 도구는 참고용 판정만 제공합니다. 실제 당첨 확인과 지급은 동행복권 공식 절차(판매점, 농협은행 등)를 통해서만 가능합니다."}}]}]
+</script>
+</head>
+<body>
+<div class="legal-banner"><div class="wrap">⚠️ 당첨 보장 없음 — 판정 결과는 참고용이며, 실제 당첨 확인·지급은 공식 절차를 따릅니다. 통계는 과거 결과 요약일 뿐 예측이 아닙니다.</div></div>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">🍀 로또<em>랩</em></a>
+  <nav><a href="../generator/">번호 생성</a><a href="../results/">당첨번호</a><a href="../stats/">통계</a></nav>
+</div></header>
+
+<main class="wrap">
+  <h1>로또 당첨 확인</h1>
+  <p class="lead">내 번호 6개를 고르고 회차를 선택하면 등수를 즉시 판정합니다.</p>
+
+  <div class="card">
+    <label>내 번호 6개 선택</label>
+    <div class="numgrid" id="grid"></div>
+    <p class="muted" id="pickState" style="margin:10px 0 0">선택 0 / 6</p>
+
+    <div class="row" style="margin-top:16px">
+      <div>
+        <label for="roundSel">회차 선택</label>
+        <select id="roundSel"><option value="">데이터 로딩 중…</option></select>
+      </div>
+      <div style="flex:0 0 auto;display:flex;align-items:flex-end;gap:10px">
+        <button class="btn" id="checkBtn" disabled>당첨 확인</button>
+        <button class="btn ghost" id="clearBtn">초기화</button>
+      </div>
+    </div>
+
+    <div class="result-box" id="resultBox"></div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="content">
+    <h2>당첨 확인 도구 소개</h2>
+    <p>로또 당첨 확인 도구는 내가 산 번호 6개를 입력하면 선택한 회차의 당첨번호와 비교해 몇 개가 일치하는지 세고, 로또 6/45 공식 등수 기준(1등~5등)에 따라 결과를 알려줍니다. 번호판에서 번호를 누르기만 하면 되고, QR이나 사진 업로드 없이 브라우저 안에서 즉시 판정됩니다.</p>
+    <p>등수 기준은 다음과 같습니다: 본번호 6개 일치 = 1등, 5개 일치 + 보너스 번호 일치 = 2등, 5개 일치 = 3등, 4개 일치 = 4등, 3개 일치 = 5등(고정 5,000원). 2개 이하 일치는 낙첨입니다. 보너스 번호는 오직 2등 판정에만 쓰인다는 점을 기억하세요.</p>
+    <p>마지막으로 입력한 번호는 다음 방문 때 다시 입력하지 않도록 이 브라우저에만(localStorage) 저장됩니다. 서버 전송은 없습니다.</p>
+
+    <h2>사용법</h2>
+    <ol>
+      <li>번호판에서 내 번호 6개를 선택합니다.</li>
+      <li>확인할 회차를 선택합니다(기본값은 최신 회차).</li>
+      <li><b>당첨 확인</b>을 누르면 일치 개수와 등수가 표시됩니다.</li>
+      <li>당첨금 실수령액이 궁금하면 <a href="../../guide/lotto-tax/">로또 세금 가이드</a>를 참고하세요.</li>
+    </ol>
+
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>보너스 번호는 언제 쓰이나요?</summary><p>보너스 번호는 본번호 5개를 맞힌 경우에만 의미가 있습니다. 5개 일치 + 보너스 일치면 2등, 보너스가 틀리면 3등입니다. 6개 전부 일치(1등) 판정에는 보너스가 쓰이지 않습니다.</p></details>
+      <details><summary>입력한 번호가 서버에 저장되나요?</summary><p>아니요. 판정은 전부 브라우저에서 실행됩니다. 편의를 위해 마지막 번호를 이 기기의 localStorage에만 저장하며, 초기화 버튼으로 지울 수 있습니다.</p></details>
+      <details><summary>지난 회차 번호도 확인할 수 있나요?</summary><p>네. 회차 선택 목록에서 수집된 모든 회차를 고를 수 있습니다. 참고로 당첨금 지급 기한은 지급 개시일로부터 1년이므로, 오래된 복권은 기한을 꼭 확인하세요.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../generator/">로또 번호 생성기</a><a href="../results/">당첨번호 조회</a><a href="../stats/">번호 통계</a><a href="../pattern/">조합 분석</a><a href="../simulator/">확률 체험</a><a href="../pension/">연금복권 생성기</a><a href="../dream/">번호 뽑기(재미)</a><a href="../../guide/lotto-tax/">로또 세금 가이드</a>
+  </div>
+  <div class="foot-links"><a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a></div>
+  <div class="foot-legal">본 사이트는 동행복권·복권위원회와 무관한 개인 운영 정보 사이트이며, 복권 판매·구매 중개를 하지 않습니다. 당첨을 보장하지 않으며 모든 통계는 과거 추첨 결과의 요약입니다. 과도한 복권 구매는 도박 문제로 이어질 수 있습니다 — 상담: 한국도박문제예방치유원 1336.<br>© 2026 LottoLab</div>
+</div></footer>
+
+<script>
+(function(){
+  'use strict';
+  var $ = LL.$;
+  var picked = [];
+  var draws = [];
+  var LS_KEY = 'lottolab-checker-nums';
+
+  var grid = $('#grid');
+  for (var i=1;i<=45;i++){
+    var b = document.createElement('button');
+    b.type='button'; b.textContent = i; b.dataset.n = i;
+    grid.appendChild(b);
+  }
+  try {
+    var saved = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    if (Array.isArray(saved)) picked = saved.filter(function(n){return n>=1 && n<=45;}).slice(0,6);
+  } catch(e){}
+
+  grid.addEventListener('click', function(e){
+    var btn = e.target.closest('button'); if(!btn) return;
+    var n = +btn.dataset.n;
+    var idx = picked.indexOf(n);
+    if (idx >= 0) picked.splice(idx,1);
+    else if (picked.length < 6) picked.push(n);
+    render();
+  });
+
+  function render(){
+    LL.$$('#grid button').forEach(function(b){
+      b.className = picked.indexOf(+b.dataset.n) >= 0 ? 'sel' : '';
+    });
+    $('#pickState').textContent = '선택 ' + picked.length + ' / 6';
+    $('#checkBtn').disabled = !(picked.length === 6 && draws.length);
+    try { localStorage.setItem(LS_KEY, JSON.stringify(picked)); } catch(e){}
+  }
+
+  $('#clearBtn').addEventListener('click', function(){
+    picked = [];
+    try { localStorage.removeItem(LS_KEY); } catch(e){}
+    $('#resultBox').innerHTML = '';
+    render();
+  });
+
+  LL.loadDraws().then(function(list){
+    draws = list;
+    var sel = $('#roundSel');
+    if (!draws.length){
+      sel.innerHTML = '<option value="">데이터 없음</option>';
+      $('#resultBox').innerHTML = LL.emptyDataHTML('회차 데이터가 쌓이면 등수 판정이 가능합니다.');
+      render();
+      return;
+    }
+    sel.innerHTML = draws.slice().reverse().map(function(d){
+      return '<option value="' + d.round + '">제' + d.round + '회 (' + d.date + ')</option>';
+    }).join('');
+    render();
+  });
+
+  var RANK_TEXT = {
+    1: ['1등 🎉', '본번호 6개 모두 일치! 실물 복권이라면 공식 절차로 반드시 확인하세요.'],
+    2: ['2등', '5개 일치 + 보너스 번호 일치'],
+    3: ['3등', '5개 일치'],
+    4: ['4등 (5만원)', '4개 일치'],
+    5: ['5등 (5천원)', '3개 일치'],
+    0: ['낙첨', '3개 미만 일치 — 다음 기회에!']
+  };
+
+  $('#checkBtn').addEventListener('click', function(){
+    var r = +$('#roundSel').value;
+    var d = draws.find(function(x){ return x.round === r; });
+    if (!d) return;
+    var res = LL.judge(picked.slice().sort(function(a,b){return a-b;}), d.numbers, d.bonus);
+    var t = RANK_TEXT[res.rank];
+    $('#resultBox').innerHTML =
+      '<h2 style="margin:16px 0 4px">제' + d.round + '회 판정 결과</h2>' +
+      '<p class="muted" style="margin:0">당첨번호</p>' +
+      '<div>' + LL.ballLineHTML(d.numbers, d.bonus, true) + '</div>' +
+      '<p class="muted" style="margin:8px 0 0">내 번호 (일치 ' + res.match + '개' + (res.bonus ? ' + 보너스' : '') + ')</p>' +
+      '<div>' + LL.ballLineHTML(picked.slice().sort(function(a,b){return a-b;}), null, true) + '</div>' +
+      '<div class="big-rank rank-' + res.rank + '">' + t[0] + '</div>' +
+      '<p class="muted">' + t[1] + ' · 실제 당첨 확인은 동행복권 공식 채널에서 하세요.</p>';
+  });
+})();
+</script>
+</body>
+</html>

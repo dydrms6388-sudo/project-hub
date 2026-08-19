@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026년 공휴일 달력 — 대체공휴일·연휴·샌드위치 데이 | DateLab</title>
+<meta name="description" content="2026년 대한민국 공휴일 20일 전체 목록(대체공휴일·임시공휴일 포함), 3일 이상 연휴와 샌드위치 데이 분석, .ics 캘린더 다운로드.">
+<link rel="stylesheet" href="../../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"2026년 공휴일","description":"2026년 대한민국 공휴일 20일 전체 목록(대체공휴일·임시공휴일 포함), 3일 이상 연휴와 샌드위치 데이 분석, .ics 캘린더 다운로드.","url":"https://datelab-kr.vercel.app/tools/holidays/2026/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"대체공휴일은 어떤 규칙으로 정해지나요?","acceptedAnswer":{"@type":"Answer","text":"「관공서의 공휴일에 관한 규정」에 따라 3·1절, 광복절, 개천절, 한글날, 어린이날, 부처님오신날, 기독탄신일이 토요일·일요일과 겹치면, 설·추석 연휴가 일요일과 겹치면 그 다음의 첫 번째 비공휴일이 대체공휴일이 됩니다. 신정(1월 1일)과 현충일은 대체공휴일 적용 대상이 아닙니다."}},{"@type":"Question","name":"임시공휴일도 표에 포함되어 있나요?","acceptedAnswer":{"@type":"Answer","text":"이미 지정·확정된 임시공휴일과 선거일은 「임시·선거일」 구분으로 포함했습니다. 다만 임시공휴일은 국무회의 의결로 새로 지정될 수 있어, 향후 추가되는 날은 반영 시점에 따라 표에 없을 수 있습니다."}},{"@type":"Question","name":"샌드위치 데이가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"공휴일과 주말 사이에 낀 평일을 말합니다. 그 하루에 연차를 쓰면 앞뒤 휴일이 이어져 긴 연휴가 됩니다. 이 페이지 하단에 해당 연도의 샌드위치 데이를 자동으로 계산해 보여드립니다."}},{"@type":"Question","name":"관공서 공휴일과 회사 휴일은 같은가요?","acceptedAnswer":{"@type":"Answer","text":"상시 5인 이상 사업장은 근로기준법에 따라 관공서 공휴일(대체공휴일 포함)을 유급휴일로 보장해야 합니다(2022년부터 전면 적용). 5인 미만 사업장은 적용 대상이 아니므로 회사 규정을 확인하세요."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://datelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"2026년 공휴일","item":"https://datelab-kr.vercel.app/tools/holidays/2026/"}]}</script>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="../../../">Date<b>Lab</b> 날짜랩</a>
+    <nav class="head-nav">
+      <a href="../../../tools/korean-age/">만나이</a>
+      <a href="../../../tools/dday/">디데이</a>
+      <a href="../../../tools/holidays/">공휴일</a>
+      <a href="../../../tools/lunar/">음력</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <nav class="crumb"><a href="../../../">홈</a> › 2026년 공휴일</nav>
+    
+<h1>2026년 공휴일</h1>
+<p class="lead">2026년 대한민국 공휴일은 <strong>총 20일</strong>(법정 15일 · 대체 4일 · 임시/선거 1일)입니다. 이 중 주말과 겹치지 않는 평일 휴일은 <strong>14일</strong>입니다.</p>
+<div class="field"><div class="seg"><a href="../2025/" style="display:inline-flex;align-items:center;padding:10px 16px;font-size:14.5px;text-decoration:none;color:var(--sub)">2025년</a><button class="on" type="button">2026년</button><a href="../2027/" style="display:inline-flex;align-items:center;padding:10px 16px;font-size:14.5px;text-decoration:none;color:var(--sub)">2027년</a></div></div>
+<div class="card">
+  <div class="res-hero" id="remainHero" style="display:none">
+    <div class="big" id="remainCnt"></div>
+    <div class="cap" id="remainCap"></div>
+  </div>
+  <div class="tbl-scroll"><table id="holiTbl">
+<thead><tr><th>날짜</th><th>요일</th><th>공휴일</th><th>구분</th></tr></thead>
+<tbody><tr data-date="2026-01-01"><td>1월 1일</td><td>목</td><td>신정(새해 첫날)</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-02-16"><td>2월 16일</td><td>월</td><td>설날 연휴</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-02-17"><td>2월 17일</td><td>화</td><td>설날</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-02-18"><td>2월 18일</td><td>수</td><td>설날 연휴</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-03-01"><td>3월 1일</td><td>일</td><td>삼일절</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-03-02"><td>3월 2일</td><td>월</td><td>대체공휴일(삼일절)</td><td><span class="badge s">대체공휴일</span></td></tr>
+<tr data-date="2026-05-05"><td>5월 5일</td><td>화</td><td>어린이날</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-05-24"><td>5월 24일</td><td>일</td><td>부처님오신날</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-05-25"><td>5월 25일</td><td>월</td><td>대체공휴일(부처님오신날)</td><td><span class="badge s">대체공휴일</span></td></tr>
+<tr data-date="2026-06-03"><td>6월 3일</td><td>수</td><td>제9회 전국동시지방선거일</td><td><span class="badge t">임시·선거일</span></td></tr>
+<tr data-date="2026-06-06"><td>6월 6일</td><td>토</td><td>현충일</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-08-15"><td>8월 15일</td><td>토</td><td>광복절</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-08-17"><td>8월 17일</td><td>월</td><td>대체공휴일(광복절)</td><td><span class="badge s">대체공휴일</span></td></tr>
+<tr data-date="2026-09-24"><td>9월 24일</td><td>목</td><td>추석 연휴</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-09-25"><td>9월 25일</td><td>금</td><td>추석</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-09-26"><td>9월 26일</td><td>토</td><td>추석 연휴</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-10-03"><td>10월 3일</td><td>토</td><td>개천절</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-10-05"><td>10월 5일</td><td>월</td><td>대체공휴일(개천절)</td><td><span class="badge s">대체공휴일</span></td></tr>
+<tr data-date="2026-10-09"><td>10월 9일</td><td>금</td><td>한글날</td><td><span class="badge h">공휴일</span></td></tr>
+<tr data-date="2026-12-25"><td>12월 25일</td><td>금</td><td>기독탄신일(성탄절)</td><td><span class="badge h">공휴일</span></td></tr></tbody></table></div>
+  <div class="btn-row">
+    <button class="btn ghost" id="icsBtn">.ics 캘린더 저장 (2026년 전체)</button>
+  </div>
+</div>
+<section class="content">
+<h2>2026년 연휴 (3일 이상)</h2>
+<ul><li><strong>2/14(토) ~ 2/18(수)</strong> — 5일 연휴 (설날)</li>
+<li><strong>2/28(토) ~ 3/2(월)</strong> — 3일 연휴 (삼일절)</li>
+<li><strong>5/23(토) ~ 5/25(월)</strong> — 3일 연휴 (부처님오신날)</li>
+<li><strong>8/15(토) ~ 8/17(월)</strong> — 3일 연휴 (광복절)</li>
+<li><strong>9/24(목) ~ 9/27(일)</strong> — 4일 연휴 (추석)</li>
+<li><strong>10/3(토) ~ 10/5(월)</strong> — 3일 연휴 (개천절)</li>
+<li><strong>10/9(금) ~ 10/11(일)</strong> — 3일 연휴 (한글날)</li>
+<li><strong>12/25(금) ~ 12/27(일)</strong> — 3일 연휴 (기독탄신일)</li></ul>
+<h2>2026년 샌드위치 데이 — 연차 하루로 만드는 연휴</h2>
+<ul><li><strong>1/2(금)</strong>에 연차를 쓰면 1/1(목)~1/4(일) <strong>4일 연휴</strong></li>
+<li><strong>5/4(월)</strong>에 연차를 쓰면 5/2(토)~5/5(화) <strong>4일 연휴</strong></li></ul>
+
+<h2>데이터 출처</h2>
+<ul>
+<li>공공데이터포털 「특일 정보」(한국천문연구원 제공): <a href="https://www.data.go.kr/data/15012690/openapi.do" target="_blank" rel="noopener">data.go.kr/data/15012690/openapi.do</a></li>
+<li>인사혁신처 공휴일·대체공휴일 안내: <a href="https://www.mpm.go.kr" target="_blank" rel="noopener">mpm.go.kr</a></li>
+<li>「관공서의 공휴일에 관한 규정」(대통령령): <a href="https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EA%B4%80%EA%B3%B5%EC%84%9C%EC%9D%98%EA%B3%B5%ED%9C%B4%EC%9D%BC%EC%97%90%EA%B4%80%ED%95%9C%EA%B7%9C%EC%A0%95" target="_blank" rel="noopener">law.go.kr — 관공서의 공휴일에 관한 규정</a></li>
+</ul>
+<p class="note">임시공휴일은 국무회의 의결로 수시 지정될 수 있어 위 표에 없는 휴일이 추가될 수 있습니다. 최신 지정 여부는 인사혁신처 보도자료를 확인하세요.</p>
+</section>
+    <!-- ad-slot -->
+    
+<section class="content">
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>대체공휴일은 어떤 규칙으로 정해지나요?</summary><p>「관공서의 공휴일에 관한 규정」에 따라 3·1절, 광복절, 개천절, 한글날, 어린이날, 부처님오신날, 기독탄신일이 토요일·일요일과 겹치면, 설·추석 연휴가 일요일과 겹치면 그 다음의 첫 번째 비공휴일이 대체공휴일이 됩니다. 신정(1월 1일)과 현충일은 대체공휴일 적용 대상이 아닙니다.</p></details>
+<details class="faq"><summary>임시공휴일도 표에 포함되어 있나요?</summary><p>이미 지정·확정된 임시공휴일과 선거일은 「임시·선거일」 구분으로 포함했습니다. 다만 임시공휴일은 국무회의 의결로 새로 지정될 수 있어, 향후 추가되는 날은 반영 시점에 따라 표에 없을 수 있습니다.</p></details>
+<details class="faq"><summary>샌드위치 데이가 무엇인가요?</summary><p>공휴일과 주말 사이에 낀 평일을 말합니다. 그 하루에 연차를 쓰면 앞뒤 휴일이 이어져 긴 연휴가 됩니다. 이 페이지 하단에 해당 연도의 샌드위치 데이를 자동으로 계산해 보여드립니다.</p></details>
+<details class="faq"><summary>관공서 공휴일과 회사 휴일은 같은가요?</summary><p>상시 5인 이상 사업장은 근로기준법에 따라 관공서 공휴일(대체공휴일 포함)을 유급휴일로 보장해야 합니다(2022년부터 전면 적용). 5인 미만 사업장은 적용 대상이 아니므로 회사 규정을 확인하세요.</p></details>
+</section>
+  </div>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+<a href="../../../tools/korean-age/">만나이 계산기</a>
+<a href="../../../tools/dday/">디데이 계산기</a>
+<a href="../../../tools/anniversary/">100일 계산기</a>
+<a href="../../../tools/lunar/">음력 변환기</a>
+<a href="../../../tools/holidays/">2026년 공휴일</a>
+<a href="../../../tools/workdays/">근무일 계산기</a>
+<a href="../../../tools/date-diff/">날짜 계산기</a>
+<a href="../../../tools/zodiac/">띠 계산기</a>
+<a href="../../../tools/week-number/">몇 주차 계산기</a>
+<a href="../../../tools/age-in-days/">살아온 날 계산기</a>
+<a href="../../../tools/retirement/">정년 퇴직일 계산기</a>
+<a href="../../../tools/military/">전역일 계산기</a>
+    </div>
+    <div class="cols">
+<a href="../../../guide/korean-age-2023/">만 나이 통일법 총정리</a>
+<a href="../../../guide/holidays-2026/">2026년 공휴일 총정리</a>
+    </div>
+    <p>모든 계산은 사용자의 브라우저 안에서만 실행되며, 입력한 값은 서버로 전송·저장되지 않습니다.</p>
+    <div class="legal">
+      <a href="../../../privacy.html">개인정보처리방침</a>
+      <a href="../../../terms.html">이용약관</a>
+      <span>© 2026 DateLab 날짜랩</span>
+    </div>
+  </div>
+</footer>
+<script src="../../../assets/common.js"></script>
+<script src="../../../assets/data/holidays.js"></script>
+<script>
+
+(function(){
+var $=DL.$;var now=DL.today();
+var list=KHolidays.data[2026]||[];
+if(now.getFullYear()===2026){
+  var remain=list.filter(function(h){return DL.fromIso(h.d)>=now;});
+  $('#remainCnt').textContent='남은 공휴일 '+remain.length+'일';
+  $('#remainCap').textContent=remain.length?('다음 공휴일: '+remain[0].name+' · '+DL.fmtKo(DL.fromIso(remain[0].d))):'올해 공휴일이 모두 지났습니다';
+  $('#remainHero').style.display='block';
+}
+DL.$$('#holiTbl tbody tr').forEach(function(tr){
+  var d=DL.fromIso(tr.dataset.date);
+  if(DL.toIso(d)===DL.toIso(now))tr.classList.add('today-row');
+  else if(d<now)tr.classList.add('past');
+});
+$('#icsBtn').addEventListener('click',function(){
+  DL.downloadIcs(list.map(function(h){return {date:h.d,title:h.name};}),'2026년 대한민국 공휴일','holidays-2026.ics');
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내 글로 타자 연습 - 텍스트 붙여넣기 연습 | typingkr</title>
+<meta name="description" content="원하는 글을 붙여넣어 나만의 타자 연습을 만드는 무료 도구. 시험 범위, 외우고 싶은 문장, 업무 문서로 연습하고 브라우저에 자동 저장됩니다. 설치·로그인 없음.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"내 글로 타자 연습",
+"url":"https://typingkr.vercel.app/tools/custom-text/","applicationCategory":"EducationalApplication",
+"operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+"description":"사용자가 붙여넣은 텍스트를 문장 단위로 나눠 연습하는 타자 연습기. 내용은 브라우저에만 저장."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"typingkr","item":"https://typingkr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"내 글로 타자 연습","item":"https://typingkr.vercel.app/tools/custom-text/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"붙여넣은 글이 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 입력한 텍스트는 브라우저의 localStorage에만 저장되며 서버로 전송되지 않습니다. 공용 PC에서는 사용 후 초기화 버튼을 눌러 주세요."}},
+{"@type":"Question","name":"긴 글을 넣으면 어떻게 나뉘나요?","acceptedAnswer":{"@type":"Answer","text":"마침표, 물음표, 느낌표, 줄바꿈을 기준으로 문장을 나눕니다. 너무 긴 문장은 읽기 쉽게 자동으로 나눠 표시합니다."}},
+{"@type":"Question","name":"저작권이 있는 글을 넣어도 되나요?","acceptedAnswer":{"@type":"Answer","text":"개인이 혼자 연습하는 용도로만 사용하세요. 이 도구는 붙여넣은 내용을 저장·배포하지 않으며, 입력 내용에 대한 책임은 이용자에게 있습니다."}}]}
+</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">타자연습<span class="dot">&middot;</span>typingkr</a>
+  <span class="head-sp"></span>
+  <button id="soundBtn" class="iconbtn" type="button">🔇 소리 끔</button>
+  <button id="themeBtn" class="iconbtn" type="button" aria-label="다크/라이트 테마 전환">🌙</button>
+</div></header>
+
+<main class="wrap">
+  <h1>내 글로 타자 연습</h1>
+  <p class="hint">연습하고 싶은 글을 붙여넣으면 문장 단위로 나눠 연습할 수 있습니다. 붙여넣은 내용은 이 브라우저에만 저장됩니다.</p>
+
+  <div class="mobile-note">📱 긴 글 연습에는 <b>PC 키보드를 권장</b>합니다. 모바일에서는 짧은 문장만 나눠 표시됩니다.</div>
+
+  <div class="card" id="editorCard">
+    <label for="src"><b>연습할 텍스트</b> (최대 5,000자)</label>
+    <textarea id="src" rows="7" style="width:100%;margin-top:8px" placeholder="여기에 연습할 글을 붙여넣으세요. 마침표와 줄바꿈을 기준으로 문장이 나뉩니다."></textarea>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" id="startBtn" type="button">연습 시작</button>
+      <button class="btn ghost sm" id="sampleBtn" type="button">예시 넣기</button>
+      <button class="btn ghost sm" id="clearBtn" type="button">저장 내용 지우기</button>
+      <span class="hint" id="countView"></span>
+    </div>
+    <p class="notice">개인정보(이름·전화번호·주민등록번호 등)가 포함된 글은 붙여넣지 마세요. 공용 PC에서는 사용 후 &quot;저장 내용 지우기&quot;를 눌러 주세요.</p>
+  </div>
+
+  <div id="practiceWrap" style="display:none">
+    <div class="statbar">
+      <div class="stat"><b id="stCpm">0</b><span>타/분</span></div>
+      <div class="stat"><b id="stAcc" class="ok">100%</b><span>정확도</span></div>
+      <div class="stat"><b id="stStroke">0</b><span>누적 타수</span></div>
+      <div class="stat"><b id="stItem">0/0</b><span>진행</span></div>
+    </div>
+    <div class="progress"><i id="pbar"></i></div>
+    <div id="playArea">
+      <div class="target" id="target" aria-live="polite"></div>
+      <textarea class="typebox" id="input" rows="2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="여기를 클릭하고 위 문장을 따라 입력하세요"></textarea>
+      <p class="hint"><span class="kbadge">Esc</span> = 현재 문장 다시 입력</p>
+      <div class="row" style="margin-top:10px">
+        <button class="btn ghost sm" id="skipBtn" type="button">이 문장 건너뛰기</button>
+        <button class="btn ghost sm" id="editBtn" type="button">글 수정하기</button>
+      </div>
+    </div>
+    <div id="resultArea" class="card result-card" style="display:none">
+      <h2 style="margin-top:0">연습 완료! 🎉</h2>
+      <div id="cardBox"></div>
+      <div class="row" style="justify-content:center;margin-top:14px">
+        <button class="btn" id="saveBtn" type="button">결과 카드 PNG 저장</button>
+        <button class="btn ghost" id="againBtn" type="button">같은 글 다시</button>
+        <button class="btn ghost" id="edit2Btn" type="button">다른 글로</button>
+      </div>
+    </div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="prose">
+    <h2>내 글로 연습하면 좋은 이유</h2>
+    <p>타자 연습의 효과는 &quot;내가 실제로 자주 쓰는 문장&quot;을 칠 때 가장 큽니다. 업무에서 반복해
+    작성하는 보고 문구, 시험 대비로 외워야 하는 개념 정리, 좋아하는 문장을 그대로 붙여넣어
+    연습하면 속도와 암기를 동시에 챙길 수 있습니다. 필사(손으로 옮겨 쓰기)를 키보드로 하는
+    셈이기도 해서, 긴 글을 집중해 읽는 데도 도움이 됩니다.</p>
+    <p>붙여넣은 글은 마침표·물음표·느낌표·줄바꿈을 기준으로 문장 단위로 잘라 한 문장씩 제시합니다.
+    아주 긴 문장은 화면에서 읽기 편한 길이로 자동 분할합니다. 타수 계산은 다른 도구와 같은
+    자모 기준이며, 입력한 글은 이 브라우저의 localStorage에만 남아 다음 방문 때 이어서 연습할 수
+    있습니다. 서버로 전송되는 데이터는 없습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>연습할 글을 텍스트 상자에 붙여넣습니다(최대 5,000자).</li>
+      <li>&quot;연습 시작&quot;을 누르면 문장 단위로 나뉘어 연습이 시작됩니다.</li>
+      <li>어려운 문장은 &quot;건너뛰기&quot;로 넘기고, 글을 바꾸려면 &quot;글 수정하기&quot;를 누르세요.</li>
+      <li>공용 PC에서 사용했다면 마지막에 &quot;저장 내용 지우기&quot;를 눌러 주세요.</li>
+    </ol>
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      <details><summary>영문과 한글이 섞여 있어도 되나요?</summary><p>네. 한글은 자모 기준, 영문·숫자·기호는 글자 1개당 1타로 계산해 함께 집계합니다.</p></details>
+      <details><summary>글이 너무 길면 어떻게 되나요?</summary><p>5,000자까지 입력할 수 있고, 초과분은 잘립니다. 긴 문서는 나눠서 연습하는 것을 권합니다.</p></details>
+      <details><summary>다른 기기에서도 같은 글로 연습할 수 있나요?</summary><p>저장은 브라우저 단위이므로 기기 간 동기화는 되지 않습니다. 다른 기기에서는 다시 붙여넣어 주세요.</p></details>
+      <details><summary>줄바꿈이 많은 목록도 연습할 수 있나요?</summary><p>네. 줄바꿈도 문장 구분자로 처리하므로 목록 형태의 글도 한 줄씩 연습됩니다.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <nav>
+    <a href="../korean-typing/">한글 타자 연습</a>
+    <a href="../english-typing/">영타 연습</a>
+    <a href="../typing-test/">타자 속도 측정</a>
+    <a href="../keyboard-layout/">두벌식 자판</a>
+    <a href="../number-typing/">숫자 키패드</a>
+    <a href="../code-typing/">코딩 타자</a>
+    <a href="../kids-typing/">어린이 타자</a>
+    <a href="../../guide/typing-tips/">타자 팁 가이드</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>&copy; typingkr &middot; tomatoeggcat.com</p>
+</div></footer>
+
+<script src="../../assets/hangul.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/engine.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = 'typingkr-custom-text';
+  var MAXLEN = 5000;
+  var mobile = TK.isMobile();
+  var SAMPLE = '타자 연습은 짧게, 자주 하는 것이 가장 효과적입니다. 손목을 들지 않고 손가락만 움직이는 습관을 들이면 속도가 자연스럽게 올라갑니다.\n화면을 보고 입력하는 연습을 하면 오타를 바로 알아차릴 수 있습니다. 처음에는 느려도 정확도를 먼저 챙기세요.';
+
+  var queue = [], idx = 0, total = 0;
+
+  function splitSentences(text) {
+    var maxLen = mobile ? 40 : 90;
+    // 문장 끝(.!?) 뒤에 구분자를 삽입한 뒤 분할 (Safari 구버전 lookbehind 미지원 회피)
+    var raw = text.replace(/\r/g, '')
+      .replace(/([.!?])\s+/g, '$1\n')
+      .split(/\n+/);
+    var out = [];
+    raw.forEach(function (s) {
+      s = s.trim();
+      if (!s) return;
+      while (s.length > maxLen) {
+        // 공백 기준으로 끊어 읽기 좋게 분할
+        var cut = s.lastIndexOf(' ', maxLen);
+        if (cut < maxLen * 0.5) cut = maxLen;
+        out.push(s.slice(0, cut).trim());
+        s = s.slice(cut).trim();
+      }
+      if (s) out.push(s);
+    });
+    return out;
+  }
+
+  function updateCount() {
+    var n = $('src').value.length;
+    $('countView').textContent = n ? (n.toLocaleString() + '자') : '';
+  }
+
+  function updateItem() {
+    $('stItem').textContent = Math.min(idx, total) + '/' + total;
+    $('pbar').style.width = (total ? Math.min(idx / total, 1) * 100 : 0) + '%';
+  }
+
+  var engine = new TK.Engine({
+    targetEl: $('target'),
+    inputEl: $('input'),
+    onProgress: function (s) {
+      $('stCpm').textContent = s.cpm;
+      $('stAcc').textContent = s.acc + '%';
+      $('stAcc').classList.toggle('ok', s.acc >= 95);
+      $('stStroke').textContent = s.strokes;
+    },
+    onLineDone: function () {
+      TK.doneSound();
+      idx++; updateItem();
+      if (idx >= total) return finish();
+      engine.setText(queue[idx]);
+    },
+    onType: TK.clickSound,
+    onError: TK.errorSound
+  });
+
+  function startPractice() {
+    var text = $('src').value.slice(0, MAXLEN);
+    if (!text.trim()) { alert('연습할 글을 먼저 붙여넣어 주세요.'); return; }
+    TK.store(KEY, text);
+    queue = splitSentences(text);
+    if (!queue.length) { alert('연습할 문장을 찾을 수 없습니다.'); return; }
+    total = queue.length; idx = 0;
+    engine.resetSession();
+    $('editorCard').style.display = 'none';
+    $('practiceWrap').style.display = '';
+    $('resultArea').style.display = 'none';
+    $('playArea').style.display = '';
+    updateItem();
+    engine.setText(queue[0]);
+    $('input').focus();
+  }
+
+  function backToEditor() {
+    $('practiceWrap').style.display = 'none';
+    $('editorCard').style.display = '';
+    window.scrollTo(0, 0);
+  }
+
+  function finish() {
+    var s = engine.stats(0, 0, 0);
+    $('playArea').style.display = 'none';
+    var cv = TK.drawResultCard({
+      title: '내 글 타자 연습 결과',
+      sub: total + '개 문장 완주',
+      stats: [
+        { label: '타/분', value: s.cpm },
+        { label: '정확도', value: s.acc + '%' },
+        { label: '총 타수', value: s.strokes }
+      ],
+      footer: s.acc >= 97 ? '정확도가 훌륭합니다! ✨' : '조금 더 천천히, 정확하게 🎯'
+    });
+    var box = $('cardBox');
+    box.textContent = '';
+    box.appendChild(cv);
+    $('resultArea').style.display = '';
+    $('saveBtn').onclick = function () { TK.downloadCanvas(cv, 'typingkr-custom.png'); };
+  }
+
+  $('startBtn').addEventListener('click', startPractice);
+  $('sampleBtn').addEventListener('click', function () { $('src').value = SAMPLE; updateCount(); });
+  $('clearBtn').addEventListener('click', function () {
+    $('src').value = '';
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    updateCount();
+  });
+  $('src').addEventListener('input', updateCount);
+  $('skipBtn').addEventListener('click', function () {
+    idx++; updateItem();
+    if (idx >= total) return finish();
+    engine.setText(queue[idx]);
+    $('input').focus();
+  });
+  $('editBtn').addEventListener('click', backToEditor);
+  $('edit2Btn').addEventListener('click', backToEditor);
+  $('againBtn').addEventListener('click', startPractice);
+  $('input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') e.preventDefault();
+  });
+
+  TK.bindSoundToggle('soundBtn');
+  var saved = TK.load(KEY, '');
+  if (saved) { $('src').value = saved; }
+  updateCount();
+})();
+</script>
+</body>
+</html>

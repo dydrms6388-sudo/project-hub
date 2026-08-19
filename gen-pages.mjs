@@ -99,7 +99,10 @@ const BUILTIN_CATS = [
   { title: "🎨 매일 · 만들기", tag: "재미", slugs: ["hanguldaily", "fortune-daily", "fourcut-web", "timecapsule-link", "yearwrap-kr"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
-const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab"]);
+const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab",
+  // 팩2 자립형 마이크로사이트 (각자 별도 Vercel 프로젝트 root 예정, 손으로 관리)
+  "datelab-kr", "genlab-kr", "studyroom-kr", "typingkr", "lottolab-kr",
+  "typelab-kr", "talkstat", "writelab-kr", "imagelab-kr", "thumbmaker-kr"]);
 
 // ── 애드센스 집중 전략: 실질 콘텐츠를 갖춘 핵심 도구만 검색 색인 ──
 // 여기 없는 도구는 <meta robots noindex,follow> + sitemap 제외(기능은 그대로 동작).

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>과제 글자수 세기 - 공백 포함/제외 · 원고지 매수 · 쪽수 추정 | 스터디룸</title>
+<meta name="description" content="과제·리포트 글자수 세기. 공백 포함/제외 글자수, 단어·문장·문단 수, 200자 원고지 매수, 글꼴 크기·줄간격 기준 A4 쪽수 추정까지 실시간 계산하는 무료 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../citation/">참고문헌</a><a href="../gpa/">학점 계산기</a><a href="../timetable/">시간표</a><a href="../schedule/">공부 계획표</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 과제 글자수 세기</nav>
+<div class="page-h">
+  <h1>과제 글자수 세기</h1>
+  <p>붙여넣는 즉시 공백 포함/제외 글자수, 원고지 매수, 예상 쪽수까지 계산합니다.</p>
+</div>
+
+<section class="card">
+  <textarea id="txt" style="min-height:220px" placeholder="여기에 과제 내용을 입력하거나 붙여넣으세요. 입력 내용은 서버로 전송되지 않습니다."></textarea>
+  <div class="btn-row">
+    <button class="btn btn-sm" id="btnClear">지우기</button>
+    <button class="btn btn-sm" id="btnCopyStat">결과 복사</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>계산 결과</h2>
+  <div class="stat-grid">
+    <div class="stat"><div class="k">공백 포함</div><div class="v" id="sInc" style="color:var(--brand)">0자</div></div>
+    <div class="stat"><div class="k">공백 제외</div><div class="v" id="sExc">0자</div></div>
+    <div class="stat"><div class="k">단어(어절) 수</div><div class="v" id="sWord">0</div></div>
+    <div class="stat"><div class="k">문장 수</div><div class="v" id="sSent">0</div></div>
+    <div class="stat"><div class="k">문단 수</div><div class="v" id="sPara">0</div></div>
+    <div class="stat"><div class="k">200자 원고지</div><div class="v" id="sPaper">0매</div></div>
+  </div>
+  <h3>A4 쪽수 추정</h3>
+  <div class="grid3">
+    <div class="field"><label class="f">글꼴 크기</label>
+      <select id="optFont"><option value="10">10pt</option><option value="11" selected>11pt</option><option value="12">12pt</option></select></div>
+    <div class="field"><label class="f">줄 간격</label>
+      <select id="optLine"><option value="160" selected>160%</option><option value="180">180%</option><option value="200">200%</option></select></div>
+    <div class="field"><label class="f">예상 쪽수</label>
+      <div class="stat" style="padding:10px 14px"><div class="v" id="sPage">0쪽</div></div></div>
+  </div>
+  <p class="note">쪽수는 A4 기본 여백(한글/워드 기본값) 기준 근사치입니다. 실제 쪽수는 여백·글꼴 종류·그림
+  포함 여부에 따라 달라질 수 있습니다.</p>
+  <!-- ad-slot -->
+</section>
+
+<article class="prose">
+  <h2>과제 글자수 세기 도구 소개</h2>
+  <p>"공백 포함 2,000자 이내"처럼 글자수 제한이 있는 과제·리포트·서평을 쓸 때, 텍스트를 붙여넣기만 하면
+  공백 포함/제외 글자수를 실시간으로 계산해 주는 도구입니다. 글자수 외에도 어절(단어) 수, 문장 수, 문단 수를
+  함께 보여 주어 글의 밀도를 점검할 수 있습니다.</p>
+  <p>국어 과제에서 자주 쓰는 <b>200자 원고지 매수</b>(공백·문장부호 포함 기준 근사)와, 글꼴 크기·줄 간격을
+  고른 뒤 확인하는 <b>A4 예상 쪽수</b>도 지원합니다. "10포인트 5장 분량" 같은 과제 조건을 미리 가늠할 때
+  유용합니다. 입력한 글은 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>입력창에 글을 쓰거나 붙여넣습니다. 결과는 입력과 동시에 갱신됩니다.</li>
+    <li>공백 포함/제외 중 과제 기준에 맞는 값을 확인합니다.</li>
+    <li>쪽수 추정이 필요하면 글꼴 크기와 줄 간격을 과제 조건에 맞게 선택하세요.</li>
+    <li><b>결과 복사</b>를 누르면 통계 요약이 클립보드에 복사됩니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>공백 포함과 제외, 과제는 보통 어느 쪽 기준인가요?</summary>
+      <div class="a">과제 공지에 명시된 기준을 따르는 것이 원칙입니다. 별도 언급이 없으면 한국 대학
+      과제·자소서에서는 "공백 포함"을 기준으로 하는 경우가 많습니다. 헷갈리면 두 값을 모두 확인해 여유 있게
+      맞추세요.</div></details>
+    <details><summary>줄바꿈(엔터)도 글자수에 포함되나요?</summary>
+      <div class="a">이 도구의 "공백 포함" 값은 줄바꿈 문자를 1자로 세지 않습니다(공백은 포함). 제출
+      시스템에 따라 줄바꿈을 세는 곳도 있으니 제한에 아슬아슬하다면 5~10자 여유를 두는 것이 안전합니다.</div></details>
+    <details><summary>원고지 매수는 어떻게 계산하나요?</summary>
+      <div class="a">공백 포함 글자수를 200으로 나눈 값을 올림해 계산하는 근사치입니다. 실제 원고지 작성
+      규칙(문단 첫 칸 비우기, 줄 바꿈 등)을 반영하면 실물 매수는 다소 늘어날 수 있습니다. 정확한 원고지
+      작성이 필요하면 실제 양식에 옮겨 확인하세요.</div></details>
+    <details><summary>영어 과제 단어 수(word count)도 확인할 수 있나요?</summary>
+      <div class="a">네. "단어(어절) 수"가 공백으로 구분된 단어 수이므로 영어 텍스트를 붙여넣으면 그대로
+      영문 word count로 사용할 수 있습니다.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"과제 글자수 세기","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"공백 포함/제외 글자수, 원고지 매수, A4 쪽수 추정 무료 글자수 계산기"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"과제는 공백 포함과 제외 중 어느 기준인가요?","acceptedAnswer":{"@type":"Answer","text":"과제 공지 기준을 따르되, 별도 언급이 없으면 공백 포함 기준이 많습니다. 두 값을 모두 확인하세요."}},
+{"@type":"Question","name":"원고지 매수는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"공백 포함 글자수를 200으로 나눠 올림한 근사치이며 실제 원고지 규칙 적용 시 다소 늘어날 수 있습니다."}},
+{"@type":"Question","name":"입력한 글이 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 모든 계산은 브라우저 안에서만 이루어집니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"과제 글자수 세기","item":"https://studyroom-kr.vercel.app/tools/word-count/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+/* pt별 A4 1쪽당 대략 글자수(공백 포함, 기본 여백, 160% 기준) */
+var BASE={10:1900,11:1600,12:1350};
+
+function calc(){
+  var t=$('txt').value;
+  var noNl=t.replace(/\r?\n/g,'');
+  var inc=noNl.length;
+  var exc=noNl.replace(/\s/g,'').length;
+  var words=t.trim()?t.trim().split(/\s+/).length:0;
+  var sents=(t.match(/[.!?。…]+(\s|$)|[다요죠]\s*[.!?\n]/g)||[]).length;
+  if(!sents&&t.trim()) sents=(t.match(/[.!?]/g)||[]).length||1;
+  var paras=t.trim()?t.split(/\n\s*\n|\n/).filter(function(p){return p.trim()}).length:0;
+  var paper=Math.ceil(inc/200);
+  $('sInc').textContent=inc.toLocaleString()+'자';
+  $('sExc').textContent=exc.toLocaleString()+'자';
+  $('sWord').textContent=words.toLocaleString();
+  $('sSent').textContent=sents.toLocaleString();
+  $('sPara').textContent=paras.toLocaleString();
+  $('sPaper').textContent=(inc?paper:0)+'매';
+  var per=BASE[+$('optFont').value]*160/(+$('optLine').value);
+  var pages=inc?Math.max(1,Math.round(inc/per*10)/10):0;
+  $('sPage').textContent=pages+'쪽';
+}
+$('txt').addEventListener('input',calc);
+$('optFont').addEventListener('change',calc);
+$('optLine').addEventListener('change',calc);
+$('btnClear').onclick=function(){ $('txt').value=''; calc(); };
+$('btnCopyStat').onclick=function(){
+  SR.copy('공백 포함 '+$('sInc').textContent+' / 공백 제외 '+$('sExc').textContent
+    +' / 단어 '+$('sWord').textContent+' / 원고지 '+$('sPaper').textContent
+    +' / 예상 '+$('sPage').textContent,'결과가 복사되었습니다');
+};
+calc();
+})();
+</script>
+</body>
+</html>

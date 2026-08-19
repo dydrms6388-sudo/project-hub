@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>이미지 변환 - PNG JPG WEBP BMP AVIF 변환기</title>
+<meta name="description" content="이미지 변환: PNG, JPG, WEBP, BMP 상호 변환과 AVIF 저장(지원 브라우저). 여러 장 일괄 변환 후 ZIP 다운로드. 서버 업로드 없음.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"이미지 변환","description":"이미지 변환: PNG, JPG, WEBP, BMP 상호 변환과 AVIF 저장(지원 브라우저). 여러 장 일괄 변환 후 ZIP 다운로드. 서버 업로드 없음.","url":"https://imagelab-kr.vercel.app/tools/convert/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"HEIC(아이폰) 사진도 변환되나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저가 HEIC 디코딩을 지원하는 경우(사파리 등)에만 가능합니다. 크롬 등 대부분의 브라우저는 HEIC를 읽지 못하므로, 아이폰 설정에서 「호환성 우선」으로 촬영하거나 전용 변환 도구를 이용하세요."}},{"@type":"Question","name":"JPG를 PNG로 바꾸면 화질이 좋아지나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. JPG 압축 과정에서 이미 손실된 정보는 되돌릴 수 없습니다. PNG로 바꾸면 이후 재편집 시 추가 손실을 막을 수 있을 뿐, 원본 화질로 복원되는 것은 아닙니다."}},{"@type":"Question","name":"AVIF가 선택되지 않아요.","acceptedAnswer":{"@type":"Answer","text":"사용 중인 브라우저가 AVIF 저장(인코딩)을 지원하지 않는 경우입니다. 최신 크롬에서는 대부분 지원됩니다. 보기(디코딩)만 지원하고 저장은 안 되는 브라우저도 있습니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"이미지 변환","item":"https://imagelab-kr.vercel.app/tools/convert/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 이미지 변환</nav>
+<h1>이미지 변환</h1>
+<p class="lead">PNG·JPG·WEBP·BMP로 일괄 변환합니다. AVIF는 브라우저가 지원할 때 선택할 수 있습니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지 여러 장을 선택하거나 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 (여러 장 가능) · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*" multiple>
+</div>
+<ul class="flist" id="list"></ul>
+<div class="field-row">
+  <label for="fmt">변환할 형식</label>
+  <select id="fmt" style="max-width:280px">
+    <option value="png">PNG (무손실·투명 지원)</option>
+    <option value="jpg" selected>JPG (사진에 적합)</option>
+    <option value="webp">WEBP (작은 용량)</option>
+    <option value="avif">AVIF</option>
+    <option value="bmp">BMP (무압축)</option>
+  </select>
+</div>
+<div class="field" id="qRow">
+  <label>품질 <span id="qv">90%</span></label>
+  <input type="range" id="q" min="0.3" max="1" step="0.05" value="0.9">
+</div>
+<div class="btn-row"><button class="btn btn-primary" id="run" disabled>변환하기</button>
+<button class="btn" id="zipAll" style="display:none">전체 ZIP 다운로드</button></div>
+<p class="status" id="status"></p>
+<ul class="flist" id="out"></ul>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>이미지 변환 소개</h2>
+<p>이미지 변환 도구는 PNG, JPG, WEBP, BMP 형식을 서로 바꿔 줍니다. AVIF는 브라우저가 인코딩을 지원하는 경우에만 선택할 수 있으며, 미지원 브라우저에서는 자동으로 비활성화됩니다. 여러 장을 올려 한 번에 변환하고 ZIP으로 받을 수 있습니다.</p>
+<p>형식마다 특성이 다릅니다. PNG는 무손실이고 투명을 지원해 로고·스크린샷에 적합하고, JPG는 사진 용량 대비 화질이 좋으며, WEBP·AVIF는 같은 화질에서 더 작은 용량을 냅니다. 투명 이미지를 JPG로 바꾸면 투명 영역은 흰색으로 채워집니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>이미지를 여러 장 선택</li>
+<li>변환할 형식과 품질(손실 형식) 선택</li>
+<li>「변환하기」 후 개별 다운로드 또는 전체 ZIP 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>HEIC(아이폰) 사진도 변환되나요?</summary><p>브라우저가 HEIC 디코딩을 지원하는 경우(사파리 등)에만 가능합니다. 크롬 등 대부분의 브라우저는 HEIC를 읽지 못하므로, 아이폰 설정에서 「호환성 우선」으로 촬영하거나 전용 변환 도구를 이용하세요.</p></details>
+<details class="faq"><summary>JPG를 PNG로 바꾸면 화질이 좋아지나요?</summary><p>아니요. JPG 압축 과정에서 이미 손실된 정보는 되돌릴 수 없습니다. PNG로 바꾸면 이후 재편집 시 추가 손실을 막을 수 있을 뿐, 원본 화질로 복원되는 것은 아닙니다.</p></details>
+<details class="faq"><summary>AVIF가 선택되지 않아요.</summary><p>사용 중인 브라우저가 AVIF 저장(인코딩)을 지원하지 않는 경우입니다. 최신 크롬에서는 대부분 지원됩니다. 보기(디코딩)만 지원하고 저장은 안 되는 브라우저도 있습니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var files = [], results = [];
+
+  /* AVIF 인코딩 지원 감지 */
+  (function () {
+    var c = IL.canvasOf(2, 2);
+    c.toBlob(function (b) {
+      var ok = !!b && b.type === 'image/avif';
+      var opt = $('fmt').querySelector('option[value=avif]');
+      if (!ok) { opt.disabled = true; opt.textContent = 'AVIF (이 브라우저는 저장 미지원)'; }
+      else { opt.textContent = 'AVIF (지원됨)'; }
+    }, 'image/avif', 0.8);
+  })();
+
+  IL.bindDrop($('drop'), $('fin'), function (fs) {
+    files = files.concat(fs); renderList();
+  });
+  function renderList() {
+    var list = $('list'); list.innerHTML = '';
+    files.forEach(function (f, i) {
+      var li = document.createElement('li');
+      var meta = document.createElement('div'); meta.className = 'meta';
+      meta.innerHTML = '<b></b>' + IL.fmtBytes(f.size) + ' · ' + (f.type || '형식 미상');
+      meta.querySelector('b').textContent = f.name;
+      var del = document.createElement('button'); del.className = 'btn btn-sm'; del.textContent = '삭제';
+      del.onclick = function () { files.splice(i, 1); renderList(); };
+      li.appendChild(meta); li.appendChild(del);
+      list.appendChild(li);
+    });
+    $('run').disabled = files.length === 0;
+  }
+
+  $('fmt').addEventListener('change', function () {
+    var f = $('fmt').value;
+    $('qRow').style.display = (f === 'jpg' || f === 'webp' || f === 'avif') ? '' : 'none';
+  });
+  $('q').addEventListener('input', function () { $('qv').textContent = Math.round($('q').value * 100) + '%'; });
+
+  /* 24bit BMP 인코더 (BI_RGB, bottom-up) */
+  function encodeBMP(canvas) {
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width, h = canvas.height;
+    var data = ctx.getImageData(0, 0, w, h).data;
+    var rowSize = Math.ceil(w * 3 / 4) * 4;
+    var imgSize = rowSize * h;
+    var buf = new ArrayBuffer(54 + imgSize);
+    var v = new DataView(buf);
+    v.setUint8(0, 0x42); v.setUint8(1, 0x4D);
+    v.setUint32(2, 54 + imgSize, true); v.setUint32(10, 54, true);
+    v.setUint32(14, 40, true); v.setInt32(18, w, true); v.setInt32(22, h, true);
+    v.setUint16(26, 1, true); v.setUint16(28, 24, true);
+    v.setUint32(34, imgSize, true); v.setInt32(38, 2835, true); v.setInt32(42, 2835, true);
+    var u8 = new Uint8Array(buf);
+    for (var y = 0; y < h; y++) {
+      var dst = 54 + (h - 1 - y) * rowSize;
+      for (var x = 0; x < w; x++) {
+        var s = (y * w + x) * 4, a = data[s + 3] / 255;
+        /* 투명 → 흰 배경 합성 */
+        u8[dst + x * 3] = Math.round(data[s + 2] * a + 255 * (1 - a));
+        u8[dst + x * 3 + 1] = Math.round(data[s + 1] * a + 255 * (1 - a));
+        u8[dst + x * 3 + 2] = Math.round(data[s] * a + 255 * (1 - a));
+      }
+    }
+    return new Blob([buf], { type: 'image/bmp' });
+  }
+
+  var MIME = { png: 'image/png', jpg: 'image/jpeg', webp: 'image/webp', avif: 'image/avif' };
+
+  $('run').addEventListener('click', async function () {
+    var fmt = $('fmt').value, q = parseFloat($('q').value);
+    var out = $('out'); out.innerHTML = ''; results = [];
+    $('run').disabled = true;
+    try {
+      for (var i = 0; i < files.length; i++) {
+        $('status').textContent = (i + 1) + ' / ' + files.length + ' 변환 중…';
+        var img = await IL.loadImage(files[i]);
+        var c = IL.canvasOf(IL.imgW(img), IL.imgH(img)), ctx = c.getContext('2d');
+        if (fmt === 'jpg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); }
+        ctx.drawImage(img, 0, 0);
+        if (img.close) img.close();
+        var blob;
+        if (fmt === 'bmp') blob = encodeBMP(c);
+        else blob = await IL.toBlob(c, MIME[fmt], (fmt === 'png') ? undefined : q);
+        var name = IL.outName(files[i].name, fmt, fmt);
+        results.push({ name: name, blob: blob });
+        var li = document.createElement('li');
+        var meta = document.createElement('div'); meta.className = 'meta';
+        meta.innerHTML = '<b></b>' + IL.fmtBytes(files[i].size) + ' → ' + IL.fmtBytes(blob.size);
+        meta.querySelector('b').textContent = name;
+        var dl = document.createElement('button'); dl.className = 'btn btn-sm btn-primary'; dl.textContent = '다운로드';
+        (function (b, n) { dl.onclick = function () { IL.download(b, n); }; })(blob, name);
+        li.appendChild(meta); li.appendChild(dl);
+        out.appendChild(li);
+      }
+      $('status').textContent = '완료!';
+      $('zipAll').style.display = results.length > 1 ? '' : 'none';
+    } catch (e) {
+      $('status').textContent = '오류: ' + e.message;
+    }
+    $('run').disabled = false;
+  });
+
+  $('zipAll').addEventListener('click', async function () {
+    var entries = [];
+    for (var i = 0; i < results.length; i++) {
+      entries.push({ name: results[i].name, data: new Uint8Array(await results[i].blob.arrayBuffer()) });
+    }
+    IL.download(IL.makeZip(entries), 'converted-images.zip');
+  });
+})();
+</script>
+</body>
+</html>
