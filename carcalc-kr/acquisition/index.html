@@ -109,7 +109,7 @@ for (const k of Object.keys(ACQ_RATES)) {
 }
 function run() {
   const price = C.num($('price'));
-  const type = $('type').value;
+  const type = ACQ_RATES[$('type').value] ? $('type').value : 'passengerNonbusiness';
   const ov = C.num($('rateOv'));
   if (price <= 0) { alert('과세표준(차량 가액)을 입력하세요.'); return; }
   const st = [];

@@ -433,7 +433,7 @@ async function smoke(file) {
   };
   g.alert = () => {}; g.confirm = () => false;
   g.location = { reload() {} };
-  g.navigator = g.navigator || {};
+  // navigator 는 Node 기본 객체를 그대로 사용
   // window.CC 로더(classic script) 평가
   new Script(readFileSync(join(ROOT, "assets", "app.js"), "utf8"), { filename: "app.js" }).runInThisContext();
   const tmp = join(dirname(file), "__smoke.mjs");
