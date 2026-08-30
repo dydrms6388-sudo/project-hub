@@ -43,6 +43,24 @@
   --lav:#c4b5fd;--lav-dim:rgba(196,181,253,.13);
   --amber:#fcd34d;--rose:#fda4af;--rose-dim:rgba(253,164,175,.12);
 }
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f4f7f5;--card:#ffffff;--card2:#edf2ef;--line:#dbe4df;--line2:#c6d3cc;
+  --tx:#182019;--tx2:#46524b;--tx3:#5d6a63;
+  --mint:#059669;--mint2:#047857;--mint-dim:rgba(5,150,105,.1);
+  --lav:#6d28d9;--lav-dim:rgba(109,40,217,.09);
+  --amber:#a16207;--rose:#be123c;--rose-dim:rgba(190,18,60,.08);
+}
+[data-theme="light"] h1{background:linear-gradient(90deg,#047857,#0d9488,#6d28d9);-webkit-background-clip:text;background-clip:text}
+[data-theme="light"] .tabs{background:rgba(244,247,245,.92)}
+[data-theme="light"] .nav a,[data-theme="light"] footer a{color:#2563eb}
+[data-theme="light"] .crisis .tel .num{color:#111827}
+[data-theme="light"] .crisis{background:linear-gradient(180deg,rgba(225,29,72,.06),var(--card))}
+[data-theme="light"] .borb .ct{color:#065f46}
+[data-theme="light"] .prose p,[data-theme="light"] .prose ol,[data-theme="light"] .prose ul{color:#3b463f}
+[data-theme="light"] .faq b{color:#111827}
+[data-theme="light"] .disc{color:#7a5b16;background:rgba(252,211,77,.14);border-color:rgba(161,98,7,.35)}
+[data-theme="light"] .imgov p{color:#fff}
+[data-theme="light"] #lockScreen p{color:var(--tx)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -272,7 +290,8 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
   <div class="hello">
     <div class="av" id="helloAv">🌱</div>
     <div><div class="who" id="helloName">안녕하세요</div><div class="days" id="helloDays"></div></div>
-    <button class="gear" id="bigBtn" aria-label="큰 글씨 켜고 끄기" aria-pressed="false" style="font-size:15px;font-weight:800">가+</button>
+    <button class="gear" id="themeBtn" aria-label="밝은 화면과 어두운 화면 전환" style="margin-left:auto">🌓</button>
+    <button class="gear" id="bigBtn" aria-label="큰 글씨 켜고 끄기" aria-pressed="false" style="margin-left:0;font-size:15px;font-weight:800">가+</button>
     <button class="gear" id="gearBtn" aria-label="설정 열기" style="margin-left:0">⚙️</button>
   </div>
 
@@ -700,7 +719,7 @@ $("#restoreGo").addEventListener("click",function(){
   if(!applied){toast("복원할 수 있는 내용이 없어요 😢");return}
   toast("복원했어요! 새로고침할게요");setTimeout(function(){location.reload()},900);
 });
-// 큰 글씨 2단계: 가+ → 1.15배 → 1.3배 → 원래대로 (구버전 true 값은 1단계로 호환)
+// 큰 글씨 3상태 순환: 원래대로 → 1.15배 → 1.3배 (구버전 true 값은 1단계로 호환)
 function bigLevel(){return settings.big===true?1:(Number(settings.big)||0)}
 function applyBig(){
   var lv=bigLevel();
@@ -709,6 +728,19 @@ function applyBig(){
   b.title=["글씨 크게","글씨 더 크게","원래 크기로"][lv];
 }
 $("#bigBtn").addEventListener("click",function(){settings.big=(bigLevel()+1)%3;LS.set("set",settings);applyBig()});
+// 테마: 명시 선택 > 허브(tec-theme) 저장값 > 다크 기본
+function applyTheme(){
+  var t=settings.theme;
+  if(!t){try{t=localStorage.getItem("tec-theme")==="light"?"light":"dark"}catch(e){t="dark"}}
+  if(t==="light")document.documentElement.setAttribute("data-theme","light");
+  else document.documentElement.removeAttribute("data-theme");
+  $("#themeBtn").textContent=t==="light"?"☀️":"🌓";
+}
+$("#themeBtn").addEventListener("click",function(){
+  var cur=document.documentElement.getAttribute("data-theme")==="light"?"light":"dark";
+  settings.theme=cur==="light"?"dark":"light";LS.set("set",settings);applyTheme();
+  toast(settings.theme==="light"?"밝은 화면으로 바꿨어요 ☀️":"어두운 화면으로 바꿨어요 🌙");
+});
 $("#wipeBtn").addEventListener("click",function(){
   if(!confirm("모든 기록(기분·일기·알림·프로필)을 이 기기에서 완전히 삭제할까요? 되돌릴 수 없어요."))return;
   KEYS.forEach(function(k){LS.del(k)});
@@ -834,11 +866,23 @@ function stepBreath(){
   try{if(navigator.vibrate&&$("#breathVib").checked)navigator.vibrate(ph[0]==="들이쉬기"?[40,60,40]:[40])}catch(e){}
   breathCue(ph[0],ph[1]);
 }
+var bCueNodes=null;
+function stopCue(){
+  if(!bCueNodes)return;
+  try{
+    var c=getCtx(),t=c.currentTime;
+    bCueNodes.g.gain.cancelScheduledValues(t);bCueNodes.g.gain.setValueAtTime(bCueNodes.g.gain.value||0.0001,t);
+    bCueNodes.g.gain.linearRampToValueAtTime(0.0001,t+0.08);bCueNodes.o.stop(t+0.1);
+  }catch(e){}
+  bCueNodes=null;
+}
 function breathCue(phase,secs){
+  stopCue(); // 이전 위상 톤 정리(정지·모드 전환 시 잔여음 방지)
   if(!$("#breathSound").checked)return;
   try{
     var ctx=getCtx();if(!ctx)return;
     var o=ctx.createOscillator(),g=ctx.createGain();
+    bCueNodes={o:o,g:g};
     o.type="sine";o.connect(g);g.connect(ctx.destination);
     // 위상 전체 길이를 커버해 눈 감고도 시작~끝을 소리로 알 수 있게 한다
     var t0=ctx.currentTime,dur=phase==="멈추기"?0.25:Math.max(0.4,secs*0.92);
@@ -881,6 +925,8 @@ function startBreath(){
 }
 function stopBreath(){
   if(bTimer){clearInterval(bTimer);bTimer=null}
+  stopCue();
+  try{if(navigator.vibrate)navigator.vibrate(0)}catch(e){}
   $("#bPhase").textContent="준비";$("#bCount").textContent="–";
   var orb=$("#borb");orb.style.transitionDuration=".5s";orb.style.transform="scale(.72)";
   $("#breathToggle").textContent="호흡 시작하기";
@@ -1064,9 +1110,9 @@ function icsForAlarm(a){
   return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//tomatoeggcat//mind-care//KO","BEGIN:VEVENT",
     "UID:mc-"+a.id+"@tomatoeggcat.com","DTSTAMP:"+stamp,"DTSTART:"+dt,
     "RRULE:FREQ=WEEKLY;BYDAY="+days.map(function(x){return ICSDAY[x]}).join(","),
-    "SUMMARY:🌿 "+a.label.replace(/[\n,;]/g," "),
+    "SUMMARY:🌿 "+a.label.replace(/[\\\n,;]/g," "),
     "DESCRIPTION:마음케어 리마인더 · tomatoeggcat.com/mind-care",
-    "BEGIN:VALARM","TRIGGER:PT0S","ACTION:DISPLAY","DESCRIPTION:"+a.label.replace(/[\n,;]/g," "),"END:VALARM",
+    "BEGIN:VALARM","TRIGGER:PT0S","ACTION:DISPLAY","DESCRIPTION:"+a.label.replace(/[\\\n,;]/g," "),"END:VALARM",
     "END:VEVENT","END:VCALENDAR"].join("\r\n");
 }
 function renderAlarms(){
@@ -1095,7 +1141,10 @@ function renderAlarms(){
         toast("캘린더 파일을 받았어요. 열면 기기 캘린더가 대신 알려줘요 📅");
       }catch(e){toast("이 브라우저에선 캘린더 내보내기가 안 돼요")}
     });
-    row.querySelector(".del").addEventListener("click",function(){alarms=alarms.filter(function(x){return x.id!==a.id});LS.set("alarms",alarms);renderAlarms()});
+    row.querySelector(".del").addEventListener("click",function(){
+      if(editingId===a.id){editingId=null;$("#alAdd").textContent="추가"}
+      alarms=alarms.filter(function(x){return x.id!==a.id});LS.set("alarms",alarms);renderAlarms();
+    });
     box.appendChild(row);
   });
 }
@@ -1399,7 +1448,7 @@ showTab=function(name){
 if(!storageOK)$("#storageWarn").hidden=false;
 if(settings.bSound===true)$("#breathSound").checked=true;
 if(settings.bVib===false)$("#breathVib").checked=false;
-renderMood();renderTodos();renderThoughts();renderGrats();renderAlarms();renderPerm();applyBig();updatePinUi();
+renderMood();renderTodos();renderThoughts();renderGrats();renderAlarms();renderPerm();applyBig();applyTheme();updatePinUi();
 if(profile){enterApp();if(settings.pin)showLock()}else{$("#loginCard").hidden=false}
 checkAlarms();
 document.addEventListener("visibilitychange",function(){if(!document.hidden){checkAlarms();renderMood();renderTodos()}});
