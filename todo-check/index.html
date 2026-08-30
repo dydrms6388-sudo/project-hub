@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>오늘할일 체크리스트 — 간편 로그인·알람·동기부여 투두앱 | TomatoEggCat</title>
+<meta name="description" content="설치 없이 쓰는 초간단 할일 체크리스트. 닉네임 간편 로그인, 시간 알람, 연속 달성 스트릭·레벨·응원 메시지로 동기부여까지. 모든 데이터는 내 브라우저에만 저장됩니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/todo-check/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="오늘할일 체크리스트 — 알람·동기부여 투두앱" />
+<meta property="og:description" content="닉네임 간편 로그인, 시간 알람, 스트릭·레벨 동기부여까지. 설치 없이 바로 쓰는 할일 체크리스트." />
+<meta property="og:url" content="https://tomatoeggcat.com/todo-check/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="오늘할일 체크리스트 — 알람·동기부여 투두앱" />
+<meta name="twitter:description" content="닉네임 간편 로그인, 시간 알람, 스트릭·레벨 동기부여까지. 설치 없이 바로 쓰는 할일 체크리스트." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"오늘할일 체크리스트","description":"닉네임 간편 로그인, 시간 알람, 스트릭·레벨 동기부여 기능을 갖춘 무료 할일 체크리스트 웹앱. 모든 데이터는 사용자의 브라우저에만 저장된다.","applicationCategory":"WebApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/todo-check/"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"회원가입 없이 어떻게 로그인하나요?","acceptedAnswer":{"@type":"Answer","text":"이메일이나 비밀번호 없이 닉네임과 아바타만 고르면 바로 시작하는 간편 로그인입니다. 프로필과 할일 데이터는 서버가 아니라 지금 쓰는 브라우저의 저장공간(localStorage)에만 보관되므로, 같은 기기·같은 브라우저에서 다시 열면 이어서 쓸 수 있습니다. 기기를 공유한다면 프로필을 여러 개 만들어 전환할 수 있습니다."}},
+{"@type":"Question","name":"알람은 어떻게 동작하나요?","acceptedAnswer":{"@type":"Answer","text":"할일에 시간을 정해 두면 그 시간에 브라우저 알림과 화면 배너, 알림음으로 알려 드립니다. 브라우저 알림 권한을 허용하면 다른 탭을 보고 있어도 알림이 뜹니다. 다만 서버가 없는 웹앱 특성상 브라우저(탭)가 완전히 닫혀 있으면 알람이 울리지 않으니, 탭을 열어 두거나 홈 화면에 추가해 두는 것을 권장합니다."}},
+{"@type":"Question","name":"내 할일 데이터가 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 할일 내용, 프로필, 달성 기록은 모두 여러분의 브라우저 안에만 저장되며 서버로 전송되지 않습니다. 유일한 예외는 여러분이 직접 '달성 카드 공유' 링크를 복사할 때로, 그때만 달성 요약(닉네임·달성률·스트릭)이 URL 안에 담겨 이동합니다. 브라우저 데이터를 삭제하면 기록도 함께 지워지니 주의하세요."}},
+{"@type":"Question","name":"스트릭과 레벨은 어떤 기준인가요?","acceptedAnswer":{"@type":"Answer","text":"스트릭은 '하루에 할일을 1개 이상 완료한 날'이 연속으로 이어진 일수입니다. 하루라도 건너뛰면 다시 1부터 시작합니다. 레벨은 완료할 때마다 쌓이는 경험치(할일 1개당 10XP)로 올라가며, 레벨마다 새 칭호가 붙습니다. 완벽하지 않아도 매일 조금씩 하는 습관을 만드는 데 초점을 맞춘 재미용 지표입니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"생산성","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"오늘할일 체크리스트","item":"https://tomatoeggcat.com/todo-check/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--accent:#34d399;--accent2:#6ee7b7;--bg:#0a0a0a;--card:#171717;--line:#262626}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding:22px 18px 64px}
+a{color:var(--accent2)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#6ee7b7,#34d399,#10b981);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-emoji{font-size:34px;line-height:1;margin-bottom:4px}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;color:#9ca3af;margin-bottom:6px}
+input[type=text],input[type=time]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #333;background:#0f0f0f;color:#ededed;font-size:16px;font-family:inherit}
+input[type=time]{color-scheme:dark}
+.hint{font-size:12px;color:#6b7280;margin-top:5px}
+button{font-family:inherit}
+.cta{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(90deg,#10b981,#34d399);color:#04150d;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+.cta:active{transform:translateY(1px)}
+.cta:disabled{opacity:.45;cursor:not-allowed}
+.ghost{background:#141414;border:1px solid #333;color:#e5e7eb;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;min-height:46px}
+/* login */
+.avatars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:4px 0 14px}
+.avatars button{font-size:26px;padding:10px 0;background:#0f0f0f;border:1px solid #333;border-radius:12px;cursor:pointer;min-height:52px}
+.avatars button.on{border-color:var(--accent);background:rgba(52,211,153,.14);box-shadow:0 0 0 1px var(--accent)}
+.profList{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.profList button{display:flex;align-items:center;gap:10px;text-align:left;background:#0f0f0f;border:1px solid #333;border-radius:12px;padding:11px 14px;color:#ededed;font-size:15px;cursor:pointer;min-height:50px}
+.profList button .em{font-size:22px}
+.profList button small{margin-left:auto;color:#6b7280;font-size:12px}
+/* header bar */
+.me{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.me .avatar{font-size:26px;background:#171717;border:1px solid var(--line);border-radius:12px;width:46px;height:46px;display:flex;align-items:center;justify-content:center}
+.me .who{line-height:1.3}
+.me .who b{font-size:16px}
+.me .who .sub{font-size:12px;color:#9ca3af}
+.me .switch{margin-left:auto;background:#141414;border:1px solid #333;color:#9ca3af;border-radius:999px;padding:8px 13px;font-size:12.5px;cursor:pointer;min-height:38px}
+/* progress */
+.dash{display:flex;align-items:center;gap:16px}
+.ring{position:relative;width:92px;height:92px;flex:0 0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+.ring .pct small{font-size:10px;font-weight:600;color:#9ca3af}
+.dstats{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dstat{background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:8px 12px}
+.dstat .v{font-size:17px;font-weight:800}
+.dstat .k{font-size:11px;color:#9ca3af}
+.quote{margin-top:14px;font-size:13.5px;color:#a7f3d0;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:10px 13px}
+.cheer{margin-top:10px;font-size:13px;color:#fbbf24;display:none}
+/* add */
+.addRow{display:flex;gap:8px}
+.addRow input[type=text]{flex:1}
+.addRow .add{flex:0 0 auto;width:52px;border:0;border-radius:12px;background:linear-gradient(90deg,#10b981,#34d399);color:#04150d;font-size:22px;font-weight:800;cursor:pointer}
+.optRow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
+.optRow input[type=time]{width:130px;padding:9px 10px;font-size:14px}
+.prioChips{display:flex;gap:6px}
+.prioChips button{padding:8px 12px;font-size:13px;font-weight:600;background:#0f0f0f;color:#9ca3af;border:1px solid #333;border-radius:999px;cursor:pointer;min-height:38px}
+.prioChips button.on[data-v="high"]{border-color:#f87171;color:#fca5a5;background:rgba(248,113,113,.12)}
+.prioChips button.on[data-v="mid"]{border-color:#fbbf24;color:#fde68a;background:rgba(251,191,36,.12)}
+.prioChips button.on[data-v="low"]{border-color:#60a5fa;color:#93c5fd;background:rgba(96,165,250,.12)}
+.rptToggle{display:flex;align-items:center;gap:6px;font-size:13px;color:#9ca3af;cursor:pointer;user-select:none}
+.rptToggle input{accent-color:var(--accent)}
+.suggest{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.suggest button{font-size:12.5px;background:#111827;color:#9fb4d8;border:1px solid #2b3648;border-radius:999px;padding:7px 12px;cursor:pointer;min-height:36px}
+/* list */
+.secTitle{display:flex;align-items:center;gap:8px;font-size:13px;color:#9ca3af;margin:16px 0 8px;font-weight:700}
+.secTitle .n{background:#262626;border-radius:999px;padding:1px 9px;font-size:12px}
+ul.todo{list-style:none;margin:0;padding:0}
+ul.todo li{display:flex;align-items:center;gap:10px;background:#0f0f0f;border:1px solid #262626;border-radius:14px;padding:11px 12px;margin-bottom:8px;transition:opacity .2s}
+ul.todo li.done{opacity:.55}
+ul.todo li.done .txt{text-decoration:line-through;color:#9ca3af}
+.chk{flex:0 0 auto;width:28px;height:28px;border-radius:9px;border:2px solid #3f3f46;background:transparent;cursor:pointer;font-size:16px;line-height:1;color:#04150d;display:flex;align-items:center;justify-content:center;padding:0}
+li.done .chk{background:var(--accent);border-color:var(--accent)}
+.tmain{flex:1;min-width:0}
+.txt{font-size:15px;word-break:break-word}
+.tmeta{display:flex;gap:6px;margin-top:3px;flex-wrap:wrap}
+.badge{font-size:11px;border-radius:999px;padding:1px 8px;border:1px solid #333;color:#9ca3af}
+.badge.time{color:#93c5fd;border-color:#2b3a55}
+.badge.high{color:#fca5a5;border-color:#5b2a2a}
+.badge.mid{color:#fde68a;border-color:#54471f}
+.badge.low{color:#93c5fd;border-color:#2b3a55}
+.badge.rpt{color:#a7f3d0;border-color:#1d4436}
+.badge.carry{color:#fdba74;border-color:#573a1d}
+.del{flex:0 0 auto;background:none;border:0;color:#525252;font-size:17px;cursor:pointer;padding:6px;min-width:34px;min-height:34px}
+.del:hover{color:#f87171}
+.empty{color:#6b7280;font-size:14px;text-align:center;padding:18px 0}
+.notifRow{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:#9ca3af;flex-wrap:wrap}
+.notifRow button{background:#111827;border:1px solid #2b3648;color:#9fb4d8;border-radius:999px;padding:8px 13px;font-size:12.5px;cursor:pointer;min-height:38px}
+.notifRow .ok{color:#a7f3d0}
+/* report */
+.report{position:relative;border-radius:18px;padding:24px 22px 18px;background:linear-gradient(160deg,#064e3b 0%,#065f46 50%,#047857 100%);color:#ecfdf5;box-shadow:0 10px 40px rgba(0,0,0,.5);overflow:hidden}
+.report .big{font-size:42px;font-weight:800;line-height:1.1}
+.report .sub{color:#a7f3d0;font-size:14px}
+.report .row{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap}
+.report .cell b{display:block;font-size:20px}
+.report .cell span{font-size:11.5px;color:#a7f3d0}
+.report .q{margin-top:14px;font-size:13.5px;border-top:1px dashed rgba(255,255,255,.25);padding-top:12px;color:#d1fae5}
+.report .wm{margin-top:12px;text-align:right;font-size:11px;color:#6ee7b7}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.actions button{flex:1 1 calc(50% - 4px);min-height:46px;margin:0;padding:12px;border-radius:12px;border:1px solid #333;background:#141414;color:#e5e7eb;font-size:14px;font-weight:600;cursor:pointer}
+.actions button.primary{background:rgba(52,211,153,.14);border-color:var(--accent);color:var(--accent2)}
+.actions button.remix{flex-basis:100%;background:#0f0f0f}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#34d399;color:#04150d;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;z-index:60;max-width:88vw;text-align:center}
+.toast.show{opacity:1}
+.inbound{display:none;position:sticky;top:0;z-index:50;margin:-22px -18px 18px;padding:12px 18px;background:linear-gradient(90deg,#10b981,#34d399);color:#04150d;font-weight:800;text-align:center}
+.inbound button{margin-left:8px;padding:8px 14px;border:0;border-radius:999px;background:#04150d;color:#a7f3d0;font-size:13px;font-weight:700;cursor:pointer;min-height:40px}
+.adbox{margin:26px 0 8px}
+h2{font-size:18px;margin:30px 0 8px}
+.prose p{color:#d4d4d4;font-size:14.5px}
+.prose ol,.prose ul{color:#d4d4d4;font-size:14.5px;padding-left:20px}
+.prose li{margin:5px 0}
+.faq{border-top:1px solid #262626;padding:14px 0}
+.faq b{display:block;margin-bottom:4px;color:#f3f4f6}
+.faq p{margin:0;color:#b9b9b9;font-size:14px}
+.disc{font-size:12.5px;color:#8a8a8a;background:#111;border:1px solid #232323;border-radius:12px;padding:12px 14px;margin-top:14px}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:#1f2937;color:#cdd6ff;padding:8px 13px;border-radius:999px;text-decoration:none;min-height:40px;display:inline-flex;align-items:center}
+footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
+/* confetti */
+.confetti{position:fixed;top:-12px;font-size:18px;pointer-events:none;z-index:70;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.7}}
+@media (prefers-reduced-motion:reduce){.confetti{display:none}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="inbound" id="inbound"><span id="inboundMsg">친구가 오늘의 달성 카드를 공유했어요 ✅</span><button id="tryMe">나도 해보기 →</button></div>
+
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 생산성 › 오늘할일 체크리스트</div>
+<div class="hero-emoji">✅</div>
+<h1>오늘할일 체크리스트</h1>
+<p class="lead">닉네임만으로 <b>간편 로그인</b>, 시간 <b>알람</b>, 스트릭·레벨 <b>동기부여</b>까지. 설치 없이 브라우저에서 바로 쓰는 할일 체크리스트예요. 데이터는 내 기기에만 저장됩니다.</p>
+
+<!-- ===== shared card (inbound view) ===== -->
+<div id="sharedView" class="hidden">
+  <div class="report" id="sharedCard"></div>
+  <div class="actions"><button class="cta remix" id="sharedStart" style="border:0">나도 오늘 체크리스트 시작하기 ✅</button></div>
+</div>
+
+<!-- ===== login ===== -->
+<div class="card hidden" id="loginCard">
+  <label>아바타 고르기</label>
+  <div class="avatars" id="avatarGrid"></div>
+  <label for="nick">닉네임</label>
+  <input type="text" id="nick" maxlength="12" placeholder="예: 지민, 갓생토마토" autocomplete="off" />
+  <p class="hint">이메일·비밀번호 없이 시작해요. 프로필과 할일은 이 브라우저에만 저장됩니다.</p>
+  <button class="cta" id="loginBtn" style="margin-top:8px">간편 로그인으로 시작 →</button>
+  <div class="profList" id="profList"></div>
+</div>
+
+<!-- ===== app ===== -->
+<div id="app" class="hidden">
+  <div class="me">
+    <div class="avatar" id="meAvatar">🍅</div>
+    <div class="who"><b id="meNick"></b><div class="sub" id="meSub"></div></div>
+    <button class="switch" id="switchBtn">프로필 전환</button>
+  </div>
+
+  <div class="card">
+    <div class="dash">
+      <div class="ring">
+        <svg width="92" height="92" viewBox="0 0 92 92">
+          <circle cx="46" cy="46" r="40" fill="none" stroke="#262626" stroke-width="9"/>
+          <circle id="ringBar" cx="46" cy="46" r="40" fill="none" stroke="#34d399" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3" style="transition:stroke-dashoffset .5s"/>
+        </svg>
+        <div class="pct"><span id="pctNum">0%</span><small>오늘 달성</small></div>
+      </div>
+      <div class="dstats">
+        <div class="dstat"><div class="v" id="stStreak">🔥 0일</div><div class="k">연속 달성</div></div>
+        <div class="dstat"><div class="v" id="stLevel">Lv.1</div><div class="k" id="stTitle">새싹 실천러</div></div>
+        <div class="dstat"><div class="v" id="stToday">0/0</div><div class="k">오늘 완료</div></div>
+        <div class="dstat"><div class="v" id="stTotal">0</div><div class="k">누적 완료</div></div>
+      </div>
+    </div>
+    <div class="quote" id="quote"></div>
+    <div class="cheer" id="cheer"></div>
+  </div>
+
+  <div class="card">
+    <label for="taskInput">할일 추가</label>
+    <div class="addRow">
+      <input type="text" id="taskInput" maxlength="60" placeholder="예: 물 2L 마시기, 보고서 초안 쓰기" autocomplete="off" enterkeyhint="done" />
+      <button class="add" id="addBtn" aria-label="할일 추가">＋</button>
+    </div>
+    <div class="optRow">
+      <input type="time" id="taskTime" aria-label="알람 시간(선택)" />
+      <div class="prioChips" id="prioChips">
+        <button data-v="high">🔴 중요</button>
+        <button data-v="mid" class="on">🟡 보통</button>
+        <button data-v="low">🔵 여유</button>
+      </div>
+      <label class="rptToggle"><input type="checkbox" id="taskRpt" />매일 반복</label>
+    </div>
+    <p class="hint">시간을 정하면 그 시간에 알람이 울려요. '매일 반복'은 자정에 자동으로 다시 체크리스트에 올라옵니다.</p>
+    <div class="suggest" id="suggest"></div>
+
+    <div class="secTitle">📋 오늘 할일 <span class="n" id="cntOpen">0</span></div>
+    <ul class="todo" id="listOpen"></ul>
+    <div class="empty hidden" id="emptyMsg">아직 할일이 없어요. 위에서 하나만 추가해 볼까요? 작게 시작할수록 좋아요 🌱</div>
+
+    <div class="secTitle">✅ 완료 <span class="n" id="cntDone">0</span></div>
+    <ul class="todo" id="listDone"></ul>
+
+    <div class="notifRow" id="notifRow">
+      <span id="notifState">🔔 알람을 받으려면 브라우저 알림을 켜 주세요.</span>
+      <button id="notifBtn">알림 켜기</button>
+    </div>
+  </div>
+
+  <button class="cta" id="reportBtn">오늘의 달성 카드 만들기 🎉</button>
+
+  <div id="out" class="hidden" style="margin-top:20px">
+    <div class="report" id="reportCard"></div>
+    <div class="actions">
+      <button class="primary" id="saveImg">이미지로 저장</button>
+      <button id="copyLink">링크 복사</button>
+      <button id="copyText">텍스트 복사</button>
+      <button id="shareX">X에 공유</button>
+      <button class="remix" id="backToList">체크리스트로 돌아가기</button>
+    </div>
+    <div class="adbox">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+</div>
+
+<div class="prose">
+  <h2>오늘할일 체크리스트란?</h2>
+  <p>오늘할일 체크리스트는 <b>딱 오늘 하루</b>에 집중하는 초경량 투두 앱이에요. 회원가입 대신 닉네임과 아바타만 고르는 간편 로그인으로 3초 만에 시작하고, 할일마다 시간을 정해 두면 브라우저 알림으로 알려 드려요. 그리고 무엇보다, 꾸준함이 눈에 보이도록 만들었어요. 하루에 하나라도 완료하면 이어지는 <b>연속 달성 스트릭</b>, 완료할 때마다 쌓이는 경험치와 <b>레벨·칭호</b>, 체크할 때마다 건네는 응원 한마디, 전부 끝내면 터지는 축하 효과까지. 심리학에서 말하는 '작은 성공의 반복'이 습관을 만든다는 원리를 그대로 담았습니다. 모든 데이터는 서버가 아닌 여러분의 브라우저에만 저장되고, 하루를 마치면 오늘의 달성률·스트릭이 담긴 카드를 이미지로 저장하거나 친구에게 링크로 자랑할 수 있어요.</p>
+
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>아바타와 닉네임을 골라 간편 로그인해요. 기기를 함께 쓴다면 프로필을 여러 개 만들 수 있어요.</li>
+    <li>할일을 입력하고 ＋를 눌러요. 필요하면 시간(알람)·중요도·매일 반복을 함께 설정해요.</li>
+    <li>'알림 켜기'를 눌러 브라우저 알림을 허용하면 정한 시간에 알람이 와요.</li>
+    <li>끝낸 일은 체크! 스트릭과 레벨이 오르고 응원 메시지가 도착해요.</li>
+    <li>하루를 마치면 '오늘의 달성 카드'를 만들어 이미지로 저장하거나 친구에게 공유해요.</li>
+  </ol>
+
+  <h2>작심삼일이 안 되는 3가지 장치</h2>
+  <ul>
+    <li><b>스트릭(연속 달성)</b> — "오늘 하나라도" 완료하면 불꽃이 이어져요. 완벽주의 대신 지속을 보상합니다.</li>
+    <li><b>레벨과 칭호</b> — 완료 1개당 10XP. 쌓일수록 '새싹 실천러'에서 '갓생 마스터'까지 칭호가 올라가요.</li>
+    <li><b>공유되는 달성 카드</b> — 기록을 남기고 보여줄 수 있을 때 동기는 훨씬 오래갑니다.</li>
+  </ul>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>회원가입 없이 어떻게 로그인하나요?</b><p>닉네임과 아바타만 고르면 되는 간편 로그인이에요. 데이터는 이 브라우저의 저장공간에만 보관되므로 같은 기기·브라우저에서 다시 열면 이어서 쓸 수 있고, 프로필을 여러 개 만들어 전환할 수도 있어요.</p></div>
+  <div class="faq"><b>알람은 어떻게 동작하나요?</b><p>할일에 시간을 정하면 그 시간에 브라우저 알림·화면 배너·알림음으로 알려 드려요. 다만 서버가 없는 웹앱이라 탭이 완전히 닫혀 있으면 알람이 울리지 않아요. 탭을 열어 두거나 홈 화면에 추가해 두는 걸 권장해요.</p></div>
+  <div class="faq"><b>내 할일 데이터가 서버로 전송되나요?</b><p>아니요. 모든 데이터는 브라우저 안에만 저장돼요. 여러분이 직접 달성 카드 링크를 복사할 때만 달성 요약이 URL에 담겨 이동합니다. 브라우저 데이터를 삭제하면 기록도 지워지니 주의하세요.</p></div>
+  <div class="faq"><b>스트릭과 레벨은 어떤 기준인가요?</b><p>스트릭은 하루 1개 이상 완료한 날이 연속된 일수, 레벨은 완료당 10XP로 오르는 경험치 지표예요. 완벽이 아니라 '매일 조금씩'을 보상하도록 설계한 재미용 지표입니다.</p></div>
+
+  <div class="disc">이 앱의 스트릭·레벨·응원 메시지는 <b>재미와 동기부여용</b>이에요. 의학적·심리학적 진단이나 치료가 아니며, 생산성에 대한 전문적 조언을 대체하지 않습니다. 알람은 브라우저가 열려 있을 때 동작하므로 중요한 일정은 별도 알람과 병행해 주세요.</div>
+
+  <div class="more">
+    <a href="/dday/">📅 D-day 계산기 →</a>
+    <a href="/future-letter/">✉️ 미래편지 →</a>
+    <a href="/pay-timer/">⏱️ 월급 초시계 →</a>
+    <a href="/">🍅 전체 도구 →</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s);};
+var LSP="tec_todo_";
+
+/* ---------- utils ---------- */
+function todayStr(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function ymdLabel(s){var p=s.split("-");return p[0]+"년 "+Number(p[1])+"월 "+Number(p[2])+"일";}
+function isYesterday(s){var d=new Date();d.setDate(d.getDate()-1);return s===d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function hashStr(s){var h=5381;for(var i=0;i<s.length;i++){h=((h<<5)+h+s.charCodeAt(i))>>>0;}return h;}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function lsGet(k,fb){try{var v=localStorage.getItem(LSP+k);return v?JSON.parse(v):fb;}catch(e){return fb;}}
+function lsSet(k,v){try{localStorage.setItem(LSP+k,JSON.stringify(v));}catch(e){}}
+
+var toastT;
+function toast(msg){var el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove("show");},2000);}
+
+/* ---------- motivation banks ---------- */
+var QUOTES=[
+ "시작이 반이다. 오늘 하나만 체크해도 이미 절반 온 거야.",
+ "완벽한 하루보다 계속되는 하루가 이긴다.",
+ "작은 성공이 쌓이면 자신감이 되고, 자신감은 습관이 된다.",
+ "오늘의 1%가 1년 뒤의 37배를 만든다.",
+ "동기부여는 시작하게 하고, 습관은 계속하게 한다.",
+ "미루던 일은 시작하는 순간 절반이 사라진다.",
+ "어제의 나와만 비교하자. 오늘 한 칸이면 충분해.",
+ "대단한 사람이 꾸준한 게 아니라, 꾸준한 사람이 대단해지는 것.",
+ "지금 5분만 해 보자. 5분이 30분이 되는 건 순식간이니까.",
+ "체크 하나가 별것 아닌 것 같지만, 인생은 체크의 합이다.",
+ "쉬어 가도 괜찮아. 멈추지만 않으면 돼.",
+ "할 일을 적는 순간, 뇌는 이미 그 일을 시작한다.",
+ "오늘 못 한 일보다 오늘 해낸 일을 세자.",
+ "루틴은 의지력을 아껴 주는 가장 확실한 장치다."
+];
+var CHEERS_CHECK=[
+ "좋아요, 하나 클리어! 👏","이 맛에 체크하죠 ✅","방금 미래의 내가 고마워했어요 🙌",
+ "리듬 탔다! 다음 것도 가볼까요?","오늘의 나, 어제의 나를 이겼다 💪","착실하게 +10XP! 쌓이는 중 📈",
+ "그 일이 제일 무거웠는데, 해냈네요!","체크 소리 들릴 만큼 시원하다 ✨"
+];
+var CHEERS_ALL=[
+ "오늘 할일 전부 완료! 오늘의 주인공은 당신 🎉","100% 달성! 이 기세면 뭐든 되겠는데요 🏆","완벽한 하루 마감! 달성 카드로 자랑해요 🥇"
+];
+var LEVEL_TITLES=["새싹 실천러","꾸준 실천러","루틴 메이커","갓생 견습생","실행력 장인","습관 건축가","갓생 마스터","전설의 실천왕"];
+function levelOf(xp){return Math.floor(xp/100)+1;}
+function titleOf(lv){return LEVEL_TITLES[Math.min(lv-1,LEVEL_TITLES.length-1)];}
+function dailyQuote(){return QUOTES[hashStr(todayStr())%QUOTES.length];}
+
+/* ---------- profiles ---------- */
+var AVATARS=["🍅","🐱","🔥","🌱","🐢","🦊","⭐","🚀"];
+var profiles=lsGet("profiles",[]);
+var activeId=lsGet("active",null);
+var P=null; /* active profile object */
+var D=null; /* active profile data */
+
+function loadData(id){
+  var d=lsGet("data_"+id,null);
+  if(!d)d={tasks:[],lastDate:todayStr(),stats:{xp:0,totalDone:0,streak:0,bestStreak:0,lastActiveDate:""}};
+  return d;
+}
+function saveData(){if(P)lsSet("data_"+P.id,D);}
+
+/* daily rollover: repeat tasks reset, finished one-off tasks archived, unfinished carry over */
+function rollover(){
+  var t=todayStr();
+  if(D.lastDate===t)return;
+  D.tasks=D.tasks.filter(function(x){return x.repeat||!x.done;});
+  D.tasks.forEach(function(x){
+    if(x.repeat){x.done=false;x.alerted="";}
+    else if(!x.done){x.carry=true;}
+  });
+  /* streak broken? if last active day is neither today nor yesterday, reset */
+  var la=D.stats.lastActiveDate;
+  if(la&&la!==t&&!isYesterday(la))D.stats.streak=0;
+  D.lastDate=t;
+  saveData();
+}
+
+/* ---------- login UI ---------- */
+var selAvatar=AVATARS[0];
+function renderAvatarGrid(){
+  var g=$("#avatarGrid");g.innerHTML="";
+  AVATARS.forEach(function(a){
+    var b=document.createElement("button");
+    b.type="button";b.textContent=a;
+    if(a===selAvatar)b.classList.add("on");
+    b.addEventListener("click",function(){selAvatar=a;renderAvatarGrid();});
+    g.appendChild(b);
+  });
+}
+function renderProfList(){
+  var box=$("#profList");box.innerHTML="";
+  if(!profiles.length)return;
+  var lbl=document.createElement("label");lbl.textContent="기존 프로필로 로그인";lbl.style.marginTop="14px";
+  box.appendChild(lbl);
+  profiles.forEach(function(p){
+    var b=document.createElement("button");b.type="button";
+    var em=document.createElement("span");em.className="em";em.textContent=p.emoji;
+    var nm=document.createElement("span");nm.textContent=p.nick;
+    var sm=document.createElement("small");sm.textContent="이어서 하기 →";
+    b.appendChild(em);b.appendChild(nm);b.appendChild(sm);
+    b.addEventListener("click",function(){login(p.id);});
+    box.appendChild(b);
+  });
+}
+function showLogin(){
+  $("#loginCard").classList.remove("hidden");
+  $("#app").classList.add("hidden");
+  renderAvatarGrid();renderProfList();
+}
+function login(id){
+  var p=null;
+  for(var i=0;i<profiles.length;i++)if(profiles[i].id===id)p=profiles[i];
+  if(!p)return;
+  P=p;activeId=id;lsSet("active",id);
+  D=loadData(id);
+  rollover();
+  $("#loginCard").classList.add("hidden");
+  $("#app").classList.remove("hidden");
+  renderAll();
+  startAlarmLoop();
+}
+$("#loginBtn").addEventListener("click",function(){
+  var nick=$("#nick").value.trim();
+  if(!nick){toast("닉네임을 입력해 주세요 🙂");$("#nick").focus();return;}
+  var p={id:uid(),nick:nick,emoji:selAvatar,created:todayStr()};
+  profiles.push(p);lsSet("profiles",profiles);
+  toast(nick+"님, 환영해요! 🎉");
+  login(p.id);
+});
+$("#nick").addEventListener("keydown",function(e){if(e.key==="Enter")$("#loginBtn").click();});
+$("#switchBtn").addEventListener("click",function(){
+  stopAlarmLoop();
+  P=null;activeId=null;lsSet("active",null);
+  showLogin();
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+/* ---------- task CRUD ---------- */
+var selPrio="mid";
+document.querySelectorAll("#prioChips button").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll("#prioChips button").forEach(function(x){x.classList.remove("on");});
+    b.classList.add("on");selPrio=b.dataset.v;
+  });
+});
+var SUGGESTIONS=["💧 물 2L 마시기","🏃 30분 운동","📖 책 10쪽 읽기","🧹 책상 정리","😴 12시 전에 자기","📵 폰 1시간 멀리하기"];
+(function renderSuggest(){
+  var box=$("#suggest");
+  SUGGESTIONS.forEach(function(s){
+    var b=document.createElement("button");b.type="button";b.textContent="+ "+s;
+    b.addEventListener("click",function(){addTask(s.replace(/^[^\s]+\s/,""),"",selPrio,true);});
+    box.appendChild(b);
+  });
+})();
+function addTask(text,time,prio,repeat){
+  text=(text||"").trim();
+  if(!text){toast("할일 내용을 입력해 주세요 ✍️");$("#taskInput").focus();return;}
+  if(D.tasks.length>=50){toast("할일은 50개까지 담을 수 있어요");return;}
+  D.tasks.push({id:uid(),text:text,time:time||"",prio:prio||"mid",repeat:!!repeat,done:false,alerted:"",carry:false});
+  saveData();renderAll();
+}
+$("#addBtn").addEventListener("click",function(){
+  addTask($("#taskInput").value,$("#taskTime").value,selPrio,$("#taskRpt").checked);
+  $("#taskInput").value="";$("#taskInput").focus();
+});
+$("#taskInput").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();$("#addBtn").click();}});
+
+function toggleTask(id){
+  var t=null;
+  for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].id===id)t=D.tasks[i];
+  if(!t)return;
+  t.done=!t.done;
+  var s=D.stats,td=todayStr();
+  if(t.done){
+    s.xp+=10;s.totalDone+=1;
+    if(s.lastActiveDate!==td){ /* first completion of the day drives the streak */
+      s.streak=(s.lastActiveDate&&isYesterday(s.lastActiveDate))?s.streak+1:1;
+      s.lastActiveDate=td;
+    }
+    if(s.streak>s.bestStreak)s.bestStreak=s.streak;
+    toast(CHEERS_CHECK[Math.floor(Math.random()*CHEERS_CHECK.length)]);
+  }else{
+    s.xp=Math.max(0,s.xp-10);s.totalDone=Math.max(0,s.totalDone-1);
+  }
+  saveData();renderAll();
+  if(t.done)maybeCelebrate();
+}
+function delTask(id){
+  D.tasks=D.tasks.filter(function(x){return x.id!==id;});
+  saveData();renderAll();
+}
+
+/* ---------- render ---------- */
+var PRIO_ORDER={high:0,mid:1,low:2};
+function renderAll(){
+  if(!P)return;
+  $("#meAvatar").textContent=P.emoji;
+  $("#meNick").textContent=P.nick;
+  var s=D.stats,lv=levelOf(s.xp);
+  $("#meSub").textContent="🔥 "+s.streak+"일 연속 · Lv."+lv+" "+titleOf(lv);
+  $("#stStreak").textContent="🔥 "+s.streak+"일";
+  $("#stLevel").textContent="Lv."+lv;
+  $("#stTitle").textContent=titleOf(lv)+" · "+(s.xp%100)+"/100XP";
+  $("#stTotal").textContent=String(s.totalDone);
+  $("#quote").textContent="💬 "+dailyQuote();
+
+  var open=D.tasks.filter(function(x){return !x.done;});
+  var done=D.tasks.filter(function(x){return x.done;});
+  open.sort(function(a,b){
+    if(a.time&&b.time&&a.time!==b.time)return a.time<b.time?-1:1;
+    if(!!a.time!==!!b.time)return a.time?-1:1;
+    return PRIO_ORDER[a.prio]-PRIO_ORDER[b.prio];
+  });
+  $("#cntOpen").textContent=String(open.length);
+  $("#cntDone").textContent=String(done.length);
+  $("#stToday").textContent=done.length+"/"+D.tasks.length;
+  var pct=D.tasks.length?Math.round(done.length/D.tasks.length*100):0;
+  $("#pctNum").textContent=pct+"%";
+  var C=251.3;
+  $("#ringBar").style.strokeDashoffset=String(C-(C*pct/100));
+  $("#ringBar").style.stroke=pct>=100?"#fbbf24":"#34d399";
+
+  renderList($("#listOpen"),open,false);
+  renderList($("#listDone"),done,true);
+  $("#emptyMsg").classList.toggle("hidden",D.tasks.length>0);
+
+  var cheer=$("#cheer");
+  if(D.tasks.length&&done.length===D.tasks.length){cheer.style.display="block";cheer.textContent="🏆 오늘 100% 달성! 아래에서 달성 카드를 만들어 보세요.";}
+  else if(open.length&&done.length){cheer.style.display="block";cheer.textContent="⛰️ "+open.length+"개 남았어요. 제일 쉬운 것부터 하나만 더!";}
+  else cheer.style.display="none";
+
+  renderNotifState();
+}
+function renderList(ul,arr,doneList){
+  ul.innerHTML="";
+  arr.forEach(function(t){
+    var li=document.createElement("li");
+    if(t.done)li.classList.add("done");
+    var chk=document.createElement("button");chk.className="chk";chk.type="button";
+    chk.setAttribute("aria-label",t.done?"완료 취소":"완료로 표시");
+    chk.textContent=t.done?"✓":"";
+    chk.addEventListener("click",function(){toggleTask(t.id);});
+    var main=document.createElement("div");main.className="tmain";
+    var tx=document.createElement("div");tx.className="txt";tx.textContent=t.text;
+    main.appendChild(tx);
+    var meta=document.createElement("div");meta.className="tmeta";
+    if(t.time){var b1=document.createElement("span");b1.className="badge time";b1.textContent="⏰ "+t.time;meta.appendChild(b1);}
+    var b2=document.createElement("span");b2.className="badge "+t.prio;
+    b2.textContent=t.prio==="high"?"중요":(t.prio==="low"?"여유":"보통");meta.appendChild(b2);
+    if(t.repeat){var b3=document.createElement("span");b3.className="badge rpt";b3.textContent="매일";meta.appendChild(b3);}
+    if(t.carry&&!t.done){var b4=document.createElement("span");b4.className="badge carry";b4.textContent="어제부터";meta.appendChild(b4);}
+    if(meta.children.length)main.appendChild(meta);
+    var del=document.createElement("button");del.className="del";del.type="button";del.textContent="✕";
+    del.setAttribute("aria-label","할일 삭제");
+    del.addEventListener("click",function(){delTask(t.id);});
+    li.appendChild(chk);li.appendChild(main);li.appendChild(del);
+    ul.appendChild(li);
+  });
+}
+
+/* ---------- confetti ---------- */
+function maybeCelebrate(){
+  var done=D.tasks.filter(function(x){return x.done;}).length;
+  if(!D.tasks.length||done!==D.tasks.length)return;
+  toast(CHEERS_ALL[Math.floor(Math.random()*CHEERS_ALL.length)]);
+  var EMO=["🎉","✨","🎊","⭐","💚"];
+  for(var i=0;i<24;i++){
+    var el=document.createElement("div");el.className="confetti";
+    el.textContent=EMO[i%EMO.length];
+    el.style.left=Math.random()*100+"vw";
+    el.style.animationDuration=(2+Math.random()*2)+"s";
+    el.style.animationDelay=(Math.random()*.6)+"s";
+    document.body.appendChild(el);
+    (function(n){setTimeout(function(){n.remove();},5000);})(el);
+  }
+}
+
+/* ---------- alarms ---------- */
+var alarmTimer=null;
+function renderNotifState(){
+  var st=$("#notifState"),btn=$("#notifBtn");
+  if(!("Notification" in window)){st.textContent="이 브라우저는 알림을 지원하지 않아요. 알람은 화면 배너·소리로 울립니다.";btn.classList.add("hidden");return;}
+  if(Notification.permission==="granted"){st.innerHTML='<span class="ok">🔔 알림 켜짐 — 정한 시간에 알려 드릴게요.</span>';btn.classList.add("hidden");}
+  else if(Notification.permission==="denied"){st.textContent="🔕 알림이 차단됐어요. 브라우저 설정에서 허용하면 알람을 받을 수 있어요. (화면 배너·소리는 계속 울려요)";btn.classList.add("hidden");}
+  else{st.textContent="🔔 알람을 받으려면 브라우저 알림을 켜 주세요.";btn.classList.remove("hidden");}
+}
+$("#notifBtn").addEventListener("click",function(){
+  Notification.requestPermission().then(function(){renderNotifState();});
+});
+function beep(){
+  try{
+    var ac=new (window.AudioContext||window.webkitAudioContext)();
+    var o=ac.createOscillator(),g=ac.createGain();
+    o.type="sine";o.frequency.value=880;g.gain.value=.08;
+    o.connect(g);g.connect(ac.destination);o.start();
+    o.frequency.setValueAtTime(660,ac.currentTime+.15);
+    g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.5);
+    o.stop(ac.currentTime+.5);
+    setTimeout(function(){ac.close();},700);
+  }catch(e){}
+}
+function checkAlarms(){
+  if(!P||!D)return;
+  rollover(); /* handles crossing midnight while tab open */
+  var now=new Date();
+  var hm=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+  var td=todayStr(),fired=false;
+  D.tasks.forEach(function(t){
+    if(t.done||!t.time||t.alerted===td)return;
+    if(t.time<=hm){
+      t.alerted=td;fired=true;
+      var msg="⏰ "+t.time+" — \""+t.text+"\" 할 시간이에요!";
+      toast(msg);
+      if(("Notification" in window)&&Notification.permission==="granted"){
+        try{new Notification("오늘할일 체크리스트",{body:t.text+" 할 시간이에요! ✅",tag:"tec-todo-"+t.id});}catch(e){}
+      }
+      beep();
+    }
+  });
+  if(fired){saveData();renderAll();}
+}
+function startAlarmLoop(){stopAlarmLoop();alarmTimer=setInterval(checkAlarms,20000);checkAlarms();}
+function stopAlarmLoop(){if(alarmTimer){clearInterval(alarmTimer);alarmTimer=null;}}
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&P){rollover();renderAll();checkAlarms();}});
+
+/* ---------- achievement report ---------- */
+function reportData(){
+  var done=D.tasks.filter(function(x){return x.done;}).length;
+  var total=D.tasks.length;
+  var pct=total?Math.round(done/total*100):0;
+  var lv=levelOf(D.stats.xp);
+  return {n:P.nick,e:P.emoji,d:todayStr(),c:done,t:total,p:pct,s:D.stats.streak,l:lv,ti:titleOf(lv)};
+}
+function reportQuote(r){
+  if(r.p>=100)return "완벽한 하루! 이 카드를 미래의 나에게 증거로 남기자.";
+  if(r.p>=70)return "충분히 잘한 하루. 남은 건 내일의 내가 이어받을게.";
+  if(r.p>=40)return "절반의 성공도 성공. 멈추지만 않으면 돼.";
+  if(r.c>0)return "0이 아닌 하루를 만든 것, 그게 제일 어려운 일이야.";
+  return "괜찮아, 내일의 첫 체크가 기다리고 있어.";
+}
+function renderReportInto(el,r){
+  el.innerHTML="";
+  var top=document.createElement("div");top.className="sub";top.textContent=ymdLabel(r.d)+" · "+r.e+" "+r.n+"님의 하루";
+  var big=document.createElement("div");big.className="big";big.textContent=r.p+"%";
+  var sub=document.createElement("div");sub.className="sub";sub.textContent="오늘 할일 "+r.t+"개 중 "+r.c+"개 완료";
+  var row=document.createElement("div");row.className="row";
+  [["🔥 "+r.s+"일","연속 달성"],["Lv."+r.l,r.ti],[r.p>=100?"🏆":(r.p>=70?"🥈":"🌱"),r.p>=100?"퍼펙트":"오늘의 배지"]].forEach(function(cv){
+    var c=document.createElement("div");c.className="cell";
+    var b=document.createElement("b");b.textContent=cv[0];
+    var sp=document.createElement("span");sp.textContent=cv[1];
+    c.appendChild(b);c.appendChild(sp);row.appendChild(c);
+  });
+  var q=document.createElement("div");q.className="q";q.textContent="“"+reportQuote(r)+"”";
+  var wm=document.createElement("div");wm.className="wm";wm.textContent="tomatoeggcat.com/todo-check";
+  el.appendChild(top);el.appendChild(big);el.appendChild(sub);el.appendChild(row);el.appendChild(q);el.appendChild(wm);
+}
+var lastReport=null;
+$("#reportBtn").addEventListener("click",function(){
+  var r=reportData();
+  if(!r.t){toast("먼저 할일을 하나 추가해 보세요 🙂");return;}
+  lastReport=r;
+  renderReportInto($("#reportCard"),r);
+  $("#out").classList.remove("hidden");
+  writeURL(r);
+  $("#out").scrollIntoView({behavior:"smooth",block:"start"});
+});
+$("#backToList").addEventListener("click",function(){
+  $("#app").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* ---------- URL state (share) ---------- */
+function encodeState(o){
+  var json=JSON.stringify(o);
+  return btoa(unescape(encodeURIComponent(json))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function decodeState(p){
+  try{
+    var b64=p.replace(/-/g,"+").replace(/_/g,"/");
+    while(b64.length%4)b64+="=";
+    var o=JSON.parse(decodeURIComponent(escape(atob(b64))));
+    if(o&&typeof o==="object"&&"p"in o&&"d"in o)return o;
+  }catch(e){}
+  return null;
+}
+function writeURL(r){
+  try{history.replaceState(null,"",location.pathname+"?r="+encodeState(r));}catch(e){}
+}
+
+/* ---------- share actions ---------- */
+$("#copyLink").addEventListener("click",function(){
+  (navigator.clipboard?navigator.clipboard.writeText(location.href):Promise.reject())
+    .then(function(){toast("링크를 복사했어요 ✅");},function(){toast("복사 실패: 주소창을 길게 눌러 복사하세요");});
+});
+$("#copyText").addEventListener("click",function(){
+  var r=lastReport||reportData();
+  var txt="✅ 오늘할일 체크리스트\n"+ymdLabel(r.d)+" — "+r.n+"의 하루: "+r.t+"개 중 "+r.c+"개 완료 ("+r.p+"%) 🔥"+r.s+"일 연속\n"+location.href;
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject())
+    .then(function(){toast("텍스트를 복사했어요");},function(){toast("복사에 실패했어요");});
+});
+$("#shareX").addEventListener("click",function(){
+  var r=lastReport||reportData();
+  var t="오늘 할일 "+r.p+"% 달성! 🔥"+r.s+"일 연속 실천 중 ✅";
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(location.href),"_blank","noopener");
+});
+if(navigator.share){
+  $("#copyLink").addEventListener("contextmenu",function(e){
+    e.preventDefault();
+    navigator.share({title:"오늘할일 체크리스트",text:"오늘의 달성 카드",url:location.href}).catch(function(){});
+  });
+}
+
+/* ---------- canvas PNG ---------- */
+function wrapText(ctx,text,maxW){
+  var out=[],line="";
+  for(var i=0;i<text.length;i++){
+    var ch=text[i];
+    if(ch==="\n"){out.push(line);line="";continue;}
+    var test=line+ch;
+    if(ctx.measureText(test).width>maxW&&line){out.push(line);line=ch;}
+    else line=test;
+  }
+  if(line)out.push(line);
+  return out;
+}
+$("#saveImg").addEventListener("click",function(){
+  var r=lastReport||reportData();
+  var W=1080,H=1350;
+  var c=document.createElement("canvas");c.width=W;c.height=H;
+  var x=c.getContext("2d");
+  var g=x.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,"#064e3b");g.addColorStop(.5,"#065f46");g.addColorStop(1,"#047857");
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.strokeStyle="rgba(167,243,208,.35)";x.lineWidth=4;x.strokeRect(40,40,W-80,H-80);
+  var pad=100,cx=pad,maxW=W-pad*2,y=190;
+  x.fillStyle="#a7f3d0";x.font="600 34px 'Apple SD Gothic Neo',sans-serif";
+  x.fillText(ymdLabel(r.d),cx,y);y+=64;
+  x.fillStyle="#ecfdf5";x.font="800 52px 'Apple SD Gothic Neo',sans-serif";
+  x.fillText(r.e+" "+r.n+"님의 하루",cx,y);y+=140;
+  x.fillStyle="#ffffff";x.font="800 170px 'Apple SD Gothic Neo',sans-serif";
+  x.fillText(r.p+"%",cx,y);
+  y+=70;
+  x.fillStyle="#a7f3d0";x.font="600 40px 'Apple SD Gothic Neo',sans-serif";
+  x.fillText("오늘 할일 "+r.t+"개 중 "+r.c+"개 완료",cx,y);y+=110;
+  x.strokeStyle="rgba(167,243,208,.3)";x.lineWidth=2;
+  x.beginPath();x.moveTo(cx,y);x.lineTo(cx+maxW,y);x.stroke();y+=90;
+  x.fillStyle="#ecfdf5";x.font="800 54px 'Apple SD Gothic Neo',sans-serif";
+  x.fillText("🔥 "+r.s+"일 연속",cx,y);
+  x.fillText("Lv."+r.l,cx+maxW-x.measureText("Lv."+r.l).width,y);y+=52;
+  x.fillStyle="#a7f3d0";x.font="500 30px 'Apple SD Gothic Neo',sans-serif";
+  x.fillText("연속 달성",cx,y);
+  x.fillText(r.ti,cx+maxW-x.measureText(r.ti).width,y);y+=120;
+  x.fillStyle="#d1fae5";x.font="500 36px 'Apple SD Gothic Neo',sans-serif";
+  wrapText(x,"“"+reportQuote(r)+"”",maxW).forEach(function(ln){x.fillText(ln,cx,y);y+=54;});
+  x.fillStyle="#6ee7b7";x.font="400 26px 'Apple SD Gothic Neo',sans-serif";
+  x.textAlign="right";x.fillText("tomatoeggcat.com/todo-check",cx+maxW,H-80);x.textAlign="left";
+  var a=document.createElement("a");
+  a.href=c.toDataURL("image/png");a.download="todo-check-"+r.d+".png";
+  document.body.appendChild(a);a.click();a.remove();
+  toast("이미지를 저장했어요 🖼️");
+});
+
+/* ---------- inbound (shared link) ---------- */
+function showShared(r){
+  $("#inbound").style.display="block";
+  $("#inboundMsg").textContent=(r.n?r.n+"님이":"친구가")+" 오늘의 달성 카드를 공유했어요 ✅";
+  $("#sharedView").classList.remove("hidden");
+  renderReportInto($("#sharedCard"),{n:String(r.n||"친구").slice(0,12),e:String(r.e||"✅").slice(0,4),d:/^\d{4}-\d{2}-\d{2}$/.test(r.d)?r.d:todayStr(),c:+r.c||0,t:+r.t||0,p:Math.max(0,Math.min(100,+r.p||0)),s:+r.s||0,l:+r.l||1,ti:r.ti&&LEVEL_TITLES.indexOf(r.ti)>=0?r.ti:titleOf(+r.l||1)});
+}
+function startMine(){
+  $("#sharedView").classList.add("hidden");
+  $("#inbound").style.display="none";
+  try{history.replaceState(null,"",location.pathname);}catch(e){}
+  if(activeId&&profiles.some(function(p){return p.id===activeId;}))login(activeId);
+  else{showLogin();$("#nick").focus();}
+  $("#loginCard").classList.contains("hidden")?$("#app").scrollIntoView({behavior:"smooth"}):$("#loginCard").scrollIntoView({behavior:"smooth"});
+}
+$("#tryMe").addEventListener("click",startMine);
+$("#sharedStart").addEventListener("click",startMine);
+
+/* ---------- boot ---------- */
+(function boot(){
+  var q=new URLSearchParams(location.search).get("r");
+  var shared=q?decodeState(q):null;
+  if(shared){
+    showShared(shared);
+    showLogin(); /* below the shared card so visitors can start */
+    return;
+  }
+  if(activeId&&profiles.some(function(p){return p.id===activeId;}))login(activeId);
+  else showLogin();
+})();
+</script>
+</body>
+</html>
