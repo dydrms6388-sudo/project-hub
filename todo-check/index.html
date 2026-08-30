@@ -44,12 +44,15 @@
   --prose:#d4d4d4;--faq:#b9b9b9;--link:#7aa2ff;--warn:#fbbf24;
   --chipbg:#111827;--chipline:#2b3648;--chiptxt:#a8bcdd;
   --dot:#20242b;--dotline:#2c313a;--quotetxt:#a7f3d0;
+  --ring:#34d399;--ringfull:#fbbf24;
   --c-red:#fca5a5;--l-red:#5b2a2a;--c-yel:#fde68a;--l-yel:#54471f;
   --c-blu:#93c5fd;--l-blu:#2b3a55;--c-grn:#a7f3d0;--l-grn:#1d4436;
   --c-org:#fdba74;--l-org:#573a1d
 }
 body.light{
   color-scheme:light;
+  --accent:#059669;--accent2:#047857;
+  --ring:#059669;--ringfull:#b45309;
   --bg:#f4f5f7;--card:#ffffff;--field:#f1f3f5;--btn:#eef0f3;
   --line:#e2e5ea;--line2:#cbd2da;
   --txt:#1a202c;--txt2:#2d3748;--mut:#5b6472;--mut2:#6b7480;
@@ -62,7 +65,7 @@ body.light{
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
-body.bigtext{zoom:1.15}
+body.bigtext .wrap{zoom:1.15} /* scale content only — fixed toasts/confetti keep true viewport coords */
 .wrap{max-width:680px;margin:0 auto;padding:22px 18px 64px}
 a{color:var(--accent2)}
 body.light a{color:#047857}
@@ -105,6 +108,8 @@ button{font-family:inherit}
 .ring{position:relative;width:92px;height:92px;flex:0 0 auto}
 .ring svg{transform:rotate(-90deg)}
 #ringTrack{stroke:var(--line)}
+#ringBar{stroke:var(--ring)}
+#ringBar.full{stroke:var(--ringfull)}
 .ring .pct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:20px}
 .ring .pct small{font-size:10px;font-weight:600;color:var(--mut)}
 .dstats{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -126,7 +131,7 @@ button{font-family:inherit}
 .histToggle{margin-top:10px;background:none;border:0;color:var(--link);font-size:12.5px;cursor:pointer;padding:8px 4px;min-height:40px;text-decoration:underline}
 .hist{margin-top:8px}
 .histGrid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
-.histGrid .hcell{aspect-ratio:1;border-radius:7px;background:var(--dot);border:1px solid var(--dotline)}
+.histGrid .hcell{aspect-ratio:1;border-radius:7px;background:var(--dot);border:1px solid var(--dotline);padding:0;cursor:pointer}
 .histGrid .hcell.some{background:rgba(52,211,153,.45);border-color:var(--accent)}
 .histGrid .hcell.full{background:var(--accent);border-color:var(--accent)}
 .histGrid .hcell.pre{opacity:.35}
@@ -341,7 +346,6 @@ footer a{color:var(--link);margin:0 6px;text-decoration:none}
     <p class="shareNote">공유 링크에는 닉네임·달성 요약과 오늘 할일 제목(최대 5개)이 담겨요. 받은 친구는 같은 리스트로 바로 시작할 수 있어요.</p>
     <div class="adbox">
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
 </div>
@@ -424,6 +428,14 @@ function toast(msg,ms,prio){
   el.classList.add("show");clearTimeout(toastT);
   toastT=setTimeout(function(){el.classList.remove("show");},ms);
 }
+/* celebrations (milestone → level-up → 100%) display sequentially, never clipping each other */
+function celebrate(msg,ms){
+  var now=Date.now();
+  if(now>=toastLock){toast(msg,ms,2);return;}
+  var wait=toastLock-now+250;
+  toastLock+=ms+250; /* reserve the next slot so a later celebrate queues after this one */
+  setTimeout(function(){toast(msg,ms,2);},wait);
+}
 function toastAction(msg,label,fn,ms){
   ms=ms||6000;toastLock=Date.now()+ms;
   var el=$("#toast");$("#toastMsg").textContent=msg;
@@ -499,7 +511,7 @@ function rollover(){
   while(keys.length>60){delete D.history[keys.shift()];}
   D.tasks=D.tasks.filter(function(x){return x.repeat||!x.done;});
   D.tasks.forEach(function(x){
-    if(x.repeat){x.done=false;x.alerted="";}
+    if(x.repeat){x.done=false;x.alerted="";delete x.snoozeD;delete x.snoozeM;}
     else if(!x.done){if(!x.carrySince)x.carrySince=D.lastDate;x.carry=true;}
   });
   var la=D.stats.lastActiveDate;
@@ -514,9 +526,16 @@ function rollover(){
 
 /* ---------- theme / text size (global, all profiles) ---------- */
 function applyPrefs(){
-  document.body.classList.toggle("light",lsGet("theme","dark")==="light");
-  document.body.classList.toggle("bigtext",!!lsGet("bigtext",false));
-  var tb=$("#themeBtn");if(tb)tb.textContent=document.body.classList.contains("light")?"🌙":"☀️";
+  var light=lsGet("theme","dark")==="light";
+  var big=!!lsGet("bigtext",false);
+  document.body.classList.toggle("light",light);
+  document.body.classList.toggle("bigtext",big);
+  var tm=document.querySelector('meta[name="theme-color"]');
+  if(tm)tm.setAttribute("content",light?"#f4f5f7":"#0a0a0a");
+  var tb=$("#themeBtn");
+  if(tb){tb.textContent=light?"🌙":"☀️";tb.setAttribute("aria-pressed",light?"true":"false");}
+  var fb=$("#fontBtn");
+  if(fb)fb.setAttribute("aria-pressed",big?"true":"false");
 }
 $("#themeBtn").addEventListener("click",function(){
   lsSet("theme",document.body.classList.contains("light")?"dark":"light");
@@ -722,10 +741,10 @@ function toggleTask(id){
       s.streak=(s.lastActiveDate&&isYesterday(s.lastActiveDate))?s.streak+1:1;
       s.lastActiveDate=td;
       if(s.streak>s.bestStreak)s.bestStreak=s.streak;
-      if(MILESTONES[s.streak]){toast(MILESTONES[s.streak],4500,2);confetti(14);celebrated=true;}
+      if(MILESTONES[s.streak]){celebrate(MILESTONES[s.streak],4500);confetti(14);celebrated=true;}
     }
     var lvAfter=levelOf(s.xp);
-    if(lvAfter>lvBefore){toast("🎉 Lv."+lvAfter+" 달성! 이제 '"+titleOf(lvAfter)+"'예요",4000,2);confetti(12);celebrated=true;}
+    if(lvAfter>lvBefore){celebrate("🎉 Lv."+lvAfter+" 달성! 이제 '"+titleOf(lvAfter)+"'예요",4000);confetti(12);celebrated=true;}
     if(!celebrated)toast(pickCheer()); /* routine cheer never overwrites a celebration */
   }else{
     s.xp=Math.max(0,s.xp-10);s.totalDone=Math.max(0,s.totalDone-1);
@@ -761,7 +780,6 @@ function delTask(id){
         s.lastActiveDate=td;
         if(s.streak>s.bestStreak)s.bestStreak=s.streak;
       }
-      void lvB;
     }
     saveData();renderAll();
   },5000);
@@ -783,6 +801,12 @@ function editTask(t,txtEl,mainEl){
     if(v&&v!==t.text){t.text=v;saveData();}
     var nt=buildTxtNode(t,mainEl);
     if(inp.parentNode===mainEl)mainEl.replaceChild(nt,inp);
+    var li=mainEl.parentNode; /* keep the row's action labels in sync with the new text */
+    if(li){
+      var chk=li.querySelector(".chk"),del=li.querySelector(".del");
+      if(chk)chk.setAttribute("aria-label",t.done?"'"+t.text+"' 완료 취소":"'"+t.text+"' 완료로 표시");
+      if(del)del.setAttribute("aria-label","'"+t.text+"' 삭제");
+    }
   }
   inp.addEventListener("keydown",function(e){
     if(e.key==="Enter")commit();
@@ -825,7 +849,7 @@ function renderAll(){
   $("#pctNum").textContent=pct+"%";
   var C=251.3;
   $("#ringBar").style.strokeDashoffset=String(C-(C*pct/100));
-  $("#ringBar").style.stroke=pct>=100?"#fbbf24":"#34d399";
+  $("#ringBar").classList.toggle("full",pct>=100);
 
   renderList($("#listOpen"),open);
   renderList($("#listDone"),done);
@@ -894,12 +918,14 @@ function renderHist(){
     var key=ymd(d);
     var rec=dayRecord(key,todayC,todayT);
     var pre=P&&P.created&&key<P.created;
-    var cell=document.createElement("div");cell.className="hcell";
+    var cell=document.createElement("button");cell.type="button";cell.className="hcell";
     if(pre)cell.classList.add("pre");
     else if(rec&&rec.t>0&&rec.c>=rec.t){cell.classList.add("full");fullDays++;}
     else if(rec&&rec.c>0)cell.classList.add("some");
     if(rec){doneSum+=rec.c;if(rec.c>0)activeDays++;}
-    cell.title=dayDesc(key,rec);
+    var desc2=dayDesc(key,rec);
+    cell.setAttribute("aria-label",desc2);
+    cell.addEventListener("click",(function(txt){return function(){toast(txt,2500);};})(desc2));
     grid.appendChild(cell);
   }
   $("#histSum").textContent="최근 30일: 완료 "+doneSum+"개 · 실천한 날 "+activeDays+"일 · 100% 달성 "+fullDays+"일";
@@ -952,9 +978,7 @@ function maybeCelebrate(){
   var done=todayDoneCount();
   if(!D.tasks.length||done!==D.tasks.length)return;
   confetti(24);
-  var msg=CHEERS_ALL[Math.floor(Math.random()*CHEERS_ALL.length)];
-  if(Date.now()<toastLock)setTimeout(function(){toast(msg,3000,1);},1900); /* let a milestone/level-up toast finish first */
-  else toast(msg,3000,1);
+  celebrate(CHEERS_ALL[Math.floor(Math.random()*CHEERS_ALL.length)],3000);
 }
 
 /* ---------- alarms ---------- */
@@ -989,13 +1013,16 @@ function beep(){
   }catch(e){}
 }
 function minutesOf(hm){var p=hm.split(":");return (+p[0])*60+(+p[1]);}
-function snoozeTask(id){
-  var t=null;
-  for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].id===id)t=D.tasks[i];
-  if(!t)return;
-  var n=new Date(Date.now()+10*60000);
-  t.time=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");
-  t.alerted="";
+function snoozeTasks(ids){ /* the scheduled t.time is never touched — a repeat routine keeps its cue */
+  var target=new Date(Date.now()+10*60000);
+  var sd=ymd(target),sm=target.getHours()*60+target.getMinutes();
+  var n=0;
+  ids.forEach(function(id){
+    for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].id===id&&!D.tasks[i].done){
+      D.tasks[i].snoozeD=sd;D.tasks[i].snoozeM=sm;D.tasks[i].alerted="";n++;
+    }
+  });
+  if(!n)return;
   saveData();renderAll();
   toast("10분 뒤에 다시 알려 드릴게요 ⏰",2500,1);
 }
@@ -1004,24 +1031,42 @@ function checkAlarms(){
   var dateChanged=rollover(); /* handles crossing midnight while tab open */
   var now=new Date();
   var nowM=now.getHours()*60+now.getMinutes();
-  var td=todayStr(),fired=false,missed=0;
+  var td=todayStr(),missed=0,firedTasks=[];
   D.tasks.forEach(function(t){
-    if(t.done||!t.time||t.alerted===td)return;
-    var tm=minutesOf(t.time);
+    if(t.done||!t.time)return;
+    var tm,snoozed=false;
+    if(t.snoozeD){
+      if(t.snoozeD>td)return; /* snooze lands after midnight — wait for that day */
+      if(t.snoozeD<td){delete t.snoozeD;delete t.snoozeM;} /* stale snooze from a past day */
+      else{tm=t.snoozeM;snoozed=true;}
+    }
+    if(!snoozed){
+      if(t.alerted===td)return;
+      tm=minutesOf(t.time);
+    }
     if(!isFinite(tm)||tm>nowM)return;
-    t.alerted=td;
-    if(nowM-tm<=60){ /* ring only within an hour of schedule */
-      fired=true;
-      toastAction("⏰ "+t.time+" — \""+t.text+"\" 할 시간이에요!","10분 뒤 다시",(function(id){return function(){snoozeTask(id);};})(t.id),8000);
-      if(("Notification" in window)&&Notification.permission==="granted"){
-        try{new Notification("오늘할일 체크리스트",{body:t.text+" 할 시간이에요! ✅",tag:"tec-todo-"+t.id});}catch(e){}
-      }
-      beep();
-    }else missed++;
+    t.alerted=td;delete t.snoozeD;delete t.snoozeM;
+    if(nowM-tm<=60)firedTasks.push(t); /* ring only within an hour of schedule */
+    else missed++;
   });
-  if(missed&&!fired)toast("⏰ 지나간 알람 "+missed+"건이 있어요. 목록에서 확인해 주세요.",4000,1);
-  if(fired||missed)saveData();
-  if(fired||missed||dateChanged)renderAll();
+  if(firedTasks.length){
+    var first=firedTasks[0];
+    var msg="⏰ \""+first.text+"\" 할 시간이에요!"
+      +(firedTasks.length>1?" (외 "+(firedTasks.length-1)+"건)":"")
+      +(missed?" · 지나간 알람 "+missed+"건":"");
+    var ids=firedTasks.map(function(t){return t.id;});
+    toastAction(msg,"10분 뒤 다시",function(){snoozeTasks(ids);},8000);
+    if(("Notification" in window)&&Notification.permission==="granted"){
+      firedTasks.forEach(function(t){
+        try{new Notification("오늘할일 체크리스트",{body:t.text+" 할 시간이에요! ✅",tag:"tec-todo-"+t.id});}catch(e){}
+      });
+    }
+    beep();
+  }else if(missed){
+    toast("⏰ 지나간 알람 "+missed+"건이 있어요. 목록에서 확인해 주세요.",4000,1);
+  }
+  if(firedTasks.length||missed)saveData();
+  if(firedTasks.length||missed||dateChanged)renderAll();
 }
 function startAlarmLoop(){stopAlarmLoop();alarmTimer=setInterval(checkAlarms,20000);checkAlarms();}
 function stopAlarmLoop(){if(alarmTimer){clearInterval(alarmTimer);alarmTimer=null;}}
@@ -1031,13 +1076,16 @@ window.addEventListener("storage",function(e){
   if(!e.key||e.key.indexOf(LSP)!==0)return;
   profiles=lsGet("profiles",[]);
   if(P){
-    if(!profiles.some(function(x){return x.id===P.id;})){
+    var np=null; /* rebind P to the fresh array — a stale reference would drop later writes (e.g. PIN) */
+    for(var i=0;i<profiles.length;i++)if(profiles[i].id===P.id)np=profiles[i];
+    if(!np){
       stopAlarmLoop();P=null;activeId=null;
       $("#out").classList.add("hidden");lastReport=null;
       showLogin();
       toast("다른 탭에서 이 프로필이 삭제되어 로그아웃했어요",4000,1);
       return;
     }
+    P=np;
     D=loadData(P.id);renderAll();
   }else if(!$("#loginCard").classList.contains("hidden")){
     renderProfList();
@@ -1050,7 +1098,7 @@ $("#expBtn").addEventListener("click",function(){
   var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   var a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
-  a.download="todo-check-"+P.nick+"-"+todayStr()+".json";
+  a.download="todo-check-"+P.nick.replace(/[^\w가-힣ㄱ-ㅎㅏ-ㅣ-]/g,"_")+"-"+todayStr()+".json";
   document.body.appendChild(a);a.click();a.remove();
   setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
   toast("백업 파일을 저장했어요 💾");
@@ -1065,7 +1113,7 @@ function sanitizeImport(o){
     if(!text)return null;
     return {
       id:uid(),text:text,
-      time:/^\d{2}:\d{2}$/.test(String(t.time))?t.time:"",
+      time:/^([01]\d|2[0-3]):[0-5]\d$/.test(String(t.time))?t.time:"",
       prio:PRIO_OK[t.prio]?t.prio:"mid",
       repeat:!!t.repeat,done:!!t.done,alerted:"",
       carry:!!t.carry,
@@ -1154,7 +1202,7 @@ function renderReportInto(el,r,withList){
   var wm=document.createElement("div");wm.className="wm";wm.textContent="tomatoeggcat.com/todo-check";
   el.appendChild(q);el.appendChild(wm);
 }
-var lastReport=null;
+var lastReport=null,adPushed=false;
 function shareUrl(r){return location.origin+location.pathname+"?r="+encodeState(r);}
 $("#reportBtn").addEventListener("click",function(){
   var r=reportData();
@@ -1162,6 +1210,10 @@ $("#reportBtn").addEventListener("click",function(){
   lastReport=r;
   renderReportInto($("#reportCard"),r,false);
   $("#out").classList.remove("hidden");
+  if(!adPushed){ /* request the ad only once the container is actually visible (width > 0) */
+    adPushed=true;
+    try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
+  }
   if(navigator.share)$("#shareNative").classList.remove("hidden");
   scrollToEl($("#out"));
 });
