@@ -1136,9 +1136,12 @@ function sanitizeImport(o){
     var t=numClamp(r.t,0,50);
     hist[k]={c:numClamp(r.c,0,t),t:t};
   });
+  var ld=String(o.data.lastDate);
   return {
     tasks:tasks,
-    lastDate:todayStr(),
+    /* keep the backup's own day — the login rollover then closes that day into history
+       instead of counting its completions into today's ring */
+    lastDate:(/^\d{4}-\d{2}-\d{2}$/.test(ld)&&ld<=todayStr())?ld:todayStr(),
     stats:{
       xp:numClamp(st.xp,0,1e7),
       totalDone:numClamp(st.totalDone,0,1e7),
