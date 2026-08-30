@@ -1147,7 +1147,7 @@ function sanitizeImport(o){
       totalDone:numClamp(st.totalDone,0,1e7),
       streak:numClamp(st.streak,0,9999),
       bestStreak:numClamp(st.bestStreak,0,9999),
-      lastActiveDate:/^\d{4}-\d{2}-\d{2}$/.test(String(st.lastActiveDate))?st.lastActiveDate:""
+      lastActiveDate:(/^\d{4}-\d{2}-\d{2}$/.test(String(st.lastActiveDate))&&String(st.lastActiveDate)<=todayStr())?st.lastActiveDate:""
     },
     history:hist,flags:{}
   };
