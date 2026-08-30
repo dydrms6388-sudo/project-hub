@@ -52,6 +52,7 @@
 }
 [data-theme="light"] h1{background:linear-gradient(90deg,#047857,#0d9488,#6d28d9);-webkit-background-clip:text;background-clip:text}
 [data-theme="light"] .tabs{background:rgba(244,247,245,.92)}
+[data-theme="light"] .tabs button#tab-sos{color:#be123c}
 [data-theme="light"] .nav a,[data-theme="light"] footer a{color:#2563eb}
 [data-theme="light"] .crisis .tel .num{color:#111827}
 [data-theme="light"] .crisis{background:linear-gradient(180deg,rgba(225,29,72,.06),var(--card))}
@@ -568,7 +569,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="imgov" id="lockScreen" role="dialog" aria-modal="true" aria-label="앱 잠금 해제" style="background:var(--bg)">
   <div style="font-size:44px" aria-hidden="true">🔒</div>
-  <p style="color:#fff;font-size:15px;margin:8px 0 12px">마음케어가 잠겨 있어요. 비밀번호 4자리를 입력해 주세요.</p>
+  <p style="color:var(--tx);font-size:15px;margin:8px 0 12px">마음케어가 잠겨 있어요. 비밀번호 4자리를 입력해 주세요.</p>
   <input type="password" id="lockPin" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="비밀번호 4자리" style="width:160px;text-align:center;font-size:24px;letter-spacing:8px;padding:10px;border-radius:12px;border:1px solid var(--line2);background:var(--card2);color:var(--tx)" />
   <button class="btn primary" id="lockGo" style="margin-top:12px;width:200px">열기</button>
   <button class="btn danger" id="lockSos" style="margin-top:8px;width:200px">🆘 SOS는 바로 열기</button>
@@ -735,6 +736,8 @@ function applyTheme(){
   if(t==="light")document.documentElement.setAttribute("data-theme","light");
   else document.documentElement.removeAttribute("data-theme");
   $("#themeBtn").textContent=t==="light"?"☀️":"🌓";
+  var tc=document.querySelector("meta[name=theme-color]");
+  if(tc)tc.setAttribute("content",t==="light"?"#f4f7f5":"#0b0f0e");
 }
 $("#themeBtn").addEventListener("click",function(){
   var cur=document.documentElement.getAttribute("data-theme")==="light"?"light":"dark";
