@@ -511,9 +511,14 @@ function rollover(){
   while(keys.length>60){delete D.history[keys.shift()];}
   D.tasks=D.tasks.filter(function(x){return x.repeat||!x.done;});
   D.tasks.forEach(function(x){
-    if(x.repeat){x.done=false;x.alerted="";delete x.snoozeD;delete x.snoozeM;}
+    if(x.repeat){
+      x.done=false;x.alerted="";
+      /* a snooze promised into the new day ("10분 뒤 다시" at 23:5x) is kept; stale ones are dropped */
+      if(!(x.snoozeD&&x.snoozeD>=t)){delete x.snoozeD;delete x.snoozeM;}
+    }
     else if(!x.done){if(!x.carrySince)x.carrySince=D.lastDate;x.carry=true;}
   });
+  delete D.stats.prevStreak;delete D.stats.prevActive;delete D.stats.prevBest; /* day-scoped snapshot */
   var la=D.stats.lastActiveDate;
   if(la&&la!==t&&!isYesterday(la)&&D.stats.streak>0){
     D.flags.lostStreak=D.stats.streak;
@@ -1074,6 +1079,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden&&P){
 /* keep two tabs in sync; if this profile was deleted elsewhere, sign out gracefully */
 window.addEventListener("storage",function(e){
   if(!e.key||e.key.indexOf(LSP)!==0)return;
+  applyPrefs(); /* theme/text-size changes in another tab apply here too */
   profiles=lsGet("profiles",[]);
   if(P){
     var np=null; /* rebind P to the fresh array — a stale reference would drop later writes (e.g. PIN) */
@@ -1094,7 +1100,7 @@ window.addEventListener("storage",function(e){
 
 /* ---------- data export / import ---------- */
 $("#expBtn").addEventListener("click",function(){
-  var payload={app:"tec-todo-check",v:1,profile:{nick:P.nick,emoji:P.emoji},data:D};
+  var payload={app:"tec-todo-check",v:1,profile:{nick:P.nick,emoji:P.emoji,created:P.created},data:D};
   var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   var a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
@@ -1111,11 +1117,13 @@ function sanitizeImport(o){
     t=t||{};
     var text=String(t.text||"").slice(0,60).trim();
     if(!text)return null;
+    var time=/^([01]\d|2[0-3]):[0-5]\d$/.test(String(t.time))?t.time:"";
     return {
       id:uid(),text:text,
-      time:/^([01]\d|2[0-3]):[0-5]\d$/.test(String(t.time))?t.time:"",
+      time:time,
       prio:PRIO_OK[t.prio]?t.prio:"mid",
-      repeat:!!t.repeat,done:!!t.done,alerted:"",
+      repeat:!!t.repeat,done:!!t.done,
+      alerted:(time&&time<nowHM())?todayStr():"", /* don't fire a batch of stale alarms right after import */
       carry:!!t.carry,
       carrySince:/^\d{4}-\d{2}-\d{2}$/.test(String(t.carrySince))?t.carrySince:undefined
     };
@@ -1152,7 +1160,13 @@ $("#impFile").addEventListener("change",function(){
       if(o.app!=="tec-todo-check"||!o.data||!o.profile)throw 0;
       var nick=String(o.profile.nick||"가져온 프로필").slice(0,12);
       var dup=profiles.some(function(x){return x.nick===nick;});
-      var p={id:uid(),nick:nick,emoji:AVATARS.indexOf(o.profile.emoji)>=0?o.profile.emoji:"🍅",created:todayStr()};
+      /* restore the original start date so past history doesn't render as "시작 전" */
+      var created=/^\d{4}-\d{2}-\d{2}$/.test(String(o.profile.created))?o.profile.created:null;
+      if(!created){
+        var hk=Object.keys(o.data.history||{}).filter(function(k){return /^\d{4}-\d{2}-\d{2}$/.test(k);}).sort();
+        created=hk.length?hk[0]:todayStr();
+      }
+      var p={id:uid(),nick:nick,emoji:AVATARS.indexOf(o.profile.emoji)>=0?o.profile.emoji:"🍅",created:created};
       profiles.push(p);lsSet("profiles",profiles);
       lsSet("data_"+p.id,sanitizeImport(o));
       toast(dup?"같은 이름 프로필이 이미 있어 새 프로필로 나란히 추가했어요":"'"+p.nick+"' 프로필로 가져왔어요! 프로필 전환에서 선택하세요",4000,1);
