@@ -414,6 +414,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
       <li>반복된다면 부끄러운 일이 아니에요. 공황장애는 <b>치료 반응이 좋은 편</b>으로 알려져 있으니 전문가 상담을 받아보세요.</li>
       <li>⚕️ 다만 이런 증상을 <b>처음</b> 겪거나, 흉통이 심하거나, 심장·호흡기 질환이 있다면 공황으로 단정하지 말고 <b>119 또는 의료기관에서 신체 원인부터 확인</b>하세요.</li>
     </ul>
+    <p class="hint">근거: 공황장애 인지행동치료(CBT) 표준 심리교육 · APA 진료지침(2009) — 원문 링크는 <b>배움</b> 탭에 있어요.</p>
   </div>
 
   <div class="card">
@@ -546,7 +547,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="imgov" id="lockScreen" role="dialog" aria-modal="true" aria-label="앱 잠금 해제">
+<div class="imgov" id="lockScreen" role="dialog" aria-modal="true" aria-label="앱 잠금 해제" style="background:var(--bg)">
   <div style="font-size:44px" aria-hidden="true">🔒</div>
   <p style="color:#fff;font-size:15px;margin:8px 0 12px">마음케어가 잠겨 있어요. 비밀번호 4자리를 입력해 주세요.</p>
   <input type="password" id="lockPin" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="비밀번호 4자리" style="width:160px;text-align:center;font-size:24px;letter-spacing:8px;padding:10px;border-radius:12px;border:1px solid var(--line2);background:var(--card2);color:var(--tx)" />
@@ -856,7 +857,17 @@ function tickBreath(){
     bPhase++;
     if(bPhase>=BREATHS[bMode].ph.length){bPhase=0;bCycles++}
     stepBreath();
-  } else {$("#bCount").textContent=bLeft}
+  } else {
+    $("#bCount").textContent=bLeft;
+    // 멈추기 구간은 초 단위 미세 블립으로 진행을 알린다(눈 감고도 추적 가능)
+    if(BREATHS[bMode].ph[bPhase][0]==="멈추기"&&$("#breathSound").checked){
+      try{
+        var c=getCtx();
+        if(c){var o2=c.createOscillator(),g2=c.createGain();o2.type="sine";o2.frequency.value=440;o2.connect(g2);g2.connect(c.destination);
+        var tt=c.currentTime;g2.gain.setValueAtTime(0,tt);g2.gain.linearRampToValueAtTime(0.04,tt+0.02);g2.gain.linearRampToValueAtTime(0.0001,tt+0.09);o2.start(tt);o2.stop(tt+0.1)}
+      }catch(e){}
+    }
+  }
   var secs=Math.round((Date.now()-bStart)/1000);
   $("#bMeta").innerHTML="🌀 "+bCycles+"회 완료 · "+Math.floor(secs/60)+"분 "+(secs%60)+"초<br />"+esc(BREATHS[bMode].tip);
   if(secs>=60&&!bMinuteFired){bMinuteFired=true;toast("1분 완주! 조금 나아졌다면 원하는 만큼 이어가요 🌿")}
