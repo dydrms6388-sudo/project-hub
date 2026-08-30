@@ -285,6 +285,15 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
       <button class="btn" id="restoreBtn">백업 붙여넣어 복원</button>
       <button class="btn danger" id="wipeBtn">모든 기록 삭제</button>
     </div>
+    <div class="setrow"><button class="btn" id="pinBtn">🔒 앱 잠금 (PIN)</button></div>
+    <div id="pinBox" hidden style="margin-top:10px">
+      <label for="pinInput" id="pinLabel">4자리 숫자 비밀번호</label>
+      <div class="row">
+        <input type="password" id="pinInput" inputmode="numeric" maxlength="4" autocomplete="off" aria-labelledby="pinLabel" style="flex:1" />
+        <button class="btn mint" id="pinGo" style="flex:none">잠금 켜기</button>
+      </div>
+      <p class="hint">가족과 함께 쓰는 기기에서 기록을 가볍게 보호해요. 🆘 SOS는 잠금 없이도 항상 열려요. 비밀번호를 잊으면 "모든 기록 삭제"로만 초기화할 수 있으니 기억해 주세요.</p>
+    </div>
     <div id="restoreBox" hidden style="margin-top:10px">
       <textarea id="restoreTa" placeholder="백업 텍스트를 여기에 붙여넣어 주세요" aria-label="백업 텍스트 붙여넣기"></textarea>
       <button class="btn mint" id="restoreGo" style="width:100%;margin-top:8px">복원 실행 (현재 기록을 덮어써요)</button>
@@ -365,6 +374,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
     <a class="tel" href="tel:119"><span style="font-size:22px">🚑</span><span><span class="num">119</span><br /><span class="lb">응급 상황(신체 위급 시)</span></span><span class="go">바로 걸기 →</span></a>
     <p class="hint" style="margin-top:10px">통화가 어렵다면 <a href="https://www.mentalhealth.go.kr" target="_blank" rel="noopener">국가정신건강정보포털</a>에서 문자·채팅 상담과 가까운 정신건강복지센터를 찾을 수 있어요.</p>
     <button class="btn mint" id="quickBreath" style="width:100%;margin-top:12px">🌬️ 60초 진정 호흡 바로 시작</button>
+    <button class="btn" id="sosHelpPath" style="width:100%;margin-top:8px">🤝 전문 도움, 어디서부터? 차근차근 보기</button>
   </div>
 
   <div class="card">
@@ -375,6 +385,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
       <button data-m="478">4·7·8 호흡</button>
     </div>
     <label class="row" style="margin:0 0 8px;cursor:pointer;font-size:13.5px;color:var(--tx2)"><input type="checkbox" id="breathSound" style="width:18px;height:18px;accent-color:#10b981" /> 🔈 소리 페이싱 — 눈을 감거나 화면을 안 봐도 따라갈 수 있어요</label>
+    <label class="row" style="margin:0 0 8px;cursor:pointer;font-size:13.5px;color:var(--tx2)"><input type="checkbox" id="breathVib" checked style="width:18px;height:18px;accent-color:#10b981" /> 📳 진동 페이싱 (지원 기기) — 자극이 부담되면 꺼도 돼요</label>
     <div class="breath-stage">
       <div class="borb" id="borb"><div class="ph" id="bPhase" aria-live="polite">준비</div><div class="ct" id="bCount" aria-hidden="true">–</div></div>
       <div class="bmeta" id="bMeta">시작을 누르고, 원이 커지면 들이쉬고 작아지면 내쉬어요.<br />날숨을 들숨보다 길게 — 몸의 브레이크(부교감신경)를 켜는 방법이에요.</div>
@@ -474,7 +485,7 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
       <input type="text" id="alLabel" maxlength="20" placeholder="알림 내용 (예: 감사일기 쓰기)" autocomplete="off" style="flex:1;min-width:150px" />
       <button class="btn mint" id="alAdd" style="flex:none">추가</button>
     </div>
-    <div class="chips" id="alDays" style="margin-top:8px" aria-label="알림 반복 요일 선택"></div>
+    <div class="chips" id="alDays" style="margin-top:8px" role="group" aria-label="알림 반복 요일 선택"></div>
     <p class="hint" style="margin-top:6px">울릴 요일을 골라요 (기본: 매일). 교대근무라면 근무 패턴에 맞춰 요일만 켜 두세요.</p>
     <div class="setrow">
       <button class="btn" data-preset="09:00|아침 기분 체크인 🫶">+ 아침 체크인</button>
@@ -535,7 +546,15 @@ footer a{color:#7aa2ff;margin:0 6px;text-decoration:none}
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="imgov" id="imgOverlay">
+<div class="imgov" id="lockScreen" role="dialog" aria-modal="true" aria-label="앱 잠금 해제">
+  <div style="font-size:44px" aria-hidden="true">🔒</div>
+  <p style="color:#fff;font-size:15px;margin:8px 0 12px">마음케어가 잠겨 있어요. 비밀번호 4자리를 입력해 주세요.</p>
+  <input type="password" id="lockPin" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="비밀번호 4자리" style="width:160px;text-align:center;font-size:24px;letter-spacing:8px;padding:10px;border-radius:12px;border:1px solid var(--line2);background:var(--card2);color:var(--tx)" />
+  <button class="btn primary" id="lockGo" style="margin-top:12px;width:200px">열기</button>
+  <button class="btn danger" id="lockSos" style="margin-top:8px;width:200px">🆘 SOS는 바로 열기</button>
+  <button id="lockForgot" style="margin-top:14px;background:none;border:0;color:var(--tx3);font-size:12.5px;cursor:pointer;min-height:40px">비밀번호를 잊었어요</button>
+</div>
+<div class="imgov" id="imgOverlay" role="dialog" aria-modal="true" aria-label="응원 카드 이미지 저장">
   <p style="color:#fff;font-size:14.5px;margin:0 0 10px">🖼️ 이미지를 길게 눌러 "사진에 저장"을 선택하세요</p>
   <img id="imgOverlayImg" alt="응원 카드 이미지" style="max-width:100%;max-height:70vh;border-radius:14px" />
   <button class="btn" id="imgOverlayClose" style="margin-top:14px;min-width:120px">닫기</button>
@@ -645,6 +664,13 @@ $("#exportBtn").addEventListener("click",function(){
     if(r.ds&&r.ds.length)out.push("  생각 습관: "+r.ds.join(", "));
     if(r.alt)out.push("  다시 보기: "+r.alt);
   });out.push("")}
+  var dn=LS.get("done",{}),tk=LS.get("tasks",[]),dks=Object.keys(dn).sort().slice(-30);
+  var dnLines=[];
+  dks.forEach(function(k){
+    var names=dn[k].map(function(id){var t=null;tk.forEach(function(x){if(x.id===id)t=x});return t?t.t:null}).filter(Boolean);
+    if(names.length)dnLines.push(k+" · "+names.length+"개 완료 — "+names.join(", "));
+  });
+  if(dnLines.length){out.push("■ 마음 챙김 할 일 (최근 "+dnLines.length+"일)");dnLines.forEach(function(l){out.push(l)});out.push("")}
   var gr=LS.get("grats",[]).slice(0,30);
   if(gr.length){out.push("■ 감사 일기 (최근 "+gr.length+"건)");gr.forEach(function(g){out.push("["+new Date(g.ts).toLocaleDateString("ko-KR")+"] "+g.items.join(" / "))})}
   if(out.length<=2){toast("아직 내보낼 기록이 없어요");return}
@@ -673,8 +699,15 @@ $("#restoreGo").addEventListener("click",function(){
   if(!applied){toast("복원할 수 있는 내용이 없어요 😢");return}
   toast("복원했어요! 새로고침할게요");setTimeout(function(){location.reload()},900);
 });
-function applyBig(){var on=settings.big===true;try{document.body.style.zoom=on?"1.15":""}catch(e){}var b=$("#bigBtn");b.textContent=on?"가−":"가+";b.setAttribute("aria-pressed",on?"true":"false")}
-$("#bigBtn").addEventListener("click",function(){settings.big=!(settings.big===true);LS.set("set",settings);applyBig()});
+// 큰 글씨 2단계: 가+ → 1.15배 → 1.3배 → 원래대로 (구버전 true 값은 1단계로 호환)
+function bigLevel(){return settings.big===true?1:(Number(settings.big)||0)}
+function applyBig(){
+  var lv=bigLevel();
+  try{document.body.style.zoom=["","1.15","1.3"][lv]}catch(e){}
+  var b=$("#bigBtn");b.textContent=["가+","가++","가−"][lv];b.setAttribute("aria-pressed",lv?"true":"false");
+  b.title=["글씨 크게","글씨 더 크게","원래 크기로"][lv];
+}
+$("#bigBtn").addEventListener("click",function(){settings.big=(bigLevel()+1)%3;LS.set("set",settings);applyBig()});
 $("#wipeBtn").addEventListener("click",function(){
   if(!confirm("모든 기록(기분·일기·알림·프로필)을 이 기기에서 완전히 삭제할까요? 되돌릴 수 없어요."))return;
   KEYS.forEach(function(k){LS.del(k)});
@@ -695,6 +728,10 @@ function renderMood(){
   $("#moodDate").textContent=new Date().toLocaleDateString("ko-KR",{month:"long",day:"numeric",weekday:"short"});
   $$("#moodBtns button").forEach(function(b){var on=!!today&&Number(b.dataset.v)===today.v;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")});
   var fb=$("#moodFb");
+  // 가장 취약한 순간의 CTA는 원탭 전화 연결로(전화번호 텍스트 → tel: 링크)
+  var telify=function(s){return esc(s)
+    .replace(/1577-0199/g,"<a href='tel:1577-0199' style='color:inherit;font-weight:800'>1577-0199</a>")
+    .replace(/109/g,"<a href='tel:109' style='color:inherit;font-weight:800'>109</a>")};
   if(today){
     var m=moodMsgs[today.v];fb.style.display="block";fb.className="mood-fb "+(m.c||"");
     var msg=m.t;
@@ -703,13 +740,9 @@ function renderMood(){
     var low=0;for(var i=0;i<3;i++){var e=moodDb[dkey(new Date(Date.now()-i*86400000))];if(e&&e.v<=2)low++}
     if(low>=3){
       msg+=" · 며칠째 마음이 무거워 보여요. 이 앱은 전문 도움을 대체하지 못해요 — 가까운 사람이나 전문가(☎109, 1577-0199)와 이야기 나눠 보는 건 어때요?";
-      fb.innerHTML=esc(msg)+"<button id='helpPath' class='btn mint' style='margin-top:10px;width:100%'>🤝 도움받는 길, 차근차근 보기</button>";
-      $("#helpPath").addEventListener("click",function(){
-        showTab("learn");
-        var ds=$$("#learnBox details"),last=ds[ds.length-1];
-        if(last){last.open=true;last.scrollIntoView({behavior:"smooth"})}
-      });
-    } else {fb.textContent=msg}
+      fb.innerHTML=telify(msg)+"<button id='helpPath' class='btn mint' style='margin-top:10px;width:100%'>🤝 도움받는 길, 차근차근 보기</button>";
+      $("#helpPath").addEventListener("click",openHelpPath);
+    } else {fb.innerHTML=telify(msg)}
   } else {fb.style.display="none"}
   renderChart();
 }
@@ -797,7 +830,7 @@ function stepBreath(){
   else if(ph[0]==="내쉬기")orb.style.transform="scale(.72)";
   orb.style.transitionDuration=ph[1]+"s";
   // 화면을 응시하지 않아도 페이스를 따라갈 수 있게 짧은 진동(지원 기기 한정) + 선택형 소리 페이싱
-  try{if(navigator.vibrate)navigator.vibrate(ph[0]==="들이쉬기"?[40,60,40]:[40])}catch(e){}
+  try{if(navigator.vibrate&&$("#breathVib").checked)navigator.vibrate(ph[0]==="들이쉬기"?[40,60,40]:[40])}catch(e){}
   breathCue(ph[0],ph[1]);
 }
 function breathCue(phase,secs){
@@ -806,7 +839,8 @@ function breathCue(phase,secs){
     var ctx=getCtx();if(!ctx)return;
     var o=ctx.createOscillator(),g=ctx.createGain();
     o.type="sine";o.connect(g);g.connect(ctx.destination);
-    var t0=ctx.currentTime,dur=Math.min(secs*0.85,phase==="멈추기"?0.25:2.2);
+    // 위상 전체 길이를 커버해 눈 감고도 시작~끝을 소리로 알 수 있게 한다
+    var t0=ctx.currentTime,dur=phase==="멈추기"?0.25:Math.max(0.4,secs*0.92);
     if(phase==="들이쉬기"){o.frequency.setValueAtTime(330,t0);o.frequency.linearRampToValueAtTime(523,t0+dur)}
     else if(phase==="내쉬기"){o.frequency.setValueAtTime(523,t0);o.frequency.linearRampToValueAtTime(294,t0+dur)}
     else{o.frequency.setValueAtTime(440,t0)}
@@ -842,10 +876,19 @@ function stopBreath(){
   $("#breathToggle").classList.add("primary");$("#breathToggle").classList.remove("danger");
 }
 $("#breathToggle").addEventListener("click",function(){bTimer?stopBreath():startBreath()});
+// 페이싱 설정은 기기별로 기억
+$("#breathSound").addEventListener("change",function(){settings.bSound=this.checked;LS.set("set",settings)});
+$("#breathVib").addEventListener("change",function(){settings.bVib=this.checked;LS.set("set",settings)});
 $("#quickBreath").addEventListener("click",function(){
   if(!bTimer)startBreath();
   var el=$("#borb");if(el&&el.scrollIntoView)el.scrollIntoView({behavior:"smooth",block:"center"});
 });
+function openHelpPath(){
+  showTab("learn");
+  var help=$("#learnBox details[data-k='help']")||$$("#learnBox details").pop();
+  if(help){help.open=true;help.scrollIntoView({behavior:"smooth"})}
+}
+$("#sosHelpPath").addEventListener("click",openHelpPath);
 
 /* ───────── grounding ───────── */
 var GSTEPS=[
@@ -1004,8 +1047,11 @@ function icsForAlarm(a){
   var guard=0;while((days.indexOf(d.getDay())<0||d<=new Date())&&guard++<8)d.setDate(d.getDate()+1);
   var pad=function(n){return String(n).padStart(2,"0")};
   var dt=d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"T"+pad(d.getHours())+pad(d.getMinutes())+"00";
+  var now=new Date();
+  var stamp=now.getUTCFullYear()+pad(now.getUTCMonth()+1)+pad(now.getUTCDate())+"T"+pad(now.getUTCHours())+pad(now.getUTCMinutes())+pad(now.getUTCSeconds())+"Z";
+  // DTSTART는 floating time — 사용자의 기기 시계 기준 그대로(해외에서도 현지 시각 유지)
   return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//tomatoeggcat//mind-care//KO","BEGIN:VEVENT",
-    "UID:mc-"+a.id+"@tomatoeggcat.com","DTSTART;TZID=Asia/Seoul:"+dt,
+    "UID:mc-"+a.id+"@tomatoeggcat.com","DTSTAMP:"+stamp,"DTSTART:"+dt,
     "RRULE:FREQ=WEEKLY;BYDAY="+days.map(function(x){return ICSDAY[x]}).join(","),
     "SUMMARY:🌿 "+a.label.replace(/[\n,;]/g," "),
     "DESCRIPTION:마음케어 리마인더 · tomatoeggcat.com/mind-care",
@@ -1018,10 +1064,18 @@ function renderAlarms(){
   alarms.sort(function(a,b){return a.time<b.time?-1:1}).forEach(function(a){
     var row=document.createElement("div");row.className="alarm"+(a.on?"":" off");
     row.innerHTML="<span class='tm'>"+esc(a.time)+"</span><span class='lb'>"+esc(a.label)+esc(daysLabel(normDays(a)))+"</span>"
+      +"<button class='edit' style='background:none;border:0;cursor:pointer;min-width:40px;min-height:40px;font-size:15px' aria-label='알림 수정' title='수정'>✏️</button>"
       +"<button class='ics' style='background:none;border:0;cursor:pointer;min-width:40px;min-height:40px;font-size:16px' aria-label='기기 캘린더에 넣기' title='캘린더에 넣기 — 탭이 닫혀 있어도 캘린더가 대신 알려줘요'>📅</button>"
       +"<label class='switch'><input type='checkbox' "+(a.on?"checked":"")+" aria-label='알림 켜고 끄기' /><i></i></label>"
       +"<button class='del' style='background:none;border:0;color:var(--tx3);cursor:pointer;min-width:40px;min-height:40px;font-size:16px' aria-label='알림 삭제'>✕</button>";
     row.querySelector("input").addEventListener("change",function(ev){a.on=ev.target.checked;LS.set("alarms",alarms);renderAlarms()});
+    row.querySelector(".edit").addEventListener("click",function(){
+      editingId=a.id;
+      $("#alTime").value=a.time;$("#alLabel").value=a.label;setDayChips(normDays(a));
+      $("#alAdd").textContent="수정 저장";
+      $("#alLabel").focus({preventScroll:true});
+      toast("아래 입력칸에서 고친 뒤 '수정 저장'을 눌러 주세요 ✏️");
+    });
     row.querySelector(".ics").addEventListener("click",function(){
       try{
         var blob=new Blob([icsForAlarm(a)],{type:"text/calendar"});
@@ -1036,7 +1090,8 @@ function renderAlarms(){
 }
 var alDaysSel=[0,1,2,3,4,5,6];
 WDAY.forEach(function(w,d){
-  var b=document.createElement("button");b.type="button";b.textContent=w;b.classList.add("on");b.setAttribute("aria-pressed","true");
+  var b=document.createElement("button");b.type="button";b.textContent=w;b.classList.add("on");
+  b.setAttribute("aria-pressed","true");b.setAttribute("aria-label",w+"요일");
   b.style.minWidth="40px";b.style.flex="1";
   b.addEventListener("click",function(){
     var i=alDaysSel.indexOf(d);
@@ -1045,7 +1100,22 @@ WDAY.forEach(function(w,d){
   });
   $("#alDays").appendChild(b);
 });
+function setDayChips(days){
+  alDaysSel=days.slice();
+  $$("#alDays button").forEach(function(b,d){var on=days.indexOf(d)>=0;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")});
+}
+var editingId=null;
 function addAlarm(time,label,days){
+  if(editingId){ // 인라인 수정 모드
+    var t=null;alarms.forEach(function(x){if(x.id===editingId)t=x});
+    if(t){
+      var now0=new Date(),hm0=String(now0.getHours()).padStart(2,"0")+":"+String(now0.getMinutes()).padStart(2,"0");
+      t.time=time;t.label=label||t.label;t.days=(days||normDays(t)).slice();delete t.rep;
+      t.last=hm0>=time?dkey():"";
+      LS.set("alarms",alarms);toast("알림을 수정했어요 ✏️");
+    }
+    editingId=null;$("#alAdd").textContent="추가";renderAlarms();return;
+  }
   if(alarms.length>=12){toast("알림은 12개까지 만들 수 있어요");return}
   // 이미 지난 시각이면 오늘은 건너뛰고 다음 날부터 울리도록(즉시 오발사 방지)
   var now=new Date(),hm=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
@@ -1058,6 +1128,7 @@ $("#alAdd").addEventListener("click",function(){
   addAlarm(t,$("#alLabel").value.trim()||"마음 챙김 시간",alDaysSel);$("#alLabel").value="";
 });
 $$("[data-preset]").forEach(function(b){b.addEventListener("click",function(){
+  if(editingId){editingId=null;$("#alAdd").textContent="추가"} // 수정 모드 중 프리셋은 새 알림으로
   var p=b.dataset.preset.split("|");addAlarm(p[0],p[1]);
 })});
 function chime(){
@@ -1101,19 +1172,21 @@ setInterval(function(){
 
 /* ───────── learn ───────── */
 var LEARN=[
-  {i:"🌊",t:"공황은 '고장'이 아니라 '오작동 경보'예요",b:"공황발작은 위험이 없는 상황에서 몸의 비상 경보(투쟁-도피 반응)가 잘못 울리는 현상이에요. 심장이 뛰고 숨이 가빠지는 건 몸이 도망칠 준비를 하기 때문이지, 심장이나 폐가 망가져서가 아니에요. 증상은 보통 수 분 내 절정에 달한 뒤 가라앉아요. '이 감각은 위험하지 않다'는 사실을 아는 것 자체가 공황 치료의 첫 단계로 쓰일 만큼 중요해요. 단, 처음 겪는 증상이거나 흉통이 심하다면 먼저 의료기관에서 신체 원인을 확인하는 게 순서예요.",s:"근거: 공황장애 인지행동치료(CBT)의 표준 심리교육 · APA(미국정신의학회) 공황장애 진료지침(2009)"},
-  {i:"🌬️",t:"긴 날숨이 몸의 브레이크를 켜요",b:"천천히, 특히 날숨을 들숨보다 길게 쉬면 심박을 늦추는 부교감신경이 활성화돼요. 분당 6회 안팎(약 5초 들숨·5초 이상 날숨)의 느린 호흡이 심박변이도를 높이고 스트레스 반응을 낮춘다는 연구가 꾸준히 보고돼요. 하루 3분씩, 불안하지 않을 때 연습해 두면 정작 필요한 순간에 훨씬 잘 돼요.",s:"근거: 느린 호흡의 자율신경계 효과에 관한 체계적 문헌고찰 (Zaccaro et al., 2018, Frontiers in Human Neuroscience)"},
-  {i:"🧠",t:"생각은 사실이 아니라 '가설'이에요",b:"우울하고 불안할 때 우리 뇌는 '다들 날 싫어해', '난 안 될 거야' 같은 자동적인 생각을 사실처럼 믿어요. 인지행동치료(CBT)는 이런 생각을 종이에 적고, 근거를 따져보고, 더 균형 잡힌 관점으로 바꿔보는 훈련이에요. CBT는 우울증과 불안장애·공황장애에 효과가 반복적으로 확인된 심리치료예요. 이 앱의 '생각 기록'이 바로 그 연습이에요.",s:"근거: CBT 효과 메타분석 (Hofmann et al., 2012, Cognitive Therapy and Research)"},
-  {i:"👟",t:"기분이 나아지길 기다리지 말고, 몸을 먼저 움직여요",b:"우울할 때는 '기운이 나면 해야지' 하고 활동을 미루게 되는데, 활동이 줄면 성취와 즐거움도 줄어 우울이 더 깊어지는 악순환이 생겨요. 행동 활성화는 이 고리를 반대로 돌려요 — 아주 작은 활동(세수, 5분 산책)부터 '일단' 하면 기분이 뒤따라와요. 행동 활성화는 그 단순함에도 우울증에 대한 효과가 잘 확립된 치료 기법이에요.",s:"근거: 행동 활성화 효과 메타분석 (Cuijpers et al., 2007; Ekers et al., 2014)"},
-  {i:"🏃",t:"운동은 과학이 인정한 기분 조절 도구예요",b:"규칙적인 유산소 운동이 우울 증상을 의미 있게 줄인다는 메타분석 결과가 여럿 있어요. 거창할 필요 없어요 — 주 3회, 조금 숨찰 정도의 빠른 걷기 30분부터가 시작이에요. 우울이 깊을 땐 '오늘 현관까지', '오늘 골목 끝까지'처럼 목표를 우스울 만큼 작게 잡는 게 요령이에요.",s:"근거: 운동과 우울증 메타분석 (Schuch et al., 2016, Journal of Psychiatric Research)"},
-  {i:"🌼",t:"감사 세 줄, 작지만 반복 확인된 효과",b:"하루를 마치며 감사한 일 몇 가지를 적는 단순한 연습이 주관적 행복감과 긍정 정서를 조금씩 높인다는 연구가 반복되어 왔어요. 효과가 극적이진 않지만 비용이 없고 부작용도 없어요. 요령은 '거창한 것'이 아니라 '구체적인 것'을 적는 거예요 — '오늘 버스를 바로 탔다', '점심이 따뜻했다'처럼요.",s:"근거: 감사 일기 실험 연구 (Emmons & McCullough, 2003, Journal of Personality and Social Psychology)"},
-  {i:"🌙",t:"잠은 마음의 면역이에요",b:"불면과 우울·불안은 서로를 키워요. 매일 같은 시각에 일어나기, 아침 햇빛 쬐기, 잠자리에서 휴대폰 안 보기, 오후 늦은 카페인 피하기 같은 수면 위생이 기본이고, 만성 불면에는 불면증 인지행동치료(CBT-I)가 수면제보다 우선 권고되는 표준 치료예요.",s:"근거: 불면증 진료지침 — CBT-I 1차 치료 권고 (미국내과학회 ACP, 2016 등)"},
-  {i:"🤝",t:"도움을 청하는 것이 회복의 시작이에요",b:"우울증과 공황장애는 의지가 약해서 생기는 게 아니라, 누구나 겪을 수 있고 치료 반응이 좋은 건강 문제예요. 심리상담, 약물치료, 또는 둘의 병행 모두 효과가 확인되어 있어요. 2주 이상 가라앉은 기분·흥미 저하가 이어지거나 일상이 흔들린다면 이렇게 시작해 보세요 — ① 부담이 적은 순서로는 시·군·구마다 있는 정신건강복지센터(1577-0199로 안내받기, 무료 상담) ② 심리상담센터 ③ 정신건강의학과 의원(첫 진료는 보통 면담 30분 안팎, 건강보험 적용). 기록이 걱정돼 망설여진다면 익명 전화 상담(109, 1577-0199)이나 센터 상담부터 시작해도 충분해요. 생각보다 훨씬 흔하고, 훨씬 나아져요.",s:"근거: 우울증 치료 효과 연구 종합 (Cuijpers et al. 다수의 메타분석) · 국가정신건강정보포털 mentalhealth.go.kr"}
+  {i:"🌊",t:"공황은 '고장'이 아니라 '오작동 경보'예요",b:"공황발작은 위험이 없는 상황에서 몸의 비상 경보(투쟁-도피 반응)가 잘못 울리는 현상이에요. 심장이 뛰고 숨이 가빠지는 건 몸이 도망칠 준비를 하기 때문이지, 심장이나 폐가 망가져서가 아니에요. 증상은 보통 수 분 내 절정에 달한 뒤 가라앉아요. '이 감각은 위험하지 않다'는 사실을 아는 것 자체가 공황 치료의 첫 단계로 쓰일 만큼 중요해요. 단, 처음 겪는 증상이거나 흉통이 심하다면 먼저 의료기관에서 신체 원인을 확인하는 게 순서예요.",s:"근거: 공황장애 인지행동치료(CBT)의 표준 심리교육 · APA(미국정신의학회) 공황장애 진료지침(2009)",u:"https://psychiatryonline.org/pb/assets/raw/sitewide/practice_guidelines/guidelines/panicdisorder.pdf"},
+  {i:"🌬️",t:"긴 날숨이 몸의 브레이크를 켜요",b:"천천히, 특히 날숨을 들숨보다 길게 쉬면 심박을 늦추는 부교감신경이 활성화돼요. 분당 6회 안팎(약 5초 들숨·5초 이상 날숨)의 느린 호흡이 심박변이도를 높이고 스트레스 반응을 낮춘다는 연구가 꾸준히 보고돼요. 하루 3분씩, 불안하지 않을 때 연습해 두면 정작 필요한 순간에 훨씬 잘 돼요.",s:"근거: 느린 호흡의 자율신경계 효과에 관한 체계적 문헌고찰 (Zaccaro et al., 2018, Frontiers in Human Neuroscience)",u:"https://doi.org/10.3389/fnhum.2018.00353"},
+  {i:"🧠",t:"생각은 사실이 아니라 '가설'이에요",b:"우울하고 불안할 때 우리 뇌는 '다들 날 싫어해', '난 안 될 거야' 같은 자동적인 생각을 사실처럼 믿어요. 인지행동치료(CBT)는 이런 생각을 종이에 적고, 근거를 따져보고, 더 균형 잡힌 관점으로 바꿔보는 훈련이에요. CBT는 우울증과 불안장애·공황장애에 효과가 반복적으로 확인된 심리치료예요. 이 앱의 '생각 기록'이 바로 그 연습이에요.",s:"근거: CBT 효과 메타분석 (Hofmann et al., 2012, Cognitive Therapy and Research)",u:"https://doi.org/10.1007/s10608-012-9476-1"},
+  {i:"👟",t:"기분이 나아지길 기다리지 말고, 몸을 먼저 움직여요",b:"우울할 때는 '기운이 나면 해야지' 하고 활동을 미루게 되는데, 활동이 줄면 성취와 즐거움도 줄어 우울이 더 깊어지는 악순환이 생겨요. 행동 활성화는 이 고리를 반대로 돌려요 — 아주 작은 활동(세수, 5분 산책)부터 '일단' 하면 기분이 뒤따라와요. 행동 활성화는 그 단순함에도 우울증에 대한 효과가 잘 확립된 치료 기법이에요.",s:"근거: 행동 활성화 효과 메타분석 (Cuijpers et al., 2007; Ekers et al., 2014)",u:"https://doi.org/10.1371/journal.pone.0100100"},
+  {i:"🏃",t:"운동은 과학이 인정한 기분 조절 도구예요",b:"규칙적인 유산소 운동이 우울 증상을 의미 있게 줄인다는 메타분석 결과가 여럿 있어요. 거창할 필요 없어요 — 주 3회, 조금 숨찰 정도의 빠른 걷기 30분부터가 시작이에요. 우울이 깊을 땐 '오늘 현관까지', '오늘 골목 끝까지'처럼 목표를 우스울 만큼 작게 잡는 게 요령이에요.",s:"근거: 운동과 우울증 메타분석 (Schuch et al., 2016, Journal of Psychiatric Research)",u:"https://doi.org/10.1016/j.jpsychires.2016.02.023"},
+  {i:"🌼",t:"감사 세 줄, 작지만 반복 확인된 효과",b:"하루를 마치며 감사한 일 몇 가지를 적는 단순한 연습이 주관적 행복감과 긍정 정서를 조금씩 높인다는 연구가 반복되어 왔어요. 효과가 극적이진 않지만 비용이 없고 부작용도 없어요. 요령은 '거창한 것'이 아니라 '구체적인 것'을 적는 거예요 — '오늘 버스를 바로 탔다', '점심이 따뜻했다'처럼요.",s:"근거: 감사 일기 실험 연구 (Emmons & McCullough, 2003, Journal of Personality and Social Psychology)",u:"https://doi.org/10.1037/0022-3514.84.2.377"},
+  {i:"🌙",t:"잠은 마음의 면역이에요",b:"불면과 우울·불안은 서로를 키워요. 매일 같은 시각에 일어나기, 아침 햇빛 쬐기, 잠자리에서 휴대폰 안 보기, 오후 늦은 카페인 피하기 같은 수면 위생이 기본이고, 만성 불면에는 불면증 인지행동치료(CBT-I)가 수면제보다 우선 권고되는 표준 치료예요.",s:"근거: 불면증 진료지침 — CBT-I 1차 치료 권고 (미국내과학회 ACP, 2016 등)",u:"https://doi.org/10.7326/M15-2175"},
+  {k:"help",i:"🤝",t:"도움을 청하는 것이 회복의 시작이에요",b:"우울증과 공황장애는 의지가 약해서 생기는 게 아니라, 누구나 겪을 수 있고 치료 반응이 좋은 건강 문제예요. 심리상담, 약물치료, 또는 둘의 병행 모두 효과가 확인되어 있어요. 2주 이상 가라앉은 기분·흥미 저하가 이어지거나 일상이 흔들린다면 이렇게 시작해 보세요 — ① 부담이 적은 순서로는 시·군·구마다 있는 정신건강복지센터(1577-0199로 안내받기, 무료 상담) ② 심리상담센터 ③ 정신건강의학과 의원(첫 진료는 보통 면담 30분 안팎, 건강보험 적용). 기록이 걱정돼 망설여진다면 익명 전화 상담(109, 1577-0199)이나 센터 상담부터 시작해도 충분해요. 생각보다 훨씬 흔하고, 훨씬 나아져요.",s:"근거: 우울증 치료 효과 연구 종합 (Cuijpers et al. 다수의 메타분석) · 국가정신건강정보포털 mentalhealth.go.kr",u:"https://www.mentalhealth.go.kr"}
 ];
 var lb=$("#learnBox");
 LEARN.forEach(function(c){
   var d=document.createElement("details");d.className="learn";
-  d.innerHTML="<summary><span>"+c.i+"</span> "+esc(c.t)+"</summary><div class='body'>"+esc(c.b)+"<div class='src'>"+esc(c.s)+"</div></div>";
+  if(c.k)d.dataset.k=c.k;
+  var srcLink=c.u?" · <a href='"+esc(c.u)+"' target='_blank' rel='noopener nofollow'>원문 보기</a>":"";
+  d.innerHTML="<summary><span>"+c.i+"</span> "+esc(c.t)+"</summary><div class='body'>"+esc(c.b)+"<div class='src'>"+esc(c.s)+srcLink+"</div></div>";
   lb.appendChild(d);
 });
 
@@ -1206,6 +1279,7 @@ $("#savePng").addEventListener("click",function(){
       var u=URL.createObjectURL(blob);
       $("#imgOverlayImg").src=u;
       $("#imgOverlay").classList.add("show");
+      $("#imgOverlayClose").focus({preventScroll:true});
     }catch(e){toast("이미지 저장이 막혀 있어요. 화면을 캡처해 주세요")}
   }
   try{
@@ -1227,12 +1301,14 @@ $("#savePng").addEventListener("click",function(){
     toast("카드 이미지를 저장했어요 🖼️");
   }catch(e){toast("이미지 저장이 막혀 있어요. 화면을 캡처해 주세요")}
 });
-$("#imgOverlayClose").addEventListener("click",function(){
+function closeImgOverlay(){
   $("#imgOverlay").classList.remove("show");
   var im=$("#imgOverlayImg");
   try{if(im.src.indexOf("blob:")===0)URL.revokeObjectURL(im.src)}catch(e){}
   im.removeAttribute("src");
-});
+}
+$("#imgOverlayClose").addEventListener("click",closeImgOverlay);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&$("#imgOverlay").classList.contains("show"))closeImgOverlay()});
 /* inbound ?r= — 받은 카드는 로그인 없이 즉시 최상단에 보여준다 */
 (function(){
   var q=new URLSearchParams(location.search),r=q.get("r");
@@ -1264,10 +1340,56 @@ $("#imgOverlayClose").addEventListener("click",function(){
   });
 })();
 
+/* ───────── 앱 잠금(PIN) — 가벼운 보호. SOS는 항상 우회 가능 ───────── */
+var locked=false;
+function pinHash(p){var s="mc-salt-"+p,h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h)}
+function updatePinUi(){
+  var on=!!settings.pin;
+  $("#pinBtn").textContent=on?"🔒 앱 잠금 (켜짐)":"🔒 앱 잠금 (PIN)";
+  $("#pinGo").textContent=on?"잠금 끄기":"잠금 켜기";
+}
+$("#pinBtn").addEventListener("click",function(){$("#pinBox").hidden=!$("#pinBox").hidden;$("#pinInput").value=""});
+$("#pinGo").addEventListener("click",function(){
+  var v=$("#pinInput").value.trim();
+  if(!/^\d{4}$/.test(v)){toast("숫자 4자리로 입력해 주세요");return}
+  if(settings.pin){ // 끄기: 현재 PIN 확인
+    if(pinHash(v)!==settings.pin){toast("비밀번호가 달라요");return}
+    delete settings.pin;LS.set("set",settings);toast("앱 잠금을 껐어요");
+  } else {
+    settings.pin=pinHash(v);LS.set("set",settings);toast("앱 잠금을 켰어요 🔒 다음에 열 때부터 물어봐요");
+  }
+  $("#pinInput").value="";$("#pinBox").hidden=true;updatePinUi();
+});
+function showLock(){locked=true;$("#lockScreen").classList.add("show");$("#lockPin").focus({preventScroll:true})}
+function hideLock(){locked=false;$("#lockScreen").classList.remove("show");$("#lockPin").value=""}
+$("#lockGo").addEventListener("click",function(){
+  if(pinHash($("#lockPin").value.trim())===settings.pin){hideLock();toast("어서 오세요 🌿")}
+  else{toast("비밀번호가 달라요. 천천히 다시 해봐요");$("#lockPin").value=""}
+});
+$("#lockPin").addEventListener("keydown",function(e){if(e.key==="Enter")$("#lockGo").click()});
+$("#lockSos").addEventListener("click",function(){ // 안전 우선: SOS는 잠금 위로
+  $("#lockScreen").classList.remove("show");
+  if($("#app").hidden){$("#loginCard").hidden=true;$("#app").hidden=false}
+  showTab("sos");
+});
+$("#lockForgot").addEventListener("click",function(){
+  if(confirm("비밀번호는 복구할 수 없어요. 모든 기록을 삭제하고 처음부터 시작할까요? (되돌릴 수 없어요)")){
+    KEYS.forEach(function(k){LS.del(k)});location.reload();
+  }
+});
+// 잠금 상태에서 SOS 외 탭 이동 시 잠금 화면 재표시
+var _showTab=showTab;
+showTab=function(name){
+  if(locked&&name!=="sos"){$("#lockScreen").classList.add("show");$("#lockPin").focus({preventScroll:true});return}
+  _showTab(name);
+};
+
 /* ───────── boot ───────── */
 if(!storageOK)$("#storageWarn").hidden=false;
-renderMood();renderTodos();renderThoughts();renderGrats();renderAlarms();renderPerm();applyBig();
-if(profile){enterApp()}else{$("#loginCard").hidden=false}
+if(settings.bSound===true)$("#breathSound").checked=true;
+if(settings.bVib===false)$("#breathVib").checked=false;
+renderMood();renderTodos();renderThoughts();renderGrats();renderAlarms();renderPerm();applyBig();updatePinUi();
+if(profile){enterApp();if(settings.pin)showLock()}else{$("#loginCard").hidden=false}
 checkAlarms();
 document.addEventListener("visibilitychange",function(){if(!document.hidden){checkAlarms();renderMood();renderTodos()}});
 })();
