@@ -78,7 +78,7 @@ const BUILTINS = [
   { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
-  { slug: "mind-care", emoji: "🌿", name: "마음케어", desc: "마음안정 루틴·공황 SOS 호흡·기분 기록·리마인더", k: "마음안정 우울 불안 공황 호흡 그라운딩 멘탈 명상", prio: "0.8" },
+  { slug: "mind-care", emoji: "🌿", name: "마음케어", desc: "따라하는 명상·요가·근육이완 + 공황 SOS 호흡·마음안정", k: "명상 요가 스트레칭 이완 마음안정 우울 불안 공황 호흡 그라운딩 멘탈", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
