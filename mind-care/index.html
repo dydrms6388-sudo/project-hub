@@ -657,7 +657,7 @@ var LS={
   set:function(k,v){if(!storageOK)return;try{localStorage.setItem("mc_"+k,JSON.stringify(v))}catch(e){}},
   del:function(k){try{localStorage.removeItem("mc_"+k)}catch(e){}}
 };
-var KEYS=["profile","mood","tasks","done","thoughts","grats","alarms","set"];
+var KEYS=["profile","mood","tasks","done","thoughts","grats","alarms","set","practice"];
 function dkey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function uid(){return Math.random().toString(36).slice(2,9)}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
@@ -776,7 +776,7 @@ $("#restoreGo").addEventListener("click",function(){
   var d=null;try{d=JSON.parse(txt)}catch(e){}
   if(!d||d.v!==1){toast("백업 형식이 아니에요 😢");return}
   // 형태 검증: 타입이 안 맞는 키는 버려서 복원 후 앱이 죽지 않게 한다
-  var SHAPE={profile:"o",mood:"o",tasks:"a",done:"o",thoughts:"a",grats:"a",alarms:"a",set:"o"};
+  var SHAPE={profile:"o",mood:"o",tasks:"a",done:"o",thoughts:"a",grats:"a",alarms:"a",set:"o",practice:"o"};
   var applied=0;
   KEYS.forEach(function(k){
     var v=d[k];if(v==null)return;
@@ -986,6 +986,8 @@ function tickBreath(){
   if(secs>=60&&!bMinuteFired){bMinuteFired=true;toast("1분 완주! 조금 나아졌다면 원하는 만큼 이어가요 🌿")}
 }
 function startBreath(){
+  // 실습 세션이 돌고 있으면 소리가 겹치지 않게 자동 일시정지
+  if(pTimer&&!pPaused){pPaused=true;$("#pPause").textContent="▶ 이어하기"}
   bPhase=0;bCycles=0;bStart=Date.now();bMinuteFired=false;
   stepBreath();
   bTimer=setInterval(tickBreath,1000);
@@ -1322,7 +1324,7 @@ var SESSIONS=[
 ["고마운 사람에게","고마운 사람 한 명을 떠올리고 같은 문구를 보내요 — \"당신이 편안하기를. 당신이 평화롭기를.\"",70,"sit"],
 ["모두에게","나를 포함해, 오늘도 애쓴 모든 사람들에게 — \"우리 모두 편안하기를.\"",50,"sit"],
 ["마무리","가슴에 남은 온기를 느끼며 천천히 눈을 떠요.",30,"sit"]]},
-{id:"sleep5",cat:"🧘 명상",icon:"🌙",name:"잠들기 명상 5분",desc:"하루를 내려놓고 잠으로",steps:[
+{id:"sleep5",cat:"🧘 명상",icon:"🌙",name:"잠들기 명상 5분",desc:"하루를 내려놓고 잠으로",quiet:true,steps:[
 ["누워서 시작","불을 줄이고 잠자리에 누워요. 이 시간 이후엔 화면을 보지 않는 게 좋아요.",25,"lie"],
 ["오늘 내려놓기","오늘 있었던 일들을 하나씩 떠올리고, 날숨마다 '오늘은 여기까지' 하고 내려놓아요.",65,"lie"],
 ["4·6 호흡","4초 들이쉬고, 6초 길게 내쉬어요. 날숨마다 몸이 침대에 더 깊이 가라앉아요.",90,"lie"],
@@ -1353,7 +1355,7 @@ var SESSIONS=[
 ["주먹과 팔","두 주먹을 꽉 쥐고 팔 전체에 힘! 5초… 훅 풀어요. 손끝이 따뜻해지는 느낌을 봐요.",50,"tense"],
 ["어깨와 목","어깨를 귀까지 끌어올려 꽉! 5초… 툭 떨궈요. 두 번 반복.",50,"shoulderRoll"],
 ["얼굴","눈을 질끈 감고 미간을 찡그려요. 5초… 풀면서 얼굴이 펴지는 걸 느껴요.",50,"sit"],
-["가슴과 배","숨을 크게 들이쉬어 가슴을 부풀리고 5초 참았다가 — 길게 내쉬어요.",50,"sit"],
+["가슴과 배","숨을 크게 들이쉬어 가슴을 부풀리고 5초 참았다가 — 길게 내쉬어요. 숨 참기가 불편하면 참지 말고 그냥 내쉬어도 돼요.",50,"sit"],
 ["다리","허벅지와 종아리에 힘을 주고 발끝을 몸 쪽으로 당겨요. 5초… 풀어요.",50,"lie"],
 ["발","발가락을 꽉 오므려요. 5초… 풀어요. 몸이 소파에 녹아드는 느낌.",50,"lie"],
 ["전신 느끼기","조임이 다 풀린 몸을 그대로 느껴요. 긴장과 이완의 차이를 기억해 두세요.",40,"lie"]]}
@@ -1403,7 +1405,10 @@ function stepIntoP(i,silent){
 }
 function updatePBar(){
   var total=sessTotal(pSess);
-  $("#pBar").style.width=Math.min(100,Math.round(pElapsed/total*100))+"%";
+  // 진행바는 '단계 위치' 기준(건너뛰어도 정확), 시간 표기는 실제 경과 기준
+  var planned=0;for(var i=0;i<pStep;i++)planned+=pSess.steps[i][2];
+  planned+=pSess.steps[pStep][2]-pLeft;
+  $("#pBar").style.width=Math.min(100,Math.round(planned/total*100))+"%";
   $("#pMeta").textContent=Math.floor(pElapsed/60)+"분 "+(pElapsed%60)+"초 / 약 "+Math.round(total/60)+"분";
 }
 function tickP(){
@@ -1427,7 +1432,7 @@ function recordPractice(){
   renderPrSum();
 }
 function startSession(s){
-  if(pTimer)clearInterval(pTimer);
+  if(pTimer){stopPTimer();recordPractice()} // 진행 중이던 세션의 시간은 기록하고 넘어간다
   pSess=s;pElapsed=0;pPaused=false;
   $("#pName").textContent=s.icon+" "+s.name;
   $("#pPause").textContent="⏸ 일시정지";
@@ -1440,12 +1445,16 @@ function stopPTimer(){if(pTimer){clearInterval(pTimer);pTimer=null}}
 function finishSession(){
   stopPTimer();
   recordPractice();
-  prTone("done");
   $("#doneTitle").textContent=pSess.name+" 완료!";
-  var pr=LS.get("practice",{}),today=Math.round((pr[dkey()]||0)/60);
-  $("#doneMeta").textContent="방금 "+Math.max(1,Math.round(pElapsed/60))+"분 실습했어요. 오늘 누적 "+Math.max(1,today)+"분 🌿";
+  if(pElapsed<30){
+    $("#doneMeta").textContent="짧게 맛만 봤어요. 다음엔 한 단계씩 천천히 함께해요 🌱";
+  } else {
+    var pr=LS.get("practice",{}),today=Math.round((pr[dkey()]||0)/60);
+    $("#doneMeta").textContent="방금 "+Math.max(1,Math.round(pElapsed/60))+"분 실습했어요. 오늘 누적 "+Math.max(1,today)+"분 🌿";
+  }
   pShow("done");
-  toast("실습 완료! 잘했어요 🌿");
+  // 잠들기 세션은 조용히 끝낸다 — 완료음·토스트로 깨우지 않기
+  if(!pSess.quiet){prTone("done");toast("실습 완료! 잘했어요 🌿")}
 }
 $("#pPause").addEventListener("click",function(){
   pPaused=!pPaused;
@@ -1453,7 +1462,7 @@ $("#pPause").addEventListener("click",function(){
 });
 $("#pSkip").addEventListener("click",function(){
   if(!pSess)return;
-  if(pStep+1<pSess.steps.length)stepIntoP(pStep+1);
+  if(pStep+1<pSess.steps.length)stepIntoP(pStep+1,pPaused); // 일시정지 중엔 소리 없이 이동
   else finishSession();
 });
 $("#pExit").addEventListener("click",function(){
@@ -1463,6 +1472,7 @@ $("#doneAgain").addEventListener("click",function(){if(pSess)startSession(pSess)
 $("#doneList").addEventListener("click",function(){pSess=null;pShow("list")});
 $("#prSound").addEventListener("change",function(){settings.prSound=this.checked;LS.set("set",settings)});
 $$("[data-qs]").forEach(function(b){b.addEventListener("click",function(){
+  if(locked){showTab("practice");return} // 잠금 중엔 잠금 화면만 띄운다
   var s=sessById(b.dataset.qs);
   if(s){showTab("practice");startSession(s)}
 })});
