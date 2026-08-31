@@ -44,6 +44,12 @@
 - 로컬 확인: `node gen-pages.mjs` 후 정적 서버로 열기. 테스트 러너 없음.
 - 검증 메타 코드는 `site.config.mjs` / env (`GOOGLE_SITE_VERIFICATION` 등)에서 주입.
 
+## 서브프로젝트: `salon/` (별도 배포)
+- 정화 머리방 고객 관리 + 알림톡 자동화. **Next.js 15 App Router + Supabase + Vercel Cron**
+  — 허브 파이프라인과 무관, 별도 Vercel 프로젝트(root=`salon`)로 배포. 상세는 `salon/README.md`.
+- Phase 1(고객/방문/알림톡 크론)만 구현됨. Phase 게이트(실사용 1주) 통과 전 다음 Phase 코드 금지.
+- gen-pages.mjs 의 RESERVED 에 `salon` 등록됨(고아 정리 보호).
+
 ## 서브프로젝트: `illusion-lab/` (별도 배포)
 - 인터랙티브 착시 실험실. **Next.js 15 App Router + 정적 export** — 허브의
   gen-pages 파이프라인과 무관하며 별도 Vercel 프로젝트(root=`illusion-lab`)로 배포.
