@@ -5,6 +5,8 @@ import { ContactForm } from "@/components/contact-form";
 import { COMPANY_URL } from "@/config/site";
 
 export const metadata: Metadata = {
+  // 회사 사이트는 인덱싱 허용 (C4 D-5 / §5.1) — noindex 금지
+  robots: { index: true, follow: true },
   title: "문의",
   description: `${BRAND_NAME} 제휴·언론·채용·권리침해 문의 창구. 앱 이용 중 신고는 앱 안의 신고 기능을 이용해 주세요.`,
   alternates: { canonical: `${COMPANY_URL}/contact` },

@@ -3,6 +3,8 @@ import { Badge, BRAND_NAME, Card } from "@duckmate/ui";
 import { COMPANY_URL, WEB_URL, webUrl } from "@/config/site";
 
 export const metadata: Metadata = {
+  // 회사 사이트는 인덱싱 허용 (C4 D-5 / §5.1) — noindex 금지
+  robots: { index: true, follow: true },
   title: "안전과 신뢰",
   description: `${BRAND_NAME}의 4단계 인증 절차, 신고 24시간 처리 약속, 데이터 처리 원칙을 안내합니다.`,
   alternates: { canonical: `${COMPANY_URL}/safety` },

@@ -5,6 +5,8 @@ import { SafetyPledge } from "@/components/safety-pledge";
 import { COMPANY_URL, webUrl } from "@/config/site";
 
 export const metadata: Metadata = {
+  // 회사 사이트는 인덱싱 허용 (C4 D-5 / §5.1) — noindex 금지
+  robots: { index: true, follow: true },
   // 홈만 title 템플릿 미적용 (C4 §5.2)
   title: {
     absolute: `${BRAND_NAME} — 같은 걸 좋아하는 사람이랑 만나는 앱`,

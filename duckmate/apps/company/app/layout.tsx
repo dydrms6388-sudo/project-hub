@@ -29,8 +29,9 @@ export const metadata: Metadata = {
   description:
     "외모 스와이프가 아니라 취향으로 만나는 데이팅·취미친구 앱. 본인인증 필수, 신고 24시간 처리.",
   applicationName: BRAND_NAME,
-  // 회사 사이트는 전 페이지 인덱싱 허용 (C4 D-5 / §5.1) — noindex 금지
-  robots: { index: true, follow: true },
+  // robots 는 레이아웃이 아니라 **각 페이지**에 둔다 (C4 D-5 / §5.1 — 회사 사이트는
+  // 전 페이지 인덱싱 허용). 레이아웃에 두면 Next 가 자동 생성하는 404 가 이를 상속해
+  // Next 자신의 noindex 와 함께 robots meta 2개를 내보낸다(E6 CMP-404-CONFLICT).
   openGraph: {
     type: "website",
     siteName: BRAND_NAME,

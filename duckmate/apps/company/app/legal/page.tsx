@@ -5,6 +5,8 @@ import { LegalNoticeTable } from "@/components/legal-notice-table";
 import { COMPANY_URL, LEGAL_DOCS, WEB_URL } from "@/config/site";
 
 export const metadata: Metadata = {
+  // 회사 사이트는 인덱싱 허용 (C4 D-5 / §5.1) — noindex 금지
+  robots: { index: true, follow: true },
   title: "법적 고지",
   description: `${BRAND_NAME} 서비스 운영 사업자 정보와 약관·정책 문서 목록을 표시합니다.`,
   alternates: { canonical: `${COMPANY_URL}/legal` },
