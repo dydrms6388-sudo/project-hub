@@ -2,7 +2,7 @@
  * 휴대폰 OTP 헬퍼 — 번호 정규화(E.164) · 해시 · 레이트리밋 키/한도 (Supabase Auth phone).
  * 원문 전화번호는 auth.users.phone 에만 존재. 앱 테이블에는 해시만 (profiles.phone_hash).
  */
-import { serverEnv } from "@/lib/env";
+import { serverEnv } from "@/lib/env/server";
 import { sha256Hex } from "@/lib/auth/hash";
 import type { AdminSupabase } from "@/lib/supabase/admin";
 import { AuthError } from "@/lib/auth/errors";

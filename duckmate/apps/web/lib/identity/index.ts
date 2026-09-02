@@ -4,7 +4,8 @@ import "server-only";
  * IdentityVerifier 선택 — env IDENTITY_VERIFIER (mock | portone). 기본 mock.
  * 프로덕션 + mock + allowlist 비어 있음 = 전원 인증 실패(의도된 동작, 경고 로그 1회).
  */
-import { isProduction, serverEnv } from "@/lib/env";
+import { isProduction } from "@/lib/env/public";
+import { serverEnv } from "@/lib/env/server";
 import { MockVerifier, parseAllowlist } from "@/lib/identity/mock";
 import { PortOneVerifier } from "@/lib/identity/portone";
 import type { IdentityVerifier } from "@/lib/identity/types";

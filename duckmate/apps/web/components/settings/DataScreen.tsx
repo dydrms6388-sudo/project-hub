@@ -9,7 +9,7 @@ import { Button, Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader
 import { pauseAccount } from "@/lib/account/actions";
 import { exportMyData } from "@/app/(app)/settings/data/actions";
 import { DATA_COPY, PAUSE_COPY } from "./copy";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 export function DataScreen({ status }: { status: Enums["profile_status"] }) {
   const router = useRouter();

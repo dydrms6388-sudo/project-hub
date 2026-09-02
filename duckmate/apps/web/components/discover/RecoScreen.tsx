@@ -19,7 +19,8 @@ import { mapFailure, UNDO_PLUS_NOTE, withRetry } from "./errors";
 import { personOfRecoCard, RESET_TEXT } from "./format";
 import { ProfileSheet } from "./ProfileSheet";
 import { RecoCardItem } from "./RecoCardItem";
-import { bucketOf, idHash, trackEvent, trackLoose } from "./track";
+import { track } from "@/lib/analytics/track";
+import { bucketOf, idHash } from "./track";
 import type { DiscoverApi, RecoCardView, TodayView } from "./types";
 
 export type RecoScreenProps = {
@@ -83,7 +84,7 @@ export function RecoScreen({ initial, api = serverApi, onNavigate }: RecoScreenP
   React.useEffect(() => {
     if (openedRef.current || !data) return;
     openedRef.current = true;
-    trackEvent("daily_reco_opened", { reco_count: data.cards.length, from_like_count: 0, boosted_count: 0 });
+    track("daily_reco_opened", { reco_count: data.cards.length, from_like_count: 0, boosted_count: 0 });
   }, [data]);
 
   // 되돌리기 카운트다운(1초 틱)
@@ -107,7 +108,7 @@ export function RecoScreen({ initial, api = serverApi, onNavigate }: RecoScreenP
 
   const onSeen = React.useCallback(
     (card: RecoCardView) => {
-      trackEvent("reco_card_seen", { position: card.position, score_bucket: bucketOf(card.score), target_id_hash: idHash(card.profile.id) });
+      track("reco_card_seen", { position: card.position, score_bucket: bucketOf(card.score), target_id_hash: idHash(card.profile.id) });
       void api.seen({ recoId: card.recoId });
     },
     [api],
@@ -154,10 +155,10 @@ export function RecoScreen({ initial, api = serverApi, onNavigate }: RecoScreenP
       setHidden((s) => new Set(s).add(card.recoId));
       if (r.data.superlike) setSuperlikeRemaining(r.data.superlike.weekly_remaining);
       dispatch({ type: "acted", recoId: card.recoId, targetId: card.profile.id, action, at: Date.now(), matched: r.data.matched });
-      if (action === "pass") trackEvent("pass_sent", { position: card.position });
-      else trackEvent("like_sent", { type: action, position: card.position, reasons_shown: card.reasons.slice(0, 2).map((x) => x.kind) });
+      if (action === "pass") track("pass_sent", { position: card.position });
+      else track("like_sent", { type: action, position: card.position, reasons_shown: card.reasons.slice(0, 2).map((x) => x.kind) });
       if (r.data.matched && r.data.matchId) {
-        if (r.data.matchCreated) trackLoose("match_created", { match_id_hash: idHash(r.data.matchId), initiator: "me" });
+        if (r.data.matchCreated) track("match_created", { match_id_hash: idHash(r.data.matchId), initiator: "me" });
         void qc.invalidateQueries({ queryKey: QK.matches });
         go(`/match/${r.data.matchId}`);
         return;

@@ -13,7 +13,7 @@ import { useChatApi } from "./api";
 import { PollingBar } from "./ChatBanners";
 import { CHAT_POLL_INTERVAL_MS, hasMaskedToken, isEnded, relativeLabel } from "./model";
 import { PartnerAvatar } from "./PartnerAvatar";
-import { trackChat } from "./track";
+import { track } from "@/lib/analytics/track";
 import { useMounted } from "./useMounted";
 
 const STATUS_BADGE: Record<Exclude<ChatListItem["status"], "active">, string> = { blocked: "종료", left: "떠남", paused: "일시정지" };
@@ -42,7 +42,7 @@ export function ChatListScreen({ initial, myProfileId }: { initial: ChatListItem
   });
 
   useEffect(() => {
-    trackChat("chat_list_viewed", { count: initial.length, unread_rooms: initial.filter((i) => i.unread_count > 0).length });
+    track("chat_list_viewed", { count: initial.length, unread_rooms: initial.filter((i) => i.unread_count > 0).length });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -9,7 +9,7 @@ import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogH
 import { setMode } from "@/lib/account/actions";
 import type { MyProfileView } from "@/components/profile/types";
 import { MODE_COPY } from "./copy";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 export function ModeScreen({ view }: { view: MyProfileView }) {
   const router = useRouter();

@@ -9,7 +9,8 @@ import "server-only";
  *  - "인증 결과" 생년월일 = 자기신고 birth_date (mock 은 알 수 없으므로). 따라서 프로덕션 mock 은 미성년 경로를 만들지 않는다.
  *  - ciHash 는 번호 기준 결정적(sha256("mock-ci:" + digits + salt)) → 같은 번호 재가입 시 중복/블록 판정이 동작한다.
  */
-import { isProduction, serverEnv } from "@/lib/env";
+import { isProduction } from "@/lib/env/public";
+import { serverEnv } from "@/lib/env/server";
 import { base64UrlDecode, base64UrlEncode, hmacSha256Hex, sha256Hex, timingSafeEqualHex } from "@/lib/auth/hash";
 import { allowlistHash, e164Digits } from "@/lib/auth/otp";
 import type { IdentityStart, IdentityStartContext, IdentityVerifier, IdentityVerifyInput, IdentityVerifyResult } from "@/lib/identity/types";

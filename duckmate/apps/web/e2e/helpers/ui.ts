@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 export const tid = (page: Page, id: string): Locator => page.getByTestId(id);
 
@@ -18,16 +18,13 @@ export async function selectRadixOptionByTestId(page: Page, triggerTestId: strin
   await option.click();
 }
 
-/** 접근성 기본: html lang, 제목(h1 — strictH1=false 면 h1|h2|role=heading 허용 + h1 부재 annotation), 버튼 접근 가능한 이름 */
-export async function expectBasicA11y(page: Page, opts: { strictH1?: boolean } = {}): Promise<void> {
-  const strictH1 = opts.strictH1 ?? true;
+/** 접근성 기본: html lang, 제목(h1 필수 — 시각적으로 숨긴 h1 도 허용, H2 가 h1~h3 허용을 되돌림), 버튼 접근 가능한 이름 */
+export async function expectBasicA11y(page: Page): Promise<void> {
   await expect(page.locator("html")).toHaveAttribute("lang", "ko");
-  if (strictH1) {
-    await expect(page.locator("h1").first()).toBeVisible();
-  } else {
-    await expect(page.locator("h1, h2, h3, [role=heading]").first()).toBeVisible();
-    if ((await page.locator("h1").count()) === 0) test.info().annotations.push({ type: "a11y", description: `h1 없음: ${page.url()}` });
-  }
+  // sr-only h1 은 toBeVisible 이 실패하므로(1px 클리핑) DOM 존재 + 텍스트로 판정한다
+  const h1 = page.locator("h1").first();
+  await expect(h1).toHaveCount(1);
+  await expect(h1).not.toHaveText(/^\s*$/);
   const unnamed = await page.evaluate(() => {
     const out: string[] = [];
     for (const b of Array.from(document.querySelectorAll("button, a[role=button], [role=button]"))) {

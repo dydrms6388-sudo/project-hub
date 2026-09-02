@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Check, ChevronLeft } from "lucide-react";
 import type { Enums, VerifyLevel } from "@duckmate/db";
 import { Button, Progress, VERIFY_LABELS, cn } from "@duckmate/ui";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 type Props = {
   verifyLevel: VerifyLevel;

@@ -4,8 +4,9 @@
  * 채팅 화면이 쓰는 데이터 접근 계약 `ChatApi` + React 컨텍스트.
  * 기본값 = 실제 서버 액션(`lib/chat/*`, `lib/moderation/actions`, `app/(app)/chat/actions`) + Realtime 구독.
  * `/dev/chat` 목 라우트와 테스트는 `<ChatApiProvider api={mock}>` 로 갈아끼운다.
+ * 컨텍스트 객체는 `api-context.tsx` 에 있다 — Realtime 번들 없이 컨텍스트만 쓰는 화면(SuggestionPicker 단독)용(H2).
  */
-import { createContext, useContext, type ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
 import type { ActionResult } from "@/lib/auth/errors";
 import { leaveMatch, markRead, sendMessage } from "@/lib/chat/actions";
 import { createChatImageUploadUrl, getChatImageUrl, sendImageMessage, type ChatImageTicket } from "@/lib/chat/images";
@@ -14,6 +15,7 @@ import { subscribeToInbox, subscribeToMatch } from "@/lib/chat/realtime";
 import { CHAT_IMAGE_BUCKET, type ChatListItem, type ChatRoom, type SentMessage } from "@/lib/chat/types";
 import { blockProfile } from "@/lib/moderation/actions";
 import { fetchChatList, fetchChatRoom, fetchMessages, fetchPartnerRiskBanner } from "@/app/(app)/chat/actions";
+import { ChatApiContext } from "./api-context";
 
 export type ChatApi = {
   fetchChatList: () => Promise<ActionResult<ChatListItem[]>>;
@@ -61,12 +63,11 @@ export const realChatApi: ChatApi = {
   subscribeToInbox,
 };
 
-const ChatApiContext = createContext<ChatApi>(realChatApi);
-
 export function ChatApiProvider({ api, children }: { api: ChatApi; children: ReactNode }) {
   return <ChatApiContext.Provider value={api}>{children}</ChatApiContext.Provider>;
 }
 
+/** 주입된 api 또는 실제 서버 액션(Provider 없이도 동작). 컨텍스트 자체는 `api-context.tsx`(경량) */
 export function useChatApi(): ChatApi {
-  return useContext(ChatApiContext);
+  return useContext(ChatApiContext) ?? realChatApi;
 }

@@ -14,7 +14,7 @@ import type { GateState } from "@duckmate/db";
 import { updateSession } from "@/lib/supabase/middleware";
 import { classifyRoute, isBypassedPath, ROUTES } from "@/lib/auth/routes";
 import { GATE_CACHE_TTL_SEC, GATE_COOKIE, decodeGateCookie, encodeGateCookie, evaluateGate } from "@/lib/auth/gate";
-import { gateCacheSecret } from "@/lib/env";
+import { gateCacheSecret } from "@/lib/env/server";
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;

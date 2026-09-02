@@ -6,18 +6,11 @@
  */
 import * as React from "react";
 import { Button, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@duckmate/ui";
+import { SAFETY_GUIDE } from "@/components/safety/copy";
 import type { DiscoverApi } from "./types";
 
-export const SAFETY_GUIDE = {
-  title: "매칭을 축하해요! 대화 전에 3가지만 기억해 주세요.",
-  items: [
-    "연락처는 매칭 3일 후부터 주고받을 수 있어요. 그 전엔 여기서 충분히 대화해 보세요.",
-    "돈 이야기(송금, 투자, 상품권)가 나오면 그건 대화가 아니라 신호예요. 바로 신고해 주세요.",
-    "불편하면 언제든 차단할 수 있어요. 상대에게 알림이 가지 않아요.",
-  ],
-  footer: "신고는 24시간 안에 확인해요.",
-  confirm: "확인했어요",
-} as const;
+/** 카피 단일 소스는 `components/safety/copy.ts`(H2: `/safety-guide` 정적 페이지와 공유). 호환 re-export */
+export { SAFETY_GUIDE };
 
 export function SafetyGuideModal({ open, api, onDone }: { open: boolean; api: DiscoverApi; onDone: () => void }) {
   const [busy, setBusy] = React.useState(false);

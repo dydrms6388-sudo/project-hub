@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { ChevronRight, Settings } from "lucide-react";
 import { DuckCard, VerifyBadge, type VerifyLevel, VERIFY_LABELS } from "@duckmate/ui";
 import { MODE_COPY } from "@/components/settings/copy";
-import { track } from "@/components/settings/track";
+import { track } from "@/lib/analytics/track";
 import type { MyProfileView } from "./types";
 
 function Row({ href, label, meta, testId }: { href: string; label: string; meta?: string; testId?: string }) {

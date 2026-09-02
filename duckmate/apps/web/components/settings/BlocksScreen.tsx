@@ -9,7 +9,7 @@ import { unblockProfile } from "@/lib/moderation/actions";
 import { BLOCK_COPY } from "@/lib/moderation/constants";
 import type { BlockListItem } from "@/lib/moderation/types";
 import { formatDateKo } from "@/components/profile/format";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 export function BlocksScreen({ blocks }: { blocks: BlockListItem[] }) {
   const router = useRouter();

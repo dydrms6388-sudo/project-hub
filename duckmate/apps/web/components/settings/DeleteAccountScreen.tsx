@@ -7,7 +7,7 @@ import { ChevronLeft } from "lucide-react";
 import { Button, Checkbox, Label, Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, useToast } from "@duckmate/ui";
 import { requestDelete } from "@/lib/account/actions";
 import { DELETE_COPY, RETENTION_ITEMS } from "./copy";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 export function DeleteAccountScreen() {
   const router = useRouter();

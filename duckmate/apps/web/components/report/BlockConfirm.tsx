@@ -14,7 +14,7 @@ import { useTransition } from "react";
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, useToast } from "@duckmate/ui";
 import { blockProfile } from "@/lib/moderation/actions";
 import { BLOCK_COPY } from "@/lib/moderation/constants";
-import { track } from "@/components/settings/track";
+import { track } from "@/lib/analytics/track";
 
 export type BlockConfirmProps = {
   open: boolean;

@@ -11,6 +11,7 @@
  * 공통 속성(session_id·source·push_slot)은 이 파일이 자동 부착한다 — `analytics` Zustand 슬라이스 대체(sessionStorage).
  *
  * 이 파일은 "use client" 지시어가 없지만 클라이언트·서버 어디서든 import 가능(런타임 분기).
+ * H2: E2/E3/E4 어댑터(`components/{discover,chat,settings}/track.ts` 의 캐스팅)는 제거됐다 — 화면은 이 `track()` 을 직접 호출한다.
  */
 
 /** A2 의 `onb_*` 이름은 PRD §0-51 에 따라 아래 `onboarding_*` 로 매핑한다. */
@@ -55,6 +56,7 @@ export type AnalyticsEvent =
   | "chat_list_viewed"
   | "image_sent"
   | "chat_left"
+  | "suggestion_picker_shown"
   // E4 추가 (프로필·설정)
   | "me_viewed"
   | "settings_viewed"

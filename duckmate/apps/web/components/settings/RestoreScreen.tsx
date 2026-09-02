@@ -7,7 +7,7 @@ import { signOut } from "@/app/(auth)/actions";
 import { cancelDelete } from "@/lib/account/actions";
 import { daysUntil, formatDateKo } from "@/components/profile/format";
 import { RESTORE_COPY } from "./copy";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 export function RestoreScreen({ requestedAt, purgeAt }: { requestedAt: string; purgeAt: string }) {
   const router = useRouter();

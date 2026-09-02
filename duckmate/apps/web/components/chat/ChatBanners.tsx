@@ -7,6 +7,7 @@ import Link from "next/link";
 import { SafetyBanner } from "@duckmate/ui";
 import type { ChatRoom } from "@/lib/chat/types";
 import { SANCTION_COPY } from "@/lib/moderation/constants";
+import { OFFLINE_MEETING_GUIDE } from "@/components/safety/copy";
 import { ENDED_LABEL, dateTimeLabel, type TopBanner } from "./model";
 
 export function TopBannerView({ banner, matchId, onReport, onDismiss }: { banner: TopBanner; matchId: string; onReport: () => void; onDismiss: (kind: "mask" | "image" | "guide") => void }) {
@@ -57,18 +58,17 @@ export function TopBannerView({ banner, matchId, onReport, onDismiss }: { banner
   }
 }
 
-/** A5 §10.2 오프라인 만남 배너 (매칭당 1회) */
+/** A5 §10.2 오프라인 만남 배너 (매칭당 1회). 카피·링크는 `components/safety/copy.ts` — 링크 대상 `/safety-guide` 는 H2 가 신설(이전 404) */
 export function OfflineMeetingBanner({ onDismiss }: { onDismiss: () => void }) {
   return (
-    <SafetyBanner variant="warn" title="처음 만나는 날, 이렇게 해요." data-testid="chat-banner-offline" onDismiss={onDismiss}>
+    <SafetyBanner variant="warn" title={OFFLINE_MEETING_GUIDE.title} data-testid="chat-banner-offline" onDismiss={onDismiss}>
       <ul className="list-disc space-y-0.5 pl-4">
-        <li>사람 많은 공개 장소에서, 낮이나 이른 저녁에 만나요.</li>
-        <li>친구에게 누구를 어디서 만나는지 알려 두세요.</li>
-        <li>이동은 각자, 첫 만남에 술은 가볍게.</li>
-        <li>뭔가 이상하면 그냥 나와도 괜찮아요. 이유를 설명할 필요 없어요.</li>
+        {OFFLINE_MEETING_GUIDE.items.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
       </ul>
-      <Link href="/safety-guide" className="mt-2 inline-block text-button-sm underline underline-offset-4">
-        만남 안전 가이드 전체 보기
+      <Link href={OFFLINE_MEETING_GUIDE.href} className="mt-2 inline-block text-button-sm underline underline-offset-4">
+        {OFFLINE_MEETING_GUIDE.more}
       </Link>
     </SafetyBanner>
   );

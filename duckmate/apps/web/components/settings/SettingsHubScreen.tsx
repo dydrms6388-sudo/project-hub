@@ -9,7 +9,7 @@ import { Button, VERIFY_LABELS, useToast } from "@duckmate/ui";
 import { signOut } from "@/app/(auth)/actions";
 import { LEGAL_LINKS } from "@/components/legal/links";
 import { MODE_COPY, SUBSCRIPTION_COPY } from "./copy";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 type Props = {
   mode: Enums["profile_mode"];

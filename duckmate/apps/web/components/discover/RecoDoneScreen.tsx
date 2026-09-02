@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Button } from "@duckmate/ui";
 import type { HomeSummary } from "@/lib/matching/rpc";
 import { RESET_TEXT } from "./format";
-import { trackEvent } from "./track";
+import { track } from "@/lib/analytics/track";
 
 export function RecoDoneScreen({ summary, mountedAt }: { summary: HomeSummary | null; mountedAt?: number }) {
   React.useEffect(() => {
@@ -23,8 +23,8 @@ export function RecoDoneScreen({ summary, mountedAt }: { summary: HomeSummary | 
     }
     const liked = summary.pending_results + summary.matches_today;
     const passed = Math.max(0, summary.reco_total - summary.reco_remaining - liked);
-    trackEvent("daily_reco_exhausted", { liked, passed, unseen: summary.reco_remaining });
-    trackEvent("daily_loop_completed", {
+    track("daily_reco_exhausted", { liked, passed, unseen: summary.reco_remaining });
+    track("daily_loop_completed", {
       likes: liked,
       matches: summary.matches_today,
       pending_results: summary.pending_results,

@@ -9,7 +9,7 @@ import { submitAppeal } from "@/lib/moderation/actions";
 import { APPEAL_COPY, categoryLabelOf, sanctionDurationDays } from "@/lib/moderation/constants";
 import type { MyModerationState, SubmitAppealResult } from "@/lib/moderation/types";
 import { formatDateKo, formatDateTimeKo } from "@/components/profile/format";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 const BODY_MAX = 1000;
 

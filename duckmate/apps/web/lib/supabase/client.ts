@@ -7,7 +7,7 @@
 import { createBrowserClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@duckmate/db";
-import { publicEnv } from "@/lib/env";
+import { publicEnv } from "@/lib/env/public";
 
 export type BrowserSupabase = SupabaseClient<Database>;
 

@@ -10,7 +10,7 @@ import type { PushPrefsView, UpdatePushPrefsInput } from "@/lib/push/schemas";
 import { usePushStore } from "@/stores/push";
 import { formatDateKo } from "@/components/profile/format";
 import { NOTIFY_COPY } from "./copy";
-import { track } from "./track";
+import { track } from "@/lib/analytics/track";
 
 type Props = { initial: PushPrefsView | null; loadError: string | null };
 

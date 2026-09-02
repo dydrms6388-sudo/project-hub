@@ -13,7 +13,8 @@ import { QK, serverApi } from "./api";
 import { mapFailure, withRetry } from "./errors";
 import { PersonCard } from "./PersonCard";
 import { SafetyGuideModal } from "./SafetyGuideModal";
-import { idHash, trackEvent } from "./track";
+import { track } from "@/lib/analytics/track";
+import { idHash } from "./track";
 import type { DiscoverApi, MatchView } from "./types";
 
 export type MatchScreenProps = {
@@ -49,13 +50,13 @@ export function MatchScreen({ matchId, initial, api = serverApi, onNavigate, ski
   const [busy, setBusy] = React.useState(false);
 
   React.useEffect(() => {
-    if (view) trackEvent("match_screen_viewed", { match_id_hash: idHash(view.matchId) });
+    if (view) track("match_screen_viewed", { match_id_hash: idHash(view.matchId) });
   }, [view]);
   const shownRef = React.useRef(false);
   React.useEffect(() => {
     if (!view || !revealed || shownRef.current || view.firstSuggestion.length === 0) return;
     shownRef.current = true;
-    trackEvent("suggestion_shown", { template_ids: view.firstSuggestion.map((c) => c.template_id), kinds: view.firstSuggestion.map((c) => c.kind) });
+    track("suggestion_shown", { template_ids: view.firstSuggestion.map((c) => c.template_id), kinds: view.firstSuggestion.map((c) => c.kind) });
   }, [view, revealed]);
 
   const select = async (position: number) => {
@@ -73,13 +74,13 @@ export function MatchScreen({ matchId, initial, api = serverApi, onNavigate, ski
       toast({ title: ux.kind === "refresh" ? (ux.message ?? "다시 시도해 주세요") : withRetry(ux.message, ux.kind === "toast" ? ux.retryAfterSec : undefined), variant: "error" });
       return;
     }
-    trackEvent("suggestion_selected", { template_id: card.template_id, kind: card.kind, position });
+    track("suggestion_selected", { template_id: card.template_id, kind: card.kind, position });
     void qc.invalidateQueries({ queryKey: QK.matches });
     go(`/chat/${view.matchId}`);
   };
 
   const skip = () => {
-    trackEvent("suggestion_skipped");
+    track("suggestion_skipped");
     go(`/chat/${matchId}`);
   };
 

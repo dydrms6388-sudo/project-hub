@@ -10,7 +10,7 @@ import { confirmPhotoUpload, createPhotoUploadUrl, deletePhoto, setPrimaryPhoto 
 import { PHOTO_ALLOWED_MIME, PHOTO_BUCKET, PHOTO_MAX_BYTES } from "@/lib/photos/upload";
 import { createClient } from "@/lib/supabase/client";
 import { PHOTO_COPY } from "@/components/settings/copy";
-import { track } from "@/components/settings/track";
+import { track } from "@/lib/analytics/track";
 import { photoBadgeVariant, photoStatusLabel } from "./format";
 import type { MyPhoto } from "./types";
 

@@ -8,7 +8,7 @@ import { Button, Checkbox, Label, RadioCard, RadioGroup, SafetyBanner, Textarea,
 import { blockProfile, submitReport } from "@/lib/moderation/actions";
 import { REPORT_CATEGORIES, REPORT_COPY, categoryOf, reasonMeta, type ReportCategoryKey } from "@/lib/moderation/constants";
 import type { SubmitReportResult } from "@/lib/moderation/types";
-import { track } from "@/components/settings/track";
+import { track } from "@/lib/analytics/track";
 import { formatDateTimeKo } from "@/components/profile/format";
 import { afterReportHref, type ReportParams } from "./params";
 

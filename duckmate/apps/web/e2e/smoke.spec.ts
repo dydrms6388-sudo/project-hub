@@ -239,16 +239,16 @@ test.describe("E4 /dev/profile (목)", () => {
 });
 
 test.describe("접근성 기본", () => {
-  // 공개·일반 화면은 h1 필수. 풀스크린 앱 뷰(매칭 리빌·채팅방·차단 안내)는 h1 대신 h2/role=heading 을 허용하고 h1 부재를 annotation 으로 남긴다(E6 접근성 후속).
-  const PAGES: Array<[string, boolean]> = [
-    ["/", true], ["/login", true], ["/onboarding/age", true], ["/blocked/age", false], ["/legal/terms", true], ["/account/delete", true],
-    ["/dev/discover?screen=reco", true], ["/dev/discover?screen=match", false], ["/dev/chat?view=room", false], ["/dev/chat?view=list", true],
-    ["/dev/profile", true], ["/dev/profile?screen=mode", true], ["/dev/profile?screen=report", true],
+  // 모든 화면 h1 필수(H2: 풀스크린 앱 뷰 h1~h3 허용을 되돌림 — /blocked/age 는 EmptyState as="h1", /match/[id] 는 리빌 헤드라인 h1, 채팅방은 ChatHeader h1).
+  const PAGES: readonly string[] = [
+    "/", "/login", "/onboarding/age", "/blocked/age", "/legal/terms", "/account/delete",
+    "/dev/discover?screen=reco", "/dev/discover?screen=match", "/dev/chat?view=room", "/dev/chat?view=list",
+    "/dev/profile", "/dev/profile?screen=mode", "/dev/profile?screen=report",
   ];
-  for (const [p, strictH1] of PAGES) {
-    test(`${p}: lang=ko · 제목 · 버튼 이름`, async ({ page }) => {
+  for (const p of PAGES) {
+    test(`${p}: lang=ko · h1 · 버튼 이름`, async ({ page }) => {
       await page.goto(p);
-      await expectBasicA11y(page, { strictH1 });
+      await expectBasicA11y(page);
     });
   }
 });

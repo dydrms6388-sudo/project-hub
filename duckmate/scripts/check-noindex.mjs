@@ -3,7 +3,7 @@
  * check-noindex — apps/web 를 프로덕션 모드(next build + next start, 더미 env)로 띄워 라우트별 인덱싱 정책을 실측한다 (E6, PRD F-043).
  *
  *  정책(12_flows §0-6 · 25_fe_profile 결정 6 · E6 지시):
- *   - index 허용 = `/`, `/legal`, `/legal/{terms,privacy,location,youth,community,refund,business}`, `/account/delete`
+ *   - index 허용 = `/`, `/legal`, `/legal/{terms,privacy,location,youth,community,refund,business}`, `/account/delete`, `/safety-guide`(H2)
  *   - 나머지 전부 noindex: <meta name="robots"> 에 noindex + X-Robots-Tag: noindex 헤더.
  *     · 로그인 필요 라우트는 307 → /login?next= 로 통과(리다이렉트 응답에도 X-Robots-Tag 필요)
  *     · (admin) 비로그인 = 404, /dev/* 프로덕션 = 404, 미존재 경로 = 404
@@ -38,7 +38,7 @@ const LEGAL = ["terms", "privacy", "location", "youth", "community", "refund", "
 
 /** kind: index | noindex-200 | login-redirect | not-found | redirect-308 | api */
 const ROUTES = [
-  ...["/", "/legal", ...LEGAL.map((s) => `/legal/${s}`), "/account/delete"].map((p) => ({ path: p, kind: "index" })),
+  ...["/", "/legal", ...LEGAL.map((s) => `/legal/${s}`), "/account/delete", "/safety-guide"].map((p) => ({ path: p, kind: "index" })),
   ...["/login", "/onboarding/age", "/onboarding/phone", "/blocked/age"].map((p) => ({ path: p, kind: "noindex-200" })),
   ...[
     "/onboarding/basic", "/onboarding/hobbies", "/onboarding/quiz", "/onboarding/card", "/onboarding/photos", "/verify",

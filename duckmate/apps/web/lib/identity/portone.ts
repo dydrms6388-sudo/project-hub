@@ -12,7 +12,7 @@ import "server-only";
  *  3. 웹훅(supabase/functions/identity-webhook)은 알림용. 최종 판정은 항상 이 verify() 의 서버-서버 조회 결과로만.
  *  4. 실연동 시 IDENTITY_MOCK_ALLOWLIST 폐기(PRD Phase 4→5 체크리스트).
  */
-import { serverEnv } from "@/lib/env";
+import { serverEnv } from "@/lib/env/server";
 import type { IdentityStart, IdentityStartContext, IdentityVerifier, IdentityVerifyInput, IdentityVerifyResult } from "@/lib/identity/types";
 
 export class PortOneVerifier implements IdentityVerifier {

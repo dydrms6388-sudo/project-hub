@@ -9,7 +9,8 @@ import "server-only";
  */
 import { createClient as createSupabaseClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@duckmate/db";
-import { publicEnv, serverEnv } from "@/lib/env";
+import { publicEnv } from "@/lib/env/public";
+import { serverEnv } from "@/lib/env/server";
 
 export type AdminSupabase = SupabaseClient<Database>;
 

@@ -6,7 +6,7 @@
  */
 import type { Enums, TablesInsert } from "@duckmate/db";
 import type { ServerSupabase } from "@/lib/supabase/server";
-import { serverEnv } from "@/lib/env";
+import { serverEnv } from "@/lib/env/server";
 import { sha256Hex } from "@/lib/auth/hash";
 import { AuthError } from "@/lib/auth/errors";
 

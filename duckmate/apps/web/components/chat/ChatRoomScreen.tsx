@@ -40,7 +40,7 @@ import {
   type UiMessage,
 } from "./model";
 import { SuggestionPicker } from "./SuggestionPicker";
-import { trackChat } from "./track";
+import { track } from "@/lib/analytics/track";
 import { useMounted } from "./useMounted";
 
 export type ChatRoomScreenProps = {
@@ -131,13 +131,13 @@ export function ChatRoomScreen({ matchId, myProfileId, initialRoom, initialMessa
     const r = await api.markRead({ matchId });
     if (r.ok) {
       markReadLocally(matchId);
-      if (r.data.marked > 0) trackChat("message_read", { match_id_hash: hashId(matchId), latency_min: Math.round((Date.now() - openedAt.current) / 60_000) });
+      if (r.data.marked > 0) track("message_read", { match_id_hash: hashId(matchId), latency_min: Math.round((Date.now() - openedAt.current) / 60_000) });
     }
   }, [api, matchId, markReadLocally]);
 
   useEffect(() => {
     setActiveMatchId(matchId);
-    trackChat("chat_opened", { match_id_hash: hashId(matchId), message_count: initialMessages.items.length, status: initialRoom.status });
+    track("chat_opened", { match_id_hash: hashId(matchId), message_count: initialMessages.items.length, status: initialRoom.status });
     void doMarkRead();
     const onVis = () => {
       if (document.visibilityState === "visible") void doMarkRead();
@@ -154,7 +154,7 @@ export function ChatRoomScreen({ matchId, myProfileId, initialRoom, initialMessa
   useEffect(() => {
     if (!reciprocatedFired.current && isReciprocated(items)) {
       reciprocatedFired.current = true;
-      trackChat("conversation_reciprocated", { match_id_hash: hashId(matchId), hours_since_match: Math.round((Date.now() - Date.parse(room.matched_at)) / 3_600_000) });
+      track("conversation_reciprocated", { match_id_hash: hashId(matchId), hours_since_match: Math.round((Date.now() - Date.parse(room.matched_at)) / 3_600_000) });
     }
   }, [items, matchId, room.matched_at]);
 
@@ -251,8 +251,8 @@ export function ChatRoomScreen({ matchId, myProfileId, initialRoom, initialMessa
   function afterSent(sent: SentMessage, clientId: string, isImage: boolean, bodyLen: number) {
     const confirmed = sentToMessage(sent, myProfileId, clientId);
     merge([confirmed]);
-    trackChat("message_sent", { match_id_hash: hashId(matchId), is_first: items.filter((m) => !m.sendState).length === 0, has_image: isImage, length_bucket: lengthBucket(bodyLen) });
-    if (isImage) trackChat("image_sent", { match_id_hash: hashId(matchId) });
+    track("message_sent", { match_id_hash: hashId(matchId), is_first: items.filter((m) => !m.sendState).length === 0, has_image: isImage, length_bucket: lengthBucket(bodyLen) });
+    if (isImage) track("image_sent", { match_id_hash: hashId(matchId) });
     if (sent.warnRules.length > 0) toast({ title: WARN_TOAST });
     if (sent.warnContact) setWarnContact(true);
     if (sent.offlineMeeting && !offlineShown) {
@@ -323,7 +323,7 @@ export function ChatRoomScreen({ matchId, myProfileId, initialRoom, initialMessa
     const r = await api.blockProfile({ targetId: room.partner_id });
     setBusy(false);
     if (r.ok) {
-      trackChat("block_submitted", { surface: "chat" });
+      track("block_submitted", { surface: "chat" });
       toast({ title: "차단했어요", description: "서로 보이지 않아요. 상대에게 알림은 가지 않아요.", variant: "success" });
       qc.removeQueries({ queryKey: key });
       void qc.invalidateQueries({ queryKey: ["matches"] });
@@ -339,7 +339,7 @@ export function ChatRoomScreen({ matchId, myProfileId, initialRoom, initialMessa
     const r = await api.leaveMatch({ matchId });
     setBusy(false);
     if (r.ok) {
-      trackChat("chat_left", { match_id_hash: hashId(matchId) });
+      track("chat_left", { match_id_hash: hashId(matchId) });
       void qc.invalidateQueries({ queryKey: ["matches"] });
       router.replace("/chat");
     } else {

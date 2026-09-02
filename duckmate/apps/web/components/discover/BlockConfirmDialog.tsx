@@ -7,7 +7,7 @@
 import * as React from "react";
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, useToast } from "@duckmate/ui";
 import { mapFailure } from "./errors";
-import { trackEvent } from "./track";
+import { track } from "@/lib/analytics/track";
 import type { DiscoverApi } from "./types";
 
 export function BlockConfirmDialog({
@@ -39,7 +39,7 @@ export function BlockConfirmDialog({
       else toast({ title: ux.kind === "refresh" ? (ux.message ?? "다시 시도해 주세요") : ux.message, variant: "error" });
       return;
     }
-    trackEvent("block_submitted", { surface });
+    track("block_submitted", { surface });
     onOpenChange(false);
     toast({ title: "차단했어요", description: "상대에게 알림이 가지 않아요" });
     onBlocked?.(targetId);

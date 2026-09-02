@@ -11,7 +11,7 @@ import "server-only";
  *   MINOR → banned(트리거) + 사진 파일 삭제, redirectTo "/suspended" (세션 유지: 정지 화면이 렌더돼야 함)
  *   BLOCKED_CI / DUPLICATE_CI / IDENTITY_FAILED / NOT_ALLOWLISTED → 인라인 사유 (C3 S7 실패 문구)
  */
-import { isProduction, publicEnv } from "@/lib/env";
+import { isProduction, publicEnv } from "@/lib/env/public";
 import type { IdentityApplyResult } from "@duckmate/db";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { fail, ok, type ActionResult } from "@/lib/auth/errors";
