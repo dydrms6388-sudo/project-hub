@@ -127,7 +127,15 @@ function startStatic(root, port) {
     res.writeHead(status, { "content-type": type, ...(gz ? { "content-encoding": "gzip" } : {}), "cache-control": "no-store" });
     res.end(gz ? gzipSync(body) : body);
   });
-  return new Promise((res) => server.listen(port, "127.0.0.1", () => res(server)));
+  // 포트 점유(이전 실행 잔재) 시 다음 포트로 최대 10회 이동
+  return new Promise((res, rej) => {
+    let tries = 0;
+    const tryListen = (pt) => {
+      server.once("error", (e) => (e.code === "EADDRINUSE" && tries++ < 10 ? tryListen(pt + 1) : rej(e)));
+      server.listen(pt, "127.0.0.1", () => { server.port = pt; res(server); });
+    };
+    tryListen(port);
+  });
 }
 
 // ---------- 측정 ----------
@@ -306,6 +314,7 @@ function toMarkdown(report) {
   const axeSource = loadAxe();
   console.log(`[vitals] axe: ${axeSource ? "axe-core" : "fallback rules"} · chromium: ${chromiumPath ?? "playwright default"} · dist: ${DIST_DIR}`);
   const report = { generatedAt: new Date().toISOString(), targets: TARGETS, pages: [], lighthouse: [], bundles: {} };
+  const checkpoint = () => { if (opt("--json")) writeFileSync(resolve(opt("--json")), JSON.stringify(report, null, 2)); };
   const browser = await chromium.launch({ executablePath: chromiumPath, args: ["--no-sandbox"] });
   const procs = [];
   try {
@@ -319,6 +328,7 @@ function toMarkdown(report) {
     }
     prod.kill("SIGTERM");
     report.bundles.web = bundleReport(WEB_DIR, DIST_DIR);
+    checkpoint();
 
     if (!flag("--skip-dev")) {
       console.log(`[vitals] next dev → ${DEV_DIST_DIR} (dev 라우트)`);
@@ -327,13 +337,14 @@ function toMarkdown(report) {
       const dbase = `http://127.0.0.1:${PORT_DEV}`;
       for (const p of PAGES.dev) { const r = await measurePage(browser, dbase, p, { mode: "dev", axeSource }); report.pages.push({ area: "web", ...r }); console.log(`  web dev ${p} LCP ${ms(r.lcp)} CLS ${r.cls.toFixed(3)} axe ${r.axe.violations.length}`); }
       dev.kill("SIGTERM");
+      checkpoint();
     }
 
     if (!flag("--skip-company")) {
       if (!existsSync(COMPANY_OUT)) console.warn("[vitals] apps/company/out 없음 — pnpm --filter @duckmate/company build 먼저 (건너뜀)");
       else {
         const srv = await startStatic(COMPANY_OUT, PORT_COMPANY);
-        const cbase = `http://127.0.0.1:${PORT_COMPANY}`;
+        const cbase = `http://127.0.0.1:${srv.port}`;
         for (const p of PAGES.company) { const r = await measurePage(browser, cbase, p, { mode: "static", axeSource }); report.pages.push({ area: "company", ...r }); console.log(`  company ${p} LCP ${ms(r.lcp)} CLS ${r.cls.toFixed(3)} JS ${kb(r.jsTransfer)}KB axe ${r.axe.violations.length}`); }
         if (flag("--lighthouse")) {
           const dir = join(REPO_ROOT, "node_modules/.cache/e6-lighthouse");
