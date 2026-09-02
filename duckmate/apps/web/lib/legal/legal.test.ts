@@ -49,7 +49,7 @@ describe("frontmatter · 마크다운 렌더", () => {
     expect(html).toContain('<h1 id="제목" class="sr-only">');
     expect(html).toContain('<h2 id="제1장-총칙">');
     expect(html).toContain('<h2 id="제1장-총칙-2">');
-    expect(html).toContain('<div class="table-wrap"><table>');
+    expect(html).toContain('<div class="table-wrap" tabindex="0" role="region" aria-label="표 (가로 스크롤)"><table>');
     expect(html).toContain('<th scope="col">');
     expect(toc.map((t) => [t.depth, t.id])).toEqual([
       [2, "제1장-총칙"],

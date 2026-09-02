@@ -129,7 +129,7 @@ function render(markdown: string): { html: string; toc: TocItem[] } {
         const rows = token.rows
           .map((r) => `<tr>${r.map((c) => `<td${align(c.align)}>${this.parser.parseInline(c.tokens)}</td>`).join("")}</tr>`)
           .join("");
-        return `<div class="table-wrap"><table><thead><tr>${th}</tr></thead><tbody>${rows}</tbody></table></div>\n`;
+        return `<div class="table-wrap" tabindex="0" role="region" aria-label="표 (가로 스크롤)"><table><thead><tr>${th}</tr></thead><tbody>${rows}</tbody></table></div>\n`;
       },
     },
   });

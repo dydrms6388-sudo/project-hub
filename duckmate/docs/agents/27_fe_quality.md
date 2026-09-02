@@ -64,7 +64,132 @@
 
 목표: LCP ≤ 2.5s(로컬) · CLS ≤ 0.1 · web 홈 JS ≤ 200KB gz · company 홈 JS ≤ 80KB gz(→ 결정 16). 모바일 375×812, 워밍업 1회 후 두 번째 로드. `*` = dev 서버(비압축·개발 번들, 크기 참고값). JS(gz) 는 same-origin `.js` 전송량 합(nomodule polyfill 포함, 모던 브라우저 실제 전송은 −39KB).
 
-{{MEASURE_MD}}
+### 2.1 Playwright 실측 (최종 실행 2026-09-02 08:00, 워밍업 후 2회차 로드)
+
+| 영역 | 모드 | 경로 | LCP ms | CLS | FCP | TTFB | DOM | JS(gz KB) | JS 파일 | axe 위반(critical/serious·기타) | 판정 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| web | prod | / | 164 | 0.000 | 164 | 33 | 102 | 143.2 | 14 | 0/0 | ✅ |
+| web | prod | /login | 176 | 0.000 | 176 | 31 | 51 | 181.8 | 19 | 0/0 | ✅ |
+| web | prod | /legal/terms | 284 | 0.000 | 284 | 17 | 591 | 142.2 | 12 | 1/0 (scrollable-region-focusable) | ❌ a11y scrollable-region-focusable |
+| web | prod | /account/delete | 192 | 0.000 | 192 | 20 | 98 | 141.7 | 11 | 0/0 | ✅ |
+| web | dev | /dev/discover?screen=reco | 712 | 0.000 | 712 | 317 | 554 | 3070.9* | 6 | 0/0 | ✅ |
+| web | dev | /dev/discover?screen=home | 344 | 0.000 | 344 | 126 | 126 | 3070.9* | 6 | 0/0 | ✅ |
+| web | dev | /dev/chat?view=room | 1052 | 0.000 | 304 | 105 | 154 | 3677.8* | 6 | 0/0 | ✅ |
+| web | dev | /dev/profile | 352 | 0.000 | 352 | 129 | 264 | 2807.4* | 6 | 1/0 (color-contrast) | ❌ a11y color-contrast |
+| company | static | / | 196 | 0.000 | 196 | 19 | 399 | 142.2 | 10 | 0/0 | ❌ JS>80KB |
+| company | static | /contact/ | 132 | 0.000 | 132 | 7 | 187 | 142.2 | 10 | 0/0 | ✅ |
+| company | static | /legal/terms/ | 268 | 0.000 | 268 | 11 | 621 | 142.7 | 11 | 1/0 (scrollable-region-focusable) | ❌ a11y scrollable-region-focusable |
+
+- 판정 ❌ 3건 중 **a11y 2건은 측정 직후 수정**(§3: `.table-wrap` `tabindex=0 role=region` · MeScreen 미달성 VerifyBadge 중립 톤) — 재빌드 후 재측정 값은 §2.4. `company /` JS>80KB 는 결정 16(프레임워크 하한 102KB).
+- JS(gz) 는 nomodule polyfill 39.5KB 를 포함한 same-origin `.js` 합. 모던 브라우저 실전송 = web 홈 ≈ 104KB, company 홈 ≈ 103KB.
+- dev 모드(`*`) JS 는 비압축 개발 번들이라 크기 비교 대상이 아님. `/dev/chat?view=room` LCP 1.05s 는 목 데이터 폴링 전 스켈레톤 → 메시지 교체 시점.
+
+### 2.2 Lighthouse 13.4.1 (모바일 시뮬레이션 · 4G 스로틀 · CPU 4× · 샌드박스 CDN 차단)
+
+| 영역 | 경로 | Perf | A11y | BP | SEO | LCP ms | CLS | TBT ms | 실패 감사 |
+|---|---|---|---|---|---|---|---|---|---|
+| web | / | 80 | 100 | 96 | 91 | 3200 | 0.000 | 429 | seo:meta-description, best-practices:errors-in-console |
+| web | /login | 77 | 100 | 96 | 63 | 3226 | 0.000 | 532 | seo:is-crawlable, best-practices:errors-in-console |
+| web | /legal/terms | 82 | 100 | 96 | 92 | 3175 | 0.000 | 353 | seo:canonical, best-practices:errors-in-console |
+| web | /account/delete | 93 | 100 | 96 | 92 | 2564 | 0.000 | 156 | seo:canonical, best-practices:errors-in-console |
+| company | / | 98 | 100 | 96 | 100 | 1976 | 0.000 | 76 | best-practices:errors-in-console |
+| company | /contact/ | 88 | 100 | 96 | 100 | 2397 | 0.000 | 292 | best-practices:errors-in-console |
+| company | /legal/terms/ | 98 | 100 | 96 | 100 | 2126 | 0.000 | 65 | best-practices:errors-in-console |
+
+- web 4건은 이전 실행(첫 번째 측정 프로세스와 CPU 경합 없이 단독 실행)에서 **Perf 89 / 95 / 96 / 93**, LCP 2.3~2.6s 였다(위 표는 다른 측정 프로세스와 겹쳐 실행돼 TBT 가 2배로 나옴). 프로덕션 실측(결정 14)으로 확정할 것.
+- `seo:meta-description`(`/`) = 결정 21(스트리밍 메타데이터, 일반 UA 는 body). `seo:is-crawlable`(`/login`) = noindex 의도. `seo:canonical`(`/legal/terms`·`/account/delete`) = 더미 `NEXT_PUBLIC_SITE_URL=localhost:3000` 과 측정 호스트(127.0.0.1) 불일치 — 프로덕션에서는 통과. `errors-in-console` = 샌드박스에서 jsdelivr(Pretendard) 연결 실패.
+- company 는 Perf 98 / 88(문의 폼) / 98, A11y 100, SEO 100.
+
+### 2.3 First Load JS (gzip, `app-build-manifest` 기준)
+
+**web First Load JS (gzip, app-build-manifest 기준: root layout + 그룹 layout + page)**
+
+| 라우트 | JS 파일 수 | First Load gz KB |
+|---|---|---|
+| /chat/[matchId] | 26 | 285.1 |
+| /dev/chat | 24 | 282.5 |
+| /chat | 25 | 276.4 |
+| /me/photos | 21 | 265.5 |
+| /onboarding/photos | 18 | 232.7 |
+| /dev/discover | 25 | 217.4 |
+| /reco | 25 | 214.2 |
+| /match/[id] | 25 | 211.9 |
+| /home | 21 | 201.6 |
+| /settings/mode | 23 | 197.3 |
+| /onboarding/basic | 20 | 196.4 |
+| /me/edit | 20 | 192.8 |
+| /reco/done | 19 | 192.3 |
+| /report/new | 20 | 191.1 |
+| /report | 20 | 191.1 |
+| /blocks | 20 | 190.1 |
+| /onboarding/hobbies | 20 | 189 |
+| /me | 20 | 187.8 |
+| /settings/notifications | 18 | 185.7 |
+| /settings/data/delete | 19 | 185.3 |
+| /dev/profile | 20 | 184.1 |
+| /settings/data | 18 | 183.5 |
+| /settings | 18 | 182.9 |
+| /settings/verify | 19 | 182.4 |
+| /verify | 19 | 182.4 |
+| /onboarding/card | 18 | 176 |
+| /settings/account | 18 | 174.6 |
+| /settings/blocks | 18 | 174.6 |
+| /settings/subscription | 18 | 174.6 |
+| /onboarding/phone | 18 | 173.3 |
+| /login | 17 | 173.1 |
+| /onboarding/age | 17 | 172.7 |
+| /appeal | 13 | 158.4 |
+| /suspended | 14 | 156.3 |
+| /admin/users/[id] | 15 | 156.2 |
+| /onboarding/quiz | 15 | 155.9 |
+| /admin/reports/[id] | 14 | 151 |
+| /admin/photos | 14 | 150 |
+| /account/restore | 11 | 146.8 |
+| /blocked/age | 11 | 140 |
+| / | 11 | 138.1 |
+| /account/delete | 11 | 138.1 |
+| /admin/audit | 12 | 136 |
+| /admin/metrics | 12 | 136 |
+| /admin | 12 | 136 |
+| /admin/users | 12 | 136 |
+| /legal/[slug] | 12 | 136 |
+| /legal | 12 | 136 |
+| /admin/reports | 12 | 135.9 |
+| /legal/business | 12 | 135.9 |
+| /_not-found | 10 | 132.4 |
+
+**company First Load JS (gzip, app-build-manifest 기준: root layout + 그룹 layout + page)**
+
+| 라우트 | JS 파일 수 | First Load gz KB |
+|---|---|---|
+| /contact | 9 | 130.5 |
+| / | 8 | 123.4 |
+| /_not-found | 8 | 114.8 |
+| /legal/business | 8 | 114.8 |
+| /legal | 8 | 114.8 |
+| /legal/[slug] | 8 | 114.8 |
+
+- web 공통 하한 ≈ 132KB(`/_not-found`, react-dom 54 + Next 런타임 46 + 프레임워크·글로벌 CSS 로더 등). 채팅·사진 라우트 +52KB = Supabase 브라우저 클라이언트(Realtime/Storage) — 해당 라우트에서만 로드.
+- company 홈 123KB(빌드 표 125KB). E5 보고 306KB → lucide 정적 map 이후 값. `optimizePackageImports` 는 이미 적용 상태.
+
+### 2.4 수정 후 재측정
+
+| 영역 | 모드 | 경로 | LCP ms | CLS | FCP | TTFB | DOM | JS(gz KB) | JS 파일 | axe 위반(critical/serious·기타) | 판정 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| web | prod | / | 136 | 0.000 | 136 | 26 | 102 | 143.2 | 14 | 0/0 | ✅ |
+| web | prod | /login | 156 | 0.000 | 156 | 24 | 49 | 181.8 | 19 | 0/0 | ✅ |
+| web | prod | /legal/terms | 300 | 0.000 | 300 | 17 | 596 | 142.2 | 12 | 0/0 | ✅ |
+| web | prod | /account/delete | 188 | 0.000 | 188 | 21 | 96 | 141.7 | 11 | 0/0 | ✅ |
+| web | dev | /dev/discover?screen=reco | 468 | 0.000 | 468 | 185 | 554 | 3070.7* | 6 | 0/0 | ✅ |
+| web | dev | /dev/discover?screen=home | 288 | 0.000 | 288 | 115 | 126 | 3070.7* | 6 | 0/0 | ✅ |
+| web | dev | /dev/chat?view=room | 1064 | 0.000 | 272 | 107 | 154 | 3677.6* | 6 | 0/0 | ✅ |
+| web | dev | /dev/profile | 368 | 0.000 | 368 | 127 | 264 | 2807.7* | 6 | 1/0 (role-img-alt) | ❌ a11y role-img-alt |
+| company | static | / | 200 | 0.000 | 200 | 12 | 401 | 142.2 | 10 | 0/0 | ❌ JS>80KB |
+| company | static | /contact/ | 124 | 0.000 | 124 | 8 | 189 | 142.2 | 10 | 0/0 | ✅ |
+| company | static | /legal/terms/ | 212 | 0.000 | 212 | 9 | 621 | 142.7 | 11 | 0/0 | ✅ |
+
+- `.table-wrap`·VerifyBadge 수정 후 web/company **axe serious 0**. `/dev/profile` 의 `role-img-alt` 1건은 1차 수정에서 `aria-label={undefined}` 가 배지 자체 라벨을 덮어쓴 회귀 → 미달성 레벨에만 props 를 spread 하도록 고쳐 재확인(axe 0, 라벨 `본인인증 완료 / 사진인증 미완료`).
+- 남은 ❌ = `company /` JS>80KB 뿐(결정 16, 프레임워크 하한).
 
 ## 3. 접근성 점검(코드 리뷰) · 수정 목록
 
@@ -80,6 +205,8 @@
 | 추천 카드 키보드 | 패스/좋아요/슈퍼라이크 = `<Button aria-label>`, 카드 `aria-label="추천 n / N"`, 프로필 열기 버튼(스와이프 없음) | 없음 |
 | 채팅 `aria-live` | 입력 비활성 `role=status`, 글자수 `aria-live=polite`, 실패 `role=alert`, 폴링 배너 `aria-live` — **메시지 목록엔 없었음** | `MessageList.tsx` `<ol aria-live="polite" aria-relevant="additions">` |
 | 이미지 alt | 모든 `<img>` alt 보유(프로필 썸네일은 `alt=""` + 상태 배지 텍스트) | 없음 |
+| 법적 문서 표 가로 스크롤 | axe `scrollable-region-focusable`(serious) — `.table-wrap{overflow-x:auto}` 에 키보드 포커스 불가(web `/legal/*`, company `/legal/*`) | `lib/legal/markdown.ts`·`apps/company/lib/legal.ts` 렌더러에 `tabindex="0" role="region" aria-label="표 (가로 스크롤)"` |
+| 인증 배지 미달성 상태 | axe `color-contrast`(serious) — `MeScreen` 이 미달성 레벨 배지를 `opacity-40` 으로 흐리게 해 흰 글자/보라 배경 대비 미달, `aria-label` 도 "완료" 로 잘못 읽힘 | 중립 톤(`bg-muted text-muted-foreground`) + `aria-label "{레벨} 미완료"` |
 | 헤딩 순서 | axe `heading-order` 위반 0 | 없음 |
 | 랜드마크 | 페이지당 `main` 1개 확인 | 없음 |
 
@@ -110,6 +237,8 @@
 | `apps/web/app/(public)/legal/layout.tsx` · `(admin)/layout.tsx` · `components/onboarding/OnboardingFrame.tsx` · `packages/ui/src/components/domain/AppShell.tsx` | `main#main tabindex=-1 outline-none` |
 | `apps/web/components/chat/MessageList.tsx` | 메시지 목록 `aria-live`, 대화 사진 `loading=lazy` |
 | `apps/web/components/profile/PhotosScreen.tsx` · `app/(admin)/_components/{PhotoReviewGrid,EvidenceViewer}.tsx` · `app/(admin)/admin/users/[id]/page.tsx` | `<img loading="lazy" decoding="async">` |
+| `apps/web/lib/legal/markdown.ts` · `apps/company/lib/legal.ts` · `apps/web/lib/legal/legal.test.ts` | 표 래퍼 `tabindex=0 role=region aria-label`(axe serious) · 테스트 기대값 갱신 |
+| `apps/web/components/profile/MeScreen.tsx` | 미달성 VerifyBadge 중립 톤 + "미완료" 라벨(axe serious) |
 | `apps/web/components/onboarding/copy.ts` | "본인인증 (지금 여기)" → "(이 단계)" — 금지 표현 `지금 여기`(위치) 오탐 회피 |
 | `apps/web/components/discover/mock.ts` · `components/chat/dev/mockApi.ts` · `packages/ui/src/demo/DemoGallery.tsx` | 목 문구 "서울 근처"→"서울 같은 지역", "성동구 근처 러닝 코스"→"성동구 러닝 코스"(금지 표현 `근처`) |
 | `apps/web/public/icons/*.png` · `apps/web/app/{icon,apple-icon}.png` · `apps/company/app/{icon,apple-icon}.png` (신규) | 플레이스홀더 아이콘(결정 11) |

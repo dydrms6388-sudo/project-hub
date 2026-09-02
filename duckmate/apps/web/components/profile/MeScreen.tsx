@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { ChevronRight, Settings } from "lucide-react";
-import { DuckCard, VerifyBadge, type VerifyLevel } from "@duckmate/ui";
+import { DuckCard, VerifyBadge, type VerifyLevel, VERIFY_LABELS } from "@duckmate/ui";
 import { MODE_COPY } from "@/components/settings/copy";
 import { track } from "@/components/settings/track";
 import type { MyProfileView } from "./types";
@@ -58,7 +58,13 @@ export function MeScreen({ view }: { view: MyProfileView }) {
           <span className="text-body">인증</span>
           <span className="flex flex-1 flex-wrap gap-1.5">
             {levels.map((l) => (
-              <VerifyBadge key={l} level={l} showLow className={view.verifyLevel < l ? "opacity-40" : undefined} />
+              <VerifyBadge
+                key={l}
+                level={l}
+                showLow
+                // 미달성 레벨: opacity 로 흐리게 하면 흰 글자/보라 배경 대비가 4.5:1 미만(axe serious) → 중립 톤 + 라벨 "미완료" (E6)
+                {...(view.verifyLevel < l ? { className: "border-border bg-muted text-muted-foreground", "aria-label": `${VERIFY_LABELS[l]} 미완료` } : {})}
+              />
             ))}
           </span>
           <ChevronRight size={20} strokeWidth={1.75} aria-hidden="true" className="text-muted-foreground" />
