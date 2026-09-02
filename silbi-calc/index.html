@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<!--theme-sync--><script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script><!--/theme-sync-->
+<meta name="robots" content="index,follow,max-image-preview:large" />
+<title>실비보험 계산기 — 내 실손 세대 찾기·예상 환급액·세대별 비교 (1~5세대) | TomatoEggCat</title>
+<meta name="description" content="가입 시기로 내 실손의료보험 세대(1~5세대)를 판별하고, 외래·입원 진료비와 병원 종류를 넣으면 세대별 공제 방식(정액·정률)을 적용한 예상 환급액과 다른 세대와의 비교표를 보여 줍니다. 4세대 비급여 할증 구조, 청구 서류·기한 FAQ 포함." />
+<link rel="canonical" href="https://tomatoeggcat.com/silbi-calc/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/lib/tool.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TomatoEggCat","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"실비보험 계산기","item":"https://tomatoeggcat.com/silbi-calc/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"실손보험 예상 환급액 계산하는 방법","description":"가입 시기로 세대를 판별하고 진료 내역에 세대별 자기부담(정액·정률) 공제를 적용해 예상 보험금을 구합니다.","totalTime":"PT2M","step":[
+{"@type":"HowToStep","position":1,"name":"내 실손 세대 찾기","text":"실손보험 최초 가입(또는 전환) 연월을 입력하면 1~5세대를 판별합니다. 2009.9 이전 1세대, 2009.10~2017.3 2세대, 2017.4~2021.6 3세대, 2021.7~2026.5 4세대, 2026.5.6 이후 5세대."},
+{"@type":"HowToStep","position":2,"name":"진료 내역 입력","text":"외래·입원 구분, 병원 종류, 진료비 영수증의 급여 본인부담금과 비급여 금액, 통원 횟수를 입력합니다."},
+{"@type":"HowToStep","position":3,"name":"결과 확인","text":"세대별 공제 방식을 적용한 예상 환급액과 다른 세대였을 때의 환급액 비교표를 확인합니다."}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"내 실손보험이 몇 세대인지 어떻게 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"최초 가입 시기로 판별합니다. 2009년 9월 이전 1세대, 2009년 10월~2017년 3월 2세대, 2017년 4월~2021년 6월 3세대, 2021년 7월~2026년 5월 초 4세대, 2026년 5월 6일 이후 5세대입니다. 중간에 전환했다면 전환 시점 기준입니다. 보험사 앱의 계약 조회나 내보험다보여(credit4u) 사이트에서 상품명과 가입일을 확인할 수 있습니다."}},
+{"@type":"Question","name":"실비 청구는 언제까지 할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"보험금 청구권 소멸시효는 3년입니다. 진료일(입원은 퇴원일)부터 3년 안에 청구하면 되고, 지난 병원비도 영수증만 있으면 소급해서 받을 수 있습니다."}},
+{"@type":"Question","name":"실비 청구에 필요한 서류는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"통원은 진료비 영수증과 진료비 세부내역서(비급여가 있을 때), 처방전 또는 약제비 영수증이 기본입니다. 입원이나 고액 청구는 진단서 또는 입퇴원확인서, 수술확인서가 추가됩니다. 2024년 10월부터 병원급 이상, 2025년 10월부터 의원·약국까지 실손24 앱으로 서류 없이 전자 청구가 가능합니다."}},
+{"@type":"Question","name":"도수치료도 실비로 받을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"1·2세대는 통원 한도 안에서 일반 비급여로 보장됩니다. 3·4세대는 도수·체외충격파·증식치료 특약으로 분리되어 자기부담 30%(최소 2만~3만 원 공제), 연 50회·350만 원 한도가 적용되고, 2026년 7월부터는 선행 물리치료 후 연 15회 등 인정 기준이 강화되었습니다. 4세대는 도수치료 보험금이 다음 해 비급여 보험료 할증에 반영됩니다."}},
+{"@type":"Question","name":"4세대 실손은 왜 보험료가 할증되나요?","acceptedAnswer":{"@type":"Answer","text":"비급여 이용량에 따라 다음 1년 비급여 보험료가 달라지는 차등제 때문입니다. 직전 1년 비급여 보험금이 0원이면 약 5% 할인, 100만 원 미만은 유지, 100만~150만 원은 100%, 150만~300만 원은 200%, 300만 원 이상은 300% 할증됩니다. 급여 보험료는 영향이 없고, 산정특례 대상 중증질환·장기요양 1~2등급은 할증에서 제외됩니다."}},
+{"@type":"Question","name":"1세대 실손은 왜 갈아타지 말라고 하나요?","acceptedAnswer":{"@type":"Answer","text":"자기부담금이 거의 없고(손보 0%) 한 번 가입하면 재가입 없이 80·100세까지 같은 조건이 유지되기 때문입니다. 보험료가 비싸고 계속 오르는 것이 단점이지만, 병원 이용이 많거나 만성질환이 있으면 4·5세대로 바꿀 때 자기부담이 크게 늘어납니다."}},
+{"@type":"Question","name":"통원 공제금액 1만 원, 2만 원은 무슨 뜻인가요?","acceptedAnswer":{"@type":"Answer","text":"통원 한 번마다 무조건 빼는 최소 자기부담금입니다. 2·3세대는 의원 1만, 병원 1만5천, 종합·상급종합 2만 원(또는 정률 자기부담 중 큰 금액), 4세대는 급여 1만(의원·병원)·2만(종합·상급), 비급여 3만 원과 정률(20%·30%) 중 큰 금액을 공제합니다. 진료비가 공제금액 이하면 받을 보험금이 없습니다."}},
+{"@type":"Question","name":"약값도 실비로 받나요?","acceptedAnswer":{"@type":"Answer","text":"네. 처방조제비도 보장됩니다. 2·3세대는 회당 8천 원 공제 후 5만 원 한도, 4세대는 병원 진료비와 약국 조제비를 합산해 급여 공제(1만·2만 원 또는 20%)를 적용합니다. 약국 영수증을 함께 제출해야 합니다."}},
+{"@type":"Question","name":"실손이 두 개면 두 배로 받나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 실손은 실제 손해만 보상하는 비례보상 상품이라 두 개에 가입해도 한도 안에서 나눠 지급되어 총액은 같습니다. 중복 가입이면 하나를 해지하거나 보험료 환급을 요청하세요. 단, 단체실손과 개인실손이 겹치는 경우 개인실손 중지 제도를 활용할 수 있습니다."}},
+{"@type":"Question","name":"4세대로 전환하면 뭐가 좋아지나요?","acceptedAnswer":{"@type":"Answer","text":"보험료가 1세대 대비 60~70%, 2세대 대비 40~50% 저렴합니다. 병원을 거의 안 가고 비급여 이용이 없으면 할인까지 받아 유리하지만, 자기부담이 급여 20%·비급여 30%로 높아지고 5년마다 재가입해야 합니다. 이 계산기의 세대 비교표로 내 진료 패턴에서의 환급 차이를 확인해 보세요."}},
+{"@type":"Question","name":"이 계산기 결과가 실제 보험금과 같나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 본 계산기는 참고용이며 실제 보험금과 다를 수 있습니다. 표준약관 대표값을 적용한 추정치이며, 가입 상품·특약·한도 소진·면책 항목(미용·건강검진 등)·갱신 약관에 따라 실제 지급액이 달라집니다."}}
+]}
+</script>
+<!--og-eeat-->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="실비보험 계산기 | TomatoEggCat" />
+<meta property="og:description" content="내 실손 세대 판별·예상 환급액·세대별 비교표" />
+<meta property="og:url" content="https://tomatoeggcat.com/silbi-calc/" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/silbi-calc.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="실비보험 계산기 | TomatoEggCat" />
+<meta name="twitter:description" content="내 실손 세대 판별·예상 환급액·세대별 비교표" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/silbi-calc.png" />
+<!--/og-eeat-->
+<script type="application/ld+json" data-eeat="1">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"실비보험 계산기","description":"내 실손 세대 판별·예상 환급액·세대별 비교표","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/silbi-calc/","inLanguage":"ko-KR","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}}</script>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 실비보험 계산기</div>
+<h1>실비보험 계산기 — 내 세대 찾기 &amp; 예상 환급액</h1>
+<p class="lead">가입 시기로 <b>내 실손 세대(1~5세대)</b>를 판별하고, 진료비 영수증 숫자를 넣으면 세대별 <b>정액·정률 공제</b>를 적용한 <b>예상 환급액</b>과 <b>다른 세대였다면 얼마 받았을지</b> 비교표를 보여 줍니다.</p>
+
+<div class="card">
+  <h3 style="margin-top:0">Step 1 · 내 실비 세대 찾기</h3>
+  <label for="joinDate">실손보험 최초 가입(또는 전환) 연월</label>
+  <input type="month" id="joinDate" value="2015-06" min="1980-01" max="2026-12" />
+  <div class="note" id="genBox" style="margin-top:12px"></div>
+  <p class="disc">가입일은 보험사 앱 계약조회, 또는 <b>내보험다보여(cred4u)</b>·<b>내보험찾아줌</b>에서 확인할 수 있습니다. 중간에 세대 전환을 했다면 전환일을 입력하세요.</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">Step 2 · 진료 내역 입력</h3>
+  <label>진료 구분</label>
+  <div class="seg" style="grid-template-columns:1fr 1fr" id="segType"><button data-v="out" class="on">외래(통원)</button><button data-v="in">입원</button></div>
+  <div class="field"><label for="hosp">병원 종류</label><select id="hosp"></select></div>
+  <div class="row field">
+    <div><label for="payAmt">급여 본인부담금 (원) <span class="hint">영수증 '급여 본인부담'</span></label><input type="text" inputmode="numeric" id="payAmt" value="25,000" /></div>
+    <div><label for="nonpayAmt">비급여 금액 (원) <span class="hint">영수증 '비급여'</span></label><input type="text" inputmode="numeric" id="nonpayAmt" value="80,000" /></div>
+  </div>
+  <div class="row field" id="outOnly">
+    <div><label for="visits">통원 횟수 <span class="hint">같은 금액 기준</span></label><input type="number" id="visits" min="1" max="200" value="1" /></div>
+    <div><label for="pharm">약국 조제비 본인부담 (원/회)</label><input type="text" inputmode="numeric" id="pharm" value="0" /></div>
+  </div>
+  <label class="chk"><input type="checkbox" id="special3" /> 비급여가 도수·체외충격파·증식치료 / 비급여 주사 / MRI(3대 비급여)에 해당</label>
+  <button class="primary" id="calc">예상 환급액 계산하기</button>
+</div>
+
+<div class="card out" id="out">
+  <h3 style="margin-top:0">Step 3 · 결과</h3>
+  <div class="big" id="refund">–</div>
+  <div class="bigsub" id="refundSub"></div>
+  <div class="facts" id="facts"></div>
+  <ol class="steps" id="steps"></ol>
+  <div class="banner" id="g4banner" hidden><b>4세대 비급여 할증 안내</b> · 이번 비급여 보험금 <span id="g4np"></span>을 받으면 직전 1년 누계 기준으로 다음 1년 비급여 보험료가 <b id="g4adj"></b>될 수 있습니다. 급여 보험료는 영향 없고, 중증질환 산정특례·장기요양 1~2등급은 제외됩니다.</div>
+
+  <!-- 광고 슬롯 ① Step 3 결과 하단 (유일한 실제 유닛) -->
+  <div class="ad-slot" data-slot="result-bottom">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h3>내 세대 vs 다른 세대 비교</h3>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>세대</th><th class="num">예상 환급액</th><th class="num">자기부담</th><th>공제 방식</th></tr></thead><tbody id="cmp"></tbody></table></div>
+  <p class="disc">같은 진료를 다른 세대 실손으로 청구했을 때의 추정치입니다. 세대별 보험료 차이(1세대 &gt; 2세대 &gt; 3세대 &gt; 4세대)는 반영하지 않았으므로 전환 판단은 <a href="/silbi-calc/switch-4th-gen-guide/">4세대 전환 가이드</a>를 함께 보세요.</p>
+  <!-- 광고 슬롯 ② 비교표 아래 (예약) -->
+  <div class="ad-slot" data-slot="table-below"></div>
+  <p class="disc">※ 본 계산기는 참고용이며 실제 보험금과 다를 수 있습니다. 표준약관 대표값 기준 추정치로, 가입 상품·특약·연간 한도 소진·면책 항목(미용·성형·건강검진·예방접종 등)·갱신 약관에 따라 지급액이 달라집니다. 입력값은 저장·전송되지 않습니다.</p>
+</div>
+
+<div class="prose">
+  <h2>세대별 약관, 무엇이 어떻게 다른가</h2>
+  <p>실손의료보험은 판매 시기마다 약관이 크게 바뀌어 <b>세대</b>로 구분합니다. 같은 병원비를 청구해도 세대에 따라 받는 돈이 다르고, 내는 보험료도 다릅니다. <b>1세대</b>(2009년 9월 이전)는 표준화 전 상품이라 회사별로 약관이 다르지만, 손해보험사 상품은 입원 자기부담이 0%이고 통원도 회당 5천 원만 빼고 전액 보장하는 것이 대표적입니다. 한 번 가입하면 재가입 절차 없이 80세나 100세 만기까지 같은 조건이 이어지는 대신, 손해율이 높아 갱신 때마다 보험료가 크게 오릅니다. <b>2세대</b>(2009년 10월~2017년 3월)는 금융당국이 약관을 표준화한 첫 상품으로, 입원 자기부담 10%(연 200만 원 상한)와 병원 종류별 통원 정액 공제(의원 1만 원·병원 1만 5천 원·종합병원 이상 2만 원), 처방 8천 원 공제가 도입되었습니다. 2013년 4월부터는 실손이 단독상품으로 분리되고 자기부담 10%형(선택형)과 20%형(표준형)이 생겼으며, 2015년 9월부터 선택형도 비급여는 20%를 부담하게 되었습니다. <b>3세대</b>(2017년 4월~2021년 6월)는 '착한실손'으로 불리며 과잉 진료가 잦은 도수·체외충격파·증식치료, 비급여 주사, 비급여 MRI를 특약으로 떼어 자기부담 30%와 회수·금액 한도를 두었고, 2년간 청구가 없으면 보험료를 10% 할인해 줍니다. <b>4세대</b>(2021년 7월~2026년 5월 초)는 급여를 주계약, 비급여를 특약으로 완전히 나누고 자기부담을 급여 20%·비급여 30%로 올렸습니다. 대신 보험료가 1세대의 30~40% 수준으로 낮고, 비급여를 안 쓰면 다음 해 보험료를 깎아 주되 많이 쓰면 최대 300%까지 할증하는 차등제가 2024년 7월부터 적용됩니다. 재가입 주기도 15년에서 5년으로 짧아져 약관 변경에 더 자주 노출됩니다. <b>5세대</b>(2026년 5월 6일 출시)는 급여 외래 자기부담을 건강보험 본인부담률과 연동해 의원 30%부터 상급종합병원 60%까지 차등하고, 비급여를 중증과 비중증으로 나눠 비중증 비급여는 자기부담 50%와 회당·연간 한도를 강화했습니다. 대신 그동안 빠져 있던 임신·출산 급여 의료비가 새로 보장됩니다.</p>
+
+  <h2>1세대는 왜 갈아타면 안 된다고 할까</h2>
+  <p>1세대 실손이 '보험계의 로또'라고 불리는 이유는 <b>자기부담이 거의 없고 보장 조건이 만기까지 고정</b>되기 때문입니다. 병원비 100만 원을 청구하면 1세대는 99만 5천 원을, 4세대는 급여·비급여 비율에 따라 70만~80만 원을 받습니다. 도수치료를 자주 받거나 만성질환으로 통원이 잦은 사람, 큰 수술이나 입원 가능성이 높은 고령자는 1세대를 유지하는 것이 유리합니다. 단점은 보험료입니다. 1세대는 갱신 때마다 보험료가 크게 올라 60대 이후 월 10만~20만 원을 넘기도 하고, 가입 당시 정한 만기(80세 등)가 되면 보장이 끝나 100세까지 보장하는 후기 상품과 다릅니다. 그래서 "1세대는 절대 해지하지 말라"는 말은 <b>병원을 실제로 많이 이용하는 사람</b>에게 맞는 조언이고, 병원에 거의 안 가는 건강한 30~40대라면 월 보험료 차액을 따져 4세대·5세대로 바꾸는 것이 합리적일 수 있습니다. 판단 기준은 단순합니다. 지난 3년 실제 청구액과 보험료 차액을 비교해, 매년 보험료 차액(예: 1세대 12만 원 − 4세대 4만 원 = 월 8만 원, 연 96만 원)보다 세대 전환으로 줄어드는 환급액이 크면 유지, 작으면 전환입니다. 위 비교표가 진료 한 건 기준 환급 차이를 보여 주니, 연간 진료 패턴에 맞게 횟수를 넣어 보세요. 한 번 4세대로 전환하면 1세대로 돌아갈 수 없고, 전환 후 6개월 안에는 조건 없이 철회가 가능하다는 점도 기억하세요.</p>
+
+  <h2>4세대 전환 손익 케이스</h2>
+  <ul>
+    <li><b>전환이 유리한 경우</b>: 2세대 표준형 가입자 중 최근 3년 청구액이 연 30만 원 미만이고 월 보험료가 4세대 대비 3만 원 이상 비싼 40대. 비급여 이용이 없어 매년 할인까지 받으면 연 40만~50만 원 절약.</li>
+    <li><b>전환이 불리한 경우</b>: 도수치료·비급여 주사를 연 10회 이상 받는 사람. 3세대에서 4세대로 바꾸면 자기부담 30%는 같지만 다음 해 비급여 보험료가 100~300% 할증되어 절약분을 상회.</li>
+    <li><b>판단이 갈리는 경우</b>: 1세대 가입 60대. 보험료가 월 15만 원을 넘지만 입원·수술 가능성이 높아 자기부담 0%의 가치가 큼. 가족력·건강 상태·자산 여력을 함께 고려.</li>
+  </ul>
+
+  <h2>가이드 더 읽기</h2>
+  <div class="guides">
+    <a href="/silbi-calc/claim-documents-guide/"><b>📄 실비 청구 서류 완벽 정리</b><span>통원·입원·약국·도수치료·해외진료별 필요 서류, 실손24 전자청구 방법, 3년 소멸시효, 거절 사유 대처까지.</span></a>
+    <a href="/silbi-calc/switch-4th-gen-guide/"><b>🔄 4세대 전환, 해야 할 사람 vs 하면 안 되는 사람</b><span>세대별 보험료·자기부담·할증 구조로 전환 손익을 계산하는 방법과 6개월 철회 제도.</span></a>
+  </div>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>Q. 내 실손이 몇 세대인지 어떻게 알 수 있나요?</b><p>최초 가입 시기로 판별합니다(2009.9 이전 1세대, 2009.10~2017.3 2세대, 2017.4~2021.6 3세대, 2021.7~2026.5 초 4세대, 2026.5.6 이후 5세대). 전환했다면 전환 시점 기준입니다. 보험사 앱 계약 조회나 내보험다보여에서 상품명과 가입일을 확인하세요.</p></div>
+  <div class="faq"><b>Q. 실비 청구는 언제까지 할 수 있나요?</b><p>청구권 소멸시효는 3년입니다. 진료일(입원은 퇴원일)부터 3년 안이면 지난 병원비도 영수증만 있으면 소급 청구할 수 있습니다.</p></div>
+  <div class="faq"><b>Q. 청구에 필요한 서류는?</b><p>통원은 진료비 영수증·세부내역서(비급여 있을 때)·약제비 영수증, 입원·고액은 진단서 또는 입퇴원확인서가 추가됩니다. 실손24 앱으로 병원 서류 없이 전자 청구도 가능합니다.</p></div>
+  <div class="faq"><b>Q. 도수치료도 받을 수 있나요?</b><p>1·2세대는 통원 한도 안에서 보장, 3·4세대는 특약으로 자기부담 30%(최소 2만~3만 원)·연 50회·350만 원 한도입니다. 2026년 7월부터 선행 물리치료 후 연 15회 등 인정 기준이 강화되었습니다.</p></div>
+  <div class="faq"><b>Q. 4세대는 왜 보험료가 할증되나요?</b><p>직전 1년 비급여 보험금 수령액에 따라 다음 1년 비급여 보험료가 5% 할인~300% 할증되는 차등제 때문입니다. 급여 보험료는 영향이 없습니다.</p></div>
+  <div class="faq"><b>Q. 1세대는 왜 갈아타지 말라고 하나요?</b><p>자기부담이 거의 없고 재가입 없이 만기까지 조건이 유지되기 때문입니다. 병원 이용이 많다면 유지가 유리하고, 거의 안 간다면 보험료 차액을 따져 전환을 검토할 수 있습니다.</p></div>
+  <div class="faq"><b>Q. 통원 공제금액 1만·2만 원은 무슨 뜻인가요?</b><p>통원 1회마다 무조건 빼는 최소 자기부담금입니다. 진료비가 공제금액 이하면 받을 보험금이 없습니다.</p></div>
+  <div class="faq"><b>Q. 약값도 받나요?</b><p>네. 2·3세대는 회당 8천 원 공제 후 5만 원 한도, 4세대는 진료비와 합산해 급여 공제를 적용합니다. 약국 영수증을 함께 제출하세요.</p></div>
+  <div class="faq"><b>Q. 실손이 두 개면 두 배로 받나요?</b><p>아니요. 비례보상이라 한도 안에서 나눠 지급되어 총액은 같습니다. 중복이면 하나를 정리하거나 단체실손과 겹칠 때는 개인실손 중지 제도를 이용하세요.</p></div>
+  <div class="faq"><b>Q. 4세대로 전환하면 뭐가 좋아지나요?</b><p>보험료가 1세대 대비 60~70%, 2세대 대비 40~50% 저렴하고 비급여를 안 쓰면 할인도 받습니다. 대신 자기부담이 높아지고 5년마다 재가입해야 합니다.</p></div>
+  <div class="faq"><b>Q. 결과가 실제 보험금과 같나요?</b><p>아니요. 본 계산기는 참고용이며 실제 보험금과 다를 수 있습니다. 상품·특약·한도·면책 항목에 따라 달라집니다.</p></div>
+</div>
+
+<div class="coupang-slot" data-subid="silbi-calc"></div>
+
+<h2>다른 도구</h2>
+<div class="more">
+  <a href="/bmi/">BMI 계산기</a>
+  <a href="/salary/">연봉 실수령액 계산기</a>
+  <a href="/inheritance-gift-tax/">상속세·증여세 계산기</a>
+  <a href="/">전체 도구 보기</a>
+</div>
+<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 2026년 7월 · 2026년 고시 요율·법령 기준</p>
+  <p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: <a href="https://www.fss.or.kr" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">금융감독원</a> · <a href="https://www.fsc.go.kr" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">금융위원회</a> · <a href="https://www.knia.or.kr" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">손해보험협회</a></p>
+</div>
+<footer>
+  🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/>
+  <a href="/about.html">소개</a>·<a href="/privacy.html">개인정보처리방침</a>·<a href="/terms.html">이용약관</a>·<a href="/contact.html">문의</a>
+</footer>
+</div>
+
+<script src="/silbi-calc/insurance-constants.js"></script>
+<script>
+(function(){
+  var C=window.INSURANCE_CONSTANTS, $=function(id){return document.getElementById(id)};
+  var type='out';
+  function won(n){ return isFinite(n)?Math.round(n).toLocaleString('ko-KR')+'원':'—'; }
+  function numv(id){ return Math.max(0,Number(String($(id).value||'').replace(/[^0-9]/g,''))||0); }
+  ['payAmt','nonpayAmt','pharm'].forEach(function(id){ $(id).addEventListener('blur',function(){ $(id).value=numv(id).toLocaleString('ko-KR'); }); });
+  C.hospitalTypes.forEach(function(h){ var o=document.createElement('option'); o.value=h.id; o.textContent=h.label; $('hosp').appendChild(o); });
+
+  function genFor(ym){ // "YYYY-MM"
+    for(var i=0;i<C.generations.length;i++){ var g=C.generations[i]; if(ym>=g.from&&ym<=g.to) return g; }
+    return C.generations[0];
+  }
+  var myGen=null;
+  function showGen(){
+    var ym=$('joinDate').value||'2015-06'; myGen=genFor(ym);
+    $('genBox').innerHTML='<b style="font-size:17px;color:var(--acc3)">'+myGen.name+'</b><br/><span style="font-size:13px">'+myGen.summary+'</span><br/><span style="font-size:12px;color:var(--mute2)">갱신·재가입: '+myGen.renewPeriod+(myGen.confidence==='typical'?' · 회사별 약관 상이(대표값 적용)':myGen.confidence==='press'?' · 출시 초기 보도자료 기준':'')+'</span>';
+  }
+  $('joinDate').addEventListener('change',showGen); $('joinDate').addEventListener('input',showGen); showGen();
+  $('segType').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; type=b.getAttribute('data-v'); Array.prototype.forEach.call($('segType').children,function(c){c.classList.remove('on')}); b.classList.add('on'); $('outOnly').style.display=type==='out'?'':'none'; });
+
+  // ── 세대별 환급 계산 (1회 기준) ──
+  function calcOne(g,inp){
+    var pay=inp.pay, np=inp.np, hosp=inp.hosp, ph=inp.pharm, notes=[];
+    if(g.calcSupported===false){ // 5세대: 급여만 연동식 계산, 비중증 비급여 특약은 대표값
+      var o5=g.outpatient;
+      if(inp.type==='in'){ var r5=pay*(1-g.inpatient.payRate)+np*(1-g.inpatient.nonpayRate); notes.push('입원 급여 20%·비급여 30% 자기부담(보도자료 기준)'); return {refund:Math.min(r5,g.inpatient.annualLimit),copay:pay+np-Math.min(r5,g.inpatient.annualLimit),desc:'입원 급여 20%·비급여 30%',notes:notes,approx:true}; }
+      var prate=o5.payRateByHospital[hosp]; var payR=Math.min(Math.max(0,(pay+ph)-Math.max(o5.payFlat[hosp],(pay+ph)*prate)),o5.payPerVisitLimit);
+      var npR=Math.min(Math.max(0,np-Math.max(o5.nonpayFlat,np*o5.nonpayRate)),o5.nonpayPerVisitLimit);
+      notes.push('급여 자기부담 '+(prate*100)+'%(건보 본인부담률 연동) · 비중증 비급여 50%·5만 원 공제 가정');
+      return {refund:payR+npR,copay:pay+np+ph-(payR+npR),desc:'급여 '+(prate*100)+'% 연동 · 비급여 50%',notes:notes,approx:true};
+    }
+    if(inp.type==='in'){
+      var ip=g.inpatient, ref=pay*(1-ip.payRate)+np*(1-ip.nonpayRate), cop=pay+np-ref;
+      if(ip.copayCap&&cop>ip.copayCap){ ref+=cop-ip.copayCap; cop=ip.copayCap; notes.push('연간 자기부담 상한 200만 원 적용'); }
+      ref=Math.min(ref,ip.annualLimit);
+      return {refund:ref,copay:pay+np-ref,desc:'입원 급여 '+(ip.payRate*100)+'%·비급여 '+(ip.nonpayRate*100)+'%',notes:notes};
+    }
+    var o=g.outpatient, total=pay+np, refund=0, desc='';
+    if(o.mode==='flat'&&g.gen===1){ refund=Math.min(Math.max(0,total+ph-o.deductible),o.perVisitLimit); desc='회당 '+won(o.deductible)+' 공제 · 한도 '+won(o.perVisitLimit); notes.push('1세대는 회사별 상이(손보 대표값)'); }
+    else if(o.mode==='flat'){ refund=Math.min(Math.max(0,total-o.flat[hosp]),o.perVisitLimit)+Math.min(Math.max(0,ph-o.pharmacy),o.pharmacyLimit); desc='정액 '+won(o.flat[hosp])+' 공제(급여+비급여 합산)'; }
+    else if(o.mode==='maxFlatRate'){
+      var rate=pay*o.payRate+np*o.nonpayRate; if(inp.special3&&g.special3){ rate=pay*o.payRate+np*g.special3.rate; }
+      var ded=Math.max(o.flat[hosp],rate); if(inp.special3&&g.special3) ded=Math.max(ded,g.special3.minDeductible);
+      refund=Math.min(Math.max(0,total-ded),o.perVisitLimit)+Math.min(Math.max(0,ph-Math.max(o.pharmacy,ph*o.payRate)),o.pharmacyLimit);
+      desc='max(정액 '+won(o.flat[hosp])+', 급여 '+(o.payRate*100)+'%+비급여 '+((inp.special3&&g.special3?g.special3.rate:o.nonpayRate)*100)+'%)';
+      if(inp.special3&&g.special3) notes.push('3대 비급여 특약 30%·최소 '+won(g.special3.minDeductible)+' 공제, 도수 연 50회·350만 원 한도');
+    }
+    else if(o.mode==='split'){
+      var payR=Math.min(Math.max(0,(pay+ph)-Math.max(o.payFlat[hosp],(pay+ph)*o.payRate)),o.payPerVisitLimit);
+      var npR=Math.min(Math.max(0,np-Math.max(o.nonpayFlat,np*o.nonpayRate)),o.nonpayPerVisitLimit);
+      refund=payR+npR; desc='급여 max('+won(o.payFlat[hosp])+', 20%) · 비급여 max(3만 원, 30%)';
+      if(inp.special3) notes.push('3대 비급여: 도수 연 50회·350만 원, 주사 연 50회·250만 원, MRI 연 300만 원 한도');
+    }
+    return {refund:refund,copay:total+ph-refund,desc:desc,notes:notes};
+  }
+
+  $('calc').addEventListener('click',function(){
+    var inp={type:type,hosp:$('hosp').value,pay:numv('payAmt'),np:numv('nonpayAmt'),pharm:type==='out'?numv('pharm'):0,special3:$('special3').checked};
+    var visits=type==='out'?Math.max(1,Math.floor(Number($('visits').value)||1)):1;
+    if(inp.pay+inp.np+inp.pharm<=0){ alert('급여 본인부담금 또는 비급여 금액을 입력하세요'); return; }
+    var mine=calcOne(myGen,inp), total=(inp.pay+inp.np+inp.pharm)*visits, refundT=mine.refund*visits;
+    $('refund').textContent=won(refundT); $('refund').className='big'+(refundT>0?'':' warn');
+    $('refundSub').textContent=myGen.name+' 기준 예상 환급액 · 총 진료비 '+won(total)+' 중 '+(total>0?Math.round(refundT/total*100):0)+'%'+(mine.approx?' · 출시 초기 약관 대표값(참고)':'');
+    $('facts').innerHTML=[['총 진료비('+visits+'회)',won(total)],['예상 환급',won(refundT),'good'],['내 자기부담',won(total-refundT),'bad'],['공제 방식',mine.desc]].map(function(f){return '<div class="fact"><div class="k">'+f[0]+'</div><div class="v'+(f[2]?' '+f[2]:'')+'" style="'+(f[0]==='공제 방식'?'font-size:13px':'')+'">'+f[1]+'</div></div>'}).join('');
+    var st=[['진료 구분 · 병원',(type==='out'?'외래':'입원')+' · '+$('hosp').selectedOptions[0].textContent.split(' (')[0]],['급여 본인부담 + 비급여'+(inp.pharm?' + 조제비':''),won(inp.pay+inp.np+inp.pharm)+'/회'],['세대별 공제 규칙',mine.desc],['= 1회 환급',won(mine.refund)],['× 통원 '+visits+'회',won(refundT)]];
+    mine.notes.forEach(function(n){ st.push(['참고',n]); });
+    $('steps').innerHTML=st.map(function(s){return '<li>'+s[0]+'<b style="float:none;display:block;font-weight:600;color:var(--fg)">'+s[1]+'</b></li>'}).join('');
+    // 4세대 할증 배너
+    var g4=C.generations.filter(function(g){return g.id==='g4'})[0];
+    if(myGen.id==='g4'){ var o=g4.outpatient, npR=(type==='out'?Math.min(Math.max(0,inp.np-Math.max(o.nonpayFlat,inp.np*o.nonpayRate)),o.nonpayPerVisitLimit):inp.np*(1-g4.inpatient.nonpayRate))*visits;
+      var tier=g4.surcharge.filter(function(t){return npR>=t.from&&npR<=t.to})[0]; $('g4np').textContent=won(npR); $('g4adj').textContent=tier?tier.adj+' ('+tier.label+' 구간)':'—'; $('g4banner').hidden=false; } else $('g4banner').hidden=true;
+    // 비교표
+    $('cmp').innerHTML=C.generations.map(function(g){ var r=calcOne(g,inp); return '<tr'+(g.id===myGen.id?' class="me"':'')+'><td>'+g.name.replace(/ \(.*/,'')+(g.id===myGen.id?' ← 내 세대':'')+(g.id==='g2a'||g.id==='g2b'?'<br/><span style="font-size:11px;color:var(--mute2)">'+g.from+'~'+g.to+'</span>':'')+'</td><td class="num">'+won(r.refund*visits)+(r.approx?'*':'')+'</td><td class="num">'+won(r.copay*visits)+'</td><td style="font-size:12px">'+r.desc+'</td></tr>'; }).join('')+'<tr><td colspan="4" style="font-size:11.5px;color:var(--mute2)">* 5세대는 출시 초기 보도자료 기준 대표값. 비중증 비급여 특약 약관 확정 후 갱신 예정.</td></tr>';
+    $('out').classList.add('show'); $('out').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
+</script>
+<script src="/coupang.js"></script>
+</body>
+</html>
