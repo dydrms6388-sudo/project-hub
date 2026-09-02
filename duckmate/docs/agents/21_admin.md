@@ -14,8 +14,8 @@
 6. **`Database["public"]["Functions"]` 에 D8 0060 함수·D5 0043 함수가 없다.** D8 은 `adminRpc()`(느슨한 타입 캐스트) 로 호출. D1/오케스트레이터가 `packages/db/src/types.ts` 에 아래 9개를 추가하면 `api.ts` 의 캐스트를 제거할 수 있다: `admin_queue_summary()`, `admin_metrics_active_users()`, `admin_metrics_daily(p_days)`, `admin_metrics_funnel(p_days)`, `admin_metrics_verify_levels()`, `admin_metrics_gender()`, `admin_metrics_sla(p_days)`, `admin_metrics_sanctions(p_days)`, `admin_metrics_photos(p_days)`.
 7. **강제 로그아웃 = Auth admin `updateUserById(id, { ban_duration })`**(5m/1h/24h 선택, 기본 1h). auth-js 2.112 의 `admin.signOut(jwt)` 는 대상 사용자 JWT 가 필요해 타인에게 못 쓴다. `banned_until` 동안 GoTrue 가 `/user` 검증·리프레시를 거부하므로 서버 게이트(`getUser`)가 즉시 세션을 끊는다(액세스 토큰 자체 만료는 최대 1h). 기간 후 자동 해제. E5/G3: 로그인 화면에서 `banned` 에러 문구("잠시 후 다시 시도") 처리 필요.
 8. **계정 삭제 예약**은 `request_delete` RPC(본인 세션 전용)를 못 쓰므로 service role 로 `profiles.status='deleting', delete_requested_at=now()` 직접 갱신 + audit. 실제 삭제는 D7 `purge_daily`(7일). `banned` 계정은 제재 해제 후에만 예약 가능(영구정지 증거 보존 5년과 충돌 방지).
-9. **영구정지(level 6) 해제 폴백**은 `profiles.status='active'` 복구까지만 하고 `blocked_ci_hashes` 는 유지한다(재가입 차단 해제는 별도 수동 검토). 0043 `admin_lift_sanction` 의 동작과 대조 필요 — D5 가 CI 블록도 푸는지 확인 후 문서 통일.
-10. **사진 검수 결과 8개 = 반려 코드 7(enum `photo_reject_code`) + `held`.** A5 §8 표는 8행(approved 제외)이고 PRD F-009 의 "9코드" 는 approved 포함 표기다. 자동 반려 없음. 승인/반려/held 모두 트리거 `trg_photos_recompute_level` 이 `recompute_verify_level` 을 호출해 L3 승격/강등(+dating→friend 복귀)을 처리함을 로컬에서 확인(§7).
+9. **영구정지(level 6) 해제**: 0043 `admin_lift_sanction` 은 `profiles.status='active'` 복구 + `blocked_ci_hashes` 삭제까지 수행(`account_restored:true`, 로컬 확인). D8 폴백은 status 복구만 하고 CI 블록은 유지한다(폴백은 0043 없는 환경 전용이므로 실제 동작은 D5 기준). 유저 화면 문구는 D5 동작으로 통일했다.
+10. **사진 검수 결과 8개 = 반려 코드 7(enum `photo_reject_code`) + `held`.** A5 §8 표는 8행(approved 제외)이고 PRD F-009 의 "9코드" 는 approved 포함 표기다. 자동 반려 없음. **0043 `admin_review_photo` 는 `approved|rejected` 만 받고 `held` 는 `INVALID_INPUT`** → `held` 는 D8 이 직접 갱신(`review_status='held', held_reason='MANUAL: …'`) + `audit_logs(photo_held)`. D5 가 held 를 RPC 에 추가하면 `actions.ts reviewPhotos` 의 held 분기를 RPC 로 돌릴 것. 승인/반려/held 모두 트리거 `trg_photos_recompute_level` 이 `recompute_verify_level` 을 호출해 L3 승격/강등(+dating→friend 복귀)을 처리함을 로컬에서 확인(§7).
 
 ### G2 (보안 리뷰 포인트)
 11. **2중 게이트**: ① `middleware.ts` `classifyRoute` → `{kind:"admin"}` → `evaluateGate` 가 `state.role ∉ {admin,moderator}` 이면 `FORBIDDEN` → `NextResponse.rewrite("/404")`(존재 비노출). 세션 없음도 `/404`(gate.test "① no session: /admin/photos → /404"). 캐시 쿠키(60s) 위·변조 대비 ② `(admin)/layout.tsx` → `requireAdminPage()` 가 매 요청 `auth.getUser()` + **사용자 JWT 클라이언트로 `app_role()` RPC**(DB 재조회: JWT app_metadata.role 우선, 없으면 admin_users) → 실패 시 `notFound()`(진짜 404 status, 리다이렉트 없음). 서버 액션은 ③ `requireAdminAction()` 이 같은 판정 + 액션별 최소 역할 + 제재 레벨 한도.
@@ -24,7 +24,7 @@
 14. **증거 열람**: `getReportDetail()` 이 `audit_logs(evidence_viewed, meta{messages, photos, target_id})` 를 매 열람마다 기록. 원문 메시지는 화면 렌더만(복사/다운로드/export 버튼 없음), 기본 마스킹 표시 + 토글. 서명 URL 10분(`SIGNED_URL_TTL_SEC`), evidence 버킷 우선 → 없으면 photos 원본. **개인정보 최소화**: 유저 상세는 `birth_year` 만(생년월일 원문 미표시), `phone_hash` 12자 프리픽스, CI/DI 해시·identity meta 미조회(select 컬럼 제외).
 15. **전화번호 검색**: 관리자가 번호를 입력하면 서버가 `phoneHash()`(D2 `PHONE_HASH_SALT`)로 해시해 `profiles.phone_hash` 와 비교. 원문 번호는 로그·audit·URL 에 남기지 않도록 **GET 쿼리 `q` 에 번호가 들어가는 점은 주의**(브라우저 히스토리·서버 로그). G2 가 문제 삼으면 검색 폼을 POST 액션으로 바꾼다.
 16. **noindex**: `(admin)/layout.tsx` `metadata.robots = {index:false, follow:false, nocache:true, googleBot:{…}}` → `<meta name="robots" content="noindex, nofollow, nocache">`. `robots.txt` Disallow `/admin` 은 E6.
-17. **강제 로그아웃·비노출·삭제 예약**은 RPC 밖 액션이므로 D8 이 `writeAudit()` 로 직접 기록(action: `force_logout` / `profile_hidden` / `profile_unhidden` / `account_delete_scheduled` / `account_delete_canceled`). RPC 가 기록하는 액션(triage/resolve/review/lift/appeal)은 D8 이 **기록하지 않는다**(중복 금지) — 폴백 경로만 `report_triaged/report_resolved/photo_reviewed/sanction_lifted/appeal_decided` 를 기록.
+17. **강제 로그아웃·비노출·삭제 예약**은 RPC 밖 액션이므로 D8 이 `writeAudit()` 로 직접 기록(action: `force_logout` / `profile_hidden` / `profile_unhidden` / `account_delete_scheduled` / `account_delete_canceled`). RPC 가 기록하는 액션(triage/resolve/review/lift/appeal)은 D8 이 **기록하지 않는다**(중복 금지) — 폴백 경로만 `report_triaged/report_resolved/photo_reviewed/sanction_lifted/appeal_decided` 를, held 판정은 항상 `photo_held` 를 기록.
 
 ### G3 (배포)
 18. **admin_users 시드 + JWT role 부여(둘 다 필요, D1 §0-4)**:
@@ -132,8 +132,8 @@
 |---|---|---|---|
 | `admin_triage_report` | `(p_actor_id, p_report_id, p_priority? report_priority, p_assignee_id? uuid)` | 동일 (메모 인자 없음 → UI 에서 triage 메모 제거) | **일치·로컬 실호출 OK** |
 | `admin_resolve_report` | `(p_actor_id, p_report_id, p_outcome report_status, p_sanction_level? int, p_note?, p_duration? interval)` | 동일, `p_duration='<h> hours'` | 일치·OK (moderator level 4 → FORBIDDEN 확인) |
-| `admin_review_photo` | `(p_actor_id, p_photo_id, p_decision review_status, p_reject_code?, p_note?)` | UI 결정값 `approved|held|reject_*` → `p_decision`=approved/held/rejected + `p_reject_code` | 일치·OK |
-| `admin_lift_sanction` | `(p_actor_id, p_sanction_id, p_note?)` | 동일(사유 → p_note) | 일치·OK (moderator level 4 → FORBIDDEN 확인) |
+| `admin_review_photo` | `(p_actor_id, p_photo_id, p_decision review_status, p_reject_code?, p_note?)` — **`held` 거부(INVALID_INPUT: decision)** | `approved` / `reject_*` → `p_decision`=approved/rejected + `p_reject_code`; `held` 는 RPC 를 거치지 않고 D8 직접 갱신 + audit `photo_held` | approved·rejected 일치·OK / held 는 D5 갭(§0-10) |
+| `admin_lift_sanction` | `(p_actor_id, p_sanction_id, p_note?)` — level 6 이면 status 복구 + CI 블록 삭제 | 동일(사유 → p_note) | 일치·OK (moderator level 3 OK / level 4 → FORBIDDEN / admin level 6 → `account_restored:true` 확인) |
 | `admin_decide_appeal` | `(p_actor_id, p_appeal_id, p_decision appeal_status, p_note?)` | 동일 | 일치·OK (moderator → FORBIDDEN 확인) |
 | `admin_set_legal_hold` | `(p_actor_id, p_report_id, p_hold, p_note?)` | 어댑터만 있음, UI 미노출 | 후속(UI 추가 시 admin 전용 버튼) |
 | `admin_list_reports` / `admin_get_report` / `admin_search_profiles` / `admin_profile_detail` / `admin_moderation_stats` | 존재 | **미사용**(§0-2) | 교체 가능 |
@@ -153,10 +153,11 @@
 | vitest 전체 | 다른 에이전트 파일 `lib/push/templates.test.ts` 2건 실패(`daily_reco_ready`, `admin_alert` 카피 lint — **D7 소관**, D8 무관). 나머지 통과 |
 | `"use client"` 파일에서 admin/serverEnv/server-only import | 0건 |
 | 로컬 PG16 + 셰임: 마이그레이션 0001~0060(D3·D4·D5·D7 포함) 순서 적용 + seed | 성공 (`pg_cron` 없음 NOTICE 만) |
+| `issue_sanction`(0009) service role 호출 시 `audit_logs.actor_role` | null 확인(§0-5 패치 요청 근거) |
 | 0060 함수 10개 실행 (service_role) | 전부 정상 반환. 시드 기준 DAU 5 · 퍼널 5→4→…→L3 1 · 성비 friend 2:2 |
 | 0060 권한 | 일반 authenticated(서윤) → `FORBIDDEN`(42501) · admin_users 폴백(JWT role 없음, 99) → 통과 · JWT app_metadata.role=admin → 통과 · anon → `permission denied` |
 | 가드 null 버그 수정 | `is_moderator()` 가 null 을 돌려줄 때 통과되던 문제 → `coalesce(…, false)` 로 fail-closed(초기 검증에서 발견) |
-| D5 RPC 실호출(D8 어댑터 인자 그대로) | triage(P0 상향+담당) / resolve confirmed level3 by moderator(sanction_id·expires_at 180d) / moderator level4 → FORBIDDEN / admin dismissed / review_photo approved(→ 서윤 L3)·rejected+code·held / lift level3 by moderator / moderator lift level4 → FORBIDDEN / moderator decide_appeal → FORBIDDEN / admin accepted → 제재 해제 — 전부 기대대로(§5) |
+| D5 RPC 실호출(D8 어댑터 인자 그대로) | triage(P0 상향+담당) / resolve confirmed level3 by moderator(sanction_id·expires_at 180d) / moderator level4 → FORBIDDEN / admin dismissed(reverted 집계) / review_photo approved(→ 서윤 L3)·rejected+code(side_effects off_platform_count) / **review_photo held → INVALID_INPUT(D5 갭, D8 직접 갱신으로 우회)** / lift level3 by moderator(active 0) / moderator lift level4 → FORBIDDEN / moderator decide_appeal → FORBIDDEN / admin accepted → 제재 해제(active 0) / admin lift level6 → status active·banned_at null·blocked_ci_hashes 0 — 전부 기대대로(§5) |
 | D8 폴백 경로 SQL 시뮬레이션 | in_review 전이·상향, `issue_sanction(issued_by)` 수동 level3, level≥3 무승인 → `MANUAL_APPROVAL_REQUIRED`, dismissed 시 AUTO 제재 revoke → active level 0·expires 90d, photos approve → L3 / reject → L2 / held(reject_code null check 통과), hidden 토글, deleting↔active(check 제약 통과), evidence_viewed insert |
 | 지표가 D5 결과를 집계 | SLA 표·제재 레벨별·daily(matches/messages/reports/sanctions)·queue_summary 반영 확인 |
 | 비밀값 하드코딩 grep | 없음 |
