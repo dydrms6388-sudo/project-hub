@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학점 계산기 - 4.5 / 4.3 / 4.0 만점 평점 계산, 목표 학점 역산 | 스터디룸</title>
+<meta name="description" content="대학 학점 계산기. 4.5·4.3·4.0 만점 스케일, 학기별 입력, 전공/교양 구분 평점, 목표 학점까지 필요한 성적 역산까지. 자동 저장되는 무료 GPA 계산기.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<style>
+.sem{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px;background:#fbfcfe}
+.sem-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sem-head input{width:180px;min-height:40px;font-size:15px;font-weight:700}
+.sem-gpa{font-size:13px;font-weight:800;color:var(--brand)}
+.course{display:grid;grid-template-columns:1fr 74px 92px 88px 34px;gap:6px;margin-bottom:6px}
+.course input,.course select{min-height:44px;padding:8px;font-size:15px}
+.course .rm{border:none;background:none;color:#cbd5e1;font-size:18px;cursor:pointer;padding:0}
+.course .rm:hover{color:var(--bad)}
+@media(max-width:560px){.course{grid-template-columns:1fr 60px 78px 76px 28px}.course input,.course select{font-size:14px;padding:6px}}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../timetable/">시간표</a><a href="../exam-dday/">시험 디데이</a><a href="../grade-calc/">내신 등급</a><a href="../pomodoro/">뽀모도로</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 학점 계산기</nav>
+<div class="page-h">
+  <h1>학점 계산기</h1>
+  <p>4.5 / 4.3 / 4.0 만점, 학기별·전공별 평점과 목표 학점까지 필요한 성적을 한 번에 계산합니다.</p>
+</div>
+
+<section class="card">
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+    <div class="seg" id="scaleSeg">
+      <button data-s="4.5" class="on">4.5 만점</button>
+      <button data-s="4.3">4.3 만점</button>
+      <button data-s="4.0">4.0 (미국식)</button>
+    </div>
+    <button class="btn btn-sm btn-danger" id="btnReset">전체 초기화</button>
+  </div>
+  <p class="note" style="margin-top:10px">P(패스) 과목은 취득 학점에는 포함되고 평점 계산에서는 제외됩니다.
+  학교마다 성적 체계가 조금씩 다르니 정확한 평점은 학교 성적표를 기준으로 확인하세요.</p>
+</section>
+
+<section id="semArea"></section>
+<div class="btn-row no-print" style="margin-bottom:16px">
+  <button class="btn" id="btnAddSem">+ 학기 추가</button>
+</div>
+
+<section class="card">
+  <h2>계산 결과</h2>
+  <div class="stat-grid" id="resultStats"></div>
+  <div class="tbl-scroll" id="semTable" style="margin-top:14px"></div>
+  <!-- ad-slot -->
+</section>
+
+<section class="card">
+  <h2>목표 학점 역산</h2>
+  <p style="font-size:14px;color:var(--sub);margin:0 0 12px">"졸업까지 평점 4.0을 만들려면 남은 학기에 얼마를 받아야 할까?"를 계산합니다.</p>
+  <div class="grid3">
+    <div class="field"><label class="f">현재 평점</label><input type="number" id="tgCur" step="0.01" min="0" placeholder="자동 입력"></div>
+    <div class="field"><label class="f">현재 취득 학점</label><input type="number" id="tgCred" step="1" min="0" placeholder="자동 입력"></div>
+    <div class="field"><label class="f">앞으로 이수할 학점</label><input type="number" id="tgRemain" step="1" min="1" value="36"></div>
+  </div>
+  <div class="field"><label class="f">목표 평점</label><input type="number" id="tgGoal" step="0.01" min="0" placeholder="예: 4.0"></div>
+  <button class="btn btn-p" id="btnTarget">필요 평점 계산</button>
+  <div class="result-box" id="targetOut" style="display:none"></div>
+</section>
+
+<article class="prose">
+  <h2>학점 계산기 소개</h2>
+  <p>이 학점 계산기는 과목별 이수 학점(credits)과 받은 성적(A+, B0 등)을 입력하면 평량평균(GPA)을 자동으로
+  계산해 주는 도구입니다. 평점은 <b>Σ(과목 평점 × 이수학점) ÷ Σ(이수학점)</b>으로 계산하며, 학기를 여러 개
+  추가해 학기별 평점과 전체 누적 평점을 함께 볼 수 있습니다. 전공/교양 구분을 지정하면 전공 평점만 따로
+  계산되어 대학원·취업 지원 시 자주 요구되는 "전공 평점"도 바로 확인됩니다.</p>
+  <p>입력한 내용은 브라우저에 자동 저장되어 다음 학기에 이어서 누적 관리할 수 있습니다. 4.5 만점(대부분의
+  한국 대학), 4.3 만점(A+, A0, A− 체계), 4.0 만점(미국식) 세 가지 스케일을 지원합니다. 자세한 계산 원리는
+  <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>에서 확인하세요.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>학교의 만점 기준(4.5 / 4.3 / 4.0)을 선택합니다.</li>
+    <li>학기 안에 과목명(선택), 학점 수, 성적, 전공/교양 구분을 입력합니다. 행은 자동으로 늘어납니다.</li>
+    <li>결과 카드에서 전체 평점·전공 평점·취득 학점·학기별 평점을 확인합니다.</li>
+    <li>목표 학점 역산에 목표 평점과 남은 이수 학점을 넣으면 앞으로 필요한 평균 평점이 계산됩니다.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>재수강 과목은 어떻게 입력하나요?</summary>
+      <div class="a">학교마다 처리 방식이 다릅니다. 성적이 대체되는 학교라면 이전 성적 행을 지우고 새 성적만
+      입력하세요. 두 성적이 모두 남는 학교라면 둘 다 입력해야 성적표와 일치합니다. 정확한 규정은 학교
+      학사 안내를 확인하세요.</div></details>
+    <details><summary>P/F(패스/논패스) 과목은 평점에 들어가나요?</summary>
+      <div class="a">일반적으로 P 과목은 취득 학점에는 포함되지만 평점 평균 계산에서는 제외됩니다. 이 계산기도
+      성적을 P로 선택하면 학점만 더하고 평점 계산에서는 뺍니다. F는 0.0으로 평점에 포함됩니다(학교에 따라
+      NP는 학점 미취득).</div></details>
+    <details><summary>백분위 환산 점수도 계산되나요?</summary>
+      <div class="a">백분위 환산표는 대학마다 달라서(같은 A0라도 94점, 95점 등 제각각) 일괄 계산하면 오히려
+      틀린 값이 됩니다. 백분위가 필요하면 소속 대학의 공식 환산표(성적증명서 발급 화면)를 확인하는 것이
+      정확합니다.</div></details>
+    <details><summary>입력한 성적이 저장되나요?</summary>
+      <div class="a">브라우저 localStorage에만 자동 저장됩니다. 서버로 전송되지 않으며, 같은 브라우저로 다시
+      방문하면 이어서 편집할 수 있습니다.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"학점 계산기","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"4.5/4.3/4.0 만점 대학 평점(GPA) 계산기. 학기별·전공별 평점, 목표 학점 역산 지원."},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"P/F 과목은 평점에 들어가나요?","acceptedAnswer":{"@type":"Answer","text":"P 과목은 일반적으로 취득 학점에는 포함되고 평점 평균 계산에서는 제외됩니다. F는 0.0으로 포함됩니다."}},
+{"@type":"Question","name":"백분위 환산 점수도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"백분위 환산표는 대학마다 달라 소속 대학의 공식 환산표를 확인해야 정확합니다."}},
+{"@type":"Question","name":"입력한 성적이 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저 localStorage에만 저장되며 서버로 전송되지 않습니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"학점 계산기","item":"https://studyroom-kr.vercel.app/tools/gpa/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+
+var SCALES={
+ '4.5':[['A+',4.5],['A0',4.0],['B+',3.5],['B0',3.0],['C+',2.5],['C0',2.0],['D+',1.5],['D0',1.0],['F',0],['P',null]],
+ '4.3':[['A+',4.3],['A0',4.0],['A-',3.7],['B+',3.3],['B0',3.0],['B-',2.7],['C+',2.3],['C0',2.0],['C-',1.7],['D+',1.3],['D0',1.0],['D-',0.7],['F',0],['P',null]],
+ '4.0':[['A',4.0],['A-',3.7],['B+',3.3],['B',3.0],['B-',2.7],['C+',2.3],['C',2.0],['C-',1.7],['D+',1.3],['D',1.0],['F',0],['P',null]]
+};
+var CATS=['전공','교양','기타'];
+
+function blankSem(n){ return {name:(n||1)+'학기', courses:[blankCourse(),blankCourse(),blankCourse()]}; }
+function blankCourse(){ return {name:'',cr:3,gr:'',cat:'전공'}; }
+var state=SR.load('gpa',null)||{scale:'4.5',sems:[blankSem(1)]};
+if(!SCALES[state.scale]) state.scale='4.5';
+function persist(){ SR.save('gpa',state); }
+
+/* ---------- 렌더 ---------- */
+function gradeOptions(sel){
+  return '<option value="">성적</option>'+SCALES[state.scale].map(function(g){
+    return '<option value="'+g[0]+'"'+(sel===g[0]?' selected':'')+'>'+g[0]+'</option>';}).join('');
+}
+function render(){
+  document.querySelectorAll('#scaleSeg button').forEach(function(b){
+    b.classList.toggle('on',b.dataset.s===state.scale);
+  });
+  var h='';
+  state.sems.forEach(function(sem,si){
+    var g=semGpa(sem);
+    h+='<div class="card sem" data-si="'+si+'"><div class="sem-head">'
+      +'<input type="text" value="'+SR.esc(sem.name)+'" maxlength="14" data-act="semname">'
+      +'<span class="sem-gpa">'+(g.cr?('평점 '+g.gpa.toFixed(2)+' · '+g.cr+'학점'):'')+'</span>'
+      +(state.sems.length>1?'<button class="btn btn-sm btn-danger" data-act="delsem">학기 삭제</button>':'')
+      +'</div>';
+    sem.courses.forEach(function(c,ci){
+      h+='<div class="course" data-ci="'+ci+'">'
+        +'<input type="text" placeholder="과목명 (선택)" maxlength="20" value="'+SR.esc(c.name)+'" data-act="cname">'
+        +'<select data-act="cr">'+[1,2,3,4,5,6].map(function(n){return '<option'+(c.cr===n?' selected':'')+'>'+n+'</option>';}).join('')+'</select>'
+        +'<select data-act="gr">'+gradeOptions(c.gr)+'</select>'
+        +'<select data-act="cat">'+CATS.map(function(x){return '<option'+(c.cat===x?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
+        +'<button class="rm" data-act="rm" aria-label="행 삭제">✕</button>'
+        +'</div>';
+    });
+    h+='<button class="btn btn-sm" data-act="addrow">+ 과목 추가</button></div>';
+  });
+  $('semArea').innerHTML=h;
+  renderResult();
+}
+$('semArea').addEventListener('input',function(e){
+  var t=e.target, semEl=t.closest('.sem'); if(!semEl) return;
+  var sem=state.sems[+semEl.dataset.si];
+  var act=t.dataset.act;
+  if(act==='semname'){ sem.name=t.value; persist(); renderResult(); return; }
+  var row=t.closest('.course'); if(!row) return;
+  var c=sem.courses[+row.dataset.ci];
+  if(act==='cname') c.name=t.value;
+  if(act==='cr') c.cr=+t.value;
+  if(act==='gr') c.gr=t.value;
+  if(act==='cat') c.cat=t.value;
+  persist();
+  if(act!=='cname'){ updateSemHead(semEl,sem); renderResult(); }
+});
+function updateSemHead(semEl,sem){
+  var g=semGpa(sem);
+  semEl.querySelector('.sem-gpa').textContent = g.cr?('평점 '+g.gpa.toFixed(2)+' · '+g.cr+'학점'):'';
+}
+$('semArea').addEventListener('click',function(e){
+  var t=e.target, act=t.dataset.act; if(!act) return;
+  var semEl=t.closest('.sem'); var si=+semEl.dataset.si; var sem=state.sems[si];
+  if(act==='addrow'){ sem.courses.push(blankCourse()); persist(); render(); }
+  if(act==='delsem'){ if(confirm('"'+sem.name+'"를 삭제할까요?')){ state.sems.splice(si,1); persist(); render(); } }
+  if(act==='rm'){ var ci=+t.closest('.course').dataset.ci; sem.courses.splice(ci,1);
+    if(!sem.courses.length) sem.courses.push(blankCourse());
+    persist(); render(); }
+});
+$('btnAddSem').onclick=function(){ state.sems.push(blankSem(state.sems.length+1)); persist(); render(); };
+$('btnReset').onclick=function(){
+  if(!confirm('입력한 모든 성적을 지울까요?')) return;
+  state={scale:state.scale,sems:[blankSem(1)]}; persist(); render();
+};
+document.querySelectorAll('#scaleSeg button').forEach(function(b){
+  b.addEventListener('click',function(){
+    state.scale=this.dataset.s;
+    /* 다른 스케일에 없는 성적 초기화 */
+    var valid=SCALES[state.scale].map(function(g){return g[0]});
+    state.sems.forEach(function(s){s.courses.forEach(function(c){ if(c.gr && valid.indexOf(c.gr)<0) c.gr=''; });});
+    persist(); render();
+  });
+});
+
+/* ---------- 계산 ---------- */
+function pt(gr){
+  var f=SCALES[state.scale].find(function(g){return g[0]===gr});
+  return f?f[1]:undefined;
+}
+function calc(filter){
+  var qp=0,qc=0,tc=0;
+  state.sems.forEach(function(sem){
+    sem.courses.forEach(function(c){
+      if(!c.gr) return;
+      if(filter && c.cat!==filter) return;
+      var p=pt(c.gr);
+      tc+=c.cr;
+      if(p!==null && p!==undefined){ qp+=p*c.cr; qc+=c.cr; }
+    });
+  });
+  return {gpa:qc?qp/qc:0, qc:qc, tc:tc};
+}
+function semGpa(sem){
+  var qp=0,qc=0;
+  sem.courses.forEach(function(c){
+    if(!c.gr) return;
+    var p=pt(c.gr);
+    if(p!==null && p!==undefined){ qp+=p*c.cr; qc+=c.cr; }
+  });
+  return {gpa:qc?qp/qc:0, cr:qc};
+}
+function renderResult(){
+  var all=calc(null), mj=calc('전공'), ge=calc('교양');
+  var h='<div class="stat"><div class="k">전체 평점</div><div class="v" style="color:var(--brand)">'+(all.qc?all.gpa.toFixed(2):'-')+'<small style="font-size:12px;color:var(--sub)"> / '+state.scale+'</small></div></div>'
+   +'<div class="stat"><div class="k">전공 평점</div><div class="v">'+(mj.qc?mj.gpa.toFixed(2):'-')+'</div></div>'
+   +'<div class="stat"><div class="k">교양 평점</div><div class="v">'+(ge.qc?ge.gpa.toFixed(2):'-')+'</div></div>'
+   +'<div class="stat"><div class="k">취득 학점</div><div class="v">'+all.tc+'</div></div>';
+  $('resultStats').innerHTML=h;
+  var t='<table class="tbl"><thead><tr><th>학기</th><th>평점</th><th>학점</th></tr></thead><tbody>';
+  state.sems.forEach(function(s){
+    var g=semGpa(s);
+    t+='<tr><td>'+SR.esc(s.name)+'</td><td>'+(g.cr?g.gpa.toFixed(2):'-')+'</td><td>'+(g.cr||'-')+'</td></tr>';
+  });
+  t+='</tbody></table>';
+  $('semTable').innerHTML=t;
+  /* 역산 자동 채움 */
+  if(all.qc){ $('tgCur').placeholder=all.gpa.toFixed(2); $('tgCred').placeholder=String(all.qc); }
+}
+$('btnTarget').onclick=function(){
+  var all=calc(null);
+  var cur=parseFloat($('tgCur').value)||all.gpa;
+  var cred=parseFloat($('tgCred').value)||all.qc;
+  var rem=parseFloat($('tgRemain').value);
+  var goal=parseFloat($('tgGoal').value);
+  var max=parseFloat(state.scale);
+  var out=$('targetOut');
+  if(!rem||rem<=0||isNaN(goal)){ SR.toast('남은 학점과 목표 평점을 입력하세요'); return; }
+  var need=(goal*(cred+rem)-cur*cred)/rem;
+  var msg;
+  if(need>max) msg='<b style="color:var(--bad)">남은 '+rem+'학점을 전부 만점('+max.toFixed(1)+') 받아도 목표 '+goal.toFixed(2)+'에 도달할 수 없습니다.</b><br>목표를 낮추거나 이수 학점을 늘려야 합니다.';
+  else if(need<=0) msg='<b style="color:var(--ok)">이미 목표를 넘었습니다!</b> 남은 과목에서 0점을 받아도 목표 이상을 유지합니다(현실적으로는 F 주의).';
+  else msg='남은 '+rem+'학점 동안 평균 <span class="big-num">'+need.toFixed(2)+'</span> 이상 받아야 합니다.'
+    +'<br><span style="font-size:13px;color:var(--sub)">계산: (목표 '+goal.toFixed(2)+' × 총 '+(cred+rem)+'학점 − 현재 '+cur.toFixed(2)+' × '+cred+'학점) ÷ 남은 '+rem+'학점</span>';
+  out.innerHTML=msg; out.style.display='block';
+};
+
+render();
+})();
+</script>
+</body>
+</html>

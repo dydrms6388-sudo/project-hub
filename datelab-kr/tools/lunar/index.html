@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>음력 변환기 — 양력 음력 변환, 윤달·음력 생일 계산 | DateLab</title>
+<meta name="description" content="한국천문연구원(KARI) 역법 데이터 기반 양력↔음력 변환기. 윤달을 지원하며, 음력 생일의 양력 날짜를 10년치 표로 보여줍니다. 1940~2050년 지원.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"음력 변환기","description":"한국천문연구원(KARI) 역법 데이터 기반 양력↔음력 변환기. 윤달을 지원하며, 음력 생일의 양력 날짜를 10년치 표로 보여줍니다. 1940~2050년 지원.","url":"https://datelab-kr.vercel.app/tools/lunar/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"윤달이 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"태음태양력에서 음력과 계절의 어긋남을 맞추기 위해 약 2~3년마다 한 번 끼워 넣는 달입니다. 예를 들어 2025년에는 윤6월이 있어 음력 6월이 두 번 있습니다. 윤달에 태어난 사람의 생일은 보통 평달 같은 날짜로 지냅니다."}},{"@type":"Question","name":"설날과 추석은 음력으로 언제인가요?","acceptedAnswer":{"@type":"Answer","text":"설날은 음력 1월 1일, 추석은 음력 8월 15일입니다. 양력으로는 2025년 설날이 1월 29일, 추석이 10월 6일이고, 2026년 설날은 2월 17일, 추석은 9월 25일입니다."}},{"@type":"Question","name":"왜 1940년부터만 변환되나요?","acceptedAnswer":{"@type":"Answer","text":"이 변환기는 정확도를 위해 근사 공식 대신 한국천문연구원 역법 기준의 연도별 실측 데이터 테이블을 내장하는 방식을 쓰며, 내장 범위가 1940년~2050년입니다. 그 밖의 연도는 한국천문연구원 홈페이지에서 확인할 수 있습니다."}},{"@type":"Question","name":"음력 생일이 매년 양력으로 달라지는 이유는?","acceptedAnswer":{"@type":"Answer","text":"음력 1년(평년 약 354일)이 양력 1년(365일)보다 짧아 매년 약 11일씩 앞당겨지다가 윤달이 든 해에 다시 뒤로 밀리기 때문입니다. 그래서 음력 생일의 양력 날짜는 해마다 다릅니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://datelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"음력 변환기","item":"https://datelab-kr.vercel.app/tools/lunar/"}]}</script>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="../../">Date<b>Lab</b> 날짜랩</a>
+    <nav class="head-nav">
+      <a href="../../tools/korean-age/">만나이</a>
+      <a href="../../tools/dday/">디데이</a>
+      <a href="../../tools/holidays/">공휴일</a>
+      <a href="../../tools/lunar/">음력</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <nav class="crumb"><a href="../../">홈</a> › 음력 변환기</nav>
+    
+<h1>음력 변환기</h1>
+<p class="lead">양력↔음력을 정확하게 변환합니다. <strong>한국천문연구원(KARI) 역법 기준 데이터</strong>를 내장해 윤달까지 지원하며, 1940년~2050년 범위를 다룹니다.</p>
+<div class="card">
+  <div class="field">
+    <div class="seg" id="modeSeg">
+      <button type="button" data-m="s2l" class="on">양력 → 음력</button>
+      <button type="button" data-m="l2s">음력 → 양력</button>
+    </div>
+  </div>
+  <div id="s2lBox">
+    <div class="field">
+      <label for="solarDate">양력 날짜</label>
+      <input type="date" id="solarDate" min="1940-02-08" max="2050-12-31">
+    </div>
+  </div>
+  <div id="l2sBox" style="display:none">
+    <div class="field">
+      <label>음력 날짜</label>
+      <div class="row2" style="grid-template-columns:2fr 1fr 1fr">
+        <select id="ly"></select>
+        <select id="lm"></select>
+        <select id="ld"></select>
+      </div>
+      <label style="margin-top:8px;font-weight:400;font-size:14px"><input type="checkbox" id="leap" style="width:auto"> 윤달</label>
+      <p class="hint" id="leapHint"></p>
+    </div>
+  </div>
+  <button class="btn" id="calc">변환하기</button>
+  <div class="result" id="result">
+    <div class="res-hero">
+      <div class="big" id="convOut"></div>
+      <div class="cap" id="convCap"></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><div class="v" id="ganjiV"></div><div class="k">간지 (음력 연도)</div></div>
+      <div class="stat"><div class="v" id="zodiacV"></div><div class="k">띠</div></div>
+      <div class="stat"><div class="v" id="dowV"></div><div class="k">요일 (양력)</div></div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <h2 style="margin-top:0">음력 생일, 앞으로 10년 양력 날짜</h2>
+  <p class="hint">음력 생일은 매년 양력 날짜가 달라집니다. 음력 월·일을 입력하면 올해부터 10년치 양력 날짜를 계산합니다.</p>
+  <div class="row2">
+    <div class="field"><label for="bm">음력 생일 월</label><select id="bm"></select></div>
+    <div class="field"><label for="bd">음력 생일 일</label><select id="bd"></select></div>
+  </div>
+  <button class="btn" id="bcalc">10년치 계산하기</button>
+  <div class="result" id="bresult">
+    <div class="tbl-scroll"><table id="btbl">
+      <thead><tr><th>음력</th><th>양력 날짜</th><th>요일</th><th>D-day</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p class="hint">해당 연도 음력에 그 날짜가 없는 경우(예: 30일이 없는 작은달)에는 관례에 따라 그 달의 마지막 날로 대신 표시하고 「말일 대체」로 표기합니다.</p>
+  </div>
+</div>
+<section class="content">
+<h2>한국 음력은 어떻게 계산되나요?</h2>
+<p>한국의 음력은 정확히는 <strong>태음태양력</strong>입니다. 달의 위상(삭망월 약 29.53일)으로 달(月)을 정하고, 태양의 움직임(24절기)으로 계절을 맞추기 위해 약 2~3년에 한 번 <strong>윤달</strong>을 끼워 넣습니다. 그래서 음력 한 달은 29일(작은달) 또는 30일(큰달)이고, 윤달이 든 해는 13개월이 됩니다.</p>
+<p>같은 음력이라도 한국과 중국의 날짜가 다를 수 있다는 점도 중요합니다. 한국은 동경 135도(한국표준시), 중국은 동경 120도 기준으로 합삭 시각을 계산하기 때문에 드물게 설날 등의 날짜가 하루 차이 나는 해가 있습니다. 이 변환기는 <strong>한국천문연구원(KARI) 역법 기준으로 정리된 연도별 데이터 테이블</strong>(1940~2050년)을 내장해 근사 공식이 아닌 실제 역법 데이터로 변환합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>「양력 → 음력」 또는 「음력 → 양력」 탭을 선택합니다.</li>
+<li>날짜를 입력하고 변환하기를 누릅니다. 음력 → 양력에서 해당 연도에 윤달이 있으면 윤달 체크박스를 사용할 수 있습니다.</li>
+<li>결과에는 간지(육십갑자)와 띠, 요일이 함께 표시됩니다.</li>
+</ol>
+<p class="note">제사·차례 등 전통 행사 날짜는 집안 관습(윤달 처리, 말일 대체 방식)에 따라 다를 수 있습니다. 공식 확인이 필요하면 한국천문연구원 천문우주지식정보(astro.kasi.re.kr)의 음양력 변환을 참고하세요.</p>
+</section>
+    <!-- ad-slot -->
+    
+<section class="content">
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>윤달이 무엇인가요?</summary><p>태음태양력에서 음력과 계절의 어긋남을 맞추기 위해 약 2~3년마다 한 번 끼워 넣는 달입니다. 예를 들어 2025년에는 윤6월이 있어 음력 6월이 두 번 있습니다. 윤달에 태어난 사람의 생일은 보통 평달 같은 날짜로 지냅니다.</p></details>
+<details class="faq"><summary>설날과 추석은 음력으로 언제인가요?</summary><p>설날은 음력 1월 1일, 추석은 음력 8월 15일입니다. 양력으로는 2025년 설날이 1월 29일, 추석이 10월 6일이고, 2026년 설날은 2월 17일, 추석은 9월 25일입니다.</p></details>
+<details class="faq"><summary>왜 1940년부터만 변환되나요?</summary><p>이 변환기는 정확도를 위해 근사 공식 대신 한국천문연구원 역법 기준의 연도별 실측 데이터 테이블을 내장하는 방식을 쓰며, 내장 범위가 1940년~2050년입니다. 그 밖의 연도는 한국천문연구원 홈페이지에서 확인할 수 있습니다.</p></details>
+<details class="faq"><summary>음력 생일이 매년 양력으로 달라지는 이유는?</summary><p>음력 1년(평년 약 354일)이 양력 1년(365일)보다 짧아 매년 약 11일씩 앞당겨지다가 윤달이 든 해에 다시 뒤로 밀리기 때문입니다. 그래서 음력 생일의 양력 날짜는 해마다 다릅니다.</p></details>
+</section>
+  </div>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+<a href="../../tools/korean-age/">만나이 계산기</a>
+<a href="../../tools/dday/">디데이 계산기</a>
+<a href="../../tools/anniversary/">100일 계산기</a>
+<a href="../../tools/lunar/">음력 변환기</a>
+<a href="../../tools/holidays/">2026년 공휴일</a>
+<a href="../../tools/workdays/">근무일 계산기</a>
+<a href="../../tools/date-diff/">날짜 계산기</a>
+<a href="../../tools/zodiac/">띠 계산기</a>
+<a href="../../tools/week-number/">몇 주차 계산기</a>
+<a href="../../tools/age-in-days/">살아온 날 계산기</a>
+<a href="../../tools/retirement/">정년 퇴직일 계산기</a>
+<a href="../../tools/military/">전역일 계산기</a>
+    </div>
+    <div class="cols">
+<a href="../../guide/korean-age-2023/">만 나이 통일법 총정리</a>
+<a href="../../guide/holidays-2026/">2026년 공휴일 총정리</a>
+    </div>
+    <p>모든 계산은 사용자의 브라우저 안에서만 실행되며, 입력한 값은 서버로 전송·저장되지 않습니다.</p>
+    <div class="legal">
+      <a href="../../privacy.html">개인정보처리방침</a>
+      <a href="../../terms.html">이용약관</a>
+      <span>© 2026 DateLab 날짜랩</span>
+    </div>
+  </div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/lunar.js"></script>
+<script>
+
+(function(){
+var $=DL.$; var mode='s2l';
+$('#solarDate').value=DL.toIso(DL.today());
+var ly=$('#ly'),lm=$('#lm'),ld=$('#ld'),bm=$('#bm'),bd=$('#bd');
+for(var y=KLunar.BASE_YEAR;y<=KLunar.MAX_YEAR;y++){var o=document.createElement('option');o.value=y;o.textContent=y+'년';if(y===1995)o.selected=true;ly.appendChild(o);}
+for(var m=1;m<=12;m++){var o1=document.createElement('option');o1.value=m;o1.textContent=m+'월';lm.appendChild(o1);var o2=o1.cloneNode(true);bm.appendChild(o2);}
+for(var d=1;d<=30;d++){var od=document.createElement('option');od.value=d;od.textContent=d+'일';ld.appendChild(od.cloneNode(true));bd.appendChild(od);}
+function refreshLeap(){
+  var lpm=KLunar.leapMonth(+ly.value);
+  var cb=$('#leap');
+  if(lpm && lpm===+lm.value){cb.disabled=false;$('#leapHint').textContent=ly.value+'년에는 윤'+lpm+'월이 있습니다. 윤달 날짜라면 체크하세요.';}
+  else{cb.disabled=true;cb.checked=false;$('#leapHint').textContent=lpm?ly.value+'년의 윤달: 윤'+lpm+'월':ly.value+'년에는 윤달이 없습니다.';}
+}
+ly.addEventListener('change',refreshLeap);lm.addEventListener('change',refreshLeap);refreshLeap();
+DL.$$('#modeSeg button').forEach(function(b){b.addEventListener('click',function(){
+  DL.$$('#modeSeg button').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');mode=b.dataset.m;
+  $('#s2lBox').style.display=mode==='s2l'?'block':'none';
+  $('#l2sBox').style.display=mode==='l2s'?'block':'none';
+});});
+function show(lunarYear,text,cap,solarDateObj){
+  var g=KLunar.yearGanji(lunarYear);
+  $('#convOut').textContent=text;
+  $('#convCap').textContent=cap;
+  $('#ganjiV').textContent=g.name+'년 ('+g.hanja+')';
+  $('#zodiacV').textContent=g.zodiac+'띠';
+  $('#dowV').textContent=solarDateObj?DL.WEEKDAYS[solarDateObj.getDay()]+'요일':'-';
+  $('#result').classList.add('show');
+}
+$('#calc').addEventListener('click',function(){
+  if(mode==='s2l'){
+    var v=$('#solarDate').value;
+    if(!v){alert('양력 날짜를 입력해 주세요.');return;}
+    var p=v.split('-').map(Number);
+    var r=KLunar.solarToLunar(p[0],p[1],p[2]);
+    if(!r){alert('지원 범위(1940-02-08 ~ 2050-12-31)를 벗어난 날짜입니다.');return;}
+    show(r.year,'음력 '+r.year+'년 '+(r.leap?'윤':'')+r.month+'월 '+r.day+'일','양력 '+DL.fmtKo(DL.fromIso(v))+' 기준',DL.fromIso(v));
+  }else{
+    var s=KLunar.lunarToSolar(+ly.value,+lm.value,+ld.value,$('#leap').checked);
+    if(!s){alert('해당 음력 날짜가 존재하지 않습니다. (작은달 30일 또는 윤달 여부를 확인하세요)');return;}
+    var sd=new Date(s.y,s.m-1,s.d);
+    show(+ly.value,'양력 '+DL.fmtKo(sd),'음력 '+ly.value+'년 '+($('#leap').checked?'윤':'')+lm.value+'월 '+ld.value+'일 기준',sd);
+  }
+});
+$('#bcalc').addEventListener('click',function(){
+  var m=+bm.value,d=+bd.value,thisY=DL.today().getFullYear();
+  var tb=$('#btbl tbody');tb.innerHTML='';var now=DL.today();
+  for(var y=thisY;y<thisY+10&&y<=KLunar.MAX_YEAR;y++){
+    var used=d,noteTxt='';
+    var s=KLunar.lunarToSolar(y,m,used,false);
+    if(!s&&d===30){used=29;s=KLunar.lunarToSolar(y,m,used,false);noteTxt=' (말일 대체)';}
+    var tr=document.createElement('tr');
+    if(s){
+      var sd=new Date(s.y,s.m-1,s.d);var dd=DL.diffDays(now,sd);
+      tr.innerHTML='<td>'+y+'년 '+m+'월 '+used+'일'+noteTxt+'</td><td>'+DL.fmtKo(sd,false)+'</td><td>'+DL.WEEKDAYS[sd.getDay()]+'</td><td>'+(dd>0?'D-'+dd:(dd===0?'오늘!':dd+'일 지남'))+'</td>';
+      if(dd<0)tr.className='past';if(dd===0)tr.className='today-row';
+    }else{
+      tr.innerHTML='<td>'+y+'년 '+m+'월 '+d+'일</td><td colspan="3">해당 날짜 없음</td>';
+    }
+    tb.appendChild(tr);
+  }
+  $('#bresult').classList.add('show');
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진 자르기 - 이미지 크롭 (비율 프리셋·원형)</title>
+<meta name="description" content="사진 자르기: 자유·1:1·4:3·16:9 비율 프리셋과 프로필용 원형 크롭 지원. 드래그로 영역 선택, 서버 업로드 없는 무료 브라우저 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사진 자르기","description":"사진 자르기: 자유·1:1·4:3·16:9 비율 프리셋과 프로필용 원형 크롭 지원. 드래그로 영역 선택, 서버 업로드 없는 무료 브라우저 도구.","url":"https://imagelab-kr.vercel.app/tools/crop/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"원형으로 자르면 바깥은 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"PNG의 투명 영역으로 저장됩니다. 투명을 지원하지 않는 곳에 올리면 검정 또는 흰색으로 보일 수 있으니, 그 경우 「이미지 변환」에서 JPG로 바꾸면 흰 배경이 채워집니다."}},{"@type":"Question","name":"화질이 떨어지나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 선택한 영역을 원본 해상도 그대로 잘라 무손실 PNG로 저장하므로 화질 손실이 없습니다."}},{"@type":"Question","name":"모바일에서도 사용할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 터치 드래그로 영역 이동과 크기 조절이 가능합니다. 다만 세밀한 조절은 PC가 더 편합니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"사진 자르기","item":"https://imagelab-kr.vercel.app/tools/crop/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 사진 자르기</nav>
+<h1>사진 자르기</h1>
+<p class="lead">드래그로 영역을 정하고 비율 프리셋 또는 원형(프로필용)으로 잘라냅니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+<style>
+#sel{position:absolute;border:2px solid var(--brand);box-shadow:0 0 0 9999px rgba(0,0,0,.45);cursor:move;touch-action:none}
+#sel .h{position:absolute;width:22px;height:22px;background:#fff;border:2px solid var(--brand);border-radius:50%;touch-action:none}
+#sel .h[data-h=nw]{left:-11px;top:-11px;cursor:nwse-resize}#sel .h[data-h=ne]{right:-11px;top:-11px;cursor:nesw-resize}
+#sel .h[data-h=sw]{left:-11px;bottom:-11px;cursor:nesw-resize}#sel .h[data-h=se]{right:-11px;bottom:-11px;cursor:nwse-resize}
+#sel .h[data-h=n]{left:calc(50% - 11px);top:-11px;cursor:ns-resize}#sel .h[data-h=s]{left:calc(50% - 11px);bottom:-11px;cursor:ns-resize}
+#sel .h[data-h=w]{left:-11px;top:calc(50% - 11px);cursor:ew-resize}#sel .h[data-h=e]{right:-11px;top:calc(50% - 11px);cursor:ew-resize}
+#stage{position:relative;display:inline-block;overflow:hidden;border-radius:10px;border:1px solid var(--line);touch-action:none;line-height:0}
+</style>
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<div class="btn-row">
+  <button class="chip on" data-r="0">자유</button><button class="chip" data-r="1:1">1:1</button>
+  <button class="chip" data-r="4:3">4:3</button><button class="chip" data-r="3:4">3:4</button>
+  <button class="chip" data-r="16:9">16:9</button><button class="chip" data-r="9:16">9:16</button>
+  <button class="chip" data-r="circle">⭕ 원형</button>
+</div>
+<div style="text-align:center"><div id="stage"><canvas id="disp"></canvas>
+<div id="sel"><div class="h" data-h="nw"></div><div class="h" data-h="n"></div><div class="h" data-h="ne"></div>
+<div class="h" data-h="w"></div><div class="h" data-h="e"></div>
+<div class="h" data-h="sw"></div><div class="h" data-h="s"></div><div class="h" data-h="se"></div></div></div></div>
+<p class="status" id="dim"></p>
+<div class="btn-row"><button class="btn btn-primary" id="dl">잘라서 다운로드 (PNG)</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>사진 자르기 소개</h2>
+<p>사진 자르기(크롭) 도구는 사진에서 필요한 부분만 남기고 잘라냅니다. 자유 비율은 물론 1:1(정사각), 4:3, 16:9 같은 비율 프리셋을 지원해 SNS 게시물·썸네일 규격에 맞추기 좋고, 프로필 사진용 원형 크롭도 제공합니다.</p>
+<p>선택 영역은 드래그로 이동하고 모서리·변의 핸들로 크기를 조절합니다. 빈 곳을 드래그하면 새 영역을 그릴 수 있습니다. 잘라낸 결과는 원본 해상도 그대로 무손실 PNG로 저장되며, 원형 크롭은 바깥 영역이 투명하게 처리됩니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택</li>
+<li>비율 프리셋 선택 (자유/1:1/16:9/원형 등)</li>
+<li>드래그로 영역 이동, 핸들로 크기 조절</li>
+<li>「잘라서 다운로드」 클릭</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>원형으로 자르면 바깥은 어떻게 되나요?</summary><p>PNG의 투명 영역으로 저장됩니다. 투명을 지원하지 않는 곳에 올리면 검정 또는 흰색으로 보일 수 있으니, 그 경우 「이미지 변환」에서 JPG로 바꾸면 흰 배경이 채워집니다.</p></details>
+<details class="faq"><summary>화질이 떨어지나요?</summary><p>아니요. 선택한 영역을 원본 해상도 그대로 잘라 무손실 PNG로 저장하므로 화질 손실이 없습니다.</p></details>
+<details class="faq"><summary>모바일에서도 사용할 수 있나요?</summary><p>네. 터치 드래그로 영역 이동과 크기 조절이 가능합니다. 다만 세밀한 조절은 PC가 더 편합니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var img = null, fileName = '', scale = 1; // 화면px = 원본px * scale
+  var box = { x: 0, y: 0, w: 100, h: 100 }; // 원본 좌표계
+  var ratio = 0; // 0 = 자유
+  var circle = false;
+  var stage = $('stage'), disp = $('disp'), sel = $('sel');
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    fileName = fs[0].name;
+    img = await IL.loadImage(fs[0]);
+    $('panel').style.display = '';
+    fit();
+    var w = IL.imgW(img), h = IL.imgH(img);
+    box = { x: w * 0.1, y: h * 0.1, w: w * 0.8, h: h * 0.8 };
+    if (ratio) applyRatio();
+    draw();
+  });
+
+  function fit() {
+    var maxW = stage.parentElement.clientWidth - 2;
+    scale = Math.min(1, maxW / IL.imgW(img), 520 / IL.imgH(img));
+    disp.width = Math.round(IL.imgW(img) * scale);
+    disp.height = Math.round(IL.imgH(img) * scale);
+    var ctx = disp.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, disp.width, disp.height);
+  }
+
+  function applyRatio() {
+    if (!ratio) return;
+    var w = IL.imgW(img), h = IL.imgH(img);
+    var bw = box.w, bh = bw / ratio;
+    if (bh > h * 0.95) { bh = h * 0.95; bw = bh * ratio; }
+    if (bw > w * 0.95) { bw = w * 0.95; bh = bw / ratio; }
+    box.w = bw; box.h = bh;
+    clamp();
+  }
+  function clamp() {
+    var w = IL.imgW(img), h = IL.imgH(img);
+    box.w = Math.min(box.w, w); box.h = Math.min(box.h, h);
+    box.x = Math.max(0, Math.min(box.x, w - box.w));
+    box.y = Math.max(0, Math.min(box.y, h - box.h));
+  }
+
+  function draw() {
+    sel.style.left = (box.x * scale) + 'px';
+    sel.style.top = (box.y * scale) + 'px';
+    sel.style.width = (box.w * scale) + 'px';
+    sel.style.height = (box.h * scale) + 'px';
+    sel.style.borderRadius = circle ? '50%' : '0';
+    $('dim').textContent = Math.round(box.w) + ' × ' + Math.round(box.h) + ' px' + (circle ? ' (원형)' : '');
+  }
+
+  /* 프리셋 */
+  document.querySelectorAll('.chip[data-r]').forEach(function (ch) {
+    ch.addEventListener('click', function () {
+      document.querySelectorAll('.chip[data-r]').forEach(function (c) { c.classList.remove('on'); });
+      ch.classList.add('on');
+      var r = ch.dataset.r;
+      circle = r === 'circle';
+      ratio = circle ? 1 : (r === '0' ? 0 : (function () { var p = r.split(':'); return p[0] / p[1]; })());
+      if (img) { if (ratio) applyRatio(); draw(); }
+    });
+  });
+
+  /* 포인터 조작: 내부 드래그=이동, 핸들=크기 */
+  var mode = null, start = null;
+  function pt(e) {
+    var r = stage.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / scale, y: (e.clientY - r.top) / scale };
+  }
+  sel.addEventListener('pointerdown', function (e) {
+    if (!img) return;
+    e.preventDefault(); e.stopPropagation();
+    sel.setPointerCapture(e.pointerId);
+    var h = e.target.dataset.h;
+    mode = h || 'move';
+    start = { p: pt(e), box: { x: box.x, y: box.y, w: box.w, h: box.h } };
+  });
+  sel.addEventListener('pointermove', function (e) {
+    if (!mode || !img) return;
+    var p = pt(e), dx = p.x - start.p.x, dy = p.y - start.p.y;
+    var b = start.box, min = 20 / scale;
+    if (mode === 'move') {
+      box.x = b.x + dx; box.y = b.y + dy;
+    } else {
+      var x1 = b.x, y1 = b.y, x2 = b.x + b.w, y2 = b.y + b.h;
+      if (mode.indexOf('w') >= 0) x1 = Math.min(x2 - min, b.x + dx);
+      if (mode.indexOf('e') >= 0) x2 = Math.max(x1 + min, b.x + b.w + dx);
+      if (mode.indexOf('n') >= 0) y1 = Math.min(y2 - min, b.y + dy);
+      if (mode.indexOf('s') >= 0) y2 = Math.max(y1 + min, b.y + b.h + dy);
+      if (ratio) { /* 비율 고정: 가로 기준 */
+        var nw = x2 - x1, nh = nw / ratio;
+        if (mode.indexOf('n') >= 0) y1 = y2 - nh; else y2 = y1 + nh;
+      }
+      box.x = x1; box.y = y1; box.w = x2 - x1; box.h = y2 - y1;
+    }
+    clamp(); draw();
+  });
+  sel.addEventListener('pointerup', function () { mode = null; });
+  /* 빈 곳 드래그 = 새 영역 그리기 */
+  stage.addEventListener('pointerdown', function (e) {
+    if (!img || e.target !== disp) return;
+    e.preventDefault();
+    stage.setPointerCapture(e.pointerId);
+    var p = pt(e);
+    box = { x: p.x, y: p.y, w: 1, h: 1 };
+    mode = 'new'; start = { p: p };
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (mode !== 'new') return;
+    var p = pt(e);
+    box.x = Math.min(start.p.x, p.x); box.y = Math.min(start.p.y, p.y);
+    box.w = Math.abs(p.x - start.p.x); box.h = Math.abs(p.y - start.p.y);
+    if (ratio) box.h = box.w / ratio;
+    clamp(); draw();
+  });
+  stage.addEventListener('pointerup', function () { if (mode === 'new') mode = null; });
+  window.addEventListener('resize', function () { if (img) { fit(); draw(); } });
+
+  $('dl').addEventListener('click', async function () {
+    if (!img) return;
+    var w = Math.round(box.w), h = Math.round(box.h);
+    var c = IL.canvasOf(w, h), ctx = c.getContext('2d');
+    if (circle) {
+      ctx.beginPath();
+      ctx.ellipse(w / 2, h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+      ctx.clip();
+    }
+    ctx.drawImage(img, Math.round(box.x), Math.round(box.y), w, h, 0, 0, w, h);
+    var blob = await IL.toBlob(c, 'image/png'); // 크롭은 무손실 PNG로 저장
+    IL.download(blob, IL.outName(fileName, circle ? 'circle' : 'cropped', 'png'));
+  });
+})();
+</script>
+</body>
+</html>

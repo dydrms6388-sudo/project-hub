@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정년 퇴직일 계산기 — 만 60세 정년 날짜 계산 | DateLab</title>
+<meta name="description" content="생년월일과 회사 규정(생일 당일·월말·연말 등)에 따라 정년 퇴직일을 계산합니다. 법정 정년 만 60세 기준, 남은 근무 기간과 D-day까지.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"정년 퇴직일 계산기","description":"생년월일과 회사 규정(생일 당일·월말·연말 등)에 따라 정년 퇴직일을 계산합니다. 법정 정년 만 60세 기준, 남은 근무 기간과 D-day까지.","url":"https://datelab-kr.vercel.app/tools/retirement/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"정년이 만 60세가 안 되는 회사 규정도 유효한가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 고령자고용법 제19조에 따라 정년을 60세 미만으로 정한 경우 60세로 정한 것으로 간주됩니다. 60세보다 높게 정하는 것은 가능합니다."}},{"@type":"Question","name":"만 60세가 「되는 날」은 생일 전날인가요, 당일인가요?","acceptedAnswer":{"@type":"Answer","text":"민법상 나이는 출생일을 포함해 계산하므로 엄밀히는 생일 전날 24시(=생일 0시)에 만 60세에 도달합니다. 실무·판례에서는 보통 생일을 기준으로 보며, 정확한 날짜는 회사 규정 해석에 따릅니다."}},{"@type":"Question","name":"임금피크제가 있으면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"임금피크제는 정년을 유지·연장하는 대신 일정 연령부터 임금을 조정하는 제도로, 퇴직일 자체는 취업규칙의 정년 규정을 따릅니다. 적용 연령·감액률은 회사마다 다릅니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://datelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"정년 퇴직일 계산기","item":"https://datelab-kr.vercel.app/tools/retirement/"}]}</script>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="../../">Date<b>Lab</b> 날짜랩</a>
+    <nav class="head-nav">
+      <a href="../../tools/korean-age/">만나이</a>
+      <a href="../../tools/dday/">디데이</a>
+      <a href="../../tools/holidays/">공휴일</a>
+      <a href="../../tools/lunar/">음력</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <nav class="crumb"><a href="../../">홈</a> › 정년 퇴직일 계산기</nav>
+    
+<h1>정년 퇴직일 계산기</h1>
+<p class="lead">「고용상 연령차별금지 및 고령자고용촉진에 관한 법률」에 따라 정년은 <strong>만 60세 이상</strong>으로 정해야 합니다. 회사 규정 방식에 따른 퇴직일을 계산해 보세요.</p>
+<div class="card">
+  <div class="row2">
+    <div class="field"><label for="birth">생년월일</label><input type="date" id="birth"></div>
+    <div class="field"><label for="retAge">정년 나이 (만)</label><input type="number" id="retAge" value="60" min="55" max="70"></div>
+  </div>
+  <div class="field">
+    <label for="rule">회사 규정 (취업규칙상 퇴직일 산정 방식)</label>
+    <select id="rule">
+      <option value="birthday" selected>만 60세가 되는 생일 당일</option>
+      <option value="monthEnd">생일이 속한 달의 말일</option>
+      <option value="yearEnd">생일이 속한 해의 12월 31일</option>
+      <option value="half">생일이 속한 반기의 말일 (6/30 또는 12/31)</option>
+    </select>
+    <p class="hint">퇴직일 산정 방식은 회사 취업규칙·단체협약마다 다릅니다. 인사팀에 확인 후 해당 방식을 선택하세요.</p>
+  </div>
+  <button class="btn" id="calc">퇴직일 계산하기</button>
+  <div class="result" id="result">
+    <div class="res-hero"><div class="big" id="out"></div><div class="cap" id="outCap"></div></div>
+    <div class="stat-grid">
+      <div class="stat"><div class="v" id="sDday"></div><div class="k">퇴직일까지</div></div>
+      <div class="stat"><div class="v" id="sYears"></div><div class="k">남은 근무 기간</div></div>
+      <div class="stat"><div class="v" id="sBday"></div><div class="k">만 60세 생일</div></div>
+    </div>
+    <div class="note">본 결과는 참고용입니다. 실제 정년퇴직일·퇴직금 산정은 회사 취업규칙과 근로계약, 관련 법령(고령자고용법 제19조)에 따르므로 소속 회사 인사 규정을 반드시 확인하세요.</div>
+  </div>
+</div>
+<section class="content">
+<h2>법정 정년과 퇴직일 계산</h2>
+<p>고령자고용법 제19조는 사업주가 근로자의 정년을 <strong>만 60세 이상</strong>으로 정하도록 의무화하고 있습니다(2016~2017년 단계 시행). 만 60세 미만으로 정한 경우에도 법에 따라 60세로 간주됩니다. 다만 「만 60세가 되는 날」이 정확히 언제인지 — 생일 당일인지, 그 달의 말일인지, 그 해 말일인지 — 는 법이 아니라 <strong>회사 취업규칙</strong>이 정합니다.</p>
+<p>판례상 특별한 규정이 없으면 정년은 만 60세에 도달하는 날(생일)로 보는 것이 일반적이지만, 실무에서는 인사 관리 편의상 반기말·연말 기준을 두는 회사가 많습니다. 이 계산기는 네 가지 방식의 날짜를 모두 계산할 수 있습니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>생년월일을 입력하고 정년 나이(기본 60세)를 확인합니다.</li>
+<li>회사 규정 방식을 선택하고 계산하면 퇴직일, D-day, 남은 근무 기간이 표시됩니다.</li>
+</ol>
+</section>
+    <!-- ad-slot -->
+    
+<section class="content">
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>정년이 만 60세가 안 되는 회사 규정도 유효한가요?</summary><p>아니요. 고령자고용법 제19조에 따라 정년을 60세 미만으로 정한 경우 60세로 정한 것으로 간주됩니다. 60세보다 높게 정하는 것은 가능합니다.</p></details>
+<details class="faq"><summary>만 60세가 「되는 날」은 생일 전날인가요, 당일인가요?</summary><p>민법상 나이는 출생일을 포함해 계산하므로 엄밀히는 생일 전날 24시(=생일 0시)에 만 60세에 도달합니다. 실무·판례에서는 보통 생일을 기준으로 보며, 정확한 날짜는 회사 규정 해석에 따릅니다.</p></details>
+<details class="faq"><summary>임금피크제가 있으면 어떻게 되나요?</summary><p>임금피크제는 정년을 유지·연장하는 대신 일정 연령부터 임금을 조정하는 제도로, 퇴직일 자체는 취업규칙의 정년 규정을 따릅니다. 적용 연령·감액률은 회사마다 다릅니다.</p></details>
+</section>
+  </div>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+<a href="../../tools/korean-age/">만나이 계산기</a>
+<a href="../../tools/dday/">디데이 계산기</a>
+<a href="../../tools/anniversary/">100일 계산기</a>
+<a href="../../tools/lunar/">음력 변환기</a>
+<a href="../../tools/holidays/">2026년 공휴일</a>
+<a href="../../tools/workdays/">근무일 계산기</a>
+<a href="../../tools/date-diff/">날짜 계산기</a>
+<a href="../../tools/zodiac/">띠 계산기</a>
+<a href="../../tools/week-number/">몇 주차 계산기</a>
+<a href="../../tools/age-in-days/">살아온 날 계산기</a>
+<a href="../../tools/retirement/">정년 퇴직일 계산기</a>
+<a href="../../tools/military/">전역일 계산기</a>
+    </div>
+    <div class="cols">
+<a href="../../guide/korean-age-2023/">만 나이 통일법 총정리</a>
+<a href="../../guide/holidays-2026/">2026년 공휴일 총정리</a>
+    </div>
+    <p>모든 계산은 사용자의 브라우저 안에서만 실행되며, 입력한 값은 서버로 전송·저장되지 않습니다.</p>
+    <div class="legal">
+      <a href="../../privacy.html">개인정보처리방침</a>
+      <a href="../../terms.html">이용약관</a>
+      <span>© 2026 DateLab 날짜랩</span>
+    </div>
+  </div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script>
+
+(function(){
+var $=DL.$;
+$('#calc').addEventListener('click',function(){
+  var b=$('#birth').value;if(!b){alert('생년월일을 입력해 주세요.');return;}
+  var age=parseInt($('#retAge').value,10)||60;
+  var birth=DL.fromIso(b);
+  var bday=DL.addMonths(birth,age*12);
+  var rule=$('#rule').value,ret;
+  if(rule==='birthday')ret=bday;
+  else if(rule==='monthEnd')ret=new Date(bday.getFullYear(),bday.getMonth()+1,0);
+  else if(rule==='yearEnd')ret=new Date(bday.getFullYear(),11,31);
+  else ret=bday.getMonth()<6?new Date(bday.getFullYear(),5,30):new Date(bday.getFullYear(),11,31);
+  var now=DL.today(),dd=DL.diffDays(now,ret);
+  $('#out').textContent=DL.fmtKo(ret);
+  $('#outCap').textContent='만 '+age+'세 정년 · '+$('#rule').selectedOptions[0].textContent;
+  $('#sDday').textContent=dd>0?'D-'+DL.numComma(dd):(dd===0?'오늘':'지남 ('+DL.numComma(-dd)+'일 전)');
+  if(dd>0){var fa=DL.fullAge(now,ret);$('#sYears').textContent=fa.years+'년 '+fa.months+'개월';}
+  else $('#sYears').textContent='-';
+  $('#sBday').textContent=DL.fmtKo(bday,false);
+  $('#sBday').style.fontSize='15px';
+  $('#result').classList.add('show');
+});
+})();
+</script>
+</body>
+</html>

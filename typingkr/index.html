@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>타자 연습 - 한글 타자 연습 무료 사이트 | typingkr</title>
+<meta name="description" content="설치와 로그인 없이 웹에서 바로 하는 한글 타자 연습. 자리 연습, 낱말, 짧은 글, 긴 글, 타자 속도 측정, 영타·코딩·어린이 타자까지 무료로 제공합니다.">
+<link rel="stylesheet" href="assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"typingkr 한글 타자 연습",
+"url":"https://typingkr.vercel.app/","applicationCategory":"EducationalApplication",
+"operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+"description":"웹에서 바로 하는 한글/영문 타자 연습. 자리 연습, 속도 측정, 두벌식 자판 익히기 등 8가지 도구."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"타자 연습을 하려면 프로그램을 설치해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. typingkr은 웹 브라우저에서 바로 실행되는 타자 연습 사이트로, 설치나 회원 가입 없이 무료로 사용할 수 있습니다."}},
+{"@type":"Question","name":"타수(타/분)는 어떻게 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"한글을 자모 단위로 분해해 올바르게 입력한 자모 수를 기준으로 계산합니다. 예를 들어 '값'은 ㄱ, ㅏ, ㅂ, ㅅ 네 타로 셉니다."}},
+{"@type":"Question","name":"기록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"모든 기록은 사용자의 브라우저(localStorage)에만 저장되며 서버로 전송되지 않습니다."}}]}
+</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="./">타자연습<span class="dot">·</span>typingkr</a>
+  <span class="head-sp"></span>
+  <button id="themeBtn" class="iconbtn" type="button" aria-label="다크/라이트 테마 전환">🌙</button>
+</div></header>
+
+<main class="wrap">
+  <h1>타자 연습 — 웹에서 바로 하는 한글 타자 연습</h1>
+  <p>설치도 로그인도 필요 없습니다. 자리 연습부터 속도 측정까지, 브라우저에서 바로 시작하세요.
+  타수는 한글 자모 기준으로 정확하게 계산하고, 모든 기록은 내 브라우저에만 저장됩니다.</p>
+
+  <div class="grid">
+    <a class="tool-card" href="tools/korean-typing/"><span class="em">⌨️</span><h3>한글 타자 연습</h3><p>자리 연습 · 낱말 · 짧은 글 · 긴 글, 실시간 타수와 정확도</p></a>
+    <a class="tool-card" href="tools/typing-test/"><span class="em">⏱️</span><h3>타자 속도 측정</h3><p>1분/3분 테스트, 결과 공유 링크와 최고 기록</p></a>
+    <a class="tool-card" href="tools/english-typing/"><span class="em">🔤</span><h3>영타 연습</h3><p>영문 낱말과 문장으로 같은 엔진 그대로</p></a>
+    <a class="tool-card" href="tools/keyboard-layout/"><span class="em">🗺️</span><h3>두벌식 자판 익히기</h3><p>화면 키보드 하이라이트로 자판 위치 학습</p></a>
+    <a class="tool-card" href="tools/number-typing/"><span class="em">🔢</span><h3>숫자 키패드 연습</h3><p>텐키 숫자 입력 속도 올리기</p></a>
+    <a class="tool-card" href="tools/code-typing/"><span class="em">💻</span><h3>코딩 타자 연습</h3><p>JS/Python 스니펫으로 특수문자까지</p></a>
+    <a class="tool-card" href="tools/kids-typing/"><span class="em">🧒</span><h3>어린이 타자 연습</h3><p>쉬운 낱말과 큰 글씨, 칭찬 가득</p></a>
+    <a class="tool-card" href="tools/custom-text/"><span class="em">📄</span><h3>내 글로 타자 연습</h3><p>원하는 텍스트를 붙여넣어 연습</p></a>
+  </div>
+
+  <section class="prose">
+    <h2>typingkr 소개</h2>
+    <p>typingkr은 한글 타자 연습을 위한 무료 웹 도구 모음입니다. 예전 PC에 설치하던 타자 연습
+    프로그램의 핵심 기능 — 자리 연습, 낱말·문장 연습, 속도 측정 — 을 현대적인 웹 환경으로
+    옮겼습니다. 한글 IME(입력기)의 글자 조합 과정을 정확히 처리해서, 조합 중인 글자를 성급하게
+    오타로 판정하지 않습니다.</p>
+    <p>타수 계산은 완성형 한글을 초성·중성·종성 자모로 분해해 셉니다. 겹받침과 복합 모음은
+    실제로 누르는 키 수만큼 계산하므로(예: "값" = ㄱ+ㅏ+ㅂ+ㅅ = 4타) 흔히 쓰는 타자 프로그램과
+    같은 기준의 타/분 수치를 얻을 수 있습니다. 자세한 계산 방식은
+    <a href="guide/typing-tips/">타자 실력 올리는 법 가이드</a>에서 확인하세요.</p>
+    <h2>이용 방법</h2>
+    <ol>
+      <li>처음이라면 <a href="tools/keyboard-layout/">두벌식 자판 익히기</a>와 자리 연습부터 시작하세요.</li>
+      <li>자판이 익숙해지면 <a href="tools/korean-typing/">한글 타자 연습</a>의 낱말 → 짧은 글 → 긴 글 순서로 올라갑니다.</li>
+      <li>실력 확인은 <a href="tools/typing-test/">타자 속도 측정</a>에서. 결과는 이미지로 저장하거나 링크로 공유할 수 있습니다.</li>
+    </ol>
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      <details><summary>모바일에서도 사용할 수 있나요?</summary><p>화면 키보드(터치)로는 정확한 타자 연습이 어려워 PC 키보드 사용을 권장합니다. 모바일에서는 간단한 낱말 모드만 제공합니다.</p></details>
+      <details><summary>연습 기록이 사라졌어요.</summary><p>기록은 브라우저 localStorage에 저장됩니다. 브라우저 데이터를 지우거나 시크릿 모드를 사용하면 기록이 남지 않습니다.</p></details>
+      <details><summary>세벌식 자판도 지원하나요?</summary><p>연습 엔진은 두벌식 기준입니다. 세벌식에 대한 소개는 두벌식 자판 익히기 페이지의 세벌식 안내 절에서 볼 수 있습니다.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <nav>
+    <a href="tools/korean-typing/">한글 타자 연습</a>
+    <a href="tools/english-typing/">영타 연습</a>
+    <a href="tools/typing-test/">타자 속도 측정</a>
+    <a href="tools/keyboard-layout/">두벌식 자판</a>
+    <a href="tools/number-typing/">숫자 키패드</a>
+    <a href="tools/code-typing/">코딩 타자</a>
+    <a href="tools/kids-typing/">어린이 타자</a>
+    <a href="tools/custom-text/">내 글로 연습</a>
+    <a href="guide/typing-tips/">타자 팁 가이드</a>
+    <a href="privacy.html">개인정보처리방침</a>
+    <a href="terms.html">이용약관</a>
+  </nav>
+  <p>© typingkr · tomatoeggcat.com — 모든 계산은 브라우저 안에서만 이루어집니다.</p>
+</div></footer>
+<script src="assets/common.js"></script>
+</body>
+</html>

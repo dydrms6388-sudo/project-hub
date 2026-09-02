@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>배경 제거 - AI 사진 배경 지우기 (브라우저 로컬)</title>
+<meta name="description" content="배경 제거: AI 모델(RMBG-1.4)을 브라우저에 내려받아 로컬에서 배경을 지웁니다. 투명·단색·그라데이션 배경 교체. 사진은 서버로 전송되지 않습니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"배경 제거","description":"배경 제거: AI 모델(RMBG-1.4)을 브라우저에 내려받아 로컬에서 배경을 지웁니다. 투명·단색·그라데이션 배경 교체. 사진은 서버로 전송되지 않습니다.","url":"https://imagelab-kr.vercel.app/tools/remove-bg/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"정말 사진이 서버로 안 가나요?","acceptedAnswer":{"@type":"Answer","text":"네. AI 모델 파일을 내려받는 통신만 발생하고, 사진 데이터는 브라우저 밖으로 나가지 않습니다. 비행기 모드에서도 모델이 캐시되어 있으면 동작합니다."}},{"@type":"Question","name":"실패하거나 너무 느려요.","acceptedAnswer":{"@type":"Answer","text":"모델 로딩에는 안정적인 인터넷이, 추론에는 어느 정도의 메모리·연산 성능이 필요합니다. PC(노트북 이상)의 최신 크롬·엣지 브라우저를 권장하며, 이미지가 매우 크면 자동으로 축소해 처리합니다."}},{"@type":"Question","name":"경계가 지저분하게 잘렸어요.","acceptedAnswer":{"@type":"Answer","text":"머리카락·반투명 물체·배경과 색이 비슷한 옷 등은 AI가 어려워하는 영역입니다. 대비가 뚜렷한 사진일수록 결과가 좋습니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"배경 제거","item":"https://imagelab-kr.vercel.app/tools/remove-bg/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 배경 제거</nav>
+<h1>배경 제거 <span class="badge badge-exp">실험적 · PC 권장</span></h1>
+<p class="lead">AI 모델을 브라우저에 내려받아 기기 안에서 배경을 지웁니다. 사진은 어디에도 전송되지 않습니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+<p class="notice-warn"><b>실험적 기능 · PC 권장</b> — 최초 사용 시 AI 모델(약 40MB)을 내려받으며(이후 캐시),
+기기 성능에 따라 수 초~수십 초가 걸립니다. 모바일이나 사양이 낮은 기기에서는 실패할 수 있습니다.</p>
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<div class="btn-row"><button class="btn btn-primary" id="run">배경 제거 시작</button></div>
+<div class="prog" id="prog" style="display:none"><i></i></div>
+<p class="status" id="status"></p>
+<div class="notice-warn" id="err" style="display:none"></div>
+<div id="result" style="display:none">
+  <div class="field-row">
+    <label><input type="radio" name="bgm" value="none" checked> 투명</label>
+    <label><input type="radio" name="bgm" value="color"> 단색</label>
+    <label><input type="radio" name="bgm" value="grad"> 그라데이션</label>
+    <input type="color" id="bg1" value="#4f8cff">
+    <input type="color" id="bg2" value="#c04fff" style="display:none">
+  </div>
+  <div class="stage checker"><canvas id="pv"></canvas></div>
+  <div class="btn-row"><button class="btn btn-primary" id="dl">PNG 저장</button></div>
+</div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>배경 제거 소개</h2>
+<p>배경 제거 도구는 AI 분할 모델(RMBG-1.4)을 이용해 사진에서 피사체만 남기고 배경을 지웁니다. 보통 이런 기능은 사진을 서버에 올려 처리하지만, 이 도구는 모델 자체를 브라우저에 내려받아 사용자의 기기 안에서 추론합니다. 그래서 사진이 외부로 전송되지 않습니다.</p>
+<p>배경을 지운 뒤에는 투명 PNG로 저장하거나, 단색·그라데이션 배경으로 바꿔 증명사진 스타일·상품 사진 스타일을 만들 수 있습니다. 최초 1회 모델 다운로드(약 40MB) 후에는 브라우저 캐시를 사용해 더 빠르게 시작됩니다.</p>
+<p>AI 결과물은 완벽하지 않을 수 있습니다. 머리카락·유리처럼 경계가 복잡한 부분은 어색하게 잘릴 수 있으니 참고용으로 활용하세요.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택</li>
+<li>「배경 제거 시작」 클릭 — 최초 1회 모델 다운로드 진행률 표시</li>
+<li>완료 후 투명/단색/그라데이션 배경 선택</li>
+<li>PNG로 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>정말 사진이 서버로 안 가나요?</summary><p>네. AI 모델 파일을 내려받는 통신만 발생하고, 사진 데이터는 브라우저 밖으로 나가지 않습니다. 비행기 모드에서도 모델이 캐시되어 있으면 동작합니다.</p></details>
+<details class="faq"><summary>실패하거나 너무 느려요.</summary><p>모델 로딩에는 안정적인 인터넷이, 추론에는 어느 정도의 메모리·연산 성능이 필요합니다. PC(노트북 이상)의 최신 크롬·엣지 브라우저를 권장하며, 이미지가 매우 크면 자동으로 축소해 처리합니다.</p></details>
+<details class="faq"><summary>경계가 지저분하게 잘렸어요.</summary><p>머리카락·반투명 물체·배경과 색이 비슷한 옷 등은 AI가 어려워하는 영역입니다. 대비가 뚜렷한 사진일수록 결과가 좋습니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script type="module">
+/* 실험적 기능: @huggingface/transformers (CDN ESM) + RMBG-1.4 로컬 추론 */
+const $ = (id) => document.getElementById(id);
+let file = null, img = null;
+let model = null, processor = null;
+let resultCanvas = null; // 투명 배경 결과
+
+IL.bindDrop($('drop'), $('fin'), async (fs) => {
+  file = fs[0];
+  img = await IL.loadImage(file);
+  $('drop').querySelector('strong').textContent = file.name + ' (' + IL.imgW(img) + '×' + IL.imgH(img) + ')';
+  $('panel').style.display = '';
+});
+
+function setProgress(pct, text) {
+  $('prog').style.display = '';
+  $('prog').querySelector('i').style.width = pct + '%';
+  $('status').textContent = text;
+}
+
+async function loadModel() {
+  if (model) return;
+  const { AutoModel, AutoProcessor, env } = await import(
+    'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3'
+  );
+  env.allowLocalModels = false;
+  const seen = {};
+  const cb = (p) => {
+    if (p.status === 'progress' && p.file) {
+      seen[p.file] = p.progress || 0;
+      const vals = Object.values(seen);
+      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      setProgress(Math.round(avg), '모델 다운로드 중… ' + Math.round(avg) + '% (최초 1회, 이후 캐시 사용)');
+    }
+  };
+  model = await AutoModel.from_pretrained('briaai/RMBG-1.4', {
+    config: { model_type: 'custom' },
+    progress_callback: cb
+  });
+  processor = await AutoProcessor.from_pretrained('briaai/RMBG-1.4', {
+    config: {
+      do_normalize: true, do_pad: false, do_rescale: true, do_resize: true,
+      image_mean: [0.5, 0.5, 0.5], image_std: [1, 1, 1],
+      feature_extractor_type: 'ImageFeatureExtractor',
+      resample: 2, rescale_factor: 0.00392156862745098,
+      size: { width: 1024, height: 1024 }
+    }
+  });
+}
+
+$('run').addEventListener('click', async () => {
+  if (!file) return;
+  $('run').disabled = true;
+  try {
+    setProgress(2, '모델 준비 중…');
+    await loadModel();
+    setProgress(100, '이미지 분석 중… (기기 성능에 따라 수 초~수십 초)');
+    const { RawImage } = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3');
+
+    /* 메모리 보호: 긴 변 2048px 제한 */
+    let w = IL.imgW(img), h = IL.imgH(img);
+    const cap = 2048;
+    if (Math.max(w, h) > cap) {
+      const s = cap / Math.max(w, h);
+      w = Math.round(w * s); h = Math.round(h * s);
+      $('status').textContent = '큰 이미지라 ' + w + '×' + h + '로 축소하여 처리합니다…';
+    }
+    const src = IL.canvasOf(w, h);
+    src.getContext('2d').drawImage(img, 0, 0, w, h);
+    const raw = await RawImage.fromBlob(await IL.toBlob(src, 'image/png'));
+
+    const { pixel_values } = await processor(raw);
+    const { output } = await model({ input: pixel_values });
+    const mask = await RawImage.fromTensor(output[0].mul(255).to('uint8')).resize(w, h);
+
+    /* 알파 합성 */
+    resultCanvas = IL.canvasOf(w, h);
+    const ctx = resultCanvas.getContext('2d');
+    ctx.drawImage(src, 0, 0);
+    const id = ctx.getImageData(0, 0, w, h);
+    for (let i = 0; i < mask.data.length; i++) id.data[i * 4 + 3] = mask.data[i];
+    ctx.putImageData(id, 0, 0);
+
+    applyBackground();
+    $('result').style.display = '';
+    $('status').textContent = '완료! 아래에서 배경을 바꾸거나 저장하세요.';
+    $('prog').style.display = 'none';
+  } catch (e) {
+    console.error(e);
+    $('prog').style.display = 'none';
+    $('status').textContent = '';
+    $('err').style.display = '';
+    $('err').innerHTML =
+      '<b>배경 제거에 실패했습니다.</b><br>' +
+      '가능한 원인: ① 인터넷 연결 문제로 모델(약 40MB)을 받지 못함 ' +
+      '② 기기 메모리 부족(모바일에서 자주 발생 — PC 이용 권장) ' +
+      '③ 구형 브라우저(최신 Chrome/Edge/Safari 권장).<br>' +
+      '잠시 후 다시 시도하거나, 더 작은 이미지로 시도해 보세요.<br>' +
+      '<span style="color:var(--sub);font-size:.82rem">오류: ' +
+      String(e && e.message || e).slice(0, 200).replace(/</g, '&lt;') + '</span>';
+  }
+  $('run').disabled = false;
+});
+
+/* 배경 옵션 */
+function applyBackground() {
+  if (!resultCanvas) return;
+  const mode = document.querySelector('input[name=bgm]:checked').value;
+  const pv = $('pv');
+  pv.width = resultCanvas.width; pv.height = resultCanvas.height;
+  const ctx = pv.getContext('2d');
+  ctx.clearRect(0, 0, pv.width, pv.height);
+  if (mode === 'color') {
+    ctx.fillStyle = $('bg1').value;
+    ctx.fillRect(0, 0, pv.width, pv.height);
+  } else if (mode === 'grad') {
+    const g = ctx.createLinearGradient(0, 0, 0, pv.height);
+    g.addColorStop(0, $('bg1').value);
+    g.addColorStop(1, $('bg2').value);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, pv.width, pv.height);
+  }
+  ctx.drawImage(resultCanvas, 0, 0);
+}
+document.querySelectorAll('input[name=bgm]').forEach((r) => r.addEventListener('change', () => {
+  $('bg2').style.display = document.querySelector('input[name=bgm]:checked').value === 'grad' ? '' : 'none';
+  applyBackground();
+}));
+$('bg1').addEventListener('input', applyBackground);
+$('bg2').addEventListener('input', applyBackground);
+
+$('dl').addEventListener('click', async () => {
+  if (!resultCanvas) return;
+  const mode = document.querySelector('input[name=bgm]:checked').value;
+  IL.download(await IL.toBlob($('pv'), 'image/png'),
+    IL.outName(file.name, mode === 'none' ? 'nobg' : 'newbg', 'png'));
+});
+</script>
+</body>
+</html>
