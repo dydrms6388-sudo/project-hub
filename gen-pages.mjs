@@ -37,6 +37,9 @@ const BUILTIN_SOURCES = {
   dday: [],
   bmi: [{ label: "대한비만학회", url: "https://general.kosso.or.kr" }, { label: "WHO", url: "https://www.who.int" }],
   pyeong: [{ label: "국가법령정보센터(법정계량단위)", url: "https://www.law.go.kr" }],
+  "inheritance-gift-tax": [{ label: "국세청", url: "https://www.nts.go.kr" }, { label: "국가법령정보센터(상속세 및 증여세법)", url: "https://www.law.go.kr" }, { label: "찾기쉬운 생활법령정보", url: "https://easylaw.go.kr" }],
+  "silbi-calc": [{ label: "금융감독원", url: "https://www.fss.or.kr" }, { label: "금융위원회", url: "https://www.fsc.go.kr" }, { label: "손해보험협회", url: "https://www.knia.or.kr" }],
+  "winter-electric-sim": [{ label: "한국전력공사", url: "https://cyber.kepco.co.kr" }, { label: "공공데이터포털(주택용 전기요금표)", url: "https://www.data.go.kr" }],
 };
 // 소유확인 메타는 "실제 코드가 설정된 경우에만" 방출한다.
 // 미설정 상태의 REPLACE_* 플레이스홀더를 프로덕션에 그대로 싣지 않기 위함
@@ -78,10 +81,23 @@ const BUILTINS = [
   { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
+  // ── 애드센스 툴 팩(2026-09): 상수 파일 분리(/<slug>/*-constants.js) + 가이드 서브페이지(BUILTIN_GUIDES) ──
+  { slug: "inheritance-gift-tax", emoji: "🏛️", name: "상속세·증여세 계산기", desc: "공제·누진세율·신고세액공제 반영 세액과 절세 시나리오 3종", k: "상속세 증여세 계산기 면제 한도 공제 절세", prio: "0.9" },
+  { slug: "silbi-calc", emoji: "🏥", name: "실비보험 계산기", desc: "내 실손 세대 판별·예상 환급액·세대별 비교표", k: "실비보험 실손 환급액 청구 4세대 전환 세대", prio: "0.9" },
+  { slug: "winter-electric-sim", emoji: "🔌", name: "겨울 전기요금 시뮬레이터", desc: "난방 가전 사용시간으로 월 kWh·누진 구간·요금 예측", k: "전기요금 계산기 누진세 전기장판 온풍기 전기세 난방비", prio: "0.9" },
+];
+// 내장 도구의 가이드(아티클) 서브페이지 — 손수 관리. sitemap 에서 툴보다 높은 우선순위(승인 무기: 먼저 색인).
+const BUILTIN_GUIDES = [
+  { parent: "inheritance-gift-tax", path: "gift-timing-guide", name: "증여세 절세 타이밍 총정리" },
+  { parent: "inheritance-gift-tax", path: "inheritance-order-guide", name: "상속 순위와 법정상속분 해설" },
+  { parent: "refinance", path: "mortgage-refi-checklist", name: "주담대 갈아타기 체크리스트" },
+  { parent: "silbi-calc", path: "claim-documents-guide", name: "실비 청구 서류 완벽 정리" },
+  { parent: "silbi-calc", path: "switch-4th-gen-guide", name: "4세대 실손 전환, 해야 할 사람 vs 하면 안 되는 사람" },
+  { parent: "winter-electric-sim", path: "heating-cost-guide", name: "겨울 난방기구별 전기요금 총정리" },
 ];
 const BUILTIN_CATS = [
-  { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
-  { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
+  { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance", "inheritance-gift-tax", "silbi-calc"] },
+  { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong", "winter-electric-sim"] },
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
@@ -98,6 +114,8 @@ const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "con
 const CORE_SLUGS = new Set([
   // 내장(builtin) — 이미 리치 페이지
   "salary", "dsr", "jeonse-loan", "yangdo", "refinance", "age", "dday", "bmi", "pyeong",
+  // 애드센스 툴 팩(2026-09) — 해설 산문 1,000자+·FAQ 8+·가이드 서브페이지 보유
+  "inheritance-gift-tax", "silbi-calc", "winter-electric-sim",
   // 금융·부동산
   "cheongyak-score-calc",
   // 생활·계산기
@@ -397,6 +415,8 @@ writeFileSync("index.html", indexHtml);
 const urls = [];
 urls.push(`  <url><loc>${SITE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`);
 for (const b of BUILTINS) if (CORE_SLUGS.has(b.slug)) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
+// 가이드 서브페이지: 툴(0.9)보다 높은 0.95 — 콘텐츠 페이지가 먼저 색인되도록
+for (const g of BUILTIN_GUIDES) if (CORE_SLUGS.has(g.parent) && existsSync(`${g.parent}/${g.path}/index.html`)) urls.push(`  <url><loc>${SITE}/${g.parent}/${g.path}/</loc><changefreq>monthly</changefreq><priority>0.95</priority></url>`);
 for (const d of daily) if (CORE_SLUGS.has(d.slug)) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
 for (const p of ["about.html", "privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
@@ -494,7 +514,7 @@ for (const b of BUILTINS) {
     h = h.replace(/<\/head>/i, `${ogBlock}\n</head>`);
 
     // 2) JSON-LD(SoftwareApplication + publisher/dateModified)
-    const appCat = ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"].includes(b.slug) ? "FinanceApplication"
+    const appCat = ["salary", "dsr", "jeonse-loan", "yangdo", "refinance", "inheritance-gift-tax", "silbi-calc"].includes(b.slug) ? "FinanceApplication"
       : b.slug === "bmi" ? "HealthApplication" : "UtilitiesApplication";
     const ld = JSON.stringify({
       "@context": "https://schema.org",
