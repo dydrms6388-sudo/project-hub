@@ -136,7 +136,7 @@ export const CONTACT_RULES: ReadonlyArray<ContactRule> = [
   {
     id: "CT_PHONE",
     pattern:
-      "(^|[^0-9])(" +
+      "(^|[^0-9+])(" +
       `${Z}${SEP}${ONE}${SEP}${X}(?:${SEP}${D}){7,8}` +
       "|\\+?82[\\s.-]{0,3}0?[\\s.-]{0,3}1[\\s.-]{0,3}[016789](?:[\\s.-]{0,3}[0-9]){7,8}" +
       ")",
