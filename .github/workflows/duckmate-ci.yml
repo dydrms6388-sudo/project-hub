@@ -1,0 +1,151 @@
+name: duckmate CI
+
+# duckmate/** 를 건드리는 PR 마다: typecheck · vitest · company 정적 export · web 빌드(더미 env) · E6 게이트 스크립트 3종 ·
+# Playwright 스모크(46, Supabase 불필요) · DB 관통 테스트(postgres:16 서비스 컨테이너 + 셰임 + 마이그레이션 25 + phase1_flow.sql).
+# 실 Supabase 가 필요한 phase1.spec 은 여기서 돌지 않는다(E2E_SUPABASE 미설정 → skip). 절차는 duckmate/docs/agents/G1_e2e.md §G3-1~3.
+# 비밀값 없음: web 빌드/스모크는 scripts/lib/dummy-env.mjs 의 더미 값만 쓴다(네트워크 연결 없음).
+
+on:
+  pull_request:
+    paths:
+      - "duckmate/**"
+      - ".github/workflows/duckmate-ci.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: duckmate-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+  TURBO_TELEMETRY_DISABLED: "1"
+  # 더미 env (scripts/lib/dummy-env.mjs DUMMY_ENV 와 동일 — lib/env.ts zod 통과용, 실제 접속 없음)
+  NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key-0123456789abcdef
+  SUPABASE_SERVICE_ROLE_KEY: dummy-service-role-key-0123456789abcdef
+  NEXT_PUBLIC_SITE_URL: http://localhost:3000
+  NEXT_PUBLIC_COMPANY_URL: http://localhost:3001
+  AUTH_GATE_SECRET: dummy-gate-secret-0123456789abcdef
+  IDENTITY_VERIFIER: mock
+
+jobs:
+  checks:
+    name: typecheck · test · build · quality gates · smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: duckmate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: duckmate/package.json
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: duckmate/pnpm-lock.yaml
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (5 workspaces)
+        run: pnpm -r typecheck
+
+      - name: E2E spec typecheck (e2e/tsconfig.json)
+        run: pnpm --filter @duckmate/web e2e:typecheck
+
+      - name: Unit tests (vitest)
+        run: pnpm -r test
+
+      - name: check:legal — 법적 플레이스홀더 (경고만, exit 0)
+        run: node scripts/check-legal-placeholders.mjs
+
+      - name: check:copy — 금지 표현·서비스명 리터럴 (위반 시 exit 1)
+        run: node scripts/check-copy.mjs
+
+      - name: Build company (정적 export → apps/company/out)
+        run: pnpm --filter @duckmate/company build
+
+      - name: Build web (더미 env, NEXT_DIST_DIR=.next)
+        run: pnpm --filter @duckmate/web build
+
+      - name: Bundle guard — 서버 비밀값 *값* 이 클라이언트 번들에 없는지 (G2 §9)
+        # 키 *이름* 은 lib/env.ts zod 스키마가 클라이언트 청크에 포함되어 등장한다(값 아님, DEPLOY_LOG.md §5 관찰 1).
+        # 여기서는 더미 *값* 이 .next/static 에 새지 않았는지만 검사한다.
+        run: |
+          if grep -rq "dummy-service-role-key-0123456789abcdef\|dummy-gate-secret-0123456789abcdef" apps/web/.next/static; then
+            echo "::error::서버 전용 env 값이 클라이언트 번들(apps/web/.next/static)에 포함되었습니다"
+            exit 1
+          fi
+          echo "ok: server-only values not in client bundle"
+
+      - name: check:noindex — 라우트별 인덱싱 정책 실측 (build 재사용, 70건)
+        env:
+          NEXT_DIST_DIR: .next
+        run: node scripts/check-noindex.mjs --no-build --port 3010
+
+      - name: Install Playwright chromium
+        working-directory: duckmate/apps/web
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright smoke (46, /dev/* 목 라우트, next dev :3100, NEXT_DIST_DIR=.next-e2e)
+        env:
+          E2E_PORT: "3100"
+        run: pnpm --filter @duckmate/web e2e:smoke
+
+      - name: Upload Playwright report (실패 시)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: duckmate-playwright
+          path: |
+            duckmate/apps/web/playwright-report
+            duckmate/apps/web/test-results
+            duckmate/apps/web/e2e/artifacts
+          if-no-files-found: ignore
+          retention-days: 7
+
+  db-test:
+    name: DB 관통 테스트 (postgres:16 + 셰임 + 마이그레이션 + phase1_flow.sql)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # scripts/db-test.sh 는 비-root 사용자면 `psql -q -v ON_ERROR_STOP=1 …` 를 그대로 쓴다 → 접속 정보는 libpq env 로 넘긴다
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure psql client
+        run: command -v psql >/dev/null || (sudo apt-get update && sudo apt-get install -y postgresql-client)
+
+      - name: Run scripts/db-test.sh
+        working-directory: duckmate
+        run: bash scripts/db-test.sh duckmate_ci
