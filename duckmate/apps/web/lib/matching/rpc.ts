@@ -1,24 +1,8 @@
 /**
- * D3 RPC 호출 헬퍼 + 반환 타입.
- * `packages/db/src/types.ts` 는 D3 경로가 아니므로 Functions 타입을 여기서 로컬 선언한다
- * (오케스트레이터 병합 요청: 16_matching §7 의 블록을 Database["public"]["Functions"] 에 추가하면 이 파일의 캐스팅을 제거할 수 있다).
+ * D3 RPC 반환 타입 (jsonb 를 돌려주는 함수의 payload 모양).
+ * 호출은 `supabase.rpc("...")` 로 직접 한다 — 함수 이름·인자는 `Database["public"]["Functions"]`(0071/H1 반영)가 검사한다.
  */
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database, Enums, FirstSuggestion } from "@duckmate/db";
-import type { SuggestionInputJson } from "./suggestions";
-
-export type MatchingRpcName =
-  | "ensure_today_recommendations"
-  | "act_on_recommendation"
-  | "undo_last_action"
-  | "likers_count"
-  | "pending_likes_count"
-  | "matching_home_summary"
-  | "superlike_status"
-  | "match_suggestion_input"
-  | "set_match_first_suggestion"
-  | "run_daily_recommendation_batch"
-  | "generate_daily_recommendations";
+import type { Enums, FirstSuggestion } from "@duckmate/db";
 
 export type RecoAction = Enums["reco_action"];
 
@@ -85,14 +69,3 @@ export type BatchResult = {
   done: boolean;
   errors: Array<{ profile_id: string; error: string }>;
 };
-
-type LooseRpc = {
-  rpc: (fn: string, args?: Record<string, unknown>) => PromiseLike<{ data: unknown; error: { message: string; code?: string; details?: string } | null }>;
-};
-
-/** 타입 미등록 RPC 호출. 에러는 그대로 throw (호출자가 toActionFailure 로 매핑) */
-export async function callRpc<T>(client: SupabaseClient<Database>, fn: MatchingRpcName, args?: Record<string, unknown>): Promise<T> {
-  const { data, error } = await (client as unknown as LooseRpc).rpc(fn, args);
-  if (error) throw error;
-  return data as T;
-}

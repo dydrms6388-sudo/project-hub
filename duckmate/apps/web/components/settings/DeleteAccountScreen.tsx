@@ -16,16 +16,22 @@ export function DeleteAccountScreen() {
   const [ack, setAck] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const confirm = () =>
+  /**
+   * 확인 시트의 두 버튼: [탈퇴하기] = 7일 유예 · [지금 바로 삭제] = 즉시(07_legal 결정 21).
+   * 즉시 옵션은 H1 의 `request_delete(p_immediate)` 와 맞물린다 — 서버 RPC 가 아직 인자를 모르면 액션이 유예 삭제로 폴백하고
+   * (`r.data.immediate === false`) 화면은 유예 안내 문구를 보여준다. 보존 항목 안내는 두 경우 모두 위 섹션 하나로 동일하다.
+   */
+  const confirm = (immediate = false) =>
     start(async () => {
-      const r = await requestDelete();
+      const r = await requestDelete({ immediate });
       setOpen(false);
       if (!r.ok) {
         if (r.redirectTo) router.replace(r.redirectTo);
         else toast({ title: r.message, variant: "error" });
         return;
       }
-      track("account_delete_requested");
+      track("account_delete_requested", { immediate: r.data.immediate });
+      toast({ title: r.data.immediate ? DELETE_COPY.immediateDone : DELETE_COPY.graceDone });
       router.replace(r.data.redirectTo);
       router.refresh();
     });
@@ -86,10 +92,14 @@ export function DeleteAccountScreen() {
             <SheetTitle>{DELETE_COPY.title}</SheetTitle>
             <SheetDescription>{DELETE_COPY.body}</SheetDescription>
           </SheetHeader>
-          <SheetFooter>
-            <Button variant="destructive" className="w-full" onClick={confirm} loading={pending} data-testid="delete-confirm">
+          <SheetFooter className="flex-col gap-2">
+            <Button variant="destructive" className="w-full" onClick={() => confirm(false)} loading={pending} data-testid="delete-confirm">
               {DELETE_COPY.confirm}
             </Button>
+            <Button variant="outline" className="w-full" onClick={() => confirm(true)} disabled={pending} data-testid="delete-confirm-immediate">
+              {DELETE_COPY.immediate}
+            </Button>
+            <p className="text-caption text-muted-foreground">{DELETE_COPY.immediateNote}</p>
           </SheetFooter>
         </SheetContent>
       </Sheet>

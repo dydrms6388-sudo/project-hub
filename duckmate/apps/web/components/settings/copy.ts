@@ -19,6 +19,11 @@ export const DELETE_COPY = {
   ack: "삭제 후 보관되는 항목과 7일 유예를 확인했어요",
   confirm: "탈퇴하기",
   cancel: "취소",
+  /** 07_legal 결정 21 — 유예 없이 즉시 (H2 UI · H1 0071 `request_delete(p_immediate)`) */
+  immediate: "지금 바로 삭제",
+  immediateNote: "7일 유예 없이 곧바로 삭제해요. 되돌릴 수 없고, 위에 적힌 보관 항목은 똑같이 남아요.",
+  immediateDone: "계정을 삭제했어요",
+  graceDone: "탈퇴를 접수했어요. 7일 안에 다시 로그인하면 취소돼요",
 } as const;
 
 export const PAUSE_COPY = {

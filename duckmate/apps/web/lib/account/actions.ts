@@ -4,7 +4,7 @@
  * 계정 상태 서버 액션 (E5 설정 화면이 호출) — 모드 전환 검증(D2 소관) · 탈퇴/휴면.
  *
  *   setMode({ mode, seekingGender?, previewViewed })  dating 은 L3 + seeking_gender + 미리보기 필수 → NOT_ENTITLED
- *   requestDelete()   → status=deleting(7일 유예) + 로그아웃, redirectTo "/"
+ *   requestDelete({immediate?}) → status=deleting(7일 유예) 또는 즉시 삭제 + 로그아웃, redirectTo "/"
  *   cancelDelete()    → 유예 중 복구, redirectTo "/home"
  *   pauseAccount()    → status=paused + 로그아웃 (재로그인 시 verifyOtp 가 resume_account)
  *   resumeAccount()   → paused → active
@@ -49,15 +49,53 @@ export async function setMode(input: unknown): Promise<ActionResult<{ mode: Enum
   }
 }
 
-export async function requestDelete(): Promise<ActionResult<{ redirectTo: string; purgeAfter: string | null }>> {
+/** RPC 시그니처에 없는 인자로 호출했을 때의 PostgREST/PG 오류 (H1 0071 적용 전) */
+function isUnknownRpcSignature(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  const code = error.code ?? "";
+  const msg = error.message ?? "";
+  return code === "PGRST202" || code === "42883" || /Could not find the function|function .* does not exist|p_immediate/i.test(msg);
+}
+
+type LooseRpc = { rpc: (fn: string, args?: Record<string, unknown>) => PromiseLike<{ data: unknown; error: { code?: string; message: string } | null }> };
+
+type RequestDeleteResult = { redirectTo: string; purgeAfter: string | null; immediate: boolean };
+
+/**
+ * 탈퇴 요청. `immediate: true` 는 07_legal 결정 21 의 "지금 바로 삭제"(유예 없이 즉시) — H1 이 0071 에서
+ * `request_delete(p_immediate boolean)` 를 추가한다. **인자를 모르는 구버전 RPC 에서도 동작해야 하므로**
+ * 인자 호출이 시그니처 오류로 실패하면 무인자 호출로 폴백하고(=7일 유예), 응답의 `immediate` 로 실제 적용 여부를 돌려준다.
+ * 화면(`DeleteAccountScreen`)은 이 값으로 완료 문구를 고른다.
+ */
+export async function requestDelete(input?: { immediate?: boolean }): Promise<ActionResult<RequestDeleteResult>> {
   try {
+    const wantImmediate = input?.immediate === true;
     const ctx = await requireProfileForAction(1, { allowOnboarding: true });
-    const { data, error } = await ctx.supabase.rpc("request_delete");
-    if (error) throw error;
-    const result = (data ?? {}) as { purge_after?: string };
+
+    let payload: { purge_after?: string; immediate?: boolean } | null = null;
+    let applied = false;
+
+    if (wantImmediate) {
+      const loose = ctx.supabase as unknown as LooseRpc;
+      const { data, error } = await loose.rpc("request_delete", { p_immediate: true });
+      if (error) {
+        if (!isUnknownRpcSignature(error)) throw error;
+      } else {
+        payload = (data ?? {}) as { purge_after?: string; immediate?: boolean };
+        applied = payload.immediate !== false;
+      }
+    }
+
+    if (payload === null) {
+      const { data, error } = await ctx.supabase.rpc("request_delete");
+      if (error) throw error;
+      payload = (data ?? {}) as { purge_after?: string; immediate?: boolean };
+      applied = payload.immediate === true;
+    }
+
     await ctx.supabase.auth.signOut();
     await invalidateGateCache();
-    return ok({ redirectTo: "/", purgeAfter: result.purge_after ?? null });
+    return ok({ redirectTo: "/", purgeAfter: payload.purge_after ?? null, immediate: applied });
   } catch (e) {
     return toActionFailure(e);
   }
