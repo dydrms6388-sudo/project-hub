@@ -46,8 +46,8 @@ describe("템플릿 카피 lint (C1 §4.4·§4.3)", () => {
         expect(r.title.length).toBeGreaterThan(0);
         expect(r.title.length).toBeLessThanOrEqual(40);
         expect(r.body.length).toBeLessThanOrEqual(120);
-        // 본문은 해요체("요." / "요")로 끝나거나 수신거부 문구로 끝난다
-        expect(/(요\.?|요\)|해제)$/.test(r.body) || r.body.length === 0, `${key} body: ${r.body}`).toBe(true);
+        // 사용자 대상 본문은 해요체("요.")로 끝나거나 수신거부 문구로 끝난다 (admin_alert 는 운영 요약 원문)
+        if (key !== "admin_alert") expect(/(요\.?|요\)|해제)$/.test(r.body) || r.body.length === 0, `${key} body: ${r.body}`).toBe(true);
         expect(r.url.startsWith("/")).toBe(true);
         expect(r.url).not.toMatch(/\/\{/);
       }

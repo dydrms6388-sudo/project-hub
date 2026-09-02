@@ -319,7 +319,7 @@ begin
       v_rule_ids := v_rule_ids || (v_f ->> 'rule_id');
       v_flags := v_flags || jsonb_build_object('rule_id', v_f ->> 'rule_id', 'matched', v_f ->> 'matched', 'score', 0);
       if v_f ->> 'rule_id' = 'CT_ACCOUNT' and not ('SC_MONEY' = any (v_rule_ids)) then
-        v_rule_ids := v_rule_ids || 'SC_MONEY';
+        v_rule_ids := v_rule_ids || 'SC_MONEY'::text;
         v_flags := v_flags || jsonb_build_object('rule_id', 'SC_MONEY', 'matched', 'CT_ACCOUNT', 'score', 3);
       end if;
     end if;
@@ -333,7 +333,7 @@ begin
       and m.body is distinct from m.masked_body;
     if not v_unmasked and v_match.matched_at + interval '24 hours' > now() and v_ct_count >= 2
        and not ('SC_OFFAPP' = any (v_rule_ids)) then
-      v_rule_ids := v_rule_ids || 'SC_OFFAPP';
+      v_rule_ids := v_rule_ids || 'SC_OFFAPP'::text;
       v_flags := v_flags || jsonb_build_object('rule_id', 'SC_OFFAPP', 'matched', null, 'score', 2);
     end if;
   end if;
@@ -341,7 +341,7 @@ begin
     if (select count(distinct match_id) from public.messages
         where sender_id = p_sender_id and match_id <> p_match_id and body = v_body
           and created_at > now() - interval '7 days') >= 2 then
-      v_rule_ids := v_rule_ids || 'SC_TEMPLATE';
+      v_rule_ids := v_rule_ids || 'SC_TEMPLATE'::text;
       v_flags := v_flags || jsonb_build_object('rule_id', 'SC_TEMPLATE', 'matched', left(v_body, 60), 'score', 3);
     end if;
   end if;
