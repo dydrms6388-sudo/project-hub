@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { allowedSanctionLevels, canIssueSanctionLevel, canPerform, isPriorityUpgrade, maxSanctionLevel, roleSatisfies } from "./permissions";
+import { allowedSanctionLevels, canIssueSanctionLevel, canLiftSanctionLevel, canPerform, isPriorityUpgrade, maxSanctionLevel, roleSatisfies } from "./permissions";
 import {
   datingFemaleRatio, funnelWithRates, likeToMatchRate, matchToFirstMessageRate, photoReview24hRate, ratio, remainingSeconds,
   reportRatePerActive, reportRatePerMatch, slaCompliance, slaComplianceAll,
@@ -30,7 +30,11 @@ describe("권한 매트릭스 (PRD §0-47 / 05 §4.1)", () => {
   it("액션별 최소 역할", () => {
     expect(canPerform("moderator", "report_resolve")).toBe(true);
     expect(canPerform("moderator", "photo_review")).toBe(true);
-    expect(canPerform("moderator", "sanction_lift")).toBe(false);
+    expect(canPerform("moderator", "sanction_lift")).toBe(true);
+    expect(canLiftSanctionLevel("moderator", 3)).toBe(true);
+    expect(canLiftSanctionLevel("moderator", 4)).toBe(false);
+    expect(canLiftSanctionLevel("admin", 6)).toBe(true);
+    expect(canLiftSanctionLevel(null, 1)).toBe(false);
     expect(canPerform("moderator", "appeal_decide")).toBe(false);
     expect(canPerform("moderator", "force_logout")).toBe(false);
     expect(canPerform("moderator", "account_delete_schedule")).toBe(false);

@@ -43,34 +43,44 @@ export async function adminRpc<T>(client: AdminSupabase, fn: string, args: Recor
 }
 
 // ---------------------------------------------------------------------------
-// D5 admin_* 어댑터 — 인자명은 D1 관례(p_*) 로 가정. 대조표 참조.
+// D5 admin_* 어댑터 — 0043_admin_functions.sql 실제 시그니처와 대조 완료(21_admin.md 대조표).
+//   공통: p_actor_id(auth.users.id) 를 받고 SQL 이 admin_users 에서 역할을 다시 확인 + audit_logs 기록.
 // ---------------------------------------------------------------------------
-export type D5ListReportsArgs = {
-  p_status?: Enums["report_status"] | null;
-  p_priority?: Enums["report_priority"] | null;
-  p_reason?: Enums["report_reason"] | null;
-  p_overdue_only?: boolean;
-  p_limit?: number;
-  p_offset?: number;
+export type D5ReportListFilter = {
+  status?: Enums["report_status"][];
+  priority?: Enums["report_priority"][];
+  reason_code?: Enums["report_reason"];
+  assignee?: string | "me" | "none";
+  overdue?: boolean;
+  target_id?: string;
 };
-export type D5TriageArgs = { p_report_id: string; p_priority?: Enums["report_priority"] | null; p_assignee?: string | null; p_note?: string | null; p_actor_id: string };
+export type D5ListReportsArgs = { p_actor_id: string; p_filter?: D5ReportListFilter; p_cursor?: Json | null; p_limit?: number };
+export type D5TriageArgs = { p_actor_id: string; p_report_id: string; p_priority?: Enums["report_priority"] | null; p_assignee_id?: string | null };
 export type D5ResolveArgs = {
-  p_report_id: string;
-  p_status: "confirmed" | "dismissed" | "need_info";
-  p_sanction_level?: SanctionLevel | null;
-  p_sanction_duration?: string | null; // interval 문자열 ('72 hours')
-  p_note: string;
   p_actor_id: string;
+  p_report_id: string;
+  p_outcome: Enums["report_status"]; // confirmed | dismissed | need_info
+  p_sanction_level?: SanctionLevel | null;
+  p_note?: string | null;
+  p_duration?: string | null; // interval 문자열 ('72 hours')
 };
-export type D5ReviewPhotoArgs = { p_photo_id: string; p_decision: "approved" | PhotoReviewDecision; p_note?: string | null; p_actor_id: string };
-export type D5SearchProfilesArgs = { p_query: string; p_kind?: "nickname" | "phone_hash" | "profile_id" | "user_id"; p_limit?: number };
-export type D5ProfileDetailArgs = { p_profile_id: string };
-export type D5LiftSanctionArgs = { p_sanction_id: string; p_reason: string; p_actor_id: string };
-export type D5DecideAppealArgs = { p_appeal_id: string; p_decision: "accepted" | "rejected"; p_note: string; p_actor_id: string };
+export type D5ReviewPhotoArgs = {
+  p_actor_id: string;
+  p_photo_id: string;
+  /** 0043 은 approved|rejected 만 허용(held → INVALID_INPUT). held 는 D8 직접 갱신 */
+  p_decision: Extract<Enums["review_status"], "approved" | "rejected">;
+  p_reject_code?: Enums["photo_reject_code"] | null;
+  p_note?: string | null;
+};
+export type D5SearchProfilesArgs = { p_actor_id: string; p_q: string; p_limit?: number };
+export type D5ProfileDetailArgs = { p_actor_id: string; p_profile_id: string };
+export type D5LiftSanctionArgs = { p_actor_id: string; p_sanction_id: string; p_note?: string | null };
+export type D5DecideAppealArgs = { p_actor_id: string; p_appeal_id: string; p_decision: Extract<Enums["appeal_status"], "accepted" | "rejected">; p_note?: string | null };
+export type D5SetLegalHoldArgs = { p_actor_id: string; p_report_id: string; p_hold: boolean; p_note?: string | null };
 
 export const d5 = {
-  listReports: (c: AdminSupabase, a: D5ListReportsArgs) => adminRpc<Json>(c, ADMIN_RPC.listReports, a),
-  getReport: (c: AdminSupabase, reportId: string, actorId: string) => adminRpc<Json>(c, ADMIN_RPC.getReport, { p_report_id: reportId, p_actor_id: actorId }),
+  listReports: (c: AdminSupabase, a: D5ListReportsArgs) => adminRpc<Json>(c, ADMIN_RPC.listReports, { ...a, p_filter: (a.p_filter ?? {}) as Json }),
+  getReport: (c: AdminSupabase, a: { p_actor_id: string; p_report_id: string }) => adminRpc<Json>(c, ADMIN_RPC.getReport, a),
   triageReport: (c: AdminSupabase, a: D5TriageArgs) => adminRpc<Json>(c, ADMIN_RPC.triageReport, a),
   resolveReport: (c: AdminSupabase, a: D5ResolveArgs) => adminRpc<Json>(c, ADMIN_RPC.resolveReport, a),
   reviewPhoto: (c: AdminSupabase, a: D5ReviewPhotoArgs) => adminRpc<Json>(c, ADMIN_RPC.reviewPhoto, a),
@@ -78,6 +88,7 @@ export const d5 = {
   profileDetail: (c: AdminSupabase, a: D5ProfileDetailArgs) => adminRpc<Json>(c, ADMIN_RPC.profileDetail, a),
   liftSanction: (c: AdminSupabase, a: D5LiftSanctionArgs) => adminRpc<Json>(c, ADMIN_RPC.liftSanction, a),
   decideAppeal: (c: AdminSupabase, a: D5DecideAppealArgs) => adminRpc<Json>(c, ADMIN_RPC.decideAppeal, a),
+  setLegalHold: (c: AdminSupabase, a: D5SetLegalHoldArgs) => adminRpc<Json>(c, ADMIN_RPC.setLegalHold, a),
 } as const;
 
 // ---------------------------------------------------------------------------

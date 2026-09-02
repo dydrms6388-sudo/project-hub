@@ -19,7 +19,7 @@ export const ACTION_MIN_ROLE = {
   report_resolve: "moderator",
   photo_review: "moderator",
   sanction_issue: "moderator", // 레벨은 ROLE_MAX_SANCTION_LEVEL 로 추가 제한
-  sanction_lift: "admin",
+  sanction_lift: "moderator", // 레벨 ≤3 만(0043 admin_lift_sanction 과 동일), 4~6 은 admin
   appeal_decide: "admin",
   profile_hide_toggle: "moderator",
   force_logout: "admin",
@@ -31,7 +31,7 @@ export type AdminActionKey = keyof typeof ACTION_MIN_ROLE;
 
 /**
  * D5 어드민 RPC 이름 (apps/web/lib/moderation/admin.ts 가 완성되면 그쪽 래퍼로 교체).
- * 실제 함수 존재·시그니처는 오케스트레이터가 D5 완료 후 대조한다(21_admin.md "D5 시그니처 대조표").
+ * 시그니처는 0043_admin_functions.sql 과 대조 완료(21_admin.md "D5 시그니처 대조표"). 최종 통합 검증은 오케스트레이터.
  */
 export const ADMIN_RPC = {
   listReports: "admin_list_reports",
@@ -43,6 +43,7 @@ export const ADMIN_RPC = {
   profileDetail: "admin_profile_detail",
   liftSanction: "admin_lift_sanction",
   decideAppeal: "admin_decide_appeal",
+  setLegalHold: "admin_set_legal_hold",
 } as const;
 
 /** D8 지표 RPC (0060) */

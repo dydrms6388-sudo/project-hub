@@ -56,7 +56,7 @@ export function ReportActions(p: Props) {
             e.preventDefault();
             const fd = new FormData(e.currentTarget);
             const pr = fd.get("priority");
-            run(() => triageReport({ reportId: p.reportId, priority: pr && pr !== "" ? String(pr) : undefined, assignToMe: fd.get("assign") === "on", note: (fd.get("note") as string) || undefined }));
+            run(() => triageReport({ reportId: p.reportId, priority: pr && pr !== "" ? String(pr) : undefined, assignToMe: fd.get("assign") === "on" }));
           }}
           className="flex flex-wrap items-end gap-2"
         >
@@ -74,7 +74,6 @@ export function ReportActions(p: Props) {
           <label className="flex h-10 items-center gap-1 text-body-sm">
             <input type="checkbox" name="assign" defaultChecked={p.handledBy !== p.myUserId} /> 내가 담당 (in_review)
           </label>
-          <input name="note" placeholder="메모(선택)" className="h-10 flex-1 rounded-md border border-input bg-card px-3 text-body-sm" />
           <Button type="submit" size="sm" variant="secondary" loading={pending}>
             적용
           </Button>

@@ -32,6 +32,12 @@ export function canIssueSanctionLevel(role: AdminRole | null | undefined, level:
   return level <= maxSanctionLevel(role);
 }
 
+/** 제재 해제: 발급과 같은 한도(moderator ≤ 3). 0043 admin_lift_sanction 과 동일 */
+export function canLiftSanctionLevel(role: AdminRole | null | undefined, level: SanctionLevel): boolean {
+  if (!canPerform(role, "sanction_lift")) return false;
+  return level <= maxSanctionLevel(role);
+}
+
 /** 역할이 고를 수 있는 레벨 목록 (폼 select 용) */
 export function allowedSanctionLevels(role: AdminRole | null | undefined): SanctionLevel[] {
   const max = maxSanctionLevel(role);

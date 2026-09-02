@@ -4,9 +4,9 @@
  * 어드민 서버 액션 (D8). 전부 ActionResult 반환(throw 금지), 사유 필수, 역할 검증은 requireAdminAction + permissions.
  *
  *  쓰기 경로 우선순위:
- *   1) D5 `admin_*` RPC (api.ts 어댑터, p_actor_id 전달) — RPC 가 audit_logs 를 기록한다고 가정 → D8 은 기록하지 않는다.
- *   2) RPC 미존재(AdminRpcMissingError = PGRST202) → **D8 직접 구현 폴백**(service role update + audit_logs meta.fallback=true).
- *      D5 병합 후 오케스트레이터가 폴백 제거 여부를 결정한다(21_admin.md).
+ *   1) D5 `admin_*` RPC (0043, api.ts 어댑터, p_actor_id 전달) — RPC 가 audit_logs 를 기록한다(admin_audit) → D8 은 기록하지 않는다.
+ *   2) RPC 미존재(AdminRpcMissingError = PGRST202, 0043 미적용 환경) → **D8 직접 구현 폴백**(service role update + audit_logs meta.fallback=true).
+ *      0043 적용 후에는 폴백이 실행되지 않는다. 제거 여부는 오케스트레이터(21_admin.md).
  *  RPC 밖 액션(비노출 토글·강제 로그아웃·삭제 예약·제재 발급은 0009 issue_sanction 이 자체 기록)은 D8 이 직접 audit.
  */
 import { revalidatePath } from "next/cache";
@@ -19,7 +19,7 @@ import { getSession, invalidateGateCache } from "@/lib/auth/session";
 import { AdminRpcMissingError, d5, writeAudit } from "./api";
 import { requireAdminAction, type AdminContext } from "./auth";
 import { ADMIN_REASON_MAX, ADMIN_REASON_MIN, AUDIT_ACTIONS, FORCE_LOGOUT_ALLOWED_DURATIONS, REPORT_OPEN_STATUSES } from "./constants";
-import { canIssueSanctionLevel, canPerform, isPriorityUpgrade } from "./permissions";
+import { canIssueSanctionLevel, canLiftSanctionLevel, canPerform, isPriorityUpgrade } from "./permissions";
 import type {
   DecideAppealInput, ForceLogoutInput, IssueSanctionInput, LiftSanctionInput, PhotoReviewInput, ResolveInput, ScheduleDeleteInput,
   ToggleHiddenInput, TriageInput,
@@ -68,12 +68,12 @@ export async function triageReport(input: unknown): Promise<ActionResult<{ repor
     );
     let via: "rpc" | "fallback" = "rpc";
     try {
+      // 0043: 메모 인자 없음 → note 는 폴백 경로의 audit meta 에만 남는다
       await d5.triageReport(ctx.admin, {
+        p_actor_id: ctx.user.id,
         p_report_id: data.reportId,
         p_priority: data.priority ?? null,
-        p_assignee: data.assignToMe ? ctx.user.id : null,
-        p_note: data.note ?? null,
-        p_actor_id: ctx.user.id,
+        p_assignee_id: data.assignToMe ? ctx.user.id : null,
       });
     } catch (e) {
       if (!(e instanceof AdminRpcMissingError)) throw e;
@@ -123,12 +123,12 @@ export async function resolveReport(input: unknown): Promise<ActionResult<{ repo
     let sanctionId: string | null = null;
     try {
       const res = await d5.resolveReport(ctx.admin, {
-        p_report_id: data.reportId,
-        p_status: data.decision,
-        p_sanction_level: data.decision === "confirmed" && data.sanctionLevel > 0 ? (data.sanctionLevel as SanctionLevel) : null,
-        p_sanction_duration: data.decision === "confirmed" ? intervalHours(data.durationHours) : null,
-        p_note: data.note,
         p_actor_id: ctx.user.id,
+        p_report_id: data.reportId,
+        p_outcome: data.decision,
+        p_sanction_level: data.decision === "confirmed" && data.sanctionLevel > 0 ? (data.sanctionLevel as SanctionLevel) : null,
+        p_note: data.note,
+        p_duration: data.decision === "confirmed" ? intervalHours(data.durationHours) : null,
       });
       if (res && typeof res === "object" && "sanction_id" in res) sanctionId = (res as { sanction_id?: string | null }).sanction_id ?? null;
     } catch (e) {
@@ -224,12 +224,23 @@ export async function reviewPhotos(input: unknown): Promise<ActionResult<{ done:
     let via: "rpc" | "fallback" = "rpc";
     for (const id of data.photoIds) {
       try {
-        try {
-          await d5.reviewPhoto(ctx.admin, { p_photo_id: id, p_decision: data.decision, p_note: data.note ?? null, p_actor_id: ctx.user.id });
-        } catch (e) {
-          if (!(e instanceof AdminRpcMissingError)) throw e;
-          via = "fallback";
+        if (data.decision === "held") {
+          // 0043 admin_review_photo 는 approved|rejected 만 받는다(held → INVALID_INPUT) → held 는 항상 D8 직접 갱신 + audit(photo_held)
           await reviewPhotoFallback(ctx, id, data);
+        } else {
+          try {
+            await d5.reviewPhoto(ctx.admin, {
+              p_actor_id: ctx.user.id,
+              p_photo_id: id,
+              p_decision: data.decision === "approved" ? "approved" : "rejected",
+              p_reject_code: data.decision === "approved" ? null : data.decision,
+              p_note: data.note ?? null,
+            });
+          } catch (e) {
+            if (!(e instanceof AdminRpcMissingError)) throw e;
+            via = "fallback";
+            await reviewPhotoFallback(ctx, id, data);
+          }
         }
         done.push(id);
       } catch (e) {
@@ -257,10 +268,10 @@ async function reviewPhotoFallback(ctx: AdminContext, photoId: string, data: Pho
   const { error: upErr } = await ctx.admin.from("photos").update(patch).eq("id", photoId);
   if (upErr) throw upErr;
   await writeAudit(ctx.admin, {
-    actorId: ctx.user.id, actorRole: ctx.role, action: "photo_reviewed", targetType: "photo", targetId: photoId,
+    actorId: ctx.user.id, actorRole: ctx.role, action: data.decision === "held" ? "photo_held" : "photo_reviewed", targetType: "photo", targetId: photoId,
     before: { review_status: photo.review_status, reject_code: photo.reject_code },
     after: { review_status: patch.review_status, reject_code: patch.reject_code },
-    meta: { profile_id: photo.profile_id, is_primary: photo.is_primary, note: data.note ?? null, fallback: true },
+    meta: { profile_id: photo.profile_id, is_primary: photo.is_primary, note: data.note ?? null, fallback: data.decision !== "held" },
   });
 }
 
@@ -322,11 +333,16 @@ async function revokeSanctionDirect(ctx: AdminContext, sanctionId: string, why: 
 
 export async function liftSanction(input: unknown): Promise<ActionResult<{ sanctionId: string; via: "rpc" | "fallback" }>> {
   try {
-    const ctx = await requireAdminAction("admin");
+    const ctx = await requireAdminAction("moderator");
     const data = parse(z.object({ sanctionId: uuid, reason }) as z.ZodType<LiftSanctionInput>, input);
+    // 레벨 한도(moderator ≤ 3)는 SQL(0043)도 강제하지만 폴백 경로를 위해 여기서도 확인
+    const { data: target, error: tErr } = await ctx.admin.from("sanctions").select("level").eq("id", data.sanctionId).maybeSingle();
+    if (tErr) throw tErr;
+    if (!target) throw new AuthError("NOT_FOUND");
+    if (!canLiftSanctionLevel(ctx.role, target.level)) throw new AuthError("FORBIDDEN", `레벨 ${target.level} 제재 해제는 admin 만 할 수 있어요`);
     let via: "rpc" | "fallback" = "rpc";
     try {
-      await d5.liftSanction(ctx.admin, { p_sanction_id: data.sanctionId, p_reason: data.reason, p_actor_id: ctx.user.id });
+      await d5.liftSanction(ctx.admin, { p_actor_id: ctx.user.id, p_sanction_id: data.sanctionId, p_note: data.reason });
     } catch (e) {
       if (!(e instanceof AdminRpcMissingError)) throw e;
       via = "fallback";
@@ -345,7 +361,7 @@ export async function decideAppeal(input: unknown): Promise<ActionResult<{ appea
     const data = parse(z.object({ appealId: uuid, decision: z.enum(["accepted", "rejected"]), note: reason }) as z.ZodType<DecideAppealInput>, input);
     let via: "rpc" | "fallback" = "rpc";
     try {
-      await d5.decideAppeal(ctx.admin, { p_appeal_id: data.appealId, p_decision: data.decision, p_note: data.note, p_actor_id: ctx.user.id });
+      await d5.decideAppeal(ctx.admin, { p_actor_id: ctx.user.id, p_appeal_id: data.appealId, p_decision: data.decision, p_note: data.note });
     } catch (e) {
       if (!(e instanceof AdminRpcMissingError)) throw e;
       via = "fallback";

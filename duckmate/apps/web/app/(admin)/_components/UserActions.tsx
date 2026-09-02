@@ -3,10 +3,10 @@
  * 전부 ConfirmActionDialog(사유 필수) → audit_logs.
  */
 import { SANCTION_LEVELS } from "@duckmate/db";
-import type { Enums } from "@duckmate/db";
+import type { Enums, SanctionLevel } from "@duckmate/db";
 import { decideAppeal, forceLogout, issueSanction, liftSanction, scheduleAccountDelete, toggleProfileHidden } from "@/lib/admin/actions";
 import { FORCE_LOGOUT_ALLOWED_DURATIONS, FORCE_LOGOUT_DEFAULT_DURATION, type AdminRole } from "@/lib/admin/constants";
-import { allowedSanctionLevels, canPerform } from "@/lib/admin/permissions";
+import { allowedSanctionLevels, canLiftSanctionLevel, canPerform } from "@/lib/admin/permissions";
 import { ConfirmActionDialog } from "./ConfirmActionDialog";
 
 export function IssueSanctionButton({ role, profileId, isSelf }: { role: AdminRole; profileId: string; isSelf: boolean }) {
@@ -29,8 +29,8 @@ export function IssueSanctionButton({ role, profileId, isSelf }: { role: AdminRo
   );
 }
 
-export function LiftSanctionButton({ role, sanctionId, level }: { role: AdminRole; sanctionId: string; level: number }) {
-  if (!canPerform(role, "sanction_lift")) return null;
+export function LiftSanctionButton({ role, sanctionId, level }: { role: AdminRole; sanctionId: string; level: SanctionLevel }) {
+  if (!canLiftSanctionLevel(role, level)) return <span className="text-caption text-muted-foreground">admin 해제</span>;
   return (
     <ConfirmActionDialog
       triggerLabel="해제"
