@@ -3,6 +3,7 @@
  */
 import type { AgeBand, FirstSuggestion, MatchRow, ProfilePublicView } from "@duckmate/db";
 import type { ActionResult } from "@/lib/auth/errors";
+import type { SentMessage } from "@/lib/chat/types";
 import type { ActOnRecommendationResult } from "@/lib/matching/actions";
 import type { RecoCard, RecoHobby, TodayRecommendations } from "@/lib/matching/queries";
 import type { HomeSummary, SuperlikeStatus } from "@/lib/matching/rpc";
@@ -70,7 +71,8 @@ export type DiscoverApi = {
   seen(input: { recoId: string }): Promise<ActionResult<{ recoId: string; seenAt: string }>>;
   undo(): Promise<ActionResult<{ recoId: string; targetId: string; previousAction: "like" | "super" | "pass" }>>;
   fetchMatch(matchId: string): Promise<ActionResult<MatchView>>;
-  sendFirst(input: { matchId: string; body: string }): Promise<ActionResult<{ id: string }>>;
+  /** 첫 메시지 전송(제안 카드). E3 `SuggestionPicker.send` 계약과 동일한 반환 타입 — H2 통합 */
+  sendFirst(input: { matchId: string; body: string }): Promise<ActionResult<SentMessage>>;
   block(input: { targetId: string }): Promise<ActionResult<{ targetId: string; blocked: true }>>;
   markSafetySeen(): Promise<ActionResult<{ seenAt: string }>>;
 };

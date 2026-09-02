@@ -182,7 +182,20 @@ export function createMockApi(opts: { safetyModal?: boolean; matchOnLike?: strin
     seen: async ({ recoId }) => ok({ recoId, seenAt: new Date().toISOString() }),
     undo: async () => fail("NOT_ENTITLED", "되돌리기는 플러스 혜택이에요"),
     fetchMatch: async () => ok({ ...MOCK_MATCH, showSafetyModal: Boolean(opts.safetyModal) }),
-    sendFirst: async () => ok({ id: "40000000-0000-4000-8000-000000000001" }),
+    sendFirst: async ({ body }) =>
+      ok({
+        id: "40000000-0000-4000-8000-000000000001",
+        matchId: MOCK_MATCH.matchId,
+        body,
+        maskedBody: body,
+        imagePath: null,
+        isHeld: false,
+        createdAt: new Date().toISOString(),
+        contactMasked: false,
+        warnContact: false,
+        warnRules: [],
+        offlineMeeting: false,
+      }),
     block: async ({ targetId }) => ok({ targetId, blocked: true as const }),
     markSafetySeen: async () => ok({ seenAt: new Date().toISOString() }),
   };

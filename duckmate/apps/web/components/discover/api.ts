@@ -2,7 +2,6 @@
  * 화면 → 서버 액션 바인딩(기본). 전부 "use server" 파일이라 클라이언트에서 import 가능.
  * 개발 라우트(/dev/discover)는 `mockApi` 를 주입한다.
  */
-import { ok } from "@/lib/auth/errors";
 import { sendMessage } from "@/lib/chat/actions";
 import { actOnRecommendation, markRecommendationSeen, undo } from "@/lib/matching/actions";
 import { blockProfile } from "@/lib/moderation/actions";
@@ -18,10 +17,7 @@ export const serverApi: DiscoverApi = {
   seen: (input) => markRecommendationSeen(input),
   undo: () => undo(),
   fetchMatch: (matchId) => fetchMatchView(matchId),
-  sendFirst: async (input) => {
-    const r = await sendMessage(input);
-    return r.ok ? ok({ id: r.data.id }) : r;
-  },
+  sendFirst: (input) => sendMessage(input),
   block: (input) => blockProfile(input),
   markSafetySeen: () => markSafetyModalSeen(),
 };
