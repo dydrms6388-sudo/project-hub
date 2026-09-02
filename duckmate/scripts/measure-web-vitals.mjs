@@ -214,11 +214,20 @@ async function measurePage(browser, base, path, { mode, axeSource }) {
 }
 
 // ---------- Lighthouse ----------
+/** 비동기 spawn — company 정적 서버가 같은 프로세스의 이벤트 루프에 있으므로 spawnSync 를 쓰면 서버가 응답하지 못해 Lighthouse 가 타임아웃한다 */
 function runLighthouse(url, outFile) {
-  const r = spawnSync("npx", ["--yes", "lighthouse@13.4.1", url, "--output=json", `--output-path=${outFile}`, '--chrome-flags=--headless=new --no-sandbox --disable-gpu', "--only-categories=performance,accessibility,best-practices,seo", "--form-factor=mobile", "--quiet"], {
-    env: { ...process.env, CHROME_PATH: chromiumPath ?? process.env.CHROME_PATH }, stdio: "pipe", timeout: 300_000,
+  return new Promise((resolve) => {
+    const child = spawn("npx", ["--yes", "lighthouse@13.4.1", url, "--output=json", `--output-path=${outFile}`, "--chrome-flags=--headless=new --no-sandbox --disable-gpu", "--only-categories=performance,accessibility,best-practices,seo", "--form-factor=mobile", "--quiet"], {
+      env: { ...process.env, CHROME_PATH: chromiumPath ?? process.env.CHROME_PATH }, stdio: ["ignore", "pipe", "pipe"],
+    });
+    let err = "";
+    child.stderr.on("data", (d) => (err += d));
+    const timer = setTimeout(() => child.kill("SIGKILL"), 300_000);
+    child.on("exit", (code) => { clearTimeout(timer); resolve(parseLighthouse(code, outFile, err)); });
   });
-  if (r.status !== 0 || !existsSync(outFile)) return { error: (r.stderr?.toString() || "lighthouse failed").split("\n").slice(-3).join(" ") };
+}
+function parseLighthouse(status, outFile, stderr) {
+  if (status !== 0 || !existsSync(outFile)) return { error: (stderr || "lighthouse failed").trim().split("\n").slice(-3).join(" ").slice(0, 200) };
   const j = JSON.parse(readFileSync(outFile, "utf8"));
   const fails = (cat) => j.categories[cat].auditRefs.map((a) => j.audits[a.id]).filter((a) => a && a.score === 0).map((a) => a.id);
   return {
@@ -306,7 +315,7 @@ function toMarkdown(report) {
     for (const p of PAGES.prod) { const r = await measurePage(browser, base, p, { mode: "prod", axeSource }); report.pages.push({ area: "web", ...r }); console.log(`  web prod ${p} LCP ${ms(r.lcp)} CLS ${r.cls.toFixed(3)} JS ${kb(r.jsTransfer)}KB axe ${r.axe.violations.length}`); }
     if (flag("--lighthouse")) {
       const dir = join(REPO_ROOT, "node_modules/.cache/e6-lighthouse"); mkdirSync(dir, { recursive: true });
-      for (const p of PAGES.prod) { const l = runLighthouse(base + p, join(dir, `web${p.replace(/[^a-z0-9]/gi, "_") || "_root"}.json`)); report.lighthouse.push({ area: "web", path: p, ...l }); console.log(`  lighthouse web ${p}`, l.scores ?? l.error); }
+      for (const p of PAGES.prod) { const l = await runLighthouse(base + p, join(dir, `web${p.replace(/[^a-z0-9]/gi, "_") || "_root"}.json`)); report.lighthouse.push({ area: "web", path: p, ...l }); console.log(`  lighthouse web ${p}`, l.scores ?? l.error); }
     }
     prod.kill("SIGTERM");
     report.bundles.web = bundleReport(WEB_DIR, DIST_DIR);
@@ -328,7 +337,7 @@ function toMarkdown(report) {
         for (const p of PAGES.company) { const r = await measurePage(browser, cbase, p, { mode: "static", axeSource }); report.pages.push({ area: "company", ...r }); console.log(`  company ${p} LCP ${ms(r.lcp)} CLS ${r.cls.toFixed(3)} JS ${kb(r.jsTransfer)}KB axe ${r.axe.violations.length}`); }
         if (flag("--lighthouse")) {
           const dir = join(REPO_ROOT, "node_modules/.cache/e6-lighthouse");
-          for (const p of PAGES.company) { const l = runLighthouse(cbase + p, join(dir, `company${p.replace(/[^a-z0-9]/gi, "_") || "_root"}.json`)); report.lighthouse.push({ area: "company", path: p, ...l }); console.log(`  lighthouse company ${p}`, l.scores ?? l.error); }
+          for (const p of PAGES.company) { const l = await runLighthouse(cbase + p, join(dir, `company${p.replace(/[^a-z0-9]/gi, "_") || "_root"}.json`)); report.lighthouse.push({ area: "company", path: p, ...l }); console.log(`  lighthouse company ${p}`, l.scores ?? l.error); }
         }
         srv.close();
         report.bundles.company = bundleReport(join(REPO_ROOT, "apps/company"), ".next");
