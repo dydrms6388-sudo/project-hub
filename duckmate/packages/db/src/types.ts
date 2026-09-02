@@ -1,6 +1,6 @@
 /**
  * @duckmate/db — Database 타입 (supabase gen types 형식을 손으로 작성)
- * 소스: supabase/migrations/2026090200000{1..13}_*.sql
+ * 소스: supabase/migrations/2026090200000{1..14}_*.sql
  * 스키마 변경 시 이 파일과 constants.ts 의 enum 배열을 함께 갱신한다.
  */
 
@@ -34,7 +34,8 @@ export type Enums = {
     | "dating_mode_public"
     | "auto_renew"
     | "digital_no_withdrawal"
-    | "reconsent";
+    | "reconsent"
+    | "youth_policy";
   consent_source: "onboarding" | "settings" | "checkout" | "banner" | "recheck";
   legal_doc_key: "terms" | "privacy" | "location" | "youth" | "business" | "refund" | "marketing";
   identity_provider: "mock" | "portone";
@@ -212,6 +213,8 @@ export type PhotoRow = {
   face_count: number | null;
   face_confidence: number | null;
   held_reason: string | null;
+  /** photo-review Edge Function 자동 검사 결과(참고값, 자동 반려 없음) */
+  auto_flags: Json;
   created_at: string;
   updated_at: string;
 };
@@ -576,6 +579,9 @@ export type NotificationLogRow = {
   error: string | null;
 };
 
+/** D2 레이트리밋 카운터 (service role 전용) */
+export type RateLimitRow = { key: string; window_start: string; count: number; updated_at: string };
+
 export type AnalyticsEventRow = {
   id: number;
   user_id_hash: string | null;
@@ -670,7 +676,7 @@ export type Database = {
       photos: TableDef<
         PhotoRow,
         | "id" | "is_primary" | "sort_order" | "review_status" | "reject_code" | "reviewed_by" | "reviewed_at"
-        | "face_count" | "face_confidence" | "held_reason" | "created_at" | "updated_at"
+        | "face_count" | "face_confidence" | "held_reason" | "auto_flags" | "created_at" | "updated_at"
       >;
       consents: TableDef<
         ConsentRow,
@@ -767,6 +773,7 @@ export type Database = {
         AnalyticsEventRow,
         "id" | "user_id_hash" | "props" | "session_id" | "platform" | "created_at"
       >;
+      rate_limits: TableDef<RateLimitRow, "count" | "updated_at">;
     };
     Views: {
       v_profile_public: ViewDef<ProfilePublicView>;
@@ -822,6 +829,34 @@ export type Database = {
           p_match_id?: string | null;
           p_surface?: Enums["report_surface"];
           p_reporter_id?: string | null;
+        };
+        Returns: Json;
+      };
+      // ---- D2 (0014) ----
+      /** 세션 사용자의 게이트 판정 필드. 프로필 없으면 profile_id=null, 세션 없으면 null */
+      get_gate_state: { Args: Record<string, never>; Returns: Json };
+      /** OTP 성공 후 생년월일 확정(update). {profile_id,status,age_blocked,onboarding_step,already_set?} */
+      create_profile: { Args: { p_birth_date: string; p_phone_hash?: string | null }; Returns: Json };
+      /** dating 은 L3 + seeking_gender 필수 → NOT_ENTITLED */
+      set_mode: { Args: { p_mode: Enums["profile_mode"]; p_seeking_gender?: Enums["seeking_gender"] | null }; Returns: Json };
+      request_delete: { Args: Record<string, never>; Returns: Json };
+      cancel_delete: { Args: Record<string, never>; Returns: Json };
+      pause_account: { Args: Record<string, never>; Returns: Json };
+      resume_account: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용. {allowed,count,limit,retry_after_sec} */
+      check_rate_limit: { Args: { p_key: string; p_limit: number; p_window: string }; Returns: Json };
+      /** service role 전용. code: OK | FAILED | BLOCKED_CI | MINOR | DUPLICATE_CI */
+      apply_identity_verification: {
+        Args: {
+          p_user_id: string;
+          p_provider: Enums["identity_provider"];
+          p_result: Enums["identity_result"];
+          p_ci_hash?: string | null;
+          p_di_hash?: string | null;
+          p_birth_date?: string | null;
+          p_gender?: Enums["gender"] | null;
+          p_provider_tx_id?: string | null;
+          p_meta?: Json;
         };
         Returns: Json;
       };

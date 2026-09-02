@@ -233,8 +233,10 @@ export const CONSENT_KEYS = [
   "auto_renew",
   "digital_no_withdrawal",
   "reconsent",
+  "youth_policy",
 ] as const satisfies ReadonlyArray<Enums["consent_key"]>;
-export const REQUIRED_ONBOARDING_CONSENTS = ["age_19", "terms", "privacy", "evidence_snapshot"] as const satisfies ReadonlyArray<
+/** 가입(S2) 필수 동의 5개. youth_policy 는 D2(0014)가 추가 — 동의 화면의 청소년보호정책 체크 */
+export const REQUIRED_ONBOARDING_CONSENTS = ["age_19", "terms", "privacy", "evidence_snapshot", "youth_policy"] as const satisfies ReadonlyArray<
   Enums["consent_key"]
 >;
 export const LEGAL_DOC_KEYS = ["terms", "privacy", "location", "youth", "business", "refund"] as const satisfies ReadonlyArray<
@@ -289,5 +291,19 @@ export const storagePaths = {
 // ---------------------------------------------------------------------------
 // 서버 에러 코드 (C3 §0-21) — RPC 가 raise 하는 메시지 접두어와 동일
 // ---------------------------------------------------------------------------
-export const ERROR_CODES = ["NOT_VERIFIED", "NOT_ENTITLED", "SANCTIONED", "ALREADY_ACTED", "RATE_LIMITED", "NOT_AUTHENTICATED"] as const;
+export const ERROR_CODES = [
+  "NOT_VERIFIED",
+  "NOT_ENTITLED",
+  "SANCTIONED",
+  "ALREADY_ACTED",
+  "RATE_LIMITED",
+  "NOT_AUTHENTICATED",
+  // D2 (0014)
+  "AGE_BLOCKED",
+  "ONBOARDING_INCOMPLETE",
+  "DELETING",
+  "INVALID_INPUT",
+  "NOT_FOUND",
+  "FORBIDDEN",
+] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
