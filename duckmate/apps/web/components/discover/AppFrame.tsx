@@ -2,7 +2,7 @@
 
 /**
  * (app) 공용 프레임 — AppShell 하단 탭 4개(홈/채팅/프로필/설정, Next Link) + 제재/모드 배너 + safe-area.
- *  - active 탭·풀스크린(hideTabs) 판정은 pathname: /chat/[id]·/match/[id] 는 탭 숨김
+ *  - active 탭·풀스크린(hideTabs) 판정은 pathname: /chat/[id]·/match/[id]·/report* 는 탭 숨김
  *  - L1(verifyLevel<2): 탭 대신 상단 "본인인증하고 추천 받기" 고정 배너(12_flows §1)
  *  - 제재 level 1: 경고 모달 1회(acknowledgeSanction) / level 2: 상단 배너(채팅·좋아요 제한, 해제 시각)
  */
@@ -37,9 +37,9 @@ export function activeTabOf(pathname: string): AppTab {
   return "home";
 }
 
-/** 대화방·매칭 화면은 풀스크린 */
+/** 대화방·매칭 화면·신고 플로우는 풀스크린(탭 숨김). `/report*` 는 자체 뒤로가기 + 단계 진행이라 탭이 방해된다(E4 병합 요청 → H2) */
 export function isFullscreenPath(pathname: string): boolean {
-  return /^\/chat\/[^/]+/.test(pathname) || /^\/match\/[^/]+/.test(pathname);
+  return /^\/chat\/[^/]+/.test(pathname) || /^\/match\/[^/]+/.test(pathname) || pathname.startsWith("/report");
 }
 
 function reasonLabel(code: Enums["report_reason"] | null): string {

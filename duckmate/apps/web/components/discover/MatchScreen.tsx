@@ -1,14 +1,20 @@
 "use client";
 
 /**
- * /match/[id] — 순서 고정: (첫 매칭이면 안전 모달) → MatchReveal simple ≤1.2s → 제안 카드 3장(가로 스냅) → 선택 시 첫 메시지 자동 전송 → /chat/[matchId].
+ * /match/[id] — 순서 고정: (첫 매칭이면 안전 모달) → MatchReveal simple ≤1.2s → 제안 카드 3장(E3 `SuggestionPicker`) → 선택 시 첫 메시지 자동 전송 → /chat/[matchId].
  * 건너뛰기 → /chat/[matchId] (E3 방 상단에 접힌 카드 재노출), 닫기 ✕ → /chat. 리빌 앞뒤에 광고·결제 유도 없음.
+ *
+ * H2: 제안 카드 선택 로직은 E3 `components/chat/SuggestionPicker` 로 단일화했다(중복 제거, `send={api.sendFirst}` 주입 →
+ *     개발 목 라우트도 그대로 동작). 전송 성공 → `['matches']` invalidate → /chat/[matchId].
+ *     리빌 뒤 첫 매칭 1회 푸시 소프트 프롬프트(20_notifications §0-4) · 화면 제목 h1(sr-only, G1 §19).
  */
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import { Button, EmptyState, MatchReveal, SuggestionCard, useToast } from "@duckmate/ui";
+import { Button, EmptyState, MatchReveal, useToast } from "@duckmate/ui";
+import { SuggestionPicker } from "@/components/chat/SuggestionPicker";
+import { PushSoftPrompt } from "@/components/push/PushSoftPrompt";
 import { QK, serverApi } from "./api";
 import { mapFailure, withRetry } from "./errors";
 import { PersonCard } from "./PersonCard";
@@ -46,8 +52,6 @@ export function MatchScreen({ matchId, initial, api = serverApi, onNavigate, ski
 
   const [safetyDone, setSafetyDone] = React.useState(false);
   const [revealed, setRevealed] = React.useState(skipReveal);
-  const [selected, setSelected] = React.useState<number | null>(null);
-  const [busy, setBusy] = React.useState(false);
 
   React.useEffect(() => {
     if (view) track("match_screen_viewed", { match_id_hash: idHash(view.matchId) });
@@ -59,29 +63,21 @@ export function MatchScreen({ matchId, initial, api = serverApi, onNavigate, ski
     track("suggestion_shown", { template_ids: view.firstSuggestion.map((c) => c.template_id), kinds: view.firstSuggestion.map((c) => c.kind) });
   }, [view, revealed]);
 
-  const select = async (position: number) => {
-    if (!view || busy) return;
-    const card = view.firstSuggestion[position - 1];
-    if (!card) return;
-    setSelected(position);
-    setBusy(true);
-    const r = await api.sendFirst({ matchId: view.matchId, body: card.body });
-    setBusy(false);
-    if (!r.ok) {
-      setSelected(null);
-      const ux = mapFailure(r, { surface: "send" });
-      if (ux.kind === "redirect") return go(ux.to);
-      toast({ title: ux.kind === "refresh" ? (ux.message ?? "다시 시도해 주세요") : withRetry(ux.message, ux.kind === "toast" ? ux.retryAfterSec : undefined), variant: "error" });
-      return;
-    }
-    track("suggestion_selected", { template_id: card.template_id, kind: card.kind, position });
-    void qc.invalidateQueries({ queryKey: QK.matches });
-    go(`/chat/${view.matchId}`);
-  };
-
   const skip = () => {
     track("suggestion_skipped");
     go(`/chat/${matchId}`);
+  };
+
+  /** 제안 카드 전송 성공(SuggestionPicker) → 채팅 목록 무효화 후 대화방으로. `suggestion_selected` 는 Picker 가 발화 */
+  const onSent = () => {
+    void qc.invalidateQueries({ queryKey: QK.matches });
+    go(`/chat/${matchId}`);
+  };
+
+  const onSendFailure = (f: Parameters<typeof mapFailure>[0]) => {
+    const ux = mapFailure(f, { surface: "send" });
+    if (ux.kind === "redirect") go(ux.to);
+    else if (ux.kind === "toast") toast({ title: withRetry(ux.message, ux.retryAfterSec), variant: "error" });
   };
 
   if (query.isError && !view) {
@@ -107,6 +103,8 @@ export function MatchScreen({ matchId, initial, api = serverApi, onNavigate, ski
 
   return (
     <div className="flex min-h-dvh flex-col px-4 pb-8 pt-2" data-testid="match-screen">
+      {/* 리빌 헤드라인은 MatchReveal 안의 h2 라 화면 제목이 없었다 → 시각적으로 숨긴 h1 (G1 §19 · H2) */}
+      <h1 className="sr-only">{partnerName}님과 매칭됐어요</h1>
       <div className="flex h-12 items-center justify-end">
         <Button variant="ghost" size="icon" aria-label="닫기" onClick={() => go("/chat")} data-testid="match-close">
           <X aria-hidden="true" />
@@ -132,10 +130,10 @@ export function MatchScreen({ matchId, initial, api = serverApi, onNavigate, ski
       ) : null}
 
       {revealed && !showSafety ? (
-        <section className="mt-6 animate-fade-in" aria-labelledby="match-suggest-title" data-testid="match-suggestions">
+        <section className="mt-6 animate-fade-in" aria-label="첫 대화 제안" data-testid="match-suggestions">
           {alreadyStarted ? (
             <div className="text-center">
-              <h2 id="match-suggest-title" className="text-h3">
+              <h2 className="text-h3">
                 이미 대화가 시작됐어요
               </h2>
               <Button className="mt-4 w-full" onClick={() => go(`/chat/${view.matchId}`)} data-testid="match-open-chat">
@@ -144,34 +142,27 @@ export function MatchScreen({ matchId, initial, api = serverApi, onNavigate, ski
             </div>
           ) : (
             <>
-              <h2 id="match-suggest-title" className="text-h3">
-                이렇게 시작해 볼까요?
-              </h2>
-              <p className="mt-1 text-body-sm text-muted-foreground">고른 카드가 첫 메시지로 바로 전송돼요.</p>
-              <ul className="-mx-4 mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2" aria-label="첫 대화 제안 3장">
-                {view.firstSuggestion.map((c, i) => (
-                  <li key={c.id} className="w-72 shrink-0 snap-start">
-                    <SuggestionCard
-                      title={c.title}
-                      body={c.body}
-                      kind={c.kind}
-                      position={i + 1}
-                      selected={selected === i + 1}
-                      loading={busy && selected === i + 1}
-                      disabled={busy && selected !== i + 1}
-                      onSelect={() => select(i + 1)}
-                      data-testid={`suggestion-card-${i + 1}`}
-                    />
-                  </li>
-                ))}
-              </ul>
-              <Button variant="ghost" className="mt-2 w-full" onClick={skip} disabled={busy} data-testid="match-skip">
+              <p className="text-body-sm text-muted-foreground">고른 카드가 첫 메시지로 바로 전송돼요. 마음에 드는 게 없으면 건너뛰어도 괜찮아요.</p>
+              <SuggestionPicker
+                className="mt-3"
+                matchId={view.matchId}
+                cards={view.firstSuggestion}
+                surface="match"
+                title="이렇게 시작해 볼까요?"
+                send={api.sendFirst}
+                onSent={onSent}
+                onFailure={onSendFailure}
+              />
+              <Button variant="ghost" className="mt-2 w-full" onClick={skip} data-testid="match-skip">
                 건너뛰고 채팅하기
               </Button>
             </>
           )}
         </section>
       ) : null}
+
+      {/* 첫 매칭 직후 1회 소프트 프롬프트 → [알림 켜기] 클릭 안에서만 브라우저 권한 요청 (20_notifications §0-4) */}
+      {revealed && !showSafety ? <PushSoftPrompt surface="match" className="mt-6" /> : null}
     </div>
   );
 }

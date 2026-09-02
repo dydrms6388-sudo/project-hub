@@ -87,6 +87,7 @@ export type Enums = {
   rsvp_status: "going" | "waitlist" | "canceled" | "no_show" | "attended";
   push_kind: "transactional" | "service" | "marketing";
   push_slot: "A" | "B" | "instant";
+  push_queue_status: "pending" | "held" | "sending" | "sent" | "failed" | "discarded";
 };
 
 /** smallint 0~3 (domain verify_level) */
@@ -125,7 +126,8 @@ export type AdminUserRow = { user_id: string; role: Enums["admin_role"]; note: s
 
 export type ProfileRow = {
   id: string;
-  user_id: string;
+  /** 탈퇴 purge 후 tombstone(purged_at not null) 행은 null (0071) */
+  user_id: string | null;
   nickname: string | null;
   nickname_changed_at: string | null;
   /** 본인 + service role 만. 타인은 v_profile_public 에서 age_band/birth_year 만 */
@@ -151,6 +153,10 @@ export type ProfileRow = {
   phone_hash: string | null;
   hidden_at: string | null;
   hidden_reason: string | null;
+  /** 탈퇴 purge 완료(가명화 tombstone) 시각. 매칭 90일 보존 후 purge_tombstones 가 행 삭제 (0071) */
+  purged_at: string | null;
+  /** 즉시 삭제 요청 시 now(). null 이면 delete_requested_at + delete_grace_days (0071) */
+  purge_after: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -577,6 +583,8 @@ export type NotificationLogRow = {
   sent_at: string;
   opened_at: string | null;
   error: string | null;
+  /** 이 발송을 만든 push_queue 행 (0050) */
+  queue_id: number | null;
 };
 
 /** D2 레이트리밋 카운터 (service role 전용) */
@@ -590,6 +598,124 @@ export type AnalyticsEventRow = {
   loop_date: string;
   session_id: string | null;
   platform: string | null;
+  created_at: string;
+};
+
+
+// ---------------------------------------------------------------------------
+// D5 moderation (0040~0043) Row 타입
+// ---------------------------------------------------------------------------
+export type ModerationSettingRow = { key: string; value: Json; description: string | null; updated_at: string };
+
+export type ModerationFlagRow = {
+  profile_id: string;
+  scam_score: number;
+  scam_signals: Json;
+  scam_banner_until: string | null;
+  scam_restricted_at: string | null;
+  last_auto_report_at: string | null;
+  contact_hits_reported: Json;
+  computed_at: string;
+  updated_at: string;
+};
+
+/** D5 → D7 통보 큐. notify_admin / notify_user 가 insert, drain_moderation_notifications 가 delivered_at 갱신 */
+export type ModerationNotificationRow = {
+  id: number;
+  audience: "admin" | "user";
+  kind: string;
+  profile_id: string | null;
+  report_id: string | null;
+  sanction_id: string | null;
+  payload: Json;
+  created_at: string;
+  delivered_at: string | null;
+  delivery: Json | null;
+};
+
+/** Storage 작업 큐 (Edge Function moderation-evidence 가 처리) */
+export type ModerationJobRow = {
+  id: number;
+  kind: "evidence_copy" | "evidence_purge" | "storage_delete";
+  report_id: string | null;
+  payload: Json;
+  status: "pending" | "done" | "failed";
+  attempts: number;
+  next_attempt_at: string;
+  last_error: string | null;
+  result: Json | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// ---------------------------------------------------------------------------
+// D7 push (0050·0051) Row 타입
+// ---------------------------------------------------------------------------
+export type PushPrefsRow = {
+  user_id: string;
+  service_enabled: boolean;
+  /** "HH:MM:SS" (Postgres time) · KST */
+  quiet_start: string | null;
+  quiet_end: string | null;
+  updated_at: string;
+};
+
+export type PushTemplateRow = {
+  key: string;
+  kind: Enums["push_kind"];
+  slot: Enums["push_slot"];
+  consumes_budget: boolean;
+  bundle_minutes: number;
+  hold_at_night: boolean;
+  priority_rank: number | null;
+  deeplink: string;
+  description: string | null;
+};
+
+export type PushQueueRow = {
+  id: number;
+  user_id: string;
+  profile_id: string | null;
+  template: string;
+  kind: Enums["push_kind"];
+  slot: Enums["push_slot"];
+  params: Json;
+  dedupe_key: string;
+  merged_count: number;
+  scheduled_at: string;
+  status: Enums["push_queue_status"];
+  hold_reason: string | null;
+  discard_reason: string | null;
+  attempts: number;
+  last_error: string | null;
+  like_id: string | null;
+  notification_log_id: number | null;
+  created_at: string;
+  updated_at: string;
+  sent_at: string | null;
+};
+
+/** 운영자 알림함 (notify_admin_push 의 저장소, service role 전용) */
+export type AdminNotificationRow = {
+  id: number;
+  kind: string;
+  payload: Json;
+  source_id: number | null;
+  created_at: string;
+  delivered_at: string | null;
+  delivery: Json | null;
+  read_at: string | null;
+  read_by: string | null;
+};
+
+export type ConsentRecheckRow = {
+  id: number;
+  user_id: string;
+  consent_id: number;
+  notified_at: string | null;
+  due_at: string;
+  resolved_at: string | null;
+  outcome: "renewed" | "withdrawn" | "expired" | null;
   created_at: string;
 };
 
@@ -646,9 +772,93 @@ export type MyMatchView = {
   last_masked_body: string | null;
   /** matched_at + 72h 경과 AND 양쪽 L3 */
   contact_unmasked: boolean;
+  /** 상대가 탈퇴(tombstone) — 화면은 "탈퇴한 사용자" (0071) */
+  partner_deleted: boolean;
 };
 
 export type WeeklyQuotaUsedView = { profile_id: string | null; week_start: string; superlike_used: number };
+
+/** 내가 차단한 사람 (닉네임만, 0040) */
+export type MyBlockView = {
+  blocked_id: string | null;
+  blocked_nickname: string | null;
+  blocked_verify_level: VerifyLevel | null;
+  blocked_at: string | null;
+};
+
+/** SLA 초과 신고 (service/moderator) */
+export type ReportsOverdueView = {
+  id: string | null;
+  priority: Enums["report_priority"] | null;
+  reason_code: Enums["report_reason"] | null;
+  status: Enums["report_status"] | null;
+  target_id: string | null;
+  handled_by: string | null;
+  created_at: string | null;
+  due_at: string | null;
+  overdue_sec: number | null;
+};
+
+export type RuleHitStatsView = { loop_date: string | null; rule_id: string | null; hits: number | null; senders: number | null };
+
+export type PushMetricsDailyView = {
+  loop_date: string | null;
+  slot: Enums["push_slot"] | null;
+  kind: Enums["push_kind"] | null;
+  template: string | null;
+  sent: number | null;
+  failed: number | null;
+  opened: number | null;
+  open_rate: number | null;
+  users: number | null;
+  budget_consumed: number | null;
+};
+
+export type PushQueueDailyView = {
+  loop_date: string | null;
+  template: string | null;
+  status: Enums["push_queue_status"] | null;
+  reason: string | null;
+  items: number | null;
+  merged_events: number | null;
+};
+
+export type RecoDailySummaryView = {
+  profile_id: string | null;
+  user_id: string | null;
+  loop_date: string | null;
+  reco_count: number | null;
+  seen_count: number | null;
+  acted_count: number | null;
+  like_count: number | null;
+  pass_count: number | null;
+  liker_count: number | null;
+  boosted_count: number | null;
+  generated_at: string | null;
+};
+
+export type RecoMetricsDailyView = {
+  loop_date: string | null;
+  users_with_reco: number | null;
+  reco_rows: number | null;
+  avg_reco_count: number | null;
+  users_under_5: number | null;
+  under_5_ratio: number | null;
+  seen_rate: number | null;
+  likes_sent: number | null;
+  passes_sent: number | null;
+  matches_created: number | null;
+  like_to_match: number | null;
+};
+
+export type RecoGenderBalanceView = {
+  mode: Enums["profile_mode"] | null;
+  total: number | null;
+  female: number | null;
+  male: number | null;
+  female_ratio: number | null;
+  min_female_ratio: number | null;
+};
 
 // ---------------------------------------------------------------------------
 // Database
@@ -774,92 +984,265 @@ export type Database = {
         "id" | "user_id_hash" | "props" | "session_id" | "platform" | "created_at"
       >;
       rate_limits: TableDef<RateLimitRow, "count" | "updated_at">;
+      // ---- D5 moderation (0040) ----
+      moderation_settings: TableDef<ModerationSettingRow, "description" | "updated_at">;
+      moderation_flags: TableDef<ModerationFlagRow, "scam_score" | "scam_signals" | "scam_banner_until" | "scam_restricted_at" | "last_auto_report_at" | "contact_hits_reported" | "computed_at" | "updated_at">;
+      moderation_notifications: TableDef<ModerationNotificationRow, "id" | "profile_id" | "report_id" | "sanction_id" | "payload" | "created_at" | "delivered_at" | "delivery">;
+      moderation_jobs: TableDef<ModerationJobRow, "id" | "report_id" | "payload" | "status" | "attempts" | "next_attempt_at" | "last_error" | "result" | "created_at" | "updated_at">;
+      // ---- D7 push (0050·0051) ----
+      push_prefs: TableDef<PushPrefsRow, "service_enabled" | "quiet_start" | "quiet_end" | "updated_at">;
+      push_templates: TableDef<PushTemplateRow, "bundle_minutes" | "hold_at_night" | "priority_rank" | "description">;
+      push_queue: TableDef<PushQueueRow, "id" | "profile_id" | "params" | "merged_count" | "scheduled_at" | "status" | "hold_reason" | "discard_reason" | "attempts" | "last_error" | "like_id" | "notification_log_id" | "created_at" | "updated_at" | "sent_at">;
+      admin_notifications: TableDef<AdminNotificationRow, "id" | "payload" | "source_id" | "created_at" | "delivered_at" | "delivery" | "read_at" | "read_by">;
+      consent_rechecks: TableDef<ConsentRecheckRow, "id" | "notified_at" | "resolved_at" | "outcome" | "created_at">;
     };
     Views: {
       v_profile_public: ViewDef<ProfilePublicView>;
       v_messages: ViewDef<MessageView>;
       v_my_matches: ViewDef<MyMatchView>;
       v_weekly_quota_used: ViewDef<WeeklyQuotaUsedView>;
+      v_my_blocks: ViewDef<MyBlockView>;
+      reports_overdue: ViewDef<ReportsOverdueView>;
+      v_rule_hit_stats: ViewDef<RuleHitStatsView>;
+      v_push_metrics_daily: ViewDef<PushMetricsDailyView>;
+      v_push_queue_daily: ViewDef<PushQueueDailyView>;
+      v_reco_daily_summary: ViewDef<RecoDailySummaryView>;
+      v_reco_metrics_daily: ViewDef<RecoMetricsDailyView>;
+      v_reco_gender_balance: ViewDef<RecoGenderBalanceView>;
     };
+    /**
+     * 0009·0014·0020·0021·0030·0040~0043·0050·0051·0060·0070·0071 의 public 함수 전체.
+     * `node scripts/gen-function-types.mjs <db>` 가 로컬 PG(pg_proc)에서 생성한 초안을 손으로 다듬은 것이다(H1).
+     * "service role 전용" = authenticated·anon 에 execute 권한이 없는 함수(0009~0071 의 revoke/grant 기준).
+     * 트리거 함수와 composite 인자 함수(score_pair)는 PostgREST 로 호출할 수 없어 제외한다.
+     */
     Functions: {
-      loop_date: { Args: { p_at?: string }; Returns: string };
-      week_start_loop_date: { Args: { p_at?: string }; Returns: string };
-      age_years_kst: { Args: { p_birth: string; p_at?: string }; Returns: number };
-      is_adult: { Args: { p_birth: string; p_at?: string }; Returns: boolean };
-      current_profile_id: { Args: Record<string, never>; Returns: string | null };
-      app_role: { Args: Record<string, never>; Returns: string | null };
-      is_admin: { Args: Record<string, never>; Returns: boolean };
-      is_moderator: { Args: Record<string, never>; Returns: boolean };
+      acknowledge_sanction: { Args: { p_sanction_id: string }; Returns: Json };
+      act_on_recommendation: { Args: { p_target_id: string; p_action: Enums["reco_action"] }; Returns: Json };
       active_sanction_level: { Args: { p_profile_id: string }; Returns: number };
+      /** service role 전용 */
+      admin_audit: { Args: { p_actor_id: string; p_action: string; p_target_type: string; p_target_id: string; p_before?: Json | null; p_after?: Json | null; p_meta?: Json | null }; Returns: undefined };
+      /** service role 전용 */
+      admin_decide_appeal: { Args: { p_actor_id: string; p_appeal_id: string; p_decision: Enums["appeal_status"]; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_get_report: { Args: { p_actor_id: string; p_report_id: string }; Returns: Json };
+      /** service role 전용 */
+      admin_lift_sanction: { Args: { p_actor_id: string; p_sanction_id: string; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_list_reports: { Args: { p_actor_id: string; p_filter?: Json | null; p_cursor?: Json | null; p_limit?: number | null }; Returns: Json };
+      admin_metrics_active_users: { Args: Record<string, never>; Returns: Json };
+      admin_metrics_daily: { Args: { p_days?: number | null }; Returns: Array<{ loop_date: string; active_users: number; signups: number; onboarding_completed: number; reco_count: number; reco_seen: number; reco_acted: number; likes: number; superlikes: number; matches: number; first_messages: number; messages: number; reports: number; sanctions: number; sanctions_auto: number }> };
+      admin_metrics_funnel: { Args: { p_days?: number | null }; Returns: Array<{ ord: number; step: string; label: string; cnt: number }> };
+      admin_metrics_gender: { Args: Record<string, never>; Returns: Array<{ mode: Enums["profile_mode"]; gender: string; cnt: number }> };
+      admin_metrics_guard: { Args: Record<string, never>; Returns: undefined };
+      admin_metrics_photos: { Args: { p_days?: number | null }; Returns: Json };
+      admin_metrics_sanctions: { Args: { p_days?: number | null }; Returns: Array<{ level: number; total: number; auto_cnt: number; manual_cnt: number; revoked_cnt: number }> };
+      admin_metrics_sla: { Args: { p_days?: number | null }; Returns: Array<{ priority: Enums["report_priority"]; total: number; handled: number; within_sla: number; overdue_open: number; open_in_sla: number; avg_handle_minutes: number }> };
+      admin_metrics_verify_levels: { Args: Record<string, never>; Returns: Array<{ verify_level: number; cnt: number }> };
+      /** service role 전용 */
+      admin_moderation_stats: { Args: { p_actor_id: string }; Returns: Json };
+      /** service role 전용 */
+      admin_profile_detail: { Args: { p_actor_id: string; p_profile_id: string }; Returns: Json };
+      admin_queue_summary: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      admin_resolve_report: { Args: { p_actor_id: string; p_report_id: string; p_outcome: Enums["report_status"]; p_sanction_level?: number | null; p_note?: string | null; p_duration?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_review_photo: { Args: { p_actor_id: string; p_photo_id: string; p_decision: Enums["review_status"]; p_reject_code?: Enums["photo_reject_code"] | null; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_role_of: { Args: { p_actor_id: string }; Returns: Enums["admin_role"] | null };
+      /** service role 전용 */
+      admin_search_profiles: { Args: { p_actor_id: string; p_q: string; p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      admin_set_legal_hold: { Args: { p_actor_id: string; p_report_id: string; p_hold: boolean; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_triage_report: { Args: { p_actor_id: string; p_report_id: string; p_priority?: Enums["report_priority"] | null; p_assignee_id?: string | null }; Returns: Json };
+      age_years_kst: { Args: { p_birth: string; p_at?: string | null }; Returns: number };
+      app_role: { Args: Record<string, never>; Returns: string | null };
+      /** service role 전용 */
+      apply_auto_moderation: { Args: { p_profile_id: string; p_match_id?: string | null }; Returns: Json };
+      apply_block: { Args: { p_blocked_id: string }; Returns: undefined };
+      /** service role 전용 */
+      apply_block_internal: { Args: { p_blocker: string; p_blocked: string }; Returns: undefined };
+      /** service role 전용 */
+      apply_identity_verification: { Args: { p_user_id: string; p_provider: Enums["identity_provider"]; p_result: Enums["identity_result"]; p_ci_hash?: string | null; p_di_hash?: string | null; p_birth_date?: string | null; p_gender?: Enums["gender"] | null; p_provider_tx_id?: string | null; p_meta?: Json | null }; Returns: Json };
       are_blocked: { Args: { p_a: string; p_b: string }; Returns: boolean };
-      match_id_of: { Args: { p_a: string; p_b: string }; Returns: string | null };
-      is_matched: { Args: { p_a: string; p_b: string }; Returns: boolean };
-      is_match_participant: { Args: { p_match_id: string; p_profile_id: string }; Returns: boolean };
-      is_recommended_recently: { Args: { p_viewer: string; p_target: string }; Returns: boolean };
-      can_view_profile: { Args: { p_viewer: string; p_target: string }; Returns: boolean };
+      /** service role 전용 */
+      assert_admin: { Args: { p_actor_id: string }; Returns: Enums["admin_role"] };
+      /** service role 전용 */
+      assert_moderator: { Args: { p_actor_id: string }; Returns: Enums["admin_role"] };
+      /** service role 전용 */
+      assert_no_contact_in_text: { Args: { p_field: string; p_text: string }; Returns: undefined };
+      /** service role 전용 */
+      auto_report_once: { Args: { p_target_id: string; p_reason: Enums["report_reason"]; p_match_id: string; p_detail: string }; Returns: string };
       can_like: { Args: { p_from: string; p_to: string }; Returns: boolean };
-      can_send_message: { Args: { p_match_id: string; p_sender: string }; Returns: boolean };
       can_send_chat_image: { Args: { p_match_id: string; p_sender: string }; Returns: boolean };
+      can_send_message: { Args: { p_match_id: string; p_sender: string }; Returns: boolean };
+      /** service role 전용 */
+      can_send_push: { Args: { p_profile_id: string; p_kind: Enums["push_kind"]; p_template?: string | null; p_at?: string | null }; Returns: Json };
+      can_view_profile: { Args: { p_viewer: string; p_target: string }; Returns: boolean };
+      cancel_delete: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      check_rate_limit: { Args: { p_key: string; p_limit: number; p_window: string }; Returns: Json };
+      /** service role 전용 */
+      claim_moderation_jobs: { Args: { p_limit?: number | null }; Returns: ModerationJobRow[] };
+      /** service role 전용 */
+      claim_push_queue: { Args: { p_limit?: number | null; p_queue_id?: number | null }; Returns: PushQueueRow[] };
+      /** service role 전용 */
+      complete_push_send: { Args: { p_queue_id: number; p_subscription_id: string; p_ok: boolean; p_status_code?: number | null; p_error?: string | null; p_payload_hash?: string | null }; Returns: number };
+      /** service role 전용 */
+      compute_scam_score: { Args: { p_profile_id: string }; Returns: Json };
+      /** service role 전용 */
+      consent_recheck: { Args: { p_at?: string | null }; Returns: Json };
+      contact_rule_patterns: { Args: Record<string, never>; Returns: Array<{ rule_id: string; pattern: string; placeholder: string; ord: number }> };
+      contact_unmasked: { Args: { p_match_id: string }; Returns: boolean };
+      create_profile: { Args: { p_birth_date: string; p_phone_hash?: string | null }; Returns: Json };
+      create_report: { Args: { p_target_id: string; p_reason_code: Enums["report_reason"]; p_detail?: string | null; p_match_id?: string | null; p_surface?: Enums["report_surface"] | null; p_reporter_id?: string | null }; Returns: Json };
+      current_profile_id: { Args: Record<string, never>; Returns: string | null };
+      detect_contacts: { Args: { p_text: string }; Returns: Json };
+      /** service role 전용 */
+      drain_moderation_notifications: { Args: { p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_push: { Args: { p_profile_id: string; p_template: string; p_params?: Json | null; p_scheduled_at?: string | null; p_dedupe_key?: string | null; p_like_id?: string | null; p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_reminders: { Args: { p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_slot_a: { Args: { p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_slot_b: { Args: { p_at?: string | null }; Returns: Json };
+      ensure_today_recommendations: { Args: Record<string, never>; Returns: Json };
+      entitlement_value: { Args: { p_tier: Enums["subscription_tier"]; p_key: string }; Returns: number };
+      /** service role 전용 */
+      finish_moderation_job: { Args: { p_job_id: number; p_ok: boolean; p_result?: Json | null; p_error?: string | null }; Returns: undefined };
+      /** service role 전용 */
+      finish_push_queue: { Args: { p_queue_id: number; p_ok: boolean; p_error?: string | null; p_discard?: boolean | null }; Returns: Enums["push_queue_status"] };
+      /** service role 전용 */
+      flush_held_queue: { Args: { p_at?: string | null }; Returns: number };
+      g2_trusted_caller: { Args: Record<string, never>; Returns: boolean };
+      /** service role 전용 */
+      generate_daily_recommendations: { Args: { p_profile_id: string; p_loop_date?: string | null; p_limit?: number | null }; Returns: Json };
+      get_chat_list: { Args: { p_match_id?: string | null }; Returns: Json };
+      get_effective_tier: { Args: { p_user_id: string }; Returns: Enums["subscription_tier"] };
+      get_gate_state: { Args: Record<string, never>; Returns: Json };
+      get_my_moderation_state: { Args: Record<string, never>; Returns: Json };
+      get_report_context: { Args: { p_match_id: string }; Returns: Json };
+      has_marketing_consent: { Args: { p_user_id: string }; Returns: boolean };
+      /** service role 전용 */
+      invoke_push_dispatch: { Args: Record<string, never>; Returns: Json };
+      is_admin: { Args: Record<string, never>; Returns: boolean };
+      is_adult: { Args: { p_birth: string; p_at?: string | null }; Returns: boolean };
+      /** service role 전용 */
+      is_complete_profile: { Args: { p_profile_id: string }; Returns: boolean };
+      is_marketing_window_kst: { Args: { p_at?: string | null }; Returns: boolean };
+      is_match_participant: { Args: { p_match_id: string; p_profile_id: string }; Returns: boolean };
+      /** service role 전용 */
+      is_matched: { Args: { p_a: string; p_b: string }; Returns: boolean };
+      is_moderator: { Args: Record<string, never>; Returns: boolean };
+      is_push_quiet_kst: { Args: { p_at?: string | null }; Returns: boolean };
+      /** service role 전용 */
+      is_recommended_recently: { Args: { p_viewer: string; p_target: string }; Returns: boolean };
+      /** service role 전용 */
+      issue_sanction: { Args: { p_profile_id: string; p_level: number; p_reason: string; p_duration?: string | null; p_report_id?: string | null; p_reason_code?: Enums["report_reason"] | null; p_issued_by?: string | null }; Returns: string };
+      kst_at: { Args: { p_date: string; p_time: string }; Returns: string };
+      kst_date: { Args: { p_at?: string | null }; Returns: string };
+      kst_time: { Args: { p_at?: string | null }; Returns: string };
+      leave_match: { Args: { p_match_id: string }; Returns: Json };
+      likers_count: { Args: Record<string, never>; Returns: number };
+      loop_date: { Args: { p_at?: string | null }; Returns: string };
+      mark_push_opened: { Args: { p_queue_id: number }; Returns: number };
+      mark_read: { Args: { p_match_id: string }; Returns: Json };
+      mask_contacts: { Args: { p_text: string }; Returns: string };
+      /** service role 전용 */
+      match_id_of: { Args: { p_a: string; p_b: string }; Returns: string | null };
+      match_suggestion_input: { Args: { p_match_id: string }; Returns: Json };
+      matching_home_summary: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      moderation_daily: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      moderation_setting: { Args: { p_key: string }; Returns: Json };
+      /** service role 전용 */
+      moderation_setting_int: { Args: { p_key: string; p_default: number }; Returns: number };
+      next_kst_time: { Args: { p_at: string; p_time: string }; Returns: string };
+      /** service role 전용 */
+      notify_admin: { Args: { p_kind: string; p_payload?: Json | null; p_report_id?: string | null; p_sanction_id?: string | null }; Returns: number };
+      /** service role 전용 */
+      notify_admin_push: { Args: { p_kind: string; p_payload?: Json | null; p_source_id?: number | null }; Returns: number };
+      /** service role 전용 */
+      notify_profile: { Args: { p_profile_id: string; p_template_key: string; p_params?: Json | null }; Returns: Json };
+      /** service role 전용 */
+      notify_user: { Args: { p_profile_id: string; p_kind: string; p_payload?: Json | null; p_report_id?: string | null; p_sanction_id?: string | null }; Returns: number };
+      /** service role 전용 */
+      pair_features: { Args: { p_a: string; p_b: string }; Returns: Json };
+      partner_risk_banner: { Args: { p_match_id: string }; Returns: boolean };
+      pause_account: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      pending_like_results: { Args: { p_profile_id: string; p_at?: string | null }; Returns: number };
+      pending_likes_count: { Args: Record<string, never>; Returns: number };
+      /** service role 전용 */
+      purge_deleted_profiles: { Args: { p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      purge_expired_evidence: { Args: { p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      purge_expired_moderation_flags: { Args: Record<string, never>; Returns: number };
+      /** service role 전용 */
+      purge_moderation_queues: { Args: { p_days?: number | null }; Returns: Json };
+      /** service role 전용 */
+      purge_old_recommendations: { Args: { p_days?: number | null }; Returns: number };
+      /** service role 전용 */
+      purge_rate_limits: { Args: { p_older_than?: string | null }; Returns: number };
+      /** service role 전용 */
+      purge_tombstones: { Args: { p_retention_days?: number | null }; Returns: Json };
+      /** service role 전용 */
+      push_budget_used: { Args: { p_user_id: string; p_loop_date?: string | null }; Returns: number };
+      /** service role 전용 */
+      push_policy_int: { Args: { p_key: string; p_default: number }; Returns: number };
+      /** service role 전용 */
+      push_policy_text: { Args: { p_key: string; p_default: string }; Returns: string };
+      /** service role 전용 */
+      realtime_send_safe: { Args: { p_payload: Json; p_event: string; p_topic: string }; Returns: undefined };
+      /** service role 전용 */
+      reco_candidates: { Args: { p_profile_id: string; p_loop_date?: string | null }; Returns: Array<{ target_id: string; is_liker: boolean; same_sido: boolean; pool_size: number; nationwide: boolean }> };
+      /** service role 전용 */
+      reco_param: { Args: { p_key: string; p_default: number }; Returns: number };
+      /** service role 전용 */
+      reco_reasons: { Args: { p_a: string; p_b: string }; Returns: Json };
       /** service role 전용 */
       recompute_verify_level: { Args: { p_profile_id: string }; Returns: number };
-      get_effective_tier: { Args: { p_user_id: string }; Returns: Enums["subscription_tier"] };
-      weekly_superlike_used: { Args: { p_profile_id: string }; Returns: number };
+      remove_block: { Args: { p_blocked_id: string }; Returns: undefined };
       report_default_priority: { Args: { p_reason: Enums["report_reason"] }; Returns: Enums["report_priority"] };
       report_sla_interval: { Args: { p_priority: Enums["report_priority"] }; Returns: string };
-      /** service role 전용 */
-      issue_sanction: {
-        Args: {
-          p_profile_id: string;
-          p_level: number;
-          p_reason: string;
-          p_duration?: string | null;
-          p_report_id?: string | null;
-          p_reason_code?: Enums["report_reason"] | null;
-          p_issued_by?: string | null;
-        };
-        Returns: string;
-      };
-      apply_block: { Args: { p_blocked_id: string }; Returns: undefined };
-      remove_block: { Args: { p_blocked_id: string }; Returns: undefined };
-      create_report: {
-        Args: {
-          p_target_id: string;
-          p_reason_code: Enums["report_reason"];
-          p_detail?: string | null;
-          p_match_id?: string | null;
-          p_surface?: Enums["report_surface"];
-          p_reporter_id?: string | null;
-        };
-        Returns: Json;
-      };
-      // ---- D2 (0014) ----
-      /** 세션 사용자의 게이트 판정 필드. 프로필 없으면 profile_id=null, 세션 없으면 null */
-      get_gate_state: { Args: Record<string, never>; Returns: Json };
-      /** OTP 성공 후 생년월일 확정(update). {profile_id,status,age_blocked,onboarding_step,already_set?} */
-      create_profile: { Args: { p_birth_date: string; p_phone_hash?: string | null }; Returns: Json };
-      /** dating 은 L3 + seeking_gender 필수 → NOT_ENTITLED */
-      set_mode: { Args: { p_mode: Enums["profile_mode"]; p_seeking_gender?: Enums["seeking_gender"] | null }; Returns: Json };
-      request_delete: { Args: Record<string, never>; Returns: Json };
-      cancel_delete: { Args: Record<string, never>; Returns: Json };
-      pause_account: { Args: Record<string, never>; Returns: Json };
+      request_delete: { Args: { p_immediate?: boolean | null }; Returns: Json };
       resume_account: { Args: Record<string, never>; Returns: Json };
-      /** service role 전용. {allowed,count,limit,retry_after_sec} */
-      check_rate_limit: { Args: { p_key: string; p_limit: number; p_window: string }; Returns: Json };
-      /** service role 전용. code: OK | FAILED | BLOCKED_CI | MINOR | DUPLICATE_CI */
-      apply_identity_verification: {
-        Args: {
-          p_user_id: string;
-          p_provider: Enums["identity_provider"];
-          p_result: Enums["identity_result"];
-          p_ci_hash?: string | null;
-          p_di_hash?: string | null;
-          p_birth_date?: string | null;
-          p_gender?: Enums["gender"] | null;
-          p_provider_tx_id?: string | null;
-          p_meta?: Json;
-        };
-        Returns: Json;
-      };
+      /** service role 전용 */
+      revert_auto_actions: { Args: { p_actor_id: string; p_report_id: string }; Returns: Json };
+      /** service role 전용 */
+      run_daily_recommendation_batch: { Args: { p_loop_date?: string | null; p_batch_size?: number | null; p_offset?: number | null }; Returns: Json };
+      /** service role 전용 */
+      run_report_as_service: { Args: { p_target_id: string; p_reason: Enums["report_reason"]; p_detail: string; p_match_id?: string | null }; Returns: Json };
+      /** service role 전용 */
+      run_slot_b_batch: { Args: { p_at?: string | null }; Returns: Json };
+      safety_preprocess: { Args: { p_text: string }; Returns: string };
+      /** service role 전용 */
+      schedule_push_jobs: { Args: Record<string, never>; Returns: Json };
+      // score_pair: composite 인자(SQL 내부 전용) — RPC 대상 아님
+      /** service role 전용 */
+      send_message: { Args: { p_match_id: string; p_sender_id: string; p_body?: string | null; p_image_path?: string | null; p_flags?: Json | null; p_message_id?: string | null; p_client_masked?: string | null; p_suggestion_template_id?: string | null }; Returns: Json };
+      /** service role 전용 */
+      set_match_first_suggestion: { Args: { p_match_id: string; p_cards: Json }; Returns: Json };
+      set_mode: { Args: { p_mode: Enums["profile_mode"]; p_seeking_gender?: Enums["seeking_gender"] | null }; Returns: Json };
+      /** service role 전용 */
+      sla_check: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      slot_b_candidate: { Args: { p_profile_id: string; p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      slot_b_time_for: { Args: { p_profile_id: string; p_at?: string | null }; Returns: string };
+      submit_appeal: { Args: { p_sanction_id: string; p_body: string; p_attachment_path?: string | null }; Returns: Json };
+      superlike_status: { Args: { p_profile_id?: string | null }; Returns: Json };
+      /** service role 전용 */
+      system_report_exists: { Args: { p_target_id: string; p_reason: Enums["report_reason"]; p_hours?: number | null }; Returns: boolean };
+      time_in_window: { Args: { p_t: string; p_start: string; p_end: string }; Returns: boolean };
+      undo_last_action: { Args: Record<string, never>; Returns: Json };
+      week_start_loop_date: { Args: { p_at?: string | null }; Returns: string };
+      weekly_superlike_used: { Args: { p_profile_id: string }; Returns: number };
     };
     Enums: Enums;
     CompositeTypes: Record<string, never>;

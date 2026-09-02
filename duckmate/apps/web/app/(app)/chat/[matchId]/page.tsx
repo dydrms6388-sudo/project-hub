@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { requireProfile } from "@/lib/auth/session";
 import { getChatRoom, getMessages } from "@/lib/chat/queries";
-import { partnerRiskBanner } from "@/lib/moderation/queries";
+import { getMySanctions, partnerRiskBanner } from "@/lib/moderation/queries";
 import { ChatRoomScreen } from "@/components/chat/ChatRoomScreen";
 
 export const metadata: Metadata = {
@@ -27,5 +27,15 @@ export default async function ChatRoomPage({ params }: { params: Promise<{ match
   }
   const initialMessages = messagesRes.ok ? messagesRes.data : { items: [], nextBefore: null };
 
-  return <ChatRoomScreen matchId={matchId} myProfileId={profile.id} initialRoom={roomRes.data} initialMessages={initialMessages} riskBanner={riskBanner} />;
+  // 내 제재 level 2(채팅 24h 제한) 일 때만 해제 시각을 읽어 배너에 넘긴다 (E3 결정 23-c → H2)
+  let sanctionEndsAt: string | null = null;
+  if (roomRes.data.my_sanction_level >= 2) {
+    try {
+      sanctionEndsAt = (await getMySanctions()).top?.endsAt ?? null;
+    } catch {
+      sanctionEndsAt = null;
+    }
+  }
+
+  return <ChatRoomScreen matchId={matchId} myProfileId={profile.id} initialRoom={roomRes.data} initialMessages={initialMessages} riskBanner={riskBanner} sanctionEndsAt={sanctionEndsAt} />;
 }

@@ -3,12 +3,14 @@
 /**
  * /home — 오늘 요약(추천 남은 수·새 매칭·미답장·나를 좋아한 사람 수: 숫자만, 블러 없음) + "오늘의 추천 보기" CTA.
  * 첫 매칭 안전 모달(홈 보완 노출: 매칭 ≥1 & safety_modal_seen_at null). 가짜 수·압박 카피 없음.
+ * 푸시 소프트 배너(H2)는 `PushSoftPrompt`(usePushStore 연동) — 매칭 화면 프롬프트·설정 화면과 상태가 같다(20_notifications §0-4·E2 결정).
  */
 import * as React from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { Heart, MessageCircle, Sparkles, Users } from "lucide-react";
 import { Button, EmptyState } from "@duckmate/ui";
+import { PushSoftPrompt } from "@/components/push/PushSoftPrompt";
 import { QK, serverApi } from "./api";
 import { mapFailure } from "./errors";
 import { RESET_TEXT } from "./format";
@@ -117,6 +119,9 @@ export function HomeScreen({ initial, api = serverApi, nickname }: { initial: Ho
           />
         </section>
       ) : null}
+
+      {/* 푸시 권한 소프트 배너 — 권한 요청은 버튼 클릭 안에서만. loop_date 1회 + 거절 시 30일 쿨다운 */}
+      <PushSoftPrompt surface="home" className="mt-6" />
 
       <SafetyGuideModal open={Boolean(view?.showSafetyModal) && !safetyDone} api={api} onDone={() => setSafetyDone(true)} />
     </div>
