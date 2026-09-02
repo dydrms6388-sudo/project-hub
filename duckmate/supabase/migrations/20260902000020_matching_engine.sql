@@ -209,7 +209,7 @@ begin
   end if;
 
   if v_slot_inter > 0 then
-    select jsonb_agg(code order by weekday, ord), min(label)
+    select jsonb_agg(code order by weekday, ord), (array_agg(label order by weekday, ord))[1]
     into v_slots, v_slot_label
     from (
       select sa.weekday, sa.slot,
@@ -280,8 +280,6 @@ declare
   v_seen2_d   integer := public.reco_param('seen_second_cooldown_days', 30)::integer;
   v_inact_d   integer := public.reco_param('inactive_exclude_days', 14)::integer;
   v_sido      text;
-  v_pool      integer;
-  v_nationwide boolean;
 begin
   select * into v_me from public.profiles where id = p_profile_id;
   if v_me.id is null or v_me.status <> 'active' or v_me.verify_level < 2 or v_me.hidden_at is not null
@@ -290,51 +288,47 @@ begin
   end if;
   v_sido := left(v_me.region_code, 2);
 
-  create temp table if not exists _reco_pool (target_id uuid primary key, is_liker boolean, same_sido boolean) on commit drop;
-  truncate _reco_pool;
-
-  insert into _reco_pool (target_id, is_liker, same_sido)
-  select t.id,
-         exists (select 1 from public.likes l where l.from_id = t.id and l.to_id = v_me.id),
-         (v_sido is not null and left(t.region_code, 2) = v_sido)
-  from public.profiles t
-  where t.id <> v_me.id
-    and t.status = 'active' and t.verify_level >= 2 and t.hidden_at is null
-    and t.mode = v_me.mode
-    and t.onboarding_step in ('verify', 'done')
-    and t.last_active_at >= now() - make_interval(days => v_inact_d)
-    and public.active_sanction_level(t.id) < 3
-    -- 데이팅 모드: seeking_gender 상호 일치(F-056). friend 모드는 성별 무관
-    and (v_me.mode <> 'dating' or (
-          t.gender is not null and v_me.gender is not null
-          and t.seeking_gender is not null and v_me.seeking_gender is not null
-          and (v_me.seeking_gender = 'any' or v_me.seeking_gender::text = t.gender::text)
-          and (t.seeking_gender = 'any' or t.seeking_gender::text = v_me.gender::text)))
-    -- 차단 양방향 · 매칭 이력(상태 무관) · 내가 보낸 좋아요 · 신고 양방향 영구 제외
-    and not public.are_blocked(v_me.id, t.id)
-    and not exists (select 1 from public.matches m where m.a_id = least(v_me.id, t.id) and m.b_id = greatest(v_me.id, t.id))
-    and not exists (select 1 from public.likes l where l.from_id = v_me.id and l.to_id = t.id)
-    and not exists (select 1 from public.reports r where (r.reporter_id = v_me.id and r.target_id = t.id) or (r.reporter_id = t.id and r.target_id = v_me.id))
-    -- 오늘 이미 추천된 상대 제외
-    and not exists (select 1 from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id and d.loop_date = v_ld)
-    -- 패스 30일
-    and not exists (select 1 from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id
-                      and d.action = 'pass' and d.loop_date > v_ld - v_pass_d)
-    -- 본 것만(무행동): 7일 후 1회 재노출, 2회째도 무행동이면 30일
-    and not exists (select 1 from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id
-                      and d.seen_at is not null and d.acted_at is null and d.loop_date > v_ld - v_seen_d)
-    and not (
-      (select count(*) from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id
-         and d.seen_at is not null and d.acted_at is null and d.loop_date > v_ld - v_seen2_d) >= 2
-    );
-
-  select count(*) into v_pool from _reco_pool p where p.same_sido;
-  v_nationwide := (v_sido is null) or (v_pool < v_pool_min);
-
   return query
-    select p.target_id, p.is_liker, p.same_sido, v_pool, v_nationwide
-    from _reco_pool p
-    where v_nationwide or p.same_sido;
+  with pool as (
+    select t.id as tid,
+           exists (select 1 from public.likes l where l.from_id = t.id and l.to_id = v_me.id) as liker,
+           (v_sido is not null and left(t.region_code, 2) = v_sido) as sido_match
+    from public.profiles t
+    where t.id <> v_me.id
+      and t.status = 'active' and t.verify_level >= 2 and t.hidden_at is null
+      and t.mode = v_me.mode
+      and t.onboarding_step in ('verify', 'done')
+      and t.last_active_at >= now() - make_interval(days => v_inact_d)
+      and public.active_sanction_level(t.id) < 3
+      -- 데이팅 모드: seeking_gender 상호 일치(F-056). friend 모드는 성별 무관
+      and (v_me.mode <> 'dating' or (
+            t.gender is not null and v_me.gender is not null
+            and t.seeking_gender is not null and v_me.seeking_gender is not null
+            and (v_me.seeking_gender = 'any' or v_me.seeking_gender::text = t.gender::text)
+            and (t.seeking_gender = 'any' or t.seeking_gender::text = v_me.gender::text)))
+      -- 차단 양방향 · 매칭 이력(상태 무관) · 내가 보낸 좋아요 · 신고 양방향 영구 제외
+      and not public.are_blocked(v_me.id, t.id)
+      and not exists (select 1 from public.matches m where m.a_id = least(v_me.id, t.id) and m.b_id = greatest(v_me.id, t.id))
+      and not exists (select 1 from public.likes l where l.from_id = v_me.id and l.to_id = t.id)
+      and not exists (select 1 from public.reports r where (r.reporter_id = v_me.id and r.target_id = t.id) or (r.reporter_id = t.id and r.target_id = v_me.id))
+      -- 오늘 이미 추천된 상대 제외
+      and not exists (select 1 from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id and d.loop_date = v_ld)
+      -- 패스 30일
+      and not exists (select 1 from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id
+                        and d.action = 'pass' and d.loop_date > v_ld - v_pass_d)
+      -- 본 것만(무행동): 7일 후 1회 재노출, 2회째도 무행동이면 30일
+      and not exists (select 1 from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id
+                        and d.seen_at is not null and d.acted_at is null and d.loop_date > v_ld - v_seen_d)
+      and (select count(*) from public.daily_recommendations d where d.profile_id = v_me.id and d.target_id = t.id
+             and d.seen_at is not null and d.acted_at is null and d.loop_date > v_ld - v_seen2_d) < 2
+  ),
+  stats as (
+    select count(*) filter (where p.sido_match)::integer as region_pool from pool p
+  )
+  select p.tid, p.liker, p.sido_match, s.region_pool,
+         (v_sido is null or s.region_pool < v_pool_min) as nationwide
+  from pool p cross join stats s
+  where (v_sido is null or s.region_pool < v_pool_min) or p.sido_match;
 end $$;
 comment on function public.reco_candidates is '재노출·제외 규칙(A3 §6.2)을 적용한 후보. 같은 시도 풀 < region_pool_min(300) 이면 전국 폴백(F-017).';
 
