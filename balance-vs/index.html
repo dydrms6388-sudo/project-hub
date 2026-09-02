@@ -61,7 +61,7 @@ input[type=text]{width:100%;padding:13px 14px;border-radius:12px;border:1px soli
 .pk.on{background:rgba(251,191,36,.13);border-color:var(--acc);color:#fde68a}
 .pk.on .ps{color:#d6b45f}
 .modes{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-.hint{font-size:12.5px;color:#7c7c7c;margin:8px 0 0}
+.hint{font-size:12.5px;color:#9ca3af;margin:8px 0 0}
 .inbound{display:none;margin:0 0 14px;padding:13px 15px;background:linear-gradient(90deg,#3b2c07,#4d3a08);border:1px solid #6b5310;border-radius:14px}
 .inbound.show{display:block}
 .inbound p{margin:0 0 10px;font-size:14.5px;color:#fde68a}
@@ -77,7 +77,7 @@ input[type=text]{width:100%;padding:13px 14px;border-radius:12px;border:1px soli
 .dbadge.d2{background:rgba(248,113,113,.16);color:#fca5a5}
 .pbar{height:7px;background:#1f1f1f;border-radius:999px;overflow:hidden;margin-bottom:16px}
 .pbar i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#fcd34d);border-radius:999px;transition:width .18s}
-.axl{font-size:12px;color:#7c7c7c;text-align:center;margin:0 0 12px;letter-spacing:.06em}
+.axl{font-size:12px;color:#9ca3af;text-align:center;margin:0 0 12px;letter-spacing:.06em}
 .opts{display:grid;gap:10px}
 .opt{background:#101010;border:1px solid #333;border-radius:16px;padding:20px 16px;min-height:88px;font-size:17px;font-weight:800;color:#e6e6e6;text-align:left;line-height:1.45;cursor:pointer;display:flex;align-items:center;gap:12px}
 .opt .tag{flex:0 0 30px;height:30px;border-radius:9px;background:#262626;color:#a3a3a3;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center}
@@ -134,10 +134,10 @@ h3{font-size:16px;margin:20px 0 8px;color:var(--acc2)}
 .faq{border-top:1px solid var(--bd);padding:13px 0}
 .faq b{display:block;margin-bottom:4px;color:var(--tx)}
 .faq p{margin:0;color:#b9b9b9;font-size:14px}
-.disc{font-size:12.5px;color:#7c7c7c;background:#141414;border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-top:14px}
+.disc{font-size:12.5px;color:#9ca3af;background:#141414;border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-top:14px}
 .more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .more a{font-size:13px;background:#1c1a14;color:#fde68a;padding:8px 13px;border-radius:999px;text-decoration:none}
-footer{margin-top:36px;text-align:center;color:#6b7280;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer{margin-top:36px;text-align:center;color:#9ca3af;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
 footer a{color:#fbbf24;margin:0 6px;text-decoration:none}
 @media(max-width:400px){.packs{grid-template-columns:1fr}.big .pct{font-size:56px}.dl .row{grid-template-columns:1fr}}
 </style>
@@ -1263,7 +1263,7 @@ function showSolo(st) {
     if (q[i][2] !== 2) continue;
     out += '<div class="key"><div class="kn">극한 문항 · ' + (i + 1) + '번</div>' +
       '<div style="margin-top:5px;color:#e8e8e8;font-weight:700">' + SK.esc(q[i][bits[i]]) + '</div>' +
-      '<div style="color:#7c7c7c;font-size:12.5px;margin-top:2px">포기한 쪽: ' + SK.esc(q[i][bits[i] ? 0 : 1]) + '</div></div>';
+      '<div style="color:#9ca3af;font-size:12.5px;margin-top:2px">포기한 쪽: ' + SK.esc(q[i][bits[i] ? 0 : 1]) + '</div></div>';
   }
   if (!out) out = '<p class="cmt2" style="margin:0">이 팩에는 극한 난이도 문항이 없어요.</p>';
   $("sHard").innerHTML = out;
