@@ -24,9 +24,18 @@ const NOINDEX_PREFIXES = [
 ];
 const NOINDEX_HEADERS = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
 
+/**
+ * 스트리밍 메타데이터 우회(E6): Next 15.5 는 동적 라우트(`/` 랜딩)의 <title>/<meta> 를 셸 이후에 스트리밍해 **<body> 에 남긴다**
+ * (Playwright 실측: `/` 만 head 0 / body 1, `/login` 등은 head). Next 기본 목록(HTML_LIMITED_BOT_UA_RE)은 Googlebot 을 제외하므로
+ * 기본 목록 + Googlebot 계열을 "HTML 전용 봇" 으로 등록해 크롤러에게는 메타데이터를 head 에 블로킹 렌더한다. 사용자 UA 는 영향 없음.
+ */
+const HTML_LIMITED_BOTS =
+  /[\w-]+-Google|Google-[\w-]+|Googlebot|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight/i;
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  htmlLimitedBots: HTML_LIMITED_BOTS,
   // G1 E2E(.next-e2e)·E6 검사(.next-e6)·측정(.next-dev) 가 동시에 build/dev 해도 `.next` 를 서로 지우지 않도록 산출물 폴더 분리. 미설정 시 `.next`.
   distDir: process.env.NEXT_DIST_DIR || ".next",
   transpilePackages: ["@duckmate/ui", "@duckmate/db"],

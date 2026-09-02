@@ -32,6 +32,7 @@
 17. **Pretendard CDN `<link rel="stylesheet">` 가 렌더 차단(Lighthouse 추정 300~450ms)** — 11 결정 3 대로 Phase 2 self-host(`next/font/local`)가 정답. 그 전에는 `<link rel="preload" as="style" onload>` 패턴으로 비차단 전환 가능(FOUT 발생, 폰트 렌더 타이밍이 바뀌므로 E6 범위 밖에서 결정).
 18. **랜딩 `<title>` 중복 수정**: `"덕메이트 — … · 덕메이트"` 로 서비스명이 두 번 나오던 것을 `title: { absolute }` 로 고쳤다. 다른 페이지는 템플릿 `%s · 덕메이트` 그대로.
 19. **금지 표현 사전은 `scripts/check-copy.mjs` `FORBIDDEN` 배열이 단일 소스**(10_brand §4.4 10분류 + §4.3 금지 이모지 11개). `packages/ui/copy-lint.json` 은 만들지 않았다(정규식·lookbehind 가 필요해 JSON 으로는 표현이 나빠짐). 예외는 같은 줄 `// copy-lint-disable-line <사유>`. 서비스명 리터럴 "덕메이트" 허용 파일 = `config/company.ts`·`manifest.webmanifest`·`lib/push/templates.ts`·`app/**/layout.tsx`.
+21. **`/` 랜딩의 `<title>`·`<meta>` 가 `<body>` 에 스트리밍되던 결함**(Next 15.5 streaming metadata): 동적 라우트 중 `/` 만 셸이 메타데이터보다 먼저 flush 되어 head 0 / body 1 로 남고, React 하이드레이션 후에도 head 로 옮겨지지 않는다(Playwright 실측; `/login`·`/account/delete`·`/legal/*` 는 head). Lighthouse `meta-description` 실패의 원인. 조치: `next.config.ts htmlLimitedBots` 에 Next 기본 목록 + `Googlebot` 을 등록해 **크롤러 UA 에는 블로킹 메타데이터(head)** 를 준다. 일반 사용자 UA 는 그대로(성능 영향 없음). G3 는 배포 후 `curl -A Googlebot https://<web>/ | head -c 3000` 에서 `<title>` 이 `<body>` 앞에 오는지, Search Console URL 검사의 렌더링 HTML 에서 head 메타를 확인할 것. 근본 해결(Next 업스트림 또는 `/` 를 정적 + 클라이언트 리다이렉트로 전환)은 동작 변경이라 E6 범위 밖.
 20. **채팅 메시지 목록에 `aria-live="polite" aria-relevant="additions"`** 를 붙였다(새 메시지 낭독). 전송 실패는 기존 `role=alert`, 입력 비활성·마스킹 안내는 `role=status` 그대로.
 
 ---
@@ -102,7 +103,7 @@
 | `package.json` (루트) | `check:copy`·`measure:vitals`·`check:all` 추가 |
 | `apps/web/app/sitemap.ts` · `robots.ts` (신규) | 공식 10 URL / Disallow 25 + Sitemap(`NEXT_PUBLIC_SITE_URL`) |
 | `apps/web/app/not-found.tsx` (신규) | 전역 404(noindex, `main#main`) |
-| `apps/web/next.config.ts` | G2 보안 헤더 + E6 `X-Robots-Tag` + `distDir`(G1) + `optimizePackageImports` 병합 |
+| `apps/web/next.config.ts` | G2 보안 헤더 + E6 `X-Robots-Tag` + `distDir`(G1) + `optimizePackageImports` 병합, `htmlLimitedBots`(결정 21) |
 | `apps/web/app/layout.tsx` · `globals.css` | 스킵 링크 + `.skip-link` |
 | `apps/web/app/(public)/page.tsx` | `main#main`, `title.absolute`(서비스명 중복 제거) |
 | `apps/web/app/account/delete/page.tsx` | `robots index` + canonical(결정 8), `main#main` |
@@ -121,6 +122,7 @@
 | company 홈 JS | 125KB gz(First Load) | ≤ 80KB gz | Next App Router 공통 102KB(react-dom+런타임) | 목표 개정(결정 16) 또는 Phase 5 위키 시점에 Astro 등 정적 프레임워크 검토 |
 | Lighthouse Perf(랜딩) | 88~97(실행별 변동) | ≥ 90 | Pretendard CDN 렌더 차단(추정 300ms), 샌드박스에선 CDN 실패로 더 나쁘게 측정 | Phase 2 self-host(결정 17); 프로덕션 실측 후 재판정 |
 | Lighthouse Perf(`/legal/terms`) | 77 | ≥ 90 | HTML 134KB(약관 전문 SSG) + 렌더 차단 CSS, `max-potential-fid` | 본문은 SSG 라 서버 비용 0. 목차 접기·`content-visibility: auto` 는 UX 변경이라 E6 범위 밖 |
+| Lighthouse SEO(`/`) `meta-description` | 실패 → 조치 후 재측정 | 통과 | 스트리밍 메타데이터가 body 에 남음(결정 21) | `htmlLimitedBots` + Googlebot; 일반 UA 는 여전히 body(Next 업스트림 이슈) |
 | Lighthouse SEO(`/login`) | 63 | — | `is-crawlable` 실패 = noindex 의도 | 정상(무시) |
 | Lighthouse `errors-in-console` | 실패 | — | 샌드박스 CDN 차단(`ERR_TUNNEL_CONNECTION_FAILED`) | 프로덕션 재확인 |
 | 폰트 자체 호스팅 | CDN | Phase 2 | — | `next/font/local` |
