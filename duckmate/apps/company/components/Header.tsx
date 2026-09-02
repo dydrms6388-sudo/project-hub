@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Button } from "@duckmate/ui";
-import { LinkButton } from "./LinkButton";
+import { DisabledButton, LinkButton } from "./LinkButton";
 import { SERVICE_NAME, appUrl } from "@/config/company";
 import { Logo } from "./Logo";
 import { NavLink } from "./NavLink";
@@ -8,7 +7,7 @@ import { Container } from "./Container";
 
 /**
  * 헤더 — Phase 1 내비 = `문의` 1개 + 앱 시작 CTA (13_company_site §4).
- * sticky + 배경 블러(CSS). WEB_APP_URL 플레이스홀더면 CTA "준비 중" 비활성.
+ * sticky + 배경 블러(CSS). WEB_APP_URL 플레이스홀더면 CTA "준비 중" 비활성(서버 렌더 `DisabledButton` — ui Button 은 클라이언트 청크, H2).
  */
 export function Header() {
   const start = appUrl("/onboarding/age");
@@ -27,9 +26,9 @@ export function Header() {
               앱 시작하기
             </LinkButton>
           ) : (
-            <Button size="sm" disabled aria-disabled="true" title="앱 주소가 아직 설정되지 않았어요">
+            <DisabledButton size="sm" title="앱 주소가 아직 설정되지 않았어요">
               준비 중
-            </Button>
+            </DisabledButton>
           )}
         </nav>
       </Container>

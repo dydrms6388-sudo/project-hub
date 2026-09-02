@@ -134,33 +134,5 @@ export type ModerationNotification = {
   delivered_at: string | null;
 };
 
-// ---- Database["public"]["Functions"] 델타 (병합 요청 → packages/db/src/types.ts) ----
-export type ModerationFunctions = {
-  acknowledge_sanction: { Args: { p_sanction_id: string }; Returns: Json };
-  submit_appeal: { Args: { p_sanction_id: string; p_body: string; p_attachment_path?: string | null }; Returns: Json };
-  get_my_moderation_state: { Args: Record<string, never>; Returns: Json };
-  partner_risk_banner: { Args: { p_match_id: string }; Returns: boolean };
-  /** service role */
-  compute_scam_score: { Args: { p_profile_id: string }; Returns: Json };
-  apply_auto_moderation: { Args: { p_profile_id: string; p_match_id?: string | null }; Returns: Json };
-  sla_check: { Args: Record<string, never>; Returns: Json };
-  purge_expired_evidence: { Args: { p_limit?: number }; Returns: Json };
-  purge_deleted_profiles: { Args: { p_limit?: number }; Returns: Json };
-  moderation_daily: { Args: Record<string, never>; Returns: Json };
-  claim_moderation_jobs: { Args: { p_limit?: number }; Returns: Json[] };
-  finish_moderation_job: { Args: { p_job_id: number; p_ok: boolean; p_result?: Json | null; p_error?: string | null }; Returns: undefined };
-  notify_admin: { Args: { p_kind: string; p_payload?: Json; p_report_id?: string | null; p_sanction_id?: string | null }; Returns: number };
-  notify_user: { Args: { p_profile_id: string; p_kind: string; p_payload?: Json; p_report_id?: string | null; p_sanction_id?: string | null }; Returns: number };
-  admin_list_reports: { Args: { p_actor_id: string; p_filter?: Json; p_cursor?: Json | null; p_limit?: number }; Returns: Json };
-  admin_get_report: { Args: { p_actor_id: string; p_report_id: string }; Returns: Json };
-  admin_triage_report: { Args: { p_actor_id: string; p_report_id: string; p_priority?: Enums["report_priority"] | null; p_assignee_id?: string | null }; Returns: Json };
-  admin_resolve_report: { Args: { p_actor_id: string; p_report_id: string; p_outcome: Enums["report_status"]; p_sanction_level?: number | null; p_note?: string | null; p_duration?: string | null }; Returns: Json };
-  admin_review_photo: { Args: { p_actor_id: string; p_photo_id: string; p_decision: Enums["review_status"]; p_reject_code?: Enums["photo_reject_code"] | null; p_note?: string | null }; Returns: Json };
-  admin_search_profiles: { Args: { p_actor_id: string; p_q: string; p_limit?: number }; Returns: Json };
-  admin_profile_detail: { Args: { p_actor_id: string; p_profile_id: string }; Returns: Json };
-  admin_lift_sanction: { Args: { p_actor_id: string; p_sanction_id: string; p_note?: string | null }; Returns: Json };
-  admin_decide_appeal: { Args: { p_actor_id: string; p_appeal_id: string; p_decision: Enums["appeal_status"]; p_note?: string | null }; Returns: Json };
-  admin_set_legal_hold: { Args: { p_actor_id: string; p_report_id: string; p_hold: boolean; p_note?: string | null }; Returns: Json };
-  admin_moderation_stats: { Args: { p_actor_id: string }; Returns: Json };
-};
-export type ModerationFunctionName = keyof ModerationFunctions;
+// RPC 이름·인자·반환 타입은 `packages/db` 의 `Database["public"]["Functions"]` 로 병합됐다(H1/0071).
+// 예전의 `ModerationFunctions` 로컬 선언과 `lib/moderation/rpc.ts` 는 삭제 — 호출은 `supabase.rpc(...)` + `unwrapRpc`.

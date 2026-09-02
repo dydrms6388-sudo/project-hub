@@ -6,7 +6,7 @@ import "server-only";
 import type { Enums } from "@duckmate/db";
 import { getSession } from "@/lib/auth/session";
 import { AuthError } from "@/lib/auth/errors";
-import { moderationRpc } from "./rpc";
+import { unwrapRpc } from "@/lib/supabase/rpc";
 import type { ActiveSanction, AppealState, BlockListItem, MyModerationState } from "./types";
 
 export async function getBlockList(): Promise<BlockListItem[]> {
@@ -46,7 +46,7 @@ function screenOf(level: number, status: Enums["profile_status"], pendingWarning
 export async function getMySanctions(): Promise<MyModerationState> {
   const { supabase, user } = await getSession();
   if (!user) throw new AuthError("NOT_AUTHENTICATED");
-  const raw = (await moderationRpc(supabase, "get_my_moderation_state", {})) as unknown as RawState;
+  const raw = await unwrapRpc<RawState>(supabase.rpc("get_my_moderation_state"));
   const active: ActiveSanction[] = raw.active.map((s) => ({
     id: s.id,
     level: s.level as ActiveSanction["level"],
@@ -83,7 +83,7 @@ export async function partnerRiskBanner(matchId: string): Promise<boolean> {
   const { supabase, user } = await getSession();
   if (!user) return false;
   try {
-    return Boolean(await moderationRpc(supabase, "partner_risk_banner", { p_match_id: matchId }));
+    return Boolean(await unwrapRpc<boolean>(supabase.rpc("partner_risk_banner", { p_match_id: matchId })));
   } catch {
     return false;
   }

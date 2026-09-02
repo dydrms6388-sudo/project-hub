@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type * as React from "react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { cn } from "@duckmate/ui";
 
@@ -26,6 +27,18 @@ export interface LinkButtonProps extends Omit<AnchorHTMLAttributes<HTMLAnchorEle
 
 export function linkButtonClass(variant: keyof typeof VARIANT = "default", size: keyof typeof SIZE = "md", className?: string) {
   return cn(BASE, VARIANT[variant], SIZE[size], className);
+}
+
+/**
+ * 비활성 CTA (앱 주소 미설정) — `@duckmate/ui` Button 은 "use client" 라 홈·헤더에 클라이언트 청크를 끌어온다.
+ * 눌리지 않는 버튼에는 JS 가 필요 없으므로 서버 렌더 `<button disabled>` 로 대체한다(H2, 27_fe_quality 결정 16).
+ */
+export function DisabledButton({ variant = "default", size = "md", className, children, ...props }: Omit<LinkButtonProps, "href">) {
+  return (
+    <button type="button" disabled className={cn(linkButtonClass(variant, size, className), "disabled:pointer-events-none disabled:opacity-50")} {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
+      {children}
+    </button>
+  );
 }
 
 export function LinkButton({ href, variant = "default", size = "md", className, children, ...props }: LinkButtonProps) {

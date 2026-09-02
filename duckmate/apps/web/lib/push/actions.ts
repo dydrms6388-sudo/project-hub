@@ -13,7 +13,7 @@ import { fail, ok, toActionFailure, type ActionResult } from "@/lib/auth/errors"
 import { clientIp } from "@/lib/auth/otp";
 import { requireProfileForAction, type ActionContext } from "@/lib/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { withPushSchema, type PushPrefsRow, type PushSupabase } from "./db-types";
+import type { PushPrefsRow } from "@duckmate/db";
 import { subscribePushSchema, unsubscribePushSchema, updatePushPrefsSchema, type PushPrefsView, type SubscribePushInput, type UpdatePushPrefsInput } from "./schemas";
 
 const MARKETING_RECHECK_DAYS = 730;
@@ -24,7 +24,7 @@ function toHm(t: string | null): string | null {
 }
 
 async function loadPrefs(ctx: ActionContext): Promise<PushPrefsView> {
-  const db: PushSupabase = withPushSchema(ctx.supabase);
+  const db = ctx.supabase;
   const [subs, prefs, consent] = await Promise.all([
     db
       .from("push_subscriptions")
@@ -149,7 +149,7 @@ export async function updatePushPrefs(raw: UpdatePushPrefsInput): Promise<Action
     }
     const input = parsed.data;
     const ctx = await requireProfileForAction(1);
-    const db = withPushSchema(ctx.supabase);
+    const db = ctx.supabase;
 
     // 슬롯 토글 (본인 구독 전체에 일괄)
     const slotPatch: { slot_a_enabled?: boolean; slot_b_enabled?: boolean; instant_enabled?: boolean } = {};

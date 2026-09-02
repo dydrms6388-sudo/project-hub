@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Button } from "@duckmate/ui";
-import { LinkButton } from "@/components/LinkButton";
+import { DisabledButton, LinkButton } from "@/components/LinkButton";
 import { SERVICE_NAME, appUrl, companyUrl } from "@/config/company";
 import { Container } from "@/components/Container";
 import { Section } from "@/components/Section";
@@ -54,9 +53,9 @@ export default function HomePage() {
         {SERVICE_NAME} 시작하기
       </LinkButton>
     ) : (
-      <Button size={size} variant={variant} disabled aria-disabled="true" title="앱 주소가 아직 설정되지 않았어요">
+      <DisabledButton size={size} variant={variant} title="앱 주소가 아직 설정되지 않았어요">
         {SERVICE_NAME} 준비 중
-      </Button>
+      </DisabledButton>
     );
 
   return (

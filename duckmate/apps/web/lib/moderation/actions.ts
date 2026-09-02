@@ -13,7 +13,7 @@ import { REPORT_DETAIL_MAX, REPORT_REASON_CODES, type CreateReportResult, type E
 import { fail, ok, toActionFailure, type ActionResult } from "@/lib/auth/errors";
 import { invalidateGateCache, requireProfileForAction } from "@/lib/auth/session";
 import { APPEAL_COPY, REPORT_COPY, slaCopyFor } from "./constants";
-import { moderationRpc } from "./rpc";
+import { unwrapRpc } from "@/lib/supabase/rpc";
 import type { SubmitAppealResult, SubmitReportResult } from "./types";
 
 const reportSchema = z.object({
@@ -107,7 +107,9 @@ export async function acknowledgeSanction(input: unknown): Promise<ActionResult<
     const parsed = sanctionSchema.safeParse(input);
     if (!parsed.success) return fail("INVALID_INPUT", undefined, { field: "sanctionId" });
     const ctx = await requireProfileForAction(1, { allowOnboarding: true });
-    const data = (await moderationRpc(ctx.supabase, "acknowledge_sanction", { p_sanction_id: parsed.data.sanctionId })) as { sanction_id: string; acknowledged_at: string };
+    const data = await unwrapRpc<{ sanction_id: string; acknowledged_at: string }>(
+      ctx.supabase.rpc("acknowledge_sanction", { p_sanction_id: parsed.data.sanctionId }),
+    );
     return ok({ sanctionId: data.sanction_id, acknowledgedAt: data.acknowledged_at });
   } catch (e) {
     return toActionFailure(e);
@@ -132,7 +134,7 @@ export async function submitAppeal(input: unknown): Promise<ActionResult<SubmitA
     if (!user) return fail("NOT_AUTHENTICATED", undefined, { redirectTo: "/login" });
     let data: { appeal_id: string; status: "pending"; decision_due_at: string };
     try {
-      data = (await moderationRpc(supabase, "submit_appeal", { p_sanction_id: parsed.data.sanctionId, p_body: parsed.data.body })) as typeof data;
+      data = await unwrapRpc<typeof data>(supabase.rpc("submit_appeal", { p_sanction_id: parsed.data.sanctionId, p_body: parsed.data.body }));
     } catch (e) {
       const msg = (e as { message?: string }).message ?? "";
       if (msg.includes("appeal_window_closed")) return fail("NOT_ENTITLED", APPEAL_COPY.windowClosed);
