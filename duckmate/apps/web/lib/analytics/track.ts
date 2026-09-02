@@ -48,7 +48,13 @@ export type AnalyticsEvent =
   | "account_paused"
   | "account_delete_requested"
   | "account_delete_canceled"
-  | "push_opened";
+  | "push_opened"
+  // E2/E3 추가 (매칭·채팅)
+  | "match_created"
+  | "chat_opened"
+  | "chat_list_viewed"
+  | "image_sent"
+  | "chat_left";
 
 export type OnboardingStepName = "age_gate" | "phone" | "basic" | "availability" | "hobbies" | "quiz" | "card" | "photos";
 
