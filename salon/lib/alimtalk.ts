@@ -1,8 +1,9 @@
+import "server-only";
 import { SolapiMessageService } from "solapi";
 import { createSupabaseServiceClient } from "./supabase";
 
-// 알림톡 발송 래퍼. 발송 결과는 성공/실패 모두 messages 테이블에 기록한다.
-// 실패 시 재시도하지 않는다 — *_sent_at이 null로 남으므로 다음날 크론이 다시 잡는다.
+// 알림톡 발송 래퍼. 성공/실패/건너뜀을 모두 messages 테이블에 기록한다.
+// 재시도는 하지 않는다 — visits.*_sent_at이 null로 남으므로 다음날 크론이 다시 잡는다.
 
 export type AlimtalkKind =
   | "booking_confirm"
@@ -10,26 +11,48 @@ export type AlimtalkKind =
   | "touchup_reminder"
   | "winback";
 
-const TEMPLATE_ENV: Record<AlimtalkKind, string | undefined> = {
-  booking_confirm: process.env.ALIMTALK_TEMPLATE_BOOKING_CONFIRM,
-  review_request: process.env.ALIMTALK_TEMPLATE_REVIEW_REQUEST,
-  touchup_reminder: process.env.ALIMTALK_TEMPLATE_TOUCHUP_REMINDER,
-  winback: undefined, // Phase 1.5 — 템플릿 심사 후 추가
-};
+const SEND_TIMEOUT_MS = 10_000;
+
+function templateId(kind: AlimtalkKind): string | undefined {
+  const raw = {
+    booking_confirm: process.env.ALIMTALK_TEMPLATE_BOOKING_CONFIRM,
+    review_request: process.env.ALIMTALK_TEMPLATE_REVIEW_REQUEST,
+    touchup_reminder: process.env.ALIMTALK_TEMPLATE_TOUCHUP_REMINDER,
+    winback: process.env.ALIMTALK_TEMPLATE_WINBACK, // Phase 1.5
+  }[kind];
+  return raw?.trim() || undefined;
+}
 
 export function alimtalkConfigured(kind: AlimtalkKind): boolean {
   return Boolean(
-    process.env.SOLAPI_API_KEY &&
-      process.env.SOLAPI_API_SECRET &&
-      process.env.KAKAO_PFID &&
-      TEMPLATE_ENV[kind]
+    process.env.SOLAPI_API_KEY?.trim() &&
+      process.env.SOLAPI_API_SECRET?.trim() &&
+      process.env.KAKAO_PFID?.trim() &&
+      templateId(kind)
   );
 }
 
 export interface SendResult {
   ok: boolean;
+  /** 미설정으로 건너뛴 경우. 크론이 실패와 구분해 집계한다. */
+  skipped?: boolean;
   providerId?: string;
   error?: string;
+}
+
+/** 로그에 고객 전화번호가 통째로 남지 않도록 마스킹한다. */
+export function maskPhone(digits: string): string {
+  if (digits.length < 7) return "***";
+  return `${digits.slice(0, 3)}****${digits.slice(-4)}`;
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`발송 응답 없음 (${ms}ms 초과)`)), ms)
+    ),
+  ]);
 }
 
 /**
@@ -44,53 +67,50 @@ export async function sendAlimtalk(params: {
   variables: Record<string, string>;
 }): Promise<SendResult> {
   const { kind, customerId, visitId, phone, variables } = params;
-  const templateId = TEMPLATE_ENV[kind];
+  const template = templateId(kind);
   const db = createSupabaseServiceClient();
 
-  if (!alimtalkConfigured(kind)) {
-    await db.from("messages").insert({
+  const record = async (status: string, extra: Record<string, unknown> = {}) => {
+    const { error } = await db.from("messages").insert({
       customer_id: customerId,
       visit_id: visitId ?? null,
       kind,
-      template_code: templateId ?? null,
-      status: "skipped_unconfigured",
+      template_code: template ?? null,
+      status,
+      ...extra,
     });
-    return { ok: false, error: "알림톡 환경변수 미설정" };
+    if (error) console.error(`[alimtalk] messages 기록 실패 (${kind}):`, error.message);
+  };
+
+  if (!alimtalkConfigured(kind)) {
+    await record("skipped_unconfigured", { error: "알림톡 환경변수 미설정" });
+    return { ok: false, skipped: true, error: "알림톡 환경변수 미설정" };
   }
 
+  const to = phone.replace(/\D/g, "");
   try {
     const service = new SolapiMessageService(
       process.env.SOLAPI_API_KEY!,
       process.env.SOLAPI_API_SECRET!
     );
-    const res = await service.sendOne({
-      to: phone.replace(/\D/g, ""),
-      kakaoOptions: {
-        pfId: process.env.KAKAO_PFID!,
-        templateId: templateId!,
-        variables,
-        disableSms: true,
-      },
-    });
-    await db.from("messages").insert({
-      customer_id: customerId,
-      visit_id: visitId ?? null,
-      kind,
-      template_code: templateId,
-      provider_id: res.messageId,
-      status: "sent",
-    });
+    const res = await withTimeout(
+      service.sendOne({
+        to,
+        kakaoOptions: {
+          pfId: process.env.KAKAO_PFID!,
+          templateId: template!,
+          variables,
+          disableSms: true, // 알림톡 실패 시 문자 대체발송 금지 (비용/동의 이슈)
+        },
+      }),
+      SEND_TIMEOUT_MS
+    );
+    await record("sent", { provider_id: res.messageId });
     return { ok: true, providerId: res.messageId };
   } catch (e) {
-    const message = e instanceof Error ? e.message : String(e);
-    await db.from("messages").insert({
-      customer_id: customerId,
-      visit_id: visitId ?? null,
-      kind,
-      template_code: templateId,
-      status: "failed",
-    });
-    console.error(`[alimtalk] ${kind} 발송 실패 (${customerId}):`, message);
+    const message = (e instanceof Error ? e.message : String(e)).slice(0, 300);
+    await record("failed", { error: message });
+    console.error(`[alimtalk] ${kind} 발송 실패 (${maskPhone(to)}):`, message);
     return { ok: false, error: message };
   }
 }

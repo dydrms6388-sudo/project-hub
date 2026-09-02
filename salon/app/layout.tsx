@@ -5,13 +5,17 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "정화 머리방",
   description: "정화 머리방 고객 관리",
-  robots: { index: false, follow: false },
+  // 고객 개인정보를 다루는 내부용 앱 — 검색엔진 색인 금지
+  robots: { index: false, follow: false, nocache: true },
+  manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "정화 머리방", statusBarStyle: "default" },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: "#b4637a",
 };
 

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test lib/*.test.ts",
+    "check": "npm run typecheck && npm run test"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
@@ -14,6 +16,7 @@
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
     "solapi": "^5.5.1"
   },
   "devDependencies": {

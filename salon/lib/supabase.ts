@@ -1,3 +1,4 @@
+import "server-only"; // service role 키가 클라이언트 번들에 섞이면 빌드가 실패하도록
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";

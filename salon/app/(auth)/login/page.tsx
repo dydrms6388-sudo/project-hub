@@ -13,17 +13,30 @@ export default function LoginPage() {
     e.preventDefault();
     setBusy(true);
     setError(null);
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
-    });
-    setBusy(false);
-    if (error) setError(error.message);
-    else setSent(true);
+    try {
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: {
+          // 등록된 계정만 로그인 — 링크로 새 계정이 생기지 않게 한다.
+          shouldCreateUser: false,
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+      setSent(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "로그인 링크를 보내지 못했습니다. 잠시 후 다시 시도해주세요."
+      );
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -33,6 +46,8 @@ export default function LoginPage() {
       {sent ? (
         <div className="notice">
           메일함을 확인해주세요. 로그인 링크를 보냈습니다.
+          <br />
+          메일이 오지 않으면 등록된 주소가 맞는지 확인해주세요.
         </div>
       ) : (
         <form className="plain" onSubmit={sendLink}>
@@ -46,10 +61,15 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               autoComplete="email"
+              inputMode="email"
             />
           </div>
-          {error && <div className="notice">{error}</div>}
-          <button className="btn btn-block" disabled={busy}>
+          {error && (
+            <p className="error" role="alert">
+              {error}
+            </p>
+          )}
+          <button className="btn btn-block" disabled={busy} aria-busy={busy}>
             {busy ? "보내는 중…" : "로그인 링크 보내기"}
           </button>
         </form>

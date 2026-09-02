@@ -126,3 +126,34 @@ form.plain { margin: 0; }
   background: var(--accent-soft); color: var(--accent);
   border-radius: 10px; padding: 10px 14px; font-size: 14px; margin-bottom: 14px;
 }
+
+.error {
+  background: #f7e4da; color: var(--warn);
+  border-radius: 10px; padding: 10px 14px;
+  font-size: 14px; margin: 0 0 12px;
+}
+.error-inline { background: none; padding: 2px 0; font-size: 12px; text-align: right; }
+.success {
+  background: #e2f1e8; color: var(--ok);
+  border-radius: 10px; padding: 10px 14px;
+  font-size: 14px; margin: 0 0 12px;
+}
+
+.badge-muted { background: #eceaea; color: var(--sub); }
+
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.btn:disabled { opacity: 0.6; cursor: default; }
+
+.hint { color: var(--sub); font-size: 12px; line-height: 1.45; margin: -2px 0 14px; }
+.memo {
+  color: var(--ink); font-size: 14px; margin-top: 6px;
+  padding-top: 6px; border-top: 1px dashed var(--line);
+  white-space: pre-wrap; word-break: break-word;
+}
+.meta-error { color: var(--warn); margin-top: 6px; word-break: break-word; }
+
+.breadcrumb { margin: 4px 0 0; font-size: 13px; }
+.breadcrumb a { color: var(--sub); text-decoration: none; }
+
+.card-link { display: flex; text-decoration: none; color: inherit; }
+.sub a { color: inherit; }

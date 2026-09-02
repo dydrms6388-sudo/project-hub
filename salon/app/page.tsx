@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { completeVisit } from "@/app/actions";
-import { formatKoreanDate, formatTime, todayKST } from "@/lib/dates";
-import { createSupabaseServerClient } from "@/lib/supabase";
+import { VisitActions } from "@/app/components/VisitActions";
+import { requireOwner } from "@/lib/auth";
+import { addDays, formatKoreanDate, formatTime, todayKST } from "@/lib/dates";
+import { sanitizeSearchTerm } from "@/lib/validate";
 
 export const dynamic = "force-dynamic";
 
@@ -11,20 +12,27 @@ const SERVICE_LABEL: Record<string, string> = {
   other: "기타",
 };
 
+const TOUCHUP_WINDOW_DAYS = 7;
+
 interface TodayVisit {
   id: string;
   service_type: string;
   price: number | null;
   reserved_time: string | null;
   completed_at: string | null;
-  customers: { id: string; name: string; phone: string } | null;
+  customers: { id: string; name: string } | null;
+}
+
+interface TouchupSoon {
+  id: string;
+  next_touchup_at: string;
+  customers: { id: string; name: string; consent_marketing: boolean } | null;
 }
 
 interface CustomerRow {
   id: string;
   name: string;
   phone: string;
-  created_at: string;
 }
 
 export default async function HomePage({
@@ -32,34 +40,53 @@ export default async function HomePage({
 }: {
   searchParams: Promise<{ q?: string }>;
 }) {
+  const { supabase } = await requireOwner();
   const { q } = await searchParams;
-  const supabase = await createSupabaseServerClient();
+  const term = sanitizeSearchTerm(q ?? "");
   const today = todayKST();
-
-  const { data: visits } = await supabase
-    .from("visits")
-    .select("id, service_type, price, reserved_time, completed_at, customers(id, name, phone)")
-    .eq("visited_at", today)
-    .order("reserved_time", { ascending: true, nullsFirst: false })
-    .returns<TodayVisit[]>();
 
   let customerQuery = supabase
     .from("customers")
-    .select("id, name, phone, created_at")
+    .select("id, name, phone")
     .order("created_at", { ascending: false })
     .limit(20);
-  if (q?.trim()) {
-    const term = q.trim();
+  if (term) {
+    const digits = term.replace(/\D/g, "");
     customerQuery = customerQuery.or(
-      `name.ilike.%${term}%,phone.ilike.%${term.replace(/\D/g, "") || term}%`
+      digits
+        ? `name.ilike.%${term}%,phone.ilike.%${digits}%`
+        : `name.ilike.%${term}%`
     );
   }
-  const { data: customers } = await customerQuery.returns<CustomerRow[]>();
+
+  const [{ data: visits }, { data: touchups }, { data: customers }] = await Promise.all([
+    supabase
+      .from("visits")
+      .select("id, service_type, price, reserved_time, completed_at, customers(id, name)")
+      .eq("visited_at", today)
+      .order("reserved_time", { ascending: true, nullsFirst: false })
+      .returns<TodayVisit[]>(),
+    supabase
+      .from("visits")
+      .select("id, next_touchup_at, customers(id, name, consent_marketing)")
+      .gte("next_touchup_at", today)
+      .lte("next_touchup_at", addDays(today, TOUCHUP_WINDOW_DAYS))
+      .is("touchup_sent_at", null)
+      .order("next_touchup_at", { ascending: true })
+      .limit(10)
+      .returns<TouchupSoon[]>(),
+    customerQuery.returns<CustomerRow[]>(),
+  ]);
+
+  const doneCount = (visits ?? []).filter((v) => v.completed_at).length;
 
   return (
     <>
       <h1>오늘 예약</h1>
-      <p className="sub">{formatKoreanDate(today)}</p>
+      <p className="sub">
+        {formatKoreanDate(today)}
+        {visits?.length ? ` · ${visits.length}건 중 ${doneCount}건 완료` : ""}
+      </p>
 
       {!visits?.length ? (
         <div className="empty">오늘 예약이 없습니다.</div>
@@ -80,35 +107,55 @@ export default async function HomePage({
                 {v.price ? ` · ${v.price.toLocaleString()}원` : ""}
               </span>
             </div>
-            {v.completed_at ? (
-              <span className="badge badge-done">완료</span>
-            ) : (
-              <form className="plain" action={completeVisit.bind(null, v.id)}>
-                <button className="btn">시술 완료</button>
-              </form>
-            )}
+            <VisitActions visitId={v.id} completed={Boolean(v.completed_at)} />
           </div>
         ))
       )}
 
+      {touchups?.length ? (
+        <>
+          <h2>곧 리터치 ({TOUCHUP_WINDOW_DAYS}일 이내)</h2>
+          {touchups.map((t) => (
+            <div key={t.id} className="card row">
+              <div className="stack">
+                {t.customers ? (
+                  <Link href={`/customers/${t.customers.id}`} className="name">
+                    {t.customers.name}
+                  </Link>
+                ) : (
+                  <span className="name">(삭제된 고객)</span>
+                )}
+                <span className="meta">{formatKoreanDate(t.next_touchup_at)} 예정</span>
+              </div>
+              {t.customers?.consent_marketing ? (
+                <span className="badge badge-wait">안내 예약됨</span>
+              ) : (
+                <span className="badge badge-muted">동의 없음</span>
+              )}
+            </div>
+          ))}
+        </>
+      ) : null}
+
       <h2>고객 찾기</h2>
       <form className="searchbar" method="get">
         <input
-          type="text"
+          type="search"
           name="q"
           defaultValue={q ?? ""}
           placeholder="이름 또는 연락처"
+          aria-label="고객 검색"
         />
         <button className="btn btn-ghost">검색</button>
       </form>
 
       {!customers?.length ? (
         <div className="empty">
-          {q ? "검색 결과가 없습니다." : "아직 등록된 고객이 없습니다."}
+          {term ? "검색 결과가 없습니다." : "아직 등록된 고객이 없습니다."}
         </div>
       ) : (
         customers.map((c) => (
-          <Link key={c.id} href={`/customers/${c.id}`} className="card row" style={{ display: "flex", textDecoration: "none", color: "inherit" }}>
+          <Link key={c.id} href={`/customers/${c.id}`} className="card row card-link">
             <span className="name">{c.name}</span>
             <span className="meta">{c.phone}</span>
           </Link>
