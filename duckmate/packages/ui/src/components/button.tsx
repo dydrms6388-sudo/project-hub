@@ -55,8 +55,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type={asChild ? undefined : (props.type ?? "button")}
         {...props}
       >
-        {loading ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : null}
-        {children}
+        {asChild ? (
+          children
+        ) : (
+          <>
+            {loading ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : null}
+            {children}
+          </>
+        )}
       </Comp>
     );
   },

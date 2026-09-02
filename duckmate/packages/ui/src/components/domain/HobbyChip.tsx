@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import * as Icons from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { hobbyIcon } from "../../lib/hobby-icons";
 import { Sprout } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { BEGINNER_WELCOME_MAX_INTENSITY, HOBBY_BY_SLUG, ICON, isHobbyCategorySlug, type Intensity } from "../../tokens";
@@ -12,7 +13,7 @@ export interface HobbyChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButt
   /** 취미 카테고리 slug → 아이콘·이모지 자동. 세부 태그는 카테고리 아이콘 상속 */
   category?: string;
   /** 아이콘 직접 지정(카테고리보다 우선) */
-  icon?: Icons.LucideIcon;
+  icon?: LucideIcon;
   /** 아이콘 대신 이모지 사용 */
   glyph?: "icon" | "emoji" | "none";
   /** 선택 상태(온보딩 선택) */
@@ -41,8 +42,7 @@ export const HobbyChip = React.forwardRef<HTMLButtonElement, HobbyChipProps>(
     ref,
   ) => {
     const cat = category && isHobbyCategorySlug(category) ? HOBBY_BY_SLUG[category] : undefined;
-    const IconComp: Icons.LucideIcon | undefined =
-      icon ?? (cat ? (Icons as unknown as Record<string, Icons.LucideIcon | undefined>)[cat.iconExport] : undefined);
+    const IconComp: LucideIcon | undefined = icon ?? hobbyIcon(cat?.iconExport);
     const showBeginner = beginnerWelcome ?? (intensity !== undefined && intensity <= BEGINNER_WELCOME_MAX_INTENSITY);
     const isButton = interactive ?? Boolean(onClick);
 

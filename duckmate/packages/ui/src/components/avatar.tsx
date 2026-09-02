@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import * as Icons from "lucide-react";
+import { hobbyIcon } from "../lib/hobby-icons";
 import { cn } from "../lib/cn";
 import { avatarFor, type HobbyCategorySlug } from "../tokens";
 
@@ -31,7 +31,7 @@ export const HobbyAvatar = React.forwardRef<HTMLSpanElement, HobbyAvatarProps>(
   ({ seed, category, size = "md", glyph = "emoji", initial, name, className, style, ...props }, ref) => {
     const spec = avatarFor(seed, category);
     const px = PX[size];
-    const IconComp = (Icons as unknown as Record<string, Icons.LucideIcon | undefined>)[spec.iconExport];
+    const IconComp = hobbyIcon(spec.iconExport);
     const decorSize = Math.round(px * 0.42);
     return (
       <span
