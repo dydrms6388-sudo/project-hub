@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,follow" />
 <meta name="theme-color" content="#0a0a0a" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="오늘할일" />
 <title>오늘할일 체크리스트 — 간편 로그인·알람·동기부여 투두앱 | TomatoEggCat</title>
 <meta name="description" content="설치 없이 쓰는 초간단 할일 체크리스트. 닉네임 간편 로그인, 시간 알람, 연속 달성 스트릭·레벨·응원 메시지로 동기부여까지. 모든 데이터는 내 브라우저에만 저장됩니다." />
 <link rel="canonical" href="https://tomatoeggcat.com/todo-check/" />
@@ -136,6 +140,14 @@ button{font-family:inherit}
 .histGrid .hcell.full{background:var(--accent);border-color:var(--accent)}
 .histGrid .hcell.pre{opacity:.35}
 .histSum{font-size:12.5px;color:var(--mut);margin-top:8px}
+.achGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.ach{background:var(--field);border:1px solid var(--line);border-radius:12px;padding:9px 4px;text-align:center;cursor:pointer}
+.ach .em{font-size:20px;line-height:1.2}
+.ach .nm{font-size:10.5px;color:var(--mut);margin-top:3px}
+.ach.locked{opacity:.35;filter:grayscale(1)}
+.ctaRow{display:flex;gap:8px}
+.ctaRow .cta{flex:1;font-size:15px}
+.cta.sub{background:var(--btn);color:var(--txt2);border:1px solid var(--line2)}
 .quote{margin-top:14px;font-size:13.5px;color:var(--quotetxt);background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:10px 13px}
 .cheer{margin-top:10px;font-size:13px;color:var(--warn);display:none}
 /* add */
@@ -151,11 +163,19 @@ button{font-family:inherit}
 .prioChips button.on[data-v="low"]{border-color:#60a5fa;color:var(--c-blu);background:rgba(96,165,250,.12)}
 .rptToggle{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mut);cursor:pointer;user-select:none;min-height:44px}
 .rptToggle input{accent-color:var(--accent);width:18px;height:18px}
+.dayChips{display:none;gap:5px;flex-wrap:wrap;margin-top:8px}
+.dayChips.show{display:flex}
+.dayChips button{width:40px;min-height:40px;font-size:13px;font-weight:600;background:var(--field);color:var(--mut);border:1px solid var(--line2);border-radius:10px;cursor:pointer}
+.dayChips button.on{background:rgba(52,211,153,.14);border-color:var(--accent);color:var(--accent)}
 .suggest{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
 .suggest button{font-size:12.5px;background:var(--chipbg);color:var(--chiptxt);border:1px solid var(--chipline);border-radius:999px;padding:10px 13px;cursor:pointer;min-height:44px}
 /* list */
 .secTitle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut);margin:16px 0 8px;font-weight:700}
 .secTitle .n{background:var(--line);border-radius:999px;padding:1px 9px;font-size:12px}
+.secTitle .tool{margin-left:auto;background:none;border:1px solid var(--line2);color:var(--mut);border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:600;cursor:pointer;min-height:36px}
+.restHint{font-size:12px;color:var(--mut2);margin:2px 0 0}
+.grab{flex:0 0 auto;width:30px;height:44px;border:0;background:none;color:var(--mut2);cursor:grab;font-size:14px;letter-spacing:-2px;touch-action:none;padding:0}
+li.dragging{opacity:.65;border-color:var(--accent)}
 ul.todo{list-style:none;margin:0;padding:0}
 ul.todo li{display:flex;align-items:center;gap:8px;background:var(--field);border:1px solid var(--line);border-radius:14px;padding:8px 8px 8px 10px;margin-bottom:8px;transition:opacity .2s}
 ul.todo li.done{opacity:.55}
@@ -190,6 +210,11 @@ li.done .chk{background:var(--accent);border-color:var(--accent)}
 .report .cell span{font-size:11.5px;color:#a7f3d0}
 .report .tlist{margin:14px 0 0;padding:0;list-style:none;font-size:13.5px;color:#d1fae5}
 .report .tlist li{margin:3px 0}
+.report .bars{display:flex;gap:6px;align-items:flex-end;height:64px;margin-top:16px}
+.report .bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.report .bar i{display:block;width:100%;border-radius:4px 4px 0 0;background:#6ee7b7;min-height:3px}
+.report .bar i.zero{background:rgba(255,255,255,.18)}
+.report .bar span{font-size:10.5px;color:#a7f3d0}
 .report .q{margin-top:14px;font-size:13.5px;border-top:1px dashed rgba(255,255,255,.25);padding-top:12px;color:#d1fae5}
 .report .wm{margin-top:12px;text-align:right;font-size:11px;color:#6ee7b7}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
@@ -287,6 +312,11 @@ footer a{color:var(--link);margin:0 6px;text-decoration:none}
       <div class="histGrid" id="histGrid"></div>
       <div class="histSum" id="histSum"></div>
     </div>
+    <button class="histToggle" id="achBtn">업적 컬렉션 보기</button>
+    <div class="hist hidden" id="achBox">
+      <div class="achGrid" id="achGrid"></div>
+      <div class="histSum" id="achSum"></div>
+    </div>
     <div class="quote" id="quote"></div>
     <div class="cheer" id="cheer" aria-live="polite"></div>
   </div>
@@ -304,17 +334,19 @@ footer a{color:var(--link);margin:0 6px;text-decoration:none}
         <button data-v="mid" class="on" aria-pressed="true">🟡 보통</button>
         <button data-v="low" aria-pressed="false">🔵 여유</button>
       </div>
-      <label class="rptToggle"><input type="checkbox" id="taskRpt" />매일 반복</label>
+      <label class="rptToggle"><input type="checkbox" id="taskRpt" />반복</label>
     </div>
-    <p class="hint">시간을 정하면 그 시간에 알람이 울려요. '매일 반복'은 자정에 자동으로 다시 올라와요. 할일 글자를 누르면 바로 수정할 수 있어요.</p>
+    <div class="dayChips" id="dayChips" role="group" aria-label="반복 요일 선택"></div>
+    <p class="hint">시간을 정하면 그 시간에 알람이 울려요. '반복'을 켜면 요일을 골라 루틴으로 만들 수 있어요(안 고르면 매일). 할일 글자를 누르면 바로 수정할 수 있어요.</p>
     <div class="suggest" id="suggest"></div>
 
-    <div class="secTitle">📋 오늘 할일 <span class="n" id="cntOpen">0</span></div>
+    <div class="secTitle">📋 오늘 할일 <span class="n" id="cntOpen">0</span><button class="tool" id="sortBtn">정렬: 스마트</button></div>
     <ul class="todo" id="listOpen"></ul>
+    <p class="restHint hidden" id="restHint"></p>
     <div class="empty hidden" id="emptyMsg">아직 할일이 없어요. 위에서 하나만 추가해 볼까요? 작게 시작할수록 좋아요 🌱</div>
 
     <div id="doneSec" class="hidden">
-      <div class="secTitle">✅ 완료 <span class="n" id="cntDone">0</span></div>
+      <div class="secTitle">✅ 완료 <span class="n" id="cntDone">0</span><button class="tool" id="clearDoneBtn">완료 비우기</button></div>
       <ul class="todo" id="listDone"></ul>
     </div>
 
@@ -331,7 +363,10 @@ footer a{color:var(--link);margin:0 6px;text-decoration:none}
     </div>
   </div>
 
-  <button class="cta" id="reportBtn">오늘의 달성 카드 만들기 🎉</button>
+  <div class="ctaRow">
+    <button class="cta" id="reportBtn">오늘의 달성 카드 🎉</button>
+    <button class="cta sub" id="weekBtn">주간 리포트 📊</button>
+  </div>
 
   <div id="out" class="hidden" style="margin-top:20px">
     <div class="report" id="reportCard"></div>
@@ -406,6 +441,7 @@ function todayStr(){return ymd(new Date());}
 function ymdLabel(s){var p=s.split("-");return p[0]+"년 "+Number(p[1])+"월 "+Number(p[2])+"일";}
 function isYesterday(s){var d=new Date();d.setDate(d.getDate()-1);return s===ymd(d);}
 function hashStr(s){var h=5381;for(var i=0;i<s.length;i++){h=((h<<5)+h+s.charCodeAt(i))>>>0;}return h;}
+var WD=["일","월","화","수","목","금","토"];
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 function numClamp(v,min,max){v=Math.round(+v);return isFinite(v)?Math.max(min,Math.min(max,v)):min;}
 var lsWarned=false;
@@ -495,18 +531,34 @@ var pendingRemix=null,remixOk=false; /* remix applies only via the explicit "이
 function loadData(id){
   var d=lsGet("data_"+id,null);
   if(!d)d={tasks:[],lastDate:todayStr(),stats:{xp:0,totalDone:0,streak:0,bestStreak:0,lastActiveDate:""},history:{},flags:{}};
-  d.history=d.history||{};d.flags=d.flags||{};
+  d.history=d.history||{};d.flags=d.flags||{};d.ach=d.ach||{};
+  if(d.sortMode!=="manual")d.sortMode="smart";
   return d;
 }
 function saveData(){if(P)lsSet("data_"+P.id,D);}
+
+/* ---------- weekly routines: a repeat task may rest on some weekdays ---------- */
+function dowOf(dateStr){return new Date(dateStr+"T00:00:00").getDay();}
+function activeOn(t,dateStr){
+  if(!t.repeat||!t.days||!t.days.length)return true; /* one-off or every-day routine */
+  return t.days.indexOf(dowOf(dateStr))>=0;
+}
+function activeToday(t){return activeOn(t,todayStr());}
+function todayTasks(){return D.tasks.filter(activeToday);}
+function restingToday(){return D.tasks.filter(function(x){return !activeToday(x);});}
+/* tasks cleared from today's list still count toward today's ring and history */
+function clearedToday(){return (D.cleared&&D.cleared.d===todayStr())?Math.max(0,D.cleared.c|0):0;}
 
 /* daily rollover. returns true if the date changed (callers must re-render) */
 function rollover(){
   var t=todayStr();
   if(D.lastDate===t)return false;
   lastDeleted=null; /* undo must not resurrect yesterday's task into today */
-  var doneN=D.tasks.filter(function(x){return x.done;}).length;
-  if(D.tasks.length)D.history[D.lastDate]={c:doneN,t:D.tasks.length};
+  var prevActive=D.tasks.filter(function(x){return activeOn(x,D.lastDate);});
+  var prevCleared=(D.cleared&&D.cleared.d===D.lastDate)?Math.max(0,D.cleared.c|0):0;
+  var doneN=prevActive.filter(function(x){return x.done;}).length+prevCleared;
+  if(prevActive.length+prevCleared)D.history[D.lastDate]={c:doneN,t:prevActive.length+prevCleared};
+  if(D.cleared&&D.cleared.d!==t)delete D.cleared;
   var keys=Object.keys(D.history).sort();
   while(keys.length>60){delete D.history[keys.shift()];}
   D.tasks=D.tasks.filter(function(x){return x.repeat||!x.done;});
@@ -684,6 +736,29 @@ document.querySelectorAll("#prioChips button").forEach(function(b){
     b.classList.add("on");b.setAttribute("aria-pressed","true");selPrio=b.dataset.v;
   });
 });
+/* repeat-day picker: no day selected = every day */
+var selDays=[];
+(function buildDayChips(){
+  var box=$("#dayChips");
+  WD.forEach(function(w,i){
+    var b=document.createElement("button");b.type="button";b.textContent=w;
+    b.setAttribute("aria-label",w+"요일 반복");b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){
+      var at=selDays.indexOf(i);
+      if(at>=0)selDays.splice(at,1);else selDays.push(i);
+      b.classList.toggle("on",at<0);b.setAttribute("aria-pressed",at<0?"true":"false");
+    });
+    box.appendChild(b);
+  });
+})();
+function resetDayChips(){
+  selDays=[];
+  document.querySelectorAll("#dayChips button").forEach(function(b){b.classList.remove("on");b.setAttribute("aria-pressed","false");});
+}
+$("#taskRpt").addEventListener("change",function(){
+  $("#dayChips").classList.toggle("show",this.checked);
+  if(!this.checked)resetDayChips();
+});
 var SUGGESTIONS=["💧 물 2L 마시기","🏃 30분 운동","📖 책 10쪽 읽기","🧹 책상 정리","😴 12시 전에 자기","📵 폰 1시간 멀리하기"];
 (function renderSuggest(){
   var box=$("#suggest");
@@ -697,32 +772,37 @@ var SUGGESTIONS=["💧 물 2L 마시기","🏃 30분 운동","📖 책 10쪽 읽
   });
 })();
 function nowHM(){var n=new Date();return String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");}
-function addTask(text,time,prio,repeat){
+function addTask(text,time,prio,repeat,days){
   text=(text||"").trim();
   if(!text){toast("할일 내용을 입력해 주세요 ✍️");$("#taskInput").focus();return false;}
   if(D.tasks.length>=50){toast("할일은 50개까지 담을 수 있어요");return false;}
   if(D.tasks.some(function(x){return x.text===text&&!x.done;})){toast("이미 목록에 있는 할일이에요 🙂");return false;}
-  var alerted="";
+  var t={id:uid(),text:text,time:time||"",prio:prio||"mid",repeat:!!repeat,done:false,alerted:"",carry:false};
+  if(t.repeat&&days&&days.length&&days.length<7)t.days=days.slice().sort();
   if(time&&time<nowHM()){ /* a past time must not ring the moment it's added */
-    alerted=todayStr();
-    toast(repeat?"이미 지난 시간이라 알람은 내일부터 울려요 ⏰":"이미 지난 시간이라 오늘은 알람이 울리지 않아요 ⏰",3000);
+    t.alerted=todayStr();
+    toast(repeat?"이미 지난 시간이라 알람은 다음 반복일부터 울려요 ⏰":"이미 지난 시간이라 오늘은 알람이 울리지 않아요 ⏰",3000);
   }
-  D.tasks.push({id:uid(),text:text,time:time||"",prio:prio||"mid",repeat:!!repeat,done:false,alerted:alerted,carry:false});
+  D.tasks.push(t);
   saveData();renderAll();
+  if(!activeToday(t))toast("오늘은 쉬는 요일이라 "+t.days.map(function(d){return WD[d];}).join("·")+"요일에 나타나요 🗓️",3200);
   return true;
 }
 $("#addBtn").addEventListener("click",function(){
-  var ok=addTask($("#taskInput").value,$("#taskTime").value,selPrio,$("#taskRpt").checked);
+  var ok=addTask($("#taskInput").value,$("#taskTime").value,selPrio,$("#taskRpt").checked,selDays);
   if(ok){
     $("#taskInput").value="";
     $("#taskTime").value="";
     $("#taskRpt").checked=false;
+    $("#dayChips").classList.remove("show");
+    resetDayChips();
   }
   $("#taskInput").focus();
 });
 $("#taskInput").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();$("#addBtn").click();}});
 
-function todayDoneCount(){return D.tasks.filter(function(x){return x.done;}).length;}
+function todayDoneCount(){return todayTasks().filter(function(x){return x.done;}).length+clearedToday();}
+function todayTotalCount(){return todayTasks().length+clearedToday();}
 function revertTodayStreakIfEmpty(){
   var s=D.stats;
   if(todayDoneCount()===0&&s.lastActiveDate===todayStr()&&"prevStreak"in s){
@@ -751,12 +831,16 @@ function toggleTask(id){
     var lvAfter=levelOf(s.xp);
     if(lvAfter>lvBefore){celebrate("🎉 Lv."+lvAfter+" 달성! 이제 '"+titleOf(lvAfter)+"'예요",4000);confetti(12);celebrated=true;}
     if(!celebrated)toast(pickCheer()); /* routine cheer never overwrites a celebration */
+    var hr=new Date().getHours();
+    if(hr<7)D.flags.early=1;
+    if(hr<3)D.flags.owl=1;
+    if(todayDoneCount()>=10)D.flags.burst=1;
   }else{
     s.xp=Math.max(0,s.xp-10);s.totalDone=Math.max(0,s.totalDone-1);
     revertTodayStreakIfEmpty();
   }
   saveData();renderAll();
-  if(t.done)maybeCelebrate();
+  if(t.done){maybeCelebrate();checkAch();}
 }
 var lastDeleted=null;
 function delTask(id){
@@ -840,17 +924,22 @@ function renderAll(){
   $("#stTotal").textContent=String(s.totalDone);
   $("#quote").textContent="💬 "+dailyQuote();
 
-  var open=D.tasks.filter(function(x){return !x.done;});
-  var done=D.tasks.filter(function(x){return x.done;});
-  open.sort(function(a,b){
-    if(a.time&&b.time&&a.time!==b.time)return a.time<b.time?-1:1;
-    if(!!a.time!==!!b.time)return a.time?-1:1;
-    return PRIO_ORDER[a.prio]-PRIO_ORDER[b.prio];
-  });
+  var live=todayTasks();
+  var open=live.filter(function(x){return !x.done;});
+  var done=live.filter(function(x){return x.done;});
+  if(D.sortMode!=="manual"){ /* smart order: by alarm time, then priority — manual keeps the user's own order */
+    open.sort(function(a,b){
+      if(a.time&&b.time&&a.time!==b.time)return a.time<b.time?-1:1;
+      if(!!a.time!==!!b.time)return a.time?-1:1;
+      return PRIO_ORDER[a.prio]-PRIO_ORDER[b.prio];
+    });
+  }
+  $("#sortBtn").textContent=D.sortMode==="manual"?"정렬: 내 순서":"정렬: 스마트";
+  var totalC=todayTotalCount(),doneC=todayDoneCount();
   $("#cntOpen").textContent=String(open.length);
   $("#cntDone").textContent=String(done.length);
-  $("#stToday").textContent=done.length+"/"+D.tasks.length;
-  var pct=D.tasks.length?Math.round(done.length/D.tasks.length*100):0;
+  $("#stToday").textContent=doneC+"/"+totalC;
+  var pct=totalC?Math.round(doneC/totalC*100):0;
   $("#pctNum").textContent=pct+"%";
   var C=251.3;
   $("#ringBar").style.strokeDashoffset=String(C-(C*pct/100));
@@ -858,16 +947,23 @@ function renderAll(){
 
   renderList($("#listOpen"),open);
   renderList($("#listDone"),done);
-  $("#emptyMsg").classList.toggle("hidden",D.tasks.length>0);
+  var rest=restingToday();
+  $("#emptyMsg").classList.toggle("hidden",totalC>0);
+  $("#emptyMsg").textContent=(!totalC&&rest.length)
+    ?"오늘은 쉬어가는 날이에요 🌿 예정된 루틴이 없으니, 하고 싶은 일이 있을 때만 하나 추가해요"
+    :"아직 할일이 없어요. 위에서 하나만 추가해 볼까요? 작게 시작할수록 좋아요 🌱";
   $("#doneSec").classList.toggle("hidden",done.length===0);
-  renderWeek(done.length,D.tasks.length);
+  $("#restHint").classList.toggle("hidden",rest.length===0);
+  if(rest.length)$("#restHint").textContent="😴 오늘 쉬는 루틴 "+rest.length+"개 — "+rest.slice(0,3).map(function(x){return x.text;}).join(", ")+(rest.length>3?" 외":"");
+  renderWeek(doneC,totalC);
   if(!$("#histBox").classList.contains("hidden"))renderHist();
+  if(!$("#achBox").classList.contains("hidden"))renderAch();
 
   var cheer=$("#cheer");
-  if(D.flags.lostStreak&&done.length===0){
+  if(D.flags.lostStreak&&doneC===0){
     cheer.style.display="block";
     cheer.textContent="🔥 "+D.flags.lostStreak+"일의 기록은 사라지지 않았어요. 최고 기록 "+D.stats.bestStreak+"일은 그대로! 오늘 체크 1개면 다시 시작이에요.";
-  }else if(D.tasks.length&&done.length===D.tasks.length){
+  }else if(totalC&&doneC===totalC){
     cheer.style.display="block";cheer.textContent="🏆 오늘 100% 달성! 아래에서 달성 카드를 만들어 보세요.";
   }else if(open.length&&done.length){
     cheer.style.display="block";cheer.textContent="⛰️ "+open.length+"개 남았어요. 제일 쉬운 것부터 하나만 더!";
@@ -875,7 +971,6 @@ function renderAll(){
 
   renderNotifState();
 }
-var WD=["일","월","화","수","목","금","토"];
 function dayRecord(key,todayC,todayT){
   if(key===todayStr())return {c:todayC,t:todayT};
   return D.history[key]||null;
@@ -935,11 +1030,19 @@ function renderHist(){
   }
   $("#histSum").textContent="최근 30일: 완료 "+doneSum+"개 · 실천한 날 "+activeDays+"일 · 100% 달성 "+fullDays+"일";
 }
+function repeatLabel(t){
+  if(!t.repeat)return "";
+  if(!t.days||!t.days.length||t.days.length===7)return "매일";
+  return t.days.map(function(d){return WD[d];}).join("·");
+}
 function renderList(ul,arr){
   ul.innerHTML="";
+  var reorderable=ul.id==="listOpen"&&arr.length>1;
   arr.forEach(function(t){
     var li=document.createElement("li");
+    li.dataset.id=t.id;
     if(t.done)li.classList.add("done");
+    if(reorderable)li.appendChild(buildGrab(t));
     var chk=document.createElement("button");chk.className="chk";chk.type="button";
     chk.setAttribute("aria-label",t.done?"'"+t.text+"' 완료 취소":"'"+t.text+"' 완료로 표시");
     chk.textContent=t.done?"✓":"";
@@ -950,7 +1053,7 @@ function renderList(ul,arr){
     if(t.time){var b1=document.createElement("span");b1.className="badge time";b1.textContent="⏰ "+t.time;meta.appendChild(b1);}
     var b2=document.createElement("span");b2.className="badge "+t.prio;
     b2.textContent=t.prio==="high"?"중요":(t.prio==="low"?"여유":"보통");meta.appendChild(b2);
-    if(t.repeat){var b3=document.createElement("span");b3.className="badge rpt";b3.textContent="매일";meta.appendChild(b3);}
+    if(t.repeat){var b3=document.createElement("span");b3.className="badge rpt";b3.textContent=repeatLabel(t);meta.appendChild(b3);}
     if(t.carry&&!t.done&&t.carrySince){
       var days=daysBetween(t.carrySince,todayStr());
       var b4=document.createElement("span");b4.className="badge carry";
@@ -966,6 +1069,168 @@ function renderList(ul,arr){
   });
 }
 
+/* ---------- manual ordering: drag the ⠿ handle, or focus it and press ↑/↓ ---------- */
+function openIdsInDom(){
+  return [].slice.call(document.querySelectorAll("#listOpen li")).map(function(li){return li.dataset.id;});
+}
+function applyOrder(ids){
+  var byId={};
+  D.tasks.forEach(function(t){byId[t.id]=t;});
+  var ordered=[];
+  ids.forEach(function(id){if(byId[id])ordered.push(byId[id]);});
+  var rest=D.tasks.filter(function(t){return ids.indexOf(t.id)<0;});
+  D.tasks=ordered.concat(rest);
+  D.sortMode="manual";
+  saveData();
+}
+function moveTask(id,dir){
+  var ids=openIdsInDom();
+  var i=ids.indexOf(id),j=i+dir;
+  if(i<0||j<0||j>=ids.length)return;
+  ids.splice(j,0,ids.splice(i,1)[0]);
+  applyOrder(ids);renderAll();
+  var g=document.querySelector('#listOpen li[data-id="'+id+'"] .grab');
+  if(g)g.focus();
+}
+/* Listeners live on document, not the handle: moving the row in the DOM detaches the
+   handle and would drop its pointer capture, losing the rest of the gesture. */
+var drag=null;
+function onDragMove(e){
+  if(!drag)return;
+  if(!drag.li.parentNode){endDrag();return;} /* a re-render replaced the row mid-drag */
+  e.preventDefault();
+  var el=document.elementFromPoint(e.clientX,e.clientY);
+  var over=(el&&el.closest)?el.closest("li"):null;
+  if(!over||over===drag.li||over.parentNode!==drag.ul)return;
+  var r=over.getBoundingClientRect();
+  var ref=(e.clientY<r.top+r.height/2)?over:over.nextSibling;
+  if(ref===drag.li||ref===drag.li.nextSibling)return; /* already in that slot */
+  drag.ul.insertBefore(drag.li,ref);
+  drag.moved=true;
+}
+function endDrag(){
+  if(!drag)return;
+  document.removeEventListener("pointermove",onDragMove);
+  document.removeEventListener("pointerup",endDrag);
+  document.removeEventListener("pointercancel",endDrag);
+  drag.li.classList.remove("dragging");
+  var moved=drag.moved;
+  var ids=openIdsInDom();
+  drag=null;
+  if(!moved)return; /* a tap on the handle must not silently switch the sort mode */
+  applyOrder(ids);renderAll();
+  toast("내 순서로 정렬했어요 ↕️",1800);
+}
+function buildGrab(t){
+  var g=document.createElement("button");
+  g.type="button";g.className="grab";g.textContent="⠿";
+  g.setAttribute("aria-label","'"+t.text+"' 순서 바꾸기 — 위·아래 화살표 키");
+  g.addEventListener("keydown",function(e){
+    if(e.key==="ArrowUp"){e.preventDefault();moveTask(t.id,-1);}
+    else if(e.key==="ArrowDown"){e.preventDefault();moveTask(t.id,1);}
+  });
+  g.addEventListener("pointerdown",function(e){
+    var li=g.parentNode;
+    if(!li||!li.parentNode||drag)return;
+    e.preventDefault();
+    drag={id:t.id,li:li,ul:li.parentNode,moved:false};
+    li.classList.add("dragging");
+    document.addEventListener("pointermove",onDragMove);
+    document.addEventListener("pointerup",endDrag);
+    document.addEventListener("pointercancel",endDrag);
+  });
+  return g;
+}
+$("#sortBtn").addEventListener("click",function(){
+  if(D.sortMode==="manual"){D.sortMode="smart";saveData();renderAll();toast("스마트 정렬 — 시간·중요도 순으로 보여드려요",2600);}
+  else{applyOrder(openIdsInDom());renderAll();toast("내 순서로 바꿨어요 — ⠿를 끌거나 ↑↓로 옮겨요",3000);} /* freeze the current order so nothing jumps */
+});
+
+/* ---------- clear completed (kept in today's ring and history) ---------- */
+$("#clearDoneBtn").addEventListener("click",function(){
+  var live=todayTasks();
+  var targets=live.filter(function(x){return x.done&&!x.repeat;});
+  if(!targets.length){
+    toast(live.some(function(x){return x.done&&x.repeat;})?"반복 루틴은 내일 또 필요해서 남겨 둬요 🔁":"비울 완료 항목이 없어요");
+    return;
+  }
+  var snapshot=D.tasks.slice();
+  var prevCleared=D.cleared?{d:D.cleared.d,c:D.cleared.c}:null;
+  var ids={};targets.forEach(function(t){ids[t.id]=1;});
+  D.tasks=D.tasks.filter(function(t){return !ids[t.id];});
+  var td=todayStr();
+  D.cleared=(prevCleared&&prevCleared.d===td)?{d:td,c:prevCleared.c+targets.length}:{d:td,c:targets.length};
+  lastDeleted=null;
+  saveData();renderAll();
+  toastAction("완료 "+targets.length+"개를 비웠어요 (달성률·기록은 그대로)","실행취소",function(){
+    D.tasks=snapshot;
+    if(prevCleared)D.cleared=prevCleared;else delete D.cleared;
+    saveData();renderAll();
+  },5500);
+});
+
+/* ---------- achievements ---------- */
+var ACHS=[
+  {id:"first",em:"🌱",nm:"첫걸음",desc:"첫 할일을 완료했어요",ok:function(c){return c.total>=1;}},
+  {id:"ten",em:"🔟",nm:"열 개",desc:"누적 10개 완료",ok:function(c){return c.total>=10;}},
+  {id:"fifty",em:"⭐",nm:"오십",desc:"누적 50개 완료",ok:function(c){return c.total>=50;}},
+  {id:"hundred",em:"💯",nm:"백 개",desc:"누적 100개 완료",ok:function(c){return c.total>=100;}},
+  {id:"s3",em:"🔥",nm:"작심삼일 격파",desc:"3일 연속 달성",ok:function(c){return c.best>=3;}},
+  {id:"s7",em:"🗓️",nm:"한 주 완주",desc:"7일 연속 달성",ok:function(c){return c.best>=7;}},
+  {id:"s30",em:"👑",nm:"한 달 개근",desc:"30일 연속 달성",ok:function(c){return c.best>=30;}},
+  {id:"perfect",em:"🏆",nm:"퍼펙트 데이",desc:"하루를 100% 달성",ok:function(c){return c.perfect>=1;}},
+  {id:"perfect7",em:"🎖️",nm:"퍼펙트 7일",desc:"100% 달성 7일",ok:function(c){return c.perfect>=7;}},
+  {id:"early",em:"🌅",nm:"얼리버드",desc:"오전 7시 전에 완료",ok:function(c){return !!c.early;}},
+  {id:"owl",em:"🦉",nm:"올빼미",desc:"자정~새벽 3시에 완료",ok:function(c){return !!c.owl;}},
+  {id:"burst",em:"⚡",nm:"폭발의 날",desc:"하루에 10개 완료",ok:function(c){return !!c.burst;}}
+];
+function achCtx(){
+  var perfect=0;
+  Object.keys(D.history).forEach(function(k){
+    var r=D.history[k];
+    if(r&&r.t>0&&r.c>=r.t)perfect++;
+  });
+  var tc=todayTotalCount(),dc=todayDoneCount();
+  if(tc>0&&dc>=tc)perfect++;
+  return {total:D.stats.totalDone,best:D.stats.bestStreak,perfect:perfect,
+          early:D.flags.early,owl:D.flags.owl,burst:D.flags.burst||dc>=10};
+}
+function checkAch(){
+  var c=achCtx(),newly=[];
+  ACHS.forEach(function(a){
+    if(!D.ach[a.id]&&a.ok(c)){D.ach[a.id]=todayStr();newly.push(a);}
+  });
+  if(!newly.length)return;
+  saveData();
+  celebrate("🏅 업적 해금! "+newly.map(function(a){return a.em+" "+a.nm;}).join(", "),4200);
+  confetti(12);
+  if(!$("#achBox").classList.contains("hidden"))renderAch();
+}
+function renderAch(){
+  var g=$("#achGrid");g.innerHTML="";
+  var got=0;
+  ACHS.forEach(function(a){
+    var on=!!D.ach[a.id];
+    if(on)got++;
+    var el=document.createElement("button");el.type="button";
+    el.className="ach"+(on?"":" locked");
+    el.setAttribute("aria-label",a.nm+" — "+a.desc+(on?" (해금됨)":" (아직 잠김)"));
+    var em=document.createElement("div");em.className="em";em.textContent=on?a.em:"🔒";
+    var nm=document.createElement("div");nm.className="nm";nm.textContent=a.nm;
+    el.appendChild(em);el.appendChild(nm);
+    el.addEventListener("click",function(){toast((on?"✅ ":"🔒 ")+a.nm+" — "+a.desc,2800);});
+    g.appendChild(el);
+  });
+  $("#achSum").textContent="업적 "+got+"/"+ACHS.length+" 해금";
+}
+$("#achBtn").addEventListener("click",function(){
+  var box=$("#achBox");
+  var show=box.classList.contains("hidden");
+  box.classList.toggle("hidden",!show);
+  $("#achBtn").textContent=show?"업적 컬렉션 접기":"업적 컬렉션 보기";
+  if(show)renderAch();
+});
+
 /* ---------- confetti ---------- */
 function confetti(n){
   var EMO=["🎉","✨","🎊","⭐","💚"];
@@ -980,8 +1245,8 @@ function confetti(n){
   }
 }
 function maybeCelebrate(){
-  var done=todayDoneCount();
-  if(!D.tasks.length||done!==D.tasks.length)return;
+  var total=todayTotalCount();
+  if(!total||todayDoneCount()<total)return;
   confetti(24);
   celebrate(CHEERS_ALL[Math.floor(Math.random()*CHEERS_ALL.length)],3000);
 }
@@ -1038,7 +1303,7 @@ function checkAlarms(){
   var nowM=now.getHours()*60+now.getMinutes();
   var td=todayStr(),missed=0,firedTasks=[];
   D.tasks.forEach(function(t){
-    if(t.done||!t.time)return;
+    if(t.done||!t.time||!activeToday(t))return; /* a routine resting today must stay silent */
     var tm,snoozed=false;
     if(t.snoozeD){
       if(t.snoozeD>td)return; /* snooze lands after midnight — wait for that day */
@@ -1118,16 +1383,26 @@ function sanitizeImport(o){
     var text=String(t.text||"").slice(0,60).trim();
     if(!text)return null;
     var time=/^([01]\d|2[0-3]):[0-5]\d$/.test(String(t.time))?t.time:"";
+    var days=Array.isArray(t.days)
+      ?t.days.map(function(d){return d|0;}).filter(function(d,i,a){return d>=0&&d<=6&&a.indexOf(d)===i;}).sort()
+      :[];
     return {
       id:uid(),text:text,
       time:time,
       prio:PRIO_OK[t.prio]?t.prio:"mid",
       repeat:!!t.repeat,done:!!t.done,
+      days:(t.repeat&&days.length&&days.length<7)?days:undefined,
       alerted:(time&&time<nowHM())?todayStr():"", /* don't fire a batch of stale alarms right after import */
       carry:!!t.carry,
       carrySince:/^\d{4}-\d{2}-\d{2}$/.test(String(t.carrySince))?t.carrySince:undefined
     };
   }).filter(Boolean);
+  var ach={};
+  var srcAch=(o.data&&o.data.ach&&typeof o.data.ach==="object")?o.data.ach:{};
+  ACHS.forEach(function(a){ /* only known achievement ids survive an import */
+    if(/^\d{4}-\d{2}-\d{2}$/.test(String(srcAch[a.id])))ach[a.id]=srcAch[a.id];
+  });
+  var f=(o.data&&o.data.flags)||{};
   var hist={};
   var h=o.data&&o.data.history||{};
   Object.keys(h).slice(0,60).forEach(function(k){
@@ -1149,7 +1424,10 @@ function sanitizeImport(o){
       bestStreak:numClamp(st.bestStreak,0,9999),
       lastActiveDate:(/^\d{4}-\d{2}-\d{2}$/.test(String(st.lastActiveDate))&&String(st.lastActiveDate)<=todayStr())?st.lastActiveDate:""
     },
-    history:hist,flags:{}
+    history:hist,
+    ach:ach,
+    sortMode:o.data&&o.data.sortMode==="manual"?"manual":"smart",
+    flags:{early:f.early?1:undefined,owl:f.owl?1:undefined,burst:f.burst?1:undefined}
   };
 }
 $("#impFile").addEventListener("change",function(){
@@ -1182,32 +1460,84 @@ $("#impFile").addEventListener("change",function(){
 /* ---------- achievement report ---------- */
 function reportData(){
   var done=todayDoneCount();
-  var total=D.tasks.length;
+  var total=todayTotalCount();
   var pct=total?Math.round(done/total*100):0;
   var lv=levelOf(D.stats.xp);
-  var titles=D.tasks.slice(0,5).map(function(t){return t.text.slice(0,24);});
+  var titles=todayTasks().slice(0,5).map(function(t){return t.text.slice(0,24);});
   return {n:P.nick,e:P.emoji,d:todayStr(),c:done,t:total,p:pct,s:D.stats.streak,l:lv,ti:titleOf(lv),ts:titles};
 }
+/* last 7 days, today included */
+function weekStats(){
+  var days=[],doneSum=0,totalSum=0,active=0,perfect=0;
+  var dc=todayDoneCount(),tc=todayTotalCount();
+  for(var i=6;i>=0;i--){
+    var d=new Date();d.setDate(d.getDate()-i);
+    var rec=dayRecord(ymd(d),dc,tc);
+    days.push({w:WD[d.getDay()],p:(rec&&rec.t>0)?Math.round(rec.c/rec.t*100):0});
+    if(rec&&rec.t>0){
+      doneSum+=rec.c;totalSum+=rec.t;
+      if(rec.c>0)active++;
+      if(rec.c>=rec.t)perfect++;
+    }
+  }
+  return {days:days,done:doneSum,total:totalSum,active:active,perfect:perfect,
+          pct:totalSum?Math.round(doneSum/totalSum*100):0};
+}
+function weekReportData(){
+  var w=weekStats(),lv=levelOf(D.stats.xp);
+  return {k:"w",n:P.nick,e:P.emoji,d:todayStr(),c:w.done,t:w.active,p:w.pct,s:D.stats.streak,
+          l:lv,ti:titleOf(lv),pf:w.perfect,wk:w.days.map(function(x){return x.p;})};
+}
+function isWeek(r){return r&&r.k==="w";}
 function reportQuote(r){
+  if(isWeek(r)){
+    if(r.p>=90)return "이번 주, 거의 완벽했어요. 지금 페이스가 곧 실력이에요.";
+    if(r.p>=70)return "꾸준한 한 주였어요. 이 리듬이 습관을 만듭니다.";
+    if(r.p>=40)return "절반을 넘긴 한 주. 다음 주는 한 칸만 더 채워봐요.";
+    if(r.c>0)return "바빴던 한 주에도 손을 놓지 않았네요. 그거면 충분해요.";
+    return "쉬어간 한 주도 괜찮아요. 내일 체크 하나면 다시 시작이에요.";
+  }
   if(r.p>=100)return "완벽한 하루! 이 카드를 미래의 나에게 증거로 남겨요.";
   if(r.p>=70)return "충분히 잘한 하루예요. 남은 건 내일의 내가 이어받을게요.";
   if(r.p>=40)return "절반의 성공도 성공이에요. 멈추지만 않으면 돼요.";
   if(r.c>0)return "0이 아닌 하루를 만든 것, 그게 제일 어려운 일이에요.";
   return "괜찮아요, 내일의 첫 체크가 기다리고 있어요.";
 }
+function weekBadge(r){return r.p>=90?"🏆":(r.p>=70?"🥈":(r.p>=40?"🌿":"🌱"));}
 function renderReportInto(el,r,withList){
   el.innerHTML="";
-  var top=document.createElement("div");top.className="sub";top.textContent=ymdLabel(r.d)+" · "+r.e+" "+r.n+"님의 하루";
+  var week=isWeek(r);
+  var top=document.createElement("div");top.className="sub";
+  top.textContent=week?("최근 7일 리포트 · "+r.e+" "+r.n+"님"):(ymdLabel(r.d)+" · "+r.e+" "+r.n+"님의 하루");
   var big=document.createElement("div");big.className="big";big.textContent=r.p+"%";
-  var sub=document.createElement("div");sub.className="sub";sub.textContent="오늘 할일 "+r.t+"개 중 "+r.c+"개 완료";
+  var sub=document.createElement("div");sub.className="sub";
+  sub.textContent=week?("완료 "+r.c+"개 · 실천한 날 "+r.t+"일"):("오늘 할일 "+r.t+"개 중 "+r.c+"개 완료");
   var row=document.createElement("div");row.className="row";
-  [["🔥 "+r.s+"일","연속 달성"],["Lv."+r.l,r.ti],[r.p>=100?"🏆":(r.p>=70?"🥈":"🌱"),r.p>=100?"퍼펙트":"오늘의 배지"]].forEach(function(cv){
+  var cells=week
+    ?[["🔥 "+r.s+"일","현재 연속"],["🏆 "+(r.pf||0)+"일","100% 달성"],[weekBadge(r),"이번 주 배지"]]
+    :[["🔥 "+r.s+"일","연속 달성"],["Lv."+r.l,r.ti],[r.p>=100?"🏆":(r.p>=70?"🥈":"🌱"),r.p>=100?"퍼펙트":"오늘의 배지"]];
+  cells.forEach(function(cv){
     var c=document.createElement("div");c.className="cell";
     var b=document.createElement("b");b.textContent=cv[0];
     var sp=document.createElement("span");sp.textContent=cv[1];
     c.appendChild(b);c.appendChild(sp);row.appendChild(c);
   });
   el.appendChild(top);el.appendChild(big);el.appendChild(sub);el.appendChild(row);
+  if(week&&r.wk&&r.wk.length){
+    var bars=document.createElement("div");bars.className="bars";
+    var today=new Date();
+    r.wk.slice(0,7).forEach(function(p,i){
+      var d=new Date(today);d.setDate(d.getDate()-(r.wk.length-1-i));
+      var col=document.createElement("div");col.className="bar";
+      var fill=document.createElement("i");
+      var v=Math.max(0,Math.min(100,+p||0));
+      fill.style.height=Math.max(3,Math.round(v*0.44))+"px";
+      if(!v)fill.className="zero";
+      var lb=document.createElement("span");lb.textContent=WD[d.getDay()];
+      col.appendChild(fill);col.appendChild(lb);bars.appendChild(col);
+    });
+    el.appendChild(bars);
+  }
   if(withList&&r.ts&&r.ts.length){
     var ul=document.createElement("ul");ul.className="tlist";
     r.ts.forEach(function(txt){
@@ -1221,9 +1551,7 @@ function renderReportInto(el,r,withList){
 }
 var lastReport=null,adPushed=false;
 function shareUrl(r){return location.origin+location.pathname+"?r="+encodeState(r);}
-$("#reportBtn").addEventListener("click",function(){
-  var r=reportData();
-  if(!r.t){toast("먼저 할일을 하나 추가해 보세요 🙂");return;}
+function showReport(r){
   lastReport=r;
   renderReportInto($("#reportCard"),r,false);
   $("#out").classList.remove("hidden");
@@ -1233,6 +1561,16 @@ $("#reportBtn").addEventListener("click",function(){
   }
   if(navigator.share)$("#shareNative").classList.remove("hidden");
   scrollToEl($("#out"));
+}
+$("#reportBtn").addEventListener("click",function(){
+  var r=reportData();
+  if(!r.t){toast("먼저 할일을 하나 추가해 보세요 🙂");return;}
+  showReport(r);
+});
+$("#weekBtn").addEventListener("click",function(){
+  var r=weekReportData();
+  if(!r.c&&!todayTotalCount()){toast("아직 기록이 없어요. 할일을 추가하고 체크해 보세요 🙂");return;}
+  showReport(r);
 });
 $("#backToList").addEventListener("click",function(){scrollToEl($("#app"));});
 
@@ -1260,18 +1598,20 @@ $("#copyLink").addEventListener("click",function(){
 });
 $("#copyText").addEventListener("click",function(){
   var r=lastReport||reportData();
-  var txt="✅ 오늘할일 체크리스트\n"+ymdLabel(r.d)+" — "+r.n+"의 하루: "+r.t+"개 중 "+r.c+"개 완료 ("+r.p+"%) 🔥"+r.s+"일 연속\n"+shareUrl(r);
+  var txt=isWeek(r)
+    ?"📊 오늘할일 체크리스트 — 최근 7일 리포트\n"+r.n+": 달성률 "+r.p+"% · 완료 "+r.c+"개 · 실천한 날 "+r.t+"일 🔥"+r.s+"일 연속\n"+shareUrl(r)
+    :"✅ 오늘할일 체크리스트\n"+ymdLabel(r.d)+" — "+r.n+"의 하루: "+r.t+"개 중 "+r.c+"개 완료 ("+r.p+"%) 🔥"+r.s+"일 연속\n"+shareUrl(r);
   (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject())
     .then(function(){toast("텍스트를 복사했어요");},function(){toast("복사에 실패했어요");});
 });
 $("#shareX").addEventListener("click",function(){
   var r=lastReport||reportData();
-  var t="오늘 할일 "+r.p+"% 달성! 🔥"+r.s+"일 연속 실천 중 ✅";
+  var t=isWeek(r)?("이번 주 달성률 "+r.p+"%! 🔥"+r.s+"일 연속 실천 중 📊"):("오늘 할일 "+r.p+"% 달성! 🔥"+r.s+"일 연속 실천 중 ✅");
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(shareUrl(r)),"_blank","noopener");
 });
 $("#shareNative").addEventListener("click",function(){
   var r=lastReport||reportData();
-  if(navigator.share)navigator.share({title:"오늘할일 체크리스트",text:"오늘 "+r.p+"% 달성! 🔥"+r.s+"일 연속",url:shareUrl(r)}).catch(function(){});
+  if(navigator.share)navigator.share({title:"오늘할일 체크리스트",text:(isWeek(r)?"이번 주 ":"오늘 ")+r.p+"% 달성! 🔥"+r.s+"일 연속",url:shareUrl(r)}).catch(function(){});
 });
 
 /* ---------- canvas PNG ---------- */
@@ -1296,53 +1636,82 @@ $("#saveImg").addEventListener("click",function(){
   g.addColorStop(0,"#064e3b");g.addColorStop(.5,"#065f46");g.addColorStop(1,"#047857");
   x.fillStyle=g;x.fillRect(0,0,W,H);
   x.strokeStyle="rgba(167,243,208,.35)";x.lineWidth=4;x.strokeRect(40,40,W-80,H-80);
+  var week=isWeek(r);
   var pad=100,cx=pad,maxW=W-pad*2,y=190;
   x.fillStyle="#a7f3d0";x.font="600 34px 'Apple SD Gothic Neo',sans-serif";
-  x.fillText(ymdLabel(r.d),cx,y);y+=64;
+  x.fillText(week?"최근 7일 리포트":ymdLabel(r.d),cx,y);y+=64;
   x.fillStyle="#ecfdf5";x.font="800 52px 'Apple SD Gothic Neo',sans-serif";
-  x.fillText(r.e+" "+r.n+"님의 하루",cx,y);y+=140;
+  x.fillText(r.e+" "+r.n+(week?"님의 한 주":"님의 하루"),cx,y);y+=140;
   x.fillStyle="#ffffff";x.font="800 170px 'Apple SD Gothic Neo',sans-serif";
   x.fillText(r.p+"%",cx,y);
   y+=70;
   x.fillStyle="#a7f3d0";x.font="600 40px 'Apple SD Gothic Neo',sans-serif";
-  x.fillText("오늘 할일 "+r.t+"개 중 "+r.c+"개 완료",cx,y);y+=110;
+  x.fillText(week?("완료 "+r.c+"개 · 실천한 날 "+r.t+"일"):("오늘 할일 "+r.t+"개 중 "+r.c+"개 완료"),cx,y);y+=110;
+  if(week&&r.wk&&r.wk.length){ /* 7-day bar chart */
+    var bw=Math.floor(maxW/7),bh=150,base=y+bh;
+    var today=new Date();
+    r.wk.slice(0,7).forEach(function(p,i){
+      var v=Math.max(0,Math.min(100,+p||0));
+      var h=Math.max(4,Math.round(v/100*bh));
+      var bx=cx+i*bw;
+      x.fillStyle=v?"#6ee7b7":"rgba(255,255,255,.18)";
+      x.fillRect(bx,base-h,bw-14,h);
+      var d=new Date(today);d.setDate(d.getDate()-(r.wk.length-1-i));
+      x.fillStyle="#a7f3d0";x.font="500 28px 'Apple SD Gothic Neo',sans-serif";
+      x.fillText(WD[d.getDay()],bx+(bw-14)/2-14,base+42);
+    });
+    y=base+92;
+  }
   x.strokeStyle="rgba(167,243,208,.3)";x.lineWidth=2;
   x.beginPath();x.moveTo(cx,y);x.lineTo(cx+maxW,y);x.stroke();y+=90;
+  var rightTop=week?("🏆 "+(r.pf||0)+"일"):("Lv."+r.l);
+  var rightSub=week?"100% 달성":r.ti;
   x.fillStyle="#ecfdf5";x.font="800 54px 'Apple SD Gothic Neo',sans-serif";
   x.fillText("🔥 "+r.s+"일 연속",cx,y);
-  x.fillText("Lv."+r.l,cx+maxW-x.measureText("Lv."+r.l).width,y);y+=52;
+  x.fillText(rightTop,cx+maxW-x.measureText(rightTop).width,y);y+=52;
   x.fillStyle="#a7f3d0";x.font="500 30px 'Apple SD Gothic Neo',sans-serif";
-  x.fillText("연속 달성",cx,y);
-  x.fillText(r.ti,cx+maxW-x.measureText(r.ti).width,y);y+=120;
+  x.fillText(week?"현재 연속":"연속 달성",cx,y);
+  x.fillText(rightSub,cx+maxW-x.measureText(rightSub).width,y);y+=110;
   x.fillStyle="#d1fae5";x.font="500 36px 'Apple SD Gothic Neo',sans-serif";
   wrapText(x,"“"+reportQuote(r)+"”",maxW).forEach(function(ln){x.fillText(ln,cx,y);y+=54;});
   x.fillStyle="#6ee7b7";x.font="400 26px 'Apple SD Gothic Neo',sans-serif";
   x.textAlign="right";x.fillText("tomatoeggcat.com/todo-check",cx+maxW,H-80);x.textAlign="left";
   var a=document.createElement("a");
-  a.href=c.toDataURL("image/png");a.download="todo-check-"+r.d+".png";
+  a.href=c.toDataURL("image/png");a.download="todo-check-"+(week?"week-":"")+r.d+".png";
   document.body.appendChild(a);a.click();a.remove();
   toast("이미지를 저장했어요 🖼️");
 });
 
 /* ---------- inbound (shared link) ---------- */
 function sanitizeShared(r){
-  var t=numClamp(r.t,0,50);
-  var c=numClamp(r.c,0,t);
+  var week=r&&r.k==="w";
   var lv=numClamp(r.l,1,999);
   var ts=Array.isArray(r.ts)?r.ts.slice(0,5).map(function(x){return String(x).slice(0,24);}).filter(Boolean):[];
-  return {
+  var base={
     n:String(r.n||"친구").slice(0,12),
     e:AVATARS.indexOf(r.e)>=0?r.e:"✅",
     d:/^\d{4}-\d{2}-\d{2}$/.test(String(r.d))?r.d:todayStr(),
-    c:c,t:t,p:t?Math.round(c/t*100):0, /* recompute — never trust the link's % */
     s:numClamp(r.s,0,9999),
     l:lv,ti:titleOf(lv),ts:ts
   };
+  if(week){ /* weekly: c=완료 개수, t=실천한 날, p는 링크 값을 0-100으로만 클램프 */
+    base.k="w";
+    base.c=numClamp(r.c,0,99999);
+    base.t=numClamp(r.t,0,7);
+    base.p=numClamp(r.p,0,100);
+    base.pf=numClamp(r.pf,0,7);
+    base.wk=Array.isArray(r.wk)?r.wk.slice(0,7).map(function(v){return numClamp(v,0,100);}):[];
+  }else{
+    base.t=numClamp(r.t,0,50);
+    base.c=numClamp(r.c,0,base.t);
+    base.p=base.t?Math.round(base.c/base.t*100):0; /* recompute — never trust the link's % */
+  }
+  return base;
 }
 function showShared(raw){
   var r=sanitizeShared(raw);
   $("#inbound").style.display="block";
-  $("#inboundMsg").textContent=r.n+"님이 오늘의 달성 카드를 공유했어요 ✅";
+  $("#inboundMsg").textContent=r.n+(isWeek(r)?"님이 이번 주 리포트를 공유했어요 📊":"님이 오늘의 달성 카드를 공유했어요 ✅");
   $("#sharedView").classList.remove("hidden");
   renderReportInto($("#sharedCard"),r,true);
   if(r.ts.length){
@@ -1367,6 +1736,7 @@ $("#sharedStart").addEventListener("click",function(){startMine(true);}); /* exp
 /* ---------- boot ---------- */
 (function boot(){
   applyPrefs();
+  $("#dayChips").classList.toggle("show",$("#taskRpt").checked); /* browsers can restore the checkbox on reload */
   var q=new URLSearchParams(location.search).get("r");
   var shared=q?decodeState(q):null;
   if(shared){
