@@ -635,7 +635,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TD
-  L["/ 랜딩/"] -->|시작하기| S1[S1 연령]
+  L["/ 랜딩"] -->|시작하기| S1[S1 연령]
   L -->|이미 회원| LG["/login OTP"]
   S1 -->|미성년| S1X[안내·계정 없음]
   S1 --> S2[S2 OTP+약관]
