@@ -68,7 +68,11 @@ for (const [code, name, market, sector] of UNIVERSE) {
   const dps = pays ? Math.round((price * dy) / 100 / 10) * 10 : 0;
   const payout = pays && eps > 0 ? Number(Math.min(120, (dps / eps) * 100).toFixed(1)) : null;
   const years = pays ? Math.round(pick(1, isFin ? 20 : 15, 0)) : 0;
-  dividends.push({ code, fiscal_year: 2025, dps, dividend_yield: dy, payout_ratio: payout, consecutive_years: years, ex_dividend_date: pays ? "2025-12-29" : null, as_of: AS_OF });
+  // 지급월: 대형 우량주 일부 분기배당, 금융 일부 반기, 나머지 연배당(4월)
+  const quarterly = pays && (["005930","000660","005380","000270","105560","055550","086790","316140","017670","030200","033780","012330"].includes(code));
+  const semi = pays && !quarterly && isFin && r() < 0.5;
+  const pay_months = !pays ? null : quarterly ? [4, 5, 8, 11] : semi ? [4, 8] : [4];
+  dividends.push({ code, fiscal_year: 2025, dps, dividend_yield: dy, payout_ratio: payout, consecutive_years: years, ex_dividend_date: pays ? "2025-12-29" : null, pay_months, as_of: AS_OF });
 }
 
 const stocks = UNIVERSE.map(([code, name, market, sector]) => ({ code, name, market, sector }));

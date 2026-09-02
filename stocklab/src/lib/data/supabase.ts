@@ -1,6 +1,6 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type {
-  DailyPick, DividendFilters, DividendRow, ScreenRow, Stock, UsageResult, ValueFilters,
+  DailyPick, DividendFilters, DividendRow, PricePoint, ScreenRow, Stock, UsageResult, ValueFilters,
 } from "@/lib/types";
 import type { DataSource } from "./source";
 import { nextKstMidnightIso } from "@/lib/kst";
@@ -36,6 +36,34 @@ export function createSupabaseSource(url: string, anonKey: string, serviceKey?: 
       const { data, error } = await anon.from("stocks").select("code,name,market,sector").eq("is_active", true).order("code");
       if (error) throw new Error(`stocks: ${error.message}`);
       return (data ?? []) as Stock[];
+    },
+    async getStock(code) {
+      const { data } = await anon.from("stocks").select("code,name,market,sector").eq("code", code).maybeSingle();
+      return (data as Stock | null) ?? null;
+    },
+    async searchStocks(query, limit) {
+      const q = query.trim();
+      if (!q) return [];
+      const { data, error } = await anon.from("stocks").select("code,name,market,sector").eq("is_active", true)
+        .or(`code.ilike.${q}%,name.ilike.%${q.replace(/[%_,()]/g, "")}%`).limit(limit);
+      if (error) throw new Error(`searchStocks: ${error.message}`);
+      return (data ?? []) as Stock[];
+    },
+    async getScreenRow(code) {
+      const { data } = await anon.from("v_screen_value").select("*").eq("code", code).maybeSingle();
+      return (data as ScreenRow | null) ?? null;
+    },
+    async getDividendRow(code) {
+      const { data } = await anon.from("v_screen_dividend").select("*").eq("code", code).maybeSingle();
+      return (data as DividendRow | null) ?? null;
+    },
+    async getPriceHistory(code, fromDate) {
+      const { data, error } = await anon.from("daily_prices").select("trade_date,close").eq("code", code)
+        .gte("trade_date", fromDate).order("trade_date", { ascending: true }).limit(10000);
+      if (error) throw new Error(`daily_prices: ${error.message}`);
+      return ((data ?? []) as { trade_date: string; close: number | null }[])
+        .filter((p): p is { trade_date: string; close: number } => p.close !== null)
+        .map((p) => ({ trade_date: p.trade_date, close: Number(p.close) }));
     },
     allScreenRows: fetchAllValue,
     allDividendRows: fetchAllDividend,

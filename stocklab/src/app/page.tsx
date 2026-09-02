@@ -5,7 +5,7 @@ import { SampleBanner } from "@/components/SampleBanner";
 import { getDataSource } from "@/lib/data";
 import { applyDividendFilters, applyValueFilters } from "@/lib/data/filters";
 import { formatKoreanDate } from "@/lib/kst";
-import { SITE, absUrl } from "@/lib/site";
+import { SITE, TOOLS, absUrl } from "@/lib/site";
 import { fmtManWon, simulate } from "@/lib/compound";
 
 export const revalidate = 3600;
@@ -188,6 +188,27 @@ export default async function Home() {
             </div>
           </article>
         </div>
+      </section>
+
+      {/* New verification tools */}
+      <section aria-labelledby="new-tools" className="card">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <h2 id="new-tools" className="text-xl font-bold sm:text-2xl">사기 전에 확인하는 도구</h2>
+            <p className="mt-1 text-sm text-muted">거래 앱이 해 주지 않는 검증·설계·세금 계산. 판단은 하지 않고 숫자만 정리합니다.</p>
+          </div>
+          <Link href="/tools" className="text-sm text-brand underline underline-offset-2">전체 도구 보기</Link>
+        </div>
+        <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {TOOLS.filter((t) => t.isNew).map((t) => (
+            <li key={t.href}>
+              <Link href={t.href} className="flex h-full flex-col rounded-xl border border-border bg-surface-2/60 p-4 transition-colors hover:border-brand/60">
+                <span className="flex items-center justify-between gap-2 font-semibold">{t.label}<span className="rounded bg-brand/15 px-1.5 py-0.5 text-[10px] font-bold text-brand">NEW</span></span>
+                <span className="mt-1 text-sm text-muted">{t.desc}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Live widget */}

@@ -36,7 +36,14 @@ export interface Dividend {
   payout_ratio: number | null; // 배당성향 %
   consecutive_years: number; // 연속 배당 연수
   ex_dividend_date: string | null; // YYYY-MM-DD
+  pay_months: number[] | null; // 배당 지급 예상 월(1~12). 예: 연배당 [4], 분기배당 [4,5,8,11]
   as_of: string;
+}
+
+/** daily_prices 의 종가 시계열 한 점 */
+export interface PricePoint {
+  trade_date: string; // YYYY-MM-DD
+  close: number;
 }
 
 export interface ScreenRow extends Stock {
@@ -58,6 +65,7 @@ export interface DividendRow extends Stock {
   payout_ratio: number | null;
   consecutive_years: number;
   ex_dividend_date: string | null;
+  pay_months: number[] | null;
   as_of: string;
 }
 

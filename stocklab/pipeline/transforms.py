@@ -358,8 +358,10 @@ def build_dividend_row(
     as_of: str,
     yield_override: float | None = None,
     ex_dividend_date: date | None = None,
+    pay_months: list[int] | None = None,
 ) -> dict[str, Any]:
-    """dividends upsert 행. yield_override 가 있으면(pykrx DIV) 그 값을 사용."""
+    """dividends upsert 행. yield_override 가 있으면(pykrx DIV) 그 값을 사용.
+    pay_months: 배당 지급 예상 월(1~12). DART 배당 공시 지급일에서 추출, 없으면 None(앱은 연배당 4월로 가정하고 '지급월 미확인' 표시)."""
     hist = dict(dps_history)
     hist.setdefault(fiscal_year, dps)
     dy = yield_override if yield_override is not None else dividend_yield(dps, price)
@@ -370,6 +372,7 @@ def build_dividend_row(
         "dps": dps,
         "dividend_yield": round_or_none(dy, 2),
         "payout_ratio": payout_ratio(dps, eps),
+        "pay_months": sorted({int(m) for m in pay_months if 1 <= int(m) <= 12}) or None if pay_months else None,
         "consecutive_years": consecutive_dividend_years(hist, fiscal_year),
         "ex_dividend_date": exd.isoformat() if (dps and dps > 0) else None,
         "as_of": as_of,

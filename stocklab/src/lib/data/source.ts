@@ -1,5 +1,6 @@
 import type {
   DailyPick,
+  PricePoint,
   DataMode,
   DividendFilters,
   DividendRow,
@@ -19,6 +20,13 @@ export interface DataSource {
   readonly mode: DataMode;
   dataAsOf(): Promise<string | null>;
   listStocks(): Promise<Stock[]>;
+  getStock(code: string): Promise<Stock | null>;
+  /** 종목명/코드 부분 일치 검색 */
+  searchStocks(query: string, limit: number): Promise<Stock[]>;
+  getScreenRow(code: string): Promise<ScreenRow | null>;
+  getDividendRow(code: string): Promise<DividendRow | null>;
+  /** 종가 시계열(오름차순). fromDate 이후. 샘플 모드는 시드 기반 합성 시계열 */
+  getPriceHistory(code: string, fromDate: string): Promise<PricePoint[]>;
   screenValue(filters: ValueFilters, limit: number): Promise<ScreenRow[]>;
   screenDividend(filters: DividendFilters, limit: number): Promise<DividendRow[]>;
   /** 모든 종목의 스크리닝용 전체 행(전략 선정에 사용) */
