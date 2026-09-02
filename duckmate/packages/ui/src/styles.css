@@ -1,0 +1,244 @@
+/*
+ * @duckmate/ui — 디자인 토큰 + 기본 스타일 (C2)
+ * 출처: docs/agents/10_brand.md §2.6(토큰, 글자 그대로) · §3.3(타입 스케일) · §7.2(reduce-motion)
+ * 앱에서 `import "@duckmate/ui/styles.css"` 1회. Pretendard 폰트 파일 로드는 앱 layout의 <link>가 담당한다.
+ * 값을 바꾸려면 10_brand.md를 먼저 고친다.
+ */
+@import "tailwindcss";
+
+/* 다크모드: `.dark` 클래스(또는 data-theme="dark") 기준. 토큰은 CSS 변수라 prefers-color-scheme 폴백은 아래 @media 블록이 담당. */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --background: oklch(98.0% 0.005 78);        /* #FAF8F5 */
+  --foreground: oklch(21.9% 0.007 78);        /* #1C1A17 */
+  --card: oklch(100% 0 0);                    /* #FFFFFF */
+  --card-foreground: oklch(21.9% 0.007 78);
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(21.9% 0.007 78);
+  --primary: oklch(48.5% 0.213 285);          /* #5B3BCF */
+  --primary-foreground: oklch(100% 0 0);
+  --secondary: oklch(94.4% 0.017 301);        /* #EEEAF6 */
+  --secondary-foreground: oklch(37.6% 0.057 300); /* #463A5B */
+  --muted: oklch(95.6% 0.007 81);             /* #F3F0EB */
+  --muted-foreground: oklch(45.7% 0.012 68);  /* #5C5650 */
+  --accent: oklch(66.4% 0.197 32);            /* #F4573C */
+  --accent-foreground: oklch(21.9% 0.007 78); /* #1C1A17 — 흰색 금지 */
+  --destructive: oklch(57.8% 0.188 25);       /* #D23B3B */
+  --destructive-foreground: oklch(100% 0 0);
+  --success: oklch(51.4% 0.114 157);          /* #177A4C */
+  --success-soft: oklch(95.9% 0.020 165);     /* #E6F6EE */
+  --warning: oklch(50.8% 0.106 72);           /* #8A5A08 (텍스트) */
+  --warning-fill: oklch(80.4% 0.147 80);      /* #F0B33B */
+  --warning-soft: oklch(97.0% 0.032 86);      /* #FFF4DD */
+  --info: oklch(44.2% 0.139 260);             /* #1F4F9E */
+  --info-fill: oklch(55.7% 0.172 260);        /* #2F6FD6 */
+  --info-soft: oklch(95.3% 0.019 260);        /* #E8F0FD */
+  --border: oklch(91.2% 0.011 77);            /* #E6E1DA */
+  --input: oklch(84.8% 0.013 75);             /* #D2CCC4 */
+  --ring: oklch(48.5% 0.213 285);             /* #5B3BCF */
+  --radius: 0.75rem;
+
+  /* C2 추가: 모션 토큰(10_brand §7.1) */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-exit: 150ms;
+  --duration-sheet: 260ms;
+  --duration-flip: 320ms;
+  --ease-enter: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  color-scheme: light;
+}
+
+.dark, :root[data-theme="dark"] {
+  --background: oklch(19.3% 0.026 294);       /* #15121F */
+  --foreground: oklch(95.6% 0.007 81);        /* #F3F0EB */
+  --card: oklch(23.1% 0.033 295);             /* #1E1A2B */
+  --card-foreground: oklch(95.6% 0.007 81);
+  --popover: oklch(23.1% 0.033 295);
+  --popover-foreground: oklch(95.6% 0.007 81);
+  --primary: oklch(69.7% 0.146 291);          /* #9F8BF0 */
+  --primary-foreground: oklch(22.4% 0.085 287); /* #1B1140 */
+  --secondary: oklch(31.4% 0.045 300);        /* #352C45 */
+  --secondary-foreground: oklch(88.8% 0.031 300); /* #DDD6EC */
+  --muted: oklch(28.0% 0.032 303);            /* #2C2536 */
+  --muted-foreground: oklch(71.3% 0.013 68);  /* #A8A19A */
+  --accent: oklch(75.7% 0.147 32);            /* #FF8A73 */
+  --accent-foreground: oklch(22.4% 0.085 287); /* #1B1140 */
+  --destructive: oklch(71.2% 0.181 23);       /* #FF6B6B */
+  --destructive-foreground: oklch(19.3% 0.026 294);
+  --success: oklch(72.2% 0.132 159);          /* #4DBE86 */
+  --success-soft: oklch(28% 0.03 160);
+  --warning: oklch(80.4% 0.147 80);           /* #F0B33B */
+  --warning-fill: oklch(80.4% 0.147 80);
+  --warning-soft: oklch(28% 0.03 80);
+  --info: oklch(71.1% 0.127 258);             /* #6EA3F0 */
+  --info-fill: oklch(55.7% 0.172 260);
+  --info-soft: oklch(28% 0.03 260);
+  --border: oklch(28.0% 0.032 303);           /* #2C2536 */
+  --input: oklch(33.5% 0.038 302);            /* #3A3247 */
+  --ring: oklch(69.7% 0.146 291);             /* #9F8BF0 */
+  color-scheme: dark;
+}
+
+/* OS 다크 자동 폴백: 명시적 .light / data-theme="light" 가 없을 때만 .dark 와 같은 값 적용 (값은 위 블록과 동일해야 한다) */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not([data-theme="light"]) {
+    --background: oklch(19.3% 0.026 294);
+    --foreground: oklch(95.6% 0.007 81);
+    --card: oklch(23.1% 0.033 295);
+    --card-foreground: oklch(95.6% 0.007 81);
+    --popover: oklch(23.1% 0.033 295);
+    --popover-foreground: oklch(95.6% 0.007 81);
+    --primary: oklch(69.7% 0.146 291);
+    --primary-foreground: oklch(22.4% 0.085 287);
+    --secondary: oklch(31.4% 0.045 300);
+    --secondary-foreground: oklch(88.8% 0.031 300);
+    --muted: oklch(28.0% 0.032 303);
+    --muted-foreground: oklch(71.3% 0.013 68);
+    --accent: oklch(75.7% 0.147 32);
+    --accent-foreground: oklch(22.4% 0.085 287);
+    --destructive: oklch(71.2% 0.181 23);
+    --destructive-foreground: oklch(19.3% 0.026 294);
+    --success: oklch(72.2% 0.132 159);
+    --success-soft: oklch(28% 0.03 160);
+    --warning: oklch(80.4% 0.147 80);
+    --warning-fill: oklch(80.4% 0.147 80);
+    --warning-soft: oklch(28% 0.03 80);
+    --info: oklch(71.1% 0.127 258);
+    --info-fill: oklch(55.7% 0.172 260);
+    --info-soft: oklch(28% 0.03 260);
+    --border: oklch(28.0% 0.032 303);
+    --input: oklch(33.5% 0.038 302);
+    --ring: oklch(69.7% 0.146 291);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-fill: var(--warning-fill);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-fill: var(--info-fill);
+  --color-info-soft: var(--info-soft);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+
+  /* 모션 별칭 → duration-fast / ease-enter 유틸 */
+  --ease-enter: var(--ease-enter);
+  --ease-exit: var(--ease-exit);
+}
+
+/* 풀 스케일(10_brand §2.2): 컴포넌트는 시맨틱 토큰만 쓰고, 스케일 직접 참조는 아바타·일러스트에 한정 */
+@theme {
+  --color-violet-50: #F4F1FE;  --color-violet-100: #E9E3FD; --color-violet-200: #D4CAFB; --color-violet-300: #B5A4F5;
+  --color-violet-400: #9078EB; --color-violet-500: #6F52DE; --color-violet-600: #5B3BCF; --color-violet-700: #4B2FB0;
+  --color-violet-800: #3D278C; --color-violet-900: #2E1E69; --color-violet-950: #1B1140;
+  --color-lilac-50: #F7F5FB;   --color-lilac-100: #EEEAF6;  --color-lilac-200: #DDD6EC;  --color-lilac-300: #C4B9DC;
+  --color-lilac-400: #A493C4;  --color-lilac-500: #8672AB;  --color-lilac-600: #6E5A91;  --color-lilac-700: #594874;
+  --color-lilac-800: #463A5B;  --color-lilac-900: #352C45;  --color-lilac-950: #1F1A29;
+  --color-coral-50: #FFF3F0;   --color-coral-100: #FFE3DD;  --color-coral-200: #FFC7BC;  --color-coral-300: #FFA08F;
+  --color-coral-400: #FF7A63;  --color-coral-500: #F4573C;  --color-coral-600: #D9412A;  --color-coral-700: #B5321F;
+  --color-coral-800: #93291C;  --color-coral-900: #79261D;  --color-coral-950: #42100A;
+  --color-sand-0: #FFFFFF;     --color-sand-50: #FAF8F5;    --color-sand-100: #F3F0EB;   --color-sand-200: #E6E1DA;
+  --color-sand-300: #D2CCC4;   --color-sand-400: #A8A19A;   --color-sand-500: #7D766F;   --color-sand-600: #5C5650;
+  --color-sand-700: #443F3A;   --color-sand-800: #2C2925;   --color-sand-900: #1C1A17;   --color-sand-950: #121110;
+}
+
+/* ---------- 기본 ---------- */
+@layer base {
+  * { @apply border-border; }
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  ::placeholder { color: #A8A19A; } /* neutral-400: placeholder 전용(의도적 저대비) */
+  .dark ::placeholder, [data-theme="dark"] ::placeholder { color: #7D766F; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+}
+
+/* ---------- 타입 스케일 (10_brand §3.3, 모바일 기준. 데스크톱은 display/h1만 +4px) ---------- */
+@utility text-display { font-size: 32px; line-height: 40px; font-weight: 800; letter-spacing: -0.02em; @media (min-width: 768px) { font-size: 36px; line-height: 44px; } }
+@utility text-h1 { font-size: 26px; line-height: 34px; font-weight: 700; letter-spacing: -0.015em; @media (min-width: 768px) { font-size: 30px; line-height: 38px; } }
+@utility text-h2 { font-size: 22px; line-height: 30px; font-weight: 700; letter-spacing: -0.01em; }
+@utility text-h3 { font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: 0; }
+@utility text-body { font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: 0; }
+@utility text-body-sm { font-size: 14px; line-height: 20px; font-weight: 400; letter-spacing: 0; }
+@utility text-label { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0; }
+@utility text-caption { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.01em; }
+@utility text-button { font-size: 16px; line-height: 24px; font-weight: 600; letter-spacing: 0; }
+@utility text-button-sm { font-size: 14px; line-height: 20px; font-weight: 600; letter-spacing: 0; }
+/* 숫자 노출 영역(카운트·가격·잔여·진행 바 숫자) 필수 */
+@utility tnum { font-variant-numeric: tabular-nums; }
+/* 하단 탭·시트 safe-area */
+@utility pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+@utility pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+
+/* ---------- 모션 (10_brand §7) ---------- */
+@keyframes dm-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dm-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes dm-slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes dm-slide-down { from { transform: translateY(0); } to { transform: translateY(100%); } }
+@keyframes dm-scale-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+@keyframes dm-skeleton { 0%, 100% { background-color: #F3F0EB; } 50% { background-color: #E6E1DA; } }
+@keyframes dm-skeleton-dark { 0%, 100% { background-color: #2C2536; } 50% { background-color: #3A3247; } }
+@keyframes dm-like-pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+@keyframes dm-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@utility animate-fade-in { animation: dm-fade-in var(--duration-base) var(--ease-enter) both; }
+@utility animate-fade-out { animation: dm-fade-out var(--duration-exit) var(--ease-exit) both; }
+@utility animate-slide-up { animation: dm-slide-up var(--duration-sheet) var(--ease-enter) both; }
+@utility animate-slide-down { animation: dm-slide-down var(--duration-sheet) var(--ease-exit) both; }
+@utility animate-scale-in { animation: dm-scale-in var(--duration-sheet) var(--ease-enter) both; }
+@utility animate-like-pop { animation: dm-like-pop 240ms var(--ease-enter) both; }
+@utility animate-toast-in { animation: dm-toast-in var(--duration-base) var(--ease-enter) both; }
+@utility animate-skeleton {
+  animation: dm-skeleton 1.2s ease-in-out infinite;
+  .dark &, [data-theme="dark"] & { animation-name: dm-skeleton-dark; }
+}
+@utility flip-card {
+  transition: transform var(--duration-flip) var(--ease-enter);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* reduce-motion: 10_brand §7.2 글자 그대로 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 120ms !important; scroll-behavior: auto !important; }
+  .flip-card { transition: opacity 120ms; transform: none !important; }
+}
