@@ -54,7 +54,19 @@ export type AnalyticsEvent =
   | "chat_opened"
   | "chat_list_viewed"
   | "image_sent"
-  | "chat_left";
+  | "chat_left"
+  // E4 추가 (프로필·설정)
+  | "me_viewed"
+  | "settings_viewed"
+  | "verify_center_viewed"
+  | "notification_settings_viewed"
+  | "report_opened"
+  | "data_export_downloaded"
+  | "photo_uploaded"
+  | "photo_deleted"
+  | "unblock_submitted"
+  | "appeal_submitted"
+  | "logged_out";
 
 export type OnboardingStepName = "age_gate" | "phone" | "basic" | "availability" | "hobbies" | "quiz" | "card" | "photos";
 

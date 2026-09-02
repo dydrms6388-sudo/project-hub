@@ -9,6 +9,8 @@ import { requireProfile } from "@/lib/auth/session";
 import { getChatList } from "@/lib/chat/queries";
 import { getMySanctions } from "@/lib/moderation/queries";
 import { AppFrame, type SanctionInfo } from "@/components/discover/AppFrame";
+import { ReconsentGate } from "@/components/legal/ReconsentGate";
+import { getPendingReconsents } from "@/lib/legal/reconsent";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
@@ -44,8 +46,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     }
   }
 
+  // 법적 문서 MAJOR 변경 재동의 게이트(E4) — 닫기 불가 Dialog, 없으면 null
+  let pendingReconsents: Awaited<ReturnType<typeof getPendingReconsents>> = [];
+  try {
+    pendingReconsents = await getPendingReconsents();
+  } catch {
+    pendingReconsents = [];
+  }
+
   return (
     <AppFrame verifyLevel={state.verifyLevel} mode={state.mode} chatBadge={chatBadge} sanction={sanction}>
+      <ReconsentGate pending={pendingReconsents} />
       {children}
     </AppFrame>
   );
