@@ -1,0 +1,348 @@
+{
+  "meta": {
+    "purpose": "한국어 어문규범 실무 레퍼런스 — 1차 항목 설계 초안",
+    "sources": [
+      "한글 맞춤법 (문화체육관광부 고시 제2017-12호)",
+      "표준어 규정 (문화체육관광부 고시 제2017-13호)",
+      "외래어 표기법 (문화체육관광부 고시 제2017-14호)",
+      "국어의 로마자 표기법 (문화체육관광부 고시 제2014-42호)",
+      "한글 맞춤법 부록 「문장 부호」 (2015. 1. 1. 시행)"
+    ],
+    "count": 40,
+    "note": "verdict는 페이지 1행 결론의 초안이다. 2단계에서 조문 원문 인용을 붙인다."
+  },
+  "categories": [
+    { "id": "spacing", "label": "띄어쓰기", "description": "조사·의존 명사·보조 용언·단위 명사의 경계" },
+    { "id": "conjugation", "label": "어미와 활용", "description": "준말, 어미의 예사소리/된소리, 혼동되는 어미" },
+    { "id": "homophone", "label": "구별해 적기", "description": "발음이 같거나 비슷해 뒤섞이는 말" },
+    { "id": "saisiot", "label": "사이시옷", "description": "합성어에 'ㅅ'을 받쳐 적는 조건" },
+    { "id": "sound", "label": "소리와 접미사", "description": "원형을 밝혀 적을지, 소리대로 적을지" },
+    { "id": "standard-word", "label": "표준어", "description": "여러 형태 중 표준으로 삼는 말" },
+    { "id": "loanword", "label": "외래어 표기", "description": "원음이 아니라 표기법이 정한 형태" },
+    { "id": "punctuation", "label": "문장 부호", "description": "2015년 개정 문장 부호 규정" },
+    { "id": "romanization", "label": "로마자 표기", "description": "인명·지명·행정 구역의 로마자화" },
+    { "id": "pronunciation", "label": "표준 발음", "description": "규정이 예외로 정해 둔 발음" }
+  ],
+  "entries": [
+    {
+      "slug": "bakke-tuieossugi",
+      "category": "spacing",
+      "question": "'너밖에 없다'의 '밖에'는 붙여 쓰나, 띄어 쓰나?",
+      "verdict": "'오직 그것뿐'이라는 뜻이면 조사이므로 '너밖에'처럼 붙여 쓴다. 공간을 가리키는 명사 '밖'일 때만 '문 밖에'로 띄어 쓴다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제41항(조사는 앞말에 붙여 쓴다), 제42항(의존 명사는 띄어 쓴다)" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "hanbeon-tuieossugi",
+      "category": "spacing",
+      "question": "'한번 해 보자'와 '한 번만 더'는 왜 띄어쓰기가 다른가?",
+      "verdict": "'두 번, 세 번'으로 바꿔 셀 수 있으면 수 관형사 + 단위 명사라 '한 번'으로 띄고, '시험 삼아·기회 있는 어떤 때'를 뜻하는 부사면 '한번'으로 붙인다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제43항(단위를 나타내는 명사는 띄어 쓴다)" },
+      "confidence": "확인필요"
+    },
+    {
+      "slug": "su-uijonmyeongsa",
+      "category": "spacing",
+      "question": "'할수있다'로 붙여 쓰면 무엇이 잘못인가?",
+      "verdict": "'수'는 자립성이 없는 의존 명사여서 앞의 관형어와 띄어 '할 수 있다'로 적는다. '것, 이, 바, 데'도 같다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제42항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "ji-tuieossugi",
+      "category": "spacing",
+      "question": "'떠난지 3년'과 '갈지 말지' 가운데 띄어 써야 할 '지'는 어느 쪽인가?",
+      "verdict": "시간의 경과를 나타내면 의존 명사라 '떠난 지 3년'으로 띄고, 막연한 의문을 나타내는 어미 '-ㄹ지/-ㄴ지'는 '갈지 말지'처럼 붙여 쓴다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제42항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "bojoyongeon-tuieossugi",
+      "category": "spacing",
+      "question": "'올 듯하다'를 '올듯하다'로 붙여 써도 규정에 맞는가?",
+      "verdict": "맞는다. 보조 용언은 띄어 씀이 원칙이되 붙여 쓰는 것도 허용된다. 다만 앞말에 조사가 붙거나('올 듯도 하다') 앞말이 합성 용언이면('떠내려가 버렸다') 반드시 띄어 쓴다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제47항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "mankeum-daero-ppun",
+      "category": "spacing",
+      "question": "'아는 만큼'은 띄고 '너만큼'은 붙이는 기준이 무엇인가?",
+      "verdict": "체언 뒤에 오면 조사라 붙이고, 용언의 관형사형 뒤에 오면 의존 명사라 띄어 쓴다. '대로'와 '뿐'도 같은 기준을 따른다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제41항, 제42항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "sutja-danwi-tuieossugi",
+      "category": "spacing",
+      "question": "'10 개'와 '10개' 중 어느 표기가 규정에 맞는가?",
+      "verdict": "둘 다 가능하다. 단위 명사는 띄어 씀이 원칙이지만, 아라비아 숫자와 어울릴 때는 '10개, 80원, 7미터'처럼 붙여 쓸 수 있다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제43항 다만" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "doe-dwae",
+      "category": "conjugation",
+      "question": "'안 되요'는 왜 틀리고 '안 돼요'가 맞는가?",
+      "verdict": "'돼'는 '되어'의 준말이다. '되어'로 바꿔 말이 되면 '돼', 되지 않으면 '되'로 적는다. '안 되어요'가 성립하므로 '안 돼요'다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제35항 [붙임2]" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "lge-lkke",
+      "category": "conjugation",
+      "question": "[께]로 소리 나는데도 '갈게'로 적어야 하는 근거는?",
+      "verdict": "약속을 나타내는 어미 '-ㄹ게, -ㄹ걸, -ㄹ수록, -ㄹ지'는 예사소리로 적는다. 된소리로 적는 것은 의문의 '-ㄹ까, -ㄹ꼬, -ㄹ쏘냐'뿐이다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제53항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "deon-deun",
+      "category": "conjugation",
+      "question": "'그때 먹든 과자'는 성립하는 표기인가?",
+      "verdict": "성립하지 않는다. 지난 일을 회상하면 '-던', 어느 쪽인지 가리지 않는 선택이면 '-든지/-든'이다. 회상이므로 '먹던 과자'다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제56항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "ha-tallak",
+      "category": "conjugation",
+      "question": "'생각건대'와 '생각컨대', '넉넉지'와 '넉넉치' — 어느 쪽이 규정 표기인가?",
+      "verdict": "'하' 앞 음절이 안울림소리(ㄱ, ㄷ, ㅂ, ㅅ)로 끝나면 '하'가 통째로 줄어 '생각건대·넉넉지·섭섭지'가 된다. 울림소리 뒤에서는 'ㅏ'만 줄고 'ㅎ'이 남아 '간편케·다정타'가 된다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제40항 및 [붙임2]" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "janh-chanh",
+      "category": "conjugation",
+      "question": "'그렇찮다'가 틀린 이유는 무엇인가?",
+      "verdict": "'-지 않-'은 '-잖-'으로, '-하지 않-'은 '-찮-'으로 준다. '그렇지 않다'에는 '하'가 없으므로 '그렇잖다'이고, '만만하지 않다'는 '만만찮다'가 된다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제39항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "euroseo-eurosseo",
+      "category": "conjugation",
+      "question": "'대표로써 인사드립니다'에서 잘못된 곳은?",
+      "verdict": "자격·신분·지위는 '-로서', 수단·도구·재료·기준 시점은 '-로써'다. 자격을 말하고 있으므로 '대표로서'로 고친다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제57항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "eumeuro-meuro",
+      "category": "conjugation",
+      "question": "'그러므로'와 '그럼으로(써)'는 어떻게 갈리는가?",
+      "verdict": "까닭·이유를 나타내면 어미 '-므로'를 써서 '그러므로'이고, 명사형 '-ㅁ'에 조사 '으로(써)'가 붙어 수단을 나타내면 '그럼으로써'다. '~하기 때문에'로 바꿔 자연스러우면 '-므로'.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제57항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "barada-barae",
+      "category": "conjugation",
+      "question": "'네가 오길 바래'는 규정에 맞는 활용인가?",
+      "verdict": "맞지 않는다. 기본형이 '바라다'이므로 활용형은 '바라'이고 명사형은 '바람'이다. '바래'는 빛이 변하는 '바래다'의 활용형이다.",
+      "ruleBasis": { "규정명": "표준어 규정", "조항": "제11항(표준어 '바라다'), 활용은 한글 맞춤법 제34항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "bandeusi-banduthi",
+      "category": "homophone",
+      "question": "'반드시'와 '반듯이'는 어떤 자리에서 갈리는가?",
+      "verdict": "'꼭, 틀림없이'는 '반드시', '비뚤지 않고 곧게'는 '반듯이'다. 뒤엣것만 '반듯하다'와 뜻이 이어진다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제57항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "buchida-butida",
+      "category": "homophone",
+      "question": "'편지를 부치다'와 '우표를 붙이다'를 가르는 기준은?",
+      "verdict": "맞닿아 떨어지지 않게 하는 것은 '붙이다', 그 밖에 보내거나 넘기거나 힘이 모자라는 뜻은 '부치다'다. '회의에 부치다, 부침개를 부치다'도 후자다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제57항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "machida-matchida",
+      "category": "homophone",
+      "question": "'정답을 맞추다'는 쓸 수 있는 표현인가?",
+      "verdict": "문제의 답을 알아맞히는 뜻이면 '맞히다'가 맞는다. '맞추다'는 서로 비교하거나 어긋남 없이 대는 뜻이어서 '친구와 답안지를 맞추다'처럼 쓴다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제55항(맞추다로 적음), 제57항(마치다/맞히다 구별)" },
+      "confidence": "확인필요"
+    },
+    {
+      "slug": "gaesu-saisiot",
+      "category": "saisiot",
+      "question": "'갯수'로 적으면 왜 틀리는가?",
+      "verdict": "한자어끼리 이룬 두 음절 합성어에는 사이시옷을 넣지 않는다. '個數'는 규정이 정한 여섯 개 예외에 들지 않으므로 '개수'로 적는다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제30항 3" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "hanjaeo-saisiot-6",
+      "category": "saisiot",
+      "question": "사이시옷을 받쳐 적는 한자어는 몇 개나 되는가?",
+      "verdict": "'곳간(庫間), 셋방(貰房), 숫자(數字), 찻간(車間), 툇간(退間), 횟수(回數)' 여섯 개뿐이다. '초점, 대가, 시가, 기차간'에는 붙이지 않는다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제30항 3" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "jeonsetjip-jeonsebang",
+      "category": "saisiot",
+      "question": "'전셋집'은 되는데 '전셋방'은 안 되는 까닭은?",
+      "verdict": "'전세(傳貰) + 집'은 한자어와 고유어가 만난 합성어여서 사이시옷을 넣지만, '전세 + 방(房)'은 한자어끼리라 '전세방'으로 적는다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제30항 2, 제30항 3" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "sutgarak-jeotgarak",
+      "category": "saisiot",
+      "question": "'숟가락'과 '젓가락'의 받침이 서로 다른 이유는?",
+      "verdict": "'술 + 가락'에서 끝소리 'ㄹ'이 'ㄷ'으로 바뀐 것이라 '숟가락'이고, '저 + 가락'은 사이시옷이 들어간 것이라 '젓가락'이다. 어원이 달라 받침도 갈린다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제29항(숟가락), 제30항 1(젓가락)" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "myeochil",
+      "category": "sound",
+      "question": "'몇 일'이라는 표기는 왜 쓸 수 없는가?",
+      "verdict": "어원이 분명하지 않은 말이라 소리대로 '며칠'로 적는다. '몇 + 일'이라면 [면닐]로 소리 나야 하는데 실제 발음은 [며칠]이다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제27항 [붙임2]" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "neopjeok-neolttarat",
+      "category": "sound",
+      "question": "'넓적하다'는 겹받침을 살리는데 '널따랗다'는 왜 살리지 않는가?",
+      "verdict": "겹받침의 끝소리가 드러나면 원형을 밝혀 '넓적하다·굵직하다'로 적고, 드러나지 않으면 소리대로 '널따랗다·널찍하다·할짝거리다'로 적는다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제21항 및 다만" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "i-hi-busa",
+      "category": "sound",
+      "question": "'깨끗이'인가 '깨끗히'인가?",
+      "verdict": "끝음절이 '이'로만 소리 나면 '-이', '히'로 소리 나거나 '이/히' 둘로 나면 '-히'다. 'ㅅ' 받침 뒤와 겹쳐 쓰는 말 뒤는 '깨끗이·틈틈이'처럼 '-이'가 된다.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제51항" },
+      "confidence": "확인필요"
+    },
+    {
+      "slug": "yul-ryul",
+      "category": "sound",
+      "question": "'비율·합격률'과 '비률·합격율' — 무엇이 갈림길인가?",
+      "verdict": "앞말이 모음이나 'ㄴ' 받침으로 끝나면 '율/열', 그 밖의 받침으로 끝나면 '률/렬'이다. '비율·백분율·선율·분열' 대 '합격률·성공률·행렬'.",
+      "ruleBasis": { "규정명": "한글 맞춤법", "조항": "제11항 [붙임1] 다만" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "wichung-utteoreun",
+      "category": "standard-word",
+      "question": "'윗층'이 표준 표기가 아닌 이유는?",
+      "verdict": "된소리나 거센소리 앞에서는 '위-'로 적어 '위층·위쪽·위팔'이 된다. '웃-'은 '아래/위'의 대립이 없는 '웃어른·웃돈·웃옷'에만 쓴다.",
+      "ruleBasis": { "규정명": "표준어 규정", "조항": "제12항 및 다만 1·2" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "sukae-sutyang",
+      "category": "standard-word",
+      "question": "'수소·숫소', '숫양·수양' 가운데 표준어는?",
+      "verdict": "접두사는 '수-'로 통일해 '수소·수꿩·수놈'이다. 거센소리로 굳은 '수캐·수탉·수퇘지·수평아리' 등과, '숫양·숫염소·숫쥐' 세 낱말만 예외다.",
+      "ruleBasis": { "규정명": "표준어 규정", "조항": "제7항 및 다만 1·2" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "jangi-jaengi",
+      "category": "standard-word",
+      "question": "'미장이'와 '멋쟁이'의 접미사가 갈리는 기준은?",
+      "verdict": "기술자를 가리키면 '-장이', 그 밖에는 '-쟁이'다. '미장이·유기장이·대장장이' 대 '멋쟁이·개구쟁이·소금쟁이'.",
+      "ruleBasis": { "규정명": "표준어 규정", "조항": "제9항 [붙임2]" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "anjeolbujeol",
+      "category": "standard-word",
+      "question": "'안절부절하다'도 표준어로 인정되는가?",
+      "verdict": "인정되지 않는다. '안절부절못하다' 한 형태만 표준어다. 부정 표현이 빠진 꼴이 널리 쓰이지만 규정은 이를 받아들이지 않았다.",
+      "ruleBasis": { "규정명": "표준어 규정", "조항": "제17항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "oeraeeo-doensori",
+      "category": "loanword",
+      "question": "'까페·빠리·써비스'로 적으면 안 되는 근거는?",
+      "verdict": "파열음 표기에는 된소리를 쓰지 않는 것이 원칙이다. '카페·파리·서비스·버스'로 적는다.",
+      "ruleBasis": { "규정명": "외래어 표기법", "조항": "제1장 제4항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "oeraeeo-batchim",
+      "category": "loanword",
+      "question": "'로켙·커피숖'이 규정에 어긋나는 까닭은?",
+      "verdict": "받침에는 'ㄱ, ㄴ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ' 일곱 자만 쓴다. 그래서 '로켓·커피숍·재킷·초콜릿'이 된다.",
+      "ruleBasis": { "규정명": "외래어 표기법", "조항": "제1장 제3항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "vision-jeon",
+      "category": "loanword",
+      "question": "'비젼·텔레비젼'이 아니라 '비전·텔레비전'인 이유는?",
+      "verdict": "모음 앞의 파찰음 [ʤ], [ʧ]는 'ㅈ, ㅊ'으로 적고 이중 모음과 결합시키지 않는다. '주스·차트·버진'도 같은 원리다.",
+      "ruleBasis": { "규정명": "외래어 표기법", "조항": "제3장 제1절 제4항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "windo-ou",
+      "category": "loanword",
+      "question": "'윈도우·스노우보드'가 규정 표기가 아닌 까닭은?",
+      "verdict": "중모음 [ou]는 '오'로 적는다. 그래서 '윈도·스노보드·볼링·보트'가 규정 표기다.",
+      "ruleBasis": { "규정명": "외래어 표기법", "조항": "제3장 제1절 제8항" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "nalja-machimpyo",
+      "category": "punctuation",
+      "question": "'2026. 8. 2'처럼 마지막 마침표를 빼도 되는가?",
+      "verdict": "뺄 수 없다. 숫자만으로 연월일을 적을 때 마침표는 '년·월·일'을 대신하므로 일 뒤에도 찍어 '2026. 8. 2.'로 적는다.",
+      "ruleBasis": { "규정명": "한글 맞춤법 부록 「문장 부호」", "조항": "1. 마침표 (2)" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "mulgyeolpyo-butimpyo",
+      "category": "punctuation",
+      "question": "기간을 나타낼 때 '3월~4월'과 '3월-4월' 중 맞는 것은?",
+      "verdict": "둘 다 맞는다. 기간이나 거리·범위에는 물결표를 쓰는 것이 원칙이고, 2015년 개정으로 붙임표를 쓰는 것도 허용됐다.",
+      "ruleBasis": { "규정명": "한글 맞춤법 부록 「문장 부호」", "조항": "17. 물결표 및 붙임" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "romaja-doensori",
+      "category": "romanization",
+      "question": "'압구정'을 'Apkkujeong'으로 적지 않는 이유는?",
+      "verdict": "음운 변화 가운데 된소리되기는 표기에 반영하지 않아 'Apgujeong·Nakdonggang'으로 적는다. 반면 자음 동화는 반영해 '종로'는 'Jongno'가 된다.",
+      "ruleBasis": { "규정명": "국어의 로마자 표기법", "조항": "제3장 제1항 및 [붙임]" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "romaja-inmyeong",
+      "category": "romanization",
+      "question": "'홍빛나'는 'Hong Binna'인가 'Hong Bitna'인가?",
+      "verdict": "'Hong Bitna'다. 이름 안에서 일어나는 음운 변화는 표기에 반영하지 않는다. 성과 이름은 띄어 쓰고 이름은 붙여 쓰되 음절 사이 붙임표도 허용된다.",
+      "ruleBasis": { "규정명": "국어의 로마자 표기법", "조항": "제3장 제4항 (1)" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "sanggyeonrye-bareum",
+      "category": "pronunciation",
+      "question": "'상견례'는 [상견녜]인가 [상결례]인가?",
+      "verdict": "[상견녜]다. 'ㄴ'과 'ㄹ'이 만나면 대개 [ㄹㄹ]로 소리 나지만, 규정이 따로 정한 예외 목록에 들어 'ㄹ'을 [ㄴ]으로 읽는다. '의견란[의ː견난]·생산량[생산냥]'도 같다.",
+      "ruleBasis": { "규정명": "표준 발음법", "조항": "제20항 다만" },
+      "confidence": "확실"
+    },
+    {
+      "slug": "balpda-bareum",
+      "category": "pronunciation",
+      "question": "'밟다'의 표준 발음은 [발ː따]인가 [밥ː따]인가?",
+      "verdict": "[밥ː따]다. 겹받침 'ㄼ'은 보통 [ㄹ]로 읽지만 '밟-'은 자음 앞에서 [밥]으로 발음한다. '넓죽하다[넙쭈카다]'도 예외에 든다.",
+      "ruleBasis": { "규정명": "표준 발음법", "조항": "제10항 다만" },
+      "confidence": "확실"
+    }
+  ]
+}
