@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>띄어쓰기 기본 검사 — 의존명사·단위 규칙 검사 | writelab</title>
+<meta name="description" content="의존명사(수·것·때·뿐·만큼)·조사·단위 명사 등 자소서에서 자주 틀리는 띄어쓰기를 규칙으로 검사합니다. 외부 전송 없이 브라우저에서만 동작합니다.">
+<meta property="og:title" content="띄어쓰기 기본 검사 — 의존명사·단위 규칙 검사 | writelab">
+<meta property="og:description" content="의존명사(수·것·때·뿐·만큼)·조사·단위 명사 등 자소서에서 자주 틀리는 띄어쓰기를 규칙으로 검사합니다. 외부 전송 없이 브라우저에서만 동작합니다.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"띄어쓰기 기본 검사","description":"의존명사(수·것·때·뿐·만큼)·조사·단위 명사 등 자소서에서 자주 틀리는 띄어쓰기를 규칙으로 검사합니다. 외부 전송 없이 브라우저에서만 동작합니다.","url":"https://writelab-kr.vercel.app/tools/spacing-basic/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"이 도구로 맞춤법 검사가 끝나나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 이 도구는 완전한 맞춤법 검사기가 아닙니다. 형태소 분석 없이 정규식 규칙으로 \"자소서에서 자주 틀리는 띄어쓰기 패턴\"만 찾습니다. 규칙에 없는 오류는 지나가고, 문맥에 따라 맞는 표기를 잘못 지적할 수도 있습니다. 제출 전에는 사람이 직접 읽는 검토가 반드시 필요합니다."}},{"@type":"Question","name":"왜 어떤 항목은 자동 수정이 되고 어떤 항목은 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"\"할수 있다 → 할 수 있다\"처럼 문맥과 무관하게 규칙이 정해진 경우만 자동 수정 대상(오류)으로 둡니다. 반면 \"한번/한 번\", \"안되/안 되\"처럼 뜻에 따라 붙여 쓰기와 띄어 쓰기가 갈리는 항목은 확인 등급으로 표시만 하고 고치지 않습니다."}},{"@type":"Question","name":"\"해 보다\"를 붙여 썼는데 왜 안내만 뜨나요?","acceptedAnswer":{"@type":"Answer","text":"보조용언은 띄어 쓰는 것이 원칙이지만 붙여 쓰는 것도 허용됩니다(한글 맞춤법 제47항). 오류가 아니므로 참고 등급으로만 알려 줍니다."}},{"@type":"Question","name":"글이 외부로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"전송되지 않습니다. 외부 맞춤법 API를 전혀 사용하지 않고, 규칙 데이터와 검사 코드가 모두 브라우저에서 실행됩니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"띄어쓰기 기본 검사","item":"https://writelab-kr.vercel.app/tools/spacing-basic/"}]}</script>
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+<a class="brand" href="../../index.html">write<span>lab</span></a>
+<a class="hublink" href="../../index.html">도구 전체 보기</a>
+</div></header>
+<main class="wrap">
+<h1>띄어쓰기 기본 검사</h1>
+<p class="sub">의존명사·조사·단위 명사 등 자주 틀리는 띄어쓰기 규칙을 검사합니다. 완전한 맞춤법 검사기가 아니며, 외부 API를 사용하지 않습니다.</p>
+
+<div class="card">
+  <label for="src">검사할 글</label>
+  <textarea id="src" placeholder="글을 붙여 넣으면 띄어쓰기 규칙에 걸리는 부분을 찾아 줍니다."></textarea>
+  <div class="row">
+    <button class="btn primary" id="fixall" type="button">고칠 수 있는 항목 모두 적용</button>
+    <button class="btn sm" id="sample" type="button">예시 문장 넣기</button>
+    <button class="btn sm" id="clear" type="button">지우기</button>
+    <button class="btn sm" id="copy" type="button">본문 복사</button>
+  </div>
+  <div class="notice warn"><b>완전한 맞춤법 검사기가 아닙니다.</b> 형태소 분석을 하지 않고 정규식 규칙으로 자주 틀리는 패턴만 검사합니다. 규칙에 없는 오류는 찾지 못하고, 문맥에 따라 잘못 지적할 수도 있습니다. 외부 맞춤법 API는 사용하지 않으며 글은 전송되지 않습니다.</div>
+  <div class="stat-grid" id="stats"></div>
+  <h3>검사 결과</h3>
+  <div id="findings"></div>
+  <h3>본문에서 위치 보기</h3>
+  <div class="preview" id="prev"></div>
+</div>
+<!-- ad-slot -->
+
+<section class="prose">
+<h2>자소서 띄어쓰기는 몇 가지 패턴에서 반복해서 틀립니다</h2>
+<p>띄어쓰기 오류는 내용과 무관하지만, 읽는 사람에게는 "검토하지 않고 제출했다"는 신호로 읽힙니다. 다행히 자소서에서 실제로 자주 틀리는 지점은 몇 갈래로 좁혀집니다. 첫째는 의존명사입니다. "할 수 있다", "하는 것", "했을 때", "했기 때문에", "할 뿐", "하는 만큼", "배운 대로"의 굵은 부분은 모두 앞말과 띄어 써야 하는 낱말인데, 발음이 붙어 있어 그대로 붙여 쓰는 실수가 잦습니다. 둘째는 단위 명사입니다. "첫 번째", "두 가지", "여러 번", "세 명"처럼 수 관형사와 단위 명사는 띄어 씁니다. 셋째는 조사입니다. 조사는 반드시 앞말에 붙여야 하는데, 문장을 다듬다가 "회사 에서"처럼 공백이 끼어드는 경우가 있습니다.</p>
+<p>이 도구는 이런 패턴을 규칙 129개로 정리해 검사합니다. 규칙은 세 등급으로 나뉩니다. <b>오류</b>는 문맥과 무관하게 틀린 표기여서 자동 수정 대상이고, <b>확인</b>은 뜻에 따라 답이 갈리는 항목(한번/한 번, 안되/안 되, -는지/-는 지)이라 표시만 합니다. <b>참고</b>는 보조용언처럼 원칙과 허용이 함께 있는 항목입니다.</p>
+<p>"고칠 수 있는 항목 모두 적용"을 누르면 오류 등급 규칙만 일괄 반영됩니다. 확인 등급은 사람이 뜻을 보고 판단해야 하므로 자동으로 건드리지 않습니다. 검사가 끝난 뒤에는 <a href="../banned-words/">자소서 금칙어 체크</a>로 표현을, <a href="../sentence-check/">문장 길이 분석</a>으로 문장 길이를 이어서 점검하면 한 번에 정리됩니다.</p>
+
+<h2>사용법</h2>
+<ol>
+<li>글을 붙여 넣으면 즉시 검사됩니다.</li>
+<li>검출 목록에서 규칙 설명을 읽고, 항목별 "적용" 버튼으로 하나씩 고치거나 상단 버튼으로 오류 등급을 한 번에 반영합니다.</li>
+<li>"확인" 등급 항목은 문맥을 보고 직접 판단합니다. 각 항목에 판단 기준을 적어 두었습니다.</li>
+<li>수정한 본문을 복사해 지원서에 붙여 넣기 전, 한 번 소리 내어 읽어 어색한 부분을 확인합니다.</li>
+</ol>
+
+<h2>검사 규칙 전체 보기</h2>
+<div class="row"><input type="text" id="rq" placeholder="규칙 검색 (설명·분류)" style="flex:1;min-width:200px"></div>
+<div class="table-scroll"><table id="rules"><thead><tr><th>분류</th><th>등급</th><th>내용</th></tr></thead><tbody></tbody></table></div>
+<p class="mini" id="rulecount"></p>
+</section>
+<section class="faq"><h2>자주 묻는 질문</h2><details><summary>이 도구로 맞춤법 검사가 끝나나요?</summary><div class="prose"><p>아닙니다. 이 도구는 완전한 맞춤법 검사기가 아닙니다. 형태소 분석 없이 정규식 규칙으로 "자소서에서 자주 틀리는 띄어쓰기 패턴"만 찾습니다. 규칙에 없는 오류는 지나가고, 문맥에 따라 맞는 표기를 잘못 지적할 수도 있습니다. 제출 전에는 사람이 직접 읽는 검토가 반드시 필요합니다.</p></div></details><details><summary>왜 어떤 항목은 자동 수정이 되고 어떤 항목은 안 되나요?</summary><div class="prose"><p>"할수 있다 → 할 수 있다"처럼 문맥과 무관하게 규칙이 정해진 경우만 자동 수정 대상(오류)으로 둡니다. 반면 "한번/한 번", "안되/안 되"처럼 뜻에 따라 붙여 쓰기와 띄어 쓰기가 갈리는 항목은 확인 등급으로 표시만 하고 고치지 않습니다.</p></div></details><details><summary>"해 보다"를 붙여 썼는데 왜 안내만 뜨나요?</summary><div class="prose"><p>보조용언은 띄어 쓰는 것이 원칙이지만 붙여 쓰는 것도 허용됩니다(한글 맞춤법 제47항). 오류가 아니므로 참고 등급으로만 알려 줍니다.</p></div></details><details><summary>글이 외부로 전송되나요?</summary><div class="prose"><p>전송되지 않습니다. 외부 맞춤법 API를 전혀 사용하지 않고, 규칙 데이터와 검사 코드가 모두 브라우저에서 실행됩니다.</p></div></details></section>
+<p class="mini">함께 쓰면 좋은 도구: <a href="../banned-words/">자소서 금칙어 체크</a> · <a href="../sentence-check/">문장 길이 분석</a> · <a href="../char-count/">자소서 글자수 세기</a></p>
+
+</main>
+<footer class="site"><div class="wrap">
+<ul class="foot-links"><li><a href="../../tools/char-count/">자소서 글자수 세기</a></li><li><a href="../../tools/sentence-check/">문장 길이 분석</a></li><li><a href="../../tools/repeat-words/">반복 단어 찾기</a></li><li><a href="../../tools/banned-words/">자소서 금칙어 체크</a></li><li><a href="../../tools/spacing-basic/">띄어쓰기 기본 검사</a></li><li><a href="../../tools/text-compare/">글 비교</a></li><li><a href="../../tools/readability/">가독성 점수</a></li><li><a href="../../tools/outline/">자소서 개요 만들기</a></li><li><a href="../../tools/keyword-density/">키워드 밀도</a></li><li><a href="../../tools/paper-count/">원고지 계산기</a></li><li><a href="../../tools/resume-date/">경력 기간 계산기</a></li><li><a href="../../guide/jasoso-char-limit/">자소서 글자수 기준 확인하는 방법</a></li><li><a href="../../guide/common-mistakes/">자소서에서 자주 하는 실수</a></li><li><a href="../../privacy.html">개인정보처리방침</a></li><li><a href="../../terms.html">이용약관</a></li></ul>
+<p class="mini">writelab — 자소서·글쓰기 도구 모음. 모든 계산은 사용자의 브라우저에서만 실행되며, 입력한 글은 어디에도 전송·저장되지 않습니다.</p>
+<p class="mini">© 2026 writelab</p>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/spacing.js"></script>
+<script>
+(function(){
+  var R=window.SPACING.rules;
+  var src=document.getElementById('src'), findings=document.getElementById('findings'),
+      prev=document.getElementById('prev'), stats=document.getElementById('stats');
+  var LV={fix:{n:'오류',b:'badge b-bad'},warn:{n:'확인',b:'badge b-warn'},info:{n:'참고',b:'badge b-brand'}};
+
+  function scan(text){
+    var out=[];
+    R.forEach(function(rule){
+      var re=new RegExp(rule.re.source,'g'), m, guard=0;
+      while((m=re.exec(text))!==null){
+        if(m[0]==='') { re.lastIndex++; continue; }
+        var single=new RegExp(rule.re.source);
+        var fixed = rule.r ? m[0].replace(single, rule.r) : null;
+        if(fixed===m[0]) fixed=null;
+        out.push({id:rule.id,lv:rule.lv,c:rule.c,m:rule.m,n:rule.n,s:m.index,e:m.index+m[0].length,raw:m[0],fixed:fixed});
+        if(++guard>300) break;
+      }
+    });
+    out.sort(function(a,b){ return a.s-b.s; });
+    var keep=[], last=-1;
+    out.forEach(function(f){ if(f.s>=last){ keep.push(f); last=f.e; } });
+    return keep;
+  }
+
+  function apply(f){
+    var text=WL.norm(src.value);
+    if(text.slice(f.s,f.e)!==f.raw || !f.fixed) { run(); return; }
+    src.value=text.slice(0,f.s)+f.fixed+text.slice(f.e);
+    run();
+  }
+
+  function run(){
+    var text=WL.norm(src.value);
+    if(!text.trim()){
+      findings.innerHTML='<p class="mini">글을 입력하면 검사 결과가 표시됩니다.</p>';
+      prev.innerHTML='<span class="mini">본문 미리보기가 여기에 표시됩니다.</span>';
+      stats.innerHTML=''; return;
+    }
+    var list=scan(text), cnt={fix:0,warn:0,info:0};
+    list.forEach(function(f){ cnt[f.lv]++; });
+    stats.innerHTML='<div class="stat"><b>'+cnt.fix+'</b><small>오류 — 자동 수정 가능</small></div>'+
+      '<div class="stat"><b>'+cnt.warn+'</b><small>확인 — 문맥 판단 필요</small></div>'+
+      '<div class="stat"><b>'+cnt.info+'</b><small>참고 — 원칙/허용 안내</small></div>'+
+      '<div class="stat"><b>'+R.length+'</b><small>적용 중인 규칙 수</small></div>';
+
+    findings.innerHTML=list.length?list.map(function(f,i){
+      var s=Math.max(0,f.s-20), e=Math.min(text.length,f.e+20);
+      var ctx=(s>0?'…':'')+WL.esc(text.slice(s,f.s))+'<mark class="m-space">'+WL.esc(f.raw)+'</mark>'+WL.esc(text.slice(f.e,e))+(e<text.length?'…':'');
+      return '<div class="finding'+(f.lv==='fix'?' fix':(f.lv==='info'?' info':''))+'">'+
+        '<div><span class="'+LV[f.lv].b+'">'+LV[f.lv].n+'</span> <span class="badge">'+f.c+'</span> <b>'+WL.esc(f.m)+'</b></div>'+
+        '<p style="margin:6px 0">'+WL.esc(f.n)+'</p>'+
+        '<div class="ctx">'+ctx+'</div>'+
+        (f.fixed?('<div class="row"><button class="btn sm" data-i="'+i+'" type="button">이 부분 적용 → '+WL.esc(f.fixed)+'</button></div>'):'')+
+        '</div>';
+    }).join(''):'<div class="finding info">규칙에 걸리는 부분이 없습니다. 다만 이 도구가 검사하지 않는 오류는 남아 있을 수 있습니다.</div>';
+    findings._list=list;
+
+    var out='',cur=0;
+    list.forEach(function(f){ out+=WL.esc(text.slice(cur,f.s))+'<mark class="m-space">'+WL.esc(text.slice(f.s,f.e))+'</mark>'; cur=f.e; });
+    out+=WL.esc(text.slice(cur));
+    prev.innerHTML=out;
+  }
+
+  findings.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-i]'); if(!b) return;
+    var f=(findings._list||[])[parseInt(b.getAttribute('data-i'),10)];
+    if(f) apply(f);
+  });
+
+  document.getElementById('fixall').addEventListener('click',function(){
+    var text=WL.norm(src.value), before=text, pass=0;
+    do{
+      before=text;
+      R.forEach(function(rule){ if(rule.lv==='fix' && rule.r) text=text.replace(new RegExp(rule.re.source,'g'), rule.r); });
+      pass++;
+    } while(text!==before && pass<4);
+    src.value=text; run();
+  });
+  document.getElementById('clear').addEventListener('click',function(){ src.value=''; run(); src.focus(); });
+  document.getElementById('copy').addEventListener('click',function(e){ WL.copy(src.value,e.currentTarget); });
+  document.getElementById('sample').addEventListener('click',function(){
+    src.value='저는 어떤 일이든 끝까지 해낼수있다고 생각합니다. 팀 프로젝트를 진행중에 문제가 생겼을때, 제가 할수있는 일을 먼저 찾았습니다. 그때 배운것이 많았고, 두번째 시도에서는 여러가지 방법을 미리 준비했기때문에 일정을 지킬수 있었습니다. 입사후에도 배운대로 실행하겠습니다.';
+    run();
+  });
+  src.addEventListener('input',WL.debounce(run,160));
+
+  var rq=document.getElementById('rq'), rbody=document.querySelector('#rules tbody'), rcount=document.getElementById('rulecount');
+  function table(){
+    var q=(rq.value||'').trim();
+    var list=R.filter(function(r){ return !q || r.m.indexOf(q)>=0 || r.n.indexOf(q)>=0 || r.c.indexOf(q)>=0; });
+    rbody.innerHTML=list.map(function(r){
+      return '<tr><td><span class="badge">'+r.c+'</span></td><td><span class="'+LV[r.lv].b+'">'+LV[r.lv].n+'</span></td><td><b>'+WL.esc(r.m)+'</b><br><span class="mini">'+WL.esc(r.n)+'</span></td></tr>';
+    }).join('')||'<tr><td colspan="3" class="mini">검색 결과가 없습니다.</td></tr>';
+    rcount.textContent='표시 '+list.length+'개 / 전체 규칙 '+R.length+'개';
+  }
+  rq.addEventListener('input',WL.debounce(table,120));
+  run(); table();
+})();</script>
+</body>
+</html>

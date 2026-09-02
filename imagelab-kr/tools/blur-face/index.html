@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>얼굴 모자이크 - 사진 얼굴 가리기 (브러시)</title>
+<meta name="description" content="얼굴 모자이크: 붓으로 문지르면 그 부분만 모자이크 또는 블러 처리. 브러시 크기·강도 조절, 실행 취소. 서버 업로드 없는 무료 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"얼굴 모자이크","description":"얼굴 모자이크: 붓으로 문지르면 그 부분만 모자이크 또는 블러 처리. 브러시 크기·강도 조절, 실행 취소. 서버 업로드 없는 무료 도구.","url":"https://imagelab-kr.vercel.app/tools/blur-face/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"얼굴을 자동으로 찾아 주지는 않나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 수동 브러시 방식입니다. 자동 인식은 놓치는 얼굴이 생길 수 있는 반면, 직접 문지르는 방식은 가릴 대상을 빠뜨릴 위험이 없고 얼굴 외에 이름표·번호판 등도 자유롭게 가릴 수 있습니다."}},{"@type":"Question","name":"모자이크와 블러 중 뭐가 더 안전한가요?","acceptedAnswer":{"@type":"Answer","text":"개인정보 보호 목적이라면 모자이크를 강도 높게 쓰는 것이 좋습니다. 약한 블러는 복원 시도에 상대적으로 취약할 수 있습니다. 두 효과 모두 저장 파일에는 원본 픽셀이 포함되지 않습니다."}},{"@type":"Question","name":"문지른 부분을 일부만 되돌릴 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"「실행 취소」로 최근 획 단위(12단계)로 되돌릴 수 있고, 「모두 지우기」로 전체를 초기화할 수 있습니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"얼굴 모자이크","item":"https://imagelab-kr.vercel.app/tools/blur-face/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 얼굴 모자이크</nav>
+<h1>얼굴 모자이크</h1>
+<p class="lead">가릴 부분을 붓으로 문지르면 모자이크(또는 블러) 처리됩니다. 얼굴·개인정보 가리기에 알맞습니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<div class="field-row">
+  <label><input type="radio" name="fx" value="mosaic" checked> 모자이크</label>
+  <label><input type="radio" name="fx" value="blur"> 블러</label>
+</div>
+<div class="grid2">
+  <div class="field"><label>브러시 크기 <span id="brushv">40px</span></label><input type="range" id="brush" min="10" max="140" value="40"></div>
+  <div class="field"><label>강도 <span id="strengthv">14</span></label><input type="range" id="strength" min="4" max="40" value="14"></div>
+</div>
+<div class="btn-row">
+  <button class="btn btn-sm" id="undo" disabled>↩ 실행 취소</button>
+  <button class="btn btn-sm" id="clear">모두 지우기</button>
+</div>
+<div class="stage" id="stage"><canvas id="pv" style="cursor:crosshair;touch-action:none"></canvas></div>
+<p class="status">가리고 싶은 부분을 마우스/손가락으로 문지르세요.</p>
+<div class="btn-row"><button class="btn btn-primary" id="dlPng">PNG 저장</button><button class="btn" id="dlJpg">JPG 저장</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>얼굴 모자이크 소개</h2>
+<p>얼굴 모자이크 도구는 사진 속 얼굴이나 개인정보를 붓으로 문질러 가립니다. 사각형 영역보다 자연스럽게, 필요한 부분만 정확히 가릴 수 있는 브러시 방식으로, 모자이크와 블러(흐림) 두 가지 효과를 지원합니다.</p>
+<p>브러시 크기와 효과 강도를 슬라이더로 조절할 수 있고, 실수한 획은 실행 취소로 되돌립니다. 모든 처리는 브라우저 안에서만 이루어져 민감한 사진도 외부로 전송되지 않으며, 저장된 결과물에는 가려진 부분의 원본 정보가 남지 않습니다.</p>
+<p>자동 얼굴 인식 없이 손으로 직접 문지르는 방식이라 어떤 사진에서도 확실하게 동작합니다. 인식 오류로 얼굴이 안 가려지는 사고가 없습니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택</li>
+<li>모자이크/블러 선택, 브러시 크기·강도 조절</li>
+<li>가릴 부분을 문지르기 (여러 곳 가능)</li>
+<li>PNG 또는 JPG로 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>얼굴을 자동으로 찾아 주지는 않나요?</summary><p>이 도구는 수동 브러시 방식입니다. 자동 인식은 놓치는 얼굴이 생길 수 있는 반면, 직접 문지르는 방식은 가릴 대상을 빠뜨릴 위험이 없고 얼굴 외에 이름표·번호판 등도 자유롭게 가릴 수 있습니다.</p></details>
+<details class="faq"><summary>모자이크와 블러 중 뭐가 더 안전한가요?</summary><p>개인정보 보호 목적이라면 모자이크를 강도 높게 쓰는 것이 좋습니다. 약한 블러는 복원 시도에 상대적으로 취약할 수 있습니다. 두 효과 모두 저장 파일에는 원본 픽셀이 포함되지 않습니다.</p></details>
+<details class="faq"><summary>문지른 부분을 일부만 되돌릴 수 있나요?</summary><p>「실행 취소」로 최근 획 단위(12단계)로 되돌릴 수 있고, 「모두 지우기」로 전체를 초기화할 수 있습니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var img = null, fileName = '', scale = 1;
+  var effectCanvas = null; // 전체 모자이크/블러 버전
+  var maskCanvas = null;   // 브러시로 칠한 마스크
+  var undoStack = [];
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    fileName = fs[0].name;
+    img = await IL.loadImage(fs[0]);
+    maskCanvas = IL.canvasOf(IL.imgW(img), IL.imgH(img));
+    undoStack = [];
+    buildEffect();
+    $('panel').style.display = '';
+    fit(); draw();
+  });
+
+  $('brush').addEventListener('input', function () { $('brushv').textContent = $('brush').value + 'px'; });
+  $('strength').addEventListener('input', function () {
+    $('strengthv').textContent = $('strength').value;
+    if (img) { buildEffect(); draw(); }
+  });
+  document.querySelectorAll('input[name=fx]').forEach(function (r) {
+    r.addEventListener('change', function () { if (img) { buildEffect(); draw(); } });
+  });
+
+  /* 전체 이미지의 모자이크/블러 버전 미리 생성 */
+  function buildEffect() {
+    var w = IL.imgW(img), h = IL.imgH(img);
+    var strength = parseInt($('strength').value, 10);
+    effectCanvas = IL.canvasOf(w, h);
+    var ctx = effectCanvas.getContext('2d');
+    var mode = document.querySelector('input[name=fx]:checked').value;
+    if (mode === 'mosaic') {
+      var size = Math.max(6, Math.round(Math.max(w, h) / 100 * strength / 4) + strength);
+      var sw = Math.max(1, Math.round(w / size)), sh = Math.max(1, Math.round(h / size));
+      var small = IL.canvasOf(sw, sh);
+      small.getContext('2d').drawImage(img, 0, 0, sw, sh);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(small, 0, 0, sw, sh, 0, 0, w, h);
+    } else {
+      var r = Math.max(4, strength * Math.max(w, h) / 600);
+      ctx.filter = 'blur(' + r + 'px)';
+      ctx.drawImage(img, 0, 0);
+      ctx.filter = 'none';
+    }
+  }
+
+  function fit() {
+    var pv = $('pv');
+    var maxW = $('stage').clientWidth - 2 || 700;
+    scale = Math.min(1, maxW / IL.imgW(img), 560 / IL.imgH(img));
+    pv.width = Math.round(IL.imgW(img) * scale);
+    pv.height = Math.round(IL.imgH(img) * scale);
+  }
+
+  function composite(targetCtx, w, h) {
+    targetCtx.clearRect(0, 0, w, h);
+    targetCtx.drawImage(img, 0, 0, w, h);
+    /* 마스크 영역만 효과 적용 */
+    var tmp = IL.canvasOf(w, h);
+    var tctx = tmp.getContext('2d');
+    tctx.drawImage(maskCanvas, 0, 0, w, h);
+    tctx.globalCompositeOperation = 'source-in';
+    tctx.drawImage(effectCanvas, 0, 0, w, h);
+    targetCtx.drawImage(tmp, 0, 0);
+  }
+
+  function draw() {
+    var pv = $('pv');
+    composite(pv.getContext('2d'), pv.width, pv.height);
+  }
+
+  function pushUndo() {
+    if (undoStack.length >= 12) undoStack.shift();
+    var s = IL.canvasOf(maskCanvas.width, maskCanvas.height);
+    s.getContext('2d').drawImage(maskCanvas, 0, 0);
+    undoStack.push(s);
+    $('undo').disabled = false;
+  }
+  $('undo').onclick = function () {
+    var s = undoStack.pop();
+    if (s) {
+      var ctx = maskCanvas.getContext('2d');
+      ctx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+      ctx.drawImage(s, 0, 0);
+      draw();
+    }
+    $('undo').disabled = undoStack.length === 0;
+  };
+  $('clear').onclick = function () {
+    if (!img) return;
+    pushUndo();
+    maskCanvas.getContext('2d').clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+    draw();
+  };
+
+  /* 브러시 드로잉 */
+  var painting = false, last = null;
+  var pv = $('pv');
+  function pos(e) {
+    var r = pv.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / scale, y: (e.clientY - r.top) / scale };
+  }
+  function stroke(a, b) {
+    var ctx = maskCanvas.getContext('2d');
+    var brush = parseInt($('brush').value, 10) / scale;
+    ctx.strokeStyle = ctx.fillStyle = '#000';
+    ctx.lineWidth = brush;
+    ctx.lineCap = ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+  }
+  pv.addEventListener('pointerdown', function (e) {
+    if (!img) return;
+    e.preventDefault();
+    pv.setPointerCapture(e.pointerId);
+    pushUndo();
+    painting = true;
+    last = pos(e);
+    stroke(last, { x: last.x + 0.01, y: last.y + 0.01 });
+    draw();
+  });
+  pv.addEventListener('pointermove', function (e) {
+    if (!painting) return;
+    var p = pos(e);
+    stroke(last, p);
+    last = p;
+    draw();
+  });
+  pv.addEventListener('pointerup', function () { painting = false; });
+
+  $('dlPng').addEventListener('click', async function () {
+    if (!img) return;
+    var c = IL.canvasOf(IL.imgW(img), IL.imgH(img));
+    composite(c.getContext('2d'), c.width, c.height);
+    IL.download(await IL.toBlob(c, 'image/png'), IL.outName(fileName, 'mosaic', 'png'));
+  });
+  $('dlJpg').addEventListener('click', async function () {
+    if (!img) return;
+    var c = IL.canvasOf(IL.imgW(img), IL.imgH(img));
+    composite(c.getContext('2d'), c.width, c.height);
+    var c2 = IL.canvasOf(c.width, c.height), ctx = c2.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c2.width, c2.height); ctx.drawImage(c, 0, 0);
+    IL.download(await IL.toBlob(c2, 'image/jpeg', 0.92), IL.outName(fileName, 'mosaic', 'jpg'));
+  });
+  window.addEventListener('resize', function () { if (img) { fit(); draw(); } });
+})();
+</script>
+</body>
+</html>

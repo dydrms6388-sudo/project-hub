@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>카톡 답장 속도 분석 — 평균 답장 시간 계산기 | TalkStat</title>
+<meta name="description" content="카카오톡 대화 내보내기 파일로 참여자별 평균·중앙값 답장 시간, 먼저 말 건 비율, 가장 긴 침묵을 계산합니다. 브라우저 안에서만 분석되고 서버 전송은 없습니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"카톡 답장 속도 분석","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"카카오톡 대화의 참여자별 답장 속도와 먼저 말 건 비율을 브라우저에서만 계산하는 무료 도구","url":"https://talkstat.vercel.app/tools/reply-time/"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TalkStat","item":"https://talkstat.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"카톡 답장 속도 분석","item":"https://talkstat.vercel.app/tools/reply-time/"}]},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"답장 시간은 무엇을 기준으로 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"발신자가 바뀌는 순간의 시간 간격을 답장으로 봅니다. 8시간을 넘는 공백은 새 대화의 시작으로 간주해 답장 평균에서 제외합니다."}},
+{"@type":"Question","name":"평균과 중앙값이 왜 둘 다 표시되나요?","acceptedAnswer":{"@type":"Answer","text":"몇 번의 늦은 답장이 평균을 크게 끌어올릴 수 있어서, 튀는 값의 영향을 덜 받는 중앙값을 함께 보여줍니다. 보통은 중앙값이 체감 답장 속도에 더 가깝습니다."}},
+{"@type":"Question","name":"대화 내용이 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 파일은 브라우저 메모리에서만 읽혀 분석되며 네트워크 전송이 없습니다. 새로고침하면 파일 내용은 사라집니다."}}]}
+]}
+</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../../">Talk<b>Stat</b></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../analyze/">대화 분석</a>
+    <a href="./" aria-current="page">답장 속도</a>
+    <a href="../word-cloud/">단어 통계</a>
+    <a href="../../guide/how-to-export-kakaotalk/">내보내기 방법</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="privacy-banner" role="note">
+    <span class="ico" aria-hidden="true">🔒</span>
+    <span>대화 내용은 서버로 전송되지 않습니다 — 브라우저 안에서만 분석됩니다.</span>
+  </div>
+
+  <h1>카톡 답장 속도 분석</h1>
+  <p class="lead">누가 더 빨리 답하는지 궁금하다면 — 참여자별 평균·중앙값 답장 시간과 먼저 말 건 비율을 계산해 드립니다.</p>
+
+  <section class="card">
+    <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="대화 파일 선택 또는 끌어다 놓기">
+      <p style="margin:0"><strong>여기를 눌러 파일 선택</strong> 또는 파일을 끌어다 놓기</p>
+      <p class="file-note">카카오톡 내보내기 .txt / .csv · 형식 자동 감지</p>
+    </div>
+    <input type="file" id="fileInput" accept=".txt,.csv,text/plain,text/csv" class="hidden">
+    <p id="errBox" class="err hidden" role="alert"></p>
+    <p id="busyBox" class="note hidden">분석 중입니다…</p>
+  </section>
+
+  <section id="results" class="hidden" aria-live="polite">
+    <h2>답장 속도 결과</h2>
+    <div class="stat-grid" id="tiles"></div>
+    <div class="card">
+      <h3 style="margin-top:0">참여자별 평균 답장 시간</h3>
+      <div class="chart-box" id="replyBars"></div>
+      <details class="tblview"><summary>표로 보기 — 답장 시간 상세</summary>
+        <div style="overflow-x:auto"><table class="data" id="replyTable"></table></div>
+      </details>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">먼저 말 건 비율 <span class="note">(8시간 이상 침묵 후 첫 메시지)</span></h3>
+      <div class="chart-box" id="initBars"></div>
+      <p class="note" id="silenceNote"></p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">답장이 빠른 시간대</h3>
+      <p class="note">시간대별 메시지 분포로 활발한 시간을 확인하세요. 골든타임: <strong id="goldenSpan"></strong></p>
+      <div class="chart-box" id="hourBox"></div>
+    </div>
+    <p class="note">전체 대시보드(히트맵·단어·리포트 카드)는 <a href="../analyze/">카톡 대화 분석</a>에서 볼 수 있어요.</p>
+    <!-- ad-slot -->
+  </section>
+
+  <article class="article">
+    <h2>답장 속도, 데이터로 확인하기</h2>
+    <p>"내가 항상 먼저 연락하는 것 같은데?"라는 느낌은 데이터로 확인해 볼 수 있습니다. 이 도구는 카카오톡 대화 내보내기 파일에서 발신자가 바뀌는 순간의 시간 간격을 모아 참여자별 평균·중앙값 답장 시간을 계산하고, 8시간 이상 침묵 뒤에 먼저 말을 꺼낸 횟수도 함께 세어 줍니다.</p>
+    <p>밤사이 공백처럼 답장이라 보기 어려운 긴 간격(8시간 초과)은 평균에서 제외하므로, 자는 시간 때문에 평균이 왜곡되는 문제를 줄였습니다. 늦은 답장 몇 번이 평균을 끌어올리는 경우를 대비해 중앙값도 함께 표시합니다.</p>
+    <p>분석은 전부 브라우저 안의 Web Worker에서 실행됩니다. 파일이 서버로 업로드되지 않으므로 사적인 대화 내용이 외부로 나가지 않습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li><a href="../../guide/how-to-export-kakaotalk/">카카오톡 대화 내보내기 방법</a>을 따라 대화를 txt/csv 파일로 저장합니다.</li>
+      <li>파일을 위 업로드 영역에 올리면 즉시 결과가 표시됩니다.</li>
+      <li>평균과 중앙값을 함께 비교하고, 먼저 말 건 비율과 가장 긴 침묵도 확인해 보세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>답장 시간이 실제 체감과 다른 것 같아요.</summary><p>연속으로 여러 메시지를 보내는 습관, 읽고 나중에 답하는 습관 등에 따라 수치는 체감과 다를 수 있습니다. 평균보다 중앙값이 체감에 가까운 경우가 많으니 둘을 함께 봐 주세요. 수치는 재미로 보는 참고 자료입니다.</p></details>
+      <details><summary>먼저 말 건 비율은 어떻게 세나요?</summary><p>대화가 8시간 이상 끊긴 뒤 처음 메시지를 보낸 사람을 "먼저 말 건 사람"으로 셉니다. 첫 메시지도 포함됩니다. 기준 시간은 일반적인 수면·업무 공백을 고려한 값입니다.</p></details>
+      <details><summary>파일이 안 올라가거나 결과가 이상해요.</summary><p>카카오톡의 "대화 내보내기(텍스트만)"로 저장한 원본 파일인지 확인해 주세요. 편집된 파일이나 스크린샷 기반 텍스트는 형식이 달라 인식되지 않을 수 있습니다. 안드로이드·아이폰·PC 형식을 모두 지원합니다.</p></details>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer"><div class="wrap">
+  <nav aria-label="사이트 링크">
+    <a href="../analyze/">카톡 대화 분석</a>
+    <a href="./">카톡 답장 속도 분석</a>
+    <a href="../word-cloud/">카톡 단어 통계</a>
+    <a href="../../guide/how-to-export-kakaotalk/">카카오톡 대화 내보내기 방법</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© 2026 TalkStat · 모든 분석은 사용자의 브라우저 안에서만 실행됩니다.</p>
+</div></footer>
+
+<script src="../../assets/parsers.js"></script>
+<script src="../../assets/analyzer.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/charts.js"></script>
+<script>
+(function () {
+  'use strict';
+  var TS = window.TalkStat, TC = window.TalkCharts, A = window.TalkAnalyzer;
+  var $ = function (id) { return document.getElementById(id); };
+  TS.attachTooltips(document);
+
+  function showErr(m) { var e = $('errBox'); e.textContent = m; e.classList.remove('hidden'); }
+
+  TS.wireUpload({
+    zoneId: 'dropzone', inputId: 'fileInput', onError: showErr,
+    onText: function (text, hint) {
+      $('errBox').classList.add('hidden');
+      $('busyBox').classList.remove('hidden');
+      TS.runAnalysis(text, hint).then(function (data) {
+        $('busyBox').classList.add('hidden');
+        render(data.result);
+      }).catch(function (err) {
+        $('busyBox').classList.add('hidden');
+        showErr(err.message || String(err));
+      });
+    }
+  });
+
+  function tile(lb, vl, sb) {
+    return '<div class="stat-tile"><div class="lb">' + TS.esc(lb) + '</div><div class="vl">' + vl + '</div>' +
+      (sb ? '<div class="sb">' + TS.esc(sb) + '</div>' : '') + '</div>';
+  }
+
+  function render(r) {
+    $('results').classList.remove('hidden');
+    var users = r.perUser.slice().sort(function (a, b) { return b.messages - a.messages; }).slice(0, 8);
+    var withReply = users.filter(function (u) { return u.avgReplyMs != null; });
+    var fastest = withReply.slice().sort(function (a, b) { return a.medianReplyMs - b.medianReplyMs; })[0];
+    var initTop = r.perUser.slice().sort(function (a, b) { return b.initiations - a.initiations; })[0];
+
+    $('tiles').innerHTML =
+      tile('가장 빠른 답장', fastest ? TS.esc(fastest.name) : '—',
+        fastest ? '중앙값 ' + A.formatDuration(fastest.medianReplyMs) : '') +
+      tile('먼저 말 걸기 1위', initTop ? TS.esc(initTop.name) : '—',
+        initTop ? TS.fmtInt(initTop.initiations) + '회 (' + Math.round(initTop.initShare * 100) + '%)' : '') +
+      tile('가장 긴 침묵', r.longestSilence ? A.formatDuration(r.longestSilence.gap) : '—',
+        r.longestSilence ? r.longestSilence.endedBy + ' 님이 깼어요' : '') +
+      tile('총 메시지', TS.fmtInt(r.totals.messages) + '<span style="font-size:.9rem">건</span>',
+        TS.fmtDate(r.totals.firstT) + ' ~ ' + TS.fmtDate(r.totals.lastT));
+
+    var colorOf = function (name) {
+      return TC.colorFor(Math.min(r.perUser.findIndex(function (x) { return x.name === name; }), 7));
+    };
+
+    $('replyBars').innerHTML = withReply.length
+      ? TC.hBars(withReply.map(function (u) {
+          return { label: u.name, value: Math.round(u.avgReplyMs / 1000), color: colorOf(u.name),
+            valueLabel: A.formatDuration(u.avgReplyMs),
+            tip: u.name + ' 평균 ' + A.formatDuration(u.avgReplyMs) + ' · 중앙값 ' + A.formatDuration(u.medianReplyMs) };
+        }), { aria: '참여자별 평균 답장 시간' })
+      : '<p class="note">답장으로 볼 수 있는 발신자 전환이 없습니다.</p>';
+
+    var th = '<thead><tr><th>참여자</th><th>평균</th><th>중앙값</th><th>답장 횟수</th><th>먼저 말 걸기</th></tr></thead>';
+    var tb = users.map(function (u) {
+      return '<tr><td>' + TS.esc(u.name) + '</td><td>' + A.formatDuration(u.avgReplyMs) + '</td><td>' +
+        A.formatDuration(u.medianReplyMs) + '</td><td>' + TS.fmtInt(u.replyCount) + '</td><td>' +
+        TS.fmtInt(u.initiations) + '회 (' + Math.round(u.initShare * 100) + '%)</td></tr>';
+    }).join('');
+    $('replyTable').innerHTML = th + '<tbody>' + tb + '</tbody>';
+
+    $('initBars').innerHTML = TC.hBars(users.map(function (u) {
+      return { label: u.name, value: u.initiations, color: colorOf(u.name),
+        valueLabel: TS.fmtInt(u.initiations) + '회 (' + Math.round(u.initShare * 100) + '%)',
+        tip: u.name + ' · 먼저 말 걸기 ' + TS.fmtInt(u.initiations) + '회' };
+    }), { aria: '먼저 말 건 횟수' });
+
+    var ls = r.longestSilence;
+    $('silenceNote').textContent = ls
+      ? '가장 긴 침묵: ' + A.formatDuration(ls.gap) + ' (' + TS.fmtDateTime(ls.fromT) + ' → ' + TS.fmtDateTime(ls.toT) + ')'
+      : '';
+    $('goldenSpan').textContent = r.goldenCellLabel;
+    $('hourBox').innerHTML = TC.hourHist(r.hourly);
+    $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}());
+</script>
+</body>
+</html>

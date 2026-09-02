@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>한글 타자 연습 - 자리 연습부터 긴 글까지 무료 | typingkr</title>
+<meta name="description" content="웹에서 바로 하는 한글 타자 연습. 두벌식 자리 연습, 낱말, 짧은 글, 긴 글 모드와 실시간 타수(타/분)·정확도, 오타 하이라이트, 결과 카드 이미지 저장까지 무료.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"한글 타자 연습",
+"url":"https://typingkr.vercel.app/tools/korean-typing/","applicationCategory":"EducationalApplication",
+"operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+"description":"두벌식 자리 연습, 낱말, 짧은 글, 긴 글 모드를 갖춘 무료 한글 타자 연습기. 자모 기준 타수와 정확도를 실시간 표시."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"typingkr","item":"https://typingkr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"한글 타자 연습","item":"https://typingkr.vercel.app/tools/korean-typing/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"타수(타/분)는 어떤 기준인가요?","acceptedAnswer":{"@type":"Answer","text":"올바르게 입력한 자모 수를 경과 시간으로 나눈 값입니다. '값'처럼 겹받침이 있는 글자는 ㄱ+ㅏ+ㅂ+ㅅ 4타로 계산합니다."}},
+{"@type":"Question","name":"글자를 조합하는 중인데 오타로 표시되지 않나요?","acceptedAnswer":{"@type":"Answer","text":"조합 중인 글자는 노란 밑줄로만 표시하고 채점을 보류합니다. 글자가 확정된 뒤에만 정답/오타를 판정합니다."}},
+{"@type":"Question","name":"자리 연습은 어떤 순서로 해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"기본자리(ㅁㄴㅇㄹ·ㅗㅓㅏㅣ) → 윗줄 → 아랫줄 → 전체 순서를 권장합니다. 화면 키보드가 다음에 누를 키를 알려줍니다."}}]}
+</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">타자연습<span class="dot">·</span>typingkr</a>
+  <span class="head-sp"></span>
+  <button id="soundBtn" class="iconbtn" type="button">🔇 소리 끔</button>
+  <button id="themeBtn" class="iconbtn" type="button" aria-label="다크/라이트 테마 전환">🌙</button>
+</div></header>
+
+<main class="wrap">
+  <h1>한글 타자 연습</h1>
+  <p class="hint">자리 연습 → 낱말 → 짧은 글 → 긴 글 순서로 실력을 올려 보세요. 조합 중인 글자는 <u>노란 밑줄</u>, 오타는 <span style="color:var(--bad)">빨간색</span>으로 표시됩니다.</p>
+
+  <div class="mobile-note">📱 모바일 환경이 감지되었습니다. 정확한 타자 연습에는 <b>PC 키보드를 권장</b>합니다. 모바일에서는 간단한 <b>낱말 모드</b>만 제공됩니다.</div>
+
+  <div class="card">
+    <div class="chips" id="modeChips">
+      <button class="chip pc-only" data-mode="jari">자리 연습</button>
+      <button class="chip on" data-mode="word">낱말</button>
+      <button class="chip pc-only" data-mode="short">짧은 글</button>
+      <button class="chip pc-only" data-mode="long">긴 글</button>
+    </div>
+    <div class="row" id="subRow" style="margin-top:10px">
+      <div class="chips pc-only" id="jariChips" style="display:none">
+        <button class="chip on" data-row="home">기본자리</button>
+        <button class="chip" data-row="top">윗줄</button>
+        <button class="chip" data-row="bottom">아랫줄</button>
+        <button class="chip" data-row="all">전체</button>
+      </div>
+      <label id="catWrap" style="display:none">문장 종류
+        <select id="catSel">
+          <option value="proverbs">속담</option>
+          <option value="quotes">명언(고전)</option>
+          <option value="daily">일상 문장</option>
+          <option value="news">뉴스체 문장</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="statbar">
+    <div class="stat"><b id="stCpm">0</b><span>타/분</span></div>
+    <div class="stat"><b id="stAcc" class="ok">100%</b><span>정확도</span></div>
+    <div class="stat"><b id="stStroke">0</b><span>누적 타수</span></div>
+    <div class="stat"><b id="stItem">0/0</b><span>진행</span></div>
+  </div>
+  <div class="progress"><i id="pbar"></i></div>
+
+  <div id="playArea">
+    <div class="target" id="target" aria-live="polite"></div>
+    <textarea class="typebox" id="input" rows="2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="여기를 클릭하고 위 내용을 따라 입력하세요"></textarea>
+    <p class="hint">입력 중 <span class="kbadge">Esc</span> = 현재 줄 다시 입력 · 한/영 전환은 <span class="kbadge">한/영</span> 키</p>
+    <div id="kbdBox" class="pc-only"></div>
+  </div>
+
+  <div id="resultArea" class="card result-card" style="display:none">
+    <h2 style="margin-top:0">연습 완료! 🎉</h2>
+    <div id="cardBox"></div>
+    <div class="row" style="justify-content:center;margin-top:14px">
+      <button class="btn" id="saveBtn" type="button">결과 카드 PNG 저장</button>
+      <button class="btn ghost" id="againBtn" type="button">같은 모드 다시</button>
+    </div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="prose">
+    <h2>한글 타자 연습, 이렇게 동작합니다</h2>
+    <p>이 연습기는 한글 입력기의 <b>글자 조합 과정</b>을 그대로 이해합니다. "한"을 입력하는 동안
+    ㅎ → 하 → 한 으로 변하는 중간 상태는 오타로 판정하지 않고 노란 밑줄로 "조합 중"임을
+    표시하며, 다음 글자로 넘어가 글자가 확정되는 순간에만 채점합니다. 그래서 실제 타자 프로그램과
+    같은 자연스러운 연습이 가능합니다.</p>
+    <p>타수(타/분)는 겉으로 보이는 글자 수가 아니라 <b>자모 수</b> 기준입니다. 완성형 한글을
+    유니코드 산술로 초성·중성·종성으로 분해하고, 겹받침·복합 모음은 실제로 누르는 키 수만큼
+    셉니다. 예를 들어 "값"은 ㄱ+ㅏ+ㅂ+ㅅ = 4타, "귀"는 ㄱ+ㅜ+ㅣ = 3타, 쌍자음 "까"의 ㄲ은
+    Shift와 함께 한 번에 누르므로 1타입니다. 정확도는 확정된 글자 기준으로, 한 번이라도 틀렸던
+    자리는 고쳐 써도 오타로 집계됩니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>상단에서 모드를 고릅니다. 처음이라면 <b>자리 연습 → 기본자리</b>부터.</li>
+      <li>입력창을 클릭하고 제시된 내용을 따라 입력합니다. 자리 연습에서는 화면 키보드가 다음 키를 파란색으로 알려줍니다.</li>
+      <li>한 세트를 마치면 타수·정확도가 담긴 결과 카드가 나오고, PNG 이미지로 저장할 수 있습니다.</li>
+      <li>헤더의 🔊 버튼으로 키 입력 소리 피드백을 켜고 끌 수 있습니다.</li>
+    </ol>
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      <details><summary>백스페이스로 고치면 정확도가 회복되나요?</summary><p>화면 표시는 초록색으로 돌아오지만, 정확도 집계에서는 한 번 틀린 자리로 남습니다. 처음부터 정확하게 치는 습관을 들이기 위한 방식입니다.</p></details>
+      <details><summary>자리 연습에서 자모 사이에 왜 띄어쓰기가 있나요?</summary><p>한글 입력기는 자음+모음을 자동으로 한 글자로 합칩니다. 자모를 하나씩 따로 연습할 수 있도록 사이에 공백을 두었고, 공백도 스페이스바 연습이 됩니다.</p></details>
+      <details><summary>평균 타수는 얼마나 되나요?</summary><p>한글 기준 일반 사용자는 200~300타/분, 능숙한 사용자는 400타/분 이상입니다. 처음에는 속도보다 정확도 95% 이상을 목표로 하세요.</p></details>
+      <details><summary>기록이 서버에 저장되나요?</summary><p>아니요. 모든 계산과 기록은 브라우저 안에서만 처리되며 서버로 전송되지 않습니다.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <nav>
+    <a href="../typing-test/">타자 속도 측정</a>
+    <a href="../english-typing/">영타 연습</a>
+    <a href="../keyboard-layout/">두벌식 자판</a>
+    <a href="../number-typing/">숫자 키패드</a>
+    <a href="../code-typing/">코딩 타자</a>
+    <a href="../kids-typing/">어린이 타자</a>
+    <a href="../custom-text/">내 글로 연습</a>
+    <a href="../../guide/typing-tips/">타자 팁 가이드</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© typingkr · tomatoeggcat.com</p>
+</div></footer>
+
+<script src="../../assets/hangul.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/engine.js"></script>
+<script src="../../assets/keyboard.js"></script>
+<script src="../../assets/data/sentences/proverbs.js"></script>
+<script src="../../assets/data/sentences/quotes.js"></script>
+<script src="../../assets/data/sentences/news.js"></script>
+<script src="../../assets/data/sentences/daily.js"></script>
+<script src="../../assets/data/sentences/words.js"></script>
+<script>
+(function () {
+  'use strict';
+  var D = window.TKDATA;
+  var $ = function (id) { return document.getElementById(id); };
+
+  var JARI = {
+    home: ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'],
+    top: ['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],
+    bottom: ['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ'],
+    all: null
+  };
+  JARI.all = JARI.home.concat(JARI.top, JARI.bottom);
+
+  var mode = 'word', jariRow = 'home';
+  var queue = [], idx = 0, total = 0;
+  var engine = null, kbd = null;
+  var mobile = TK.isMobile();
+  if (!mobile) {
+    // PC 기본 모드는 자리→낱말 중 낱말 유지하되, 짧은 글이 대표 경험이므로 short 로 시작
+    mode = 'short';
+    setChip('modeChips', 'data-mode', 'short');
+  }
+
+  function setChip(boxId, attr, val) {
+    var btns = $(boxId).querySelectorAll('.chip');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i].getAttribute(attr) === val);
+  }
+
+  function jariLine(pool) {
+    var out = [];
+    for (var i = 0; i < 11; i++) out.push(TK.pick(pool));
+    return out.join(' ');
+  }
+  function buildQueue() {
+    var i;
+    if (mode === 'jari') {
+      queue = [];
+      for (i = 0; i < 5; i++) queue.push(jariLine(JARI[jariRow]));
+    } else if (mode === 'word') {
+      queue = TK.shuffle(D.words.filter(function (w) { return !/^[a-z]/i.test(w); })).slice(0, mobile ? 10 : 15);
+    } else if (mode === 'short') {
+      queue = TK.shuffle(D[$('catSel').value]).slice(0, 10);
+    } else { // long
+      var pool = TK.shuffle(D.daily.concat(D.news));
+      queue = [];
+      for (i = 0; i < 3; i++) queue.push(pool.slice(i * 5, i * 5 + 5).join(' '));
+    }
+    total = queue.length;
+    idx = 0;
+  }
+
+  function makeEngine() {
+    if (engine) { engine.jamoMode = (mode === 'jari'); return; }
+    engine = new TK.Engine({
+      targetEl: $('target'),
+      inputEl: $('input'),
+      jamoMode: mode === 'jari',
+      onProgress: function (s) {
+        $('stCpm').textContent = s.cpm;
+        $('stAcc').textContent = s.acc + '%';
+        $('stAcc').classList.toggle('ok', s.acc >= 95);
+        $('stStroke').textContent = s.strokes;
+      },
+      onLineDone: function () {
+        TK.doneSound();
+        idx++;
+        updateItem();
+        if (idx >= total) return finish();
+        engine.setText(queue[idx]);
+      },
+      onKeyHint: function (j) { if (kbd) kbd.highlight(mode === 'jari' ? j : null); },
+      onType: TK.clickSound,
+      onError: TK.errorSound
+    });
+  }
+
+  function updateItem() {
+    $('stItem').textContent = Math.min(idx, total) + '/' + total;
+    $('pbar').style.width = (total ? Math.min(idx / total, 1) * 100 : 0) + '%';
+  }
+
+  function start() {
+    buildQueue();
+    makeEngine();
+    engine.resetSession();
+    $('resultArea').style.display = 'none';
+    $('playArea').style.display = '';
+    $('kbdBox').style.display = mode === 'jari' ? '' : 'none';
+    updateItem();
+    engine.setText(queue[0]);
+  }
+
+  function finish() {
+    var s = engine.stats(0, 0, 0);
+    $('playArea').style.display = 'none';
+    var modeName = { jari: '자리 연습', word: '낱말', short: '짧은 글', long: '긴 글' }[mode];
+    var cv = TK.drawResultCard({
+      title: '한글 타자 연습 결과',
+      sub: modeName + ' · ' + total + '개 완료',
+      stats: [
+        { label: '타/분', value: s.cpm },
+        { label: '정확도', value: s.acc + '%' },
+        { label: '총 타수', value: s.strokes }
+      ],
+      footer: gradeMsg(s.cpm, s.acc)
+    });
+    var box = $('cardBox');
+    box.textContent = '';
+    box.appendChild(cv);
+    $('resultArea').style.display = '';
+    $('saveBtn').onclick = function () { TK.downloadCanvas(cv, 'typingkr-korean.png'); };
+    // 최고 기록 저장
+    var key = 'typingkr-best-korean-' + mode;
+    var best = TK.load(key, 0);
+    if (s.cpm > best) TK.store(key, s.cpm);
+  }
+  function gradeMsg(cpm, acc) {
+    if (acc < 90) return '속도보다 정확도부터! 천천히 정확하게 🎯';
+    if (cpm >= 400) return '타자의 달인이시군요! ⚡';
+    if (cpm >= 300) return '아주 능숙한 솜씨예요 👍';
+    if (cpm >= 200) return '평균 이상! 꾸준히 늘고 있어요 🌱';
+    return '좋은 시작이에요. 매일 조금씩! ✨';
+  }
+
+  // 모드 전환
+  $('modeChips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    mode = b.getAttribute('data-mode');
+    setChip('modeChips', 'data-mode', mode);
+    $('jariChips').style.display = mode === 'jari' ? '' : 'none';
+    $('catWrap').style.display = mode === 'short' ? '' : 'none';
+    start();
+  });
+  $('jariChips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    jariRow = b.getAttribute('data-row');
+    setChip('jariChips', 'data-row', jariRow);
+    start();
+  });
+  $('catSel').addEventListener('change', start);
+  $('againBtn').addEventListener('click', start);
+
+  // Enter 는 줄바꿈 없이 무시 (문장에 개행 없음)
+  $('input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') e.preventDefault();
+  });
+
+  TK.bindSoundToggle('soundBtn');
+  kbd = TK.Keyboard($('kbdBox'));
+  $('catWrap').style.display = mode === 'short' ? '' : 'none';
+  start();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자소서 개요 만들기 — STAR 템플릿, 글자수 배분 | writelab</title>
+<meta name="description" content="STAR(상황·과제·행동·결과) 템플릿으로 자소서 개요를 잡고, 총 글자수를 단계별로 자동 배분합니다. 마크다운으로 내보내 바로 초고를 쓰세요.">
+<meta property="og:title" content="자소서 개요 만들기 — STAR 템플릿, 글자수 배분 | writelab">
+<meta property="og:description" content="STAR(상황·과제·행동·결과) 템플릿으로 자소서 개요를 잡고, 총 글자수를 단계별로 자동 배분합니다. 마크다운으로 내보내 바로 초고를 쓰세요.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"자소서 개요 만들기","description":"STAR(상황·과제·행동·결과) 템플릿으로 자소서 개요를 잡고, 총 글자수를 단계별로 자동 배분합니다. 마크다운으로 내보내 바로 초고를 쓰세요.","url":"https://writelab-kr.vercel.app/tools/outline/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"STAR가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"Situation(상황), Task(과제), Action(행동), Result(결과)의 앞 글자입니다. 경험을 설명할 때 배경 → 내가 맡은 문제 → 실제로 한 행동 → 결과 순서로 쓰면, 읽는 사람이 \"무엇을 했는지\"를 놓치지 않습니다. 자소서에서 가장 많이 비는 칸은 대개 Action과 Result입니다."}},{"@type":"Question","name":"글자수 배분 비율은 왜 행동(A)이 가장 큰가요?","acceptedAnswer":{"@type":"Answer","text":"상황 설명이 길어지고 정작 본인이 한 일이 두 줄로 끝나는 자소서가 많기 때문입니다. 기본값은 상황 15% · 과제 15% · 행동 45% · 결과 25%로 두었습니다. 비율은 직접 바꿀 수 있고, 합이 100%가 아니어도 입력한 비율대로 배분해 계산합니다."}},{"@type":"Question","name":"마크다운으로 내보내면 어디에 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"노션·옵시디언·깃허브·메모 앱에 그대로 붙여 넣을 수 있는 텍스트 형식입니다. 문항 제목이 제목(##)으로, STAR 각 단계가 소제목으로 정리되어 초고를 쓸 때 그대로 채워 넣기 좋습니다."}},{"@type":"Question","name":"입력한 내용이 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"\"이 브라우저에 임시 저장\"을 켠 경우에만 이 기기의 localStorage에 저장됩니다. 서버로 전송되지 않으며, 옵션을 끄면 저장된 내용도 지워집니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"writelab 홈","item":"https://writelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"자소서 개요 만들기","item":"https://writelab-kr.vercel.app/tools/outline/"}]}</script>
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+<a class="brand" href="../../index.html">write<span>lab</span></a>
+<a class="hublink" href="../../index.html">도구 전체 보기</a>
+</div></header>
+<main class="wrap">
+<h1>자소서 개요 만들기</h1>
+<p class="sub">STAR 템플릿으로 개요를 잡고 목표 글자수를 단계별로 배분합니다. 마크다운으로 내보낼 수 있습니다.</p>
+
+<div class="card">
+  <div class="row">
+    <button class="btn primary" id="add" type="button">문항 추가</button>
+    <button class="btn sm" id="md" type="button">마크다운 복사</button>
+    <button class="btn sm" id="dl" type="button">마크다운 파일로 저장</button>
+    <label style="display:flex;align-items:center;gap:6px;font-weight:600"><input type="checkbox" id="keep"> 이 브라우저에 임시 저장</label>
+  </div>
+  <fieldset>
+    <legend>글자수 배분 비율(%)</legend>
+    <div class="row">
+      <label>상황 S <input type="number" id="rs" value="15" min="0" max="100" style="width:76px"></label>
+      <label>과제 T <input type="number" id="rt" value="15" min="0" max="100" style="width:76px"></label>
+      <label>행동 A <input type="number" id="ra" value="45" min="0" max="100" style="width:76px"></label>
+      <label>결과 R <input type="number" id="rr" value="25" min="0" max="100" style="width:76px"></label>
+      <span class="mini" id="rsum"></span>
+    </div>
+  </fieldset>
+  <div id="items"></div>
+  <h3>미리보기(마크다운)</h3>
+  <div class="preview" id="prev"></div>
+</div>
+<!-- ad-slot -->
+<section class="prose">
+<h2>쓰기 전에 배분부터 정하면 고쳐 쓰는 횟수가 줄어듭니다</h2>
+<p>자소서를 처음부터 문장으로 쓰기 시작하면 대개 상황 설명에 300자를 쓰고, 남은 200자에 행동과 결과를 몰아넣게 됩니다. 그러면 정작 평가에 필요한 "무엇을 어떻게 했고 어떤 결과가 났는지"가 빠집니다. 개요를 먼저 잡고 단계별로 쓸 분량을 정해 두면 이런 일이 줄어듭니다.</p>
+<p>이 도구는 문항마다 목표 글자수를 넣으면 STAR 네 단계에 배분되는 권장 글자수를 계산하고, 각 칸을 채우는 동안 실제 글자수와 권장량을 나란히 보여 줍니다. 권장량의 130%를 넘으면 붉게 표시되므로, 초고 단계에서 분량이 한쪽으로 몰리는 것을 바로 알 수 있습니다.</p>
+<p>완성된 개요는 마크다운으로 복사하거나 파일로 내려받을 수 있습니다. 초고를 쓴 뒤에는 <a href="../char-count/">자소서 글자수 세기</a>로 최종 분량을, <a href="../banned-words/">자소서 금칙어 체크</a>로 표현을 점검하는 순서를 권합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>"문항 추가"로 자소서 문항을 만들고 제목과 목표 글자수를 넣습니다.</li>
+<li>필요하면 상단에서 STAR 배분 비율을 조정합니다.</li>
+<li>각 단계에 사실만 짧게 적습니다. 문장으로 쓰지 않고 개조식으로 메모해도 됩니다.</li>
+<li>권장 글자수와 현재 글자수를 비교해 분량이 몰린 단계를 조정합니다.</li>
+<li>"마크다운 복사"로 개요를 옮겨 초고를 씁니다.</li>
+</ol>
+</section>
+<section class="faq"><h2>자주 묻는 질문</h2><details><summary>STAR가 무엇인가요?</summary><div class="prose"><p>Situation(상황), Task(과제), Action(행동), Result(결과)의 앞 글자입니다. 경험을 설명할 때 배경 → 내가 맡은 문제 → 실제로 한 행동 → 결과 순서로 쓰면, 읽는 사람이 "무엇을 했는지"를 놓치지 않습니다. 자소서에서 가장 많이 비는 칸은 대개 Action과 Result입니다.</p></div></details><details><summary>글자수 배분 비율은 왜 행동(A)이 가장 큰가요?</summary><div class="prose"><p>상황 설명이 길어지고 정작 본인이 한 일이 두 줄로 끝나는 자소서가 많기 때문입니다. 기본값은 상황 15% · 과제 15% · 행동 45% · 결과 25%로 두었습니다. 비율은 직접 바꿀 수 있고, 합이 100%가 아니어도 입력한 비율대로 배분해 계산합니다.</p></div></details><details><summary>마크다운으로 내보내면 어디에 쓸 수 있나요?</summary><div class="prose"><p>노션·옵시디언·깃허브·메모 앱에 그대로 붙여 넣을 수 있는 텍스트 형식입니다. 문항 제목이 제목(##)으로, STAR 각 단계가 소제목으로 정리되어 초고를 쓸 때 그대로 채워 넣기 좋습니다.</p></div></details><details><summary>입력한 내용이 저장되나요?</summary><div class="prose"><p>"이 브라우저에 임시 저장"을 켠 경우에만 이 기기의 localStorage에 저장됩니다. 서버로 전송되지 않으며, 옵션을 끄면 저장된 내용도 지워집니다.</p></div></details></section>
+<p class="mini">함께 쓰면 좋은 도구: <a href="../char-count/">자소서 글자수 세기</a> · <a href="../readability/">가독성 점수</a> · <a href="../sentence-check/">문장 길이 분석</a></p>
+</main>
+<footer class="site"><div class="wrap">
+<ul class="foot-links"><li><a href="../../tools/char-count/">자소서 글자수 세기</a></li><li><a href="../../tools/sentence-check/">문장 길이 분석</a></li><li><a href="../../tools/repeat-words/">반복 단어 찾기</a></li><li><a href="../../tools/banned-words/">자소서 금칙어 체크</a></li><li><a href="../../tools/spacing-basic/">띄어쓰기 기본 검사</a></li><li><a href="../../tools/text-compare/">글 비교</a></li><li><a href="../../tools/readability/">가독성 점수</a></li><li><a href="../../tools/outline/">자소서 개요 만들기</a></li><li><a href="../../tools/keyword-density/">키워드 밀도</a></li><li><a href="../../tools/paper-count/">원고지 계산기</a></li><li><a href="../../tools/resume-date/">경력 기간 계산기</a></li><li><a href="../../guide/jasoso-char-limit/">자소서 글자수 기준 확인하는 방법</a></li><li><a href="../../guide/common-mistakes/">자소서에서 자주 하는 실수</a></li><li><a href="../../privacy.html">개인정보처리방침</a></li><li><a href="../../terms.html">이용약관</a></li></ul>
+<p class="mini">writelab — 자소서·글쓰기 도구 모음. 모든 계산은 사용자의 브라우저에서만 실행되며, 입력한 글은 어디에도 전송·저장되지 않습니다.</p>
+<p class="mini">© 2026 writelab</p>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function(){
+  var KEY='writelab:outline';
+  var STAR=[['s','상황 (Situation)','어떤 배경·환경이었나'],['t','과제 (Task)','무엇이 문제였고 내 역할은 무엇이었나'],
+            ['a','행동 (Action)','내가 실제로 한 행동을 순서대로'],['r','결과 (Result)','수치·평가·변화로 드러난 결과']];
+  var items=document.getElementById('items'), prev=document.getElementById('prev'), keep=document.getElementById('keep');
+  var R={s:document.getElementById('rs'),t:document.getElementById('rt'),a:document.getElementById('ra'),r:document.getElementById('rr')};
+  var state={list:[]};
+  function ratios(){
+    var o={}, sum=0;
+    ['s','t','a','r'].forEach(function(k){ o[k]=Math.max(0,parseFloat(R[k].value)||0); sum+=o[k]; });
+    document.getElementById('rsum').textContent='합계 '+sum+'% '+(sum===100?'(권장)':'(100%가 아니어도 입력 비율대로 배분합니다)');
+    return {o:o,sum:sum||1};
+  }
+  function blank(){ return {q:'',target:700,s:'',t:'',a:'',r:''}; }
+  function render(){
+    var rr=ratios();
+    items.innerHTML=state.list.map(function(it,i){
+      var rows=STAR.map(function(p){
+        var goal=Math.round(it.target*rr.o[p[0]]/rr.sum);
+        var cur=WL.charStats(it[p[0]]).incl;
+        var pct=goal?Math.min(100,Math.round(cur/goal*100)):0;
+        var cls=goal&&cur>goal*1.3?'progress over':(goal&&cur>=goal*0.7?'progress ok':'progress');
+        return '<div style="margin:10px 0"><label>'+p[1]+' <span class="mini">— '+p[2]+'</span></label>'+
+          '<textarea class="short" data-i="'+i+'" data-k="'+p[0]+'" placeholder="'+p[2]+'">'+WL.esc(it[p[0]])+'</textarea>'+
+          '<div class="row" style="margin:2px 0"><span class="mini">권장 '+WL.fmt(goal)+'자 · 현재 '+WL.fmt(cur)+'자</span></div>'+
+          '<div class="'+cls+'"><i style="width:'+pct+'%"></i></div></div>';
+      }).join('');
+      var totalCur=STAR.reduce(function(a,p){ return a+WL.charStats(it[p[0]]).incl; },0);
+      return '<fieldset><legend>문항 '+(i+1)+'</legend>'+
+        '<div class="row"><input type="text" data-i="'+i+'" data-k="q" placeholder="문항 제목 (예: 지원 동기와 입사 후 목표)" value="'+WL.esc(it.q)+'" style="flex:1;min-width:200px">'+
+        '<label class="mini">목표 <input type="number" data-i="'+i+'" data-k="target" value="'+it.target+'" min="100" max="5000" step="50" style="width:96px">자</label>'+
+        '<button class="btn sm" data-del="'+i+'" type="button">문항 삭제</button></div>'+
+        rows+
+        '<p class="mini">개요 합계 '+WL.fmt(totalCur)+'자 / 목표 '+WL.fmt(it.target)+'자</p></fieldset>';
+    }).join('')||'<p class="mini">"문항 추가"를 눌러 시작하세요.</p>';
+    prev.textContent=markdown();
+    if(keep.checked) WL.saveLS(KEY,{k:true,list:state.list});
+  }
+  function markdown(){
+    var rr=ratios();
+    var out='# 자소서 개요\n\n';
+    state.list.forEach(function(it,i){
+      out+='## 문항 '+(i+1)+'. '+(it.q||'(제목 없음)')+'  \n';
+      out+='목표 '+it.target+'자\n\n';
+      STAR.forEach(function(p){
+        var goal=Math.round(it.target*rr.o[p[0]]/rr.sum);
+        out+='### '+p[1]+' — 권장 '+goal+'자\n'+((it[p[0]]||'(작성 전)')+'\n\n');
+      });
+    });
+    return out;
+  }
+  items.addEventListener('input',function(e){
+    var el=e.target, i=el.getAttribute('data-i'), k=el.getAttribute('data-k');
+    if(i===null||!k) return;
+    var it=state.list[parseInt(i,10)]; if(!it) return;
+    it[k]=(k==='target')?(parseInt(el.value,10)||0):el.value;
+    if(k==='target'){ render(); return; }
+    // 포커스 유지: 카운터만 갱신
+    var box=el.closest('div'); if(box){
+      var goal=Math.round(it.target*ratios().o[k]/ratios().sum), cur=WL.charStats(el.value).incl;
+      var mini=box.querySelector('.mini'), bar=box.querySelector('.progress');
+      if(mini) mini.textContent='권장 '+WL.fmt(goal)+'자 · 현재 '+WL.fmt(cur)+'자';
+      if(bar){ bar.className=goal&&cur>goal*1.3?'progress over':(goal&&cur>=goal*0.7?'progress ok':'progress');
+        bar.firstChild.style.width=(goal?Math.min(100,Math.round(cur/goal*100)):0)+'%'; }
+    }
+    prev.textContent=markdown();
+    if(keep.checked) WL.saveLS(KEY,{k:true,list:state.list});
+  });
+  items.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-del]'); if(!b) return;
+    state.list.splice(parseInt(b.getAttribute('data-del'),10),1); render();
+  });
+  document.getElementById('add').addEventListener('click',function(){ state.list.push(blank()); render(); });
+  document.getElementById('md').addEventListener('click',function(e){ WL.copy(markdown(),e.currentTarget); });
+  document.getElementById('dl').addEventListener('click',function(){ WL.download('jasoso-outline.md',markdown(),'text/markdown;charset=utf-8'); });
+  ['s','t','a','r'].forEach(function(k){ R[k].addEventListener('input',render); });
+  keep.addEventListener('change',function(){ if(keep.checked) WL.saveLS(KEY,{k:true,list:state.list}); else WL.saveLS(KEY,{k:false,list:[]}); });
+  var saved=WL.loadLS(KEY,null);
+  if(saved&&saved.k&&saved.list&&saved.list.length){ keep.checked=true; state.list=saved.list; } else { state.list=[blank()]; }
+  render();
+})();</script>
+</body>
+</html>

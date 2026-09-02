@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>카톡 대화 분석 — 카카오톡 대화 통계 분석기 | TalkStat</title>
+<meta name="description" content="카카오톡 내보내기(txt/csv) 파일을 브라우저에서만 분석합니다. 참여자별 메시지·글자 수, 답장 속도, 시간대 히트맵, 자주 쓴 단어, 골든타임까지 — 대화 내용은 서버로 전송되지 않습니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"카톡 대화 분석","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"카카오톡 내보내기 파일을 브라우저 안에서만 분석해 대화 통계를 보여주는 무료 도구","url":"https://talkstat.vercel.app/tools/analyze/"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TalkStat","item":"https://talkstat.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"카톡 대화 분석","item":"https://talkstat.vercel.app/tools/analyze/"}]},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"대화 내용이 서버로 전송되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 파일은 브라우저 메모리에서만 읽혀 Web Worker로 분석되며, 네트워크로 전송되는 데이터가 전혀 없습니다. 새로고침하면 파일 내용은 사라집니다."}},
+{"@type":"Question","name":"어떤 파일 형식을 지원하나요?","acceptedAnswer":{"@type":"Answer","text":"안드로이드 카카오톡의 txt 내보내기, 아이폰(iOS) txt 내보내기, PC 카카오톡의 txt/csv 저장 파일을 모두 지원하며 형식은 자동으로 감지됩니다."}},
+{"@type":"Question","name":"분석 결과를 저장할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"원하면 요약 통계만 내 브라우저의 localStorage에 저장할 수 있습니다. 원문 대화는 저장되지 않으며, 저장한 요약도 버튼 한 번으로 삭제할 수 있습니다."}},
+{"@type":"Question","name":"단체 대화방도 분석되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 1:1 대화와 단체 대화방 모두 분석됩니다. 참여자가 많은 방은 메시지 수 상위 참여자를 중심으로 차트가 그려집니다."}}]}
+]}
+</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../../">Talk<b>Stat</b></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="./" aria-current="page">대화 분석</a>
+    <a href="../reply-time/">답장 속도</a>
+    <a href="../word-cloud/">단어 통계</a>
+    <a href="../../guide/how-to-export-kakaotalk/">내보내기 방법</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="privacy-banner" role="note">
+    <span class="ico" aria-hidden="true">🔒</span>
+    <span>대화 내용은 서버로 전송되지 않습니다 — 브라우저 안에서만 분석됩니다. 파일은 메모리에서만 처리되고 새로고침하면 사라집니다.</span>
+  </div>
+
+  <h1>카톡 대화 분석</h1>
+  <p class="lead">카카오톡 "대화 내보내기" 파일(txt/csv)을 올리면 메시지 수·답장 속도·시간대 히트맵·자주 쓴 단어까지 한 번에 분석합니다.</p>
+
+  <section class="card" id="uploadCard">
+    <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="대화 파일 선택 또는 끌어다 놓기">
+      <p style="margin:0"><strong>여기를 눌러 파일 선택</strong> 또는 파일을 끌어다 놓기</p>
+      <p class="file-note">카카오톡 내보내기 .txt / .csv · 안드로이드·아이폰·PC 형식 자동 감지</p>
+    </div>
+    <input type="file" id="fileInput" accept=".txt,.csv,text/plain,text/csv" class="hidden">
+    <div style="margin-top:12px">
+      <label for="fmtSel">파일 형식</label>
+      <select id="fmtSel" style="max-width:260px;display:block;margin-top:4px">
+        <option value="">자동 감지</option>
+        <option value="android">안드로이드 (txt)</option>
+        <option value="ios">아이폰 iOS (txt)</option>
+        <option value="pc">PC 카카오톡 (txt)</option>
+        <option value="pc-csv">PC 카카오톡 (csv)</option>
+      </select>
+    </div>
+    <details style="margin-top:12px">
+      <summary class="note" style="cursor:pointer">파일 대신 텍스트 붙여넣기</summary>
+      <textarea id="pasteBox" rows="6" placeholder="내보내기 파일의 내용을 그대로 붙여넣으세요" style="margin-top:8px"></textarea>
+      <div class="btn-row"><button class="btn small" id="pasteBtn" type="button">붙여넣은 텍스트 분석</button></div>
+    </details>
+    <div id="loadSavedRow" class="btn-row hidden">
+      <button class="btn ghost small" id="loadSavedBtn" type="button">저장된 결과 불러오기</button>
+      <button class="btn ghost small" id="delSavedBtn" type="button">저장된 결과 삭제</button>
+    </div>
+    <p id="errBox" class="err hidden" role="alert"></p>
+    <p id="busyBox" class="note hidden">분석 중입니다…</p>
+  </section>
+
+  <section id="results" class="hidden" aria-live="polite">
+    <h2>분석 결과 <span class="badge" id="fmtBadge"></span></h2>
+    <div class="stat-grid" id="tiles"></div>
+
+    <div class="card">
+      <h3 style="margin-top:0">참여자별 메시지 수</h3>
+      <div class="chart-box" id="userBars"></div>
+      <details class="tblview"><summary>표로 보기 — 참여자별 상세</summary>
+        <div style="overflow-x:auto"><table class="data" id="userTable"></table></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">평균 답장 시간 <span class="note">(발신자 전환 기준 · 8시간 넘는 공백 제외)</span></h3>
+      <div class="chart-box" id="replyBars"></div>
+      <h3>먼저 말 건 비율 <span class="note">(8시간 이상 침묵 후 첫 메시지)</span></h3>
+      <div class="chart-box" id="initBars"></div>
+      <p class="note" id="silenceNote"></p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">시간대 × 요일 히트맵</h3>
+      <div class="chart-box scroll" id="heatmapBox"></div>
+      <p class="note" id="goldenNote"></p>
+      <h3>시간대별 메시지</h3>
+      <div class="chart-box" id="hourBox"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">월별 대화량 추이</h3>
+      <div class="legend" id="monthLegend"></div>
+      <div class="chart-box" id="monthBox"></div>
+      <details class="tblview"><summary>표로 보기 — 월별 메시지 수</summary>
+        <div style="overflow-x:auto"><table class="data" id="monthTable"></table></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">자주 쓴 단어 <span class="note">(불용어 제외 · ㅋㅋ/ㅎㅎ는 아래 별도 집계)</span></h3>
+      <div class="chart-box" id="wordBox"></div>
+      <div class="stat-grid" id="laughTiles"></div>
+      <h3>자주 쓴 이모지</h3>
+      <div class="emoji-row" id="emojiBox"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">관계 리포트 카드</h3>
+      <p class="note">아래 카드는 사실 지표만 담은 이미지입니다. PNG로 저장해 공유할 수 있어요.</p>
+      <canvas id="reportCanvas" style="width:100%;max-width:420px;border:1px solid var(--line);border-radius:12px" aria-label="관계 리포트 카드 미리보기"></canvas>
+      <div class="btn-row">
+        <button class="btn" id="dlBtn" type="button">리포트 카드 PNG 저장</button>
+        <button class="btn ghost" id="saveBtn" type="button">요약 결과 브라우저에 저장</button>
+      </div>
+      <p class="note">"브라우저에 저장"은 요약 통계만 내 기기의 localStorage에 보관합니다. 원문 대화는 저장되지 않습니다.</p>
+    </div>
+    <!-- ad-slot -->
+  </section>
+
+  <article class="article">
+    <h2>카톡 대화 분석기는 이런 도구예요</h2>
+    <p>TalkStat 카톡 대화 분석은 카카오톡의 "대화 내보내기" 기능으로 저장한 텍스트 파일을 읽어, 두 사람(또는 단체방)의 대화 패턴을 숫자로 보여주는 무료 도구입니다. 누가 메시지를 더 많이 보내는지, 답장은 평균 몇 분 만에 오는지, 대화가 가장 활발한 요일과 시간대는 언제인지 같은 궁금증을 데이터로 확인할 수 있습니다.</p>
+    <p>가장 중요한 특징은 <strong>개인정보 처리 방식</strong>입니다. 파일은 업로드되지 않고 브라우저 메모리에서만 읽히며, 분석 계산도 브라우저 안의 Web Worker에서 실행됩니다. 네트워크 요청이 발생하지 않으므로 대화 내용이 외부로 나갈 경로 자체가 없고, 새로고침하면 파일 내용은 즉시 사라집니다.</p>
+    <p>분석 결과에는 참여자별 메시지·글자·사진·이모티콘 수, 시간대×요일 히트맵, 월별 추이, 평균 답장 시간, 먼저 말 건 비율, 가장 긴 침묵 구간, 자주 쓴 단어와 이모지, 대화 골든타임이 포함됩니다. 결과는 사실 그대로의 수치이며, 성격이나 관계를 단정하는 해석은 제공하지 않습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>카카오톡에서 분석할 대화방의 대화를 내보냅니다. 방법은 <a href="../../guide/how-to-export-kakaotalk/">카카오톡 대화 내보내기 방법</a>을 참고하세요.</li>
+      <li>저장된 .txt 또는 .csv 파일을 위 업로드 영역에 끌어다 놓거나 눌러서 선택합니다.</li>
+      <li>형식은 자동으로 감지됩니다. 감지가 잘못되면 형식을 직접 선택한 뒤 다시 올려 주세요.</li>
+      <li>결과 대시보드를 확인하고, 필요하면 리포트 카드를 PNG로 저장합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>대화 내용이 정말 서버로 안 가나요?</summary><p>네. 이 페이지는 정적 파일로만 구성되어 있고 분석 중 네트워크 요청을 보내지 않습니다. 브라우저 개발자 도구의 네트워크 탭에서 직접 확인할 수도 있습니다. 파일은 메모리에서만 처리되며 새로고침하면 사라집니다.</p></details>
+      <details><summary>어떤 내보내기 형식을 지원하나요?</summary><p>안드로이드 txt("2026년 8월 19일 오후 3:12, 이름 : 내용"), 아이폰 txt("2026. 8. 19. 오후 3:12, 이름 : 내용"), PC 카카오톡 txt("[이름] [오후 3:12] 내용")와 csv(Date,User,Message) 형식을 지원합니다. 입장·퇴장 안내, 사진·이모티콘·삭제된 메시지도 자동 분류되고 여러 줄 메시지도 하나로 합쳐 집계합니다.</p></details>
+      <details><summary>평균 답장 시간은 어떻게 계산하나요?</summary><p>발신자가 바뀌는 순간의 시간 간격을 답장으로 봅니다. 다만 밤사이 공백처럼 8시간을 넘는 간격은 답장이 아니라 "새 대화 시작"으로 분류해 평균에서 제외합니다. 평균과 함께 중앙값도 보여주므로 튀는 값의 영향을 줄여 볼 수 있습니다.</p></details>
+      <details><summary>결과 저장은 어떻게 되나요?</summary><p>"요약 결과 브라우저에 저장"을 누르면 집계 통계만 내 브라우저의 localStorage에 저장됩니다. 원문 메시지는 저장되지 않으며, 저장된 요약은 같은 화면에서 언제든 삭제할 수 있습니다.</p></details>
+      <details><summary>대화 MBTI 같은 성격 분석도 해주나요?</summary><p>아니요. 이 도구는 메시지 수·시간 같은 사실 지표만 계산합니다. 대화 습관으로 성격이나 관계를 단정하는 해석은 근거가 부족하다고 보아 제공하지 않습니다. 수치는 참고용이며 관계에 대한 판단 자료로 쓰기보다는 재미로 봐 주세요.</p></details>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer"><div class="wrap">
+  <nav aria-label="사이트 링크">
+    <a href="./">카톡 대화 분석</a>
+    <a href="../reply-time/">카톡 답장 속도 분석</a>
+    <a href="../word-cloud/">카톡 단어 통계</a>
+    <a href="../../guide/how-to-export-kakaotalk/">카카오톡 대화 내보내기 방법</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© 2026 TalkStat · 모든 분석은 사용자의 브라우저 안에서만 실행됩니다.</p>
+</div></footer>
+
+<script src="../../assets/parsers.js"></script>
+<script src="../../assets/analyzer.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/charts.js"></script>
+<script>
+(function () {
+  'use strict';
+  var TS = window.TalkStat, TC = window.TalkCharts, A = window.TalkAnalyzer;
+  var SAVE_KEY = 'talkstat:analyze';
+  var $ = function (id) { return document.getElementById(id); };
+  var lastData = null;
+
+  TS.attachTooltips(document);
+
+  function showErr(msg) { var e = $('errBox'); e.textContent = msg; e.classList.remove('hidden'); }
+  function clearErr() { $('errBox').classList.add('hidden'); }
+
+  function analyzeText(text, formatHint) {
+    clearErr();
+    $('busyBox').classList.remove('hidden');
+    var fmt = $('fmtSel').value || formatHint || null;
+    TS.runAnalysis(text, fmt).then(function (data) {
+      $('busyBox').classList.add('hidden');
+      lastData = data;
+      render(data);
+    }).catch(function (err) {
+      $('busyBox').classList.add('hidden');
+      showErr(err.message || String(err));
+    });
+  }
+
+  TS.wireUpload({ zoneId: 'dropzone', inputId: 'fileInput', onText: analyzeText, onError: showErr });
+  $('pasteBtn').addEventListener('click', function () {
+    var t = $('pasteBox').value;
+    if (t.trim()) { analyzeText(t, null); } else { showErr('붙여넣은 텍스트가 없습니다.'); }
+  });
+
+  // 저장된 요약 결과 (localStorage 옵션)
+  function refreshSavedRow() {
+    var saved = TS.loadResult(SAVE_KEY);
+    $('loadSavedRow').classList.toggle('hidden', !saved);
+  }
+  refreshSavedRow();
+  $('loadSavedBtn').addEventListener('click', function () {
+    var saved = TS.loadResult(SAVE_KEY);
+    if (saved && saved.payload) { lastData = saved.payload; render(saved.payload); }
+  });
+  $('delSavedBtn').addEventListener('click', function () {
+    TS.clearResult(SAVE_KEY); refreshSavedRow();
+  });
+  $('saveBtn').addEventListener('click', function () {
+    if (!lastData) { return; }
+    var ok = TS.saveResult(SAVE_KEY, lastData);
+    $('saveBtn').textContent = ok ? '저장됨 ✓ (요약만)' : '저장 실패(용량 초과)';
+    refreshSavedRow();
+  });
+
+  var FMT_KO = { android: '안드로이드 txt', ios: '아이폰 txt', pc: 'PC txt', 'pc-csv': 'PC csv' };
+
+  function tile(lb, vl, sb) {
+    return '<div class="stat-tile"><div class="lb">' + TS.esc(lb) + '</div><div class="vl">' + vl + '</div>' +
+      (sb ? '<div class="sb">' + TS.esc(sb) + '</div>' : '') + '</div>';
+  }
+
+  function render(data) {
+    var r = data.result;
+    $('results').classList.remove('hidden');
+    $('fmtBadge').textContent = FMT_KO[data.format] || data.format;
+
+    var period = TS.fmtDate(r.totals.firstT) + ' ~ ' + TS.fmtDate(r.totals.lastT);
+    var perDay = r.totals.days ? Math.round(r.totals.messages / r.totals.days) : 0;
+    $('tiles').innerHTML =
+      tile('총 메시지', TS.fmtInt(r.totals.messages) + '<span style="font-size:.9rem">건</span>', period) +
+      tile('참여자', TS.fmtInt(r.totals.participants) + '<span style="font-size:.9rem">명</span>', '시스템 알림 ' + TS.fmtInt(r.totals.systemEvents) + '건 제외') +
+      tile('대화한 날', TS.fmtInt(r.totals.days) + '<span style="font-size:.9rem">일</span>', '하루 평균 ' + TS.fmtInt(perDay) + '건') +
+      tile('골든타임', r.goldenHour.hour + '시', r.goldenCellLabel + '이 최고 (' + TS.fmtInt(r.goldenCell.count) + '건)');
+
+    // 참여자별 (상위 8명 + 기타 폴드 — 색은 등장 순서 고정)
+    var users = r.perUser.slice().sort(function (a, b) { return b.messages - a.messages; });
+    var shown = users.slice(0, 8);
+    var rest = users.slice(8);
+    var items = shown.map(function (u) {
+      var idx = r.perUser.indexOf(r.perUser.filter(function (x) { return x.name === u.name; })[0]);
+      return { label: u.name, value: u.messages, color: TC.colorFor(Math.min(idx, 7)),
+        tip: u.name + ' · ' + TS.fmtInt(u.messages) + '건 (' + Math.round(u.share * 100) + '%)',
+        valueLabel: TS.fmtInt(u.messages) + ' (' + Math.round(u.share * 100) + '%)' };
+    });
+    if (rest.length) {
+      var sum = rest.reduce(function (s, u) { return s + u.messages; }, 0);
+      items.push({ label: '기타 ' + rest.length + '명', value: sum, color: '#94a3b8' });
+    }
+    $('userBars').innerHTML = TC.hBars(items, { aria: '참여자별 메시지 수' });
+
+    // 참여자 상세 표
+    var th = '<thead><tr><th>참여자</th><th>메시지</th><th>지분</th><th>글자 수</th><th>사진</th><th>이모티콘</th><th>ㅋㅋ</th><th>ㅎㅎ</th><th>이모지</th></tr></thead>';
+    var tb = users.map(function (u) {
+      return '<tr><td>' + TS.esc(u.name) + '</td><td>' + TS.fmtInt(u.messages) + '</td><td>' +
+        Math.round(u.share * 100) + '%</td><td>' + TS.fmtInt(u.chars) + '</td><td>' + TS.fmtInt(u.photos) +
+        '</td><td>' + TS.fmtInt(u.emoticons) + '</td><td>' + TS.fmtInt(u.laughK) + '</td><td>' +
+        TS.fmtInt(u.laughH) + '</td><td>' + TS.fmtInt(u.emojis) + '</td></tr>';
+    }).join('');
+    $('userTable').innerHTML = th + '<tbody>' + tb + '</tbody>';
+
+    // 답장 시간 / 먼저 말 걸기
+    var replyItems = shown.filter(function (u) { return u.avgReplyMs != null; }).map(function (u, i) {
+      return { label: u.name, value: Math.round(u.avgReplyMs / 1000),
+        color: TC.colorFor(Math.min(r.perUser.findIndex(function (x) { return x.name === u.name; }), 7)),
+        valueLabel: A.formatDuration(u.avgReplyMs) + ' (중앙값 ' + A.formatDuration(u.medianReplyMs) + ')',
+        tip: u.name + ' 평균 ' + A.formatDuration(u.avgReplyMs) + ' · 답장 ' + TS.fmtInt(u.replyCount) + '회' };
+    });
+    $('replyBars').innerHTML = replyItems.length
+      ? TC.hBars(replyItems, { aria: '참여자별 평균 답장 시간(초)' })
+      : '<p class="note">답장으로 볼 수 있는 발신자 전환이 없습니다.</p>';
+
+    var initItems = shown.map(function (u) {
+      return { label: u.name, value: u.initiations,
+        color: TC.colorFor(Math.min(r.perUser.findIndex(function (x) { return x.name === u.name; }), 7)),
+        valueLabel: TS.fmtInt(u.initiations) + '회 (' + Math.round(u.initShare * 100) + '%)',
+        tip: u.name + ' · 먼저 말 걸기 ' + TS.fmtInt(u.initiations) + '회' };
+    });
+    $('initBars').innerHTML = TC.hBars(initItems, { aria: '먼저 말 건 횟수' });
+
+    var ls = r.longestSilence;
+    $('silenceNote').textContent = ls
+      ? '가장 긴 침묵: ' + A.formatDuration(ls.gap) + ' (' + TS.fmtDateTime(ls.fromT) + ' → ' + TS.fmtDateTime(ls.toT) + ', ' + ls.endedBy + ' 님이 침묵을 깼어요)'
+      : '침묵 구간이 없습니다.';
+
+    // 히트맵 / 시간대
+    $('heatmapBox').innerHTML = TC.heatmap(r.heatmap);
+    $('goldenNote').textContent = '대화 골든타임은 ' + r.goldenCellLabel + ' (' + TS.fmtInt(r.goldenCell.count) + '건), 하루 중에는 ' + r.goldenHour.hour + '시대(' + TS.fmtInt(r.goldenHour.count) + '건)에 가장 활발했어요.';
+    $('hourBox').innerHTML = TC.hourHist(r.hourly);
+
+    // 월별 추이 (전체 + 상위 2명, 3시리즈 이하 유지)
+    var labels = r.monthly.map(function (m) { return m.month; });
+    var series = [{ name: '전체', color: '#94a3b8', values: r.monthly.map(function (m) { return m.total; }) }];
+    shown.slice(0, 2).forEach(function (u) {
+      var idx = Math.min(r.perUser.findIndex(function (x) { return x.name === u.name; }), 7);
+      series.push({ name: u.name, color: TC.colorFor(idx),
+        values: r.monthly.map(function (m) { return m.perUser[u.name] || 0; }) });
+    });
+    if (labels.length) {
+      $('monthBox').innerHTML = TC.lines(series, labels);
+      $('monthLegend').innerHTML = series.map(function (s) {
+        return '<span class="key"><span class="sw" style="background:' + s.color + '"></span>' + TS.esc(s.name) + '</span>';
+      }).join('');
+      var mh = '<thead><tr><th>월</th>' + series.map(function (s) { return '<th>' + TS.esc(s.name) + '</th>'; }).join('') + '</tr></thead>';
+      var mb = labels.map(function (lb, i) {
+        return '<tr><td>' + lb + '</td>' + series.map(function (s) { return '<td>' + TS.fmtInt(s.values[i]) + '</td>'; }).join('') + '</tr>';
+      }).join('');
+      $('monthTable').innerHTML = mh + '<tbody>' + mb + '</tbody>';
+    }
+
+    // 단어 / 웃음 / 이모지
+    $('wordBox').innerHTML = r.topWords.length
+      ? TC.wordBars(r.topWords, { limit: 15 })
+      : '<p class="note">집계할 단어가 없습니다.</p>';
+    $('laughTiles').innerHTML =
+      tile('ㅋㅋ (웃음)', TS.fmtInt(r.totals.laughK) + '<span style="font-size:.9rem">회</span>',
+        r.perUser.map(function (u) { return u.name + ' ' + TS.fmtInt(u.laughK); }).slice(0, 3).join(' · ')) +
+      tile('ㅎㅎ', TS.fmtInt(r.totals.laughH) + '<span style="font-size:.9rem">회</span>',
+        r.perUser.map(function (u) { return u.name + ' ' + TS.fmtInt(u.laughH); }).slice(0, 3).join(' · '));
+    $('emojiBox').innerHTML = r.topEmojis.length
+      ? r.topEmojis.slice(0, 12).map(function (e) {
+          return '<span class="em">' + TS.esc(e.key) + '<small>' + TS.fmtInt(e.count) + '</small></span>';
+        }).join('')
+      : '<p class="note">이모지가 없습니다.</p>';
+
+    drawReportCard(r);
+    $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── 관계 리포트 카드 (Canvas → PNG, 사실 지표만) ──
+  function drawReportCard(r) {
+    var cv = $('reportCanvas');
+    var W = 840, H = 1050;
+    cv.width = W; cv.height = H;
+    var ctx = cv.getContext('2d');
+    var F = "'Pretendard Variable',Pretendard,-apple-system,'Noto Sans KR',sans-serif";
+
+    ctx.fillStyle = '#f7f8fa'; ctx.fillRect(0, 0, W, H);
+    // 헤더 밴드
+    var grad = ctx.createLinearGradient(0, 0, W, 0);
+    grad.addColorStop(0, '#2563eb'); grad.addColorStop(1, '#7c3aed');
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, 150);
+    ctx.fillStyle = '#fff';
+    ctx.font = '800 44px ' + F;
+    ctx.fillText('카톡 대화 리포트', 48, 78);
+    ctx.font = '400 24px ' + F;
+    ctx.fillText(TS.fmtDate(r.totals.firstT) + ' ~ ' + TS.fmtDate(r.totals.lastT), 48, 118);
+
+    var y = 210;
+    ctx.fillStyle = '#1a202c';
+    ctx.font = '800 64px ' + F;
+    var heroText = TS.fmtInt(r.totals.messages);
+    var heroW = ctx.measureText(heroText).width;
+    ctx.fillText(heroText, 48, y);
+    ctx.font = '400 26px ' + F;
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('총 메시지 · ' + TS.fmtInt(r.totals.days) + '일 동안', 48 + heroW + 18, y);
+
+    // 참여자 지분 바
+    y += 60;
+    ctx.font = '700 26px ' + F; ctx.fillStyle = '#1a202c';
+    ctx.fillText('메시지 지분', 48, y);
+    y += 24;
+    var users = r.perUser.slice().sort(function (a, b) { return b.messages - a.messages; }).slice(0, 4);
+    users.forEach(function (u, i) {
+      var idx = Math.min(r.perUser.findIndex(function (x) { return x.name === u.name; }), 7);
+      var bw = Math.max(6, u.share * (W - 340));
+      ctx.font = '600 24px ' + F; ctx.fillStyle = '#1a202c';
+      ctx.fillText(clip(ctx, u.name, 170), 48, y + 26);
+      roundRight(ctx, 240, y + 6, bw, 24, 4);
+      ctx.fillStyle = TC.colorFor(idx); ctx.fill();
+      ctx.font = '400 22px ' + F; ctx.fillStyle = '#64748b';
+      ctx.fillText(Math.round(u.share * 100) + '%', 240 + bw + 12, y + 26);
+      y += 46;
+    });
+
+    // 지표 2열
+    y += 30;
+    var rows = [];
+    users.slice(0, 2).forEach(function (u) {
+      rows.push(['평균 답장 (' + clipText(u.name, 6) + ')', u.avgReplyMs != null ? A.formatDuration(u.avgReplyMs) : '—']);
+    });
+    var initTop = r.perUser.slice().sort(function (a, b) { return b.initiations - a.initiations; })[0];
+    rows.push(['먼저 말 걸기 1위', initTop ? clipText(initTop.name, 6) + ' (' + Math.round(initTop.initShare * 100) + '%)' : '—']);
+    rows.push(['골든타임', r.goldenCellLabel]);
+    rows.push(['ㅋㅋ 웃음', TS.fmtInt(r.totals.laughK) + '회']);
+    rows.push(['가장 긴 침묵', r.longestSilence ? A.formatDuration(r.longestSilence.gap) : '—']);
+    var col2 = W / 2 + 8;
+    rows.forEach(function (row, i) {
+      var x = i % 2 === 0 ? 48 : col2;
+      if (i % 2 === 0 && i > 0) { y += 108; }
+      else if (i === 0) { y += 0; }
+      card(ctx, x, y, W / 2 - 64, 92);
+      ctx.font = '400 20px ' + F; ctx.fillStyle = '#64748b';
+      ctx.fillText(row[0], x + 20, y + 34);
+      ctx.font = '800 30px ' + F; ctx.fillStyle = '#1a202c';
+      ctx.fillText(clip(ctx, row[1], W / 2 - 104), x + 20, y + 72);
+    });
+    y += 130;
+
+    ctx.font = '400 20px ' + F; ctx.fillStyle = '#94a3b8';
+    ctx.fillText('사실 지표만 담았습니다 · 브라우저 안에서만 분석됨', 48, H - 72);
+    ctx.font = '700 22px ' + F; ctx.fillStyle = '#2563eb';
+    ctx.fillText('talkstat.vercel.app', 48, H - 40);
+
+    function clip(c, text, maxW) {
+      var t = String(text);
+      while (t.length > 1 && c.measureText(t + '…').width > maxW) { t = t.slice(0, -1); }
+      return t.length < String(text).length ? t + '…' : t;
+    }
+    function clipText(t, n) { t = String(t); return t.length > n ? t.slice(0, n) + '…' : t; }
+    function roundRight(c, x, yy, w, h, rr) {
+      c.beginPath();
+      c.moveTo(x, yy); c.lineTo(x + w - rr, yy);
+      c.arcTo(x + w, yy, x + w, yy + rr, rr);
+      c.lineTo(x + w, yy + h - rr);
+      c.arcTo(x + w, yy + h, x + w - rr, yy + h, rr);
+      c.lineTo(x, yy + h); c.closePath();
+    }
+    function card(c, x, yy, w, h) {
+      c.beginPath();
+      var rr = 14;
+      c.moveTo(x + rr, yy);
+      c.arcTo(x + w, yy, x + w, yy + h, rr);
+      c.arcTo(x + w, yy + h, x, yy + h, rr);
+      c.arcTo(x, yy + h, x, yy, rr);
+      c.arcTo(x, yy, x + w, yy, rr);
+      c.closePath();
+      c.fillStyle = '#ffffff'; c.fill();
+      c.strokeStyle = '#e2e8f0'; c.lineWidth = 2; c.stroke();
+    }
+  }
+
+  $('dlBtn').addEventListener('click', function () {
+    var cv = $('reportCanvas');
+    cv.toBlob(function (blob) {
+      if (!blob) { return; }
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'talkstat-report.png';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    }, 'image/png');
+  });
+}());
+</script>
+</body>
+</html>

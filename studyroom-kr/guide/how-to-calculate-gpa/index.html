@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학점 계산법 완전 정리 - 평량평균 공식과 4.5 만점 평점표 | 스터디룸</title>
+<meta name="description" content="대학 학점(GPA) 계산법을 처음부터 정리했습니다. 평량평균 공식, 4.5·4.3·4.0 만점 성적별 평점표, P/F와 재수강 처리, 전공 평점, 목표 학점 역산 공식까지 예시로 설명합니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../../tools/gpa/">학점 계산기</a><a href="../../tools/timetable/">시간표</a><a href="../../tools/exam-dday/">시험 디데이</a><a href="../../tools/grade-calc/">내신 등급</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 가이드 › 학점 계산법</nav>
+<div class="page-h">
+  <h1>학점 계산법 완전 정리</h1>
+  <p>평량평균 공식부터 P/F 처리, 목표 학점 역산까지. 계산은 <a href="../../tools/gpa/">학점 계산기</a>로 바로 할 수 있습니다.</p>
+</div>
+
+<article class="card prose">
+  <h2>1. 학점(GPA)은 어떻게 계산되나요?</h2>
+  <p>대학 성적표에 찍히는 평점평균(GPA, 흔히 "평량평균")은 단순 평균이 아닙니다. 과목마다 이수 학점
+  (credit)이 다르기 때문에 <b>학점 수로 가중한 평균</b>을 씁니다. 공식은 다음과 같습니다.</p>
+  <div class="result-box">
+    <b>평점평균 = Σ(과목 평점 × 과목 학점) ÷ Σ(과목 학점)</b>
+  </div>
+  <p>여기서 "과목 평점"은 A+, B0 같은 등급을 숫자로 바꾼 값이고, "과목 학점"은 그 과목의 이수 학점(1~3학점
+  등)입니다. 3학점 과목이 1학점 과목보다 평점에 3배 큰 영향을 준다는 뜻입니다.</p>
+
+  <h3>계산 예시</h3>
+  <div class="tbl-scroll">
+  <table class="tbl">
+    <thead><tr><th>과목</th><th>학점</th><th>성적</th><th>평점</th><th>평점 × 학점</th></tr></thead>
+    <tbody>
+      <tr><td>경영학원론</td><td>3</td><td>A+</td><td>4.5</td><td>13.5</td></tr>
+      <tr><td>미적분학</td><td>3</td><td>B+</td><td>3.5</td><td>10.5</td></tr>
+      <tr><td>글쓰기</td><td>2</td><td>A0</td><td>4.0</td><td>8.0</td></tr>
+      <tr><td>체육</td><td>1</td><td>B0</td><td>3.0</td><td>3.0</td></tr>
+      <tr><th>합계</th><th>9</th><th>-</th><th>-</th><th>35.0</th></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>총 평점×학점 합계가 35.0, 총 학점이 9학점이므로 평점평균은 <b>35.0 ÷ 9 = 3.888…</b>, 즉
+  <b>3.89</b>(소수점 둘째 자리, 학교에 따라 절사 또는 반올림)가 됩니다. 단순 평균으로 계산하면 3.75가
+  나오는데, 이렇게 계산하면 성적표와 값이 달라지므로 반드시 학점으로 가중해야 합니다.</p>
+
+  <h2>2. 성적별 평점표 (스케일별)</h2>
+  <p>한국 대학은 대부분 4.5 만점을 쓰지만, A−·B− 등을 두는 4.3 만점 학교도 있고, 미국식 4.0 만점 체계도
+  있습니다. 아래 표는 각 체계에서 널리 쓰이는 평점값입니다. 학교에 따라 소수점 값이 다를 수 있으니 최종
+  확인은 소속 대학 학사 규정을 따르세요.</p>
+  <div class="tbl-scroll">
+  <table class="tbl">
+    <thead><tr><th>등급</th><th>4.5 만점</th><th>4.3 만점</th><th>4.0 만점(미국식)</th></tr></thead>
+    <tbody>
+      <tr><td>A+</td><td>4.5</td><td>4.3</td><td>4.0 (A)</td></tr>
+      <tr><td>A0 / A</td><td>4.0</td><td>4.0</td><td>4.0</td></tr>
+      <tr><td>A−</td><td>-</td><td>3.7</td><td>3.7</td></tr>
+      <tr><td>B+</td><td>3.5</td><td>3.3</td><td>3.3</td></tr>
+      <tr><td>B0 / B</td><td>3.0</td><td>3.0</td><td>3.0</td></tr>
+      <tr><td>B−</td><td>-</td><td>2.7</td><td>2.7</td></tr>
+      <tr><td>C+</td><td>2.5</td><td>2.3</td><td>2.3</td></tr>
+      <tr><td>C0 / C</td><td>2.0</td><td>2.0</td><td>2.0</td></tr>
+      <tr><td>D+</td><td>1.5</td><td>1.3</td><td>1.3</td></tr>
+      <tr><td>D0 / D</td><td>1.0</td><td>1.0</td><td>1.0</td></tr>
+      <tr><td>F</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+      <tr><td>P (패스)</td><td colspan="3">평점 계산 제외 · 취득 학점만 인정</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">4.5 만점에서 A+와 A0의 차이는 0.5점입니다. 3학점 과목 하나에서 A0 대신 A+를 받으면
+  평점×학점 합계가 1.5 올라갑니다. 총 이수 학점이 60학점이라면 전체 평점이 약 0.025 오르는 셈입니다.</p>
+
+  <h2>3. P/F, 재수강, F 처리</h2>
+  <h3>P/F (패스/논패스)</h3>
+  <p>P로 처리된 과목은 <b>취득 학점에는 포함되지만 평점 계산에서는 제외</b>됩니다. 즉 분자(평점×학점)와
+  분모(학점) 어디에도 들어가지 않습니다. NP(논패스)는 학점 미취득이며 평점에도 반영되지 않는 경우가
+  일반적입니다. 반대로 F는 평점 0.0으로 <b>분모에 포함</b>되기 때문에 평점을 크게 끌어내립니다.</p>
+  <h3>재수강</h3>
+  <p>재수강 처리 방식은 학교별로 크게 다릅니다. 대표적으로 세 가지입니다.</p>
+  <ul>
+    <li><b>성적 대체</b> — 이전 성적이 평점 계산에서 제외되고 새 성적만 반영 (가장 흔함)</li>
+    <li><b>둘 다 반영</b> — 두 성적이 모두 평점 계산에 포함</li>
+    <li><b>상한 제한</b> — 재수강 시 받을 수 있는 최고 등급이 A0 또는 B+로 제한</li>
+  </ul>
+  <p>계산기에 입력할 때는 자기 학교 방식에 맞춰야 합니다. 성적 대체 학교라면 이전 성적 행을 지우고 새
+  성적만 남기고, 둘 다 반영하는 학교라면 두 줄 모두 입력하세요.</p>
+
+  <h2>4. 전공 평점과 졸업 요건</h2>
+  <p>대학원 진학이나 일부 채용에서는 전체 평점과 별도로 <b>전공 평점</b>을 요구합니다. 계산 방식은 같고,
+  대상 과목만 전공(전공필수 + 전공선택)으로 한정합니다. 교양 성적이 좋고 전공이 아쉬운 경우, 또는 그
+  반대인 경우 두 값이 꽤 벌어지기도 합니다. <a href="../../tools/gpa/">학점 계산기</a>에서 과목별로
+  전공/교양을 지정하면 전체·전공·교양 평점이 동시에 계산됩니다.</p>
+  <p>또한 많은 학교가 졸업 요건으로 "총 이수 학점 130학점 이상, 평점평균 2.0 이상"과 같은 기준을
+  둡니다. 장학금 기준(직전 학기 평점 3.5 이상 등), 전과·복수전공 신청 기준도 평점으로 정해지는 경우가
+  많으므로 학기마다 누적 평점을 확인해 두는 편이 좋습니다.</p>
+
+  <h2>5. 목표 학점 역산하기</h2>
+  <p>"졸업할 때 평점 3.8을 만들려면 남은 학기에 얼마를 받아야 할까?"는 역산으로 구할 수 있습니다.</p>
+  <div class="result-box">
+    <b>필요 평점 = (목표 평점 × (현재 학점 + 남은 학점) − 현재 평점 × 현재 학점) ÷ 남은 학점</b>
+  </div>
+  <p>예를 들어 현재 평점 3.60에 취득 학점 60학점이고, 앞으로 36학점을 더 이수해 목표 3.80을 만들고
+  싶다면 다음과 같이 계산합니다.</p>
+  <ul>
+    <li>목표 총점 = 3.80 × (60 + 36) = 364.8</li>
+    <li>현재 총점 = 3.60 × 60 = 216.0</li>
+    <li>남은 36학점에서 필요한 총점 = 364.8 − 216.0 = 148.8</li>
+    <li>필요 평점 = 148.8 ÷ 36 = <b>약 4.13</b></li>
+  </ul>
+  <p>즉 남은 모든 과목에서 평균 4.13(A0~A+ 사이)을 받아야 한다는 뜻입니다. 이 값이 만점을 넘으면 목표는
+  수학적으로 달성 불가능하므로, 목표를 조정하거나 이수 학점을 늘려야 합니다. 계산기의 "목표 학점 역산"
+  기능이 이 과정을 자동으로 처리해 줍니다.</p>
+
+  <h2>6. 백분위 환산은 왜 계산기로 안 되나요?</h2>
+  <p>지원 서류에 "100점 만점 환산 점수"를 요구하는 곳이 있는데, 환산표는 <b>대학마다 다릅니다</b>. 같은
+  A0라도 어떤 학교는 95점, 다른 학교는 93점으로 환산합니다. 게다가 일부 기관은 자체 환산식을 사용합니다.
+  그래서 일괄 환산은 오히려 틀린 값을 만들 위험이 큽니다. 성적증명서 발급 화면이나 학사 시스템에서 제공하는
+  공식 환산 점수를 사용하는 것이 정확합니다.</p>
+
+  <div class="note">이 문서는 국내 대학에서 일반적으로 쓰이는 방식을 정리한 참고 자료입니다. 학점 산정
+  규칙·소수점 처리(절사/반올림)·재수강 규정은 학교별 학사 규정이 우선합니다. 정확한 내용은 소속 학교의
+  학사 안내와 성적표를 확인하세요.</div>
+
+  <div class="btn-row">
+    <a class="btn btn-p" href="../../tools/gpa/">학점 계산기로 계산하기</a>
+    <a class="btn" href="../../tools/grade-calc/">내신 등급 계산기</a>
+  </div>
+  <!-- ad-slot -->
+</article>
+
+<section class="prose">
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>단순 평균으로 계산했는데 성적표와 다릅니다.</summary>
+      <div class="a">학점으로 가중하지 않아서 생기는 차이입니다. 반드시 (평점 × 학점)을 모두 더한 뒤 총
+      학점으로 나눠야 성적표 값과 일치합니다.</div></details>
+    <details><summary>계절학기 성적도 평점에 들어가나요?</summary>
+      <div class="a">대부분 정규 학기와 같은 방식으로 누적 평점에 포함됩니다. 다만 "직전 학기 평점"을 보는
+      장학금 심사 등에서는 계절학기를 별도로 취급하는 학교도 있어 개별 확인이 필요합니다.</div></details>
+    <details><summary>F를 받으면 평점이 얼마나 떨어지나요?</summary>
+      <div class="a">F는 0.0으로 분모에는 포함되기 때문에 타격이 큽니다. 예를 들어 평점 3.5로 30학점을
+      이수한 상태에서 3학점 F를 받으면 (3.5×30 + 0×3) ÷ 33 = 약 3.18로, 0.3 이상 떨어집니다.</div></details>
+    <details><summary>학점을 올리려면 어떤 과목에 집중해야 하나요?</summary>
+      <div class="a">가중 평균이므로 학점 수가 큰 과목(3학점)의 영향이 가장 큽니다. 같은 노력이면 1학점
+      과목보다 3학점 과목의 등급을 한 칸 올리는 쪽이 평점 상승 효과가 큽니다.</div></details>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Article","headline":"학점 계산법 완전 정리 - 평량평균 공식과 4.5 만점 평점표","description":"평량평균 공식, 스케일별 평점표, P/F·재수강 처리, 전공 평점, 목표 학점 역산 공식 정리","inLanguage":"ko"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"단순 평균으로 계산했는데 성적표와 다릅니다.","acceptedAnswer":{"@type":"Answer","text":"학점으로 가중하지 않아 생기는 차이입니다. (평점 × 학점)의 합을 총 학점으로 나눠야 성적표와 일치합니다."}},
+{"@type":"Question","name":"F를 받으면 평점이 얼마나 떨어지나요?","acceptedAnswer":{"@type":"Answer","text":"F는 평점 0.0으로 분모에 포함되어 타격이 큽니다. 평점 3.5로 30학점 이수 후 3학점 F를 받으면 약 3.18로 떨어집니다."}},
+{"@type":"Question","name":"백분위 환산 점수는 왜 자동 계산이 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"환산표가 대학마다 달라 일괄 환산 시 틀린 값이 나올 수 있어, 학교가 제공하는 공식 환산 점수를 사용해야 합니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"학점 계산법 완전 정리","item":"https://studyroom-kr.vercel.app/guide/how-to-calculate-gpa/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../../tools/timetable/">시간표 만들기</a><a href="../../tools/gpa/">학점 계산기</a><a href="../../tools/exam-dday/">시험 디데이</a>
+    <a href="../../tools/pomodoro/">뽀모도로 타이머</a><a href="../../tools/study-timer/">공부 시간 측정</a><a href="../../tools/flashcards/">암기 카드</a>
+    <a href="../../tools/word-count/">과제 글자수 세기</a><a href="../../tools/citation/">참고문헌 생성기</a><a href="../../tools/grade-calc/">내신 등급 계산기</a>
+    <a href="../../tools/class-time/">수업 시간 계산기</a><a href="../../tools/schedule/">공부 계획표 만들기</a><a href="../../tools/seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+</body>
+</html>
