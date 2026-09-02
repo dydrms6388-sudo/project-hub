@@ -318,7 +318,7 @@ export function DemoGallery() {
 
           <Section title="SuggestionCard">
             <div className="flex snap-x gap-3 overflow-x-auto pb-2">
-              <SuggestionCard className="w-72 shrink-0 snap-start" position={1} kind="offline" title="같이 뛰기" body="성동구 근처 러닝 코스 추천해 주실 수 있어요? 주말에 같이 뛰어도 좋고요." />
+              <SuggestionCard className="w-72 shrink-0 snap-start" position={1} kind="offline" title="같이 뛰기" body="성동구 러닝 코스 추천해 주실 수 있어요? 주말에 같이 뛰어도 좋고요." />
               <SuggestionCard className="w-72 shrink-0 snap-start" position={2} kind="online" title="보드게임 온라인" body="요즘 온라인으로 하는 보드게임 있어요? 같이 한 판 어때요." selected />
               <SuggestionCard className="w-72 shrink-0 snap-start" position={3} kind="talk" title="최애 코스" body="한강 야간 러닝 코스 중에 제일 좋아하는 구간이 어디예요?" />
             </div>

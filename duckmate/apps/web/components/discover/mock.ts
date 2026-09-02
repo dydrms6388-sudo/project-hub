@@ -61,7 +61,7 @@ export const MOCK_CARDS: RecoCardView[] = [
   card(1, MINJAE, 0.78, [hobby(11, "running", "러닝", 3, 1, 4, true, "한강 야간 러닝"), hobby(6, "boardgame", "보드게임", 2, 2, 4, true), hobby(26, "cafe_tour", "카페투어", 6, 3, 3)], [
     { kind: "hobby_overlap", label: "공통 취미: 러닝·보드게임" },
     { kind: "slot_overlap", label: "토요일 아침에 시간이 맞아요" },
-    { kind: "region_same", label: "서울 근처", level: "sido" },
+    { kind: "region_same", label: "서울 같은 지역", level: "sido" },
   ]),
   card(2, DOHYUN, 0.62, [hobby(6, "boardgame", "보드게임", 2, 1, 2, true, "스플렌더"), hobby(21, "pc_game", "PC 게임", 5, 2, 3), hobby(31, "book_club", "북클럽", 7, 3, 2)], [
     { kind: "hobby_overlap", label: "공통 취미: 보드게임" },
@@ -130,7 +130,7 @@ const MINJAE_PERSON: CardPerson = {
 };
 
 export const MOCK_SUGGESTIONS: FirstSuggestion[] = [
-  { id: "c1", template_id: "RUN-2", title: "같이 뛰기", body: "성동구 근처 러닝 코스 추천해 주실 수 있어요? 주말에 같이 뛰어도 좋고요.", kind: "offline" },
+  { id: "c1", template_id: "RUN-2", title: "같이 뛰기", body: "성동구 러닝 코스 추천해 주실 수 있어요? 주말에 같이 뛰어도 좋고요.", kind: "offline" },
   { id: "c2", template_id: "GEN-3", title: "온라인으로 먼저", body: "요즘 러닝 기록 어떻게 관리하세요? 저는 앱으로 매주 정리하는데, 기록 공유해도 재밌을 것 같아요.", kind: "online" },
   { id: "c3", template_id: "FIT-1", title: "운동 루틴", body: "러닝 하시는군요! 일주일에 몇 번 정도 하세요?", kind: "talk" },
 ];

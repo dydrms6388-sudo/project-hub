@@ -7,12 +7,14 @@ import { RETENTION_ITEMS } from "@/components/settings/copy";
 
 /**
  * /account/delete — 스토어 정책용 웹 계정 삭제 URL (09_store_policy 결정 3, 07_legal 결정 21).
- * 비로그인 안내 페이지: 절차 + 보존 항목 + [로그인하고 삭제 진행] → /login?next=/settings/data/delete. noindex.
+ * 비로그인 안내 페이지: 절차 + 보존 항목 + [로그인하고 삭제 진행] → /login?next=/settings/data/delete.
+ * 인덱싱 O(E6): 스토어 정책이 요구하는 "누구나 접근 가능한 삭제 안내 URL" 이므로 공식 페이지로 취급, sitemap 포함.
  */
 export const metadata: Metadata = {
   title: "계정 삭제 안내",
   description: `${SERVICE_NAME} 계정을 삭제하는 방법과 삭제 후 보관되는 항목을 안내합니다.`,
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
+  alternates: { canonical: "/account/delete" },
 };
 
 const STEPS = [
@@ -30,7 +32,7 @@ export default function AccountDeletePage() {
           {SERVICE_NAME}
         </Link>
       </header>
-      <main id="main" className="flex-1 pb-10" data-testid="account-delete-page">
+      <main id="main" tabIndex={-1} className="flex-1 pb-10 outline-none" data-testid="account-delete-page">
         <p className="text-label mt-4 text-primary">계정</p>
         <h1 className="text-h1 mt-1">계정 삭제 안내</h1>
         <p className="text-body mt-3 text-muted-foreground">계정 삭제는 앱 안에서 직접 할 수 있어요. 별도 문의 없이 아래 순서대로 진행돼요.</p>

@@ -125,7 +125,7 @@ export function PhotosScreen({ photos, verifyLevel, mode }: Props) {
                 <div className="relative aspect-square bg-muted">
                   {p.url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.url} alt="" className={cn("size-full object-cover", p.reviewStatus === "rejected" && "opacity-50")} />
+                    <img src={p.url} alt="" loading="lazy" decoding="async" className={cn("size-full object-cover", p.reviewStatus === "rejected" && "opacity-50")} />
                   ) : (
                     <div className="text-caption flex size-full items-center justify-center text-muted-foreground">미리보기 없음</div>
                   )}

@@ -20,7 +20,11 @@ export type ReportContext = {
 
 type Step = 1 | 2 | "done";
 
-export function ReportScreen({ params, context }: { params: ReportParams; context: ReportContext }) {
+/** 서버 액션 주입점 — 기본은 실제 액션. 개발 목 라우트(/dev/profile?screen=report)·테스트가 목을 넘긴다 (G1) */
+export type ReportActions = { submitReport: typeof submitReport; blockProfile: typeof blockProfile };
+const REAL_ACTIONS: ReportActions = { submitReport, blockProfile };
+
+export function ReportScreen({ params, context, actions = REAL_ACTIONS }: { params: ReportParams; context: ReportContext; actions?: ReportActions }) {
   const router = useRouter();
   const { toast } = useToast();
   const [pending, start] = useTransition();
@@ -46,7 +50,7 @@ export function ReportScreen({ params, context }: { params: ReportParams; contex
     start(async () => {
       if (!reason) return;
       setDetailError(null);
-      const r = await submitReport({ targetId, matchId: params.matchId, reasonCode: reason, detail: detail.trim() || null, surface: params.surface });
+      const r = await actions.submitReport({ targetId, matchId: params.matchId, reasonCode: reason, detail: detail.trim() || null, surface: params.surface });
       if (!r.ok) {
         if (r.redirectTo) {
           router.replace(r.redirectTo);
@@ -65,7 +69,7 @@ export function ReportScreen({ params, context }: { params: ReportParams; contex
   const finish = () =>
     start(async () => {
       if (blockChecked) {
-        const b = await blockProfile({ targetId });
+        const b = await actions.blockProfile({ targetId });
         if (!b.ok) {
           if (b.redirectTo) {
             router.replace(b.redirectTo);

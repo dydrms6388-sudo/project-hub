@@ -20,7 +20,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           법적 고지
         </Link>
       </header>
-      <main id="main" className="flex-1 pb-10">
+      <main id="main" tabIndex={-1} className="flex-1 pb-10 outline-none">
         {children}
       </main>
       <LegalFooterBlock />

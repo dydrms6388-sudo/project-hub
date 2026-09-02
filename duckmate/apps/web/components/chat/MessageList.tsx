@@ -73,7 +73,7 @@ function ImageBubble({ m, onOpen }: { m: UiMessage; onOpen: (url: string) => voi
   if (url) {
     return (
       <button type="button" onClick={() => onOpen(url)} className={cn(box, "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring")} aria-label="사진 크게 보기">
-        <img src={url} alt="대화 사진" className="size-full object-cover" />
+        <img src={url} alt="대화 사진" loading="lazy" decoding="async" className="size-full object-cover" />
       </button>
     );
   }
@@ -155,7 +155,7 @@ export function MessageList({ items, onRetry, onOpenImage, now }: { items: reado
   }, [items]);
   return (
     <TooltipProvider delayDuration={200}>
-      <ol className="flex flex-col gap-2 px-4 py-3" aria-label="메시지">
+      <ol className="flex flex-col gap-2 px-4 py-3" aria-label="메시지" aria-live="polite" aria-relevant="additions">
         {groups.map((g) =>
           g.type === "date" ? (
             <li key={g.key} className="my-2 flex items-center gap-3 text-caption text-muted-foreground" aria-label={`${g.label} 구분선`}>

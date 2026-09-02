@@ -140,7 +140,7 @@ export const COPY = {
   verify: {
     headline: "본인인증 후 추천이 시작돼요",
     sub: "이름은 저장하지 않아요. 생년월일과 중복 가입 확인에만 써요.",
-    steps: { phone: "휴대폰 확인", identity: "본인인증 (지금 여기)", photo: "사진 인증 (데이팅 모드용)" },
+    steps: { phone: "휴대폰 확인", identity: "본인인증 (이 단계)", photo: "사진 인증 (데이팅 모드용)" },
     start: "인증하기",
     later: "프로필 먼저 다듬기",
     processing: "확인하는 중이에요",

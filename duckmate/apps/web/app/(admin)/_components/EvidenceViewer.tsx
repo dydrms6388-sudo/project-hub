@@ -60,7 +60,7 @@ export function EvidenceViewer({ evidence, photoUrls, targetId, reporterId }: { 
               <figure key={p.photo_id} className="w-36">
                 {url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={url} alt={`대상 사진 ${shortId(p.photo_id)}`} className="aspect-square w-36 rounded-md border border-border object-cover" />
+                  <img src={url} alt={`대상 사진 ${shortId(p.photo_id)}`} loading="lazy" decoding="async" className="aspect-square w-36 rounded-md border border-border object-cover" />
                 ) : (
                   <div className="flex aspect-square w-36 items-center justify-center rounded-md border border-dashed border-border text-caption text-muted-foreground">미리보기 없음</div>
                 )}

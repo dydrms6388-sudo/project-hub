@@ -48,7 +48,9 @@ export const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(
   ({ children, active, tabs = DEFAULT_APP_TABS, badges, renderLink, header, hideTabs = false, mainClassName, className, ...props }, ref) => (
     <div ref={ref} className={cn("flex min-h-dvh flex-col bg-background text-foreground", className)} {...props}>
       {header ? <header className="pt-safe sticky top-0 z-30 bg-background/95 backdrop-blur">{header}</header> : null}
-      <main className={cn("flex-1", !hideTabs && "pb-[calc(4rem+env(safe-area-inset-bottom,0px))]", mainClassName)}>{children}</main>
+      <main id="main" tabIndex={-1} className={cn("flex-1 outline-none", !hideTabs && "pb-[calc(4rem+env(safe-area-inset-bottom,0px))]", mainClassName)}>
+        {children}
+      </main>
       {!hideTabs ? (
         <nav aria-label="주 메뉴" className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card">
           <ul className="mx-auto flex h-16 max-w-lg items-stretch">

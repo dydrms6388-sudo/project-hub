@@ -123,7 +123,7 @@ function msg(over: Partial<ChatMessage> & Pick<ChatMessage, "id" | "created_at" 
 
 export const DEV_MESSAGES: Record<string, ChatMessage[]> = {
   [DEV_MATCH_MINJAE]: [
-    msg({ id: "m1", sender_id: DEV_ME, created_at: iso(19 * H), body: "성동구 근처 러닝 코스 추천해 주실 수 있어요? 주말에 같이 뛰어도 좋고요.", suggestion_template_id: "run_together", read_at: iso(18.9 * H) }),
+    msg({ id: "m1", sender_id: DEV_ME, created_at: iso(19 * H), body: "성동구 러닝 코스 추천해 주실 수 있어요? 주말에 같이 뛰어도 좋고요.", suggestion_template_id: "run_together", read_at: iso(18.9 * H) }),
     msg({ id: "m2", sender_id: MINJAE, created_at: iso(18.5 * H), masked_body: "오 저 서울숲 자주 뛰어요! 초보 코스도 있어요" }),
     msg({ id: "m3", sender_id: DEV_ME, created_at: iso(18 * H), body: "저는 5k 정도 천천히 뛰는 편이에요 🏃", read_at: iso(17 * H) }),
     msg({ id: "m4", sender_id: MINJAE, created_at: iso(3 * H), masked_body: "토요일 아침 한강 5k 어때요? 제 번호는 [연락처 숨김] 이에요" }),

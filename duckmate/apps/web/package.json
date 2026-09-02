@@ -9,7 +9,10 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "e2e:smoke": "playwright test --project=smoke",
+    "e2e:phase1": "E2E_SUPABASE=1 playwright test --project=phase1",
+    "e2e:typecheck": "tsc -p e2e/tsconfig.json"
   },
   "dependencies": {
     "@duckmate/db": "workspace:*",

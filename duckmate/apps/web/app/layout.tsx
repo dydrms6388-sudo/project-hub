@@ -24,6 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href={PRETENDARD_CDN_HREF} />
       </head>
       <body className="min-h-dvh bg-background text-foreground antialiased">
+        {/* 스킵 링크 — 각 프레임(AppShell·OnboardingFrame·legal·landing·admin)의 <main id="main"> 으로 (WCAG 2.4.1, E6) */}
+        <a href="#main" className="skip-link">
+          본문으로 건너뛰기
+        </a>
         <Providers>{children}</Providers>
       </body>
     </html>

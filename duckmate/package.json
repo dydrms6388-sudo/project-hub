@@ -9,7 +9,10 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "check:legal": "node scripts/check-legal-placeholders.mjs",
-    "check:noindex": "node scripts/check-noindex.mjs"
+    "check:copy": "node scripts/check-copy.mjs",
+    "check:noindex": "node scripts/check-noindex.mjs",
+    "measure:vitals": "node scripts/measure-web-vitals.mjs",
+    "check:all": "node scripts/check-legal-placeholders.mjs && node scripts/check-copy.mjs && node scripts/check-noindex.mjs"
   },
   "devDependencies": {
     "turbo": "^2.10.0",

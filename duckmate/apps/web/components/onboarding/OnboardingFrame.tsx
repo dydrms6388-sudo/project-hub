@@ -50,7 +50,7 @@ export function OnboardingFrame({ step, headline, sub, backHref, footer, hidePro
         )}
         {!hideProgress ? <OnboardingProgress current={step} total={ONBOARDING_TOTAL} labels={ONBOARDING_LABELS} className="flex-1" /> : <span className="flex-1" />}
       </header>
-      <main className="flex flex-1 flex-col gap-6 px-5 pb-6 pt-2">
+      <main id="main" tabIndex={-1} className="flex flex-1 flex-col gap-6 px-5 pb-6 pt-2 outline-none">
         <div>
           <h1 className="text-h1 text-foreground">{headline}</h1>
           {sub ? <p className="mt-2 text-body text-muted-foreground">{sub}</p> : null}

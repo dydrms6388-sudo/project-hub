@@ -143,7 +143,7 @@ export function PhotoReviewGrid({ items }: { items: PhotoQueueItem[] }) {
               <div className="relative">
                 {p.url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.url} alt={`검수 대기 사진 ${shortId(p.id)}`} className="aspect-square w-full rounded-md object-cover" />
+                  <img src={p.url} alt={`검수 대기 사진 ${shortId(p.id)}`} loading="lazy" decoding="async" className="aspect-square w-full rounded-md object-cover" />
                 ) : (
                   <div className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed border-border text-caption text-muted-foreground">미리보기 없음</div>
                 )}

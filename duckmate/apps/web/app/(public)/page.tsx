@@ -12,7 +12,8 @@ import { LegalFooterWeb } from "@/components/auth/LegalFooterWeb";
 import { COPY, SERVICE_NAME } from "@/components/onboarding/copy";
 
 export const metadata: Metadata = {
-  title: `${SERVICE_NAME} — ${COPY.landing.headline}`,
+  // absolute: 루트 템플릿 `%s · 덕메이트` 가 붙어 서비스명이 두 번 나오던 것을 방지(E6)
+  title: { absolute: `${SERVICE_NAME} — ${COPY.landing.headline}` },
   description: COPY.landing.sub,
   robots: { index: true, follow: true },
 };
@@ -32,7 +33,7 @@ export default async function LandingPage() {
           {COPY.landing.login}
         </Link>
       </header>
-      <main className="flex flex-1 flex-col px-5 pt-14 pb-10">
+      <main id="main" tabIndex={-1} className="flex flex-1 flex-col px-5 pt-14 pb-10 outline-none">
         <h1 className="text-display text-foreground">{COPY.landing.headline}</h1>
         <p className="mt-4 text-body text-muted-foreground">{COPY.landing.sub}</p>
         <div className="mt-8 flex flex-col gap-2">

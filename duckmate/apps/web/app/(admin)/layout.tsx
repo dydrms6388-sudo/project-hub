@@ -26,7 +26,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <AdminSidebar role={ctx.role} userId={ctx.user.id} summary={summary} />
       <div className="flex min-w-0 flex-1 flex-col">
         <OverdueBanner summary={summary} />
-        <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-6">{children}</main>
+        <main id="main" tabIndex={-1} className="mx-auto w-full max-w-7xl flex-1 px-6 py-6 outline-none">{children}</main>
       </div>
     </div>
   );

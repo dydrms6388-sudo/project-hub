@@ -1,5 +1,6 @@
 node_modules
 .next
+.next-*
 out
 dist
 .turbo
@@ -10,3 +11,4 @@ dist
 playwright-report
 test-results
 supabase/.temp
+apps/web/e2e/artifacts

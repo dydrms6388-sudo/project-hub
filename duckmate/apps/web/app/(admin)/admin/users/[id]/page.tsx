@@ -94,7 +94,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
               <figure key={ph.id} className="w-28">
                 {ph.url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={ph.url} alt={`사진 ${shortId(ph.id)}`} className="aspect-square w-28 rounded-md border border-border object-cover" />
+                  <img src={ph.url} alt={`사진 ${shortId(ph.id)}`} loading="lazy" decoding="async" className="aspect-square w-28 rounded-md border border-border object-cover" />
                 ) : (
                   <div className="flex aspect-square w-28 items-center justify-center rounded-md border border-dashed border-border text-caption text-muted-foreground">없음</div>
                 )}
