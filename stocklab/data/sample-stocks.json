@@ -1,0 +1,3145 @@
+{
+ "_note": "합성 샘플 데이터 — 실제 재무·시세 아님. 파이프라인 연결 전 UI 확인용.",
+ "as_of": "2026-09-01",
+ "stocks": [
+  {
+   "code": "005930",
+   "name": "삼성전자",
+   "market": "KOSPI",
+   "sector": "반도체"
+  },
+  {
+   "code": "000660",
+   "name": "SK하이닉스",
+   "market": "KOSPI",
+   "sector": "반도체"
+  },
+  {
+   "code": "373220",
+   "name": "LG에너지솔루션",
+   "market": "KOSPI",
+   "sector": "2차전지"
+  },
+  {
+   "code": "207940",
+   "name": "삼성바이오로직스",
+   "market": "KOSPI",
+   "sector": "바이오"
+  },
+  {
+   "code": "005380",
+   "name": "현대차",
+   "market": "KOSPI",
+   "sector": "자동차"
+  },
+  {
+   "code": "000270",
+   "name": "기아",
+   "market": "KOSPI",
+   "sector": "자동차"
+  },
+  {
+   "code": "068270",
+   "name": "셀트리온",
+   "market": "KOSPI",
+   "sector": "바이오"
+  },
+  {
+   "code": "005490",
+   "name": "POSCO홀딩스",
+   "market": "KOSPI",
+   "sector": "철강"
+  },
+  {
+   "code": "035420",
+   "name": "NAVER",
+   "market": "KOSPI",
+   "sector": "인터넷"
+  },
+  {
+   "code": "105560",
+   "name": "KB금융",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "055550",
+   "name": "신한지주",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "086790",
+   "name": "하나금융지주",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "316140",
+   "name": "우리금융지주",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "012330",
+   "name": "현대모비스",
+   "market": "KOSPI",
+   "sector": "자동차부품"
+  },
+  {
+   "code": "028260",
+   "name": "삼성물산",
+   "market": "KOSPI",
+   "sector": "지주"
+  },
+  {
+   "code": "066570",
+   "name": "LG전자",
+   "market": "KOSPI",
+   "sector": "전자"
+  },
+  {
+   "code": "003670",
+   "name": "포스코퓨처엠",
+   "market": "KOSPI",
+   "sector": "2차전지"
+  },
+  {
+   "code": "096770",
+   "name": "SK이노베이션",
+   "market": "KOSPI",
+   "sector": "에너지"
+  },
+  {
+   "code": "034730",
+   "name": "SK",
+   "market": "KOSPI",
+   "sector": "지주"
+  },
+  {
+   "code": "015760",
+   "name": "한국전력",
+   "market": "KOSPI",
+   "sector": "유틸리티"
+  },
+  {
+   "code": "017670",
+   "name": "SK텔레콤",
+   "market": "KOSPI",
+   "sector": "통신"
+  },
+  {
+   "code": "030200",
+   "name": "KT",
+   "market": "KOSPI",
+   "sector": "통신"
+  },
+  {
+   "code": "032640",
+   "name": "LG유플러스",
+   "market": "KOSPI",
+   "sector": "통신"
+  },
+  {
+   "code": "033780",
+   "name": "KT&G",
+   "market": "KOSPI",
+   "sector": "담배"
+  },
+  {
+   "code": "009150",
+   "name": "삼성전기",
+   "market": "KOSPI",
+   "sector": "전자부품"
+  },
+  {
+   "code": "010130",
+   "name": "고려아연",
+   "market": "KOSPI",
+   "sector": "비철금속"
+  },
+  {
+   "code": "051910",
+   "name": "LG화학",
+   "market": "KOSPI",
+   "sector": "화학"
+  },
+  {
+   "code": "011200",
+   "name": "HMM",
+   "market": "KOSPI",
+   "sector": "해운"
+  },
+  {
+   "code": "010950",
+   "name": "S-Oil",
+   "market": "KOSPI",
+   "sector": "에너지"
+  },
+  {
+   "code": "024110",
+   "name": "기업은행",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "138040",
+   "name": "메리츠금융지주",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "000810",
+   "name": "삼성화재",
+   "market": "KOSPI",
+   "sector": "보험"
+  },
+  {
+   "code": "032830",
+   "name": "삼성생명",
+   "market": "KOSPI",
+   "sector": "보험"
+  },
+  {
+   "code": "018260",
+   "name": "삼성에스디에스",
+   "market": "KOSPI",
+   "sector": "IT서비스"
+  },
+  {
+   "code": "036570",
+   "name": "엔씨소프트",
+   "market": "KOSPI",
+   "sector": "게임"
+  },
+  {
+   "code": "251270",
+   "name": "넷마블",
+   "market": "KOSPI",
+   "sector": "게임"
+  },
+  {
+   "code": "009540",
+   "name": "HD한국조선해양",
+   "market": "KOSPI",
+   "sector": "조선"
+  },
+  {
+   "code": "042660",
+   "name": "한화오션",
+   "market": "KOSPI",
+   "sector": "조선"
+  },
+  {
+   "code": "012450",
+   "name": "한화에어로스페이스",
+   "market": "KOSPI",
+   "sector": "방산"
+  },
+  {
+   "code": "047050",
+   "name": "포스코인터내셔널",
+   "market": "KOSPI",
+   "sector": "상사"
+  },
+  {
+   "code": "000100",
+   "name": "유한양행",
+   "market": "KOSPI",
+   "sector": "제약"
+  },
+  {
+   "code": "128940",
+   "name": "한미약품",
+   "market": "KOSPI",
+   "sector": "제약"
+  },
+  {
+   "code": "004020",
+   "name": "현대제철",
+   "market": "KOSPI",
+   "sector": "철강"
+  },
+  {
+   "code": "011170",
+   "name": "롯데케미칼",
+   "market": "KOSPI",
+   "sector": "화학"
+  },
+  {
+   "code": "090430",
+   "name": "아모레퍼시픽",
+   "market": "KOSPI",
+   "sector": "화장품"
+  },
+  {
+   "code": "097950",
+   "name": "CJ제일제당",
+   "market": "KOSPI",
+   "sector": "식품"
+  },
+  {
+   "code": "271560",
+   "name": "오리온",
+   "market": "KOSPI",
+   "sector": "식품"
+  },
+  {
+   "code": "139480",
+   "name": "이마트",
+   "market": "KOSPI",
+   "sector": "유통"
+  },
+  {
+   "code": "023530",
+   "name": "롯데쇼핑",
+   "market": "KOSPI",
+   "sector": "유통"
+  },
+  {
+   "code": "029780",
+   "name": "삼성카드",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "071050",
+   "name": "한국금융지주",
+   "market": "KOSPI",
+   "sector": "금융"
+  },
+  {
+   "code": "006800",
+   "name": "미래에셋증권",
+   "market": "KOSPI",
+   "sector": "증권"
+  },
+  {
+   "code": "016360",
+   "name": "삼성증권",
+   "market": "KOSPI",
+   "sector": "증권"
+  },
+  {
+   "code": "039490",
+   "name": "키움증권",
+   "market": "KOSPI",
+   "sector": "증권"
+  },
+  {
+   "code": "002380",
+   "name": "KCC",
+   "market": "KOSPI",
+   "sector": "건자재"
+  },
+  {
+   "code": "000720",
+   "name": "현대건설",
+   "market": "KOSPI",
+   "sector": "건설"
+  },
+  {
+   "code": "047040",
+   "name": "대우건설",
+   "market": "KOSPI",
+   "sector": "건설"
+  },
+  {
+   "code": "021240",
+   "name": "코웨이",
+   "market": "KOSPI",
+   "sector": "생활가전"
+  },
+  {
+   "code": "008770",
+   "name": "호텔신라",
+   "market": "KOSPI",
+   "sector": "면세"
+  },
+  {
+   "code": "035250",
+   "name": "강원랜드",
+   "market": "KOSPI",
+   "sector": "레저"
+  },
+  {
+   "code": "247540",
+   "name": "에코프로비엠",
+   "market": "KOSDAQ",
+   "sector": "2차전지"
+  },
+  {
+   "code": "086520",
+   "name": "에코프로",
+   "market": "KOSDAQ",
+   "sector": "2차전지"
+  },
+  {
+   "code": "091990",
+   "name": "셀트리온헬스케어",
+   "market": "KOSDAQ",
+   "sector": "바이오"
+  },
+  {
+   "code": "028300",
+   "name": "HLB",
+   "market": "KOSDAQ",
+   "sector": "바이오"
+  },
+  {
+   "code": "196170",
+   "name": "알테오젠",
+   "market": "KOSDAQ",
+   "sector": "바이오"
+  },
+  {
+   "code": "066970",
+   "name": "엘앤에프",
+   "market": "KOSDAQ",
+   "sector": "2차전지"
+  },
+  {
+   "code": "263750",
+   "name": "펄어비스",
+   "market": "KOSDAQ",
+   "sector": "게임"
+  },
+  {
+   "code": "293490",
+   "name": "카카오게임즈",
+   "market": "KOSDAQ",
+   "sector": "게임"
+  },
+  {
+   "code": "112040",
+   "name": "위메이드",
+   "market": "KOSDAQ",
+   "sector": "게임"
+  },
+  {
+   "code": "035900",
+   "name": "JYP Ent.",
+   "market": "KOSDAQ",
+   "sector": "엔터"
+  },
+  {
+   "code": "041510",
+   "name": "에스엠",
+   "market": "KOSDAQ",
+   "sector": "엔터"
+  },
+  {
+   "code": "067160",
+   "name": "아프리카TV",
+   "market": "KOSDAQ",
+   "sector": "미디어"
+  },
+  {
+   "code": "058470",
+   "name": "리노공업",
+   "market": "KOSDAQ",
+   "sector": "반도체장비"
+  },
+  {
+   "code": "240810",
+   "name": "원익IPS",
+   "market": "KOSDAQ",
+   "sector": "반도체장비"
+  },
+  {
+   "code": "403870",
+   "name": "HPSP",
+   "market": "KOSDAQ",
+   "sector": "반도체장비"
+  },
+  {
+   "code": "039030",
+   "name": "이오테크닉스",
+   "market": "KOSDAQ",
+   "sector": "반도체장비"
+  },
+  {
+   "code": "357780",
+   "name": "솔브레인",
+   "market": "KOSDAQ",
+   "sector": "반도체소재"
+  },
+  {
+   "code": "036930",
+   "name": "주성엔지니어링",
+   "market": "KOSDAQ",
+   "sector": "반도체장비"
+  },
+  {
+   "code": "095340",
+   "name": "ISC",
+   "market": "KOSDAQ",
+   "sector": "반도체부품"
+  },
+  {
+   "code": "215200",
+   "name": "메가스터디교육",
+   "market": "KOSDAQ",
+   "sector": "교육"
+  },
+  {
+   "code": "064760",
+   "name": "티씨케이",
+   "market": "KOSDAQ",
+   "sector": "반도체소재"
+  },
+  {
+   "code": "222800",
+   "name": "심텍",
+   "market": "KOSDAQ",
+   "sector": "PCB"
+  },
+  {
+   "code": "078600",
+   "name": "대주전자재료",
+   "market": "KOSDAQ",
+   "sector": "전자소재"
+  },
+  {
+   "code": "166090",
+   "name": "하나머티리얼즈",
+   "market": "KOSDAQ",
+   "sector": "반도체소재"
+  },
+  {
+   "code": "214150",
+   "name": "클래시스",
+   "market": "KOSDAQ",
+   "sector": "의료기기"
+  },
+  {
+   "code": "145020",
+   "name": "휴젤",
+   "market": "KOSDAQ",
+   "sector": "바이오"
+  },
+  {
+   "code": "141080",
+   "name": "리가켐바이오",
+   "market": "KOSDAQ",
+   "sector": "바이오"
+  },
+  {
+   "code": "237690",
+   "name": "에스티팜",
+   "market": "KOSDAQ",
+   "sector": "제약"
+  },
+  {
+   "code": "348370",
+   "name": "엔켐",
+   "market": "KOSDAQ",
+   "sector": "2차전지"
+  },
+  {
+   "code": "009520",
+   "name": "포스코엠텍",
+   "market": "KOSDAQ",
+   "sector": "철강"
+  }
+ ],
+ "financials": [
+  {
+   "code": "005930",
+   "fiscal_year": 2025,
+   "price": 306300,
+   "market_cap": 2825717,
+   "per": 5.5,
+   "pbr": 0.78,
+   "roe": 12,
+   "debt_ratio": 145,
+   "eps": 55691,
+   "bps": 392692,
+   "revenue": 1893230,
+   "operating_income": 104128,
+   "net_income": 62477,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000660",
+   "fiscal_year": 2025,
+   "price": 206600,
+   "market_cap": 340992,
+   "per": 16.9,
+   "pbr": 2.79,
+   "roe": 13,
+   "debt_ratio": 77,
+   "eps": 12225,
+   "bps": 74050,
+   "revenue": 467159,
+   "operating_income": 57928,
+   "net_income": 53294,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "373220",
+   "fiscal_year": 2025,
+   "price": 126500,
+   "market_cap": 1799547,
+   "per": 71.5,
+   "pbr": 2.59,
+   "roe": 1,
+   "debt_ratio": 68,
+   "eps": 1769,
+   "bps": 48842,
+   "revenue": 3077225,
+   "operating_income": 181556,
+   "net_income": 170663,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "207940",
+   "fiscal_year": 2025,
+   "price": 162200,
+   "market_cap": 242287,
+   "per": 20.8,
+   "pbr": 5.23,
+   "roe": 5.6,
+   "debt_ratio": 113,
+   "eps": 7798,
+   "bps": 31013,
+   "revenue": 179292,
+   "operating_income": 1972,
+   "net_income": 1696,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "005380",
+   "fiscal_year": 2025,
+   "price": 353300,
+   "market_cap": 329200,
+   "per": 13.3,
+   "pbr": 2.19,
+   "roe": 15.1,
+   "debt_ratio": 188,
+   "eps": 26564,
+   "bps": 161324,
+   "revenue": 309448,
+   "operating_income": 58795,
+   "net_income": 46448,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000270",
+   "fiscal_year": 2025,
+   "price": 346000,
+   "market_cap": 154784,
+   "per": 16.7,
+   "pbr": 2.08,
+   "roe": 9.3,
+   "debt_ratio": 157,
+   "eps": 20719,
+   "bps": 166346,
+   "revenue": 199671,
+   "operating_income": -8386,
+   "net_income": -5283,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "068270",
+   "fiscal_year": 2025,
+   "price": 185600,
+   "market_cap": 1094467,
+   "per": null,
+   "pbr": 5.51,
+   "roe": -4.3,
+   "debt_ratio": 144,
+   "eps": -4826,
+   "bps": 33684,
+   "revenue": 1970041,
+   "operating_income": 161543,
+   "net_income": 109849,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "005490",
+   "fiscal_year": 2025,
+   "price": 195500,
+   "market_cap": 2624579,
+   "per": 26.2,
+   "pbr": 0.55,
+   "roe": 11.5,
+   "debt_ratio": 116,
+   "eps": 7462,
+   "bps": 355455,
+   "revenue": 4094343,
+   "operating_income": 413529,
+   "net_income": 376311,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "035420",
+   "fiscal_year": 2025,
+   "price": 156900,
+   "market_cap": 78954,
+   "per": 12,
+   "pbr": 1.18,
+   "roe": 10.8,
+   "debt_ratio": 39,
+   "eps": 13075,
+   "bps": 132966,
+   "revenue": 41846,
+   "operating_income": 879,
+   "net_income": 765,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "105560",
+   "fiscal_year": 2025,
+   "price": 154000,
+   "market_cap": 1703633,
+   "per": 7.6,
+   "pbr": 0.54,
+   "roe": 11.9,
+   "debt_ratio": 1211,
+   "eps": 20263,
+   "bps": 285185,
+   "revenue": 2333977,
+   "operating_income": 343095,
+   "net_income": 277907,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "055550",
+   "fiscal_year": 2025,
+   "price": 385000,
+   "market_cap": 1324563,
+   "per": 6.7,
+   "pbr": 0.44,
+   "roe": 12.6,
+   "debt_ratio": 1191,
+   "eps": 57463,
+   "bps": 875000,
+   "revenue": 675527,
+   "operating_income": 83090,
+   "net_income": 63979,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "086790",
+   "fiscal_year": 2025,
+   "price": 236600,
+   "market_cap": 1131342,
+   "per": 6.1,
+   "pbr": 0.76,
+   "roe": 12,
+   "debt_ratio": 785,
+   "eps": 38787,
+   "bps": 311316,
+   "revenue": 1391551,
+   "operating_income": 20873,
+   "net_income": 16698,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "316140",
+   "fiscal_year": 2025,
+   "price": 115100,
+   "market_cap": 1989704,
+   "per": 7.7,
+   "pbr": 0.62,
+   "roe": 8.3,
+   "debt_ratio": 1237,
+   "eps": 14948,
+   "bps": 185645,
+   "revenue": 2904968,
+   "operating_income": 592613,
+   "net_income": 462238,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "012330",
+   "fiscal_year": 2025,
+   "price": 20700,
+   "market_cap": 50263,
+   "per": 11.1,
+   "pbr": 0.73,
+   "roe": 18.9,
+   "debt_ratio": 176,
+   "eps": 1865,
+   "bps": 28356,
+   "revenue": 71876,
+   "operating_income": 2228,
+   "net_income": 1604,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "028260",
+   "fiscal_year": 2025,
+   "price": 63700,
+   "market_cap": 849197,
+   "per": 19.4,
+   "pbr": 1.57,
+   "roe": 19.9,
+   "debt_ratio": 163,
+   "eps": 3284,
+   "bps": 40573,
+   "revenue": 1435143,
+   "operating_income": 169347,
+   "net_income": 111769,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "066570",
+   "fiscal_year": 2025,
+   "price": 192400,
+   "market_cap": 825326,
+   "per": 9.7,
+   "pbr": 2.93,
+   "roe": 4.1,
+   "debt_ratio": 83,
+   "eps": 19835,
+   "bps": 65666,
+   "revenue": 1081177,
+   "operating_income": 115686,
+   "net_income": 72882,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "003670",
+   "fiscal_year": 2025,
+   "price": 276700,
+   "market_cap": 1882087,
+   "per": 48.7,
+   "pbr": 8.95,
+   "roe": 17,
+   "debt_ratio": 160,
+   "eps": 5682,
+   "bps": 30916,
+   "revenue": 1882087,
+   "operating_income": 222086,
+   "net_income": 173227,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "096770",
+   "fiscal_year": 2025,
+   "price": 32400,
+   "market_cap": 559598,
+   "per": 7.5,
+   "pbr": 1.39,
+   "roe": 8.8,
+   "debt_ratio": 144,
+   "eps": 4320,
+   "bps": 23309,
+   "revenue": 615558,
+   "operating_income": 13542,
+   "net_income": 8396,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "034730",
+   "fiscal_year": 2025,
+   "price": 130400,
+   "market_cap": 383104,
+   "per": 16.9,
+   "pbr": 1.87,
+   "roe": 4.8,
+   "debt_ratio": 103,
+   "eps": 7716,
+   "bps": 69733,
+   "revenue": 570825,
+   "operating_income": -26829,
+   "net_income": -20390,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "015760",
+   "fiscal_year": 2025,
+   "price": 120700,
+   "market_cap": 2768187,
+   "per": 10.2,
+   "pbr": 1.31,
+   "roe": 9,
+   "debt_ratio": 57,
+   "eps": 11833,
+   "bps": 92137,
+   "revenue": 4567509,
+   "operating_income": 744504,
+   "net_income": 476483,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "017670",
+   "fiscal_year": 2025,
+   "price": 397200,
+   "market_cap": 352997,
+   "per": 19.9,
+   "pbr": 2.41,
+   "roe": 11.5,
+   "debt_ratio": 24,
+   "eps": 19960,
+   "bps": 164813,
+   "revenue": 130609,
+   "operating_income": -5486,
+   "net_income": -3895,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "030200",
+   "fiscal_year": 2025,
+   "price": 95500,
+   "market_cap": 320113,
+   "per": 7.4,
+   "pbr": 1.42,
+   "roe": 6.4,
+   "debt_ratio": 161,
+   "eps": 12905,
+   "bps": 67254,
+   "revenue": 467365,
+   "operating_income": 99081,
+   "net_income": 92145,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "032640",
+   "fiscal_year": 2025,
+   "price": 390700,
+   "market_cap": 2500067,
+   "per": 12.8,
+   "pbr": 1.89,
+   "roe": 2.2,
+   "debt_ratio": 187,
+   "eps": 30523,
+   "bps": 206720,
+   "revenue": 2600070,
+   "operating_income": -75402,
+   "net_income": -52781,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "033780",
+   "fiscal_year": 2025,
+   "price": 254500,
+   "market_cap": 1509493,
+   "per": 25.4,
+   "pbr": 0.72,
+   "roe": 3.3,
+   "debt_ratio": 85,
+   "eps": 10020,
+   "bps": 353472,
+   "revenue": 769841,
+   "operating_income": 62357,
+   "net_income": 48015,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "009150",
+   "fiscal_year": 2025,
+   "price": 364300,
+   "market_cap": 1978487,
+   "per": 25.4,
+   "pbr": 3.14,
+   "roe": 8.6,
+   "debt_ratio": 163,
+   "eps": 14343,
+   "bps": 116019,
+   "revenue": 751825,
+   "operating_income": 132321,
+   "net_income": 105857,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "010130",
+   "fiscal_year": 2025,
+   "price": 163500,
+   "market_cap": 549406,
+   "per": 17,
+   "pbr": 0.99,
+   "roe": 18.9,
+   "debt_ratio": 184,
+   "eps": 9618,
+   "bps": 165152,
+   "revenue": 873556,
+   "operating_income": -10483,
+   "net_income": -9225,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "051910",
+   "fiscal_year": 2025,
+   "price": 167400,
+   "market_cap": 749175,
+   "per": 18.3,
+   "pbr": 0.85,
+   "roe": 14.3,
+   "debt_ratio": 137,
+   "eps": 9148,
+   "bps": 196941,
+   "revenue": 269703,
+   "operating_income": 15643,
+   "net_income": 12984,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "011200",
+   "fiscal_year": 2025,
+   "price": 350400,
+   "market_cap": 1358431,
+   "per": 12.4,
+   "pbr": 1.9,
+   "roe": 7.3,
+   "debt_ratio": 24,
+   "eps": 28258,
+   "bps": 184421,
+   "revenue": 882980,
+   "operating_income": 75936,
+   "net_income": 53155,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "010950",
+   "fiscal_year": 2025,
+   "price": 220700,
+   "market_cap": 178305,
+   "per": 14.4,
+   "pbr": 0.54,
+   "roe": 4.8,
+   "debt_ratio": 148,
+   "eps": 15326,
+   "bps": 408704,
+   "revenue": 144427,
+   "operating_income": 2311,
+   "net_income": 1664,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "024110",
+   "fiscal_year": 2025,
+   "price": 354900,
+   "market_cap": 179890,
+   "per": 5.3,
+   "pbr": 0.41,
+   "roe": 9.2,
+   "debt_ratio": 1140,
+   "eps": 66962,
+   "bps": 865610,
+   "revenue": 255444,
+   "operating_income": -4853,
+   "net_income": -4222,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "138040",
+   "fiscal_year": 2025,
+   "price": 358200,
+   "market_cap": 914996,
+   "per": 8.9,
+   "pbr": 0.42,
+   "roe": 12.8,
+   "debt_ratio": 679,
+   "eps": 40247,
+   "bps": 852857,
+   "revenue": 475798,
+   "operating_income": -21887,
+   "net_income": -20574,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000810",
+   "fiscal_year": 2025,
+   "price": 358000,
+   "market_cap": 249356,
+   "per": 7.2,
+   "pbr": 0.67,
+   "roe": 12.9,
+   "debt_ratio": 949,
+   "eps": 49722,
+   "bps": 534328,
+   "revenue": 231901,
+   "operating_income": -4870,
+   "net_income": -3263,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "032830",
+   "fiscal_year": 2025,
+   "price": 196200,
+   "market_cap": 1480208,
+   "per": 7.7,
+   "pbr": 0.74,
+   "roe": 7.7,
+   "debt_ratio": 955,
+   "eps": 25481,
+   "bps": 265135,
+   "revenue": 2309124,
+   "operating_income": 360223,
+   "net_income": 266565,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "018260",
+   "fiscal_year": 2025,
+   "price": 299200,
+   "market_cap": 2555345,
+   "per": 26.9,
+   "pbr": 1.28,
+   "roe": 18.7,
+   "debt_ratio": 151,
+   "eps": 11123,
+   "bps": 233750,
+   "revenue": 4114105,
+   "operating_income": 329128,
+   "net_income": 233681,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "036570",
+   "fiscal_year": 2025,
+   "price": 190500,
+   "market_cap": 209417,
+   "per": 87.1,
+   "pbr": 3.83,
+   "roe": 10.3,
+   "debt_ratio": 131,
+   "eps": 2187,
+   "bps": 49739,
+   "revenue": 337161,
+   "operating_income": -5057,
+   "net_income": -3641,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "251270",
+   "fiscal_year": 2025,
+   "price": 191300,
+   "market_cap": 2260543,
+   "per": null,
+   "pbr": 3.96,
+   "roe": -2.3,
+   "debt_ratio": 127,
+   "eps": -3635,
+   "bps": 48308,
+   "revenue": 1356326,
+   "operating_income": 107150,
+   "net_income": 97507,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "009540",
+   "fiscal_year": 2025,
+   "price": 129000,
+   "market_cap": 952693,
+   "per": 13,
+   "pbr": 2.7,
+   "roe": 15.1,
+   "debt_ratio": 138,
+   "eps": 9923,
+   "bps": 47778,
+   "revenue": 1638632,
+   "operating_income": -19664,
+   "net_income": -17698,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "042660",
+   "fiscal_year": 2025,
+   "price": 28800,
+   "market_cap": 2020261,
+   "per": 17.7,
+   "pbr": 2.11,
+   "roe": 19.9,
+   "debt_ratio": 144,
+   "eps": 1627,
+   "bps": 13649,
+   "revenue": 3474849,
+   "operating_income": 483004,
+   "net_income": 313953,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "012450",
+   "fiscal_year": 2025,
+   "price": 128200,
+   "market_cap": 1093096,
+   "per": 13.4,
+   "pbr": 0.78,
+   "roe": 7.3,
+   "debt_ratio": 80,
+   "eps": 9567,
+   "bps": 164359,
+   "revenue": 579341,
+   "operating_income": 115868,
+   "net_income": 100805,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "047050",
+   "fiscal_year": 2025,
+   "price": 322400,
+   "market_cap": 2488983,
+   "per": 16.4,
+   "pbr": 1.4,
+   "roe": 18.4,
+   "debt_ratio": 159,
+   "eps": 19659,
+   "bps": 230286,
+   "revenue": 3509466,
+   "operating_income": 322871,
+   "net_income": 287355,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000100",
+   "fiscal_year": 2025,
+   "price": 151300,
+   "market_cap": 165003,
+   "per": 10.5,
+   "pbr": 2.57,
+   "roe": 9.7,
+   "debt_ratio": 178,
+   "eps": 14410,
+   "bps": 58872,
+   "revenue": 61051,
+   "operating_income": 9402,
+   "net_income": 8650,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "128940",
+   "fiscal_year": 2025,
+   "price": 258000,
+   "market_cap": 676641,
+   "per": 27.1,
+   "pbr": 1.04,
+   "roe": 15.3,
+   "debt_ratio": 176,
+   "eps": 9520,
+   "bps": 248077,
+   "revenue": 1170589,
+   "operating_income": 11706,
+   "net_income": 8545,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "004020",
+   "fiscal_year": 2025,
+   "price": 170200,
+   "market_cap": 2470432,
+   "per": 11.1,
+   "pbr": 1,
+   "roe": 15.3,
+   "debt_ratio": 106,
+   "eps": 15333,
+   "bps": 170200,
+   "revenue": 1729302,
+   "operating_income": 281876,
+   "net_income": 245232,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "011170",
+   "fiscal_year": 2025,
+   "price": 193500,
+   "market_cap": 2369277,
+   "per": 24,
+   "pbr": 2.34,
+   "roe": 17.8,
+   "debt_ratio": 139,
+   "eps": 8063,
+   "bps": 82692,
+   "revenue": 2037578,
+   "operating_income": 85578,
+   "net_income": 76164,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "090430",
+   "fiscal_year": 2025,
+   "price": 58100,
+   "market_cap": 1561040,
+   "per": 20.4,
+   "pbr": 2.91,
+   "roe": 20.4,
+   "debt_ratio": 186,
+   "eps": 2848,
+   "bps": 19966,
+   "revenue": 2684989,
+   "operating_income": 424228,
+   "net_income": 301202,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "097950",
+   "fiscal_year": 2025,
+   "price": 60100,
+   "market_cap": 1511921,
+   "per": 10.2,
+   "pbr": 2.5,
+   "roe": 4.9,
+   "debt_ratio": 91,
+   "eps": 5892,
+   "bps": 24040,
+   "revenue": 1663113,
+   "operating_income": 18294,
+   "net_income": 16648,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "271560",
+   "fiscal_year": 2025,
+   "price": 142800,
+   "market_cap": 2459391,
+   "per": 23.1,
+   "pbr": 1.16,
+   "roe": 3.7,
+   "debt_ratio": 99,
+   "eps": 6182,
+   "bps": 123103,
+   "revenue": 1106726,
+   "operating_income": 100712,
+   "net_income": 86612,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "139480",
+   "fiscal_year": 2025,
+   "price": 95700,
+   "market_cap": 2356925,
+   "per": 7.8,
+   "pbr": 2.35,
+   "roe": 5.3,
+   "debt_ratio": 39,
+   "eps": 12269,
+   "bps": 40723,
+   "revenue": 1602709,
+   "operating_income": 157065,
+   "net_income": 146070,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "023530",
+   "fiscal_year": 2025,
+   "price": 216400,
+   "market_cap": 1300257,
+   "per": 27.3,
+   "pbr": 1.64,
+   "roe": 21.5,
+   "debt_ratio": 94,
+   "eps": 7927,
+   "bps": 131951,
+   "revenue": 1404278,
+   "operating_income": 4213,
+   "net_income": 2696,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "029780",
+   "fiscal_year": 2025,
+   "price": 98500,
+   "market_cap": 1774375,
+   "per": 8.9,
+   "pbr": 0.39,
+   "roe": 8.3,
+   "debt_ratio": 768,
+   "eps": 11067,
+   "bps": 252564,
+   "revenue": 727494,
+   "operating_income": -27645,
+   "net_income": -16863,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "071050",
+   "fiscal_year": 2025,
+   "price": 207600,
+   "market_cap": 178711,
+   "per": 6.2,
+   "pbr": 0.49,
+   "roe": 11.6,
+   "debt_ratio": 985,
+   "eps": 33484,
+   "bps": 423673,
+   "revenue": 260918,
+   "operating_income": 7045,
+   "net_income": 5706,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "006800",
+   "fiscal_year": 2025,
+   "price": 34900,
+   "market_cap": 1872187,
+   "per": 7.3,
+   "pbr": 0.65,
+   "roe": 7.2,
+   "debt_ratio": 1399,
+   "eps": 4781,
+   "bps": 53692,
+   "revenue": 3070387,
+   "operating_income": -42985,
+   "net_income": -31379,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "016360",
+   "fiscal_year": 2025,
+   "price": 239400,
+   "market_cap": 2917018,
+   "per": 5.9,
+   "pbr": 0.74,
+   "roe": 6.6,
+   "debt_ratio": 1043,
+   "eps": 40576,
+   "bps": 323514,
+   "revenue": 5221462,
+   "operating_income": -151422,
+   "net_income": -136280,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "039490",
+   "fiscal_year": 2025,
+   "price": 19800,
+   "market_cap": 2432748,
+   "per": 6.2,
+   "pbr": 0.69,
+   "roe": 12.7,
+   "debt_ratio": 971,
+   "eps": 3194,
+   "bps": 28696,
+   "revenue": 4014034,
+   "operating_income": 614147,
+   "net_income": 386913,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "002380",
+   "fiscal_year": 2025,
+   "price": 211100,
+   "market_cap": 921300,
+   "per": 27.9,
+   "pbr": 1.11,
+   "roe": 9.8,
+   "debt_ratio": 60,
+   "eps": 7566,
+   "bps": 190180,
+   "revenue": 423798,
+   "operating_income": 16528,
+   "net_income": 10247,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000720",
+   "fiscal_year": 2025,
+   "price": 404700,
+   "market_cap": 1781239,
+   "per": 5.4,
+   "pbr": 2.98,
+   "roe": 12,
+   "debt_ratio": 43,
+   "eps": 74944,
+   "bps": 135805,
+   "revenue": 2636234,
+   "operating_income": -18454,
+   "net_income": -12364,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "047040",
+   "fiscal_year": 2025,
+   "price": 130300,
+   "market_cap": 548068,
+   "per": 9.1,
+   "pbr": 2.45,
+   "roe": 11.2,
+   "debt_ratio": 28,
+   "eps": 14319,
+   "bps": 53184,
+   "revenue": 696046,
+   "operating_income": 82133,
+   "net_income": 64064,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "021240",
+   "fiscal_year": 2025,
+   "price": 216000,
+   "market_cap": 1558516,
+   "per": 5.3,
+   "pbr": 0.75,
+   "roe": 20.7,
+   "debt_ratio": 145,
+   "eps": 40755,
+   "bps": 288000,
+   "revenue": 514310,
+   "operating_income": 43716,
+   "net_income": 40656,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "008770",
+   "fiscal_year": 2025,
+   "price": 66900,
+   "market_cap": 1597973,
+   "per": 5.1,
+   "pbr": 2.78,
+   "roe": 4.1,
+   "debt_ratio": 23,
+   "eps": 13118,
+   "bps": 24065,
+   "revenue": 1358277,
+   "operating_income": 175218,
+   "net_income": 115644,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "035250",
+   "fiscal_year": 2025,
+   "price": 292400,
+   "market_cap": 884898,
+   "per": 26.2,
+   "pbr": 0.88,
+   "roe": 2.6,
+   "debt_ratio": 162,
+   "eps": 11160,
+   "bps": 332273,
+   "revenue": 1079576,
+   "operating_income": 53979,
+   "net_income": 34547,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "247540",
+   "fiscal_year": 2025,
+   "price": 149900,
+   "market_cap": 30862,
+   "per": 32.3,
+   "pbr": 8.74,
+   "roe": 7.8,
+   "debt_ratio": 43,
+   "eps": 4641,
+   "bps": 17151,
+   "revenue": 49071,
+   "operating_income": 7704,
+   "net_income": 5547,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "086520",
+   "fiscal_year": 2025,
+   "price": 19700,
+   "market_cap": 88583,
+   "per": 39.8,
+   "pbr": 3,
+   "roe": 12,
+   "debt_ratio": 84,
+   "eps": 495,
+   "bps": 6567,
+   "revenue": 106300,
+   "operating_income": 1807,
+   "net_income": 1391,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "091990",
+   "fiscal_year": 2025,
+   "price": 54400,
+   "market_cap": 15457,
+   "per": null,
+   "pbr": 4.15,
+   "roe": -6.6,
+   "debt_ratio": 138,
+   "eps": -1197,
+   "bps": 13108,
+   "revenue": 26741,
+   "operating_income": -401,
+   "net_income": -369,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "028300",
+   "fiscal_year": 2025,
+   "price": 143100,
+   "market_cap": 119833,
+   "per": null,
+   "pbr": 1.53,
+   "roe": -7.4,
+   "debt_ratio": 87,
+   "eps": -4865,
+   "bps": 93529,
+   "revenue": 128221,
+   "operating_income": 16925,
+   "net_income": 14894,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "196170",
+   "fiscal_year": 2025,
+   "price": 159100,
+   "market_cap": 98703,
+   "per": 37.6,
+   "pbr": 3.19,
+   "roe": 9.7,
+   "debt_ratio": 141,
+   "eps": 4231,
+   "bps": 49875,
+   "revenue": 35533,
+   "operating_income": 2701,
+   "net_income": 2458,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "066970",
+   "fiscal_year": 2025,
+   "price": 137100,
+   "market_cap": 104931,
+   "per": 35.5,
+   "pbr": 7.16,
+   "roe": 14.1,
+   "debt_ratio": 67,
+   "eps": 3862,
+   "bps": 19148,
+   "revenue": 69254,
+   "operating_income": 14336,
+   "net_income": 9605,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "263750",
+   "fiscal_year": 2025,
+   "price": 147400,
+   "market_cap": 43371,
+   "per": 43.9,
+   "pbr": 7.63,
+   "roe": 13.1,
+   "debt_ratio": 60,
+   "eps": 3358,
+   "bps": 19318,
+   "revenue": 50310,
+   "operating_income": -2214,
+   "net_income": -1572,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "293490",
+   "fiscal_year": 2025,
+   "price": 83200,
+   "market_cap": 83550,
+   "per": null,
+   "pbr": 6.69,
+   "roe": -1.2,
+   "debt_ratio": 84,
+   "eps": -3245,
+   "bps": 12436,
+   "revenue": 45117,
+   "operating_income": 180,
+   "net_income": 149,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "112040",
+   "fiscal_year": 2025,
+   "price": 38100,
+   "market_cap": 64628,
+   "per": 35.9,
+   "pbr": 4.99,
+   "roe": 7.6,
+   "debt_ratio": 139,
+   "eps": 1061,
+   "bps": 7635,
+   "revenue": 80139,
+   "operating_income": 13463,
+   "net_income": 8886,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "035900",
+   "fiscal_year": 2025,
+   "price": 161000,
+   "market_cap": 85841,
+   "per": 51,
+   "pbr": 5.24,
+   "roe": 14.4,
+   "debt_ratio": 108,
+   "eps": 3157,
+   "bps": 30725,
+   "revenue": 57513,
+   "operating_income": 6614,
+   "net_income": 5291,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "041510",
+   "fiscal_year": 2025,
+   "price": 88200,
+   "market_cap": 116881,
+   "per": 19.3,
+   "pbr": 6.23,
+   "roe": 5,
+   "debt_ratio": 94,
+   "eps": 4570,
+   "bps": 14157,
+   "revenue": 136751,
+   "operating_income": 4786,
+   "net_income": 4260,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "067160",
+   "fiscal_year": 2025,
+   "price": 62800,
+   "market_cap": 38896,
+   "per": 19.9,
+   "pbr": 1.81,
+   "roe": 8.6,
+   "debt_ratio": 48,
+   "eps": 3156,
+   "bps": 34696,
+   "revenue": 21393,
+   "operating_income": 620,
+   "net_income": 459,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "058470",
+   "fiscal_year": 2025,
+   "price": 89300,
+   "market_cap": 81687,
+   "per": 9.7,
+   "pbr": 0.65,
+   "roe": 7.5,
+   "debt_ratio": 68,
+   "eps": 9206,
+   "bps": 137385,
+   "revenue": 49829,
+   "operating_income": 4485,
+   "net_income": 4126,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "240810",
+   "fiscal_year": 2025,
+   "price": 26100,
+   "market_cap": 8739,
+   "per": 7.8,
+   "pbr": 3.11,
+   "roe": 4.4,
+   "debt_ratio": 41,
+   "eps": 3346,
+   "bps": 8392,
+   "revenue": 5506,
+   "operating_income": 617,
+   "net_income": 383,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "403870",
+   "fiscal_year": 2025,
+   "price": 32000,
+   "market_cap": 22958,
+   "per": 10.3,
+   "pbr": 1.03,
+   "roe": 6.3,
+   "debt_ratio": 126,
+   "eps": 3107,
+   "bps": 31068,
+   "revenue": 30534,
+   "operating_income": 4488,
+   "net_income": 3994,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "039030",
+   "fiscal_year": 2025,
+   "price": 65700,
+   "market_cap": 50666,
+   "per": 6.9,
+   "pbr": 2.95,
+   "roe": 13.4,
+   "debt_ratio": 142,
+   "eps": 9522,
+   "bps": 22271,
+   "revenue": 15200,
+   "operating_income": 106,
+   "net_income": 85,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "357780",
+   "fiscal_year": 2025,
+   "price": 166500,
+   "market_cap": 77746,
+   "per": 7.4,
+   "pbr": 2.19,
+   "roe": 9.8,
+   "debt_ratio": 67,
+   "eps": 22500,
+   "bps": 76027,
+   "revenue": 87853,
+   "operating_income": 7116,
+   "net_income": 4412,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "036930",
+   "fiscal_year": 2025,
+   "price": 5400,
+   "market_cap": 49495,
+   "per": 25.2,
+   "pbr": 0.82,
+   "roe": 10.1,
+   "debt_ratio": 86,
+   "eps": 214,
+   "bps": 6585,
+   "revenue": 47020,
+   "operating_income": 4091,
+   "net_income": 3846,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "095340",
+   "fiscal_year": 2025,
+   "price": 107900,
+   "market_cap": 24541,
+   "per": 21.1,
+   "pbr": 2.19,
+   "roe": 3,
+   "debt_ratio": 122,
+   "eps": 5114,
+   "bps": 49269,
+   "revenue": 42211,
+   "operating_income": -929,
+   "net_income": -715,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "215200",
+   "fiscal_year": 2025,
+   "price": 79000,
+   "market_cap": 119890,
+   "per": 9.5,
+   "pbr": 1.44,
+   "roe": 18.8,
+   "debt_ratio": 189,
+   "eps": 8316,
+   "bps": 54861,
+   "revenue": 62343,
+   "operating_income": 6234,
+   "net_income": 5735,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "064760",
+   "fiscal_year": 2025,
+   "price": 123700,
+   "market_cap": 56646,
+   "per": 14.1,
+   "pbr": 0.53,
+   "roe": 15.1,
+   "debt_ratio": 75,
+   "eps": 8773,
+   "bps": 233396,
+   "revenue": 65709,
+   "operating_income": 13602,
+   "net_income": 9385,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "222800",
+   "fiscal_year": 2025,
+   "price": 25500,
+   "market_cap": 83815,
+   "per": 11.2,
+   "pbr": 0.52,
+   "roe": 13.4,
+   "debt_ratio": 137,
+   "eps": 2277,
+   "bps": 49038,
+   "revenue": 149191,
+   "operating_income": -4476,
+   "net_income": -2999,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "078600",
+   "fiscal_year": 2025,
+   "price": 59600,
+   "market_cap": 109394,
+   "per": 20.5,
+   "pbr": 2.01,
+   "roe": 15.3,
+   "debt_ratio": 104,
+   "eps": 2907,
+   "bps": 29652,
+   "revenue": 38288,
+   "operating_income": 2986,
+   "net_income": 2120,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "166090",
+   "fiscal_year": 2025,
+   "price": 62700,
+   "market_cap": 21763,
+   "per": 17.2,
+   "pbr": 2.13,
+   "roe": 4.3,
+   "debt_ratio": 115,
+   "eps": 3645,
+   "bps": 29437,
+   "revenue": 37868,
+   "operating_income": -492,
+   "net_income": -384,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "214150",
+   "fiscal_year": 2025,
+   "price": 67800,
+   "market_cap": 34939,
+   "per": 17.4,
+   "pbr": 0.56,
+   "roe": 21.1,
+   "debt_ratio": 78,
+   "eps": 3897,
+   "bps": 121071,
+   "revenue": 22012,
+   "operating_income": 88,
+   "net_income": 77,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "145020",
+   "fiscal_year": 2025,
+   "price": 19000,
+   "market_cap": 118875,
+   "per": 52.2,
+   "pbr": 4.94,
+   "roe": 9.9,
+   "debt_ratio": 124,
+   "eps": 364,
+   "bps": 3846,
+   "revenue": 143839,
+   "operating_income": 10788,
+   "net_income": 10141,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "141080",
+   "fiscal_year": 2025,
+   "price": 52500,
+   "market_cap": 14614,
+   "per": 67.6,
+   "pbr": 4.17,
+   "roe": 15.2,
+   "debt_ratio": 91,
+   "eps": 777,
+   "bps": 12590,
+   "revenue": 11107,
+   "operating_income": 267,
+   "net_income": 208,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "237690",
+   "fiscal_year": 2025,
+   "price": 10100,
+   "market_cap": 6287,
+   "per": 13.8,
+   "pbr": 1.42,
+   "roe": 6.6,
+   "debt_ratio": 64,
+   "eps": 732,
+   "bps": 7113,
+   "revenue": 7922,
+   "operating_income": -277,
+   "net_income": -188,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "348370",
+   "fiscal_year": 2025,
+   "price": 62100,
+   "market_cap": 10852,
+   "per": 45.8,
+   "pbr": 4,
+   "roe": 4.2,
+   "debt_ratio": 103,
+   "eps": 1356,
+   "bps": 15525,
+   "revenue": 14976,
+   "operating_income": 1243,
+   "net_income": 858,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "009520",
+   "fiscal_year": 2025,
+   "price": 162900,
+   "market_cap": 57429,
+   "per": 6.4,
+   "pbr": 2.73,
+   "roe": 16.2,
+   "debt_ratio": 150,
+   "eps": 25453,
+   "bps": 59670,
+   "revenue": 96481,
+   "operating_income": -193,
+   "net_income": -181,
+   "as_of": "2026-09-01"
+  }
+ ],
+ "dividends": [
+  {
+   "code": "005930",
+   "fiscal_year": 2025,
+   "dps": 9590,
+   "dividend_yield": 3.13,
+   "payout_ratio": 17.2,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000660",
+   "fiscal_year": 2025,
+   "dps": 11360,
+   "dividend_yield": 5.5,
+   "payout_ratio": 92.9,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "373220",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "207940",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "005380",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000270",
+   "fiscal_year": 2025,
+   "dps": 8030,
+   "dividend_yield": 2.32,
+   "payout_ratio": 38.8,
+   "consecutive_years": 6,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "068270",
+   "fiscal_year": 2025,
+   "dps": 4920,
+   "dividend_yield": 2.65,
+   "payout_ratio": null,
+   "consecutive_years": 6,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "005490",
+   "fiscal_year": 2025,
+   "dps": 960,
+   "dividend_yield": 0.49,
+   "payout_ratio": 12.9,
+   "consecutive_years": 2,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "035420",
+   "fiscal_year": 2025,
+   "dps": 8270,
+   "dividend_yield": 5.27,
+   "payout_ratio": 63.3,
+   "consecutive_years": 7,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "105560",
+   "fiscal_year": 2025,
+   "dps": 12400,
+   "dividend_yield": 8.05,
+   "payout_ratio": 61.2,
+   "consecutive_years": 19,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "055550",
+   "fiscal_year": 2025,
+   "dps": 29300,
+   "dividend_yield": 7.61,
+   "payout_ratio": 51,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "086790",
+   "fiscal_year": 2025,
+   "dps": 13600,
+   "dividend_yield": 5.75,
+   "payout_ratio": 35.1,
+   "consecutive_years": 17,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "316140",
+   "fiscal_year": 2025,
+   "dps": 4780,
+   "dividend_yield": 4.15,
+   "payout_ratio": 32,
+   "consecutive_years": 17,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "012330",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "028260",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "066570",
+   "fiscal_year": 2025,
+   "dps": 4770,
+   "dividend_yield": 2.48,
+   "payout_ratio": 24,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "003670",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "096770",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "034730",
+   "fiscal_year": 2025,
+   "dps": 5840,
+   "dividend_yield": 4.48,
+   "payout_ratio": 75.7,
+   "consecutive_years": 5,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "015760",
+   "fiscal_year": 2025,
+   "dps": 4740,
+   "dividend_yield": 3.93,
+   "payout_ratio": 40.1,
+   "consecutive_years": 15,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "017670",
+   "fiscal_year": 2025,
+   "dps": 21090,
+   "dividend_yield": 5.31,
+   "payout_ratio": 105.7,
+   "consecutive_years": 4,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "030200",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "032640",
+   "fiscal_year": 2025,
+   "dps": 8200,
+   "dividend_yield": 2.1,
+   "payout_ratio": 26.9,
+   "consecutive_years": 9,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "033780",
+   "fiscal_year": 2025,
+   "dps": 14230,
+   "dividend_yield": 5.59,
+   "payout_ratio": 120,
+   "consecutive_years": 4,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    5,
+    8,
+    11
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "009150",
+   "fiscal_year": 2025,
+   "dps": 17810,
+   "dividend_yield": 4.89,
+   "payout_ratio": 120,
+   "consecutive_years": 3,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "010130",
+   "fiscal_year": 2025,
+   "dps": 6330,
+   "dividend_yield": 3.87,
+   "payout_ratio": 65.8,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "051910",
+   "fiscal_year": 2025,
+   "dps": 3400,
+   "dividend_yield": 2.03,
+   "payout_ratio": 37.2,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "011200",
+   "fiscal_year": 2025,
+   "dps": 15940,
+   "dividend_yield": 4.55,
+   "payout_ratio": 56.4,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "010950",
+   "fiscal_year": 2025,
+   "dps": 7040,
+   "dividend_yield": 3.19,
+   "payout_ratio": 45.9,
+   "consecutive_years": 4,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "024110",
+   "fiscal_year": 2025,
+   "dps": 13380,
+   "dividend_yield": 3.77,
+   "payout_ratio": 20,
+   "consecutive_years": 10,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    8
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "138040",
+   "fiscal_year": 2025,
+   "dps": 28550,
+   "dividend_yield": 7.97,
+   "payout_ratio": 70.9,
+   "consecutive_years": 9,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    8
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000810",
+   "fiscal_year": 2025,
+   "dps": 23230,
+   "dividend_yield": 6.49,
+   "payout_ratio": 46.7,
+   "consecutive_years": 18,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "032830",
+   "fiscal_year": 2025,
+   "dps": 14300,
+   "dividend_yield": 7.29,
+   "payout_ratio": 56.1,
+   "consecutive_years": 15,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "018260",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "036570",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "251270",
+   "fiscal_year": 2025,
+   "dps": 2010,
+   "dividend_yield": 1.05,
+   "payout_ratio": null,
+   "consecutive_years": 2,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "009540",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "042660",
+   "fiscal_year": 2025,
+   "dps": 940,
+   "dividend_yield": 3.25,
+   "payout_ratio": 57.8,
+   "consecutive_years": 14,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "012450",
+   "fiscal_year": 2025,
+   "dps": 1280,
+   "dividend_yield": 1,
+   "payout_ratio": 13.4,
+   "consecutive_years": 8,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "047050",
+   "fiscal_year": 2025,
+   "dps": 14060,
+   "dividend_yield": 4.36,
+   "payout_ratio": 71.5,
+   "consecutive_years": 6,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000100",
+   "fiscal_year": 2025,
+   "dps": 1130,
+   "dividend_yield": 0.75,
+   "payout_ratio": 7.8,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "128940",
+   "fiscal_year": 2025,
+   "dps": 14160,
+   "dividend_yield": 5.49,
+   "payout_ratio": 120,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "004020",
+   "fiscal_year": 2025,
+   "dps": 2010,
+   "dividend_yield": 1.18,
+   "payout_ratio": 13.1,
+   "consecutive_years": 7,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "011170",
+   "fiscal_year": 2025,
+   "dps": 7780,
+   "dividend_yield": 4.02,
+   "payout_ratio": 96.5,
+   "consecutive_years": 1,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "090430",
+   "fiscal_year": 2025,
+   "dps": 2050,
+   "dividend_yield": 3.52,
+   "payout_ratio": 72,
+   "consecutive_years": 12,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "097950",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "271560",
+   "fiscal_year": 2025,
+   "dps": 1110,
+   "dividend_yield": 0.78,
+   "payout_ratio": 18,
+   "consecutive_years": 7,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "139480",
+   "fiscal_year": 2025,
+   "dps": 740,
+   "dividend_yield": 0.77,
+   "payout_ratio": 6,
+   "consecutive_years": 8,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "023530",
+   "fiscal_year": 2025,
+   "dps": 10450,
+   "dividend_yield": 4.83,
+   "payout_ratio": 120,
+   "consecutive_years": 2,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "029780",
+   "fiscal_year": 2025,
+   "dps": 6560,
+   "dividend_yield": 6.66,
+   "payout_ratio": 59.3,
+   "consecutive_years": 10,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "071050",
+   "fiscal_year": 2025,
+   "dps": 13470,
+   "dividend_yield": 6.49,
+   "payout_ratio": 40.2,
+   "consecutive_years": 1,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    8
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "006800",
+   "fiscal_year": 2025,
+   "dps": 1610,
+   "dividend_yield": 4.6,
+   "payout_ratio": 33.7,
+   "consecutive_years": 20,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "016360",
+   "fiscal_year": 2025,
+   "dps": 17980,
+   "dividend_yield": 7.51,
+   "payout_ratio": 44.3,
+   "consecutive_years": 8,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "039490",
+   "fiscal_year": 2025,
+   "dps": 900,
+   "dividend_yield": 4.56,
+   "payout_ratio": 28.2,
+   "consecutive_years": 3,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4,
+    8
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "002380",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "000720",
+   "fiscal_year": 2025,
+   "dps": 3040,
+   "dividend_yield": 0.75,
+   "payout_ratio": 4.1,
+   "consecutive_years": 5,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "047040",
+   "fiscal_year": 2025,
+   "dps": 7570,
+   "dividend_yield": 5.81,
+   "payout_ratio": 52.9,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "021240",
+   "fiscal_year": 2025,
+   "dps": 5770,
+   "dividend_yield": 2.67,
+   "payout_ratio": 14.2,
+   "consecutive_years": 2,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "008770",
+   "fiscal_year": 2025,
+   "dps": 3890,
+   "dividend_yield": 5.81,
+   "payout_ratio": 29.7,
+   "consecutive_years": 6,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "035250",
+   "fiscal_year": 2025,
+   "dps": 10670,
+   "dividend_yield": 3.65,
+   "payout_ratio": 95.6,
+   "consecutive_years": 3,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "247540",
+   "fiscal_year": 2025,
+   "dps": 3910,
+   "dividend_yield": 2.61,
+   "payout_ratio": 84.2,
+   "consecutive_years": 2,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "086520",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "091990",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "028300",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "196170",
+   "fiscal_year": 2025,
+   "dps": 7540,
+   "dividend_yield": 4.74,
+   "payout_ratio": 120,
+   "consecutive_years": 9,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "066970",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "263750",
+   "fiscal_year": 2025,
+   "dps": 2590,
+   "dividend_yield": 1.76,
+   "payout_ratio": 77.1,
+   "consecutive_years": 4,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "293490",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "112040",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "035900",
+   "fiscal_year": 2025,
+   "dps": 8730,
+   "dividend_yield": 5.42,
+   "payout_ratio": 120,
+   "consecutive_years": 8,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "041510",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "067160",
+   "fiscal_year": 2025,
+   "dps": 1410,
+   "dividend_yield": 2.25,
+   "payout_ratio": 44.7,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "058470",
+   "fiscal_year": 2025,
+   "dps": 1930,
+   "dividend_yield": 2.16,
+   "payout_ratio": 21,
+   "consecutive_years": 12,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "240810",
+   "fiscal_year": 2025,
+   "dps": 1210,
+   "dividend_yield": 4.62,
+   "payout_ratio": 36.2,
+   "consecutive_years": 13,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "403870",
+   "fiscal_year": 2025,
+   "dps": 1390,
+   "dividend_yield": 4.35,
+   "payout_ratio": 44.7,
+   "consecutive_years": 8,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "039030",
+   "fiscal_year": 2025,
+   "dps": 1900,
+   "dividend_yield": 2.89,
+   "payout_ratio": 20,
+   "consecutive_years": 11,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "357780",
+   "fiscal_year": 2025,
+   "dps": 970,
+   "dividend_yield": 0.58,
+   "payout_ratio": 4.3,
+   "consecutive_years": 12,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "036930",
+   "fiscal_year": 2025,
+   "dps": 60,
+   "dividend_yield": 1.12,
+   "payout_ratio": 28,
+   "consecutive_years": 3,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "095340",
+   "fiscal_year": 2025,
+   "dps": 2580,
+   "dividend_yield": 2.39,
+   "payout_ratio": 50.4,
+   "consecutive_years": 6,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "215200",
+   "fiscal_year": 2025,
+   "dps": 2990,
+   "dividend_yield": 3.79,
+   "payout_ratio": 36,
+   "consecutive_years": 10,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "064760",
+   "fiscal_year": 2025,
+   "dps": 1630,
+   "dividend_yield": 1.32,
+   "payout_ratio": 18.6,
+   "consecutive_years": 12,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "222800",
+   "fiscal_year": 2025,
+   "dps": 300,
+   "dividend_yield": 1.16,
+   "payout_ratio": 13.2,
+   "consecutive_years": 6,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "078600",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "166090",
+   "fiscal_year": 2025,
+   "dps": 630,
+   "dividend_yield": 1,
+   "payout_ratio": 17.3,
+   "consecutive_years": 5,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "214150",
+   "fiscal_year": 2025,
+   "dps": 3630,
+   "dividend_yield": 5.35,
+   "payout_ratio": 93.1,
+   "consecutive_years": 10,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "145020",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "141080",
+   "fiscal_year": 2025,
+   "dps": 0,
+   "dividend_yield": 0,
+   "payout_ratio": null,
+   "consecutive_years": 0,
+   "ex_dividend_date": null,
+   "pay_months": null,
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "237690",
+   "fiscal_year": 2025,
+   "dps": 470,
+   "dividend_yield": 4.68,
+   "payout_ratio": 64.2,
+   "consecutive_years": 6,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "348370",
+   "fiscal_year": 2025,
+   "dps": 920,
+   "dividend_yield": 1.48,
+   "payout_ratio": 67.8,
+   "consecutive_years": 5,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  },
+  {
+   "code": "009520",
+   "fiscal_year": 2025,
+   "dps": 750,
+   "dividend_yield": 0.46,
+   "payout_ratio": 2.9,
+   "consecutive_years": 1,
+   "ex_dividend_date": "2025-12-29",
+   "pay_months": [
+    4
+   ],
+   "as_of": "2026-09-01"
+  }
+ ]
+}
