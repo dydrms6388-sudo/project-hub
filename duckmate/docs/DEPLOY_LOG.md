@@ -13,6 +13,7 @@
 | Supabase 프로덕션 | **없음** — 프로젝트 미생성(마이그레이션 25개는 로컬 PG16 에서 전부 적용·테스트 통과) |
 | 배포 파이프라인 | **완성** — GitHub Actions 4개(§4) + `vercel.json` 2개 + `.vercelignore` 2개 + `config.toml` `[functions.*]` |
 | 로컬 사전 검증 | **12/12 통과**(§5). 토큰 필요 명령 3개는 예상대로 실패(사유 기록) |
+| GitHub Actions 실행 | `duckmate-ci.yml` PR #46 run #3(`9fbca77`) **2/2 잡 성공**(checks 3m55s · db-test 24s, §5.1). 배포 워크플로 3개는 시크릿 부재로 미실행 |
 | 막힌 원인 | 자격증명 9개 + 계정 4개 + 소유자 결정 10개(§2) |
 
 ## 1. 이번에 만든/바꾼 파일
@@ -144,11 +145,19 @@ workflow_dispatch ─▶ duckmate-supabase-migrate.yml ──▶ supabase link �
 | 9 | `NEXT_DIST_DIR=.next node scripts/check-noindex.mjs --no-build --port 3017` | 0 | 3s | **70/70** (web 라우트 + company out/) |
 | 10 | `pnpm --filter @duckmate/web e2e:smoke` | 0 | 97s | **46 passed** |
 | 11 | `bash scripts/db-test.sh duckmate_g3` (root → `su postgres`) | 0 | 5s | 셰임 2 → 마이그레이션 **25** → seed → phase1_flow S1~S11 PASS |
-| 12 | `bash scripts/db-test.sh` **비-root(nobody) + `PGHOST/PGUSER/PGPASSWORD`** — CI 경로 재현 | 0 | 2s | 동일 PASS (`duckmate-ci.yml` db-test 잡과 같은 조건) |
+| 12 | `bash scripts/db-test.sh` **비-root(nobody) + `PGHOST/PGUSER/PGPASSWORD`** — CI 접속 경로 재현 | 0 | 2s | PASS. 단 이 클러스터에는 `anon`·`authenticated` 롤이 이미 있어 **셰임 적용 순서 결함을 잡지 못했다**(빈 클러스터 결과는 §5.1) |
 | 13 | `pnpm audit --prod` | 1 | 1s | postcss 4건(high 2·moderate 2, `apps/company>next>postcss`, 빌드타임) — G2-15 기지, Next 패치 업데이트로 해소 |
 | 14 | `npx vercel@latest build` (apps/web, 토큰·링크 없음) | **1** | 3s | `project_settings_required: No project settings found locally. Run pull…` — `.vercel/project.json` 없음. 우회하지 않음(토큰 필요) |
 | 15 | `npx supabase@latest migration list` (v2.116.0) | **1** | 2s | `LegacyProjectNotLinkedError: Cannot find project ref. Have you run supabase link?` — 액세스 토큰·ref 필요 |
 | 16 | `npx supabase@latest db lint` | **1** | 2s | `ECONNREFUSED 127.0.0.1:54322 … Make sure Docker is running` — 로컬 Supabase 스택(Docker) 없음 |
+
+### 5.1 GitHub Actions 실측 — `duckmate-ci.yml` (PR #46, 2026-09-02 08:11~08:17 UTC)
+
+| run | head | 결과 | 비고 |
+|---|---|---|---|
+| #1 | `97713ac` | db-test **실패** → 취소 | 빈 `postgres:16` 컨테이너에서 `shim/*.sql` 글롭이 알파벳 순(`realtime_shim` → `supabase_shim`)으로 적용돼 `role "anon" does not exist`. 로컬(§5 #11·#12)은 클러스터에 롤이 이미 있어 통과했던 것. **오케스트레이터가 `scripts/db-test.sh` 의 셰임 순서를 `supabase_shim → realtime_shim` 로 고정**(`2707329`, G3 는 미접촉) |
+| #2 | `2707329` | 취소(다음 push 로 대체) | `concurrency` 동작 확인 |
+| #3 | `9fbca77` | **성공 2/2** | checks 3m55s: install 3s · typecheck 16s · e2e typecheck 2s · vitest 5s · legal/copy <1s · company build 24s · web build 48s · bundle guard <1s · noindex 2s · playwright install 24s · smoke 93s(46 passed) · 리포트 업로드 skipped(실패 시만). db-test 24s(셰임 2 → 마이그레이션 25 → seed → S1~S11 PASS) |
 
 관찰:
 1. **클라이언트 번들에 서버 env *키 이름* 이 포함된다(값 아님).** `grep -rlE "SUPABASE_SERVICE_ROLE_KEY|service_role|IDENTITY_CI_SALT|PHONE_HASH_SALT|AUTH_GATE_SECRET|VAPID_PRIVATE" apps/web/.next/static` = 4 파일(`chunks/917-*.js`, `chunks/3839-*.js`, `(app)/me/photos`, `(onboarding)/…/photos`). 내용은 `lib/env.ts` 의 zod `serverSchema` 키 목록(`SUPABASE_SERVICE_ROLE_KEY:a.Yj().min(20),…`) — `lib/supabase/client.ts`(브라우저 클라이언트)가 `publicEnv()` 를 쓰려고 같은 모듈을 import 해 스키마 정의가 딸려온 것. Next 는 `NEXT_PUBLIC_*` 만 인라인하므로 **값은 노출되지 않는다**(더미 값 grep 0 → CI `Bundle guard` 단계로 고정). G2 §G3-9 의 "= 0" 기대와 어긋나므로 기록: `lib/env.ts` 를 public/server 두 파일로 나누면 0 이 된다(E/D 소관, 동작 변경 없음, 비차단).
@@ -218,4 +227,4 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST https://<ref>.supabase.co/funct
 
 | 일시(KST) | 대상 | 커밋 | 마지막 마이그레이션 | 결과 · 비고 |
 |---|---|---|---|---|
-| 2026-09-02 | (없음 — 파이프라인·사전 검증만) | `97713ac`+미커밋 | 로컬 PG16: `20260902000070_security_fixes.sql`(25/25) | 프로덕션 미적용. 시크릿·계정 부재(§2) |
+| 2026-09-02 | (없음 — 파이프라인·사전 검증만) | `9fbca77`(+스냅샷) | 로컬 PG16·CI postgres:16: `20260902000070_security_fixes.sql`(25/25) | 프로덕션 미적용. 시크릿·계정 부재(§2). CI run #3 성공(§5.1) |

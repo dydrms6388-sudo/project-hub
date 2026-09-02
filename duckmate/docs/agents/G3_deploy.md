@@ -59,7 +59,8 @@
 | `pnpm --filter @duckmate/web build`(더미 env) | 0 | 70s | 20 정적 페이지 |
 | `NEXT_DIST_DIR=.next node scripts/check-noindex.mjs --no-build` | 0 | 3s | 70/70 |
 | `pnpm --filter @duckmate/web e2e:smoke` | 0 | 97s | 46 passed |
-| `bash scripts/db-test.sh`(root) / 비-root+libpq env(CI 재현) | 0 / 0 | 5s / 2s | 마이그레이션 25, S1~S11 PASS |
+| `bash scripts/db-test.sh`(root) / 비-root+libpq env | 0 / 0 | 5s / 2s | 마이그레이션 25, S1~S11 PASS — 단 로컬 클러스터는 롤이 이미 있어 셰임 순서 결함을 놓쳤다(아래 CI 실측) |
+| **GitHub Actions `duckmate-ci.yml` PR #46** | run #1 db-test ✗ → run #3 **✓ 2/2** | checks 3m55s · db-test 24s | #1: 빈 postgres:16 에서 `realtime_shim` 이 `supabase_shim` 보다 먼저 적용돼 `role "anon" does not exist` → 오케스트레이터가 `db-test.sh` 셰임 순서 고정(`2707329`). #3(`9fbca77`): typecheck 16s · vitest 5s · company 24s · web 48s · noindex 2s · smoke 93s(46) · db-test S1~S11 PASS. 워크플로 파일 수정 불필요 |
 | `pnpm audit --prod` | 1 | 1s | postcss 4건(G2-15 기지) |
 | `npx vercel@latest build`(토큰 없음) | 1 | 3s | `project_settings_required` — `.vercel/project.json` 없음 |
 | `npx supabase@latest migration list` | 1 | 2s | `LegacyProjectNotLinkedError` |
@@ -67,7 +68,9 @@
 | 워크플로 YAML 파싱(PyYAML) 4개 | 0 | — | 문법 OK |
 | git 히스토리 비밀값 grep(`duckmate/`) | — | — | 0건, `.env*` 미추적 |
 
-미실행(환경): 실제 Vercel 배포, Supabase `db push`/Edge 실행, SMS 실발송, Realtime/Storage 실동작, phase1.spec(실 Supabase), GitHub Actions 실행 자체(PR #46 에서 `duckmate-ci.yml` 이 첫 실행). 전부 `DEPLOY_LOG.md` §3 체크리스트로 소유자에게 넘김.
+미실행(환경): 실제 Vercel 배포, Supabase `db push`/Edge 실행, SMS 실발송, Realtime/Storage 실동작, phase1.spec(실 Supabase), 배포 워크플로 3개(시크릿 부재 → 실행 시 warning skip 경로만 검증 가능). 전부 `DEPLOY_LOG.md` §3 체크리스트로 소유자에게 넘김.
+
+교훈(재발 방지): 로컬 검증 환경이 "깨끗한 클러스터"가 아니면 초기화 순서 결함을 놓친다. 셰임·마이그레이션 순서 변경 시 반드시 `duckmate-ci.yml` db-test 잡(빈 `postgres:16`)으로 확인.
 
 ## 4. 게이트 판정
 

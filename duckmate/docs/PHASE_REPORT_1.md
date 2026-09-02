@@ -6,7 +6,7 @@
 |---|---|
 | **게이트 판정** | **미통과** — 프로덕션 URL 2개·Supabase 프로덕션·실계정 E2E 스크린샷 없음(자격증명·계정 부재, `DEPLOY_LOG.md` §2) |
 | 코드·문서 | 그룹 A~E 산출물 전부 존재(문서 28 + G1·G2·G3). 앱 2개 빌드 통과, 마이그레이션 25, Edge Function 9, 테스트 338(vitest) + 46(스모크) + DB S1~S11 |
-| 파이프라인 | GitHub Actions 4개 + `vercel.json` 2개 완성. 시크릿 등록 즉시 배포 가능 |
+| 파이프라인 | GitHub Actions 4개 + `vercel.json` 2개 완성. `duckmate-ci.yml` 은 PR #46 run #3(`9fbca77`)에서 **2/2 잡 성공**(첫 실행의 셰임 순서 결함은 `db-test.sh` 수정으로 해소). 배포 3개는 시크릿 등록 즉시 동작 |
 | 남은 것 | 소유자 체크리스트 16단계(`DEPLOY_LOG.md` §3, 3~4h + 계약) |
 
 ## 2. 게이트 체크리스트 (PRD §8 Phase 1 → 2)
