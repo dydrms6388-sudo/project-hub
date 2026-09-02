@@ -1,0 +1,108 @@
+# Supabase CLI 설정 — 덕메이트(DuckMate)
+# 로컬: `supabase start`(Docker 필요) → `supabase db reset` 이 migrations/ + seed.sql 을 순서대로 적용.
+# 프로덕션: `supabase link --project-ref <ref>` → `supabase db push`.
+# 비밀값은 여기에 두지 않는다. env(...) 참조만 사용.
+
+project_id = "duckmate"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 200
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.pooler]
+enabled = false
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "10MiB"
+
+[storage.buckets.photos]
+public = false
+file_size_limit = "10MiB"
+allowed_mime_types = ["image/jpeg", "image/png", "image/webp"]
+
+[storage.buckets.chat-images]
+public = false
+file_size_limit = "10MiB"
+allowed_mime_types = ["image/jpeg", "image/png", "image/webp"]
+
+[storage.buckets.evidence]
+public = false
+
+[auth]
+enabled = true
+site_url = "env(SITE_URL)"
+additional_redirect_urls = ["http://localhost:3000", "http://127.0.0.1:3000"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+
+# Phase 1 로그인 수단 = 휴대폰 OTP 단일 (PRD §0-19). 이메일 가입 비활성.
+[auth.email]
+enable_signup = false
+enable_confirmations = false
+
+[auth.sms]
+enable_signup = true
+enable_confirmations = true
+template = "[덕메이트] 인증 코드 {{ .Code }} · 번호는 본인 확인용이며 프로필에 표시되지 않아요."
+max_frequency = "30s"
+
+# 로컬/E2E 용 테스트 OTP (seed.sql 의 예약 번호). 프로덕션 대시보드에는 설정하지 않는다.
+[auth.sms.test_otp]
+821000000001 = "000001"
+821000000002 = "000002"
+821000000003 = "000003"
+821000000004 = "000004"
+821000000099 = "000099"
+
+# 프로덕션 SMS 프로바이더(Twilio 등)는 대시보드/secret 로만 설정. 값은 env 참조.
+[auth.sms.twilio]
+enabled = false
+account_sid = "env(TWILIO_ACCOUNT_SID)"
+message_service_sid = "env(TWILIO_MESSAGE_SERVICE_SID)"
+auth_token = "env(TWILIO_AUTH_TOKEN)"
+
+[auth.rate_limit]
+sms_sent = 5
+token_refresh = 150
+sign_in_sign_ups = 30
+token_verifications = 30
+
+[auth.mfa]
+max_enrolled_factors = 0
+
+[edge_runtime]
+enabled = true
+policy = "oneshot"
+inspector_port = 8083
+
+[analytics]
+enabled = false
