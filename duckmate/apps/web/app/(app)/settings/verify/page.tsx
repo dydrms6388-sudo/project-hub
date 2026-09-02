@@ -4,6 +4,8 @@ import { VerifyCenterScreen } from "@/components/settings/VerifyCenterScreen";
 import { loadMyPhotos } from "../../me/load";
 
 export const metadata: Metadata = { title: "인증 센터", robots: { index: false, follow: false } };
+/** 세션·쿠키 기반 게이트 — 빌드 시 프리렌더 금지 */
+export const dynamic = "force-dynamic";
 
 /** /settings/verify — L0~L3 진행 표시 + 단계별 CTA (12_flows §6.3) */
 export default async function VerifyCenterPage() {

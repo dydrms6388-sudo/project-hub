@@ -7,6 +7,8 @@ import { ReportScreen, type ReportContext } from "@/components/report/ReportScre
 import { parseReportParams } from "@/components/report/params";
 
 export const metadata: Metadata = { title: "신고하기", robots: { index: false, follow: false } };
+/** 세션·쿠키 기반 게이트 — 빌드 시 프리렌더 금지 */
+export const dynamic = "force-dynamic";
 
 const PREVIEW_COUNT = 5;
 

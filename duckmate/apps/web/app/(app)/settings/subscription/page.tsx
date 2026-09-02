@@ -10,6 +10,8 @@ import { SUBSCRIPTION_COPY } from "@/components/settings/copy";
 import { WebOnly } from "@/components/settings/WebOnly";
 
 export const metadata: Metadata = { title: "구독", robots: { index: false, follow: false } };
+/** 세션·쿠키 기반 게이트 — 빌드 시 프리렌더 금지 */
+export const dynamic = "force-dynamic";
 
 const TIERS: ReadonlyArray<Tier> = ["free", "plus", "pro"];
 const TIER_LABEL: Readonly<Record<Tier, string>> = { free: SUBSCRIPTION_COPY.free, plus: SUBSCRIPTION_COPY.plus, pro: SUBSCRIPTION_COPY.pro };

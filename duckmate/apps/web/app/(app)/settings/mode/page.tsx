@@ -4,6 +4,8 @@ import { ModeScreen } from "@/components/settings/ModeScreen";
 import { loadMyProfileView } from "../../me/load";
 
 export const metadata: Metadata = { title: "모드", robots: { index: false, follow: false } };
+/** 세션·쿠키 기반 게이트 — 빌드 시 프리렌더 금지 */
+export const dynamic = "force-dynamic";
 
 /** /settings/mode — 친구↔데이팅 전환. 데이팅은 L3 + seeking_gender + 공개 범위 미리보기 완료 필수 (12_flows §6.2) */
 export default async function ModePage() {

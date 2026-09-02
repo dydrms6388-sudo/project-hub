@@ -12,7 +12,7 @@ const ICON_BTN = "inline-flex size-11 shrink-0 items-center justify-center round
 export function ChatHeader({ room, compat, onOpenMenu, onOpenProfile }: { room: ChatRoom; compat?: number | null; onOpenMenu: () => void; onOpenProfile: () => void }) {
   const nickname = room.partner_nickname ?? "탈퇴한 사용자";
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center gap-1 border-b border-border bg-background/95 px-1 backdrop-blur">
+    <header className="sticky top-0 z-20 flex min-h-14 items-center gap-1 border-b border-border bg-background/95 px-1 py-1 backdrop-blur">
       <Link href="/chat" aria-label="채팅 목록으로" className={ICON_BTN}>
         <ArrowLeftIcon size={22} />
       </Link>
@@ -25,7 +25,7 @@ export function ChatHeader({ room, compat, onOpenMenu, onOpenProfile }: { room: 
             </span>
             <VerifyBadge level={room.partner_verify_level} />
           </span>
-          {typeof compat === "number" ? <CompatGauge value={compat} size="sm" layout="bar" className="w-24" /> : null}
+          {typeof compat === "number" ? <CompatGauge value={compat} size="sm" layout="bar" className="w-28" /> : null}
         </span>
       </button>
       <Link href={reportHref(room.partner_id, room.match_id)} aria-label="신고하기" data-testid="chat-report" className={ICON_BTN}>

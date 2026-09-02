@@ -4,6 +4,8 @@ import { PhotosScreen } from "@/components/profile/PhotosScreen";
 import { loadMyPhotos } from "../load";
 
 export const metadata: Metadata = { title: "사진 관리", robots: { index: false, follow: false } };
+/** 세션·쿠키 기반 게이트 — 빌드 시 프리렌더 금지 */
+export const dynamic = "force-dynamic";
 
 /** /me/photos — 6칸 그리드 · 검수 배지 · 대표 지정 · 삭제 · 추가 업로드 (12_flows §6.1, 15_auth 결정 11) */
 export default async function MePhotosPage() {
