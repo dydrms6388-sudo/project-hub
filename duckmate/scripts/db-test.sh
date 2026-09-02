@@ -38,7 +38,8 @@ fail=0
 step() { echo "== $1"; }
 
 step "shim (검증 전용)"
-for f in "$SB"/tests/shim/*.sql; do run_file "$DB" "$f" || { echo "FAILED: $f"; exit 1; }; done
+# 순서 고정: supabase_shim(롤·auth/storage 스키마) → realtime_shim(realtime 스키마, 롤에 grant). 글롭 알파벳 순은 역순이라 CI(빈 클러스터)에서 "role anon does not exist"로 실패한다.
+for f in "$SB"/tests/shim/supabase_shim.sql "$SB"/tests/shim/realtime_shim.sql; do run_file "$DB" "$f" || { echo "FAILED: $f"; exit 1; }; done
 
 count=0
 for f in "$SB"/migrations/*.sql; do
