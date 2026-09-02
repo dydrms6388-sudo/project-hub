@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+dist
+.turbo
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+playwright-report
+test-results
+supabase/.temp
