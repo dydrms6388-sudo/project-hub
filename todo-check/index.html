@@ -478,6 +478,12 @@ function scrollToEl(el){el.scrollIntoView(REDUCE?{block:"start"}:{behavior:"smoo
 
 /* ---------- toast with priority (celebrations & actions aren't clobbered by routine cheers) ---------- */
 var toastT,toastLock=0;
+function hideToast(){
+  var el=$("#toast");if(!el)return;
+  el.classList.remove("show");
+  var b=$("#toastAct");b.classList.add("hidden");b.onclick=null;
+  clearTimeout(toastT);toastLock=0;
+}
 function toast(msg,ms,prio){
   prio=prio||0;ms=ms||2000;
   var now=Date.now();
@@ -623,6 +629,11 @@ function rollover(){
   if(la&&la!==t&&!streakContinues(la)&&D.stats.streak>0){
     D.flags.lostStreak=D.stats.streak;
     D.stats.streak=0;
+    delete D.stats.streakOk;
+  }else if(D.stats.streak>0){
+    /* continuity was verified now, against today's routines — remember it so editing or
+       deleting a routine later cannot silently erase a streak the user already saw */
+    D.stats.streakOk=t;
   }
   D.lastDate=t;
   saveData();
@@ -720,6 +731,8 @@ function login(id){
   for(var i=0;i<profiles.length;i++)if(profiles[i].id===id)p=profiles[i];
   if(!p)return;
   P=p;activeId=id;lsSet("active",id);
+  undoEpoch++;lastDeleted=null; /* drop any undo still armed for the previous profile */
+  hideToast();
   D=loadData(id);
   rollover();
   clearSharedUI();
@@ -758,6 +771,7 @@ $("#loginBtn").addEventListener("click",function(){
 $("#nick").addEventListener("keydown",function(e){if(e.key==="Enter")$("#loginBtn").click();});
 $("#switchBtn").addEventListener("click",function(){
   stopAlarmLoop();
+  undoEpoch++;lastDeleted=null;hideToast();
   P=null;activeId=null;lsSet("active",null);
   $("#out").classList.add("hidden");lastReport=null;
   showLogin();
@@ -879,7 +893,8 @@ function toggleTask(id){
     var parts=[];
     if(s.lastActiveDate!==td){ /* first completion of the day drives the streak */
       s.prevStreak=s.streak;s.prevActive=s.lastActiveDate;s.prevBest=s.bestStreak;
-      s.streak=(s.lastActiveDate&&streakContinues(s.lastActiveDate))?s.streak+1:1;
+      var cont=s.lastActiveDate&&(s.streakOk===td||streakContinues(s.lastActiveDate));
+      s.streak=cont?s.streak+1:1;
       s.lastActiveDate=td;
       if(s.streak>s.bestStreak)s.bestStreak=s.streak;
       if(MILESTONES[s.streak])parts.push(MILESTONES[s.streak]);
@@ -908,7 +923,7 @@ function toggleTask(id){
     confetti(parts.length>=3?24:16);
   }else toast(pickCheer());
 }
-var lastDeleted=null;
+var lastDeleted=null,undoEpoch=0; /* bumped on every profile switch — stale undos become no-ops */
 function delTask(id){
   var idx=-1;
   for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].id===id)idx=i;
@@ -922,8 +937,9 @@ function delTask(id){
     revertTodayStreakIfEmpty();
   }
   saveData();renderAll();
+  var epoch=undoEpoch;
   toastAction("삭제했어요","실행취소",function(){
-    if(!lastDeleted)return;
+    if(epoch!==undoEpoch||!lastDeleted)return; /* profile changed under us */
     var ld=lastDeleted;lastDeleted=null;
     D.tasks.splice(Math.min(ld.index,D.tasks.length),0,ld.task);
     if(ld.wasDone){
@@ -931,7 +947,7 @@ function delTask(id){
       s.xp+=10;s.totalDone+=1;
       if(s.lastActiveDate!==td){
         s.prevStreak=s.streak;s.prevActive=s.lastActiveDate;s.prevBest=s.bestStreak;
-        s.streak=(s.lastActiveDate&&streakContinues(s.lastActiveDate))?s.streak+1:1;
+        s.streak=(s.lastActiveDate&&(s.streakOk===td||streakContinues(s.lastActiveDate)))?s.streak+1:1;
         s.lastActiveDate=td;
         if(s.streak>s.bestStreak)s.bestStreak=s.streak;
       }
@@ -1041,7 +1057,13 @@ function renderAll(){
 }
 function dayRecord(key,todayC,todayT){
   if(key===todayStr())return {c:todayC,t:todayT,rest:todayT===0&&restingToday().length>0};
-  return D.history[key]||null;
+  var h=D.history[key];
+  if(h)return h;
+  if(P&&P.created&&key<P.created)return null;
+  /* days the app wasn't opened have no record — infer rest from the routines so the
+     grid agrees with the streak instead of showing "기록 없음" for a scheduled-nothing day */
+  if(key<todayStr()&&isRestDay(key))return {c:0,t:0,rest:1};
+  return null;
 }
 function dayDesc(key,rec){
   if(P&&P.created&&key<P.created)return ymdLabel(key)+" — 시작 전";
@@ -1145,10 +1167,10 @@ function openIdsInDom(){
   return [].slice.call(document.querySelectorAll("#listOpen li")).map(function(li){return li.dataset.id;});
 }
 function applyOrder(ids){
-  var byId={};
+  var byId={},seen={};
   D.tasks.forEach(function(t){byId[t.id]=t;});
   var ordered=[];
-  ids.forEach(function(id){if(byId[id])ordered.push(byId[id]);});
+  ids.forEach(function(id){if(byId[id]&&!seen[id]){seen[id]=1;ordered.push(byId[id]);}});
   /* rearrange only the slots the reordered rows already occupy — resting routines and
      completed tasks keep their absolute position, so their order survives the day */
   var out=D.tasks.slice(),slots=[];
@@ -1166,6 +1188,7 @@ function moveTask(id,dir,text){
   applyOrder(ids);renderAll();
   var g=document.querySelector('#listOpen li[data-id="'+id+'"] .grab');
   if(g){g.focus();srSay((text||"항목")+" — "+(j+1)+"번째로 이동");}
+  toast("내 순서로 정렬했어요 ↕️ ("+(j+1)+"번째)",1600);
 }
 /* Listeners live on document, not the handle: moving the row in the DOM detaches the
    handle and would drop its pointer capture, losing the rest of the gesture. */
@@ -1189,6 +1212,8 @@ function endDrag(){
   document.removeEventListener("pointerup",endDrag);
   document.removeEventListener("pointercancel",endDrag);
   drag.li.classList.remove("dragging");
+  /* also catch the case where the re-render happened with no further pointermove */
+  if(!drag.li.isConnected||drag.li.parentNode!==drag.ul)drag.dead=true;
   var moved=drag.moved&&!drag.dead,id=drag.id;
   var ids=openIdsInDom();
   drag=null;
@@ -1236,7 +1261,7 @@ $("#clearDoneBtn").addEventListener("click",function(){
     return;
   }
   var prevCleared=D.cleared?{d:D.cleared.d,c:D.cleared.c}:null;
-  var undoDay=todayStr();
+  var undoDay=todayStr(),undoEp=undoEpoch;
   var ids={};targets.forEach(function(t){ids[t.id]=1;});
   /* remember each row's slot, not the whole array — a snapshot would drop tasks added during the undo window */
   var removed=[];
@@ -1247,6 +1272,7 @@ $("#clearDoneBtn").addEventListener("click",function(){
   lastDeleted=null;
   saveData();renderAll();
   toastAction("완료 "+targets.length+"개를 비웠어요 (달성률·기록은 그대로)","실행취소",function(){
+    if(undoEp!==undoEpoch)return; /* a different profile is loaded now */
     if(todayStr()!==undoDay||!D.cleared||D.cleared.d!==undoDay){ /* the day rolled over — that record is closed */
       toast("자정이 지나 어제 기록은 되돌릴 수 없어요");return;
     }
@@ -1272,8 +1298,9 @@ var ACHS=[
   {id:"burst",em:"⚡",nm:"폭발의 날",desc:"하루에 10개 완료 — 그런 날은 푹 쉬어요",ok:function(c){return !!c.burst;}}
 ];
 function achCtx(){
-  var perfect=0;
+  var perfect=0,td=todayStr();
   Object.keys(D.history).forEach(function(k){
+    if(k===td)return; /* today is counted live below — never twice */
     var r=D.history[k];
     if(r&&r.t>0&&r.c>=r.t)perfect++;
   });
@@ -1502,6 +1529,7 @@ function sanitizeImport(o){
     var r=h[k]||{};
     var t=numClamp(r.t,0,50);
     hist[k]={c:numClamp(r.c,0,t),t:t};
+    if(r.rest&&!t)hist[k].rest=1;
   });
   var ld=String(o.data.lastDate);
   var cl=o.data&&o.data.cleared;
@@ -1637,9 +1665,9 @@ function renderReportInto(el,r,withList){
   el.appendChild(top);el.appendChild(big);el.appendChild(sub);el.appendChild(row);
   if(week&&r.wk&&r.wk.length){
     var bars=document.createElement("div");bars.className="bars";
-    var today=new Date();
+    var anchor=/^\d{4}-\d{2}-\d{2}$/.test(String(r.d))?new Date(r.d+"T00:00:00"):new Date();
     r.wk.slice(0,7).forEach(function(pv,i){
-      var d=new Date(today);d.setDate(d.getDate()-(r.wk.length-1-i));
+      var d=new Date(anchor);d.setDate(d.getDate()-(r.wk.length-1-i));
       var col=document.createElement("div");col.className="bar";
       var fill=document.createElement("i");
       var v=+pv;
@@ -1683,7 +1711,12 @@ function showReport(r){
 }
 $("#reportBtn").addEventListener("click",function(){
   var r=reportData();
-  if(!r.t){toast("먼저 할일을 하나 추가해 보세요 🙂");return;}
+  if(!r.t){
+    toast(restingToday().length
+      ?"🌿 오늘은 예정된 루틴이 없는 날이에요. 한 주 흐름은 '주간 리포트'에서 볼 수 있어요"
+      :"먼저 할일을 하나 추가해 보세요 🙂",3200);
+    return;
+  }
   showReport(r);
 });
 $("#weekBtn").addEventListener("click",function(){
@@ -1770,14 +1803,14 @@ $("#saveImg").addEventListener("click",function(){
                  :("오늘 할일 "+r.t+"개 중 "+r.c+"개 완료"),cx,y);y+=110;
   if(week&&r.wk&&r.wk.length){ /* 7-day bar chart */
     var bw=Math.floor(maxW/7),bh=150,base=y+bh;
-    var today=new Date();
+    var anchor=/^\d{4}-\d{2}-\d{2}$/.test(String(r.d))?new Date(r.d+"T00:00:00"):new Date();
     r.wk.slice(0,7).forEach(function(pv,i){
       var raw=+pv,v=Math.max(0,Math.min(100,raw));
       var h=raw<0?6:Math.max(4,Math.round(v/100*bh));
       var bx=cx+i*bw;
       x.fillStyle=(raw<=-2)?"rgba(110,231,183,.45)":(raw<0?"rgba(255,255,255,.12)":(v?"#6ee7b7":"rgba(255,255,255,.18)"));
       x.fillRect(bx,base-h,bw-14,h);
-      var d=new Date(today);d.setDate(d.getDate()-(r.wk.length-1-i));
+      var d=new Date(anchor);d.setDate(d.getDate()-(r.wk.length-1-i));
       x.fillStyle="#a7f3d0";x.font="500 28px 'Apple SD Gothic Neo',sans-serif";
       x.fillText(WD[d.getDay()],bx+(bw-14)/2-14,base+42);
     });
@@ -1820,11 +1853,17 @@ function sanitizeShared(r){
     base.tt=numClamp(r.tt,0,99999);
     base.c=numClamp(r.c,0,base.tt||99999);
     base.t=numClamp(r.t,0,7);
+    base.wk=Array.isArray(r.wk)?r.wk.slice(0,7).map(function(v){return numClamp(v,-2,100);}):[];
     /* recompute from the denominator — never trust the link's own rate */
-    base.p=base.tt?Math.round(base.c/base.tt*100):0;
+    /* with a denominator, recompute. Without one (links made before `tt` existed) fall back to
+       the average of the bars the card itself draws — never to the link's own claimed rate. */
+    if(base.tt)base.p=Math.round(base.c/base.tt*100);
+    else{
+      var vals=base.wk.filter(function(v){return v>=0;});
+      base.p=vals.length?Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length):0;
+    }
     base.pf=numClamp(r.pf,0,base.t);
     base.rd=numClamp(r.rd,0,7);
-    base.wk=Array.isArray(r.wk)?r.wk.slice(0,7).map(function(v){return numClamp(v,-2,100);}):[];
   }else{
     base.t=numClamp(r.t,0,50);
     base.c=numClamp(r.c,0,base.t);
