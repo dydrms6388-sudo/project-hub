@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Apple SD Gothic Neo",
+    "Noto Sans KR", sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: #ffffff;
+  color: #0f172a;
+  /* 320px 폭에서 가로 스크롤이 생기지 않도록 — 넓은 요소는 각자 overflow-x:auto 를 갖는다 */
+  overflow-x: hidden;
+}
+
+/* details 기본 마커 제거 (FAQ 아코디언) */
+summary::-webkit-details-marker {
+  display: none;
+}
