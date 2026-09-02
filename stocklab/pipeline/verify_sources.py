@@ -135,8 +135,9 @@ def check_pykrx(timeout: int) -> Result:  # noqa: ARG001 — pykrx 는 자체 �
         tickers = stock.get_market_ticker_list(d, market="KOSPI")
         n = len(tickers)
         if n == 0:
-            return "FAIL", f"{d} KOSPI 종목 0개 (휴장일 또는 KRX 응답 변경)", "KRX 웹 스크레이핑 기반 — 응답 형식 변경 시 pykrx 업데이트"
-        return "OK", f"{d} KOSPI {n} 종목", "키 불필요. 과도한 호출 시 KRX 차단 가능 → sleep 유지"
+            return "FAIL", f"{d} KOSPI 종목 0개 (휴장일·KRX 응답 변경·로그인 필요)", "KRX_ID/KRX_PW 설정 또는 pykrx 업데이트 확인"
+        auth = "로그인" if (env("KRX_ID") and env("KRX_PW")) else "비로그인(KRX_ID/KRX_PW 미설정)"
+        return "OK", f"{d} KOSPI {n} 종목 [{auth}]", "API 키 없음. pykrx≥1.1 은 일부 조회에 KRX 로그인 필요 → KRX_ID/KRX_PW 권장. 과도한 호출 시 차단 → sleep 유지"
 
     res = _timed(go)
     res.name = "pykrx"

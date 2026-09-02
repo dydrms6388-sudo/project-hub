@@ -188,6 +188,8 @@ export KIS_APP_SECRET=...
 
 # 2. 통합 검증 (모든 소스 순차 호출, 표 형태 리포트 출력)
 python pipeline/verify_sources.py
+#   옵션: --strict (SKIPPED 도 실패 처리) · --timeout 20 · --kis-mock (모의투자 도메인으로 KIS 확인)
+#   키가 없는 소스는 SKIPPED 로 표시되므로, C1 완료 판정은 --strict 로 실행해 전부 PASS 여야 함
 
 # 3. 개별 확인 (verify_sources.py 실패 시 원인 분리)
 python - <<'EOF'

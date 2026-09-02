@@ -37,6 +37,7 @@ python -m pytest -q                                      # 네트워크 불필�
 | `SUPABASE_URL` | ✅ | 프로젝트 URL (`NEXT_PUBLIC_SUPABASE_URL` 도 인식) |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | **service role** — RLS 우회 쓰기. 서버/CI 전용, 브라우저 노출 금지 |
 | `DART_API_KEY` | 권장 | 금감원 OpenDART 키. 없으면 financials/dividends 가 pykrx fallback(ROE·부채비율 없음) |
+| `KRX_ID` / `KRX_PW` | 선택 | KRX 정보데이터시스템(data.krx.co.kr) 로그인 계정. pykrx ≥1.1 이 일부 엔드포인트에서 로그인 세션을 요구 — 미설정 시 `KRX 로그인 실패…` 안내가 출력되고 비로그인으로 시도한다. 무료 회원가입으로 발급 |
 | `KIS_APP_KEY` / `KIS_APP_SECRET` | 선택 | 한국투자증권 OpenAPI — 현재는 `verify_sources.py` 점검에만 사용 (실시간 시세 도입 대비) |
 | `SITE_URL` | 권장 | 예 `https://stocklab.tomatoeggcat.com` (`NEXT_PUBLIC_SITE_URL` 별칭) |
 | `CRON_SECRET` | 권장 | 크론 라우트 Bearer 토큰 (Vercel 환경변수와 동일 값) |
@@ -61,7 +62,7 @@ python run_daily.py --dry-run         # 전체 흐름 (쓰기 없음)
 ## 4. GitHub Actions 스케줄
 
 `.github/workflows/stocklab-pipeline.yml` — `30 20 * * 1-5` UTC = **05:30 KST 평일** (`run_daily.py`).
-Secrets: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `DART_API_KEY`, `SITE_URL`, `CRON_SECRET`.
+Secrets: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `DART_API_KEY`, `SITE_URL`, `CRON_SECRET` (+ 선택 `KRX_ID`, `KRX_PW`).
 `workflow_dispatch` 입력: `full_backfill`(20년 시세), `with_financials`(요일 무관 DART 재무).
 
 요일별 기본 동작(`run_daily.py`):
@@ -78,7 +79,7 @@ Vercel Cron(`vercel.json`, 06:00 KST)이 daily-pick 을 이미 돌리므로 Acti
 ## 5. 쿼터·제약
 
 - **DART**: 무료 키 **1일 10,000건**(공식 안내 기준, 변경 여부 확인 필요). `status=020` 시 즉시 중단 후 요약. 종목당 재무 2건(사업+분기, `--quarter-off` 로 1건), 배당 `ceil(years/3)` 건. 재무·배당을 **같은 날** 전 종목 돌리면 초과 → 요일 분산.
-- **pykrx**: KRX 정보데이터시스템 웹을 스크레이핑한다. 키 불필요이지만 **KRX 응답 형식이 바뀌면 깨진다**(빈 DataFrame·KeyError). 장중/휴장일에는 빈 응답 → 스킵 처리. 호출 간 `sleep` 을 유지해 차단을 피한다. 깨지면 `pip install -U pykrx` 후 컬럼명 확인.
+- **pykrx**: KRX 정보데이터시스템 웹을 스크레이핑한다. API 키는 없지만 **최근 버전(≥1.1)은 KRX 로그인(`KRX_ID`/`KRX_PW`)을 요구하는 엔드포인트가 늘었다** — 비로그인 시 빈 응답/오류가 날 수 있으니 계정을 만들어 Secrets 에 넣는 것을 권장. 또한 **KRX 응답 형식이 바뀌면 깨진다**(빈 DataFrame·KeyError). 장중/휴장일에는 빈 응답 → 스킵 처리. 호출 간 `sleep` 을 유지해 차단을 피한다. 깨지면 `pip install -U pykrx` 후 컬럼명 확인.
 - **KIS**: 토큰 발급 1분 1회, 실전 초당 20건. 현재 적재에는 미사용.
 - **KRX 데이터 재배포 주의**: KRX 시세·지수 데이터는 상업적 재배포에 라이선스 제약이 있다. 본 서비스는 **지연 시세(전일 종가)·파생 지표(PER/PBR 등)만 화면에 표시**하고 원시 OHLCV 를 외부에 재배포(API/다운로드)하지 않는다. 표시 시 "데이터 기준일" 과 출처(KRX/DART) 고지 유지.
 - **Supabase Free**: 500MB. `daily_prices` 20년 전 종목 ≈ 1,400만 행이면 초과 가능 → 기본은 최근 구간만, 백필은 `--from/--to` 로 범위 조절. 파티셔닝 전략은 `0001_init.sql` 주석 참고.

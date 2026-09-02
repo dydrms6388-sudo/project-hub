@@ -238,6 +238,7 @@
 | 식별자 오탐 | `daily_picks`, `DailyPick` 같은 코드 식별자는 현재 규칙에 안 걸리지만 `/오늘의\s*픽/` 등 한글 위주로 추가해 식별자 오탐을 피함. 영어는 `\b` 경계 + 공백 필수 패턴만 |
 | 메타데이터 | `metadata.title/description`, JSON-LD `description`, `og:title` 도 같은 `.ts/.tsx` 안에 있으므로 자동 커버됨. 알림톡 템플릿 문안이 별도 파일(`pipeline/templates/*.txt` 등)로 존재하면 ROOTS 에 추가 |
 | CI | `npm run check` 를 Vercel 빌드 전 단계(`vercel.json` `buildCommand` 또는 GitHub Actions)에 연결 |
+| **관찰된 오탐 (2026-09-02 실행)** | `src/app/page.tsx:26` FAQ 질문 `"종목을 찍어주거나 리딩을 하나요?"` 가 `/리딩/` 에 걸림. 부정 맥락("하지 않습니다")이 **다음 줄(답변)** 에 있어 같은 줄 NEGATION 규칙이 놓친다. 해결안 2가지: (a) 질문 문구를 "종목을 찍어주거나 매매를 안내하나요?" 처럼 금지어 없이 재작성(권장 — FAQ 질문 자체에 리딩방 용어를 넣지 않음) (b) 스크립트를 **질문·답변 쌍(q/a 인접 2줄) 또는 앞뒤 1줄까지 NEGATION 탐색**으로 확장. 본 검증팀은 `src/` 를 수정하지 않았으므로 프론트팀이 처리 |
 
 ---
 

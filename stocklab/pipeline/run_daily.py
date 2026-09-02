@@ -69,8 +69,15 @@ def main(argv: list[str] | None = None) -> int:
         step("stocks", _stocks, results, required=True)
 
     def _prices():
+        from datetime import timedelta
+
         import load_prices
-        return load_prices.main(["--full"] if a.full else [])
+        from transforms import kst_today, weekdays_back
+
+        end = kst_today() - timedelta(days=1)
+        if a.full:
+            return load_prices.run(end.replace(year=end.year - 20), end, sleep_sec=2.0)
+        return load_prices.run(weekdays_back(end, 5)[-1], end)
     step("prices", _prices, results, required=True)
 
     if run_fin:

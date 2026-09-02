@@ -215,7 +215,7 @@ export function requiredMonthly(
   const at = (m: number) => simulate({ ...base, monthly: m }).totals.balance;
   if (at(0) >= target) return 0;
   let lo = 0;
-  let hi = LIMITS.monthly.max;
+  let hi: number = LIMITS.monthly.max;
   if (at(hi) < target) return null;
   for (let i = 0; i < 60; i++) {
     const mid = (lo + hi) / 2;

@@ -85,13 +85,14 @@ def run(start: date, end: date, sleep_sec: float = 1.0, restrict_to_stocks: bool
         if known is None:
             log.warning("stocks 테이블이 비어 있음 — FK 위반 방지를 위해 load_stocks 먼저 실행 권장")
     days = [d for d in date_range(start, end) if d.weekday() < 5]
-    total, skipped = 0, 0
+    total, skipped, errors = 0, 0, 0
     for d in days:
         try:
             rows = fetch_day(d, known)
         except Exception as e:
             log.error("%s 조회 실패: %s", d, repr(e)[:200])
             skipped += 1
+            errors += 1
             continue
         if not rows:
             log.info("%s 휴장/데이터 없음 — 스킵", d)
@@ -99,7 +100,9 @@ def run(start: date, end: date, sleep_sec: float = 1.0, restrict_to_stocks: bool
             continue
         total += upsert_rows("daily_prices", rows, on_conflict="code,trade_date")
         polite_sleep(sleep_sec)
-    summary = {"from": start.isoformat(), "to": end.isoformat(), "days": len(days), "rows": total, "skipped_days": skipped}
+    summary = {"from": start.isoformat(), "to": end.isoformat(), "days": len(days), "rows": total, "skipped_days": skipped, "error_days": errors}
+    if days and errors == len(days):
+        raise RuntimeError(f"모든 날짜 조회 실패 (KRX 접근 불가?) {summary}")
     log.info("완료 %s", summary)
     return summary
 
