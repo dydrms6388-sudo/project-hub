@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>카카오톡 대화 내보내기 방법 — 안드로이드·아이폰·PC | TalkStat</title>
+<meta name="description" content="카카오톡 대화를 txt/csv 파일로 저장하는 방법을 OS별(안드로이드, 아이폰, PC)로 정리했습니다. 내보낸 파일은 TalkStat에서 브라우저 안에서만 분석할 수 있어요.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"HowTo","name":"카카오톡 대화 내보내기 방법","description":"안드로이드·아이폰·PC 카카오톡에서 대화를 텍스트 파일로 저장하는 절차",
+"step":[
+{"@type":"HowToStep","name":"대화방 열기","text":"내보낼 대화방에 들어가 우측 상단 메뉴(≡)를 엽니다."},
+{"@type":"HowToStep","name":"설정 진입","text":"채팅방 설정(톱니바퀴)에서 '대화 내용 내보내기'(안드로이드) 또는 '대화 내용 저장'(iOS)을 선택합니다."},
+{"@type":"HowToStep","name":"텍스트만 보내기","text":"'텍스트만 보내기'를 선택해 txt 파일로 저장하거나 메일·파일 앱으로 전달합니다."},
+{"@type":"HowToStep","name":"TalkStat에서 분석","text":"저장된 파일을 TalkStat 분석 페이지에 올리면 브라우저 안에서만 분석됩니다."}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TalkStat","item":"https://talkstat.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"카카오톡 대화 내보내기 방법","item":"https://talkstat.vercel.app/guide/how-to-export-kakaotalk/"}]},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"사진이나 동영상도 내보내지나요?","acceptedAnswer":{"@type":"Answer","text":"'텍스트만 보내기'를 선택하면 텍스트 파일에는 '사진', '동영상' 같은 표시만 남습니다. TalkStat 분석에는 텍스트 파일만 있으면 충분합니다."}},
+{"@type":"Question","name":"내보내기 파일에는 어떤 정보가 담기나요?","acceptedAnswer":{"@type":"Answer","text":"메시지 시각, 보낸 사람의 대화명, 메시지 내용이 담깁니다. 민감한 내용이 포함될 수 있으니 파일 관리에 주의하세요. TalkStat는 이 파일을 서버로 전송하지 않고 브라우저 안에서만 읽습니다."}},
+{"@type":"Question","name":"과거 대화가 일부만 저장돼요.","acceptedAnswer":{"@type":"Answer","text":"기기에 남아 있는 대화만 내보내집니다. 기기를 바꿨거나 대화를 삭제했다면 그 이전 내용은 파일에 포함되지 않습니다."}}]}
+]}
+</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../../">Talk<b>Stat</b></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../../tools/analyze/">대화 분석</a>
+    <a href="../../tools/reply-time/">답장 속도</a>
+    <a href="../../tools/word-cloud/">단어 통계</a>
+    <a href="./" aria-current="page">내보내기 방법</a>
+  </nav>
+</div></header>
+
+<main class="wrap article">
+  <h1>카카오톡 대화 내보내기 방법</h1>
+  <p class="lead">안드로이드·아이폰·PC별로 대화를 txt/csv 파일로 저장하는 절차를 정리했습니다. 저장한 파일은 <a href="../../tools/analyze/">카톡 대화 분석</a>에 올려 브라우저 안에서만 분석할 수 있어요.</p>
+
+  <div class="card">
+    <h2 style="margin-top:0">📱 안드로이드</h2>
+    <ol>
+      <li>내보낼 <strong>대화방</strong>에 들어가 오른쪽 위 <strong>메뉴(≡)</strong>를 누릅니다.</li>
+      <li>오른쪽 아래 <strong>설정(톱니바퀴)</strong> 아이콘을 누릅니다.</li>
+      <li><strong>대화 내용 내보내기</strong>를 선택합니다.</li>
+      <li><strong>텍스트만 보내기</strong>를 선택합니다. (모든 파일 포함을 고르면 압축 파일로 저장됩니다)</li>
+      <li>메일, 메시지 앱 또는 파일로 저장을 선택해 <strong>.txt 파일</strong>을 받습니다.</li>
+    </ol>
+    <p class="note">저장된 파일의 형식: <code>2026년 8월 19일 오후 3:12, 이름 : 내용</code></p>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">🍎 아이폰 (iOS)</h2>
+    <ol>
+      <li>내보낼 <strong>대화방</strong>에서 오른쪽 위 <strong>메뉴(≡)</strong>를 누릅니다.</li>
+      <li>오른쪽 아래 <strong>설정(톱니바퀴)</strong>을 누른 뒤 <strong>대화 내용</strong> 메뉴로 이동합니다.</li>
+      <li><strong>대화 내용 저장</strong>(또는 내보내기)을 선택합니다.</li>
+      <li>공유 시트에서 <strong>파일에 저장</strong>을 고르면 .txt 파일이 저장됩니다. 메일로 나에게 보내는 방법도 편리합니다.</li>
+    </ol>
+    <p class="note">저장된 파일의 형식: <code>2026. 8. 19. 오후 3:12, 이름 : 내용</code></p>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">💻 PC 카카오톡 (Windows/Mac)</h2>
+    <ol>
+      <li>PC 카카오톡에서 내보낼 <strong>대화방</strong>을 엽니다.</li>
+      <li>오른쪽 위 <strong>메뉴(≡)</strong> → <strong>대화 내용</strong> → <strong>대화 내보내기</strong>를 선택합니다.</li>
+      <li>저장 위치를 정하면 <strong>.txt</strong> 파일로 저장됩니다. 버전에 따라 csv 저장을 지원하기도 합니다.</li>
+    </ol>
+    <p class="note">저장된 파일의 형식: <code>[이름] [오후 3:12] 내용</code> 과 날짜 구분줄, 또는 <code>Date,User,Message</code> 형식의 csv</p>
+  </div>
+
+  <h2>내보내기 전에 알아두세요</h2>
+  <ul>
+    <li><strong>기기에 남아 있는 대화만</strong> 내보내집니다. 기기 변경·대화 삭제 이전의 내용은 포함되지 않습니다.</li>
+    <li>파일에는 대화명과 메시지 내용이 그대로 담기므로 <strong>파일 보관·전달에 주의</strong>하세요.</li>
+    <li>TalkStat는 이 파일을 <strong>서버로 전송하지 않고</strong> 브라우저 메모리에서만 읽어 분석합니다. 분석 후 새로고침하면 내용이 사라집니다.</li>
+    <li>상대방의 동의 없이 대화 내용을 외부에 공개하는 것은 삼가 주세요.</li>
+  </ul>
+
+  <h2>이제 분석해 볼까요?</h2>
+  <div class="btn-row">
+    <a class="btn" href="../../tools/analyze/">카톡 대화 분석 시작</a>
+    <a class="btn ghost" href="../../tools/reply-time/">답장 속도만 보기</a>
+    <a class="btn ghost" href="../../tools/word-cloud/">단어 통계만 보기</a>
+  </div>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>단체방도 내보낼 수 있나요?</summary><p>네. 1:1 대화와 동일한 절차로 단체 대화방도 내보낼 수 있고, TalkStat는 참여자 수 제한 없이 분석합니다.</p></details>
+    <details><summary>파일 용량이 큰데 분석되나요?</summary><p>수만 건 규모의 대화도 브라우저 안 Web Worker에서 분석됩니다. 파일이 매우 크면 몇 초 정도 걸릴 수 있습니다.</p></details>
+    <details><summary>"모든 파일 포함"으로 내보냈어요.</summary><p>압축(zip) 파일이 만들어졌다면 압축을 푼 뒤 그 안의 .txt 파일만 TalkStat에 올리면 됩니다.</p></details>
+  </div>
+</main>
+
+<footer class="site-footer"><div class="wrap">
+  <nav aria-label="사이트 링크">
+    <a href="../../tools/analyze/">카톡 대화 분석</a>
+    <a href="../../tools/reply-time/">카톡 답장 속도 분석</a>
+    <a href="../../tools/word-cloud/">카톡 단어 통계</a>
+    <a href="./">카카오톡 대화 내보내기 방법</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© 2026 TalkStat · 모든 분석은 사용자의 브라우저 안에서만 실행됩니다.</p>
+</div></footer>
+</body>
+</html>

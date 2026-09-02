@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공부 시간 측정 - 과목별 스톱워치 · 주간 통계 | 스터디룸</title>
+<meta name="description" content="과목별 공부 시간 측정 스톱워치. 과목마다 시간을 기록하고 주간 통계 그래프로 확인, CSV 내보내기까지. 로그인 없이 브라우저에 자동 저장되는 무료 공부 타이머.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/common.js"></script>
+<style>
+.subj{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;background:var(--card)}
+.subj .cdot{width:12px;height:12px;border-radius:99px;flex:none}
+.subj .nm{font-weight:800;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.subj .tm{font-variant-numeric:tabular-nums;font-weight:700;color:var(--sub);font-size:14px}
+.subj.running{border-color:var(--brand);background:#f5f6ff}
+.subj.running .tm{color:var(--brand)}
+.subj button{min-height:40px}
+.bigclock{text-align:center;font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin:4px 0}
+.bigclock small{display:block;font-size:14px;color:var(--sub);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:10px;font-size:12px;font-weight:700;color:var(--sub)}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:4px;vertical-align:-1px}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap head-in">
+  <a class="logo" href="../../">🎒 스터디룸<span class="dot">.</span></a>
+  <nav class="head-nav"><a href="../pomodoro/">뽀모도로</a><a href="../timetable/">시간표</a><a href="../exam-dday/">시험 디데이</a><a href="../flashcards/">암기 카드</a></nav>
+</div></header>
+
+<main class="wrap">
+<nav class="crumb"><a href="../../">홈</a> › 공부 시간 측정</nav>
+<div class="page-h">
+  <h1>공부 시간 측정</h1>
+  <p>과목별 스톱워치로 공부 시간을 기록하고 주간 통계로 확인하세요.</p>
+</div>
+
+<section class="card">
+  <div class="bigclock" id="bigClock">00:00:00<small id="bigLabel">오늘 총 공부 시간</small></div>
+</section>
+
+<section class="card">
+  <h2>과목</h2>
+  <div id="subjList"></div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <input type="text" id="fSubj" maxlength="16" placeholder="과목 추가 (예: 수학)" style="flex:1">
+    <button class="btn btn-p" id="btnAddSubj">추가</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>주간 통계 (최근 7일)</h2>
+  <div id="chartArea"></div>
+  <div class="legend" id="legendArea"></div>
+  <div class="stat-grid" id="statsArea" style="margin-top:14px"></div>
+  <div class="btn-row">
+    <button class="btn" id="btnCsv">⬇ CSV 내보내기</button>
+    <button class="btn btn-danger" id="btnClearAll">기록 전체 삭제</button>
+  </div>
+  <!-- ad-slot -->
+</section>
+
+<article class="prose">
+  <h2>공부 시간 측정 도구 소개</h2>
+  <p>"오늘 얼마나 공부했지?"를 감이 아니라 숫자로 확인하는 과목별 스톱워치입니다. 과목을 등록해 두고 공부를
+  시작할 때 ▶ 버튼을 누르면 시간이 흘러가고, 멈추면 그 시간이 오늘 날짜·해당 과목으로 자동 기록됩니다.
+  한 번에 하나의 과목만 측정되므로 과목을 바꾸면 이전 측정은 자동으로 저장됩니다.</p>
+  <p>기록은 최근 7일 그래프로 요약되어 과목별 비중과 요일별 흐름을 한눈에 볼 수 있고, 전체 기록은 CSV
+  파일로 내보내 엑셀·스프레드시트에서 정리할 수도 있습니다. 측정 중 새로고침해도 시작 시각이 저장되어 있어
+  시간이 끊기지 않습니다. 모든 데이터는 브라우저에만 저장됩니다.</p>
+  <h3>사용법</h3>
+  <ol>
+    <li>과목 추가 칸에 과목명을 입력하고 추가합니다.</li>
+    <li>공부를 시작할 때 과목 옆의 <b>▶ 시작</b>을 누릅니다. 다른 과목을 누르면 자동으로 전환됩니다.</li>
+    <li>쉬거나 끝낼 때 <b>■ 정지</b>를 누르면 기록이 저장됩니다.</li>
+    <li>주간 통계에서 그래프를 확인하고, 필요하면 CSV로 내보내세요.</li>
+  </ol>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>측정 중에 실수로 탭을 닫으면 어떻게 되나요?</summary>
+      <div class="a">측정 시작 시각이 브라우저에 저장되어 있어, 다시 페이지를 열면 측정이 이어진 상태로
+      복원됩니다. 닫혀 있던 시간도 포함해서 계산됩니다.</div></details>
+    <details><summary>1분 미만도 기록되나요?</summary>
+      <div class="a">초 단위까지 기록됩니다. 다만 10초 미만의 아주 짧은 측정은 실수로 판단해 저장하지
+      않습니다.</div></details>
+    <details><summary>CSV 파일은 어떤 형식인가요?</summary>
+      <div class="a">날짜, 과목, 공부 시간(분) 세 열로 내보냅니다. UTF-8 BOM이 포함되어 엑셀에서 열어도
+      한글이 깨지지 않습니다.</div></details>
+    <details><summary>여러 기기에서 같이 쓸 수 있나요?</summary>
+      <div class="a">서버 없이 브라우저 저장소만 사용하므로 기기 간 동기화는 되지 않습니다. 주로 쓰는 기기
+      한 곳에서 기록하는 것을 추천합니다.</div></details>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"공부 시간 측정","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"과목별 공부 시간 스톱워치, 주간 통계 그래프, CSV 내보내기"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"측정 중 탭을 닫으면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"시작 시각이 저장되어 있어 다시 열면 측정이 이어진 상태로 복원되며 닫혀 있던 시간도 포함됩니다."}},
+{"@type":"Question","name":"CSV는 어떤 형식인가요?","acceptedAnswer":{"@type":"Answer","text":"날짜, 과목, 공부 시간(분) 세 열이며 UTF-8 BOM 포함으로 엑셀에서 한글이 깨지지 않습니다."}},
+{"@type":"Question","name":"기기 간 동기화가 되나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저 저장소만 사용하므로 동기화는 지원하지 않습니다."}}]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"스터디룸","item":"https://studyroom-kr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"공부 시간 측정","item":"https://studyroom-kr.vercel.app/tools/study-timer/"}]}
+]}
+</script>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <div class="foot-links">
+    <a href="../timetable/">시간표 만들기</a><a href="../gpa/">학점 계산기</a><a href="../exam-dday/">시험 디데이</a>
+    <a href="../pomodoro/">뽀모도로 타이머</a><a href="../study-timer/">공부 시간 측정</a><a href="../flashcards/">암기 카드</a>
+    <a href="../word-count/">과제 글자수 세기</a><a href="../citation/">참고문헌 생성기</a><a href="../grade-calc/">내신 등급 계산기</a>
+    <a href="../class-time/">수업 시간 계산기</a><a href="../schedule/">공부 계획표 만들기</a><a href="../seat-random/">자리 뽑기</a>
+  </div>
+  <div class="foot-links">
+    <a href="../../guide/how-to-calculate-gpa/">학점 계산법 가이드</a>
+    <a href="../../guide/2026-semester-start/">개강일·학사일정 확인법</a>
+    <a href="../../privacy.html">개인정보처리방침</a><a href="../../terms.html">이용약관</a>
+  </div>
+  <p class="copy">© 2026 스터디룸 · 모든 데이터는 내 브라우저에만 저장됩니다.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+
+var subjects=SR.load('st_subjects',[]);            /* [{id,name,c}] */
+var logs=SR.load('st_logs',[]);                    /* [{d:'YYYY-MM-DD',s:id,sec:n}] */
+var run=SR.load('st_run',null);                    /* {s:id, t0:ts} */
+var tick=null;
+
+function persist(){
+  SR.save('st_subjects',subjects); SR.save('st_logs',logs); SR.save('st_run',run);
+}
+function subjById(id){ return subjects.find(function(s){return s.id===id}); }
+function fmtHMS(sec){
+  sec=Math.floor(sec);
+  return SR.pad2(Math.floor(sec/3600))+':'+SR.pad2(Math.floor(sec%3600/60))+':'+SR.pad2(sec%60);
+}
+function todaySec(subjId){
+  var k=SR.ymd(new Date()), t=0;
+  logs.forEach(function(l){ if(l.d===k && (!subjId||l.s===subjId)) t+=l.sec; });
+  if(run && (!subjId||run.s===subjId)) t+=(Date.now()-run.t0)/1000;
+  return t;
+}
+
+/* ---------- 과목 목록 ---------- */
+function renderSubjects(){
+  var h='';
+  subjects.forEach(function(s){
+    var isRun=run&&run.s===s.id;
+    h+='<div class="subj'+(isRun?' running':'')+'" data-id="'+s.id+'">'
+      +'<span class="cdot" style="background:'+SR.PALETTE[s.c]+'"></span>'
+      +'<span class="nm">'+SR.esc(s.name)+'</span>'
+      +'<span class="tm" data-tm="'+s.id+'">'+fmtHMS(todaySec(s.id))+'</span>'
+      +'<button class="btn btn-sm'+(isRun?'':' btn-p')+'" data-act="toggle">'+(isRun?'■ 정지':'▶ 시작')+'</button>'
+      +'<button class="btn btn-sm btn-danger" data-act="del" aria-label="과목 삭제">✕</button>'
+      +'</div>';
+  });
+  $('subjList').innerHTML=h||'<p class="note">과목을 추가하면 스톱워치가 생깁니다.</p>';
+}
+$('subjList').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  var id=b.closest('.subj').dataset.id;
+  if(b.dataset.act==='del'){
+    if(!confirm('과목을 삭제할까요? (지난 기록은 통계에 남습니다)')) return;
+    if(run&&run.s===id) stopRun();
+    subjects=subjects.filter(function(s){return s.id!==id});
+    persist(); renderAll(); return;
+  }
+  if(run&&run.s===id) stopRun();
+  else{
+    if(run) stopRun();
+    run={s:id,t0:Date.now()}; persist();
+  }
+  renderAll();
+});
+$('btnAddSubj').onclick=addSubj;
+$('fSubj').addEventListener('keydown',function(e){ if(e.key==='Enter') addSubj(); });
+function addSubj(){
+  var name=$('fSubj').value.trim();
+  if(!name){ SR.toast('과목명을 입력하세요'); return; }
+  if(subjects.some(function(s){return s.name===name})){ SR.toast('이미 있는 과목입니다'); return; }
+  var used={}; subjects.forEach(function(s){used[s.c]=1});
+  var c=0; while(used[c]&&c<SR.PALETTE.length) c++;
+  subjects.push({id:SR.uid(),name:name,c:c%SR.PALETTE.length});
+  $('fSubj').value=''; persist(); renderAll();
+}
+function stopRun(){
+  if(!run) return;
+  var sec=(Date.now()-run.t0)/1000;
+  if(sec>=10) logs.push({d:SR.ymd(new Date()),s:run.s,sec:Math.round(sec)});
+  else SR.toast('10초 미만은 저장하지 않습니다');
+  run=null; persist();
+}
+
+/* ---------- 시계 갱신 ---------- */
+function tickFn(){
+  $('bigClock').childNodes[0].nodeValue=fmtHMS(todaySec(null));
+  if(run){
+    var el=document.querySelector('[data-tm="'+run.s+'"]');
+    if(el) el.textContent=fmtHMS(todaySec(run.s));
+    var s=subjById(run.s);
+    $('bigLabel').textContent='측정 중: '+(s?s.name:'')+' · 오늘 총 공부 시간';
+  }else $('bigLabel').textContent='오늘 총 공부 시간';
+}
+tick=setInterval(tickFn,1000);
+
+/* ---------- 주간 통계 (SVG 누적 막대) ---------- */
+function renderChart(){
+  var days=[],max=1;
+  for(var i=6;i>=0;i--){
+    var d=new Date(); d.setDate(d.getDate()-i);
+    var k=SR.ymd(d), per={},tot=0;
+    logs.forEach(function(l){ if(l.d===k){ per[l.s]=(per[l.s]||0)+l.sec; tot+=l.sec; } });
+    if(i===0&&run){ per[run.s]=(per[run.s]||0)+(Date.now()-run.t0)/1000; tot+=(Date.now()-run.t0)/1000; }
+    days.push({d:d,per:per,tot:tot,today:i===0});
+    max=Math.max(max,tot);
+  }
+  var W=700,H=220,pad=30,bw=58,gap=(W-pad*2-bw*7)/6;
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto" role="img" aria-label="주간 공부 시간 그래프">';
+  days.forEach(function(o,i){
+    var x=pad+i*(bw+gap), y=H-40;
+    Object.keys(o.per).forEach(function(sid){
+      var h=o.per[sid]/max*(H-80);
+      if(h<1) h=1;
+      var s=subjById(sid);
+      svg+='<rect x="'+x+'" y="'+(y-h)+'" width="'+bw+'" height="'+h+'" rx="4" fill="'+(s?SR.PALETTE[s.c]:'#cbd5e1')+'"/>';
+      y-=h+1;
+    });
+    var hh=Math.round(o.tot/3600*10)/10;
+    if(o.tot>0) svg+='<text x="'+(x+bw/2)+'" y="'+(y-6)+'" text-anchor="middle" font-size="13" font-weight="700" fill="#64748b">'+hh+'h</text>';
+    svg+='<text x="'+(x+bw/2)+'" y="'+(H-16)+'" text-anchor="middle" font-size="13" font-weight="700" fill="'+(o.today?'#4f46e5':'#94a3b8')+'">'
+      +(o.today?'오늘':(o.d.getMonth()+1)+'/'+o.d.getDate())+'</text>';
+  });
+  svg+='</svg>';
+  $('chartArea').innerHTML=svg;
+  /* 범례 + 과목별 합계 */
+  var lg='',weekTot=0,perSubj={};
+  var weekAgo=new Date(); weekAgo.setDate(weekAgo.getDate()-6);
+  logs.forEach(function(l){
+    if(SR.parseYmd(l.d)>=new Date(weekAgo.getFullYear(),weekAgo.getMonth(),weekAgo.getDate())){
+      perSubj[l.s]=(perSubj[l.s]||0)+l.sec; weekTot+=l.sec;
+    }
+  });
+  subjects.forEach(function(s){
+    lg+='<span><i style="background:'+SR.PALETTE[s.c]+'"></i>'+SR.esc(s.name)
+      +' '+Math.round((perSubj[s.id]||0)/60)+'분</span>';
+  });
+  $('legendArea').innerHTML=lg;
+  $('statsArea').innerHTML=
+    '<div class="stat"><div class="k">오늘</div><div class="v">'+Math.round(todaySec(null)/60)+'분</div></div>'
+   +'<div class="stat"><div class="k">최근 7일 합계</div><div class="v">'+Math.round(weekTot/60)+'분</div></div>'
+   +'<div class="stat"><div class="k">하루 평균</div><div class="v">'+Math.round(weekTot/60/7)+'분</div></div>';
+}
+setInterval(renderChart,30000);
+
+$('btnCsv').onclick=function(){
+  if(!logs.length){ SR.toast('내보낼 기록이 없습니다'); return; }
+  var rows=['날짜,과목,공부시간(분)'];
+  logs.forEach(function(l){
+    var s=subjById(l.s);
+    rows.push(l.d+','+'"'+((s?s.name:'삭제된 과목').replace(/"/g,'""'))+'",'+(Math.round(l.sec/60*10)/10));
+  });
+  SR.saveText('﻿'+rows.join('\n'),'study-log.csv','text/csv');
+};
+$('btnClearAll').onclick=function(){
+  if(!confirm('모든 공부 기록을 삭제할까요? 되돌릴 수 없습니다.')) return;
+  logs=[]; run=null; persist(); renderAll();
+};
+
+function renderAll(){ renderSubjects(); renderChart(); tickFn(); }
+renderAll();
+})();
+</script>
+</body>
+</html>

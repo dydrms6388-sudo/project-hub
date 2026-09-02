@@ -1,0 +1,667 @@
+{
+  "version": "draft-1",
+  "note": "인터랙티브 착시 실험실 1단계 항목 설계 초안. 40개 항목. 모든 도형은 canvas/SVG/CSS로 자체 렌더링하며 이미지 파일을 쓰지 않는다. copyrightStatus '확인필요' 항목은 구현 전 소유자 확인 필요. motionWarning=true 항목은 정지 버튼·사전 경고 배너·prefers-reduced-motion 대응 필수, 깜빡임은 초당 3회 미만으로 제한한다.",
+  "categories": [
+    { "slug": "geometry-size", "label": "기하 · 크기와 길이" },
+    { "slug": "geometry-angle", "label": "기하 · 방향과 각도" },
+    { "slug": "brightness", "label": "밝기와 명암" },
+    { "slug": "color-contour", "label": "색과 윤곽" },
+    { "slug": "fading", "label": "소실과 충전" },
+    { "slug": "motion", "label": "운동" },
+    { "slug": "ambiguous", "label": "다의도형 · 불가능도형" }
+  ],
+  "illusions": [
+    {
+      "slug": "muller-lyer",
+      "name": "뮐러-라이어 착시",
+      "nameEn": "Müller-Lyer illusion",
+      "category": "geometry-size",
+      "discoveredBy": "Franz Carl Müller-Lyer",
+      "year": 1889,
+      "mechanism": "깊이단서(원근 해석) · 윤곽통합",
+      "params": [
+        { "name": "finAngle", "label": "화살깃 각도(°)", "min": 15, "max": 165, "default": 45 },
+        { "name": "finLength", "label": "화살깃 길이(px)", "min": 10, "max": 60, "default": 30 },
+        { "name": "lineLength", "label": "선분 길이(px)", "min": 100, "max": 300, "default": 200 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "ponzo",
+      "name": "폰조 착시",
+      "nameEn": "Ponzo illusion",
+      "category": "geometry-size",
+      "discoveredBy": "Mario Ponzo",
+      "year": 1911,
+      "mechanism": "깊이단서 · 크기항등성",
+      "params": [
+        { "name": "convergence", "label": "수렴선 기울기(%)", "min": 0, "max": 80, "default": 50 },
+        { "name": "barGap", "label": "두 막대 간격(px)", "min": 20, "max": 200, "default": 120 },
+        { "name": "barLength", "label": "막대 길이(px)", "min": 40, "max": 160, "default": 80 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "ebbinghaus",
+      "name": "에빙하우스 착시",
+      "nameEn": "Ebbinghaus (Titchener) illusion",
+      "category": "geometry-size",
+      "discoveredBy": "Hermann Ebbinghaus",
+      "year": 1898,
+      "mechanism": "크기 맥락대비",
+      "params": [
+        { "name": "surroundSize", "label": "주변 원 크기(px)", "min": 5, "max": 60, "default": 40 },
+        { "name": "surroundCount", "label": "주변 원 개수", "min": 4, "max": 10, "default": 6 },
+        { "name": "surroundDist", "label": "주변 원 거리(px)", "min": 40, "max": 120, "default": 70 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "delboeuf",
+      "name": "델뵈프 착시",
+      "nameEn": "Delboeuf illusion",
+      "category": "geometry-size",
+      "discoveredBy": "Joseph Delboeuf",
+      "year": 1865,
+      "mechanism": "크기 맥락대비 · 동화",
+      "params": [
+        { "name": "annulusRatio", "label": "고리/원판 반지름 비", "min": 1.1, "max": 3.0, "default": 1.4, "step": 0.1 },
+        { "name": "targetSize", "label": "가운데 원 크기(px)", "min": 20, "max": 80, "default": 50 },
+        { "name": "ringWidth", "label": "고리 두께(px)", "min": 1, "max": 10, "default": 2 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "vertical-horizontal",
+      "name": "수직-수평 착시",
+      "nameEn": "Vertical–horizontal illusion",
+      "category": "geometry-size",
+      "discoveredBy": "Adolf Fick",
+      "year": 1851,
+      "mechanism": "시야 이방성 · 이등분 과소평가",
+      "params": [
+        { "name": "lineLength", "label": "선분 길이(px)", "min": 50, "max": 250, "default": 150 },
+        { "name": "junction", "label": "접점 위치(0=끝, 50=중앙)", "min": 0, "max": 50, "default": 50 },
+        { "name": "tilt", "label": "전체 회전(°)", "min": 0, "max": 90, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "oppel-kundt",
+      "name": "오펠-쿤트 착시",
+      "nameEn": "Oppel–Kundt illusion",
+      "category": "geometry-size",
+      "discoveredBy": "Johann Joseph Oppel",
+      "year": 1855,
+      "mechanism": "충전 공간 과대평가",
+      "params": [
+        { "name": "dividerCount", "label": "구획선 개수", "min": 0, "max": 20, "default": 8 },
+        { "name": "extent", "label": "구간 길이(px)", "min": 80, "max": 240, "default": 160 },
+        { "name": "dividerHeight", "label": "구획선 높이(px)", "min": 10, "max": 60, "default": 30 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "sander",
+      "name": "잔더 평행사변형",
+      "nameEn": "Sander parallelogram",
+      "category": "geometry-size",
+      "discoveredBy": "Friedrich Sander",
+      "year": 1926,
+      "mechanism": "깊이단서(원근 해석)",
+      "params": [
+        { "name": "skew", "label": "기울임 각도(°)", "min": 0, "max": 55, "default": 40 },
+        { "name": "width", "label": "전체 너비(px)", "min": 150, "max": 320, "default": 260 },
+        { "name": "height", "label": "높이(px)", "min": 70, "max": 160, "default": 110 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "jastrow",
+      "name": "재스트로 착시",
+      "nameEn": "Jastrow illusion",
+      "category": "geometry-size",
+      "discoveredBy": "Joseph Jastrow",
+      "year": 1892,
+      "mechanism": "인접 변 길이 대비",
+      "params": [
+        { "name": "arcAngle", "label": "부채꼴 각도(°)", "min": 30, "max": 120, "default": 60 },
+        { "name": "ringWidth", "label": "고리 폭(px)", "min": 20, "max": 80, "default": 45 },
+        { "name": "offset", "label": "가로 어긋남(px)", "min": 0, "max": 60, "default": 20 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "helmholtz-squares",
+      "name": "헬름홀츠 정사각형",
+      "nameEn": "Helmholtz squares",
+      "category": "geometry-size",
+      "discoveredBy": "Hermann von Helmholtz",
+      "year": 1867,
+      "mechanism": "충전 공간 과대평가(줄무늬 방향)",
+      "params": [
+        { "name": "stripeCount", "label": "줄무늬 개수", "min": 4, "max": 24, "default": 12 },
+        { "name": "squareSize", "label": "정사각형 크기(px)", "min": 100, "max": 240, "default": 180 },
+        { "name": "duty", "label": "줄무늬 두께 비율(%)", "min": 20, "max": 80, "default": 50 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "zollner",
+      "name": "죌너 착시",
+      "nameEn": "Zöllner illusion",
+      "category": "geometry-angle",
+      "discoveredBy": "Johann Karl Friedrich Zöllner",
+      "year": 1860,
+      "mechanism": "예각 과대평가 · 방향상호작용",
+      "params": [
+        { "name": "hatchAngle", "label": "빗금 각도(°)", "min": 10, "max": 80, "default": 30 },
+        { "name": "hatchSpacing", "label": "빗금 간격(px)", "min": 8, "max": 40, "default": 16 },
+        { "name": "lineCount", "label": "주선 개수", "min": 2, "max": 8, "default": 5 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "hering-wundt",
+      "name": "헤링 · 분트 착시",
+      "nameEn": "Hering / Wundt illusion",
+      "category": "geometry-angle",
+      "discoveredBy": "Ewald Hering (1861) · Wilhelm Wundt (1898)",
+      "year": 1861,
+      "mechanism": "예각 과대평가 · 방향상호작용",
+      "mergedFrom": ["hering", "wundt"],
+      "params": [
+        { "name": "radialCount", "label": "방사선 개수", "min": 10, "max": 60, "default": 30 },
+        { "name": "variant", "label": "배경 유형(0=헤링 방사, 1=분트 역방사)", "min": 0, "max": 1, "default": 0 },
+        { "name": "lineGap", "label": "두 직선 간격(px)", "min": 30, "max": 120, "default": 60 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "poggendorff",
+      "name": "포겐도르프 착시",
+      "nameEn": "Poggendorff illusion",
+      "category": "geometry-angle",
+      "discoveredBy": "Johann Christian Poggendorff",
+      "year": 1860,
+      "mechanism": "예각 과대평가 · 가림 보간 오류",
+      "params": [
+        { "name": "occluderWidth", "label": "가림 사각형 폭(px)", "min": 20, "max": 120, "default": 60 },
+        { "name": "lineAngle", "label": "사선 각도(°)", "min": 15, "max": 75, "default": 40 },
+        { "name": "userOffset", "label": "이어질 위치 추정(px)", "min": -40, "max": 40, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "orbison",
+      "name": "오비슨 착시",
+      "nameEn": "Orbison illusion",
+      "category": "geometry-angle",
+      "discoveredBy": "William Orbison",
+      "year": 1939,
+      "mechanism": "예각 과대평가 · 배경 왜곡장",
+      "params": [
+        { "name": "patternDensity", "label": "배경선 밀도", "min": 8, "max": 48, "default": 24 },
+        { "name": "patternType", "label": "배경(0=방사, 1=동심원)", "min": 0, "max": 1, "default": 0 },
+        { "name": "shape", "label": "도형(0=정사각형, 1=원)", "min": 0, "max": 1, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "cafe-wall",
+      "name": "카페월 착시",
+      "nameEn": "Café wall illusion",
+      "category": "geometry-angle",
+      "discoveredBy": "A. H. Pierce (1898 기술, 1979 R. Gregory 명명)",
+      "year": 1898,
+      "mechanism": "경계 명암대비 · 방향선택성(경계 오귀속)",
+      "params": [
+        { "name": "rowOffset", "label": "행 어긋남(타일 폭 대비 %)", "min": 0, "max": 50, "default": 25 },
+        { "name": "mortarWidth", "label": "모르타르 선 두께(px)", "min": 0, "max": 6, "default": 2 },
+        { "name": "mortarGray", "label": "모르타르 밝기(0=검정, 100=흰색)", "min": 0, "max": 100, "default": 50 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "fraser-spiral",
+      "name": "프레이저 나선",
+      "nameEn": "Fraser spiral (twisted cord)",
+      "category": "geometry-angle",
+      "discoveredBy": "James Fraser",
+      "year": 1908,
+      "mechanism": "국소 방향신호의 전역 오통합(꼬인 끈 효과)",
+      "params": [
+        { "name": "cordTwist", "label": "끈 꼬임 각도(°)", "min": 0, "max": 45, "default": 25 },
+        { "name": "ringCount", "label": "동심원 개수", "min": 3, "max": 8, "default": 5 },
+        { "name": "checkerDensity", "label": "배경 체크 밀도", "min": 6, "max": 24, "default": 12 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "상"
+    },
+    {
+      "slug": "hermann-grid",
+      "name": "헤르만 격자",
+      "nameEn": "Hermann grid",
+      "category": "brightness",
+      "discoveredBy": "Ludimar Hermann",
+      "year": 1870,
+      "mechanism": "측면억제",
+      "params": [
+        { "name": "squareSize", "label": "사각형 크기(px)", "min": 20, "max": 80, "default": 50 },
+        { "name": "gapWidth", "label": "통로 폭(px)", "min": 2, "max": 24, "default": 10 },
+        { "name": "contrast", "label": "명암 대비(%)", "min": 20, "max": 100, "default": 100 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "simultaneous-contrast",
+      "name": "동시대비",
+      "nameEn": "Simultaneous contrast",
+      "category": "brightness",
+      "discoveredBy": "Michel Eugène Chevreul",
+      "year": 1839,
+      "mechanism": "측면억제 · 맥락 정규화",
+      "mergedFrom": ["simultaneous-brightness-contrast", "simultaneous-color-contrast"],
+      "params": [
+        { "name": "bgLeft", "label": "왼쪽 배경 밝기(%)", "min": 0, "max": 100, "default": 15 },
+        { "name": "bgRight", "label": "오른쪽 배경 밝기(%)", "min": 0, "max": 100, "default": 85 },
+        { "name": "targetGray", "label": "표적 밝기(%)", "min": 0, "max": 100, "default": 50 },
+        { "name": "colorMode", "label": "모드(0=무채색, 1=보색 배경)", "min": 0, "max": 1, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "mach-bands",
+      "name": "마흐 밴드",
+      "nameEn": "Mach bands",
+      "category": "brightness",
+      "discoveredBy": "Ernst Mach",
+      "year": 1865,
+      "mechanism": "측면억제(경계 강조)",
+      "params": [
+        { "name": "rampWidth", "label": "경사 구간 폭(px)", "min": 10, "max": 200, "default": 80 },
+        { "name": "lowLum", "label": "어두운 면 밝기(%)", "min": 0, "max": 45, "default": 20 },
+        { "name": "highLum", "label": "밝은 면 밝기(%)", "min": 55, "max": 100, "default": 80 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "whites-illusion",
+      "name": "화이트 착시",
+      "nameEn": "White's illusion (incl. Munker–White)",
+      "category": "brightness",
+      "discoveredBy": "Michael White (색 변형: Hans Munker)",
+      "year": 1979,
+      "mechanism": "귀속(belongingness) · 동화",
+      "mergedFrom": ["whites", "munker-white"],
+      "params": [
+        { "name": "stripeWidth", "label": "줄무늬 폭(px)", "min": 4, "max": 40, "default": 14 },
+        { "name": "targetLength", "label": "표적 조각 길이(px)", "min": 20, "max": 120, "default": 60 },
+        { "name": "colorMode", "label": "모드(0=회색, 1=문커-화이트 색)", "min": 0, "max": 1, "default": 0 }
+      ],
+      "copyrightStatus": "확인필요",
+      "difficulty": "중"
+    },
+    {
+      "slug": "cornsweet",
+      "name": "크레이크-오브라이언-콘스위트 착시",
+      "nameEn": "Craik–O'Brien–Cornsweet illusion",
+      "category": "brightness",
+      "discoveredBy": "Kenneth Craik · Vivian O'Brien · Tom Cornsweet",
+      "year": 1970,
+      "mechanism": "경계 신호의 면 외삽(filling-in)",
+      "params": [
+        { "name": "gradientWidth", "label": "경계 그라데이션 폭(px)", "min": 5, "max": 100, "default": 40 },
+        { "name": "gradientDepth", "label": "경계 명암 깊이(%)", "min": 0, "max": 50, "default": 25 },
+        { "name": "baseLum", "label": "양면 기본 밝기(%)", "min": 30, "max": 70, "default": 50 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "checker-shadow",
+      "name": "체커 그림자 착시",
+      "nameEn": "Checker shadow illusion",
+      "category": "brightness",
+      "discoveredBy": "Edward H. Adelson",
+      "year": 1995,
+      "mechanism": "밝기항등성 · 조명 추론(그림자 할인)",
+      "params": [
+        { "name": "shadowOpacity", "label": "그림자 진하기(%)", "min": 0, "max": 80, "default": 55 },
+        { "name": "shadowSoftness", "label": "그림자 가장자리 흐림(px)", "min": 0, "max": 40, "default": 20 },
+        { "name": "checkContrast", "label": "체커 대비(%)", "min": 20, "max": 100, "default": 70 }
+      ],
+      "copyrightStatus": "확인필요",
+      "difficulty": "중"
+    },
+    {
+      "slug": "ehrenstein",
+      "name": "에렌슈타인 착시",
+      "nameEn": "Ehrenstein illusion",
+      "category": "brightness",
+      "discoveredBy": "Walter Ehrenstein",
+      "year": 1941,
+      "mechanism": "윤곽보완 · 밝기 충전",
+      "params": [
+        { "name": "lineCount", "label": "방사선 개수", "min": 4, "max": 16, "default": 8 },
+        { "name": "gapRadius", "label": "중심 공백 반지름(px)", "min": 5, "max": 50, "default": 20 },
+        { "name": "lineLength", "label": "방사선 길이(px)", "min": 20, "max": 100, "default": 50 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "kanizsa-triangle",
+      "name": "카니자 삼각형",
+      "nameEn": "Kanizsa triangle",
+      "category": "color-contour",
+      "discoveredBy": "Gaetano Kanizsa",
+      "year": 1955,
+      "mechanism": "주관적 윤곽(모달 보완)",
+      "params": [
+        { "name": "discRadius", "label": "팩맨 원 반지름(px)", "min": 20, "max": 80, "default": 45 },
+        { "name": "spacing", "label": "꼭짓점 간 거리(px)", "min": 100, "max": 300, "default": 200 },
+        { "name": "rotation", "label": "팩맨 입 회전(°)", "min": 0, "max": 60, "default": 0 }
+      ],
+      "copyrightStatus": "확인필요",
+      "difficulty": "하"
+    },
+    {
+      "slug": "neon-color-spreading",
+      "name": "네온색 확산",
+      "nameEn": "Neon color spreading",
+      "category": "color-contour",
+      "discoveredBy": "Dario Varin (1971) · Hans van Tuijl (1975)",
+      "year": 1971,
+      "mechanism": "색채동화 · 주관적 윤곽",
+      "params": [
+        { "name": "crossSaturation", "label": "교차부 색 채도(%)", "min": 0, "max": 100, "default": 70 },
+        { "name": "gridDensity", "label": "격자 밀도", "min": 4, "max": 16, "default": 8 },
+        { "name": "segmentRatio", "label": "색 구간 길이 비(%)", "min": 10, "max": 60, "default": 30 }
+      ],
+      "copyrightStatus": "확인필요",
+      "difficulty": "중"
+    },
+    {
+      "slug": "watercolor-illusion",
+      "name": "수채화 착시",
+      "nameEn": "Watercolor illusion",
+      "category": "color-contour",
+      "discoveredBy": "Baingio Pinna",
+      "year": 1987,
+      "mechanism": "색채동화 · 경계 색 확산",
+      "params": [
+        { "name": "borderWidth", "label": "이중 윤곽선 두께(px)", "min": 1, "max": 8, "default": 3 },
+        { "name": "innerHue", "label": "안쪽 선 색상(°)", "min": 0, "max": 360, "default": 30 },
+        { "name": "waviness", "label": "윤곽 물결 진폭(px)", "min": 0, "max": 30, "default": 12 }
+      ],
+      "copyrightStatus": "확인필요",
+      "difficulty": "중"
+    },
+    {
+      "slug": "color-afterimage",
+      "name": "색 잔상",
+      "nameEn": "Negative color afterimage",
+      "category": "color-contour",
+      "discoveredBy": "고전 (J. W. von Goethe 등이 체계적으로 기술)",
+      "year": 1810,
+      "mechanism": "광수용체 · 대립과정 적응",
+      "params": [
+        { "name": "adaptSeconds", "label": "응시 시간(초)", "min": 5, "max": 30, "default": 15 },
+        { "name": "hue", "label": "자극 색상(°)", "min": 0, "max": 360, "default": 120 },
+        { "name": "saturation", "label": "자극 채도(%)", "min": 20, "max": 100, "default": 90 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "bezold",
+      "name": "베졸트 효과",
+      "nameEn": "Bezold effect",
+      "category": "color-contour",
+      "discoveredBy": "Wilhelm von Bezold",
+      "year": 1874,
+      "mechanism": "색채동화",
+      "params": [
+        { "name": "lineDensity", "label": "삽입선 밀도", "min": 2, "max": 20, "default": 10 },
+        { "name": "lineLum", "label": "삽입선 밝기(0=검정, 100=흰색)", "min": 0, "max": 100, "default": 0 },
+        { "name": "baseHue", "label": "바탕 색상(°)", "min": 0, "max": 360, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "troxler",
+      "name": "트록슬러 소실",
+      "nameEn": "Troxler fading",
+      "category": "fading",
+      "discoveredBy": "Ignaz Paul Vital Troxler",
+      "year": 1804,
+      "mechanism": "주변시 신경적응 · 충전",
+      "params": [
+        { "name": "blobBlur", "label": "얼룩 흐림 정도(px)", "min": 0, "max": 60, "default": 40 },
+        { "name": "eccentricity", "label": "중심에서 거리(px)", "min": 50, "max": 250, "default": 150 },
+        { "name": "blobSaturation", "label": "얼룩 채도(%)", "min": 10, "max": 100, "default": 40 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "blind-spot",
+      "name": "맹점 채우기",
+      "nameEn": "Blind spot filling-in",
+      "category": "fading",
+      "discoveredBy": "Edme Mariotte",
+      "year": 1660,
+      "mechanism": "충전(filling-in)",
+      "params": [
+        { "name": "targetDistance", "label": "십자-표적 거리(px)", "min": 100, "max": 400, "default": 250 },
+        { "name": "targetSize", "label": "표적 크기(px)", "min": 5, "max": 40, "default": 20 },
+        { "name": "fillPattern", "label": "배경(0=단색, 1=줄무늬)", "min": 0, "max": 1, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "motion-aftereffect",
+      "name": "운동 잔효 (폭포 착시)",
+      "nameEn": "Motion aftereffect (waterfall illusion)",
+      "category": "motion",
+      "discoveredBy": "Robert Addams (아리스토텔레스가 최초 기록)",
+      "year": 1834,
+      "mechanism": "방향선택성 신경적응",
+      "motionWarning": true,
+      "mergedFrom": ["waterfall", "spiral-aftereffect"],
+      "params": [
+        { "name": "adaptSeconds", "label": "적응 시간(초)", "min": 10, "max": 60, "default": 30 },
+        { "name": "driftSpeed", "label": "이동 속도(주기/초)", "min": 0.5, "max": 3, "default": 1.5, "step": 0.1 },
+        { "name": "mode", "label": "모드(0=선형 격자, 1=회전 나선)", "min": 0, "max": 1, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "상"
+    },
+    {
+      "slug": "phi-beta",
+      "name": "파이 현상 (가현운동)",
+      "nameEn": "Phi phenomenon / beta movement",
+      "category": "motion",
+      "discoveredBy": "Max Wertheimer",
+      "year": 1912,
+      "mechanism": "시간적 통합 · 대응 문제",
+      "motionWarning": true,
+      "params": [
+        { "name": "alternationHz", "label": "교대 빈도(Hz, 최대 2.5)", "min": 0.5, "max": 2.5, "default": 1.5, "step": 0.1 },
+        { "name": "dotDistance", "label": "두 점 거리(px)", "min": 20, "max": 200, "default": 80 },
+        { "name": "dotSize", "label": "점 크기(px)", "min": 8, "max": 40, "default": 20 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "ternus",
+      "name": "테르누스 착시",
+      "nameEn": "Ternus display",
+      "category": "motion",
+      "discoveredBy": "Josef Ternus",
+      "year": 1926,
+      "mechanism": "대응 문제 · 지각적 집단화",
+      "motionWarning": true,
+      "params": [
+        { "name": "isi", "label": "프레임 간 공백(ms)", "min": 0, "max": 300, "default": 50, "step": 10 },
+        { "name": "elementSpacing", "label": "요소 간격(px)", "min": 30, "max": 100, "default": 60 },
+        { "name": "cycleMs", "label": "한 사이클 길이(ms, 최소 400)", "min": 400, "max": 2000, "default": 800, "step": 50 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "induced-motion",
+      "name": "유도 운동",
+      "nameEn": "Induced motion",
+      "category": "motion",
+      "discoveredBy": "Karl Duncker",
+      "year": 1929,
+      "mechanism": "상대운동 참조틀",
+      "motionWarning": true,
+      "params": [
+        { "name": "frameSpeed", "label": "틀 이동 속도(px/초)", "min": 5, "max": 60, "default": 25 },
+        { "name": "frameAmplitude", "label": "틀 이동 폭(px)", "min": 20, "max": 150, "default": 80 },
+        { "name": "dotJitter", "label": "점 실제 이동량(px)", "min": 0, "max": 30, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "barberpole",
+      "name": "이발소 기둥 착시",
+      "nameEn": "Barberpole illusion",
+      "category": "motion",
+      "discoveredBy": "J. P. Guilford",
+      "year": 1929,
+      "mechanism": "개구 문제(aperture problem)",
+      "motionWarning": true,
+      "params": [
+        { "name": "apertureRatio", "label": "창 가로/세로 비", "min": 0.3, "max": 3, "default": 0.4, "step": 0.1 },
+        { "name": "stripeAngle", "label": "줄무늬 각도(°)", "min": 15, "max": 75, "default": 45 },
+        { "name": "stripeSpeed", "label": "줄무늬 속도(px/초)", "min": 10, "max": 80, "default": 40 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "kinetic-depth",
+      "name": "운동 깊이 효과",
+      "nameEn": "Kinetic depth effect",
+      "category": "motion",
+      "discoveredBy": "Hans Wallach · D. N. O'Connell",
+      "year": 1953,
+      "mechanism": "운동으로부터의 구조(structure from motion)",
+      "motionWarning": true,
+      "params": [
+        { "name": "rotationSpeed", "label": "회전 속도(°/초)", "min": 5, "max": 60, "default": 25 },
+        { "name": "dotCount", "label": "점 개수", "min": 20, "max": 200, "default": 80 },
+        { "name": "perspective", "label": "원근 강도(0=평행투영)", "min": 0, "max": 100, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "상"
+    },
+    {
+      "slug": "stereokinetic",
+      "name": "입체운동 효과",
+      "nameEn": "Stereokinetic effect",
+      "category": "motion",
+      "discoveredBy": "Cesare Musatti",
+      "year": 1924,
+      "mechanism": "운동으로부터의 구조 · 깊이단서",
+      "motionWarning": true,
+      "params": [
+        { "name": "rotationSpeed", "label": "회전 속도(°/초)", "min": 10, "max": 60, "default": 30 },
+        { "name": "eccentricOffset", "label": "원 중심 어긋남(px)", "min": 0, "max": 40, "default": 18 },
+        { "name": "ringCount", "label": "원 개수", "min": 2, "max": 8, "default": 5 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "necker-cube",
+      "name": "네커 정육면체",
+      "nameEn": "Necker cube",
+      "category": "ambiguous",
+      "discoveredBy": "Louis Albert Necker",
+      "year": 1832,
+      "mechanism": "다의적 깊이 해석(쌍안정)",
+      "params": [
+        { "name": "skewAngle", "label": "투영 기울기(°)", "min": 20, "max": 45, "default": 30 },
+        { "name": "size", "label": "정육면체 크기(px)", "min": 80, "max": 240, "default": 160 },
+        { "name": "depthHint", "label": "깊이 힌트 강도(%)", "min": 0, "max": 100, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "schroeder-stairs",
+      "name": "슈뢰더 계단",
+      "nameEn": "Schröder stairs",
+      "category": "ambiguous",
+      "discoveredBy": "Heinrich Schröder",
+      "year": 1858,
+      "mechanism": "다의적 깊이 해석(쌍안정)",
+      "params": [
+        { "name": "stepCount", "label": "계단 수", "min": 3, "max": 10, "default": 6 },
+        { "name": "skew", "label": "기울임(°)", "min": 10, "max": 45, "default": 30 },
+        { "name": "flipAid", "label": "반전 보조 음영(%)", "min": 0, "max": 100, "default": 0 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "하"
+    },
+    {
+      "slug": "rubin-vase",
+      "name": "루빈의 꽃병",
+      "nameEn": "Rubin's vase",
+      "category": "ambiguous",
+      "discoveredBy": "Edgar Rubin",
+      "year": 1915,
+      "mechanism": "전경-배경 조직화",
+      "params": [
+        { "name": "vaseWidth", "label": "꽃병 폭(%)", "min": 30, "max": 70, "default": 50 },
+        { "name": "contrast", "label": "명암 대비(%)", "min": 20, "max": 100, "default": 100 },
+        { "name": "colorBalance", "label": "색 균형(0=꽃병 강조, 100=얼굴 강조)", "min": 0, "max": 100, "default": 50 }
+      ],
+      "copyrightStatus": "공유자산",
+      "difficulty": "중"
+    },
+    {
+      "slug": "penrose-triangle",
+      "name": "펜로즈 삼각형",
+      "nameEn": "Penrose (Reutersvärd) triangle",
+      "category": "ambiguous",
+      "discoveredBy": "Oscar Reutersvärd (1934) · Lionel & Roger Penrose (1958)",
+      "year": 1934,
+      "mechanism": "국소-전역 깊이 통합 불일치",
+      "params": [
+        { "name": "beamWidth", "label": "막대 두께(px)", "min": 10, "max": 40, "default": 24 },
+        { "name": "size", "label": "전체 크기(px)", "min": 120, "max": 300, "default": 220 },
+        { "name": "breakGap", "label": "모서리 벌리기(px, 속임수 해제용)", "min": 0, "max": 60, "default": 0 }
+      ],
+      "copyrightStatus": "확인필요",
+      "difficulty": "중"
+    }
+  ]
+}

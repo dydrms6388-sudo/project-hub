@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>띠 계산기 — 12간지 띠·육십갑자·별자리 계산 (입춘·설날 기준) | DateLab</title>
+<meta name="description" content="생년월일로 띠(12지)·육십갑자·별자리를 계산합니다. 양력 1월 1일, 음력 설날, 입춘 세 가지 기준을 지원해 1~2월생 띠 경계도 정확히 확인할 수 있습니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"띠 계산기","description":"생년월일로 띠(12지)·육십갑자·별자리를 계산합니다. 양력 1월 1일, 음력 설날, 입춘 세 가지 기준을 지원해 1~2월생 띠 경계도 정확히 확인할 수 있습니다.","url":"https://datelab-kr.vercel.app/tools/zodiac/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"1월생인데 띠가 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"기준에 따라 다릅니다. 예를 들어 2025년 1월 15일생은 양력 기준 뱀띠지만, 설날(1월 29일)이나 입춘(2월 3일) 이전이므로 전통·명리 기준으로는 용띠(2024년 갑진년)입니다. 이 계산기는 세 기준을 모두 보여줍니다."}},{"@type":"Question","name":"입춘 기준은 왜 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"명리학(사주팔자)에서는 한 해의 시작을 태양의 움직임에 따른 절기력으로 보아, 24절기의 첫 절기인 입춘부터 새로운 해의 간지가 시작된다고 봅니다."}},{"@type":"Question","name":"별자리는 어떤 기준인가요?","acceptedAnswer":{"@type":"Answer","text":"서양 점성술의 태양 별자리로, 양력 생일 날짜 구간(예: 3/21~4/19 양자리)으로 정해집니다. 경계일 부근은 연도별로 하루 정도 차이가 있을 수 있습니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://datelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"띠 계산기","item":"https://datelab-kr.vercel.app/tools/zodiac/"}]}</script>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="../../">Date<b>Lab</b> 날짜랩</a>
+    <nav class="head-nav">
+      <a href="../../tools/korean-age/">만나이</a>
+      <a href="../../tools/dday/">디데이</a>
+      <a href="../../tools/holidays/">공휴일</a>
+      <a href="../../tools/lunar/">음력</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <nav class="crumb"><a href="../../">홈</a> › 띠 계산기</nav>
+    
+<h1>띠 계산기</h1>
+<p class="lead">생년월일로 <strong>띠(12지)</strong>와 <strong>육십갑자</strong>, <strong>별자리</strong>를 계산합니다. 1~2월생은 기준(설날/입춘)에 따라 띠가 달라질 수 있어 세 기준을 모두 보여줍니다.</p>
+<div class="card">
+  <div class="field">
+    <label for="birth">생년월일 (양력)</label>
+    <input type="date" id="birth" min="1940-02-08" max="2050-12-31">
+  </div>
+  <div class="field">
+    <label for="std">띠 기준</label>
+    <select id="std">
+      <option value="lunar" selected>음력 설날 기준 (민속 전통)</option>
+      <option value="ipchun">입춘 기준 (명리학·사주)</option>
+      <option value="solar">양력 1월 1일 기준 (약식)</option>
+    </select>
+  </div>
+  <button class="btn" id="calc">띠 계산하기</button>
+  <div class="result" id="result">
+    <div class="res-hero"><div class="big" id="out"></div><div class="cap" id="outCap"></div></div>
+    <div class="stat-grid">
+      <div class="stat"><div class="v" id="ganjiV"></div><div class="k">육십갑자</div></div>
+      <div class="stat"><div class="v" id="starV"></div><div class="k">별자리</div></div>
+      <div class="stat"><div class="v" id="cmpV"></div><div class="k">기준별 띠 비교</div></div>
+    </div>
+    <div class="note">기준에 따른 차이는 학문·관습의 차이일 뿐 맞고 틀림의 문제가 아닙니다. 사주·운세 관련 해석은 재미로 보는 참고 정보입니다.</div>
+  </div>
+</div>
+<section class="content">
+<h2>띠는 언제 바뀔까? 세 가지 기준</h2>
+<p>띠의 경계에 대해서는 세 가지 견해가 있습니다. <strong>민속 전통</strong>에서는 설날(음력 1월 1일)에 해가 바뀐다고 보고, <strong>명리학(사주)</strong>에서는 24절기의 시작인 입춘(양력 2월 3~4일경)을 기준으로 합니다. 일상에서는 편의상 <strong>양력 1월 1일</strong>로 띠를 말하는 경우도 많습니다. 그래서 1월~2월 초에 태어난 사람은 기준에 따라 띠가 달라질 수 있습니다.</p>
+<p>육십갑자는 10개의 천간(갑을병정무기경신임계)과 12개의 지지(자축인묘진사오미신유술해)를 조합한 60년 주기입니다. 예를 들어 2025년은 을사년(뱀띠), 2026년은 병오년(말띠)입니다. 지지가 곧 띠를 결정합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>생년월일과 기준을 선택하고 「띠 계산하기」를 누릅니다.</li>
+<li>결과에는 선택한 기준의 띠와 함께 세 기준을 비교한 값이 표시되어 경계 여부를 확인할 수 있습니다.</li>
+</ol>
+<p class="note">입춘 시각은 해마다 다릅니다(2월 3일 또는 4일). 이 계산기는 연도별 입춘 날짜를 일 단위로 계산하며, 입춘 당일 출생처럼 시각까지 필요한 경우 한국천문연구원 자료를 확인하세요.</p>
+</section>
+    <!-- ad-slot -->
+    
+<section class="content">
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>1월생인데 띠가 무엇인가요?</summary><p>기준에 따라 다릅니다. 예를 들어 2025년 1월 15일생은 양력 기준 뱀띠지만, 설날(1월 29일)이나 입춘(2월 3일) 이전이므로 전통·명리 기준으로는 용띠(2024년 갑진년)입니다. 이 계산기는 세 기준을 모두 보여줍니다.</p></details>
+<details class="faq"><summary>입춘 기준은 왜 쓰나요?</summary><p>명리학(사주팔자)에서는 한 해의 시작을 태양의 움직임에 따른 절기력으로 보아, 24절기의 첫 절기인 입춘부터 새로운 해의 간지가 시작된다고 봅니다.</p></details>
+<details class="faq"><summary>별자리는 어떤 기준인가요?</summary><p>서양 점성술의 태양 별자리로, 양력 생일 날짜 구간(예: 3/21~4/19 양자리)으로 정해집니다. 경계일 부근은 연도별로 하루 정도 차이가 있을 수 있습니다.</p></details>
+</section>
+  </div>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+<a href="../../tools/korean-age/">만나이 계산기</a>
+<a href="../../tools/dday/">디데이 계산기</a>
+<a href="../../tools/anniversary/">100일 계산기</a>
+<a href="../../tools/lunar/">음력 변환기</a>
+<a href="../../tools/holidays/">2026년 공휴일</a>
+<a href="../../tools/workdays/">근무일 계산기</a>
+<a href="../../tools/date-diff/">날짜 계산기</a>
+<a href="../../tools/zodiac/">띠 계산기</a>
+<a href="../../tools/week-number/">몇 주차 계산기</a>
+<a href="../../tools/age-in-days/">살아온 날 계산기</a>
+<a href="../../tools/retirement/">정년 퇴직일 계산기</a>
+<a href="../../tools/military/">전역일 계산기</a>
+    </div>
+    <div class="cols">
+<a href="../../guide/korean-age-2023/">만 나이 통일법 총정리</a>
+<a href="../../guide/holidays-2026/">2026년 공휴일 총정리</a>
+    </div>
+    <p>모든 계산은 사용자의 브라우저 안에서만 실행되며, 입력한 값은 서버로 전송·저장되지 않습니다.</p>
+    <div class="legal">
+      <a href="../../privacy.html">개인정보처리방침</a>
+      <a href="../../terms.html">이용약관</a>
+      <span>© 2026 DateLab 날짜랩</span>
+    </div>
+  </div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/lunar.js"></script>
+<script>
+
+(function(){
+var $=DL.$;
+var STARS=[['물병자리',120],['물고기자리',219],['양자리',321],['황소자리',420],['쌍둥이자리',521],['게자리',622],['사자자리',723],['처녀자리',823],['천칭자리',923],['전갈자리',1023],['사수자리',1122],['염소자리',1222]];
+function star(m,d){var v=m*100+d,name='염소자리';for(var i=0;i<STARS.length;i++){if(v>=STARS[i][1])name=STARS[i][0];}return name;}
+function ipchunDay(y){var c=y<2000?4.6295:3.87;var yy=y%100;return Math.floor(yy*0.2422+c)-Math.floor((yy===0?(y-1)%100+1-1:yy-1)/4);}
+function zodiacYear(date,std){
+  var y=date.getFullYear();
+  if(std==='solar')return y;
+  if(std==='ipchun'){var day=ipchunDay(y);return (date.getMonth()===0||(date.getMonth()===1&&date.getDate()<day))?y-1:y;}
+  var r=KLunar.solarToLunar(y,date.getMonth()+1,date.getDate());
+  return r?r.year:y;
+}
+$('#calc').addEventListener('click',function(){
+  var v=$('#birth').value;
+  if(!v){alert('생년월일을 입력해 주세요.');return;}
+  var d=DL.fromIso(v),std=$('#std').value;
+  if(std==='lunar'&&!KLunar.solarToLunar(d.getFullYear(),d.getMonth()+1,d.getDate())){alert('음력 데이터 범위(1940-02-08~2050-12-31)를 벗어났습니다. 다른 기준을 선택해 주세요.');return;}
+  var zy=zodiacYear(d,std),g=KLunar.yearGanji(zy);
+  var stdKo={lunar:'음력 설날',ipchun:'입춘',solar:'양력 1월 1일'}[std];
+  $('#out').textContent=g.zodiac+'띠';
+  $('#outCap').textContent=DL.fmtKo(d)+' 출생 · '+stdKo+' 기준 ('+zy+'년 '+g.name+'년)';
+  $('#ganjiV').textContent=g.name+'년 ('+g.hanja+')';
+  $('#starV').textContent=star(d.getMonth()+1,d.getDate());
+  var parts=['lunar','ipchun','solar'].map(function(s){
+    var gy;try{gy=zodiacYear(d,s);}catch(e){return null;}
+    return {lunar:'설날',ipchun:'입춘',solar:'양력'}[s]+' '+KLunar.yearGanji(gy).zodiac;
+  }).filter(Boolean);
+  $('#cmpV').textContent=parts.join(' · ');
+  $('#cmpV').style.fontSize='14px';
+  $('#result').classList.add('show');
+});
+})();
+</script>
+</body>
+</html>

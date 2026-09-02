@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로필 사진 만들기 — 무료·로그인 없음 | 썸메이커</title>
+<meta name="description" content="프로필 사진 만들기 무료 에디터. 원형 가이드 위에 사진·이니셜·배경색을 배치하고 원형으로 잘린 투명 PNG로 저장하세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"프로필 사진 만들기 — 썸메이커","applicationCategory":"DesignApplication","operatingSystem":"Web","description":"프로필 사진 만들기 무료 에디터. 원형 가이드 위에 사진·이니셜·배경색을 배치하고 원형으로 잘린 투명 PNG로 저장하세요.","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"원형 PNG는 어디에 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"문서·영상·웹사이트처럼 원형 그대로 얹어야 하는 곳에 유용합니다. 카카오톡·인스타 등 업로드 시 자동으로 원형 크롭되는 서비스에는 정사각 원본을 올리는 것이 좋습니다."}},{"@type":"Question","name":"프로필 사진 권장 크기는요?","acceptedAnswer":{"@type":"Answer","text":"서비스마다 다르지만 800×800이면 대부분 충분합니다. 유튜브 채널 프로필은 800×800을 권장합니다."}},{"@type":"Question","name":"사진 배경만 바꿀 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"배경 제거 기능은 없습니다. 배경이 투명한 PNG를 올리면 배경 패널의 단색/그라데이션이 뒤에 깔립니다."}},{"@type":"Question","name":"얼굴이 가장자리에서 잘려요.","acceptedAnswer":{"@type":"Answer","text":"점선 원이 실제 표시 영역입니다. 사진을 선택해 크기를 줄이거나 위치를 옮겨 원 안에 얼굴이 들어오게 하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"썸메이커","item":"https://thumbmaker-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"프로필 사진 만들기","item":"https://thumbmaker-kr.vercel.app/tools/profile/"}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="logo" href="../../index.html">🎨 썸메이커<span class="dot">.</span><small style="font-weight:600;color:var(--sub)">thumbmaker-kr</small></a>
+  <nav class="gnb" aria-label="주요 메뉴">
+    <a href="../../tools/youtube/index.html">유튜브</a>
+    <a href="../../tools/instagram/index.html">인스타</a>
+    <a href="../../tools/meme/index.html">짤</a>
+    <a href="../../index.html#tools">전체 도구</a>
+    <a href="../../guide/youtube-thumbnail-size/index.html">크기 가이드</a>
+    <a href="../../fonts.html">폰트</a>
+  </nav>
+</div></header>
+
+<main class="wrap-wide">
+  <nav aria-label="현재 위치" style="font-size:.8rem;color:var(--sub);margin-top:14px"><a href="../../index.html">홈</a> › 프로필 사진 만들기</nav>
+  <h1>프로필 사진 만들기</h1>
+  <p class="lead">원형 가이드가 표시되는 정사각 캔버스입니다. 저장 시 원형으로 잘린 투명 PNG로 내보낼 수 있어요.</p>
+  <div id="editor"></div>
+  <!-- ad-slot -->
+  <div class="wrap" style="padding:0">
+  <section class="content">
+    <h2>프로필 사진 만들기 — 이 도구 소개</h2>
+    <p>카카오톡·인스타그램·유튜브 등 대부분의 서비스는 프로필 사진을 원형으로 잘라 보여줍니다. 이 도구의 캔버스에는 <strong>원형 가이드(점선)</strong>가 항상 표시되어, 얼굴이나 이니셜이 원 밖으로 잘리지 않게 배치할 수 있습니다.</p>
+<p>사진 없이도 배경색 + 이니셜 텍스트만으로 깔끔한 프로필을 만들 수 있고, 내보내기에서 "원형으로 자르기"를 켜면 <strong>원형으로 잘린 투명 PNG</strong>가 저장됩니다. 원형 파일이 필요 없는 서비스(업로드 후 자동으로 잘라 주는 곳)라면 옵션을 끄고 정사각으로 저장하세요.</p>
+    
+    <h2>사용법</h2>
+    <ol>
+<li>사진을 올리거나, 이니셜 템플릿의 글자·배경색을 내 것으로 바꿉니다.</li>
+<li>점선 원 가이드 안에 핵심(얼굴/이니셜)이 들어오게 드래그로 조정합니다.</li>
+<li>내보내기에서 <b>원형으로 자르기</b>를 켜고(투명 PNG) 저장합니다.</li>
+<li>서비스가 정사각 업로드를 요구하면 옵션을 끄고 저장하세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq">
+<details><summary>원형 PNG는 어디에 쓰나요?</summary><p>문서·영상·웹사이트처럼 원형 그대로 얹어야 하는 곳에 유용합니다. 카카오톡·인스타 등 업로드 시 자동으로 원형 크롭되는 서비스에는 정사각 원본을 올리는 것이 좋습니다.</p></details>
+<details><summary>프로필 사진 권장 크기는요?</summary><p>서비스마다 다르지만 800×800이면 대부분 충분합니다. 유튜브 채널 프로필은 800×800을 권장합니다.</p></details>
+<details><summary>사진 배경만 바꿀 수 있나요?</summary><p>배경 제거 기능은 없습니다. 배경이 투명한 PNG를 올리면 배경 패널의 단색/그라데이션이 뒤에 깔립니다.</p></details>
+<details><summary>얼굴이 가장자리에서 잘려요.</summary><p>점선 원이 실제 표시 영역입니다. 사진을 선택해 크기를 줄이거나 위치를 옮겨 원 안에 얼굴이 들어오게 하세요.</p></details>
+    </div>
+    <p class="notice">이 도구의 모든 처리(이미지 편집·저장)는 사용자의 브라우저 안에서만 이루어지며, 어떤 파일이나 개인정보도 서버로 전송되지 않습니다. 업로드하는 이미지·문구의 저작권과 초상권은 사용자 본인에게 책임이 있습니다.</p>
+  </section>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="cols">
+    <div><h4>만들기 도구</h4><ul>
+      <li><a href="../../tools/youtube/index.html">유튜브 썸네일 만들기</a></li>
+      <li><a href="../../tools/instagram/index.html">인스타 게시물 만들기</a></li>
+      <li><a href="../../tools/story/index.html">인스타 스토리 만들기</a></li>
+      <li><a href="../../tools/blog/index.html">블로그 대표 이미지 만들기</a></li>
+      <li><a href="../../tools/meme/index.html">짤 만들기</a></li>
+      <li><a href="../../tools/quote-card/index.html">명언 카드 만들기</a></li>
+      <li><a href="../../tools/og-image/index.html">OG 이미지 만들기</a></li>
+      <li><a href="../../tools/profile/index.html">프로필 사진 만들기</a></li>
+      <li><a href="../../tools/banner/index.html">유튜브 배너 만들기</a></li>
+      <li><a href="../../tools/kakao-cover/index.html">카톡 배경 만들기</a></li>
+      <li><a href="../../tools/text-image/index.html">글씨 이미지 만들기</a></li>
+      <li><a href="../../tools/sticker/index.html">스티커 만들기</a></li>
+    </ul></div>
+    <div><h4>안내</h4><ul>
+      <li><a href="../../guide/youtube-thumbnail-size/index.html">플랫폼별 썸네일 권장 크기</a></li>
+      <li><a href="../../guide/thumbnail-tips/index.html">클릭을 부르는 썸네일 팁</a></li>
+      <li><a href="../../fonts.html">제공 폰트 및 라이선스</a></li>
+      <li><a href="../../privacy.html">개인정보처리방침</a></li>
+      <li><a href="../../terms.html">이용약관</a></li>
+    </ul></div>
+    <div><h4>썸메이커</h4>
+      <p style="margin:0;max-width:320px">로그인 없이, 워터마크 없이 쓰는 한국어 썸네일·짤 에디터.
+      모든 작업은 브라우저 안에서만 처리되며 이미지가 서버로 전송되지 않습니다.</p></div>
+  </div>
+  <div class="copy">© <span data-year>2026</span> 썸메이커 (thumbmaker-kr) · 모든 도구 무료</div>
+</footer>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/data/templates.js"></script>
+<script src="../../assets/editor.js"></script>
+<script>
+(function(){
+  var preset = {slug:'profile',circle:true,sizes:[{label:'800×800',w:800,h:800},{label:'400×400 (소형)',w:400,h:400}],templateCats:['profile','sticker'],starterTpl:'profile-initial'};
+  if (preset.starterTpl && window.TM_TEMPLATES) {
+    var tpl = window.TM_TEMPLATES.filter(function(t){return t.id===preset.starterTpl;})[0];
+    if (tpl) preset.starter = function(ed){ ed.state = ed._templateState(tpl); };
+  }
+  window.__ed = new ThumbEditor(document.getElementById('editor'), preset);
+})();
+</script>
+</body>
+</html>

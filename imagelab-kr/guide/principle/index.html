@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>이미지 압축 원리와 AI 초해상도의 한계 | 이미지랩</title>
+<meta name="description" content="이미지 압축은 왜 용량이 줄고 화질이 떨어질까? AI 초해상도는 왜 &quot;없는 정보는 못 만든다&quot;고 할까? 원리를 쉽게 설명합니다.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"이미지 압축 원리와 AI 초해상도의 한계","description":"이미지 압축은 왜 용량이 줄고 화질이 떨어질까? AI 초해상도는 왜 \"없는 정보는 못 만든다\"고 할까? 원리를 쉽게 설명합니다.","url":"https://imagelab-kr.vercel.app/guide/principle/","inLanguage":"ko","author":{"@type":"Organization","name":"이미지랩"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"압축해서 나빠진 화질을 원본으로 되돌릴 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 손실 압축은 정보를 버리는 과정이라 버려진 정보는 어떤 방법으로도 복원되지 않습니다. AI 업스케일은 없는 정보를 그럴듯하게 추정해 채울 뿐, 원본 복원이 아닙니다."}},{"@type":"Question","name":"품질을 몇 %로 압축하는 게 좋나요?","acceptedAnswer":{"@type":"Answer","text":"웹 게시·메신저 공유 용도라면 품질 70~85%가 용량과 화질의 균형이 좋습니다. 인쇄나 재편집 예정이면 원본을 따로 보관하세요."}},{"@type":"Question","name":"AI 업스케일 결과를 증거·신원 확인에 써도 되나요?","acceptedAnswer":{"@type":"Answer","text":"안 됩니다. AI가 채운 픽셀은 추정일 뿐 사실이 아니므로, 정확성이 중요한 용도에는 사용하지 말아야 합니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"이미지 압축 원리와 AI 초해상도의 한계","item":"https://imagelab-kr.vercel.app/guide/principle/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap content">
+<nav class="crumb"><a href="../../">이미지랩</a> › 가이드</nav>
+<h1>이미지 압축 원리와 AI 초해상도의 한계</h1>
+<p class="lead">「용량은 줄이고 싶은데 화질은 지키고 싶다」, 「흐릿한 사진을 선명하게 만들고 싶다」 — 두 바람이 어디까지 가능하고 어디부터 불가능한지, 원리로 설명합니다.</p>
+
+<h2>1. 이미지 압축은 왜 용량이 줄어들까?</h2>
+<p>디지털 사진은 픽셀(점)마다 색 정보를 담은 데이터 덩어리입니다. 1200만 화소 사진을 그대로 저장하면 30MB가 넘지만, 실제 JPG 파일은 3~5MB 수준입니다. 그 차이를 만드는 것이 압축입니다.</p>
+<p>압축에는 두 갈래가 있습니다. <b>무손실 압축</b>(PNG 등)은 데이터를 더 효율적으로 적을 뿐 정보를 버리지 않아, 풀면 원본과 완전히 같습니다. 반면 <b>손실 압축</b>(JPG, WEBP, AVIF)은 사람 눈이 잘 느끼지 못하는 정보를 골라서 버립니다. 사람의 눈은 밝기 변화에는 민감하지만 미세한 색 변화나 아주 고운 질감에는 둔감한데, 손실 압축은 바로 그 둔감한 부분의 데이터를 줄입니다.</p>
+<h3>품질 슬라이더의 의미</h3>
+<p>품질 90%는 「둔감한 부분만 조금 버린다」, 품질 40%는 「눈에 보이는 부분까지 과감히 버린다」에 가깝습니다. 품질을 낮출수록 용량은 급격히 줄지만, 어느 지점부터 경계가 뭉개지고 블록 무늬(계단 현상)가 보이기 시작합니다. 경험적으로 <b>품질 70~85% 구간</b>이 「용량은 크게 줄고 화질 차이는 느끼기 어려운」 실용 구간입니다. <a href="../../tools/compress/">사진 용량 줄이기 도구</a>의 전/후 비교 슬라이더로 직접 확인해 보세요.</p>
+<h3>한 번 버린 정보는 돌아오지 않는다</h3>
+<p>중요한 것은 손실 압축이 <b>비가역</b>이라는 점입니다. 품질 40%로 저장한 JPG를 다시 품질 100%로 저장해도, PNG로 변환해도, 버려진 정보는 돌아오지 않습니다. 오히려 재저장할 때마다 손실이 누적됩니다. 그래서 원본은 삭제하지 말고 보관하는 것이 철칙입니다.</p>
+
+<h2>2. AI 초해상도(업스케일)의 원리와 한계</h2>
+<p>작은 사진을 단순히 2배로 키우면 픽셀 하나를 네 개로 늘려 그리는 것이라 흐릿해집니다. AI 초해상도 모델(Swin2SR, Real-ESRGAN 등)은 수백만 장의 「저해상도 ↔ 고해상도」 사진 쌍을 학습해서, 저해상도 패턴을 보고 <b>고해상도였다면 있었을 법한 픽셀을 추정</b>해 채웁니다. 그래서 단순 확대보다 경계가 또렷하고 질감이 살아 있는 결과가 나옵니다.</p>
+<h3>「없는 정보는 못 만든다」</h3>
+<p>여기서 한계가 분명해집니다. AI가 채우는 것은 <b>통계적으로 그럴듯한 추정</b>이지, 사라진 원본 정보가 아닙니다.</p>
+<ul>
+<li>흐릿해서 읽을 수 없는 글자 → AI는 「글자처럼 보이는 무언가」를 그릴 뿐, 실제 그 글자를 복원하지 못합니다.</li>
+<li>뭉개진 얼굴 → 「자연스러운 얼굴」이 만들어지지만 실제 그 사람의 얼굴이라는 보장이 없습니다.</li>
+<li>저화질 CCTV 캡처 → 선명해 보여도 세부는 AI의 상상이므로 증거·신원 확인 용도로는 부적합합니다.</li>
+</ul>
+<p>즉 AI 업스케일은 「보기 좋게 만드는」 도구이지 「사실을 복원하는」 도구가 아닙니다. 이 점을 이해하고 쓰면 매우 유용합니다. 오래된 저해상도 사진의 인쇄, 작은 이미지의 웹 게시용 확대 등이 좋은 용도입니다. <a href="../../tools/upscale/">사진 화질 좋게 하기 도구</a>에서 단순 확대와 AI 결과를 직접 비교할 수 있습니다.</p>
+
+<h2>3. 형식별 특성 요약</h2>
+<div class="tbl-wrap"><table>
+<tr><th>형식</th><th>압축</th><th>투명</th><th>적합한 용도</th></tr>
+<tr><td>PNG</td><td>무손실</td><td>지원</td><td>로고, 스크린샷, 재편집할 이미지</td></tr>
+<tr><td>JPG</td><td>손실</td><td>미지원</td><td>사진 전반, 메신저·웹 공유</td></tr>
+<tr><td>WEBP</td><td>손실/무손실</td><td>지원</td><td>웹 게시 (JPG보다 25~35% 작음)</td></tr>
+<tr><td>AVIF</td><td>손실/무손실</td><td>지원</td><td>최신 웹 (WEBP보다 더 작음, 지원 확인 필요)</td></tr>
+<tr><td>GIF</td><td>무손실(256색 제한)</td><td>지원</td><td>움짤·간단한 애니메이션</td></tr>
+</table></div>
+
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>압축해서 나빠진 화질을 원본으로 되돌릴 수 있나요?</summary><p>아니요. 손실 압축은 정보를 버리는 과정이라 버려진 정보는 어떤 방법으로도 복원되지 않습니다. AI 업스케일도 없는 정보를 그럴듯하게 추정해 채울 뿐, 원본 복원이 아닙니다. 원본 파일을 따로 보관하는 것이 유일한 해법입니다.</p></details>
+<details class="faq"><summary>품질을 몇 %로 압축하는 게 좋나요?</summary><p>웹 게시·메신저 공유 용도라면 70~85%가 균형이 좋습니다. 화면용으로는 차이를 느끼기 어려우면서 용량은 절반 이하로 줄어드는 경우가 많습니다.</p></details>
+<details class="faq"><summary>AI 업스케일 결과를 증거·신원 확인에 써도 되나요?</summary><p>안 됩니다. AI가 채운 픽셀은 추정일 뿐 사실이 아닙니다. 정확성이 중요한 용도에는 원본만 사용해야 합니다.</p></details>
+<p><a href="../../">← 이미지랩 도구 목록으로</a></p>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+</body>
+</html>

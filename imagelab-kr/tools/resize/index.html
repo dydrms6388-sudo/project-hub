@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>이미지 크기 조절 - 사진 크기 변경 (px·%·프리셋)</title>
+<meta name="description" content="이미지 크기 조절: 픽셀 직접 입력, 퍼센트 축소, 카톡 프로필·인스타·유튜브 썸네일 프리셋 지원. 서버 업로드 없는 무료 브라우저 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"이미지 크기 조절","description":"이미지 크기 조절: 픽셀 직접 입력, 퍼센트 축소, 카톡 프로필·인스타·유튜브 썸네일 프리셋 지원. 서버 업로드 없는 무료 브라우저 도구.","url":"https://imagelab-kr.vercel.app/tools/resize/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"작은 사진을 크게 키우면 화질이 좋아지나요?","acceptedAnswer":{"@type":"Answer","text":"단순 확대는 픽셀을 늘려 그릴 뿐 없는 정보를 만들지 못하므로 흐릿해집니다. 화질 개선이 목적이라면 「사진 화질 좋게 하기(AI 업스케일)」 도구를 사용해 보세요. 다만 그것도 원본에 없는 세부를 추정으로 채우는 것입니다."}},{"@type":"Question","name":"비율이 다른 프리셋을 선택하면 사진이 찌그러지나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 중앙을 기준으로 잘라내는 방식(cover)으로 맞추기 때문에 비율이 왜곡되지 않습니다. 잘리는 위치를 직접 고르고 싶다면 「사진 자르기」 도구를 먼저 사용하세요."}},{"@type":"Question","name":"어떤 형식으로 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"원본이 PNG면 PNG, WEBP면 WEBP, 그 외에는 JPG로 저장됩니다. 파일명은 원본이름-resized-크기 형태입니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"이미지 크기 조절","item":"https://imagelab-kr.vercel.app/tools/resize/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 이미지 크기 조절</nav>
+<h1>이미지 크기 조절</h1>
+<p class="lead">픽셀 직접 입력, 퍼센트, 자주 쓰는 프리셋(카톡 프로필·인스타·유튜브 썸네일)으로 크기를 바꿉니다.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<div class="field-row">
+  <label><input type="radio" name="rmode" value="px" checked> 픽셀 지정</label>
+  <label><input type="radio" name="rmode" value="pct"> 퍼센트</label>
+  <label><input type="radio" name="rmode" value="pre"> 프리셋</label>
+</div>
+<div id="pxBox">
+  <div class="grid2">
+    <div class="field"><label>가로 (px)</label><input type="number" id="w" min="1" inputmode="numeric"></div>
+    <div class="field"><label>세로 (px)</label><input type="number" id="h" min="1" inputmode="numeric"></div>
+  </div>
+  <label><input type="checkbox" id="lock" checked> 가로세로 비율 유지</label>
+</div>
+<div id="pctBox" style="display:none" class="field">
+  <label>비율 <span id="pctv">100%</span> · <span id="pctDim"></span></label>
+  <input type="range" id="pct" min="1" max="200" value="100">
+</div>
+<div id="preBox" style="display:none" class="field">
+  <label>용도 프리셋</label>
+  <select id="preset"></select>
+  <p class="status">프리셋 크기와 비율이 다르면 중앙 기준으로 잘라 맞춥니다.</p>
+</div>
+<p class="status" id="dim"></p>
+<div class="stage"><canvas id="pv"></canvas></div>
+<div class="btn-row"><button class="btn btn-primary" id="dl">다운로드</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>이미지 크기 조절 소개</h2>
+<p>이미지 크기 조절 도구는 사진의 가로·세로 픽셀을 원하는 값으로 바꿔 줍니다. 픽셀을 직접 입력하는 기본 모드 외에, 퍼센트로 축소·확대하는 모드와 카톡 프로필(640×640)·인스타그램 게시물(1080×1080)·유튜브 썸네일(1280×720) 같은 자주 쓰는 용도의 프리셋 모드를 제공합니다.</p>
+<p>비율 유지 옵션을 켜면 한쪽 값만 입력해도 나머지가 자동 계산되어 사진이 찌그러지지 않습니다. 프리셋처럼 비율이 다른 크기를 선택하면 중앙 기준으로 잘라(cover) 정확한 크기로 맞춥니다. 처리 결과는 미리보기로 즉시 확인할 수 있습니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장을 선택</li>
+<li>픽셀/퍼센트/프리셋 중 원하는 모드 선택</li>
+<li>값을 입력하면 미리보기가 즉시 갱신됨</li>
+<li>「다운로드」로 저장 (원본 형식 유지)</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>작은 사진을 크게 키우면 화질이 좋아지나요?</summary><p>단순 확대는 픽셀을 늘려 그릴 뿐 없는 정보를 만들지 못하므로 흐릿해집니다. 화질 개선이 목적이라면 「사진 화질 좋게 하기(AI 업스케일)」 도구를 사용해 보세요. 다만 그것도 원본에 없는 세부를 추정으로 채우는 것입니다.</p></details>
+<details class="faq"><summary>비율이 다른 프리셋을 선택하면 사진이 찌그러지나요?</summary><p>아니요. 중앙을 기준으로 잘라내는 방식(cover)으로 맞추기 때문에 비율이 왜곡되지 않습니다. 잘리는 위치를 직접 고르고 싶다면 「사진 자르기」 도구를 먼저 사용하세요.</p></details>
+<details class="faq"><summary>어떤 형식으로 저장되나요?</summary><p>원본이 PNG면 PNG, WEBP면 WEBP, 그 외에는 JPG로 저장됩니다. 파일명은 원본이름-resized-크기 형태입니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var img = null, fileName = '', origType = 'image/png';
+  var PRESETS = [
+    { n: '카톡 프로필 (640×640)', w: 640, h: 640 },
+    { n: '인스타 정사각 (1080×1080)', w: 1080, h: 1080 },
+    { n: '인스타 세로 (1080×1350)', w: 1080, h: 1350 },
+    { n: '인스타 스토리 (1080×1920)', w: 1080, h: 1920 },
+    { n: '유튜브 썸네일 (1280×720)', w: 1280, h: 720 },
+    { n: '프로필 사진 (400×400)', w: 400, h: 400 },
+    { n: 'FHD 배경 (1920×1080)', w: 1920, h: 1080 }
+  ];
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    var f = fs[0];
+    fileName = f.name;
+    origType = f.type === 'image/png' ? 'image/png' : (f.type === 'image/webp' ? 'image/webp' : 'image/jpeg');
+    img = await IL.loadImage(f);
+    $('drop').querySelector('strong').textContent = f.name + ' (' + IL.imgW(img) + '×' + IL.imgH(img) + ')';
+    $('panel').style.display = '';
+    $('w').value = IL.imgW(img);
+    $('h').value = IL.imgH(img);
+    updatePct();
+    preview();
+  });
+
+  var presetSel = $('preset');
+  PRESETS.forEach(function (p, i) {
+    var o = document.createElement('option'); o.value = i; o.textContent = p.n; presetSel.appendChild(o);
+  });
+
+  document.querySelectorAll('input[name=rmode]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      $('pxBox').style.display = r.value === 'px' && r.checked ? '' : 'none';
+      $('pctBox').style.display = r.value === 'pct' && r.checked ? '' : 'none';
+      $('preBox').style.display = r.value === 'pre' && r.checked ? '' : 'none';
+      preview();
+    });
+  });
+
+  function ratioLocked() { return $('lock').checked; }
+  $('w').addEventListener('input', function () {
+    if (img && ratioLocked()) $('h').value = Math.round($('w').value * IL.imgH(img) / IL.imgW(img)) || '';
+    preview();
+  });
+  $('h').addEventListener('input', function () {
+    if (img && ratioLocked()) $('w').value = Math.round($('h').value * IL.imgW(img) / IL.imgH(img)) || '';
+    preview();
+  });
+  $('pct').addEventListener('input', function () { updatePct(); preview(); });
+  presetSel.addEventListener('change', preview);
+  function updatePct() {
+    $('pctv').textContent = $('pct').value + '%';
+    if (img) {
+      var s = $('pct').value / 100;
+      $('pctDim').textContent = Math.round(IL.imgW(img) * s) + ' × ' + Math.round(IL.imgH(img) * s) + ' px';
+    }
+  }
+
+  /* 반환: {w,h,cover:boolean} — 프리셋은 중앙 커버 크롭 */
+  function targetSize() {
+    var mode = document.querySelector('input[name=rmode]:checked').value;
+    if (mode === 'px') return { w: parseInt($('w').value, 10) || IL.imgW(img), h: parseInt($('h').value, 10) || IL.imgH(img), cover: false };
+    if (mode === 'pct') {
+      var s = $('pct').value / 100;
+      return { w: Math.max(1, Math.round(IL.imgW(img) * s)), h: Math.max(1, Math.round(IL.imgH(img) * s)), cover: false };
+    }
+    var p = PRESETS[presetSel.value | 0];
+    return { w: p.w, h: p.h, cover: true };
+  }
+
+  function render() {
+    var t = targetSize();
+    var c = IL.canvasOf(t.w, t.h), ctx = c.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    if (t.cover) {
+      var s = Math.max(t.w / IL.imgW(img), t.h / IL.imgH(img));
+      var sw = t.w / s, sh = t.h / s;
+      ctx.drawImage(img, (IL.imgW(img) - sw) / 2, (IL.imgH(img) - sh) / 2, sw, sh, 0, 0, t.w, t.h);
+    } else {
+      ctx.drawImage(img, 0, 0, t.w, t.h);
+    }
+    return c;
+  }
+
+  function preview() {
+    if (!img) return;
+    var t = targetSize();
+    $('dim').textContent = '결과 크기: ' + t.w + ' × ' + t.h + ' px' + (t.cover ? ' (중앙 기준 잘라 맞춤)' : '');
+    var c = render();
+    var pv = $('pv'); pv.width = c.width; pv.height = c.height;
+    pv.getContext('2d').drawImage(c, 0, 0);
+  }
+
+  $('dl').addEventListener('click', async function () {
+    if (!img) return;
+    var c = render();
+    var ext = origType === 'image/png' ? 'png' : (origType === 'image/webp' ? 'webp' : 'jpg');
+    if (origType === 'image/jpeg') {
+      var c2 = IL.canvasOf(c.width, c.height), ctx2 = c2.getContext('2d');
+      ctx2.fillStyle = '#fff'; ctx2.fillRect(0, 0, c2.width, c2.height); ctx2.drawImage(c, 0, 0);
+      c = c2;
+    }
+    var blob = await IL.toBlob(c, origType, 0.92);
+    IL.download(blob, IL.outName(fileName, 'resized-' + c.width + 'x' + c.height, ext));
+  });
+})();
+</script>
+</body>
+</html>

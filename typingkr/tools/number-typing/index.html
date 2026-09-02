@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>숫자 키패드 연습 - 텐키 타자 연습 | typingkr</title>
+<meta name="description" content="키보드 오른쪽 숫자 키패드(텐키) 입력 연습 무료 도구. 4자리·8자리·소수점·연산 기호 모드와 실시간 속도·정확도, 화면 텐키 하이라이트 제공.">
+<link rel="stylesheet" href="../../assets/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"숫자 키패드 연습",
+"url":"https://typingkr.vercel.app/tools/number-typing/","applicationCategory":"EducationalApplication",
+"operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+"description":"텐키(숫자 키패드) 입력 연습기. 무작위 숫자·소수·연산 기호를 화면 텐키 하이라이트와 함께 연습."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"typingkr","item":"https://typingkr.vercel.app/"},
+{"@type":"ListItem","position":2,"name":"숫자 키패드 연습","item":"https://typingkr.vercel.app/tools/number-typing/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"텐키 연습은 왜 따로 하나요?","acceptedAnswer":{"@type":"Answer","text":"회계, 재고, 전화번호 입력처럼 숫자를 많이 다루는 업무에서는 숫자열보다 텐키가 훨씬 빠릅니다. 텐키는 5번 키의 돌기에 중지를 올리는 전용 손자세를 따로 익혀야 합니다."}},
+{"@type":"Question","name":"노트북에 텐키가 없어요.","acceptedAnswer":{"@type":"Answer","text":"상단 숫자열로도 연습할 수 있지만 효과는 제한적입니다. 숫자 입력이 잦다면 USB 텐키패드를 추천합니다."}},
+{"@type":"Question","name":"숫자가 입력되지 않아요.","acceptedAnswer":{"@type":"Answer","text":"키보드의 NumLock이 켜져 있는지 확인하세요. NumLock이 꺼져 있으면 텐키가 방향키로 동작합니다."}}]}
+</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="logo" href="../../">타자연습<span class="dot">·</span>typingkr</a>
+  <span class="head-sp"></span>
+  <button id="soundBtn" class="iconbtn" type="button">🔇 소리 끔</button>
+  <button id="themeBtn" class="iconbtn" type="button" aria-label="다크/라이트 테마 전환">🌙</button>
+</div></header>
+
+<main class="wrap">
+  <h1>숫자 키패드 연습</h1>
+  <p class="hint">오른손을 텐키에 올리고(중지를 5번 키 돌기에) 제시되는 숫자를 입력하세요. NumLock이 켜져 있어야 합니다.</p>
+
+  <div class="mobile-note">📱 텐키 연습은 <b>PC 키보드(숫자 키패드)</b>가 필요합니다. 모바일 숫자 자판으로도 가볍게 연습할 수는 있습니다.</div>
+
+  <div class="card">
+    <div class="chips" id="modeChips">
+      <button class="chip on" data-m="d4">4자리</button>
+      <button class="chip" data-m="d8">8자리</button>
+      <button class="chip" data-m="dec">소수점</button>
+      <button class="chip" data-m="calc">연산 기호</button>
+    </div>
+  </div>
+
+  <div class="statbar">
+    <div class="stat"><b id="stCpm">0</b><span>타/분</span></div>
+    <div class="stat"><b id="stAcc" class="ok">100%</b><span>정확도</span></div>
+    <div class="stat"><b id="stItem">0/15</b><span>진행</span></div>
+  </div>
+  <div class="progress"><i id="pbar"></i></div>
+
+  <div id="playArea">
+    <div class="target mono" id="target" style="text-align:center;font-size:1.8rem" aria-live="polite"></div>
+    <input type="text" class="typebox mono" id="input" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="숫자를 입력하세요" style="text-align:center">
+    <div id="tenkeyBox"></div>
+  </div>
+
+  <div id="resultArea" class="card result-card" style="display:none">
+    <h2 style="margin-top:0">연습 완료! 🎉</h2>
+    <div id="cardBox"></div>
+    <div class="row" style="justify-content:center;margin-top:14px">
+      <button class="btn" id="saveBtn" type="button">결과 카드 PNG 저장</button>
+      <button class="btn ghost" id="againBtn" type="button">다시 연습</button>
+    </div>
+  </div>
+  <!-- ad-slot -->
+
+  <section class="prose">
+    <h2>텐키 연습 소개</h2>
+    <p>숫자 키패드(텐키)는 회계 전표, 재고 수량, 계좌·전화번호처럼 숫자를 연속으로 입력하는
+    업무에서 필수 도구입니다. 텐키 입력의 기본 자세는 <b>중지를 5번 키</b>(돌기가 있는 키)에
+    올리는 것입니다. 검지가 4·1·7, 중지가 5·2·8, 약지가 6·3·9, 엄지가 0, 새끼손가락이
+    Enter와 +를 담당합니다.</p>
+    <p>이 연습기는 무작위 숫자를 제시하므로 외워서 칠 수 없고, 화면 텐키가 다음에 누를 키를
+    보여주어 손을 내려다보지 않는 습관을 만들어 줍니다. 소수점·연산 기호 모드까지 익히면
+    계산기와 스프레드시트 입력이 눈에 띄게 빨라집니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>NumLock이 켜져 있는지 확인하고 모드를 고릅니다. 처음이면 4자리부터.</li>
+      <li>제시된 숫자를 입력하면 자동으로 다음 숫자가 나옵니다. 한 세트는 15개입니다.</li>
+      <li>화면 텐키의 파란 키가 다음에 누를 키입니다. 손이 아니라 화면을 보세요.</li>
+    </ol>
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      <details><summary>목표 속도는 어느 정도인가요?</summary><p>사무 실무 기준 분당 150타 이상이면 준수하고, 200타 이상이면 빠른 편입니다. 정확도가 우선입니다.</p></details>
+      <details><summary>상단 숫자열로 연습해도 되나요?</summary><p>가능합니다. 다만 상단 숫자열은 양손 분담이 필요해 텐키와는 다른 기술입니다. 이 페이지는 텐키 자세 기준으로 안내합니다.</p></details>
+      <details><summary>연산 기호 모드는 무엇을 연습하나요?</summary><p>+, - 기호가 섞인 수식을 입력합니다. 스프레드시트 수식 입력과 계산기 사용에 도움이 됩니다.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <nav>
+    <a href="../korean-typing/">한글 타자 연습</a>
+    <a href="../english-typing/">영타 연습</a>
+    <a href="../typing-test/">타자 속도 측정</a>
+    <a href="../keyboard-layout/">두벌식 자판</a>
+    <a href="../code-typing/">코딩 타자</a>
+    <a href="../kids-typing/">어린이 타자</a>
+    <a href="../custom-text/">내 글로 연습</a>
+    <a href="../../guide/typing-tips/">타자 팁 가이드</a>
+    <a href="../../privacy.html">개인정보처리방침</a>
+    <a href="../../terms.html">이용약관</a>
+  </nav>
+  <p>© typingkr · tomatoeggcat.com</p>
+</div></footer>
+
+<script src="../../assets/hangul.js"></script>
+<script src="../../assets/common.js"></script>
+<script src="../../assets/engine.js"></script>
+<script src="../../assets/keyboard.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = 'd4', queue = [], idx = 0, TOTAL = 15;
+  var tenkey = TK.Tenkey($('tenkeyBox'));
+
+  function rnd(n) {
+    var s = '';
+    for (var i = 0; i < n; i++) s += Math.floor(Math.random() * 10);
+    return s;
+  }
+  function item() {
+    if (mode === 'd4') return rnd(4);
+    if (mode === 'd8') return rnd(8);
+    if (mode === 'dec') return rnd(2 + Math.floor(Math.random() * 3)) + '.' + rnd(1 + Math.floor(Math.random() * 2));
+    var op = Math.random() < 0.5 ? '+' : '-';
+    return rnd(2 + Math.floor(Math.random() * 2)) + op + rnd(2 + Math.floor(Math.random() * 2));
+  }
+  function build() {
+    queue = [];
+    for (var i = 0; i < TOTAL; i++) queue.push(item());
+    idx = 0;
+  }
+  function updateItem() {
+    $('stItem').textContent = Math.min(idx, TOTAL) + '/' + TOTAL;
+    $('pbar').style.width = Math.min(idx / TOTAL, 1) * 100 + '%';
+  }
+  function start() {
+    build();
+    engine.resetSession();
+    $('resultArea').style.display = 'none';
+    $('playArea').style.display = '';
+    updateItem();
+    engine.setText(queue[0]);
+  }
+  function finish() {
+    var s = engine.stats(0, 0, 0);
+    $('playArea').style.display = 'none';
+    var names = { d4: '4자리', d8: '8자리', dec: '소수점', calc: '연산 기호' };
+    var cv = TK.drawResultCard({
+      title: '숫자 키패드 연습 결과',
+      sub: names[mode] + ' · ' + TOTAL + '개 완료',
+      stats: [
+        { label: '타/분', value: s.cpm },
+        { label: '정확도', value: s.acc + '%' },
+        { label: '총 타수', value: s.strokes }
+      ],
+      footer: s.cpm >= 150 ? '실무 속도 도달! 🧮' : '꾸준함이 답입니다 🌱'
+    });
+    var box = $('cardBox');
+    box.textContent = '';
+    box.appendChild(cv);
+    $('resultArea').style.display = '';
+    $('saveBtn').onclick = function () { TK.downloadCanvas(cv, 'typingkr-number.png'); };
+  }
+
+  var engine = new TK.Engine({
+    targetEl: $('target'),
+    inputEl: $('input'),
+    onProgress: function (s) {
+      $('stCpm').textContent = s.cpm;
+      $('stAcc').textContent = s.acc + '%';
+      $('stAcc').classList.toggle('ok', s.acc >= 95);
+    },
+    onLineDone: function () {
+      TK.doneSound();
+      idx++; updateItem();
+      if (idx >= TOTAL) return finish();
+      engine.setText(queue[idx]);
+    },
+    onKeyHint: function (ch) { tenkey.highlight(ch); },
+    onType: TK.clickSound,
+    onError: TK.errorSound
+  });
+
+  $('modeChips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    mode = b.getAttribute('data-m');
+    var btns = $('modeChips').querySelectorAll('.chip');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i] === b);
+    start();
+  });
+  $('againBtn').addEventListener('click', start);
+  $('input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') e.preventDefault();
+  });
+
+  TK.bindSoundToggle('soundBtn');
+  start();
+})();
+</script>
+</body>
+</html>

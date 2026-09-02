@@ -43,3 +43,12 @@
 ## 개발
 - 로컬 확인: `node gen-pages.mjs` 후 정적 서버로 열기. 테스트 러너 없음.
 - 검증 메타 코드는 `site.config.mjs` / env (`GOOGLE_SITE_VERIFICATION` 등)에서 주입.
+
+## 서브프로젝트: `illusion-lab/` (별도 배포)
+- 인터랙티브 착시 실험실. **Next.js 15 App Router + 정적 export** — 허브의
+  gen-pages 파이프라인과 무관하며 별도 Vercel 프로젝트(root=`illusion-lab`)로 배포.
+- `illusion-lab/data/illusions.json` 이 단일 소스. slug 추가 시 renderer
+  (`src/lib/renderers/`), SVG 도형(`src/lib/figures.tsx`), 본문
+  (`src/lib/content/`) 3종 등록 필요 — `node scripts/check-coverage.mjs` 로 검사.
+- 빌드: `cd illusion-lab && npm install && npm run build` → `out/`.
+- gen-pages.mjs 의 RESERVED 에 `illusion-lab` 등록됨(고아 정리 보호).

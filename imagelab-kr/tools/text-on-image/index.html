@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진에 글씨 넣기 - 이미지에 텍스트 추가</title>
+<meta name="description" content="사진에 글씨 넣기: 외곽선·그림자 효과, Pretendard 웹폰트와 시스템 폰트, 드래그로 위치 조절, 여러 텍스트 추가. 서버 업로드 없는 무료 도구.">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"SoftwareApplication","name":"사진에 글씨 넣기","description":"사진에 글씨 넣기: 외곽선·그림자 효과, Pretendard 웹폰트와 시스템 폰트, 드래그로 위치 조절, 여러 텍스트 추가. 서버 업로드 없는 무료 도구.","url":"https://imagelab-kr.vercel.app/tools/text-on-image/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"browserRequirements":"HTML5 Canvas를 지원하는 최신 브라우저"},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"글꼴을 더 추가할 수 없나요?","acceptedAnswer":{"@type":"Answer","text":"저작권 문제 없이 웹에서 쓸 수 있는 오픈 라이선스 글꼴(Pretendard)과 기기에 내장된 시스템 글꼴만 제공합니다. 기기에 설치된 글꼴은 시스템 고딕/명조 선택 시 자동 반영됩니다."}},{"@type":"Question","name":"외곽선이 깨져 보여요.","acceptedAnswer":{"@type":"Answer","text":"외곽선 두께를 글자 크기에 비해 너무 크게 하면 획이 겹쳐 보일 수 있습니다. 두께를 줄이거나 글자 크기를 키워 보세요."}},{"@type":"Question","name":"미리보기와 저장 결과가 다른가요?","acceptedAnswer":{"@type":"Answer","text":"미리보기는 화면 크기에 맞게 축소 표시될 뿐, 저장은 항상 원본 해상도로 렌더링됩니다. 위치·비율은 동일하게 유지됩니다."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"이미지랩","item":"https://imagelab-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"사진에 글씨 넣기","item":"https://imagelab-kr.vercel.app/tools/text-on-image/"}]}]</script>
+</head>
+<body>
+<header class="site-head"><div class="in">
+<a class="logo" href="../../"><span class="dot"></span>이미지랩 <span style="color:var(--sub);font-weight:500">imagelab</span></a>
+<span class="tag">브라우저에서 끝내는 이미지 도구</span>
+</div></header>
+<main class="wrap">
+<nav class="crumb"><a href="../../">이미지랩</a> › 사진에 글씨 넣기</nav>
+<h1>사진에 글씨 넣기</h1>
+<p class="lead">외곽선·그림자 효과가 있는 텍스트를 드래그로 원하는 위치에 얹습니다. 여러 개 추가 가능.</p>
+<div class="notice-local">🔒 <span>모든 처리는 이 브라우저 안에서만 이루어집니다. <b>사진·파일이 서버로 전송되지 않습니다.</b></span></div>
+<section class="card">
+
+
+<div class="drop" id="drop">
+  <strong>이미지를 선택하거나 여기에 끌어다 놓으세요</strong>
+  클릭하여 파일 선택 · 사진은 서버로 전송되지 않습니다
+  <input type="file" id="fin" accept="image/*">
+</div>
+<div id="panel" style="display:none">
+<div class="stage" id="stage"><canvas id="pv" style="cursor:move;touch-action:none"></canvas></div>
+<p class="status">미리보기에서 텍스트를 드래그해 위치를 옮기고, 클릭해서 선택하세요.</p>
+<div class="btn-row"><button class="btn btn-sm" id="add">＋ 텍스트 추가</button><button class="btn btn-sm" id="del">선택 삭제</button></div>
+<div id="ctrls">
+<div class="field"><label>내용 (줄바꿈 가능)</label><textarea id="txt" rows="2"></textarea></div>
+<div class="field-row">
+  <label for="font">글꼴</label><select id="font" style="max-width:220px"></select>
+  <label><input type="checkbox" id="bold" checked> 굵게</label>
+</div>
+<div class="field"><label>크기 <span id="sizev"></span></label><input type="range" id="size" min="12" max="240" value="48"></div>
+<div class="field-row">
+  <label for="color">글자색</label><input type="color" id="color" value="#ffffff">
+  <label><input type="checkbox" id="outline" checked> 외곽선</label>
+  <input type="range" id="outlineW" min="0" max="14" value="3" style="max-width:120px">
+  <input type="color" id="outlineColor" value="#000000">
+  <label><input type="checkbox" id="shadow"> 그림자</label>
+</div>
+</div>
+<div class="btn-row"><button class="btn btn-primary" id="dlPng">PNG 저장</button><button class="btn" id="dlJpg">JPG 저장</button></div>
+</div>
+</section>
+<!-- ad-slot -->
+<section class="content">
+<h2>사진에 글씨 넣기 소개</h2>
+<p>사진에 글씨 넣기 도구는 사진 위에 텍스트를 얹어 짤·안내 이미지·간단한 썸네일을 만듭니다. 어떤 배경에서도 잘 읽히도록 외곽선(테두리)과 그림자 효과를 지원하며, 글꼴은 오픈 라이선스 한글 웹폰트인 Pretendard와 시스템 고딕·명조 등을 선택할 수 있습니다.</p>
+<p>텍스트는 여러 개 추가할 수 있고, 미리보기 화면에서 드래그해 원하는 위치에 배치합니다. 줄바꿈도 지원하므로 위·아래 두 줄 밈 스타일도 텍스트 하나로 만들 수 있습니다. 저장은 원본 해상도 기준 PNG/JPG로 이루어집니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>사진 1장 선택</li>
+<li>내용 입력, 글꼴·크기·색·외곽선·그림자 설정</li>
+<li>미리보기에서 드래그로 위치 이동, 필요하면 「텍스트 추가」</li>
+<li>PNG 또는 JPG 저장</li>
+</ol>
+<h2>자주 묻는 질문</h2>
+<details class="faq"><summary>글꼴을 더 추가할 수 없나요?</summary><p>저작권 문제 없이 웹에서 쓸 수 있는 오픈 라이선스 글꼴(Pretendard)과 기기에 내장된 시스템 글꼴만 제공합니다. 기기에 설치된 글꼴은 시스템 고딕/명조 선택 시 자동 반영됩니다.</p></details>
+<details class="faq"><summary>외곽선이 깨져 보여요.</summary><p>외곽선 두께를 글자 크기에 비해 너무 크게 하면 획이 겹쳐 보일 수 있습니다. 두께를 줄이거나 글자 크기를 키워 보세요.</p></details>
+<details class="faq"><summary>미리보기와 저장 결과가 다른가요?</summary><p>미리보기는 화면 크기에 맞게 축소 표시될 뿐, 저장은 항상 원본 해상도로 렌더링됩니다. 위치·비율은 동일하게 유지됩니다.</p></details>
+<p><a href="../../guide/principle/">→ 더 알아보기: 이미지 압축 원리와 AI 초해상도의 한계</a></p>
+</section>
+</main>
+<footer class="site-foot"><div class="wrap">
+<b>이미지랩의 다른 도구</b>
+<div class="cols">
+<a href="../../tools/compress/">사진 용량 줄이기</a>
+<a href="../../tools/resize/">이미지 크기 조절</a>
+<a href="../../tools/crop/">사진 자르기</a>
+<a href="../../tools/rotate-flip/">이미지 회전 반전</a>
+<a href="../../tools/convert/">이미지 변환</a>
+<a href="../../tools/collage/">사진 합치기</a>
+<a href="../../tools/text-on-image/">사진에 글씨 넣기</a>
+<a href="../../tools/filter/">사진 필터</a>
+<a href="../../tools/pixelate/">픽셀화·모자이크</a>
+<a href="../../tools/favicon/">파비콘 만들기</a>
+<a href="../../tools/gif-maker/">GIF 만들기</a>
+<a href="../../tools/blur-face/">얼굴 모자이크</a>
+<a href="../../tools/remove-bg/">배경 제거</a>
+<a href="../../tools/upscale/">사진 화질 좋게 하기</a>
+<a href="../../guide/principle/">가이드: 압축 원리와 AI의 한계</a>
+</div>
+<div class="legal">
+<a href="../../privacy.html">개인정보처리방침</a>
+<a href="../../terms.html">이용약관</a>
+<span>© 2026 이미지랩 (imagelab-kr) — 모든 이미지 처리는 사용자의 브라우저에서만 이루어집니다.</span>
+</div>
+</div></footer>
+<script src="../../assets/common.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var img = null, fileName = '';
+  var texts = []; // {text,font,size,color,bold,outline,outlineW,outlineColor,shadow,x,y}
+  var sel = -1, scale = 1;
+  var FONTS = [
+    { n: 'Pretendard (웹폰트)', v: '"Pretendard Variable",Pretendard,sans-serif' },
+    { n: '시스템 고딕', v: '-apple-system,BlinkMacSystemFont,system-ui,"Noto Sans KR",sans-serif' },
+    { n: '명조 (Serif)', v: '"Noto Serif KR","Nanum Myeongjo",serif' },
+    { n: '모노스페이스', v: 'ui-monospace,Consolas,monospace' }
+  ];
+
+  var fontSel = $('font');
+  FONTS.forEach(function (f, i) { var o = document.createElement('option'); o.value = i; o.textContent = f.n; fontSel.appendChild(o); });
+
+  IL.bindDrop($('drop'), $('fin'), async function (fs) {
+    fileName = fs[0].name;
+    img = await IL.loadImage(fs[0]);
+    $('panel').style.display = '';
+    if (!texts.length) addText();
+    render();
+  });
+
+  function addText() {
+    texts.push({
+      text: '텍스트를 입력하세요', font: 0, size: Math.max(24, Math.round((img ? IL.imgW(img) : 800) / 14)),
+      color: '#ffffff', bold: true, outline: true, outlineW: 3, outlineColor: '#000000',
+      shadow: false, x: 0.5, y: 0.85
+    });
+    sel = texts.length - 1;
+    syncControls();
+  }
+  $('add').onclick = function () { addText(); render(); };
+  $('del').onclick = function () {
+    if (sel >= 0) { texts.splice(sel, 1); sel = texts.length - 1; syncControls(); render(); }
+  };
+
+  function cur() { return texts[sel]; }
+  function syncControls() {
+    var t = cur(); if (!t) { $('ctrls').style.display = 'none'; return; }
+    $('ctrls').style.display = '';
+    $('txt').value = t.text; $('font').value = t.font; $('size').value = t.size;
+    $('sizev').textContent = t.size + 'px';
+    $('color').value = t.color; $('bold').checked = t.bold;
+    $('outline').checked = t.outline; $('outlineW').value = t.outlineW; $('outlineColor').value = t.outlineColor;
+    $('shadow').checked = t.shadow;
+  }
+  $('txt').addEventListener('input', function () { if (cur()) { cur().text = $('txt').value; render(); } });
+  $('font').addEventListener('change', function () { if (cur()) { cur().font = +$('font').value; render(); } });
+  $('size').addEventListener('input', function () { if (cur()) { cur().size = +$('size').value; $('sizev').textContent = cur().size + 'px'; render(); } });
+  $('color').addEventListener('input', function () { if (cur()) { cur().color = $('color').value; render(); } });
+  $('bold').addEventListener('change', function () { if (cur()) { cur().bold = $('bold').checked; render(); } });
+  $('outline').addEventListener('change', function () { if (cur()) { cur().outline = $('outline').checked; render(); } });
+  $('outlineW').addEventListener('input', function () { if (cur()) { cur().outlineW = +$('outlineW').value; render(); } });
+  $('outlineColor').addEventListener('input', function () { if (cur()) { cur().outlineColor = $('outlineColor').value; render(); } });
+  $('shadow').addEventListener('change', function () { if (cur()) { cur().shadow = $('shadow').checked; render(); } });
+
+  async function ensureFont(t) {
+    var fam = FONTS[t.font].v.split(',')[0].replace(/"/g, '');
+    try { await document.fonts.load((t.bold ? '700 ' : '400 ') + '32px "' + fam + '"', t.text); } catch (e) { }
+  }
+
+  function drawTexts(ctx, W) {
+    texts.forEach(function (t, i) {
+      var lines = t.text.split('\n');
+      ctx.font = (t.bold ? '700 ' : '400 ') + t.size + 'px ' + FONTS[t.font].v;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      var lh = t.size * 1.25;
+      var cx = t.x * ctx.canvas.width, cy = t.y * ctx.canvas.height;
+      lines.forEach(function (line, li) {
+        var y = cy + (li - (lines.length - 1) / 2) * lh;
+        if (t.shadow) {
+          ctx.shadowColor = 'rgba(0,0,0,.55)'; ctx.shadowBlur = t.size / 5;
+          ctx.shadowOffsetX = t.size / 16; ctx.shadowOffsetY = t.size / 16;
+        } else { ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; }
+        if (t.outline && t.outlineW > 0) {
+          ctx.lineJoin = 'round';
+          ctx.lineWidth = t.outlineW * 2;
+          ctx.strokeStyle = t.outlineColor;
+          ctx.strokeText(line, cx, y);
+        }
+        ctx.fillStyle = t.color;
+        ctx.fillText(line, cx, y);
+      });
+      ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+      /* 선택 표시 (미리보기 전용) */
+      if (i === sel && ctx.canvas === $('pv')) {
+        var w = Math.max.apply(null, lines.map(function (l) { return ctx.measureText(l).width; }));
+        var h = lh * lines.length;
+        ctx.save();
+        ctx.strokeStyle = 'rgba(14,165,164,.9)'; ctx.setLineDash([6, 4]); ctx.lineWidth = 2;
+        ctx.strokeRect(cx - w / 2 - 8, cy - h / 2 - 6, w + 16, h + 12);
+        ctx.restore();
+      }
+    });
+  }
+
+  async function render() {
+    if (!img) return;
+    for (var i = 0; i < texts.length; i++) await ensureFont(texts[i]);
+    var pv = $('pv');
+    var maxW = $('stage').clientWidth - 2 || 700;
+    scale = Math.min(1, maxW / IL.imgW(img));
+    pv.width = Math.round(IL.imgW(img) * scale);
+    pv.height = Math.round(IL.imgH(img) * scale);
+    var ctx = pv.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, pv.width, pv.height);
+    /* 미리보기는 축소 좌표계 → 글자 크기도 축소 */
+    ctx.save();
+    var tmp = texts.map(function (t) { return Object.assign({}, t, { size: t.size * scale, outlineW: t.outlineW * scale }); });
+    var real = texts; texts = tmp;
+    drawTexts(ctx);
+    texts = real;
+    ctx.restore();
+  }
+
+  /* 드래그로 위치 이동 + 클릭 선택 */
+  var dragging = false;
+  $('pv').addEventListener('pointerdown', function (e) {
+    if (!img || !texts.length) return;
+    var r = $('pv').getBoundingClientRect();
+    var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+    /* 가장 가까운 텍스트 선택 */
+    var bi = -1, bd = 1e9;
+    texts.forEach(function (t, i) {
+      var d = Math.hypot(t.x - px, t.y - py);
+      if (d < bd) { bd = d; bi = i; }
+    });
+    if (bi >= 0) { sel = bi; syncControls(); }
+    dragging = true;
+    $('pv').setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  $('pv').addEventListener('pointermove', function (e) {
+    if (!dragging || sel < 0) return;
+    var r = $('pv').getBoundingClientRect();
+    cur().x = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+    cur().y = Math.max(0, Math.min(1, (e.clientY - r.top) / r.height));
+    render();
+  });
+  $('pv').addEventListener('pointerup', function () { dragging = false; });
+
+  async function outputCanvas() {
+    var c = IL.canvasOf(IL.imgW(img), IL.imgH(img)), ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    var keep = sel; sel = -1; // 선택 박스 제외
+    drawTexts(ctx);
+    sel = keep;
+    return c;
+  }
+  $('dlPng').addEventListener('click', async function () {
+    if (!img) return;
+    IL.download(await IL.toBlob(await outputCanvas(), 'image/png'), IL.outName(fileName, 'text', 'png'));
+  });
+  $('dlJpg').addEventListener('click', async function () {
+    if (!img) return;
+    var src = await outputCanvas();
+    var c = IL.canvasOf(src.width, src.height), ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(src, 0, 0);
+    IL.download(await IL.toBlob(c, 'image/jpeg', 0.92), IL.outName(fileName, 'text', 'jpg'));
+  });
+  window.addEventListener('resize', render);
+})();
+</script>
+</body>
+</html>
