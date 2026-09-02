@@ -389,7 +389,7 @@ function shareText(){
 }
 $("copyLink").addEventListener("click",function(){navigator.clipboard.writeText(curUrl()).then(function(){toast("링크를 복사했어요");},function(){toast("복사 실패, 주소창에서 복사해 주세요");});});
 $("copyText").addEventListener("click",function(){navigator.clipboard.writeText(shareText()).then(function(){toast("텍스트를 복사했어요");},function(){toast("복사 실패");});});
-$("xShare").addEventListener("click",function(){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText()),"_blank");});
+$("xShare").addEventListener("click",function(){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText()),"_blank","noopener");});
 $("webShare").addEventListener("click",function(){
   if(navigator.share){navigator.share({title:"잘잘못 판독기",text:shareText().split("\n").slice(0,2).join(" "),url:curUrl()}).catch(function(){});}
   else{navigator.clipboard.writeText(shareText()).then(function(){toast("공유 텍스트를 복사했어요");},function(){toast("공유를 지원하지 않는 환경이에요");});}

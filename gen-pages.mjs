@@ -14,7 +14,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { GOOGLE_SITE_VERIFICATION, NAVER_SITE_VERIFICATION } from "./site.config.mjs";
 import { renderHub } from "./lib/hub.mjs";
-import { iconFor } from "./lib/icons.mjs";
+import { iconFor, iconForSlug } from "./lib/icons.mjs";
 
 const SITE = "https://tomatoeggcat.com";
 const ADSENSE = "ca-pub-5567719201265106";
@@ -126,7 +126,7 @@ const CORE_SLUGS = new Set([
   "dydrms-engnote", "chipnote", "dydrms-hagwon", // 교육·학습
 ]);
 
-const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
 // 본문에 포함된 마크다운 표(| a | b | 또는 헤더 없는 공백|공백 형태)를 HTML <table>로 변환.
 // 파이프가 없으면 기존 esc()와 동일하게 동작 → 표 없는 페이지엔 영향 없음.
@@ -220,7 +220,10 @@ const seen = new Set();
 for (const p of projects) {
   if (!p.live || !/^https?:\/\//.test(p.live)) continue;
   // slug 우선순위: projects.json 의 slug > slug-map > live 호스트 추론
+  // ⚠ slug 는 HTML 속성(href/data-subid/canonical)과 파일시스템 경로 양쪽에 쓰이므로
+  //   [a-z0-9-] 로 강제 정규화한다(속성 이스케이프 이탈·경로 탈출 방지). 기존 slug 는 이미 이 형식이라 무변경.
   let s = p.slug || SLUG_MAP[p.live] || slugify(p.live);
+  s = String(s || "").toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "");
   if (!s) continue;
   if (RESERVED.has(s)) s = s + "-app";
   while (seen.has(s)) s = s + "-x";
@@ -234,7 +237,7 @@ for (const d of daily) {
   if (APEX_SERVED.has(d.slug)) { if (existsSync(`${d.slug}/index.html`)) rmSync(d.slug, { recursive: true, force: true }); continue; }
   let related = daily.filter(x => x.cat === d.cat && x.slug !== d.slug).slice(0, 6);
   if (related.length < 4) related = related.concat(daily.filter(x => x.slug !== d.slug && !related.includes(x)).slice(0, 6 - related.length));
-  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span class="rel-ic" aria-hidden="true">${iconFor(r.cat)}</span> ${esc(r.name)}</a>`).join("\n      ");
+  const relHtml = related.map(r => `<a class="rel" href="/${r.slug}/"><span class="rel-ic" aria-hidden="true">${iconForSlug(r.slug, r.cat)}</span> ${esc(r.name)}</a>`).join("\n      ");
 
   // ── 사용자용 콘텐츠 조립(고유 콘텐츠 우선, 없으면 정제된 폴백) ──
   const c = CONTENT[d.slug] || {};
@@ -258,10 +261,13 @@ for (const d of daily) {
 
   const secUl = (title, items) => items.length
     ? `<h2>${title}</h2>\n    <ul>\n        ${items.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
-  const bgHtml = background
-    ? `<h2>알아두면 좋은 배경지식</h2>\n    ${background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => p.includes("|") ? renderRich(p).html : `<p>${esc(p)}</p>`).join("\n    ")}` : "";
+  const bgParas = background
+    ? background.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(p => p.includes("|") ? renderRich(p).html : `<p>${esc(p)}</p>`).join("\n    ") : "";
   const stepsHtml = `<h2>이렇게 사용하세요</h2>\n    <ol>\n        ${steps.map(s => `<li>${richInline(s)}</li>`).join("\n        ")}\n    </ol>`;
-  const scenHtml = secUl("이럴 때 유용해요", scenarios);
+  // 시나리오가 넉넉하면(≥3) 첫 항목은 '한눈에 보기'로 올리고 본문은 나머지를 노출 →
+  // 히어로 lead·TL;DR·본문 간 같은 예시 문장 반복 방지(콘텐츠 얇아지지 않게 ≥3일 때만).
+  const scenLeadInTldr = scenarios.length >= 3;
+  const scenHtml = secUl("이럴 때 유용해요", scenLeadInTldr ? scenarios.slice(1) : scenarios);
   const tipsHtml = secUl("활용 팁", tips);
   const cautHtml = cautions.length
     ? `<h2>주의사항</h2>\n    <ul class="cautions">\n        ${cautions.map(x => `<li>${richInline(x)}</li>`).join("\n        ")}\n    </ul>` : "";
@@ -286,11 +292,42 @@ for (const d of daily) {
       ${srcHtml}
     </div>`;
 
-  const body = `<h2>${esc(d.name)} 소개</h2>
-    <p>${esc(intro)}</p>
-    ${bgHtml}
-    ${stepsHtml}
+  // YMYL(금융·건강·법률 등) 도구는 결과 오인 방지를 위해 상단에 간결한 참고용 고지를 노출.
+  const isYmyl = NEEDS_NOTE.test(`${d.cat} ${d.domain} ${d.name}`);
+  const topNoteHtml = isYmyl
+    ? `<p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 ${REVIEW_LABEL(reviewed)}입니다.</p>`
+    : "";
+
+  // 실행 우선 + 스캔 가독성: 한눈 요약 → (참고용) → 이럴 때(후크) → [사용법·배경지식은 접기] → 팁 → 주의 → FAQ
+  // 한눈에 보기는 히어로 lead(전체 문장) 와도, 본문 "이럴 때 유용해요"(scenarios) 와도
+  // 같은 문장을 반복하지 않도록: 무엇을=lead 를 짧게 압축한 요약 한 줄만 노출.
+  const gist = lead.length > 52 ? lead.slice(0, 50).replace(/\s+\S*$/, "") + "…" : lead;
+  const tldrItems = [
+    scenLeadInTldr
+      ? `<li><b>이럴 때</b> ${richInline(scenarios[0])}</li>`
+      : `<li><b>무엇을</b> ${esc(gist)}</li>`,
+    `<li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>`,
+  ];
+  const tldrHtml = `<div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        ${tldrItems.join("\n        ")}
+      </ul>
+    </div>`;
+  // 긴 사용법(번호 목록)과 소개·배경지식을 한 접이식으로 묶어 첫 화면이 텍스트 벽이 되지 않게 함
+  // (콘텐츠는 그대로 DOM 에 남아 색인/E-E-A-T 유지, 기본 접힘으로 스캔성만 개선).
+  const detailHtml = `<details class="deep">
+      <summary>사용법과 자세한 설명 보기 · ${esc(d.name)}</summary>
+      <div class="deep-body">
+        ${stepsHtml}
+        ${intro ? `<p>${esc(intro)}</p>` : ""}
+        ${bgParas}
+      </div>
+    </details>`;
+  const body = `${tldrHtml}
+    ${topNoteHtml}
     ${scenHtml}
+    ${detailHtml}
     ${tipsHtml}
     ${cautHtml}
     ${faqHtml}
@@ -347,7 +384,7 @@ for (const d of daily) {
     .replaceAll("%%SLUG%%", d.slug)
     .replaceAll("%%NAME%%", esc(d.name))
     .replaceAll("%%EMOJI%%", d.emoji)
-    .replaceAll("%%HEROICON%%", iconFor(d.cat))
+    .replaceAll("%%HEROICON%%", iconForSlug(d.slug, d.cat))
     .replaceAll("%%LIVE%%", esc(d.live))
     .replaceAll("%%CTA%%", esc(ctaText))
     .replaceAll("%%CATEGORY%%", esc(d.cat))
@@ -426,6 +463,14 @@ for (const b of BUILTINS) {
   let h = readFileSync(f, "utf8");
   const before = h;
 
+  // YMYL 내장(금융·건강) 입력 화면 상단에 참고용 고지(멱등): 결과 오인 방지.
+  const YMYL_BUILTINS = new Set(["salary", "dsr", "jeonse-loan", "yangdo", "refinance", "bmi"]);
+  h = h.replace(/\s*<p class="topnote"[\s\S]*?<\/p>/i, "");
+  if (YMYL_BUILTINS.has(b.slug) && /<div class="card"/.test(h)) {
+    const tn = `<p class="topnote" style="color:var(--x6b7280,#8b8f98);font-size:13px;background:var(--x171717,#171717);border:1px solid var(--x262626,#262626);border-left:3px solid var(--xfbbf24,#fbbf24);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6">ⓘ 참고용 추정입니다. 실제 심사·세무 결과와 다를 수 있으며, 2026년 요율·세법 기준으로 반영합니다.</p>\n`;
+    h = h.replace(/(?=<div class="card")/, tn);
+  }
+
   // robots(멱등): 집중 색인 전략을 내장에도 적용. CORE만 색인, 나머지(master 신규 앱 포함)는 noindex.
   h = h.replace(/\s*<meta name="robots"[^>]*>/gi, "");
   const bRobots = CORE_SLUGS.has(b.slug)
@@ -467,7 +512,7 @@ for (const b of BUILTINS) {
     // 1) 편집·검토 + 공식 출처 가시 블록
     const bsrc = (BUILTIN_SOURCES[b.slug] || []).filter(s => s && s.label && /^https?:\/\//.test(s.url || ""));
     const bsrcHtml = bsrc.length
-      ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
+      ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
       : "";
     const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
   <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>

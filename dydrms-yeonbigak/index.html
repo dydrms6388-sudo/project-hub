@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">생활 도구</span> <span class="sep">›</span> <span class="c-cur">연비각 (YeonbiGak)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.3 2.3-2.3-.4-.4-2.3z"/></svg></div>
@@ -121,16 +142,28 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">주유할 때마다 기록만 남기면 내 차 실연비(km/L)와 월 유류비·km당 비용이 자동으로 계산되는 무료 연비 계산기·유류비 트래커.</p>
     <a class="cta" href="https://dydrms-yeonbigak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>연비각 (YeonbiGak) 소개</h2>
-    <p>주유할 때마다 기록만 남기면 내 차 실연비(km/L)와 월 유류비·km당 비용이 자동으로 계산되는 무료 연비 계산기·유류비 트래커. 만탱크(full-to-full) 계산법으로 구간별 실연비 자동 산출, 공인연비 대비 등급(연비왕~개선필요)·최고 실연비 신기록(컨페티), 월별 유류비 추이 차트·연간 예상, 다차량 프로필(휘발유·경유·LPG·전기차 전비). 빠른 계산 3종(실연비·여행 유류비 예측·월 유류비), 운전습관 연비 진단(급가속·공회전·에어컨·공기압 등 8항목→예상 손실%·월 절약 가능액 처방). 무백엔드·무가입, 기기 저장. 자동차 클러스터(ddayhub/car 소모품 D-day·goyo 세차/차량온도)와 '연비·유류비' 축으로 분리. 참고용 계산 면책.</p>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 주유할 때마다 기록만 남기면 내 차 실연비(km/L)와 월 유류비·km당 비용이 자동으로…</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
     
-    <h2>이렇게 사용하세요</h2>
+    
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 연비각 (YeonbiGak)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>아래 ‘바로 실행하기’를 눌러 도구를 엽니다.</li>
         <li>안내에 따라 값을 입력하거나 항목을 선택합니다.</li>
         <li>결과를 확인하고 필요하면 저장·공유합니다.</li>
     </ol>
-    
+        <p>주유할 때마다 기록만 남기면 내 차 실연비(km/L)와 월 유류비·km당 비용이 자동으로 계산되는 무료 연비 계산기·유류비 트래커. 만탱크(full-to-full) 계산법으로 구간별 실연비 자동 산출, 공인연비 대비 등급(연비왕~개선필요)·최고 실연비 신기록(컨페티), 월별 유류비 추이 차트·연간 예상, 다차량 프로필(휘발유·경유·LPG·전기차 전비). 빠른 계산 3종(실연비·여행 유류비 예측·월 유류비), 운전습관 연비 진단(급가속·공회전·에어컨·공기압 등 8항목→예상 손실%·월 절약 가능액 처방). 무백엔드·무가입, 기기 저장. 자동차 클러스터(ddayhub/car 소모품 D-day·goyo 세차/차량온도)와 &#39;연비·유류비&#39; 축으로 분리. 참고용 계산 면책.</p>
+        
+      </div>
+    </details>
     
     
     

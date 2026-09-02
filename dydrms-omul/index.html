@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">건강·운동</span> <span class="sep">›</span> <span class="c-cur">오물오물</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">이유식은 아기가 처음으로 모유·분유 이외의 음식을 경험하는 중요한 단계로, 어떤 재료를 어떤 순서로 도입하느냐가 알레르기 예방과 올바른 식습관 형성에 영향을 줍니다.</p>
     <a class="cta" href="https://dydrms-omul.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>오물오물 소개</h2>
-    <p>이유식은 아기가 처음으로 모유·분유 이외의 음식을 경험하는 중요한 단계로, 어떤 재료를 어떤 순서로 도입하느냐가 알레르기 예방과 올바른 식습관 형성에 영향을 줍니다. 이 도구는 아기의 생년월일을 입력하면 현재 개월 수에 맞는 재료를 추천하고, 8대 알레르겐 도입 이력과 3일 간격 안전 규칙을 함께 안내합니다. 기록 기능을 통해 어떤 재료를 이미 먹였는지 한눈에 파악할 수 있어 바쁜 육아 중에도 놓치는 것이 없습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>세계보건기구(WHO)와 국내 소아청소년과학회는 일반적으로 생후 만 6개월부터 이유식 시작을 권장하지만, 아기의 발달 상태(목 가누기, 앉기 보조 가능, 음식에 관심 보이기)에 따라 만 4개월 이후부터 시작하기도 합니다. 알레르기 예방을 위한 핵심 원칙은 '한 번에 한 가지, 3일 간격'으로, 새 재료 도입 후 이상 반응 여부를 충분히 관찰한 뒤 다음 재료로 넘어가는 방식입니다. 최근 연구에서는 땅콩·달걀 등 주요 알레르겐을 이른 시기(생후 4~6개월)에 소량 도입하는 것이 오히려 알레르기 발생을 줄일 수 있다는 방향의 근거가 쌓이고 있습니다. 이유식 농도는 초기에 10배죽(물: 쌀 = 10:1)처럼 묽게 시작해 단계적으로 진하게 늘려가며, 6~7개월에 7배죽, 8~9개월에 5배죽, 10개월 이후 진밥으로 발전하는 것이 일반적인 흐름입니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>이럴 때</b> 이유식을 막 시작한 초보 부모가 어디서부터 어떻게 시작해야 할지 순서를 잡는 데 도움이 됩니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>둘째 아이라 첫째와 비슷하게 하면 된다고 생각했다가 개월 수 차이와 알레르겐 도입 순서를 놓치지 않도록 점검하는 용도로 활용할 수 있습니다.</li>
+        <li>소아과 방문 전 현재 도입한 재료와 반응 이력을 정리해 진료 시간을 효율적으로 쓸 수 있습니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 오물오물</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>아기의 생년월일을 입력해 현재 개월 수와 권장 이유식 단계를 확인합니다.</li>
         <li>해당 단계에서 도입 가능한 재료 목록을 확인합니다.</li>
@@ -134,12 +167,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>문제가 없으면 해당 재료를 기록(도장)하고 다음 재료로 넘어갑니다.</li>
         <li>8대 알레르겐 도입 현황을 기록하며 남은 알레르겐을 체계적으로 소개합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>이유식을 막 시작한 초보 부모가 어디서부터 어떻게 시작해야 할지 순서를 잡는 데 도움이 됩니다.</li>
-        <li>둘째 아이라 첫째와 비슷하게 하면 된다고 생각했다가 개월 수 차이와 알레르겐 도입 순서를 놓치지 않도록 점검하는 용도로 활용할 수 있습니다.</li>
-        <li>소아과 방문 전 현재 도입한 재료와 반응 이력을 정리해 진료 시간을 효율적으로 쓸 수 있습니다.</li>
-    </ul>
+        <p>이유식은 아기가 처음으로 모유·분유 이외의 음식을 경험하는 중요한 단계로, 어떤 재료를 어떤 순서로 도입하느냐가 알레르기 예방과 올바른 식습관 형성에 영향을 줍니다. 이 도구는 아기의 생년월일을 입력하면 현재 개월 수에 맞는 재료를 추천하고, 8대 알레르겐 도입 이력과 3일 간격 안전 규칙을 함께 안내합니다. 기록 기능을 통해 어떤 재료를 이미 먹였는지 한눈에 파악할 수 있어 바쁜 육아 중에도 놓치는 것이 없습니다.</p>
+        <p>세계보건기구(WHO)와 국내 소아청소년과학회는 일반적으로 생후 만 6개월부터 이유식 시작을 권장하지만, 아기의 발달 상태(목 가누기, 앉기 보조 가능, 음식에 관심 보이기)에 따라 만 4개월 이후부터 시작하기도 합니다. 알레르기 예방을 위한 핵심 원칙은 &#39;한 번에 한 가지, 3일 간격&#39;으로, 새 재료 도입 후 이상 반응 여부를 충분히 관찰한 뒤 다음 재료로 넘어가는 방식입니다. 최근 연구에서는 땅콩·달걀 등 주요 알레르겐을 이른 시기(생후 4~6개월)에 소량 도입하는 것이 오히려 알레르기 발생을 줄일 수 있다는 방향의 근거가 쌓이고 있습니다. 이유식 농도는 초기에 10배죽(물: 쌀 = 10:1)처럼 묽게 시작해 단계적으로 진하게 늘려가며, 6~7개월에 7배죽, 8~9개월에 5배죽, 10개월 이후 진밥으로 발전하는 것이 일반적인 흐름입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>새 재료는 오전에 소량(1~2 티스푼)으로 시작하세요. 낮 시간에 반응이 나타나면 소아과 방문이 수월합니다.</li>
@@ -168,12 +199,12 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <div class="coupang-slot" data-subid="dydrms-omul" style="margin:28px 0 0"></div>
   <section class="related">
     <h2>관련 서비스</h2>
-    <div class="rel-grid"><a class="rel" href="/dydrms-wonjunbi/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 원준비</a>
+    <div class="rel-grid"><a class="rel" href="/dydrms-facemap/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 얼굴신호 (FaceSignal)</a>
+      <a class="rel" href="/dydrms-hyeoread/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 혀읽기 (TongueRead)</a>
+      <a class="rel" href="/dydrms-wonjunbi/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 원준비</a>
       <a class="rel" href="/dydrms-bloom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 블룸</a>
       <a class="rel" href="/dydrms-dariease/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 다리편해</a>
-      <a class="rel" href="/dydrms-chabunhae/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 차분해</a>
-      <a class="rel" href="/dydrms-vitality/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 활력노트</a>
-      <a class="rel" href="/dydrms-binyeom/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 코편안 (비염노트)</a></div>
+      <a class="rel" href="/dydrms-chabunhae/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l2 6 4-13 2.5 7H21"/></svg></span> 차분해</a></div>
   </section>
   <footer>
     <p style="margin:0 0 8px">🍅🥚🐈 <a href="/">TomatoEggCat</a> — 일상에 유용한 무료 도구 모음</p>

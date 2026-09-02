@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">생활 도구</span> <span class="sep">›</span> <span class="c-cur">정비각</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.3 2.3-2.3-.4-.4-2.3z"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">차 점검 시기를 놓쳐 예상치 못한 수리비가 나온 경험이 있다면, 정비각이 도움이 됩니다.</p>
     <a class="cta" href="https://jeongbigak.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>정비각 소개</h2>
-    <p>차 점검 시기를 놓쳐 예상치 못한 수리비가 나온 경험이 있다면, 정비각이 도움이 됩니다. 현재 주행거리를 입력하면 엔진오일·타이어·브레이크패드 등 16개 소모품의 교환 권장 시기를 한 번에 진단해주어, 어떤 항목을 먼저 점검해야 할지 파악할 수 있습니다. 계절별 점검 항목과 차종별 부품 정보도 함께 확인할 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>자동차 소모품은 각각 교환 주기가 다르게 설계되어 있습니다. 엔진오일은 주행거리(보통 5,000~1만 km)뿐 아니라 시간 경과(보통 1년)도 기준이 됩니다. 타이어는 트레드 마모도와 경화 상태를 함께 봐야 하며, 브레이크패드는 잔량이 일정 수준 이하면 제동 거리가 늘고 디스크까지 손상될 수 있어 조기 발견이 중요합니다. 냉각수·브레이크액·에어컨 필터 등은 눈에 잘 띄지 않아 교환 시기를 놓치기 쉬운 항목들입니다. 미리 파악해두면 정비소에서 불필요한 항목을 권유받을 때 판단 기준이 되기도 합니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>이럴 때</b> 중고차를 구입했거나 오래된 차를 물려받아 정비 이력을 모를 때, 주행거리 기준으로 어떤 항목을 먼저 점검해야 할지 순서를 잡을 수 있습니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>장거리 운전이나 명절 귀성길 전에 점검 리스트를 뽑아두면 정비소 방문 시 구체적으로 확인 요청할 항목을 정리하는 데 도움이 됩니다.</li>
+        <li>계절이 바뀌는 시점에 계절 점검 탭을 참고하면 여름 전 에어컨 가스, 겨울 전 부동액처럼 놓치기 쉬운 항목을 챙길 수 있습니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 정비각</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>현재 차량의 주행거리(km)를 입력합니다.</li>
         <li>16개 소모품 항목별 교환 권장 시기 진단 결과를 확인합니다.</li>
@@ -134,12 +167,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>계절 점검 탭에서 현재 계절에 맞는 추가 점검 항목을 확인합니다.</li>
         <li>진단 결과를 내 차고에 저장해 다음 점검 때 이전 기록을 참고합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>중고차를 구입했거나 오래된 차를 물려받아 정비 이력을 모를 때, 주행거리 기준으로 어떤 항목을 먼저 점검해야 할지 순서를 잡을 수 있습니다.</li>
-        <li>장거리 운전이나 명절 귀성길 전에 점검 리스트를 뽑아두면 정비소 방문 시 구체적으로 확인 요청할 항목을 정리하는 데 도움이 됩니다.</li>
-        <li>계절이 바뀌는 시점에 계절 점검 탭을 참고하면 여름 전 에어컨 가스, 겨울 전 부동액처럼 놓치기 쉬운 항목을 챙길 수 있습니다.</li>
-    </ul>
+        <p>차 점검 시기를 놓쳐 예상치 못한 수리비가 나온 경험이 있다면, 정비각이 도움이 됩니다. 현재 주행거리를 입력하면 엔진오일·타이어·브레이크패드 등 16개 소모품의 교환 권장 시기를 한 번에 진단해주어, 어떤 항목을 먼저 점검해야 할지 파악할 수 있습니다. 계절별 점검 항목과 차종별 부품 정보도 함께 확인할 수 있습니다.</p>
+        <p>자동차 소모품은 각각 교환 주기가 다르게 설계되어 있습니다. 엔진오일은 주행거리(보통 5,000~1만 km)뿐 아니라 시간 경과(보통 1년)도 기준이 됩니다. 타이어는 트레드 마모도와 경화 상태를 함께 봐야 하며, 브레이크패드는 잔량이 일정 수준 이하면 제동 거리가 늘고 디스크까지 손상될 수 있어 조기 발견이 중요합니다. 냉각수·브레이크액·에어컨 필터 등은 눈에 잘 띄지 않아 교환 시기를 놓치기 쉬운 항목들입니다. 미리 파악해두면 정비소에서 불필요한 항목을 권유받을 때 판단 기준이 되기도 합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>엔진오일은 주행이 적어도 6개월~1년 사이에 한 번은 점검하는 것이 좋습니다. 장기 주차 후에도 오일 상태를 확인하세요.</li>
