@@ -45,8 +45,6 @@
 29. **계정 삭제는 2탭**: 설정 > 계정 > [탈퇴하기] → 확인 시트 1회 → 즉시 로그아웃. 만류·할인 팝업 없음. 유예 7일 중 재로그인 시 `/account/restore`에서 [탈퇴 취소] 1탭.
 30. **분석 이벤트 발화 지점은 §10.2 표가 소스**. 각 `*Screen.tsx` 마운트 시 뷰 이벤트 1회, 액션 이벤트는 RPC 성공 콜백에서만(낙관적 UI 시점 아님).
 
----
-
 ## 1. 전체 라우트 맵
 
 접근 조건 표기: `비로그인` / `L1`(OTP 완료·온보딩 미완) / `L1+done`(온보딩 완료) / `L2` / `L3` / `mode=dating`. `noindex` O = `robots: index:false`.
@@ -88,33 +86,14 @@
 | `/blocked/age` | 연령 차단 | status=age_blocked | O | E1 | 1 |
 | `/account/restore` | 탈퇴 유예 복구 | status=deleting | O | E5 | 1 |
 | `/admin/photos` `/admin/reports` `/admin/users` | 어드민 | `admin_users` 역할(없으면 404) | O | E6 | 1 |
-| `/shop` `/likes-you` | 상점·나를 좋아한 사람 | L2 | O | E4 | 3 |
-| `/play/*` `/events/*` `/ranking` | 게임·이벤트·랭킹 | L2 | O | F1~F3 | 2/5 |
-| `/update-required` | 강제 업데이트 | 앱 빌드 버전 미달 | O | E5 | 4 |
+| `/shop` `/likes-you` / `/play/*` `/events/*` `/ranking` / `/update-required` | 상점·나를 좋아한 사람 / 게임·이벤트·랭킹 / 강제 업데이트 | L2 / L2 / 앱 버전 미달 | O | E4 / F1~F3 / E5 | 3 / 2·5 / 4 |
 
 하단 탭 바(`(app)` 전용, L2 이상에서만 렌더): **오늘**(`/home`) · **추천**(`/reco`) · **채팅**(`/chat`, 미읽음 배지) · **나**(`/me`). L1 상태(`/me`·`/settings`만 접근)에서는 탭 바 대신 상단 "본인인증하고 추천 받기" 고정 배너.
-
----
 
 ## 2. 온보딩 플로우 (E1)
 
 공통 프레임: 상단 진행 바 6칸(S1~S6, `/onboarding/photos`는 6/6 유지) + 좌측 뒤로가기(S1·S2 제외) + 단계 카피. "탈락" 표현 금지. 각 화면 마운트 시 `duration_ms` 타이머 시작, 완료 시 `onboarding_step_completed{step, duration_ms}`.
 
-```mermaid
-flowchart LR
-  A[S1 /onboarding/age] --> B[S2 /onboarding/phone]
-  B -->|OTP 성공·프로필 생성| C[S3 /onboarding/basic]
-  C --> D[S4 /onboarding/hobbies]
-  D --> E[S5 /onboarding/quiz]
-  E -->|완료 or 나중에| F[S6-a /onboarding/card]
-  F --> G[S6-b /onboarding/photos]
-  G -->|업로드 or 나중에| H[S7 /verify]
-  H -->|mock allowlist 성공 → L2| I[/home]
-  H -->|프로필 먼저 다듬기| J[/me/edit]
-  J -.->|추천 탭| H
-  A -->|만 19세 미만| X[안내 화면: 계정 없음]
-  B -->|서버 재검증 미성년| Y[/blocked/age]
-```
 
 ### S1 연령 확인 — `/onboarding/age`
 ```
@@ -308,8 +287,6 @@ flowchart LR
 - `verify_gate_viewed` 마운트 시. 인증 성공 → `verify_succeeded{provider, level_after:2}` → `invalidate(['me'])` → `/home`. 실패 → `verify_failed`. 인증 생년월일 미성년 → 서버 `banned` + 로그아웃 → `/suspended`(영구).
 - 이 화면은 `(onboarding)` 그룹에 두되 진행 바 없음. L2 이상이 접근하면 `/home`으로.
 
----
-
 ## 3. 홈 / 탐색 (E2)
 
 ### 3.1 홈(오늘 탭) — `/home`
@@ -387,7 +364,7 @@ flowchart LR
 - 이벤트: `daily_reco_exhausted{liked, passed, unseen}` + `daily_loop_completed{likes, matches, pending_results, duration_ms}`. 광고·타이머·스트릭 없음. 07:00 전 `/reco` 재진입 시 이 화면으로.
 
 ### 3.4 나를 좋아한 사람(블러) — Phase 3, `/likes-you` (E4)
-Phase 1 미렌더. Phase 3 설계: 홈 하단 섹션 "나를 좋아한 N명"(실제 수만, 0이면 섹션 자체 없음) → 블러 카드 그리드(취미 겹침 개수만 노출, 사진·닉네임 블러) → 탭 시 상점 시트. 가짜 수·"누군가" 카피 금지.
+Phase 1 미렌더. Phase 3: 홈 하단 "나를 좋아한 N명"(실제 수만, 0이면 섹션 없음) → 블러 카드 그리드(취미 겹침 개수만 노출) → 탭 시 상점 시트. 가짜 수·"누군가" 카피 금지.
 
 ### 3.5 추천 카드 상태도
 ```mermaid
@@ -400,14 +377,12 @@ stateDiagram-v2
   flipped --> passed: 패스
   seen --> liked: 좋아요/슈퍼 (RPC 성공)
   flipped --> liked: 좋아요/슈퍼
-  liked --> matched: 상호 좋아요 → /match/[id]
+  liked --> matched: 상호 좋아요 → /match/{id}
   liked --> pending: 상대 미응답 (결과 대기 카운터)
   passed --> [*]: 30일 재노출 금지
   seen --> [*]: 무행동 → 7일 후 1회 재노출
   pending --> matched: 상대 좋아요 (Realtime)
 ```
-
----
 
 ## 4. 매칭 (E2/E3)
 
@@ -440,8 +415,6 @@ stateDiagram-v2
 - 양쪽이 동시에 카드를 고르면 둘 다 전송된다(선착 제한 없음). 이미 첫 메시지가 있으면 이 화면의 카드는 "대화 보기"로 대체.
 - **첫 매칭이면** 화면 진입 즉시 `SafetyModal`(A5 §10.1 문구 그대로, [확인했어요] 필수, `profiles`에 `safety_modal_seen_at` 저장 — D1 요청). 이후 매칭에는 미표시.
 - 닫기 ✕ → `/chat` 목록(매칭은 유지). 스크래치 리빌은 `variant='scratch'` 슬롯만 예약(Phase 2 F2).
-
----
 
 ## 5. 채팅 (E3)
 
@@ -497,12 +470,10 @@ stateDiagram-v2
 - 헤더: 닉네임·인증 마크·[🚩 신고](1탭 → `/report/new?target&match&surface=chat`)·[⋮](프로필 보기·차단). 
 - 마스킹 표시: 수신 메시지는 항상 `masked_body`. 발신자 본인 화면에는 원문 + 인라인 안내(A5 §10.4). 배너 해제 시각 = `matched_at + 72h`(양쪽 L3 조건 미충족이면 "양쪽 사진인증 후"로 문구 교체). 같은 매칭 `CT_*` 3회 hit → 경고 배너 "연락처 공유 시도가 반복되면 자동으로 신고돼요".
 - 이미지: 양쪽 L3 AND 24h 경과 시만 📷 활성. 수신 이미지는 블러 + [보기] 탭(세션 내 유지). 서버 `403 NOT_ENTITLED` → 버튼 비활성 + 사유.
-- 오프라인 만남 키워드 → 인라인 배너(A5 §10.2, 매칭당 1회, `chat.safetyBannerShownMatchIds`) + [만남 안전 가이드 전체 보기] → `/legal/youth#safety`가 아니라 별도 정적 `/safety-guide`(`(public)`, 인덱싱 O — E5 추가).
+- 오프라인 만남 키워드 → 인라인 배너(A5 §10.2, 매칭당 1회, `chat.safetyBannerShownMatchIds`) + [만남 안전 가이드 전체 보기] → 정적 `/safety-guide`(`(public)`, 인덱싱 O — E5 추가).
 - 스냅샷 안내: 신고 진입 시 폼 상단에 "신고하면 최근 50개 메시지가 운영팀에 자동으로 전달돼요"(방 안에서는 상시 노출하지 않음).
 - 읽음 처리: 방 포커스 시 `mark_read` RPC → `message_read{latency_min}`. 읽음 표시(✓)는 Phase 3 권한(F-078), Phase 1은 미표시.
 - 상태별 화면: `matches.status='blocked'`(내가 피차단) / `left`(상대 탈퇴) / `paused`(상대 제재 5·휴면) → 입력창 대신 "대화가 종료되었습니다" 고정 바, 메시지 열람 가능, 헤더 신고 버튼 유지(증거 보존 목적). 내 `sanctions.level=2` → 상단 "채팅이 24시간 제한됐어요 · 사유: {카테고리} · 해제 {시각}" + 입력 비활성, 읽기 가능. 상대 `level=2`이면 표시 없음.
-
----
 
 ## 6. 프로필 / 설정 (E5)
 
@@ -577,8 +548,6 @@ stateDiagram-v2
 - `/settings/data`: Phase 1 = 항목 목록(A5 §11.2) + [문의로 요청하기] → `inquiries` 시트(category `data_export`) + "10일 이내 이메일로 보내드려요". Phase 4 자동 생성 버튼 자리.
 - `/settings/account`: [휴면하기](확인 1회 → `status='paused'`, 추천·노출·푸시 중단·매칭 보존, 재로그인 시 즉시 해제 배너) / [탈퇴하기] → 시트 1회("7일 안에 다시 로그인하면 취소돼요. 신고 기록은 정책에 따라 보관돼요") → RPC `request_delete` → 로그아웃. `account_paused` / `account_delete_requested` 이벤트. `/account/restore`: [탈퇴 취소] 1탭 → `account_delete_canceled` → `/home`.
 
----
-
 ## 7. 신고 / 차단 (E5/D5)
 
 ### 7.1 진입점
@@ -646,8 +615,6 @@ stateDiagram-v2
 └───────────────────────────────┘
 ```
 
----
-
 ## 8. 공용 상태
 
 | 상태 | 표시 | 규칙 |
@@ -664,56 +631,50 @@ stateDiagram-v2
 | 강제 업데이트 | `/update-required`(Phase 4): 스토어 링크 1개, 닫기 없음 | Capacitor 빌드 버전 < `min_app_version` |
 | 404 / 500 | 앱 톤 문구 + [홈으로]; `(admin)` 권한 없음은 404와 동일 화면 | 에러 바운더리는 `(app)/error.tsx` 1개 |
 
----
-
 ## 9. 전체 플로우차트
 
 ```mermaid
 flowchart TD
-  L[/ 랜딩/] -->|시작하기| S1[S1 연령]
-  L -->|이미 회원| LG[/login OTP]
+  L["/ 랜딩/"] -->|시작하기| S1[S1 연령]
+  L -->|이미 회원| LG["/login OTP"]
   S1 -->|미성년| S1X[안내·계정 없음]
   S1 --> S2[S2 OTP+약관]
   LG --> G{게이트 판정}
   S2 -->|프로필 생성| G
-  G -->|age_blocked| BA[/blocked/age]
-  G -->|banned·제재≥3| SU[/suspended] --> AP[/appeal]
-  G -->|deleting| RS[/account/restore] -->|취소| G
+  G -->|age_blocked| BA["/blocked/age"]
+  G -->|banned·제재≥3| SU["/suspended"] --> AP["/appeal"]
+  G -->|deleting| RS["/account/restore"] -->|취소| G
   G -->|step≠done| OB[S3 기본 → S4 취미 → S5 퀴즈 → S6 카드 → 사진]
-  OB --> VG[/verify 게이트]
+  OB --> VG["/verify 게이트"]
   G -->|L1·done| VG
-  VG -->|프로필 먼저| ME[/me·/settings]
+  VG -->|프로필 먼저| ME["/me·/settings"]
   ME --> VG
-  VG -->|L2| H[/home]
+  VG -->|L2| H["/home"]
   G -->|L2| H
-  H --> R[/reco 카드 5장]
+  H --> R["/reco 카드 5장"]
   R -->|패스| R
   R -->|좋아요| LK{상호?}
   LK -->|아니오| R
-  LK -->|예| M[/match/id 리빌+제안 3장]
+  LK -->|예| M["/match/id 리빌+제안 3장"]
   M -->|첫 매칭| SM[안전 모달 1회] --> M
-  M -->|카드 선택·자동 첫 메시지| C[/chat/matchId]
+  M -->|카드 선택·자동 첫 메시지| C["/chat/matchId"]
   M -->|건너뛰기| C
-  R -->|5장 완료| D[/reco/done]
-  D --> CL[/chat 목록]
+  R -->|5장 완료| D["/reco/done"]
+  D --> CL["/chat 목록"]
   CL --> C
-  C -->|🚩| RP[/report/new 2단계] --> RD[완료+차단 체크]
+  C -->|🚩| RP["/report/new 2단계"] --> RD[완료+차단 체크]
   C -->|⋮ 차단| BK[BlockConfirmDialog]
   H --> ME
-  ME -->|모드 전환 L3| MD[/settings/mode 미리보기]
+  ME -->|모드 전환 L3| MD["/settings/mode 미리보기"]
   ME -->|탈퇴| DEL[확인 1회 → 로그아웃]
 ```
 
----
-
 ## 10. 분석 이벤트 발화 지점 (A3 §8 / PRD §6.1 이름 그대로)
 
-### 10.1 규칙
-- `track(name, props)` 단일 진입(`packages/db/src/analytics.ts`). 공통 속성은 `analytics` 슬라이스에서 자동 부착.
+규칙: `track(name, props)` 단일 진입(`packages/db/src/analytics.ts`). 공통 속성은 `analytics` 슬라이스에서 자동 부착.
 - 뷰 이벤트는 `*Screen.tsx` `useEffect` 마운트 1회, 액션 이벤트는 RPC 성공 콜백. 서버 생성 이벤트(`match_created`·`push_sent`·`weekly_grant_applied`)는 D 그룹.
 - 원문 메시지·닉네임·전화번호·사진 경로는 어떤 props에도 넣지 않는다.
 
-### 10.2 화면별 표
 | 화면 | 이벤트 | 발화 시점 | 담당 |
 |---|---|---|---|
 | S1 `/onboarding/age` | `onboarding_step_completed{step:age_gate, duration_ms}` | 계속하기 성공 | E1 |
@@ -735,10 +696,7 @@ flowchart TD
 | `/settings/account` · `/account/restore` | `account_paused` / `account_delete_requested` / `account_delete_canceled` | RPC 성공 | E5 |
 | 푸시 클릭(서비스 워커) | `push_opened{slot, kind}` | `notificationclick` → 앱 진입 시 `source=push` | E5 |
 
----
-
-## 11. D1·D 그룹 요청 요약 (본 문서에서 발생)
-- `profiles.onboarding_step`(enum `basic|hobbies|quiz|card|photos|verify|done`), `profiles.onboarding_started_at`, `profiles.safety_modal_seen_at`.
-- `sanctions.acknowledged_at`(경고 모달 확인 기록).
-- RPC 이름 확정 요청: `create_profile`, `ensure_daily_reco`, `send_like`, `send_super_like`, `send_first_message`, `mark_read`, `create_report`, `block_user`, `unblock_user`, `set_mode`, `request_delete`, `cancel_delete`, `pause_account`. 에러 코드 enum `NOT_VERIFIED | NOT_ENTITLED | SANCTIONED | ALREADY_ACTED | RATE_LIMITED`.
-- E5 추가 정적 페이지: `/safety-guide`(`(public)`, 인덱싱 O, A5 §10.2 전문 + 확장).
+## 11. D 그룹 요청 요약 (본 문서에서 발생)
+- D1 컬럼: `profiles.onboarding_step`(enum `basic|hobbies|quiz|card|photos|verify|done`)·`onboarding_started_at`·`safety_modal_seen_at`, `sanctions.acknowledged_at`.
+- RPC 이름: `create_profile`·`ensure_daily_reco`·`send_like`·`send_super_like`·`send_first_message`·`mark_read`·`create_report`·`block_user`·`unblock_user`·`set_mode`·`request_delete`·`cancel_delete`·`pause_account`. 에러 코드 enum `NOT_VERIFIED | NOT_ENTITLED | SANCTIONED | ALREADY_ACTED | RATE_LIMITED`.
+- E5 추가 정적 페이지 `/safety-guide`(`(public)`, 인덱싱 O, A5 §10.2 전문).
