@@ -16,7 +16,6 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { AuthError, fail, fromDbError, ok, toActionFailure, type ActionResult } from "@/lib/auth/errors";
 import { requireProfileForAction } from "@/lib/auth/session";
 import { enforceRateLimit, rateLimitKey } from "@/lib/auth/otp";
-import { callRpc } from "@/lib/chat/rpc";
 import {
   CHAT_MESSAGE_MAX_LEN,
   CHAT_RATE_PER_MIN,
@@ -60,7 +59,7 @@ export async function sendMessage(input: unknown): Promise<ActionResult<SentMess
     const score = scoreMessage(body);
     const flags = score.flags.map((f) => ({ rule_id: f.ruleId, matched: f.matched, score: f.score }));
 
-    const r = await callRpc<SendMessageResult>(admin, "send_message", {
+    const sent = await admin.rpc("send_message", {
       p_match_id: matchId,
       p_sender_id: ctx.profileId,
       p_body: body,
@@ -68,6 +67,8 @@ export async function sendMessage(input: unknown): Promise<ActionResult<SentMess
       p_flags: flags,
       p_client_masked: score.masked,
     });
+    if (sent.error) throw sent.error;
+    const r = sent.data as unknown as SendMessageResult;
 
     return ok({
       id: r.message_id,
@@ -93,7 +94,9 @@ export async function markRead(input: unknown): Promise<ActionResult<{ matchId: 
     const parsed = matchIdSchema.safeParse(input);
     if (!parsed.success) return fail("INVALID_INPUT");
     const ctx = await requireProfileForAction(2);
-    const r = await callRpc<{ match_id: string; marked: number }>(ctx.supabase, "mark_read", { p_match_id: parsed.data.matchId });
+    const { data, error } = await ctx.supabase.rpc("mark_read", { p_match_id: parsed.data.matchId });
+    if (error) throw error;
+    const r = data as unknown as { match_id: string; marked: number };
     return ok({ matchId: r.match_id, marked: r.marked });
   } catch (e) {
     if (e instanceof AuthError) return toActionFailure(e);
@@ -106,7 +109,9 @@ export async function leaveMatch(input: unknown): Promise<ActionResult<{ matchId
     const parsed = matchIdSchema.safeParse(input);
     if (!parsed.success) return fail("INVALID_INPUT");
     const ctx = await requireProfileForAction(1);
-    const r = await callRpc<{ match_id: string; status: string; changed: boolean }>(ctx.supabase, "leave_match", { p_match_id: parsed.data.matchId });
+    const { data, error } = await ctx.supabase.rpc("leave_match", { p_match_id: parsed.data.matchId });
+    if (error) throw error;
+    const r = data as unknown as { match_id: string; status: string; changed: boolean };
     return ok({ matchId: r.match_id, status: r.status, changed: r.changed });
   } catch (e) {
     if (e instanceof AuthError) return toActionFailure(e);
@@ -120,7 +125,9 @@ export async function getReportContext(input: unknown): Promise<ActionResult<Rep
     const parsed = matchIdSchema.safeParse(input);
     if (!parsed.success) return fail("INVALID_INPUT");
     const ctx = await requireProfileForAction(1);
-    const r = await callRpc<ReportContextItem[] | null>(ctx.supabase, "get_report_context", { p_match_id: parsed.data.matchId });
+    const { data, error } = await ctx.supabase.rpc("get_report_context", { p_match_id: parsed.data.matchId });
+    if (error) throw error;
+    const r = data as unknown as ReportContextItem[] | null;
     if (r === null) return fail("FORBIDDEN");
     return ok(r);
   } catch (e) {

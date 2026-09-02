@@ -14,7 +14,7 @@ import { loopDate } from "@duckmate/db";
 import { AuthError, ok, toActionFailure, type ActionResult } from "@/lib/auth/errors";
 import { requireProfileForAction, type ActionContext } from "@/lib/auth/session";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { callRpc, type EnsureTodayResult, type HomeSummary, type SetFirstSuggestionResult, type SuperlikeStatus } from "./rpc";
+import type { EnsureTodayResult, HomeSummary, SetFirstSuggestionResult, SuperlikeStatus } from "./rpc";
 import { buildSuggestions, parseSuggestionInput, type SuggestionInputJson } from "./suggestions";
 import { isIntroWelcome, scorePercent } from "./score";
 
@@ -71,7 +71,9 @@ function parseReasons(v: Json): RecoReason[] {
 export async function getTodayRecommendations(): Promise<ActionResult<TodayRecommendations>> {
   try {
     const ctx = await requireProfileForAction(2);
-    const ensured = await callRpc<EnsureTodayResult>(ctx.supabase, "ensure_today_recommendations");
+    const ensureRes = await ctx.supabase.rpc("ensure_today_recommendations");
+    if (ensureRes.error) throw ensureRes.error;
+    const ensured = ensureRes.data as unknown as EnsureTodayResult;
     const ld = ensured.loop_date ?? loopDate();
 
     const { data: rows, error } = await ctx.supabase
@@ -173,7 +175,9 @@ export async function getTodayRecommendations(): Promise<ActionResult<TodayRecom
 export async function getHomeSummary(): Promise<ActionResult<HomeSummary>> {
   try {
     const ctx = await requireProfileForAction(2);
-    return ok(await callRpc<HomeSummary>(ctx.supabase, "matching_home_summary"));
+    const { data, error } = await ctx.supabase.rpc("matching_home_summary");
+    if (error) throw error;
+    return ok(data as unknown as HomeSummary);
   } catch (e) {
     return toActionFailure(e);
   }
@@ -205,11 +209,17 @@ export type MatchDetail = {
 
 /** first_suggestion 이 비어 있으면(레이스) 여기서 조립·기록한다 (service, 비어 있을 때만 set → 멱등) */
 export async function ensureFirstSuggestion(ctx: ActionContext, matchId: string, input?: SuggestionInputJson | null): Promise<FirstSuggestion[]> {
-  const json = input ?? (await callRpc<SuggestionInputJson>(ctx.supabase, "match_suggestion_input", { p_match_id: matchId }));
+  let json = input ?? null;
+  if (json === null) {
+    const { data, error } = await ctx.supabase.rpc("match_suggestion_input", { p_match_id: matchId });
+    if (error) throw error;
+    json = data as unknown as SuggestionInputJson;
+  }
   const cards = buildSuggestions(parseSuggestionInput(json));
   const admin = createAdminClient();
-  const res = await callRpc<SetFirstSuggestionResult>(admin, "set_match_first_suggestion", { p_match_id: matchId, p_cards: cards });
-  return res.first_suggestion;
+  const { data, error } = await admin.rpc("set_match_first_suggestion", { p_match_id: matchId, p_cards: cards as unknown as Json });
+  if (error) throw error;
+  return (data as unknown as SetFirstSuggestionResult).first_suggestion;
 }
 
 export async function getMatch(matchId: string): Promise<ActionResult<MatchDetail>> {
@@ -221,11 +231,12 @@ export async function getMatch(matchId: string): Promise<ActionResult<MatchDetai
     const partnerId = match.a_id === ctx.profileId ? match.b_id : match.a_id;
     const [partnerRes, input] = await Promise.all([
       ctx.supabase.from("v_profile_public").select("*").eq("id", partnerId).maybeSingle(),
-      callRpc<SuggestionInputJson>(ctx.supabase, "match_suggestion_input", { p_match_id: matchId }),
+      ctx.supabase.rpc("match_suggestion_input", { p_match_id: matchId }),
     ]);
     if (partnerRes.error) throw partnerRes.error;
+    if (input.error) throw input.error;
     let firstSuggestion = (Array.isArray(match.first_suggestion) ? match.first_suggestion : []) as unknown as FirstSuggestion[];
-    if (firstSuggestion.length === 0) firstSuggestion = await ensureFirstSuggestion(ctx, matchId, input);
+    if (firstSuggestion.length === 0) firstSuggestion = await ensureFirstSuggestion(ctx, matchId, input.data as unknown as SuggestionInputJson);
     return ok({
       match,
       partnerId,
@@ -242,7 +253,9 @@ export async function getMatch(matchId: string): Promise<ActionResult<MatchDetai
 export async function getLikersCount(): Promise<ActionResult<{ count: number }>> {
   try {
     const ctx = await requireProfileForAction(2);
-    return ok({ count: await callRpc<number>(ctx.supabase, "likers_count") });
+    const { data, error } = await ctx.supabase.rpc("likers_count");
+    if (error) throw error;
+    return ok({ count: data ?? 0 });
   } catch (e) {
     return toActionFailure(e);
   }
@@ -251,7 +264,9 @@ export async function getLikersCount(): Promise<ActionResult<{ count: number }>>
 export async function getSuperlikeStatus(): Promise<ActionResult<SuperlikeStatus>> {
   try {
     const ctx = await requireProfileForAction(2);
-    return ok(await callRpc<SuperlikeStatus>(ctx.supabase, "superlike_status"));
+    const { data, error } = await ctx.supabase.rpc("superlike_status", {});
+    if (error) throw error;
+    return ok(data as unknown as SuperlikeStatus);
   } catch (e) {
     return toActionFailure(e);
   }

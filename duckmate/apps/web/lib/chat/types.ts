@@ -1,8 +1,7 @@
 /**
  * 채팅 도메인 타입·상수 (E3 화면 ↔ D4 서버 액션 공용). 런타임 의존성 없음.
  *
- * RPC 타입은 `packages/db/src/types.ts` 의 `Database.Functions` 에 아직 없다(D4 경로 제한) → `rpc.ts` 의 `callRpc()` 로 호출하고
- * 여기 정의한 결과 타입으로 좁힌다. 오케스트레이터 병합 시 types.ts 에 옮긴다(17_chat.md 병합 요청).
+ * RPC 이름·인자는 `packages/db/src/types.ts` 의 `Database.Functions`(H1/0071 반영)가 검사하고, jsonb payload 모양은 여기 타입으로 좁힌다.
  */
 import type { Enums, MessageView, VerifyLevel } from "@duckmate/db";
 import type { SafetyRuleId } from "@duckmate/db/safety-rules";

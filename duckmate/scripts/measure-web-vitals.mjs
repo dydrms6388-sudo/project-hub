@@ -11,7 +11,10 @@
  *   - web(dev, next dev)         : /dev/discover?screen=reco · /dev/discover?screen=home · /dev/chat?view=room · /dev/profile
  *                                  (NODE_ENV=production 이면 404 라 dev 서버가 필요. JS 크기는 비압축·개발 번들이라 참고값)
  *   - company(apps/company/out)  : / · /contact/ · /legal/terms/   (내장 정적 서버, gzip)
- *  목표: LCP ≤ 2.5s · CLS ≤ 0.1 · web 홈 JS ≤ 200KB gz · company 홈 JS ≤ 80KB gz (06_PRD §5.1 / 13 결정 23)
+ *  목표: LCP ≤ 2.5s · CLS ≤ 0.1 · web 홈 런타임 JS ≤ 200KB gz
+ *        company 홈은 **First Load ≤ 130KB gz + 페이지 고유 ≤ 30KB gz** (13_company_site 결정 23 개정 — 27_fe_quality 결정 16 제안을 H2 가 반영).
+ *        Next App Router 공통 프레임워크가 102KB gz 라 기존 "홈 JS ≤ 80KB" 는 React 를 버리지 않는 한 도달 불가였다.
+ *        런타임 전송량(jsGzKb)은 nomodule 폴리필 39.5KB 를 포함하므로 First Load(app-build-manifest) 와 값이 다르다 — 판정은 First Load 기준.
  *
  *  사용: [NEXT_DIST_DIR=.next-e6] node scripts/measure-web-vitals.mjs [--no-build] [--skip-dev] [--skip-company] [--lighthouse]
  *        [--json <file>] [--md <file>] [--strict]
@@ -39,7 +42,16 @@ const PORT_PROD = Number(opt("--port", 3011));
 const PORT_DEV = PORT_PROD + 1;
 const PORT_COMPANY = PORT_PROD + 2;
 
-const TARGETS = { lcpMs: 2500, cls: 0.1, jsGzKb: { "web:/": 200, "company:/": 80 } };
+const TARGETS = {
+  lcpMs: 2500,
+  cls: 0.1,
+  /** 런타임 same-origin JS 전송량(gz, nomodule 폴리필 포함) */
+  jsGzKb: { "web:/": 200 },
+  /** First Load JS (app-build-manifest: root layout + 그룹 layout + page, gz) */
+  firstLoadGzKb: { "company:/": 130 },
+  /** 페이지 고유 JS (First Load 에서 layout 공통분을 뺀 값, gz) */
+  pageOwnGzKb: { "company:/": 30 },
+};
 const PAGES = {
   prod: ["/", "/login", "/legal/terms", "/account/delete"],
   dev: ["/dev/discover?screen=reco", "/dev/discover?screen=home", "/dev/chat?view=room", "/dev/profile"],
@@ -264,7 +276,15 @@ function bundleReport(appDir, distDir) {
     for (const f of pages[key]) files.add(f);
     const route = "/" + segs.filter((s) => !/^\(.*\)$/.test(s)).join("/");
     const js = [...files].filter((f) => f.endsWith(".js"));
-    rows.push({ route: route === "/" ? "/" : route.replace(/\/$/, ""), files: js.length, firstLoadGzKb: +(js.reduce((n, f) => n + gz(f), 0) / 1024).toFixed(1) });
+    // 페이지 고유분 = page 엔트리에만 있는 청크(layout 공통분 제외)
+    const layoutFiles = new Set([...files].filter((f) => !pages[key].includes(f)));
+    const own = js.filter((f) => !layoutFiles.has(f));
+    rows.push({
+      route: route === "/" ? "/" : route.replace(/\/$/, ""),
+      files: js.length,
+      firstLoadGzKb: +(js.reduce((n, f) => n + gz(f), 0) / 1024).toFixed(1),
+      pageOwnGzKb: +(own.reduce((n, f) => n + gz(f), 0) / 1024).toFixed(1),
+    });
   }
   return rows.sort((a, b) => b.firstLoadGzKb - a.firstLoadGzKb);
 }
@@ -280,6 +300,19 @@ function verdict(r, area) {
   if (TARGETS.jsGzKb[key] && r.mode !== "dev" && r.jsTransfer / 1024 > TARGETS.jsGzKb[key]) fails.push(`JS>${TARGETS.jsGzKb[key]}KB`);
   const a11y = (r.axe?.violations ?? []).filter((v) => v.impact === "critical" || v.impact === "serious");
   if (a11y.length) fails.push(`a11y ${a11y.map((v) => v.id).join(",")}`);
+  return fails;
+}
+
+/** 번들 목표(First Load·페이지 고유) 판정 — 영역별 라우트 키 `area:route` */
+function bundleFails(report) {
+  const fails = [];
+  for (const [area, rows] of Object.entries(report.bundles ?? {})) {
+    for (const r of rows ?? []) {
+      const key = `${area}:${r.route}`;
+      if (TARGETS.firstLoadGzKb[key] && r.firstLoadGzKb > TARGETS.firstLoadGzKb[key]) fails.push(`${key} FirstLoad ${r.firstLoadGzKb}>${TARGETS.firstLoadGzKb[key]}KB`);
+      if (TARGETS.pageOwnGzKb[key] && r.pageOwnGzKb > TARGETS.pageOwnGzKb[key]) fails.push(`${key} PageOwn ${r.pageOwnGzKb}>${TARGETS.pageOwnGzKb[key]}KB`);
+    }
+  }
   return fails;
 }
 
@@ -303,8 +336,15 @@ function toMarkdown(report) {
   }
   for (const [name, rows] of Object.entries(report.bundles ?? {})) {
     if (!rows) continue;
-    L.push("", `**${name} First Load JS (gzip, app-build-manifest 기준: root layout + 그룹 layout + page)**`, "", `| 라우트 | JS 파일 수 | First Load gz KB |`, `|---|---|---|`);
-    for (const r of rows) L.push(`| ${r.route} | ${r.files} | ${r.firstLoadGzKb} |`);
+    L.push("", `**${name} First Load JS (gzip, app-build-manifest 기준: root layout + 그룹 layout + page)**`, "", `| 라우트 | JS 파일 수 | First Load gz KB | 페이지 고유 gz KB | 판정 |`, `|---|---|---|---|---|`);
+    for (const r of rows) {
+      const key = `${name}:${r.route}`;
+      const f = [];
+      if (TARGETS.firstLoadGzKb[key] && r.firstLoadGzKb > TARGETS.firstLoadGzKb[key]) f.push(`First Load>${TARGETS.firstLoadGzKb[key]}`);
+      if (TARGETS.pageOwnGzKb[key] && r.pageOwnGzKb > TARGETS.pageOwnGzKb[key]) f.push(`고유>${TARGETS.pageOwnGzKb[key]}`);
+      const target = TARGETS.firstLoadGzKb[key] || TARGETS.pageOwnGzKb[key];
+      L.push(`| ${r.route} | ${r.files} | ${r.firstLoadGzKb} | ${r.pageOwnGzKb} | ${target ? (f.length ? "❌ " + f.join("; ") : "✅") : "—"} |`);
+    }
   }
   return L.join("\n");
 }
@@ -364,6 +404,8 @@ function toMarkdown(report) {
   if (opt("--json")) writeFileSync(resolve(opt("--json")), JSON.stringify(report, null, 2));
   if (opt("--md")) writeFileSync(resolve(opt("--md")), md + "\n");
   const failed = report.pages.filter((r) => verdict(r, r.area).length);
-  console.log(`\n${failed.length ? "⚠️" : "✅"} [vitals] ${report.pages.length} pages, ${failed.length} below target${failed.length ? ": " + failed.map((r) => `${r.area}${r.path}`).join(", ") : ""}${flag("--strict") ? "" : " (측정 모드, exit 0)"}`);
-  process.exit(flag("--strict") && failed.length ? 1 : 0);
+  const bundleFailed = bundleFails(report);
+  if (bundleFailed.length) console.log(`\n⚠️ [vitals] 번들 목표 미달: ${bundleFailed.join(", ")}`);
+  console.log(`\n${failed.length || bundleFailed.length ? "⚠️" : "✅"} [vitals] ${report.pages.length} pages, ${failed.length} below target${failed.length ? ": " + failed.map((r) => `${r.area}${r.path}`).join(", ") : ""}${bundleFailed.length ? ` · 번들 ${bundleFailed.length}건` : ""}${flag("--strict") ? "" : " (측정 모드, exit 0)"}`);
+  process.exit(flag("--strict") && (failed.length || bundleFailed.length) ? 1 : 0);
 })().catch((e) => { console.error(e); process.exit(1); });

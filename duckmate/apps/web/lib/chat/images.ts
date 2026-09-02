@@ -16,7 +16,6 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { AuthError, fail, fromDbError, ok, toActionFailure, type ActionResult } from "@/lib/auth/errors";
 import { requireProfileForAction } from "@/lib/auth/session";
 import { enforceRateLimit, rateLimitKey } from "@/lib/auth/otp";
-import { callRpc } from "@/lib/chat/rpc";
 import {
   CHAT_IMAGE_ALLOWED_MIME,
   CHAT_IMAGE_BUCKET,
@@ -49,7 +48,8 @@ export async function createChatImageUploadUrl(input: unknown): Promise<ActionRe
     if (ctx.state.sanctionLevel >= 2) return fail("SANCTIONED", "채팅이 24시간 제한됐어요");
     const { matchId } = parsed.data;
 
-    const allowed = await callRpc<boolean>(ctx.supabase, "can_send_chat_image", { p_match_id: matchId, p_sender: ctx.profileId });
+    const { data: allowed, error: allowedErr } = await ctx.supabase.rpc("can_send_chat_image", { p_match_id: matchId, p_sender: ctx.profileId });
+    if (allowedErr) throw allowedErr;
     if (!allowed) return fail("NOT_ENTITLED", IMAGE_NOT_ALLOWED_MSG);
 
     const messageId = crypto.randomUUID();
@@ -86,7 +86,7 @@ export async function sendImageMessage(input: unknown): Promise<ActionResult<Sen
     }
 
     await enforceRateLimit(admin, await rateLimitKey("chat_send", ctx.profileId), CHAT_RATE_PER_MIN, 60);
-    const r = await callRpc<SendMessageResult>(admin, "send_message", {
+    const sent = await admin.rpc("send_message", {
       p_match_id: matchId,
       p_sender_id: ctx.profileId,
       p_body: null,
@@ -94,6 +94,8 @@ export async function sendImageMessage(input: unknown): Promise<ActionResult<Sen
       p_flags: [],
       p_message_id: messageId,
     });
+    if (sent.error) throw sent.error;
+    const r = sent.data as unknown as SendMessageResult;
     cleanupPath = null;
     return ok({
       id: r.message_id, matchId, body: null, maskedBody: r.masked_body, imagePath: path, isHeld: r.is_held, createdAt: r.created_at,

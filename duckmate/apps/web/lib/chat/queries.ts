@@ -7,14 +7,14 @@
  */
 import { fail, ok, toActionFailure, type ActionResult } from "@/lib/auth/errors";
 import { requireProfileForAction } from "@/lib/auth/session";
-import { callRpc } from "@/lib/chat/rpc";
 import { CHAT_PAGE_SIZE, type ChatListItem, type ChatMessage, type ChatRoom } from "@/lib/chat/types";
 
 export async function getChatList(): Promise<ActionResult<ChatListItem[]>> {
   try {
     const ctx = await requireProfileForAction(2);
-    const rows = await callRpc<ChatListItem[]>(ctx.supabase, "get_chat_list");
-    return ok(rows ?? []);
+    const { data, error } = await ctx.supabase.rpc("get_chat_list", {});
+    if (error) throw error;
+    return ok((data as unknown as ChatListItem[] | null) ?? []);
   } catch (e) {
     return toActionFailure(e);
   }
@@ -23,8 +23,9 @@ export async function getChatList(): Promise<ActionResult<ChatListItem[]>> {
 export async function getChatRoom(matchId: string): Promise<ActionResult<ChatRoom>> {
   try {
     const ctx = await requireProfileForAction(2);
-    const rows = await callRpc<ChatRoom[]>(ctx.supabase, "get_chat_list", { p_match_id: matchId });
-    const room = rows?.[0];
+    const { data, error } = await ctx.supabase.rpc("get_chat_list", { p_match_id: matchId });
+    if (error) throw error;
+    const room = (data as unknown as ChatRoom[] | null)?.[0];
     if (!room) return fail("NOT_FOUND", "대화방을 찾을 수 없어요");
     return ok(room);
   } catch (e) {

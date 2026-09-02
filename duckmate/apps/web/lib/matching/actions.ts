@@ -16,7 +16,7 @@ import { AuthError, fail, ok, toActionFailure, type ActionResult } from "@/lib/a
 import { requireProfileForAction } from "@/lib/auth/session";
 import { enforceRateLimit, rateLimitKey } from "@/lib/auth/otp";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { callRpc, type ActResult, type EnsureTodayResult, type SuperlikeStatus, type UndoResult } from "./rpc";
+import type { ActResult, EnsureTodayResult, SuperlikeStatus, UndoResult } from "./rpc";
 import { ensureFirstSuggestion } from "./queries";
 
 const uuid = z.string().uuid();
@@ -57,7 +57,9 @@ export async function actOnRecommendation(input: unknown): Promise<ActionResult<
 
     let r: ActResult;
     try {
-      r = await callRpc<ActResult>(ctx.supabase, "act_on_recommendation", { p_target_id: targetId, p_action: action });
+      const res = await ctx.supabase.rpc("act_on_recommendation", { p_target_id: targetId, p_action: action });
+      if (res.error) throw res.error;
+      r = res.data as unknown as ActResult;
     } catch (e) {
       const msg = typeof e === "object" && e !== null && "message" in e ? String((e as { message: unknown }).message) : "";
       const m = /^NOT_ENTITLED:\s*(NO_SUPERLIKE|SUPERLIKE_DAILY_CAP)/.exec(msg);
@@ -111,7 +113,9 @@ export async function undo(): Promise<ActionResult<{ recoId: string; targetId: s
   try {
     const ctx = await requireProfileForAction(2);
     try {
-      const r = await callRpc<UndoResult>(ctx.supabase, "undo_last_action");
+      const { data, error } = await ctx.supabase.rpc("undo_last_action");
+      if (error) throw error;
+      const r = data as unknown as UndoResult;
       return ok({ recoId: r.reco_id, targetId: r.target_id, previousAction: r.previous_action });
     } catch (e) {
       const msg = typeof e === "object" && e !== null && "message" in e ? String((e as { message: unknown }).message) : "";
@@ -128,7 +132,9 @@ export async function undo(): Promise<ActionResult<{ recoId: string; targetId: s
 export async function ensureTodayRecommendations(): Promise<ActionResult<EnsureTodayResult>> {
   try {
     const ctx = await requireProfileForAction(2);
-    return ok(await callRpc<EnsureTodayResult>(ctx.supabase, "ensure_today_recommendations"));
+    const { data, error } = await ctx.supabase.rpc("ensure_today_recommendations");
+    if (error) throw error;
+    return ok(data as unknown as EnsureTodayResult);
   } catch (e) {
     if (e instanceof AuthError) return toActionFailure(e);
     return toActionFailure(e);

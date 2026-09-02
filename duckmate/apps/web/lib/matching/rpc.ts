@@ -3,6 +3,7 @@
  * 호출은 `supabase.rpc("...")` 로 직접 한다 — 함수 이름·인자는 `Database["public"]["Functions"]`(0071/H1 반영)가 검사한다.
  */
 import type { Enums, FirstSuggestion } from "@duckmate/db";
+import type { SuggestionInputJson } from "./suggestions";
 
 export type RecoAction = Enums["reco_action"];
 
