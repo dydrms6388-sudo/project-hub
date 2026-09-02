@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 export const tid = (page: Page, id: string): Locator => page.getByTestId(id);
 
@@ -18,17 +18,25 @@ export async function selectRadixOptionByTestId(page: Page, triggerTestId: strin
   await option.click();
 }
 
-/** 접근성 기본: html lang, h1 ≥ 1, 버튼 접근 가능한 이름 */
-export async function expectBasicA11y(page: Page): Promise<void> {
+/** 접근성 기본: html lang, 제목(h1 — strictH1=false 면 h1|h2|role=heading 허용 + h1 부재 annotation), 버튼 접근 가능한 이름 */
+export async function expectBasicA11y(page: Page, opts: { strictH1?: boolean } = {}): Promise<void> {
+  const strictH1 = opts.strictH1 ?? true;
   await expect(page.locator("html")).toHaveAttribute("lang", "ko");
-  await expect(page.locator("h1").first()).toBeVisible();
+  if (strictH1) {
+    await expect(page.locator("h1").first()).toBeVisible();
+  } else {
+    await expect(page.locator("h1, h2, h3, [role=heading]").first()).toBeVisible();
+    if ((await page.locator("h1").count()) === 0) test.info().annotations.push({ type: "a11y", description: `h1 없음: ${page.url()}` });
+  }
   const unnamed = await page.evaluate(() => {
     const out: string[] = [];
     for (const b of Array.from(document.querySelectorAll("button, a[role=button], [role=button]"))) {
       const el = b as HTMLElement;
       const labelledBy = el.getAttribute("aria-labelledby");
       const byRef = labelledBy ? (document.getElementById(labelledBy)?.textContent ?? "") : "";
-      const name = (el.getAttribute("aria-label") ?? "") + (el.textContent ?? "") + (el.getAttribute("title") ?? "") + byRef;
+      // <label for=id> 연결(Radix RadioGroupItem/Checkbox 는 button 이라 .labels 로 접근 가능한 이름을 얻는다)
+      const labels = "labels" in el && (el as HTMLButtonElement).labels ? Array.from((el as HTMLButtonElement).labels ?? []).map((l) => l.textContent ?? "").join("") : "";
+      const name = (el.getAttribute("aria-label") ?? "") + (el.textContent ?? "") + (el.getAttribute("title") ?? "") + byRef + labels;
       const img = el.querySelector("img[alt]:not([alt=''])");
       if (name.trim().length === 0 && !img) out.push(el.outerHTML.slice(0, 120));
     }

@@ -20,9 +20,9 @@ export function ChatHeader({ room, compat, onOpenMenu, onOpenProfile }: { room: 
         <PartnerAvatar partnerId={room.partner_id} nickname={room.partner_nickname} size="sm" />
         <span className="flex min-w-0 flex-col">
           <span className="flex min-w-0 items-center gap-1.5">
-            <span className={cn("truncate text-h3", !room.partner_nickname && "text-muted-foreground")} data-testid="chat-partner-name">
+            <h1 className={cn("truncate text-h3", !room.partner_nickname && "text-muted-foreground")} data-testid="chat-partner-name">
               {nickname}
-            </span>
+            </h1>
             <VerifyBadge level={room.partner_verify_level} />
           </span>
           {typeof compat === "number" ? <CompatGauge value={compat} size="sm" layout="bar" className="w-28" /> : null}

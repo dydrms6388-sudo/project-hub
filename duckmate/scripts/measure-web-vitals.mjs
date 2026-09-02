@@ -175,7 +175,8 @@ async function measurePage(browser, base, path, { mode, axeSource }) {
   page.on("response", (r) => { if (r.status() >= 400 && new URL(r.url()).hostname === "127.0.0.1") http4xx.push(`${r.status()} ${new URL(r.url()).pathname}`); });
   await page.addInitScript(INIT_SCRIPT);
   const url = base + path;
-  if (mode === "dev") { await page.goto(url, { waitUntil: "load", timeout: 120_000 }); await page.waitForTimeout(500); } // 1회 컴파일 워밍업
+  // 워밍업 1회(서버 캐시·dev 컴파일). 측정은 두 번째 로드(브라우저 캐시는 새 컨텍스트라 비어 있음)
+  { const warm = await browser.newContext(); const wp = await warm.newPage(); await wp.route("**/*", (r) => (/^(127\.0\.0\.1|localhost)$/.test(new URL(r.request().url()).hostname) ? r.continue() : r.abort())); await wp.goto(url, { waitUntil: "load", timeout: 120_000 }); await warm.close(); }
   const t0 = Date.now();
   await page.goto(url, { waitUntil: "load", timeout: 120_000 });
   try { await page.waitForLoadState("networkidle", { timeout: 10_000 }); } catch { /* 폴링 등 */ }

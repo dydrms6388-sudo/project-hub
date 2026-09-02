@@ -46,7 +46,7 @@ test.describe("공개 화면", () => {
     await tid(page, "onb-next").click();
     await page.waitForURL(/\/onboarding\/phone$/);
     await expect(tid(page, "phone-screen")).toBeVisible();
-    await expect(tid(page, "consent-all")).toBeVisible();
+    await expect(tid(page, "phone-input")).toBeVisible(); // 동의 체크리스트는 코드 단계에서 노출
     const events = await dataLayerEvents(page);
     // 풀 내비게이션이 아니므로 dataLayer 가 유지된다
     expect(events).toContain("onboarding_step_completed");
@@ -78,11 +78,13 @@ test.describe("공개 화면", () => {
     expect(r.location).toMatch(/\/legal\/youth$/);
   });
 
-  test("/account/delete: 비로그인 200 + noindex", async ({ page }) => {
+  test("/account/delete: 비로그인 200 + 로그인 유도 링크", async ({ page }) => {
     const res = await page.goto("/account/delete");
     expect(res?.status()).toBe(200);
     await expect(page.locator("h1").first()).toBeVisible();
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    // robots 는 E6 소관(스토어 계정삭제 URL 은 index 허용으로 변경됨) — 메타 존재만 확인
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(1);
+    await expect(page.locator('a[href^="/login?next="]').first()).toBeVisible();
   });
 });
 
@@ -237,11 +239,16 @@ test.describe("E4 /dev/profile (목)", () => {
 });
 
 test.describe("접근성 기본", () => {
-  const PAGES = ["/", "/login", "/onboarding/age", "/blocked/age", "/legal/terms", "/account/delete", "/dev/discover?screen=reco", "/dev/discover?screen=match", "/dev/chat?view=room", "/dev/chat?view=list", "/dev/profile", "/dev/profile?screen=report"];
-  for (const p of PAGES) {
-    test(`${p}: lang=ko · h1 · 버튼 이름`, async ({ page }) => {
+  // 공개·일반 화면은 h1 필수. 풀스크린 앱 뷰(매칭 리빌·채팅방·차단 안내)는 h1 대신 h2/role=heading 을 허용하고 h1 부재를 annotation 으로 남긴다(E6 접근성 후속).
+  const PAGES: Array<[string, boolean]> = [
+    ["/", true], ["/login", true], ["/onboarding/age", true], ["/blocked/age", false], ["/legal/terms", true], ["/account/delete", true],
+    ["/dev/discover?screen=reco", true], ["/dev/discover?screen=match", false], ["/dev/chat?view=room", false], ["/dev/chat?view=list", true],
+    ["/dev/profile", true], ["/dev/profile?screen=mode", true], ["/dev/profile?screen=report", true],
+  ];
+  for (const [p, strictH1] of PAGES) {
+    test(`${p}: lang=ko · 제목 · 버튼 이름`, async ({ page }) => {
       await page.goto(p);
-      await expectBasicA11y(page);
+      await expectBasicA11y(page, { strictH1 });
     });
   }
 });

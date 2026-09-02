@@ -237,8 +237,8 @@ do $$ declare r jsonb; begin
 end $$;
 :as_B
 do $$ begin
-  if (select jsonb_array_length(first_suggestion) from public.v_my_matches where match_id = (select v::uuid from t_state where k='match')) <> 3
-    then raise exception 'S7 FAIL: B does not see 3 suggestion cards'; end if;
+  if jsonb_array_length(public.get_chat_list((select v::uuid from t_state where k='match')) -> 0 -> 'first_suggestion') <> 3
+    then raise exception 'S7 FAIL: B does not see 3 suggestion cards via get_chat_list'; end if;
 end $$;
 select 'S7 PASS first suggestion: 3 cards set once, visible to participants';
 
