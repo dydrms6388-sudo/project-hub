@@ -67,6 +67,7 @@ const BUILTINS = [
   { slug: "tone-lab", emoji: "🎭", name: "말투연구소", desc: "아무 문장이나 부장님·사극·MZ·츤데레 말투로 변환", k: "말투 변환 부장님 사극 MZ 츤데레", prio: "0.7" },
   { slug: "roast-edit", emoji: "🌶️", name: "사이다첨삭", desc: "내 문장을 독설로, 그리고 칭찬으로 평가서 발급", k: "독설 첨삭 평가 문장 리뷰 사이다", prio: "0.7" },
   { slug: "dark-history", emoji: "📼", name: "흑역사 판독기", desc: "옛날에 쓴 글의 시대·감성·오글 지수 판독", k: "흑역사 싸이월드 감성 오글 판독", prio: "0.7" },
+  { slug: "dul", emoji: "🫶", name: "둘만의 문답", desc: "매일 질문 하나, 둘 다 답해야 열리는 두 사람의 교환문답", k: "둘 문답 질문 부모님 친구 연인 교환일기", prio: "0.7" },
   { slug: "excuse-factory", emoji: "🙈", name: "핑계공장", desc: "상황만 고르면 신뢰도별 핑계 3종 즉시 제조", k: "핑계 약속 취소 지각 회식 거절", prio: "0.7" },
   { slug: "apology-maker", emoji: "📄", name: "공식사과문 생성기", desc: "사소한 잘못도 연예인급 공식 사과문으로", k: "사과문 공식입장 패러디 밈", prio: "0.7" },
   { slug: "nag-menu", emoji: "🍱", name: "잔소리 메뉴판", desc: "명절·모임 잔소리에 가격표를 붙이는 밈 카드", k: "잔소리 명절 메뉴판 가격표 밈", prio: "0.7" },
@@ -82,7 +83,7 @@ const BUILTINS = [
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
-  { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
+  { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history", "dul"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
