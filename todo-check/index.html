@@ -17,9 +17,13 @@
 <meta property="og:title" content="오늘할일 체크리스트 — 알람·동기부여 투두앱" />
 <meta property="og:description" content="닉네임 간편 로그인, 시간 알람, 스트릭·레벨 동기부여까지. 설치 없이 바로 쓰는 할일 체크리스트." />
 <meta property="og:url" content="https://tomatoeggcat.com/todo-check/" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="오늘할일 체크리스트 — 알람·동기부여 투두앱" />
 <meta name="twitter:description" content="닉네임 간편 로그인, 시간 알람, 스트릭·레벨 동기부여까지. 설치 없이 바로 쓰는 할일 체크리스트." />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/default.png" />
 <meta name="google-adsense-account" content="ca-pub-5567719201265106" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
 <script type="application/ld+json">
@@ -136,7 +140,7 @@ button{font-family:inherit}
 .wday .dot.rest{background:transparent;border-style:dashed;font-size:13px}
 .wday .lb{font-size:10.5px;color:var(--mut2);margin-top:3px}
 .wday.today .lb{color:var(--accent);font-weight:700}
-.histToggle{margin-top:10px;background:none;border:0;color:var(--link);font-size:12.5px;cursor:pointer;padding:8px 4px;min-height:40px;text-decoration:underline}
+.histToggle{margin-top:10px;background:none;border:0;color:var(--link);font-size:12.5px;cursor:pointer;padding:10px 4px;min-height:44px;text-decoration:underline}
 .hist{margin-top:8px}
 .histGrid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
 .histGrid .hcell{aspect-ratio:1;border-radius:7px;background:var(--dot);border:1px solid var(--dotline);padding:0;cursor:pointer}
@@ -150,8 +154,8 @@ button{font-family:inherit}
 .ach .em{font-size:20px;line-height:1.2}
 .ach .nm{font-size:10.5px;color:var(--mut);margin-top:3px}
 .ach.locked .em{opacity:.5;filter:grayscale(1)} /* dim the icon, keep the label readable (contrast) */
-.ach.locked .nm{color:var(--mut2)}
-.ach .pg{font-size:9.5px;color:var(--accent);margin-top:1px}
+.ach.locked .nm{color:var(--mut)}
+.ach .pg{font-size:10.5px;font-weight:700;color:var(--accent2);margin-top:1px}
 .ctaRow{display:flex;gap:8px}
 .ctaRow .cta{flex:1;font-size:15px}
 .cta.sub{background:var(--btn);color:var(--txt2);border:1px solid var(--line2)}
@@ -223,6 +227,7 @@ li.done .chk{background:var(--accent);border-color:var(--accent)}
 .report .bar i{display:block;width:100%;border-radius:4px 4px 0 0;background:#6ee7b7;min-height:3px}
 .report .bar i.zero{background:rgba(255,255,255,.18)}
 .report .bar i.none{background:transparent;border:1px dashed rgba(255,255,255,.35);min-height:6px}
+.report .bar i.rest{background:transparent;border:1px dashed #6ee7b7;min-height:6px}
 .report .bar span{font-size:10.5px;color:#a7f3d0}
 .report .q{margin-top:14px;font-size:13.5px;border-top:1px dashed rgba(255,255,255,.25);padding-top:12px;color:#d1fae5}
 .report .wm{margin-top:12px;text-align:right;font-size:11px;color:#6ee7b7}
@@ -232,9 +237,11 @@ li.done .chk{background:var(--accent);border-color:var(--accent)}
 .actions button.remix{flex-basis:100%;background:var(--field)}
 .shareNote{font-size:12px;color:var(--mut2);margin-top:8px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#34d399;color:#04150d;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;z-index:60;max-width:88vw;text-align:center;display:flex;align-items:center;gap:10px}
-.toast.show{opacity:1;pointer-events:auto}
+.toast.show{opacity:1}
+.toast.multi{border-radius:16px;padding:13px 18px} /* a 4-line capsule eats its own text */
+.toast button{pointer-events:auto} /* only the action is clickable — the toast must not block taps */
 #toastMsg{white-space:pre-line;text-align:left;line-height:1.45}
-.toast button{border:0;background:#04150d;color:#a7f3d0;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;min-height:36px}
+.toast button{border:0;background:#04150d;color:#a7f3d0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;min-height:44px;flex:0 0 auto}
 .inbound{display:none;position:sticky;top:0;z-index:50;margin:-22px -18px 18px;padding:12px 18px;background:linear-gradient(90deg,#10b981,#34d399);color:#04150d;font-weight:800;text-align:center}
 .inbound button{margin-left:8px;padding:10px 14px;border:0;border-radius:999px;background:#04150d;color:#a7f3d0;font-size:13px;font-weight:700;cursor:pointer;min-height:44px}
 .adbox{margin:26px 0 8px}
@@ -308,7 +315,7 @@ footer a{color:var(--link);margin:0 6px;text-decoration:none}
           <circle id="ringTrack" cx="46" cy="46" r="40" fill="none" stroke="#262626" stroke-width="9"/>
           <circle id="ringBar" cx="46" cy="46" r="40" fill="none" stroke="#34d399" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3" style="transition:stroke-dashoffset .5s"/>
         </svg>
-        <div class="pct"><span id="pctNum">0%</span><small>오늘 달성</small></div>
+        <div class="pct"><span id="pctNum">0%</span><small id="pctLb">오늘 달성</small></div>
       </div>
       <div class="dstats">
         <div class="dstat"><div class="v" id="stStreak">🔥 0일</div><div class="k" id="stStreakSub">연속 달성</div></div>
@@ -477,6 +484,7 @@ function toast(msg,ms,prio){
   if(prio<1&&now<toastLock)return; /* a celebration is on screen — don't stomp it */
   if(prio>=1)toastLock=now+ms;
   var el=$("#toast");$("#toastMsg").textContent=msg;
+  el.classList.toggle("multi",msg.indexOf("\n")>=0);
   $("#toastAct").classList.add("hidden");$("#toastAct").onclick=null;
   el.classList.add("show");clearTimeout(toastT);
   toastT=setTimeout(function(){el.classList.remove("show");},ms);
@@ -492,6 +500,7 @@ function celebrate(msg,ms){
 function toastAction(msg,label,fn,ms){
   ms=ms||6000;toastLock=Date.now()+ms;
   var el=$("#toast");$("#toastMsg").textContent=msg;
+  el.classList.remove("multi");
   var b=$("#toastAct");b.textContent=label;b.classList.remove("hidden");
   b.onclick=function(){el.classList.remove("show");b.classList.add("hidden");b.onclick=null;toastLock=0;fn();};
   el.classList.add("show");clearTimeout(toastT);
@@ -975,7 +984,7 @@ function renderAll(){
   var s=D.stats,lv=levelOf(s.xp);
   $("#meSub").textContent="Lv."+lv+" "+titleOf(lv);
   $("#stStreak").textContent="🔥 "+s.streak+"일";
-  $("#stStreakSub").textContent=s.bestStreak>0?"연속 달성 · 최고 "+s.bestStreak+"일":"연속 달성";
+  $("#stStreakSub").textContent=s.bestStreak>0?"연속 실천 · 최고 "+s.bestStreak+"일":"연속 실천";
   $("#stLevel").textContent="Lv."+lv;
   $("#stTitle").textContent=titleOf(lv)+" · "+(s.xp%100)+"/100XP";
   $("#stTotal").textContent=String(s.totalDone);
@@ -995,19 +1004,21 @@ function renderAll(){
   var totalC=todayTotalCount(),doneC=todayDoneCount();
   $("#cntOpen").textContent=String(open.length);
   $("#cntDone").textContent=String(done.length);
-  $("#stToday").textContent=doneC+"/"+totalC;
+  var rest=restingToday();
+  var restDayNow=!totalC&&rest.length>0;
   var pct=totalC?Math.round(doneC/totalC*100):0;
-  $("#pctNum").textContent=pct+"%";
+  $("#pctNum").textContent=restDayNow?"🌿":(pct+"%");
+  $("#pctLb").textContent=restDayNow?"쉬는 날":"오늘 달성";
+  $("#stToday").textContent=restDayNow?"휴식":(doneC+"/"+totalC);
   var C=251.3;
   $("#ringBar").style.strokeDashoffset=String(C-(C*pct/100));
   $("#ringBar").classList.toggle("full",pct>=100);
 
   renderList($("#listOpen"),open);
   renderList($("#listDone"),done);
-  var rest=restingToday();
   $("#emptyMsg").classList.toggle("hidden",totalC>0);
-  $("#emptyMsg").textContent=(!totalC&&rest.length)
-    ?"🌿 오늘은 예정된 루틴이 없는 날이에요. 연속 기록은 그대로 이어지니 편히 쉬어요."
+  $("#emptyMsg").textContent=restDayNow
+    ?"하고 싶은 일이 생기면 위에서 하나만 추가해요 🌿"
     :"아직 할일이 없어요. 위에서 하나만 추가해 볼까요? 작게 시작할수록 좋아요 🌱";
   $("#doneSec").classList.toggle("hidden",done.length===0);
   $("#restHint").classList.toggle("hidden",rest.length===0);
@@ -1147,14 +1158,14 @@ function applyOrder(ids){
   D.sortMode="manual";
   saveData();
 }
-function moveTask(id,dir){
+function moveTask(id,dir,text){
   var ids=openIdsInDom();
   var i=ids.indexOf(id),j=i+dir;
   if(i<0||j<0||j>=ids.length)return;
   ids.splice(j,0,ids.splice(i,1)[0]);
   applyOrder(ids);renderAll();
   var g=document.querySelector('#listOpen li[data-id="'+id+'"] .grab');
-  if(g){g.focus();srSay(g.getAttribute("aria-label").split("'")[1]+" — "+(j+1)+"번째로 이동");}
+  if(g){g.focus();srSay((text||"항목")+" — "+(j+1)+"번째로 이동");}
 }
 /* Listeners live on document, not the handle: moving the row in the DOM detaches the
    handle and would drop its pointer capture, losing the rest of the gesture. */
@@ -1194,8 +1205,8 @@ function buildGrab(t,enabled){
   if(!enabled){g.disabled=true;g.setAttribute("aria-hidden","true");g.tabIndex=-1;return g;}
   g.setAttribute("aria-label","'"+t.text+"' 순서 바꾸기 — 위·아래 화살표 키");
   g.addEventListener("keydown",function(e){
-    if(e.key==="ArrowUp"){e.preventDefault();moveTask(t.id,-1);}
-    else if(e.key==="ArrowDown"){e.preventDefault();moveTask(t.id,1);}
+    if(e.key==="ArrowUp"){e.preventDefault();moveTask(t.id,-1,t.text);}
+    else if(e.key==="ArrowDown"){e.preventDefault();moveTask(t.id,1,t.text);}
   });
   g.addEventListener("pointerdown",function(e){
     var li=g.parentNode;
@@ -1553,26 +1564,31 @@ function reportData(){
 }
 /* last 7 days, today included */
 function weekStats(){
-  var days=[],doneSum=0,totalSum=0,active=0,perfect=0;
+  var days=[],doneSum=0,totalSum=0,active=0,perfect=0,restDays=0;
   var dc=todayDoneCount(),tc=todayTotalCount();
   for(var i=6;i>=0;i--){
     var d=new Date();d.setDate(d.getDate()-i);
     var rec=dayRecord(ymd(d),dc,tc);
-    days.push({w:WD[d.getDay()],p:(rec&&rec.t>0)?Math.round(rec.c/rec.t*100):-1});
+    var pv;
+    if(rec&&rec.t>0)pv=Math.round(rec.c/rec.t*100);
+    else if(rec&&rec.rest)pv=-2; /* nothing was scheduled — a rest day, not a blank */
+    else pv=-1;
+    days.push({w:WD[d.getDay()],p:pv});
+    if(pv===-2)restDays++;
     if(rec&&rec.t>0){
       doneSum+=rec.c;totalSum+=rec.t;
       if(rec.c>0)active++;
       if(rec.c>=rec.t)perfect++;
     }
   }
-  return {days:days,done:doneSum,total:totalSum,active:active,perfect:perfect,
+  return {days:days,done:doneSum,total:totalSum,active:active,perfect:perfect,rest:restDays,
           pct:totalSum?Math.round(doneSum/totalSum*100):0};
 }
 function weekReportData(){
   var w=weekStats(),lv=levelOf(D.stats.xp);
   /* tt = the week's denominator, so a receiver can recompute the rate instead of trusting it */
   return {k:"w",n:P.nick,e:P.emoji,d:todayStr(),c:w.done,t:w.active,tt:w.total,p:w.pct,s:D.stats.streak,
-          l:lv,ti:titleOf(lv),pf:w.perfect,wk:w.days.map(function(x){return x.p;})};
+          l:lv,ti:titleOf(lv),pf:w.perfect,rd:w.rest,wk:w.days.map(function(x){return x.p;})};
 }
 function isWeek(r){return r&&r.k==="w";}
 function reportQuote(r){
@@ -1599,10 +1615,11 @@ function renderReportInto(el,r,withList){
   var sub=document.createElement("div");sub.className="sub";
   if(week){
     var rec=(r.wk||[]).filter(function(v){return +v>=0;}).length;
+    var rd=+r.rd||0;
     var lean=r.p<40; /* lead with what was done, not with a low rate */
     big.textContent=lean?(r.c+"개 완료"):(r.p+"%");
     sub.textContent=(lean?("달성률 "+r.p+"% · 실천한 날 "+r.t+"일"):("완료 "+r.c+"개 · 실천한 날 "+r.t+"일"))
-      +(rec&&rec<7?(" · 기록 "+rec+"일 기준"):"");
+      +(rec&&rec<7?(" · 예정 "+rec+"일 기준"+(rd?" (🌿 쉬는 날 "+rd+"일)":"")):"");
   }else{
     big.textContent=r.p+"%";
     sub.textContent="오늘 할일 "+r.t+"개 중 "+r.c+"개 완료";
@@ -1626,7 +1643,8 @@ function renderReportInto(el,r,withList){
       var col=document.createElement("div");col.className="bar";
       var fill=document.createElement("i");
       var v=+pv;
-      if(v<0){fill.className="none";fill.style.height="6px";} /* no record — not a zero */
+      if(v<=-2){fill.className="rest";fill.style.height="6px";} /* scheduled nothing — 🌿, not a miss */
+      else if(v<0){fill.className="none";fill.style.height="6px";} /* no record — not a zero */
       else{
         fill.style.height=Math.max(3,Math.round(Math.min(100,v)*0.44))+"px";
         if(!v)fill.className="zero";
@@ -1757,7 +1775,7 @@ $("#saveImg").addEventListener("click",function(){
       var raw=+pv,v=Math.max(0,Math.min(100,raw));
       var h=raw<0?6:Math.max(4,Math.round(v/100*bh));
       var bx=cx+i*bw;
-      x.fillStyle=raw<0?"rgba(255,255,255,.12)":(v?"#6ee7b7":"rgba(255,255,255,.18)");
+      x.fillStyle=(raw<=-2)?"rgba(110,231,183,.45)":(raw<0?"rgba(255,255,255,.12)":(v?"#6ee7b7":"rgba(255,255,255,.18)"));
       x.fillRect(bx,base-h,bw-14,h);
       var d=new Date(today);d.setDate(d.getDate()-(r.wk.length-1-i));
       x.fillStyle="#a7f3d0";x.font="500 28px 'Apple SD Gothic Neo',sans-serif";
@@ -1805,7 +1823,8 @@ function sanitizeShared(r){
     /* recompute from the denominator — never trust the link's own rate */
     base.p=base.tt?Math.round(base.c/base.tt*100):0;
     base.pf=numClamp(r.pf,0,base.t);
-    base.wk=Array.isArray(r.wk)?r.wk.slice(0,7).map(function(v){return numClamp(v,-1,100);}):[];
+    base.rd=numClamp(r.rd,0,7);
+    base.wk=Array.isArray(r.wk)?r.wk.slice(0,7).map(function(v){return numClamp(v,-2,100);}):[];
   }else{
     base.t=numClamp(r.t,0,50);
     base.c=numClamp(r.c,0,base.t);
