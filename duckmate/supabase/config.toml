@@ -76,6 +76,8 @@ template = "[덕메이트] 인증 코드 {{ .Code }} · 번호는 본인 확인�
 max_frequency = "30s"
 
 # 로컬/E2E 용 테스트 OTP (seed.sql 의 예약 번호). 프로덕션 대시보드에는 설정하지 않는다.
+# ⚠️ 이 파일은 `supabase start`/`db reset` 에서만 읽힌다. 프로덕션 반영 경로는 `supabase config push` 뿐이며 G3 워크플로
+#    (.github/workflows/duckmate-supabase-migrate.yml) 는 `db push`·`functions deploy` 만 실행하고 config push 는 하지 않는다.
 [auth.sms.test_otp]
 821000000001 = "000001"
 821000000002 = "000002"
@@ -106,6 +108,17 @@ max_enrolled_factors = 0
 enabled = true
 policy = "oneshot"
 inspector_port = 8083
+
+# Edge Function 별 JWT 검증 (G3). `supabase functions deploy`(전체) 가 이 값을 읽는다 — 26_fe_company §G3-4 · G2_security §G3-3.
+# 브라우저/외부 서비스가 키 없이 직접 POST 하는 3개만 false. 나머지는 기본값(true) 유지 + 함수 내부 isTrustedCaller 가 2중 검증.
+[functions.contact]
+verify_jwt = false
+
+[functions.toss-webhook]
+verify_jwt = false
+
+[functions.identity-webhook]
+verify_jwt = false
 
 [analytics]
 enabled = false
