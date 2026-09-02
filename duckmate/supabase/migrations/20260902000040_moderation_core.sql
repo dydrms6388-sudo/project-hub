@@ -319,6 +319,10 @@ returns boolean language sql stable security definer set search_path = public as
 $$;
 
 -- ---------- 권한 ----------
+-- 새 테이블은 Supabase default privileges 로 anon/authenticated 에 자동 grant 되므로 명시 회수(0010 과 동일 원칙). RLS 정책 없음 = service role 전용.
+revoke all on table public.moderation_settings, public.moderation_flags, public.moderation_notifications, public.moderation_jobs from public, anon, authenticated;
+revoke all on sequence public.moderation_notifications_id_seq, public.moderation_jobs_id_seq from public, anon, authenticated;
+
 revoke execute on function
   public.moderation_setting(text), public.moderation_setting_int(text, integer),
   public.notify_admin(text, jsonb, uuid, uuid), public.notify_user(uuid, text, jsonb, uuid, uuid),
