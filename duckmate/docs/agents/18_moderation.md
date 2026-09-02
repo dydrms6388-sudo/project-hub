@@ -181,7 +181,8 @@ flowchart LR
 | audit | admin/moderator actor_role 행 다수, 액션 20종 기록 |
 | 경고 확인·anon | `pending_warning` → `acknowledge_sanction` / anon 전부 42501 |
 | `pnpm --filter @duckmate/web typecheck` | **`lib/moderation` 오류 0**. (동시 작업 중인 `lib/admin/{actions,api}.ts`(D8) 에 오류 3건 — D8 경로) |
-| `vitest run lib/moderation` | 11 통과 |
+| `vitest run lib/moderation` | 11 통과. 전체 `pnpm --filter @duckmate/web test` 는 206 중 2 실패 — `lib/push/templates.test.ts`(D7 경로) |
+| 동시 작업 마이그레이션과의 정합 | 전체 세트(0020~0060 포함) 적용도 오류 0. 단 D4 `0030_chat` 이후 `messages` 의 authenticated 직접 insert 권한이 회수됨(RPC 전용 설계) → 본 시나리오는 0001~0014+004x 로 검증했고, 실 환경에서는 D4 `send_message` 가 insert + `message_flags` 를 넣으면 트리거 경로가 동일하게 동작한다 |
 | 비밀값 grep | 없음(env 키 이름만) |
 
 ## 7. 미결·후속
