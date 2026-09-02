@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-fg: var(--brand-fg);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-warn: var(--warn);
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-2: #f1f3f6;
+  --border: #e3e6eb;
+  --fg: #111418;
+  --muted: #5d6673;
+  --brand: #1d4ed8;
+  --brand-fg: #ffffff;
+  --up: #d93a3a;   /* 국내 관습: 상승=빨강 */
+  --down: #2563eb; /* 하락=파랑 */
+  --warn: #b45309;
+  color-scheme: light;
+}
+.dark {
+  --bg: #0b0e13;
+  --surface: #131820;
+  --surface-2: #1a212b;
+  --border: #263040;
+  --fg: #e8ecf1;
+  --muted: #9aa5b4;
+  --brand: #60a5fa;
+  --brand-fg: #0b0e13;
+  --up: #f06a6a;
+  --down: #5b9cff;
+  --warn: #f59e0b;
+  color-scheme: dark;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body { @apply bg-bg text-fg antialiased; font-feature-settings: "tnum" 1; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* 폼 컨트롤 공통 */
+.field { @apply w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-fg outline-none focus:border-brand focus:ring-2 focus:ring-brand/20; }
+.btn { @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50; }
+.btn-primary { @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 bg-brand text-brand-fg hover:opacity-90; }
+.btn-ghost { @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 border border-border bg-surface text-fg hover:bg-surface-2; }
+.card { @apply rounded-2xl border border-border bg-surface p-5 shadow-sm; }
+.prose-kr h2 { @apply mt-8 mb-3 text-xl font-bold; }
+.prose-kr h3 { @apply mt-6 mb-2 text-lg font-semibold; }
+.prose-kr p { @apply my-3 leading-7 text-fg/90; }
+.prose-kr ul { @apply my-3 list-disc space-y-1 pl-5 leading-7; }
+.prose-kr ol { @apply my-3 list-decimal space-y-1 pl-5 leading-7; }
+.prose-kr a { @apply text-brand underline underline-offset-2; }
+.prose-kr table { @apply my-4 w-full text-sm; }
+.prose-kr th, .prose-kr td { @apply border border-border px-3 py-2 text-left; }
+.prose-kr th { @apply bg-surface-2 font-semibold; }

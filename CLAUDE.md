@@ -52,3 +52,15 @@
   (`src/lib/content/`) 3종 등록 필요 — `node scripts/check-coverage.mjs` 로 검사.
 - 빌드: `cd illusion-lab && npm install && npm run build` → `out/`.
 - gen-pages.mjs 의 RESERVED 에 `illusion-lab` 등록됨(고아 정리 보호).
+
+## 서브프로젝트: `stocklab/` (별도 배포 · 주식 데이터 도구 플랫폼)
+- 스톡랩(StockLab). **Next.js 15 App Router + TypeScript strict + Tailwind v4 + Supabase**.
+  정적 export 아님(ISR·route handler·middleware 사용) → 별도 Vercel 프로젝트(root=`stocklab`).
+- 법적 포지션 = **A안(추천 없는 데이터 도구)**. UI 문구에 추천/매수/매도/목표가/급등/수익 보장 금지 →
+  `npm run lint:expr`(`scripts/check-expressions.mjs`)가 `src/` 를 스캔해 실패시킴. 가이드: `docs/00-legal-expression-guide.md`.
+- 데이터 소스 추상화 `src/lib/data/`: Supabase env 없으면 **샘플 데이터 모드**(`data/sample-stocks.json`, 합성 수치)로 동작하고
+  화면에 샘플 배너 노출. 컬럼명 SoT = `src/lib/types.ts` ↔ `supabase/migrations/`.
+- 파이프라인 `pipeline/`(Python, pykrx+DART → Supabase) 은 `.github/workflows/stocklab-pipeline.yml` 로 평일 05:30 KST 실행.
+  오늘의 주식은 `/api/cron/daily-pick`(Vercel Cron 06:00 KST, `CRON_SECRET`).
+- 검증: `cd stocklab && npm run check && npm run build`. 기획/설계 문서는 `stocklab/docs/`.
+- gen-pages.mjs 의 RESERVED 에 `stocklab` 등록됨(고아 정리 보호).
