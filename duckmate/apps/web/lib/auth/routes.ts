@@ -14,6 +14,7 @@ export const ROUTE_MIN_LEVEL: Readonly<Record<string, VerifyLevel>> = {
   "/me": 1,
   "/settings": 1,
   "/report": 1,
+  "/blocks": 1, // E4: 차단 목록 (12_flows 의 /settings/blocks 는 여기로 redirect)
   // Phase 2·3·5 (라우트만 예약)
   "/shop": 2,
   "/likes-you": 2,

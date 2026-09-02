@@ -25,7 +25,8 @@ import { invalidateGateCache } from "@/lib/auth/session";
 import { ROUTES } from "@/lib/auth/routes";
 import { firstIssue, phoneSchema, submitBirthDateSchema, verifyOtpSchema } from "@/lib/onboarding/schemas";
 
-export const OTP_RESEND_AFTER_SEC = 30;
+/** "use server" 파일은 async 함수만 export 가능(Next 규칙) — E1 이 export 제거(값은 requestOtp 응답 resendAfterSec 로 전달) */
+const OTP_RESEND_AFTER_SEC = 30;
 
 async function requestContext(): Promise<ConsentContext> {
   const h = await headers();
