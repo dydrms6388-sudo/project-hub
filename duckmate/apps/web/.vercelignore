@@ -1,0 +1,12 @@
+# Vercel 업로드 제외 (Root Directory 기준). 빌드 산출물은 Vercel 이 직접 만들고, --prebuilt 배포는 .vercel/output 만 올린다.
+.next
+.next-*
+out
+node_modules
+playwright-report
+test-results
+e2e/artifacts
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local

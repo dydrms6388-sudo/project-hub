@@ -1,0 +1,21 @@
+{
+  "name": "duckmate",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "check:legal": "node scripts/check-legal-placeholders.mjs",
+    "check:copy": "node scripts/check-copy.mjs",
+    "check:noindex": "node scripts/check-noindex.mjs",
+    "measure:vitals": "node scripts/measure-web-vitals.mjs",
+    "check:all": "node scripts/check-legal-placeholders.mjs && node scripts/check-copy.mjs && node scripts/check-noindex.mjs"
+  },
+  "devDependencies": {
+    "turbo": "^2.10.0",
+    "typescript": "^5.6.0"
+  }
+}

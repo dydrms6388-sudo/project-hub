@@ -1,0 +1,123 @@
+name: duckmate Supabase migrate (manual)
+
+# 수동 전용(workflow_dispatch). 덕메이트 Supabase 프로덕션 프로젝트에 `supabase/migrations/*.sql` 을 적용하고 Edge Function 을 배포한다.
+# 자동 트리거를 두지 않는 이유: 마이그레이션은 되돌리기 어렵고(14_schema.md §5), 배포마다 적용 버전을 DEPLOY_LOG.md 에 손으로 기록해야 한다.
+#
+# ── GitHub Secrets ──
+#   DM_SUPABASE_ACCESS_TOKEN : supabase.com → Account → Access Tokens (sbp_…)
+#   DM_SUPABASE_PROJECT_REF  : 프로젝트 URL 의 <ref> (https://<ref>.supabase.co) — Project Settings → General → Reference ID
+#   DM_SUPABASE_DB_PASSWORD  : 프로젝트 생성 시 정한 DB 비밀번호 (Project Settings → Database → Reset 가능)
+#   셋 중 하나라도 없으면 ::warning 후 건너뛴다.
+#
+# ── 이 워크플로가 하지 않는 것 (대시보드/CLI 로 소유자가 직접) ──
+#   • `supabase secrets set`  — Edge Function 시크릿(PHOTO_REVIEW_WEBHOOK_SECRET, DAILY_RECO_WEBHOOK_SECRET, MODERATION_WEBHOOK_SECRET,
+#     PUSH_DISPATCH_SECRET, CONTACT_IP_SALT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT, RESEND_API_KEY …)은 GitHub Secrets 에
+#     복제하지 않는다. 대시보드 Edge Functions → Secrets 또는 로컬 `supabase secrets set --env-file` 로 넣는다(G2_security.md §G3-3).
+#   • `supabase config push` — 절대 실행하지 않는다. supabase/config.toml 은 로컬 전용이며 `[auth.sms.test_otp]`(테스트 OTP) 가
+#     프로덕션 Auth 에 적용되면 안 된다. Auth 설정(phone provider·rate limit·Site URL)은 대시보드에서 한다.
+#   • seed.sql — 로컬 `db reset` 전용. 프로덕션에는 admin 시드 SQL(21_admin.md §18) 을 SQL Editor 에서 직접 실행한다.
+#   • pg_cron 재등록 `select public.schedule_push_jobs();` 등 후속 SQL — DEPLOY_LOG.md §3 체크리스트.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "db push --dry-run 만 (적용하지 않음)"
+        type: boolean
+        default: false
+      deploy_functions:
+        description: "Edge Functions 전체 배포 (supabase functions deploy)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: duckmate-supabase-migrate
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'dydrms6388-sudo/project-hub' }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: duckmate
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.DM_SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.DM_SUPABASE_DB_PASSWORD }}
+      PROJECT_REF: ${{ secrets.DM_SUPABASE_PROJECT_REF }}
+      # config.toml 의 env(...) 참조가 파싱될 수 있도록 값만 채운다. 프로덕션에는 push 되지 않는다(config push 미실행).
+      SITE_URL: http://localhost:3000
+      TWILIO_ACCOUNT_SID: ""
+      TWILIO_MESSAGE_SERVICE_SID: ""
+      TWILIO_AUTH_TOKEN: ""
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Guard — secrets present?
+        id: guard
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$PROJECT_REF" ] || [ -z "$SUPABASE_DB_PASSWORD" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Supabase 시크릿(DM_SUPABASE_ACCESS_TOKEN / DM_SUPABASE_PROJECT_REF / DM_SUPABASE_DB_PASSWORD)이 없어 마이그레이션을 건너뜁니다. duckmate/docs/DEPLOY_LOG.md §2 참고."
+            echo "### ⏭️ Supabase 마이그레이션 건너뜀 — 시크릿 미등록" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Supabase CLI
+        if: steps.guard.outputs.ok == 'true'
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link project
+        if: steps.guard.outputs.ok == 'true'
+        run: supabase link --project-ref "$PROJECT_REF"
+
+      - name: Migration status (local vs remote)
+        if: steps.guard.outputs.ok == 'true'
+        run: |
+          echo "### 마이그레이션 상태 (적용 전)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          supabase migration list | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: db push (dry run)
+        if: steps.guard.outputs.ok == 'true' && inputs.dry_run
+        run: supabase db push --dry-run
+
+      - name: db push
+        if: steps.guard.outputs.ok == 'true' && !inputs.dry_run
+        run: |
+          supabase db push
+          last=$(ls supabase/migrations/*.sql | sort | tail -1 | xargs -n1 basename)
+          echo "### ✅ db push 완료 — 마지막 마이그레이션: $last" >> "$GITHUB_STEP_SUMMARY"
+          echo "DEPLOY_LOG.md 에 이 버전을 기록하세요(14_schema.md §5)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Deploy Edge Functions (전체, verify_jwt 는 supabase/config.toml [functions.*] 기준)
+        if: steps.guard.outputs.ok == 'true' && !inputs.dry_run && inputs.deploy_functions
+        run: |
+          # config.toml: contact / toss-webhook / identity-webhook 만 verify_jwt=false (G2 §G3-3). 나머지는 함수 내부 isTrustedCaller 검증.
+          supabase functions deploy --project-ref "$PROJECT_REF"
+          echo "### ✅ Edge Functions 배포" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          supabase functions list --project-ref "$PROJECT_REF" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Next steps reminder
+        if: steps.guard.outputs.ok == 'true'
+        run: |
+          {
+            echo "### 다음 단계 (수동, duckmate/docs/DEPLOY_LOG.md §3)"
+            echo "1. 대시보드 Edge Functions → Secrets: PHOTO_REVIEW_WEBHOOK_SECRET · DAILY_RECO_WEBHOOK_SECRET · MODERATION_WEBHOOK_SECRET · PUSH_DISPATCH_SECRET · CONTACT_IP_SALT · VAPID_PUBLIC_KEY · VAPID_PRIVATE_KEY · VAPID_SUBJECT"
+            echo "2. Database → Extensions: pg_cron · pg_net 활성 → Vault secret push_dispatch_secret → app_settings('push_dispatch') → select public.schedule_push_jobs();"
+            echo "3. SQL Editor: G2_security.md §3 재검증 SQL (사용자 JWT 로 is_matched → 42501)"
+            echo "4. Auth: Phone provider(SMS 공급자) · OTP 6자리/≤5분 · Site URL/Redirect = NEXT_PUBLIC_SITE_URL · Captcha 권장"
+            echo "5. Realtime → Private channels 활성, Storage 버킷 3개 public=false 확인, Storage 웹훅(object created → photo-review)"
+            echo "6. admin 시드 SQL (21_admin.md §18)"
+          } >> "$GITHUB_STEP_SUMMARY"
