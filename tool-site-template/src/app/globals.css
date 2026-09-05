@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Regular.subset.woff2") format("woff2");
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Bold.subset.woff2") format("woff2");
+  font-weight: 700; font-display: swap;
+}
+
+@theme {
+  --color-ink: #16181d;
+  --color-muted: #6b7280;
+  --color-line: #e5e7eb;
+  --color-paper: #f7f7f5;
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body { @apply bg-white text-ink font-sans antialiased; }
+:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.prose-custom h1 { @apply text-3xl font-bold tracking-tight text-ink mb-4; }
+.prose-custom h2 { @apply text-lg font-bold text-ink mt-8 mb-2; }
+.prose-custom p { @apply text-[15px] leading-relaxed text-ink mb-3; }
+.prose-custom a { @apply underline underline-offset-2; }
