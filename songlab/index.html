@@ -1162,6 +1162,16 @@ function buildSong(o){
     sections:sections,flat:flat,fromHum:!!(o.hum&&o.hum.length),trans:0,baseKeyPc:ki.pc,voice:'alto'};
   if(!song.fromHum){normalizeRange(song);clampSpan(song);smoothLeaps(song);clampSpan(song);smoothLeaps(song);}
   attachSyllables(song);
+  /* 음역 보정이 끝난 뒤에 딕션을 다듬어야 결과가 덮어써지지 않는다 */
+  for(var ds=0;ds<song.sections.length;ds++){
+    var dsec=song.sections[ds];
+    for(var dl=0;dl<dsec.lines.length;dl++){
+      var dln=dsec.lines[dl], dbars=[];
+      for(var dk=0;dk<dln.bars;dk++)if(dsec.bars[dln.bar+dk])dbars.push(dsec.bars[dln.bar+dk]);
+      easeDiction(dbars,dln.text,ki);
+    }
+  }
+  if(!song.fromHum)clampSpan(song);
   song.range=songRange(song);
   return song;
 }
