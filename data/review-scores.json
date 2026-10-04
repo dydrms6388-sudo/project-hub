@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-07-24",
+  "updatedAt": "2026-10-04",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 55,
+    "total": 56,
     "pass": 51,
     "reviewNeeded": 4,
-    "reviewing": 0,
+    "reviewing": 1,
     "avgOverall": 82.2
   },
   "projects": [
@@ -2593,6 +2593,70 @@
         }
       ],
       "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "songlab",
+      "name": "AI 작사작곡 스튜디오",
+      "source": "project-hub/songlab",
+      "live": "https://tomatoeggcat.com/songlab/",
+      "status": "reviewing",
+      "loops": 6,
+      "note": "소유자 요청으로 게이트 90. 도메인 페르소나 4인(작곡가·작사가·가수·일반 사용자) 루프.",
+      "axes": {
+        "functional": 88,
+        "mobileUX": 90,
+        "design": 84,
+        "content": 83,
+        "realValue": 80
+      },
+      "reviewerAvg": 85,
+      "userScores": [
+        77,
+        83,
+        77,
+        89
+      ],
+      "userAvg": 81.5,
+      "overall": 83,
+      "findings": [
+        "박 격자 규칙이 음표에만 적용되고 쉼표에는 빠져 216/240곡에서 한 기호로 못 적는 쉼표 1,364건 (6차에서 0건으로 수정).",
+        "fixDurs 가 길이만 보고 위치는 안 봐 dur 10 이 38곡에 살아남아 마디가 14/16박으로 적힘 (6차 수정).",
+        "durOk 가 표준 당김음까지 금지해 리듬이 8분 격자로 평탄해짐 — 당김음 0.13% (6차에 12.55%로 완화).",
+        "applyVoice 가 정확해지자 남성 프리셋에서 덧줄 3개 이상 100%·가사 겹침 93.1% (6차에 8vb 기보로 해결).",
+        "코러스를 chorusLine 단일 풀로 제한하면서 발라드 30곡 중 24곡의 후렴 한 줄이 동일 (6차에 풀 14→31로 확장).",
+        "전 차수 공통으로 공유 링크 왕복·MIDI 바이트 일치·음절:음표 1:1 은 무결점 유지."
+      ],
+      "changes": [
+        "4/4 박 격자 기보 규칙(durOk)과 splitDurs/layoutSeg/pushRest 도입 — 음표·쉼표 전부 붙임줄 없이 한 기호로 기보 가능.",
+        "마디 중간 숨자리를 어절 경계로만 배치 — 단어 절단 54.1% → 5.3%.",
+        "성역 프리셋 4종 중앙음 오차 0.00반음, 이조 버튼 가드를 성역 lo/hi 에 연동.",
+        "중앙음 C4 미만이면 8vb 기보(소리·MIDI 불변) — 덧줄 0 / 가사 겹침 0.",
+        "코러스 전용 어휘 풀 분리 + 무드당 31개로 확장, 사람 주어 ↔ 재귀 목적어 비문 차단.",
+        "느린 무드 타악기 추가, 공유 카드/파일명/용어 설명/터치 타깃 등 UI 개선."
+      ],
+      "history": [
+        {
+          "loop": 1,
+          "overall": 35
+        },
+        {
+          "loop": 2,
+          "overall": 62
+        },
+        {
+          "loop": 3,
+          "overall": 70
+        },
+        {
+          "loop": 4,
+          "overall": 78
+        },
+        {
+          "loop": 5,
+          "overall": 82
+        }
+      ],
+      "reviewedAt": "2026-10-04"
     }
   ]
 }
