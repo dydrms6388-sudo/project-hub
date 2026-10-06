@@ -123,6 +123,7 @@ footer a{color:#9ca3af;text-decoration:none;margin-right:12px;display:inline-blo
 details.adv{border:1px solid #2c2c2c;background:#131313;border-radius:12px;padding:0 14px;margin-top:14px}
 details.adv[open]{padding-bottom:14px}
 details.adv>summary{cursor:pointer;font-weight:700;font-size:14px;color:#9ca3af;padding:14px 0;list-style:none}
+details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}details>summary::marker{content:""}
 details.adv>summary::-webkit-details-marker{display:none}
 details.adv>summary:before{content:"▸ ";color:var(--acc)}
 details.adv[open]>summary:before{content:"▾ "}
@@ -219,7 +220,7 @@ details.adv[open]>summary:before{content:"▾ "}
       <ul style="font-size:13.5px;color:#c9c9c9;padding-left:18px;margin:8px 0 0">
         <li><b>장조 · 단조</b> — 노래의 분위기. 장조는 밝고, 단조는 어둡고 애절하게 들려요.</li>
         <li><b>BPM</b> — 1분에 몇 박인지. 숫자가 클수록 빠른 노래예요(발라드 60~75, 댄스 125~135).</li>
-        <li><b>마디</b> — 노래를 네 박자씩 끊은 한 칸. 20마디면 약 1분쯤이에요.</li>
+        <li><b>마디</b> — 노래를 네 박자씩 끊은 한 칸. 20마디면 빠르기에 따라 40초~1분쯤이에요.</li>
         <li><b>계이름</b> — 도·레·미… 로 읽은 음 이름. 악보를 못 읽어도 따라 부를 수 있어요.</li>
       </ul>
     </details>
@@ -261,11 +262,13 @@ details.adv[open]>summary:before{content:"▾ "}
         <li><b>음역</b> — 이 곡에서 가장 낮은 음과 가장 높은 음. 부르기 힘들면 ♭ 버튼으로 낮추세요.</li>
         <li><b>반음</b> — 피아노에서 바로 옆 건반까지의 거리. ♭·♯ 버튼이 한 번에 반음씩 옮겨요.</li>
         <li><b>빠르기 · BPM</b> — 1분에 몇 박인지. 숫자가 클수록 빠른 노래예요(발라드 60~75, 댄스 125~135).</li>
-        <li><b>마디</b> — 노래를 네 박자씩 끊은 한 칸. 20마디면 약 1분쯤이에요.</li>
+        <li><b>마디</b> — 노래를 네 박자씩 끊은 한 칸. 20마디면 빠르기에 따라 40초~1분쯤이에요.</li>
         <li><b>벌스 · 프리코러스 · 코러스</b> — 노래의 1절, 넘어가는 부분, 후렴이에요.</li>
         <li><b>코드 (C, Am, G7 …)</b> — 반주로 치는 화음 이름. 뒤의 <b>7 · maj7 · m7</b> 은 음을 하나 더 얹어 부드럽게 만든 화음이에요.</li>
         <li><b>〃</b> — 앞 마디와 같은 코드를 그대로 치라는 뜻이에요.</li>
         <li><b>계이름</b> — 도·레·미… 로 읽은 음 이름. 악보를 못 읽어도 따라 부를 수 있어요.</li>
+        <li><b>자리표 아래 8</b> — 남성 음역이라 악보를 한 옥타브 올려 적었다는 표시예요.
+          들리는 소리와 MIDI 는 악보보다 한 옥타브 낮습니다.</li>
         <li><b>누가 부를까요 (여성/남성)</b> — 반주에 노래 목소리는 없어요. 대신 부를 사람의 보통 음역에 맞게
           <b>곡 전체의 키를 옮겨 줍니다.</b> 남성을 고르면 더 낮은 키로 바뀌어요.</li>
         <li><b>MIDI</b> — 음악 프로그램에서 열어 악기를 바꾸고 편곡할 수 있는 파일이에요.</li>
@@ -386,6 +389,9 @@ function clamp(v,a,b){return v<a?a:(v>b?b:v);}
 function syl(s){var m=String(s).match(/[가-힣]/g);return m?m.length:0;}
 function bat(ch){var c=String(ch).charCodeAt(0)-0xAC00;return (c>=0&&c<11172)?c%28:0;}
 function vowelOf(ch){var c=String(ch).charCodeAt(0)-0xAC00;return (c>=0&&c<11172)?Math.floor(c/28)%21:-1;}
+/* 대명사는 주격이 불규칙하다 — "너가/나가" 가 아니라 "네가/내가" */
+var PRON_SUBJ={"너":"네가","나":"내가","저":"제가","누구":"누가"};
+function subjOf(w){return PRON_SUBJ[w]||(w+josa(w,"이가"));}
 function josa(w,t){var b=bat(w.charAt(w.length-1));
   if(t==="은는")return b?"은":"는";
   if(t==="이가")return b?"이":"가";
@@ -615,7 +621,7 @@ var BANK={
   pred:["빛이 될 거야","앞으로 나아가","무너지지 않아","여기서 시작해","끝까지 갈 거야","다시 타올라","더 멀리 닿아","전부 의미가 돼","앞을 비춰","나를 깨워"],
   clause:["숨이 차올라도 좋아","심장이 다시 뛰어","눈물이 힘이 됐어","시간이 증명할 거야","오늘이 시작이야","발끝이 앞을 봐","네가 잘하고 있어","어둠이 곧 걷힐 거야","우리가 여기 있잖아","내일이 기다리고 있어","발끝이 다시 땅을 밀어","어깨가 조금 펴졌어","숨이 가슴을 두드려","어제가 나를 키웠어","길이 아직 남아 있어","눈앞이 조금 밝아져","주먹에 힘이 들어가","오늘이 나를 부른다"],
  
-  chorusLine:["끝까지 가볼 거야","여기서 멈추지 않아","다시 일어설 수 있어","오늘을 이겨낼 거야","우린 더 멀리 갈 거야","넘어져도 다시 설게","내일의 내가 웃을 거야","한 번 더 해보는 거야","다시 일어설게","여기서 버텨보자","끝까지 가는 거야","오늘은 이겨낼게","한 번 더 일어서자","내일은 더 빛날 거야","다시 일어날게","끝까지 가볼게","너는 할 수 있어","포기 안 할 거야","다시 시작할게","오늘을 이겨낼래","넘어져도 일어나","여기서 다시 뛴다","너도 해낼 수 있어","한 번 더 일어설 거야","우리는 더 멀리 간다","오늘의 내가 이긴다","심장이 다시 뛴다","내일의 내가 웃을 거야","이 길 끝까지 가볼 거야","오늘을 끝까지 버틸래","여기서 다시 일어선다"],
+  chorusLine:["끝까지 가볼 거야","여기서 멈추지 않아","다시 일어설 수 있어","오늘을 이겨낼 거야","우린 더 멀리 갈 거야","넘어져도 다시 설게","내일의 내가 웃을 거야","한 번 더 해보는 거야","다시 일어설게","여기서 버텨보자","끝까지 가는 거야","오늘은 이겨낼게","한 번 더 일어서자","내일은 더 빛날 거야","다시 일어날게","끝까지 가볼게","너는 할 수 있어","포기 안 할 거야","다시 시작할게","오늘을 이겨낼래","넘어져도 일어나","여기서 다시 뛰어","너도 해낼 수 있어","한 번 더 일어설 거야","우리는 더 멀리 가","오늘의 내가 이긴다","심장이 다시 뛰어","내일의 내가 웃을 거야","이 길 끝까지 가볼 거야","오늘을 끝까지 버틸래","여기서 다시 일어서"],
   short:["할 수 있어","괜찮아 넌","다시 한번","포기 안 해","일어서자"],
   pre:["여기서 멈출 수 없어","숨을 크게 들이쉬고","무너져도 다시 서면 돼","한 걸음만 더 가보자","이제부터가 진짜야","두려워도 괜찮아","무릎을 털고 일어나","여기서 멈추면 아까워","심장이 먼저 달려가","숨이 턱까지 차올라도","한 걸음이 길이 돼","포기는 내일 하자"],
   bridge:["사실은 많이 울었어","아무도 안 볼 때 무너졌어","그래도 여기까지 왔어","포기하려던 밤에도","돌아보면 다 지나갔어","내일의 내가 웃도록","수없이 주저앉았어","아무도 안 볼 때 울었어","그래도 다시 신발을 묶어","여기까지 온 내가 대견해","내일의 내가 고마워하게","이번엔 끝까지 가볼래"],
@@ -628,10 +634,10 @@ var BANK={
   pred:["흘러 지나가","반짝이며 번져","천천히 물들어","창밖을 스쳐","발밑에 깔려","우리를 비춰","노래처럼 흘러","조용히 빛나","밤을 채워가","멀어져 가"],
   clause:["도시가 반짝이고 있어","라디오가 우릴 태워","신호가 초록이 됐어","밤이 아직 젊어","창문을 조금 내렸어","바람이 머리를 헝클어","조수석이 비어 있어","이 노래가 딱이야","여름이 아직 안 끝났어","불빛이 강처럼 흘러","가로등이 줄지어 흘러","창문에 바람이 들어와","도시가 등을 밝혀","신호가 깜빡이고 있어","여름이 아직 안 식었어","노래가 딱 맞게 흘러","밤공기가 선선해졌어","속도계가 조용히 떨려"],
  
-  chorusLine:["이 밤을 다 쓰고 갈래","창밖이 우릴 지나가","오늘 밤은 길어도 돼","이대로 더 달려볼래","도시가 우리 편이야","속도를 늦추지 말자","이 노래가 끝나기 전에","여름이 끝나지 않았으면","창을 열고 달리자","이 밤이 길어도 돼","조금만 더 달려보자","우리 속도로 가자","밤이 우릴 데려가","라디오를 더 크게","창을 열고 가자","밤이 길어도 돼","이대로 달린다","도시가 빛난다","오늘 밤은 좋아","이 길을 달려볼래","창밖이 다 예뻐서","네온이 흘러간다","속도를 늦추지 마","이 도시를 다 가져가","라디오를 더 키워 봐","밤이 우릴 데려다 줘","우리만 아는 밤이야","오늘 밤은 길어도 좋아","이 도시가 우릴 비춘다","창문을 내리고 달린다","이 길 끝까지 가 보자"],
+  chorusLine:["이 밤을 다 쓰고 갈래","창밖이 우릴 지나가","오늘 밤은 길어도 돼","이대로 더 달려볼래","도시가 우리 편이야","속도를 늦추지 말자","이 노래가 끝나기 전에","여름이 끝나지 않았으면","창을 열고 달리자","이 밤이 길어도 돼","조금만 더 달려보자","우리 속도로 가자","밤이 우릴 데려가","라디오를 더 크게","창을 열고 가자","밤이 길어도 돼","이대로 달려","도시가 빛나고 있어","오늘 밤은 좋아","이 길을 달려볼래","창밖이 다 예뻐서","네온이 흘러가","속도를 늦추지 마","이 도시를 다 가져가","라디오를 더 키워 봐","밤이 우릴 데려다 줘","우리만 아는 밤이야","오늘 밤은 길어도 좋아","이 도시가 우릴 비춰","창문을 내리고 달려","이 길 끝까지 가 보자"],
   short:["밤이 좋아","조금만 더","창을 열어","이대로 가","드라이브"],
   pre:["어디로 갈지 안 정했어","이 길 끝까지 가볼까","오늘 밤은 길어도 돼","라디오를 조금 키우고","시간을 잊어도 좋아","창밖이 자꾸 예뻐","목적지는 안 정했어","신호가 바뀌기 전에","창문을 끝까지 내려","라디오가 우리 노래야","속도를 조금만 줄여","도시가 뒤로 흘러가"],
-  bridge:["사실은 돌아가기 싫어","이 밤이 끝나지 않았으면","언젠가 이 길을 떠올릴 거야","그때도 이 노래였으면","우린 아직 여기 있어","도시는 잠들지 않아","돌아가기 싫어진다","이 밤을 접어 두고 싶어","언젠가 다시 올 거야","그때도 이 노래이기를","우린 아직 여기 있어","해가 뜨면 아쉬울 거야"],
+  bridge:["사실은 돌아가기 싫어","이 밤이 끝나지 않았으면","언젠가 이 길을 떠올릴 거야","그때도 이 노래였으면","우린 아직 여기 있어","도시는 잠들지 않아","돌아가기 싫어져","이 밤을 접어 두고 싶어","언젠가 다시 올 거야","그때도 이 노래이기를","우린 아직 여기 있어","해가 뜨면 아쉬울 거야"],
   hooks:["네온이 흐르는 밤에","창문을 조금 내리고","이 도시가 반짝일 때","오늘 밤은 길어도 좋아","이 길 끝까지 달려","라디오를 크게 켜고","밤이 우릴 태우고 가","여름밤이 번져가","우리만 아는 속도로","창밖이 자꾸 예뻐서"],
   chant:["밤이 밤이","조금만 더","달려 달려"],
   titles:["네온이 흐르는 밤","조수석의 여름","도시가 반짝일 때","창을 조금 내리고","밤의 고속도로","라디오를 크게","우리만 아는 속도","젖은 아스팔트","백미러 너머","잠들지 않는 도시"]},
@@ -654,7 +660,7 @@ var BANK={
   pred:["더 크게 번져","발끝을 밀어","심장을 때려","멈추지 않아","하늘로 튀어","우릴 끌어당겨","밤을 태워가","폭발할 것 같아","온몸을 흔들어","불을 붙여"],
   clause:["비트가 심장을 때려","조명이 우릴 비춰","밤이 아직 안 끝났어","발이 먼저 움직여","목소리가 터져 나와","시간이 사라졌어","다들 손을 들었어","숨이 차도 괜찮아","바닥이 흔들리고 있어","오늘이 제일 뜨거워","조명이 눈앞에 터져","바닥이 쿵쿵 울려","숨이 가슴을 때려","사람들이 손을 올려","소리가 벽을 흔들어","밤이 아직 뜨거워","심장이 박자를 쫓아","열기가 천장을 뚫어"],
  
-  chorusLine:["오늘 밤을 다 태우자","손을 들고 뛰어올라","멈추지 말고 가는 거야","끝날 때까지 가보자","다 같이 소리 질러","이 박자에 몸을 맡겨","새벽까지 달려보자","지금이 제일 뜨거워","지금 뛰어올라","더 크게 소리쳐","이 밤을 다 가져가","멈추지 말고 가자","오늘은 우리 거야","끝까지 뛰어보자","다 같이 뛰어 봐","오늘 밤 터진다","손을 들어 올려","멈추지 말고 가","더 크게 질러 봐","이 밤을 다 태우자","지금이 제일 좋아","다 같이 소리 질러","새벽까지 달리자","오늘 밤은 우리 거야","심장이 터질 때까지","끝날 때까지 안 멈춰","이 밤을 통째로 태워","지금 이 순간이 전부야","오늘 밤은 끝나지 않아","다 같이 손을 들어 올려","여기서 멈추지 말자"],
+  chorusLine:["오늘 밤을 다 태우자","손을 들고 뛰어올라","멈추지 말고 가는 거야","끝날 때까지 가보자","다 같이 소리 질러","이 박자에 몸을 맡겨","새벽까지 달려보자","지금이 제일 뜨거워","지금 뛰어올라","더 크게 소리쳐","이 밤을 다 가져가","멈추지 말고 가자","오늘은 우리 거야","끝까지 뛰어보자","다 같이 뛰어 봐","오늘 밤 터져","손을 들어 올려","멈추지 말고 가","더 크게 질러 봐","이 밤을 다 태우자","지금이 제일 좋아","다 같이 소리 질러","새벽까지 달리자","오늘 밤은 우리 거야","심장이 터질 때까지","끝날 때까지 안 멈춰","이 밤을 통째로 태워","지금 이 순간이 전부야","오늘 밤은 끝나지 않아","다 같이 손을 들어 올려","여기서 멈추지 말자"],
   short:["뛰어 뛰어","멈추지 마","더 크게","손을 들어","지금이야"],
   pre:["카운트다운 시작이야","숨을 고를 틈도 없어","이 박자에 몸을 맡겨","조명이 켜지는 순간","다 같이 소리 질러","이제부터 시작이야","카운트가 시작됐어","숨 고를 틈도 없어","조명이 터지는 순간","발이 먼저 반응해","목소리를 다 쏟아내","다 같이 손을 올려"],
   bridge:["잠깐 숨을 고르고","다시 한번 터뜨리자","이 밤이 끝나기 전에","목소리가 쉬어도 좋아","내일은 생각하지 마","지금 이 순간만 봐","잠깐만 숨을 고르고","다시 터뜨릴 준비 됐어","내일 걱정은 접어 둬","목이 쉬어도 상관없어","이 밤을 다 쓰고 갈래","지금이 제일 뜨거워"],
@@ -821,17 +827,20 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool){
   return line;
 }
 /* 키워드를 주어·목적어·부사구 자리에 고루 넣는다 */
+var PERSON_KW=/^(너|나|엄마|아빠|친구|누나|형|오빠|언니|동생|선생님|그대|그|그녀|우리)$/;
 function keywordPhrases(kw,bank,rng){
   if(!kw)return [];
   var out=[],i,pr=bank.pred,cl=bank.clause,sh=bank.short;
   /* 주어 자리 */
   for(i=0;i<pr.length;i++){
+    /* 사람 키워드(엄마·친구…)에는 사물 전용 서술어를 붙이지 않는다 */
+    if(PERSON_KW.test(kw)&&/(쌓여|식어가|번져|깔려|물들어|잠겨|흘러|내려|채워|무너져)/.test(pr[i]))continue;
     /* 키워드는 사물 주어다 — 사람·재귀 목적어와 의지·행위 서술어는 제외
        ("겨울비는 다시 타올라", "우산이 앞을 비춰" 류 방지) */
     if(/(^|\s)(나를|날|우리를|너를|널)/.test(pr[i]))continue;
     if(/(타올라|나아가|비춰|깨워|일어나|달려|뛰어|웃어|불러|지켜|버텨|싸워|튀어|외쳐|안아)/.test(pr[i]))continue;
     out.push(kw+josa(kw,"은는")+" "+pr[i]);
-    if(i%2===0)out.push(kw+josa(kw,"이가")+" "+pr[i]);
+    if(i%2===0)out.push(subjOf(kw)+" "+pr[i]);
   }
   /* 부사구 자리: 완결된 절 앞에만 붙인다 */
   var heads=[kw+" 너머로",kw+" 아래에서",kw+josa(kw,"을를")+" 지나",kw+" 곁에서"];
@@ -839,14 +848,14 @@ function keywordPhrases(kw,bank,rng){
   /* "서울과 괜찮아 난" 같은 비문이 나오던 kw+과/와+짧은구 패턴은 쓰지 않는다 */
   out.push(kw+josa(kw,"을를")+" 불러본다");
   out.push(kw+" 같은 밤이었어");
-  out.push(kw+josa(kw,"이가")+" 남아 있어");
+  out.push(subjOf(kw)+" 남아 있어");
   out.push(kw+josa(kw,"은는")+" 아직 그대로야");
   return out;
 }
 function makeTitle(kw,bank,mood,rng){
   if(kw){
     var pats=[kw+", 그 밤",kw+"에게",kw+josa(kw,"을를")+" 부르는 밤","우리의 "+kw,kw+" 한 조각",
-      kw+josa(kw,"과와")+" 나",kw+" 같은 밤",kw+"의 온도",kw+josa(kw,"이가")+" 오는 계절",
+      kw+josa(kw,"과와")+" 나",kw+" 같은 밤",kw+"의 온도",subjOf(kw)+" 오는 계절",
       "남겨진 "+kw,"다시 "+kw,kw+" 사이로"];
     /* 무드 제목의 명사 자리를 키워드로 치환한 변형도 후보에 */
     var t=pick(rng,bank.titles);
@@ -858,11 +867,20 @@ function makeTitle(kw,bank,mood,rng){
     return pick(rng,pats);
   }
   var t0=pick(rng,bank.titles);
-  /* 같은 무드에서 제목이 자주 겹쳐 보여, 시드에 따라 수식 변형을 섞는다 */
-  var deco=["그 ","다시 ","오래 ","조용한 ","마지막 ","우리의 ","어떤 "];
+  /* 같은 무드에서 제목이 자주 겹쳐 보여, 앞뒤 변형을 섞는다 (공백이 있어도 자연스럽다) */
+  var deco=["그 ","다시 ","오래 ","조용한 ","마지막 ","우리의 ","어떤 ","아직 ","여전히 "];
+  /* 종결어미로 끝나는 제목 뒤에는 명사구를 붙일 수 없다 ("멈추지 마, 그 밤") */
+  var ending=/(마|게|고|래|야|어|돼|자|해|록|니|줘|봐|까|데|려|더|네|지|요)$/.test(t0);
+  var adnom=/(는|던|ㄴ|은|한)$/.test(t0)&&!/(는다|한다)$/.test(t0);
+  var hasNight=/밤/.test(t0);
   var r=rng();
-  if(r<0.34&&!/\s/.test(t0))return pick(rng,deco)+t0;
-  if(r<0.5)return t0+", 그 밤";
+  if(adnom)return t0+" "+pick(rng,["밤","계절","자리","날","얼굴","목소리"]);
+  if(ending)return (r<0.5)?pick(rng,deco)+t0:t0;
+  if(r<0.26)return pick(rng,deco)+t0;
+  if(r<0.40&&!hasNight)return t0+", 그 밤";
+  if(r<0.52)return t0+" 그 자리";
+  if(r<0.60)return t0+" 한 조각";
+  if(r<0.68)return t0+" 같은 날";
   return t0;
 }
 
@@ -1247,13 +1265,18 @@ function phrasePlan(md,rng,ph,nph,type){
       if(Math.abs(NOTE_DUR[lz]-Lr)<bd){bd=Math.abs(NOTE_DUR[lz]-Lr);L=NOTE_DUR[lz];}
     }
   }
-  L=Math.max(4,Math.min(12,L));
+  /* 상한을 마디 단위가 아니라 "1.6초" 기준으로 — 160bpm 에서 12단위는 1.13초뿐이다 */
+  var Lcap=Math.max(12,Math.min(16,Math.ceil(1.6/spu)));
+  L=Math.max(4,Math.min(Lcap,L));
   var rest=evenD(isLast?Math.max(minT,4):Math.max(minT,(slow?[6,8,4,8]:[4,6,4,8])[ph%4]));
   if(L+rest>16){ if(L-(L+rest-16)>=6)L-=(L+rest-16); else rest=16-L; }
+  /* 2마디를 쉬지 않고 부르면 4.5초를 넘는 빠르기면, 코러스 첫 프레이즈라도 숨자리를 둔다 */
+  var needBreath=(spu*26>4.5);
+  var noMid=(type==="chorus"&&ph===0)&&!needBreath;
   var mid=0;
-  if(!(type==="chorus"&&ph===0)&&(slow||ph%2===1||rng()<0.35))mid=evenD(Math.min(6,Math.max(minT,slow?4:3)));
+  if(!noMid&&(slow||needBreath||ph%2===1||rng()<0.35))mid=evenD(Math.min(6,Math.max(minT,slow?4:3)));
   /* 느린 곡은 2마디가 7초를 넘는다 — 둘째 마디에도 숨자리를 준다 */
-  var mid2=(slow&&!(type==="chorus"&&ph===0))?evenD(Math.max(minT,4)):0;
+  var mid2=((slow||needBreath)&&!noMid)?evenD(Math.max(minT,4)):0;
   var up=0;
   if(ph>0&&type!=="chorus"&&rng()<0.4)up=evenD(Math.min(4,Math.max(2,minT)));
   /* 한 프레이즈는 끝쉼표 없이 다음으로 이어 부른다 — 2마디 주기를 깬다.
@@ -1502,18 +1525,20 @@ function breathGuard(song,maxSec){
   var spu=60/song.bpm/4, lim=Math.max(6,Math.round(maxSec/spu));
   var secEnd={},acc=0,i;
   for(i=0;i<song.sections.length;i++){acc+=song.sections[i].bars.length;secEnd[acc-1]=1;}
-  var guard=0;
-  while(guard++<40){
-    /* 쉼표 없이 이어지는 구간을 모아 두었다가, 한도를 넘으면 줄일 수 있는 음을 뒤에서부터 찾는다 */
-    var chain=[],run=0,hit=null;
+  var skip={},guard=0;
+  while(guard++<120){
+    /* 쉼표 없이 이어지는 구간을 모으다가 한도를 넘으면 줄일 수 있는 음을 뒤에서부터 찾는다.
+       못 고치는 구간이 있어도 멈추지 않고 다음 구간으로 넘어간다. */
+    var chain=[],run=0,hit=null,key="",ck="";
     for(var b=0;b<song.flat.length&&!hit;b++){
-      var bar=song.flat[b].notes, last=-1;
+      var bar=song.flat[b].notes,last=-1;
       for(i=bar.length-1;i>=0;i--)if(!bar[i].rest){last=i;break;}
       for(i=0;i<bar.length;i++){
-        if(bar[i].rest){chain=[];run=0;continue;}
+        if(bar[i].rest){chain=[];run=0;ck="";continue;}
+        if(!chain.length)ck=b+":"+i;
         chain.push({bar:bar,i:i,end:(secEnd[b]&&i===last)});
         run+=bar[i].dur;
-        if(run>lim){hit=chain.slice();break;}
+        if(run>lim&&!skip[ck]){hit=chain.slice();key=ck;break;}
       }
     }
     if(!hit)break;
@@ -1524,17 +1549,16 @@ function breathGuard(song,maxSec){
       var n=c.bar[c.i];
       for(var z=NOTE_DUR.length-1;z>=0;z--){
         var nd=NOTE_DUR[z];
-        if(nd<n.dur&&nd>=2&&durOk(n.start,nd)&&n.dur-nd>=2){
-          n.dur-=(n.dur-nd);
-          c.bar.splice(c.i+1,0,{rest:true,dur:0});
-          c.bar[c.i+1].dur=(function(){var t=0;for(var k=0;k<c.bar.length;k++)t+=c.bar[k].dur;return 16-t;})();
-          if(c.bar[c.i+1].dur<=0)c.bar.splice(c.i+1,1);
+        if(nd>=1&&nd<n.dur&&n.dur-nd>=1&&durOk(n.start,nd)){
+          var gapLen=n.dur-nd;
+          n.dur=nd;
+          c.bar.splice(c.i+1,0,{rest:true,dur:gapLen});
           fixDurs(c.bar);
           done=true;break;
         }
       }
     }
-    if(!done)break;
+    if(!done)skip[key]=1;
   }
 }
 /* 2절 코러스는 1절 코러스와 선율·리듬이 같아야 훅이다 (후처리가 따로 건드려 갈라지는 것을 되돌린다) */
@@ -1582,7 +1606,7 @@ function finishEnding(song){
   var acc=0;
   for(var sx=0;sx<song.sections.length;sx++){
     acc+=song.sections[sx].bars.length;
-    if(sx<song.sections.length-1)extendLastNote(song.flat[acc-1].notes,8);
+    if(sx<song.sections.length-1)extendLastNote(song.flat[acc-1].notes,8,4);
   }
   var bi=-1,i,j;
   for(i=song.flat.length-1;i>=0;i--){
@@ -1590,17 +1614,16 @@ function finishEnding(song){
     if(bi>=0)break;
   }
   if(bi<0)return;
-  extendLastNote(song.flat[bi].notes,16);
+  extendLastNote(song.flat[bi].notes,16,0);
 }
-function extendLastNote(bar,maxWant){
+function extendLastNote(bar,maxWant,minRest){
   var i,li=-1;
-  for(i=bar.length-1;i>=0;i--)if(!bar[i].rest){li=i;break;}
   for(i=bar.length-1;i>=0;i--)if(!bar[i].rest){li=i;break;}
   if(li<0)return;
   var after=0;
   for(i=li+1;i<bar.length;i++)after+=bar[i].dur;
   if(!after)return;
-  var want=Math.min(bar[li].dur+after,maxWant||16), pick=0;
+  var want=Math.min(bar[li].dur+after-(minRest||0),maxWant||16), pick=0;
   for(var z=0;z<NOTE_DUR.length;z++)
     if(NOTE_DUR[z]<=want&&NOTE_DUR[z]>bar[li].dur&&durOk(bar[li].start,NOTE_DUR[z]))pick=NOTE_DUR[z];
   if(!pick)return;
@@ -1690,12 +1713,20 @@ function cloneBars(bs){return bs.map(function(b){return b.map(function(n){return
 function buildSong(o){
   var mood=MOOD_BY_ID[o.moodId]||MOODS[0];
   var mode=o.mode||mood.mode;
-  var ki=keyInfo(o.keyPc,mode);
+  var targetPc=((((o.keyPc|0)%12)+12)%12);
+  /* 조성에 따라 음역 클램프·스냅 결과가 달라지면 음표 수가 바뀌고, 그러면 가사까지 바뀐다.
+     그래서 생성은 언제나 C 기준으로 하고 맨 마지막에 목표 조성으로 통째로 옮긴다.
+     (허밍 곡은 들려준 조성을 그대로 써야 하므로 제외) */
+  var genPc=(o.hum&&o.hum.length)?targetPc:0;
+  var ki=keyInfo(genPc,mode);
   /* 조성·빠르기는 시드에서 제외 — 키를 바꿔도 같은 곡이 유지된다 */
   var seedStr=[o.moodId,o.form,o.kw||"",o.seed,(o.hum?o.hum.length:0)].join("|");
   var rng=rngFrom(fnv(seedStr));
   /* 가사는 멜로디와 난수 스트림을 분리한다 — 키만 바꿔도 가사가 통째로 바뀌던 문제 */
   var lrng=rngFrom(fnv(seedStr+"|lyric"));
+  /* 음고 결정은 조성에 따라 난수 소비량이 달라진다 — 전용 스트림으로 분리해야
+     리듬·음표 수(=가사 목표 음절수)가 키와 무관해진다 */
+  var prng=rngFrom(fnv(seedStr+"|pitch"));
   var trng=rngFrom(fnv(seedStr+"|title"));
   var bank=BANK[mood.id]||BANK.seolem;
   /* "너의 이름" 처럼 두 어절도 받되, 붙여 쓰지 않고 공백을 그대로 둔다 */
@@ -1773,7 +1804,7 @@ function buildSong(o){
       if(type==="bridge")use=varyMotif(mb,rng,0.4,2);
       var ceil=(type==="chorus")?RANGE_HI:(type==="pre"?RANGE_HI-4:RANGE_HI-7);
       var bmo={prevMidi:prevMidi,last:(bi===nbars-1),cadence:(isFinal&&bi===nbars-1),ceil:ceil,same:sameRun};
-      var nb=barMelody(use,chords[bi],ki,baseDeg,rng,bmo);
+      var nb=barMelody(use,chords[bi],ki,baseDeg,prng,bmo);
       sameRun=bmo.same||0;
       var lastReal=nb[nb.length-1];
       prevMidi=lastReal?lastReal.midi:prevMidi;
@@ -1846,7 +1877,7 @@ function buildSong(o){
     flatPush(flat,sec);
   }
   var song={title:title,mood:mood,ki:ki,bpm:o.bpm,seed:o.seed,form:o.form,kw:kw,
-    sections:sections,flat:flat,fromHum:!!(o.hum&&o.hum.length),trans:0,baseKeyPc:ki.pc,voice:'alto'};
+    sections:sections,flat:flat,fromHum:!!(o.hum&&o.hum.length),trans:0,baseKeyPc:targetPc,voice:'alto'};
   if(!song.fromHum){normalizeRange(song);clampSpan(song,ki);smoothLeaps(song,ki);clampSpan(song,ki);smoothLeaps(song,ki);}
   attachSyllables(song);
   /* 음역 보정이 끝난 뒤에 딕션을 다듬어야 결과가 덮어써지지 않는다 */
@@ -1866,11 +1897,41 @@ function buildSong(o){
     smoothLeaps(song,ki,sw.lo,sw.hi);breakUnison(song,ki);
     clampSpan(song,ki);
     sw=spanWindow(song);smoothLeaps(song,ki,sw.lo,sw.hi);
-    syncChorusRepeat(song);syncChorusSections(song);fixCadence(song);finishEnding(song);
+    fixCadence(song);finishEnding(song);
     smoothJoin(song);breathGuard(song,4.0);
+    /* 선율을 건드리는 모든 단계가 끝난 뒤에 후렴 반복을 맞춘다 (먼저 하면 뒤에서 다시 깨진다) */
+    syncChorusRepeat(song);syncChorusSections(song);
   }
+  if(genPc!==targetPc)shiftToKey(song,targetPc,mode);
+  fitRange(song);
   song.range=songRange(song);
   return song;
+}
+/* 곡 전체를 목표 조성으로 옮긴다 (음정 관계·리듬은 그대로) */
+function shiftToKey(song,pc,mode){
+  var d=((pc-song.ki.pc)%12+12)%12;
+  if(d>6)d-=12;
+  if(d)eachNote(song,function(n){n.midi+=d;});
+  song.ki=keyInfo(pc,mode);
+  for(var s2=0;s2<song.sections.length;s2++){
+    var sec=song.sections[s2];
+    sec.chords=sec.chords.map(function(c){return realizeChord(c.roman,song.ki)||c;});
+    for(var l=0;l<sec.lines.length;l++)
+      sec.lines[l].chords=chordTextFor(sec.lines[l].bars,sec.chords,sec.lines[l].bar);
+  }
+  var k=0;
+  for(var s3=0;s3<song.sections.length;s3++)
+    for(var b=0;b<song.sections[s3].bars.length;b++){song.flat[k].chord=song.sections[s3].chords[b];k++;}
+}
+/* 옮긴 뒤 음역을 벗어나면 곡 전체를 옥타브 단위로만 맞춘다 (윤곽 보존) */
+function fitRange(song){
+  var guard=0;
+  while(guard++<4){
+    var r=songRange(song);
+    if(r.hi>RANGE_HI&&r.lo-12>=RANGE_LO-2){eachNote(song,function(n){n.midi-=12;});continue;}
+    if(r.lo<RANGE_LO&&r.hi+12<=RANGE_HI+2){eachNote(song,function(n){n.midi+=12;});continue;}
+    break;
+  }
 }
 /* 각 마디의 음표에 가사 음절을 1:1로 붙인다 */
 function attachSyllables(song){
@@ -1978,7 +2039,7 @@ function transposeSong(song,d,opt){
   return true;
 }
 /*==== 6. 악보 그리기 (SVG) ====*/
-var STAFF={barW:168,sysH:186,left:78,pad:14,top:56};
+var STAFF={barW:168,sysH:166,left:78,pad:14,top:56};
 function stepOf(letterIdx,oct){return oct*7+letterIdx;}
 function yOfStep(step,base){/* E4(step 30) = 아래 첫 줄 */return base+46-5*(step-30);}
 function accPath(kind,x,y){
@@ -1988,16 +2049,21 @@ function accPath(kind,x,y){
   if(kind===-1)return '<path d="M'+(x-3)+','+(y-8)+' L'+(x-3)+','+(y+5)+' C'+(x+2)+','+(y-1)+' '+(x+4)+','+(y+2)+' '+(x-3)+','+(y+5)+'" stroke="#1d1b3a" stroke-width="1.3" fill="none"/>';
   return '<path d="M'+(x-3)+','+(y+6)+' L'+(x-3)+','+(y-4)+' M'+(x+2)+','+(y+4)+' L'+(x+2)+','+(y-6)+' M'+(x-3)+','+(y-2)+' L'+(x+2)+','+(y-3)+' M'+(x-3)+','+(y+3)+' L'+(x+2)+','+(y+2)+'" stroke="#1d1b3a" stroke-width="1.2" fill="none"/>';
 }
+/* 높은음자리표: 한 획으로 G4 선을 감아 올라가는 형태 (떨어진 원 + 나선 없는 획을 대체) */
 function clefSvg(x,base){
   var g=yOfStep(stepOf(4,4),base); /* G4 */
-  var s='<g stroke="#1d1b3a" stroke-width="2" fill="none" stroke-linecap="round">';
-  s+='<path d="M'+x+','+g+' C'+x+','+(g-14)+' '+(x+8)+','+(g-20)+' '+(x+8)+','+(g-28)+
-     ' C'+(x+8)+','+(g-36)+' '+(x+2)+','+(g-40)+' '+(x-2)+','+(g-36)+
-     ' C'+(x-6)+','+(g-32)+' '+(x-5)+','+(g-24)+' '+(x-1)+','+(g-16)+
-     ' C'+(x+4)+','+(g-4)+' '+(x+12)+','+(g+6)+' '+(x+12)+','+(g+16)+
-     ' C'+(x+12)+','+(g+24)+' '+(x+4)+','+(g+27)+' '+(x-1)+','+(g+24)+'"/>';
-  s+='<circle cx="'+(x+1)+'" cy="'+g+'" r="7.5"/>';
-  return s+'</g>';
+  function P(dx,dy){return (x+dx)+','+(g+dy);}
+  var d='M'+P(0,2)
+    +' C'+P(-5,1)+' '+P(-6,-4)+' '+P(-2,-6)
+    +' C'+P(3,-8)+' '+P(8,-4)+' '+P(8,2)
+    +' C'+P(8,9)+' '+P(1,13)+' '+P(-4,10)
+    +' C'+P(-10,7)+' '+P(-11,-3)+' '+P(-7,-11)
+    +' C'+P(-3,-19)+' '+P(4,-25)+' '+P(4,-32)
+    +' C'+P(4,-38)+' '+P(-2,-39)+' '+P(-4,-33)
+    +' C'+P(-6,-26)+' '+P(-1,-17)+' '+P(2,-8)
+    +' C'+P(6,4)+' '+P(8,14)+' '+P(6,23)
+    +' C'+P(5,30)+' '+P(-2,32)+' '+P(-6,28);
+  return '<path d="'+d+'" stroke="#1d1b3a" stroke-width="2.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
 }
 function keySigSvg(x,base,ki){
   var order=ki.sig>0?SHARP_ORDER:FLAT_ORDER, n=Math.abs(ki.sig), s="";
@@ -2051,7 +2117,9 @@ function noteSvg(n,x,base,ki,accState,beam){
   if(g.dot)s+='<circle cx="'+(x+9)+'" cy="'+(y-2)+'" r="1.6" fill="#1d1b3a"/>';
   if(g.stem){
     /* 빔으로 묶인 음표는 그룹이 정한 방향과 빔 직선 위의 y 로 기둥을 그린다 */
-    var up=beam?beam.up:(y>=base+26), sx=up?x+5.3:x-5.3, sy=beam?beam.y:(up?y-30:y+30);
+    var up=beam?beam.up:(y>=base+26), sx=up?x+5.3:x-5.3;
+    /* 기둥은 기본 3칸 반, 단 보표 가운뎃줄까지는 반드시 닿게 */
+    var sy=beam?beam.y:(up?Math.min(y-30,base+26):Math.max(y+30,base+26));
     s+='<line x1="'+sx+'" y1="'+y+'" x2="'+sx+'" y2="'+sy+'" stroke="#1d1b3a" stroke-width="1.5"/>';
     for(var f=0;f<(beam?0:g.flags);f++){
       var fy=sy+(up?f*6:-f*6);
@@ -2074,6 +2142,15 @@ function renderStaff(bars,ki,perSys,maxW,oct8){
   var avail=(maxW||760)-musicLeft-STAFF.pad;
   var BW=Math.floor(avail/perSys);
   if(BW<150){perSys=Math.max(2,Math.floor(avail/150));BW=Math.floor(avail/perSys);}
+  /* 음절이 10px 아래로 줄어들 만큼 빽빽하면 보표를 넓혀 가로 스크롤(.scroller)로 보여 준다 */
+  var dense=0,dn;
+  for(dn=0;dn<bars.length;dn++){
+    var cnt=0;
+    for(var dq=0;dq<bars[dn].notes.length;dq++)if(!bars[dn].notes[dq].rest)cnt++;
+    if(cnt>dense)dense=cnt;
+  }
+  var needBW=Math.min(300,Math.max(150,dense*13+34));
+  if(BW<needBW)BW=needBW;
   var sys=Math.ceil(bars.length/perSys);
   var W=musicLeft+perSys*BW+STAFF.pad;
   var H=sys*STAFF.sysH+18;
@@ -2081,11 +2158,12 @@ function renderStaff(bars,ki,perSys,maxW,oct8){
   s+='<rect width="'+W+'" height="'+H+'" fill="#fbfaff"/>';
   for(var sy=0;sy<sys;sy++){
     var base=STAFF.top+sy*STAFF.sysH, x0=STAFF.pad, i;
+    var lyr=[];
     var nbSys=Math.min(perSys,bars.length-sy*perSys);
     var lineEnd=musicLeft+nbSys*BW;                      /* 남는 빈 마디까지 줄을 긋지 않는다 */
     for(i=0;i<5;i++)s+='<line x1="'+x0+'" y1="'+(base+6+i*10)+'" x2="'+lineEnd+'" y2="'+(base+6+i*10)+'" stroke="#9a97b8" stroke-width="1"/>';
     s+=clefSvg(x0+16,base);
-    if(oct8)s+='<text x="'+(x0+20)+'" y="'+(base+66)+'" font-size="12" font-weight="700" fill="#1d1b3a" font-family="Georgia,serif">8</text>';
+    if(oct8)s+='<text x="'+(x0+17)+'" y="'+(base+76)+'" font-size="13" font-weight="700" text-anchor="middle" fill="#1d1b3a" font-family="Georgia,serif">8</text>';
     s+=keySigSvg(x0+34,base,ki);
     if(sy===0){
       var tx=x0+36+Math.abs(ki.sig)*8;
@@ -2116,7 +2194,7 @@ function renderStaff(bars,ki,perSys,maxW,oct8){
       }
       if(run.length>1)groups.push(run);
       /* 음표를 그리기 전에 빔 그룹의 방향·기둥 끝 y 를 먼저 확정한다(기둥이 섞이던 문제) */
-      var pos={},beamed={},beamLines=[],lyr=[],gi,gj;
+      var pos={},beamed={},beamLines=[],gi,gj;
       for(i=0;i<bar.notes.length;i++)pos[i]=bx+14+(bar.notes[i].start/16)*(BW-30);
       for(gi=0;gi<groups.length;gi++){
         var gp=groups[gi], fI=gp[0].i, lI=gp[gp.length-1].i, ys=[];
@@ -2160,13 +2238,17 @@ function renderStaff(bars,ki,perSys,maxW,oct8){
         si++;
       }
       s+=beamLines.join("");
-      /* 가사는 그 마디 최저 음표보다 아래에 — 덧줄과 겹치지 않게 */
+    }
+    /* 가사는 단(system) 단위로 한 번에 — 한 줄 안에서 글자 크기가 들쭉날쭉하지 않게 */
+    if(lyr.length){
       var ly2=base+92,lq;
       for(lq=0;lq<lyr.length;lq++)ly2=Math.max(ly2,lyr[lq].y+16);
-      /* 음절 간격이 좁으면 글자도 같이 줄인다 — 좁은 화면에서 가사가 서로 덮던 문제 */
       var gap=99;
-      for(lq=1;lq<lyr.length;lq++)gap=Math.min(gap,Math.abs(lyr[lq].x-lyr[lq-1].x));
-      var fsz=(gap<13)?Math.max(7,Math.round(gap*0.92)):12;
+      for(lq=1;lq<lyr.length;lq++){
+        var dx=Math.abs(lyr[lq].x-lyr[lq-1].x);
+        if(dx>1)gap=Math.min(gap,dx);
+      }
+      var fsz=(gap<13)?Math.max(10,Math.min(12,Math.round(gap*0.92))):12;
       for(lq=0;lq<lyr.length;lq++)
         s+='<text x="'+lyr[lq].x+'" y="'+ly2+'" font-size="'+fsz+'" text-anchor="middle" fill="#1d1b3a">'+lyr[lq].t+'</text>';
     }
@@ -2752,18 +2834,20 @@ function refreshResult(){
   if(!current)return;
   var song=current;
   var secs=Math.round(song.flat.length*4*60/song.bpm);
-  $("songFacts").innerHTML=[song.mood.emoji+" "+song.mood.name,"길이 "+lenWord(secs),"빠르기 "+tempoWord(song.bpm),
+  $("songFacts").innerHTML=[song.mood.emoji+" "+song.mood.name,"길이 "+lenWord(secs)+" ("+song.flat.length+"마디)","빠르기 "+tempoWord(song.bpm),
     "키 "+song.ki.label,
     "음역 "+noteLabel(song.range.lo,song.ki)+"–"+noteLabel(song.range.hi,song.ki)]
-    .concat(song.fromHum?["🎤 내 허밍 속도에 맞췄어요"]:[])
+    .concat(song.fromHum?["🎤 내 허밍 빠르기에 맞췄어요"]:[])
     .map(function(f){return '<span class="fact">'+f+"</span>";}).join("");
   $("progView").textContent=song.sections.map(function(s){
     return (s.label.padEnd?s.label.padEnd(7," "):s.label+"\t")+" "+chordRow(s.chords.map(function(c){return c.name;})," | ");
   }).join("\n");
   $("staffView").innerHTML=renderStaff(song.flat,song.ki,barsPerSystem(),staffWidth("staffView"),staffOct8(song));
-  $("staffNote").textContent=staffOct8(song)
+  var sv=$("staffView");
+  $("staffNote").textContent=(staffOct8(song)
     ?"자리표 아래 8 — 남성 음역이라 한 옥타브 올려 적었어요. 소리와 MIDI 는 악보보다 한 옥타브 낮습니다."
-    :"멜로디 악보입니다. 음표 아래에 가사 음절이 붙어 있어요.";
+    :"멜로디 악보입니다. 음표 아래에 가사 음절이 붙어 있어요.")
+    +(sv.scrollWidth>sv.clientWidth+4?" 가로로 밀어서 전체를 볼 수 있어요.":"");
   var html="";
   for(var i=0;i<song.sections.length;i++){
     var sec=song.sections[i];
@@ -2970,9 +3054,9 @@ function processFrames(frames){
       list.push({midi:q[i].midi,start:q[i].start%16,dur:Math.min(q[i].dur,16-(q[i].start%16))});
     bars.push({chord:chords[b],notes:list,label:b===0?"허밍":""});
   }
-  $("anaSum").textContent="— "+ki.label+" · 약 "+bpm+" BPM · 음표 "+q.length+"개 · "+nbars+"마디";
+  $("anaSum").textContent=ki.label+" · 약 "+bpm+" BPM · 음표 "+q.length+"개 · "+nbars+"마디";
   $("anaPlain").textContent=(ki.mode==="minor"?"어두운 느낌":"밝은 느낌")+"이고, "+
-    tempoAdv(bpm)+" 부르셨어요 · "+(nbars===1?"한 소절":nbars+"소절")+" 분량";
+    tempoAdv(bpm)+" 부르셨어요 · "+nbars+"마디 분량";
   humStaffBars=bars;
   redrawHumStaff();
   $("humProg").textContent="코드: "+chords.map(function(c){return c.name;}).join(" | ")+
@@ -3143,8 +3227,11 @@ function drawCard(){
   g.fillText(title,70,206);
   g.fillStyle="#a5f3fc";g.font="700 30px "+F;
   var cs=Math.round(s.flat.length*4*60/s.bpm);
-  g.fillText(s.mood.emoji+" "+s.mood.name+"  ·  길이 "+lenWord(cs)+"  ·  빠르기 "+tempoWord(s.bpm)+"  ·  키 "+s.ki.label+
-    "  ·  음역 "+noteLabel(s.range.lo,s.ki)+"–"+noteLabel(s.range.hi,s.ki),70,258);
+  var meta=s.mood.emoji+" "+s.mood.name+"  ·  길이 "+lenWord(cs)+"  ·  빠르기 "+tempoWord(s.bpm)+
+    "  ·  키 "+s.ki.label+"  ·  음역 "+noteLabel(s.range.lo,s.ki)+"–"+noteLabel(s.range.hi,s.ki);
+  var mf=30;
+  while(mf>20){g.font="700 "+mf+"px "+F;if(g.measureText(meta).width<=W-140)break;mf-=2;}
+  g.fillText(meta,70,258);
   g.strokeStyle="rgba(255,255,255,.28)";g.lineWidth=2;
   g.beginPath();g.moveTo(70,292);g.lineTo(W-70,292);g.stroke();
   /* 코드 진행 */
