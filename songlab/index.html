@@ -2460,6 +2460,7 @@ function buildSong(o){
     /* 후렴 복제가 끝난 뒤 섹션 이음매만 다시 본다 — 2절→라스트 코러스 같은 자리 */
     joinSections(song,ki,sw2.lo,sw2.hi);
     /* 클라이맥스 한 음만 음역 창 위로 2반음 허용 — 곡의 최고음은 마지막 후렴에 있어야 한다 */
+    syncVersePhrase(song,ki,sw2.lo,sw2.hi);
     finalLift(song,ki,Math.min(RANGE_HI,sw2.hi+2));
     fixCadence(song);          /* 정점을 올렸으면 종지 으뜸음도 그에 맞춰 다시 고른다 */
     /* 음고 보정이 끝난 맨 마지막에 딕션을 한 번 더 — 5도 안으로만 내리므로 도약을 만들지 않는다 */
@@ -2572,6 +2573,69 @@ function easeDictionAll(song,ki){
       /* 5도(7반음) 안으로만 — 딕션 때문에 도약을 만들면 안 된다 */
       if(d<n.midi&&d>=RANGE_LO&&(!prev||Math.abs(d-prev)<=7)&&(!next||Math.abs(next-d)<=7)){n.midi=d;break;}
     }
+  }
+}
+/* a-a'-b-a'' 가 귀에 들리려면 벌스의 마지막 프레이즈가 첫 프레이즈를 되받아야 한다.
+   가사가 달라 리듬은 못 맞추므로 음정 관계(윤곽)만 옮긴다. 종지가 있는 마지막 마디는 건드리지 않는다 */
+function syncVersePhrase(song,ki,lo,hi){
+  function live(bar){return bar.filter(function(n){return !n.rest;});}
+  for(var si=0;si<song.sections.length;si++){
+    var sec=song.sections[si];
+    if(sec.type!=="verse"||sec.bars.length<4)continue;
+    var zi=sec.bars.length-2;                       /* 마지막 프레이즈의 앞 마디 */
+    var A=live(sec.bars[0]), Z=live(sec.bars[zi]);
+    if(A.length<2||Z.length<2)continue;
+    /* 이 마디 앞뒤 음 — 윤곽을 옮겨도 도약이 생기면 안 된다 */
+    var pv=null,nx=null,i,j;
+    for(i=zi-1;i>=0&&pv===null;i--){var L=live(sec.bars[i]);if(L.length)pv=L[L.length-1].midi;}
+    var N=live(sec.bars[zi+1]); if(N.length)nx=N[0].midi;
+    /* 출발음을 몇 가지로 바꿔 가며 가장 먼저 통과하는 쪽을 쓴다 — 한 번에 포기하면 성공률이 낮다 */
+    var anchors=[Z[0].midi,Z[0].midi+2,Z[0].midi-2,Z[0].midi+4,Z[0].midi-4,Z[0].midi+7,Z[0].midi-7];
+    var cand=null,ok=false;
+    for(var an=0;an<anchors.length&&!ok;an++){
+    cand=[nearestScale(anchors[an],ki)];
+    for(i=1;i<Z.length;i++){
+      var step=(i<A.length)?(A[i].midi-A[i-1].midi):0;
+      cand.push(cand[i-1]+step);
+    }
+    ok=true;
+    for(i=0;i<cand.length&&ok;i++){
+      cand[i]=nearestScale(cand[i],ki);
+      if(cand[i]<lo||cand[i]>hi)ok=false;
+      if(i>0&&Math.abs(cand[i]-cand[i-1])>9)ok=false;
+    }
+    if(ok&&pv!==null&&Math.abs(cand[0]-pv)>9)ok=false;
+    if(ok&&nx!==null&&Math.abs(nx-cand[cand.length-1])>9)ok=false;
+    /* 긴 음은 그 마디 화음 안으로 끌어 준다 (윤곽을 통째로 포기하지 않는다) */
+    var ch=sec.chords&&sec.chords[zi];
+    if(ok&&ch)for(i=0;i<Z.length;i++){
+      if(Z[i].dur<6||ch.tones.indexOf(((cand[i]%12)+12)%12)>=0)continue;
+      var fix=0;
+      for(var d2=1;d2<=2&&!fix;d2++)for(var sg=1;sg>=-1;sg-=2){
+        var v=cand[i]+sg*d2;
+        if(v<lo||v>hi)continue;
+        if(ch.tones.indexOf(((v%12)+12)%12)<0)continue;
+        if(i>0&&Math.abs(v-cand[i-1])>9)continue;
+        if(i+1<cand.length&&Math.abs(cand[i+1]-v)>9)continue;
+        cand[i]=v;fix=1;break;
+      }
+      if(!fix){ok=false;break;}
+    }
+    /* 윤곽을 옮기다 같은 음이 네 번 이어지면 찬트처럼 들린다 */
+    if(ok){
+      var run=1;
+      for(i=1;i<cand.length;i++){
+        run=(cand[i]===cand[i-1])?run+1:1;
+        if(run>3){ok=false;break;}
+      }
+    }
+    /* 화음 보정 뒤에 이음매를 다시 본다 — 보정이 도약을 만들 수 있다 */
+    if(ok&&pv!==null&&Math.abs(cand[0]-pv)>9)ok=false;
+    if(ok&&nx!==null&&Math.abs(nx-cand[cand.length-1])>9)ok=false;
+    if(ok)for(i=1;i<cand.length&&ok;i++)if(Math.abs(cand[i]-cand[i-1])>9)ok=false;
+    }
+    if(!ok)continue;
+    for(i=0;i<Z.length;i++)Z[i].midi=cand[i];
   }
 }
 /* 라스트 코러스의 "마지막 한 방" — 훅(1·3행)은 1차와 똑같이 둬야 하므로,
