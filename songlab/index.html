@@ -1265,7 +1265,10 @@ var RHY_BPM=110;   /* 리듬 분배에 쓰는 빠르기 힌트 */
 function splitDurs(budget,cnt,start,strict){
   start=start||0;
   if(cnt<=0)return budget===0?[]:(strict?null:[budget]);
-  var ND=[16,12,8,6,4,3,2,1],memo={};
+  /* 한 음절을 실으려면 1단위가 최소 0.125초는 돼야 한다(한국어 받침 발음).
+     120bpm 을 넘으면 16분은 0.125초 미만이고, 점8분은 durOk 상 뒤에 16분을 강제하므로 둘 다 뺀다.
+     가중치(wt)로 누르는 방식은 "점8분 뒤 16분" 이 강제 삽입이라 평가 지점을 우회해 효과가 없었다. */
+  var ND=(60/RHY_BPM/4<0.125)?[16,12,8,6,4,2]:[16,12,8,6,4,3,2,1],memo={};
   function go(p,i,left){
     if(i===cnt)return left===0?[]:null;
     var key=p+"|"+i+"|"+left;
@@ -1275,7 +1278,7 @@ function splitDurs(budget,cnt,start,strict){
        ♪.♬ 라는 K-pop·발라드의 기본 리듬 세포가 여기서만 나온다.
        16분은 빠른 곡일수록 한 음절을 싣기 어려우니 더 누른다(이전엔 방향이 거꾸로였다). */
     function wt(v){
-      var six=(RHY_BPM>=140?1.3:(RHY_BPM>=110?0.7:0.3));
+      var six=(RHY_BPM>=110?0.7:0.3);   /* 120bpm 초과는 ND 에서 16분이 빠지므로 여기 안 온다 */
       return Math.abs(v-want)-(v===4?0.4:0)+(v===3?0.25:0)+(v===1?six:0)
         -((p%4===2&&v>=4)?0.45:0);
     }
@@ -1760,6 +1763,11 @@ function breathGuard(song,maxSec){
   for(i=0;i<song.sections.length;i++){acc+=song.sections[i].bars.length;secEnd[acc-1]=1;}
   var mg=mirrorGroups(song);
   markWordStarts(song);
+  var choBar=[];
+  for(i=0;i<song.sections.length;i++){
+    if(song.sections[i].type!=="chorus")continue;
+    for(var cb=0;cb<song.sections[i].bars.length;cb++)choBar.push(song.sections[i].bars[cb]);
+  }
   var changed=true,guard=0;
   while(changed&&guard++<400){
     changed=false;
@@ -1771,7 +1779,11 @@ function breathGuard(song,maxSec){
       /* 구간 전체를 뒤에서부터 훑어 줄일 수 있는 음을 찾는다 (앞부분만 보고 포기하지 않는다).
          어절 경계는 하드 제약이다 — 15% 를 넘길 때만 낱말을 쪼갠다.
          "먼 (숨) 저 떠올라" 는 4.4초를 한 번에 부르는 것보다 훨씬 부르기 어렵다 */
-      var hard=run>Math.round(lim*1.08);
+      /* 후렴은 마디당 음이 적어 합법적 절단점이 좁다 — 어절을 지키도록 시간 상한을 더 양보한다.
+         후렴 최대 무중단이 이미 4.04초 이하라 여유가 있다 */
+      var inCho=false;
+      for(var ci=0;ci<chain.length;ci++)if(choBar.indexOf(chain[ci].bar)>=0){inCho=true;break;}
+      var hard=run>Math.round(lim*(inCho?1.20:1.08));
       for(var pass=0;pass<3&&!changed;pass++){
       if(pass===2&&!hard)break;
       for(var q=chain.length-1;q>=0&&!changed;q--){
@@ -1934,7 +1946,7 @@ function chorusPeak(song,ki){
   if(!best)return;
   var chord=song.sections[0]&&sec.chords?sec.chords[bi]:null;
   var want=vmax+2,got=0;
-  for(var m2=want;m2<=Math.min(moodCeil(song),vmax+5);m2++){
+  for(var m2=want;m2<=Math.min(moodCeil(song),vmax+7);m2++){
     if(chord&&chord.tones.indexOf(((m2%12)+12)%12)<0)continue;
     if(!chord&&nearestScale(m2,ki)!==m2)continue;
     got=m2;break;
@@ -2187,10 +2199,8 @@ function fixCadence(song){
 /* 코러스가 벌스보다 충분히 올라가지 않으면 코러스만 들어 올린다 */
 /* 무드마다 후렴 천장을 달리 둔다 — 전부 RANGE_HI 까지 밀어 올리면 발라드와 댄스가 같은 높이가 된다 */
 var CEIL_OFF={ballad:4,saebyeok:4,lofi:4,ibyeol:3,seolem:2,citypop:2,eungwon:0,dance:0};
-function moodCeil(song){
-  var o=(song.mood&&CEIL_OFF[song.mood.id])||0;
-  return RANGE_HI-o;
-}
+function moodCeilId(id){return RANGE_HI-((id&&CEIL_OFF[id])||0);}
+function moodCeil(song){return moodCeilId(song&&song.mood&&song.mood.id);}
 function liftChorus(song,ki){
   function med(sec){
     var a=[];
@@ -2215,7 +2225,7 @@ function liftChorus(song,ki){
   /* 전부 못 올리면 포기하지 말고, 올릴 수 있는 만큼만 올린다 */
   for(var up=Math.min(5,need);up>=1;up--){
     var ok=true;
-    each(function(n){if(nearestScale(n.midi+up,ki)>RANGE_HI)ok=false;});
+    each(function(n){if(nearestScale(n.midi+up,ki)>moodCeil(song))ok=false;});
     if(!ok)continue;
     each(function(n){n.midi=nearestScale(n.midi+up,ki);});
     return;
@@ -2331,7 +2341,9 @@ function buildSong(o){
       else if(ph===2)use=varyMotif(mb,rng,0.35,-1);
       else use=varyMotif(mb,rng,0.12,0);
       if(type==="bridge")use=varyMotif(mb,rng,0.4,2);
-      var ceil=(type==="chorus")?RANGE_HI:(type==="pre"?RANGE_HI-4:RANGE_HI-7);
+      /* 무드 천장을 여기서도 써야 발라드와 댄스가 같은 높이로 포화되지 않는다 */
+      var mc=moodCeilId(mood&&mood.id);
+      var ceil=(type==="chorus")?mc:(type==="pre"?mc-4:mc-7);
       var bmo={prevMidi:prevMidi,last:(bi===nbars-1),cadence:(isFinal&&bi===nbars-1),ceil:ceil,same:sameRun};
       var nb=barMelody(use,chords[bi],ki,baseDeg,prng,bmo);
       sameRun=bmo.same||0;
@@ -2461,11 +2473,13 @@ function buildSong(o){
     joinSections(song,ki,sw2.lo,sw2.hi);
     /* 클라이맥스 한 음만 음역 창 위로 2반음 허용 — 곡의 최고음은 마지막 후렴에 있어야 한다 */
     syncVersePhrase(song,ki,sw2.lo,sw2.hi);
-    finalLift(song,ki,Math.min(RANGE_HI,sw2.hi+2));
+    finalLift(song,ki,Math.min(RANGE_HI,moodCeil(song)+2,sw2.hi+2));
     fixCadence(song);          /* 정점을 올렸으면 종지 으뜸음도 그에 맞춰 다시 고른다 */
     /* 음고 보정이 끝난 맨 마지막에 딕션을 한 번 더 — 5도 안으로만 내리므로 도약을 만들지 않는다 */
     easeDictionAll(song,ki);
     syncChorusRepeat(song);syncChorusSections(song);
+    /* 훅 복제가 도약 보정을 되돌린다 — 복제 마디는 못 건드리니 이음매 앞쪽을 고친다 */
+    fixRepeatJoin(song,ki,sw2.lo,sw2.hi);
     attachSyllables(song);
   }
   if(genPc!==targetPc)shiftToKey(song,targetPc,mode);
@@ -2489,7 +2503,9 @@ function shiftToKey(song,pc,mode){
   for(var s3=0;s3<song.sections.length;s3++)
     for(var b=0;b<song.sections[s3].bars.length;b++){song.flat[k].chord=song.sections[s3].chords[b];k++;}
 }
-/* 옮긴 뒤 음역을 벗어나면 곡 전체를 옥타브 단위로만 맞춘다 (윤곽 보존) */
+/* 옮긴 뒤 음역을 벗어나면 맞춘다. 옥타브 단위로 먼저 시도하고(윤곽 보존),
+   양끝이 동시에 걸려 옥타브로 못 고치면 반음 단위로 이탈량이 가장 작은 자리를 고른다.
+   (전조로 ±6반음 움직인 뒤 선언 음역 밖 음이 나오던 문제 — keyPc=5 에서 최고음 Bb5 가 나왔다) */
 function fitRange(song){
   var guard=0;
   while(guard++<4){
@@ -2497,6 +2513,27 @@ function fitRange(song){
     if(r.hi>RANGE_HI&&r.lo-12>=RANGE_LO-2){eachNote(song,function(n){n.midi-=12;});continue;}
     if(r.lo<RANGE_LO&&r.hi+12<=RANGE_HI+2){eachNote(song,function(n){n.midi+=12;});continue;}
     break;
+  }
+  var r2=songRange(song);
+  if(r2.hi<=RANGE_HI&&r2.lo>=RANGE_LO)return;
+  function cost(d){
+    return Math.max(0,(r2.hi+d)-RANGE_HI)+Math.max(0,RANGE_LO-(r2.lo+d));
+  }
+  var best=0,bc=cost(0);
+  for(var d=-6;d<=6;d++)if(cost(d)<bc){bc=cost(d);best=d;}
+  if(best)eachNote(song,function(n){n.midi+=best;});
+  /* 그래도 남으면(음폭이 음역보다 넓은 경우) 밖으로 나간 음만 음계 안으로 접는다 */
+  var r3=songRange(song);
+  if(r3.hi>RANGE_HI||r3.lo<RANGE_LO){
+    eachNote(song,function(n){
+      while(n.midi>RANGE_HI)n.midi-=12;
+      while(n.midi<RANGE_LO)n.midi+=12;
+      if(n.midi>RANGE_HI||n.midi<RANGE_LO)n.midi=scaleInRange(n.midi,song.ki,RANGE_LO,RANGE_HI);
+    });
+    breakUnison(song,song.ki);
+    smoothLeaps(song,song.ki,RANGE_LO,RANGE_HI);
+    smoothLeaps(song,song.ki,RANGE_LO,RANGE_HI);
+    fixCadence(song);
   }
 }
 /* 각 마디의 음표에 가사 음절을 1:1로 붙인다 */
@@ -2681,6 +2718,43 @@ function finalLift(song,ki,hi){
     if(ok&&peak>=target){
       for(i=0;i<notes.length;i++)notes[i].midi=cand[i];
       return;
+    }
+  }
+}
+/* syncChorusRepeat 가 마디 0,1 을 4,5 로 복제하면 smoothLeaps 가 고쳐 둔 음고가 되돌아가
+   이음매(마디 3→4)에 큰 도약이 생긴다. 복제 마디는 훅이라 손댈 수 없으므로 앞 음을 움직인다 */
+function fixRepeatJoin(song,ki,lo,hi){
+  var mg=mirrorGroups(song);
+  function mirrored(bar){return mg.of(bar).length>1;}
+  var prev=null,prevBar=null,prevIdx=-1,prev2=null;
+  for(var i=0;i<song.flat.length;i++){
+    var bar=song.flat[i].notes;
+    for(var j=0;j<bar.length;j++){
+      var n=bar[j];
+      if(n.rest)continue;
+      /* 뒤 음이 복제 마디에 있으면 그 음은 훅이라 못 건드린다 — 앞 음을 옮긴다 */
+      if(prev!==null&&Math.abs(n.midi-prev.midi)>9&&mirrored(bar)){
+        var ref=n.midi, old=prev.midi;
+        var cands=[old+((old>ref)?-12:12),
+                   nearestScale(ref+((old>ref)?7:-7),ki),
+                   nearestScale(ref+((old>ref)?5:-5),ki)];
+        for(var c=0;c<cands.length;c++){
+          var v=cands[c];
+          if(v<lo||v>hi)continue;
+          if(Math.abs(ref-v)>9||Math.abs(ref-v)>=Math.abs(ref-old))continue;
+          if(prev2!==null&&Math.abs(v-prev2)>9)continue;
+          /* 앞 음도 미러 묶음에 있으면 짝까지 똑같이 옮겨야 훅 일치가 안 깨진다 */
+          var grp=mg.of(prevBar);
+          for(var g=0;g<grp.length;g++){
+            var tb=grp[g];
+            if(tb!==prevBar&&!(tb[prevIdx]&&!tb[prevIdx].rest&&tb[prevIdx].midi===old))continue;
+            tb[prevIdx].midi=v;
+          }
+          break;
+        }
+      }
+      prev2=(prev!==null)?prev.midi:null;
+      prev=n;prevBar=bar;prevIdx=j;
     }
   }
 }
@@ -2959,9 +3033,22 @@ function renderStaff(bars,ki,perSys,maxW,oct8,bpm){
         var n=bar.notes.length, avail=BW-30;
         if(!n)return;
         var ws=[],tw=0,k;
-        for(k=0;k<n;k++){ws[k]=Math.sqrt(Math.max(1,bar.notes[k].dur));tw+=ws[k];}
-        var base=Math.min(14,avail/n), extra=Math.max(0,avail-base*n), acc=0;
-        for(k=0;k<n;k++){pos[k]=bx+14+acc;acc+=base+extra*(ws[k]/tw);}
+        for(k=0;k<n;k++){ws[k]=Math.pow(Math.max(1,bar.notes[k].dur),0.62);tw+=ws[k];}
+        /* 고정분이 크면 16분과 4분이 비슷한 간격으로 보여 리듬이 눈에 안 읽힌다.
+           고정분을 낮추고 음길이 비중을 올린다(겹침은 아래 최소 간격 보정이 막는다) */
+        /* 균등 고정분을 쓰면 빽빽한 마디에서 음길이 순서가 통째로 무너진다.
+           음길이별 최소폭을 주고 남는 폭만 비례 배분한다(표준 악보 배치) */
+        var MINW={1:11,2:13,3:14,4:17,6:20,8:24,12:30,16:36};
+        var mins=[],msum=0;
+        for(k=0;k<n;k++){mins[k]=MINW[bar.notes[k].dur]||13;msum+=mins[k];}
+        var sc=(msum>avail)?(avail/msum):1;
+        var extra=Math.max(0,avail-msum*sc), acc=0;
+        for(k=0;k<n;k++){pos[k]=bx+14+acc;acc+=mins[k]*sc+extra*(ws[k]/tw);}
+        /* 가사가 붙는 음끼리는 글자폭만큼은 벌려 둔다 — 비례 배분만으로는 겹친다 */
+        var MING=13;
+        for(k=1;k<n;k++)if(pos[k]-pos[k-1]<MING)pos[k]=pos[k-1]+MING;
+        var over=pos[n-1]-(bx+14+avail-6);
+        if(over>0)for(k=0;k<n;k++)pos[k]-=over*(k/(n-1||1));
       })();
       for(gi=0;gi<groups.length;gi++){
         var gp=groups[gi], fI=gp[0].i, lI=gp[gp.length-1].i, ys=[];

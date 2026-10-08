@@ -2600,8 +2600,8 @@
    "source": "project-hub/songlab",
    "live": "https://tomatoeggcat.com/songlab/",
    "status": "reviewing",
-   "loops": 11,
-   "note": "소유자 요청으로 게이트 90. 도메인 페르소나 4인(작곡가·작사가·가수·일반 사용자) 루프.",
+   "loops": 12,
+   "note": "소유자 요청으로 게이트 90. 도메인 페르소나 4인 루프. 10차는 세션 한도로 작사·일반 사용자 측정 미완.",
    "axes": {
     "functional": 92,
     "mobileUX": 84,
@@ -2665,6 +2665,10 @@
     },
     {
      "loop": 9,
+     "overall": 77
+    },
+    {
+     "loop": 10,
      "overall": 77
     }
    ],
