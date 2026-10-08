@@ -148,6 +148,8 @@ details.adv[open]>summary:before{content:"▾ "}
 .sline.now{background:rgba(124,58,237,.16);border-radius:8px}
 .sline.now .slyric{color:#fff}
 .scroller{position:relative}
+.swipe{display:inline-block;background:#7c3aed;color:#fff;font-weight:700;border-radius:999px;
+  padding:3px 10px;margin-right:6px;font-size:12.5px}
 .scroller.more::after{content:"";position:absolute;top:0;right:0;width:22px;height:100%;
   pointer-events:none;background:linear-gradient(90deg,rgba(251,250,255,0),rgba(251,250,255,.95))}
 .sy{display:none}
@@ -334,7 +336,7 @@ details.adv[open]>summary:before{content:"▾ "}
     <summary>악보 · 코드 · MIDI (음악 하시는 분용)</summary>
     <h2 class="sec" style="margin-top:14px">🎹 코드 진행</h2>
     <p class="progline" id="progView"></p>
-    <p class="scrollhint">가로로 밀어서 전체를 볼 수 있어요.</p>
+    <p class="scrollhint"><span class="swipe">👉 옆으로 밀어서 보세요</span> 악보가 화면보다 넓어요.</p>
     <h2 class="sec">🎼 악보</h2>
     <div class="scroller" id="staffView"></div>
     <p class="hint" id="staffNote">멜로디 악보입니다. 음표 아래에 가사 음절이 붙어 있어요.</p>
@@ -751,6 +753,8 @@ function canHead(line){
   return true;
 }
 function headClash(head,line){
+  /* "한참을 창문을 조금 내렸어" 같은 이중 목적격 — 앞 2글자 비교만으로는 못 잡는다 */
+  if(/(을|를)$/.test(head)&&/(을|를)\s/.test(line))return true;
   var a=(head.match(/[가-힣]{2}/)||[""])[0], b=(line.match(/[가-힣]{2}/)||[""])[0];
   return a&&a===b;
 }
@@ -791,13 +795,17 @@ function addrClash(line,kw){
   if(/^(그대|당신)$/.test(kw))return /(너|네가|네 |넌|널|너를|너의|너에게)/.test(line);
   if(FAMILY_KW.test(kw))return /(너|네가|넌|널|그대)/.test(line);
   if(/^너$/.test(kw))return /(그대|당신)/.test(line);
+  if(PERSON_KW.test(kw))return /(그대|당신)/.test(line);   /* 사람 키워드 곡에 "그대" 가 끼어들지 않게 */
   return false;
 }
-function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw){
+function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw,kwState){
   target=clamp(target,3,14);
   /* 키워드가 제목에만 남던 문제로 확률을 올렸더니 이번엔 템플릿이 전체 행의 27% 를 먹었다.
      코러스만 0.5 로 두고 벌스·브릿지는 되돌린다 */
-  var usePool=!!(kwp&&kwp.length&&stage!=="pre"&&(forcePool||rng()<(stage==="chorus"?0.5:0.35)));
+  /* 행마다 독립 추첨이라 곡 전체 투입량에 상한이 없었다 — 발표곡의 실제 키워드 밀도는 곡당 3~4행이다 */
+  var kwFull=!!(kwState&&kwState.cap&&kwState.count>=kwState.cap);
+  var usePool=!!(kwp&&kwp.length&&stage!=="pre"&&!kwFull&&
+                 (forcePool||rng()<(stage==="chorus"?0.5:0.35)));
   var alts=[],i,line;
   function stems(x){
     var o={},w=String(x).split(/\s+/);
@@ -817,7 +825,8 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw){
   }
   function consider(c,lvl){
     if(!c)return null;
-    if(lvl>=1&&addrClash(c,kw))return null;        /* 후보가 아예 없을 때만(lvl 0) 허용 */
+    /* 호칭 충돌은 레벨과 무관한 하드 게이트다 — lvl 0 폴백으로 새던 경로를 막는다 */
+    if(addrClash(c,kw))return null;
     var u,n=syl(c),rep=0;
     for(u=0;u<used.length;u++){
       /* 바로 앞 행과는 어간 하나만 겹쳐도 재탕으로 본다 ("한 발만 더 가까이" / "한 걸음만 더 가까이") */
@@ -848,8 +857,11 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw){
   var nlim=(stage==="chorus"||stage==="pre"||stage==="bridge")?2:1;
   var near=alts.filter(function(x){return x.d<=nlim;});
   /* pre/bridge 는 목표 음절이 거의 고정이라 ±2 로도 후보가 2~3개뿐이었다 — 모자라면 넓힌다 */
-  if((stage==="pre"||stage==="bridge")&&near.length<4){
-    for(var wd=3;wd<=5&&near.length<4;wd++)
+  if(stage==="pre"||stage==="bridge"){
+    /* 후보 4개에서 멈추니 풀이 20개여도 6~7개만 돌았다 — 풀 크기에 비례해 넓힌다 */
+    var pool0=(stage==="bridge"?bank.bridge:bank.pre)||[];
+    var wantN=Math.max(6,Math.ceil(pool0.length*0.5));
+    for(var wd=3;wd<=7&&near.length<wantN;wd++)
       near=alts.filter(function(x){return x.d<=wd;});
   }
   if(near.length){
@@ -859,6 +871,7 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw){
     alts=near.concat(alts);
   }
   var best=alts[0];
+  if(kwState&&kw&&best.line.indexOf(kw)>=0)kwState.count++;
   if(best.d<=2)return best.line;
   /* 그래도 짧으면 수식구를 앞에 붙인다(채움말은 곡당 2회까지) */
   line=best.line;
@@ -981,7 +994,11 @@ function makeTitle(kw,bank,mood,rng){
       dance:["터지는 "+kw,kw+"의 박자","오늘 밤의 "+kw],
       lofi:["느린 "+kw,kw+"의 오후","식어가는 "+kw]
     };
-    if(mood&&MP[mood.id])pats=pats.concat(MP[mood.id]);
+    if(mood&&MP[mood.id])pats=pats.concat(MP[mood.id].filter(function(t){
+      /* 무드 수식어가 키워드와 어간이 겹치면 "새벽과 새벽" 이 된다 */
+      var rest=t.split(kw).join("");
+      return !(new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"))).test(rest);
+    }));
     /* 키워드에 "밤" 이 들어 있으면 밤 패턴을 빼야 "겨울밤 같은 밤" 이 안 나온다 */
     if(/밤/.test(kw))pats=pats.filter(function(t){return !/밤/.test(t.replace(kw,""));});
     else pats=pats.concat([kw+", 그 밤",kw+josa(kw,"을를")+" 부르는 밤",kw+" 같은 밤"]);
@@ -1280,7 +1297,8 @@ function splitDurs(budget,cnt,start,strict){
     function wt(v){
       var six=(RHY_BPM>=110?0.7:0.3);   /* 120bpm 초과는 ND 에서 16분이 빠지므로 여기 안 온다 */
       return Math.abs(v-want)-(v===4?0.4:0)+(v===3?0.25:0)+(v===1?six:0)
-        -((p%4===2&&v>=4)?0.45:0);
+        -((p%4===2&&v>=4)?(RHY_BPM>120?1.1:0.45):0)
+        -((p%2===0&&p%4!==0&&v===6)?(RHY_BPM>120?0.6:0):0);
     }
     var cand=ND.slice().sort(function(a,b){return wt(a)-wt(b)||(b-a);});
     for(var z=0;z<cand.length;z++){
@@ -2276,6 +2294,7 @@ function buildSong(o){
   var form=FORMS[clamp(o.form|0,0,2)];
   var sections=[],flat=[],used=[],chorusCache=null;
   var fillState={count:0,used:[],heads:[]};
+  var kwState={count:0,cap:4};
   for(var si=0;si<form.length;si++){
     var type=form[si][0],nbars=form[si][1],isFinal=(si===form.length-1);
     var chords=sectionChords(mood,ki,type,nbars,rng,isFinal);
@@ -2386,7 +2405,10 @@ function buildSong(o){
           return true;
         });
         if(!pool.length)pool=hookPool;
-        if(kwHook.length)pool=kwHook.concat(pool);
+        /* 훅은 fitLine 을 안 거치므로 여기서 직접 호칭을 걸러야 한다 (kw='그대' 훅이 "너에게…" 가 되던 문제) */
+        var okAddr=pool.filter(function(h){return !addrClash(h,kw);});
+        if(okAddr.length)pool=okAddr;
+        if(kwHook.length)pool=kwHook.filter(function(h){return !addrClash(h,kw);}).concat(pool);
         var scored=pool.map(function(h){return {h:h,k:dictionScore(h,flatNotes),d:Math.abs(syl(h)-cnt)};});
         scored.sort(function(x,y){return x.d-y.d||y.k-x.k;});
         var lim=Math.max(2,scored[0].d+1);
@@ -2407,14 +2429,14 @@ function buildSong(o){
       }else if(type==="chorus"&&p===2&&hookText){
         text=hookText;                       /* 후렴 반복 */
       }else{
-        text=fitLine(cnt,lrng,bank,used,kwp,type,flatNotes,fillState,(kw&&type==="verse"&&p===1),kw);
+        text=fitLine(cnt,lrng,bank,used,kwp,type,flatNotes,fillState,(kw&&type==="verse"&&p===1),kw,kwState);
       }
       /* 1차 선택으로 음절 수를 정해 음표를 확정한 뒤, 확정된 음표로 가사를 다시 고른다 */
       var pchs=[chords[p*2],chords[p*2+1]||chords[p*2]];
       matchCount(pb,syl(text),ki,pchs);
       if(!(type==="chorus"&&(p===0||p===2))){
         var fixed=pb[0].concat(pb[1]||[]).filter(function(x){return !x.rest;});
-        var re=fitLine(fixed.length,lrng,bank,used,kwp,type,fixed,fillState,(kw&&type==="verse"&&p===1),kw);
+        var re=fitLine(fixed.length,lrng,bank,used,kwp,type,fixed,fillState,(kw&&type==="verse"&&p===1),kw,kwState);
         if(syl(re)===fixed.length&&dictionScore(re,fixed)>dictionScore(text,fixed))text=re;
       }
       var pl2=balancePhrase(pb,pl,text,ki,pchs);
@@ -2477,6 +2499,7 @@ function buildSong(o){
     fixCadence(song);          /* 정점을 올렸으면 종지 으뜸음도 그에 맞춰 다시 고른다 */
     /* 음고 보정이 끝난 맨 마지막에 딕션을 한 번 더 — 5도 안으로만 내리므로 도약을 만들지 않는다 */
     easeDictionAll(song,ki);
+    easeShortDiction(song);
     syncChorusRepeat(song);syncChorusSections(song);
     /* 훅 복제가 도약 보정을 되돌린다 — 복제 마디는 못 건드리니 이음매 앞쪽을 고친다 */
     fixRepeatJoin(song,ki,sw2.lo,sw2.hi);
@@ -2573,6 +2596,42 @@ function easeDiction(bars,text,ki){
       var down=cands[c];
       if(down<n.midi&&down>=RANGE_LO&&(!prev||Math.abs(down-prev)<=9)&&(!next||Math.abs(next-down)<=9)){
         n.midi=down;fixed++;break;
+      }
+    }
+  }
+}
+/* 16분은 너무 짧아 어절 첫 글자나 파열·복받침이 걸리면 발음이 뭉갠다.
+   점8분+16분 쌍(3,1)의 음가를 뒤집어(1,3) 긴 쪽에 그 글자를 실어 준다 */
+function easeShortDiction(song){
+  var HARD=/^[ㄱ-ㅎ]*$/;
+  function hardCh(c){
+    if(!c)return false;
+    var x=c.charCodeAt(0)-0xAC00;
+    if(x<0||x>=11172)return false;
+    var cho=Math.floor(x/588), jong=x%28;
+    /* 된소리·거센소리 초성이거나 겹받침·파열 받침이면 짧은 음에 못 싣는다 */
+    return [1,2,4,8,10,12,13,16,17,18].indexOf(cho)>=0||
+           [2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,22,24,25].indexOf(jong)>=0;
+  }
+  for(var si=0;si<song.sections.length;si++){
+    var sec=song.sections[si];
+    for(var li=0;li<sec.lines.length;li++){
+      var ln=sec.lines[li], chars=(ln.text.match(/[가-힣]/g)||[]);
+      var cum=wordBounds(ln.text), starts={0:1},ci=0,k,i;
+      for(k=0;k<cum.length-1;k++)starts[cum[k]]=1;
+      for(k=0;k<ln.bars;k++){
+        var bar=sec.bars[ln.bar+k]; if(!bar)continue;
+        for(i=0;i<bar.length;i++){
+          if(bar[i].rest)continue;
+          var ch=chars[ci], idx=ci; ci++;
+          if(bar[i].dur!==1)continue;
+          if(!(starts[idx]||hardCh(ch)))continue;
+          /* 앞이 점8분이면 (3,1) → (1,3) 으로 뒤집는다 — 길이 합이 같아 마디가 안 깨진다 */
+          var pr=(i>0&&!bar[i-1].rest)?bar[i-1]:null;
+          if(pr&&pr.dur===3&&durOk(pr.start,1)&&durOk(pr.start+1,3)){
+            pr.dur=1;bar[i].dur=3;bar[i].start=pr.start+1;
+          }
+        }
       }
     }
   }
@@ -3621,7 +3680,10 @@ function syncLenChips(v){
   var bs=document.querySelectorAll("#lenChips button");
   for(var i=0;i<bs.length;i++)bs[i].addEventListener("click",function(){
     var v=this.getAttribute("data-form");
-    $("formSel").value=v;syncLenChips(v);
+    $("formSel").value=v;
+    /* value 만 바꾸면 change 가 안 떠서 state.form 이 그대로였다 — 칩이 눌리기만 하고 안 먹혔다 */
+    $("formSel").dispatchEvent(new Event("change",{bubbles:true}));
+    syncLenChips(v);
   });
   $("formSel").addEventListener("change",function(){syncLenChips(this.value);});
 })();
@@ -3647,7 +3709,9 @@ function renderSong(song){
   /* 고른 키가 목소리 설정에 밀려 바뀌었으면 말해 준다 — 안 그러면 "눌렀는데 안 먹네" 로 보인다 */
   (function(){
     var h=$("keyHint");if(!h)return;
-    var want=((state.keyPc|0)%12+12)%12, got=((song.ki.pc|0)%12+12)%12;
+    /* keyPc < 0 은 "자동" 이다 — 고르지도 않은 사람에게 "고르신 키 대신" 이라고 하면 안 된다 */
+    if(!(state.keyPc>=0)){h.style.display="none";return;}
+    var want=(state.keyPc%12+12)%12, got=((song.ki.pc|0)%12+12)%12;
     if(want!==got){
       var vn="";for(var i=0;i<VOICES.length;i++)if(VOICES[i].id===(song.voice||"alto"))vn=VOICES[i].name;
       h.textContent="🎚️ 고르신 키 대신 "+song.ki.label+"로 맞췄어요 — “누가 부를까요"+(vn?" · "+vn:"")+"” 에 맞추느라 옮겼습니다.";
