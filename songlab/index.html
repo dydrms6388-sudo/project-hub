@@ -554,42 +554,42 @@ function realizeChord(tok,ki){
 var MOODS=[
  {id:"seolem",name:"설렘·두근",emoji:"💗",mode:"major",bpm:116,fam:"seolem",drums:true,
   hint:"첫 만남의 두근거림. 밝은 장조에 발랄한 리듬을 얹습니다.",
-  prog:{verse:["I","V","vi","IV"],pre:["IV","V","iii","vi"],chorus:["I","V","vi","IV"],bridge:["vi","IV","I","V"]},progAlt:{verse:[["I","vi","IV","V"],["I","iii","IV","V"]],chorus:[["IV","V","iii","vi"],["I","IV","vi","V"]]},
+  prog:{verse:["I","V","vi","IV"],pre:["IV","V","iii","vi"],chorus:["I","V","vi","IV"],bridge:["vi","IV","I","V"]},progAlt:{verse:[["I","vi","IV","V"],["I","iii","IV","V"]],chorus:[["IV","V","iii","vi"],["I","IV","vi","V"]],pre:[["ii","V","iii","vi"],["IV","iii","ii","V"]],bridge:[["IV","I","ii","V"],["vi","iii","IV","V"]]},
   rhythm:[[4,4,4,4],[2,2,4,4,4],[4,2,2,4,4],[3,1,4,4,4],[2,2,2,2,4,4]],lift:1,
   hooks:["오늘도 네 생각뿐이야","심장이 자꾸 앞서가","말해버릴까 이 마음","네 쪽으로 기울어져"]},
  {id:"ibyeol",name:"이별·먹먹",emoji:"💔",mode:"minor",bpm:74,fam:"ibyeol",drums:false,
   hint:"단조의 무게감. 느린 템포로 여운을 길게 끕니다.",
-  prog:{verse:["i","VI","III","VII"],pre:["iv","v","VI","VII"],chorus:["VI","VII","i","i"],bridge:["iv","VII","III","VI"]},progAlt:{verse:[["i","VII","VI","VII"],["i","iv","VI","V"]],chorus:[["VI","VII","i","VII"],["iv","VII","III","VI"]]},
+  prog:{verse:["i","VI","III","VII"],pre:["iv","v","VI","VII"],chorus:["VI","VII","i","i"],bridge:["iv","VII","III","VI"]},progAlt:{verse:[["i","VII","VI","VII"],["i","iv","VI","V"]],chorus:[["VI","VII","i","VII"],["iv","VII","III","VI"]],pre:[["VI","iv","v","VII"],["iv","III","VI","VII"]],bridge:[["VI","VII","iv","v"],["III","VI","iv","VII"]]},
   rhythm:[[4,4,4,4],[4,4,2,2,4],[2,2,4,4,4],[4,2,2,8]],lift:1,
   hooks:["그 자리에 멈춰 있어","돌아오지 않을 걸 알아","마지막이 너무 짧았어","아직 널 지우지 못해"]},
  {id:"saebyeok",name:"새벽·잔잔",emoji:"🌙",mode:"major",bpm:68,fam:"saebyeok",drums:false,
   hint:"7화음을 섞은 몽롱한 새벽 감성. 숨을 고르는 속도.",
-  prog:{verse:["Imaj7","iiim7","vim7","IVmaj7"],pre:["IVmaj7","V","iiim7","vim7"],chorus:["IVmaj7","V","iiim7","vim7"],bridge:["iim7","V7","Imaj7","vim7"]},progAlt:{verse:[["Imaj7","vim7","iim7","V"],["IVmaj7","iiim7","vim7","V"]],chorus:[["iim7","V","Imaj7","vim7"],["IVmaj7","iiim7","iim7","V"]]},
+  prog:{verse:["Imaj7","iiim7","vim7","IVmaj7"],pre:["IVmaj7","V","iiim7","vim7"],chorus:["IVmaj7","V","iiim7","vim7"],bridge:["iim7","V7","Imaj7","vim7"]},progAlt:{verse:[["Imaj7","vim7","iim7","V"],["IVmaj7","iiim7","vim7","V"]],chorus:[["iim7","V","Imaj7","vim7"],["IVmaj7","iiim7","iim7","V"]],pre:[["iim7","V","iiim7","vim7"],["IVmaj7","iiim7","iim7","V"]],bridge:[["IVmaj7","V7","iiim7","vim7"],["vim7","iim7","V7","Imaj7"]]},
   rhythm:[[4,4,4,4],[2,2,4,4,4],[4,4,2,2,4],[8,4,4]],lift:1,
   hooks:["잠들지 못한 밤에","이 새벽이 길었으면","조용히 곁에 있어줘","불빛만 깨어 있어"]},
  {id:"eungwon",name:"응원·벅참",emoji:"🔥",mode:"major",bpm:126,fam:"eungwon",drums:true,
   hint:"으뜸화음으로 시원하게 뻗는 응원가. 후렴이 높이 올라갑니다.",
-  prog:{verse:["I","IV","V","I"],pre:["IV","V","vi","V"],chorus:["I","V","IV","I"],bridge:["vi","IV","V","V"]},progAlt:{verse:[["I","V","vi","IV"],["I","IV","vi","V"]],chorus:[["IV","I","V","vi"],["I","vi","IV","V"]]},
+  prog:{verse:["I","IV","V","I"],pre:["IV","V","vi","V"],chorus:["I","V","IV","I"],bridge:["vi","IV","V","V"]},progAlt:{verse:[["I","V","vi","IV"],["I","IV","vi","V"]],chorus:[["IV","I","V","vi"],["I","vi","IV","V"]],pre:[["ii","V","IV","V"],["IV","I","ii","V"]],bridge:[["IV","V","vi","IV"],["ii","V","vi","V"]]},
   rhythm:[[4,4,4,4],[4,4,2,2,4],[2,2,4,4,4],[3,1,4,4,4],[4,4,4,2,2]],lift:2,
   hooks:["여기서 다시 시작해","끝까지 가보는 거야","무너져도 괜찮아","내일의 내가 웃도록"]},
  {id:"citypop",name:"시티팝·야경",emoji:"🌃",mode:"major",bpm:104,fam:"seolem",drums:true,
   hint:"부드러운 7화음과 밤 운전 같은 그루브.",
-  prog:{verse:["Imaj7","VII7","iiim7","VI7"],pre:["iim7","V7","iiim7","VI7"],chorus:["IVmaj7","iiim7","iim7","V7"],bridge:["IVmaj7","V7","iiim7","vim7"]},progAlt:{verse:[["Imaj7","iim7","iiim7","VI7"],["IVmaj7","V7","iiim7","VI7"]],chorus:[["iim7","V7","Imaj7","VI7"],["IVmaj7","iiim7","vim7","V7"]]},
+  prog:{verse:["Imaj7","VII7","iiim7","VI7"],pre:["iim7","V7","iiim7","VI7"],chorus:["IVmaj7","iiim7","iim7","V7"],bridge:["IVmaj7","V7","iiim7","vim7"]},progAlt:{verse:[["Imaj7","iim7","iiim7","VI7"],["IVmaj7","V7","iiim7","VI7"]],chorus:[["iim7","V7","Imaj7","VI7"],["IVmaj7","iiim7","vim7","V7"]],pre:[["IVmaj7","V7","iiim7","VI7"],["iim7","iiim7","IVmaj7","V7"]],bridge:[["iim7","V7","vim7","VI7"],["IVmaj7","iiim7","iim7","V7"]]},
   rhythm:[[2,2,4,4,4],[4,2,2,4,4],[3,1,4,4,4],[2,2,2,2,4,4],[4,4,2,2,4]],lift:1,
   hooks:["네온이 흐르는 밤에","창문을 조금 내리고","이 도시가 반짝일 때","오늘 밤은 길어도 좋아"]},
  {id:"ballad",name:"발라드·고백",emoji:"🎹",mode:"major",bpm:64,fam:"ibyeol",drums:false,
   hint:"차분하게 쌓아 올리는 정통 발라드 진행.",
-  prog:{verse:["I","iii","IV","V"],pre:["IV","V","iii","vi"],chorus:["I","V","vi","IV"],bridge:["IV","iii","vi","V"]},progAlt:{verse:[["I","V","vi","iii"],["vi","IV","I","V"]],chorus:[["IV","V","I","vi"],["I","iii","IV","V"]]},
+  prog:{verse:["I","iii","IV","V"],pre:["IV","V","iii","vi"],chorus:["I","V","vi","IV"],bridge:["IV","iii","vi","V"]},progAlt:{verse:[["I","V","vi","iii"],["vi","IV","I","V"]],chorus:[["IV","V","I","vi"],["I","iii","IV","V"]],pre:[["ii","V","vi","V"],["IV","I","ii","V"]],bridge:[["vi","V","IV","V"],["IV","V","iii","vi"]]},
   rhythm:[[4,4,4,4],[2,2,4,4,4],[4,4,4,2,2],[6,2,4,4]],lift:2,
   hooks:["이 말을 삼키지 않을게","오래 준비한 말이야","네게 닿기를 바라","한 번만 들어줄래"]},
  {id:"dance",name:"신남·댄스",emoji:"🕺",mode:"major",bpm:132,fam:"eungwon",drums:true,
   hint:"쪼갠 리듬과 반복되는 훅. 몸이 먼저 움직이는 빠르기.",
-  prog:{verse:["vi","IV","I","V"],pre:["IV","V","vi","V"],chorus:["vi","IV","I","V"],bridge:["IV","I","V","vi"]},progAlt:{verse:[["vi","V","IV","V"],["I","V","vi","IV"]],chorus:[["IV","V","vi","I"],["vi","IV","V","I"]]},
+  prog:{verse:["vi","IV","I","V"],pre:["IV","V","vi","V"],chorus:["vi","IV","I","V"],bridge:["IV","I","V","vi"]},progAlt:{verse:[["vi","V","IV","V"],["I","V","vi","IV"]],chorus:[["IV","V","vi","I"],["vi","IV","V","I"]],pre:[["ii","V","vi","V"],["vi","IV","ii","V"]],bridge:[["vi","V","IV","I"],["IV","ii","V","vi"]]},
   rhythm:[[2,2,2,2,4,4],[2,2,4,2,2,4],[3,1,2,2,4,4],[4,2,2,2,2,4],[2,2,2,2,2,2,4]],lift:2,
   hooks:["오늘 밤은 멈추지 마","손을 들고 뛰어올라","이 박자에 몸을 맡겨","끝날 때까지 끝이 아냐"]},
  {id:"lofi",name:"로파이·공부",emoji:"☕",mode:"minor",bpm:84,fam:"saebyeok",drums:true,
   hint:"느슨한 7화음 루프. 배경으로 흘려 두기 좋은 결.",
-  prog:{verse:["im7","iv7","VII","IIImaj7"],pre:["VI","VII","im7","im7"],chorus:["iv7","VII","IIImaj7","VI"],bridge:["im7","VII","VI","v"]},progAlt:{verse:[["im7","VI","iv7","VII"],["iv7","VII","im7","VI"]],chorus:[["VI","VII","im7","iv7"],["IIImaj7","VI","iv7","VII"]]},
+  prog:{verse:["im7","iv7","VII","IIImaj7"],pre:["VI","VII","im7","im7"],chorus:["iv7","VII","IIImaj7","VI"],bridge:["im7","VII","VI","v"]},progAlt:{verse:[["im7","VI","iv7","VII"],["iv7","VII","im7","VI"]],chorus:[["VI","VII","im7","iv7"],["IIImaj7","VI","iv7","VII"]],pre:[["iv7","VII","VI","VII"],["VI","v","iv7","VII"]],bridge:[["iv7","VI","VII","im7"],["VI","VII","v","im7"]]},
   rhythm:[[4,4,4,4],[4,2,2,4,4],[2,2,4,8],[4,4,8]],lift:1,
   hooks:["창밖은 천천히 흐르고","한 장만 더 넘기면","식은 커피 곁에 두고","이대로 잠시 머물러"]}
 ];
@@ -1120,7 +1120,11 @@ function sectionChords(mood,ki,type,bars,rng,isFinal){
 /* 섹션별 리듬: 코러스는 다운비트에 롱톤, 프리코러스는 잘게 쪼갠다 */
 function sectionRhythm(mood,type,rng){
   var r=pick(rng,mood.rhythm).slice();
-  if(type==="chorus"&&r.length>2){r.splice(0,2,r[0]+r[1]);}
+  if(type==="chorus"&&r.length>2){
+    r.splice(0,2,r[0]+r[1]);
+    /* 코러스가 벌스보다 "길게 뻗는" 질감이 되도록 한 번 더 묶는다 */
+    if(r.length>2)r.splice(r.length-2,2,r[r.length-2]+r[r.length-1]);
+  }
   if(type==="pre"){
     /* 프리코러스는 코러스로 밀어 올리는 구간이다 — 긴 음을 두 번 쪼갠다 */
     for(var pz=0;pz<2;pz++){
@@ -1323,9 +1327,11 @@ function splitDurs(budget,cnt,start,strict){
        ♪.♬ 라는 K-pop·발라드의 기본 리듬 세포가 여기서만 나온다.
        16분은 빠른 곡일수록 한 음절을 싣기 어려우니 더 누른다(이전엔 방향이 거꾸로였다). */
     function wt(v){
-      var six=(RHY_BPM>=110?0.7:0.3);   /* 120bpm 초과는 ND 에서 16분이 빠지므로 여기 안 온다 */
+      /* 빠른 곡일수록 16분을 눌렀더니 댄스가 16분을 가장 적게 쓰는 역설이 생겼다.
+         받침은 easeShortDiction 이 따로 막으므로 템포 벌점을 거둔다 */
+      var six=(RHY_BPM>=126?0.15:(RHY_BPM>=110?0.4:0.3));
       return Math.abs(v-want)-(v===4?0.4:0)+(v===3?0.25:0)+(v===1?six:0)
-        -((p%4===2&&v>=4)?(RHY_BPM>120?1.1:0.45):0)
+        -((p%4===2&&v>=4)?(RHY_BPM>120?0.5:0.45):0)
         -((p%2===0&&p%4!==0&&v===6)?(RHY_BPM>120?0.6:0):0);
     }
     var cand=ND.slice().sort(function(a,b){return wt(a)-wt(b)||(b-a);});
@@ -1524,6 +1530,8 @@ function repairCount(pb,target,ki,chs){
     }
     if(bb<0)break;
     var a=pb[bb],h=(md>=6)?Math.floor(md/2):2,base=a[ii].midi;
+    /* splitDurs 와 같은 하한 — 빠른 곡에서 6단위를 (3,3) 으로 쪼개면 16분이 새로 생긴다 */
+    if(60/RHY_BPM/4<0.105&&(h%2))h=evenD(h-1)||2;
     h=snapND(h);if(h>=md)h=2;
     var alt=nearestScale(base+2,ki),ch3=chOf(bb);
     if(ch3)alt=snapToChord(alt,ch3,2);
@@ -1833,7 +1841,7 @@ function breathGuard(song,maxSec){
          후렴 최대 무중단이 이미 4.04초 이하라 여유가 있다 */
       var inCho=false;
       for(var ci=0;ci<chain.length;ci++)if(choBar.indexOf(chain[ci].bar)>=0){inCho=true;break;}
-      var hard=run>Math.round(lim*(inCho?1.12:1.08));
+      var hard=run>Math.round(lim*(inCho?1.16:1.08));
       for(var pass=0;pass<3&&!changed;pass++){
       if(pass===2&&!hard)break;
       for(var q=chain.length-1;q>=0&&!changed;q--){
@@ -1996,8 +2004,8 @@ function chorusPeak(song,ki){
   }
   if(!best)return;
   var chord=song.sections[0]&&sec.chords?sec.chords[bi]:null;
-  var want=vmax+2,got=0;
-  for(var m2=want;m2<=Math.min(moodCeil(song),vmax+7);m2++){
+  var want=vmax+1+((song.mood&&song.mood.lift)||0)*2,got=0;
+  for(var m2=want;m2<=Math.min(moodCeil(song)-2,vmax+7);m2++){
     if(chord&&chord.tones.indexOf(((m2%12)+12)%12)<0)continue;
     if(!chord&&nearestScale(m2,ki)!==m2)continue;
     got=m2;break;
@@ -2226,6 +2234,14 @@ function clampSpan(song,ki){
   });
 }
 /* 마지막 음은 반드시 으뜸음으로 — clampSpan 이 종지를 b7 로 밀어내는 것을 되돌린다 */
+/* 끝음은 으뜸음이 기본이지만, 재즈·시티팝 계열은 3도/5도로 열어 두는 게 관용이다.
+   seed 해시로 고르므로 ?r= 링크가 같은 종지를 그대로 재현한다 */
+var END_DEG={citypop:[0,2,4],lofi:[0,2,4],saebyeok:[0,4],ballad:[0,4]};
+function endDegree(song){
+  var c=END_DEG[song&&song.mood&&song.mood.id];
+  if(!c||!c.length)return 0;
+  return c[fnv("cad|"+(song.seed||"")+"|"+song.mood.id)%c.length];
+}
 function fixCadence(song){
   var ms=[],last=null,prevN=null;
   eachNote(song,function(n){ms.push(n.midi);prevN=last;last=n;});
@@ -2235,16 +2251,24 @@ function fixCadence(song){
   var med=ms[Math.floor(ms.length/2)];
   /* clampSpan 과 같은 창 안에서 으뜸음을 고른다 — 종지가 음역 폭을 깨뜨리던 문제 */
   var lo=Math.max(RANGE_LO,med-Math.floor(MAX_SPAN/2)), hi=Math.min(RANGE_HI,med+Math.ceil(MAX_SPAN/2));
-  var ton=tonicMidi(song.ki),best=null,m;
-  while(ton-12>=RANGE_LO)ton-=12;
-  for(m=ton;m<=hi;m+=12){
-    if(m<lo)continue;
-    if(best===null||Math.abs(m-ref)<Math.abs(best-ref))best=m;
+  var base=tonicMidi(song.ki),m;
+  /* 자리(3도/5도)를 고르되, 직전 음에서 9반음 넘게 뛰면 으뜸음으로 되돌린다 —
+     종지를 다양화하면서 끝 도약이 커지던 문제(실측 최대 10→12반음)를 막는다 */
+  function pickDeg(di){
+    var ton=base+(song.ki.scale[di]||0),b=null;
+    while(ton-12>=RANGE_LO)ton-=12;
+    for(m=ton;m<=hi;m+=12){if(m<lo)continue;if(b===null||Math.abs(m-ref)<Math.abs(b-ref))b=m;}
+    if(b===null)for(m=ton;m<=RANGE_HI;m+=12){if(m<RANGE_LO)continue;if(b===null||Math.abs(m-ref)<Math.abs(b-ref))b=m;}
+    return b;
   }
-  if(best===null)for(m=ton;m<=RANGE_HI;m+=12){
-    if(m<RANGE_LO)continue;
-    if(best===null||Math.abs(m-ref)<Math.abs(best-ref))best=m;
+  var cands=[endDegree(song),0],best=null,fb=null,ci;
+  for(ci=0;ci<cands.length;ci++){
+    var v=pickDeg(cands[ci]);
+    if(v===null)continue;
+    if(fb===null||Math.abs(v-ref)<Math.abs(fb-ref))fb=v;
+    if(Math.abs(v-ref)<=9){best=v;break;}
   }
+  if(best===null)best=fb;
   if(best!==null)last.midi=best;
 }
 /* 코러스가 벌스보다 충분히 올라가지 않으면 코러스만 들어 올린다 */
@@ -2269,7 +2293,7 @@ function liftChorus(song,ki){
   var vm=0,cm=0;
   for(i=0;i<vs.length;i++)vm+=med(vs[i]); vm/=vs.length;
   for(i=0;i<cs.length;i++)cm+=med(cs[i]); cm/=cs.length;
-  var need=Math.round(vm+3-cm);
+  var need=Math.round(vm+3+((song.mood&&song.mood.lift)||0)*2-cm);
   if(need<=0)return;
   function each(fn){for(var a=0;a<cs.length;a++)for(var b=0;b<cs[a].bars.length;b++)
     for(var c=0;c<cs[a].bars[b].length;c++){var n=cs[a].bars[b][c];if(!n.rest)fn(n);}}
@@ -2525,7 +2549,9 @@ function buildSong(o){
     snapLongNotes(song);smoothJoin(song);
     /* 선율을 건드리는 단계가 끝난 뒤 후렴 반복을 맞추고, 숨자리는 그 뒤에 양쪽에 똑같이 넣는다 */
     syncChorusRepeat(song);syncChorusSections(song);
-    breathGuard(song,3.8);
+    /* 64bpm 에서 한 마디가 3.75초라 3.8초 상한이면 거의 매 마디가 끊긴다 —
+       느린 곡은 두 마디 프레이즈가 살도록 상한을 늘린다 */
+    breathGuard(song,Math.max(3.8,Math.min(6.0,(240/o.bpm)*1.55)));
     /* 숨자리·도약 보정이 긴 음을 다시 화음 밖으로 밀어내므로 마지막에 한 번 더 */
     snapLongNotes(song);syncChorusRepeat(song);syncChorusSections(song);
     /* 음가가 다 확정된 뒤 딕션을 한 번 더 — 숨자리·롱톤 보정으로 긴 음에 닫힌 모음이 새로 걸린다 */
@@ -2547,9 +2573,16 @@ function buildSong(o){
     /* 음고 보정이 끝난 맨 마지막에 딕션을 한 번 더 — 5도 안으로만 내리므로 도약을 만들지 않는다 */
     easeDictionAll(song,ki);
     easeShortDiction(song);
+    endOnStable(song,ki,sw2.lo,sw2.hi);
     syncChorusRepeat(song);syncChorusSections(song);
     /* 훅 복제가 도약 보정을 되돌린다 — 복제 마디는 못 건드리니 이음매 앞쪽을 고친다 */
     fixRepeatJoin(song,ki,sw2.lo,sw2.hi);
+    /* 정점·이음매·딕션 보정이 긴 음을 다시 화음 밖으로 밀어낸다 —
+       음고 단계의 맨 끝에 한 번 더 붙이고, 그 뒤 도약·훅 복제·종지를 다시 맞춘다 */
+    snapLongNotes(song);
+    smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
+    syncChorusRepeat(song);syncChorusSections(song);
+    fixCadence(song);
     attachSyllables(song);
   }
   if(genPc!==targetPc)shiftToKey(song,targetPc,mode);
@@ -2578,8 +2611,9 @@ function shiftToKey(song,pc,mode){
    (전조로 ±6반음 움직인 뒤 선언 음역 밖 음이 나오던 문제 — keyPc=5 에서 최고음 Bb5 가 나왔다) */
 function fitRange(song){
   var guard=0;
-  /* 옥타브를 접을 때 무드 천장을 목표로 삼는다 — 안 그러면 전조 뒤 발라드와 댄스가 다시 같은 높이가 된다 */
-  var top=Math.min(RANGE_HI,moodCeil(song)+1);
+  /* 옥타브 접기는 r.lo-12>=RANGE_LO 를 요구해 실측 14.8% 에서만 발동한다 —
+     천장 맞추기는 음계 단위 하강으로 따로 한다(아래) */
+  var top=RANGE_HI;
   while(guard++<4){
     var r=songRange(song);
     if(r.hi>top&&r.lo-12>=RANGE_LO){eachNote(song,function(n){n.midi-=12;});continue;}
@@ -2596,6 +2630,11 @@ function fitRange(song){
   /* 반음 단위로 곡 전체를 옮기면 조표·코드는 그대로인데 멜로디만 다른 조성이 된다
      (12차에 그렇게 했다가 keyPc=4 에서 음표의 55% 가 조표 밖으로 나갔다).
      음정류를 보존하는 옥타브 접기 + 음계 안 보정만 쓴다. */
+  /* 무드 천장을 여기서 "음계 단위 하강"으로 맞추려 했으나(실측) n.midi-=k 뒤
+     nearestScale 스냅은 음마다 이동량이 달라 음정류를 깨뜨린다 — 으뜸음 종지
+     100%→87.8%, 10반음 이상 도약 2→97, 최대 동음 런 4→12 로 모두 퇴행했다.
+     천장은 생성 단계(melodyLine / chorusPeak / finalLift)에서만 제한하고,
+     여기서는 음정류를 보존하는 옥타브 접기만 쓴다. */
   var r3=songRange(song);
   if(r3.hi>RANGE_HI||r3.lo<RANGE_LO){
     eachNote(song,function(n){
@@ -2677,7 +2716,8 @@ function easeShortDiction(song){
           if(bar[i].rest)continue;
           var ch=chars[ci], idx=ci; ci++;
           if(bar[i].dur!==1)continue;
-          if(!(starts[idx]||hardCh(ch)))continue;
+          /* ㄴㄹㅁㅇ 받침("사랑"의 랑, "지금"의 금)도 16분에는 못 싣는다 — 받침 전체를 대상으로 */
+          if(!(starts[idx]||hardCh(ch)||bat(ch)>0))continue;
           /* 앞이 점8분이면 (3,1) → (2,2) 로 고른다 — 문제 글자가 16분 대신 8분을 받는다.
              (1,3) 은 durOk 상 적을 수 없는 음형이라 조건이 영원히 거짓이었다 */
           var pr=(i>0&&!bar[i-1].rest)?bar[i-1]:null;
@@ -2785,6 +2825,35 @@ function syncVersePhrase(song,ki,lo,hi){
     }
     if(!ok)continue;
     for(i=0;i<Z.length;i++)Z[i].midi=cand[i];
+  }
+}
+/* 프레이즈가 이끈음(7도)에서 끊기면 노래가 공중에 뜬다 — 1도·5도·6도 쪽으로 당긴다 */
+function endOnStable(song,ki,lo,hi){
+  var deg7=((ki.pc+ki.scale[6])%12+12)%12;
+  /* 곡의 맨 끝음은 fixCadence 의 몫(으뜸음) — 여기서 건드리면 종지가 깨진다 */
+  var tail=null,ta,tb;
+  for(ta=0;ta<song.sections.length;ta++)for(tb=0;tb<song.sections[ta].bars.length;tb++)
+    for(var tc=0;tc<song.sections[ta].bars[tb].length;tc++)
+      if(!song.sections[ta].bars[tb][tc].rest)tail=song.sections[ta].bars[tb][tc];
+  for(var si=0;si<song.sections.length;si++){
+    var sec=song.sections[si];
+    for(var li=0;li<sec.lines.length;li++){
+      var ln=sec.lines[li],last=null,prev=null;
+      for(var k=0;k<ln.bars;k++){
+        var bar=sec.bars[ln.bar+k];if(!bar)continue;
+        for(var i=0;i<bar.length;i++){if(bar[i].rest)continue;prev=last;last=bar[i];}
+      }
+      if(!last||last===tail)continue;
+      if(((last.midi%12)+12)%12!==deg7)continue;
+      var cands=[last.midi+1,last.midi-2,last.midi-4];
+      for(var c=0;c<cands.length;c++){
+        var v=nearestScale(cands[c],ki);
+        if(v<lo||v>hi)continue;
+        if(((v%12)+12)%12===deg7)continue;
+        if(prev&&Math.abs(v-prev.midi)>9)continue;
+        last.midi=v;break;
+      }
+    }
   }
 }
 /* 라스트 코러스의 "마지막 한 방" — 훅(1·3행)은 1차와 똑같이 둬야 하므로,
@@ -3177,7 +3246,7 @@ function renderStaff(bars,ki,perSys,maxW,oct8,bpm){
         var extra=Math.max(0,avail-msum*sc), acc=0;
         for(k=0;k<n;k++){pos[k]=bx+14+acc;acc+=mins[k]*sc+extra*(ws[k]/tw);}
         /* 가사가 붙는 음끼리는 글자폭만큼은 벌려 둔다 — 비례 배분만으로는 겹친다 */
-        var MING=11;
+        var MING=9;
         for(k=1;k<n;k++)if(pos[k]-pos[k-1]<MING)pos[k]=pos[k-1]+MING;
         var over=pos[n-1]-(bx+14+avail-6);
         if(over>0)for(k=0;k<n;k++)pos[k]-=over*(k/(n-1||1));
@@ -3833,6 +3902,8 @@ function escHtml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").
 function stateObj(song){
   var o={v:1,m:song.mood.id,k:(song.baseKeyPc===undefined?song.ki.pc:song.baseKeyPc),d:song.ki.mode,b:song.bpm,f:song.form,s:song.seed};
   if(song.voice&&song.voice!=="alto")o.vo=song.voice;
+  /* "고른 키가 이긴다" 보정은 song.trans 에 안 남으므로 플래그로 실어 복원 때 다시 건다 */
+  if(state.userKey&&state.keyPc>=0)o.uk=1;
   if(song.trans)o.tr=song.trans;
   if(song.vbase)o.vb=song.vbase;
   if(song.kw)o.w=song.kw;
@@ -3857,6 +3928,20 @@ function keepUserKey(song,vid){
     if(r.hi>v.hi&&r.lo-12>=v.lo){eachNote(song,function(n){n.midi-=12;});continue;}
     if(r.lo<v.lo&&r.hi+12<=v.hi){eachNote(song,function(n){n.midi+=12;});continue;}
     break;
+  }
+  /* 옥타브 통째 접기로 안 되는 경우(음폭이 창보다 넓을 때) 음별로 접어 넣는다 — applyVoice 와 같은 처리 */
+  var rr=songRange(song);
+  if(rr.lo<v.lo||rr.hi>v.hi){
+    eachNote(song,function(n){
+      while(n.midi>v.hi)n.midi-=12;
+      while(n.midi<v.lo)n.midi+=12;
+      if(n.midi>v.hi||n.midi<v.lo)n.midi=scaleInRange(n.midi,song.ki,v.lo,v.hi);
+    });
+    var mgv=mirrorGroups(song);
+    smoothLeaps(song,song.ki,v.lo,v.hi,mgv);
+    syncChorusRepeat(song);syncChorusSections(song);
+    fixRepeatJoin(song,song.ki,v.lo,v.hi);
+    fixCadence(song);
   }
   song.range=songRange(song);
   attachSyllables(song);
@@ -3975,7 +4060,7 @@ $("upBtn").addEventListener("click",function(){
   if(transposeSong(current,1,{base:current.vbase||0,lo:voiceGuard(current).lo,hi:voiceGuard(current).hi})){attachSyllables(current);refreshResult();toast("반음 높였어요 · "+current.ki.label);}
   else toast("더 높일 수 없어요");
 });
-var VOICES=[{id:"alto",name:"여성 (기본)",t:67,lo:55,hi:79},{id:"sop",name:"여성 높게",t:70,lo:58,hi:81},
+var VOICES=[{id:"alto",name:"여성 (기본)",t:66,lo:55,hi:77},{id:"sop",name:"여성 높게",t:70,lo:58,hi:81},
             {id:"ten",name:"남성",t:62,lo:49,hi:74},{id:"bar",name:"남성 낮게",t:59,lo:46,hi:71}];
 (function(){
   [$("voiceSel"),$("voiceSel2"),$("voiceSel3")].forEach(function(sel){
@@ -4461,6 +4546,8 @@ $("saveBtn").addEventListener("click",function(){
   if(typeof d.vo==="string"&&MOOD_BY_ID){
     for(var vq=0;vq<VOICES.length;vq++)if(VOICES[vq].id===d.vo){sg.voice=d.vo;state.voice=d.vo;}
   }
+  /* 보낸 사람이 키를 직접 골랐으면 받는 쪽에서도 같은 키로 복원해야 "링크 = 결과" 가 성립한다 */
+  if(d.uk){state.userKey=true;state.keyPc=keyPc;keepUserKey(sg,sg.voice||"alto");}
   renderSong(sg);
 
   $("inboundMsg").textContent='🎼 「'+sg.title+'」 도착했어요';
