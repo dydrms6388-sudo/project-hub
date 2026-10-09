@@ -1090,7 +1090,16 @@ function sectionChords(mood,ki,type,bars,rng,isFinal){
   }
   if(isFinal&&bars>=2){
     out[bars-1]=realizeChord(ki.mode==="minor"?"i":"I",ki);
-    out[bars-2]=realizeChord(ki.mode==="minor"?"V7":"V",ki);
+    /* 종지가 전 곡 V→I 한 가지였다 — 변격(IV→I)과 ii-V-I 을 섞는다 */
+    var soft=/^(ballad|ibyeol|saebyeok|lofi)$/.test(mood.id), rr=rng();
+    if(bars>=3&&rr<0.22){
+      out[bars-2]=realizeChord(ki.mode==="minor"?"V7":"V",ki);
+      out[bars-3]=realizeChord(ki.mode==="minor"?"iidim":"ii",ki)||out[bars-3];
+    }else if(soft&&rr<0.55){
+      out[bars-2]=realizeChord(ki.mode==="minor"?"iv":"IV",ki)||realizeChord("V",ki);
+    }else{
+      out[bars-2]=realizeChord(ki.mode==="minor"?"V7":"V",ki);
+    }
   }
   return out;
 }
@@ -1099,8 +1108,11 @@ function sectionRhythm(mood,type,rng){
   var r=pick(rng,mood.rhythm).slice();
   if(type==="chorus"&&r.length>2){r.splice(0,2,r[0]+r[1]);}
   if(type==="pre"){
-    var mi=0;for(var i=1;i<r.length;i++)if(r[i]>r[mi])mi=i;
-    if(r[mi]>=4){var h=Math.floor(r[mi]/2);r.splice(mi,1,h,r[mi]-h);}
+    /* 프리코러스는 코러스로 밀어 올리는 구간이다 — 긴 음을 두 번 쪼갠다 */
+    for(var pz=0;pz<2;pz++){
+      var mi=0;for(var i=1;i<r.length;i++)if(r[i]>r[mi])mi=i;
+      if(r[mi]>=4){var h=Math.floor(r[mi]/2);r.splice(mi,1,h,r[mi]-h);}
+    }
   }
   return r;
 }
@@ -1409,6 +1421,7 @@ function phrasePlan(md,rng,ph,nph,type){
   /* 롱톤은 마디 단위가 아니라 "몇 초를 끄는가"로 정해야 빠른 곡에서도 프레이즈 끝이 받쳐진다 */
   var spu=60/md.bpm/4;
   var Lsec=isLast?2.2:[1.3,1.0,1.6,1.0][ph%4];
+  if(type==="pre")Lsec*=0.7;        /* 프리코러스는 끝을 덜 끈다 — 코러스로 이어지는 느낌 */
   var Lr=Lsec/spu, L=4;
   if(isLast)L=snapND(Math.round(Lr));                 /* 섹션 끝은 올려 잡는다 */
   else{                                                /* 그 외는 가장 가까운 음가 (내림만 하면 늘 짧아진다) */
@@ -1451,6 +1464,7 @@ function phraseCap(pb,pl){
   else cap=Math.max(2,Math.floor((16-pl.rest-pl.L)/2)+1);
   /* 후렴은 음절을 적게 실어야 한 음 한 음이 길어진다 — 훅이 벌스보다 빽빽하면 안 터진다 */
   if(pl.type==="chorus")cap=Math.min(cap,pb.length>1?7:4);
+  if(pl.type==="pre")cap=cap+1;     /* 음절을 한 자 더 실어 밀도를 올린다 */
   return cap;
 }
 /* 가사의 어절이 시작되는 음표 인덱스 목록 */
@@ -2409,7 +2423,11 @@ function buildSong(o){
         var okAddr=pool.filter(function(h){return !addrClash(h,kw);});
         if(okAddr.length)pool=okAddr;
         if(kwHook.length)pool=kwHook.filter(function(h){return !addrClash(h,kw);}).concat(pool);
-        var scored=pool.map(function(h){return {h:h,k:dictionScore(h,flatNotes),d:Math.abs(syl(h)-cnt)};});
+        /* 훅이 길면 matchCount 가 음표를 그만큼 늘려 후렴이 벌스보다 빽빽해진다 — 짧은 훅에 가점 */
+        var scored=pool.map(function(h){
+          var n2=syl(h);
+          return {h:h,k:dictionScore(h,flatNotes)-(n2>7?(n2-7)*6:0),d:Math.abs(n2-cnt)+(n2>7?1:0)};
+        });
         scored.sort(function(x,y){return x.d-y.d||y.k-x.k;});
         var lim=Math.max(2,scored[0].d+1);
         var near=scored.filter(function(x){return x.d<=lim;});
@@ -2864,10 +2882,18 @@ function noTritone(cand,prev,ki,lo,hi){
 /* 9반음 넘는 도약이 남으면 옥타브를 접어 이어 준다 */
 /* 9반음 넘는 도약은 옥타브를 접고, 그래도 크면 음계 안에서 5도로 줄인다 */
 function smoothLeaps(song,ki,lo,hi){
-  var prev=null;ki=ki||song.ki;
+  var prev=null,pp=null;ki=ki||song.ki;
   lo=(lo===undefined)?RANGE_LO:lo; hi=(hi===undefined)?RANGE_HI:hi;
   for(var i=0;i<song.flat.length;i++)for(var j=0;j<song.flat[i].notes.length;j++){
     var n=song.flat[i].notes[j];if(n.rest)continue;
+    /* 증4도는 음계 안이어도 부르기 가장 어렵다 — 긴 음(4단위 이상)에서만 비껴 간다 */
+    if(prev!==null&&Math.abs(n.midi-prev)===6&&n.dur>=4)
+      n.midi=noTritone(n.midi,prev,ki,lo,hi);
+    /* 증4도를 뛴 다음 음은 2도 안으로 해결해야 한다 — 공중에 뜬 채 또 뛰면 못 부른다 */
+    if(pp!==null&&prev!==null&&Math.abs(prev-pp)===6&&Math.abs(n.midi-prev)>2){
+      var want=prev+((n.midi>prev)?2:-2), fix=nearestScale(want,ki);
+      if(fix>=lo&&fix<=hi&&Math.abs(fix-prev)<=2)n.midi=fix;
+    }
     if(prev!==null&&Math.abs(n.midi-prev)>9){
       var f=n.midi+(n.midi>prev?-12:12);
       if(f>=lo&&f<=hi&&Math.abs(f-prev)<Math.abs(n.midi-prev))n.midi=f;
@@ -2876,7 +2902,7 @@ function smoothLeaps(song,ki,lo,hi){
         if(g>=lo&&g<=hi)n.midi=noTritone(g,prev,ki,lo,hi);
       }
     }
-    prev=n.midi;
+    pp=prev;prev=n.midi;
   }
 }
 function songRange(song){
