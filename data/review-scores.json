@@ -2600,7 +2600,7 @@
    "source": "project-hub/songlab",
    "live": "https://tomatoeggcat.com/songlab/",
    "status": "reviewing",
-   "loops": 13,
+   "loops": 17,
    "note": "소유자 요청으로 게이트 90. 도메인 페르소나 4인(작곡가·작사가·가수·일반 사용자) 루프.",
    "axes": {
     "functional": 92,
@@ -2609,15 +2609,15 @@
     "content": 78,
     "realValue": 82
    },
-   "reviewerAvg": 79,
+   "reviewerAvg": 81,
    "userScores": [
-    66,
-    81,
-    87,
-    81
+    67,
+    85,
+    89,
+    83
    ],
-   "userAvg": 78.75,
-   "overall": 79,
+   "userAvg": 81.0,
+   "overall": 81,
    "findings": [
     "10차에 고쳤다고 보고한 RHY_BPM(빠른 곡 16분 완화)은 splitDurs 출력이 bpm 70/170 에서 바이트 단위로 동일 — 효과 0. 섹션 끝음 '빠르기 연동' 도 분포가 60/100/150/170bpm 에서 완전히 같아 효과 0이었다.",
     "점8분음표가 194,442음 중 0개 — splitDurs 의 페널티 1.2 가 다른 항을 압도해 ♪.♬ 리듬 세포가 통째로 사라지고 8분음표가 62.6% 를 차지했다 (11차에 851개 복원, 8분 50.2%).",
@@ -2670,9 +2670,13 @@
     {
      "loop": 10,
      "overall": 79
+    },
+    {
+     "loop": 11,
+     "overall": 81
     }
    ],
-   "reviewedAt": "2026-10-08"
+   "reviewedAt": "2026-10-09"
   }
  ]
 }
