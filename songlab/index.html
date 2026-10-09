@@ -134,6 +134,8 @@ h2.sec{font-size:18px;margin:26px 0 10px;color:var(--acc2)}
 .schord{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:800;color:#67e8f9;white-space:pre;overflow-x:auto}
 .slyric{color:#f1f1f1;word-break:keep-all}
 .slyric .sy{font-size:11px;color:#9ca3af;margin-left:6px}
+/* 계이름 — 가사 음절과 1:1 로 대응하므로 가사 바로 아래 붙인다 */
+.ssol{font-size:12.5px;color:#a8a0d4;letter-spacing:.12em;margin-top:2px}
 .progline{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:#ddd6fe;background:#131313;border:1px solid #262626;border-radius:12px;padding:14px;overflow-x:auto;white-space:pre}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
 .acts .full{grid-column:1/-1}
@@ -205,6 +207,7 @@ details.adv[open]>summary:before{content:"▾ "}
   <div class="row">
     <label for="kwInput">가사에 넣고 싶은 단어 (선택)</label>
     <input type="text" id="kwInput" maxlength="12" placeholder="예: 바다, 첫눈, 퇴근길" autocomplete="off" />
+    <p class="hint" style="margin-top:4px">이 단어는 제목·가사에 들어가고 <b>공유 링크에도 함께 담겨요</b> — 실명은 넣지 마세요.</p>
   </div>
 
   <div class="row">
@@ -214,9 +217,9 @@ details.adv[open]>summary:before{content:"▾ "}
   <div class="row">
     <label>곡 길이</label>
     <div class="lenchips" id="lenChips" role="group" aria-label="곡 길이">
-      <button type="button" data-form="0">짧게<small>12마디</small></button>
-      <button type="button" data-form="1" class="on">보통<small>20마디</small></button>
-      <button type="button" data-form="2">길게<small>40마디 · 2절</small></button>
+      <button type="button" data-form="0" aria-pressed="false">짧게<small>12마디</small></button>
+      <button type="button" data-form="1" class="on" aria-pressed="true">보통<small>20마디</small></button>
+      <button type="button" data-form="2" aria-pressed="false">길게<small>40마디 · 2절</small></button>
     </div>
   </div>
   <button class="cta" id="makeBtn" type="button">🎼 이 감성으로 한 곡 만들기</button>
@@ -229,7 +232,7 @@ details.adv[open]>summary:before{content:"▾ "}
         <select id="keySel"></select>
       </div>
       <div>
-        <label for="formSel">곡 길이</label>
+        <label for="formSel">곡 구성 <span class="hint" style="font-weight:600">위 칩과 같은 설정이에요</span></label>
         <select id="formSel">
           <option value="0">짧게 · 12마디</option>
           <option value="1" selected>보통 · 20마디</option>
@@ -288,7 +291,8 @@ details.adv[open]>summary:before{content:"▾ "}
   </div>
   <div class="row">
     <label for="kwInput2">가사에 넣고 싶은 단어 (선택)</label>
-    <input type="text" id="kwInput2" maxlength="12" placeholder="예: 새벽, 너의 이름" autocomplete="off" />
+    <input type="text" id="kwInput2" maxlength="12" placeholder="예: 새벽, 바다, 첫눈" autocomplete="off" />
+    <p class="hint" style="margin-top:4px">이 단어는 제목·가사에 들어가고 <b>공유 링크에도 함께 담겨요</b> — 실명은 넣지 마세요.</p>
   </div>
   <div class="row">
     <label for="voiceSel3">누가 부를까요? <span class="hint" style="font-weight:600">고르면 키가 자동으로 맞춰져요</span></label>
@@ -325,7 +329,7 @@ details.adv[open]>summary:before{content:"▾ "}
       <button id="playBtn" type="button">▶ 재생</button>
       <span class="barpos" id="barPos">0 / 0 마디</span>
     </div>
-    <p class="playnote">🔇 이 곡엔 노래 목소리가 없어요. 반주에 맞춰 가사를 직접 불러 보세요.</p>
+    <p class="playnote">🎹 멜로디는 악기 소리로 들려드려요(사람 목소리 합성은 아직 없어요). 가사 아래 <b>계이름</b>을 보면서 따라 불러 보세요 — 음절 하나에 음 하나입니다.</p>
     <p class="playnote" style="margin:10px 0 4px"><b>누가 부를까요?</b> 고르면 키가 자동으로 맞춰져요.</p>
     <div class="tools">
       <button class="mini" id="downBtn" type="button">♭ 낮추기</button>
@@ -2353,7 +2357,9 @@ function buildSong(o){
   var genPc=(o.hum&&o.hum.length)?targetPc:0;
   var ki=keyInfo(genPc,mode);
   /* 조성·빠르기는 시드에서 제외 — 키를 바꿔도 같은 곡이 유지된다 */
-  var seedStr=[o.moodId,o.form,o.kw||"",o.seed,(o.hum?o.hum.length:0)].join("|");
+  /* 폼(곡 길이)을 시드에 섞으면 "좀 더 길게" 를 눌렀을 때 제목·가사가 통째로 남의
+   곡이 된다 — 길이는 같은 곡을 더 전개하는 것이어야 한다 */
+  var seedStr=[o.moodId,o.kw||"",o.seed,(o.hum?o.hum.length:0)].join("|");
   var rng=rngFrom(fnv(seedStr));
   /* 가사는 멜로디와 난수 스트림을 분리한다 — 키만 바꿔도 가사가 통째로 바뀌던 문제 */
   var lrng=rngFrom(fnv(seedStr+"|lyric"));
@@ -3813,8 +3819,11 @@ function makeChips(box,selId,onPick){
     var b=document.createElement("button");
     b.type="button";b.className="chip"+(m.id===selId?" on":"");
     b.textContent=m.emoji+" "+m.name;b.style.width="auto";b.setAttribute("data-id",m.id);
+    /* 4.1.2 — 눌린 상태를 보조기기에도 알린다 (class="on" 만으로는 안 읽힌다) */
+    b.setAttribute("aria-pressed",m.id===selId?"true":"false");
     b.addEventListener("click",function(){
-      Array.prototype.forEach.call(box.children,function(c){c.classList.toggle("on",c===b);});
+      Array.prototype.forEach.call(box.children,function(c){
+        var on=(c===b);c.classList.toggle("on",on);c.setAttribute("aria-pressed",on?"true":"false");});
       onPick(m.id);
     });
     box.appendChild(b);
@@ -3843,7 +3852,10 @@ $("keySel").addEventListener("change",function(){
 /* 곡 길이 칩 ↔ 세부설정 드롭다운을 양방향으로 묶는다 */
 function syncLenChips(v){
   var bs=document.querySelectorAll("#lenChips button");
-  for(var i=0;i<bs.length;i++)bs[i].classList.toggle("on",bs[i].getAttribute("data-form")===String(v));
+  for(var i=0;i<bs.length;i++){
+    var on=bs[i].getAttribute("data-form")===String(v);
+    bs[i].classList.toggle("on",on);bs[i].setAttribute("aria-pressed",on?"true":"false");
+  }
 }
 (function(){
   var bs=document.querySelectorAll("#lenChips button");
@@ -3859,6 +3871,8 @@ function syncLenChips(v){
 function switchTab(which){
   $("tabMood").classList.toggle("on",which==="mood");
   $("tabHum").classList.toggle("on",which==="hum");
+  $("tabMood").setAttribute("aria-selected",which==="mood"?"true":"false");
+  $("tabHum").setAttribute("aria-selected",which==="hum"?"true":"false");
   $("tabMood").setAttribute("aria-selected",which==="mood");
   $("tabHum").setAttribute("aria-selected",which==="hum");
   $("paneMood").classList.toggle("on",which==="mood");
@@ -3986,12 +4000,18 @@ function generateFromHum(){
      존재하지 않는 화음명이 나온다. 조성은 음높이(keyPc)만 반영한다 */
   var song=buildSong({moodId:state.humMood,keyPc:ki.pc,mode:MOOD_BY_ID[state.humMood].mode,bpm:hum.bpm,form:state.form,
     kw:$("kwInput2").value,seed:state.seed,hum:hum.notes,humChords:chords});
+  /* 성역 맞춤으로 조성이 옮겨지면 "내가 C로 불렀는데 왜 Ab?" 가 된다 — 라벨을 남긴다 */
+  var sungLabel=ki.label;
   applyVoice(song,state.voice||"alto");
+  song.humKeyLabel=(song.ki.label!==sungLabel)?sungLabel:"";
   renderSong(song);
   $("resultSec").scrollIntoView({behavior:smooth(),block:"start"});
 }
-$("makeBtn").addEventListener("click",function(){state.seed=1;state.kw=$("kwInput").value;generate();});
-$("humMakeBtn").addEventListener("click",function(){state.seed=1;generateFromHum();});
+/* 새로 만들 때마다 시드를 뽑는다 — 1 로 고정돼 있어 모든 신규 방문자가 글자까지
+   똑같은 첫 곡을 받았다. ?r= 복원 경로는 저장된 시드를 그대로 쓰므로 영향 없다 */
+function freshSeed(){return 1+(Math.random()*900000|0);}   /* 복원 측 clamp 상한 999999 와 맞춤 */
+$("makeBtn").addEventListener("click",function(){state.seed=freshSeed();state.kw=$("kwInput").value;generate();});
+$("humMakeBtn").addEventListener("click",function(){state.seed=freshSeed();generateFromHum();});
 $("againBtn").addEventListener("click",function(){
   state.seed++;
   if(current&&current.fromHum)generateFromHum();else generate();
@@ -4025,6 +4045,7 @@ function refreshResult(){
     "키 "+song.ki.label,
     "음역 "+noteLabel(song.range.lo,song.ki)+"–"+noteLabel(song.range.hi,song.ki)]
     .concat(song.fromHum?["🎤 내 허밍 빠르기에 맞췄어요"]:[])
+    .concat(song.humKeyLabel?["🎤 "+song.humKeyLabel+"로 부르셨지만 "+voiceName(song.voice)+" 음역에 맞춰 옮겼어요"]:[])
     .map(function(f){return '<span class="fact">'+f+"</span>";}).join("");
   $("progView").textContent=song.sections.map(function(s){
     return (s.label.padEnd?s.label.padEnd(7," "):s.label+"\t")+" "+chordRow(s.chords.map(function(c){return c.name;})," | ");
@@ -4046,8 +4067,17 @@ function refreshResult(){
           KO_SEC(sec.type,seen[sec.type],tot[sec.type])+"</div>";
     for(var j=0;j<sec.lines.length;j++){
       var ln=sec.lines[j];
+      /* 계이름을 가사 바로 아래에 — 음절 하나당 한 음이라 그대로 맞춰 읽힌다 */
+      var sol=[];
+      for(var sb=0;sb<ln.bars;sb++){
+        var fb=song.flat[secBase+ln.bar+sb];
+        if(!fb)continue;
+        for(var sn=0;sn<fb.notes.length;sn++)
+          if(!fb.notes[sn].rest)sol.push(solfa(fb.notes[sn].midi,song.ki));
+      }
       html+='<div class="sline" data-b="'+(secBase+ln.bar)+'" data-n="'+ln.bars+'"><div class="schord">'+escHtml(chordRow(ln.chords,"   |   "))+'</div>'+
-            '<div class="slyric">'+escHtml(ln.text)+'<span class="sy">'+syl(ln.text)+"음절</span></div></div>";
+            '<div class="slyric">'+escHtml(ln.text)+'<span class="sy">'+syl(ln.text)+"음절</span></div>"+
+            (sol.length?'<div class="ssol">'+escHtml(sol.join(" "))+"</div>":"")+"</div>";
     }
     html+="</div>";
     secBase+=sec.bars.length;
@@ -4063,6 +4093,10 @@ function refreshResult(){
     th.style.display="block";
   }else th.style.display="none";
   history.replaceState(null,"",location.pathname+"?r="+enc(stateObj(song)));
+}
+function voiceName(vid){
+  for(var i=0;i<VOICES.length;i++)if(VOICES[i].id===vid)return VOICES[i].name;
+  return VOICES[0].name;
 }
 function voiceGuard(song){
   var v=VOICES[0];
@@ -4519,7 +4553,9 @@ $("saveBtn").addEventListener("click",function(){
   var mode=(d.d==="minor")?"minor":"major";
   var bpm=clamp(parseInt(d.b,10)||110,60,170);
   var form=clamp(parseInt(d.f,10)||0,0,2);
-  var seed=clamp(parseInt(d.s,10)||1,1,9999);
+  /* 시드 상한은 freshSeed() 범위(1~900000)와 맞춰야 한다 — 9999 로 묶어 두었던 탓에
+     랜덤 시드를 도입하자 공유 링크 16/16 이 전부 다른 곡으로 복원됐다. 재뽑기 여유분 포함 */
+  var seed=clamp(parseInt(d.s,10)||1,1,999999);
   var kw=(typeof d.w==="string"&&/^[가-힣]{1,6}( [가-힣]{1,6})?$/.test(d.w))?d.w:"";
   var opts={moodId:d.m,keyPc:keyPc,mode:mode,bpm:bpm,form:form,kw:kw,seed:seed};
   if(Array.isArray(d.h)&&Array.isArray(d.c)&&d.h.length){
