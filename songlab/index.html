@@ -2780,6 +2780,22 @@ function buildSong(o){
 function shiftToKey(song,pc,mode){
   var d=((pc-song.ki.pc)%12+12)%12;
   if(d>6)d-=12;
+  /* 이조량을 d / d-12 / d+12 중에서 "곡 전체가 기보 음역 안에 들어오는" 값으로 고른다.
+     이걸 안 하면 fitRange 가 음을 하나씩 옥타브로 접는데, 음별 접기는 음정류를
+     보존하지 않아 멜로디가 조마다 달라졌다(실측 2,640쌍 중 31.1%, keyPc=4 는 67.5%).
+     평균 음폭 13.3반음에 창은 22반음이라 대개 해가 존재한다 */
+  (function(){
+    var r=songRange(song), best=null, c, i, cands=[d,d-12,d+12];
+    for(i=0;i<cands.length;i++){
+      c=cands[i];
+      var lo=r.lo+c, hi=r.hi+c;
+      var over=Math.max(0,hi-RANGE_HI)+Math.max(0,RANGE_LO-lo);
+      /* 창 안에 들어오는 후보끼리는 창 가운데에 가까운 쪽을 고른다 */
+      var cen=Math.abs((lo+hi)/2-(RANGE_LO+RANGE_HI)/2);
+      if(!best||over<best.over||(over===best.over&&cen<best.cen))best={d:c,over:over,cen:cen};
+    }
+    d=best.d;
+  })();
   if(d)eachNote(song,function(n){n.midi+=d;});
   song.ki=keyInfo(pc,mode);
   for(var s2=0;s2<song.sections.length;s2++){
@@ -2821,20 +2837,18 @@ function fitRange(song){
      100%→87.8%, 10반음 이상 도약 2→97, 최대 동음 런 4→12 로 모두 퇴행했다.
      천장은 생성 단계(melodyLine / chorusPeak / finalLift)에서만 제한하고,
      여기서는 음정류를 보존하는 옥타브 접기만 쓴다. */
+  /* 음별 옥타브 접기는 음정류를 보존하지 않는다 — 이웃 음이 안 접히면 그 음정이
+     12반음 바뀐다. 이것 때문에 같은 곡을 다른 키로 고르면 멜로디가 달라졌다
+     (실측 2,640쌍 중 31.1%, keyPc=4 는 67.5%). 곡 전체를 옥타브 단위로 옮기는
+     것만 남기고, 남는 1~3반음 초과는 덧줄로 기보한다(실측 덧줄 2줄 이하 99.4%). */
   var r3=songRange(song);
   if(r3.hi>RANGE_HI||r3.lo<RANGE_LO){
-    eachNote(song,function(n){
-      while(n.midi>RANGE_HI)n.midi-=12;
-      while(n.midi<RANGE_LO)n.midi+=12;
-      if(n.midi>RANGE_HI||n.midi<RANGE_LO)n.midi=scaleInRange(n.midi,song.ki,RANGE_LO,RANGE_HI);
-    });
-    var mg2=mirrorGroups(song);
-    breakUnison(song,song.ki);
-    smoothLeaps(song,song.ki,RANGE_LO,RANGE_HI,mg2);
-    smoothLeaps(song,song.ki,RANGE_LO,RANGE_HI,mg2);
-    syncChorusRepeat(song);syncChorusSections(song);
-    fixRepeatJoin(song,song.ki,RANGE_LO,RANGE_HI);
-    fixCadence(song);
+    var cand=[0,12,-12],bestC=0,bestOv=1e9,ci2;
+    for(ci2=0;ci2<cand.length;ci2++){
+      var ov=Math.max(0,r3.hi+cand[ci2]-RANGE_HI)+Math.max(0,RANGE_LO-(r3.lo+cand[ci2]));
+      if(ov<bestOv){bestOv=ov;bestC=cand[ci2];}
+    }
+    if(bestC)eachNote(song,function(n){n.midi+=bestC;});
   }
 }
 /* 각 마디의 음표에 가사 음절을 1:1로 붙인다 */
