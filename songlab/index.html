@@ -833,7 +833,7 @@ function addrClash(line,kw){
   if(PERSON_KW.test(kw))return /(그대|당신)/.test(line);   /* 사람 키워드 곡에 "그대" 가 끼어들지 않게 */
   return false;
 }
-function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw,kwState){
+function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw,kwState,exact){
   target=clamp(target,3,14);
   /* 키워드가 제목에만 남던 문제로 확률을 올렸더니 이번엔 템플릿이 전체 행의 27% 를 먹었다.
      코러스만 0.5 로 두고 벌스·브릿지는 되돌린다 */
@@ -892,6 +892,12 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw,kwS
   if(!alts.length){
     var sh=bank.short.filter(function(x){return !addrClash(x,kw);});
     return pick(rng,sh.length?sh:bank.short);
+  }
+  /* a-a' 프레이즈는 음절 수가 같아야 음표 수가 같아지고, 그래야 모티프 관계가
+     matchCount/repairCount 를 거쳐도 살아남는다 — 하드 제약으로 건다 */
+  if(exact){
+    var exOnly=alts.filter(function(x){return x.n===exact;});
+    if(exOnly.length)alts=exOnly;
   }
   /* 음절 차이 우선, 같으면 딕션 점수가 높은 후보 */
   alts.sort(function(x,y){return (x.d-y.d)||(y.k-x.k);});
@@ -2192,6 +2198,60 @@ function snapLongNotes(song){
     }
   }
 }
+/* a - a' 를 실제로 만든다. varyMotif 의 amt/shift 는 출력에 효과가 0 이었다 —
+   barMelody 가 마디마다 독립 생성하고 matchCount/balancePhrase/shapePhrase 가
+   윤곽을 덮어쓰기 때문이다(실측 프레이즈0↔1 음정 일치 0.094, 완전 동일 0%).
+   음절 수를 맞춘 홀수 프레이즈는 앞 프레이즈의 "음정 수열"을 그대로 받고
+   시작음만 자기 화음에 맞춘다. 코러스 AABA 가 이 기법으로 이미 100% 성공한다. */
+function mirrorPhrases(sec,ceil,ki){
+  if(sec.type!=="verse"&&sec.type!=="bridge")return;
+  for(var mp=1;mp<sec.lines.length;mp+=2){
+    var A=[],B=[],bq,nq;
+    for(bq=0;bq<sec.lines[mp-1].bars;bq++){
+      var ab=sec.bars[sec.lines[mp-1].bar+bq];
+      if(ab)for(nq=0;nq<ab.length;nq++)if(!ab[nq].rest)A.push(ab[nq]);
+    }
+    for(bq=0;bq<sec.lines[mp].bars;bq++){
+      var bb=sec.bars[sec.lines[mp].bar+bq];
+      if(bb)for(nq=0;nq<bb.length;nq++)if(!bb[nq].rest)B.push(bb[nq]);
+    }
+    /* 음절 수를 맞추지 못한 쌍(가사 뱅크에 같은 음절 줄이 없을 때)도 버리지 않는다 —
+       앞에서부터 겹치는 길이만큼 수열을 물려주면 머리 동기(motif head)는 살아난다 */
+    if(A.length<2||B.length<2||Math.abs(A.length-B.length)>2)continue;
+    var LN=Math.min(A.length,B.length);
+    /* 시작음은 자기 마디 화음 안에서, 원래 자리에서 가장 가깝게 고른다 */
+    var ch0=(sec.chords&&sec.chords[sec.lines[mp].bar])||(sec.chords&&sec.chords[0]);
+    var head=ch0?snapToChord(B[0].midi,ch0,3):B[0].midi;
+    var hi=ceil||RANGE_HI, degs=null;
+    /* 반음 단위로 옮기면 조성 밖 음이 쏟아진다(실측 nonScale 903 → 2,331) —
+       음계 "도수" 단위로 옮겨야 다이아토닉 윤곽이 그대로 남는다 */
+    if(!ki)continue;
+    var aDeg=[];
+    for(nq=0;nq<LN;nq++)aDeg.push(degNearest(A[nq].midi,ki));
+    /* 들어가는 음(앞 프레이즈 끝음)과 이어져야 한다 */
+    var entry=null;
+    var pbBar=sec.bars[sec.lines[mp].bar-1];
+    if(pbBar)for(nq=pbBar.length-1;nq>=0;nq--)if(!pbBar[nq].rest){entry=pbBar[nq].midi;break;}
+    /* 0 도수(= A 를 그대로 반복)를 가장 먼저 시도한다 — 코러스 AABA 와 같은 기법이고
+       음정이 한 치도 안 변하므로 a-a' 관계가 가장 또렷하다. 안 되면 가까운 도수부터 */
+    var offs=[0];
+    for(var oc=0;oc<3;oc++)offs.push(degNearest(head+[0,-12,12][oc],ki)-aDeg[0]);
+    for(var dz=-3;dz<=3;dz++)offs.push(dz);
+    for(var oi=0;oi<offs.length&&degs===null;oi++){
+      var dOff=offs[oi], mn=1e9, mx=-1e9, tmp=[];
+      for(nq=0;nq<LN;nq++){
+        var v2=degToMidi(aDeg[nq]+dOff,ki);
+        tmp.push(v2); if(v2<mn)mn=v2; if(v2>mx)mx=v2;
+      }
+      if(mn<RANGE_LO||mx>hi)continue;
+      if(entry!==null&&Math.abs(tmp[0]-entry)>9)continue;      /* 진입 도약 */
+      if(LN<B.length&&Math.abs(B[LN].midi-tmp[LN-1])>7)continue; /* 꼬리 이음매 */
+      degs=tmp;
+    }
+    if(degs===null)continue;
+    for(nq=0;nq<LN;nq++)B[nq].midi=degs[nq];
+  }
+}
 /* 코러스 1행과 3행은 같은 가사다 — 후처리가 두 복사본을 따로 건드려 선율이 갈라지는 것을 되돌린다 */
 function syncChorusRepeat(song){
   function notesOf(bar){var o=[];for(var i=0;i<bar.length;i++)if(!bar[i].rest)o.push(bar[i]);return o;}
@@ -2742,15 +2802,20 @@ function buildSong(o){
       }else if(type==="chorus"&&p===2&&hookText){
         text=hookText;                       /* 후렴 반복 */
       }else{
-        text=fitLine(cnt,lrng,bank,used,kwp,type,flatNotes,fillState,(kw&&type==="verse"&&p===1),kw,kwState);
+        /* 홀수 프레이즈(a')는 짝수 프레이즈(a)와 음절 수를 맞춘다 — 음표 수가 같아야
+           varyMotif 가 만든 a-a' 관계가 가사 맞춤 단계를 거쳐도 남는다.
+           프리코러스는 2행뿐이라 제외하고, 코러스는 이미 AABA 로 처리된다 */
+        var exSyl=(p%2===1&&(type==="verse"||type==="bridge")&&lines[p-1])?syl(lines[p-1].text):0;
+        text=fitLine(cnt,lrng,bank,used,kwp,type,flatNotes,fillState,(kw&&type==="verse"&&p===1),kw,kwState,exSyl);
       }
       /* 1차 선택으로 음절 수를 정해 음표를 확정한 뒤, 확정된 음표로 가사를 다시 고른다 */
       var pchs=[chords[p*2],chords[p*2+1]||chords[p*2]];
       matchCount(pb,syl(text),ki,pchs);
       if(!(type==="chorus"&&(p===0||p===2))){
         var fixed=pb[0].concat(pb[1]||[]).filter(function(x){return !x.rest;});
-        var re=fitLine(fixed.length,lrng,bank,used,kwp,type,fixed,fillState,(kw&&type==="verse"&&p===1),kw,kwState);
-        if(syl(re)===fixed.length&&dictionScore(re,fixed)>dictionScore(text,fixed))text=re;
+        var exSyl2=(p%2===1&&(type==="verse"||type==="bridge")&&lines[p-1])?syl(lines[p-1].text):0;
+        var re=fitLine(fixed.length,lrng,bank,used,kwp,type,fixed,fillState,(kw&&type==="verse"&&p===1),kw,kwState,exSyl2);
+        if(syl(re)===fixed.length&&(!exSyl2||syl(re)===exSyl2)&&dictionScore(re,fixed)>dictionScore(text,fixed))text=re;
       }
       var pl2=balancePhrase(pb,pl,text,ki,pchs);
       shapePhrase(pb,pl2,ki,pchs,text);
@@ -2760,6 +2825,12 @@ function buildSong(o){
       if(!(type==="chorus"&&p===2))used.push(text);
       lines.push({text:text,bar:p*2,bars:pb.length,chords:chordTextFor(pb.length,chords,p*2)});
     }
+    /* a - a' 를 실제로 만든다. varyMotif 의 amt/shift 는 출력에 효과가 0 이었다 —
+       barMelody 가 마디마다 독립 생성하고 matchCount/balancePhrase/shapePhrase 가
+       윤곽을 덮어쓰기 때문이다(실측 프레이즈0↔1 음정 일치 0.094, 완전 동일 0%).
+       음절 수를 맞춘 홀수 프레이즈는 앞 프레이즈의 "음정 수열"을 그대로 받고
+       시작음만 자기 화음에 맞춘다. 코러스 AABA 가 이 기법으로 이미 100% 성공한다. */
+    mirrorPhrases({type:type,chords:chords,bars:barsOut,lines:lines},moodCeilId(mood&&mood.id),ki);
     var sec={type:type,label:SEC_LABEL[type],chords:chords,bars:barsOut,lines:lines};
     if(type==="chorus"&&!chorusCache)chorusCache=sec;
     sections.push(sec);
@@ -2827,6 +2898,9 @@ function buildSong(o){
     /* 박머리 스냅은 음고를 움직여 도약을 새로 만든다(실측 최대 9→11반음) —
        뒤에 도약 보정을 두 번 걸고 동음 런도 다시 본다 */
     snapBeats(song);
+    /* 뒤 단계들(정점·도약·딕션·음폭)이 a-a' 수열을 흔들어 놓는다 — 음고 단계
+       끝에서 다시 걸어야 남는다. snapLongNotes 를 끝에 한 번 더 거는 것과 같은 이유 */
+    for(var mq=0;mq<song.sections.length;mq++)mirrorPhrases(song.sections[mq],moodCeil(song),ki);
     breakUnison(song,ki);
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
