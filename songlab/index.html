@@ -4,7 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,follow" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<!--theme-sync--><script>try{var t=localStorage.getItem("tec-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script><!--/theme-sync-->
 <title>AI 작사작곡 스튜디오 — 무드 고르면 멜로디·코드·가사 완성 | TomatoEggCat</title>
 <meta name="description" content="감성 무드만 고르면 코드 진행·멜로디·가사가 한 번에 만들어지는 무료 작사작곡 도구. 허밍이나 노래를 녹음하면 음정을 분석해 악보와 코드를 뽑아내고, 그 멜로디를 바탕으로 곡을 완성합니다. 악보 보기, 재생, MIDI 저장, 이미지 카드까지 브라우저에서 바로." />
 <link rel="canonical" href="https://tomatoeggcat.com/songlab/" />
@@ -26,7 +28,7 @@
 {"@type":"Question","name":"허밍을 넣으면 정말 악보와 코드가 나오나요?","acceptedAnswer":{"@type":"Answer","text":"마이크로 부른 소리의 파형에서 자기상관 방식으로 기본 주파수를 추적해 음높이를 구하고, 이어지는 프레임을 하나의 음표로 묶은 뒤 박자 격자에 맞춰 정리합니다. 그 결과로 조성을 추정하고 마디마다 가장 잘 맞는 화음을 골라 코드 진행을 붙입니다. 조용한 곳에서 '루' 또는 '나'로 또렷하게 부르면 정확도가 올라갑니다."}},
 {"@type":"Question","name":"만들어진 곡을 다른 프로그램에서 편집할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"결과 화면의 MIDI 파일 저장을 누르면 멜로디·코드·베이스가 각각 들어간 표준 MIDI 파일이 내려받아집니다. 로직, 큐베이스, 스튜디오원, 뮤즈스코어 등 미디를 읽는 프로그램에서 열어 악기를 바꾸거나 이어서 편곡할 수 있습니다. 악보와 코드는 텍스트로도 복사됩니다."}},
 {"@type":"Question","name":"만든 멜로디와 가사를 자유롭게 써도 되나요?","acceptedAnswer":{"@type":"Answer","text":"이 도구는 기존 곡을 가져오지 않고 화성학 규칙과 문장 조각을 조합해 결과를 만듭니다. 개인 창작이나 습작에 자유롭게 활용하세요. 다만 알고리즘이 만든 초안이므로 상업적으로 발표할 때는 기존 곡과 비슷한 부분이 없는지 직접 확인하고 다듬어 쓰시길 권합니다."}},
-{"@type":"Question","name":"같은 설정이면 항상 같은 곡이 나오나요?","acceptedAnswer":{"@type":"Answer","text":"네. 무드·조성·빠르기·시드가 같으면 언제 어디서 열어도 똑같은 곡이 재현됩니다. 다시 뽑기를 누르면 시드만 하나 올라가 새로운 곡이 되고, 결과 링크에는 시드까지 담기므로 친구가 링크를 열면 같은 곡을 듣게 됩니다."}}
+{"@type":"Question","name":"같은 설정이면 항상 같은 곡이 나오나요?","acceptedAnswer":{"@type":"Answer","text":"네. 무드·키워드·키가 그대로면 만들기를 다시 눌러도 같은 곡이 나옵니다. 곡 길이나 빠르기만 바꾸면 같은 곡을 그 길이로 다시 펼쳐 드려요. 새로운 곡을 받고 싶으면 다시 뽑기를 누르세요. 결과 링크에는 그 곡의 정보가 모두 담기므로 친구가 링크를 열면 똑같은 곡을 듣게 됩니다."}}
 ]},
 {"@type":"BreadcrumbList","itemListElement":[
 {"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
@@ -176,8 +178,9 @@ details.adv[open]>summary:before{content:"▾ "}
   padding:3px 10px;margin-right:6px;font-size:12.5px}
 .scroller.more::after{content:"";position:absolute;top:0;right:0;width:22px;height:100%;
   pointer-events:none;background:linear-gradient(90deg,rgba(251,250,255,0),rgba(251,250,255,.95))}
-.sy{display:none}
-.sheet.showsyl .sy{display:inline}
+/* 음절 수 라벨 — showsyl 을 켜는 JS 가 없어 죽어 있었다. 화면에선 숨기되
+   스크린리더는 읽도록 sr-only 로 바꾼다 */
+.sy{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(max-width:430px){.grid2{grid-template-columns:1fr}.songtitle{font-size:23px}.quick{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -274,7 +277,7 @@ details.adv[open]>summary:before{content:"▾ "}
         <li><b>장조 · 단조</b> — 노래의 분위기. 장조는 밝고, 단조는 어둡고 애절하게 들려요.</li>
         <li><b>BPM</b> — 1분에 몇 박인지. 숫자가 클수록 빠른 노래예요(발라드 60~75, 댄스 125~135).</li>
         <li><b>마디</b> — 노래를 네 박자씩 끊은 한 칸. 20마디면 빠르기에 따라 40초~1분쯤이에요.</li>
-        <li><b>계이름</b> — 도·레·미… 로 읽은 음 이름. 악보를 못 읽어도 따라 부를 수 있어요.</li>
+        <li><b>계이름</b> — 도·레·미… 로 읽은 음 이름. 악보를 못 읽어도 따라 부를 수 있어요. <b>이 곡의 으뜸음이 "도"</b>라서, 피아노로 칠 때는 계이름 말고 위의 코드 이름을 보세요.</li>
       </ul>
     </details>
     <p class="progline" id="humProg" style="margin:0 0 2px"></p>
@@ -285,7 +288,7 @@ details.adv[open]>summary:before{content:"▾ "}
     </details>
     <div class="grid2" style="margin-top:10px">
       <button class="ghost" id="humPlayBtn" type="button">▶ 인식된 멜로디 들어보기</button>
-      <button class="ghost" id="humRedoBtn" type="button">↺ 다시 녹음</button>
+      <button class="ghost" id="humRedoBtn" type="button">🔄 다시 녹음</button>
     </div>
   </div>
 
@@ -321,7 +324,7 @@ details.adv[open]>summary:before{content:"▾ "}
         <li><b>벌스 · 프리코러스 · 코러스</b> — 노래의 1절, 넘어가는 부분, 후렴이에요.</li>
         <li><b>코드 (C, Am, G7 …)</b> — 반주로 치는 화음 이름. 뒤의 <b>7 · maj7 · m7</b> 은 음을 하나 더 얹어 부드럽게 만든 화음이에요.</li>
         <li><b>〃</b> — 앞 마디와 같은 코드를 그대로 치라는 뜻이에요.</li>
-        <li><b>계이름</b> — 도·레·미… 로 읽은 음 이름. 악보를 못 읽어도 따라 부를 수 있어요.</li>
+        <li><b>계이름</b> — 도·레·미… 로 읽은 음 이름. 악보를 못 읽어도 따라 부를 수 있어요. <b>이 곡의 으뜸음이 "도"</b>라서, 피아노로 칠 때는 계이름 말고 위의 코드 이름을 보세요.</li>
         <li><b>자리표 아래 8</b> — 남성 음역이라 악보를 한 옥타브 올려 적었다는 표시예요.
           들리는 소리와 MIDI 는 악보보다 한 옥타브 낮습니다.</li>
         <li><b>누가 부를까요 (여성/남성)</b> — 반주에 노래 목소리는 없어요. 대신 부를 사람의 보통 음역에 맞게
@@ -418,7 +421,7 @@ details.adv[open]>summary:before{content:"▾ "}
   <details><summary>허밍을 넣으면 정말 악보와 코드가 나오나요?</summary><p>마이크로 부른 소리의 파형에서 자기상관 방식으로 기본 주파수를 추적해 음높이를 구하고, 이어지는 프레임을 하나의 음표로 묶은 뒤 박자 격자에 맞춰 정리합니다. 그 결과로 조성을 추정하고 마디마다 가장 잘 맞는 화음을 골라 코드 진행을 붙입니다. 조용한 곳에서 '루' 또는 '나'로 또렷하게 부르면 정확도가 올라갑니다. 휘파람이나 피아노 단음 연주도 인식됩니다.</p></details>
   <details><summary>만들어진 곡을 다른 프로그램에서 편집할 수 있나요?</summary><p>결과 화면의 MIDI 파일 저장을 누르면 멜로디·코드·베이스가 각각 들어간 표준 MIDI 파일이 내려받아집니다. 로직, 큐베이스, 스튜디오원, 뮤즈스코어 등 미디를 읽는 프로그램에서 열어 악기를 바꾸거나 이어서 편곡할 수 있습니다. 악보와 코드는 텍스트로도 복사됩니다.</p></details>
   <details><summary>만든 멜로디와 가사를 자유롭게 써도 되나요?</summary><p>이 도구는 기존 곡을 가져오지 않고 화성학 규칙과 문장 조각을 조합해 결과를 만듭니다. 개인 창작이나 습작에 자유롭게 활용하세요. 다만 알고리즘이 만든 초안이므로 상업적으로 발표할 때는 기존 곡과 비슷한 부분이 없는지 직접 확인하고 다듬어 쓰시길 권합니다.</p></details>
-  <details><summary>같은 설정이면 항상 같은 곡이 나오나요?</summary><p>네. 무드·조성·빠르기·시드가 같으면 언제 어디서 열어도 똑같은 곡이 재현됩니다. 다시 뽑기를 누르면 시드만 하나 올라가 새로운 곡이 되고, 결과 링크에는 시드까지 담기므로 친구가 링크를 열면 같은 곡을 듣게 됩니다. 허밍으로 만든 곡은 추출한 멜로디까지 링크에 담깁니다.</p></details>
+  <details><summary>같은 설정이면 항상 같은 곡이 나오나요?</summary><p>네. 무드·키워드·키가 그대로면 만들기를 다시 눌러도 같은 곡이 나옵니다. 곡 길이나 빠르기만 바꾸면 같은 곡을 그 길이로 다시 펼쳐 드려요. 새로운 곡을 받고 싶으면 다시 뽑기를 누르세요. 결과 링크에는 그 곡의 정보가 모두 담기므로 친구가 링크를 열면 똑같은 곡을 듣게 됩니다. 허밍으로 만든 곡은 추출한 멜로디까지 링크에 담깁니다.</p></details>
   <details><summary>소리가 나지 않아요.</summary><p>브라우저는 사용자가 화면을 한 번 누른 뒤에야 소리를 낼 수 있습니다. 재생 버튼을 직접 눌러 주세요. 그래도 조용하다면 기기 음량과 무음 스위치를 확인하고, 다른 탭에서 재생 중인 소리를 멈춘 뒤 다시 시도해 보세요.</p></details>
 
   <p class="fine">이 도구가 만든 멜로디·코드·가사는 <b>재미와 습작을 위한 초안</b>입니다. 화성학 규칙과 문장 조각을 조합한 결과이므로 전문 작곡·편곡 교육이나 저작권 검토를 대신하지 않습니다. 마이크 입력은 브라우저 안에서만 분석되며 서버로 전송·저장되지 않습니다. 실명·전화번호 등 민감한 정보는 입력하지 마세요.</p>
@@ -792,7 +795,10 @@ function headClash(head,line){
   return a&&a===b;
 }
 /* 섹션·길이에 맞는 후보 문장 하나 */
-function candLine(bank,stage,target,rng,i){
+function candLine(bank,stage,target,rng,i,exact){
+  /* exact(앞 프레이즈와 같은 음절 수)가 걸려 있으면 밴드를 그 값으로 고른다 —
+     target 으로 고르면 다른 밴드의 풀만 뒤져 후보가 아예 없다 */
+  if(exact)target=exact;
   if(stage==="pre")return pick(rng,bank.pre);
   if(stage==="bridge")return pick(rng,bank.bridge);
   /* 코러스는 선언·2인칭 호명체로 — 벌스의 "장면 주어 + 서술어" 어법을 쓰지 않는다 */
@@ -803,7 +809,12 @@ function candLine(bank,stage,target,rng,i){
   }
   if(target<=5)return pick(rng,bank.short);
   if(target<=8)return (i%3===0)?pick(rng,bank.short):pick(rng,bank.clause);
-  if(i%4===0&&canHead(bank.clause[i%bank.clause.length]))return pick(rng,bank.adv)+" "+bank.clause[i%bank.clause.length];
+  if(i%4===0&&canHead(bank.clause[i%bank.clause.length])){
+    /* 이 경로만 headClash 를 빠뜨려 "한참을 도시가 등을 밝혀" 같은 이중 목적격이 샜다 */
+    var hv=pick(rng,bank.adv), cl2=bank.clause[i%bank.clause.length];
+    for(var hg=0;hg<6&&headClash(hv,cl2);hg++)hv=pick(rng,bank.adv);
+    if(!headClash(hv,cl2))return hv+" "+cl2;
+  }
   var sb=pick(rng,bank.subj),pr=pick(rng,bank.pred);
   /* "흔들리던 내가 나를 깨워" 처럼 사람 주어에 재귀 목적어가 붙는 비문을 막는다 */
   for(var g=0;g<6&&!subjPredOk(sb,pr);g++)pr=pick(rng,bank.pred);
@@ -888,10 +899,20 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw,kwS
     if(kwState&&kw&&fp.indexOf(kw)>=0)kwState.count++;
     return fp;
   }
-  for(i=0;i<160;i++)consider(candLine(bank,stage,target,rng,i),i<70?2:(i<120?1:0));
+  for(i=0;i<160;i++)consider(candLine(bank,stage,target,rng,i,exact),i<70?2:(i<120?1:0));
   if(!alts.length){
+    /* 이 폴백이 used 를 안 봐서 같은 줄이 한 곡에 두세 번 나왔다
+       (실측 벌스 재사용 207건 / 곡 내 중복 110곡 / 전절이 전부 ≤5음절 37건).
+       closeEnding 과 같은 방식으로 쓰지 않은 것부터 고르고, 다 썼을 때만 되돌린다 */
     var sh=bank.short.filter(function(x){return !addrClash(x,kw);});
-    return pick(rng,sh.length?sh:bank.short);
+    if(!sh.length)sh=bank.short;
+    var fresh=sh.filter(function(x){return used.indexOf(x)<0;});
+    /* short 가 다 떨어지면 clause 에서라도 안 쓴 줄을 찾는다 — 3~5음절 행만
+       반복되는 "전절 붕괴"를 막는다 */
+    if(!fresh.length&&bank.clause){
+      fresh=bank.clause.filter(function(x){return used.indexOf(x)<0&&!addrClash(x,kw);});
+    }
+    return pick(rng,fresh.length?fresh:sh);
   }
   /* a-a' 프레이즈는 음절 수가 같아야 음표 수가 같아지고, 그래야 모티프 관계가
      matchCount/repairCount 를 거쳐도 살아남는다 — 하드 제약으로 건다 */
@@ -1550,8 +1571,11 @@ function phrasePlan(md,rng,ph,nph,type,bpm){
 /* 이 계획으로 2마디에 넣을 수 있는 음절(=음표) 수 상한 */
 function phraseCap(pb,pl){
   var cap;
+  /* 픽업(up)을 캡에서 빼면 가사 음절 목표가 먼저 줄어든다 — 픽업 도입 뒤
+     5음절 미만 행이 4.6% → 13.7% 로 늘고 음표가 8.1% 깎였다.
+     layoutBar 는 자리가 모자라면 lead 를 먼저 0 으로 되돌리므로 캡에서 뺄 필요가 없다 */
   if(pb.length>1)
-    cap=Math.max(3,Math.floor((16-pl.up-pl.mid)/2)+Math.floor((16-pl.rest-pl.L-(pl.mid2||0))/2)+1);
+    cap=Math.max(3,Math.floor((16-pl.mid)/2)+Math.floor((16-pl.rest-pl.L-(pl.mid2||0))/2)+1);
   else cap=Math.max(2,Math.floor((16-pl.rest-pl.L)/2)+1);
   /* 후렴은 음절을 적게 실어야 한 음 한 음이 길어진다 — 훅이 벌스보다 빽빽하면 안 터진다 */
   if(pl.type==="chorus")cap=Math.min(cap,pb.length>1?7:4);
@@ -2192,6 +2216,9 @@ function snapBeats(song){
       function worse(a){
         if(!a)return false;
         var was=Math.abs(n.midi-a.midi), now=Math.abs(m-a.midi);
+        /* 상대 비교만 하면 리듬이 바뀔 때마다 새 도약이 생긴다(실측 최대 10→14반음) —
+           9반음을 넘기는 스냅은 이전보다 나아지더라도 버린다 */
+        if(now>9)return true;
         return now>was&&now>7;
       }
       if(worse(pv)||worse(nx))continue;
@@ -2280,6 +2307,8 @@ function mirrorPhrases(sec,ceil,ki){
           var sn=snapToChord(v3,bch,2);
           /* snapBeats 와 같은 이웃 음정 가드 — 당기다가 이웃과 벌어지면 버린다 */
           var okSn=(sn>=RANGE_LO&&sn<=(ceil||RANGE_HI));
+          if(okSn&&nq>0&&Math.abs(sn-degs[nq-1])>9)okSn=false;
+          if(okSn&&nq+1<LN&&Math.abs(degs[nq+1]-sn)>9)okSn=false;
           if(okSn&&nq>0&&Math.abs(sn-degs[nq-1])>7&&Math.abs(sn-degs[nq-1])>Math.abs(v3-degs[nq-1]))okSn=false;
           if(okSn&&nq+1<LN&&Math.abs(degs[nq+1]-sn)>7&&Math.abs(degs[nq+1]-sn)>Math.abs(degs[nq+1]-v3))okSn=false;
           if(okSn){v3=sn;degs[nq]=sn;}
@@ -2985,6 +3014,9 @@ function buildSong(o){
     syncChorusRepeat(song);syncChorusSections(song);
     /* 훅 복제가 동음 런을 복원한다 — 복제 뒤에 한 번 더 끊고 같은 이유로 다시 복제한다 */
     breakUnison(song,ki);
+    /* 섹션 이음매는 픽업·리듬이 바뀔 때마다 다시 벌어진다(실측 벌스→코러스 +14반음) —
+       음고 단계 끝에서 한 번 더 좁힌다 */
+    joinSections(song,ki,sw2.lo,sw2.hi);
     syncChorusRepeat(song);syncChorusSections(song);
     fixCadence(song);
     /* 음가·음표 수가 다 확정된 뒤 어절 표시를 다시 찍는다 — 그래야 악보·분석이
@@ -4287,6 +4319,7 @@ makeChips($("moodChips"),state.mood,function(id){
   state.mood=id;
   var m=MOOD_BY_ID[id];
   $("moodHint").textContent=m.hint;
+  markDirty();
   state.bpm=m.bpm;$("bpmRange").value=m.bpm;$("bpmVal").textContent=tempoVal(m.bpm);
   buildKeyOptions();
 });
@@ -4297,10 +4330,10 @@ function tempoWord(b){return b<75?"아주 느리게":b<95?"느리게":b<120?"보
 function tempoVal(b){return tempoWord(b)+" ("+b+" BPM)";}
 /* "보통 부르셨어요" 같은 비문을 막는 부사형 */
 function tempoAdv(b){return b<75?"아주 느리게":b<95?"느리게":b<120?"보통 빠르기로":b<140?"빠르게":"아주 빠르게";}
-$("bpmRange").addEventListener("input",function(){state.bpm=parseInt(this.value,10);$("bpmVal").textContent=tempoVal(state.bpm);});
-$("formSel").addEventListener("change",function(){state.form=parseInt(this.value,10);});
+$("bpmRange").addEventListener("input",function(){state.bpm=parseInt(this.value,10);$("bpmVal").textContent=tempoVal(state.bpm);markDirty();});
+$("formSel").addEventListener("change",function(){state.form=parseInt(this.value,10);markDirty();});
 $("keySel").addEventListener("change",function(){
-  state.keyPc=parseInt(this.value,10);
+  state.keyPc=parseInt(this.value,10);markDirty();
   state.userKey=(state.keyPc>=0);      /* 공유 링크 복원과 구분한다 — 그쪽은 고른 게 아니다 */
 });
 /* 곡 길이 칩 ↔ 세부설정 드롭다운을 양방향으로 묶는다 */
@@ -4359,6 +4392,9 @@ function renderSong(song){
 }
 var SIMPLE_PC=["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"];
 /* 조성을 주면 그 조의 조표대로 적는다 — "키 B 장조인데 음역이 Ab" 같은 혼동을 없앤다 */
+/* 음역 칩처럼 "그냥 읽는" 자리는 쉬운 표기로 — E#3 같은 이명동음이 오타로 보인다.
+   악보·조표 철자는 noteLabel(m,ki) 그대로 쓴다 */
+function simpleNote(m){return SIMPLE_PC[((m%12)+12)%12]+(Math.floor(m/12)-1);}
 function noteLabel(m,ki){
   if(ki){var sp=spellMidi(m,ki);return sp.letter+ACC_TXT[String(sp.acc)]+sp.oct;}
   return SIMPLE_PC[((m%12)+12)%12]+(Math.floor(m/12)-1);
@@ -4482,7 +4518,22 @@ function generateFromHum(){
 /* 새로 만들 때마다 시드를 뽑는다 — 1 로 고정돼 있어 모든 신규 방문자가 글자까지
    똑같은 첫 곡을 받았다. ?r= 복원 경로는 저장된 시드를 그대로 쓰므로 영향 없다 */
 function freshSeed(){return 1+(Math.random()*900000|0);}   /* 복원 측 clamp 상한 999999 와 맞춤 */
-$("makeBtn").addEventListener("click",function(){state.seed=freshSeed();state.kw=$("kwInput").value;generate();});
+/* 곡의 "정체성" — 이게 같으면 같은 곡이어야 한다. 길이·빠르기·성역은 편곡 설정이라
+   바뀌어도 같은 곡을 다시 전개할 뿐이다. 새 곡은 🎲 다시 뽑기 가 담당한다 */
+function songIdent(){return [state.mood,($("kwInput").value||"").trim(),state.keyPc].join("|");}
+var lastIdent=null;
+/* 결과를 보는 중에 설정을 바꾸면 "눌렀는데 안 먹네" 로 읽힌다 — CTA 라벨로 알린다 */
+var CTA_BASE="🎼 이 감성으로 한 곡 만들기", CTA_AGAIN="🎼 바뀐 설정으로 다시 만들기";
+function markDirty(){
+  if(!current)return;
+  var b=$("makeBtn");if(b)b.textContent=CTA_AGAIN;
+}
+function clearDirty(){var b=$("makeBtn");if(b)b.textContent=CTA_BASE;}
+$("makeBtn").addEventListener("click",function(){
+  var id=songIdent();
+  if(id!==lastIdent||!current){state.seed=freshSeed();lastIdent=id;}
+  state.kw=$("kwInput").value;clearDirty();generate();
+});
 $("humMakeBtn").addEventListener("click",function(){state.seed=freshSeed();generateFromHum();});
 $("againBtn").addEventListener("click",function(){
   state.seed++;
@@ -4515,7 +4566,7 @@ function refreshResult(){
   var secs=Math.round(song.flat.length*4*60/song.bpm);
   $("songFacts").innerHTML=[song.mood.emoji+" "+song.mood.name,"길이 "+lenWord(secs)+" ("+song.flat.length+"마디)","빠르기 "+tempoWord(song.bpm),
     "키 "+song.ki.label,
-    "음역 "+noteLabel(song.range.lo,song.ki)+"–"+noteLabel(song.range.hi,song.ki)]
+    "음역 "+simpleNote(song.range.lo)+"–"+simpleNote(song.range.hi)]
     .concat(song.fromHum?["🎤 내 허밍 빠르기에 맞췄어요"]:[])
     .concat(song.humKeyLabel?["🎤 "+song.humKeyLabel+"로 부르셨지만 "+voiceName(song.voice)+" 음역에 맞춰 옮겼어요"]:[])
     .map(function(f){return '<span class="fact">'+f+"</span>";}).join("");
@@ -4800,12 +4851,12 @@ $("humRedoBtn").addEventListener("click",function(){
     this.style.color="#fca5a5";
     var btn=this;
     setTimeout(function(){
-      if(Date.now()-redoArm>=4000){btn.textContent="↺ 다시 녹음";btn.style.color="";}
+      if(Date.now()-redoArm>=4000){btn.textContent="🔄 다시 녹음";btn.style.color="";}
     },4200);
     toast("지금 분석한 멜로디가 사라져요");
     return;
   }
-  redoArm=0;this.textContent="↺ 다시 녹음";this.style.color="";
+  redoArm=0;this.textContent="🔄 다시 녹음";this.style.color="";
   hum=null;humStaffBars=null;
   $("analysisBox").classList.remove("show");
   $("humMakeBtn").disabled=true;
@@ -4934,7 +4985,7 @@ function drawCard(){
   g.fillStyle="#a5f3fc";g.font="700 30px "+F;
   var cs=Math.round(s.flat.length*4*60/s.bpm);
   var meta=s.mood.emoji+" "+s.mood.name+"  ·  길이 "+lenWord(cs)+"  ·  빠르기 "+tempoWord(s.bpm)+
-    "  ·  키 "+s.ki.label+"  ·  음역 "+noteLabel(s.range.lo,s.ki)+"–"+noteLabel(s.range.hi,s.ki);
+    "  ·  키 "+s.ki.label+"  ·  음역 "+simpleNote(s.range.lo)+"–"+simpleNote(s.range.hi);
   var mf=30;
   while(mf>20){g.font="700 "+mf+"px "+F;if(g.measureText(meta).width<=W-140)break;mf-=2;}
   g.fillText(meta,70,258);

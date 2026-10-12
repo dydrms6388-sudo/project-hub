@@ -439,7 +439,13 @@ for (const b of BUILTINS) {
   // 테마 대응(멱등): 내가 CSS 변수로 테마화한 색인 대상(CORE) 내장에만 적용.
   // 단색 theme-color를 라이트/다크 쌍으로 정규화 + 홈 저장 테마 읽기(무쓰기) 동기화 스크립트.
   // master가 추가한 비색인 앱은 고유 디자인을 그대로 두기 위해 건드리지 않는다.
-  h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
+  // 단, 자기 테마 동기화 블록을 직접 넣은 앱(songlab 등)은 지우지 않는다 —
+  // 지우면 홈에서 라이트를 고른 사용자가 그 앱에서만 다크를 보게 된다.
+  if (!CORE_SLUGS.has(b.slug) && /<!--theme-sync-->/.test(h)) {
+    // 그대로 둔다
+  } else {
+    h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
+  }
   if (CORE_SLUGS.has(b.slug)) {
     h = h.replace(/\s*<meta name="theme-color"[^>]*>/gi, "");
     const themeBlock = `<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
