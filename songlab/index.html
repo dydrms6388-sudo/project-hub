@@ -1423,7 +1423,7 @@ function layoutBar(bar,o){
   var notes=bar.filter(function(n){return !n.rest;});
   var k=notes.length,i;
   if(!k){bar.length=0;bar.push({rest:true,start:0,dur:16});return 0;}
-  var lead=Math.min(4,evenD(o.lead||0)), mid=(k>=3?evenD(o.mid||0):0), tail=evenD(o.tail||0);
+  var lead=Math.min(6,evenD(o.lead||0)), mid=(k>=3?evenD(o.mid||0):0), tail=evenD(o.tail||0);
   var budget=16-lead-mid-tail;
   /* 자리가 모자라도 끝쉼표(숨자리)는 4단위 아래로 줄이지 않는다 */
   var tailFloor=(o.tail>=4)?4:o.tail;
@@ -1516,7 +1516,16 @@ function phrasePlan(md,rng,ph,nph,type){
   /* 느린 곡은 2마디가 7초를 넘는다 — 둘째 마디에도 숨자리를 준다 */
   var mid2=((slow||needBreath)&&!noMid)?evenD(Math.max(minT,4)):0;
   var up=0;
-  if(ph>0&&type!=="chorus"&&rng()<0.4)up=evenD(Math.min(4,Math.max(2,minT)));
+  /* 어택(픽업)이 전 섹션 0% 였다 — 행 머리가 슬롯 0 과 4 에만 떨어져 악보가 네모나게
+     들린다. 특히 코러스는 100%가 1박 시작이었다. K-pop 후렴은 "4박 뒤 8분"이나
+     2박 픽업이 기본 어법이므로 코러스에도 연다. 자리가 모자라면 layoutBar 가 되돌린다 */
+  var upP=(type==="chorus")?0.45:0.45;
+  if(rng()<upP){
+    var upMin=Math.max(2,evenD(minT));
+    var upc=[2,4,6].filter(function(v){return v>=upMin;});
+    if(!upc.length)upc=[upMin];
+    up=pick(rng,upc);
+  }
   /* 한 프레이즈는 끝쉼표 없이 다음으로 이어 부른다 — 2마디 주기를 깬다.
      느린 곡은 2마디가 7초를 넘으므로 짧은 쉼표만 준다. */
   if(!isLast&&nph>=3&&ph===1){
@@ -2432,7 +2441,8 @@ function spanWindow(song){
   if(!ms.length)return {lo:RANGE_LO,hi:RANGE_HI};
   ms.sort(function(a,b){return a-b;});
   var med=ms[Math.floor(ms.length/2)];
-  return {lo:Math.max(RANGE_LO,med-Math.floor(MAX_SPAN/2)),hi:Math.min(RANGE_HI,med+Math.ceil(MAX_SPAN/2))};
+  var sp=moodSpan(song),ch=moodCeil(song);
+  return {lo:Math.max(RANGE_LO,med-Math.floor(sp/2)),hi:Math.min(ch,med+Math.ceil(sp/2))};
 }
 /* 한 곡의 음역 폭 제한 — 경계에 박아 넣을 때도 조성 밖 음을 만들지 않는다 */
 function clampSpan(song,ki){
@@ -2440,13 +2450,17 @@ function clampSpan(song,ki){
   if(!ms.length)return;
   ms.sort(function(a,b){return a-b;});
   var med=ms[Math.floor(ms.length/2)];
-  var lo=Math.max(RANGE_LO,med-Math.floor(MAX_SPAN/2)), hi=Math.min(RANGE_HI,med+Math.ceil(MAX_SPAN/2));
+  var sp=moodSpan(song);
+  var lo=Math.max(RANGE_LO,med-Math.floor(sp/2)), hi=Math.min(moodCeil(song),med+Math.ceil(sp/2));
   ki=ki||song.ki;
+  /* 음계 단계로 당겨 봤더니 오히려 도약이 늘었다(최대 9→11반음, 10반음 이상 0→21건) —
+     옥타브 접기 뒤 도약 보정을 거는 쪽이 실측상 낫다 */
   eachNote(song,function(n){
     while(n.midi>hi)n.midi-=12;
     while(n.midi<lo)n.midi+=12;
     if(n.midi>hi||n.midi<lo)n.midi=scaleInRange(n.midi,ki,lo,hi);
   });
+  smoothLeaps(song,ki,lo,hi,mirrorGroups(song));
 }
 /* 마지막 음은 반드시 으뜸음으로 — clampSpan 이 종지를 b7 로 밀어내는 것을 되돌린다 */
 /* 끝음은 으뜸음이 기본이지만, 재즈·시티팝 계열은 3도/5도로 열어 두는 게 관용이다.
@@ -2465,7 +2479,8 @@ function fixCadence(song){
   ms.sort(function(a,b){return a-b;});
   var med=ms[Math.floor(ms.length/2)];
   /* clampSpan 과 같은 창 안에서 으뜸음을 고른다 — 종지가 음역 폭을 깨뜨리던 문제 */
-  var lo=Math.max(RANGE_LO,med-Math.floor(MAX_SPAN/2)), hi=Math.min(RANGE_HI,med+Math.ceil(MAX_SPAN/2));
+  var sp=moodSpan(song);
+  var lo=Math.max(RANGE_LO,med-Math.floor(sp/2)), hi=Math.min(moodCeil(song),med+Math.ceil(sp/2));
   var base=tonicMidi(song.ki),m;
   /* 자리(3도/5도)를 고르되, 직전 음에서 9반음 넘게 뛰면 으뜸음으로 되돌린다 —
      종지를 다양화하면서 끝 도약이 커지던 문제(실측 최대 10→12반음)를 막는다 */
@@ -2488,9 +2503,17 @@ function fixCadence(song){
 }
 /* 코러스가 벌스보다 충분히 올라가지 않으면 코러스만 들어 올린다 */
 /* 무드마다 후렴 천장을 달리 둔다 — 전부 RANGE_HI 까지 밀어 올리면 발라드와 댄스가 같은 높이가 된다 */
-var CEIL_OFF={ballad:4,saebyeok:4,lofi:4,ibyeol:3,seolem:2,citypop:2,eungwon:0,dance:0};
+/* 무드 변별은 "절대 후렴 높이"로 가능하다 — 성역 프리셋 탓이라고 봤던 것은 틀렸고,
+   천장 값이 작은 데다(최대 4반음) spanWindow·clampSpan·fixCadence 가 RANGE_HI 를
+   직접 써서 천장이 새고 있었다. 값을 키우고 누수를 막는다. */
+var CEIL_OFF={ballad:7,saebyeok:7,lofi:6,ibyeol:5,seolem:3,citypop:3,eungwon:0,dance:0};
 function moodCeilId(id){return RANGE_HI-((id&&CEIL_OFF[id])||0);}
 function moodCeil(song){return moodCeilId(song&&song.mood&&song.mood.id);}
+/* 두 번째 변별 축 — 음역 폭. 발라드·새벽은 좁게 속삭이고 댄스·응원은 넓게 쓴다.
+   지금까지 8무드가 전부 같은 17 이라 발라드와 댄스의 음폭이 사실상 같았다(편차 1.42반음) */
+var SPAN_OFF={ballad:11,saebyeok:12,lofi:12,ibyeol:13,seolem:15,citypop:15,eungwon:17,dance:17};
+function moodSpanId(id){return (id&&SPAN_OFF[id])||MAX_SPAN;}
+function moodSpan(song){return moodSpanId(song&&song.mood&&song.mood.id);}
 function liftChorus(song,ki){
   function med(sec){
     var a=[];
@@ -2788,7 +2811,8 @@ function buildSong(o){
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
     /* 클라이맥스 한 음만 음역 창 위로 2반음 허용 — 곡의 최고음은 마지막 후렴에 있어야 한다 */
     syncVersePhrase(song,ki,sw2.lo,sw2.hi);
-    finalLift(song,ki,Math.min(RANGE_HI,moodCeil(song)+2,sw2.hi+2));
+    /* +2 가 무드 천장을 그대로 넘겼다(실측 ballad 천장 73 대비 최고음 76) */
+    finalLift(song,ki,Math.min(moodCeil(song),sw2.hi+2));
     fixCadence(song);          /* 정점을 올렸으면 종지 으뜸음도 그에 맞춰 다시 고른다 */
     /* 음고 보정이 끝난 맨 마지막에 딕션을 한 번 더 — 5도 안으로만 내리므로 도약을 만들지 않는다 */
     easeDictionAll(song,ki);
@@ -2829,11 +2853,12 @@ function buildSong(o){
        20~21 로 새는 곡(실측 0.1%)만 잡는다 — 클라이맥스는 건드리지 않는다 */
     (function(){
       var r=songRange(song);
-      if(r.hi-r.lo<=MAX_SPAN+2)return;
+      var msp=moodSpan(song);
+      if(r.hi-r.lo<=msp+2)return;
       var ms=[];eachNote(song,function(n){ms.push(n.midi);});
       ms.sort(function(a,b){return a-b;});
       var md=ms[Math.floor(ms.length/2)];
-      var lo2=md-Math.floor((MAX_SPAN+2)/2), hi2=md+Math.ceil((MAX_SPAN+2)/2);
+      var lo2=md-Math.floor((msp+2)/2), hi2=md+Math.ceil((msp+2)/2);
       /* 바깥 음을 한 값으로 뭉개면 큰 도약이 생긴다 — 음계 한 단계씩만 당긴다 */
       eachNote(song,function(n){
         var g=0;
