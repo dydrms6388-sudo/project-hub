@@ -2049,7 +2049,9 @@ function breathGuard(song,maxSec){
       if(!changed){
         var ce=chain[chain.length-1];
         if(ce.end){
-          var en=ce.bar[ce.i], floor=Math.max(8,Math.ceil(1.2/spu));
+          /* 60bpm 에서 max(8,5)=8 인데 끝음도 8 이라 줄일 후보가 없었다(실측 7.00초 무중단).
+             하한을 1.0초 기준으로 내리면 60bpm 은 4(=1.0초)까지, 170bpm 은 12 로 현행 유지 */
+          var en=ce.bar[ce.i], floor=Math.max(4,Math.ceil(1.0/spu));
           for(var z4=NOTE_DUR.length-1;z4>=0;z4--){
             var nd4=NOTE_DUR[z4];
             if(nd4>=floor&&nd4<en.dur&&en.dur-nd4>=gapFloor&&durOk(en.start,nd4)){
@@ -2397,6 +2399,16 @@ function finishEnding(song,capUnits){
   if(bi<0)return;
   if(capUnits){
     var spu2=60/song.bpm/4, cur=runIntoEnd(song,spu2);
+    /* 끝음이 음역 하위 1/4 에 깔리면 길게 끌수록 소리가 주저앉는다 —
+       그런 곡은 1.6초 상당으로 상한을 줄인다(실측 끝음 최저음±2 인 곡 9.1%) */
+    var ms2=[];eachNote(song,function(n){ms2.push(n.midi);});
+    ms2.sort(function(a,b){return a-b;});
+    if(ms2.length){
+      var q1=ms2[Math.floor(ms2.length*0.25)];
+      var lastM=null,lb2=song.flat[bi].notes,q2;
+      for(q2=lb2.length-1;q2>=0;q2--)if(!lb2[q2].rest){lastM=lb2[q2].midi;break;}
+      if(lastM!==null&&lastM<=q1)capUnits=Math.min(capUnits,Math.max(4,Math.round(1.6/spu2)));
+    }
     var lastN=null,lb=song.flat[bi].notes,q;
     for(q=lb.length-1;q>=0;q--)if(!lb[q].rest){lastN=lb[q];break;}
     /* 끝음을 뺀 앞 구간 + 끝음이 가질 수 있는 최대 음가 */
@@ -2584,6 +2596,14 @@ function fixCadence(song){
     while(ton-12>=RANGE_LO)ton-=12;
     for(m=ton;m<=hi;m+=12){if(m<lo)continue;if(b===null||Math.abs(m-ref)<Math.abs(b-ref))b=m;}
     if(b===null)for(m=ton;m<=RANGE_HI;m+=12){if(m<RANGE_LO)continue;if(b===null||Math.abs(m-ref)<Math.abs(b-ref))b=m;}
+    /* 팝 멜로디의 중앙음은 3~5도에 앉으므로 그 아래 으뜸음은 거의 항상 음역 바닥이다 —
+       끝음이 긴 롱톤인데 바닥에 깔리면 아마추어는 거기서 소리가 주저앉는다
+       (실측 끝음이 최저음 ±2반음인 곡 11.85%, 발라드 31.77%).
+       중앙음보다 5반음 넘게 낮으면 한 옥타브 위 후보를 먼저 본다 */
+    if(b!==null&&b<med-5){
+      var upOct=b+12;
+      if(upOct<=hi&&upOct<=RANGE_HI&&Math.abs(upOct-ref)<=9)b=upOct;
+    }
     return b;
   }
   var cands=[endDegree(song),0],best=null,fb=null,ci;
@@ -2601,9 +2621,27 @@ function fixCadence(song){
 /* 무드 변별은 "절대 후렴 높이"로 가능하다 — 성역 프리셋 탓이라고 봤던 것은 틀렸고,
    천장 값이 작은 데다(최대 4반음) spanWindow·clampSpan·fixCadence 가 RANGE_HI 를
    직접 써서 천장이 새고 있었다. 값을 키우고 누수를 막는다. */
+/* 천장을 절대 MIDI 로 두면 ±6반음 강체 전조를 못 따라간다 — 실사용 키 분포에서
+   33.75% 의 곡이 자기 천장을 넘고(최대 +8반음) 무드 변별이 7.03 → 2.68 로 붕괴했다.
+   게다가 발라드는 천장이 너무 낮아 55.6% 의 곡이 이미 천장을 치고 있어 liftChorus 가
+   후렴을 올릴 공간이 없었다(후렴이 벌스보다 안 올라가는 곡 20.31%).
+   "으뜸음 위 몇 반음"으로 정의하면 전조와 함께 움직이고 공간도 확보된다. */
+/* 천장을 "으뜸음 위 n반음"으로 옮겨 봤으나 변별이 오히려 줄었다
+   (코러스 정점 스프레드 2.96 → 1.73반음) — 곡은 C 로 생성되므로 도수 기준도
+   결국 같은 절대값이 되고, RANGE_HI 에서 접으면 천장이 무너진다. 절대 천장을 쓴다. */
 var CEIL_OFF={ballad:7,saebyeok:7,lofi:6,ibyeol:5,seolem:3,citypop:3,eungwon:0,dance:0};
 function moodCeilId(id){return RANGE_HI-((id&&CEIL_OFF[id])||0);}
 function moodCeil(song){return moodCeilId(song&&song.mood&&song.mood.id);}
+/* 발라드는 천장이 70 인데 벌스 중심은 전 무드 공통 64 라, 후렴이 올라갈 자리가
+   6반음뿐이었다 — 5곡 중 1곡의 발라드에서 후렴이 벌스보다 안 올라갔다(실측 20.31%).
+   천장을 내린 무드는 섹션 중심도 함께 내려 "낮은 곳에서의 상승"이 되게 한다 */
+function secCenter(type,id){
+  /* 코러스까지 같이 내리면 리프트가 그대로라 소용이 없다(실측 발라드 ≤0 20.3% → 31.3%).
+     천장이 낮은 무드는 벌스·프리·브릿지만 내려서 "낮은 데서 올라오는" 폭을 만든다 */
+  if(type==="chorus")return SEC_CENTER[type];
+  var drop=Math.round(((id&&CEIL_OFF[id])||0)*0.8);
+  return SEC_CENTER[type]-drop;
+}
 /* 두 번째 변별 축 — 음역 폭. 발라드·새벽은 좁게 속삭이고 댄스·응원은 넓게 쓴다.
    지금까지 8무드가 전부 같은 17 이라 발라드와 댄스의 음폭이 사실상 같았다(편차 1.42반음) */
 var SPAN_OFF={ballad:11,saebyeok:12,lofi:12,ibyeol:13,seolem:15,citypop:15,eungwon:17,dance:17};
@@ -2749,7 +2787,7 @@ function buildSong(o){
       sections.push(cl);flatPush(flat,cl);
       continue;
     }
-    var baseDeg=degNearest(SEC_CENTER[type]+(type==="chorus"?mood.lift:0),ki);
+    var baseDeg=degNearest(secCenter(type,mood.id)+(type==="chorus"?mood.lift:0),ki);
     var barsOut=[],bi,prevMidi=0,sameRun=0;
     /* 프레이즈 설계 a - a' - b - a'' */
     for(bi=0;bi<nbars;bi++){
@@ -2938,6 +2976,9 @@ function buildSong(o){
     /* 뒤 단계들(정점·도약·딕션·음폭)이 a-a' 수열을 흔들어 놓는다 — 음고 단계
        끝에서 다시 걸어야 남는다. snapLongNotes 를 끝에 한 번 더 거는 것과 같은 이유 */
     for(var mq=0;mq<song.sections.length;mq++)mirrorPhrases(song.sections[mq],moodCeil(song),ki);
+    /* liftChorus 는 파이프라인 앞에 있어 clampSpan 이 다시 눌러 버린다 — 후렴이
+       벌스보다 안 올라가는 곡이 발라드 20.3% / 로파이 16.7% 였다. 끝에서 한 번 더 */
+    liftChorus(song,ki);
     breakUnison(song,ki);
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
@@ -3137,7 +3178,9 @@ function easeShortDiction(song){
           /* dur===1(16분)만 보던 탓에 143bpm 이상에서는 splitDurs 가 16분을 아예
              만들지 않아 이 함수가 한 번도 실행되지 않았다(실측 170bpm 폐쇄받침의
              65.2%가 0.20초 미만 음에). 기준을 음가가 아니라 "초"로 바꾼다 */
-          if(bar[i].dur*spuD>=0.20)continue;
+          /* 초 기준만 쓰면 60bpm 의 16분(0.25초)이 빠져나간다 — 이전 dur===1
+             기준에서는 잡히던 구간이다. 16분은 템포와 무관하게 항상 대상 */
+          if(bar[i].dur>1&&bar[i].dur*spuD>=0.20)continue;
           /* ㄴㄹㅁㅇ 받침("사랑"의 랑, "지금"의 금)도 16분에는 못 싣는다 — 받침 전체를 대상으로 */
           if(!(starts[idx]||hardCh(ch)||bat(ch)>0))continue;
           /* 앞이 점8분이면 (3,1) → (2,2) 로 고른다 — 문제 글자가 16분 대신 8분을 받는다.
@@ -4322,7 +4365,25 @@ function noteLabel(m,ki){
 }
 function lenWord(secs){return secs<60?("약 "+secs+"초"):("약 "+Math.floor(secs/60)+"분 "+(secs%60?secs%60+"초":"")).trim();}
 /* 중앙 음고가 C4 아래면 8vb 로 적는다 */
-function staffOct8(song){return song?songRange(song).lo<57:false;}
+function staffOct8(song){
+  /* lo<57 만 보면 "남성" 성역에서 8vb 가 오히려 악보를 위로 터뜨린다
+     (실측 ten 보표 밖 음표 0.87% → 10.88%, 해당 곡 20.7% → 54.4%).
+     그대로 적을 때와 한 옥타브 올려 적을 때의 보표 이탈을 재어 적은 쪽을 고른다 */
+  if(!song)return false;
+  /* 음역 양끝만 보면 "한 음만 삐져나간 곡"과 "절반이 나간 곡"을 구분 못 한다 —
+     실제 보표 밖 음표 수로 센다. 동률이면 보표 가운데(66)에 가까운 쪽 */
+  var a=0,u=0,sa=0,su=0,cnt=0;
+  eachNote(song,function(n){
+    cnt++;
+    if(n.midi<RANGE_LO||n.midi>RANGE_HI)a++;
+    if(n.midi+12<RANGE_LO||n.midi+12>RANGE_HI)u++;
+    sa+=n.midi;su+=n.midi+12;
+  });
+  if(!cnt)return false;
+  if(u!==a)return u<a;
+  var mid=(RANGE_LO+RANGE_HI)/2;
+  return Math.abs(su/cnt-mid)<Math.abs(sa/cnt-mid);
+}
 /* 430px 이하에서는 3마디가 화면 폭을 넘겨 매 줄 가로로 밀어야 했다 — 2마디로 줄인다 */
 function barsPerSystem(){var w=window.innerWidth||800;return w<=430?2:(w<560?3:4);}
 function staffWidth(id){
@@ -4530,7 +4591,7 @@ $("upBtn").addEventListener("click",function(){
   else toast("더 높일 수 없어요");
 });
 var VOICES=[{id:"alto",name:"여성 (기본)",t:66,lo:55,hi:77},{id:"sop",name:"여성 높게",t:70,lo:58,hi:81},
-            {id:"ten",name:"남성",t:62,lo:49,hi:74},{id:"bar",name:"남성 낮게",t:56,lo:46,hi:71}];
+            {id:"ten",name:"남성",t:62,lo:49,hi:74},{id:"bar",name:"남성 낮게",t:59,lo:46,hi:71}];
 (function(){
   [$("voiceSel"),$("voiceSel2"),$("voiceSel3")].forEach(function(sel){
     if(!sel)return;
