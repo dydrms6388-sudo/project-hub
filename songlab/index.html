@@ -1131,7 +1131,13 @@ function sectionChords(mood,ki,type,bars,rng,isFinal){
   var out=[],i;
   for(i=0;i<bars;i++){
     var tok=pat[i%4];
-    if(bars>=8&&i===bars-1&&type!=="chorus"&&!isFinal)tok=(ki.mode==="minor")?"VII":"V";
+    if(bars>=4&&i===bars-1&&type!=="chorus"&&!isFinal){
+      /* 프리코러스는 코러스로 밀어 올리는 자리라 도미넌트 색을 넓게 쓴다 */
+      var dom=(type==="pre")
+        ?(ki.mode==="minor"?["VII","v","iv","VI"]:["V","V7","IVmaj7","ii"])
+        :(ki.mode==="minor"?["VII","VI","v","iv"]:["V","IV","V7","vi"]);
+      tok=pick(rng,dom);
+    }
     out.push(realizeChord(tok,ki)||realizeChord("I",ki));
   }
   if(isFinal&&bars>=2){
@@ -1145,6 +1151,15 @@ function sectionChords(mood,ki,type,bars,rng,isFinal){
       out[bars-2]=realizeChord(ki.mode==="minor"?"iv":"IV",ki)||realizeChord("V",ki);
     }else{
       out[bars-2]=realizeChord(ki.mode==="minor"?"V7":"V",ki);
+    }
+    /* 앞 마디가 이미 도미넌트면 V-V-I 로 굳는다(실측 최빈형 20.83%) —
+       앞을 ii/IV 로 흘려 ii-V-I·IV-V-I 가 되게 한다 */
+    if(bars>=3&&out[bars-3]&&out[bars-2]){
+      var d2=out[bars-2].roman, d3=out[bars-3].roman;
+      if(/^(V|V7|VII)$/.test(d2)&&/^(V|V7|VII)$/.test(d3)){
+        var sub=(ki.mode==="minor")?(rng()<0.5?"iv":"VI"):(rng()<0.5?"ii":"IV");
+        out[bars-3]=realizeChord(sub,ki)||out[bars-3];
+      }
     }
   }
   return out;
@@ -1227,7 +1242,10 @@ function barMelody(mb,chord,ki,baseDeg,rng,o){
     var d=Math.min(mb.r[i],16-t);
     if(d<=0)break;
     var midi=degToMidi(baseDeg+mb.s[i],ki);
+    /* 강박(2박)과 행 머리에만 걸려 있어 강박 음의 32.4%가 화음 밖이었다 —
+       매 박으로 넓히되, 1·3박은 2반음, 2·4박은 3반음까지만 당겨 윤곽을 덜 해친다 */
     if(t%8===0||i===0)midi=snapToChord(midi,chord,2);
+    else if(t%4===0)midi=snapToChord(midi,chord,3);
     else midi=nearestScale(midi,ki);
     midi=scaleInRange(midi,ki,RANGE_LO,Math.min(ceil,RANGE_HI));
     if(prev){
@@ -1349,7 +1367,7 @@ function splitDurs(budget,cnt,start,strict){
      가중치(wt)로 누르는 방식은 "점8분 뒤 16분" 이 강제 삽입이라 평가 지점을 우회해 효과가 없었다. */
   /* 임계 0.125초는 과했다 — 132bpm 의 16분(0.114초)은 K-pop 댄스의 정체성이고
      받침 음절은 easeShortDiction 이 긴 쪽으로 옮긴다. 0.105초(≈143bpm) 로 낮춘다 */
-  var ND=(60/RHY_BPM/4<0.105)?[16,12,8,6,4,2]:[16,12,8,6,4,3,2,1],memo={};
+  var ND=(60/RHY_BPM/4<0.095)?[16,12,8,6,4,2]:[16,12,8,6,4,3,2,1],memo={};
   function go(p,i,left){
     if(i===cnt)return left===0?[]:null;
     var key=p+"|"+i+"|"+left;
@@ -1563,7 +1581,7 @@ function repairCount(pb,target,ki,chs){
     if(bb<0)break;
     var a=pb[bb],h=(md>=6)?Math.floor(md/2):2,base=a[ii].midi;
     /* splitDurs 와 같은 하한 — 빠른 곡에서 6단위를 (3,3) 으로 쪼개면 16분이 새로 생긴다 */
-    if(60/RHY_BPM/4<0.105&&(h%2))h=evenD(h-1)||2;
+    if(60/RHY_BPM/4<0.095&&(h%2))h=evenD(h-1)||2;
     h=snapND(h);if(h>=md)h=2;
     var alt=nearestScale(base+2,ki),ch3=chOf(bb);
     if(ch3)alt=snapToChord(alt,ch3,2);
@@ -2119,6 +2137,40 @@ function chorusPeak(song,ki){
   best.midi=got;
 }
 /* 후처리로 움직인 긴 음을 그 마디 화음으로 되돌린다 (점4분 이상) */
+/* 박머리(1·2·3·4박)의 음을 화음 안으로 당긴다. barMelody 에서 한 번 걸어도
+   정점·도약·딕션 보정이 다시 밀어내므로(실측 강박 화음 밖 33.0%) 음고 단계
+   맨 끝에서 한 번 더 건다. 1·3박은 2반음, 2·4박은 3반음까지만 — 윤곽을 덜 해친다 */
+function snapBeats(song){
+  for(var i=0;i<song.flat.length;i++){
+    var bar=song.flat[i];
+    if(!bar.chord)continue;
+    for(var j=0;j<bar.notes.length;j++){
+      var n=bar.notes[j];
+      /* 1·3박만 — 2·4박까지 당기면 걸림음(appoggiatura)이 사라져 화음 밖이
+         4%까지 떨어진다(실측). 약박은 비화성음이 있어야 선율이 산다 */
+      if(n.rest||n.start%8!==0)continue;
+      /* 허용폭 2반음은 강박 화음밖을 33%→4.7% 로 떨어뜨렸지만 도약을 새로 만들었다
+         (최대 10→14반음, 10반음 이상 7→35건). 반음 충돌만 당긴다 */
+      var m=snapToChord(n.midi,bar.chord,1);
+      if(m===n.midi||m<RANGE_LO||m>RANGE_HI)continue;
+      /* 당기다가 이웃과의 음정을 벌리면 안 된다 — 보정 전보다 나빠지는 스냅은 버린다 */
+      var pv=null,nx=null,q;
+      for(q=j-1;q>=0;q--)if(!bar.notes[q].rest){pv=bar.notes[q];break;}
+      if(!pv&&i>0)for(q=song.flat[i-1].notes.length-1;q>=0;q--)
+        if(!song.flat[i-1].notes[q].rest){pv=song.flat[i-1].notes[q];break;}
+      for(q=j+1;q<bar.notes.length;q++)if(!bar.notes[q].rest){nx=bar.notes[q];break;}
+      if(!nx&&i+1<song.flat.length)for(q=0;q<song.flat[i+1].notes.length;q++)
+        if(!song.flat[i+1].notes[q].rest){nx=song.flat[i+1].notes[q];break;}
+      function worse(a){
+        if(!a)return false;
+        var was=Math.abs(n.midi-a.midi), now=Math.abs(m-a.midi);
+        return now>was&&now>7;
+      }
+      if(worse(pv)||worse(nx))continue;
+      n.midi=m;
+    }
+  }
+}
 function snapLongNotes(song){
   for(var i=0;i<song.flat.length;i++){
     var bar=song.flat[i];
@@ -2748,6 +2800,11 @@ function buildSong(o){
     /* 정점·이음매·딕션 보정이 긴 음을 다시 화음 밖으로 밀어낸다 —
        음고 단계의 맨 끝에 한 번 더 붙이고, 그 뒤 도약·훅 복제·종지를 다시 맞춘다 */
     snapLongNotes(song);
+    /* 박머리 스냅은 음고를 움직여 도약을 새로 만든다(실측 최대 9→11반음) —
+       뒤에 도약 보정을 두 번 걸고 동음 런도 다시 본다 */
+    snapBeats(song);
+    breakUnison(song,ki);
+    smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
     syncChorusRepeat(song);syncChorusSections(song);
     fixCadence(song);
@@ -2768,6 +2825,26 @@ function buildSong(o){
        8.00초(상한 6.00초) 무중단이 됐다 — 이제 남은 숨 여유만큼만 늘린다 */
     finishEnding(song,Math.floor(bLim/(60/o.bpm/4)));
     fixCadence(song);
+    /* finalLift 가 음역 창 위로 2반음을 허용하므로 실제 상한은 MAX_SPAN+2=19 다.
+       20~21 로 새는 곡(실측 0.1%)만 잡는다 — 클라이맥스는 건드리지 않는다 */
+    (function(){
+      var r=songRange(song);
+      if(r.hi-r.lo<=MAX_SPAN+2)return;
+      var ms=[];eachNote(song,function(n){ms.push(n.midi);});
+      ms.sort(function(a,b){return a-b;});
+      var md=ms[Math.floor(ms.length/2)];
+      var lo2=md-Math.floor((MAX_SPAN+2)/2), hi2=md+Math.ceil((MAX_SPAN+2)/2);
+      /* 바깥 음을 한 값으로 뭉개면 큰 도약이 생긴다 — 음계 한 단계씩만 당긴다 */
+      eachNote(song,function(n){
+        var g=0;
+        while(n.midi>hi2&&g++<6)n.midi=nearestScale(n.midi-1,ki);
+        g=0;
+        while(n.midi<lo2&&g++<6)n.midi=nearestScale(n.midi+1,ki);
+      });
+      var mgS=mirrorGroups(song);
+      smoothLeaps(song,ki,lo2,hi2,mgS);
+      syncChorusRepeat(song);syncChorusSections(song);fixCadence(song);
+    })();
     markWordStarts(song);
     attachSyllables(song);
   }
