@@ -1492,12 +1492,16 @@ function layoutBar(bar,o){
   return k;
 }
 /* 프레이즈마다 숨자리·롱톤을 다르게 잡는다 (전부 "둘째 마디 끝"이면 2마디 주기가 귀에 들린다) */
-function phrasePlan(md,rng,ph,nph,type){
-  var slow=md.bpm<95;
-  var minT=Math.max(2,Math.ceil(md.bpm/30));            /* 쉼표는 실시간 0.5초 이상 */
+function phrasePlan(md,rng,ph,nph,type,bpm){
+  /* md.bpm 은 "무드 기본 템포"다 — 사용자가 슬라이더로 바꾼 값이 아니다.
+     프레이즈 길이·숨자리·롱톤이 전부 여기서 나오는데 사용자 템포를 안 보고 있었다
+     (dance 를 132bpm 으로 돌려도 쉼표의 34.0%가 0.25초 미만, 주석은 0.5초 이상이라 선언). */
+  bpm=bpm||md.bpm;
+  var slow=bpm<95;
+  var minT=Math.max(2,Math.ceil(bpm/30));               /* 쉼표는 실시간 0.5초 이상 */
   var isLast=(ph===nph-1);
   /* 롱톤은 마디 단위가 아니라 "몇 초를 끄는가"로 정해야 빠른 곡에서도 프레이즈 끝이 받쳐진다 */
-  var spu=60/md.bpm/4;
+  var spu=60/bpm/4;
   var Lsec=isLast?2.2:[1.3,1.0,1.6,1.0][ph%4];
   if(type==="pre")Lsec*=0.7;        /* 프리코러스는 끝을 덜 끈다 — 코러스로 이어지는 느낌 */
   var Lr=Lsec/spu, L=4;
@@ -1617,22 +1621,29 @@ function repairCount(pb,target,ki,chs){
 }
 /* 같은 음 4연타 이상은 찬트가 된다 — 음계 안에서 2도 움직인다 */
 function breakUnison(song,ki){
-  var prev=null,run=1;
-  for(var i=0;i<song.flat.length;i++)for(var j=0;j<song.flat[i].notes.length;j++){
-    var n=song.flat[i].notes[j];if(n.rest)continue;
-    if(prev!==null&&n.midi===prev){
-      run++;
-      if(run>2){
-        var cands=[nearestScale(n.midi+2,ki),nearestScale(n.midi-2,ki),
-                   nearestScale(n.midi+1,ki),nearestScale(n.midi-1,ki),
-                   nearestScale(n.midi+3,ki),nearestScale(n.midi-3,ki)];
-        for(var cz=0;cz<cands.length;cz++){
-          var c=cands[cz];
-          if(c!==n.midi&&c>=RANGE_LO&&c<=RANGE_HI){n.midi=c;run=1;break;}
+  /* 한 번만 훑으면 후보가 전부 막힌 자리에서 런이 그대로 남는다 — 실측 1,176곡 중
+     28곡에서 6~8연타가 살아남았다(미러 프레이즈가 같은 화음음으로 모인 자리).
+     후보를 ±4도까지 넓히고 런이 사라질 때까지 몇 번 더 훑는다 */
+  for(var pass=0;pass<4;pass++){
+    var prev=null,run=1,fixedAny=false;
+    for(var i=0;i<song.flat.length;i++)for(var j=0;j<song.flat[i].notes.length;j++){
+      var n=song.flat[i].notes[j];if(n.rest)continue;
+      if(prev!==null&&n.midi===prev){
+        run++;
+        if(run>2){
+          var cands=[nearestScale(n.midi+2,ki),nearestScale(n.midi-2,ki),
+                     nearestScale(n.midi+1,ki),nearestScale(n.midi-1,ki),
+                     nearestScale(n.midi+3,ki),nearestScale(n.midi-3,ki),
+                     nearestScale(n.midi+4,ki),nearestScale(n.midi-4,ki)];
+          for(var cz=0;cz<cands.length;cz++){
+            var c=cands[cz];
+            if(c!==n.midi&&c>=RANGE_LO&&c<=RANGE_HI){n.midi=c;run=1;fixedAny=true;break;}
+          }
         }
-      }
-    }else run=1;
-    prev=n.midi;
+      }else run=1;
+      prev=n.midi;
+    }
+    if(!fixedAny)break;
   }
 }
 function stripRests(bar){
@@ -2164,9 +2175,9 @@ function snapBeats(song){
       /* 1·3박만 — 2·4박까지 당기면 걸림음(appoggiatura)이 사라져 화음 밖이
          4%까지 떨어진다(실측). 약박은 비화성음이 있어야 선율이 산다 */
       if(n.rest||n.start%8!==0)continue;
-      /* 허용폭 2반음은 강박 화음밖을 33%→4.7% 로 떨어뜨렸지만 도약을 새로 만들었다
-         (최대 10→14반음, 10반음 이상 7→35건). 반음 충돌만 당긴다 */
-      var m=snapToChord(n.midi,bar.chord,1);
+      /* 허용폭 1반음은 과도하게 보수적이었다 — 도약이 늘었다는 그때의 측정은
+         아래 worse() 이웃 음정 가드를 넣기 "전" 값이었다. 가드가 있는 지금은 2반음 */
+      var m=snapToChord(n.midi,bar.chord,2);
       if(m===n.midi||m<RANGE_LO||m>RANGE_HI)continue;
       /* 당기다가 이웃과의 음정을 벌리면 안 된다 — 보정 전보다 나빠지는 스냅은 버린다 */
       var pv=null,nx=null,q;
@@ -2206,14 +2217,18 @@ function snapLongNotes(song){
 function mirrorPhrases(sec,ceil,ki){
   if(sec.type!=="verse"&&sec.type!=="bridge")return;
   for(var mp=1;mp<sec.lines.length;mp+=2){
+    /* a - a' - b - a'' 가 설계인데 mp-1 을 그대로 쓰면 4행 벌스가 a-a'-b-b' 가 된다
+       (실측 0↔3 음정 일치 0.135 / 2↔3 0.346). 3행은 1행(a)으로 되돌린다 */
+    var src=(mp===3)?0:mp-1;
     var A=[],B=[],bq,nq;
-    for(bq=0;bq<sec.lines[mp-1].bars;bq++){
-      var ab=sec.bars[sec.lines[mp-1].bar+bq];
+    for(bq=0;bq<sec.lines[src].bars;bq++){
+      var ab=sec.bars[sec.lines[src].bar+bq];
       if(ab)for(nq=0;nq<ab.length;nq++)if(!ab[nq].rest)A.push(ab[nq]);
     }
+    var Bbar=[];
     for(bq=0;bq<sec.lines[mp].bars;bq++){
       var bb=sec.bars[sec.lines[mp].bar+bq];
-      if(bb)for(nq=0;nq<bb.length;nq++)if(!bb[nq].rest)B.push(bb[nq]);
+      if(bb)for(nq=0;nq<bb.length;nq++)if(!bb[nq].rest){B.push(bb[nq]);Bbar.push(sec.lines[mp].bar+bq);}
     }
     /* 음절 수를 맞추지 못한 쌍(가사 뱅크에 같은 음절 줄이 없을 때)도 버리지 않는다 —
        앞에서부터 겹치는 길이만큼 수열을 물려주면 머리 동기(motif head)는 살아난다 */
@@ -2232,11 +2247,14 @@ function mirrorPhrases(sec,ceil,ki){
     var entry=null;
     var pbBar=sec.bars[sec.lines[mp].bar-1];
     if(pbBar)for(nq=pbBar.length-1;nq>=0;nq--)if(!pbBar[nq].rest){entry=pbBar[nq].midi;break;}
-    /* 0 도수(= A 를 그대로 반복)를 가장 먼저 시도한다 — 코러스 AABA 와 같은 기법이고
-       음정이 한 치도 안 변하므로 a-a' 관계가 가장 또렷하다. 안 되면 가까운 도수부터 */
-    var offs=[0];
+    /* 0 도수(= A 를 글자 그대로 반복)를 1순위로 두었더니 a' 의 31.8%가 음정이 한 치도
+       안 변한 복사가 됐고, 2행짜리 브릿지는 75%가 벌스의 복제가 됐다.
+       1순위를 "머리음만 자기 화음에 맞춘 평행이동"으로 바꾼다 — 도수 평행이동이라
+       음정 관계는 그대로고 높이만 달라진다. 브릿지는 대비 섹션이라 0 을 아예 뺀다 */
+    var offs=[];
     for(var oc=0;oc<3;oc++)offs.push(degNearest(head+[0,-12,12][oc],ki)-aDeg[0]);
-    for(var dz=-3;dz<=3;dz++)offs.push(dz);
+    if(sec.type!=="bridge")offs.push(0);
+    for(var dz=-3;dz<=3;dz++)if(sec.type!=="bridge"||dz!==0)offs.push(dz);
     for(var oi=0;oi<offs.length&&degs===null;oi++){
       var dOff=offs[oi], mn=1e9, mx=-1e9, tmp=[];
       for(nq=0;nq<LN;nq++){
@@ -2249,7 +2267,24 @@ function mirrorPhrases(sec,ceil,ki){
       degs=tmp;
     }
     if(degs===null)continue;
-    for(nq=0;nq<LN;nq++)B[nq].midi=degs[nq];
+    for(nq=0;nq<LN;nq++){
+      var v3=degs[nq];
+      /* a' 는 a 와 화음이 다르다(예: I-V vs vi-IV) — 수열을 그대로 얹으면 강박이
+         통째로 화음 밖으로 떨어진다(실측 a' 38.3% vs a 23.5%). 1·3박만 자기 마디
+         화음으로 1도수 안에서 다시 당긴다. 수열 동일성은 그 폭 안에서 유지된다 */
+      if(B[nq].start%8===0&&sec.chords){
+        var bch=sec.chords[Bbar[nq]]||sec.chords[0];
+        if(bch){
+          var sn=snapToChord(v3,bch,2);
+          /* snapBeats 와 같은 이웃 음정 가드 — 당기다가 이웃과 벌어지면 버린다 */
+          var okSn=(sn>=RANGE_LO&&sn<=(ceil||RANGE_HI));
+          if(okSn&&nq>0&&Math.abs(sn-degs[nq-1])>7&&Math.abs(sn-degs[nq-1])>Math.abs(v3-degs[nq-1]))okSn=false;
+          if(okSn&&nq+1<LN&&Math.abs(degs[nq+1]-sn)>7&&Math.abs(degs[nq+1]-sn)>Math.abs(degs[nq+1]-v3))okSn=false;
+          if(okSn){v3=sn;degs[nq]=sn;}
+        }
+      }
+      B[nq].midi=v3;
+    }
   }
 }
 /* 코러스 1행과 3행은 같은 가사다 — 후처리가 두 복사본을 따로 건드려 선율이 갈라지는 것을 되돌린다 */
@@ -2758,7 +2793,7 @@ function buildSong(o){
     for(p=0;p<nph;p++){
       var pb=[barsOut[p*2]];
       if(barsOut[p*2+1])pb.push(barsOut[p*2+1]);
-      var pl=phrasePlan(mood,rng,p,nph,type);
+      var pl=phrasePlan(mood,rng,p,nph,type,o.bpm);
       var cnt=Math.min(pb[0].length+(pb[1]?pb[1].length:0),phraseCap(pb,pl));
       var flatNotes=pb[0].concat(pb[1]||[]);
       var text;
@@ -2805,7 +2840,8 @@ function buildSong(o){
         /* 홀수 프레이즈(a')는 짝수 프레이즈(a)와 음절 수를 맞춘다 — 음표 수가 같아야
            varyMotif 가 만든 a-a' 관계가 가사 맞춤 단계를 거쳐도 남는다.
            프리코러스는 2행뿐이라 제외하고, 코러스는 이미 AABA 로 처리된다 */
-        var exSyl=(p%2===1&&(type==="verse"||type==="bridge")&&lines[p-1])?syl(lines[p-1].text):0;
+        var exSrc=(p===3)?0:p-1;
+        var exSyl=(p%2===1&&(type==="verse"||type==="bridge")&&lines[exSrc])?syl(lines[exSrc].text):0;
         text=fitLine(cnt,lrng,bank,used,kwp,type,flatNotes,fillState,(kw&&type==="verse"&&p===1),kw,kwState,exSyl);
       }
       /* 1차 선택으로 음절 수를 정해 음표를 확정한 뒤, 확정된 음표로 가사를 다시 고른다 */
@@ -2813,7 +2849,8 @@ function buildSong(o){
       matchCount(pb,syl(text),ki,pchs);
       if(!(type==="chorus"&&(p===0||p===2))){
         var fixed=pb[0].concat(pb[1]||[]).filter(function(x){return !x.rest;});
-        var exSyl2=(p%2===1&&(type==="verse"||type==="bridge")&&lines[p-1])?syl(lines[p-1].text):0;
+        var exSrc2=(p===3)?0:p-1;
+        var exSyl2=(p%2===1&&(type==="verse"||type==="bridge")&&lines[exSrc2])?syl(lines[exSrc2].text):0;
         var re=fitLine(fixed.length,lrng,bank,used,kwp,type,fixed,fillState,(kw&&type==="verse"&&p===1),kw,kwState,exSyl2);
         if(syl(re)===fixed.length&&(!exSyl2||syl(re)===exSyl2)&&dictionScore(re,fixed)>dictionScore(text,fixed))text=re;
       }
@@ -2905,6 +2942,9 @@ function buildSong(o){
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
     smoothLeaps(song,ki,sw2.lo,sw2.hi,mgC);
     syncChorusRepeat(song);syncChorusSections(song);
+    /* 훅 복제가 동음 런을 복원한다 — 복제 뒤에 한 번 더 끊고 같은 이유로 다시 복제한다 */
+    breakUnison(song,ki);
+    syncChorusRepeat(song);syncChorusSections(song);
     fixCadence(song);
     /* 음가·음표 수가 다 확정된 뒤 어절 표시를 다시 찍는다 — 그래야 악보·분석이
        breathGuard 가 본 것과 같은 어절 경계를 가리킨다 */
@@ -2942,6 +2982,8 @@ function buildSong(o){
       });
       var mgS=mirrorGroups(song);
       smoothLeaps(song,ki,lo2,hi2,mgS);
+      /* 도약 보정이 음을 같은 높이로 눌러 6~8연타를 만든다(실측 1,176곡 중 28곡) */
+      breakUnison(song,ki);
       syncChorusRepeat(song);syncChorusSections(song);fixCadence(song);
     })();
     markWordStarts(song);
