@@ -2027,21 +2027,25 @@ function healWordBreaks(song){
     if(flat[p+1].n.ws)continue;                     /* 어절 경계 = 정상 */
     if(frag(p-1,-1)>=2&&frag(p+1,1)>=2)continue;    /* 양쪽 2음절 이상 = 허용 */
     var rb=flat[p].bar, ri=flat[p].i, rd=flat[p].n.dur;
-    if(ri<1||ri+1>=rb.length)continue;              /* 마디를 넘는 쉼표는 건드리지 않는다 */
-    var pv=rb[ri-1], nx=rb[ri+1];
-    if(pv.rest||nx.rest)continue;
+    /* 마디 끝·머리의 쉼표도 고칠 수 있다 — 쉼표와 같은 마디 쪽 음만 늘리면
+       마디 합(16)은 그대로다. 이것을 통째로 건너뛰어 어절 끊김의 31%가 남았다 */
+    if(rb.length<2)continue;
+    var pv=(ri>=1)?rb[ri-1]:null, nx=(ri+1<rb.length)?rb[ri+1]:null;
+    if((pv&&pv.rest)||(nx&&nx.rest))continue;
+    if(!pv&&!nx)continue;
     /* ① 앞 음이 쉼표를 삼킨다 ② 안 되면 뒤 음을 쉼표 자리로 당긴다 */
     var mode=0;
-    if(snapND(pv.dur+rd)===pv.dur+rd&&durOk(pv.start,pv.dur+rd))mode=1;
-    else if(snapND(nx.dur+rd)===nx.dur+rd&&durOk(flat[p].n.start,nx.dur+rd))mode=2;
+    if(pv&&snapND(pv.dur+rd)===pv.dur+rd&&durOk(pv.start,pv.dur+rd))mode=1;
+    else if(nx&&snapND(nx.dur+rd)===nx.dur+rd&&durOk(flat[p].n.start,nx.dur+rd))mode=2;
     if(!mode)continue;
     /* 훅 복제 마디는 바이트 단위로 같아야 한다 — 같은 모양일 때만 함께 고친다 */
     var grp=mg.of(rb),able=true,g;
     for(g=0;g<grp.length;g++){
       var tb=grp[g];
       if(tb===rb)continue;
-      if(!(tb[ri]&&tb[ri].rest&&tb[ri].dur===rd&&tb[ri-1]&&!tb[ri-1].rest&&tb[ri+1]&&!tb[ri+1].rest
-           &&tb[ri-1].dur===pv.dur&&tb[ri+1].dur===nx.dur)){able=false;break;}
+      var okPv=!pv||(tb[ri-1]&&!tb[ri-1].rest&&tb[ri-1].dur===pv.dur);
+      var okNx=!nx||(tb[ri+1]&&!tb[ri+1].rest&&tb[ri+1].dur===nx.dur);
+      if(!(tb[ri]&&tb[ri].rest&&tb[ri].dur===rd&&tb.length===rb.length&&okPv&&okNx)){able=false;break;}
     }
     if(!able)continue;
     for(g=0;g<grp.length;g++){
@@ -2826,7 +2830,13 @@ function buildSong(o){
   var bank=BANK[mood.id]||BANK.seolem;
   /* "너의 이름" 처럼 두 어절도 받되, 붙여 쓰지 않고 공백을 그대로 둔다 */
   var kw=(o.kw||"").trim().replace(/\s+/g," ");
-  if(!/^[가-힣]{1,6}( [가-힣]{1,6})?$/.test(kw)||syl(kw)<1||syl(kw)>7)kw="";
+  /* 영어·숫자·이모지·7음절 이상은 가사와 제목에서 통째로 빠지는데 아무 말이 없어서
+     "단어를 넣었는데 무시당했다"가 됐다 — 왜 못 넣었는지 호출 쪽에 남긴다 */
+  var kwSkip="";
+  if(!/^[가-힣]{1,6}( [가-힣]{1,6})?$/.test(kw)||syl(kw)<1||syl(kw)>7){
+    if(kw)kwSkip=(/^[가-힣 ]+$/.test(kw)?"long":"hangul");
+    kw="";
+  }
   var kwp=keywordPhrases(kw,bank,lrng);
   var title=makeTitle(kw,bank,mood,trng);
   var kwHook=kwHooks(kw),kwSet={};
@@ -3027,7 +3037,7 @@ function buildSong(o){
     sections.push(sec);
     flatPush(flat,sec);
   }
-  var song={title:title,mood:mood,ki:ki,bpm:o.bpm,seed:o.seed,form:o.form,kw:kw,
+  var song={title:title,mood:mood,ki:ki,bpm:o.bpm,seed:o.seed,form:o.form,kw:kw,kwSkip:kwSkip,
     sections:sections,flat:flat,fromHum:!!(o.hum&&o.hum.length),trans:0,baseKeyPc:targetPc,voice:'alto'};
   if(!song.fromHum){normalizeRange(song);clampSpan(song,ki);smoothLeaps(song,ki);clampSpan(song,ki);smoothLeaps(song,ki);}
   attachSyllables(song);
@@ -4572,6 +4582,8 @@ function stateObj(song){
   if(song.trans)o.tr=song.trans;
   if(song.vbase)o.vb=song.vbase;
   if(song.kw)o.w=song.kw;
+  /* "C로 부르셨지만 알토 음역으로 옮겼어요" 안내가 링크를 타면 사라졌다 */
+  if(song.humKeyLabel)o.hk=song.humKeyLabel;
   if(song.fromHum&&hum){
     o.h=hum.notes.map(function(n){return [n.midi,n.start,n.dur];});
     o.c=hum.chords;
@@ -4617,7 +4629,13 @@ function generate(){
   applyVoice(song,state.voice||"alto");   /* 고른 목소리를 생성 직후에 실제로 적용 — 다시 뽑아도 유지된다 */
   keepUserKey(song,state.voice||"alto");
   renderSong(song);
+  kwSkipToast(song);
   $("resultSec").scrollIntoView({behavior:smooth(),block:"start"});
+}
+/* 넣지 못한 단어는 왜 못 넣었는지 말해 준다 */
+function kwSkipToast(song){
+  if(song.kwSkip==="long")toast("단어가 길어서 가사에 넣지 못했어요 · 6자 이내로 적어 주세요");
+  else if(song.kwSkip==="hangul")toast("가사에 넣을 단어는 한글로 적어 주세요 (영어·숫자·기호는 못 넣어요)");
 }
 function generateFromHum(){
   if(!hum){toast("먼저 허밍을 녹음해 주세요");return;}
@@ -4632,6 +4650,7 @@ function generateFromHum(){
   applyVoice(song,state.voice||"alto");
   song.humKeyLabel=(song.ki.label!==sungLabel)?sungLabel:"";
   renderSong(song);
+  kwSkipToast(song);
   $("resultSec").scrollIntoView({behavior:smooth(),block:"start"});
 }
 /* 새로 만들 때마다 시드를 뽑는다 — 1 로 고정돼 있어 모든 신규 방문자가 글자까지
@@ -5117,7 +5136,8 @@ function drawCard(){
   g.fillStyle="#ddd6fe";g.font="800 30px "+F;
   g.fillText("코드 진행",70,350);
   g.fillStyle="#67e8f9";g.font="800 42px "+F;
-  g.fillText(chordRow(hook.chords.slice(0,4).map(function(c){return c.name;}),"  -  "),70,404);
+  /* 카드에서는 반복 기호(〃)가 맥락 없이 떠서 깨진 것처럼 보인다 — 화음명을 그대로 적는다 */
+  g.fillText(hook.chords.slice(0,4).map(function(c){return c.name;}).join("  -  "),70,404);
   /* 멜로디 피아노롤 */
   var rollY=456,rollH=286,bars=hook.bars.slice(0,4);
   g.fillStyle="rgba(255,255,255,.06)";g.fillRect(70,rollY,W-140,rollH);
@@ -5144,12 +5164,26 @@ function drawCard(){
   /* 가사 */
   g.fillStyle="#ddd6fe";g.font="800 30px "+F;
   g.fillText("가사",70,rollY+rollH+68);
-  g.font="700 44px "+F;g.fillStyle="#f5f3ff";
-  var y2=rollY+rollH+134;
-  for(i=0;i<hook.lines.length&&i<4;i++){
-    var t=hook.lines[i].text;
+  /* 가사 블록을 워터마크 구분선까지 남은 띠 안에서 채운다 — 고정 66px 줄간격이라
+     코러스가 2~3행이면 카드 아래가 150~280px 비어 보였다 */
+  var lyTop=rollY+rollH+104, lyBot=H-128-46, lns=[];
+  /* 후렴 1·3행은 같은 가사다 — 카드에 그대로 찍으면 네 줄 중 두 줄이 겹쳐 보인다.
+     중복은 건너뛰고 다음 섹션에서 채운다 */
+  var pool=hook.lines.slice();
+  for(i=0;i<s.sections.length&&pool.length<10;i++)if(s.sections[i]!==hook)pool=pool.concat(s.sections[i].lines);
+  for(i=0;i<pool.length&&lns.length<4;i++){
+    var lt=pool[i].text;
+    if(lt&&lns.indexOf(lt)<0)lns.push(lt);
+  }
+  if(!lns.length)lns.push(s.title);
+  var lh=Math.min(92,Math.floor((lyBot-lyTop)/lns.length));
+  var fs=Math.max(38,Math.min(56,Math.round(lh*0.62)));
+  g.font="700 "+fs+"px "+F;g.fillStyle="#f5f3ff";
+  var y2=lyTop+Math.round((lyBot-lyTop-lh*lns.length)/2)+fs;
+  for(i=0;i<lns.length;i++){
+    var t=lns[i];
     while(g.measureText(t).width>W-140&&t.length>4)t=t.slice(0,-1);
-    g.fillText(t,70,y2);y2+=66;
+    g.fillText(t,70,y2);y2+=lh;
   }
   /* 워터마크 */
   g.strokeStyle="rgba(255,255,255,.2)";
@@ -5245,6 +5279,11 @@ $("saveBtn").addEventListener("click",function(){
     attachSyllables(sg);
   }
   if(typeof d.vb==="number"&&Math.abs(d.vb)<=24)sg.vbase=d.vb|0;
+  /* 받는 쪽에서도 "부른 키" 안내를 되살린다 — 임의 문자열은 받지 않는다 */
+  if(typeof d.hk==="string"&&d.hk.length<=12){
+    for(var hq=0;hq<12&&!sg.humKeyLabel;hq++)
+      for(var hm=0;hm<2;hm++)if(keyInfo(hq,hm?"minor":"major").label===d.hk)sg.humKeyLabel=d.hk;
+  }
   if(typeof d.vo==="string"&&MOOD_BY_ID){
     for(var vq=0;vq<VOICES.length;vq++)if(VOICES[vq].id===d.vo){sg.voice=d.vo;state.voice=d.vo;}
   }
