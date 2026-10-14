@@ -1239,6 +1239,16 @@ function snapToChord(midi,chord,maxOff){
   }
   return midi;
 }
+/* nearestScale 은 올림을 먼저 본다 — "한 단계 내려" 에 쓰면 비음계음에서 도로
+   올라와 제자리걸음을 한다(음폭 가드가 1,176곡 중 48곡에서 무효였다).
+   방향을 지키는 한 단계 이동을 따로 둔다 */
+function scaleStep(midi,ki,dir){
+  for(var k=1;k<=3;k++){
+    var m=midi+dir*k, pc=((m%12)+12)%12;
+    for(var i=0;i<7;i++)if(ki.spell[i].pc===pc)return m;
+  }
+  return midi+dir*2;
+}
 function nearestScale(midi,ki){
   for(var off=0;off<=2;off++)for(var s=0;s<2;s++){
     var m=midi+(s?-off:off), pc=((m%12)+12)%12;
@@ -3002,7 +3012,7 @@ function buildSong(o){
       var mc=moodCeilId(mood&&mood.id);
       /* 브릿지는 대비 섹션인데 벌스와 같은 천장(mc-7)을 써서 음폭 5.9~7.9반음,
          음고 4개 안에서 맴도는 섹션이 25.9%였다 — 프리코러스와 같은 천장을 준다 */
-      var ceil=(type==="chorus")?mc:((type==="pre"||type==="bridge")?mc-4:mc-6);
+      var ceil=(type==="chorus")?mc:(type==="bridge"?mc-3:(type==="pre"?mc-4:mc-6));
       var bmo={prevMidi:prevMidi,last:(bi===nbars-1),cadence:(isFinal&&bi===nbars-1),ceil:ceil,
         same:sameRun,hist:secHist,n2:secHistN};
       var nb=barMelody(use,chords[bi],ki,baseDeg,prng,bmo);
@@ -3234,13 +3244,26 @@ function buildSong(o){
       /* 바깥 음을 한 값으로 뭉개면 큰 도약이 생긴다 — 음계 한 단계씩만 당긴다 */
       eachNote(song,function(n){
         var g=0;
-        while(n.midi>hi2&&g++<6)n.midi=nearestScale(n.midi-1,ki);
+        while(n.midi>hi2&&g++<8)n.midi=scaleStep(n.midi,ki,-1);
         g=0;
-        while(n.midi<lo2&&g++<6)n.midi=nearestScale(n.midi+1,ki);
+        while(n.midi<lo2&&g++<8)n.midi=scaleStep(n.midi,ki,1);
       });
       var mgS=mirrorGroups(song);
       smoothLeaps(song,ki,lo2,hi2,mgS);
       /* 도약 보정이 음을 같은 높이로 눌러 6~8연타를 만든다(실측 1,176곡 중 28곡) */
+      breakUnison(song,ki);
+      syncChorusRepeat(song);syncChorusSections(song);fixCadence(song);
+      /* 위 네 단계가 음을 창 밖으로 도로 밀어낸다 — 한 번 더 당기고 복제만 맞춘다.
+         음폭이 상한을 넘는 곡이 1,176곡 중 48곡 남아 있었고, 그중 한 곡은 조를
+         옮기면 덧줄 두 줄(51~81) 밖으로 나갔다 */
+      eachNote(song,function(n){
+        var g2=0;
+        while(n.midi>hi2&&g2++<8)n.midi=scaleStep(n.midi,ki,-1);
+        g2=0;
+        while(n.midi<lo2&&g2++<8)n.midi=scaleStep(n.midi,ki,1);
+      });
+      /* 당기다 보면 이웃과 같은 높이가 되고(동음 런 5) 종지가 2도로 밀린다 —
+         연타·복제·종지를 그 자리에서 다시 잡는다 */
       breakUnison(song,ki);
       syncChorusRepeat(song);syncChorusSections(song);fixCadence(song);
     })();
