@@ -981,7 +981,7 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw,kwS
 var PERSON_KW=/^(너|나|엄마|아빠|친구|누나|형|오빠|언니|동생|선생님|그대|그|그녀|우리)$/;
 /* 가족·호칭 키워드 — 사물·쇠퇴 수식어가 붙으면 비하로 읽힌다 ("오래된 엄마") */
 var KIN_KW=/^(엄마|아빠|친구|누나|형|오빠|언니|동생|선생님)$/;
-function keywordPhrases(kw,bank,rng){
+function keywordPhrases(kw,bank,rng,mid){
   if(!kw)return [];
   var out=[],i,pr=bank.pred,cl=bank.clause,sh=bank.short;
   /* 주어 자리 */
@@ -1018,12 +1018,36 @@ function keywordPhrases(kw,bank,rng){
   out.push(subjOf(kw)+" 오늘을 채워");
   out.push("아직 "+subjOf(kw)+" 선명해");
   out.push(kw+josa(kw,"을를")+" 지우지 못해");
+  /* 여기까지의 꼬리는 전부 무드와 무관해, 같은 패턴이 8무드에 그대로 걸렸다
+     (키워드 패턴의 15.5%가 4무드 이상 공유, 9개는 전 무드 공유).
+     무드마다 제 어휘의 꼬리를 얹어 희석한다 — 사물 키워드에만 쓴다 */
+  if(mid&&!PERSON_KW.test(kw)){
+    var MKW={
+      seolem:[kw+josa(kw,"을를")+" 보면 설레",subjOf(kw)+" 자꾸 떠올라",kw+" 앞에서 웃었어",
+              subjOf(kw)+" 하루를 채워",kw+josa(kw,"과와")+" 마주친 날"],
+      ibyeol:[kw+josa(kw,"은는")+" 여기 남았어",subjOf(kw)+" 식어버렸어",kw+josa(kw,"을를")+" 접어둘게",
+              kw+" 없이도 괜찮을까",subjOf(kw)+" 자꾸 밟혀"],
+      saebyeok:[kw+josa(kw,"은는")+" 아직 깨어 있어",kw+" 곁에서 숨을 골라",kw+josa(kw,"을를")+" 가만히 안고",
+              subjOf(kw)+" 밤을 재워",kw+" 아래 조용히 앉아"],
+      eungwon:[kw+josa(kw,"을를")+" 꼭 쥐고 간다",kw+" 하나로 버텼어",kw+josa(kw,"과와")+" 끝까지 간다",
+              subjOf(kw)+" 길을 열어",kw+josa(kw,"을를")+" 믿고 걸어"],
+      citypop:[subjOf(kw)+" 창밖으로 흘러",kw+josa(kw,"을를")+" 지나 달려",kw+" 위로 네온이 번져",
+              subjOf(kw)+" 밤을 달려가",kw+josa(kw,"과와")+" 드라이브 중이야"],
+      ballad:[kw+josa(kw,"을를")+" 삼키고 있었어",kw+" 앞에서 망설였어",subjOf(kw)+" 오래 기다렸어",
+              kw+josa(kw,"을를")+" 겨우 꺼내",subjOf(kw)+" 목에 걸려"],
+      dance:[kw+josa(kw,"을를")+" 터뜨려",subjOf(kw)+" 박자를 올려",kw+" 위로 뛰어올라",
+              kw+" 하나로 불을 켜",subjOf(kw)+" 밤을 흔들어"],
+      lofi:[kw+josa(kw,"은는")+" 천천히 식어",subjOf(kw)+" 오후를 채워",kw+" 옆에 앉아 있어",
+              kw+josa(kw,"을를")+" 그냥 두기로 해",subjOf(kw)+" 느리게 흘러"]
+    };
+    if(MKW[mid])out=out.concat(MKW[mid]);
+  }
   return out;
 }
 /* 제목에 쓴 키워드를 후렴 첫 행(훅)에도 넣는다 — 작사 실무에서 제목은 훅의 한 구절이다 */
 /* 손에 쥐거나 안고 걸을 수 없는 명사 — "먼지를 품고 걸어가" 류를 막는다 */
 var SOFT_KW=/^(먼지|비|겨울비|눈|바람|구름|하늘|노을|파도|바다|별|달|빗소리|새벽|아침|저녁|밤|겨울밤|여름밤)$/;
-function kwHooks(kw){
+function kwHooks(kw,mid){
   if(!kw)return [];
   var out=[],night=/밤/.test(kw),soft=SOFT_KW.test(kw);
   function add(l){ if(night&&/밤/.test(l.replace(kw,"")))return; out.push(l); }
@@ -1059,6 +1083,18 @@ function kwHooks(kw){
       add(kw+josa(kw,"을를")+" 놓지 않을래");
       add(kw+josa(kw,"을를")+" 품고 걸어가");
     }
+    /* 훅도 무드와 무관해 "◆는 그대로야" 가 8무드에 전부 나왔다 */
+    var MH={
+      seolem:[kw+josa(kw,"을를")+" 보면 웃음이 나",subjOf(kw)+" 오늘의 전부야",kw+" 쪽으로 기울어",kw+josa(kw,"과와")+" 두근거려"],
+      ibyeol:[kw+josa(kw,"은는")+" 두고 갈게",subjOf(kw)+" 아직 아파",kw+" 없이 걸어갈게",kw+josa(kw,"을를")+" 흘려보낼게"],
+      saebyeok:[kw+josa(kw,"은는")+" 깨어 있는 밤",kw+" 곁에 있어 줄게",subjOf(kw)+" 나를 재워",kw+josa(kw,"을를")+" 가만히 둬"],
+      eungwon:[kw+josa(kw,"을를")+" 쥐고 일어서",kw+" 하나면 충분해",kw+josa(kw,"과와")+" 끝까지 가",subjOf(kw)+" 오늘을 이겨"],
+      citypop:[kw+josa(kw,"을를")+" 지나 달려",kw+" 위로 네온이 흘러",subjOf(kw)+" 밤을 데려가",kw+josa(kw,"과와")+" 창을 내려"],
+      ballad:[kw+josa(kw,"을를")+" 전하고 싶어",subjOf(kw)+" 오래 기다린 말",kw+" 앞에서 솔직해질게",kw+josa(kw,"을를")+" 겨우 꺼내 놓을게"],
+      dance:[kw+josa(kw,"을를")+" 터뜨려 봐",kw+" 하나로 불을 켜",subjOf(kw)+" 밤을 흔들어",kw+josa(kw,"과와")+" 새벽까지"],
+      lofi:[kw+josa(kw,"은는")+" 천천히 가도 돼",kw+" 옆에서 쉬어 가",subjOf(kw)+" 느린 오후야",kw+josa(kw,"을를")+" 그냥 둘래"]
+    };
+    if(mid&&MH[mid])for(var mq=0;mq<MH[mid].length;mq++)add(MH[mid][mq]);
   }
   return out;
 }
@@ -2837,9 +2873,9 @@ function buildSong(o){
     if(kw)kwSkip=(/^[가-힣 ]+$/.test(kw)?"long":"hangul");
     kw="";
   }
-  var kwp=keywordPhrases(kw,bank,lrng);
+  var kwp=keywordPhrases(kw,bank,lrng,mood&&mood.id);
   var title=makeTitle(kw,bank,mood,trng);
-  var kwHook=kwHooks(kw),kwSet={};
+  var kwHook=kwHooks(kw,mood&&mood.id),kwSet={};
   for(var kh=0;kh<kwHook.length;kh++)kwSet[kwHook[kh]]=1;
   var hookPool=bank.hooks.slice();
   for(var hs=hookPool.length-1;hs>0;hs--){var hj=irnd(lrng,hs+1);var tmp=hookPool[hs];hookPool[hs]=hookPool[hj];hookPool[hj]=tmp;}
