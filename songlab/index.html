@@ -979,6 +979,8 @@ function fitLine(target,rng,bank,used,kwp,stage,notes,fillState,forcePool,kw,kwS
 }
 /* 키워드를 주어·목적어·부사구 자리에 고루 넣는다 */
 var PERSON_KW=/^(너|나|엄마|아빠|친구|누나|형|오빠|언니|동생|선생님|그대|그|그녀|우리)$/;
+/* 가족·호칭 키워드 — 사물·쇠퇴 수식어가 붙으면 비하로 읽힌다 ("오래된 엄마") */
+var KIN_KW=/^(엄마|아빠|친구|누나|형|오빠|언니|동생|선생님)$/;
 function keywordPhrases(kw,bank,rng){
   if(!kw)return [];
   var out=[],i,pr=bank.pred,cl=bank.clause,sh=bank.short;
@@ -1060,12 +1062,45 @@ function kwHooks(kw){
   }
   return out;
 }
+/* 제목 유형표 — 수식어·명사구를 아무 데나 붙여 "조용한 사랑한다 말할게",
+   "느리게 가도 좋아 같은 날" 같은 비문이 났다(실측 13.1%). 80개를 손으로 분류한다.
+   N=체언구(관형 수식어·명사구 꼬리 OK) · V=용언 종결(부사만) ·
+   A=관형형(체언을 붙여야 완성) · F=조사/부사 종결(그대로 둔다) */
+var TITLE_KIND={
+ "너에게 기울어":"V","두근거리는 계절":"N","말하지 못한 말":"N","첫 번째 봄":"N",
+ "네 쪽으로":"F","오늘도 네 생각":"N","심장이 먼저":"F","괜히 웃는 밤":"N",
+ "닿을 듯 말 듯":"F","우리가 시작된 자리":"N",
+ "남겨진 계절":"N","마지막 인사":"N","식어가는 온도":"N","너의 겨울":"N",
+ "지우지 못한":"A","우리였던 자리":"N","끝나버린 페이지":"N","대답 없는 밤":"N",
+ "혼자 남은 계절":"N","그 자리에 그대로":"F",
+ "새벽 세 시":"N","불 꺼진 방":"N","조용한 도시":"N","오늘은 여기까지":"F",
+ "희미한 빛":"N","긴 밤의 끝":"N","깨어 있는 창":"N","잠들지 못한 밤":"N",
+ "천천히 흐르는":"A","숨을 고르는 시간":"N",
+ "다시 뛰는 심장":"N","오늘의 나에게":"F","끝까지":"F","넘어진 자리에서":"F",
+ "한 걸음 더":"F","빛이 되는 밤":"N","무너지지 않아":"V","여기서 시작":"N",
+ "버텨온 날들":"N","내일의 내가 웃도록":"V",
+ "네온이 흐르는 밤":"N","조수석의 여름":"N","도시가 반짝일 때":"N","창을 조금 내리고":"V",
+ "밤의 고속도로":"N","라디오를 크게":"F","우리만 아는 속도":"N","젖은 아스팔트":"N",
+ "백미러 너머":"N","잠들지 않는 도시":"N",
+ "삼키지 않을게":"V","오래 준비한 말":"N","떨리는 입술":"N","네게 닿기를":"V",
+ "뒤늦은 용기":"N","한 번만 들어줄래":"V","마주 앉은 밤":"N","오래된 편지":"N",
+ "말이 목에 걸려":"V","사랑한다 말할게":"V",
+ "멈추지 마":"V","새벽 두 시의 플로어":"N","손을 들고":"V","터지는 비트":"N",
+ "끝날 때까지":"F","밤을 태워":"V","심장이 터질 때까지":"F","다 같이 소리 질러":"V",
+ "이 박자에":"F","지금 이 순간":"N",
+ "비 오는 오후":"N","한 장만 더":"F","식은 잔":"N","느리게 가도 좋아":"V",
+ "창밖은 흐리고":"V","오늘은 이만큼":"F","책상 위 스탠드":"N","넘기지 못한 페이지":"N",
+ "시간이 느려지는":"A","아무 일 없어도":"V"
+};
+function titleKind(t){return TITLE_KIND[t]||"F";}   /* 모르면 가장 안전한 쪽 */
 function makeTitle(kw,bank,mood,rng){
   if(kw){
     /* 무드 중립 패턴 — "조용한/오래된" 같은 느린 정서의 말이 응원·댄스 곡 제목에 붙으면 안 된다 */
     var pats=["우리의 "+kw,kw+" 한 조각",kw+josa(kw,"과와")+" 나",kw+"의 온도",
       subjOf(kw)+" 오는 계절","남겨진 "+kw,"다시 "+kw,kw+" 사이로",
-      kw+"에게",kw+" 그 자리",kw+" 같은 날",kw+"의 거리",kw+" 너머"];
+      kw+" 그 자리",kw+" 같은 날",kw+"의 거리",kw+" 너머"];
+    /* "커피에게", "서울에게 쓰는 편지" — 여격은 사람 키워드에만 쓴다 */
+    if(PERSON_KW.test(kw))pats.push(kw+"에게");
     var calm=!mood||/^(ballad|ibyeol|saebyeok|lofi)$/.test(mood.id);
     pats=pats.concat(calm?["오래된 "+kw,"조용한 "+kw,"아직 "+kw]
                          :["오늘의 "+kw,"더 멀리 "+kw,kw+", 지금"]);
@@ -1073,10 +1108,11 @@ function makeTitle(kw,bank,mood,rng){
     var MP={
       seolem:["설레는 "+kw,subjOf(kw)+" 두근거려",kw+"의 첫 장"],
       ibyeol:["마지막 "+kw,kw+"의 끝",kw+josa(kw,"을를")+" 보내고"],
-      saebyeok:["새벽의 "+kw,kw+josa(kw,"과와")+" 새벽",subjOf(kw)+" 깨어 있는"],
+      saebyeok:["새벽의 "+kw,kw+josa(kw,"과와")+" 새벽",subjOf(kw)+" 깨어 있는 밤"],
       eungwon:["다시 "+kw,kw+"의 아침","일어서는 "+kw],
       citypop:["네온 속 "+kw,kw+josa(kw,"과와")+" 드라이브",kw+"의 속도"],
-      ballad:["오래된 "+kw,kw+"에게 쓰는 편지","삼켜둔 "+kw],
+      ballad:PERSON_KW.test(kw)?["오래된 "+kw,kw+"에게 쓰는 편지","삼켜둔 "+kw]
+                               :["오래된 "+kw,kw+"을 향한 편지".replace("을",josa(kw,"을를")),"삼켜둔 "+kw],
       dance:["터지는 "+kw,kw+"의 박자","오늘 밤의 "+kw],
       lofi:["느린 "+kw,kw+"의 오후","식어가는 "+kw]
     };
@@ -1084,6 +1120,10 @@ function makeTitle(kw,bank,mood,rng){
     if(mood&&MP[mood.id])pats=pats.concat(MP[mood.id].filter(function(t){
       return t.split(kw).length-1<=1;
     }));
+    /* 호칭 키워드에서 쇠퇴·사물 수식어를 걷어낸다 */
+    if(KIN_KW.test(kw))pats=pats.filter(function(t){
+      return !/^(오래된|식어가는|느린|남겨진|터지는|삼켜둔|조용한|마지막|설레는) /.test(t);
+    });
     /* 키워드에 "밤" 이 들어 있으면 밤 패턴을 빼야 "겨울밤 같은 밤" 이 안 나온다 */
     if(/밤/.test(kw))pats=pats.filter(function(t){return !/밤/.test(t.replace(kw,""));});
     else pats=pats.concat([kw+", 그 밤",kw+josa(kw,"을를")+" 부르는 밤",kw+" 같은 밤"]);
@@ -1093,20 +1133,28 @@ function makeTitle(kw,bank,mood,rng){
     /* tail 이 명사일 때만 치환한다 — "무너지지 서울", "시간이 첫눈" 방지 */
     var tailOk=syl(tail)>=2&&!/^(듯|뿐|만|것|거|채|줄|수|때)$/.test(tail)&&
       !/(지|고|며|서|면|이|가|을|를|은|는|에|로|와|과|도|만|까|네|야|어|아|다|라|자|게|래|려|요|죠|봐|줘|걸|해|니|러|록|춰|쳐|겨|혀|둬|워|져|한|든|던|을|줄|킬|할|볼|올)$/.test(tail);
-    if(/\s/.test(t)&&tailOk)pats.push(t.replace(/\S+$/,kw));
+    /* 앞 어절이 주격·처격으로 끝나면 그 뒤는 술어 자리다 — 명사로 바꾸면
+       "심장이 커피", "여기서 나이" 같은 비문이 된다 */
+    var ws=t.split(/\s+/), prevW=ws.length>1?ws[ws.length-2]:"";
+    var predSlot=/(이|가|은|는|을|를|에|에서|로|으로|와|과)$/.test(prevW);
+    /* 관형 소유격 뒤에 호칭이 오면 "오늘도 네 엄마" 처럼 읽힌다 */
+    var posSlot=PERSON_KW.test(kw)&&/^(네|내|제|너의|나의|우리|그)$/.test(prevW);
+    if(/\s/.test(t)&&tailOk&&!predSlot&&!posSlot)pats.push(t.replace(/\S+$/,kw));
     return pick(rng,pats);
   }
-  var t0=pick(rng,bank.titles);
-  /* 같은 무드에서 제목이 자주 겹쳐 보여, 앞뒤 변형을 섞는다 (공백이 있어도 자연스럽다) */
-  var deco=["그 ","다시 ","오래 ","조용한 ","마지막 ","우리의 ","어떤 ","아직 ","여전히 "];
-  /* 종결어미로 끝나는 제목 뒤에는 명사구를 붙일 수 없다 ("멈추지 마, 그 밤") */
-  var ending=/(마|게|고|래|야|어|돼|자|해|록|니|줘|봐|까|데|려|더|네|지|요)$/.test(t0);
-  var adnom=/(는|던|ㄴ|은|한)$/.test(t0)&&!/(는다|한다)$/.test(t0);
+  var t0=pick(rng,bank.titles), kind=titleKind(t0);
+  /* 관형 수식어는 체언 앞에만, 부사는 용언 앞에만 — 섞어 쓰면 비문이 된다 */
+  var ADNOM=["그 ","조용한 ","마지막 ","우리의 ","어떤 "];
+  var ADVP=["다시 ","오래 ","아직 ","여전히 "];
   var hasNight=/밤/.test(t0);
   var r=rng();
-  if(adnom)return t0+" "+pick(rng,["밤","계절","자리","날","얼굴","목소리"]);
-  if(ending)return (r<0.5)?pick(rng,deco)+t0:t0;
-  if(r<0.26)return pick(rng,deco)+t0;
+  if(kind==="A")return t0+" "+pick(rng,["밤","계절","자리","날","얼굴","목소리"]);
+  if(kind==="V")return (r<0.3)?pick(rng,ADVP)+t0:t0;
+  if(kind==="F")return t0;                       /* 조사·부사로 끝난 조각은 그대로 */
+  /* 이미 관형어로 시작하는 제목에 또 얹으면 "마지막 조용한 도시" 처럼 겹친다 */
+  var w0=t0.split(" ")[0];
+  var stacked=syl(w0)>=2&&/(은|는|던|진|린|난|운|된|긴|신|친|한|떤|쁜|른)$/.test(w0);
+  if(r<0.26&&!stacked)return pick(rng,ADNOM)+t0;
   if(r<0.40&&!hasNight)return t0+", 그 밤";
   if(r<0.52)return t0+" 그 자리";
   if(r<0.60)return t0+" 한 조각";
