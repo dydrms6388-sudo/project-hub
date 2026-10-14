@@ -91,7 +91,10 @@ input[type=range]{width:100%;max-width:100%;box-sizing:border-box;accent-color:v
 .tabs{display:flex;gap:8px;margin-bottom:12px}
 .tab{flex:1;padding:12px 8px;font-size:14px;font-weight:800;background:var(--x131313);color:var(--x9ca3af);border:1px solid var(--x2c2c2c);border-radius:12px;cursor:pointer;min-height:48px}
 .tab.on{background:rgba(167,139,250,.16);border-color:var(--acc);color:var(--acc2)}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px}
+/* 무드 8개가 글자 길이대로 흘러 3-2-2-1 로 끊기고 마지막 줄에 하나만 남았다.
+   같은 폭 2열로 세우면 고를 때 눈이 한 축만 훑으면 된다 */
+.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 4px}
+.chips .chip{width:100%;text-align:center}
 .chip{padding:8px 12px;font-size:13px;font-weight:700;background:var(--x0f0f0f);color:var(--xc9c9c9);border:1px solid var(--x333);border-radius:999px;cursor:pointer;min-height:44px}
 .chip.on{background:rgba(167,139,250,.16);border-color:var(--acc);color:var(--acc2)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
