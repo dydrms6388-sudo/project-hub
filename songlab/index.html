@@ -1735,8 +1735,19 @@ function repairCount(pb,target,ki,chs){
       if(n.rest||n.dur<4)continue;
       if(n.dur>md){md=n.dur;bb=b;ii=i;}
     }
-    if(bb<0)break;
-    var a=pb[bb],h=(md>=6)?Math.floor(md/2):2,base=a[ii].midi;
+    if(bb<0){
+      /* 쪼갤 4단위 이상 음이 없으면 한 음 모자란 채 끝난다(실측 1,176곡 중 8행).
+         16분 하한(0.105초, 142bpm 이하)을 지킬 수 있을 때만 2단위도 쪼갠다 */
+      if(60/RHY_BPM/4>=0.105)
+        for(b=0;b<pb.length&&bb<0;b++)for(i=0;i<pb[b].length;i++){
+          var n2=pb[b][i];
+          if(n2.rest||n2.dur!==2)continue;
+          if(!durOk(n2.start,1)||!durOk(n2.start+1,1))continue;
+          md=2;bb=b;ii=i;break;
+        }
+      if(bb<0)break;
+    }
+    var a=pb[bb],h=(md>=6)?Math.floor(md/2):(md>=4?2:1),base=a[ii].midi;
     /* splitDurs 와 같은 하한 — 빠른 곡에서 6단위를 (3,3) 으로 쪼개면 16분이 새로 생긴다 */
     if(60/RHY_BPM/4<0.095&&(h%2))h=evenD(h-1)||2;
     h=snapND(h);if(h>=md)h=2;
@@ -2564,7 +2575,24 @@ function finishEnding(song,capUnits){
     for(q=lb.length-1;q>=0;q--)if(!lb[q].rest){lastN=lb[q];break;}
     /* 끝음을 뺀 앞 구간 + 끝음이 가질 수 있는 최대 음가 */
     var room=capUnits-(cur-(lastN?lastN.dur:0));
-    if(room<=0)return;
+    if(room<=0){
+      /* 숨 상한 탓에 끝음을 늘릴 수 없는데 8분으로 끝나면 "뚝" 끊긴다 —
+         앞 음에서 음가를 옮겨 온다. 합이 그대로라 무중단 발성 시간은 안 늘어난다 */
+      if(lastN&&lastN.dur<=2){
+        var pz=lb.indexOf(lastN)-1;
+        while(pz>=0&&lb[pz].rest)pz--;
+        if(pz>=0){
+          var pn=lb[pz];
+          for(var mv=6;mv>=2;mv-=2){
+            if(pn.dur-mv<2)continue;
+            if(snapND(pn.dur-mv)!==pn.dur-mv||snapND(lastN.dur+mv)!==lastN.dur+mv)continue;
+            if(!durOk(pn.start,pn.dur-mv)||!durOk(lastN.start-mv,lastN.dur+mv))continue;
+            pn.dur-=mv;lastN.start-=mv;lastN.dur+=mv;break;
+          }
+        }
+      }
+      return;
+    }
     growFinal(song.flat[bi].notes,room,Math.ceil(0.25/spu2));
   }else growFinal(song.flat[bi].notes);
 }
@@ -2730,8 +2758,8 @@ function endDegree(song){
   return c[fnv("cad|"+(song.seed||"")+"|"+song.mood.id)%c.length];
 }
 function fixCadence(song){
-  var ms=[],last=null,prevN=null;
-  eachNote(song,function(n){ms.push(n.midi);prevN=last;last=n;});
+  var ms=[],last=null,prevN=null,prev2=null;
+  eachNote(song,function(n){ms.push(n.midi);prev2=prevN;prevN=last;last=n;});
   if(!last)return;
   var ref=(prevN!==null)?prevN.midi:last.midi;   /* 직전 음에서 멀리 뛰지 않게 고른다 */
   ms.sort(function(a,b){return a-b;});
@@ -2768,6 +2796,19 @@ function fixCadence(song){
   }
   if(best===null)best=fb;
   if(best!==null)last.midi=best;
+  /* 끝음을 옥타브로 올릴 자리가 없으면(음폭 창 밖) 72→60 같은 종지 진입이 남는다 —
+     실측 720곡 중 12건, 전부 코러스 끝. 끝음을 낮추는 대신 직전 음을 끌어내려
+     "걸어 들어가는" 종지로 만든다 */
+  if(best!==null&&prevN&&Math.abs(best-prevN.midi)>9){
+    var want=[best+7,best+5,best+4,best+3,best+2],pi;
+    for(pi=0;pi<want.length;pi++){
+      var cd2=nearestScale(want[pi],song.ki);
+      if(cd2<RANGE_LO||cd2>moodCeil(song))continue;
+      if(Math.abs(cd2-best)>9)continue;
+      if(prev2&&Math.abs(cd2-prev2.midi)>9)continue;
+      prevN.midi=cd2;break;
+    }
+  }
 }
 /* 코러스가 벌스보다 충분히 올라가지 않으면 코러스만 들어 올린다 */
 /* 무드마다 후렴 천장을 달리 둔다 — 전부 RANGE_HI 까지 밀어 올리면 발라드와 댄스가 같은 높이가 된다 */
@@ -3058,6 +3099,17 @@ function buildSong(o){
       shapePhrase(pb,pl2,ki,pchs,text);
       repairCount(pb,syl(text),ki,pchs);
       for(var fq=0;fq<pb.length;fq++)fixDurs(pb[fq]);
+      /* 두 마디가 못 받는 음절 수(11~12)를 요구하면 repairCount 가 쪼갤 긴 음이
+         남지 않아 한 음 모자란 채 끝난다 — 넓힌 시드 표본에서 1,176곡 중 8행.
+         실제로 만들어진 음표 수에 맞는 줄로 다시 고른다 (훅 복제행은 제외) */
+      var realN=0,rq;
+      for(rq=0;rq<pb.length;rq++)realN+=pb[rq].filter(function(x){return !x.rest;}).length;
+      if(realN!==syl(text)&&!(type==="chorus"&&(p===0||p===2))){
+        var fixed3=[];
+        for(rq=0;rq<pb.length;rq++)fixed3=fixed3.concat(pb[rq].filter(function(x){return !x.rest;}));
+        var alt3=fitLine(realN,lrng,bank,used,kwp,type,fixed3,fillState,false,kw,kwState,0);
+        if(syl(alt3)===realN)text=alt3;
+      }
       easeDiction(pb,text,ki);
       if(!(type==="chorus"&&p===2))used.push(text);
       lines.push({text:text,bar:p*2,bars:pb.length,chords:chordTextFor(pb.length,chords,p*2)});
