@@ -4,9 +4,9 @@
  "maxLoops": 5,
  "summary": {
   "total": 56,
-  "pass": 51,
+  "pass": 52,
   "reviewNeeded": 4,
-  "reviewing": 1,
+  "reviewing": 0,
   "avgOverall": 82.3
  },
  "projects": [
@@ -2599,9 +2599,9 @@
    "name": "AI 작사작곡 스튜디오",
    "source": "project-hub/songlab",
    "live": "https://tomatoeggcat.com/songlab/",
-   "status": "reviewing",
-   "loops": 27,
-   "note": "소유자 요청으로 게이트 90. 도메인 페르소나 4인 루프 15차 평균 89.75(작곡 86/작사 90/가수 92/일반 91), 디자이너 3인 루프 3라운드 평균 90.7(79.0 → 90.7)로 디자인 게이트 통과.",
+   "status": "pass",
+   "loops": 28,
+   "note": "소유자 요청으로 게이트 90. 도메인 페르소나 4인 루프 16차 평균 90.75(작곡 86/작사 90/가수 92/일반 95), 디자이너 3인 루프 3라운드 평균 90.7 — 둘 다 통과.",
    "axes": {
     "functional": 96,
     "mobileUX": 91,
@@ -2609,15 +2609,15 @@
     "content": 90,
     "realValue": 88
    },
-   "reviewerAvg": 90,
+   "reviewerAvg": 91,
    "userScores": [
     86,
     90,
     92,
-    91
+    95
    ],
-   "userAvg": 89.75,
-   "overall": 90,
+   "userAvg": 90.75,
+   "overall": 91,
    "findings": [
     "불변식 하네스가 1,176곡을 돌면서도 시드를 1~3만 썼다 — 넓히자 음절 불일치 8행·끝음 8분 1건이 드러났다(수정됨).",
     "파이프라인 끝 음폭 가드가 48곡에서 무효. nearestScale 이 off=1 에서 올림을 먼저 봐서 '한 단계 내려'가 제자리걸음을 했다(수정됨).",
@@ -2700,6 +2700,10 @@
     {
      "loop": 15,
      "overall": 90
+    },
+    {
+     "loop": 16,
+     "overall": 91
     }
    ],
    "reviewedAt": "2026-10-14",
