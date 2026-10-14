@@ -47,9 +47,10 @@
 body{margin:0;background:var(--x0a0a0a);color:var(--xededed);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
 .wrap{max-width:760px;margin:0 auto;padding:18px 18px 64px}
 a{color:var(--acc)}
-.nav{font-size:12.5px;color:var(--x9ca3af);margin-bottom:10px}
+.nav{font-size:12px;color:var(--x9ca3af);margin-bottom:10px}
 /* 문장 속 인라인 링크지만 13×15px 였다 — 세로 패딩으로 24×24 를 넘긴다 */
-.nav a{color:inherit;display:inline-block;padding:6px 8px;margin:-6px -4px;min-width:24px;text-align:center}
+/* 엄지로 누를 수 있게 44x44 — 음수 여백으로 줄 높이는 그대로 둔다 */
+.nav a{color:inherit;display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin:-14px -8px;vertical-align:middle}
 .nav a{color:var(--x7aa2ff);text-decoration:none}
 h1{font-size:24px;font-weight:800;margin:0 0 4px;color:var(--xa78bfa)}
 /* 그라디언트 글자는 background-clip:text 를 지원하는 곳에서만 — 미지원·강제색
@@ -60,27 +61,27 @@ h1{font-size:24px;font-weight:800;margin:0 0 4px;color:var(--xa78bfa)}
 @media (forced-colors:active){
   h1{background:none;color:CanvasText;-webkit-text-fill-color:CanvasText}
 }
-.lead{color:var(--x9ca3af);margin:0 0 14px;font-size:14.5px}
-.card{border:1px solid var(--x262626);background:var(--x161616);border-radius:18px;padding:16px;margin-bottom:18px}
+.lead{color:var(--x9ca3af);margin:0 0 14px;font-size:14px}
+.card{border:1px solid var(--x262626);background:var(--x161616);border-radius:20px;padding:16px;margin-bottom:18px}
 label{display:block;font-size:13px;font-weight:700;color:var(--x9ca3af);margin:0 0 8px}
-.hint{font-size:12.5px;color:var(--x9a9a9a);margin:6px 0 0;line-height:1.45}
-input[type=text]{width:100%;padding:13px;font-size:16px;background:var(--x0f0f0f);color:var(--xf5f3ff);border:1px solid var(--x333);border-radius:12px;outline:none;min-height:48px}
+.hint{font-size:12px;color:var(--x9a9a9a);margin:6px 0 0;line-height:1.45}
+input[type=text]{width:100%;padding:12px;font-size:16px;background:var(--x0f0f0f);color:var(--xf5f3ff);border:1px solid var(--x333);border-radius:12px;outline:none;min-height:48px}
 input[type=text]:focus{border-color:var(--acc)}
-select{width:100%;padding:12px;font-size:15px;background:var(--x0f0f0f);color:var(--xf5f3ff);border:1px solid var(--x333);border-radius:12px;min-height:46px}
-input[type=range]{width:100%;accent-color:var(--acc);height:44px;padding:0;background:transparent;cursor:pointer}
+select{width:100%;padding:12px;font-size:16px;background:var(--x0f0f0f);color:var(--xf5f3ff);border:1px solid var(--x333);border-radius:12px;min-height:46px}
+input[type=range]{width:100%;max-width:100%;box-sizing:border-box;accent-color:var(--acc);height:44px;padding:0;margin:0;background:transparent;cursor:pointer}
 /* 2.4.7 — 키보드 포커스는 어느 배경에서도 보여야 한다 (바깥 흰 테두리 + 안쪽 보라) */
 :is(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
-  outline:3px solid var(--xc4b5fd);outline-offset:2px;border-radius:6px}
+  outline:3px solid var(--xc4b5fd);outline-offset:2px;border-radius:8px}
 /* 2.3.3 / frontend-design — 움직임 축소를 요청한 사용자에게는 애니메이션을 끈다 */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
     transition-duration:.001ms !important;scroll-behavior:auto !important}
 }
 .tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{flex:1;padding:11px 8px;font-size:14.5px;font-weight:800;background:var(--x131313);color:var(--x9ca3af);border:1px solid var(--x2c2c2c);border-radius:12px;cursor:pointer;min-height:48px}
+.tab{flex:1;padding:12px 8px;font-size:14px;font-weight:800;background:var(--x131313);color:var(--x9ca3af);border:1px solid var(--x2c2c2c);border-radius:12px;cursor:pointer;min-height:48px}
 .tab.on{background:rgba(167,139,250,.16);border-color:var(--acc);color:var(--acc2)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px}
-.chip{padding:9px 12px;font-size:13.5px;font-weight:700;background:var(--x0f0f0f);color:var(--xc9c9c9);border:1px solid var(--x333);border-radius:999px;cursor:pointer;min-height:44px}
+.chip{padding:8px 12px;font-size:13px;font-weight:700;background:var(--x0f0f0f);color:var(--xc9c9c9);border:1px solid var(--x333);border-radius:999px;cursor:pointer;min-height:44px}
 .chip.on{background:rgba(167,139,250,.16);border-color:var(--acc);color:var(--acc2)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 .row{margin-top:12px}
@@ -97,13 +98,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .lenchips{display:flex;gap:8px}
 .lenchips button{flex:1;width:auto;padding:10px 6px;background:var(--x1b1733);border:1px solid var(--x2e2a52);color:var(--xcfcae8);
   font-size:14px;font-weight:700;line-height:1.25;border-radius:12px}
-.lenchips button small{display:block;font-size:11px;font-weight:500;color:var(--x9a93c0);margin-top:2px}
+.lenchips button small{display:block;font-size:11px;font-weight:400;color:var(--x9a93c0);margin-top:2px}
 .lenchips button.on{background:var(--x7c3aed);border-color:var(--x7c3aed);color:#fff}
 .lenchips button.on small{color:#fff}
 .inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,var(--x1e1b4b),var(--x3b1d6b));border-bottom:1px solid var(--x4c2a8a)}
 .inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .inbound span{font-size:14px;color:var(--xe9d5ff);flex:1;min-width:150px}
-.inbound button{width:auto;padding:10px 18px;font-size:15px;flex:0 0 auto;white-space:nowrap}
+.inbound button{width:auto;padding:10px 18px;font-size:16px;flex:0 0 auto;white-space:nowrap}
 .inbound span{word-break:keep-all;overflow-wrap:anywhere}
 .pane{display:none}
 .pane.on{display:block}
@@ -115,73 +116,93 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .analysis{display:none;margin-top:14px;padding:14px;border:1px dashed var(--x3b2f63);border-radius:12px;background:var(--x12101f)}
 .analysis.show{display:block}
 .analysis b{color:var(--acc2)}
-.warn{display:none;font-size:13.5px;color:var(--xfca5a5);margin:12px 0 0}
+.warn{display:none;font-size:13px;color:var(--xfca5a5);margin:12px 0 0}
 .warn.show{display:block}
 .result{display:none;margin-top:8px}
 .result.show{display:block}
-.songhead{background:linear-gradient(160deg,var(--x241056) 0%,var(--x3b1d6b) 45%,var(--x155e75) 120%);border:1px solid var(--x4c2a8a);border-radius:20px;padding:22px;position:relative;overflow:hidden}
+.songhead{background:linear-gradient(160deg,var(--x241056) 0%,var(--x3b1d6b) 45%,var(--x155e75) 120%);border:1px solid var(--x4c2a8a);border-radius:20px;padding:24px;position:relative;overflow:hidden}
 .songhead:before{content:"";position:absolute;top:-80px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(167,139,250,.35),transparent 70%);pointer-events:none}
 .songtag{font-size:12px;font-weight:800;letter-spacing:.18em;color:var(--xc4b5fd)}
-.songtitle{font-size:27px;font-weight:900;margin:8px 0 10px;color:var(--xf1f1f1);word-break:keep-all}
+.songtitle{font-size:27px;font-weight:800;margin:8px 0 10px;color:var(--xf1f1f1);word-break:keep-all}
 .facts{display:flex;flex-wrap:wrap;gap:8px}
-.analysis{scroll-margin-top:26px}#resultSec{scroll-margin-top:16px}#staffView{scroll-margin-top:86px}
-.fact{font-size:12.5px;font-weight:800;background:rgba(255,255,255,.14);color:var(--xf5f3ff);padding:5px 12px;border-radius:999px}
+.analysis{scroll-margin-top:24px}#resultSec{scroll-margin-top:16px}#staffView{scroll-margin-top:86px}
+.fact{font-size:12px;font-weight:800;background:rgba(255,255,255,.14);color:var(--xf5f3ff);padding:5px 12px;border-radius:999px}
 .player{display:flex;gap:10px;align-items:center;margin-top:16px}
 .player button{width:auto;padding:12px 20px}
 .barpos{font-size:13px;color:var(--xc4b5fd);font-variant-numeric:tabular-nums}
-h2.sec{font-size:18px;margin:26px 0 10px;color:var(--acc2)}
-.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--x262626);border-radius:14px;background:#fbfaff;padding:10px 4px}
+h2.sec{font-size:19px;margin:24px 0 10px;color:var(--acc2)}
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--x262626);border-radius:12px;background:#fbfaff;padding:10px 4px}
 .scroller svg{display:block}
-.sheet{border:1px solid var(--x262626);background:var(--x131313);border-radius:14px;padding:16px;font-size:14.5px}
+.sheet{border:1px solid var(--x262626);background:var(--x131313);border-radius:12px;padding:16px;font-size:14px}
 .sblock{margin-bottom:16px}
 .sblock:last-child{margin-bottom:0}
 .slabel{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--acc);margin-bottom:6px}
 .sline{margin-bottom:10px}
 .schord{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:800;color:var(--x67e8f9);white-space:pre;overflow-x:auto}
-.slyric{color:var(--xf1f1f1);word-break:keep-all}
+/* 따라 부르는 글자다 — 시트 기본 14px 로는 폰에서 작다 */
+.slyric{font-size:16px;line-height:1.5;color:var(--xf1f1f1);word-break:keep-all}
 .slyric .sy{font-size:11px;color:var(--x9ca3af);margin-left:6px}
 /* 계이름 — 가사 음절과 1:1 로 대응하므로 가사 바로 아래 붙인다 */
-.ssol{font-size:12.5px;color:var(--xa8a0d4);letter-spacing:.12em;margin-top:2px}
+.ssol{font-size:12px;color:var(--xa8a0d4);letter-spacing:.12em;margin-top:2px}
 .progline{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:var(--xddd6fe);background:var(--x131313);border:1px solid var(--x262626);border-radius:12px;padding:14px;overflow-x:auto;white-space:pre}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
 .acts .full{grid-column:1/-1}
-.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--x262626);color:var(--xede9fe);border:1px solid var(--x3b2f63);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--x262626);color:var(--xede9fe);border:1px solid var(--x3b2f63);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .about{margin-top:34px}
-.about h2{font-size:19px;margin:26px 0 8px;color:var(--acc2)}
-.about p,.about li{font-size:14.5px;color:var(--xc9c9c9)}
+.about h2{font-size:19px;margin:24px 0 8px;color:var(--acc2)}
+.about p,.about li{font-size:14px;color:var(--xc9c9c9)}
 .about details{border:1px solid var(--x262626);background:var(--x141414);border-radius:12px;padding:12px 16px;margin-bottom:10px}
-.about summary{cursor:pointer;font-weight:700;font-size:14.5px;color:var(--xededed);min-height:44px;display:flex;align-items:center}
-.fine{font-size:12.5px;color:var(--x8a8a8a);border-top:1px dashed var(--x2e2e2e);padding-top:14px;margin-top:22px}
-.rel{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
-.rel a{font-size:13.5px;font-weight:700;text-decoration:none;color:var(--xe5e5e5);background:var(--x161616);border:1px solid var(--x2c2c2c);border-radius:999px;padding:11px 14px;min-height:44px;display:inline-flex;align-items:center}
-footer{border-top:1px solid var(--x1f1f1f);margin-top:40px;padding-top:18px;font-size:12.5px;color:var(--x9ca3af)}
+.about summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--xededed);min-height:44px;display:flex;align-items:center}
+.fine{font-size:12px;color:var(--x8a8a8a);border-top:1px dashed var(--x2e2e2e);padding-top:14px;margin-top:24px}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0}
+.rel a{font-size:13px;font-weight:700;text-decoration:none;color:var(--xe5e5e5);background:var(--x161616);border:1px solid var(--x2c2c2c);border-radius:999px;padding:12px 14px;min-height:44px;display:inline-flex;align-items:center}
+footer{border-top:1px solid var(--x1f1f1f);margin-top:40px;padding-top:18px;font-size:12px;color:var(--x9ca3af)}
 footer a{color:var(--x9ca3af);text-decoration:none;margin-right:12px;display:inline-block;min-height:44px;line-height:44px;min-width:44px;text-align:center;padding:0 4px}
 details.adv{border:1px solid var(--x2c2c2c);background:var(--x131313);border-radius:12px;padding:0 14px;margin-top:14px}
 details.adv[open]{padding-bottom:14px}
 details.adv>summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--x9ca3af);padding:14px 0;list-style:none}
 details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}details>summary::marker{content:""}
 details.adv>summary::-webkit-details-marker{display:none}
-details.adv>summary:before{content:"▸ ";color:var(--acc)}
+details.adv>summary::before{color:var(--acc)}
 details.adv[open]>summary:before{content:"▾ "}
 .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.mini{width:auto;padding:11px 14px;font-size:13.5px;font-weight:700;background:rgba(255,255,255,.14);color:var(--xf5f3ff);border:1px solid rgba(255,255,255,.22);border-radius:10px;min-height:44px}
+.mini{width:auto;padding:12px 14px;font-size:13px;font-weight:700;background:rgba(255,255,255,.14);color:var(--xf5f3ff);border:1px solid rgba(255,255,255,.22);border-radius:12px;min-height:44px}
 .mini.on{background:var(--acc);color:var(--accd);border-color:var(--acc)}
 .quick{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
-.quick button{padding:13px 6px;font-size:14px;min-height:46px}
-.playnote{font-size:12.5px;color:var(--xc4b5fd);margin:10px 0 0}
+.quick button{padding:12px 6px;font-size:14px;min-height:46px}
+.playnote{font-size:12px;color:var(--xc4b5fd);margin:10px 0 0}
 .scrollhint{font-size:12px;color:var(--x9a9a9a);margin:6px 0 0}
 .sline.now{background:rgba(124,58,237,.16);border-radius:8px}
 .sline.now .slyric{color:#fff}
 .scroller{position:relative}
 .swipe{display:inline-block;background:var(--x7c3aed);color:#fff;font-weight:700;border-radius:999px;
-  padding:3px 10px;margin-right:6px;font-size:12.5px}
+  padding:3px 10px;margin-right:6px;font-size:12px}
 .scroller.more::after{content:"";position:absolute;top:0;right:0;width:22px;height:100%;
   pointer-events:none;background:linear-gradient(90deg,rgba(251,250,255,0),rgba(251,250,255,.95))}
 /* 음절 수 라벨 — showsyl 을 켜는 JS 가 없어 죽어 있었다. 화면에선 숨기되
    스크린리더는 읽도록 sr-only 로 바꾼다 */
 .sy{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media(max-width:430px){.grid2{grid-template-columns:1fr}.songtitle{font-size:23px}.quick{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.grid2{grid-template-columns:1fr}.songtitle{font-size:24px}.quick{grid-template-columns:1fr 1fr}}
+
+/* 디스클로저 표시 — FAQ 6개와 "악보로 보기" 에는 아무 표시가 없어 펼쳐지는지
+   알 수 없었다. 모든 summary 에 같은 꺾쇠를 주고 열리면 돌린다 */
+summary{list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"";display:inline-block;flex:0 0 auto;width:0;height:0;
+  margin-right:8px;border-left:5px solid currentColor;border-top:4px solid transparent;
+  border-bottom:4px solid transparent;transition:transform .18s ease;transform-origin:30% 50%}
+details[open]>summary::before{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){summary::before{transition:none}}
+
+/* 재생 진행이 "3 / 20 마디" 글자뿐이라 어디쯤인지 한눈에 안 들어왔다 */
+.pbar{height:6px;border-radius:999px;background:var(--x262626);overflow:hidden;margin:10px 0 0}
+.pbar>i{display:block;height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .12s linear}
+@media (prefers-reduced-motion:reduce){.pbar>i{transition:none}}
+/* 상태 변화가 즉각 점프했다 — 누르는 요소에 같은 전환을 준다 */
+button,.chip,select,summary,a{transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .08s ease}
+@media (prefers-reduced-motion:reduce){button,.chip,select,summary,a{transition:none}}
 </style>
 </head>
 <body>
@@ -190,7 +211,7 @@ details.adv[open]>summary:before{content:"▾ "}
 <div class="inbound" id="inbound">
   <span id="inboundMsg">🎼 친구가 만든 곡이 도착했어요.</span>
   <button id="inboundBtn" type="button">나도 만들기 →</button>
-  <button id="inboundX" type="button" aria-label="닫기" style="width:auto;padding:8px 12px;background:transparent;color:var(--xc4b5fd);border:0;font-size:18px">✕</button>
+  <button id="inboundX" type="button" aria-label="닫기" style="width:auto;padding:8px 12px;background:transparent;color:var(--xc4b5fd);border:0;font-size:19px">✕</button>
 </div>
 
 <nav class="nav"><a href="/">홈</a> › 엔터·바이럴 › AI 작사작곡 스튜디오</nav>
@@ -218,7 +239,7 @@ details.adv[open]>summary:before{content:"▾ "}
   </div>
 
   <div class="row">
-    <label for="voiceSel2">누가 부를까요? <span class="hint" style="font-weight:600">고르면 키가 자동으로 맞춰져요</span></label>
+    <label for="voiceSel2">누가 부를까요? <span class="hint" style="font-weight:700">고르면 키가 자동으로 맞춰져요</span></label>
     <select id="voiceSel2"></select>
   </div>
   <div class="row">
@@ -239,7 +260,7 @@ details.adv[open]>summary:before{content:"▾ "}
         <select id="keySel"></select>
       </div>
       <div>
-        <label for="formSel">곡 구성 <span class="hint" style="font-weight:600">위 칩과 같은 설정이에요</span></label>
+        <label for="formSel">곡 구성 <span class="hint" style="font-weight:700">위 칩과 같은 설정이에요</span></label>
         <select id="formSel">
           <option value="0">짧게 · 12마디</option>
           <option value="1" selected>보통 · 20마디</option>
@@ -273,7 +294,7 @@ details.adv[open]>summary:before{content:"▾ "}
     <p id="anaPlain" style="margin:0 0 8px;font-size:13px;color:var(--x9ca3af)"></p>
     <details class="adv" style="margin:0 0 10px">
       <summary>❓ 단조 · BPM · 마디가 무슨 뜻인가요?</summary>
-      <ul style="font-size:13.5px;color:var(--xc9c9c9);padding-left:18px;margin:8px 0 0">
+      <ul style="font-size:13px;color:var(--xc9c9c9);padding-left:18px;margin:8px 0 0">
         <li><b>장조 · 단조</b> — 노래의 분위기. 장조는 밝고, 단조는 어둡고 애절하게 들려요.</li>
         <li><b>BPM</b> — 1분에 몇 박인지. 숫자가 클수록 빠른 노래예요(발라드 60~75, 댄스 125~135).</li>
         <li><b>마디</b> — 노래를 네 박자씩 끊은 한 칸. 20마디면 빠르기에 따라 40초~1분쯤이에요.</li>
@@ -302,7 +323,7 @@ details.adv[open]>summary:before{content:"▾ "}
     <p class="hint" style="margin-top:4px">이 단어는 제목·가사에 들어가고 <b>공유 링크에도 함께 담겨요</b> — 실명은 넣지 마세요.</p>
   </div>
   <div class="row">
-    <label for="voiceSel3">누가 부를까요? <span class="hint" style="font-weight:600">고르면 키가 자동으로 맞춰져요</span></label>
+    <label for="voiceSel3">누가 부를까요? <span class="hint" style="font-weight:700">고르면 키가 자동으로 맞춰져요</span></label>
     <select id="voiceSel3"></select>
   </div>
   <button class="cta" id="humMakeBtn" type="button" disabled>🎼 내 허밍으로 곡 완성하기</button>
@@ -336,6 +357,7 @@ details.adv[open]>summary:before{content:"▾ "}
       <button id="playBtn" type="button">▶ 재생</button>
       <span class="barpos" id="barPos">0 / 0 마디</span>
     </div>
+    <div class="pbar" id="playBar" role="progressbar" aria-label="재생 진행" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
     <p class="playnote">🎹 멜로디는 악기 소리로 들려드려요(사람 목소리 합성은 아직 없어요). 가사 아래 <b>계이름</b>을 보면서 따라 불러 보세요 — 음절 하나에 음 하나입니다.</p>
     <p class="playnote" style="margin:10px 0 4px"><b>누가 부를까요?</b> 고르면 키가 자동으로 맞춰져요.</p>
     <div class="tools">
@@ -347,7 +369,7 @@ details.adv[open]>summary:before{content:"▾ "}
     <p class="playnote" id="keyHint" style="margin-top:6px;display:none;color:var(--xfcd34d)"></p>
   </div>
 
-  <p class="playnote" style="margin:10px 0 0;font-size:12.5px;color:var(--x9a93c0)">
+  <p class="playnote" style="margin:10px 0 0;font-size:12px;color:var(--x9a93c0)">
     ⓘ 재미와 습작을 위한 초안이에요. 전문 작곡·편곡이나 저작권 검토를 대신하지 않습니다.</p>
 
   <div class="quick">
@@ -4155,8 +4177,16 @@ function stopPlay(){
   activeNodes=[];
   $("playBtn").textContent="▶ 재생";
   $("barPos").textContent="0 / "+(current?current.flat.length:0)+" 마디";
+  setPlayBar(0);
   var ls0=document.querySelectorAll("#lyricSheet .sline.now");
   for(var z0=0;z0<ls0.length;z0++)ls0[z0].classList.remove("now");
+}
+/* 재생 진행 바 — 글자만으로는 어디쯤인지 안 보인다 */
+function setPlayBar(pct){
+  var el=$("playBar");if(!el)return;
+  var p=Math.max(0,Math.min(100,pct||0));
+  el.firstElementChild.style.width=p.toFixed(1)+"%";
+  el.setAttribute("aria-valuenow",Math.round(p));
 }
 function playSong(song){
   if(!ac()){toast("이 브라우저에서는 소리를 낼 수 없어요");return;}
@@ -4209,6 +4239,7 @@ function playSong(song){
     if(el>=playDur){stopPlay();return;}
     var bi=clamp(Math.floor(el/barSec)+1,0,song.flat.length);
     $("barPos").textContent=bi+" / "+song.flat.length+" 마디";
+    setPlayBar(100*Math.min(1,el/playDur));
     /* 악보를 못 읽어도 지금 어느 가사인지 알 수 있게 */
     var cur=bi-1,ls=document.querySelectorAll("#lyricSheet .sline"),nowEl=null;
     for(var q=0;q<ls.length;q++){
@@ -4614,6 +4645,7 @@ function renderSong(song){
   $("songTitle").textContent=song.title;
   refreshResult();
   $("barPos").textContent="0 / "+song.flat.length+" 마디";
+  setPlayBar(0);
   $("voiceSel").value=song.voice||"alto";
   ["voiceSel2","voiceSel3"].forEach(function(o){if($(o))$(o).value=song.voice||"alto";});
   /* 고른 키가 목소리 설정에 밀려 바뀌었으면 말해 준다 — 안 그러면 "눌렀는데 안 먹네" 로 보인다 */
