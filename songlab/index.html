@@ -38,6 +38,17 @@
 ]}
 </script>
 <style>
+/* 디자인 토큰 — 값이 흩어져 글자 12종·모서리 6종·굵기 6종이 됐던 것을 정리했다.
+   새 규칙은 이 스케일 밖의 값을 쓰지 않는다.
+   글자 11·12·13·14·16·19·24·27 / 간격 2·4·6·8·10·12·14·16·20·24·32 /
+   모서리 8·12·20·999 / 굵기 400·700·800 */
+:root{
+  --fs-xs:11px;--fs-sm:12px;--fs-md:13px;--fs-base:14px;--fs-lg:16px;
+  --fs-xl:19px;--fs-2xl:24px;--fs-3xl:27px;
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-8:32px;
+  --rad-sm:8px;--rad-md:12px;--rad-lg:20px;--rad-pill:999px;
+}
+
 :root{color-scheme:light dark;--xfcd34d:#fcd34d;--x0a0a0a:#0a0a0a;--x0f0f0f:#0f0f0f;--x12101f:#12101f;--x131313:#131313;--x141414:#141414;--x155e75:#155e75;--x161616:#161616;--x1b1630:#1b1630;--x1b1733:#1b1733;--x1e1b4b:#1e1b4b;--x1f1f1f:#1f1f1f;--x241056:#241056;--x262626:#262626;--x2a1055:#2a1055;--x2c2c2c:#2c2c2c;--x2e2a52:#2e2a52;--x2e2e2e:#2e2e2e;--x333:#333;--x34d399:#34d399;--x3a0b0b:#3a0b0b;--x3b1d6b:#3b1d6b;--x3b2f63:#3b2f63;--x4c2a8a:#4c2a8a;--x5eead4:#5eead4;--x67e8f9:#67e8f9;--x7aa2ff:#7aa2ff;--x7c3aed:#7c3aed;--x8a8a8a:#8a8a8a;--x9a93c0:#9a93c0;--x9a9a9a:#9a9a9a;--x9ca3af:#9ca3af;--xa78bfa:#a78bfa;--xa8a0d4:#a8a0d4;--xc4b5fd:#c4b5fd;--xc9c9c9:#c9c9c9;--xcfcae8:#cfcae8;--xddd6fe:#ddd6fe;--xe5e5e5:#e5e5e5;--xe9d5ff:#e9d5ff;--xede9fe:#ede9fe;--xededed:#ededed;--xf1f1f1:#f1f1f1;--xf5f3ff:#f5f3ff;--xf87171:#f87171;--xfca5a5:#fca5a5;--acc:var(--xa78bfa);--acc2:var(--xddd6fe);--accd:var(--x2a1055);--ok:var(--x5eead4)}
 /* 허브 416개 앱 중 385개가 라이트 모드 토큰 플립 + 공용 tec-theme 선호값을 읽는다.
    songlab 만 다크 전용이어서 홈에서 라이트로 바꾼 사용자가 이 앱에서만 다크를 봤다. */
@@ -126,7 +137,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .songtitle{font-size:27px;font-weight:800;margin:8px 0 10px;color:var(--xf1f1f1);word-break:keep-all}
 .facts{display:flex;flex-wrap:wrap;gap:8px}
 .analysis{scroll-margin-top:24px}#resultSec{scroll-margin-top:16px}#staffView{scroll-margin-top:86px}
-.fact{font-size:12px;font-weight:800;background:rgba(255,255,255,.14);color:var(--xf5f3ff);padding:5px 12px;border-radius:999px}
+.fact{font-size:12px;font-weight:800;background:rgba(255,255,255,.14);color:var(--xf5f3ff);padding:4px 12px;border-radius:999px}
 .player{display:flex;gap:10px;align-items:center;margin-top:16px}
 .player button{width:auto;padding:12px 20px}
 .barpos{font-size:13px;color:var(--xc4b5fd);font-variant-numeric:tabular-nums}
@@ -149,7 +160,7 @@ h2.sec{font-size:19px;margin:24px 0 10px;color:var(--acc2)}
 .acts .full{grid-column:1/-1}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--x262626);color:var(--xede9fe);border:1px solid var(--x3b2f63);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.about{margin-top:34px}
+.about{margin-top:32px}
 .about h2{font-size:19px;margin:24px 0 8px;color:var(--acc2)}
 .about p,.about li{font-size:14px;color:var(--xc9c9c9)}
 .about details{border:1px solid var(--x262626);background:var(--x141414);border-radius:12px;padding:12px 16px;margin-bottom:10px}
@@ -177,8 +188,8 @@ details.adv[open]>summary:before{content:"▾ "}
 .sline.now .slyric{color:#fff}
 .scroller{position:relative}
 .swipe{display:inline-block;background:var(--x7c3aed);color:#fff;font-weight:700;border-radius:999px;
-  padding:3px 10px;margin-right:6px;font-size:12px}
-.scroller.more::after{content:"";position:absolute;top:0;right:0;width:22px;height:100%;
+  padding:4px 10px;margin-right:6px;font-size:12px}
+.scroller.more::after{content:"";position:absolute;top:0;right:0;width:24px;height:100%;
   pointer-events:none;background:linear-gradient(90deg,rgba(251,250,255,0),rgba(251,250,255,.95))}
 /* 음절 수 라벨 — showsyl 을 켜는 JS 가 없어 죽어 있었다. 화면에선 숨기되
    스크린리더는 읽도록 sr-only 로 바꾼다 */
@@ -190,7 +201,7 @@ details.adv[open]>summary:before{content:"▾ "}
 summary{list-style:none}
 summary::-webkit-details-marker{display:none}
 summary::before{content:"";display:inline-block;flex:0 0 auto;width:0;height:0;
-  margin-right:8px;border-left:5px solid currentColor;border-top:4px solid transparent;
+  margin-right:8px;border-left:4px solid currentColor;border-top:4px solid transparent;
   border-bottom:4px solid transparent;transition:transform .18s ease;transform-origin:30% 50%}
 details[open]>summary::before{transform:rotate(90deg)}
 @media (prefers-reduced-motion:reduce){summary::before{transition:none}}
@@ -203,6 +214,21 @@ details[open]>summary::before{transform:rotate(90deg)}
 /* 상태 변화가 즉각 점프했다 — 누르는 요소에 같은 전환을 준다 */
 button,.chip,select,summary,a{transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .08s ease}
 @media (prefers-reduced-motion:reduce){button,.chip,select,summary,a{transition:none}}
+
+/* 결과가 두 화면이 넘어(1,734px) 가사를 읽는 동안 재생 버튼이 화면 밖으로 나간다.
+   재생 중에 원래 플레이어가 안 보이면 아래에 작은 조작줄을 띄운다 */
+.minibar{position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:40;
+  width:min(760px,100%);box-sizing:border-box;
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  background:var(--x131313);border-top:1px solid var(--x262626)}
+.minibar[hidden]{display:none}
+.minibar button{width:auto;min-width:44px;min-height:44px;padding:0 16px;flex:0 0 auto}
+.minipos{font-size:13px;color:var(--xc4b5fd);font-variant-numeric:tabular-nums;flex:0 0 auto}
+.minibar .pbar{flex:1 1 auto;margin:0}
+body.hasmini .toast{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+/* 조작줄이 마지막 줄을 가리지 않게 */
+body.hasmini{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 </style>
 </head>
 <body>
@@ -402,13 +428,18 @@ button,.chip,select,summary,a{transition:background-color .16s ease,border-color
     <button class="ghost full" id="shareBtn" type="button" style="display:none">📤 공유하기</button>
   </div>
 
-  <div style="margin-top:22px">
+  <div style="margin-top:24px">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </section>
 
 <canvas id="cardCanvas" width="1080" height="1350" style="display:none"></canvas>
+<div class="minibar" id="miniBar" hidden>
+  <button id="miniBtn" type="button" aria-label="정지">■</button>
+  <span class="minipos" id="miniPos">0 / 0</span>
+  <div class="pbar" id="miniBarProg"><i></i></div>
+</div>
 <div class="toast" id="toast">복사됐어요!</div>
 
 <section class="about">
@@ -4178,15 +4209,26 @@ function stopPlay(){
   $("playBtn").textContent="▶ 재생";
   $("barPos").textContent="0 / "+(current?current.flat.length:0)+" 마디";
   setPlayBar(0);
+  if($("miniBar")){$("miniBar").hidden=true;document.body.classList.remove("hasmini");}
   var ls0=document.querySelectorAll("#lyricSheet .sline.now");
   for(var z0=0;z0<ls0.length;z0++)ls0[z0].classList.remove("now");
 }
 /* 재생 진행 바 — 글자만으로는 어디쯤인지 안 보인다 */
 function setPlayBar(pct){
-  var el=$("playBar");if(!el)return;
-  var p=Math.max(0,Math.min(100,pct||0));
-  el.firstElementChild.style.width=p.toFixed(1)+"%";
-  el.setAttribute("aria-valuenow",Math.round(p));
+  var p=Math.max(0,Math.min(100,pct||0)), w=p.toFixed(1)+"%";
+  var el=$("playBar");
+  if(el){el.firstElementChild.style.width=w;el.setAttribute("aria-valuenow",Math.round(p));}
+  var mb=$("miniBarProg");
+  if(mb)mb.firstElementChild.style.width=w;
+}
+/* 재생 중에 원래 플레이어가 화면 밖으로 나가면 아래 조작줄을 띄운다 */
+function syncMiniBar(){
+  var bar=$("miniBar");if(!bar)return;
+  var pl=document.querySelector(".player");
+  var show=playing&&pl&&pl.getBoundingClientRect().bottom<0;
+  if(show===!bar.hidden)return;
+  bar.hidden=!show;
+  document.body.classList.toggle("hasmini",show);
 }
 function playSong(song){
   if(!ac()){toast("이 브라우저에서는 소리를 낼 수 없어요");return;}
@@ -4239,7 +4281,9 @@ function playSong(song){
     if(el>=playDur){stopPlay();return;}
     var bi=clamp(Math.floor(el/barSec)+1,0,song.flat.length);
     $("barPos").textContent=bi+" / "+song.flat.length+" 마디";
+    if($("miniPos"))$("miniPos").textContent=bi+" / "+song.flat.length;
     setPlayBar(100*Math.min(1,el/playDur));
+    syncMiniBar();
     /* 악보를 못 읽어도 지금 어느 가사인지 알 수 있게 */
     var cur=bi-1,ls=document.querySelectorAll("#lyricSheet .sline"),nowEl=null;
     for(var q=0;q<ls.length;q++){
@@ -4987,6 +5031,10 @@ $("playBtn").addEventListener("click",function(){
   if(playing){stopPlay();return;}
   if(current)playSong(current);
 });
+/* 아래 조작줄의 정지 — 가사를 읽다가 바로 멈출 수 있어야 한다 */
+$("miniBtn").addEventListener("click",function(){ if(playing)stopPlay(); });
+/* 스크롤만 해도 조작줄이 제때 나타나고 사라지도록 */
+window.addEventListener("scroll",function(){ if(playing)syncMiniBar(); },{passive:true});
 
 /*==== 12. 허밍 녹음 · 파일 분석 ====*/
 var recStream=null,recAnalyser=null,recRaf=0,recFrames=[],recStart=0,recording=false,humStaffBars=null;
