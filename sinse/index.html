@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>신세 — 돈이 아닌, 받은 마음을 적어 두는 장부 | TomatoEggCat</title>
+<meta name="description" content="밥 얻어먹은 것, 이사 도와준 것, 공항에 데려다준 것. 돈으로 환산하지 않고 횟수만 적어 두는 개인 장부입니다. 상대에게는 어떤 알림도 가지 않고 점수도 등급도 없습니다. 연말이 되면 올해 몇 번 신세를 졌는지 조용히 정리해 보여 줍니다. 기록은 내 브라우저에만 남습니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/sinse/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="신세 — 돈이 아닌, 받은 마음을 적어 두는 장부" />
+<meta property="og:description" content="갚게 만드는 앱이 아니라, 받은 걸 기억하게 만드는 앱. 상대에게는 아무 알림도 가지 않습니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/sinse/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="신세 — 받은 마음을 적어 두는 장부" />
+<meta name="twitter:description" content="점수도 등급도 없이, 횟수만 적습니다." />
+<script>
+/* 공유 링크(?r=)를 광고 스크립트가 읽어 가기 전에 먼저 회수하고 주소를 비운다.
+   본문 아래 IIFE에서 지우면 그 사이에 광고가 먼저 로드돼 URL을 볼 수 있는 틈이 생긴다. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.has("r")){
+      window.__sharedPayload=q.get("r");
+      history.replaceState(null,"",location.pathname);
+    }
+  }catch(e){}
+})();
+</script>
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"신세","description":"금전이 아닌 도움과 호의를 기록하는 개인 장부. 상대에게 알림이 가지 않고 점수나 등급을 매기지 않으며 모든 기록은 사용자의 브라우저에만 저장된다. 연말 정산 화면에서 한 해 동안의 기록을 조용히 되돌아볼 수 있다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/sinse/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"상대방에게 알림이 가나요?","acceptedAnswer":{"@type":"Answer","text":"가지 않습니다. 초대, 공유 코드, 상호 확인 같은 기능을 아예 만들지 않았습니다. 이 도구에는 상대에게 무언가를 보낼 수 있는 경로 자체가 없습니다. 전적으로 내 기록이며, 그래야만 빚 독촉 도구가 되지 않는다고 보았습니다. 갚을 때가 되었다는 알림도 보내지 않습니다."}},
+{"@type":"Question","name":"받은 것과 준 것을 점수로 비교하나요?","acceptedAnswer":{"@type":"Answer","text":"비교하지 않습니다. 점수, 등급, 순위, 적자나 흑자 같은 표현을 쓰지 않습니다. 사람별 화면에도 받은 횟수와 준 횟수를 나란히 적을 뿐 어느 쪽이 많은지 판정하지 않습니다. 밥 한 끼와 이사 도움을 숫자로 환산해 비교하는 순간 이 기록은 다른 성격이 되어 버리기 때문에 가중치나 금액 환산 기능도 넣지 않았습니다."}},
+{"@type":"Question","name":"연락처에 접근하나요?","acceptedAnswer":{"@type":"Answer","text":"접근하지 않습니다. 연락처 권한을 요청하는 코드가 없습니다. 상대는 내가 부르는 호칭으로 직접 적으며 저장되는 정보는 그 호칭과 관계 분류뿐입니다. 전화번호, 이메일, 사회관계망 계정 같은 것은 저장하지 않습니다."}},
+{"@type":"Question","name":"기록은 어디에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"이 브라우저 안에만 저장됩니다. 서버가 없어 계정도 로그인도 없고 어떤 내용도 외부로 전송되지 않습니다. 아주 사적인 기록이므로 공용 기기에서는 쓰지 않는 편이 좋습니다. 내보내기로 백업 파일을 만들 수 있고 전체 삭제로 한 번에 지울 수 있습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"생활 도구","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"신세","item":"https://tomatoeggcat.com/sinse/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--ink:#e8e4dc;--ink2:#a8a29a;--ink3:#9a938a;--pap:#141311;--pap2:#1b1a17;--ln:#2a2723;--acc:#d4b483;--acc2:#e9d5b0}
+*{box-sizing:border-box}
+body{margin:0;background:#0d0c0b;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.75;letter-spacing:-.005em;word-break:keep-all}
+.wrap{max-width:640px;margin:0 auto;padding:28px 20px 72px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:var(--ink3);margin-bottom:20px}
+.nav a{color:#8aa2c8;text-decoration:none}
+h1{font-size:25px;font-weight:700;margin:0 0 8px;color:var(--ink);letter-spacing:-.02em}
+.lead{color:var(--ink2);margin:0 0 28px;font-size:15px;line-height:1.8}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.card{border:1px solid var(--ln);background:var(--pap);border-radius:18px;padding:22px;margin-bottom:20px}
+.lab{font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:.06em;margin:0 0 12px;text-transform:none}
+.lab b{color:var(--acc2);font-weight:700}
+.hint{font-size:13px;color:var(--ink3);margin:8px 0 0;line-height:1.7}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{width:auto;flex:none;padding:9px 14px;font-size:13.5px;font-weight:600;background:transparent;color:var(--ink2);border:1px solid var(--ln);border-radius:999px;cursor:pointer;min-height:44px;transition:.12s}
+.chip.on{background:rgba(212,180,131,.12);border-color:var(--acc);color:var(--acc2)}
+input[type=text],input[type=date],select{width:100%;padding:12px 14px;font-size:15px;background:var(--pap2);color:var(--ink);border:1px solid var(--ln);border-radius:12px;min-height:46px;font-family:inherit}
+input:focus,select:focus{outline:none;border-color:var(--acc)}
+.field{margin-top:18px}
+.row2{display:flex;gap:9px;flex-wrap:wrap}
+.row2>div{flex:1;min-width:140px}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#241d10;font-size:15.5px;font-weight:700;cursor:pointer;min-height:48px}
+button.ghost{background:transparent;color:var(--acc2);border:1px solid #4a4034;font-weight:600}
+button.mini{width:auto;padding:9px 13px;font-size:13px;min-height:44px}
+button.tiny{width:auto;padding:8px 12px;font-size:13px;min-height:44px;min-width:44px;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:8px;font-weight:600}
+button:disabled{opacity:.35;cursor:not-allowed}
+.acts{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-28px -20px 18px;padding:13px 20px;background:#221d16;border-bottom:1px solid #3a3227}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:var(--acc2);flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:14.5px}
+/* 방향 토글 */
+.dirsw{display:flex;gap:9px;margin-bottom:16px}
+.dirsw button{flex:1;background:transparent;color:var(--ink2);border:1px solid var(--ln);font-size:15px;font-weight:600;min-height:50px}
+.dirsw button.on{background:rgba(212,180,131,.12);border-color:var(--acc);color:var(--acc2);font-weight:700}
+/* 탭 */
+.tabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:78px;word-break:keep-all;background:transparent;color:var(--ink3);border:1px solid var(--ln);border-radius:12px;font-size:13px;font-weight:600;min-height:44px;padding:10px 6px}
+.tabs button.on{background:rgba(212,180,131,.1);border-color:var(--acc);color:var(--acc2)}
+/* 장부 줄 */
+.entry{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--ln)}
+.entry .mk{flex:none;width:26px;text-align:center;font-size:17px;padding-top:1px}
+.entry .body{flex:1;min-width:0}
+.entry .top{font-size:15px;color:var(--ink);word-break:keep-all}
+.entry .top b{font-weight:700}
+.entry .ctx{font-size:13px;color:var(--ink2);margin-top:1px;word-break:keep-all}
+.entry .meta{font-size:12.5px;color:var(--ink3);margin-top:4px;letter-spacing:.02em}
+.entry .settled{color:var(--acc);font-weight:700}
+.eacts{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.person{padding:16px 0;border-bottom:1px solid var(--ln)}
+.person .pn{font-size:16px;font-weight:700;color:var(--ink)}
+.person .pc{font-size:13px;color:var(--ink2);margin-top:2px}
+.person .pc b{color:var(--acc2);font-weight:700}
+.kindrow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--ln)}
+.kindrow .kn{flex:none;width:104px;font-size:14px;color:var(--ink)}
+.kindrow .kb{flex:1;height:9px;background:#221f1b;border-radius:999px;overflow:hidden}
+.kindrow .kb i{display:block;height:100%;background:var(--acc);width:0;transition:width .7s}
+.kindrow .kv{flex:none;font-size:13.5px;color:var(--ink2);font-weight:700;width:52px;text-align:right}
+.empty{color:var(--ink3);font-size:13.5px;padding:22px 0;text-align:center;line-height:1.8}
+/* 연말 정산 */
+.yr{background:var(--pap2);border:1px solid var(--ln);border-radius:14px;padding:24px 20px;text-align:center}
+.yr .yl{font-size:13px;color:var(--ink3);letter-spacing:.08em}
+.yr .yn{font-size:56px;font-weight:800;color:var(--acc2);line-height:1.15;margin:6px 0 2px;letter-spacing:-.03em}
+.yr .ys{font-size:14.5px;color:var(--ink2)}
+.yrgrid{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;text-align:left}
+.yrgrid .yb{flex:1;min-width:150px;background:var(--pap);border:1px solid var(--ln);border-radius:10px;padding:14px}
+.yrgrid .yb .k{font-size:12.5px;color:var(--ink3);letter-spacing:.04em}
+.yrgrid .yb .v{font-size:16px;color:var(--ink);font-weight:700;margin-top:3px;line-height:1.5}
+.yrgrid .yb .s{font-size:12.5px;color:var(--ink3)}
+.editbox{background:var(--pap2);border:1px solid var(--acc);border-radius:14px;padding:14px;margin-top:10px}
+.editbox .er{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.editbox .er>*{flex:1;min-width:130px}
+.editbox .ech{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.editbox .ea{display:flex;gap:8px;margin-top:4px}
+.editbox .ea button{flex:1;min-height:46px}
+.sw{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink2);margin-top:14px;min-height:44px;padding:6px 2px;cursor:pointer}
+.sw input{width:auto;min-height:auto}
+.vow{font-size:13px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-left:2px solid var(--acc);border-radius:8px;padding:13px 15px;margin-top:16px;line-height:1.8}
+.vow b{color:var(--acc2)}
+details{margin-top:14px;border:1px solid var(--ln);border-radius:12px;background:var(--pap2)}
+summary{cursor:pointer;padding:13px 15px;font-size:13.5px;font-weight:600;color:var(--ink2)}
+details .dbody{padding:0 15px 15px}
+.disc{font-size:13px;color:var(--ink2);background:var(--pap2);border:1px solid var(--ln);border-radius:9px;padding:12px 14px;margin-top:14px;line-height:1.75}
+.about h2{font-size:18px;margin:32px 0 10px;color:var(--acc2);font-weight:700}
+.about p,.about li{font-size:14.5px;color:var(--ink2);line-height:1.85}
+.faq dt{font-weight:700;margin-top:16px;color:var(--ink)}
+.faq dd{margin:5px 0 0;color:var(--ink2);font-size:14.5px}
+.rel{display:flex;flex-wrap:wrap;gap:8px;margin:30px 0 0}
+.rel a{font-size:13.5px;font-weight:600;text-decoration:none;color:var(--ink2);background:transparent;border:1px solid var(--ln);border-radius:999px;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center}
+.rel a:hover{border-color:var(--acc);color:var(--acc2)}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--ln);font-size:12.5px;color:var(--ink3)}
+footer a{color:var(--ink2);text-decoration:none;margin-right:14px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#2a2620;color:var(--ink);font-size:14px;font-weight:600;padding:11px 20px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>🤝 누군가 올해의 정산을 남겨 두었어요.</span>
+  <button id="inboundBtn" type="button">나도 적어 보기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 생활 도구 › 신세</nav>
+
+<header>
+  <h1>신세</h1>
+  <p class="lead">밥 얻어먹은 것, 이사 도와준 것, 공항에 데려다준 것. 돈으로 환산하지 않고 <b>횟수만</b> 적어 두는 장부입니다. 갚게 만들려는 것이 아니라 <b>받은 걸 기억하려고</b> 만들었습니다.</p>
+</header>
+
+<!-- 공유로 들어온 정산 -->
+<section class="card" id="sharedCard" style="display:none">
+  <p class="lab">공유된 정산</p>
+  <div id="sharedBody"></div>
+  <p class="hint">공유 링크에는 횟수와 종류가 담깁니다. 사람 이름은 보낸 사람이 <b>직접 켠 경우에만</b> 들어갑니다(기본값은 가림).</p>
+</section>
+
+<!-- 기록 -->
+<section class="card" id="addCard">
+  <p class="lab">적기</p>
+  <div class="dirsw" id="dirsw" role="group" aria-label="받았다 또는 줬다">
+    <button type="button" data-d="r" class="on">받았다</button>
+    <button type="button" data-d="g">줬다</button>
+  </div>
+
+  <div class="chips" id="kindChips" role="group" aria-label="무엇을 주고받았는지"></div>
+  <div class="field" id="kindEtcWrap" style="display:none">
+    <input type="text" id="fKindEtc" aria-label="무엇을 받았는지" maxlength="14" placeholder="무엇을 (예: 짐 옮겨줌)" />
+  </div>
+
+  <div class="field">
+    <p class="lab" id="peopleLab" style="display:none">최근에 적은 사람 — 탭하면 바로 선택됩니다</p>
+    <div class="chips" id="peopleChips" role="group" aria-label="최근에 적은 사람"></div>
+    <div class="field">
+      <input type="text" id="fPerson" aria-label="상대 호칭" maxlength="14" placeholder="누구에게 — 내가 부르는 호칭으로" />
+      <p class="hint">연락처를 읽지 않습니다. 실명이 아니어도 됩니다. 준호 씨, 옆자리, 이모처럼 내가 알아보는 이름이면 충분합니다.</p>
+    </div>
+  </div>
+
+  <div class="row2 field">
+    <div><input type="date" id="fDate" aria-label="날짜" /></div>
+    <div>
+      <select id="fTag" aria-label="상대와의 관계">
+        <option value="friend">친구</option>
+        <option value="family">가족</option>
+        <option value="work">동료</option>
+        <option value="etc">기타</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <input type="text" id="fBody" aria-label="한 줄 맥락" maxlength="40" placeholder="한 줄 맥락 (비워도 됩니다)" />
+  </div>
+
+  <div class="acts">
+    <button id="addBtn" type="button">적어 두기</button>
+  </div>
+  <p class="hint">종류와 상대만 고르면 끝납니다. 나머지는 나중에 채워도 됩니다.</p>
+</section>
+
+<!-- 보기 -->
+<section class="card" id="listCard">
+  <div class="acts" id="demoWrap" style="display:none">
+    <button class="ghost" id="demoBtn" type="button">👀 예시로 둘러보기</button>
+  </div>
+  <div class="tabs" id="tabs" role="group" aria-label="보기 방식">
+    <button type="button" data-t="all" class="on">전체</button>
+    <button type="button" data-t="person">사람별</button>
+    <button type="button" data-t="kind">종류별</button>
+    <button type="button" data-t="old">오래 된 받은 것</button>
+  </div>
+  <div id="listBody"></div>
+</section>
+
+<!-- 연말 정산 -->
+<section class="card" id="yearCard">
+  <p class="lab">올해의 정산</p>
+  <div class="yr" id="yrBox"></div>
+  <div class="yrgrid" id="yrGrid"></div>
+  <label class="sw"><input type="checkbox" id="showNames" /> 카드에 이름 표시 (기본은 가림)</label>
+  <div class="acts">
+    <button id="saveBtn" type="button">카드 저장</button>
+    <button class="ghost" id="copyLinkBtn" type="button">링크 복사</button>
+    <button class="ghost" id="copyTextBtn" type="button">텍스트 복사</button>
+    <button class="ghost" id="xBtn" type="button">𝕏 공유</button>
+    <button class="ghost" id="shareBtn" type="button" style="display:none">공유</button>
+  </div>
+
+  <details>
+    <summary>고맙다고 말하고 싶을 때 — 문장 초안 만들기</summary>
+    <div class="dbody">
+      <p class="hint" style="margin-top:0">기록을 하나 고르면 보낼 만한 문장을 만들어 드립니다. <b>이 도구는 대신 보내지 않습니다.</b> 복사만 해 드리고, 보낼지 말지는 직접 정하세요.</p>
+      <div class="field"><select id="thxSel" aria-label="고마움을 표현할 기록 고르기"></select></div>
+      <div class="field"><input type="text" id="thxOut" aria-label="만들어진 문장" readonly placeholder="기록을 고르면 문장이 만들어집니다" /></div>
+      <!-- readonly input 값이 바뀌어도 스크린리더는 조용하다. 만들어진 문장을 따로 읽어 준다. -->
+      <p class="sr-only" id="thxLive" role="status" aria-live="polite"></p>
+      <div class="acts">
+        <button class="ghost mini" id="thxMake" type="button">문장 만들기</button>
+        <button class="ghost mini" id="thxCopy" type="button">복사</button>
+      </div>
+    </div>
+  </details>
+
+  <p class="vow">이 도구가 <b>하지 않는 것</b> — 상대에게 알림 보내기, 초대·공유 코드 만들기, 점수·등급·순위 매기기, 받은 것과 준 것을 적자·흑자로 계산하기, 갚을 때가 됐다고 재촉하기, 밥 한 끼와 이사 도움을 금액으로 환산하기, 연락처 읽기. 전부 만들지 않았습니다.</p>
+
+  <details>
+    <summary>내 데이터 관리 (백업 · 가져오기 · 삭제)</summary>
+    <div class="dbody">
+      <div class="acts">
+        <button class="ghost mini" id="exportBtn" type="button">내보내기</button>
+        <button class="ghost mini" id="importBtn" type="button">가져오기</button>
+        <button class="ghost mini" id="wipeBtn" type="button">전체 삭제</button>
+      </div>
+      <input type="file" id="fileIn" accept="application/json,.json" style="display:none" />
+    </div>
+  </details>
+
+  <p class="disc">아주 사적인 기록입니다. 적어 둔 내용은 이 브라우저 안에만 저장되며, 저희는 그 내용을 받아 가지 않습니다(수집 서버가 없습니다). 다만 이 페이지에는 광고가 붙어 있어 <b>페이지 주소</b>가 광고 제공자에게 전달될 수 있습니다. 그리고 <b>‘링크 복사’나 X 공유를 누르면 그 주소에 올해 요약(횟수·종류·상대 호칭)이 담깁니다</b> — 장부에 적은 한 줄 맥락은 절대 들어가지 않지만, 요약은 들어갑니다. 링크를 어디에 붙여넣을지 신중히 정하세요. 서버가 없는 정적 페이지라 화면 잠금 기능은 넣지 않았습니다 — 브라우저 안에서 만든 비밀번호 잠금은 실제 보안이 되지 못하면서 안전하다는 착각만 주기 때문입니다. 공용 기기에서는 쓰지 마시고, 기기 자체 잠금을 사용해 주세요.</p>
+
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</section>
+
+<section class="about">
+  <h2>신세에 대하여</h2>
+  <p>한국에는 신세를 졌다는 감각이 유난히 뚜렷합니다. 그런데 그걸 적어 두는 도구가 없어서 다들 머릿속에 어렴풋이 담아 두고, 시간이 지나면서 점점 부정확해집니다. 그리고 대개는 받은 것을 잊고 준 것을 기억합니다. 이 장부의 진짜 쓸모는 갚게 만드는 것이 아니라 <b>받은 것을 기억하게 만드는 것</b>입니다.</p>
+  <p>그래서 설계에서 가장 중요하게 지킨 선이 있습니다. 이 도구가 빚 독촉 장치가 되어서는 안 된다는 것입니다. 상대에게는 어떤 알림도 가지 않습니다. 초대, 공유 코드, 상호 확인 같은 기능은 아예 만들지 않았습니다. 점수도 등급도 순위도 없고, 사람별 화면에서도 받은 횟수와 준 횟수를 나란히 적을 뿐 어느 쪽이 많은지 판정하지 않습니다. 밥 한 끼와 이사 도움을 금액으로 환산하는 기능도 넣지 않았습니다. 숫자로 비교하기 시작하면 이건 다른 물건이 됩니다.</p>
+  <p>연말이 되면 정산 화면이 채워집니다. 올해 몇 번 신세를 졌고 몇 번 갚았는지, 가장 자주 만난 이름은 누구였는지, 내가 가장 자주 한 도움은 무엇이었는지. 훈계나 평가 없이 사실만 적혀 있습니다. 이 화면 하나 때문에 일 년치를 적어 둘 만합니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>받았다 또는 줬다를 고릅니다.</li>
+    <li>밥, 커피, 태워줌 같은 자주 쓰는 종류를 탭합니다.</li>
+    <li>상대 호칭을 적거나 이미 적어 둔 이름을 탭합니다. 여기까지가 최소 입력입니다.</li>
+    <li>맥락 한 줄은 나중에 생각나면 채워도 됩니다.</li>
+    <li>나중에 갚았다면 그 기록에 ‘갚음’을 표시합니다. 기록은 사라지지 않고 이력으로 남습니다.</li>
+    <li>연말에 정산 카드를 저장합니다. 이름은 기본으로 가려집니다.</li>
+  </ol>
+  <h2>일부러 넣지 않은 것</h2>
+  <ul>
+    <li><b>상대에게 가는 알림</b> — 푸시, 이메일, 공유 코드 전부 없습니다. 보낼 경로 자체가 없습니다.</li>
+    <li><b>독촉</b> — 갚을 때가 됐다는 알림은 만들지 않았습니다. 오래된 기록은 목록으로만 조용히 보여 줍니다.</li>
+    <li><b>점수와 등급</b> — 사람을 평가하는 숫자는 두지 않았습니다.</li>
+    <li><b>금액 환산</b> — 호의에 값을 매기지 않습니다.</li>
+    <li><b>연락처 접근</b> — 권한을 요청하지 않습니다. 호칭은 직접 적습니다.</li>
+  </ul>
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>Q. 상대방에게 알림이 가나요?</dt>
+    <dd>가지 않습니다. 상대에게 무언가를 보낼 수 있는 기능이 이 도구에는 없습니다. 전적으로 내 기록입니다.</dd>
+    <dt>Q. 받은 것과 준 것을 비교해 주나요?</dt>
+    <dd>비교하지 않습니다. 횟수를 나란히 적을 뿐 적자·흑자나 점수로 표현하지 않습니다.</dd>
+    <dt>Q. 갚으면 기록이 없어지나요?</dt>
+    <dd>없어지지 않습니다. ‘갚음’ 표시가 붙고 이력으로 남습니다. 어떤 기록을 갚았는지 느슨하게 연결할 수 있지만 일대일로 맞출 필요는 없습니다.</dd>
+    <dt>Q. 연락처를 읽나요?</dt>
+    <dd>읽지 않습니다. 권한 요청 코드가 없습니다. 저장되는 것은 내가 적은 호칭과 관계 분류뿐입니다.</dd>
+    <dt>Q. 기록은 어디에 있나요?</dt>
+    <dd>이 브라우저 안에만 있습니다. 내보내기로 백업하고, 전체 삭제로 한 번에 지울 수 있습니다.</dd>
+    <dt>Q. 화면 잠금은 왜 없나요?</dt>
+    <dd>서버 없는 페이지에서 만든 비밀번호 잠금은 실제 보안이 되지 않으면서 안전하다는 착각만 줍니다. 그래서 넣지 않고, 기기 자체 잠금을 쓰시라고 안내합니다.</dd>
+  </dl>
+  <p style="color:var(--ink3);font-size:13px">※ 본 도구는 개인 기록용이며 금융·법률 조언이 아닙니다. 기록된 내용은 사용자가 직접 적은 것입니다.</p>
+</section>
+
+<nav class="rel">
+  <a href="/gift-money/">💌 얼마내지</a>
+  <a href="/dydrms-gyeongjosa/">🕊️ 경조사 도우미</a>
+  <a href="/dydrms-malseonmul/">🎁 말선물</a>
+  <a href="/recipe-tree/">🌿 레시피 계보</a>
+  <a href="/">🍅 전체 도구</a>
+</nav>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">적었습니다</div>
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+
+<script>
+(function(){
+"use strict";
+
+var KINDS = [
+  { k:"meal",   label:"밥",     em:"🍚" },
+  { k:"coffee", label:"커피",   em:"☕" },
+  { k:"ride",   label:"태워줌", em:"🚗" },
+  { k:"help",   label:"도와줌", em:"🧰" },
+  { k:"care",   label:"챙겨줌", em:"🧺" },
+  { k:"listen", label:"들어줌", em:"👂" },
+  { k:"gift",   label:"선물",   em:"🎁" },
+  { k:"kid",    label:"아이 봐줌", em:"🧸" },
+  { k:"info",   label:"알려줌",   em:"💡" },
+  { k:"intro",  label:"소개해줌", em:"🤝" },
+  { k:"etc",    label:"그 외",   em:"✍️" }
+];
+var TAGS = { family:"가족", friend:"친구", work:"동료", etc:"기타" };
+function kindOf(k){ for(var i=0;i<KINDS.length;i++) if(KINDS[i].k===k) return KINDS[i]; return KINDS[KINDS.length-1]; }
+
+/* ================= utils ================= */
+function $(id){ return document.getElementById(id); }
+function pad(n){ return n<10?"0"+n:""+n; }
+function today(){ return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
+function parseD(s){ var p=String(s).split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+function daysAgo(s){ return Math.floor((parseD(today())-parseD(s))/86400000); }
+function fmtD(s){ var p=String(s).split("-"); return p[1].replace(/^0/,"")+"월 "+p[2].replace(/^0/,"")+"일"; }
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function decd(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(err){ return null; } }
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},2000); }
+function uid(){ return "f"+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36); }
+function mask(name){
+  var s=String(name||"");
+  if(s.length<=1) return s+"○";
+  return s.charAt(0)+"○".repeat(Math.min(2,s.length-1));
+}
+
+/* ================= store ================= */
+var LSKEY="sinse:v1";
+var db={ v:1, people:[], favors:[] };
+function load(){
+  try{ var raw=localStorage.getItem(LSKEY); if(raw){ var o=JSON.parse(raw); if(o&&Array.isArray(o.favors)) db=o; } }catch(err){}
+  if(!Array.isArray(db.people)) db.people=[];
+}
+function save(){ try{ localStorage.setItem(LSKEY, JSON.stringify(db)); }catch(err){ toast("저장 공간이 부족합니다"); } }
+function personByLabel(l){
+  for(var i=0;i<db.people.length;i++) if(db.people[i].l===l) return db.people[i];
+  return null;
+}
+function personById(id){
+  for(var i=0;i<db.people.length;i++) if(db.people[i].id===id) return db.people[i];
+  return null;
+}
+function ensurePerson(label, tag){
+  var p=personByLabel(label);
+  /* 관계 태그를 덮어쓰면 과거 기록의 표시까지 소급으로 바뀐다.
+     이미 있는 사람이면 태그는 건드리지 않는다(바꾸려면 '호칭 바꾸기'에서). */
+  if(p) return p;
+  p={ id:"p"+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36), l:label, t:tag||"etc" };
+  db.people.push(p); return p;
+}
+
+/* ================= 입력 ================= */
+var dir="r", kind=null, pickedPerson=null;
+Array.prototype.forEach.call($("dirsw").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
+  b.addEventListener("click",function(){
+    dir=b.dataset.d;
+    Array.prototype.forEach.call($("dirsw").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
+  });
+});
+KINDS.forEach(function(k){
+  var b=document.createElement("button");
+  b.type="button"; b.className="chip"; b.dataset.k=k.k; b.textContent=k.em+" "+k.label;
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){
+    kind=k.k;
+    Array.prototype.forEach.call($("kindChips").children,function(c){
+      var on = c.dataset.k===k.k;
+      c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
+    $("kindEtcWrap").style.display = k.k==="etc" ? "block" : "none";
+  });
+  $("kindChips").appendChild(b);
+});
+function renderPeopleChips(){
+  var h=$("peopleChips"); h.innerHTML="";
+  $("peopleLab").style.display = db.favors.length ? "" : "none";
+  var recent=db.favors.slice(-40).reverse();
+  var seen={}, order=[];
+  recent.forEach(function(f){ if(!seen[f.pid]){ seen[f.pid]=1; order.push(f.pid); } });
+  order.slice(0,8).forEach(function(pid){
+    var p=personById(pid); if(!p) return;
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"+(pickedPerson===p.id?" on":""); b.dataset.p=p.id; b.textContent=p.l;
+    b.addEventListener("click",function(){
+      pickedPerson = (pickedPerson===p.id) ? null : p.id;
+      $("fPerson").value = pickedPerson ? p.l : "";
+      if(pickedPerson) $("fTag").value = p.t||"etc";
+      Array.prototype.forEach.call(h.children,function(c){ c.classList.toggle("on", c.dataset.p===pickedPerson); });
+    });
+    h.appendChild(b);
+  });
+}
+$("fPerson").addEventListener("input",function(){
+  pickedPerson=null;
+  Array.prototype.forEach.call($("peopleChips").children,function(c){ c.classList.remove("on"); });
+});
+$("fDate").value=today();
+
+$("addBtn").addEventListener("click",function(){
+  if(!kind){ toast("무엇인지 골라 주세요"); return; }
+  var label=$("fPerson").value.trim();
+  if(pickedPerson && !label){ var pp=personById(pickedPerson); if(pp) label=pp.l; }
+  if(!label){ toast("누구인지 적어 주세요"); $("fPerson").focus(); return; }
+  var etc=$("fKindEtc").value.trim();
+  if(kind==="etc" && !etc){ toast("무엇인지 한 마디만 적어 주세요"); $("fKindEtc").focus(); return; }
+  var p=ensurePerson(label.slice(0,14), $("fTag").value);
+  db.favors.push({
+    id:uid(), pid:p.id, dir:dir, k:kind, ke:kind==="etc"?etc.slice(0,14):"",
+    b:$("fBody").value.trim().slice(0,40), d:$("fDate").value||today(), s:null
+  });
+  save();
+  $("fBody").value=""; $("fKindEtc").value=""; $("fPerson").value="";
+  kind=null; pickedPerson=null;
+  Array.prototype.forEach.call($("kindChips").children,function(c){ c.classList.remove("on"); });
+  $("kindEtcWrap").style.display="none";
+  renderAll();
+  toast(dir==="r" ? "적어 두었습니다" : "적어 두었습니다");
+});
+
+/* ================= 보기 ================= */
+var tab="all";
+Array.prototype.forEach.call($("tabs").children,function(b){
+  b.setAttribute("aria-pressed", b.classList.contains("on")?"true":"false");
+  b.addEventListener("click",function(){
+    tab=b.dataset.t;
+    Array.prototype.forEach.call($("tabs").children,function(c){
+      var on = c===b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on?"true":"false");
+    });
+    renderList();
+  });
+});
+function kindLabel(f){ return f.k==="etc" && f.ke ? f.ke : kindOf(f.k).label; }
+function entryHtml(f){
+  var p=personById(f.pid);
+  var got = f.dir==="r";
+  var top = got
+    ? "<b>"+esc(p?p.l:"—")+"</b>에게 "+esc(kindLabel(f))+" 받음"
+    : "<b>"+esc(p?p.l:"—")+"</b>에게 "+esc(kindLabel(f))+" 줌";
+  return '<div class="entry" data-id="'+f.id+'">'
+    + '<div class="mk">'+kindOf(f.k).em+'</div>'
+    + '<div class="body">'
+      + '<div class="top">'+top+'</div>'
+      + (f.b?'<div class="ctx">'+esc(f.b)+'</div>':"")
+      + '<div class="meta">'+fmtD(f.d)+' · '+(TAGS[p&&p.t]||"기타")
+        + (f.s?' · <span class="settled">갚음</span>':"")+'</div>'
+      + '<div class="eacts"></div>'
+    + '</div></div>';
+}
+function attachEntryActions(node, f){
+  var box=node.querySelector(".eacts");
+  var b1=document.createElement("button"); b1.type="button"; b1.className="tiny";
+  b1.textContent = f.s ? "갚음 해제" : (f.dir==="r" ? "갚음 표시" : "돌려받음 표시");
+  b1.addEventListener("click",function(){
+    f.s = f.s ? null : today();
+    save(); renderAll();
+    toast(f.s ? "표시했습니다" : "표시를 해제했습니다");
+  });
+  var b2=document.createElement("button"); b2.type="button"; b2.className="tiny"; b2.textContent="고치기";
+  b2.addEventListener("click",function(){ editFavor(f); });
+  var b3=document.createElement("button"); b3.type="button"; b3.className="tiny"; b3.textContent="삭제";
+  b3.addEventListener("click",function(){
+    if(!window.confirm("이 기록을 지울까요?")) return;
+    db.favors=db.favors.filter(function(x){ return x.id!==f.id; });
+    pruneOrphanPeople();   /* 마지막 기록이 지워진 사람이 내보내기 파일에 유령으로 남지 않게 */
+    save(); renderAll();
+  });
+  box.appendChild(b1); box.appendChild(b2); box.appendChild(b3);
+}
+/* 기록 하나를 통째로 고친다. 지금까지는 삭제 후 재입력뿐이었다. */
+function editFavor(f){
+  var host=document.querySelector('.entry[data-id="'+f.id+'"] .body');
+  var prev=document.getElementById("favEdit"); if(prev) prev.remove();
+  var p=personById(f.pid);
+  var box=document.createElement("div");
+  box.className="editbox"; box.id="favEdit";
+  box.innerHTML =
+    '<div class="er"><input type="text" id="feWho" maxlength="14" aria-label="누구에게" placeholder="누구에게 (호칭)" />'
+      + '<input type="date" id="feDate" aria-label="날짜" /></div>'
+    + '<div class="ech" id="feKinds" role="group" aria-label="무엇인지 고르기"></div>'
+    + '<div class="er"><input type="text" id="feEtc" maxlength="14" aria-label="무엇인지" placeholder="무엇인지 (그 외일 때)" style="display:none" /></div>'
+    + '<div class="er"><input type="text" id="feBody" maxlength="40" aria-label="한 줄 맥락" placeholder="한 줄 맥락 (비워도 됩니다)" /></div>'
+    + '<div class="ea"><button id="feSave" type="button">저장</button>'
+      + '<button class="ghost" id="feCancel" type="button">취소</button></div>';
+  (host||$("listBody")).appendChild(box);
+  $("feWho").value = p?p.l:"";
+  $("feDate").value = f.d;
+  $("feBody").value = f.b||"";
+  var pickKind=f.k;
+  KINDS.forEach(function(k){
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"+(k.k===pickKind?" on":""); b.textContent=k.em+" "+k.label;
+    b.setAttribute("aria-pressed", k.k===pickKind?"true":"false");
+    b.addEventListener("click",function(){
+      pickKind=k.k;
+      Array.prototype.forEach.call($("feKinds").children,function(c){
+        var on=(c===b); c.classList.toggle("on",on); c.setAttribute("aria-pressed",on?"true":"false");
+      });
+      $("feEtc").style.display = k.k==="etc" ? "" : "none";
+    });
+    $("feKinds").appendChild(b);
+  });
+  if(pickKind==="etc"){ $("feEtc").style.display=""; $("feEtc").value=f.ke||""; }
+  $("feCancel").addEventListener("click",function(){ box.remove(); });
+  $("feSave").addEventListener("click",function(){
+    var who=$("feWho").value.trim().slice(0,14);
+    if(!who){ toast("호칭은 비울 수 없어요"); $("feWho").focus(); return; }
+    if(pickKind==="etc" && !$("feEtc").value.trim()){ toast("무엇인지 한 마디만 적어 주세요"); $("feEtc").focus(); return; }
+    f.k=pickKind;
+    f.ke = pickKind==="etc" ? $("feEtc").value.trim().slice(0,14) : "";
+    var dv=$("feDate").value;
+    if(/^\d{4}-\d{2}-\d{2}$/.test(dv)) f.d=dv;
+    f.b=$("feBody").value.slice(0,40);
+    var np=ensurePerson(who, p?p.t:"etc");
+    f.pid=np.id;
+    pruneOrphanPeople();
+    save(); renderAll(); toast("고쳤습니다");
+  });
+}
+/* 같은 사람을 다르게 적어 통계가 쪼개졌을 때 합친다. */
+function personCount(id){ var n=0; db.favors.forEach(function(f){ if(f.pid===id) n++; }); return n; }
+/* 기록이 하나도 안 남은 사람은 화면 어디에도 안 보이는데 합치기 후보로만 떠서 혼란스럽다.
+   호칭을 바꾸는 과정에서 생긴 고아 레코드를 조용히 정리한다. */
+function pruneOrphanPeople(){
+  var before=db.people.length;
+  db.people=db.people.filter(function(x){ return personCount(x.id)>0; });
+  return before-db.people.length;
+}
+function mergePerson(p){
+  pruneOrphanPeople();
+  var others=db.people.filter(function(x){ return x.id!==p.id; });
+  if(!others.length){ toast("합칠 다른 이름이 없어요"); return; }
+  var list=others.map(function(x,i){ return (i+1)+". "+x.l; }).join("\n");
+  var v=window.prompt("‘"+p.l+"’를 누구와 같은 사람으로 합칠까요?\n번호를 적어 주세요.\n\n"+list, "");
+  if(v===null) return;
+  var i=parseInt(v,10);
+  if(!(i>=1 && i<=others.length)){ toast("번호를 확인해 주세요"); return; }
+  var target=others[i-1];
+  if(!window.confirm("‘"+p.l+"’의 기록을 ‘"+target.l+"’ 쪽으로 옮깁니다. 되돌릴 수 없습니다.")) return;
+  var moved=0;
+  db.favors.forEach(function(f){ if(f.pid===p.id){ f.pid=target.id; moved++; } });
+  db.people=db.people.filter(function(x){ return x.id!==p.id; });
+  save(); renderAll(); toast(moved+"건을 ‘"+target.l+"’로 합쳤습니다");
+}
+function renderPersonName(p){
+  var v=window.prompt("호칭 바꾸기", p.l);
+  if(v===null) return;
+  v=String(v).trim().slice(0,14);
+  if(!v){ toast("호칭은 비울 수 없어요"); return; }
+  p.l=v; save(); renderAll(); toast("바꿨습니다");
+}
+function renderList(){
+  var h=$("listBody"); h.innerHTML="";
+  if(!db.favors.length){
+    h.innerHTML='<p class="empty">아직 아무것도 적지 않았습니다.<br>가장 최근에 밥 한 끼 얻어먹은 일부터 적어 보세요.</p>';
+    return;
+  }
+  if(tab==="all" || tab==="old"){
+    var list=db.favors.slice().sort(function(a,b){ return a.d<b.d?1:a.d>b.d?-1:0; });
+    if(tab==="old"){
+      list=list.filter(function(f){ return f.dir==="r" && !f.s && daysAgo(f.d)>=365; });
+      if(!list.length){ h.innerHTML='<p class="empty">1년 넘게 갚음 표시 없이 남은 <b>받은 기록</b>이 없습니다.</p>'; return; }
+      var note=document.createElement("p"); note.className="hint"; note.style.margin="0 0 12px";
+      note.textContent="1년이 지난 뒤에도 갚음 표시가 없는 \u2018받은 것\u2019만 모았습니다. 준 것은 여기 나오지 않습니다. 알림은 보내지 않습니다 — 목록으로만 보여 드립니다.";
+      h.appendChild(note);
+    }
+    list.slice(0,200).forEach(function(f){
+      var d=document.createElement("div"); d.innerHTML=entryHtml(f);
+      var node=d.firstChild; attachEntryActions(node,f); h.appendChild(node);
+    });
+    return;
+  }
+  if(tab==="person"){
+    var byP={};
+    db.favors.forEach(function(f){ (byP[f.pid]=byP[f.pid]||[]).push(f); });
+    var keys=Object.keys(byP).sort(function(a,b){ return byP[b].length-byP[a].length; });
+    if(!keys.length){ h.innerHTML='<p class="empty">아직 기록이 없습니다.</p>'; return; }
+    keys.forEach(function(pid){
+      var p=personById(pid); if(!p) return;
+      var arr=byP[pid];
+      var got=arr.filter(function(f){ return f.dir==="r"; }).length;
+      var gave=arr.filter(function(f){ return f.dir==="g"; }).length;
+      var d=document.createElement("div"); d.className="person";
+      d.innerHTML='<div class="pn">'+esc(p.l)+' <span style="font-size:12px;color:var(--ink3);font-weight:400">'+(TAGS[p.t]||"기타")+'</span></div>'
+        + '<div class="pc">받은 것 <b>'+got+'번</b> · 준 것 <b>'+gave+'번</b></div>';
+      var pacts=document.createElement("div"); pacts.className="eacts";
+      var bRename=document.createElement("button"); bRename.type="button"; bRename.className="tiny"; bRename.textContent="호칭 바꾸기";
+      bRename.addEventListener("click",function(){ renderPersonName(p); });
+      var bMerge=document.createElement("button"); bMerge.type="button"; bMerge.className="tiny"; bMerge.textContent="같은 사람 합치기";
+      bMerge.addEventListener("click",function(){ mergePerson(p); });
+      pacts.appendChild(bRename); pacts.appendChild(bMerge);
+      d.appendChild(pacts);
+      var det=document.createElement("details");
+      det.innerHTML='<summary>시간순으로 보기 ('+arr.length+')</summary>';
+      var body=document.createElement("div"); body.className="dbody";
+      arr.slice().sort(function(a,b){ return a.d<b.d?1:-1; }).forEach(function(f){
+        var e=document.createElement("div"); e.innerHTML=entryHtml(f);
+        var node=e.firstChild; attachEntryActions(node,f); body.appendChild(node);
+      });
+      det.appendChild(body); d.appendChild(det);
+      h.appendChild(d);
+    });
+    return;
+  }
+  if(tab==="kind"){
+    ["r","g"].forEach(function(dd){
+      var title=document.createElement("p"); title.className="lab";
+      title.textContent = dd==="r" ? "가장 많이 받은 종류" : "가장 많이 준 종류";
+      title.style.margin="18px 0 8px";
+      h.appendChild(title);
+      var cnt={};
+      db.favors.filter(function(f){ return f.dir===dd; }).forEach(function(f){
+        var key=kindLabel(f); cnt[key]=(cnt[key]||0)+1;
+      });
+      var keys=Object.keys(cnt).sort(function(a,b){ return cnt[b]-cnt[a]; });
+      if(!keys.length){ var e=document.createElement("p"); e.className="empty"; e.textContent="아직 없습니다."; h.appendChild(e); return; }
+      var max=cnt[keys[0]];
+      keys.forEach(function(k){
+        var row=document.createElement("div"); row.className="kindrow";
+        row.innerHTML='<div class="kn">'+esc(k)+'</div><div class="kb"><i></i></div><div class="kv">'+cnt[k]+'번</div>';
+        h.appendChild(row);
+        setTimeout(function(){ row.querySelector("i").style.width=Math.round(cnt[k]/max*100)+"%"; },40);
+      });
+    });
+  }
+}
+
+/* ================= 연말 정산 ================= */
+function yearStats(){
+  /* 연도 경계도 기기 타임존이 아니라 KST 기준으로 */
+  var y=+new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric"}).format(new Date());
+  var inY=db.favors.filter(function(f){ return String(f.d).slice(0,4)===String(y); });
+  var got=inY.filter(function(f){ return f.dir==="r"; });
+  var gave=inY.filter(function(f){ return f.dir==="g"; });
+  var settled=inY.filter(function(f){ return f.dir==="r" && f.s; }).length;
+  var byP={};
+  got.forEach(function(f){ byP[f.pid]=(byP[f.pid]||0)+1; });
+  var top=Object.keys(byP).sort(function(a,b){ return byP[b]-byP[a]; }).slice(0,3).map(function(pid){
+    var p=personById(pid);
+    return { l:p?p.l:"—", n:byP[pid] };
+  });
+  var kc={}, kg={};
+  got.forEach(function(f){ var k=kindLabel(f); kc[k]=(kc[k]||0)+1; });
+  gave.forEach(function(f){ var k=kindLabel(f); kg[k]=(kg[k]||0)+1; });
+  var topGot=Object.keys(kc).sort(function(a,b){ return kc[b]-kc[a]; })[0]||null;
+  var topGave=Object.keys(kg).sort(function(a,b){ return kg[b]-kg[a]; })[0]||null;
+  return { y:y, got:got.length, gave:gave.length, settled:settled, top:top,
+           topGot:topGot, topGotN:topGot?kc[topGot]:0, topGave:topGave, topGaveN:topGave?kg[topGave]:0 };
+}
+function renderYear(){
+  var s=yearStats();
+  $("yrBox").innerHTML =
+    '<div class="yl">'+s.y+'년</div>'
+    + '<div class="yn">'+s.got+'번</div>'
+    + '<div class="ys">'+(s.got?"신세를 졌습니다":"아직 적어 둔 것이 없습니다")+'</div>'
+    + (s.got?'<div class="ys" style="margin-top:6px;color:var(--ink3)">그중 '+s.settled+'번은 갚음으로 표시해 두었습니다</div>':"");
+  var names = $("showNames").checked;
+  var topHtml = s.top.length
+    ? s.top.map(function(t,i){ return (i+1)+". "+esc(names?t.l:mask(t.l))+" "+t.n+"번"; }).join("<br>")
+    : "아직 없습니다";
+  $("yrGrid").innerHTML =
+    '<div class="yb"><div class="k">자주 신세 진 사람</div><div class="v">'+topHtml+'</div><div class="s">순위가 아니라 횟수입니다</div></div>'
+    + '<div class="yb"><div class="k">가장 많이 받은 것</div><div class="v">'+(s.topGot?esc(s.topGot)+" "+s.topGotN+"번":"—")+'</div>'
+      + '<div class="s">가장 많이 준 것: '+(s.topGave?esc(s.topGave)+" "+s.topGaveN+"번":"—")+'</div></div>'
+    + '<div class="yb"><div class="k">내가 준 것</div><div class="v">'+s.gave+'번</div><div class="s">받은 것과 비교하지 않습니다</div></div>';
+  renderThxOptions();
+}
+$("showNames").addEventListener("change",renderYear);
+
+/* 감사 표현 도우미 — 초안만 만들고 보내지 않는다 */
+function renderThxOptions(){
+  var sel=$("thxSel"); sel.innerHTML="";
+  var list=db.favors.filter(function(f){ return f.dir==="r"; }).slice().sort(function(a,b){ return a.d<b.d?1:-1; }).slice(0,30);
+  if(!list.length){ sel.innerHTML='<option value="">받은 기록이 아직 없습니다</option>'; return; }
+  list.forEach(function(f){
+    var p=personById(f.pid);
+    var o=document.createElement("option"); o.value=f.id;
+    o.textContent=(p?p.l:"—")+" · "+kindLabel(f)+" · "+fmtD(f.d);
+    sel.appendChild(o);
+  });
+}
+$("thxMake").addEventListener("click",function(){
+  var id=$("thxSel").value;
+  var f=null;
+  for(var i=0;i<db.favors.length;i++) if(db.favors[i].id===id) f=db.favors[i];
+  if(!f){ toast("먼저 기록을 골라 주세요"); return; }
+  var p=personById(f.pid);
+  var when = daysAgo(f.d)>60 ? "지난번에" : fmtD(f.d)+"에";
+  var what = kindLabel(f);
+  var body = f.b ? ("("+f.b+") ") : "";
+  $("thxOut").value = (p?p.l:"") + ", " + when + " " + what + " 챙겨 주셔서 " + body + "고마웠어요. 그때 말로 제대로 못 한 것 같아 이제야 적어 봅니다.";
+  $("thxLive").textContent = "문장을 만들었습니다. " + $("thxOut").value;
+  toast("초안을 만들었습니다. 보낼지는 직접 정하세요");
+});
+$("thxCopy").addEventListener("click",function(){
+  if(!$("thxOut").value){ toast("먼저 문장을 만들어 주세요"); return; }
+  copy($("thxOut").value,"복사했습니다 — 보내는 건 직접 하세요");
+});
+
+/* ================= 공유 (정산 요약만) ================= */
+function shareState(){
+  var s=yearStats();
+  var names=$("showNames").checked;
+  /* 자유입력 종류에는 사람 이름이 섞여 들어갈 수 있다("지영이가 준 선물").
+     이름을 가리기로 했으면 프리셋 종류만 내보낸다. */
+  var presetOnly=function(label){
+    if(names) return label;
+    var ok=false;
+    KINDS.forEach(function(k){ if(k.label===label) ok=true; });
+    return ok ? label : null;
+  };
+  return { y:s.y, r:s.got, g:s.gave, s:s.settled,
+           t:s.top.map(function(t){ return { l: names ? String(t.l).slice(0,10) : mask(t.l), n:t.n }; }),
+           kg:presetOnly(s.topGot), kgn:s.topGotN, kv:presetOnly(s.topGave), kvn:s.topGaveN,
+           /* 가려서 빠진 것과 애초에 기록이 없는 것은 다르다. 카드가 '아직 없습니다'로
+              뭉개면 거짓말이 되므로 구분해서 넘긴다. */
+           kgh: !!(s.topGot && !presetOnly(s.topGot)), kvh: !!(s.topGave && !presetOnly(s.topGave)) };
+}
+function resultUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(shareState())); }
+function copy(text,msg){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});
+  } else fallbackCopy(text,msg);
+}
+function fallbackCopy(text,msg){
+  var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(err){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+function shareText(){
+  var s=shareState();
+  var lines=[s.y+"년, 저는 "+s.r+"번 신세를 졌습니다."];
+  if(s.g) lines.push("제가 건넨 것은 "+s.g+"번이었습니다.");
+  if(s.kg) lines.push("가장 많이 받은 것: "+s.kg+" "+s.kgn+"번");
+  if(s.t.length) lines.push("가장 자주 신세 진 사람: "+s.t.map(function(t){ return t.l+" "+t.n+"번"; }).join(", "));
+  lines.push(resultUrl());
+  return lines.join("\n");
+}
+function guard(){ if(!db.favors.length){ toast("먼저 한 줄이라도 적어 주세요"); return true; } return false; }
+function nameWarn(where){
+  if(!$("showNames").checked) return true;
+  return window.confirm(where+"\n\n지금 \u2018이름 표시\u2019가 켜져 있어 상대 이름이 가려지지 않은 채 나갑니다. 계속할까요?");
+}
+$("copyLinkBtn").addEventListener("click",function(){ if(!guard() && nameWarn("링크를 복사합니다.")) copy(resultUrl(),"링크를 복사했습니다"); });
+$("copyTextBtn").addEventListener("click",function(){ if(!guard() && nameWarn("텍스트를 복사합니다.")) copy(shareText(),"텍스트를 복사했습니다"); });
+$("xBtn").addEventListener("click",function(){
+  if(guard()) return;
+  var warn = $("showNames").checked
+    ? "X(트위터)에 공개로 올립니다.\n\n지금 ‘이름 표시’가 켜져 있어 상대 이름이 가려지지 않은 채 나갑니다. 계속할까요?"
+    : "X(트위터)에 공개로 올립니다.\n\n올해 신세 진 횟수와 종류가 함께 나갑니다(이름은 가려집니다). 계속할까요?";
+  if(!window.confirm(warn)) return;
+  var s=shareState();
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(s.y+"년, 저는 "+s.r+"번 신세를 졌습니다.")+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
+});
+if(navigator.share){
+  $("shareBtn").style.display="";
+  $("shareBtn").addEventListener("click",function(){
+    if(guard()) return;
+    if(!nameWarn("다른 앱으로 공유합니다.")) return;
+    navigator.share({ title:"신세", text:shareText(), url:resultUrl() }).catch(function(){});
+  });
+}
+
+/* ================= 카드 ================= */
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function drawCard(){
+  var s=shareState(), ctx=$("cv").getContext("2d"), W=1080, H=1350;
+  ctx.fillStyle="#141311"; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="#2a2723"; ctx.lineWidth=2;
+  ctx.strokeRect(56,56,W-112,H-112);
+  ctx.textAlign="center";
+  ctx.fillStyle="#6f6a62"; ctx.font="600 30px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText(s.y+"년", W/2, 210);
+  ctx.fillStyle="#d4b483"; ctx.font="800 190px -apple-system,'Apple SD Gothic Neo',sans-serif";
+  ctx.fillText(s.r+"번", W/2, 400);
+  ctx.fillStyle="#e8e4dc"; ctx.font="600 40px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+  ctx.fillText("신세를 졌습니다", W/2, 470);
+  ctx.fillStyle="#6f6a62"; ctx.font="500 27px -apple-system,sans-serif";
+  ctx.fillText("그중 "+s.s+"번은 갚음으로 표시해 두었습니다", W/2, 522);
+
+  var y=610;
+  ctx.textAlign="left";
+  function block(title, lines){
+    ctx.fillStyle="#1b1a17"; roundRect(ctx,100,y,880,60+lines.length*46,14); ctx.fill();
+    ctx.fillStyle="#6f6a62"; ctx.font="600 24px -apple-system,sans-serif";
+    ctx.fillText(title, 132, y+44);
+    ctx.fillStyle="#e8e4dc"; ctx.font="700 32px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif";
+    lines.forEach(function(l,i){ ctx.fillText(l, 132, y+92+i*46); });
+    y += 60+lines.length*46 + 26;
+  }
+  block("가장 자주 신세 진 사람", s.t.length ? s.t.map(function(t,i){ return (i+1)+".  "+t.l+"  "+t.n+"번"; }) : ["아직 없습니다"]);
+  block("가장 많이 받은 것", [ s.kg ? (s.kg+"  "+s.kgn+"번") : (s.kgh ? "직접 적은 종류라 가렸습니다" : "아직 없습니다") ]);
+  block("내가 건넨 것", [ s.g+"번" + (s.kv ? "   (주로 "+s.kv+")" : (s.kvh ? "   (종류는 가렸습니다)" : "")) ]);
+
+  ctx.textAlign="center";
+  ctx.fillStyle="#6f6a62"; ctx.font="500 24px -apple-system,'Apple SD Gothic Neo',sans-serif";
+  ctx.fillText("점수도 등급도 없이, 횟수만 적었습니다", W/2, 1230);
+  ctx.fillStyle="#8a8279"; ctx.font="600 26px -apple-system,sans-serif";
+  ctx.fillText("tomatoeggcat.com/sinse", W/2, 1276);
+}
+$("saveBtn").addEventListener("click",function(){
+  if(guard()) return;
+  drawCard();
+  var a=document.createElement("a");
+  a.download="sinse-"+yearStats().y+".png"; a.href=$("cv").toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("이미지를 저장했습니다");
+});
+
+/* ================= 백업 ================= */
+$("exportBtn").addEventListener("click",function(){
+  var blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
+  var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="sinse-backup.json";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },2000);
+  toast("백업 파일을 내려받았습니다");
+});
+$("importBtn").addEventListener("click",function(){ $("fileIn").click(); });
+$("fileIn").addEventListener("change",function(){
+  var f=$("fileIn").files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var o=JSON.parse(rd.result);
+      if(!o||!Array.isArray(o.favors)) throw new Error("형식");
+      if(!window.confirm("현재 기록을 파일 내용으로 덮어쓸까요?")) return;
+      var str=function(v,n){ return String(v==null?"":v).slice(0,n); };
+      db={ v:1,
+        people:(Array.isArray(o.people)?o.people:[]).map(function(p){ return { id:str(p.id,24), l:str(p.l,14), t:TAGS[p.t]?p.t:"etc" }; }),
+        favors:o.favors.filter(function(f){ return f&&f.id&&f.pid; }).map(function(f){
+          return { id:str(f.id,24), pid:str(f.pid,24), dir:f.dir==="g"?"g":"r",
+                   k:kindOf(f.k).k, ke:str(f.ke,14), b:str(f.b,40),
+                   d:/^\d{4}-\d{2}-\d{2}$/.test(f.d)?f.d:today(), s:f.s?str(f.s,10):null };
+        })
+      };
+      save(); renderAll(); toast("가져오기 완료 ("+db.favors.length+"건)");
+    }catch(err){ toast("파일을 읽지 못했어요"); }
+    $("fileIn").value="";
+  };
+  rd.readAsText(f);
+});
+$("wipeBtn").addEventListener("click",function(){
+  if(!window.confirm("모든 기록을 지울까요? 되돌릴 수 없습니다.")) return;
+  db={ v:1, people:[], favors:[] }; save(); renderAll(); toast("전체 삭제했습니다");
+});
+
+/* ================= 시작 ================= */
+/* 첫 화면이 비어 있어 "연말 정산이 어떻게 생겼는지" 감이 안 온다는 지적 반영.
+   예시를 넣어 보고 지운 뒤 내 것으로 시작할 수 있게 한다. */
+var DEMO_FAVORS=[
+  ["준호","r","meal","점심 사 줌",4],["준호","r","ride","공항까지 태워 줌",30],
+  ["준호","g","coffee","커피 삼",12],["민지","r","help","이사 도와줌",60],
+  ["민지","r","meal","저녁 사 줌",21],["민지","g","gift","집들이 선물",55],
+  ["수아","r","listen","힘들 때 들어줌",8],["수아","g","meal","밥 삼",40],
+  ["엄마","r","care","반찬 챙겨 줌",3],["엄마","r","kid","아이 봐줌",17]
+];
+$("demoBtn").addEventListener("click",function(){
+  if(db.favors.length && !window.confirm("예시 기록 10건을 넣습니다. 기존 기록은 그대로 남습니다. 계속할까요?")) return;
+  DEMO_FAVORS.forEach(function(x){
+    var d=new Date(); d.setDate(d.getDate()-x[4]);
+    var p=ensurePerson("[예시] "+x[0], "friend");
+    db.favors.push({ id:uid(), pid:p.id, dir:x[1], k:x[2], ke:"", b:x[3],
+      d:d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()), s:null });
+  });
+  save(); renderAll();
+  toast("예시를 넣었습니다. 호칭 앞에 [예시]가 붙어 있으니 확인 후 지우세요");
+  $("yearCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+function renderAll(){ renderPeopleChips(); renderList(); renderYear(); $("demoWrap").style.display = db.favors.length ? "none" : ""; }
+load(); renderAll();
+
+var sharedRaw = window.__sharedPayload || new URLSearchParams(location.search).get("r");
+if(sharedRaw){
+  var sh=decd(sharedRaw);
+  if(sh && typeof sh.r==="number"){
+    var num=function(v){ return typeof v==="number"&&isFinite(v)&&v>=0 ? Math.round(v) : 0; };
+    var t=Array.isArray(sh.t)?sh.t.slice(0,3).map(function(x){ return { l:String(x&&x.l||"—").slice(0,10), n:num(x&&x.n) }; }):[];
+    $("sharedBody").innerHTML =
+      '<div class="yr"><div class="yl">'+num(sh.y)+'년</div><div class="yn">'+num(sh.r)+'번</div>'
+      + '<div class="ys">신세를 졌다고 적혀 있습니다</div></div>'
+      + '<div class="yrgrid">'
+      + '<div class="yb"><div class="k">건넨 것</div><div class="v">'+num(sh.g)+'번</div><div class="s">비교하지 않습니다</div></div>'
+      + '<div class="yb"><div class="k">가장 많이 받은 것</div><div class="v">'+(sh.kg?esc(String(sh.kg).slice(0,14))+" "+num(sh.kgn)+"번":(sh.kgh?"가림":"—"))+'</div><div class="s">'+((!sh.kg&&sh.kgh)?"보낸 사람이 직접 적은 종류라 빠졌습니다":"&nbsp;")+'</div></div>'
+      + (t.length?'<div class="yb"><div class="k">자주 신세 진 사람</div><div class="v">'+t.map(function(x,i){ return (i+1)+". "+esc(x.l)+" "+x.n+"번"; }).join("<br>")+'</div><div class="s">보낸 사람이 적은 이름표 그대로입니다</div></div>':"")
+      + '</div>';
+    $("sharedCard").style.display="block";
+    /* 남의 요약이 내 주소창·히스토리에 계속 남지 않게 정리한다 */
+    try{ history.replaceState(null,"",location.pathname); }catch(err){}
+    $("inbound").classList.add("show");
+    $("inboundBtn").addEventListener("click",function(){
+      $("inbound").classList.remove("show");
+      $("addCard").scrollIntoView({behavior:"smooth"});
+    });
+  }
+}
+})();
+</script>
+</body>
+</html>
