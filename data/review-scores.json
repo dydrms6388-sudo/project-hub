@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-07-24",
+  "updatedAt": "2026-07-29",
   "gate": 80,
   "maxLoops": 5,
   "summary": {
-    "total": 55,
-    "pass": 51,
+    "total": 59,
+    "pass": 55,
     "reviewNeeded": 4,
     "reviewing": 0,
-    "avgOverall": 82.2
+    "avgOverall": 82.7
   },
   "projects": [
     {
@@ -2593,6 +2593,268 @@
         }
       ],
       "reviewedAt": "2026-07-22"
+    },
+    {
+      "slug": "nameless",
+      "name": "이름 없는 것들",
+      "source": "project-hub/nameless",
+      "live": "https://tomatoeggcat.com/nameless/",
+      "status": "pass",
+      "gate": 90,
+      "loops": 4,
+      "axes": {
+        "functional": 90,
+        "mobileUX": 90,
+        "design": 92,
+        "content": 93,
+        "realValue": 87
+      },
+      "reviewerAvg": 90.4,
+      "userScores": [
+        92,
+        90,
+        91,
+        90,
+        91,
+        89,
+        92,
+        88,
+        91,
+        88
+      ],
+      "userAvg": 90.2,
+      "overall": 90.3,
+      "findings": [
+        "터치타깃 32px(사전 조판 우선) — 44px로 수정",
+        "본문 11.5px 텍스트 82개 — 12.5px 이상으로 수정",
+        "등재어 30개가 통짜 스크롤, 탐색 수단 없음 — 초성 색인 9그룹·결과 개수 표시 추가",
+        "미명 18개가 최하단이라 발견성 낮음 — 오늘의 현상에서 바로가기 추가",
+        "사전인데 상호참조가 없음 — 같은 분야 이웃 항목 60개 링크 추가",
+        "명명 성취감 약함(표결 부재) — 미명 번호(제 N 호)와 공유 문구 CTA 추가",
+        "남은 한계: 집단 표결·공용 등재는 서버가 없어 미구현"
+      ],
+      "changes": [
+        "터치타깃 44px 일괄 확보, 12px 미만 텍스트 제거",
+        "가나다순 초성 머리글(ㄱ~ㅎ) 자동 생성 + 등재어 개수/검색 결과 개수 표시",
+        "‘아직 이름 없는 것 18개’ 바로가기 버튼",
+        "등재어마다 같은 분야 이웃 2개 상호참조(클릭 시 해당 항목으로 이동·하이라이트)",
+        "명명 카드/공유 텍스트에 미명 번호와 ‘당신이라면?’ CTA"
+      ],
+      "history": [
+        {
+          "loop": 1,
+          "userAvg": 84.3
+        },
+        {
+          "loop": 2,
+          "userAvg": 89.3
+        },
+        {
+          "loop": 3,
+          "userAvg": 90.2
+        },
+        {
+          "loop": 4,
+          "userAvg": 90.2
+        }
+      ],
+      "reviewedAt": "2026-07-29"
+    },
+    {
+      "slug": "five-photos",
+      "name": "오늘의 다섯 장",
+      "source": "project-hub/five-photos",
+      "live": "https://tomatoeggcat.com/five-photos/",
+      "status": "pass",
+      "gate": 90,
+      "loops": 4,
+      "axes": {
+        "functional": 92,
+        "mobileUX": 91,
+        "design": 89,
+        "content": 88,
+        "realValue": 89
+      },
+      "reviewerAvg": 89.8,
+      "userScores": [
+        91,
+        87,
+        90,
+        90,
+        91,
+        89,
+        96,
+        88,
+        91,
+        89
+      ],
+      "userAvg": 90.2,
+      "overall": 90,
+      "findings": [
+        "360px 첫 화면에 조작 요소 0개(안내 블록 2개가 벽) — 시작 버튼을 상단으로",
+        "촬영일이 파일 수정시각이라 메신저 사진에서 부정확 — EXIF 촬영일 파싱",
+        "PC에서 5장 판정에 마우스만 써야 함 — 키보드 단축키",
+        "다음 사진 로딩 시 깜빡임 — 프리로드",
+        "결산이 연말에만 의미 — 기간별(올해/30일/전체) 결산 + 비율 막대",
+        "남은 한계: 브라우저에 사진첩 삭제 권한이 없어 파일명 목록 내보내기로 대체"
+      ],
+      "changes": [
+        "프라이버시 안내를 한 줄 배지 + 접이식으로 바꾸고 시작 버튼을 첫 화면에(360px top=455px)",
+        "EXIF DateTimeOriginal 파싱(앞 128KB만, GPS 태그는 읽지 않음) + ‘촬영/파일 시각’ 표기",
+        "← 버림 / → 남김 / ↑ 즐겨찾기 / Z 되돌리기 키보드 단축키",
+        "다음 장 objectURL 프리로드 및 디코딩",
+        "기간별 결산 3종 + 남김·버림 비율 막대(화면·카드 모두)"
+      ],
+      "history": [
+        {
+          "loop": 1,
+          "userAvg": 80.5
+        },
+        {
+          "loop": 2,
+          "userAvg": 89.1
+        },
+        {
+          "loop": 3,
+          "userAvg": 90.2
+        },
+        {
+          "loop": 4,
+          "userAvg": 90.2
+        }
+      ],
+      "reviewedAt": "2026-07-29"
+    },
+    {
+      "slug": "walk-shape",
+      "name": "걸음의 모양",
+      "source": "project-hub/walk-shape",
+      "live": "https://tomatoeggcat.com/walk-shape/",
+      "status": "pass",
+      "gate": 90,
+      "loops": 4,
+      "axes": {
+        "functional": 93,
+        "mobileUX": 89,
+        "design": 92,
+        "content": 90,
+        "realValue": 90
+      },
+      "reviewerAvg": 90.8,
+      "userScores": [
+        92,
+        90,
+        91,
+        93,
+        89,
+        88,
+        95,
+        89,
+        92,
+        90
+      ],
+      "userAvg": 90.9,
+      "overall": 90.8,
+      "findings": [
+        "걷는 중 화면이 꺼지면 기록이 멈춤 — Wake Lock 적용",
+        "새로고침·탭 종료 시 궤적 소실인데 소개에는 ‘여러 날 완성 가능’ — 실제 저장·복원 구현",
+        "복원한 궤적을 바로 마무리할 방법이 없었음(테스트가 발견) — 종료 버튼 노출",
+        "지도가 없어 어디를 걸을지 감이 안 옴 — 모양 회전 4방향 + 북쪽 표시 + 예상 소요 시간",
+        "데스크톱에서 할 일이 없음 — 이미 걸은 GPX 불러와 채점",
+        "결과가 캔버스라 낭독 불가 — aria-label로 점수·거리·시간 제공"
+      ],
+      "changes": [
+        "navigator.wakeLock으로 걷는 동안 화면 유지(미지원 기기는 안내)",
+        "궤적·경과시간 localStorage 저장(5초 스로틀) + ‘걷다 만 그림’ 복원 카드, 완성 시 자동 정리",
+        "모양 90/180/270도 회전(회전한 모양이 채점 기준) + 실시간 화면 북쪽 표시 + 도보 소요 시간",
+        "GPX 불러오기(트랙포인트 파싱, 4000점 초과 시 균등 솎기) → 즉시 채점",
+        "결과·실시간 캔버스에 role=img와 동적 aria-label"
+      ],
+      "history": [
+        {
+          "loop": 1,
+          "userAvg": 83.4
+        },
+        {
+          "loop": 2,
+          "userAvg": 88.5
+        },
+        {
+          "loop": 3,
+          "userAvg": 89.9
+        },
+        {
+          "loop": 4,
+          "userAvg": 90.9
+        }
+      ],
+      "reviewedAt": "2026-07-29"
+    },
+    {
+      "slug": "handwriting",
+      "name": "손글씨만",
+      "source": "project-hub/handwriting",
+      "live": "https://tomatoeggcat.com/handwriting/",
+      "status": "pass",
+      "gate": 90,
+      "loops": 4,
+      "axes": {
+        "functional": 92,
+        "mobileUX": 90,
+        "design": 90,
+        "content": 90,
+        "realValue": 88
+      },
+      "reviewerAvg": 90,
+      "userScores": [
+        90,
+        89,
+        90,
+        92,
+        91,
+        88,
+        93,
+        90,
+        88,
+        91
+      ],
+      "userAvg": 90.2,
+      "overall": 90.1,
+      "findings": [
+        "여러 장 써도 이미지는 1장만 저장 — 전체 페이지 이어 붙여 저장",
+        "링크 한도 초과를 막지 않아 잘린 링크가 나갈 수 있음 — 초과 시 링크 공유 잠금",
+        "색 스와치가 30px(.tools button 특이도에 눌림) — 44px 확보",
+        "되돌리기만 있고 되살리기 없음 — redo 스택 추가",
+        "마우스·트랙패드 필기가 각짐 — 필기 보정 토글",
+        "손글씨는 낭독 불가(구조적) — 크게 보기 + 고대비(굵고 진하게)로 저시력 보완",
+        "용도가 막연 — ‘이럴 때 씁니다’ 사례 5종"
+      ],
+      "changes": [
+        "쓴 장 전부를 세로로 이어 붙인 단일 PNG로 저장(2장=2610px 확인)",
+        "6KB 초과 시 경고 패널 + 링크·텍스트·X·공유 버튼 비활성화",
+        ".tools button.swatch 특이도 수정으로 44px 터치타깃",
+        "되살리기(redo) 스택, 새 획을 그으면 초기화",
+        "필기 보정(지수 이동평균) 토글, 크게 보기 전체화면 + 고대비 렌더"
+      ],
+      "history": [
+        {
+          "loop": 1,
+          "userAvg": 84
+        },
+        {
+          "loop": 2,
+          "userAvg": 87.5
+        },
+        {
+          "loop": 3,
+          "userAvg": 89
+        },
+        {
+          "loop": 4,
+          "userAvg": 90.2
+        }
+      ],
+      "reviewedAt": "2026-07-29"
     }
   ]
 }

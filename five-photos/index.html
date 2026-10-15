@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>오늘의 다섯 장 — 사진 3만 장을 하루 5장씩 정리하기 | TomatoEggCat</title>
+<meta name="description" content="사진첩에 3만 장이 쌓여 있어도 하루 다섯 장이면 40초입니다. 무작위가 아니라 오래된 것부터, 연속 촬영은 묶어서, 스크린샷은 따로 제시합니다. 사진은 서버로 전송되지 않고 전부 브라우저 안에서만 처리되며, 판정 기록도 이 기기에만 남습니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/five-photos/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="오늘의 다섯 장 — 사진 3만 장을 하루 5장씩" />
+<meta property="og:description" content="3만 장은 못 봐도 다섯 장은 봅니다. 하루 40초, 남길지 버릴지만 고르는 사진 정리. 사진은 기기 밖으로 나가지 않습니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/five-photos/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="오늘의 다섯 장 — 사진 3만 장을 하루 5장씩" />
+<meta name="twitter:description" content="하루 40초, 다섯 장씩. 사진은 기기 밖으로 나가지 않습니다." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"오늘의 다섯 장","description":"사진첩에서 하루 다섯 장만 꺼내 남길지 버릴지 고르게 하는 사진 정리 도구. 오래된 것 우선, 연속 촬영 묶음, 스크린샷 별도 트랙으로 선정하며 사진은 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/five-photos/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"사진이 서버로 올라가나요?","acceptedAnswer":{"@type":"Answer","text":"올라가지 않습니다. 사진 파일도, 썸네일도, 해시도, 파일명도 서버로 전송되지 않습니다. 이 페이지는 선택한 파일을 브라우저 메모리에서만 읽어 화면에 그리고, 판정 결과는 이 기기의 IndexedDB에만 저장합니다. 업로드나 동기화 기능 자체가 코드에 없습니다."}},
+{"@type":"Question","name":"이 앱이 사진을 지워 주나요?","acceptedAnswer":{"@type":"Answer","text":"지우지 않습니다. 웹 브라우저에는 휴대폰 사진첩을 삭제할 권한이 없기 때문입니다. 대신 버림으로 판정한 사진은 30일 유예함에 쌓이고, 유예가 끝나면 파일명 목록을 텍스트로 내려받아 갤러리 앱에서 직접 검색해 지울 수 있습니다. 앱이 조용히 지우는 경로는 존재하지 않습니다."}},
+{"@type":"Question","name":"매일 어떻게 다섯 장을 고르나요?","acceptedAnswer":{"@type":"Answer","text":"완전 무작위가 아닙니다. 아직 판정하지 않은 사진 중에서 오래된 쪽에 가중치를 두어 씨앗을 뽑고, 그 사진과 3분 이내에 연속 촬영된 사진들을 함께 묶어 보여 줍니다. 비슷한 사진 여러 장 중에서 고르는 편이 훨씬 빠르기 때문입니다. 스크린샷은 별도 트랙으로 모아 한 번에 여러 장을 처리합니다."}},
+{"@type":"Question","name":"기록이 다음에도 남아 있나요?","acceptedAnswer":{"@type":"Answer","text":"남습니다. 각 사진은 파일명과 크기, 수정 시각을 조합한 지문으로 식별하므로, 다음에 같은 폴더를 다시 선택해도 이미 판정한 사진은 다시 나오지 않습니다. 다만 브라우저 저장소를 지우거나 다른 기기에서 열면 기록은 이어지지 않습니다. 서버에 저장하지 않기 때문에 생기는 당연한 한계입니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"사진·기록","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"오늘의 다섯 장","item":"https://tomatoeggcat.com/five-photos/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#7dd3fc;--acc2:#bae6fd;--keep:#34d399;--trash:#fb7185;--fav:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.65}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#7dd3fc,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px;word-break:keep-all}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+.lab{font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:.03em;margin:0 0 8px}
+.lab b{color:var(--acc2)}
+.hint{font-size:12.5px;color:#6b7280;margin:6px 0 0;word-break:keep-all}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#062a3a;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.ghost{background:#13202a;color:var(--acc2);border:1px solid #24455a;font-weight:700}
+button:disabled{opacity:.4;cursor:not-allowed}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.acts button{flex:1;min-width:130px}
+.trustline{margin:0 0 14px;padding:10px 13px;border:1px solid #14532d;background:#0d1f16;border-radius:12px;font-size:13px;color:#a7f3d0;word-break:keep-all}
+.details{margin:16px 0 18px}
+.details summary{cursor:pointer;font-size:13.5px;color:#9ca3af;padding:12px 4px;min-height:44px;display:flex;align-items:center}
+.details[open] summary{color:var(--acc2)}
+.privacy{border:1px solid #14532d;background:#0d1f16;border-radius:14px;padding:14px 16px;margin-bottom:18px}
+.privacy p{margin:0;font-size:13.5px;color:#a7f3d0;word-break:keep-all}
+.privacy p+p{margin-top:7px}
+.warn{border:1px solid #78350f;background:#1f1509;border-radius:14px;padding:14px 16px;margin-bottom:18px}
+.warn p{margin:0;font-size:13.5px;color:#fcd34d;word-break:keep-all}
+/* 판정 화면 */
+.stage{display:none}
+.stage.on{display:block}
+.frame{position:relative;background:#000;border:1px solid #262626;border-radius:16px;overflow:hidden;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+.frame img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:transform .06s linear,opacity .12s linear}
+.frame .meta{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;background:linear-gradient(0deg,rgba(0,0,0,.8),transparent);font-size:12.5px;color:#d1d5db;display:flex;justify-content:space-between;gap:10px}
+.frame .meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frame .verdictTag{position:absolute;top:16px;font-size:22px;font-weight:900;padding:6px 16px;border-radius:10px;opacity:0;transition:.1s}
+.frame .vKeep{right:16px;color:var(--keep);border:3px solid var(--keep);transform:rotate(9deg)}
+.frame .vTrash{left:16px;color:var(--trash);border:3px solid var(--trash);transform:rotate(-9deg)}
+.frame .vFav{left:50%;top:34%;transform:translateX(-50%);color:var(--fav);border:3px solid var(--fav)}
+.frame .burst{position:absolute;top:12px;left:12px;font-size:12px;background:rgba(0,0,0,.65);border:1px solid #3f3f46;padding:4px 9px;border-radius:999px;color:#e5e7eb}
+.pager{display:flex;gap:6px;justify-content:center;margin:12px 0 0}
+.pager i{width:26px;height:4px;border-radius:2px;background:#2a2a2a;display:block}
+.pager i.done{background:var(--acc)}
+.pager i.now{background:#e5e7eb}
+.judge{display:flex;gap:10px;margin-top:14px}
+.judge button{flex:1;font-size:15px;padding:16px 8px}
+.bTrash{background:#2b1218;color:#fecdd3;border:1px solid #7f1d2c}
+.bFav{background:#241c07;color:#fde68a;border:1px solid #78500a}
+.bKeep{background:#0c2a20;color:#a7f3d0;border:1px solid #10603f}
+.undo{margin-top:10px}
+.undo button{background:transparent;border:1px solid #333;color:#9ca3af;font-weight:600;font-size:13.5px;padding:10px}
+/* 진행률 */
+.bar{height:10px;border-radius:6px;background:#1f1f1f;overflow:hidden;margin:10px 0 8px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#a78bfa);width:0}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.stat{flex:1;min-width:104px;background:#111;border:1px solid #242424;border-radius:12px;padding:12px}
+.stat b{display:block;font-size:21px;color:#fff}
+.stat span{font-size:12px;color:#8b8b8b}
+.eta{font-size:13.5px;color:#fbbf24;margin:10px 0 0}
+/* 결산 카드 */
+.periodTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.periodTabs button{width:auto;flex:none;padding:9px 14px;font-size:13px;min-height:44px;background:#111;color:#9ca3af;border:1px solid #2a2a2a;border-radius:999px;font-weight:600}
+.periodTabs button.on{background:#13202a;color:var(--acc2);border-color:#24455a}
+.ratio{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:16px;background:#1f2937}
+.ratio i{display:block;height:100%}
+.ratioLab{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:#94a3b8}
+.ratioLab b{color:#e5e7eb}
+.recap{background:linear-gradient(160deg,#101a24,#0b0f14);border:1px solid #24455a;border-radius:18px;padding:24px 20px}
+.recap h3{margin:0 0 4px;font-size:15px;color:var(--acc2);letter-spacing:.04em}
+.recap .big{font-size:44px;font-weight:900;margin:6px 0 0;color:#fff;line-height:1.15}
+.recap .row{display:flex;gap:14px;margin-top:16px;flex-wrap:wrap}
+.recap .row div{flex:1;min-width:96px}
+.recap .row b{display:block;font-size:24px;color:#fff}
+.recap .row span{font-size:12px;color:#94a3b8}
+.recap .wm{margin:18px 0 0;font-size:12px;color:#64748b;text-align:right}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#0c3549,#123f56);border-bottom:1px solid #1d5c7d}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#bae6fd;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px}
+.trashlist{max-height:190px;overflow:auto;border:1px solid #242424;border-radius:12px;padding:10px 12px;margin-top:10px;font-size:12.5px;color:#9ca3af}
+.trashlist div{padding:3px 0;border-bottom:1px solid #1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.about h2{font-size:18px;margin:26px 0 8px;color:#e5e7eb}
+.about p,.about li{font-size:14.5px;color:#b6b6b6;word-break:keep-all}
+.about ol,.about ul{padding-left:20px}
+.faq dt{font-weight:700;color:#e5e7eb;margin-top:14px;font-size:14.5px}
+.faq dd{margin:5px 0 0;font-size:14.5px;color:#b6b6b6;word-break:keep-all}
+.rel{display:flex;flex-wrap:wrap;gap:9px;margin-top:34px}
+.rel a{font-size:13px;color:#9ca3af;border:1px solid #2a2a2a;padding:12px 14px;border-radius:999px;text-decoration:none;min-height:44px;display:flex;align-items:center}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#9ca3af;text-decoration:none;margin-right:12px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:#e5e7eb;color:#111;padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:60}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.disc{font-size:12.5px;color:#6b7280;margin:14px 0 0;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>📷 친구가 사진 정리 결산을 공유했어요. 당신의 사진첩은 몇 장인가요?</span>
+  <button id="inboundBtn" type="button">나도 시작하기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 사진·기록 › 오늘의 다섯 장</nav>
+
+<header>
+  <h1>📷 오늘의 다섯 장</h1>
+  <p class="lead">사진첩에 3만 장이 있어도 3만 장을 보는 일은 영원히 일어나지 않습니다. 그런데 <b>다섯 장이면 40초</b>입니다. 남길지 버릴지만 고르세요. 1년이면 1,800장이 정리됩니다.</p>
+</header>
+
+<p class="trustline">🔒 사진은 <b>이 기기 밖으로 나가지 않습니다</b> · 삭제도 하지 않습니다 · 로그인 없음</p>
+
+<!-- 0. 시작 -->
+<section class="card stage on" id="stageStart">
+  <p class="lab">1. 사진 고르기</p>
+  <p class="hint" style="margin-bottom:12px">휴대폰이면 <b>사진 선택</b>에서 여러 장을 한 번에(수백 장도 됩니다) 고르세요. PC라면 <b>폴더 통째로</b>를 쓰면 편합니다. 고른 파일은 읽기만 하고 수정하지 않습니다.</p>
+  <input type="file" id="fileIn" accept="image/*" multiple style="display:none" />
+  <input type="file" id="dirIn" accept="image/*" multiple webkitdirectory style="display:none" />
+  <div class="acts">
+    <button type="button" id="pickFiles">사진 선택 🖼️</button>
+    <button type="button" id="pickDir" class="ghost">폴더 통째로 📁</button>
+  </div>
+  <p class="hint" id="loadHint"></p>
+  <div id="resumeBox" style="display:none;margin-top:16px">
+    <p class="lab">이어서 하기</p>
+    <p class="hint" id="resumeInfo"></p>
+  </div>
+</section>
+
+<details class="details">
+  <summary>이 도구가 사진을 어떻게 다루는지 (꼭 읽어 주세요)</summary>
+  <div class="privacy">
+    <p><b>🔒 사진은 이 기기 밖으로 나가지 않습니다.</b></p>
+    <p>선택한 사진은 브라우저 메모리에서만 읽혀 화면에 그려집니다. 파일도 썸네일도 파일명도 어디로도 전송되지 않고, 업로드 코드 자체가 없습니다. 판정 기록은 이 브라우저의 저장소(IndexedDB)에만 남고 언제든 지울 수 있습니다.</p>
+    <p>얼굴 인식, 장소 분석, 자동 분류는 하지 않습니다. 이 도구는 그런 물건이 아닙니다.</p>
+  </div>
+  <div class="warn">
+    <p><b>⚠️ 이 도구는 사진을 삭제하지 않습니다.</b> 웹 브라우저에는 사진첩을 지울 권한이 없습니다. 버림으로 고른 사진은 30일 유예함에 쌓이고, 나중에 <b>파일명 목록</b>을 내려받아 갤러리 앱에서 직접 지우시면 됩니다. 앱이 조용히 지우는 경로는 없습니다.</p>
+  </div>
+</details>
+
+<!-- 1. 오늘의 다섯 장 -->
+<section class="stage" id="stageJudge">
+  <div class="card" style="padding:16px 16px 18px">
+    <p class="lab" id="judgeHead">오늘의 다섯 장 <b id="judgeCount">1/5</b></p>
+    <div class="frame" id="frame">
+      <img id="photo" alt="정리할 사진" />
+      <div class="burst" id="burstTag" style="display:none">연속 촬영 묶음</div>
+      <div class="verdictTag vKeep" id="tagKeep">남김</div>
+      <div class="verdictTag vTrash" id="tagTrash">버림</div>
+      <div class="verdictTag vFav" id="tagFav">즐겨찾기</div>
+      <div class="meta"><span id="mDate">—</span><span id="mName">—</span></div>
+    </div>
+    <div class="pager" id="pager"></div>
+    <div class="judge">
+      <button type="button" class="bTrash" id="bTrash">← 버림</button>
+      <button type="button" class="bFav" id="bFav">↑ 즐겨찾기</button>
+      <button type="button" class="bKeep" id="bKeep">남김 →</button>
+    </div>
+    <div class="undo"><button type="button" id="bUndo" disabled>방금 판정 되돌리기 ⟲</button></div>
+    <p class="hint">좌우로 밀어서 넘겨도 됩니다. 왼쪽 = 버림 후보, 오른쪽 = 남김, 위 = 즐겨찾기.<br>PC에서는 <b>← 버림 · → 남김 · ↑ 즐겨찾기 · Z 되돌리기</b> 키를 쓸 수 있습니다.</p>
+  </div>
+</section>
+
+<!-- 2. 오늘 끝 -->
+<section class="stage" id="stageDone">
+  <div class="card">
+    <p class="lab">오늘 몫 완료 ☕</p>
+    <p style="margin:0;font-size:15px" id="doneMsg">다섯 장 끝났습니다. 내일 또 다섯 장이 기다립니다.</p>
+    <p class="hint">스트릭은 만들지 않았습니다. 하루 빠져도 아무 일도 일어나지 않습니다.</p>
+    <div class="acts"><button type="button" class="ghost" id="moreBtn" style="flex:0 0 auto;min-width:0;padding:10px 14px;font-size:13.5px">조금 더 하기 (오늘 최대 15장)</button></div>
+  </div>
+</section>
+
+<!-- 진행률 -->
+<section class="card" id="progressCard" style="display:none">
+  <p class="lab">진행률</p>
+  <div class="bar"><i id="barFill"></i></div>
+  <p style="margin:0;font-size:15px" id="progLine">—</p>
+  <p class="eta" id="etaLine"></p>
+  <div class="stats">
+    <div class="stat"><b id="sKeep">0</b><span>남김</span></div>
+    <div class="stat"><b id="sTrash">0</b><span>버림 후보</span></div>
+    <div class="stat"><b id="sFav">0</b><span>즐겨찾기</span></div>
+  </div>
+</section>
+
+<!-- 유예함 -->
+<section class="card" id="trashCard" style="display:none">
+  <p class="lab">🗑️ 30일 유예함 <b id="trashCount">0</b>장</p>
+  <p class="hint">버림으로 고른 사진은 여기서 30일 기다립니다. 마음이 바뀌면 되돌릴 수 있고, 유예가 끝난 것은 목록으로 내려받아 갤러리에서 직접 지우면 됩니다. <b>이 도구는 사진을 지우지 않습니다.</b></p>
+  <div class="trashlist" id="trashList"></div>
+  <div class="acts">
+    <button type="button" class="ghost" id="exportTrash">파일명 목록 내려받기 📄</button>
+    <button type="button" class="ghost" id="restoreTrash">유예함 전체 되돌리기 ⟲</button>
+  </div>
+  <p class="hint" id="purgeLine"></p>
+</section>
+
+<!-- 결산 -->
+<section class="card" id="recapCard" style="display:none">
+  <p class="lab">📅 결산</p>
+  <div class="periodTabs" id="periodTabs">
+    <button type="button" data-p="year" class="on">올해</button>
+    <button type="button" data-p="30">최근 30일</button>
+    <button type="button" data-p="all">전체</button>
+  </div>
+  <div class="recap" id="recap">
+    <h3>오늘의 다섯 장 · <span id="rYear">2026년</span> 결산</h3>
+    <p class="big" id="rBig">0장을 보고<br>0장을 남겼습니다</p>
+    <div class="row">
+      <div><b id="rSeen">0</b><span>판정한 사진</span></div>
+      <div><b id="rKeep">0</b><span>남긴 사진</span></div>
+      <div><b id="rFav">0</b><span>즐겨찾기</span></div>
+    </div>
+    <div class="ratio" id="ratioBar"></div>
+    <div class="ratioLab" id="ratioLab"></div>
+    <p class="wm">tomatoeggcat.com/five-photos</p>
+  </div>
+  <p class="hint">결산 카드에는 <b>숫자만</b> 들어갑니다. 사진은 한 장도 들어가지 않으니 그대로 공유해도 사생활이 드러나지 않습니다.</p>
+  <div class="acts">
+    <button type="button" id="saveBtn">이미지로 저장 🖼️</button>
+    <button type="button" class="ghost" id="copyLinkBtn">링크 복사 🔗</button>
+  </div>
+  <div class="acts">
+    <button type="button" class="ghost" id="copyTextBtn">텍스트 복사 📋</button>
+    <button type="button" class="ghost" id="xBtn">X 공유</button>
+    <button type="button" class="ghost" id="shareBtn" style="display:none">공유하기 📤</button>
+  </div>
+  <div class="acts">
+    <button type="button" class="ghost" id="remixBtn">사진 더 고르고 다시 결산 ⟲</button>
+    <button type="button" class="ghost" id="resetBtn">모든 기록 지우기</button>
+  </div>
+  <p class="disc">※ 결산 숫자는 이 브라우저에 저장된 판정 기록만으로 계산합니다. 다른 기기·다른 브라우저의 기록과는 합쳐지지 않습니다.</p>
+
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</section>
+
+<section class="about">
+  <h2>📷 오늘의 다섯 장 소개</h2>
+  <p>사진 정리는 모두가 미루고 아무도 하지 않는 일입니다. 이유는 분명합니다. 3만 장을 보는 순간 포기하기 때문입니다. 그래서 이 도구는 3만 장을 보여 주지 않습니다. 하루에 딱 다섯 장만 꺼냅니다. 한 장에 8초면 40초, 커피 물 끓는 동안 끝나는 분량입니다. 그렇게 1년이면 1,800장이 정리됩니다.</p>
+  <p>부수 효과가 오히려 본편입니다. 매일 자기 인생의 사진 다섯 장을 무작위에 가깝게 다시 보게 됩니다. 정리 도구인 척하는 회고 도구인 셈입니다. 그래서 화면에는 사진과 촬영일, 파일명 말고는 아무것도 두지 않았습니다. 점수도, 배지도, 연속 출석 기록도 없습니다.</p>
+
+  <h2>어떻게 다섯 장을 고르나요</h2>
+  <ul>
+    <li><b>오래된 것 우선.</b> 최근 사진은 아직 판단이 서지 않습니다. 아직 판정하지 않은 사진 중 오래된 쪽에 가중치를 둡니다.</li>
+    <li><b>연속 촬영은 묶어서.</b> 3분 이내에 찍힌 사진들은 한 묶음으로 함께 보여 줍니다. 비슷한 12장 중에서 고르는 편이 훨씬 빠릅니다.</li>
+    <li><b>스크린샷은 따로.</b> 파일명으로 알아본 스크린샷은 별도 트랙에 모아 몰아서 처리합니다.</li>
+    <li><b>같은 날 열면 같은 다섯 장.</b> 날짜를 씨앗으로 뽑기 때문에 새로고침해도 오늘 몫은 바뀌지 않습니다.</li>
+    <li>이미 판정한 사진은 다시 나오지 않습니다.</li>
+  </ul>
+
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>사진 선택(또는 폴더 통째로)으로 정리할 사진을 고릅니다. 수백 장, 수천 장도 괜찮습니다.</li>
+    <li>오늘의 다섯 장이 한 장씩 나옵니다. 좌우로 밀거나 버튼을 눌러 <b>버림 / 즐겨찾기 / 남김</b> 중 하나를 고릅니다.</li>
+    <li>다섯 장이 끝나면 그날은 끝입니다. 더 하고 싶으면 하루 최대 15장까지만 늘릴 수 있습니다.</li>
+    <li>버림 후보는 30일 유예함에서 기다립니다. 마음이 바뀌면 되돌리세요.</li>
+    <li>연말에는 숫자만 담긴 결산 카드를 저장해 공유할 수 있습니다.</li>
+  </ol>
+  <p>더 하기 버튼을 일부러 작게 두었습니다. 하루에 200장을 몰아서 보면 다음 날 오지 않기 때문입니다. 이 도구의 목적은 오늘 많이 하는 것이 아니라 내일도 하는 것입니다.</p>
+
+  <h2>결산은 연말까지 기다리지 않아도 됩니다</h2>
+  <p>결산 카드는 올해, 최근 30일, 전체 기간 중에서 고를 수 있습니다. 한 달만 해 봐도 숫자가 쌓이고, 그 숫자가 다음 달을 굴립니다. 카드에는 남긴 비율 막대만 들어가고 사진은 한 장도 들어가지 않습니다.</p>
+
+  <h2>솔직하게 밝히는 한계</h2>
+  <p>원래 이 기획은 사진첩 전체를 읽고 삭제까지 처리하는 휴대폰 앱을 전제로 했습니다. 이 도구는 설치가 필요 없는 웹 페이지이고, 웹 브라우저에는 사진첩 전체 접근 권한도, 사진 삭제 권한도 없습니다. 그래서 다음과 같이 축소했습니다.</p>
+  <ul>
+    <li><b>사진첩 자동 읽기 → 사용자가 직접 고르기.</b> 브라우저는 사용자가 고른 파일만 볼 수 있습니다.</li>
+    <li><b>삭제 → 파일명 목록 내려받기.</b> 앱이 사진을 지우는 경로는 아예 만들지 않았습니다.</li>
+    <li><b>아침 알림 → 없음.</b> 백그라운드로 알림을 예약하려면 설치형 앱이나 푸시 서버가 필요합니다. 없는 기능을 흉내 내지 않았습니다.</li>
+    <li><b>촬영 위치 표시 → 없음.</b> 위치 정보는 읽지도 표시하지도 않습니다. 장소 분석을 하지 않겠다는 원칙을 그대로 지켰습니다.</li>
+    <li><b>촬영일</b>은 사진에 EXIF 촬영 정보가 있으면 그것을, 없으면 파일 수정 시각을 씁니다(화면에 어느 쪽인지 표시됩니다). EXIF도 기기 안에서만 읽습니다.</li>
+  </ul>
+
+  <h2>자주 묻는 질문</h2>
+  <dl class="faq">
+    <dt>Q. 사진이 정말 서버로 안 가나요?</dt>
+    <dd>가지 않습니다. 이 페이지에는 업로드·동기화 코드가 없습니다. 선택한 파일은 브라우저 메모리에서만 읽히고, 화면에 그린 뒤 즉시 해제됩니다. 개발자 도구의 네트워크 탭을 열어 두고 사용해 보시면 사진과 관련된 요청이 한 건도 없다는 것을 직접 확인하실 수 있습니다.</dd>
+    <dt>Q. 다음에 다시 열면 처음부터 하나요?</dt>
+    <dd>아닙니다. 사진마다 파일명·크기·수정 시각을 조합한 지문을 만들어 판정 기록을 남기므로, 같은 사진을 다시 고르더라도 이미 판정한 것은 나오지 않습니다. 다만 브라우저 저장소를 지우거나 다른 기기에서 열면 기록은 이어지지 않습니다.</dd>
+    <dt>Q. 왜 하루 다섯 장인가요?</dt>
+    <dd>포기하지 않는 최대치이기 때문입니다. 스무 장은 부담이 되고, 한 장은 시작한 느낌이 나지 않습니다. 다섯 장은 40초 안에 끝나고, 그런데도 1년이면 1,800장입니다.</dd>
+    <dt>Q. 이 속도면 몇 년이 걸린다고 나오는데요?</dt>
+    <dd>정직하게 계산한 숫자입니다. 3만 장을 하루 다섯 장씩 보면 16년이 걸립니다. 그 숫자를 감추지 않는 이유는, 그걸 본 사람들이 대개 하루 열다섯 장으로 늘리기 때문입니다.</dd>
+    <dt>Q. 결산 카드를 공유하면 사진이 보이나요?</dt>
+    <dd>보이지 않습니다. 카드에는 판정한 장수, 남긴 장수, 즐겨찾기 수만 들어갑니다. 사진도 파일명도 들어가지 않습니다.</dd>
+  </dl>
+  <p style="color:#6b7280;font-size:13px">※ 이 도구는 사진을 삭제하지 않으며, 삭제로 인한 결과에 대해 책임지지 않습니다. 중요한 사진은 반드시 별도 백업을 유지하세요.</p>
+</section>
+
+<nav class="rel">
+  <a href="/year-mosaic/">🧩 연간 모자이크</a>
+  <a href="/year-book/">📖 추억연감</a>
+  <a href="/future-letter/">✉️ 미래편지</a>
+  <a href="/nameless/">📖 이름 없는 것들</a>
+  <a href="/">🍅 전체 도구</a>
+</nav>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+
+</div>
+<div class="toast" id="toast">저장되었습니다</div>
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+
+<script>
+(function(){
+"use strict";
+function $(id){ return document.getElementById(id); }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function dec(s){ try{ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove("show");},1900); }
+function pad(n){ return n<10 ? "0"+n : ""+n; }
+function ymd(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+
+/* ============================================================
+   선정 로직 (순수 함수 — 서버·DOM 없음)
+   ============================================================ */
+/* SELECT-LOGIC-START */
+function fnv(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
+function assetKey(name,size,lm){ return fnv(name+"|"+size+"|"+lm).toString(36) + "-" + (size%100000).toString(36); }
+function isScreenshot(name){ return /screen ?shot|screencapture|스크린샷|화면 ?캡[처쳐]|^SCR_|^Screenshot/i.test(name); }
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+/* 하루 몫 뽑기.
+   pool: [{id,name,lm}] 판정 안 된 것만. dayKey: "2026-07-29". n: 뽑을 장수.
+   - 오래된 것 우선(제곱 가중) 씨앗 → 3분 이내 연속 촬영 묶음으로 확장
+   - 스크린샷이 많이 쌓이면(120장 이상) 3일에 한 번 스크린샷 트랙
+   - 같은 날 같은 pool이면 같은 결과(결정론적) */
+function pickToday(pool, dayKey, n){
+  if(!pool.length) return { picks:[], track:"none" };
+  var rnd = mulberry32(fnv(dayKey + "#" + pool.length));
+  var shots = [], photos = [];
+  for(var i=0;i<pool.length;i++){ (isScreenshot(pool[i].name) ? shots : photos).push(pool[i]); }
+  var dayNum = fnv(dayKey) % 3;
+  var useShots = shots.length >= 120 && dayNum === 0;
+  var src = useShots ? shots : (photos.length ? photos : shots);
+  var sorted = src.slice().sort(function(a,b){ return a.lm - b.lm; });
+  if(useShots){
+    var start = Math.floor(rnd()*Math.max(1, sorted.length - n));
+    return { picks: sorted.slice(start, start+n), track:"screenshot" };
+  }
+  var picks = [], used = {};
+  while(picks.length < n && picks.length < sorted.length){
+    var r = rnd(); var seedIdx = Math.floor(r*r*sorted.length); // 오래된 쪽 가중
+    while(used[seedIdx] && seedIdx < sorted.length) seedIdx++;
+    if(seedIdx >= sorted.length){ seedIdx = 0; while(used[seedIdx] && seedIdx < sorted.length) seedIdx++; }
+    if(seedIdx >= sorted.length) break;
+    var seed = sorted[seedIdx]; used[seedIdx]=1; picks.push(seed);
+    // 연속 촬영 묶음(±180초) 확장
+    var j = seedIdx+1;
+    while(j < sorted.length && picks.length < n && sorted[j].lm - seed.lm <= 180000){
+      if(!used[j]){ used[j]=1; picks.push(sorted[j]); }
+      j++;
+    }
+  }
+  var burst = picks.length > 1 && (picks[picks.length-1].lm - picks[0].lm) <= 180000;
+  return { picks: picks, track: burst ? "burst" : "photo" };
+}
+/* 남은 기간 추정: 남은 장수 / 하루 평균 판정수 → 완료 연도 */
+function etaYear(remaining, perDay, fromYear){
+  if(perDay <= 0) return null;
+  var years = remaining / perDay / 365;
+  return { years: years, year: fromYear + Math.ceil(years) };
+}
+/* SELECT-LOGIC-END */
+
+if(typeof module !== "undefined" && module.exports){
+  module.exports = { assetKey:assetKey, isScreenshot:isScreenshot, pickToday:pickToday, etaYear:etaYear };
+}
+
+/* ── EXIF 촬영일(DateTimeOriginal) — 파일 앞부분만 읽어 기기 안에서 파싱.
+      수정 시각은 메신저로 받은 사진에서 실제 촬영일과 다르기 때문에 EXIF가 있으면 그쪽을 쓴다. ── */
+function parseExifDate(view){
+  if(view.byteLength < 8 || view.getUint16(0) !== 0xFFD8) return null;   // JPEG 아님
+  var off = 2;
+  while(off + 4 < view.byteLength){
+    if(view.getUint8(off) !== 0xFF) return null;
+    var marker = view.getUint8(off+1), size = view.getUint16(off+2);
+    if(marker === 0xE1){                                                  // APP1(Exif)
+      var base = off + 10;                                                // "Exif\0\0" 다음 = TIFF 헤더
+      if(base + 8 > view.byteLength) return null;
+      var little = view.getUint16(base) === 0x4949;
+      var ifd0 = base + view.getUint32(base+4, little);
+      function tagVal(dirStart, want){
+        if(dirStart + 2 > view.byteLength) return 0;
+        var n = view.getUint16(dirStart, little);
+        for(var i=0;i<n;i++){
+          var e = dirStart + 2 + i*12;
+          if(e + 12 > view.byteLength) return 0;
+          if(view.getUint16(e, little) === want) return view.getUint32(e+8, little);
+        }
+        return 0;
+      }
+      function tagStr(dirStart, want){
+        if(dirStart + 2 > view.byteLength) return null;
+        var n = view.getUint16(dirStart, little);
+        for(var i=0;i<n;i++){
+          var e = dirStart + 2 + i*12;
+          if(e + 12 > view.byteLength) return null;
+          if(view.getUint16(e, little) === want){
+            var len = view.getUint32(e+4, little), p = base + view.getUint32(e+8, little), out = "";
+            for(var k=0;k<len-1 && p+k<view.byteLength;k++) out += String.fromCharCode(view.getUint8(p+k));
+            return out;
+          }
+        }
+        return null;
+      }
+      var exifPtr = tagVal(ifd0, 0x8769);
+      var str = exifPtr ? tagStr(base + exifPtr, 0x9003) : null;          // DateTimeOriginal
+      if(!str) str = tagStr(ifd0, 0x0132);                                // DateTime 폴백
+      if(!str) return null;
+      var m = str.match(/^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}):(\d{2}):(\d{2})/);
+      if(!m) return null;
+      return new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5], +m[6]).getTime();
+    }
+    if(marker === 0xDA) return null;                                      // 이미지 데이터 시작
+    off += 2 + size;
+  }
+  return null;
+}
+function readExifDate(file){
+  return new Promise(function(res){
+    if(!/jpe?g/i.test(file.type) && !/\.jpe?g$/i.test(file.name)) { res(null); return; }
+    var fr = new FileReader();
+    fr.onload = function(){ try{ res(parseExifDate(new DataView(fr.result))); }catch(e){ res(null); } };
+    fr.onerror = function(){ res(null); };
+    fr.readAsArrayBuffer(file.slice(0, 131072));
+  });
+}
+
+/* ============================================================
+   저장소 (IndexedDB) — 사진은 저장하지 않는다. 판정 기록만.
+   ============================================================ */
+var DB=null, DBNAME="tec-five-photos", memFallback={judgments:{},meta:{}};
+function openDB(){
+  return new Promise(function(res){
+    if(!window.indexedDB){ res(null); return; }
+    var rq = indexedDB.open(DBNAME, 1);
+    rq.onupgradeneeded = function(e){
+      var db = e.target.result;
+      if(!db.objectStoreNames.contains("judgments")) db.createObjectStore("judgments",{keyPath:"id"});
+      if(!db.objectStoreNames.contains("meta")) db.createObjectStore("meta",{keyPath:"k"});
+    };
+    rq.onsuccess = function(){ res(rq.result); };
+    rq.onerror = function(){ res(null); };
+  });
+}
+function txPut(store, val){
+  if(!DB){ memFallback[store][val.id||val.k] = val; return Promise.resolve(); }
+  return new Promise(function(res){
+    var t = DB.transaction(store,"readwrite"); t.objectStore(store).put(val);
+    t.oncomplete=function(){res();}; t.onerror=function(){res();};
+  });
+}
+function txDel(store, key){
+  if(!DB){ delete memFallback[store][key]; return Promise.resolve(); }
+  return new Promise(function(res){
+    var t = DB.transaction(store,"readwrite"); t.objectStore(store).delete(key);
+    t.oncomplete=function(){res();}; t.onerror=function(){res();};
+  });
+}
+function txAll(store){
+  if(!DB){ return Promise.resolve(Object.keys(memFallback[store]).map(function(k){return memFallback[store][k];})); }
+  return new Promise(function(res){
+    var out=[], t=DB.transaction(store,"readonly"), rq=t.objectStore(store).openCursor();
+    rq.onsuccess=function(e){ var c=e.target.result; if(c){ out.push(c.value); c.continue(); } else res(out); };
+    rq.onerror=function(){ res(out); };
+  });
+}
+function txClear(store){
+  if(!DB){ memFallback[store]={}; return Promise.resolve(); }
+  return new Promise(function(res){
+    var t=DB.transaction(store,"readwrite"); t.objectStore(store).clear();
+    t.oncomplete=function(){res();}; t.onerror=function(){res();};
+  });
+}
+
+/* ============================================================
+   상태
+   ============================================================ */
+var assets = [];        // 이번 세션에 고른 파일 [{id,name,lm,size,file}]
+var judged = {};        // id -> {id,v,t,name}
+var meta = {};          // k -> value
+var queue = [], qi = 0, track = "photo", todayLimit = 5, lastJudged = null;
+var objectUrl = null;
+var shared = null;      // 공유 링크로 들어온 결산(내 기록 대신 표시)
+
+function metaGet(k, d){ return (meta[k] !== undefined && meta[k] !== null) ? meta[k] : d; }
+function metaSet(k, v){ meta[k] = v; return txPut("meta", {k:k, v:v}); }
+
+/* ---- 파일 선택 ---- */
+function onFiles(list){
+  var files = Array.prototype.slice.call(list).filter(function(f){ return /^image\//.test(f.type) || /\.(jpe?g|png|heic|heif|webp|gif)$/i.test(f.name); });
+  if(!files.length){ $("loadHint").textContent = "이미지 파일을 찾지 못했습니다. 다시 골라 주세요."; return; }
+  assets = files.map(function(f){
+    return { id: assetKey(f.name, f.size, f.lastModified), name: f.name, lm: f.lastModified || Date.now(), size: f.size, file: f };
+  });
+  metaSet("libTotal", Math.max(assets.length, metaGet("libTotal",0)));
+  $("loadHint").textContent = assets.length.toLocaleString() + "장을 읽었습니다. (사진은 전송되지 않습니다)";
+  startDay();
+}
+$("pickFiles").addEventListener("click",function(){ $("fileIn").click(); });
+$("pickDir").addEventListener("click",function(){ $("dirIn").click(); });
+$("fileIn").addEventListener("change",function(){ onFiles(this.files); });
+$("dirIn").addEventListener("change",function(){ onFiles(this.files); });
+
+/* ---- 하루 시작 ---- */
+function todayKey(){ return ymd(new Date()); }
+function doneToday(){ return metaGet("dayKey","") === todayKey() ? metaGet("dayCount",0) : 0; }
+function startDay(){
+  var pool = assets.filter(function(a){ return !judged[a.id]; });
+  if(!pool.length){
+    show("stageDone");
+    $("doneMsg").textContent = "고른 사진을 전부 판정했습니다. 사진을 더 고르면 이어서 진행합니다.";
+    paint(); return;
+  }
+  var already = doneToday();
+  var remainToday = Math.max(0, todayLimit - already);
+  if(remainToday <= 0){
+    show("stageDone");
+    $("doneMsg").textContent = "오늘 몫 " + already + "장을 끝냈습니다. 내일 또 다섯 장이 기다립니다.";
+    paint(); return;
+  }
+  var r = pickToday(pool, todayKey() + "#" + already, remainToday);
+  queue = r.picks; qi = 0; track = r.track;
+  if(!queue.length){ show("stageDone"); paint(); return; }
+  show("stageJudge");
+  $("judgeHead").innerHTML = (track==="screenshot" ? "스크린샷 몰아 처리 " : "오늘의 다섯 장 ") + "<b id='judgeCount'></b>";
+  paintPager();
+  showPhoto();
+  paint();
+}
+function show(id){
+  ["stageStart","stageJudge","stageDone"].forEach(function(s){ $(s).classList.toggle("on", s===id); });
+  $("progressCard").style.display = (assets.length || Object.keys(judged).length) ? "" : "none";
+}
+function paintPager(){
+  var p = $("pager"); p.innerHTML = "";
+  for(var i=0;i<queue.length;i++){
+    var b = document.createElement("i");
+    b.className = i < qi ? "done" : (i===qi ? "now" : "");
+    p.appendChild(b);
+  }
+  var jc = $("judgeCount"); if(jc) jc.textContent = Math.min(qi+1, queue.length) + "/" + queue.length;
+}
+var preUrl = null, preId = null;
+function preloadNext(){
+  var nx = queue[qi+1];
+  if(!nx || preId === nx.id) return;
+  if(preUrl){ URL.revokeObjectURL(preUrl); preUrl = null; }
+  preUrl = URL.createObjectURL(nx.file); preId = nx.id;
+  var im = new Image(); im.src = preUrl;                 // 디코딩까지 미리 (깜빡임 방지)
+}
+function showPhoto(){
+  var a = queue[qi];
+  if(!a){ finishDay(); return; }
+  if(objectUrl){ URL.revokeObjectURL(objectUrl); objectUrl = null; }
+  if(preId === a.id && preUrl){ objectUrl = preUrl; preUrl = null; preId = null; }
+  else objectUrl = URL.createObjectURL(a.file);
+  var img = $("photo");
+  img.style.transform = ""; img.style.opacity = "1";
+  img.src = objectUrl;
+  var fmt = function(t, exif){
+    return new Date(t).toLocaleDateString("ko-KR",{year:"numeric",month:"long",day:"numeric"}) + (exif ? " 촬영" : " (파일 시각)");
+  };
+  $("mDate").textContent = fmt(a.lm, false);
+  if(a.exif === undefined){
+    readExifDate(a.file).then(function(t){
+      a.exif = t || null;
+      if(queue[qi] && queue[qi].id === a.id && a.exif) $("mDate").textContent = fmt(a.exif, true);
+    });
+  } else if(a.exif) $("mDate").textContent = fmt(a.exif, true);
+  preloadNext();
+  $("mName").textContent = a.name.length > 26 ? a.name.slice(0,24)+"…" : a.name;
+  $("burstTag").style.display = (track==="burst") ? "" : ( track==="screenshot" ? "" : "none");
+  $("burstTag").textContent = track==="screenshot" ? "스크린샷 트랙" : "연속 촬영 묶음";
+  paintPager();
+  setTag(0,0);
+}
+function setTag(dx,dy){
+  $("tagKeep").style.opacity  = dx > 30 ? Math.min(1,(dx-30)/70) : 0;
+  $("tagTrash").style.opacity = dx < -30 ? Math.min(1,(-dx-30)/70) : 0;
+  $("tagFav").style.opacity   = dy < -40 ? Math.min(1,(-dy-40)/70) : 0;
+}
+function judge(v){
+  var a = queue[qi];
+  if(!a) return;
+  var rec = { id:a.id, v:v, t:new Date().toISOString(), name:a.name };
+  judged[a.id] = rec;
+  lastJudged = rec;
+  $("bUndo").disabled = false;
+  txPut("judgments", rec);
+  var already = doneToday();          // 날짜가 바뀌었으면 0부터
+  metaSet("dayKey", todayKey());
+  metaSet("dayCount", already + 1);
+  qi++;
+  if(qi >= queue.length) finishDay(); else showPhoto();
+  paint();
+}
+$("bKeep").addEventListener("click",function(){ judge("keep"); });
+$("bTrash").addEventListener("click",function(){ judge("trash"); });
+$("bFav").addEventListener("click",function(){ judge("fav"); });
+$("bUndo").addEventListener("click",function(){
+  if(!lastJudged) return;
+  delete judged[lastJudged.id];
+  txDel("judgments", lastJudged.id);
+  metaSet("dayCount", Math.max(0, doneToday()-1));
+  var i = queue.findIndex(function(x){ return x.id === lastJudged.id; });
+  if(i >= 0){ qi = i; show("stageJudge"); showPhoto(); }
+  lastJudged = null; $("bUndo").disabled = true;
+  paint();
+});
+function finishDay(){
+  if(objectUrl){ URL.revokeObjectURL(objectUrl); objectUrl=null; }
+  if(preUrl){ URL.revokeObjectURL(preUrl); preUrl=null; preId=null; }
+  show("stageDone");
+  var d = doneToday();
+  $("doneMsg").textContent = d + "장 끝났습니다. " + (d >= 15 ? "오늘은 여기까지입니다. 내일 또 다섯 장." : "내일 또 다섯 장이 기다립니다.");
+  $("moreBtn").style.display = d >= 15 ? "none" : "";
+  paint();
+}
+$("moreBtn").addEventListener("click",function(){
+  todayLimit = Math.min(15, doneToday() + 5);
+  startDay();
+});
+
+/* ---- 키보드 (PC) ---- */
+document.addEventListener("keydown",function(e){
+  if(!$("stageJudge").classList.contains("on")) return;
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
+  var k = e.key;
+  if(k === "ArrowRight"){ e.preventDefault(); judge("keep"); }
+  else if(k === "ArrowLeft"){ e.preventDefault(); judge("trash"); }
+  else if(k === "ArrowUp"){ e.preventDefault(); judge("fav"); }
+  else if(k === "z" || k === "Z" || k === "ㅋ"){ e.preventDefault(); $("bUndo").click(); }
+});
+
+/* ---- 스와이프 ---- */
+(function(){
+  var f = $("frame"), sx=0, sy=0, dragging=false;
+  function down(e){ dragging=true; var p=pt(e); sx=p.x; sy=p.y; }
+  function move(e){
+    if(!dragging) return;
+    var p=pt(e), dx=p.x-sx, dy=p.y-sy;
+    if(Math.abs(dx) > 8 || Math.abs(dy) > 8) e.preventDefault();
+    $("photo").style.transform = "translate("+dx+"px,"+Math.min(0,dy)+"px) rotate("+(dx/28)+"deg)";
+    setTag(dx,dy);
+  }
+  function up(e){
+    if(!dragging) return; dragging=false;
+    var p=pt(e), dx=p.x-sx, dy=p.y-sy;
+    $("photo").style.transform = "";
+    setTag(0,0);
+    if(dy < -90 && Math.abs(dx) < 80) judge("fav");
+    else if(dx > 90) judge("keep");
+    else if(dx < -90) judge("trash");
+  }
+  function pt(e){ var t = e.changedTouches ? e.changedTouches[0] : e; return {x:t.clientX, y:t.clientY}; }
+  f.addEventListener("mousedown",down); f.addEventListener("mousemove",move); f.addEventListener("mouseup",up); f.addEventListener("mouseleave",function(){dragging=false;$("photo").style.transform="";setTag(0,0);});
+  f.addEventListener("touchstart",down,{passive:true}); f.addEventListener("touchmove",move,{passive:false}); f.addEventListener("touchend",up);
+})();
+
+/* ---- 진행률 · 유예함 · 결산 ---- */
+function counts(){
+  var k=0,t=0,f=0, list=[];
+  for(var id in judged){ var j=judged[id]; list.push(j);
+    if(j.v==="keep")k++; else if(j.v==="trash")t++; else if(j.v==="fav")f++; }
+  return {keep:k, trash:t, fav:f, total:list.length, list:list};
+}
+function paint(){
+  var c = counts();
+  var total = Math.max(metaGet("libTotal",0), assets.length, c.total);
+  $("progressCard").style.display = (total || c.total) ? "" : "none";
+  var pct = total ? (c.total/total*100) : 0;
+  $("barFill").style.width = Math.min(100,pct).toFixed(1)+"%";
+  $("progLine").textContent = total.toLocaleString()+"장 중 "+c.total.toLocaleString()+"장 판정 · "+pct.toFixed(1)+"%";
+  $("sKeep").textContent = c.keep.toLocaleString();
+  $("sTrash").textContent = c.trash.toLocaleString();
+  $("sFav").textContent = c.fav.toLocaleString();
+  // ETA — 최근 7일 판정 속도
+  var since = Date.now() - 7*86400000, recent = 0, days = {};
+  c.list.forEach(function(j){ var t = Date.parse(j.t); if(t >= since){ recent++; days[j.t.slice(0,10)] = 1; } });
+  var activeDays = Math.max(1, Object.keys(days).length);
+  var perDay = recent ? recent/activeDays : 5;
+  var yr = new Date().getFullYear();
+  var e = etaYear(Math.max(0,total - c.total), perDay, yr);
+  if(e && total > c.total){
+    var line = "이 속도(하루 "+perDay.toFixed(1)+"장)면 완주는 "+e.year+"년쯤입니다.";
+    var fast = etaYear(total - c.total, 15, yr);
+    if(fast && fast.year < e.year) line += " 하루 15장으로 늘리면 "+fast.year+"년.";
+    $("etaLine").textContent = line;
+  } else $("etaLine").textContent = "";
+  paintTrash(c);
+  paintRecap(c);
+}
+function paintTrash(c){
+  var t = c.list.filter(function(j){ return j.v==="trash"; });
+  $("trashCard").style.display = t.length ? "" : "none";
+  if(!t.length) return;
+  $("trashCount").textContent = t.length.toLocaleString();
+  var box = $("trashList"); box.innerHTML = "";
+  t.slice(0,200).forEach(function(j){
+    var d = document.createElement("div");
+    var due = new Date(Date.parse(j.t) + 30*86400000);
+    d.textContent = j.name + "  ·  " + ymd(due) + " 이후";
+    box.appendChild(d);
+  });
+  var ready = t.filter(function(j){ return Date.now() - Date.parse(j.t) >= 30*86400000; }).length;
+  $("purgeLine").textContent = ready
+    ? "유예가 끝난 " + ready + "장이 있습니다. 목록을 내려받아 갤러리 앱에서 직접 지워 주세요."
+    : "아직 유예 기간이 끝난 사진은 없습니다.";
+}
+$("exportTrash").addEventListener("click",function(){
+  var t = counts().list.filter(function(j){ return j.v==="trash"; });
+  if(!t.length) return;
+  var txt = "# 오늘의 다섯 장 — 버림 후보 목록\n# 이 파일은 파일명만 담고 있습니다. 갤러리 앱에서 검색해 직접 삭제하세요.\n# 이 도구는 사진을 삭제하지 않습니다.\n\n"
+    + t.map(function(j){ return j.name + "\t(" + j.t.slice(0,10) + " 판정)"; }).join("\n") + "\n";
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([txt],{type:"text/plain;charset=utf-8"}));
+  a.download = "five-photos-trash-" + ymd(new Date()) + ".txt";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  toast("목록을 내려받았습니다");
+});
+$("restoreTrash").addEventListener("click",function(){
+  var t = counts().list.filter(function(j){ return j.v==="trash"; });
+  if(!t.length) return;
+  t.forEach(function(j){ delete judged[j.id]; txDel("judgments", j.id); });
+  toast(t.length + "장을 되돌렸습니다");
+  paint();
+});
+var period = "year";
+function periodLabel(){ return period === "year" ? (new Date().getFullYear() + "년") : (period === "30" ? "최근 30일" : "전체 기간"); }
+function recapData(){
+  var y = new Date().getFullYear(), c = counts(), since = Date.now() - 30*86400000;
+  var seen=0, keep=0, fav=0;
+  c.list.forEach(function(j){
+    if(period === "year" && j.t.slice(0,4) !== String(y)) return;
+    if(period === "30" && Date.parse(j.t) < since) return;
+    seen++; if(j.v==="keep") keep++; if(j.v==="fav"){ keep++; fav++; }
+  });
+  return { y:y, seen:seen, keep:keep, fav:fav, label: periodLabel() };
+}
+function paintRecap(c){
+  var r = shared || recapData();
+  $("recapCard").style.display = (r.seen || shared) ? "" : "none";
+  $("rYear").textContent = r.label || (r.y + "년");
+  $("rBig").innerHTML = r.seen.toLocaleString()+"장을 보고<br>"+r.keep.toLocaleString()+"장을 남겼습니다";
+  $("rSeen").textContent = r.seen.toLocaleString();
+  $("rKeep").textContent = r.keep.toLocaleString();
+  $("rFav").textContent = r.fav.toLocaleString();
+  var kept = r.keep, trashed = Math.max(0, r.seen - r.keep);
+  var tot = Math.max(1, r.seen);
+  $("ratioBar").innerHTML = "<i style='width:" + (kept/tot*100) + "%;background:#34d399'></i>"
+                          + "<i style='width:" + (trashed/tot*100) + "%;background:#fb7185'></i>";
+  $("ratioLab").innerHTML = "<span>남김 <b>" + Math.round(kept/tot*100) + "%</b></span>"
+                          + "<span>버림 후보 <b>" + Math.round(trashed/tot*100) + "%</b></span>"
+                          + "<span>즐겨찾기 <b>" + r.fav.toLocaleString() + "장</b></span>";
+}
+Array.prototype.forEach.call(document.querySelectorAll("#periodTabs button"),function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll("#periodTabs button").forEach(function(x){x.classList.remove("on");});
+    b.classList.add("on"); period = b.dataset.p; shared = null; paint();
+  });
+});
+$("remixBtn").addEventListener("click",function(){
+  shared = null; todayLimit = Math.max(5, doneToday()+5);
+  show("stageStart"); window.scrollTo({top:0,behavior:"smooth"});
+});
+$("resetBtn").addEventListener("click",function(){
+  txClear("judgments").then(function(){ return txClear("meta"); }).then(function(){
+    judged = {}; meta = {}; shared = null; assets = [];
+    toast("모든 기록을 지웠습니다");
+    show("stageStart"); paint();
+  });
+});
+
+/* ---- 공유 ---- */
+function state(){ var r = shared || recapData(); return { y:r.y, s:r.seen, k:r.keep, f:r.fav, l:r.label || (r.y+"년") }; }
+function resultUrl(){ return location.origin+location.pathname+"?r="+encodeURIComponent(enc(state())); }
+function copy(text,msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});
+  } else fallbackCopy(text,msg);
+}
+function fallbackCopy(text,msg){
+  var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사에 실패했어요"); }
+  document.body.removeChild(ta);
+}
+function shareText(){
+  var s = state();
+  return "📷 오늘의 다섯 장 — "+(s.l||s.y+"년")+" 결산\n"+s.s.toLocaleString()+"장을 보고 "+s.k.toLocaleString()+"장을 남겼습니다. (즐겨찾기 "+s.f+")\n하루 다섯 장이면 40초.\n"+resultUrl();
+}
+$("copyLinkBtn").addEventListener("click",function(){ copy(resultUrl(),"링크가 복사되었습니다"); });
+$("copyTextBtn").addEventListener("click",function(){ copy(shareText(),"텍스트가 복사되었습니다"); });
+$("xBtn").addEventListener("click",function(){
+  var s = state();
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("올해 사진 "+s.s.toLocaleString()+"장을 보고 "+s.k.toLocaleString()+"장을 남겼습니다 📷 하루 다섯 장씩.")+"&url="+encodeURIComponent(resultUrl()),"_blank");
+});
+if(navigator.share){
+  $("shareBtn").style.display="";
+  $("shareBtn").addEventListener("click",function(){
+    navigator.share({ title:"오늘의 다섯 장", text:shareText(), url:resultUrl() }).catch(function(){});
+  });
+}
+/* 결산 카드 — 숫자만, 사진 없음 */
+$("saveBtn").addEventListener("click",function(){
+  var s = state(), cv = $("cv"), ctx = cv.getContext("2d"), W=1080, H=1350, M=96;
+  var F='-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  var g = ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,"#0f1b26"); g.addColorStop(1,"#080b0f");
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="#1d4459"; ctx.lineWidth=2; ctx.strokeRect(44,44,W-88,H-88);
+  ctx.textBaseline="alphabetic"; ctx.textAlign="left";
+  ctx.fillStyle="#7dd3fc"; ctx.font="700 32px "+F;
+  ctx.fillText("오늘의 다섯 장", M, 180);
+  ctx.fillStyle="#94a3b8"; ctx.font="30px "+F;
+  ctx.fillText((s.l || (s.y+"년")) + " 결산", M, 228);
+  ctx.fillStyle="#ffffff"; ctx.font="900 92px "+F;
+  ctx.fillText(s.s.toLocaleString()+"장을 보고", M, 400);
+  ctx.fillText(s.k.toLocaleString()+"장을 남겼습니다", M, 510);
+  ctx.strokeStyle="#1d4459"; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(M,590); ctx.lineTo(W-M,590); ctx.stroke();
+  var cols = [["판정한 사진", s.s.toLocaleString()],["남긴 사진", s.k.toLocaleString()],["즐겨찾기", s.f.toLocaleString()]];
+  cols.forEach(function(c,i){
+    var x = M + i*((W-2*M)/3);
+    ctx.fillStyle="#94a3b8"; ctx.font="27px "+F; ctx.fillText(c[0], x, 668);
+    ctx.fillStyle="#ffffff"; ctx.font="800 56px "+F; ctx.fillText(c[1], x, 738);
+  });
+  // 남김 / 버림 비율 막대
+  var kept = s.k, trashed = Math.max(0, s.s - s.k), tot = Math.max(1, s.s), bw = W - 2*M;
+  ctx.fillStyle="#1f2937"; ctx.fillRect(M, 800, bw, 26);
+  ctx.fillStyle="#34d399"; ctx.fillRect(M, 800, bw*kept/tot, 26);
+  ctx.fillStyle="#fb7185"; ctx.fillRect(M + bw*kept/tot, 800, bw*trashed/tot, 26);
+  ctx.fillStyle="#94a3b8"; ctx.font="26px "+F;
+  ctx.fillText("남김 " + Math.round(kept/tot*100) + "%   ·   버림 후보 " + Math.round(trashed/tot*100) + "%", M, 872);
+  ctx.fillStyle="#cbd5e1"; ctx.font="32px "+F;
+  ctx.fillText("3만 장은 못 봐도", M, 960);
+  ctx.fillText("다섯 장은 봅니다.", M, 1012);
+  ctx.fillStyle="#64748b"; ctx.font="26px "+F;
+  ctx.fillText("이 카드에는 사진이 한 장도 들어 있지 않습니다.", M, 1120);
+  ctx.fillText("숫자만 담긴 카드입니다.", M, 1162);
+  ctx.textAlign="right"; ctx.fillStyle="#7dd3fc"; ctx.font="28px "+F;
+  ctx.fillText("tomatoeggcat.com/five-photos", W-M, H-110);
+  ctx.textAlign="left";
+  var a=document.createElement("a");
+  a.download="five-photos-"+(s.l||s.y).replace(/\s/g,"")+".png"; a.href=cv.toDataURL("image/png");
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast("결산 카드를 저장했습니다");
+});
+
+/* ---- 부팅 ---- */
+openDB().then(function(db){
+  DB = db;
+  return Promise.all([txAll("judgments"), txAll("meta")]);
+}).then(function(r){
+  r[0].forEach(function(j){ judged[j.id] = j; });
+  r[1].forEach(function(m){ meta[m.k] = m.v; });
+  var n = Object.keys(judged).length;
+  if(n){
+    $("resumeBox").style.display = "";
+    $("resumeInfo").textContent = "이 브라우저에 " + n.toLocaleString() + "장의 판정 기록이 남아 있습니다. 같은 사진을 다시 골라도 이미 판정한 것은 나오지 않습니다.";
+  }
+  var params = new URLSearchParams(location.search);
+  if(params.has("r")){
+    var st = dec(params.get("r"));
+    if(st && typeof st.s === "number"){
+      shared = { y: st.y||new Date().getFullYear(), seen: Math.max(0,st.s|0), keep: Math.max(0,st.k|0), fav: Math.max(0,st.f|0),
+                 label: String(st.l||"").slice(0,12) || ((st.y||new Date().getFullYear())+"년") };
+      $("inbound").classList.add("show");
+      $("inboundBtn").addEventListener("click",function(){
+        $("inbound").classList.remove("show"); shared = null;
+        show("stageStart"); paint(); window.scrollTo({top:0,behavior:"smooth"});
+      });
+    }
+  }
+  paint();
+});
+})();
+</script>
+</body>
+</html>
