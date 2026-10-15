@@ -17,6 +17,7 @@
 2. `gen-pages.mjs` 의 `BUILTINS` 배열 + `BUILTIN_CATS` 에 등록 → 허브·사이트맵 반영,
    생성기의 orphan 정리에서 보호됨.
 3. `node gen-pages.mjs` 실행해 경고 0 확인 (`광고 영역`/`REPLACE_` 잔재 금지).
+4. 앱 로직에 회귀 테스트가 있으면 `scripts/test-<slug>.mjs` 로 두고 배포 전 실행.
 
 ## 콘텐츠/정책 규칙 (AdSense·품질)
 - 광고: 결과 하단 1개만. 입력 화면 광고 금지. `광고 영역` 플레이스홀더 텍스트 금지
@@ -35,13 +36,24 @@
 4. 공유: 링크 복사 / 커뮤니티 텍스트 블록 복사 / X / navigator.share.
 5. **리믹스**: 이전 입력 프리필로 1클릭 재생성.
 
+### 공유 엔진 `lib/share-kit.js` (전역 `SK`)
+- 링크 공유형 앱의 공통 부품: 상태 인코딩(`?d=`, LZSS+base64url), URL 상태 읽기/쓰기,
+  체인 누적, 공유바, 결과 카드 canvas 헬퍼, KST 일일 시드, 이모지 격자.
+- **`단일 파일 완결형` 규칙의 유일한 예외** — 같은 오리진 정적 파일이라 외부 의존이 아니다.
+  앱에서는 `<script src="/lib/share-kit.js"></script>` 로 불러 쓴다.
+- 사용법·상태 스키마 규칙·한계: `lib/SHARE-KIT.md`.
+- 고치면 이미 쓰는 앱이 함께 깨진다. 반드시 `node scripts/test-share-kit.mjs` (경고 0).
+- 사용 중: `chemi-link`.
+
 > 정적 스택 한계: 결과별 **동적 OG 이미지**(Satori/ImageResponse)는 서버가 없어 불가.
 > 대체로 canvas 카드(사용자가 저장·업로드)를 제공한다. 정적 OG 는 앱 단위로만 존재.
 > 서버·DB·유료 AI 키가 필요한 기능(daily 자동발행 cron, 서버 레이트리밋 등)은
 > 이 스택에서 미구현 — 도입하려면 소유자 승인(과금) 필요.
 
 ## 개발
-- 로컬 확인: `node gen-pages.mjs` 후 정적 서버로 열기. 테스트 러너 없음.
+- 로컬 확인: `node gen-pages.mjs` 후 정적 서버로 열기. 테스트 러너 없음(node 스크립트 직접 실행).
+- 현재 있는 테스트: `node scripts/test-share-kit.mjs`, `node scripts/test-chemi-link.mjs`
+  (둘 다 실패 시 exit 1 — 배포 전 가드로 쓸 수 있다).
 - 검증 메타 코드는 `site.config.mjs` / env (`GOOGLE_SITE_VERIFICATION` 등)에서 주입.
 
 ## 서브프로젝트: `illusion-lab/` (별도 배포)
