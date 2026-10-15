@@ -52,3 +52,27 @@
   (`src/lib/content/`) 3종 등록 필요 — `node scripts/check-coverage.mjs` 로 검사.
 - 빌드: `cd illusion-lab && npm install && npm run build` → `out/`.
 - gen-pages.mjs 의 RESERVED 에 `illusion-lab` 등록됨(고아 정리 보호).
+
+## 서브프로젝트: `sound-lab/` (별도 배포)
+- 인터랙티브 소리 실험실. **Next.js 15 App Router + 정적 export** — illusion-lab 과
+  같은 구조이며 별도 Vercel 프로젝트(root=`sound-lab`)로 배포.
+- **도메인은 `NEXT_PUBLIC_SITE_URL` 환경변수로만 주입**한다. 하드코딩·폴백 금지이며
+  값이 없으면 `src/lib/sounds.ts` 가 빌드를 실패시킨다. 빌드 시 반드시 지정:
+  `NEXT_PUBLIC_SITE_URL=https://... npm run build`.
+- `sound-lab/data/sounds.json` 이 단일 소스. slug 추가 시 빌더
+  (`src/lib/audio/builders/<카테고리>.ts`), 본문+프리셋(`src/lib/content/`),
+  상호 링크(`src/lib/sounds.ts` 의 `RELATED`) 3종 등록 필요.
+- **음원 파일 금지** — 모든 소리는 Web Audio API 로 실시간 합성한다(저작권·용량).
+  빌더는 반드시 `BuildCtx.out`(프리-리미터 버스)에만 연결하고, `destination` 에
+  직접 연결하지 말 것. 마스터 리미터를 우회하면 청력 보호 요건이 깨진다.
+- 자동 재생 금지(사용자 제스처 후 시작), 페이지 이탈 시 AudioContext 정리 필수.
+- 검사 스크립트 (`cd sound-lab` 후):
+  - `node scripts/check-coverage.mjs` — 빌더·본문·프리셋 정합, 프리셋 값의
+    min/max·step 격자 일치 검사.
+  - `node scripts/report.mjs` — 본문 분량(공백 제외 1,000자 이상), 도입문 중복,
+    문장 유사도, 코드 중복률.
+  - `node scripts/measure-levels.mjs` — **빌드 후** 실행. 헤드리스 Chromium 으로
+    40개 항목을 슬라이더 양끝값까지 재생해 출력 피크를 실측한다. 오디오 계열
+    코드를 고쳤으면 클리핑(>0.98) 0건을 반드시 재확인할 것.
+- 빌드: `cd sound-lab && npm install && NEXT_PUBLIC_SITE_URL=<도메인> npm run build` → `out/`.
+- gen-pages.mjs 의 RESERVED 에 `sound-lab` 등록됨(고아 정리 보호).
