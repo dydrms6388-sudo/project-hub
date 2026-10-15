@@ -3,3 +3,8 @@ node_modules
 
 # 내부 에이전트 툴링 상태(세션 로그·프로젝트 메모리·임시파일) — 저장소에 커밋하지 않는다
 .omc/
+
+# 선배포 프리뷰는 정적 export 산출물(36MB)이라 커밋하지 않는다.
+# 지우는 커밋을 나중에 얹어도 git 히스토리에는 남으므로 애초에 넣지 않는다.
+#   재생성: bash sites/build-preview.sh && node sites/make-preview-index.mjs
+/preview/

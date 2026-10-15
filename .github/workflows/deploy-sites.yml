@@ -1,0 +1,132 @@
+name: Deploy tool sites (production)
+
+# sites/<project> 각각을 자체 Vercel 프로젝트로 배포한다.
+# deploy-isitnormal.yml 과 같은 방식이며, 변경된 프로젝트만 배포한다.
+#
+# ── 사전 준비 (프로젝트마다 한 번) ──
+#  1) Vercel 대시보드 → Add New Project → 이 리포 선택
+#     → Root Directory = sites/<project> (Framework 은 Next.js 자동 감지)
+#  2) 배포 후 Settings → Domains 에서 도메인 연결
+#     → sites/<project>/src/site.config.ts 의 url/domain 도 같은 주소로 수정
+#        (canonical · sitemap · OG 가 여기서 나온다)
+#  3) 로컬에서 `cd sites/<project> && npx vercel link` → `cat .vercel/project.json`
+#     → projectId 확인
+#  4) 리포 Settings → Secrets and variables → Actions 에 등록:
+#        SITES_VERCEL_TOKEN                    (계정 전체 공용, 한 번만)
+#        SITES_VERCEL_ORG_ID                   (계정 전체 공용, 한 번만)
+#        SITES_VERCEL_PROJECT_ID_<PROJECT>     (프로젝트마다, 아래 key 참고)
+#
+#  시크릿이 없는 프로젝트는 경고만 남기고 조용히 건너뛴다 — 10개를 한 번에
+#  준비할 필요 없이 하나씩 붙여 나가면 된다.
+#
+# ⚠️ Vercel 네이티브 Git 자동배포와 이 워크플로를 동시에 켜지 말 것.
+#    같은 push 에 프로덕션 배포가 2번 발생해 최종 alias 가 비결정적이 된다.
+
+on:
+  push:
+    branches: [master]
+    paths: ["sites/**"]
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "특정 프로젝트만 배포 (비우면 전체)"
+        required: false
+        default: ""
+
+concurrency:
+  group: vercel-sites-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'dydrms6388-sudo/project-hub' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - project: aitidy
+            key: AITIDY
+          - project: pickfair
+            key: PICKFAIR
+          - project: photolab-kr
+            key: PHOTOLAB_KR
+          - project: bodycalc
+            key: BODYCALC
+          - project: moneycalc-kr
+            key: MONEYCALC_KR
+          - project: pdfroom
+            key: PDFROOM
+          - project: idphoto-kr
+            key: IDPHOTO_KR
+          - project: clipforge
+            key: CLIPFORGE
+          - project: dictate-kr
+            key: DICTATE_KR
+          - project: docmind-local
+            key: DOCMIND_LOCAL
+    env:
+      VERCEL_ORG_ID: ${{ secrets.SITES_VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets[format('SITES_VERCEL_PROJECT_ID_{0}', matrix.key)] }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Guard — 이 프로젝트를 배포해야 하나?
+        id: guard
+        run: |
+          # 수동 실행 시 project 입력이 있으면 그것만
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            want="${{ github.event.inputs.project }}"
+            if [ -n "$want" ] && [ "$want" != "${{ matrix.project }}" ]; then
+              echo "ok=false" >> "$GITHUB_OUTPUT"
+              echo "::notice::${{ matrix.project }} — 대상 아님, 건너뜀"
+              exit 0
+            fi
+          else
+            # push 시 이 프로젝트 경로가 실제로 바뀌었을 때만
+            if git rev-parse HEAD^ >/dev/null 2>&1; then
+              if git diff --name-only HEAD^ HEAD -- "sites/${{ matrix.project }}" "sites/_template" \
+                   | grep -q .; then
+                :
+              else
+                echo "ok=false" >> "$GITHUB_OUTPUT"
+                echo "::notice::${{ matrix.project }} — 변경 없음, 건너뜀"
+                exit 0
+              fi
+            fi
+          fi
+
+          if [ -z "${{ secrets.SITES_VERCEL_TOKEN }}" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::${{ matrix.project }} — Vercel 시크릿(SITES_VERCEL_TOKEN / SITES_VERCEL_ORG_ID / SITES_VERCEL_PROJECT_ID_${{ matrix.key }})이 없어 배포를 건너뜁니다."
+            exit 0
+          fi
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node
+        if: steps.guard.outputs.ok == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        if: steps.guard.outputs.ok == 'true'
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project settings
+        if: steps.guard.outputs.ok == 'true'
+        working-directory: sites/${{ matrix.project }}
+        run: vercel pull --yes --environment=production --token="${{ secrets.SITES_VERCEL_TOKEN }}"
+
+      - name: Deploy to production
+        if: steps.guard.outputs.ok == 'true'
+        working-directory: sites/${{ matrix.project }}
+        run: |
+          url=$(vercel deploy --prod --token="${{ secrets.SITES_VERCEL_TOKEN }}" --yes)
+          echo "Deployed: $url"
+          echo "### ✅ ${{ matrix.project }} 프로덕션 배포 완료" >> "$GITHUB_STEP_SUMMARY"
+          echo "$url" >> "$GITHUB_STEP_SUMMARY"
