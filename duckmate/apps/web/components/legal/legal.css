@@ -1,0 +1,29 @@
+/* 법적 문서 본문 타이포 (company app/globals.css .legal-prose 와 동일 규칙, 12px 미만 없음) */
+.legal-prose {
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--foreground);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.legal-prose > * + * { margin-top: 1em; }
+.legal-prose h2 { font-size: 22px; line-height: 30px; font-weight: 700; letter-spacing: -0.01em; margin-top: 2.5em; scroll-margin-top: 5rem; }
+.legal-prose h3 { font-size: 18px; line-height: 26px; font-weight: 600; margin-top: 1.75em; scroll-margin-top: 5rem; }
+.legal-prose h4 { font-size: 16px; line-height: 24px; font-weight: 600; margin-top: 1.5em; }
+.legal-prose p { margin-top: 0.75em; }
+.legal-prose ul, .legal-prose ol { padding-left: 1.5rem; margin-top: 0.5em; }
+.legal-prose ul { list-style: disc; }
+.legal-prose ol { list-style: decimal; }
+.legal-prose li { margin-top: 0.35em; }
+.legal-prose li > ul, .legal-prose li > ol { margin-top: 0.25em; }
+.legal-prose strong { font-weight: 700; }
+.legal-prose a { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
+.legal-prose blockquote { border-left: 3px solid var(--primary); background: var(--muted); padding: 0.75rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; }
+.legal-prose blockquote > * + * { margin-top: 0.5em; }
+.legal-prose code { font-size: 14px; background: var(--muted); padding: 0.1em 0.35em; border-radius: 6px; }
+.legal-prose hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
+.legal-prose .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 1em; border: 1px solid var(--border); border-radius: var(--radius); }
+.legal-prose table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 20px; }
+.legal-prose th, .legal-prose td { border-bottom: 1px solid var(--border); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; min-width: 7rem; }
+.legal-prose th { background: var(--muted); font-weight: 600; white-space: nowrap; }
+.legal-prose tbody tr:last-child td { border-bottom: 0; }

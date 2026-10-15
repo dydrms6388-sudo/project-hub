@@ -1,0 +1,1300 @@
+/**
+ * @duckmate/db — Database 타입 (supabase gen types 형식을 손으로 작성)
+ * 소스: supabase/migrations/2026090200000{1..14}_*.sql
+ * 스키마 변경 시 이 파일과 constants.ts 의 enum 배열을 함께 갱신한다.
+ */
+
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+
+// ---------------------------------------------------------------------------
+// Enums (Postgres 타입명 = 키, 값 문자열 = SQL 과 동일)
+// ---------------------------------------------------------------------------
+export type Enums = {
+  profile_status: "active" | "paused" | "banned" | "age_blocked" | "deleting";
+  profile_mode: "friend" | "dating";
+  gender: "female" | "male" | "unspecified";
+  seeking_gender: "any" | "female" | "male";
+  onboarding_step: "basic" | "hobbies" | "quiz" | "card" | "photos" | "verify" | "done";
+  availability_slot: "morning" | "afternoon" | "evening" | "night";
+  review_status: "pending" | "approved" | "rejected" | "held";
+  photo_reject_code:
+    | "reject_no_face"
+    | "reject_not_self"
+    | "reject_nudity"
+    | "reject_text_contact"
+    | "reject_minor"
+    | "reject_group"
+    | "reject_quality";
+  consent_key:
+    | "age_19"
+    | "terms"
+    | "privacy"
+    | "evidence_snapshot"
+    | "marketing_push"
+    | "dating_mode_public"
+    | "auto_renew"
+    | "digital_no_withdrawal"
+    | "reconsent"
+    | "youth_policy";
+  consent_source: "onboarding" | "settings" | "checkout" | "banner" | "recheck";
+  legal_doc_key: "terms" | "privacy" | "location" | "youth" | "business" | "refund" | "marketing";
+  identity_provider: "mock" | "portone";
+  identity_result: "success" | "failed" | "minor" | "duplicate_ci" | "blocked_ci";
+  like_type: "like" | "super";
+  reco_action: "like" | "super" | "pass";
+  match_status: "active" | "blocked" | "left" | "paused";
+  report_reason:
+    | "SEXUAL_HARASSMENT"
+    | "ROMANCE_SCAM"
+    | "MINOR_SUSPECT"
+    | "IMPERSONATION"
+    | "OFF_PLATFORM_LURE"
+    | "COMMERCIAL_SPAM"
+    | "HATE_SPEECH"
+    | "STALKING"
+    | "PII_REQUEST"
+    | "INAPPROPRIATE_PHOTO"
+    | "THREAT_VIOLENCE"
+    | "FAKE_PROFILE"
+    | "NO_SHOW"
+    | "OTHER";
+  report_priority: "P0" | "P1" | "P2" | "P3";
+  report_status: "queued" | "in_review" | "need_info" | "confirmed" | "dismissed";
+  report_surface: "profile" | "chat" | "system";
+  appeal_status: "pending" | "accepted" | "rejected";
+  admin_role: "moderator" | "admin";
+  inquiry_category:
+    | "general"
+    | "privacy_export"
+    | "data_export"
+    | "legal_request"
+    | "report"
+    | "hobby_request"
+    | "refund";
+  inquiry_status: "open" | "answered" | "closed";
+  subscription_tier: "free" | "plus" | "pro";
+  subscription_status: "active" | "past_due" | "canceled" | "expired" | "refunded";
+  payment_provider: "toss" | "apple" | "google";
+  payment_kind: "subscription" | "item";
+  payment_status: "pending" | "paid" | "failed" | "canceled" | "partially_refunded" | "refunded";
+  item_type: "superlike" | "boost" | "rewind_pack" | "card_refill";
+  refund_reason: "change_of_mind" | "service_fault" | "duplicate_charge" | "minor" | "other";
+  refund_status: "requested" | "approved" | "rejected" | "executed";
+  quest_kind: "daily" | "weekly";
+  game_type: "daily_card" | "taste_battle" | "fandom_quiz" | "match_reveal";
+  game_session_result: "pending" | "completed" | "expired" | "canceled";
+  event_status: "draft" | "open" | "closed" | "canceled" | "done";
+  rsvp_status: "going" | "waitlist" | "canceled" | "no_show" | "attended";
+  push_kind: "transactional" | "service" | "marketing";
+  push_slot: "A" | "B" | "instant";
+  push_queue_status: "pending" | "held" | "sending" | "sent" | "failed" | "discarded";
+};
+
+/** smallint 0~3 (domain verify_level) */
+export type VerifyLevel = 0 | 1 | 2 | 3;
+/** smallint 1~6 (domain sanction_level). 0 = 제재 없음(행 없음) */
+export type SanctionLevel = 1 | 2 | 3 | 4 | 5 | 6;
+export type AgeBand = "20_early" | "20_mid" | "20_late" | "30_early" | "30_mid" | "30_late" | "40_plus";
+
+// ---------------------------------------------------------------------------
+// 헬퍼: Row → Insert / Update
+// ---------------------------------------------------------------------------
+type InsertOf<Row, Optional extends keyof Row> = Omit<Row, Optional> & Partial<Pick<Row, Optional>>;
+type TableDef<Row, Optional extends keyof Row> = {
+  Row: Row;
+  Insert: InsertOf<Row, Optional>;
+  Update: Partial<Row>;
+  Relationships: [];
+};
+type ViewDef<Row> = { Row: Row; Relationships: [] };
+
+// ---------------------------------------------------------------------------
+// Row 타입
+// ---------------------------------------------------------------------------
+export type AppSettingsRow = { key: string; value: Json; updated_at: string };
+
+export type RegionRow = {
+  code: string;
+  sido_code: string;
+  sido: string;
+  sigungu: string;
+  is_active: boolean;
+  sort_order: number;
+};
+
+export type AdminUserRow = { user_id: string; role: Enums["admin_role"]; note: string | null; created_at: string };
+
+export type ProfileRow = {
+  id: string;
+  /** 탈퇴 purge 후 tombstone(purged_at not null) 행은 null (0071) */
+  user_id: string | null;
+  nickname: string | null;
+  nickname_changed_at: string | null;
+  /** 본인 + service role 만. 타인은 v_profile_public 에서 age_band/birth_year 만 */
+  birth_date: string | null;
+  birth_year: number | null;
+  gender: Enums["gender"] | null;
+  seeking_gender: Enums["seeking_gender"] | null;
+  region_code: string | null;
+  bio: string | null;
+  now_into: string | null;
+  verify_level: VerifyLevel;
+  status: Enums["profile_status"];
+  mode: Enums["profile_mode"];
+  onboarding_step: Enums["onboarding_step"];
+  onboarding_started_at: string;
+  onboarding_completed_at: string | null;
+  safety_modal_seen_at: string | null;
+  last_active_at: string;
+  paused_at: string | null;
+  delete_requested_at: string | null;
+  banned_at: string | null;
+  age_blocked_at: string | null;
+  phone_hash: string | null;
+  hidden_at: string | null;
+  hidden_reason: string | null;
+  /** 탈퇴 purge 완료(가명화 tombstone) 시각. 매칭 90일 보존 후 purge_tombstones 가 행 삭제 (0071) */
+  purged_at: string | null;
+  /** 즉시 삭제 요청 시 now(). null 이면 delete_requested_at + delete_grace_days (0071) */
+  purge_after: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type HobbyCategoryRow = {
+  id: number;
+  slug: string;
+  name: string;
+  icon: string | null;
+  is_initial: boolean;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export type HobbyRow = {
+  id: number;
+  slug: string;
+  name: string;
+  category_id: number;
+  icon: string | null;
+  is_active: boolean;
+  sort_order: number;
+};
+
+export type ProfileHobbyRow = {
+  profile_id: string;
+  hobby_id: number;
+  rank: 1 | 2 | 3 | 4 | 5;
+  intensity: 1 | 2 | 3 | 4 | 5;
+  fav_note: string | null;
+  created_at: string;
+};
+
+export type QuizOption = { value: number; label: string };
+export type QuizQuestionRow = {
+  id: number;
+  key: string;
+  category: string;
+  text: string;
+  options: Json;
+  weight: number;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export type QuizAnswerRow = { profile_id: string; question_id: number; choice: number; answered_at: string };
+
+export type AvailabilityRow = { profile_id: string; weekday: 1 | 2 | 3 | 4 | 5 | 6 | 7; slot: Enums["availability_slot"] };
+
+export type PhotoRow = {
+  id: string;
+  profile_id: string;
+  path: string;
+  is_primary: boolean;
+  sort_order: number;
+  review_status: Enums["review_status"];
+  reject_code: Enums["photo_reject_code"] | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  face_count: number | null;
+  face_confidence: number | null;
+  held_reason: string | null;
+  /** photo-review Edge Function 자동 검사 결과(참고값, 자동 반려 없음) */
+  auto_flags: Json;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ConsentRow = {
+  id: number;
+  user_id: string | null;
+  subject_hash: string | null;
+  key: Enums["consent_key"];
+  document_key: Enums["legal_doc_key"] | null;
+  version: string;
+  agreed: boolean;
+  agreed_at: string;
+  withdrawn_at: string | null;
+  ip_hash: string | null;
+  ua_hash: string | null;
+  source: Enums["consent_source"];
+};
+
+export type LegalDocumentRow = {
+  key: Enums["legal_doc_key"];
+  version: string;
+  effective_at: string;
+  content_hash: string;
+  requires_reconsent: boolean;
+  published_at: string;
+};
+
+export type IdentityVerificationRow = {
+  id: string;
+  user_id: string | null;
+  profile_id: string | null;
+  provider: Enums["identity_provider"];
+  result: Enums["identity_result"];
+  ci_hash: string | null;
+  di_hash: string | null;
+  birth_date: string | null;
+  gender: Enums["gender"] | null;
+  birth_date_verified: boolean | null;
+  verified_at: string | null;
+  reverify_due_at: string | null;
+  is_active: boolean;
+  provider_tx_id: string | null;
+  meta: Json;
+  created_at: string;
+};
+
+export type BlockedCiHashRow = {
+  ci_hash: string;
+  reason: string;
+  source_profile_id: string | null;
+  created_at: string;
+  expires_at: string | null;
+};
+
+export type DailyRecommendationRow = {
+  id: string;
+  profile_id: string;
+  target_id: string;
+  loop_date: string;
+  position: number;
+  score: number;
+  reasons: Json;
+  is_from_liker: boolean;
+  is_boosted: boolean;
+  seen_at: string | null;
+  acted_at: string | null;
+  action: Enums["reco_action"] | null;
+  created_at: string;
+};
+
+export type LikeRow = { id: string; from_id: string; to_id: string; type: Enums["like_type"]; created_at: string };
+
+export type FirstSuggestion = {
+  id: string;
+  template_id: string;
+  title: string;
+  body: string;
+  kind: "online" | "offline" | "talk";
+};
+
+export type MatchRow = {
+  id: string;
+  a_id: string;
+  b_id: string;
+  mode: Enums["profile_mode"];
+  matched_at: string;
+  first_suggestion: Json;
+  status: Enums["match_status"];
+  ended_at: string | null;
+  first_message_at: string | null;
+  last_message_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type BlockRow = { blocker_id: string; blocked_id: string; created_at: string };
+
+export type MessageRow = {
+  id: string;
+  match_id: string;
+  sender_id: string;
+  /** authenticated 는 컬럼 select 불가(v_messages 사용). service role 전용 */
+  body: string | null;
+  masked_body: string;
+  image_path: string | null;
+  suggestion_template_id: string | null;
+  is_held: boolean;
+  created_at: string;
+  read_at: string | null;
+};
+
+export type MessageFlagRow = {
+  id: number;
+  message_id: string;
+  rule_id: string;
+  matched: string | null;
+  score: number;
+  created_at: string;
+};
+
+export type ReportRow = {
+  id: string;
+  reporter_id: string | null;
+  target_id: string | null;
+  reporter_ci_hash: string | null;
+  target_ci_hash: string | null;
+  match_id: string | null;
+  surface: Enums["report_surface"];
+  reason_code: Enums["report_reason"];
+  detail: string | null;
+  priority: Enums["report_priority"];
+  due_at: string;
+  legal_hold: boolean;
+  evidence: Json;
+  detector_hit_count: number;
+  status: Enums["report_status"];
+  handled_by: string | null;
+  handled_at: string | null;
+  resolution_note: string | null;
+  auto_actions: Json;
+  expires_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SanctionRow = {
+  id: string;
+  profile_id: string | null;
+  profile_ci_hash: string | null;
+  level: SanctionLevel;
+  reason: string;
+  reason_code: Enums["report_reason"] | null;
+  report_id: string | null;
+  starts_at: string;
+  ends_at: string | null;
+  acknowledged_at: string | null;
+  issued_by: string | null;
+  revoked_at: string | null;
+  revoked_by: string | null;
+  created_at: string;
+};
+
+export type AppealRow = {
+  id: string;
+  sanction_id: string;
+  profile_id: string | null;
+  body: string;
+  attachment_path: string | null;
+  status: Enums["appeal_status"];
+  decision_note: string | null;
+  decided_by: string | null;
+  decided_at: string | null;
+  created_at: string;
+};
+
+export type AuditLogRow = {
+  id: number;
+  actor_id: string | null;
+  actor_role: string | null;
+  action: string;
+  target_type: string | null;
+  target_id: string | null;
+  before: Json | null;
+  after: Json | null;
+  meta: Json;
+  created_at: string;
+};
+
+export type InquiryRow = {
+  id: string;
+  user_id: string | null;
+  email: string | null;
+  category: Enums["inquiry_category"];
+  body: string;
+  status: Enums["inquiry_status"];
+  handled_by: string | null;
+  handled_at: string | null;
+  created_at: string;
+};
+
+export type SkuRow = {
+  sku: string;
+  kind: Enums["payment_kind"];
+  tier: Enums["subscription_tier"] | null;
+  item_type: Enums["item_type"] | null;
+  item_qty: number | null;
+  price_krw: number;
+  display_terms: string | null;
+  is_active: boolean;
+  experiment_group: string | null;
+  retired_at: string | null;
+  created_at: string;
+};
+
+export type SkuPriceHistoryRow = { id: number; sku: string; price_krw: number; starts_at: string; ends_at: string | null };
+
+export type SubscriptionRow = {
+  id: string;
+  user_id: string | null;
+  tier: Exclude<Enums["subscription_tier"], "free">;
+  provider: Enums["payment_provider"];
+  provider_sub_id: string | null;
+  sku: string | null;
+  status: Enums["subscription_status"];
+  current_period_start: string;
+  current_period_end: string;
+  cancel_at: string | null;
+  canceled_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PaymentRow = {
+  id: string;
+  user_id: string | null;
+  provider: Enums["payment_provider"];
+  provider_payment_id: string;
+  kind: Enums["payment_kind"];
+  sku: string;
+  subscription_id: string | null;
+  amount_krw: number;
+  status: Enums["payment_status"];
+  paid_at: string | null;
+  refunded_amount_krw: number;
+  refunded_at: string | null;
+  receipt_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ItemLedgerRow = {
+  id: number;
+  user_id: string | null;
+  item_type: Enums["item_type"];
+  delta: number;
+  balance_after: number | null;
+  ref: string;
+  expires_at: string | null;
+  created_at: string;
+};
+
+export type BoostRow = {
+  id: string;
+  user_id: string;
+  ledger_id: number | null;
+  starts_at: string;
+  ends_at: string;
+  created_at: string;
+};
+
+export type RefundRequestRow = {
+  id: string;
+  payment_id: string;
+  user_id: string | null;
+  reason_code: Enums["refund_reason"];
+  computed_deduction_krw: number;
+  computed_refund_krw: number;
+  formula_snapshot: Json;
+  status: Enums["refund_status"];
+  handled_by: string | null;
+  handled_at: string | null;
+  executed_at: string | null;
+  created_at: string;
+};
+
+export type GameProfileRow = {
+  profile_id: string;
+  level: number;
+  xp: number;
+  streak_days: number;
+  last_played_at: string | null;
+  coins: number;
+  updated_at: string;
+};
+
+export type GameSessionRow = {
+  id: string;
+  game_type: Enums["game_type"];
+  loop_date: string;
+  participants: Json;
+  state: Json;
+  result: Enums["game_session_result"];
+  created_at: string;
+  updated_at: string;
+};
+
+export type QuestRow = { id: number; key: string; title: string; kind: Enums["quest_kind"]; reward: Json; is_active: boolean };
+
+export type QuestProgressRow = {
+  profile_id: string;
+  quest_id: number;
+  loop_date: string;
+  progress: number;
+  completed_at: string | null;
+};
+
+export type EventRow = {
+  id: string;
+  hobby_id: number | null;
+  title: string;
+  description: string | null;
+  region_code: string | null;
+  starts_at: string;
+  ends_at: string | null;
+  capacity: number;
+  host_id: string | null;
+  status: Enums["event_status"];
+  created_at: string;
+  updated_at: string;
+};
+
+export type EventRsvpRow = { event_id: string; profile_id: string; status: Enums["rsvp_status"]; created_at: string };
+
+export type PushSubscriptionRow = {
+  id: string;
+  user_id: string;
+  endpoint: string;
+  keys: Json;
+  user_agent: string | null;
+  slot_a_enabled: boolean;
+  slot_b_enabled: boolean;
+  instant_enabled: boolean;
+  created_at: string;
+  last_sent_at: string | null;
+  disabled_at: string | null;
+};
+
+export type NotificationLogRow = {
+  id: number;
+  user_id: string;
+  subscription_id: string | null;
+  kind: Enums["push_kind"];
+  slot: Enums["push_slot"];
+  template: string;
+  loop_date: string;
+  budget_consumed: boolean;
+  like_id: string | null;
+  payload_hash: string | null;
+  sent_at: string;
+  opened_at: string | null;
+  error: string | null;
+  /** 이 발송을 만든 push_queue 행 (0050) */
+  queue_id: number | null;
+};
+
+/** D2 레이트리밋 카운터 (service role 전용) */
+export type RateLimitRow = { key: string; window_start: string; count: number; updated_at: string };
+
+export type AnalyticsEventRow = {
+  id: number;
+  user_id_hash: string | null;
+  name: string;
+  props: Json;
+  loop_date: string;
+  session_id: string | null;
+  platform: string | null;
+  created_at: string;
+};
+
+
+// ---------------------------------------------------------------------------
+// D5 moderation (0040~0043) Row 타입
+// ---------------------------------------------------------------------------
+export type ModerationSettingRow = { key: string; value: Json; description: string | null; updated_at: string };
+
+export type ModerationFlagRow = {
+  profile_id: string;
+  scam_score: number;
+  scam_signals: Json;
+  scam_banner_until: string | null;
+  scam_restricted_at: string | null;
+  last_auto_report_at: string | null;
+  contact_hits_reported: Json;
+  computed_at: string;
+  updated_at: string;
+};
+
+/** D5 → D7 통보 큐. notify_admin / notify_user 가 insert, drain_moderation_notifications 가 delivered_at 갱신 */
+export type ModerationNotificationRow = {
+  id: number;
+  audience: "admin" | "user";
+  kind: string;
+  profile_id: string | null;
+  report_id: string | null;
+  sanction_id: string | null;
+  payload: Json;
+  created_at: string;
+  delivered_at: string | null;
+  delivery: Json | null;
+};
+
+/** Storage 작업 큐 (Edge Function moderation-evidence 가 처리) */
+export type ModerationJobRow = {
+  id: number;
+  kind: "evidence_copy" | "evidence_purge" | "storage_delete";
+  report_id: string | null;
+  payload: Json;
+  status: "pending" | "done" | "failed";
+  attempts: number;
+  next_attempt_at: string;
+  last_error: string | null;
+  result: Json | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// ---------------------------------------------------------------------------
+// D7 push (0050·0051) Row 타입
+// ---------------------------------------------------------------------------
+export type PushPrefsRow = {
+  user_id: string;
+  service_enabled: boolean;
+  /** "HH:MM:SS" (Postgres time) · KST */
+  quiet_start: string | null;
+  quiet_end: string | null;
+  updated_at: string;
+};
+
+export type PushTemplateRow = {
+  key: string;
+  kind: Enums["push_kind"];
+  slot: Enums["push_slot"];
+  consumes_budget: boolean;
+  bundle_minutes: number;
+  hold_at_night: boolean;
+  priority_rank: number | null;
+  deeplink: string;
+  description: string | null;
+};
+
+export type PushQueueRow = {
+  id: number;
+  user_id: string;
+  profile_id: string | null;
+  template: string;
+  kind: Enums["push_kind"];
+  slot: Enums["push_slot"];
+  params: Json;
+  dedupe_key: string;
+  merged_count: number;
+  scheduled_at: string;
+  status: Enums["push_queue_status"];
+  hold_reason: string | null;
+  discard_reason: string | null;
+  attempts: number;
+  last_error: string | null;
+  like_id: string | null;
+  notification_log_id: number | null;
+  created_at: string;
+  updated_at: string;
+  sent_at: string | null;
+};
+
+/** 운영자 알림함 (notify_admin_push 의 저장소, service role 전용) */
+export type AdminNotificationRow = {
+  id: number;
+  kind: string;
+  payload: Json;
+  source_id: number | null;
+  created_at: string;
+  delivered_at: string | null;
+  delivery: Json | null;
+  read_at: string | null;
+  read_by: string | null;
+};
+
+export type ConsentRecheckRow = {
+  id: number;
+  user_id: string;
+  consent_id: number;
+  notified_at: string | null;
+  due_at: string;
+  resolved_at: string | null;
+  outcome: "renewed" | "withdrawn" | "expired" | null;
+  created_at: string;
+};
+
+// ---------------------------------------------------------------------------
+// View Row 타입
+// ---------------------------------------------------------------------------
+export type ProfilePublicView = {
+  id: string;
+  nickname: string | null;
+  birth_year: number | null;
+  age_band: AgeBand | null;
+  gender: Enums["gender"] | null;
+  region_code: string | null;
+  sido: string | null;
+  sigungu: string | null;
+  bio: string | null;
+  now_into: string | null;
+  verify_level: VerifyLevel;
+  mode: Enums["profile_mode"];
+  last_active_at: string;
+  created_at: string;
+};
+
+export type MessageView = {
+  id: string;
+  match_id: string;
+  sender_id: string;
+  /** 발신자 본인일 때만 원문, 그 외 null */
+  body: string | null;
+  masked_body: string;
+  /** 렌더용: 본인이면 원문, 상대면 masked_body */
+  display_body: string;
+  image_path: string | null;
+  suggestion_template_id: string | null;
+  is_held: boolean;
+  created_at: string;
+  read_at: string | null;
+  is_mine: boolean;
+};
+
+export type MyMatchView = {
+  match_id: string;
+  status: Enums["match_status"];
+  mode: Enums["profile_mode"];
+  matched_at: string;
+  first_message_at: string | null;
+  last_message_at: string | null;
+  ended_at: string | null;
+  partner_id: string;
+  partner_nickname: string | null;
+  partner_verify_level: VerifyLevel;
+  partner_status: Enums["profile_status"];
+  unread_count: number;
+  last_masked_body: string | null;
+  /** matched_at + 72h 경과 AND 양쪽 L3 */
+  contact_unmasked: boolean;
+  /** 상대가 탈퇴(tombstone) — 화면은 "탈퇴한 사용자" (0071) */
+  partner_deleted: boolean;
+};
+
+export type WeeklyQuotaUsedView = { profile_id: string | null; week_start: string; superlike_used: number };
+
+/** 내가 차단한 사람 (닉네임만, 0040) */
+export type MyBlockView = {
+  blocked_id: string | null;
+  blocked_nickname: string | null;
+  blocked_verify_level: VerifyLevel | null;
+  blocked_at: string | null;
+};
+
+/** SLA 초과 신고 (service/moderator) */
+export type ReportsOverdueView = {
+  id: string | null;
+  priority: Enums["report_priority"] | null;
+  reason_code: Enums["report_reason"] | null;
+  status: Enums["report_status"] | null;
+  target_id: string | null;
+  handled_by: string | null;
+  created_at: string | null;
+  due_at: string | null;
+  overdue_sec: number | null;
+};
+
+export type RuleHitStatsView = { loop_date: string | null; rule_id: string | null; hits: number | null; senders: number | null };
+
+export type PushMetricsDailyView = {
+  loop_date: string | null;
+  slot: Enums["push_slot"] | null;
+  kind: Enums["push_kind"] | null;
+  template: string | null;
+  sent: number | null;
+  failed: number | null;
+  opened: number | null;
+  open_rate: number | null;
+  users: number | null;
+  budget_consumed: number | null;
+};
+
+export type PushQueueDailyView = {
+  loop_date: string | null;
+  template: string | null;
+  status: Enums["push_queue_status"] | null;
+  reason: string | null;
+  items: number | null;
+  merged_events: number | null;
+};
+
+export type RecoDailySummaryView = {
+  profile_id: string | null;
+  user_id: string | null;
+  loop_date: string | null;
+  reco_count: number | null;
+  seen_count: number | null;
+  acted_count: number | null;
+  like_count: number | null;
+  pass_count: number | null;
+  liker_count: number | null;
+  boosted_count: number | null;
+  generated_at: string | null;
+};
+
+export type RecoMetricsDailyView = {
+  loop_date: string | null;
+  users_with_reco: number | null;
+  reco_rows: number | null;
+  avg_reco_count: number | null;
+  users_under_5: number | null;
+  under_5_ratio: number | null;
+  seen_rate: number | null;
+  likes_sent: number | null;
+  passes_sent: number | null;
+  matches_created: number | null;
+  like_to_match: number | null;
+};
+
+export type RecoGenderBalanceView = {
+  mode: Enums["profile_mode"] | null;
+  total: number | null;
+  female: number | null;
+  male: number | null;
+  female_ratio: number | null;
+  min_female_ratio: number | null;
+};
+
+// ---------------------------------------------------------------------------
+// Database
+// ---------------------------------------------------------------------------
+export type Database = {
+  public: {
+    Tables: {
+      app_settings: TableDef<AppSettingsRow, "updated_at">;
+      regions: TableDef<RegionRow, "sido_code" | "is_active" | "sort_order">;
+      admin_users: TableDef<AdminUserRow, "note" | "created_at">;
+      profiles: TableDef<
+        ProfileRow,
+        | "id" | "nickname" | "nickname_changed_at" | "birth_date" | "birth_year" | "gender" | "seeking_gender"
+        | "region_code" | "bio" | "now_into" | "verify_level" | "status" | "mode" | "onboarding_step"
+        | "onboarding_started_at" | "onboarding_completed_at" | "safety_modal_seen_at" | "last_active_at"
+        | "paused_at" | "delete_requested_at" | "banned_at" | "age_blocked_at" | "phone_hash" | "hidden_at"
+        | "hidden_reason" | "created_at" | "updated_at"
+      >;
+      hobby_categories: TableDef<HobbyCategoryRow, "icon" | "is_initial" | "sort_order" | "is_active">;
+      hobbies: TableDef<HobbyRow, "icon" | "is_active" | "sort_order">;
+      profile_hobbies: TableDef<ProfileHobbyRow, "intensity" | "fav_note" | "created_at">;
+      quiz_questions: TableDef<QuizQuestionRow, "weight" | "sort_order" | "is_active">;
+      quiz_answers: TableDef<QuizAnswerRow, "answered_at">;
+      availability: TableDef<AvailabilityRow, never>;
+      photos: TableDef<
+        PhotoRow,
+        | "id" | "is_primary" | "sort_order" | "review_status" | "reject_code" | "reviewed_by" | "reviewed_at"
+        | "face_count" | "face_confidence" | "held_reason" | "auto_flags" | "created_at" | "updated_at"
+      >;
+      consents: TableDef<
+        ConsentRow,
+        "id" | "user_id" | "subject_hash" | "document_key" | "agreed_at" | "withdrawn_at" | "ip_hash" | "ua_hash"
+      >;
+      legal_documents: TableDef<LegalDocumentRow, "requires_reconsent" | "published_at">;
+      identity_verifications: TableDef<
+        IdentityVerificationRow,
+        | "id" | "user_id" | "profile_id" | "ci_hash" | "di_hash" | "birth_date" | "gender" | "birth_date_verified"
+        | "verified_at" | "reverify_due_at" | "is_active" | "provider_tx_id" | "meta" | "created_at"
+      >;
+      blocked_ci_hashes: TableDef<BlockedCiHashRow, "source_profile_id" | "created_at" | "expires_at">;
+      daily_recommendations: TableDef<
+        DailyRecommendationRow,
+        | "id" | "position" | "reasons" | "is_from_liker" | "is_boosted" | "seen_at" | "acted_at" | "action"
+        | "created_at"
+      >;
+      likes: TableDef<LikeRow, "id" | "type" | "created_at">;
+      matches: TableDef<
+        MatchRow,
+        | "id" | "matched_at" | "first_suggestion" | "status" | "ended_at" | "first_message_at" | "last_message_at"
+        | "created_at" | "updated_at"
+      >;
+      blocks: TableDef<BlockRow, "created_at">;
+      messages: TableDef<
+        MessageRow,
+        "id" | "body" | "image_path" | "suggestion_template_id" | "is_held" | "created_at" | "read_at"
+      >;
+      message_flags: TableDef<MessageFlagRow, "id" | "matched" | "score" | "created_at">;
+      reports: TableDef<
+        ReportRow,
+        | "id" | "reporter_id" | "target_id" | "reporter_ci_hash" | "target_ci_hash" | "match_id" | "surface"
+        | "detail" | "legal_hold" | "detector_hit_count" | "status" | "handled_by" | "handled_at"
+        | "resolution_note" | "auto_actions" | "expires_at" | "created_at" | "updated_at"
+      >;
+      sanctions: TableDef<
+        SanctionRow,
+        | "id" | "profile_id" | "profile_ci_hash" | "reason_code" | "report_id" | "starts_at" | "ends_at"
+        | "acknowledged_at" | "issued_by" | "revoked_at" | "revoked_by" | "created_at"
+      >;
+      appeals: TableDef<
+        AppealRow,
+        "id" | "profile_id" | "attachment_path" | "status" | "decision_note" | "decided_by" | "decided_at" | "created_at"
+      >;
+      audit_logs: TableDef<
+        AuditLogRow,
+        "id" | "actor_id" | "actor_role" | "target_type" | "target_id" | "before" | "after" | "meta" | "created_at"
+      >;
+      inquiries: TableDef<
+        InquiryRow,
+        "id" | "user_id" | "email" | "category" | "status" | "handled_by" | "handled_at" | "created_at"
+      >;
+      skus: TableDef<
+        SkuRow,
+        "tier" | "item_type" | "item_qty" | "display_terms" | "is_active" | "experiment_group" | "retired_at" | "created_at"
+      >;
+      sku_price_history: TableDef<SkuPriceHistoryRow, "id" | "starts_at" | "ends_at">;
+      subscriptions: TableDef<
+        SubscriptionRow,
+        "id" | "user_id" | "provider_sub_id" | "sku" | "cancel_at" | "canceled_at" | "created_at" | "updated_at"
+      >;
+      payments: TableDef<
+        PaymentRow,
+        | "id" | "user_id" | "subscription_id" | "status" | "paid_at" | "refunded_amount_krw" | "refunded_at"
+        | "receipt_url" | "created_at" | "updated_at"
+      >;
+      item_ledger: TableDef<ItemLedgerRow, "id" | "user_id" | "balance_after" | "expires_at" | "created_at">;
+      boosts: TableDef<BoostRow, "id" | "ledger_id" | "starts_at" | "created_at">;
+      refund_requests: TableDef<
+        RefundRequestRow,
+        | "id" | "user_id" | "computed_deduction_krw" | "computed_refund_krw" | "status" | "handled_by" | "handled_at"
+        | "executed_at" | "created_at"
+      >;
+      game_profiles: TableDef<GameProfileRow, "level" | "xp" | "streak_days" | "last_played_at" | "coins" | "updated_at">;
+      game_sessions: TableDef<GameSessionRow, "id" | "participants" | "state" | "result" | "created_at" | "updated_at">;
+      quests: TableDef<QuestRow, "reward" | "is_active">;
+      quest_progress: TableDef<QuestProgressRow, "progress" | "completed_at">;
+      events: TableDef<
+        EventRow,
+        | "id" | "hobby_id" | "description" | "region_code" | "ends_at" | "capacity" | "host_id" | "status"
+        | "created_at" | "updated_at"
+      >;
+      event_rsvps: TableDef<EventRsvpRow, "status" | "created_at">;
+      push_subscriptions: TableDef<
+        PushSubscriptionRow,
+        | "id" | "user_agent" | "slot_a_enabled" | "slot_b_enabled" | "instant_enabled" | "created_at" | "last_sent_at"
+        | "disabled_at"
+      >;
+      notification_log: TableDef<
+        NotificationLogRow,
+        | "id" | "subscription_id" | "budget_consumed" | "like_id" | "payload_hash" | "sent_at" | "opened_at" | "error"
+      >;
+      analytics_events: TableDef<
+        AnalyticsEventRow,
+        "id" | "user_id_hash" | "props" | "session_id" | "platform" | "created_at"
+      >;
+      rate_limits: TableDef<RateLimitRow, "count" | "updated_at">;
+      // ---- D5 moderation (0040) ----
+      moderation_settings: TableDef<ModerationSettingRow, "description" | "updated_at">;
+      moderation_flags: TableDef<ModerationFlagRow, "scam_score" | "scam_signals" | "scam_banner_until" | "scam_restricted_at" | "last_auto_report_at" | "contact_hits_reported" | "computed_at" | "updated_at">;
+      moderation_notifications: TableDef<ModerationNotificationRow, "id" | "profile_id" | "report_id" | "sanction_id" | "payload" | "created_at" | "delivered_at" | "delivery">;
+      moderation_jobs: TableDef<ModerationJobRow, "id" | "report_id" | "payload" | "status" | "attempts" | "next_attempt_at" | "last_error" | "result" | "created_at" | "updated_at">;
+      // ---- D7 push (0050·0051) ----
+      push_prefs: TableDef<PushPrefsRow, "service_enabled" | "quiet_start" | "quiet_end" | "updated_at">;
+      push_templates: TableDef<PushTemplateRow, "bundle_minutes" | "hold_at_night" | "priority_rank" | "description">;
+      push_queue: TableDef<PushQueueRow, "id" | "profile_id" | "params" | "merged_count" | "scheduled_at" | "status" | "hold_reason" | "discard_reason" | "attempts" | "last_error" | "like_id" | "notification_log_id" | "created_at" | "updated_at" | "sent_at">;
+      admin_notifications: TableDef<AdminNotificationRow, "id" | "payload" | "source_id" | "created_at" | "delivered_at" | "delivery" | "read_at" | "read_by">;
+      consent_rechecks: TableDef<ConsentRecheckRow, "id" | "notified_at" | "resolved_at" | "outcome" | "created_at">;
+    };
+    Views: {
+      v_profile_public: ViewDef<ProfilePublicView>;
+      v_messages: ViewDef<MessageView>;
+      v_my_matches: ViewDef<MyMatchView>;
+      v_weekly_quota_used: ViewDef<WeeklyQuotaUsedView>;
+      v_my_blocks: ViewDef<MyBlockView>;
+      reports_overdue: ViewDef<ReportsOverdueView>;
+      v_rule_hit_stats: ViewDef<RuleHitStatsView>;
+      v_push_metrics_daily: ViewDef<PushMetricsDailyView>;
+      v_push_queue_daily: ViewDef<PushQueueDailyView>;
+      v_reco_daily_summary: ViewDef<RecoDailySummaryView>;
+      v_reco_metrics_daily: ViewDef<RecoMetricsDailyView>;
+      v_reco_gender_balance: ViewDef<RecoGenderBalanceView>;
+    };
+    /**
+     * 0009·0014·0020·0021·0030·0040~0043·0050·0051·0060·0070·0071 의 public 함수 전체.
+     * `node scripts/gen-function-types.mjs <db>` 가 로컬 PG(pg_proc)에서 생성한 초안을 손으로 다듬은 것이다(H1).
+     * "service role 전용" = authenticated·anon 에 execute 권한이 없는 함수(0009~0071 의 revoke/grant 기준).
+     * 트리거 함수와 composite 인자 함수(score_pair)는 PostgREST 로 호출할 수 없어 제외한다.
+     */
+    Functions: {
+      acknowledge_sanction: { Args: { p_sanction_id: string }; Returns: Json };
+      act_on_recommendation: { Args: { p_target_id: string; p_action: Enums["reco_action"] }; Returns: Json };
+      active_sanction_level: { Args: { p_profile_id: string }; Returns: number };
+      /** service role 전용 */
+      admin_audit: { Args: { p_actor_id: string; p_action: string; p_target_type: string; p_target_id: string; p_before?: Json | null; p_after?: Json | null; p_meta?: Json | null }; Returns: undefined };
+      /** service role 전용 */
+      admin_decide_appeal: { Args: { p_actor_id: string; p_appeal_id: string; p_decision: Enums["appeal_status"]; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_get_report: { Args: { p_actor_id: string; p_report_id: string }; Returns: Json };
+      /** service role 전용 */
+      admin_lift_sanction: { Args: { p_actor_id: string; p_sanction_id: string; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_list_reports: { Args: { p_actor_id: string; p_filter?: Json | null; p_cursor?: Json | null; p_limit?: number | null }; Returns: Json };
+      admin_metrics_active_users: { Args: Record<string, never>; Returns: Json };
+      admin_metrics_daily: { Args: { p_days?: number | null }; Returns: Array<{ loop_date: string; active_users: number; signups: number; onboarding_completed: number; reco_count: number; reco_seen: number; reco_acted: number; likes: number; superlikes: number; matches: number; first_messages: number; messages: number; reports: number; sanctions: number; sanctions_auto: number }> };
+      admin_metrics_funnel: { Args: { p_days?: number | null }; Returns: Array<{ ord: number; step: string; label: string; cnt: number }> };
+      admin_metrics_gender: { Args: Record<string, never>; Returns: Array<{ mode: Enums["profile_mode"]; gender: string; cnt: number }> };
+      admin_metrics_guard: { Args: Record<string, never>; Returns: undefined };
+      admin_metrics_photos: { Args: { p_days?: number | null }; Returns: Json };
+      admin_metrics_sanctions: { Args: { p_days?: number | null }; Returns: Array<{ level: number; total: number; auto_cnt: number; manual_cnt: number; revoked_cnt: number }> };
+      admin_metrics_sla: { Args: { p_days?: number | null }; Returns: Array<{ priority: Enums["report_priority"]; total: number; handled: number; within_sla: number; overdue_open: number; open_in_sla: number; avg_handle_minutes: number }> };
+      admin_metrics_verify_levels: { Args: Record<string, never>; Returns: Array<{ verify_level: number; cnt: number }> };
+      /** service role 전용 */
+      admin_moderation_stats: { Args: { p_actor_id: string }; Returns: Json };
+      /** service role 전용 */
+      admin_profile_detail: { Args: { p_actor_id: string; p_profile_id: string }; Returns: Json };
+      admin_queue_summary: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      admin_resolve_report: { Args: { p_actor_id: string; p_report_id: string; p_outcome: Enums["report_status"]; p_sanction_level?: number | null; p_note?: string | null; p_duration?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_review_photo: { Args: { p_actor_id: string; p_photo_id: string; p_decision: Enums["review_status"]; p_reject_code?: Enums["photo_reject_code"] | null; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_role_of: { Args: { p_actor_id: string }; Returns: Enums["admin_role"] | null };
+      /** service role 전용 */
+      admin_search_profiles: { Args: { p_actor_id: string; p_q: string; p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      admin_set_legal_hold: { Args: { p_actor_id: string; p_report_id: string; p_hold: boolean; p_note?: string | null }; Returns: Json };
+      /** service role 전용 */
+      admin_triage_report: { Args: { p_actor_id: string; p_report_id: string; p_priority?: Enums["report_priority"] | null; p_assignee_id?: string | null }; Returns: Json };
+      age_years_kst: { Args: { p_birth: string; p_at?: string | null }; Returns: number };
+      app_role: { Args: Record<string, never>; Returns: string | null };
+      /** service role 전용 */
+      apply_auto_moderation: { Args: { p_profile_id: string; p_match_id?: string | null }; Returns: Json };
+      apply_block: { Args: { p_blocked_id: string }; Returns: undefined };
+      /** service role 전용 */
+      apply_block_internal: { Args: { p_blocker: string; p_blocked: string }; Returns: undefined };
+      /** service role 전용 */
+      apply_identity_verification: { Args: { p_user_id: string; p_provider: Enums["identity_provider"]; p_result: Enums["identity_result"]; p_ci_hash?: string | null; p_di_hash?: string | null; p_birth_date?: string | null; p_gender?: Enums["gender"] | null; p_provider_tx_id?: string | null; p_meta?: Json | null }; Returns: Json };
+      are_blocked: { Args: { p_a: string; p_b: string }; Returns: boolean };
+      /** service role 전용 */
+      assert_admin: { Args: { p_actor_id: string }; Returns: Enums["admin_role"] };
+      /** service role 전용 */
+      assert_moderator: { Args: { p_actor_id: string }; Returns: Enums["admin_role"] };
+      /** service role 전용 */
+      assert_no_contact_in_text: { Args: { p_field: string; p_text: string }; Returns: undefined };
+      /** service role 전용 */
+      auto_report_once: { Args: { p_target_id: string; p_reason: Enums["report_reason"]; p_match_id: string; p_detail: string }; Returns: string };
+      can_like: { Args: { p_from: string; p_to: string }; Returns: boolean };
+      can_send_chat_image: { Args: { p_match_id: string; p_sender: string }; Returns: boolean };
+      can_send_message: { Args: { p_match_id: string; p_sender: string }; Returns: boolean };
+      /** service role 전용 */
+      can_send_push: { Args: { p_profile_id: string; p_kind: Enums["push_kind"]; p_template?: string | null; p_at?: string | null }; Returns: Json };
+      can_view_profile: { Args: { p_viewer: string; p_target: string }; Returns: boolean };
+      cancel_delete: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      check_rate_limit: { Args: { p_key: string; p_limit: number; p_window: string }; Returns: Json };
+      /** service role 전용 */
+      claim_moderation_jobs: { Args: { p_limit?: number | null }; Returns: ModerationJobRow[] };
+      /** service role 전용 */
+      claim_push_queue: { Args: { p_limit?: number | null; p_queue_id?: number | null }; Returns: PushQueueRow[] };
+      /** service role 전용 */
+      complete_push_send: { Args: { p_queue_id: number; p_subscription_id: string; p_ok: boolean; p_status_code?: number | null; p_error?: string | null; p_payload_hash?: string | null }; Returns: number };
+      /** service role 전용 */
+      compute_scam_score: { Args: { p_profile_id: string }; Returns: Json };
+      /** service role 전용 */
+      consent_recheck: { Args: { p_at?: string | null }; Returns: Json };
+      contact_rule_patterns: { Args: Record<string, never>; Returns: Array<{ rule_id: string; pattern: string; placeholder: string; ord: number }> };
+      contact_unmasked: { Args: { p_match_id: string }; Returns: boolean };
+      create_profile: { Args: { p_birth_date: string; p_phone_hash?: string | null }; Returns: Json };
+      create_report: { Args: { p_target_id: string; p_reason_code: Enums["report_reason"]; p_detail?: string | null; p_match_id?: string | null; p_surface?: Enums["report_surface"] | null; p_reporter_id?: string | null }; Returns: Json };
+      current_profile_id: { Args: Record<string, never>; Returns: string | null };
+      detect_contacts: { Args: { p_text: string }; Returns: Json };
+      /** service role 전용 */
+      drain_moderation_notifications: { Args: { p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_push: { Args: { p_profile_id: string; p_template: string; p_params?: Json | null; p_scheduled_at?: string | null; p_dedupe_key?: string | null; p_like_id?: string | null; p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_reminders: { Args: { p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_slot_a: { Args: { p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      enqueue_slot_b: { Args: { p_at?: string | null }; Returns: Json };
+      ensure_today_recommendations: { Args: Record<string, never>; Returns: Json };
+      entitlement_value: { Args: { p_tier: Enums["subscription_tier"]; p_key: string }; Returns: number };
+      /** service role 전용 */
+      finish_moderation_job: { Args: { p_job_id: number; p_ok: boolean; p_result?: Json | null; p_error?: string | null }; Returns: undefined };
+      /** service role 전용 */
+      finish_push_queue: { Args: { p_queue_id: number; p_ok: boolean; p_error?: string | null; p_discard?: boolean | null }; Returns: Enums["push_queue_status"] };
+      /** service role 전용 */
+      flush_held_queue: { Args: { p_at?: string | null }; Returns: number };
+      g2_trusted_caller: { Args: Record<string, never>; Returns: boolean };
+      /** service role 전용 */
+      generate_daily_recommendations: { Args: { p_profile_id: string; p_loop_date?: string | null; p_limit?: number | null }; Returns: Json };
+      get_chat_list: { Args: { p_match_id?: string | null }; Returns: Json };
+      get_effective_tier: { Args: { p_user_id: string }; Returns: Enums["subscription_tier"] };
+      get_gate_state: { Args: Record<string, never>; Returns: Json };
+      get_my_moderation_state: { Args: Record<string, never>; Returns: Json };
+      get_report_context: { Args: { p_match_id: string }; Returns: Json };
+      has_marketing_consent: { Args: { p_user_id: string }; Returns: boolean };
+      /** service role 전용 */
+      invoke_push_dispatch: { Args: Record<string, never>; Returns: Json };
+      is_admin: { Args: Record<string, never>; Returns: boolean };
+      is_adult: { Args: { p_birth: string; p_at?: string | null }; Returns: boolean };
+      /** service role 전용 */
+      is_complete_profile: { Args: { p_profile_id: string }; Returns: boolean };
+      is_marketing_window_kst: { Args: { p_at?: string | null }; Returns: boolean };
+      is_match_participant: { Args: { p_match_id: string; p_profile_id: string }; Returns: boolean };
+      /** service role 전용 */
+      is_matched: { Args: { p_a: string; p_b: string }; Returns: boolean };
+      is_moderator: { Args: Record<string, never>; Returns: boolean };
+      is_push_quiet_kst: { Args: { p_at?: string | null }; Returns: boolean };
+      /** service role 전용 */
+      is_recommended_recently: { Args: { p_viewer: string; p_target: string }; Returns: boolean };
+      /** service role 전용 */
+      issue_sanction: { Args: { p_profile_id: string; p_level: number; p_reason: string; p_duration?: string | null; p_report_id?: string | null; p_reason_code?: Enums["report_reason"] | null; p_issued_by?: string | null }; Returns: string };
+      kst_at: { Args: { p_date: string; p_time: string }; Returns: string };
+      kst_date: { Args: { p_at?: string | null }; Returns: string };
+      kst_time: { Args: { p_at?: string | null }; Returns: string };
+      leave_match: { Args: { p_match_id: string }; Returns: Json };
+      likers_count: { Args: Record<string, never>; Returns: number };
+      loop_date: { Args: { p_at?: string | null }; Returns: string };
+      mark_push_opened: { Args: { p_queue_id: number }; Returns: number };
+      mark_read: { Args: { p_match_id: string }; Returns: Json };
+      mask_contacts: { Args: { p_text: string }; Returns: string };
+      /** service role 전용 */
+      match_id_of: { Args: { p_a: string; p_b: string }; Returns: string | null };
+      match_suggestion_input: { Args: { p_match_id: string }; Returns: Json };
+      matching_home_summary: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      moderation_daily: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      moderation_setting: { Args: { p_key: string }; Returns: Json };
+      /** service role 전용 */
+      moderation_setting_int: { Args: { p_key: string; p_default: number }; Returns: number };
+      next_kst_time: { Args: { p_at: string; p_time: string }; Returns: string };
+      /** service role 전용 */
+      notify_admin: { Args: { p_kind: string; p_payload?: Json | null; p_report_id?: string | null; p_sanction_id?: string | null }; Returns: number };
+      /** service role 전용 */
+      notify_admin_push: { Args: { p_kind: string; p_payload?: Json | null; p_source_id?: number | null }; Returns: number };
+      /** service role 전용 */
+      notify_profile: { Args: { p_profile_id: string; p_template_key: string; p_params?: Json | null }; Returns: Json };
+      /** service role 전용 */
+      notify_user: { Args: { p_profile_id: string; p_kind: string; p_payload?: Json | null; p_report_id?: string | null; p_sanction_id?: string | null }; Returns: number };
+      /** service role 전용 */
+      pair_features: { Args: { p_a: string; p_b: string }; Returns: Json };
+      partner_risk_banner: { Args: { p_match_id: string }; Returns: boolean };
+      pause_account: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      pending_like_results: { Args: { p_profile_id: string; p_at?: string | null }; Returns: number };
+      pending_likes_count: { Args: Record<string, never>; Returns: number };
+      /** service role 전용 */
+      purge_deleted_profiles: { Args: { p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      purge_expired_evidence: { Args: { p_limit?: number | null }; Returns: Json };
+      /** service role 전용 */
+      purge_expired_moderation_flags: { Args: Record<string, never>; Returns: number };
+      /** service role 전용 */
+      purge_moderation_queues: { Args: { p_days?: number | null }; Returns: Json };
+      /** service role 전용 */
+      purge_old_recommendations: { Args: { p_days?: number | null }; Returns: number };
+      /** service role 전용 */
+      purge_rate_limits: { Args: { p_older_than?: string | null }; Returns: number };
+      /** service role 전용 */
+      purge_tombstones: { Args: { p_retention_days?: number | null }; Returns: Json };
+      /** service role 전용 */
+      push_budget_used: { Args: { p_user_id: string; p_loop_date?: string | null }; Returns: number };
+      /** service role 전용 */
+      push_policy_int: { Args: { p_key: string; p_default: number }; Returns: number };
+      /** service role 전용 */
+      push_policy_text: { Args: { p_key: string; p_default: string }; Returns: string };
+      /** service role 전용 */
+      realtime_send_safe: { Args: { p_payload: Json; p_event: string; p_topic: string }; Returns: undefined };
+      /** service role 전용 */
+      reco_candidates: { Args: { p_profile_id: string; p_loop_date?: string | null }; Returns: Array<{ target_id: string; is_liker: boolean; same_sido: boolean; pool_size: number; nationwide: boolean }> };
+      /** service role 전용 */
+      reco_param: { Args: { p_key: string; p_default: number }; Returns: number };
+      /** service role 전용 */
+      reco_reasons: { Args: { p_a: string; p_b: string }; Returns: Json };
+      /** service role 전용 */
+      recompute_verify_level: { Args: { p_profile_id: string }; Returns: number };
+      remove_block: { Args: { p_blocked_id: string }; Returns: undefined };
+      report_default_priority: { Args: { p_reason: Enums["report_reason"] }; Returns: Enums["report_priority"] };
+      report_sla_interval: { Args: { p_priority: Enums["report_priority"] }; Returns: string };
+      request_delete: { Args: { p_immediate?: boolean | null }; Returns: Json };
+      resume_account: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      revert_auto_actions: { Args: { p_actor_id: string; p_report_id: string }; Returns: Json };
+      /** service role 전용 */
+      run_daily_recommendation_batch: { Args: { p_loop_date?: string | null; p_batch_size?: number | null; p_offset?: number | null }; Returns: Json };
+      /** service role 전용 */
+      run_report_as_service: { Args: { p_target_id: string; p_reason: Enums["report_reason"]; p_detail: string; p_match_id?: string | null }; Returns: Json };
+      /** service role 전용 */
+      run_slot_b_batch: { Args: { p_at?: string | null }; Returns: Json };
+      safety_preprocess: { Args: { p_text: string }; Returns: string };
+      /** service role 전용 */
+      schedule_push_jobs: { Args: Record<string, never>; Returns: Json };
+      // score_pair: composite 인자(SQL 내부 전용) — RPC 대상 아님
+      /** service role 전용 */
+      send_message: { Args: { p_match_id: string; p_sender_id: string; p_body?: string | null; p_image_path?: string | null; p_flags?: Json | null; p_message_id?: string | null; p_client_masked?: string | null; p_suggestion_template_id?: string | null }; Returns: Json };
+      /** service role 전용 */
+      set_match_first_suggestion: { Args: { p_match_id: string; p_cards: Json }; Returns: Json };
+      set_mode: { Args: { p_mode: Enums["profile_mode"]; p_seeking_gender?: Enums["seeking_gender"] | null }; Returns: Json };
+      /** service role 전용 */
+      sla_check: { Args: Record<string, never>; Returns: Json };
+      /** service role 전용 */
+      slot_b_candidate: { Args: { p_profile_id: string; p_at?: string | null }; Returns: Json };
+      /** service role 전용 */
+      slot_b_time_for: { Args: { p_profile_id: string; p_at?: string | null }; Returns: string };
+      submit_appeal: { Args: { p_sanction_id: string; p_body: string; p_attachment_path?: string | null }; Returns: Json };
+      superlike_status: { Args: { p_profile_id?: string | null }; Returns: Json };
+      /** service role 전용 */
+      system_report_exists: { Args: { p_target_id: string; p_reason: Enums["report_reason"]; p_hours?: number | null }; Returns: boolean };
+      time_in_window: { Args: { p_t: string; p_start: string; p_end: string }; Returns: boolean };
+      undo_last_action: { Args: Record<string, never>; Returns: Json };
+      week_start_loop_date: { Args: { p_at?: string | null }; Returns: string };
+      weekly_superlike_used: { Args: { p_profile_id: string }; Returns: number };
+    };
+    Enums: Enums;
+    CompositeTypes: Record<string, never>;
+  };
+};
+
+// ---------------------------------------------------------------------------
+// 편의 타입 (supabase gen types 의 Tables<>/Enums<> 헬퍼와 동일 용법)
+// ---------------------------------------------------------------------------
+export type PublicSchema = Database["public"];
+export type TableName = keyof PublicSchema["Tables"];
+export type ViewName = keyof PublicSchema["Views"];
+export type Tables<T extends TableName> = PublicSchema["Tables"][T]["Row"];
+export type TablesInsert<T extends TableName> = PublicSchema["Tables"][T]["Insert"];
+export type TablesUpdate<T extends TableName> = PublicSchema["Tables"][T]["Update"];
+export type Views<T extends ViewName> = PublicSchema["Views"][T]["Row"];
+export type EnumOf<T extends keyof Enums> = Enums[T];
+
+/** create_report RPC 반환값 */
+export type CreateReportResult = {
+  report_id: string;
+  deduped: boolean;
+  priority: Enums["report_priority"];
+  auto_actions?: string[];
+};
+
+/** reports.evidence (A5 §5.1, schema 1) */
+export type ReportEvidence = {
+  schema: 1;
+  captured_at: string;
+  match_id: string | null;
+  messages: Array<
+    Pick<MessageRow, "id" | "sender_id" | "body" | "masked_body" | "image_path" | "is_held" | "created_at" | "read_at">
+  >;
+  reporter: { profile_id: string; nickname: string | null; verify_level: VerifyLevel; mode: Enums["profile_mode"]; created_at: string } | null;
+  target: {
+    profile_id: string;
+    nickname: string | null;
+    birth_year: number | null;
+    gender: Enums["gender"] | null;
+    region_code: string | null;
+    bio: string | null;
+    now_into: string | null;
+    verify_level: VerifyLevel;
+    mode: Enums["profile_mode"];
+    status: Enums["profile_status"];
+    created_at: string;
+    hobbies: Array<{ hobby: string; rank: number; intensity: number; fav_note: string | null }>;
+  };
+  target_photos: Array<{ photo_id: string; path: string; evidence_path: string; review_status: Enums["review_status"]; is_primary: boolean }>;
+  relation: { like_from_target_at: string | null; like_from_reporter_at: string | null; matched_at: string | null; blocked: boolean };
+  detector_hits: Array<{ rule_id: string; message_id: string; matched: string | null; score: number }>;
+  prior_reports_count: number;
+  prior_sanctions: Array<{ level: SanctionLevel; reason: string; starts_at: string; ends_at: string | null }>;
+};

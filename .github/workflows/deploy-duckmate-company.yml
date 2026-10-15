@@ -1,0 +1,130 @@
+name: Deploy duckmate company (production)
+
+# duckmate/ 변경이 master 에 머지될 때 회사 소개 사이트(apps/company, Next.js 정적 export → out/)를
+# 자체 Vercel 프로젝트로 배포한다. deploy-duckmate-web.yml 과 같은 패턴, 시크릿만 DM_COMPANY_* 로 분리.
+#
+# ── Vercel 프로젝트 설정 (소유자가 대시보드에서 1회) ──
+#   Framework Preset      : Next.js  — next.config.ts 의 `output: "export"` 를 Next 빌더가 감지해 out/ 을 그대로 서빙한다.
+#                           (판정: Framework "Other" + Output Directory=out 도 동작하지만, Next.js 프리셋이 정적 export 를 공식 지원하므로
+#                            그쪽을 택했다. Output Directory 는 비워 둔다. 26_fe_company.md §G3-1 의 "Output Directory = out" 은
+#                            "Other" 프리셋을 고를 때만 필요.)
+#   Root Directory        : duckmate/apps/company  ("Include source files outside of the Root Directory" 켜기 — prebuild 가 ../../scripts 를 읽는다)
+#   Node.js Version       : 22.x
+#   Install / Build       : duckmate/apps/company/vercel.json 이 명시 (루트 pnpm 워크스페이스에서 install, `pnpm --filter @duckmate/company build`)
+#   환경변수(Production)  : 전부 공개 값(비밀 없음) — NEXT_PUBLIC_COMPANY_URL, NEXT_PUBLIC_WEB_APP_URL, NEXT_PUBLIC_CONTACT_ENDPOINT
+#                           (duckmate/apps/company/.env.example). VERCEL_ENV 는 자동 주입(production 이 아니면 메타 noindex).
+#
+# ── GitHub Secrets ──
+#   DM_COMPANY_VERCEL_TOKEN / DM_COMPANY_VERCEL_ORG_ID / DM_COMPANY_VERCEL_PROJECT_ID
+#   (토큰은 web 과 같은 계정 토큰을 재사용해도 된다. ORG_ID 는 보통 동일, PROJECT_ID 만 다르다.)
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "duckmate/**"
+      - ".github/workflows/deploy-duckmate-company.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: vercel-duckmate-company
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'dydrms6388-sudo/project-hub' }}
+    env:
+      VERCEL_ORG_ID: ${{ secrets.DM_COMPANY_VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.DM_COMPANY_VERCEL_PROJECT_ID }}
+      NEXT_TELEMETRY_DISABLED: "1"
+      TURBO_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Guard — secrets present?
+        id: guard
+        run: |
+          if [ -z "${{ secrets.DM_COMPANY_VERCEL_TOKEN }}" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::duckmate company Vercel 시크릿(DM_COMPANY_VERCEL_TOKEN / DM_COMPANY_VERCEL_ORG_ID / DM_COMPANY_VERCEL_PROJECT_ID)이 없어 배포를 건너뜁니다. duckmate/docs/DEPLOY_LOG.md §2 참고."
+            echo "### ⏭️ duckmate company 배포 건너뜀 — Vercel 시크릿 미등록" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup pnpm
+        if: steps.guard.outputs.ok == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: duckmate/package.json
+
+      - name: Setup Node 22
+        if: steps.guard.outputs.ok == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: duckmate/pnpm-lock.yaml
+
+      - name: Install (frozen lockfile)
+        if: steps.guard.outputs.ok == 'true'
+        working-directory: duckmate
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        if: steps.guard.outputs.ok == 'true'
+        working-directory: duckmate
+        run: pnpm -r typecheck
+
+      - name: Unit tests
+        if: steps.guard.outputs.ok == 'true'
+        working-directory: duckmate
+        run: pnpm -r test
+
+      - name: Legal placeholder scan (경고만)
+        if: steps.guard.outputs.ok == 'true'
+        working-directory: duckmate
+        run: node scripts/check-legal-placeholders.mjs
+
+      - name: Install Vercel CLI
+        if: steps.guard.outputs.ok == 'true'
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project settings + production env
+        if: steps.guard.outputs.ok == 'true'
+        run: vercel pull --yes --environment=production --token="${{ secrets.DM_COMPANY_VERCEL_TOKEN }}"
+
+      - name: Build (vercel build --prod)
+        if: steps.guard.outputs.ok == 'true'
+        run: vercel build --prod --yes --token="${{ secrets.DM_COMPANY_VERCEL_TOKEN }}"
+
+      - name: Locate prebuilt output
+        if: steps.guard.outputs.ok == 'true'
+        run: |
+          if [ -d .vercel/output ]; then
+            echo "prebuilt output: $(pwd)/.vercel/output"
+          elif [ -d duckmate/apps/company/.vercel/output ]; then
+            echo "::error::.vercel/output 이 Root Directory 안에 생성되었습니다. DEPLOY_LOG.md §6 참고"
+            exit 1
+          else
+            echo "::error::.vercel/output 없음 — vercel build 실패 로그를 확인하세요"
+            exit 1
+          fi
+
+      - name: Deploy to production (prebuilt)
+        if: steps.guard.outputs.ok == 'true'
+        run: |
+          url=$(vercel deploy --prebuilt --prod --yes --token="${{ secrets.DM_COMPANY_VERCEL_TOKEN }}")
+          echo "Deployed: $url"
+          {
+            echo "### ✅ duckmate company 프로덕션 배포 완료"
+            echo ""
+            echo "- URL: $url"
+            echo "- commit: ${{ github.sha }}"
+            echo "- 배포 후 스모크: \`curl -sI <url>/\` 에 x-robots-tag 없어야 함, /legal/terms/ 200, /sitemap.xml 7 URL (27_fe_quality.md §G3-13)"
+          } >> "$GITHUB_STEP_SUMMARY"

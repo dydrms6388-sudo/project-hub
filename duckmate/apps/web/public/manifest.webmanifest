@@ -1,0 +1,16 @@
+{
+  "name": "덕메이트",
+  "short_name": "덕메이트",
+  "description": "같은 걸 좋아하는 사람이랑 만나요. 만 19세 이상.",
+  "lang": "ko",
+  "start_url": "/home?src=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#5B3BCF",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/badge-72.png", "sizes": "72x72", "type": "image/png", "purpose": "monochrome" }
+  ]
+}
