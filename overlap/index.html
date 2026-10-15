@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>겹치는 부분 — 싸운 두 사람이 둘 다 동의하는 것만 남기기 | TomatoEggCat</title>
+<meta name="description" content="갈등 당사자 두 사람이 각자 자기 관점의 경위를 쓰면, 양쪽이 모두 동의하는 사실만 뽑아 보여주는 도구. 누가 옳은지 판정하지 않고 조언도 하지 않습니다. 합의된 것 / 한쪽만 말한 것 / 서로 어긋나는 것 세 덩어리로만 정리하고, 감정 문장은 판정 대상에서 빼고 나란히 보여줍니다. 상대가 제출하기 전까지 내 글은 열리지 않습니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/overlap/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="겹치는 부분 — 둘 다 동의하는 것만 남긴다" />
+<meta property="og:description" content="누가 맞는지 판정하지 않습니다. 그냥 겹치는 걸 보여줍니다. 대개 아주 작습니다." />
+<meta property="og:url" content="https://tomatoeggcat.com/overlap/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="겹치는 부분 — 둘 다 동의하는 것만 남긴다" />
+<meta name="twitter:description" content="누가 맞는지 판정하지 않습니다. 그냥 겹치는 걸 보여줍니다." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"겹치는 부분","description":"갈등 당사자 두 명이 각자 관점의 경위를 쓰면 양쪽이 모두 동의하는 사실만 추출해 보여주는 도구. 옳고 그름을 판정하지 않고 합의·한쪽만 언급·어긋남 세 덩어리로만 정리하며, 모든 대조는 브라우저 안에서 규칙 기반으로 수행된다.","applicationCategory":"WebApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/overlap/","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"누가 잘못했는지 알려주나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 이 도구는 판정을 하지 않습니다. 과실 비율도, 조언도, 중재안도 내놓지 않습니다. 판정을 받는 순간 진 쪽은 승복하지 않고 대화가 끝나기 때문입니다. 이 도구가 하는 일은 두 사람의 서술을 문장 단위로 맞춰 보고 겹치는 부분과 어긋나는 부분을 그대로 늘어놓는 것뿐입니다. 어느 쪽 서술이 맞는지도 말하지 않고 양쪽을 나란히 보여줍니다."}},
+{"@type":"Question","name":"상대가 내 글을 먼저 볼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"앱은 상대가 자기 글을 제출하기 전까지 당신의 글을 화면에 절대 보여주지 않습니다. 다만 이 사이트는 서버가 없는 정적 도구라 초대 링크 안에 당신의 글이 인코딩되어 담깁니다. 즉 상대가 마음먹고 주소를 뜯어보면 볼 수 있습니다. 서버 데이터베이스로 강제 격리하는 방식이 아니라 서로 먼저 보지 않기로 하는 약속에 기대는 구조이며, 이 한계를 화면에도 그대로 고지합니다."}},
+{"@type":"Question","name":"문장 분류와 대조는 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"인공지능을 쓰지 않고 한국어 규칙으로 처리합니다. 감정 어휘가 들어간 문장은 감정, 추측이나 의도 단정 표현이 들어간 문장은 해석, 나머지는 사실로 우선 분류하고 사용자가 직접 고칠 수 있습니다. 대조는 사실·해석 문장끼리만 하며 시각 표현 일치와 낱말 겹침 정도로 유사도를 계산해 짝을 짓습니다. 짝이 지어지고 내용이 충분히 비슷하면 합의, 짝은 지어졌는데 내용이 다르면 어긋남, 짝이 없으면 한쪽만 언급으로 분류합니다."}},
+{"@type":"Question","name":"폭력이나 학대 상황에도 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"쓰면 안 되고, 쓸 수도 없습니다. 신체적 폭력·위협·통제·강압·스토킹·학대 정황이 글에서 감지되면 도구가 즉시 중단되고 대조 결과를 만들지 않습니다. 그건 중재할 사안이 아니라 도움이 필요한 상황이기 때문입니다. 감지는 양쪽 글에 각각 독립적으로 수행되고, 감지 사실은 상대에게 전달되지 않습니다."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"관계·대화","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"겹치는 부분","item":"https://tomatoeggcat.com/overlap/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#2dd4bf;--acc2:#5eead4;--accdim:#0c2b28}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#6b7280;margin-bottom:16px}
+.nav a{color:#7aa2ff;text-decoration:none}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;color:#fff}
+h1 .c{color:var(--acc)}
+.lead{color:#9ca3af;margin:0 0 20px;font-size:15px}
+.card{border:1px solid #262626;background:#141414;border-radius:18px;padding:20px;margin-bottom:16px}
+.step{display:none}
+.step.on{display:block}
+label{display:block;font-size:13px;font-weight:700;color:#9ca3af;margin:14px 0 6px}
+label:first-child{margin-top:0}
+input[type=text],textarea{width:100%;padding:12px 14px;font-size:16px;background:#0d0d0d;color:#ededed;border:1px solid #333;border-radius:12px;font-family:inherit;line-height:1.7}
+input[type=text]{min-height:48px}
+textarea{min-height:190px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+.hint{font-size:12.5px;color:#6b7280;margin:6px 0 0;line-height:1.65}
+.cta{display:block;width:100%;margin-top:18px;padding:15px;border:0;border-radius:999px;background:var(--acc);color:#04211e;font-size:16.5px;font-weight:800;cursor:pointer;min-height:52px}
+.cta:active{transform:scale(.99)}
+.ghost{background:#0d1917;color:var(--acc2);border:1px solid #1d3b37;font-weight:700;border-radius:12px;padding:12px;cursor:pointer;min-height:48px;font-size:14px;width:100%}
+.seal{margin:0 0 16px;padding:13px 15px;border:1px solid #3a3320;background:#171307;border-radius:12px;font-size:13px;color:#d8cba0;line-height:1.7}
+.seal b{color:#f0dfa8}
+/* 문장 태깅 */
+.slist{list-style:none;padding:0;margin:0}
+.slist li{border:1px solid #262626;background:#101010;border-radius:12px;padding:11px 13px;margin-bottom:9px}
+.slist p{margin:0 0 8px;font-size:14.5px;color:#dcdfe4;word-break:break-word}
+.tagrow{display:flex;gap:6px}
+.tagrow button{flex:1;padding:7px 4px;font-size:12px;font-weight:700;background:#0d0d0d;color:#8b8f98;border:1px solid #2c2c2c;border-radius:9px;cursor:pointer;min-height:36px}
+.tagrow button.on{background:var(--accdim);border-color:var(--acc);color:var(--acc2)}
+.tagrow button.on[data-t="emotion"]{background:#2b1030;border-color:#c084fc;color:#e9d5ff}
+.tagrow button.on[data-t="interp"]{background:#2b2410;border-color:#eab308;color:#fde68a}
+/* 결과 */
+.rlead{font-size:22px;font-weight:800;color:#fff;margin:0 0 4px;word-break:keep-all}
+.rlead em{font-style:normal;color:var(--acc)}
+.rsub{font-size:13.5px;color:#8b8f98;margin:0 0 18px}
+.block{border-radius:16px;padding:16px 17px;margin-bottom:14px}
+.b-agree{border:1px solid #1d4d46;background:linear-gradient(160deg,#0b1f1d,#0e2a26)}
+.b-one{border:1px solid #2a2a2a;background:#111}
+.b-conf{border:1px solid #33291a;background:#15120a}
+.b-emo{border:1px solid #2e2140;background:#140f1c}
+.bh{font-size:15px;font-weight:800;margin:0 0 3px}
+.b-agree .bh{color:var(--acc2)}
+.b-one .bh{color:#c9ced6}
+.b-conf .bh{color:#fbbf24}
+.b-emo .bh{color:#d8b4fe}
+.bd{font-size:12.5px;color:#8b8f98;margin:0 0 12px;line-height:1.6}
+.block ul{list-style:none;padding:0;margin:0}
+.block li{font-size:14.5px;padding:9px 0;border-top:1px solid rgba(255,255,255,.07);color:#dcdfe4;word-break:break-word}
+.block li:first-child{border-top:0}
+.b-agree li{font-size:16px;color:#fff;font-weight:600}
+.who{display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;margin-right:7px;vertical-align:1px}
+.wa{background:#123c37;color:#5eead4}
+.wb{background:#3c2312;color:#fdba74}
+.pair{display:grid;gap:8px;padding:9px 0;border-top:1px solid rgba(255,255,255,.07)}
+.pair:first-child{border-top:0}
+.pair div{font-size:14px;color:#dcdfe4;word-break:break-word}
+.emopair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.emopair>div{background:rgba(255,255,255,.04);border-radius:11px;padding:11px}
+.emopair li{font-size:13.5px;padding:6px 0}
+.close{font-size:14px;color:#9ca3af;text-align:center;margin:20px 0 0}
+/* 안전 중단 */
+.stop{display:none;border:1px solid #4a1f1f;background:#170a0a;border-radius:16px;padding:20px}
+.stop.on{display:block}
+.stop h2{font-size:18px;color:#fca5a5;margin:0 0 10px}
+.stop p{font-size:14.5px;color:#e5c9c9;margin:0 0 12px;line-height:1.75}
+.stop ul{margin:0;padding-left:18px}
+.stop li{font-size:14px;color:#e5c9c9;margin-bottom:6px}
+.shareRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.remixRow{margin-top:10px}
+.after{display:none}
+.after.on{display:block}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#0c2b28,#124f47);border-bottom:1px solid #1d6b60}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#99f6e4;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px;border:0;border-radius:999px;background:var(--acc);color:#04211e;font-weight:800;cursor:pointer;min-height:44px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#0e2a26;color:var(--acc2);border:1px solid var(--acc);padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+.toast.show{opacity:1}
+.about h2{font-size:19px;margin:34px 0 10px;color:#e5e7eb}
+.about p,.about li{font-size:14.5px;color:#b9bec7}
+.about details{border:1px solid #262626;border-radius:12px;padding:12px 16px;margin-bottom:10px;background:#121212}
+.about summary{cursor:pointer;font-weight:700;font-size:14.5px;color:#ddd}
+.disc{font-size:13px;color:#8b8f98;background:#141414;border:1px dashed #333;border-radius:12px;padding:12px 14px;margin-top:18px}
+.rel{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 10px}
+.rel a{font-size:13.5px;font-weight:700;color:#c9c9c9;text-decoration:none;background:#141414;border:1px solid #2a2a2a;border-radius:999px;padding:9px 14px;min-height:40px;display:inline-flex;align-items:center}
+.rel a:hover{border-color:var(--acc);color:var(--acc2)}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid #1f1f1f;font-size:12.5px;color:#6b7280}
+footer a{color:#7aa2ff;text-decoration:none;margin-right:12px}
+@media (max-width:420px){.emopair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span>상대가 먼저 썼어요. 당신 차례입니다.</span>
+  <button type="button" id="btnInbound">내 이야기 쓰기 →</button>
+</div>
+
+<nav class="nav"><a href="/">홈</a> › 관계·대화 › 겹치는 부분</nav>
+
+<header>
+  <h1>🧩 겹치는 <span class="c">부분</span></h1>
+  <p class="lead">누가 맞는지 판정하지 않습니다. 그냥 둘 다 동의하는 걸 보여줍니다. 대개 아주 작습니다.</p>
+</header>
+
+<!-- 안전 중단 화면 -->
+<section class="stop" id="stopBox">
+  <h2>여기서 멈출게요</h2>
+  <p id="stopMsg"></p>
+  <ul>
+    <li>여성긴급전화 <b>1366</b> (24시간)</li>
+    <li>경찰 <b>112</b> · 아동학대 신고 <b>112</b></li>
+    <li>자살예방상담전화 <b>109</b> (24시간)</li>
+    <li>한국가정법률상담소 <b>1644-7077</b></li>
+  </ul>
+  <p style="margin-top:14px;font-size:13px;color:#c9a0a0">이 내용은 상대에게 전달되지 않았습니다. 이 화면은 당신에게만 보입니다.</p>
+</section>
+
+<div id="app">
+
+<!-- 0. 시작 -->
+<section class="card step on" id="stepIntro">
+  <label for="title">무슨 일이었나요? (제목)</label>
+  <input type="text" id="title" maxlength="40" placeholder="예: 지난 금요일 저녁" autocomplete="off" />
+  <p class="hint">두 사람이 같은 사건을 각자 씁니다. 상대가 제출하기 전까지 서로의 글은 열리지 않습니다.</p>
+  <button type="button" class="cta" id="btnStartA">나부터 쓰기</button>
+</section>
+
+<!-- 1. A 작성 -->
+<section class="card step" id="stepWriteA">
+  <label for="textA">있었던 일을 시간 순서대로 적어주세요</label>
+  <textarea id="textA" placeholder="한 줄에 한 가지씩 적어주세요.&#10;&#10;9시에 내가 집에 들어왔다&#10;인사를 했는데 대답이 없었다&#10;나는 무시당했다고 느꼈다&#10;그래서 방으로 들어갔다"></textarea>
+  <p class="hint">한 줄 = 한 문장. 잘잘못을 설득하려 하지 말고, 일어난 일을 순서대로만 적어주세요.</p>
+  <button type="button" class="cta" id="btnTagA">다음 — 문장 확인하기</button>
+</section>
+
+<!-- 2. A 태깅 -->
+<section class="card step" id="stepTagA">
+  <label>각 문장이 어떤 종류인지 확인해 주세요</label>
+  <p class="hint" style="margin-bottom:12px">자동으로 분류했습니다. 틀린 게 있으면 눌러서 바꿔주세요. <b>감정</b>으로 표시된 문장은 맞다 틀리다를 따지지 않고 그대로 보여집니다.</p>
+  <ul class="slist" id="listA"></ul>
+  <button type="button" class="cta" id="btnSubmitA">제출하고 상대에게 보내기</button>
+</section>
+
+<!-- 3. A 초대 링크 -->
+<section class="card step" id="stepInvite">
+  <p class="rlead">이제 상대에게 보내세요</p>
+  <p class="rsub">상대가 자기 이야기를 제출하면, 그때 두 사람 모두 결과를 볼 수 있습니다.</p>
+  <div class="seal">
+    <b>먼저 알려드립니다.</b> 이 사이트는 서버가 없는 정적 도구입니다. 그래서 당신이 쓴 글은
+    <b>초대 링크 주소 안에</b> 담겨 갑니다. 앱은 상대가 제출하기 전까지 절대 보여주지 않지만,
+    상대가 마음먹고 주소를 뜯어보면 볼 수 있습니다. 데이터베이스로 강제 격리하는 방식이 아니라
+    <b>먼저 보지 않기로 하는 약속</b>에 기대는 구조입니다.
+  </div>
+  <button type="button" class="ghost" id="btnCopyInvite">🔗 초대 링크 복사</button>
+  <div class="remixRow"><button type="button" class="ghost" id="btnShareInvite" style="display:none">📲 공유하기</button></div>
+  <div class="remixRow"><button type="button" class="ghost" id="btnBackEdit">✏️ 다시 쓰기</button></div>
+</section>
+
+<!-- 4. B 작성 -->
+<section class="card step" id="stepWriteB">
+  <p class="rlead" id="bTitle"></p>
+  <div class="seal">상대는 이미 자기 이야기를 제출했습니다. <b>당신이 제출하기 전까지 그 글은 열리지 않습니다.</b>
+  먼저 보지 않기로 하고 시작해 주세요 — 그래야 이 도구가 의미가 있습니다.</div>
+  <label for="textB">같은 일을 당신 입장에서 적어주세요</label>
+  <textarea id="textB" placeholder="한 줄에 한 가지씩 적어주세요.&#10;&#10;9시쯤 문 소리가 났다&#10;나는 그날 너무 피곤했다&#10;인사를 못 들었다&#10;미안한 마음이 들었다"></textarea>
+  <p class="hint">한 줄 = 한 문장. 반박하려 하지 말고, 당신이 겪은 순서대로만 적어주세요.</p>
+  <button type="button" class="cta" id="btnTagB">다음 — 문장 확인하기</button>
+</section>
+
+<!-- 5. B 태깅 -->
+<section class="card step" id="stepTagB">
+  <label>각 문장이 어떤 종류인지 확인해 주세요</label>
+  <p class="hint" style="margin-bottom:12px">자동으로 분류했습니다. 틀린 게 있으면 눌러서 바꿔주세요.</p>
+  <ul class="slist" id="listB"></ul>
+  <button type="button" class="cta" id="btnSubmitB">제출하고 결과 보기</button>
+</section>
+
+<!-- 6. 결과 -->
+<section class="step" id="stepResult">
+  <div class="card" style="margin-bottom:14px">
+    <p class="rlead" id="resHead"></p>
+    <p class="rsub" id="resSub"></p>
+  </div>
+  <div class="block b-agree" id="blkAgree">
+    <p class="bh">둘 다 동의하는 것</p>
+    <p class="bd">두 사람의 서술에서 같은 사건으로 맞춰지고 내용도 일치한 문장입니다.</p>
+    <ul id="ulAgree"></ul>
+  </div>
+  <div class="block b-conf" id="blkConf">
+    <p class="bh">서로 어긋나는 것</p>
+    <p class="bd">같은 순간을 말하는 것 같은데 내용이 다릅니다. 어느 쪽이 맞는지는 이 도구가 말하지 않습니다.</p>
+    <div id="ulConf"></div>
+  </div>
+  <div class="block b-one" id="blkOne">
+    <p class="bh">한쪽만 말한 것</p>
+    <p class="bd">상대의 서술에는 없는 내용입니다. 틀렸다는 뜻이 아니라 서로 다른 걸 기억하고 있다는 뜻입니다.</p>
+    <ul id="ulOne"></ul>
+  </div>
+  <div class="block b-emo" id="blkEmo">
+    <p class="bh">각자의 감정</p>
+    <p class="bd">느낌은 맞다 틀리다를 따지는 대상이 아닙니다. 대조하지 않고 그대로 나란히 둡니다.</p>
+    <div class="emopair">
+      <div><p style="margin:0 0 6px;font-size:12px;font-weight:800;color:#5eead4">먼저 쓴 사람</p><ul id="ulEmoA"></ul></div>
+      <div><p style="margin:0 0 6px;font-size:12px;font-weight:800;color:#fdba74">나중에 쓴 사람</p><ul id="ulEmoB"></ul></div>
+    </div>
+  </div>
+  <p class="close">여기서 다시 이야기해보세요.</p>
+
+  <div class="after on" id="after">
+    <div class="shareRow">
+      <button type="button" class="ghost" id="btnSave">🖼️ 이미지로 저장</button>
+      <button type="button" class="ghost" id="btnLink">🔗 결과 링크 복사</button>
+      <button type="button" class="ghost" id="btnText">📋 텍스트 복사</button>
+      <button type="button" class="ghost" id="btnShare">📲 공유하기</button>
+    </div>
+    <div class="remixRow"><button type="button" class="ghost" id="btnRemix">🔁 처음부터 다시</button></div>
+    <div style="margin-top:22px">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+</section>
+
+</div><!-- /#app -->
+
+<canvas id="cv" width="1080" height="1350" style="display:none"></canvas>
+<div class="toast" id="toast">복사됐어요</div>
+
+<section class="about">
+  <h2>겹치는 부분이란?</h2>
+  <p>싸움이 안 끝나는 이유는 사실이 달라서가 아니라 서사가 달라서인 경우가 많습니다. 같은 저녁을 두고 한 사람은 "네가 나를 무시했다"로 기억하고 다른 사람은 "내가 너무 피곤했다"로 기억합니다. 그런데 두 사람 다 "9시에 문이 열렸다"에는 동의합니다. 겹치는 부분은 그 동의하는 지점만 골라내는 도구입니다. 두 사람이 각자 자기 관점에서 있었던 일을 시간 순서대로 적으면, 문장을 사실·해석·감정으로 나누고 사실과 해석만 서로 맞춰 봅니다. 결과는 딱 네 덩어리입니다. 둘 다 동의하는 것, 서로 어긋나는 것, 한쪽만 말한 것, 그리고 각자의 감정. 어느 쪽이 옳은지는 말하지 않습니다. AI 중재 서비스들이 실패하는 지점이 바로 판정이기 때문입니다. 판정을 받는 순간 진 쪽은 승복하지 않고 자리를 뜹니다. 이 도구는 판정 대신 교집합만 계산하고, 나머지는 두 사람의 대화에 맡깁니다.</p>
+  <h2>이렇게 사용하세요</h2>
+  <ol>
+    <li>한 사람이 제목을 적고 자기 관점에서 있었던 일을 <b>한 줄에 한 가지씩</b> 씁니다.</li>
+    <li>자동 분류된 문장 종류(사실·해석·감정)를 확인하고 틀린 것만 고칩니다.</li>
+    <li>제출하면 초대 링크가 만들어집니다. 상대에게 보냅니다.</li>
+    <li>상대는 링크를 열어 <b>같은 일을 자기 입장에서</b> 씁니다. 이때 먼저 쓴 사람의 글은 보이지 않습니다.</li>
+    <li>상대가 제출하면 그때 두 사람 모두 대조 결과를 봅니다.</li>
+  </ol>
+  <h2>이럴 때 유용해요</h2>
+  <ul>
+    <li>같은 일을 두고 기억이 완전히 다를 때, 무엇이 실제로 다른지부터 확인하고 싶을 때</li>
+    <li>대화가 계속 "그때 네가 그랬잖아"에서 멈춰 돌아갈 때</li>
+    <li>누가 이기는 대화 말고, 어디까지 같은 이야기를 하고 있는지 확인하고 싶을 때</li>
+    <li>감정을 부정당하지 않으면서 사실만 따로 떼어놓고 보고 싶을 때</li>
+  </ul>
+  <h2>자주 묻는 질문</h2>
+  <details><summary>누가 잘못했는지 알려주나요?</summary><p>아니요. 이 도구는 판정을 하지 않습니다. 과실 비율도, 조언도, 중재안도 내놓지 않습니다. 판정을 받는 순간 진 쪽은 승복하지 않고 대화가 끝나기 때문입니다. 이 도구가 하는 일은 두 사람의 서술을 문장 단위로 맞춰 보고 겹치는 부분과 어긋나는 부분을 그대로 늘어놓는 것뿐입니다. 어느 쪽 서술이 맞는지도 말하지 않고 양쪽을 나란히 보여줍니다.</p></details>
+  <details><summary>상대가 내 글을 먼저 볼 수 있나요?</summary><p>앱은 상대가 자기 글을 제출하기 전까지 당신의 글을 화면에 절대 보여주지 않습니다. 다만 이 사이트는 서버가 없는 정적 도구라 초대 링크 안에 당신의 글이 인코딩되어 담깁니다. 즉 상대가 마음먹고 주소를 뜯어보면 볼 수 있습니다. 서버 데이터베이스로 강제 격리하는 방식이 아니라 서로 먼저 보지 않기로 하는 약속에 기대는 구조이며, 이 한계를 화면에도 그대로 고지합니다.</p></details>
+  <details><summary>문장 분류와 대조는 어떻게 하나요?</summary><p>인공지능을 쓰지 않고 한국어 규칙으로 처리합니다. 감정 어휘가 들어간 문장은 감정, 추측이나 의도 단정 표현이 들어간 문장은 해석, 나머지는 사실로 우선 분류하고 사용자가 직접 고칠 수 있습니다. 대조는 사실·해석 문장끼리만 하며 시각 표현 일치와 낱말 겹침 정도로 유사도를 계산해 짝을 짓습니다. 짝이 지어지고 내용이 충분히 비슷하면 합의, 짝은 지어졌는데 내용이 다르면 어긋남, 짝이 없으면 한쪽만 언급으로 분류합니다.</p></details>
+  <details><summary>폭력이나 학대 상황에도 쓸 수 있나요?</summary><p>쓰면 안 되고, 쓸 수도 없습니다. 신체적 폭력·위협·통제·강압·스토킹·학대 정황이 글에서 감지되면 도구가 즉시 중단되고 대조 결과를 만들지 않습니다. 그건 중재할 사안이 아니라 도움이 필요한 상황이기 때문입니다. 감지는 양쪽 글에 각각 독립적으로 수행되고, 감지 사실은 상대에게 전달되지 않습니다.</p></details>
+  <p class="disc">⚠️ 이 도구는 <b>판정·중재·상담 도구가 아닙니다</b>. 법률·심리·의료 자문이 아니며 어떤 분쟁의 증거나 판단 근거로 쓸 수 없습니다. 문장 분류와 대조는 한국어 규칙 기반 어림짐작이라 틀릴 수 있습니다. 폭력·학대·강압 상황은 중재 대상이 아니라 도움이 필요한 상황이며, 이 도구는 그런 정황이 감지되면 중단됩니다. 입력한 글은 서버로 전송되지 않고 링크와 이 브라우저 안에만 존재합니다.</p>
+</section>
+
+<div class="rel">
+  <a href="/coin-moment/">🪙 동전의 순간</a>
+  <a href="/fight-judge/">⚖️ 잘잘못 판독기</a>
+  <a href="/office-translate/">🏢 직장인 번역기</a>
+  <a href="/katalk-chemistry/">💬 카톡 케미</a>
+  <a href="/">🍅 전체 도구</a>
+</div>
+
+<footer>
+  <a href="/about.html">소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a>
+  <div>© TomatoEggCat</div>
+</footer>
+</div>
+
+<script>
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var KINDS = { fact:"사실", interp:"해석", emotion:"감정" };
+
+/* ── 안전: 중재 대상이 아닌 정황. 감지되면 도구를 즉시 중단한다 ── */
+var DANGER = [
+  "때렸","때린","때리","때려","맞았","맞아서","폭행","구타","밀쳤","밀쳐","목을 조","조르","멱살",
+  "위협","협박","죽인다","죽이겠","죽여버","흉기","칼을","무기","던졌","집어던",
+  "감금","가뒀","가둬","못 나가게","못나가게","나가지 못하게","문을 잠그",
+  "휴대폰을 뺏","폰을 뺏","돈을 뺏","카드를 뺏","통장을","생활비를 끊",
+  "스토킹","따라다니","미행","몰래 찍","몰카","동의 없이","강제로","억지로",
+  "성폭","성추행","추행","학대","아동학대","미성년","초등학생","중학생","고등학생"
+];
+function dangerHit(text){
+  var t = String(text).replace(/\s/g, "");
+  for(var i = 0; i < DANGER.length; i++){
+    if(t.indexOf(DANGER[i].replace(/\s/g, "")) >= 0) return DANGER[i];
+  }
+  return null;
+}
+function stopTool(){
+  $("app").style.display = "none";
+  $("inbound").classList.remove("show");
+  $("stopMsg").textContent =
+    "쓰신 내용에 폭력·위협·통제·강압으로 보이는 정황이 있습니다. 그건 두 사람의 기억을 맞춰 볼 사안이 아니라 도움이 필요한 상황입니다. 이 도구는 여기서 결과를 만들지 않습니다.";
+  $("stopBox").classList.add("on");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ── 문장 분해 ── */
+function splitSentences(raw){
+  return String(raw).split(/\n+/)
+    .map(function(s){ return s.replace(/\s+/g, " ").trim(); })
+    .filter(function(s){ return s.length >= 2; })
+    .slice(0, 25)
+    .map(function(s){ return s.slice(0, 120); });
+}
+
+/* ── 규칙 기반 문장 분류 (LLM 없음) ── */
+var EMO = ["서운","서럽","속상","억울","답답","짜증","화가","화났","화나","열받","기분","서글","외로","슬프","슬펐","우울","불안","무서","두려","미안","고맙","감사","실망","상처","지치","지쳤","힘들","힘든","괴로","섭섭","민망","창피","부끄","반가","기뻤","기쁘","행복","편했","불편","싫었","싫어","좋았","설레","허무","공허","막막","울었","울고","눈물","느꼈","느낀","느껴","서운했","마음이"];
+var INTERP = ["같았","같아","같은 것","것 같","듯했","듯한","듯이","아마","분명","확실히","일부러","의도적","무시했","무시하","비꼬","빈정","떠보","티를 냈","척했","척하","생각했","느낌이","느껴졌","보였","보이는","이해가 안","당연히","항상","맨날","늘 그렇","또 그","원래 그"];
+function classify(s){
+  var t = s.replace(/\s/g, "");
+  var i;
+  for(i = 0; i < EMO.length; i++) if(t.indexOf(EMO[i].replace(/\s/g,"")) >= 0) return "emotion";
+  for(i = 0; i < INTERP.length; i++) if(t.indexOf(INTERP[i].replace(/\s/g,"")) >= 0) return "interp";
+  return "fact";
+}
+
+/* ── 시각 표현 추출 ── */
+var DAYWORD = ["새벽","아침","점심","오전","낮","오후","저녁","밤","어제","오늘","그저께","엊그제","주말","금요일","토요일","일요일","월요일","화요일","수요일","목요일"];
+function timeKey(s){
+  var m = s.match(/(\d{1,2})\s*시/);
+  if(m) return "h" + m[1];
+  for(var i = 0; i < DAYWORD.length; i++) if(s.indexOf(DAYWORD[i]) >= 0) return "d" + DAYWORD[i];
+  return "";
+}
+/* "9시쯤"·"9시 경" 같은 변형을 "9시"로 통일한다 — 안 하면 같은 시각이 다른 낱말로 갈린다 */
+function normTime(s){
+  return String(s).replace(/(\d{1,2})\s*시\s*(쯤|경|께|정도|가량)?/g, "$1시");
+}
+
+/* ── 낱말 뽑기: 조사·어미를 걷어내고 내용어만 ── */
+var PARTICLE = /(은|는|이|가|을|를|에게|에서|에|으로|로|와|과|랑|하고|도|만|까지|부터|보다|처럼|의|께|한테|더러|마저|조차|밖에)$/;
+var STOP = { "그리고":1, "그래서":1, "그런데":1, "하지만":1, "나는":1, "내가":1, "너는":1, "네가":1, "우리":1, "그냥":1, "정말":1, "너무":1, "좀":1, "다시":1, "계속":1, "결국":1, "그때":1, "이제":1, "아직":1 };
+function tokens(s){
+  var raw = normTime(s).replace(/[.,!?~"'()\[\]·…]/g, " ").split(/\s+/);
+  var out = [], i, w;
+  for(i = 0; i < raw.length; i++){
+    w = raw[i].trim();
+    if(!w || STOP[w]) continue;
+    w = w.replace(PARTICLE, "");
+    // 용언 어미 정리 — 어간 근처까지만 남긴다
+    w = w.replace(/(했다|한다|하다|했어|해서|하고|하는|했던|였다|이다|었다|았다|겠다|더라|네요|어요|아요|습니다|ㅂ니다)$/, "");
+    if(w.length < 2 || STOP[w]) continue;
+    out.push(w);
+    // 어간 앞머리도 함께 넣는다 — "들어갔다"와 "들어가는"이 서로 닿게 하는 최소 장치
+    if(w.length >= 3) out.push(w.slice(0, 2));
+  }
+  return out;
+}
+/* 글자 2-gram — 조사·어미 변형에 토큰 일치보다 훨씬 덜 민감하다 */
+function bigrams(s){
+  var t = normTime(s).replace(/[^0-9A-Za-z가-힣]/g, "");
+  var out = [];
+  for(var i = 0; i + 1 < t.length; i++) out.push(t.slice(i, i + 2));
+  return out;
+}
+function jaccard(a, b){
+  if(!a.length || !b.length) return 0;
+  var setB = {}, i, inter = 0, seen = {};
+  for(i = 0; i < b.length; i++) setB[b[i]] = 1;
+  for(i = 0; i < a.length; i++){
+    if(setB[a[i]] && !seen[a[i]]){ inter++; seen[a[i]] = 1; }
+  }
+  var uni = {};
+  for(i = 0; i < a.length; i++) uni[a[i]] = 1;
+  for(i = 0; i < b.length; i++) uni[b[i]] = 1;
+  var uniN = 0; for(var k in uni) if(uni.hasOwnProperty(k)) uniN++;
+  return uniN ? inter / uniN : 0;
+}
+/* 낱말 포함도 — 짧은 문장의 낱말이 상대 문장에 다 들어있는 경우를 잡는다.
+   낱말 하나만 겹칠 때 만점이 되지 않도록 겹친 개수로 감쇠한다. */
+function containment(a, b){
+  if(!a.length || !b.length) return 0;
+  var setB = {}, seen = {}, shared = 0, i;
+  for(i = 0; i < b.length; i++) setB[b[i]] = 1;
+  for(i = 0; i < a.length; i++) if(setB[a[i]] && !seen[a[i]]){ shared++; seen[a[i]] = 1; }
+  if(!shared) return 0;
+  var uniqA = {}, uniqB = {}, na = 0, nb = 0, k;
+  for(i = 0; i < a.length; i++) uniqA[a[i]] = 1;
+  for(i = 0; i < b.length; i++) uniqB[b[i]] = 1;
+  for(k in uniqA) if(uniqA.hasOwnProperty(k)) na++;
+  for(k in uniqB) if(uniqB.hasOwnProperty(k)) nb++;
+  return (shared / Math.min(na, nb)) * Math.min(1, shared / 2);
+}
+/* 두 문장 유사도: 낱말·글자·포함도 중 가장 강한 신호 + 시각 일치 가산.
+   한국어는 같은 사건도 어형이 크게 달라져 단일 지표로는 계속 놓친다. */
+function sim(x, y){
+  var s = Math.max(
+    jaccard(x.tok, y.tok),
+    jaccard(x.bi, y.bi),
+    containment(x.tok, y.tok)
+  );
+  var tx = x.time, ty = y.time;
+  if(tx && ty){
+    if(tx === ty) s += 0.35;
+    else {
+      // 시각이 서로 다르면 낱말이 아무리 같아도 같은 사건이라고 말하지 않는다.
+      // ("8시에 저녁을 먹었다" vs "9시에 저녁을 먹었다" 는 합의가 아니라 어긋남이다)
+      s = Math.min(s - 0.10, AGREE_MIN - 0.05);
+    }
+  }
+  return Math.max(0, Math.min(1, s));
+}
+
+var PAIR_MIN = 0.22;   // 이 아래면 짝이 아님 → 한쪽만 언급
+var AGREE_MIN = 0.60;  // 이 위면 같은 내용 → 합의
+
+/* ── 대조 ── */
+function compare(A, B){
+  var a = A.filter(function(s){ return s.kind !== "emotion"; });
+  var b = B.filter(function(s){ return s.kind !== "emotion"; });
+  var cand = [], i, j;
+  for(i = 0; i < a.length; i++){
+    for(j = 0; j < b.length; j++) cand.push({ i:i, j:j, s:sim(a[i], b[j]) });
+  }
+  cand.sort(function(p, q){ return q.s - p.s; });
+  var usedA = {}, usedB = {}, pairs = [];
+  for(i = 0; i < cand.length; i++){
+    var c = cand[i];
+    if(c.s < PAIR_MIN) break;
+    if(usedA[c.i] || usedB[c.j]) continue;
+    usedA[c.i] = 1; usedB[c.j] = 1;
+    pairs.push(c);
+  }
+  var agreed = [], conflict = [], oneSided = [];
+  for(i = 0; i < pairs.length; i++){
+    var p = pairs[i];
+    if(p.s >= AGREE_MIN) agreed.push({ text:a[p.i].text, other:b[p.j].text });
+    else conflict.push({ a:a[p.i].text, b:b[p.j].text });
+  }
+  for(i = 0; i < a.length; i++) if(!usedA[i]) oneSided.push({ who:"a", text:a[i].text });
+  for(j = 0; j < b.length; j++) if(!usedB[j]) oneSided.push({ who:"b", text:b[j].text });
+  return {
+    agreed: agreed, conflict: conflict, oneSided: oneSided,
+    emoA: A.filter(function(s){ return s.kind === "emotion"; }).map(function(s){ return s.text; }),
+    emoB: B.filter(function(s){ return s.kind === "emotion"; }).map(function(s){ return s.text; })
+  };
+}
+
+/* ── 상태 ── */
+var ST = { title:"", A:[], B:[], res:null };
+
+function buildSentences(raw){
+  return splitSentences(raw).map(function(t){
+    return { text:t, kind:classify(t), tok:tokens(t), bi:bigrams(t), time:timeKey(t) };
+  });
+}
+
+/* ── 태깅 UI ── */
+function renderTagList(ulId, arr){
+  var ul = $(ulId);
+  ul.innerHTML = "";
+  arr.forEach(function(s, idx){
+    var li = document.createElement("li");
+    var p = document.createElement("p");
+    p.textContent = s.text;
+    li.appendChild(p);
+    var row = document.createElement("div");
+    row.className = "tagrow";
+    ["fact","interp","emotion"].forEach(function(k){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("data-t", k);
+      b.textContent = KINDS[k];
+      if(s.kind === k) b.classList.add("on");
+      b.addEventListener("click", function(){
+        arr[idx].kind = k;
+        Array.prototype.forEach.call(row.querySelectorAll("button"), function(x){ x.classList.remove("on"); });
+        b.classList.add("on");
+      });
+      row.appendChild(b);
+    });
+    li.appendChild(row);
+    ul.appendChild(li);
+  });
+}
+
+/* ── 화면 전환 ── */
+var STEPS = ["stepIntro","stepWriteA","stepTagA","stepInvite","stepWriteB","stepTagB","stepResult"];
+function show(id){
+  STEPS.forEach(function(s){ $(s).classList.toggle("on", s === id); });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ── 인코딩 ── */
+function enc(obj){
+  return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function dec(str){
+  try{
+    var b64 = String(str).replace(/-/g,"+").replace(/_/g,"/");
+    while(b64.length % 4) b64 += "=";
+    return JSON.parse(decodeURIComponent(escape(atob(b64))));
+  }catch(e){ return null; }
+}
+function clean(x){
+  var out = "", i, ch;
+  x = String(x);
+  for(i = 0; i < x.length; i++){ ch = x.charCodeAt(i); if(ch > 31 && ch !== 127) out += x.charAt(i); }
+  return out.replace(/\s+/g, " ").trim().slice(0, 120);
+}
+function packSide(arr){
+  return arr.map(function(s){ return [s.text, s.kind === "interp" ? 1 : s.kind === "emotion" ? 2 : 0]; });
+}
+function unpackSide(raw){
+  if(Object.prototype.toString.call(raw) !== "[object Array]") return null;
+  var out = [];
+  for(var i = 0; i < raw.length && i < 25; i++){
+    var r = raw[i];
+    if(Object.prototype.toString.call(r) !== "[object Array]") continue;
+    var t = clean(r[0]);
+    if(!t) continue;
+    var k = r[1] === 1 ? "interp" : r[1] === 2 ? "emotion" : "fact";
+    out.push({ text:t, kind:k, tok:tokens(t), bi:bigrams(t), time:timeKey(t) });
+  }
+  return out.length ? out : null;
+}
+
+/* ── 흐름: A ── */
+$("btnStartA").addEventListener("click", function(){
+  var t = $("title").value.trim();
+  if(!t){ toast("제목을 적어주세요"); $("title").focus(); return; }
+  ST.title = t.slice(0, 40);
+  show("stepWriteA");
+});
+$("btnTagA").addEventListener("click", function(){
+  var raw = $("textA").value;
+  if(dangerHit(raw)){ stopTool(); return; }
+  var arr = buildSentences(raw);
+  if(arr.length < 2){ toast("두 줄 이상 적어주세요"); $("textA").focus(); return; }
+  ST.A = arr;
+  renderTagList("listA", ST.A);
+  show("stepTagA");
+});
+$("btnSubmitA").addEventListener("click", function(){ show("stepInvite"); });
+$("btnBackEdit").addEventListener("click", function(){ show("stepWriteA"); });
+
+function inviteUrl(){
+  return "https://tomatoeggcat.com/overlap/?i=" + encodeURIComponent(enc({ t: ST.title, a: packSide(ST.A) }));
+}
+$("btnCopyInvite").addEventListener("click", function(){ copyText(inviteUrl(), "초대 링크 복사 완료!"); });
+$("btnShareInvite").addEventListener("click", function(){
+  navigator.share({ title:"겹치는 부분", text:"같은 일을 각자 써보고 겹치는 부분만 봅시다: " + ST.title, url:inviteUrl() }).catch(function(){});
+});
+
+/* ── 흐름: B ── */
+$("btnInbound").addEventListener("click", function(){
+  $("inbound").classList.remove("show");
+  show("stepWriteB");
+  $("textB").focus();
+});
+$("btnTagB").addEventListener("click", function(){
+  var raw = $("textB").value;
+  if(dangerHit(raw)){ stopTool(); return; }
+  var arr = buildSentences(raw);
+  if(arr.length < 2){ toast("두 줄 이상 적어주세요"); $("textB").focus(); return; }
+  ST.B = arr;
+  renderTagList("listB", ST.B);
+  show("stepTagB");
+});
+$("btnSubmitB").addEventListener("click", function(){ runCompare(true); });
+
+function runCompare(push){
+  ST.res = compare(ST.A, ST.B);
+  renderResult();
+  $("inbound").classList.remove("show");   // 제출을 마쳤으니 "당신 차례" 배너는 걷는다
+  show("stepResult");
+  if(push) pushResultUrl();
+  if(navigator.share) $("btnShare").style.display = "block";
+}
+
+/* ── 결과 렌더 ── */
+function liText(t){ var li = document.createElement("li"); li.textContent = t; return li; }
+function renderResult(){
+  var r = ST.res, n = r.agreed.length;
+  $("resHead").innerHTML = n > 0
+    ? '둘 다 동의하는 것은 <em>' + n + '가지</em>입니다'
+    : '둘 다 동의하는 문장은 <em>없었습니다</em>';
+  $("resSub").textContent = ST.title + " · 어긋남 " + r.conflict.length + "건 · 한쪽만 언급 " + r.oneSided.length + "건";
+
+  $("ulAgree").innerHTML = "";
+  if(n) r.agreed.forEach(function(x){ $("ulAgree").appendChild(liText(x.text)); });
+  else $("ulAgree").appendChild(liText("겹치는 문장이 없었습니다. 드문 일이 아닙니다."));
+
+  $("ulConf").innerHTML = "";
+  r.conflict.forEach(function(x){
+    var d = document.createElement("div"); d.className = "pair";
+    var d1 = document.createElement("div"); var s1 = document.createElement("span");
+    s1.className = "who wa"; s1.textContent = "먼저"; d1.appendChild(s1);
+    d1.appendChild(document.createTextNode(x.a));
+    var d2 = document.createElement("div"); var s2 = document.createElement("span");
+    s2.className = "who wb"; s2.textContent = "나중"; d2.appendChild(s2);
+    d2.appendChild(document.createTextNode(x.b));
+    d.appendChild(d1); d.appendChild(d2);
+    $("ulConf").appendChild(d);
+  });
+  $("blkConf").style.display = r.conflict.length ? "block" : "none";
+
+  $("ulOne").innerHTML = "";
+  r.oneSided.forEach(function(x){
+    var li = document.createElement("li");
+    var s = document.createElement("span");
+    s.className = "who " + (x.who === "a" ? "wa" : "wb");
+    s.textContent = x.who === "a" ? "먼저" : "나중";
+    li.appendChild(s);
+    li.appendChild(document.createTextNode(x.text));
+    $("ulOne").appendChild(li);
+  });
+  $("blkOne").style.display = r.oneSided.length ? "block" : "none";
+
+  $("ulEmoA").innerHTML = ""; $("ulEmoB").innerHTML = "";
+  r.emoA.forEach(function(t){ $("ulEmoA").appendChild(liText(t)); });
+  r.emoB.forEach(function(t){ $("ulEmoB").appendChild(liText(t)); });
+  if(!r.emoA.length) $("ulEmoA").appendChild(liText("—"));
+  if(!r.emoB.length) $("ulEmoB").appendChild(liText("—"));
+  $("blkEmo").style.display = (r.emoA.length || r.emoB.length) ? "block" : "none";
+}
+
+/* ── 결과 URL ── */
+function resultPayload(){ return enc({ t: ST.title, a: packSide(ST.A), b: packSide(ST.B) }); }
+function resultUrl(){ return "https://tomatoeggcat.com/overlap/?r=" + encodeURIComponent(resultPayload()); }
+function pushResultUrl(){
+  try{ history.replaceState(null, "", location.pathname + "?r=" + encodeURIComponent(resultPayload())); }catch(e){}
+}
+
+/* ── 공유 ── */
+function toast(msg){
+  var t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(function(){ t.classList.remove("show"); }, 1800);
+}
+function copyText(txt, msg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast(msg); }, function(){ fallbackCopy(txt, msg); });
+  } else fallbackCopy(txt, msg);
+}
+function fallbackCopy(txt, msg){
+  var ta = document.createElement("textarea");
+  ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast(msg); }catch(e){ toast("복사 실패 — 길게 눌러 복사해 주세요"); }
+  document.body.removeChild(ta);
+}
+function resultText(){
+  var r = ST.res, out = "🧩 겹치는 부분 — " + ST.title + "\n\n[둘 다 동의하는 것 " + r.agreed.length + "가지]\n";
+  r.agreed.forEach(function(x){ out += "· " + x.text + "\n"; });
+  if(!r.agreed.length) out += "· (없음)\n";
+  if(r.conflict.length){
+    out += "\n[서로 어긋나는 것]\n";
+    r.conflict.forEach(function(x){ out += "· 먼저: " + x.a + "\n  나중: " + x.b + "\n"; });
+  }
+  out += "\n※ 이 도구는 누가 옳은지 판정하지 않습니다.\n" + resultUrl();
+  return out;
+}
+$("btnLink").addEventListener("click", function(){ pushResultUrl(); copyText(resultUrl(), "결과 링크 복사 완료!"); });
+$("btnText").addEventListener("click", function(){ copyText(resultText(), "텍스트 복사 완료!"); });
+$("btnShare").addEventListener("click", function(){
+  navigator.share({ title:"겹치는 부분", text:resultText(), url:resultUrl() }).catch(function(){});
+});
+$("btnRemix").addEventListener("click", function(){
+  try{ history.replaceState(null, "", location.pathname); }catch(e){}
+  ST = { title:"", A:[], B:[], res:null };
+  $("title").value = ""; $("textA").value = ""; $("textB").value = "";
+  show("stepIntro");
+});
+
+/* ── 결과 카드 ── */
+function wrapLines(x, text, maxW, maxLines){
+  var words = text.split(" "), lines = [], cur = "";
+  for(var i = 0; i < words.length; i++){
+    var t = cur ? cur + " " + words[i] : words[i];
+    if(x.measureText(t).width > maxW && cur){ lines.push(cur); cur = words[i]; }
+    else cur = t;
+    if(lines.length >= maxLines) break;
+  }
+  if(cur && lines.length < maxLines) lines.push(cur);
+  return lines;
+}
+$("btnSave").addEventListener("click", function(){
+  var r = ST.res, c = $("cv"), x = c.getContext("2d"), W = 1080, H = 1350;
+  var g = x.createLinearGradient(0, 0, W, H);
+  g.addColorStop(0, "#08100f"); g.addColorStop(.6, "#0b1f1d"); g.addColorStop(1, "#0e2a26");
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  var rg = x.createRadialGradient(W/2, 260, 20, W/2, 260, 520);
+  rg.addColorStop(0, "rgba(45,212,191,.18)"); rg.addColorStop(1, "rgba(45,212,191,0)");
+  x.fillStyle = rg; x.fillRect(0, 0, W, H);
+  x.textAlign = "center";
+  x.fillStyle = "#2dd4bf"; x.font = "700 36px sans-serif";
+  x.fillText("🧩 겹 치 는  부 분", W/2, 120);
+  x.fillStyle = "#7d8f8c"; x.font = "500 34px sans-serif";
+  x.fillText(ST.title.slice(0, 26), W/2, 185);
+  x.fillStyle = "#ffffff"; x.font = "900 96px sans-serif";
+  x.fillText("둘 다 동의하는 것", W/2, 300);
+  x.fillStyle = "#5eead4"; x.font = "900 150px sans-serif";
+  x.fillText(r.agreed.length + "가지", W/2, 450);
+  // 합의 문장
+  x.textAlign = "left";
+  var y = 560;
+  x.font = "500 40px sans-serif";
+  if(r.agreed.length){
+    for(var i = 0; i < r.agreed.length && i < 6 && y < 1020; i++){
+      var ls = wrapLines(x, r.agreed[i].text, W - 200, 2);
+      x.fillStyle = "#2dd4bf"; x.fillText("·", 90, y);
+      x.fillStyle = "#e6f5f3";
+      for(var k = 0; k < ls.length; k++){ x.fillText(ls[k], 130, y); y += 52; }
+      y += 14;
+    }
+  } else {
+    x.fillStyle = "#7d8f8c";
+    x.fillText("겹치는 문장이 없었습니다.", 90, y);
+    y += 60;
+  }
+  x.textAlign = "center";
+  x.fillStyle = "#6b7d7a"; x.font = "500 32px sans-serif";
+  x.fillText("어긋남 " + r.conflict.length + "건 · 한쪽만 언급 " + r.oneSided.length + "건", W/2, 1110);
+  x.fillText("이 도구는 누가 옳은지 판정하지 않습니다.", W/2, 1165);
+  x.fillStyle = "#5eead4"; x.font = "700 38px sans-serif";
+  x.fillText("tomatoeggcat.com/overlap", W/2, 1265);
+  var a = document.createElement("a");
+  a.download = "overlap-" + Date.now() + ".png";
+  a.href = c.toDataURL("image/png");
+  a.click();
+  toast("이미지 저장!");
+});
+
+/* ── 부팅 ── */
+(function(){
+  var q = new URLSearchParams(location.search);
+  var inv = q.get("i"), res = q.get("r");
+  if(res){
+    var o = dec(res);
+    if(o){
+      var A = unpackSide(o.a), B = unpackSide(o.b);
+      if(A && B){
+        ST.title = clean(o.t).slice(0, 40) || "우리 이야기";
+        ST.A = A; ST.B = B;
+        runCompare(false);
+        return;
+      }
+    }
+  }
+  if(inv){
+    var oi = dec(inv);
+    if(oi){
+      var A2 = unpackSide(oi.a);
+      if(A2){
+        ST.title = clean(oi.t).slice(0, 40) || "우리 이야기";
+        ST.A = A2;                       // 화면에는 절대 렌더하지 않는다
+        $("bTitle").textContent = ST.title;
+        $("inbound").classList.add("show");
+        show("stepWriteB");
+        return;
+      }
+    }
+  }
+  show("stepIntro");
+})();
+</script>
+</body>
+</html>
