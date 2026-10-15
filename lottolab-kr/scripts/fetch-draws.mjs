@@ -57,14 +57,44 @@ function toRecord(json) {
   };
 }
 
-async function fetchRound(round) {
-  const res = await fetch(ENDPOINT + round, {
-    headers: { 'User-Agent': 'lottolab-kr-fetcher/1.0 (static site data sync)' },
-  });
+// 동행복권은 브라우저가 아닌 요청에 JSON 대신 HTML(안내/차단 페이지)을 돌려주는 경우가 있어
+// 일반 브라우저와 같은 헤더를 보낸다.
+const REQ_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+    + '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+  Accept: 'application/json, text/javascript, */*; q=0.01',
+  'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8',
+  Referer: 'https://www.dhlottery.co.kr/gameResult.do?method=byWin',
+};
+
+async function fetchRoundOnce(round) {
+  const res = await fetch(ENDPOINT + round, { headers: REQ_HEADERS });
   if (!res.ok) throw new Error(`HTTP ${res.status} for round ${round}`);
-  const json = await res.json();
+  const body = (await res.text()).trim();
+  // JSON이 아니면 차단/점검 페이지다. 원인을 알 수 있게 명확히 알린다.
+  if (!body.startsWith('{')) {
+    const ct = res.headers.get('content-type') || 'unknown';
+    throw new Error(
+      `round ${round}: JSON 대신 비-JSON 응답(content-type: ${ct}, 앞부분: ${JSON.stringify(body.slice(0, 60))}). `
+      + '동행복권이 이 실행 환경의 IP/요청을 차단했을 가능성이 높다.'
+    );
+  }
+  const json = JSON.parse(body);
   if (json.returnValue !== 'success') return null; // 아직 추첨 전 회차
   return toRecord(json);
+}
+
+async function fetchRound(round) {
+  let lastErr;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      return await fetchRoundOnce(round);
+    } catch (err) {
+      lastErr = err;
+      if (attempt < 3) await sleep(DELAY_MS * 2 ** attempt);
+    }
+  }
+  throw lastErr;
 }
 
 async function save(draws) {
