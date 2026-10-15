@@ -78,12 +78,25 @@ const BUILTINS = [
   { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
+  // ── 공유·바이럴 10종(share-kit 엔진) — 링크가 곧 결과. 상세는 templates/SHARE-KIT.md ──
+  { slug: "chemi-link", emoji: "💞", name: "케미 테스트", desc: "내가 답하고 링크 보내면 상대가 답해야 열리는 궁합", k: "케미 궁합 테스트 친구 연인 링크", prio: "0.7" },
+  { slug: "aboutme-quiz", emoji: "🧠", name: "나를 맞혀봐 퀴즈", desc: "내가 낸 문제를 친구가 풀고 점수가 링크에 쌓인다", k: "퀴즈 친구 문제 점수 랭킹 나를", prio: "0.7" },
+  { slug: "balance-vs", emoji: "⚔️", name: "밸런스 게임 vs 친구", desc: "A/B 30문항 고르고 친구와 일치율·결정적 차이 비교", k: "밸런스 게임 질문 모음 친구 일치율", prio: "0.7" },
+  { slug: "hanguldaily", emoji: "🟩", name: "한글데일리", desc: "매일 한 판, 낱말·초성·시군구·국기 4종 이모지 격자 공유", k: "데일리 한글 낱말 초성 퀴즈 게임", prio: "0.7" },
+  { slug: "nbbang-link", emoji: "🧾", name: "N빵 정산 링크", desc: "지출 넣으면 최소 송금으로 정산, 그대로 링크 공유", k: "n빵 정산 더치페이 회식 여행 경비", prio: "0.7" },
+  { slug: "when-link", emoji: "🗓️", name: "약속 시간 잡기", desc: "가능한 시간 칠하고 링크 넘기면 히트맵으로 모인다", k: "약속 시간 조율 일정 when2meet 모임", prio: "0.7" },
+  { slug: "fourcut-web", emoji: "📸", name: "웹 인생네컷", desc: "앱 없이 브라우저 카메라로 4컷·프레임·저장", k: "인생네컷 포토부스 프레임 사진 4컷", prio: "0.7" },
+  { slug: "fortune-daily", emoji: "🔮", name: "오늘의 운세 카드", desc: "띠·별자리로 보는 결정론적 오늘 운세 카드", k: "오늘의 운세 띠 별자리 무료 재미", prio: "0.7" },
+  { slug: "timecapsule-link", emoji: "⏳", name: "미래에 열리는 편지", desc: "열람일 전엔 카운트다운만, 그날이 오면 열리는 편지", k: "타임캡슐 편지 미래 카운트다운 선물", prio: "0.7" },
+  { slug: "yearwrap-kr", emoji: "🎁", name: "연말 결산 카드", desc: "12문항으로 만드는 나의 한 해 스토리 카드 5장", k: "연말 결산 올해 정리 회고 카드 스토리", prio: "0.7" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
+  { title: "🔗 같이 하는 공유 게임", tag: "링크 하나로", slugs: ["chemi-link", "aboutme-quiz", "balance-vs", "when-link", "nbbang-link"] },
+  { title: "🎨 매일 · 만들기", tag: "재미", slugs: ["hanguldaily", "fortune-daily", "fourcut-web", "timecapsule-link", "yearwrap-kr"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab",

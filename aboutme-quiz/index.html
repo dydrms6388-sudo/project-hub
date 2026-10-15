@@ -1,0 +1,1402 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>나를 맞혀봐 퀴즈 — 내가 낸 문제로 친구 점수 랭킹 만들기 | TomatoEggCat</title>
+<meta name="description" content="나에 대한 10문항 퀴즈를 만들어 링크로 보내면 친구들이 풀고 점수가 나옵니다. 취향·습관·과거·만약에·최애 5개 카테고리 130개 문항 은행에서 고르고 선택지도 직접 고칠 수 있어요. 친구 점수는 링크에 최대 20명까지 쌓여 랭킹이 되고, 결과는 PNG 카드로 저장해 단톡방에 바로 공유할 수 있는 무료 재미용 퀴즈입니다." />
+<link rel="canonical" href="https://tomatoeggcat.com/aboutme-quiz/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="나를 맞혀봐 퀴즈 — 친구들은 나를 몇 % 알까?" />
+<meta property="og:description" content="나에 대한 10문항을 직접 출제하고 링크를 뿌리면, 친구 점수가 링크에 쌓여 랭킹이 됩니다. 서버 없이 링크 하나로 끝." />
+<meta property="og:url" content="https://tomatoeggcat.com/aboutme-quiz/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="나를 맞혀봐 퀴즈 — 친구들은 나를 몇 % 알까?" />
+<meta name="twitter:description" content="10문항을 직접 출제하고 링크를 보내면 친구 점수가 랭킹으로 쌓여요." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"나를 맞혀봐 퀴즈","description":"나에 대한 10문항 퀴즈를 직접 출제해 링크로 공유하면 친구들이 풀고 점수가 링크에 누적되어 랭킹이 되는 재미용 웹 도구.","applicationCategory":"GameApplication","operatingSystem":"Web","url":"https://tomatoeggcat.com/aboutme-quiz/","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"정답이 링크 주소에 그대로 들어가나요?","acceptedAnswer":{"@type":"Answer","text":"정답 번호는 문항 번호와 출제자 닉네임에서 만든 마스크 값으로 한 번 뒤섞은 뒤에 링크에 담깁니다. 그래서 주소창을 대충 훑어봐서는 몇 번이 정답인지 알 수 없습니다. 다만 이것은 암호화가 아니라 눈속임 수준의 난독화이므로, 작정하고 코드를 뜯어보는 사람에게는 보일 수 있습니다. 순위를 걸고 상금을 주는 용도가 아니라 친구끼리 웃자고 푸는 재미용 놀이로만 써 주세요."}},
+{"@type":"Question","name":"친구들 점수는 어디에 모이나요?","acceptedAnswer":{"@type":"Answer","text":"서버나 데이터베이스가 전혀 없습니다. 친구가 퀴즈를 다 풀면 결과 화면에서 자기 점수를 이어 붙인 새 링크가 만들어지고, 그 링크를 단톡방이나 출제자에게 다시 보내면 됩니다. 새 링크를 열면 지금까지 이어 붙은 사람들의 점수가 랭킹 표로 보입니다. 즉 점수는 링크 그 자체에 들어 있고, 링크를 주고받는 사람들 사이에서만 돌아다닙니다."}},
+{"@type":"Question","name":"몇 명까지 참여할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"한 링크에 최대 20명까지 쌓입니다. 주소 길이에도 한계가 있어서, 20명이 차거나 링크가 너무 길어지면 더 이상 추가되지 않고 안내가 뜹니다. 더 많은 인원이 참여해야 한다면 같은 문항으로 퀴즈를 한 번 더 만들어 2차 링크를 돌리시면 됩니다."}},
+{"@type":"Question","name":"개인정보를 수집하나요?","acceptedAnswer":{"@type":"Answer","text":"수집하지 않습니다. 입력받는 것은 최대 12자 닉네임뿐이며 실명·전화번호·이메일·주민번호는 묻지 않고 입력칸 자체가 없습니다. 회원가입도, 로그인도, 서버 전송도 없습니다. 모든 계산은 브라우저 안에서 끝나고 결과는 링크 주소 안에만 저장됩니다. 닉네임도 링크를 받은 사람에게는 그대로 보이니, 본명 대신 별명을 쓰는 편을 권합니다."}},
+{"@type":"Question","name":"링크는 언제 만료되나요?","acceptedAnswer":{"@type":"Answer","text":"만료되지 않습니다. 링크 안에 문항과 정답과 점수가 전부 들어 있기 때문에 몇 달 뒤에 열어도 같은 퀴즈가 그대로 열립니다. 반대로 말하면 링크를 잃어버리면 복구할 방법이 없습니다. 만든 링크는 메모장이나 나에게 보내기 같은 곳에 한 번 저장해 두세요."}},
+{"@type":"Question","name":"문항이나 선택지를 내 마음대로 바꿀 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 130개 문항 은행에서 10개를 고르는 것이 기본이고, 각 문항의 선택지 네 개는 원하는 문구로 직접 고쳐 쓸 수 있습니다. 예를 들어 카페 메뉴 문항의 선택지를 내가 실제로 자주 가는 메뉴 이름으로 바꿔 두면 친구들이 훨씬 헷갈려 합니다. 선택지를 고치지 않으면 기본 문구만 쓰이므로 링크도 훨씬 짧아집니다."}},
+{"@type":"Question","name":"점수가 낮게 나오면 친구가 나를 모르는 건가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 이 퀴즈는 심리 검사나 관계 진단이 아니라 순수한 재미용 놀이입니다. 문항을 어렵게 고르면 아주 친한 친구도 3~4개밖에 못 맞히고, 쉬운 문항만 고르면 처음 만난 사람도 만점이 나옵니다. 점수는 친밀도가 아니라 문항 난이도를 재는 숫자에 가깝다고 생각하고 웃으며 즐겨 주세요."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"홈","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"엔터·바이럴","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":3,"name":"나를 맞혀봐 퀴즈","item":"https://tomatoeggcat.com/aboutme-quiz/"}
+]}
+]}
+</script>
+<style>
+:root{color-scheme:dark;--acc:#38bdf8;--acc2:#7dd3fc;--acc3:#0284c7}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0a0a;color:#ededed;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:22px 16px 64px}
+a{color:var(--acc)}
+.nav{font-size:13px;color:#8a94a6;margin-bottom:14px}
+.nav a{color:#7dd3fc;text-decoration:none;display:inline-block;min-height:44px;line-height:44px}
+h1{font-size:26px;font-weight:800;margin:0 0 6px;background:linear-gradient(90deg,#38bdf8,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent;word-break:keep-all}
+.lead{color:#9ca3af;margin:0 0 18px;font-size:15px;word-break:keep-all}
+.card{border:1px solid #262626;background:#161616;border-radius:18px;padding:18px;margin-bottom:16px}
+.step{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--acc2);margin:0 0 8px}
+h2{font-size:19px;margin:28px 0 10px;word-break:keep-all}
+h3{font-size:16px;margin:0 0 10px;word-break:keep-all}
+label.fl{display:block;font-size:13px;font-weight:700;color:#9ca3af;margin:0 0 6px}
+input[type=text]{width:100%;padding:13px 14px;background:#0f0f0f;border:1px solid #333;border-radius:12px;color:#ededed;font-size:16px;min-height:48px;font-family:inherit}
+input[type=text]:focus{outline:none;border-color:var(--acc)}
+.hint{font-size:12.5px;color:#8a94a6;margin:6px 0 0}
+button{margin:0;width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#062032;font-size:16px;font-weight:800;cursor:pointer;min-height:48px;font-family:inherit}
+button.ghost{background:#132330;color:#7dd3fc;border:1px solid #21455c;font-weight:700}
+button.mini{width:auto;padding:9px 14px;font-size:13.5px;min-height:44px}
+button:disabled{opacity:.38;cursor:not-allowed}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 12px}
+.tab{padding:9px 13px;font-size:13.5px;font-weight:700;background:#0f0f0f;color:#9ca3af;border:1px solid #2e2e2e;border-radius:999px;cursor:pointer;min-height:44px;width:auto}
+.tab.on{background:rgba(56,189,248,.15);border-color:var(--acc);color:#bae6fd}
+.counter{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;color:#9ca3af;margin:0 0 10px}
+.counter b{color:var(--acc2);font-variant-numeric:tabular-nums;font-size:16px}
+.qlist{max-height:52vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid #232323;border-radius:14px;background:#101010;padding:8px}
+.qrow{display:block;width:100%;text-align:left;background:#141414;border:1px solid #2a2a2a;border-radius:12px;padding:11px 13px;margin-bottom:7px;cursor:pointer;min-height:44px;color:#dcdcdc;font-family:inherit}
+.qrow.on{background:rgba(56,189,248,.13);border-color:var(--acc)}
+.qrow:disabled{opacity:.35}
+.qrow .qt{font-size:14.5px;font-weight:700;color:#ededed;display:block;word-break:keep-all}
+.qrow .qo{font-size:12.5px;color:#7b8794;display:block;margin-top:3px;word-break:keep-all}
+.qrow .tagc{display:inline-block;font-size:11px;font-weight:800;color:#0c4a6e;background:#7dd3fc;border-radius:6px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+.qedit{border:1px solid #262626;background:#131313;border-radius:14px;padding:14px;margin-bottom:12px}
+.qedit .qh{font-size:15px;font-weight:800;margin:0 0 10px;word-break:keep-all}
+.qedit .num{color:var(--acc2);margin-right:6px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{background:#0f0f0f;border:1px solid #303030;border-radius:11px;padding:11px 10px;font-size:14px;font-weight:700;color:#cbd5e1;cursor:pointer;min-height:48px;width:100%;word-break:keep-all;font-family:inherit;text-align:center}
+.opt.on{background:rgba(56,189,248,.18);border-color:var(--acc);color:#e0f2fe}
+.opt.ok{background:rgba(34,197,94,.18);border-color:#22c55e;color:#bbf7d0}
+.opt.no{background:rgba(248,113,113,.16);border-color:#f87171;color:#fecaca}
+.lnkbtn{background:none;border:0;color:var(--acc2);font-size:13px;font-weight:700;padding:12px 0 0;width:auto;min-height:44px;cursor:pointer;text-decoration:underline;font-family:inherit}
+.editbox{margin-top:10px;border-top:1px dashed #303030;padding-top:10px}
+.editbox input{margin-bottom:7px;padding:10px 12px;min-height:44px;font-size:15px}
+.prog{font-size:13px;color:#9ca3af;margin:0 0 10px}
+.prog b{color:var(--acc2);font-size:17px;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:#1e1e1e;border-radius:999px;overflow:hidden;margin:0 0 16px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#0284c7,#38bdf8);transition:.25s}
+.qbig{font-size:20px;font-weight:800;margin:0 0 16px;word-break:keep-all;line-height:1.4}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-22px -16px 14px;padding:11px 16px;background:linear-gradient(90deg,#0c3b52,#075985);border-bottom:1px solid #0e7490}
+.inbound.on{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:13.5px;color:#e0f2fe;flex:1;min-width:150px;word-break:keep-all}
+.inbound button{width:auto;padding:10px 16px;font-size:14px;min-height:44px}
+.screen{display:none}
+.screen.on{display:block}
+#scoreCard{background:linear-gradient(160deg,#0c4a6e 0%,#0369a1 45%,#38bdf8 100%);border-radius:20px;padding:24px 20px 28px;position:relative;overflow:hidden;margin-bottom:14px}
+#scoreCard:before{content:"";position:absolute;top:-70px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.26),transparent 70%);pointer-events:none}
+.sc-l{font-size:12px;font-weight:800;letter-spacing:.18em;color:#bae6fd;margin:0 0 8px}
+.sc-big{font-size:56px;font-weight:900;color:#fff;margin:0;line-height:1.05;font-variant-numeric:tabular-nums}
+.sc-sub{font-size:16px;color:#e0f2fe;margin:6px 0 0;font-weight:700;word-break:keep-all}
+.sc-cmt{font-size:15px;color:#f0f9ff;margin:14px 0 0;background:rgba(255,255,255,.14);border-radius:12px;padding:11px 13px;word-break:keep-all}
+.sc-wm{position:absolute;bottom:10px;right:14px;font-size:11px;color:rgba(255,255,255,.6);font-weight:700}
+.rank{border:1px solid #262626;background:#131313;border-radius:14px;overflow:hidden}
+.rk{display:grid;grid-template-columns:44px 1fr 84px;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid #212121;font-size:14.5px}
+.rk:last-child{border-bottom:0}
+.rk .m{font-weight:900;color:var(--acc2);font-size:16px}
+.rk .n{font-weight:700;color:#ededed;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk .s{text-align:right;font-weight:800;color:#7dd3fc;font-variant-numeric:tabular-nums}
+.rk.me{background:rgba(56,189,248,.09)}
+.rev{border:1px solid #262626;background:#111;border-radius:14px;padding:13px 14px;margin-bottom:8px}
+.rev .rq{font-size:14.5px;font-weight:700;margin:0 0 7px;word-break:keep-all}
+.rev .ra{font-size:13.5px;color:#9ca3af;margin:0}
+.rev .ra b{color:#bbf7d0}
+.rev .ra i{color:#fecaca;font-style:normal}
+.rev .mk{font-weight:900;margin-right:6px}
+.rev .mk.o{color:#4ade80}.rev .mk.x{color:#f87171}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.share button{font-size:14px;padding:13px 6px}
+.save{margin-top:10px;background:#f0f9ff;color:#075985}
+.linkbox{background:#0f0f0f;border:1px solid #2b2b2b;border-radius:12px;padding:11px 13px;font-size:12.5px;color:#8ba3b3;word-break:break-all;margin:12px 0 0;max-height:76px;overflow:auto}
+.note{font-size:13.5px;color:#a8bcc9;background:rgba(56,189,248,.08);border:1px solid #1e4256;border-radius:12px;padding:11px 13px;margin-top:12px;word-break:keep-all}
+.ad{margin:22px 0}
+.about p{color:#d0d0d0;font-size:14.5px;word-break:keep-all}
+.about ol,.about ul{color:#d0d0d0;font-size:14.5px;padding-left:20px}
+.about li{margin-bottom:6px;word-break:keep-all}
+.bank{border:1px solid #232323;background:#121212;border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.bank h3{color:var(--acc2);font-size:15px;margin:0 0 8px}
+.bank ul{margin:0;padding-left:18px;color:#c5c5c5;font-size:14px}
+.bank li{margin-bottom:5px}
+.faq{border-top:1px solid #262626;padding:13px 0}
+.faq b{display:block;margin-bottom:4px;color:#ededed}
+.faq p{margin:0;color:#b9b9b9;font-size:14px;word-break:keep-all}
+.disc{font-size:12.5px;color:#8a94a6;background:#141414;border:1px solid #232323;border-radius:12px;padding:12px 14px;margin-top:14px;word-break:keep-all}
+.more{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.more a{font-size:13px;background:#132330;color:#bae6fd;padding:11px 14px;border-radius:999px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+footer{margin-top:34px;text-align:center;color:#8a94a6;font-size:12px;border-top:1px solid #1f1f1f;padding-top:20px}
+footer a{color:#7dd3fc;margin:0 4px;text-decoration:none;display:inline-block;min-height:44px;line-height:44px;padding:0 6px}
+@media(max-width:400px){.opts{grid-template-columns:1fr}.sc-big{font-size:48px}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span id="inboundMsg">친구가 <b>나를 맞혀봐 퀴즈</b>를 보냈어요.</span>
+  <button id="meToo">나도 해보기 →</button>
+</div>
+
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 엔터·바이럴 › 나를 맞혀봐 퀴즈</div>
+<h1>🙋 나를 맞혀봐 퀴즈</h1>
+<p class="lead">나에 대한 <b>10문항</b>을 직접 출제하고 링크를 뿌리세요. 친구들이 풀면 점수가 <b>링크에 쌓여</b> 랭킹이 됩니다. 가입도, 서버도 없어요.</p>
+
+<!-- ── 1. 만들기: 닉네임 + 문항 고르기 ── -->
+<div class="screen on" id="scCreate">
+  <div class="card">
+    <p class="step">STEP 1 · 출제자</p>
+    <label class="fl" for="cNick">내 닉네임 (최대 12자)</label>
+    <input type="text" id="cNick" maxlength="12" placeholder="예: 토마토" autocomplete="off" />
+    <p class="hint">본명 대신 별명을 써 주세요. 링크를 받은 친구에게 그대로 보입니다.</p>
+  </div>
+
+  <div class="card">
+    <p class="step">STEP 2 · 문항 10개 고르기</p>
+    <div class="counter"><span>고른 문항 <b id="cCount">0</b> / 10</span><button class="mini ghost" id="cRandom" type="button">🎲 랜덤 추천 10개</button></div>
+    <div class="tabs" id="cTabs"></div>
+    <div class="qlist" id="cList"></div>
+    <button id="cNext" style="margin-top:14px" disabled>다음 · 내 답 고르기 →</button>
+  </div>
+</div>
+
+<!-- ── 2. 만들기: 내 정답 고르기 ── -->
+<div class="screen" id="scAnswer">
+  <div class="card">
+    <p class="step">STEP 3 · 내 답 고르기</p>
+    <h3>각 문항에서 <b>진짜 내 답</b>을 눌러 주세요</h3>
+    <p class="hint">선택지가 나랑 안 맞으면 아래 ‘선택지 직접 고치기’로 문구를 바꿀 수 있어요. 고친 선택지는 링크에 함께 담깁니다.</p>
+    <div class="counter" style="margin-top:12px"><span>답 정한 문항 <b id="aCount">0</b> / 10</span><button class="mini ghost" id="aBack" type="button">← 문항 다시 고르기</button></div>
+  </div>
+  <div id="aHost"></div>
+  <button id="aMake" disabled>🔗 퀴즈 링크 만들기</button>
+</div>
+
+<!-- ── 3. 출제 완료 ── -->
+<div class="screen" id="scMade">
+  <div class="card">
+    <p class="step">출제 완료</p>
+    <h3 id="mTitle">퀴즈가 만들어졌어요</h3>
+    <p class="hint">아래 링크를 단톡방·스토리·DM에 붙여넣으면 친구들이 바로 풀 수 있어요.</p>
+    <div class="linkbox" id="mLink"></div>
+    <div class="share">
+      <button class="ghost" id="mCopy">🔗 링크 복사</button>
+      <button class="ghost" id="mText">📋 문구 복사</button>
+      <button class="ghost" id="mX">𝕏 공유</button>
+      <button class="ghost" id="mShare">📤 공유하기</button>
+    </div>
+    <p class="note">친구가 퀴즈를 다 풀면 <b>자기 점수가 이어 붙은 새 링크</b>가 만들어져요. 그 링크를 단톡방에 다시 올려 달라고 하면 점수가 여기로 쌓이고 <b>랭킹</b>이 생깁니다.</p>
+    <div class="row2">
+      <button class="ghost" id="mPreview">👀 미리 풀어보기</button>
+      <button class="ghost" id="mRemix">🔁 문항 바꿔 다시 만들기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 4. 인바운드: 친구가 링크를 열었을 때 ── -->
+<div class="screen" id="scIntro">
+  <div class="card">
+    <p class="step">도전</p>
+    <h3 id="iTitle" style="font-size:22px">나를 얼마나 알아?</h3>
+    <p class="hint" id="iSub">10문항, 1분이면 끝나요. 정답은 출제자가 직접 골라 둔 ‘진짜 내 답’입니다.</p>
+    <label class="fl" for="iNick" style="margin-top:14px">내 닉네임 (최대 12자)</label>
+    <input type="text" id="iNick" maxlength="12" placeholder="예: 계란" autocomplete="off" />
+    <button id="iStart" style="margin-top:14px">퀴즈 풀기 시작 →</button>
+    <button class="ghost" id="iMake" style="margin-top:9px">✍️ 나도 내 퀴즈 만들기</button>
+  </div>
+</div>
+
+<!-- ── 5. 풀기 ── -->
+<div class="screen" id="scSolve">
+  <div class="card">
+    <p class="prog"><b id="sNum">1</b> / <span id="sTot">10</span> 문항</p>
+    <div class="bar"><i id="sBar" style="width:10%"></i></div>
+    <p class="qbig" id="sQ">-</p>
+    <div class="opts" id="sOpts"></div>
+    <button class="ghost" id="sPrev" style="margin-top:14px">← 이전 문항</button>
+  </div>
+</div>
+
+<!-- ── 6. 결과 ── -->
+<div class="screen" id="scResult">
+  <div id="scoreCard">
+    <p class="sc-l">ABOUT ME QUIZ</p>
+    <p class="sc-big" id="rBig">0%</p>
+    <p class="sc-sub" id="rSub">-</p>
+    <p class="sc-cmt" id="rCmt">-</p>
+    <div class="sc-wm">tomatoeggcat.com/aboutme-quiz</div>
+  </div>
+
+  <button class="save" id="rSave">📸 점수 카드 이미지로 저장</button>
+
+  <h2 style="margin-top:22px">정답 공개</h2>
+  <div id="rRev"></div>
+
+  <h2 style="margin-top:22px">🏆 점수 이어 붙이기</h2>
+  <p class="hint">아래 버튼을 누르면 <b>내 점수가 추가된 새 링크</b>가 만들어져요. 출제자와 단톡방에 다시 보내면 랭킹이 쌓입니다.</p>
+  <button id="rChain" style="margin-top:10px">🔗 내 점수 추가한 링크 만들기</button>
+  <div class="linkbox" id="rLink" style="display:none"></div>
+  <div class="share" id="rShareBox" style="display:none">
+    <button class="ghost" id="rCopy">🔗 링크 복사</button>
+    <button class="ghost" id="rText">📋 문구 복사</button>
+    <button class="ghost" id="rX">𝕏 공유</button>
+    <button class="ghost" id="rShare">📤 공유하기</button>
+  </div>
+
+  <div class="ad">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="row2">
+    <button class="ghost" id="rRetry">🔁 한 번 더 풀기</button>
+    <button class="ghost" id="rMine">✍️ 나도 만들기</button>
+  </div>
+</div>
+
+<!-- ── 7. 랭킹 ── -->
+<div class="screen" id="scRank">
+  <div class="card">
+    <p class="step">랭킹</p>
+    <h3 id="kTitle">누가 제일 잘 맞혔을까?</h3>
+    <p class="hint" id="kSub">-</p>
+  </div>
+  <div class="rank" id="kList"></div>
+  <button id="kSolve" style="margin-top:14px">✏️ 나도 이 퀴즈 풀어보기</button>
+  <div class="share">
+    <button class="ghost" id="kCopy">🔗 랭킹 링크 복사</button>
+    <button class="ghost" id="kShare">📤 공유하기</button>
+  </div>
+  <button class="ghost" id="kMine" style="margin-top:9px">✍️ 나도 내 퀴즈 만들기</button>
+</div>
+
+<!-- ── 본문 ── -->
+<div class="about">
+  <h2>나를 맞혀봐 퀴즈란?</h2>
+  <p>‘나를 맞혀봐 퀴즈’는 심리 테스트처럼 기계가 나를 분석해 주는 도구가 아닙니다. 반대로, <b>내가 직접 출제자가 되어 나에 대한 문제를 내는</b> 놀이입니다. 카페에서 늘 시키는 음료, 알람을 몇 개 맞춰 두는지, 어릴 적 장래희망이 무엇이었는지처럼 나만 아는 사소한 사실을 10개 골라 정답을 정해 두면 링크 하나가 만들어집니다. 그 링크를 단톡방이나 스토리에 올리면 친구들이 각자 풀고, 마지막에 “너는 나를 몇 % 알아” 하는 점수 카드를 받습니다. 재미있는 지점은 그다음입니다. 친구가 결과 화면에서 만든 새 링크를 다시 단톡방에 올리면, 그 링크 안에 앞사람 점수까지 함께 들어가 자연스럽게 랭킹이 만들어집니다. 서버도, 회원가입도, 데이터베이스도 없이 링크가 오가는 것만으로 순위표가 자라나는 구조입니다. 문항은 취향·습관·과거·만약에·최애 다섯 갈래로 130개를 준비해 두었고, 선택지 네 개는 언제든 내 문구로 바꿔 쓸 수 있어 “아무도 못 맞히는 헬 난이도”부터 “다 같이 만점 나오는 훈훈 버전”까지 마음대로 조절할 수 있습니다.</p>
+
+  <h2>3단계로 끝나는 사용법</h2>
+  <ol>
+    <li><b>만들기</b> — 닉네임을 적고 문항 은행에서 10개를 고릅니다. 고르기 귀찮으면 <b>🎲 랜덤 추천 10개</b> 버튼 한 번이면 됩니다. 카테고리 탭으로 취향·습관·과거·만약에·최애를 오가며 취향껏 섞어도 좋습니다.</li>
+    <li><b>정답 정하기</b> — 문항마다 진짜 내 답을 누릅니다. 네 개 선택지가 애매하면 ‘선택지 직접 고치기’로 문구를 바꾸세요. 다 정하면 링크가 만들어집니다.</li>
+    <li><b>뿌리고 모으기</b> — 링크를 단톡방에 던지고 친구들이 푼 뒤 만들어 준 새 링크를 다시 받으세요. 그 링크를 열면 최대 20명까지의 점수 랭킹이 보입니다.</li>
+  </ol>
+
+  <h2>이런 문항이 인기예요 — 친구 퀴즈 질문 모음</h2>
+  <p>어떤 문항을 골라야 할지 막막하다면 아래 목록을 참고하세요. 실제로 앱 안에 들어 있는 문항들이며, 카테고리별로 성격이 조금씩 다릅니다. 취향 문항은 누구나 답을 찍을 수 있어 훈훈한 점수가 나오고, 과거 문항은 오래 알고 지낸 사람만 맞힐 수 있어 변별력이 큽니다. 습관 문항은 같이 살아 봤거나 자주 만난 사람에게 유리하고, 만약에 문항은 정답이 없는 것 같지만 의외로 성격을 잘 아는 친구가 잘 맞힙니다.</p>
+
+  <div class="bank">
+    <h3>① 취향 — 무난하고 훈훈한 시작</h3>
+    <ul>
+      <li>내가 카페 가면 거의 항상 시키는 건?</li>
+      <li>내가 치킨 시킬 때 고르는 맛은?</li>
+      <li>내가 여행 가면 더 좋아하는 쪽은?</li>
+      <li>내가 영화관에서 고르는 장르는?</li>
+      <li>내가 좋아하는 계절은?</li>
+      <li>내가 라면 끓일 때 꼭 넣는 건?</li>
+      <li>내가 분식집에서 무조건 시키는 건?</li>
+      <li>내가 좋아하는 날씨는?</li>
+      <li>내가 고르는 여행 숙소는?</li>
+      <li>내가 김밥에서 빼는 재료는?</li>
+      <li>내가 좋아하는 디저트는?</li>
+      <li>내가 즐겨 보는 영상은?</li>
+    </ul>
+  </div>
+
+  <div class="bank">
+    <h3>② 습관 — 자주 만난 사람만 아는 것</h3>
+    <ul>
+      <li>내가 아침에 눈 뜨고 제일 먼저 하는 건?</li>
+      <li>내 알람은 보통 몇 개?</li>
+      <li>내가 약속 장소에 도착하는 시간은?</li>
+      <li>내 방 상태는 보통 어떤가?</li>
+      <li>내가 메시지에 답장하는 속도는?</li>
+      <li>내가 여행 짐을 싸는 시점은?</li>
+      <li>내가 공부하거나 일할 때 듣는 건?</li>
+      <li>내가 처음 간 식당에서 시키는 건?</li>
+      <li>내가 밥 먹는 속도는?</li>
+      <li>내가 시험이나 마감을 앞두고 하는 행동은?</li>
+      <li>내가 사진 찍을 때 습관은?</li>
+      <li>내가 자기 전에 하는 건?</li>
+    </ul>
+  </div>
+
+  <div class="bank">
+    <h3>③ 과거 — 오래 알수록 유리한 킬러 문항</h3>
+    <ul>
+      <li>내 어릴 적 장래희망은?</li>
+      <li>내가 학창시절 앉던 자리는?</li>
+      <li>내가 제일 싫어했던 과목은?</li>
+      <li>내가 처음 배운 악기는?</li>
+      <li>내 첫 알바는?</li>
+      <li>내가 처음 가 본 해외는?</li>
+      <li>내가 어릴 때 모았던 건?</li>
+      <li>내가 학교 급식에서 제일 반겼던 건?</li>
+      <li>내가 학창시절 했던 동아리는?</li>
+      <li>내가 방학 때 주로 한 건?</li>
+      <li>내가 어릴 때 자주 갔던 곳은?</li>
+      <li>내가 졸업앨범 사진을 찍을 때 표정은?</li>
+    </ul>
+  </div>
+
+  <div class="bank">
+    <h3>④ 만약에 — 성격을 아는 사람이 맞히는 문항</h3>
+    <ul>
+      <li>내가 복권 1등에 당첨되면 제일 먼저 할 일은?</li>
+      <li>내가 시간여행을 한다면 어디로?</li>
+      <li>내가 초능력을 하나 얻는다면?</li>
+      <li>내가 무인도에 하나만 가져간다면?</li>
+      <li>내가 동물로 태어난다면?</li>
+      <li>내가 로봇에게 맡기고 싶은 집안일은?</li>
+      <li>내가 하나만 평생 먹어야 한다면?</li>
+      <li>내가 살고 싶은 집은?</li>
+      <li>내가 가게를 차린다면?</li>
+      <li>내가 갑자기 일주일 휴가가 생기면?</li>
+      <li>내가 한 가지 능력을 완벽하게 얻는다면?</li>
+      <li>내가 과거의 나에게 한마디 한다면?</li>
+    </ul>
+  </div>
+
+  <div class="bank">
+    <h3>⑤ 최애 — 답이 명확해 논쟁이 붙는 문항</h3>
+    <ul>
+      <li>내 최애 배달 음식은?</li>
+      <li>내 최애 휴식 방법은?</li>
+      <li>내 최애 간식은?</li>
+      <li>내 최애 아이스크림 맛은?</li>
+      <li>내 최애 요일은?</li>
+      <li>내 최애 여행 방식은?</li>
+      <li>내 최애 국물 요리는?</li>
+      <li>내 최애 계절 간식은?</li>
+      <li>내 최애 공부 장소는?</li>
+      <li>내 최애 하루 시작 음료는?</li>
+      <li>내 최애 산책 시간대는?</li>
+      <li>내 최애 이동수단은?</li>
+    </ul>
+  </div>
+
+  <h2>이럴 때 써 보세요</h2>
+  <ul>
+    <li>단톡방이 조용할 때 던지는 대화 시작용 놀이로</li>
+    <li>새 학기·새 모임에서 서로를 빨리 알아 가는 아이스브레이킹으로</li>
+    <li>오래된 친구들과 “우리 얼마나 서로 알까?” 확인하는 내기로</li>
+    <li>생일이나 기념일에 주인공 퀴즈를 만들어 다 같이 푸는 이벤트로</li>
+    <li>가족 단톡방에서 세대 차이를 웃으며 확인하는 소재로</li>
+    <li>동아리·동호회 신입 환영회에서 선배 소개 대신 쓰는 코너로</li>
+  </ul>
+
+  <h2>점수는 이렇게 계산돼요</h2>
+  <p>계산은 아주 단순하고 100% 결정론적입니다. 10문항 중 출제자가 정해 둔 답과 같은 선택지를 고른 개수를 세고, 여기에 10을 곱해 백분율로 보여 줍니다. 즉 7개를 맞히면 70%입니다. 난수도, 보정도, 서버 통신도 없기 때문에 같은 사람이 같은 답을 고르면 언제 어디서 열어도 항상 같은 점수가 나옵니다. 정답 번호는 문항 번호와 출제자 닉네임에서 만든 값으로 한 번 뒤섞어 링크에 담기 때문에, 주소창을 슬쩍 봐서는 답을 알아내기 어렵습니다. 물론 완벽한 보안은 아니니 상금이 걸린 대회가 아니라 친구끼리 웃자고 하는 놀이로만 즐겨 주세요.</p>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>정답이 링크 주소에 그대로 들어가나요?</b><p>정답 번호는 문항 번호와 출제자 닉네임으로 만든 마스크 값과 섞은 뒤 링크에 담깁니다. 주소창을 대충 훑어봐서는 몇 번이 정답인지 보이지 않아요. 다만 암호화가 아니라 눈속임 수준의 난독화라, 작정하고 뜯어보는 사람에게는 보일 수 있습니다. 재미용으로만 써 주세요.</p></div>
+  <div class="faq"><b>친구들 점수는 어디에 모이나요?</b><p>서버도 데이터베이스도 없습니다. 친구가 퀴즈를 다 풀면 자기 점수가 이어 붙은 새 링크가 만들어지고, 그 링크를 다시 단톡방에 올리면 다음 사람 점수가 또 붙습니다. 점수는 링크 그 자체에 들어 있고 링크를 주고받는 사람들 사이에서만 돌아다닙니다.</p></div>
+  <div class="faq"><b>몇 명까지 참여할 수 있나요?</b><p>한 링크에 최대 20명까지 쌓입니다. 주소 길이 한계도 있어서 20명이 차거나 링크가 너무 길어지면 안내가 뜨고 더 추가되지 않습니다. 인원이 더 많다면 같은 문항으로 2차 링크를 하나 더 만들어 돌리세요.</p></div>
+  <div class="faq"><b>개인정보를 수집하나요?</b><p>수집하지 않습니다. 받는 것은 12자 닉네임 하나뿐이고 실명·전화번호·이메일·주민번호는 묻지 않으며 입력칸도 없습니다. 회원가입도 서버 전송도 없고 모든 계산은 브라우저 안에서 끝납니다. 닉네임은 링크를 받은 사람에게 보이니 별명을 권합니다.</p></div>
+  <div class="faq"><b>링크는 언제 만료되나요?</b><p>만료되지 않습니다. 문항·정답·점수가 모두 링크 안에 들어 있어 몇 달 뒤에 열어도 그대로 열립니다. 반대로 링크를 잃어버리면 복구할 방법이 없으니 만든 링크는 메모장에 한 번 저장해 두세요.</p></div>
+  <div class="faq"><b>문항이나 선택지를 바꿀 수 있나요?</b><p>네. 130개 문항 중 10개를 고르는 게 기본이고, 각 문항의 선택지 네 개는 원하는 문구로 고쳐 쓸 수 있습니다. 내가 실제로 자주 가는 곳이나 메뉴 이름으로 바꿔 두면 난이도가 확 올라갑니다. 고치지 않으면 기본 문구만 쓰이므로 링크도 짧아집니다.</p></div>
+  <div class="faq"><b>점수가 낮으면 친구가 나를 모르는 건가요?</b><p>아닙니다. 이 퀴즈는 관계 진단이 아니라 순수한 재미용 놀이입니다. 문항을 어렵게 고르면 절친도 서너 개밖에 못 맞히고, 쉬운 문항만 고르면 처음 본 사람도 만점이 나옵니다. 점수는 친밀도보다 문항 난이도를 재는 숫자에 가깝습니다.</p></div>
+
+  <p class="disc">본 서비스는 <b>재미용 놀이</b>이며 심리 검사·성격 진단·인간관계 평가 등 어떤 전문적 판단도 제공하지 않습니다. 점수는 출제자가 임의로 정한 답과 일치한 개수를 센 숫자일 뿐이며 친밀도나 관계의 질을 보장하지 않습니다. 링크에 담기는 정답 난독화는 암호화가 아니므로 민감한 내용을 문항이나 선택지에 적지 마세요. 타인을 비하하거나 외모를 평가하는 문항을 만들어 공유하지 말아 주세요.</p>
+
+  <div class="more">
+    <a href="/taste-dna/">🧬 취향DNA</a>
+    <a href="/friend-chemistry/">🤝 친구 케미</a>
+    <a href="/balance-pick/">⚖️ 밸런스픽</a>
+    <a href="/ideal-worldcup/">🏆 이상형 월드컵</a>
+    <a href="/">🍅 전체 도구</a>
+  </div>
+</div>
+
+<footer>
+  <div><a href="/about.html">소개</a><a href="/privacy.html">개인정보</a><a href="/terms.html">이용약관</a><a href="/contact.html">문의</a></div>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+</div>
+
+<script>
+/* ────────────────────────────────────────────────────────────────────────────
+   share-kit v1 — TomatoEggCat 공유·바이럴 엔진 (자기완결 · 외부 의존 0)
+
+   사용법: 각 앱의 <script> 최상단에 이 파일 내용을 **그대로 붙여넣는다**.
+   (앱은 단일 파일 완결형이어야 하고, 나중에 앱별 도메인으로 떼어내도
+    이 엔진이 함께 따라가야 하므로 공유 <script src>를 쓰지 않는다.)
+
+   제공 기능
+   - 상태 URL 인코딩: SK.enc / SK.dec  (UTF-8 안전 base64url + 선택적 LZW 압축)
+   - URL 상태 훅:     SK.readState / SK.writeState / SK.clearState / SK.stateUrl
+   - 용량 가드:       SK.sizeOf (8KB 경고 / 12KB 차단)
+   - 체인:            SK.appendChain
+   - 비트맵:          SK.bitsToStr / SK.strToBits  (밸런스·시간표처럼 0/1 대량 상태용)
+   - 결정론 난수:     SK.kstYMD / SK.dailySeed / SK.prng / SK.pick / SK.shuffle
+   - 이모지 격자:     SK.emojiGrid
+   - 공유 UI:         SK.copy / SK.toast / SK.share / SK.xUrl
+   - 결과 카드:       SK.card / SK.wrapText / SK.roundRect / SK.savePng / SK.sharePng
+   - 유틸:            SK.esc / SK.nick (닉네임 12자 정제) / SK.countdownToKstMidnight
+
+   상태 스키마 규칙: 객체 키 반복은 URL 낭비 → **배열 튜플**로 쓴다.
+     좋음  {v:1,a:["민수",[3,1,4,...]]}
+     나쁨  {version:1,me:{nickname:"민수",answers:[...]}}
+   ──────────────────────────────────────────────────────────────────────────── */
+var SK = (function () {
+  "use strict";
+
+  /* ── UTF-8 ↔ 바이트 ─────────────────────────────────────────── */
+  function utf8Bytes(str) {
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(str);
+    var esc = unescape(encodeURIComponent(str)), out = new Uint8Array(esc.length);
+    for (var i = 0; i < esc.length; i++) out[i] = esc.charCodeAt(i);
+    return out;
+  }
+  function bytesUtf8(bytes) {
+    if (typeof TextDecoder !== "undefined") return new TextDecoder().decode(bytes);
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return decodeURIComponent(escape(s));
+  }
+
+  /* ── base64url ──────────────────────────────────────────────── */
+  var B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  var B64I = (function () { var m = {}; for (var i = 0; i < 64; i++) m[B64[i]] = i; return m; })();
+  function b64uEnc(bytes) {
+    var out = "", i;
+    for (i = 0; i + 2 < bytes.length; i += 3) {
+      var n = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+      out += B64[(n >> 18) & 63] + B64[(n >> 12) & 63] + B64[(n >> 6) & 63] + B64[n & 63];
+    }
+    var rem = bytes.length - i;
+    if (rem === 1) {
+      var a = bytes[i] << 16;
+      out += B64[(a >> 18) & 63] + B64[(a >> 12) & 63];
+    } else if (rem === 2) {
+      var b = (bytes[i] << 16) | (bytes[i + 1] << 8);
+      out += B64[(b >> 18) & 63] + B64[(b >> 12) & 63] + B64[(b >> 6) & 63];
+    }
+    return out;
+  }
+  function b64uDec(str) {
+    var clean = String(str).replace(/[^A-Za-z0-9\-_]/g, "");
+    var full = Math.floor(clean.length / 4), rem = clean.length % 4;
+    if (rem === 1) throw new Error("bad base64url length");
+    var len = full * 3 + (rem === 2 ? 1 : rem === 3 ? 2 : 0);
+    var out = new Uint8Array(len), o = 0, i;
+    for (i = 0; i + 3 < clean.length; i += 4) {
+      var n = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6) | B64I[clean[i + 3]];
+      out[o++] = (n >> 16) & 255; out[o++] = (n >> 8) & 255; out[o++] = n & 255;
+    }
+    if (rem === 2) {
+      out[o++] = ((B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12)) >> 16 & 255;
+    } else if (rem === 3) {
+      var m = (B64I[clean[i]] << 18) | (B64I[clean[i + 1]] << 12) | (B64I[clean[i + 2]] << 6);
+      out[o++] = (m >> 16) & 255; out[o++] = (m >> 8) & 255;
+    }
+    return out;
+  }
+
+  /* ── LZW (바이트 단위, 16비트 코드) ─────────────────────────────
+     한글 본문처럼 긴 텍스트를 URL에 담을 때 쓴다. 압축이 이득이 아니면
+     enc()가 자동으로 무압축(prefix "1")을 고른다. ─────────────────── */
+  function codeOf(dict, w) { return w.length === 1 ? w.charCodeAt(0) : dict.get(w); }
+  function lzwEnc(bytes) {
+    if (!bytes.length) return new Uint8Array(0);
+    var dict = new Map(), next = 256, codes = [], w = String.fromCharCode(bytes[0]);
+    for (var i = 1; i < bytes.length; i++) {
+      var c = String.fromCharCode(bytes[i]), wc = w + c;
+      if (dict.has(wc)) { w = wc; continue; }
+      codes.push(codeOf(dict, w));
+      if (next < 65536) dict.set(wc, next++);
+      w = c;
+    }
+    codes.push(codeOf(dict, w));
+    var out = new Uint8Array(codes.length * 2);
+    for (var j = 0; j < codes.length; j++) { out[j * 2] = (codes[j] >> 8) & 255; out[j * 2 + 1] = codes[j] & 255; }
+    return out;
+  }
+  function lzwDec(buf) {
+    if (buf.length % 2 !== 0) throw new Error("bad lzw stream");
+    var codes = [], i;
+    for (i = 0; i < buf.length; i += 2) codes.push((buf[i] << 8) | buf[i + 1]);
+    if (!codes.length) return new Uint8Array(0);
+    var dict = [], next = 256;
+    for (i = 0; i < 256; i++) dict[i] = String.fromCharCode(i);
+    var w = dict[codes[0]];
+    if (w === undefined) throw new Error("bad lzw code");
+    var out = w;
+    for (i = 1; i < codes.length; i++) {
+      var k = codes[i], entry;
+      if (k < next && dict[k] !== undefined) entry = dict[k];
+      else if (k === next) entry = w + w.charAt(0);
+      else throw new Error("bad lzw code");
+      out += entry;
+      if (next < 65536) dict[next++] = w + entry.charAt(0);
+      w = entry;
+    }
+    var bytes = new Uint8Array(out.length);
+    for (i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+    return bytes;
+  }
+
+  /* ── 상태 인코딩 ─────────────────────────────────────────────
+     prefix "1" = 무압축, "2" = LZW. 두 형식 모두 dec()가 읽는다. ── */
+  function enc(obj) {
+    var raw = utf8Bytes(JSON.stringify(obj));
+    var plain = "1" + b64uEnc(raw);
+    if (raw.length < 120) return plain;
+    try {
+      var z = "2" + b64uEnc(lzwEnc(raw));
+      return z.length < plain.length ? z : plain;
+    } catch (e) { return plain; }
+  }
+  function dec(str) {
+    if (!str) return null;
+    try {
+      var s = String(str), tag = s.charAt(0), body = s.slice(1);
+      if (tag !== "1" && tag !== "2") { tag = "1"; body = s; } // v0 링크(무접두) 하위호환
+      var bytes = b64uDec(body);
+      if (tag === "2") bytes = lzwDec(bytes);
+      var val = JSON.parse(bytesUtf8(bytes));
+      return (val && typeof val === "object") ? val : null;
+    } catch (e) { return null; }
+  }
+
+  /* ── URL 상태 ────────────────────────────────────────────────── */
+  var KEY = "d";
+  function stateUrl(obj, key) {
+    return location.origin + location.pathname + "?" + (key || KEY) + "=" + enc(obj);
+  }
+  function readState(key) {
+    try { return dec(new URLSearchParams(location.search).get(key || KEY)); }
+    catch (e) { return null; }
+  }
+  function writeState(obj, key) {
+    try { history.replaceState(null, "", location.pathname + "?" + (key || KEY) + "=" + enc(obj)); } catch (e) {}
+  }
+  function clearState() {
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  }
+  /* 8KB 경고 / 12KB 차단. 반환 {bytes, ok, warn} */
+  function sizeOf(obj) {
+    var n = enc(obj).length;
+    return { bytes: n, ok: n <= 12288, warn: n > 8192 };
+  }
+  /* 체인 추가: 최대 인원·용량 초과 시 {ok:false, reason} */
+  function appendChain(list, entry, maxItems) {
+    var arr = (list || []).slice();
+    if (arr.length >= (maxItems || 20)) return { ok: false, reason: "max", list: arr };
+    arr.push(entry);
+    return { ok: true, list: arr };
+  }
+
+  /* ── 비트맵(0/1 대량 상태) ───────────────────────────────────── */
+  function bitsToStr(bits) {
+    var bytes = new Uint8Array(Math.ceil(bits.length / 8));
+    for (var i = 0; i < bits.length; i++) if (bits[i]) bytes[i >> 3] |= (128 >> (i & 7));
+    return b64uEnc(bytes);
+  }
+  function strToBits(str, n) {
+    var bytes = b64uDec(str), bits = [];
+    for (var i = 0; i < n; i++) bits.push(((bytes[i >> 3] || 0) >> (7 - (i & 7))) & 1);
+    return bits;
+  }
+
+  /* ── KST 날짜 · 결정론 난수 ──────────────────────────────────── */
+  var KST_MS = 9 * 3600 * 1000;
+  function kstDate(d) { return new Date((d ? d.getTime() : Date.now()) + KST_MS); }
+  /* KST 기준 YYYYMMDD 숫자 */
+  function kstYMD(d) {
+    var k = kstDate(d);
+    return k.getUTCFullYear() * 10000 + (k.getUTCMonth() + 1) * 100 + k.getUTCDate();
+  }
+  /* 기준일(YYYYMMDD)로부터 KST 며칠째인가 — 데일리 게임 회차 번호 */
+  function kstDayIndex(startYMD, d) {
+    var s = String(startYMD);
+    var start = Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8));
+    var k = kstDate(d);
+    var cur = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate());
+    return Math.round((cur - start) / 86400000);
+  }
+  function hash32(str) {
+    var h = 2166136261 >>> 0;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return h >>> 0;
+  }
+  function dailySeed(salt, d) { return hash32(kstYMD(d) + "|" + (salt || "")); }
+  function prng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), 1 | t);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function pick(rnd, arr) { return arr[Math.floor(rnd() * arr.length) % arr.length]; }
+  function shuffle(rnd, arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  /* KST 자정까지 남은 시간 {h,m,s,ms} */
+  function countdownToKstMidnight(d) {
+    var k = kstDate(d);
+    var ms = 86400000 - (k.getUTCHours() * 3600000 + k.getUTCMinutes() * 60000 + k.getUTCSeconds() * 1000 + k.getUTCMilliseconds());
+    return { ms: ms, h: Math.floor(ms / 3600000), m: Math.floor(ms / 60000) % 60, s: Math.floor(ms / 1000) % 60 };
+  }
+
+  /* ── 이모지 격자(데일리 공유용) ───────────────────────────────── */
+  function emojiGrid(rows, header) {
+    var body = rows.map(function (r) { return r.join(""); }).join("\n");
+    return (header ? header + "\n" : "") + body;
+  }
+
+  /* ── 문자열 유틸 ─────────────────────────────────────────────── */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  /* 닉네임: 12자 · 제어문자 제거. 개인정보(실명 강요) 금지 — 별명 안내는 UI에서. */
+  function nick(s, fallback) {
+    var raw = String(s == null ? "" : s), t = "";
+    for (var i = 0; i < raw.length && t.length < 12; i++) {
+      var cc = raw.charCodeAt(i);
+      if (cc < 32 || cc === 127) continue;              // 제어문자 제거
+      if ("<>&\"'\\".indexOf(raw[i]) >= 0) continue;      // HTML 위험 문자 제거
+      t += raw[i];
+    }
+    t = t.trim();
+    return t || (fallback || "익명");
+  }
+
+  /* ── 공유 UI ─────────────────────────────────────────────────── */
+  function toast(msg) {
+    var el = document.getElementById("sk-toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "sk-toast";
+      el.setAttribute("role", "status");
+      el.style.cssText = "position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);z-index:99;" +
+        "background:#101014;color:#f2f3f5;border:1px solid #33343c;border-radius:12px;padding:11px 16px;font-size:14px;" +
+        "font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.45);opacity:0;transition:.18s;pointer-events:none;max-width:88vw;text-align:center";
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    requestAnimationFrame(function () { el.style.opacity = "1"; el.style.transform = "translateX(-50%) translateY(0)"; });
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.style.opacity = "0"; el.style.transform = "translateX(-50%) translateY(8px)"; }, 1900);
+  }
+  function copy(text) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallback(); });
+    }
+    return Promise.resolve(fallback());
+  }
+  function share(opts) {
+    if (navigator.share) {
+      return navigator.share(opts).then(function () { return true; }, function () { return false; });
+    }
+    return copy(opts.url || opts.text || "").then(function (ok) {
+      if (ok) toast("링크를 복사했어요. 카톡·인스타에 붙여넣으세요");
+      return ok;
+    });
+  }
+  function xUrl(text, url) {
+    return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
+  }
+
+  /* ── 결과 카드(캔버스) ───────────────────────────────────────── */
+  var FONT = '-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif';
+  /* preset: "story"(1080×1920) | "square"(1080×1080) | "card"(1080×1350) */
+  function card(preset) {
+    var size = preset === "story" ? [1080, 1920] : preset === "square" ? [1080, 1080] : [1080, 1350];
+    var cv = document.createElement("canvas");
+    cv.width = size[0]; cv.height = size[1];
+    var ctx = cv.getContext("2d");
+    ctx.textBaseline = "top";
+    return { cv: cv, ctx: ctx, W: size[0], H: size[1], font: FONT };
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    var rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rr);
+    ctx.arcTo(x + w, y + h, x, y + h, rr);
+    ctx.arcTo(x, y + h, x, y, rr);
+    ctx.arcTo(x, y, x + w, y, rr);
+    ctx.closePath();
+  }
+  /* 줄바꿈 그리기 → 마지막 y 반환 */
+  function wrapText(ctx, text, x, y, maxW, lh, maxLines) {
+    var words = String(text).split(/(\s+)/), line = "", lines = [];
+    for (var i = 0; i < words.length; i++) {
+      var test = line + words[i];
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line.replace(/\s+$/, "")); line = words[i].replace(/^\s+/, ""); }
+      else line = test;
+    }
+    if (line.trim()) lines.push(line.replace(/\s+$/, ""));
+    /* 공백 없는 긴 한글 줄 대비: 글자 단위 재분할 */
+    var out = [];
+    for (var j = 0; j < lines.length; j++) {
+      var l = lines[j];
+      while (ctx.measureText(l).width > maxW && l.length > 1) {
+        var cut = l.length;
+        while (cut > 1 && ctx.measureText(l.slice(0, cut)).width > maxW) cut--;
+        out.push(l.slice(0, cut)); l = l.slice(cut);
+      }
+      out.push(l);
+    }
+    if (maxLines && out.length > maxLines) { out = out.slice(0, maxLines); out[maxLines - 1] = out[maxLines - 1].replace(/.$/, "…"); }
+    for (var k = 0; k < out.length; k++) ctx.fillText(out[k], x, y + k * lh);
+    return y + out.length * lh;
+  }
+  /* 하단 워터마크 — 도메인/앱 경로 (예: "tomatoeggcat.com/chemi-link") */
+  function watermark(ctx, W, H, label, color) {
+    ctx.font = "600 26px " + FONT;
+    ctx.fillStyle = color || "rgba(255,255,255,.42)";
+    ctx.textAlign = "center";
+    ctx.fillText(label, W / 2, H - 62);
+    ctx.textAlign = "left";
+  }
+  function savePng(cv, filename) {
+    try {
+      var a = document.createElement("a");
+      a.href = cv.toDataURL("image/png");
+      a.download = filename || "card.png";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      return true;
+    } catch (e) { return false; }
+  }
+  /* navigator.share(files) 우선 → 실패 시 PNG 다운로드 */
+  function sharePng(cv, filename, title) {
+    return new Promise(function (resolve) {
+      if (!cv.toBlob || !navigator.canShare) { resolve(savePng(cv, filename)); return; }
+      cv.toBlob(function (blob) {
+        if (!blob) { resolve(savePng(cv, filename)); return; }
+        try {
+          var file = new File([blob], filename || "card.png", { type: "image/png" });
+          if (navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: title || "" }).then(
+              function () { resolve(true); },
+              function () { resolve(savePng(cv, filename)); }
+            );
+            return;
+          }
+        } catch (e) {}
+        resolve(savePng(cv, filename));
+      }, "image/png");
+    });
+  }
+
+  return {
+    enc: enc, dec: dec,
+    stateUrl: stateUrl, readState: readState, writeState: writeState, clearState: clearState,
+    sizeOf: sizeOf, appendChain: appendChain,
+    bitsToStr: bitsToStr, strToBits: strToBits,
+    kstYMD: kstYMD, kstDayIndex: kstDayIndex, dailySeed: dailySeed, hash32: hash32,
+    prng: prng, pick: pick, shuffle: shuffle, countdownToKstMidnight: countdownToKstMidnight,
+    emojiGrid: emojiGrid, esc: esc, nick: nick,
+    toast: toast, copy: copy, share: share, xUrl: xUrl,
+    card: card, roundRect: roundRect, wrapText: wrapText, watermark: watermark,
+    savePng: savePng, sharePng: sharePng
+  };
+})();
+if (typeof module !== "undefined" && module.exports) module.exports = SK;
+
+/* ─────────────────────────────────────────────────────────────
+   나를 맞혀봐 퀴즈 (aboutme-quiz) — 앱 로직
+   ───────────────────────────────────────────────────────────── */
+(function () {
+  "use strict";
+
+  var $ = function (id) { return document.getElementById(id); };
+  var SLUG = "aboutme-quiz";
+  var WM = "tomatoeggcat.com/aboutme-quiz";
+  var MAXP = 20;   /* 체인 최대 인원 */
+  var NQ = 10;     /* 출제 문항 수 */
+
+  var CATN = { "취": "취향", "습": "습관", "과": "과거", "만": "만약에", "최": "최애" };
+  var CATO = ["취", "습", "과", "만", "최"];
+
+  /* ── 문항 은행 (125문항) ── [카테고리, 질문, 기본 선택지 4개] ── */
+  var QB = [
+    ["취", "내가 카페 가면 거의 항상 시키는 건?", ["아메리카노", "라떼", "차·에이드", "그때그때 다름"]],
+    ["취", "내가 치킨 시킬 때 고르는 맛은?", ["후라이드", "양념", "간장", "반반"]],
+    ["취", "내가 여행 가면 더 좋아하는 쪽은?", ["바다", "산", "도시", "시골"]],
+    ["취", "내가 영화관에서 고르는 장르는?", ["액션", "코미디", "공포·스릴러", "애니메이션"]],
+    ["취", "내가 좋아하는 계절은?", ["봄", "여름", "가을", "겨울"]],
+    ["취", "내가 라면 끓일 때 꼭 넣는 건?", ["계란", "파", "치즈", "아무것도 안 넣음"]],
+    ["취", "내가 편의점에서 자주 집는 건?", ["삼각김밥", "컵라면", "과자", "음료"]],
+    ["취", "내가 피자에서 선호하는 건?", ["불고기", "페퍼로니", "하와이안", "고구마"]],
+    ["취", "내가 자주 듣는 음악 장르는?", ["발라드", "힙합", "팝·댄스", "인디"]],
+    ["취", "내가 좋아하는 색 계열은?", ["블랙·화이트", "파랑", "초록", "파스텔"]],
+    ["취", "내가 분식집에서 무조건 시키는 건?", ["떡볶이", "김밥", "순대", "튀김"]],
+    ["취", "내 국물 취향은?", ["매운 국물", "맑은 국물", "진한 국물", "국물 잘 안 먹음"]],
+    ["취", "내가 커피에 넣는 건?", ["아무것도 안 넣음", "시럽", "우유", "얼음만 잔뜩"]],
+    ["취", "내가 좋아하는 디저트는?", ["케이크", "아이스크림", "붕어빵·호떡", "쿠키·마카롱"]],
+    ["취", "내가 고르는 여행 숙소는?", ["호텔", "게스트하우스", "펜션", "캠핑"]],
+    ["취", "내가 즐겨 보는 영상은?", ["예능", "드라마", "다큐", "브이로그"]],
+    ["취", "내가 선호하는 약속 시간대는?", ["아침", "점심", "저녁", "밤"]],
+    ["취", "내가 좋아하는 날씨는?", ["맑음", "흐림", "비", "눈"]],
+    ["취", "내가 좋아하는 향은?", ["비누향", "시트러스", "우디·머스크", "향 자체를 싫어함"]],
+    ["취", "내가 고르는 자리는?", ["창가", "통로", "구석", "아무데나"]],
+    ["취", "내가 김밥에서 빼는 재료는?", ["오이", "단무지", "당근", "안 뺌"]],
+    ["취", "내가 좋아하는 과일은?", ["딸기", "수박", "포도", "귤"]],
+    ["취", "내가 고르는 야식은?", ["치킨", "족발", "라면", "떡볶이"]],
+    ["취", "내가 좋아하는 게임 종류는?", ["모바일 게임", "PC 게임", "콘솔 게임", "보드게임"]],
+    ["취", "내가 좋아하는 이야기 장르는?", ["로맨스", "스릴러", "판타지", "에세이"]],
+    ["습", "내가 아침에 눈 뜨고 제일 먼저 하는 건?", ["폰 확인", "물 마시기", "다시 눕기", "바로 씻기"]],
+    ["습", "내 알람은 보통 몇 개?", ["1개", "2~3개", "4개 이상", "알람 안 씀"]],
+    ["습", "내가 약속 장소에 도착하는 시간은?", ["10분 이상 일찍", "딱 맞게", "조금 늦게", "그때그때"]],
+    ["습", "내 방 상태는 보통?", ["항상 깔끔", "겉만 깔끔", "늘 어질러짐", "주기적 대청소"]],
+    ["습", "내가 메시지에 답장하는 속도는?", ["거의 바로", "몇 분 안에", "몇 시간 뒤", "생각나면"]],
+    ["습", "내가 지하철·버스에서 주로 하는 건?", ["영상 보기", "음악 듣기", "자기", "창밖 보기"]],
+    ["습", "내가 공부·일할 때 듣는 건?", ["무음", "가사 없는 음악", "노래", "백색소음"]],
+    ["습", "내 쇼핑 스타일은?", ["오래 고민", "바로 결제", "장바구니만 채움", "리뷰 정독"]],
+    ["습", "내가 자기 전에 하는 건?", ["폰 스크롤", "책 읽기", "바로 잠", "내일 계획"]],
+    ["습", "내가 밥 먹는 속도는?", ["엄청 빠름", "보통", "느린 편", "상황 따라"]],
+    ["습", "내가 여행 짐 싸는 시점은?", ["일주일 전", "전날", "당일 새벽", "나가기 직전"]],
+    ["습", "내 사진 찍는 습관은?", ["수십 장 연사", "딱 한 장", "잘 안 찍음", "남한테 부탁"]],
+    ["습", "내가 새 앱을 깔면?", ["설정부터 만짐", "바로 사용", "안내 정독", "일단 방치"]],
+    ["습", "계단과 엘리베이터 중 내 선택은?", ["무조건 엘리베이터", "2층까진 계단", "웬만하면 계단", "그날 기분"]],
+    ["습", "내가 물건 잃어버리는 빈도는?", ["거의 없음", "가끔", "자주", "거의 매번"]],
+    ["습", "내가 메모하는 방식은?", ["폰 메모앱", "손글씨 노트", "메신저 나에게", "메모 안 함"]],
+    ["습", "내 영화 관람 습관은?", ["팝콘 필수", "아무것도 안 먹음", "중간에 화장실", "엔딩크레딧까지"]],
+    ["습", "내가 배달 시킬 때는?", ["늘 먹던 것", "새로운 것", "리뷰 보고", "제일 빠른 것"]],
+    ["습", "내가 청소하는 타이밍은?", ["정해진 요일", "손님 오기 전", "못 참을 때", "조금씩 매일"]],
+    ["습", "내 이어폰 볼륨은?", ["아주 작게", "보통", "크게", "노이즈캔슬만 켬"]],
+    ["습", "내 걷는 속도는?", ["엄청 빠름", "보통", "느긋", "같이 걷는 사람 맞춤"]],
+    ["습", "내 돈 쓰는 스타일은?", ["계획적 저축", "쓸 땐 확실히", "자잘하게 자주", "기분 따라"]],
+    ["습", "내가 시험·마감을 앞두면?", ["미리미리", "벼락치기", "계획만 세움", "몰아서 폭주"]],
+    ["습", "처음 간 식당에서 내가 시키는 건?", ["대표 메뉴", "제일 싼 것", "남들 시킨 것", "제일 특이한 것"]],
+    ["습", "내가 더 선호하는 소통 방식은?", ["문자·메신저", "통화", "영상통화", "만나서 얘기"]],
+    ["과", "내 어릴 적 장래희망은?", ["선생님", "연예인", "과학자·의사", "매번 바뀜"]],
+    ["과", "내가 학창시절 앉던 자리는?", ["맨 앞", "중간", "맨 뒤", "창가"]],
+    ["과", "내가 좋아했던 과목은?", ["국어·문학", "수학", "과학", "체육·예체능"]],
+    ["과", "내가 제일 싫어했던 과목은?", ["수학", "영어", "과학", "체육"]],
+    ["과", "내가 처음 배운 악기는?", ["피아노", "리코더", "기타", "배운 적 없음"]],
+    ["과", "내가 어릴 때 키운 적 있는 건?", ["강아지", "고양이", "물고기·햄스터", "없음"]],
+    ["과", "내 초등학교 때 별명은 어떤 느낌?", ["이름에서 딴 것", "동물 관련", "특징 관련", "별명 없었음"]],
+    ["과", "내가 학창시절 했던 동아리는?", ["운동부", "음악·미술부", "학생회", "안 했음"]],
+    ["과", "내 첫 아르바이트는?", ["카페", "편의점", "음식점", "안 해봄"]],
+    ["과", "내가 어릴 때 좋아한 만화 종류는?", ["로봇·액션", "개그", "마법·판타지", "동물 나오는 것"]],
+    ["과", "내가 처음 가 본 해외는?", ["일본", "동남아", "유럽·미국", "아직 없음"]],
+    ["과", "학교에서 발표할 때 나는?", ["자원해서 함", "시키면 함", "최대한 피함", "준비 철저히"]],
+    ["과", "내 첫 휴대폰의 주 용도는?", ["문자", "게임", "전화", "사진"]],
+    ["과", "수학여행에서 내가 주로 한 건?", ["사진 찍기", "밤새 수다", "잠", "쇼핑"]],
+    ["과", "내가 어릴 때 모았던 건?", ["스티커", "카드", "인형·피규어", "안 모음"]],
+    ["과", "급식에서 내가 제일 반겼던 건?", ["돈까스", "카레", "볶음밥", "디저트"]],
+    ["과", "내가 어릴 때 무서워한 건?", ["귀신", "벌레", "높은 곳", "어둠"]],
+    ["과", "방학 때 내가 주로 한 건?", ["학원", "여행", "집콕", "아르바이트"]],
+    ["과", "내 돈으로 처음 산 물건은?", ["옷", "전자기기", "간식", "게임 아이템"]],
+    ["과", "체육대회에서 내 역할은?", ["선수", "응원", "진행·기록", "구경"]],
+    ["과", "내가 처음 가수에 빠진 시기는?", ["초등학교", "중학교", "고등학교", "성인 이후"]],
+    ["과", "내가 어릴 때 자주 갔던 곳은?", ["문방구", "놀이터", "도서관", "오락실"]],
+    ["과", "학생 때 내 필통 속은?", ["샤프 하나", "볼펜 여러 자루", "형광펜 가득", "거의 빈 필통"]],
+    ["과", "졸업앨범 사진 속 내 표정은?", ["활짝 웃음", "무표정", "장난스러움", "눈 감음"]],
+    ["과", "어릴 때 받은 용돈을 나는?", ["저금했다", "간식 사먹었다", "문구·장난감", "친구랑 놀았다"]],
+    ["만", "복권 1등에 당첨되면 내가 먼저 할 일은?", ["집 사기", "여행 가기", "저축·투자", "가족에게 주기"]],
+    ["만", "시간여행이 가능하다면 나는?", ["과거로", "미래로", "안 간다", "딱 하루만 과거로"]],
+    ["만", "초능력을 하나 얻는다면 나는?", ["순간이동", "시간정지", "투명인간", "마음 읽기"]],
+    ["만", "무인도에 하나만 가져간다면?", ["칼", "라이터", "냄비", "책"]],
+    ["만", "하루 24시간을 마음대로 쓴다면?", ["잠", "여행", "취미", "아무것도 안 하기"]],
+    ["만", "한 달 살기를 한다면 어디로?", ["제주", "유럽", "동남아", "서울"]],
+    ["만", "동물로 태어난다면 나는?", ["고양이", "강아지", "새", "돌고래"]],
+    ["만", "로봇에게 맡기고 싶은 집안일은?", ["설거지", "빨래", "청소", "요리"]],
+    ["만", "하나만 평생 먹어야 한다면?", ["밥", "빵", "면", "고기"]],
+    ["만", "새 언어를 하나 배운다면?", ["영어", "일본어", "중국어", "스페인어"]],
+    ["만", "갑자기 일주일 휴가가 생기면?", ["여행", "집에서 쉬기", "밀린 취미", "공부"]],
+    ["만", "내가 살고 싶은 집은?", ["바다 앞", "산속", "도심 고층", "조용한 동네"]],
+    ["만", "유명해진다면 어떤 분야로?", ["예술", "스포츠", "학문", "요리"]],
+    ["만", "과거의 나에게 한마디 한다면?", ["걱정 마", "좀 더 해봐", "쉬어도 돼", "그 선택은 하지 마"]],
+    ["만", "반려동물과 대화가 된다면 첫마디는?", ["사랑한다고", "뭐 먹고 싶냐고", "불편한 건 없냐고", "그냥 수다"]],
+    ["만", "하루 동안 다른 존재가 된다면?", ["유명인", "동물", "친구", "미래의 나"]],
+    ["만", "타임캡슐에 넣을 것은?", ["편지", "사진", "물건", "안 넣는다"]],
+    ["만", "세계일주 첫 나라는?", ["일본", "이탈리아", "미국", "호주"]],
+    ["만", "가게를 차린다면 나는?", ["카페", "식당", "서점", "소품샵"]],
+    ["만", "한 가지 능력을 완벽하게 얻는다면?", ["외국어", "요리", "악기", "운동"]],
+    ["만", "눈이 너무 와서 집에 갇히면?", ["영상 정주행", "잠", "요리", "눈 구경"]],
+    ["만", "딱 한 명에게 선물을 준다면?", ["가족", "친구", "나 자신", "고마운 사람"]],
+    ["만", "다시 학교에 간다면 나는?", ["열심히 공부", "친구 많이 사귀기", "동아리 활동", "안 간다"]],
+    ["만", "이름을 바꿀 수 있다면?", ["바꾼다", "안 바꾼다", "성만 바꾼다", "고민된다"]],
+    ["만", "하루 세 끼 중 하나만 고른다면?", ["아침", "점심", "저녁", "야식"]],
+    ["만", "투명 망토가 생기면 제일 먼저?", ["장난치기", "몰래 여행", "집에서 쉬기", "안 쓴다"]],
+    ["만", "내 인생을 영화로 만든다면 장르는?", ["코미디", "드라마", "다큐", "판타지"]],
+    ["만", "미래를 딱 하나 알 수 있다면?", ["내 직업", "내 건강", "가족 소식", "안 알고 싶다"]],
+    ["만", "하늘을 날 수 있다면 어디부터?", ["우리 동네", "바다 위", "산 위", "외국"]],
+    ["만", "무한 리필되는 음식 하나를 고른다면?", ["고기", "회", "디저트", "과일"]],
+    ["최", "내 최애 배달 음식은?", ["치킨", "피자", "중식", "분식"]],
+    ["최", "내 최애 이동수단은?", ["지하철", "버스", "자동차", "도보·자전거"]],
+    ["최", "내 최애 휴식 방법은?", ["잠", "산책", "영상 보기", "수다"]],
+    ["최", "내 최애 앱 종류는?", ["영상 앱", "SNS", "메신저", "게임"]],
+    ["최", "내 최애 간식은?", ["초콜릿", "감자칩", "젤리", "견과·과일"]],
+    ["최", "내 최애 명절 음식은?", ["갈비", "전", "잡채", "떡국·송편"]],
+    ["최", "내가 보는 걸 제일 좋아하는 스포츠는?", ["축구", "야구", "농구", "스포츠 안 봄"]],
+    ["최", "내 최애 카페 자리는?", ["창가", "구석", "큰 테이블", "야외"]],
+    ["최", "내 최애 요일은?", ["금요일", "토요일", "일요일", "수요일"]],
+    ["최", "내 최애 여행 방식은?", ["혼자", "친구랑", "가족과", "패키지"]],
+    ["최", "내 최애 아이스크림 맛은?", ["바닐라", "초코", "딸기", "민트초코"]],
+    ["최", "내 최애 계절 간식은?", ["붕어빵", "팥빙수", "군고구마", "아이스크림"]],
+    ["최", "내 최애 취미는?", ["운동", "그림·글쓰기", "게임", "영상 감상"]],
+    ["최", "내 최애 옷 스타일은?", ["심플·베이직", "스포티", "캐주얼", "개성 강한"]],
+    ["최", "내 최애 국물 요리는?", ["김치찌개", "된장찌개", "국밥", "부대찌개"]],
+    ["최", "내 최애 이모티콘 느낌은?", ["귀여운 캐릭터", "웃긴 짤", "텍스트형", "거의 안 씀"]],
+    ["최", "내 최애 영상 콘텐츠는?", ["먹방", "브이로그", "리뷰", "게임 방송"]],
+    ["최", "내 최애 공부 장소는?", ["집", "카페", "도서관", "스터디카페"]],
+    ["최", "내 최애 산책 시간대는?", ["아침", "낮", "노을 질 때", "밤"]],
+    ["최", "내 최애 김치는?", ["배추김치", "깍두기", "총각김치", "물김치"]],
+    ["최", "내 최애 라면 종류는?", ["매운 국물라면", "짜장라면", "해물라면", "볶음면"]],
+    ["최", "내 최애 여행 기념품은?", ["마그넷", "엽서", "간식", "안 산다"]],
+    ["최", "내 최애 영화 관람 방식은?", ["영화관", "집에서 스트리밍", "노트북", "잘 안 봄"]],
+    ["최", "내 최애 하루 시작 음료는?", ["커피", "물", "우유·주스", "차"]],
+    ["최", "내 최애 노래방 장르는?", ["발라드", "댄스", "힙합", "노래방 안 감"]]
+  ];
+
+  /* ── 정답 난독화: 문항 id + 출제자 닉 해시 기반 2비트 XOR 마스크 ──
+     완전한 보안이 아니라 '주소창 훑어보기' 방지용 눈속임이다. FAQ에 명시. */
+  function amask(nick, qid) { return SK.hash32(nick + "|" + qid + "|amq") & 3; }
+  function xorAns(nick, qid, a) { return (a ^ amask(nick, qid)) & 3; }  /* 자기역함수 */
+
+  /* ── 상태 ── */
+  var quiz = null;                                  /* {v,n,q,r} */
+  var draft = { nick: "", sel: [], ans: {}, cust: {} };
+  var tab = "전체";
+  var solver = { nick: "", i: 0, picks: [] };
+  var lastScore = 0, chained = false, chainUrl = "";
+
+  function optsOfItem(it) { return it[1] === 0 ? QB[it[0]][2] : it[1]; }
+  function draftOpts(id) { return draft.cust[id] || QB[id][2]; }
+
+  /* ── 화면 전환 ── */
+  var SCREENS = ["scCreate", "scAnswer", "scMade", "scIntro", "scSolve", "scResult", "scRank"];
+  function show(id) {
+    for (var i = 0; i < SCREENS.length; i++) $(SCREENS[i]).classList.toggle("on", SCREENS[i] === id);
+    try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); }
+  }
+
+  /* ── 임시 저장(리믹스 프리필) ── */
+  function saveDraft() {
+    try { localStorage.setItem("amq_draft", JSON.stringify(draft)); } catch (e) {}
+  }
+  function loadDraft() {
+    try {
+      var raw = localStorage.getItem("amq_draft");
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (!d || !Array.isArray(d.sel)) return;
+      draft.nick = typeof d.nick === "string" ? d.nick.slice(0, 12) : "";
+      draft.sel = d.sel.filter(function (x) { return typeof x === "number" && x >= 0 && x < QB.length; }).slice(0, NQ);
+      draft.ans = (d.ans && typeof d.ans === "object") ? d.ans : {};
+      draft.cust = (d.cust && typeof d.cust === "object") ? d.cust : {};
+    } catch (e) {}
+  }
+
+  /* ── STEP 1~2: 문항 고르기 ── */
+  function renderTabs() {
+    var out = '<button type="button" class="tab' + (tab === "전체" ? " on" : "") + '" data-t="전체">전체</button>';
+    for (var i = 0; i < CATO.length; i++) {
+      var c = CATO[i];
+      out += '<button type="button" class="tab' + (tab === c ? " on" : "") + '" data-t="' + c + '">' + CATN[c] + '</button>';
+    }
+    $("cTabs").innerHTML = out;
+  }
+  function renderList() {
+    var out = "", full = draft.sel.length >= NQ;
+    for (var i = 0; i < QB.length; i++) {
+      if (tab !== "전체" && QB[i][0] !== tab) continue;
+      var on = draft.sel.indexOf(i) >= 0;
+      out += '<button type="button" class="qrow' + (on ? " on" : "") + '" data-i="' + i + '"' + (!on && full ? " disabled" : "") + '>' +
+        '<span class="qt"><span class="tagc">' + CATN[QB[i][0]] + '</span>' + SK.esc(QB[i][1]) + '</span>' +
+        '<span class="qo">' + SK.esc(QB[i][2].join(" · ")) + '</span></button>';
+    }
+    $("cList").innerHTML = out;
+    $("cCount").textContent = draft.sel.length;
+    $("cNext").disabled = draft.sel.length !== NQ;
+  }
+  function renderCreate() { renderTabs(); renderList(); $("cNick").value = draft.nick; }
+
+  $("cTabs").addEventListener("click", function (e) {
+    var b = e.target.closest(".tab"); if (!b) return;
+    tab = b.getAttribute("data-t"); renderTabs(); renderList();
+  });
+  $("cList").addEventListener("click", function (e) {
+    var b = e.target.closest(".qrow"); if (!b || b.disabled) return;
+    var id = +b.getAttribute("data-i"), at = draft.sel.indexOf(id);
+    if (at >= 0) { draft.sel.splice(at, 1); delete draft.ans[id]; }
+    else { if (draft.sel.length >= NQ) return; draft.sel.push(id); }
+    renderList(); saveDraft();
+  });
+  $("cNick").addEventListener("input", function () { draft.nick = this.value; saveDraft(); });
+  $("cRandom").addEventListener("click", function () {
+    /* 카테고리별 2개씩 균형 있게 추천 */
+    var rnd = SK.prng((Date.now() ^ Math.floor(Math.random() * 1e9)) >>> 0), out = [];
+    for (var c = 0; c < CATO.length; c++) {
+      var pool = [];
+      for (var i = 0; i < QB.length; i++) if (QB[i][0] === CATO[c]) pool.push(i);
+      pool = SK.shuffle(rnd, pool);
+      out.push(pool[0], pool[1]);
+    }
+    draft.sel = SK.shuffle(rnd, out).slice(0, NQ);
+    draft.ans = {};
+    renderList(); saveDraft();
+    SK.toast("문항 10개를 골랐어요. 마음에 안 들면 눌러서 빼세요");
+  });
+  $("cNext").addEventListener("click", function () {
+    if (draft.sel.length !== NQ) return;
+    if (!SK.nick(draft.nick, "")) { SK.toast("닉네임을 먼저 적어 주세요"); $("cNick").focus(); return; }
+    renderAnswer(); show("scAnswer");
+  });
+
+  /* ── STEP 3: 내 답 고르기 + 선택지 편집 ── */
+  function renderAnswer() {
+    var out = "";
+    for (var n = 0; n < draft.sel.length; n++) {
+      var id = draft.sel[n], o = draftOpts(id), custom = !!draft.cust[id];
+      out += '<div class="qedit" data-q="' + id + '">' +
+        '<p class="qh"><span class="num">Q' + (n + 1) + '.</span>' + SK.esc(QB[id][1]) + '</p><div class="opts">';
+      for (var k = 0; k < 4; k++) {
+        out += '<button type="button" class="opt' + (draft.ans[id] === k ? " on" : "") + '" data-k="' + k + '">' + SK.esc(o[k]) + '</button>';
+      }
+      out += '</div><button type="button" class="lnkbtn" data-edit="1">✏️ 선택지 직접 고치기' + (custom ? " (수정됨)" : "") + '</button>' +
+        '<div class="editbox" style="display:none">';
+      for (var j = 0; j < 4; j++) {
+        out += '<input type="text" maxlength="20" data-e="' + j + '" value="' + SK.esc(o[j]) + '" placeholder="선택지 ' + (j + 1) + '" />';
+      }
+      out += '<button type="button" class="mini ghost" data-reset="1">기본 선택지로 되돌리기</button></div></div>';
+    }
+    $("aHost").innerHTML = out;
+    syncAnswerCount();
+  }
+  function syncAnswerCount() {
+    var n = 0;
+    for (var i = 0; i < draft.sel.length; i++) if (typeof draft.ans[draft.sel[i]] === "number") n++;
+    $("aCount").textContent = n;
+    $("aMake").disabled = n !== draft.sel.length || draft.sel.length !== NQ;
+  }
+  $("aHost").addEventListener("click", function (e) {
+    var box = e.target.closest(".qedit"); if (!box) return;
+    var id = +box.getAttribute("data-q");
+    var opt = e.target.closest(".opt");
+    if (opt) {
+      draft.ans[id] = +opt.getAttribute("data-k");
+      var all = box.querySelectorAll(".opt");
+      for (var i = 0; i < all.length; i++) all[i].classList.toggle("on", all[i] === opt);
+      syncAnswerCount(); saveDraft(); return;
+    }
+    if (e.target.closest("[data-edit]")) {
+      var eb = box.querySelector(".editbox");
+      eb.style.display = eb.style.display === "none" ? "block" : "none";
+      return;
+    }
+    if (e.target.closest("[data-reset]")) {
+      delete draft.cust[id]; saveDraft(); renderAnswer();
+      SK.toast("기본 선택지로 되돌렸어요");
+    }
+  });
+  $("aHost").addEventListener("input", function (e) {
+    var inp = e.target.closest("input[data-e]"); if (!inp) return;
+    var box = e.target.closest(".qedit"), id = +box.getAttribute("data-q"), k = +inp.getAttribute("data-e");
+    if (!draft.cust[id]) draft.cust[id] = QB[id][2].slice();
+    var v = SK.nick(inp.value, "").slice(0, 20);
+    draft.cust[id][k] = v || QB[id][2][k];
+    var btn = box.querySelectorAll(".opt")[k];
+    if (btn) btn.textContent = draft.cust[id][k];
+    saveDraft();
+  });
+  $("aBack").addEventListener("click", function () { renderCreate(); show("scCreate"); });
+
+  /* ── 퀴즈 상태 만들기 ── */
+  function buildQuiz() {
+    var nk = SK.nick(draft.nick, "익명"), q = [];
+    for (var i = 0; i < draft.sel.length; i++) {
+      var id = draft.sel[i], c = draft.cust[id], custom = 0;
+      if (c) {
+        var base = QB[id][2], diff = false;
+        for (var k = 0; k < 4; k++) if (c[k] !== base[k]) diff = true;
+        if (diff) custom = [String(c[0]), String(c[1]), String(c[2]), String(c[3])];
+      }
+      q.push([id, custom, xorAns(nk, id, draft.ans[id] | 0)]);
+    }
+    return { v: 1, n: nk, q: q };
+  }
+  $("aMake").addEventListener("click", function () {
+    var st = buildQuiz(), sz = SK.sizeOf(st);
+    if (!sz.ok) { SK.toast("선택지 문구가 너무 길어요. 조금 줄여 주세요"); return; }
+    quiz = st; chained = false;
+    var url = SK.stateUrl(st);
+    SK.writeState(st);
+    $("mTitle").textContent = st.n + "님의 퀴즈가 만들어졌어요";
+    $("mLink").textContent = url;
+    show("scMade");
+    SK.toast("링크가 준비됐어요");
+  });
+
+  /* ── 출제 완료 화면 공유 ── */
+  function quizUrl() { return SK.stateUrl({ v: 1, n: quiz.n, q: quiz.q, r: quiz.r || [] }); }
+  function quizText() {
+    return "[나를 맞혀봐 퀴즈] " + quiz.n + "에 대한 10문항, 몇 개나 맞힐 수 있어? 풀고 점수 캡처해서 보내줘!";
+  }
+  $("mCopy").addEventListener("click", function () {
+    SK.copy(quizUrl()).then(function (ok) { SK.toast(ok ? "링크를 복사했어요. 단톡방에 붙여넣으세요" : "복사에 실패했어요"); });
+  });
+  $("mText").addEventListener("click", function () {
+    SK.copy(quizText() + "\n" + quizUrl()).then(function (ok) { SK.toast(ok ? "공유 문구를 복사했어요" : "복사에 실패했어요"); });
+  });
+  $("mX").addEventListener("click", function () { window.open(SK.xUrl(quizText(), quizUrl()), "_blank", "noopener"); });
+  $("mShare").addEventListener("click", function () { SK.share({ title: "나를 맞혀봐 퀴즈", text: quizText(), url: quizUrl() }); });
+  $("mPreview").addEventListener("click", function () { openIntro(); });
+  $("mRemix").addEventListener("click", function () { renderCreate(); show("scCreate"); SK.toast("이전 문항이 그대로 있어요. 바꿔서 다시 만들어 보세요"); });
+
+  /* ── 인바운드 / 풀기 ── */
+  function openIntro() {
+    $("iTitle").textContent = quiz.n + "를(을) 얼마나 알아?";
+    $("iSub").textContent = quiz.q.length + "문항, 1분이면 끝나요. 정답은 " + quiz.n + "님이 직접 골라 둔 '진짜 내 답'입니다.";
+    show("scIntro");
+  }
+  $("iStart").addEventListener("click", function () {
+    var nk = SK.nick($("iNick").value, "");
+    if (!nk) { SK.toast("닉네임을 적어 주세요"); $("iNick").focus(); return; }
+    solver.nick = nk; solver.i = 0; solver.picks = [];
+    renderSolve(); show("scSolve");
+  });
+  $("iMake").addEventListener("click", goCreate);
+
+  function renderSolve() {
+    var it = quiz.q[solver.i], o = optsOfItem(it);
+    $("sNum").textContent = solver.i + 1;
+    $("sTot").textContent = quiz.q.length;
+    $("sBar").style.width = Math.round((solver.i + 1) / quiz.q.length * 100) + "%";
+    $("sQ").textContent = QB[it[0]][1];
+    var out = "";
+    for (var k = 0; k < 4; k++) {
+      out += '<button type="button" class="opt' + (solver.picks[solver.i] === k ? " on" : "") + '" data-k="' + k + '">' + SK.esc(o[k]) + '</button>';
+    }
+    $("sOpts").innerHTML = out;
+    $("sPrev").disabled = solver.i === 0;
+  }
+  $("sOpts").addEventListener("click", function (e) {
+    var b = e.target.closest(".opt"); if (!b) return;
+    solver.picks[solver.i] = +b.getAttribute("data-k");
+    if (solver.i + 1 < quiz.q.length) { solver.i++; renderSolve(); }
+    else finishSolve();
+  });
+  $("sPrev").addEventListener("click", function () { if (solver.i > 0) { solver.i--; renderSolve(); } });
+
+  /* ── 채점(결정론) ── */
+  function trueAns(it) { return xorAns(quiz.n, it[0], it[2]); }
+  function scoreOf(picks) {
+    var s = 0;
+    for (var i = 0; i < quiz.q.length; i++) if (picks[i] === trueAns(quiz.q[i])) s++;
+    return s;
+  }
+  function pctOf(s) { return Math.round(s / quiz.q.length * 100); }
+  function commentOf(p) {
+    if (p >= 100) return "만점! 이건 거의 같은 사람 아닌가요? 완전 통했어요.";
+    if (p >= 80) return "거의 다 맞혔어요. 서로를 잘 아는 사이가 분명합니다.";
+    if (p >= 60) return "절반 이상 정답! 꽤 잘 아는 편이에요.";
+    if (p >= 40) return "반은 맞고 반은 빗나갔어요. 앞으로가 더 재밌겠는데요?";
+    if (p >= 20) return "조금 아쉬워요. 오늘 대화 주제가 생겼습니다.";
+    return "지금부터 알아가면 돼요. 다음엔 꼭 만회하세요!";
+  }
+
+  function finishSolve() {
+    lastScore = scoreOf(solver.picks);
+    var p = pctOf(lastScore);
+    $("rBig").textContent = p + "%";
+    $("rSub").textContent = solver.nick + "님은 " + quiz.n + "님을 " + lastScore + "/" + quiz.q.length + " 맞혔어요";
+    $("rCmt").textContent = commentOf(p);
+    var out = "";
+    for (var i = 0; i < quiz.q.length; i++) {
+      var it = quiz.q[i], o = optsOfItem(it), t = trueAns(it), my = solver.picks[i];
+      var ok = my === t;
+      out += '<div class="rev"><p class="rq"><span class="mk ' + (ok ? "o" : "x") + '">' + (ok ? "O" : "X") + '</span>Q' + (i + 1) + '. ' + SK.esc(QB[it[0]][1]) + '</p>' +
+        '<p class="ra">내 답 <i>' + SK.esc(o[my] === undefined ? "-" : o[my]) + '</i> · 정답 <b>' + SK.esc(o[t]) + '</b></p></div>';
+    }
+    $("rRev").innerHTML = out;
+    chained = false; chainUrl = "";
+    $("rChain").disabled = false;
+    $("rLink").style.display = "none";
+    $("rShareBox").style.display = "none";
+    show("scResult");
+  }
+
+  /* ── 체인(되받아치기) ── */
+  $("rChain").addEventListener("click", function () {
+    if (chained) return;
+    var res = SK.appendChain(quiz.r || [], [solver.nick, lastScore, solver.picks.slice()], MAXP);
+    if (!res.ok) { SK.toast("한 링크에는 최대 " + MAXP + "명까지만 쌓을 수 있어요"); return; }
+    var next = { v: 1, n: quiz.n, q: quiz.q, r: res.list }, sz = SK.sizeOf(next);
+    if (!sz.ok) { SK.toast("링크가 너무 길어졌어요. 새 퀴즈 링크로 이어가 주세요"); return; }
+    quiz = next; chained = true; chainUrl = SK.stateUrl(next);
+    SK.writeState(next);
+    $("rLink").textContent = chainUrl;
+    $("rLink").style.display = "block";
+    $("rShareBox").style.display = "grid";
+    $("rChain").disabled = true;
+    SK.toast(sz.warn ? "링크가 길어졌어요. 곧 인원이 가득 찹니다" : "내 점수가 담긴 링크를 만들었어요");
+  });
+  function chainText() {
+    return "[나를 맞혀봐 퀴즈] " + solver.nick + " " + pctOf(lastScore) + "% (" + lastScore + "/" + quiz.q.length + ") · " + quiz.n + "님 퀴즈. 너도 풀어봐!";
+  }
+  $("rCopy").addEventListener("click", function () {
+    SK.copy(chainUrl).then(function (ok) { SK.toast(ok ? "링크를 복사했어요. 단톡방에 올려 주세요" : "복사에 실패했어요"); });
+  });
+  $("rText").addEventListener("click", function () {
+    SK.copy(chainText() + "\n" + chainUrl).then(function (ok) { SK.toast(ok ? "공유 문구를 복사했어요" : "복사에 실패했어요"); });
+  });
+  $("rX").addEventListener("click", function () { window.open(SK.xUrl(chainText(), chainUrl || quizUrl()), "_blank", "noopener"); });
+  $("rShare").addEventListener("click", function () { SK.share({ title: "나를 맞혀봐 퀴즈", text: chainText(), url: chainUrl || quizUrl() }); });
+  $("rRetry").addEventListener("click", function () { solver.i = 0; solver.picks = []; renderSolve(); show("scSolve"); });
+  $("rMine").addEventListener("click", goCreate);
+
+  /* ── 결과 카드 PNG ── */
+  $("rSave").addEventListener("click", function () {
+    var c = SK.card("card"), ctx = c.ctx, W = c.W, H = c.H, F = c.font;
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, "#0c4a6e"); g.addColorStop(0.5, "#0369a1"); g.addColorStop(1, "#38bdf8");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    var rg = ctx.createRadialGradient(W - 170, 150, 10, W - 170, 150, 360);
+    rg.addColorStop(0, "rgba(255,255,255,.26)"); rg.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+    var P = 88;
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#bae6fd"; ctx.font = "800 30px " + F;
+    ctx.fillText("A B O U T   M E   Q U I Z", P, 118);
+    ctx.fillStyle = "#e0f2fe"; ctx.font = "700 38px " + F;
+    SK.wrapText(ctx, "출제 " + quiz.n + "  ·  도전 " + solver.nick, P, 176, W - P * 2, 50, 2);
+    ctx.fillStyle = "#ffffff"; ctx.font = "900 210px " + F;
+    ctx.fillText(pctOf(lastScore) + "%", P, 300);
+    ctx.fillStyle = "#e0f2fe"; ctx.font = "700 44px " + F;
+    SK.wrapText(ctx, quiz.n + "님을 " + lastScore + " / " + quiz.q.length + " 맞혔어요", P, 560, W - P * 2, 58, 2);
+    ctx.fillStyle = "rgba(255,255,255,.16)";
+    SK.roundRect(ctx, P, 690, W - P * 2, 250, 30); ctx.fill();
+    ctx.fillStyle = "#f0f9ff"; ctx.font = "600 40px " + F;
+    SK.wrapText(ctx, commentOf(pctOf(lastScore)), P + 36, 736, W - P * 2 - 72, 56, 3);
+    ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.font = "800 36px " + F;
+    ctx.fillText("나도 풀어보기 →", P, 1010);
+    ctx.fillStyle = "rgba(255,255,255,.72)"; ctx.font = "600 32px " + F;
+    ctx.fillText(WM, P, 1070);
+    SK.watermark(ctx, W, H, WM);
+    SK.sharePng(c.cv, "aboutme-quiz.png", "나를 맞혀봐 퀴즈").then(function () { SK.toast("점수 카드를 저장했어요"); });
+  });
+
+  /* ── 랭킹 ── */
+  function showRank() {
+    var list = quiz.r || [], rows = [], i;
+    for (i = 0; i < list.length; i++) {
+      var e = list[i];
+      var sc = Array.isArray(e[2]) ? scoreOf(e[2]) : (typeof e[1] === "number" ? e[1] : 0);
+      rows.push({ n: SK.nick(e[0], "익명"), s: sc, i: i });
+    }
+    rows.sort(function (a, b) { return b.s - a.s || a.i - b.i; });
+    var sum = 0;
+    for (i = 0; i < rows.length; i++) sum += rows[i].s;
+    var avg = rows.length ? Math.round(sum / rows.length / quiz.q.length * 100) : 0;
+    $("kTitle").textContent = quiz.n + "님을 제일 잘 아는 사람은?";
+    $("kSub").textContent = "참여 " + rows.length + "명 / 최대 " + MAXP + "명 · 평균 " + avg + "% · 문항 " + quiz.q.length + "개";
+    var medal = ["🥇", "🥈", "🥉"], out = "";
+    for (i = 0; i < rows.length; i++) {
+      out += '<div class="rk"><span class="m">' + (medal[i] || (i + 1)) + '</span>' +
+        '<span class="n">' + SK.esc(rows[i].n) + '</span>' +
+        '<span class="s">' + Math.round(rows[i].s / quiz.q.length * 100) + '% <small>(' + rows[i].s + '/' + quiz.q.length + ')</small></span></div>';
+    }
+    if (!out) out = '<div class="rk"><span class="m">-</span><span class="n">아직 아무도 안 풀었어요</span><span class="s">0%</span></div>';
+    $("kList").innerHTML = out;
+    show("scRank");
+  }
+  $("kSolve").addEventListener("click", function () { openIntro(); });
+  $("kCopy").addEventListener("click", function () {
+    SK.copy(quizUrl()).then(function (ok) { SK.toast(ok ? "랭킹 링크를 복사했어요" : "복사에 실패했어요"); });
+  });
+  $("kShare").addEventListener("click", function () {
+    SK.share({ title: "나를 맞혀봐 퀴즈 랭킹", text: quiz.n + "님 퀴즈 랭킹, 너도 도전해봐!", url: quizUrl() });
+  });
+  $("kMine").addEventListener("click", goCreate);
+
+  /* ── '나도 만들기' 진입 ── */
+  function goCreate() {
+    SK.clearState();
+    $("inbound").classList.remove("on");
+    renderCreate(); show("scCreate");
+  }
+  $("meToo").addEventListener("click", goCreate);
+
+  /* ── 상태 검증 ── */
+  function validate(s) {
+    if (!s || s.v !== 1 || typeof s.n !== "string" || !Array.isArray(s.q)) return null;
+    if (s.q.length < 1 || s.q.length > NQ) return null;
+    var q = [], i, k;
+    for (i = 0; i < s.q.length; i++) {
+      var it = s.q[i];
+      if (!Array.isArray(it) || it.length < 3) return null;
+      var id = it[0];
+      if (typeof id !== "number" || !(id >= 0 && id < QB.length)) return null;
+      var c = it[1], cc = 0;
+      if (c !== 0) {
+        if (!Array.isArray(c) || c.length !== 4) return null;
+        cc = [];
+        for (k = 0; k < 4; k++) {
+          if (typeof c[k] !== "string") return null;
+          cc.push(SK.nick(c[k], QB[id][2][k]).slice(0, 20));
+        }
+      }
+      var a = it[2];
+      if (typeof a !== "number" || a < 0 || a > 3) return null;
+      q.push([id, cc, a | 0]);
+    }
+    var r = [];
+    if (Array.isArray(s.r)) {
+      for (i = 0; i < s.r.length && r.length < MAXP; i++) {
+        var e = s.r[i];
+        if (!Array.isArray(e) || e.length < 3) continue;
+        if (!Array.isArray(e[2])) continue;
+        var pk = [];
+        for (k = 0; k < q.length; k++) pk.push(typeof e[2][k] === "number" && e[2][k] >= 0 && e[2][k] <= 3 ? e[2][k] | 0 : -1);
+        r.push([SK.nick(e[0], "익명"), typeof e[1] === "number" ? e[1] | 0 : 0, pk]);
+      }
+    }
+    return { v: 1, n: SK.nick(s.n, "익명"), q: q, r: r };
+  }
+
+  /* ── 초기 로드 ── */
+  (function init() {
+    var st = validate(SK.readState());
+    if (st) {
+      quiz = st;
+      $("inbound").classList.add("on");
+      if (quiz.r && quiz.r.length) {
+        $("inboundMsg").innerHTML = "친구들이 <b>" + SK.esc(quiz.n) + "</b>님 퀴즈를 푸는 중이에요.";
+        showRank();
+      } else {
+        $("inboundMsg").innerHTML = "<b>" + SK.esc(quiz.n) + "</b>님이 <b>나를 맞혀봐 퀴즈</b>를 보냈어요.";
+        openIntro();
+      }
+      return;
+    }
+    loadDraft();
+    renderCreate();
+    show("scCreate");
+    if (draft.sel.length) SK.toast("이전에 만들던 문항을 불러왔어요");
+  })();
+})();
+</script>
+</body>
+</html>
