@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="index,follow,max-image-preview:large" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>Korean Honorifics Quiz — 15 Questions on Oppa, Sunbae, -ssi and -nim | TomatoEggCat</title>
+<meta name="description" content="A 15-question quiz on Korean address terms: oppa and hyung, sunbae and hoobae, name + -ssi, job title + -nim, in-law titles and the 2023 Korean age law. Every answer comes with the reason. Score card and challenge link included." />
+<link rel="canonical" href="https://tomatoeggcat.com/whatdoicallthem/quiz/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="Korean Honorifics Quiz — 15 Questions" />
+<meta property="og:description" content="Do you know when to say oppa and when to say hyung? Fifteen questions on Korean address terms, with the reasoning behind every answer." />
+<meta property="og:url" content="https://tomatoeggcat.com/whatdoicallthem/quiz/" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Korean Honorifics Quiz — 15 Questions" />
+<meta name="twitter:description" content="Fifteen questions on Korean address terms, with the reasoning behind every answer." />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Quiz","name":"Korean Honorifics Quiz","description":"Fifteen multiple-choice questions on Korean address terms, speech levels and the seniority rules behind them.","educationalLevel":"beginner","inLanguage":"en","url":"https://tomatoeggcat.com/whatdoicallthem/quiz/","about":{"@type":"Thing","name":"Korean honorifics"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How is the quiz scored?","acceptedAnswer":{"@type":"Answer","text":"There are fifteen questions worth one point each. You see whether you were right immediately, along with the reason, and the running score sits at the top of the screen. At the end you get a grade band and a card you can save or share."}},
+{"@type":"Question","name":"Do I need to read Hangul to take it?","acceptedAnswer":{"@type":"Answer","text":"No. Every Korean word in the quiz is written in Hangul with Revised Romanization next to it, and the questions themselves are in English. Reading Hangul will make it faster but it is not required."}},
+{"@type":"Question","name":"Is my score stored anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. The quiz runs entirely in your browser and there is no account or database. When you copy a challenge link, the score is encoded in the address after ?r= rather than saved on a server."}}
+]},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Home","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"What Do I Call Them?","item":"https://tomatoeggcat.com/whatdoicallthem/"},
+{"@type":"ListItem","position":3,"name":"Honorifics Quiz","item":"https://tomatoeggcat.com/whatdoicallthem/quiz/"}
+]}
+]}
+</script>
+<link rel="stylesheet" href="/whatdoicallthem/titles/style.css" />
+<style>
+.bar{display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:12px 14px;background:#111;border:1px solid #2a2a2a;border-radius:12px;font-size:13px;color:#9ca3af}
+.bar .prog{flex:1;height:8px;background:#222;border-radius:999px;overflow:hidden}
+.bar .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#60a5fa,#a78bfa);transition:width .25s}
+.bar b{color:var(--acc2);font-variant-numeric:tabular-nums}
+.qcard{border:1px solid #262626;background:#161616;border-radius:18px;padding:20px;margin-bottom:18px}
+.qnum{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-weight:800}
+.qtext{font-size:18px;font-weight:700;color:#f3f4f6;margin:6px 0 16px;line-height:1.45}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;padding:13px 14px;background:#0f0f0f;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;min-height:52px;color:#d6d6d6;font-size:15px;line-height:1.45;transition:.12s}
+.opt .mk{flex:0 0 24px;width:24px;height:24px;border-radius:8px;border:2px solid #444;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#0a0a0a}
+.opt:hover:not(:disabled){border-color:#3d5b80}
+.opt:disabled{cursor:default}
+.opt.right{border-color:#22c55e;background:rgba(34,197,94,.1)}
+.opt.right .mk{background:#22c55e;border-color:#22c55e}
+.opt.wrong{border-color:#ef4444;background:rgba(239,68,68,.1)}
+.opt.wrong .mk{background:#ef4444;border-color:#ef4444}
+.expl{display:none;margin:14px 0 0;padding:13px 15px;background:#0d1726;border:1px solid #1e3a5f;border-radius:12px;font-size:14px;color:#c9d8ea}
+.expl.show{display:block}
+.expl b{color:var(--acc2)}
+.next{margin-top:14px}
+button.solid{width:100%;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#08172c;font-size:16px;font-weight:800;cursor:pointer;min-height:48px}
+button.wide{width:100%;margin-top:0}
+#final{display:none}
+.mock{background:linear-gradient(160deg,#101c2e,#161616);border:1px solid #24405f;border-radius:18px;padding:26px 20px;text-align:center;margin-bottom:16px}
+.mock .pre{font-size:12px;color:#93b4d8;letter-spacing:.1em;text-transform:uppercase;font-weight:800}
+.mock .score{font-size:64px;font-weight:900;color:#fff;line-height:1.1;margin:8px 0 0}
+.mock .score small{font-size:26px;color:#93b4d8}
+.mock .grade{font-size:22px;font-weight:800;color:var(--acc2);margin-top:6px}
+.mock .blurb{font-size:14px;color:#9ca3af;margin-top:10px}
+.mock .mMark{margin-top:18px;font-size:12px;color:#5b7ea6}
+.shareRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.missed{margin:0 0 16px}
+.missed .m{padding:11px 13px;background:#0f0f0f;border:1px solid #2a2a2a;border-radius:12px;margin-bottom:8px;font-size:13.5px;color:#a3a3a3}
+.missed .m b{display:block;color:#e5e7eb;font-size:14px;margin-bottom:3px}
+.inbound{display:none;position:sticky;top:0;z-index:20;margin:-24px -18px 16px;padding:12px 18px;background:linear-gradient(90deg,#0b2545,#123a63);border-bottom:1px solid #1e4d7b}
+.inbound.show{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.inbound span{font-size:14px;color:#dbeafe;flex:1;min-width:150px}
+.inbound button{width:auto;padding:10px 18px;font-size:15px;border:0;border-radius:12px;background:var(--acc);color:#08172c;font-weight:800;cursor:pointer;min-height:44px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="inbound" id="inbound">
+  <span id="inboundText">Someone challenged you.</span>
+  <button id="inboundBtn" type="button">Take the quiz →</button>
+</div>
+
+<nav class="nav"><a href="/">Home</a> › <a href="/whatdoicallthem/">What Do I Call Them?</a> › Quiz</nav>
+
+<header>
+  <h1>Korean Honorifics Quiz</h1>
+  <p class="lead">Fifteen questions on who says 오빠 and who says 형, why 선배 has nothing to do with age, and what happens to all of it inside a Korean office. Every answer comes with the reason.</p>
+</header>
+
+<div class="bar">
+  <span>Question <b id="qPos">1</b> / 15</span>
+  <span class="prog"><i id="progBar"></i></span>
+  <span>Score <b id="scoreNow">0</b></span>
+</div>
+
+<section class="qcard" id="quizCard">
+  <div class="qnum" id="qNum">Question 1</div>
+  <div class="qtext" id="qText"></div>
+  <div class="opts" id="optBox"></div>
+  <div class="expl" id="expl"></div>
+  <div class="next" id="nextWrap" style="display:none"><button class="solid" id="nextBtn" type="button">Next question →</button></div>
+</section>
+
+<section id="final">
+  <div class="mock">
+    <div class="pre">Korean Honorifics Quiz</div>
+    <div class="score"><span id="fScore">0</span><small>/15</small></div>
+    <div class="grade" id="fGrade"></div>
+    <div class="blurb" id="fBlurb"></div>
+    <div class="mMark">tomatoeggcat.com/whatdoicallthem</div>
+  </div>
+
+  <h2 style="font-size:18px;margin:0 0 10px">What you missed</h2>
+  <div class="missed" id="missedBox"></div>
+
+  <div class="shareRow">
+    <button class="solid" id="saveBtn" type="button">🖼 Save card</button>
+    <button class="ghost wide" id="copyLinkBtn" type="button">🔗 Challenge a friend</button>
+    <button class="ghost wide" id="copyTextBtn" type="button">📋 Copy text</button>
+    <button class="ghost wide" id="xBtn" type="button">𝕏 Post</button>
+  </div>
+  <div class="shareRow" id="nsRow" style="display:none"><button class="ghost wide" id="nativeShareBtn" type="button" style="grid-column:1 / -1">📲 Share…</button></div>
+  <div class="shareRow"><button class="ghost wide" id="retryBtn" type="button" style="grid-column:1 / -1">🔁 Try again</button></div>
+
+  <div class="adsWrap">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="cta">
+    <p>Now put it to work on a real person.</p>
+    <a class="btn" href="/whatdoicallthem/">Run the title calculator →</a>
+  </div>
+</section>
+
+<article class="about">
+  <h2>What this quiz is testing</h2>
+  <p>Korean address terms are one of the few parts of the language where a learner can be grammatically perfect and still land badly. The verb endings are teachable in a week; knowing that a 32-year-old team leader outranks a 45-year-old subordinate, or that 후배 is a word you use about someone and never to them, takes longer because it is social knowledge rather than grammar. These fifteen questions cover the decisions that come up most: the four kinship terms and the speaker-gender rule behind them, the entry-order pair 선배 and 후배, the two suffixes -씨 and -님, what happens in an office, what to say to a stranger, and the age arithmetic that sits underneath all of it.</p>
+  <p>Nothing here is trick knowledge. Every answer is explained the moment you choose, so a wrong guess still teaches you the rule, and the summary at the end lists only the ones you got wrong so you know where to read next. If you want the underlying reference rather than the test, each term has its own page in the <a href="/whatdoicallthem/titles/">title reference</a>, and the <a href="/whatdoicallthem/guide/korean-honorifics-101/">honorifics guide</a> covers the speech levels the quiz assumes.</p>
+
+  <h2>Frequently asked questions</h2>
+  <dl class="faq">
+    <dt>Q. How is the quiz scored?</dt>
+    <dd>Fifteen questions, one point each. You find out immediately whether you were right, with the reason, and the running score sits at the top. At the end you get a grade band and a card you can save.</dd>
+    <dt>Q. Do I need to read Hangul?</dt>
+    <dd>No. Every Korean word appears in Hangul with Revised Romanization beside it, and the questions are in English throughout.</dd>
+    <dt>Q. Is my score stored anywhere?</dt>
+    <dd>No. Everything runs in your browser. A challenge link carries the score inside the address after <code>?r=</code>, not on a server.</dd>
+  </dl>
+
+  <div class="rel">
+    <a href="/whatdoicallthem/">🇰🇷 Title calculator</a>
+    <a href="/whatdoicallthem/titles/">📚 Title reference</a>
+    <a href="/whatdoicallthem/guide/korean-honorifics-101/">📖 Honorifics 101</a>
+    <a href="/whatdoicallthem/guide/age-hierarchy-explained/">🪜 Age hierarchy</a>
+    <a href="/">🍅 All tools</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/about.html">About</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/contact.html">Contact</a>
+  <div style="margin-top:8px">© TomatoEggCat</div>
+</footer>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+var Q=[
+{q:"You are a man. A close friend of yours is a woman three years older. What do you call her?",
+ o:["누나 (nuna)","언니 (eonni)","오빠 (oppa)","선배 (seonbae)"],a:0,
+ e:"누나 is what a male speaker calls an older female. 언니 is the same slot but for a female speaker — the four kinship terms encode who is speaking as well as who is listening."},
+{q:"You are a woman. An older male classmate you are close to. What do you call him?",
+ o:["형 (hyeong)","오빠 (oppa)","아저씨 (ajeossi)","도련님 (doryeon-nim)"],a:1,
+ e:"오빠 for a female speaker; a male classmate in exactly your position would say 형. 아저씨 is for a middle-aged stranger and 도련님 is an in-law title."},
+{q:"Which statement about 선배 (seonbae) is true?",
+ o:["It always means someone older than you","It only applies to men","It means someone who joined before you, whatever their age","It is only used at work"],a:2,
+ e:"선배 tracks entry order, not birth year. After military service or a repeated entrance exam, a 선배 younger than you is completely ordinary — and the term is gender-neutral."},
+{q:"How do you address a university junior to their face?",
+ o:["후배 (hubae)","후배님 (hubae-nim)","Their given name","동생 (dongsaeng)"],a:2,
+ e:"후배 is a description, not a form of address, and -님 does not rescue it. You call a junior by name — 지우야 if you are close, 지우 씨 if you are not."},
+{q:"Your team leader at work is five years younger than you. What do you call them?",
+ o:["팀장님 (timjang-nim)","동생 (dongsaeng)","이름 + 야","오빠 / 언니"],a:0,
+ e:"Rank outranks age inside a company, comprehensively. The position plus -님 is correct regardless of who was born first, and nobody finds it awkward."},
+{q:"Where does the suffix 씨 (-ssi) go?",
+ o:["On the family name: 김 씨","On the given name: 지우 씨","On a job title: 팀장 씨","On a username: 토마토 씨"],a:1,
+ e:"씨 attaches to the given name or full name. Family name alone plus 씨 sounds curt, and job titles and usernames take -님 instead."},
+{q:"Someone was born in the same calendar year as you. What is that relationship called?",
+ o:["선배 (seonbae)","동갑 (dongap)","후배 (hubae)","사촌 (sachon)"],a:1,
+ e:"동갑 — the one configuration with no senior and no junior. Same-year pairs usually move to first names and casual speech almost immediately."},
+{q:"You need to get a stranger's attention in a restaurant. What is the safe choice?",
+ o:["아줌마 (ajumma)","아저씨 (ajeossi)","저기요 (jeogiyo)","야 (ya)"],a:2,
+ e:"저기요 assumes nothing about age or gender, which is exactly why it works everywhere. Once they turn round, upgrade to 사장님 or 선생님."},
+{q:"Calling a middle-aged woman you do not know 아줌마 is…",
+ o:["Neutral and standard","Risky — many hear it as an insult","The most polite option","Only used in writing"],a:1,
+ e:"The dictionary meaning is neutral, but the word carries a stereotype about age and manners. 아주머니 is the neutral form; 저기요 followed by 사장님 or 선생님 is safer still."},
+{q:"이모 (imo) refers specifically to…",
+ o:["Your father's sister","Your mother's sister","Any older woman","Your father's brother's wife"],a:1,
+ e:"Korean names the two sides of the family separately: 이모 is the mother's sister, 고모 the father's sister. It is also used affectionately for the woman running a small restaurant."},
+{q:"Your close friend's given name is 지우 (Jiu). How do you call out to them?",
+ o:["지우아","지우야","지우씨야","지우님아"],a:1,
+ e:"야 follows a name ending in a vowel, 아 follows one ending in a consonant — 지우야 but 민준아. That is the whole rule."},
+{q:"You are in a Korean online game with someone whose age you do not know. What do you call them?",
+ o:["닉네임 + 님","형 / 언니","이름 + 야","저기요"],a:0,
+ e:"Handle plus -님 is the online default precisely because it works without knowing age, gender or position. Staying on it indefinitely is normal, not cold."},
+{q:"Which speech level should a learner default to in everyday situations?",
+ o:["반말 (banmal)","해요체 (haeyoche)","합쇼체 (hapsyoche)","하게체 (hageche)"],a:1,
+ e:"해요체 — polite but relaxed — covers shops, taxis, classmates and colleagues. 합쇼체 is for presentations and first business meetings; 반말 waits until it is offered."},
+{q:"A married woman addressing her husband's older brother says…",
+ o:["아주버님 (ajubeo-nim)","처남 (cheonam)","도련님 (doryeon-nim)","형 (hyeong)"],a:0,
+ e:"아주버님 is that exact slot. 도련님 is the husband's younger unmarried brother, and 처남 belongs to the other side — a man's word for his wife's younger brother."},
+{q:"What changed in Korean law on 28 June 2023?",
+ o:["Korean age was abolished entirely","International age (만 나이) became the legal default","The drinking age moved to 20","Birth-year seniority was banned"],a:1,
+ e:"만 나이 became the default for laws and contracts. Calendar-year age still governs school entry, conscription and the drinking age, and the traditional count survives in conversation."}
+];
+
+var idx=0,score=0,answered=false,missed=[],finished=false;
+function $(id){return document.getElementById(id);}
+function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._tm);t._tm=setTimeout(function(){t.classList.remove("show");},1800);}
+
+function grade(s){
+  if(s>=14)return {g:"원어민급 · Near-native",b:"You are not guessing. This is the level where Koreans stop explaining the rules to you."};
+  if(s>=11)return {g:"고급 · Advanced",b:"Solid. The gaps left are the situational ones — work hierarchy and in-law titles are where most people lose points."};
+  if(s>=8) return {g:"중급 · Intermediate",b:"You have the kinship grid. Next step is the office rules and what to say to strangers."};
+  if(s>=5) return {g:"초급 · Beginner",b:"The basics are landing. Read the four kinship terms as a grid rather than one at a time — it clicks faster that way."};
+  return {g:"입문 · Just starting",b:"Nothing wrong with starting here. Begin with 이름 + 씨, which is never wrong, and add the rest one at a time."};
+}
+
+function render(){
+  var q=Q[idx];
+  answered=false;
+  $("qNum").textContent="Question "+(idx+1);
+  $("qText").textContent=q.q;
+  $("qPos").textContent=idx+1;
+  $("scoreNow").textContent=score;
+  $("progBar").style.width=(idx/Q.length*100)+"%";
+  $("expl").classList.remove("show");
+  $("nextWrap").style.display="none";
+  var box=$("optBox");box.innerHTML="";
+  q.o.forEach(function(text,i){
+    var b=document.createElement("button");
+    b.type="button";b.className="opt";
+    var mk=document.createElement("span");mk.className="mk";mk.textContent=String.fromCharCode(65+i);
+    var tx=document.createElement("span");tx.textContent=text;
+    b.appendChild(mk);b.appendChild(tx);
+    b.onclick=function(){choose(i);};
+    box.appendChild(b);
+  });
+}
+
+function choose(i){
+  if(answered)return;
+  answered=true;
+  var q=Q[idx];
+  var buttons=$("optBox").querySelectorAll(".opt");
+  for(var k=0;k<buttons.length;k++){
+    buttons[k].disabled=true;
+    if(k===q.a)buttons[k].className="opt right";
+    else if(k===i)buttons[k].className="opt wrong";
+  }
+  if(i===q.a){score++;$("scoreNow").textContent=score;}
+  else missed.push({q:q.q,a:q.o[q.a],e:q.e});
+  $("expl").innerHTML="<b>"+(i===q.a?"Correct.":"The answer is "+q.o[q.a]+".")+"</b> "+q.e;
+  $("expl").classList.add("show");
+  $("nextBtn").textContent=(idx===Q.length-1)?"See my score →":"Next question →";
+  $("nextWrap").style.display="block";
+}
+
+function finish(){
+  finished=true;
+  var g=grade(score);
+  $("fScore").textContent=score;
+  $("fGrade").textContent=g.g;
+  $("fBlurb").textContent=g.b;
+  $("progBar").style.width="100%";
+  $("qPos").textContent=Q.length;
+  var mb=$("missedBox");mb.innerHTML="";
+  if(!missed.length){
+    var d=document.createElement("div");d.className="m";
+    d.innerHTML="<b>Nothing.</b> Full marks — there is nothing left to review here.";
+    mb.appendChild(d);
+  }else{
+    missed.forEach(function(m){
+      var d=document.createElement("div");d.className="m";
+      var b=document.createElement("b");b.textContent=m.q;
+      var s=document.createElement("span");s.textContent=m.a+" — "+m.e;
+      d.appendChild(b);d.appendChild(s);mb.appendChild(d);
+    });
+  }
+  $("quizCard").style.display="none";
+  $("final").style.display="block";
+  history.replaceState(null,"",location.pathname+"?r="+encodeScore());
+  $("final").scrollIntoView({behavior:"smooth"});
+}
+
+/* ---------- share state ---------- */
+function encodeScore(){
+  var s=btoa(unescape(encodeURIComponent(JSON.stringify({v:1,s:score,n:Q.length}))));
+  return s.replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function decodeScore(str){
+  try{
+    var b=String(str).replace(/-/g,"+").replace(/_/g,"/");
+    while(b.length%4)b+="=";
+    var o=JSON.parse(decodeURIComponent(escape(atob(b))));
+    if(!o||o.v!==1)return null;
+    var s=parseInt(o.s,10);
+    if(isNaN(s)||s<0||s>Q.length)return null;
+    return s;
+  }catch(e){return null;}
+}
+function resultURL(){return location.origin+location.pathname+"?r="+encodeScore();}
+function shareText(){
+  return "Korean Honorifics Quiz — I got "+score+"/"+Q.length+" ("+grade(score).g+")\nBeat me: "+resultURL();
+}
+function copy(text,msg){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallbackCopy(text,msg);});
+  }else fallbackCopy(text,msg);
+}
+function fallbackCopy(text,msg){
+  var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");toast(msg);}catch(e){toast("Copying failed");}
+  document.body.removeChild(ta);
+}
+
+/* ---------- score card ---------- */
+function drawCard(){
+  var W=1080,H=1350,g=grade(score);
+  var cv=document.createElement("canvas");cv.width=W;cv.height=H;
+  var ctx=cv.getContext("2d");
+  var F='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  var bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,"#0f172a");bg.addColorStop(.55,"#132a4a");bg.addColorStop(1,"#1e1b4b");
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="rgba(147,197,253,.35)";ctx.lineWidth=4;ctx.strokeRect(44,44,W-88,H-88);
+
+  ctx.textAlign="center";
+  ctx.fillStyle="#93c5fd";ctx.font="700 30px "+F;
+  ctx.fillText("K O R E A N   H O N O R I F I C S   Q U I Z",W/2,150);
+
+  ctx.fillStyle="#ffffff";ctx.font="900 260px "+F;
+  ctx.fillText(String(score),W/2,470);
+  ctx.fillStyle="rgba(191,219,254,.75)";ctx.font="800 70px "+F;
+  ctx.fillText("/ "+Q.length,W/2,560);
+
+  ctx.fillStyle="#bfdbfe";ctx.font="800 52px "+F;
+  ctx.fillText(g.g,W/2,680);
+
+  /* fifteen dots, filled for each correct answer */
+  var cols=5,r=26,gapX=96,gapY=96;
+  var startX=W/2-((cols-1)*gapX)/2, startY=790;
+  for(var i=0;i<Q.length;i++){
+    var cx=startX+(i%cols)*gapX, cy=startY+Math.floor(i/cols)*gapY;
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+    if(i<score){ctx.fillStyle="#60a5fa";ctx.fill();}
+    else{ctx.strokeStyle="rgba(147,197,253,.45)";ctx.lineWidth=4;ctx.stroke();}
+  }
+
+  ctx.fillStyle="rgba(191,219,254,.8)";ctx.font="400 32px "+F;
+  var words=g.b.split(" "),line="",lines=[];
+  for(var w=0;w<words.length;w++){
+    var trial=line?line+" "+words[w]:words[w];
+    if(ctx.measureText(trial).width>W-220&&line){lines.push(line);line=words[w];}else line=trial;
+  }
+  if(line)lines.push(line);
+  lines.slice(0,3).forEach(function(l,i){ctx.fillText(l,W/2,1110+i*44);});
+
+  ctx.fillStyle="rgba(147,197,253,.6)";ctx.font="600 28px "+F;
+  ctx.fillText("tomatoeggcat.com/whatdoicallthem",W/2,1270);
+  return cv;
+}
+
+/* ---------- wiring ---------- */
+$("nextBtn").onclick=function(){
+  if(idx===Q.length-1){finish();return;}
+  idx++;render();
+  $("quizCard").scrollIntoView({behavior:"smooth",block:"start"});
+};
+$("retryBtn").onclick=function(){
+  idx=0;score=0;missed=[];finished=false;
+  $("final").style.display="none";
+  $("quizCard").style.display="block";
+  history.replaceState(null,"",location.pathname);
+  render();
+  $("quizCard").scrollIntoView({behavior:"smooth"});
+};
+$("saveBtn").onclick=function(){
+  var cv=drawCard();
+  var a=document.createElement("a");
+  a.download="korean-honorifics-quiz-"+score+"of"+Q.length+".png";
+  a.href=cv.toDataURL("image/png");
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  toast("Saved the score card");
+};
+$("copyLinkBtn").onclick=function(){copy(resultURL(),"Challenge link copied");};
+$("copyTextBtn").onclick=function(){copy(shareText(),"Share text copied");};
+$("xBtn").onclick=function(){
+  var t="Korean Honorifics Quiz — I got "+score+"/"+Q.length+" 🇰🇷 Can you beat it?";
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultURL()),"_blank","noopener");
+};
+$("inboundBtn").onclick=function(){
+  $("inbound").classList.remove("show");
+  $("quizCard").scrollIntoView({behavior:"smooth"});
+};
+if(navigator.share){
+  $("nsRow").style.display="grid";
+  $("nativeShareBtn").onclick=function(){
+    navigator.share({title:"Korean Honorifics Quiz",text:"I got "+score+"/"+Q.length+" — can you beat it?",url:resultURL()}).catch(function(){});
+  };
+}
+
+/* ---------- boot ---------- */
+var incoming=decodeScore(new URLSearchParams(location.search).get("r"));
+if(incoming!==null&&incoming!==undefined){
+  $("inboundText").textContent="👀 Someone scored "+incoming+"/"+Q.length+" on this quiz. Can you beat them?";
+  $("inbound").classList.add("show");
+  history.replaceState(null,"",location.pathname);
+}
+render();
+})();
+</script>
+</body>
+</html>

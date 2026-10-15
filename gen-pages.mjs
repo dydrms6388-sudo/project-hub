@@ -78,6 +78,8 @@ const BUILTINS = [
   { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
+  // ── 영어권(K-culture) 앱 — UI·콘텐츠 전부 영어. 자체 OG/JSON-LD/편집블록 보유(SELF_MANAGED) ──
+  { slug: "whatdoicallthem", emoji: "🇰🇷", name: "What Do I Call Them? (한국어 호칭 계산기)", desc: "영어권 대상 — 나이·성별·관계로 오빠/형/선배/-씨 호칭 판정", k: "korean honorifics oppa unnie hyung noona sunbae 호칭 영어권 k-culture", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
@@ -85,7 +87,27 @@ const BUILTIN_CATS = [
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
+  { title: "🌏 English · K-culture", tag: "영어권", slugs: ["whatdoicallthem"] },
 ];
+// 자체 OG/JSON-LD/편집(E-E-A-T) 블록을 이미 갖고 있고 한국어 주입이 부적절한 내장 앱.
+// (영어권 앱에 "2026년 고시 요율·법령 기준" 한국어 문구나 ko-KR JSON-LD를 덧대면 오히려 해가 된다.)
+// robots/sitemap/verification 은 정상 적용되고, 아래 CORE 전용 주입만 건너뛴다.
+const SELF_MANAGED = new Set(["whatdoicallthem"]);
+// 자체 하위 문서(/titles/*, /guide/*, /quiz 등)를 갖는 내장 앱 — 하위 index.html 도 sitemap 에 싣는다.
+const SUBPAGE_INDEXED = new Set(["whatdoicallthem"]);
+// slug 폴더 아래 index.html 을 가진 하위 경로를 모두 찾아 slug 기준 상대경로로 돌려준다.
+function walkSubpages(slug, rel = "") {
+  const dir = rel ? `${slug}/${rel}` : slug;
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (!e.isDirectory()) continue;
+    const next = rel ? `${rel}/${e.name}` : e.name;
+    if (existsSync(`${slug}/${next}/index.html`)) out.push(next);
+    out.push(...walkSubpages(slug, next));
+  }
+  return out.sort();
+}
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab",
   // 팩2 자립형 마이크로사이트 (각자 별도 Vercel 프로젝트 root 예정, 손으로 관리)
   "datelab-kr", "genlab-kr", "studyroom-kr", "typingkr", "lottolab-kr",
@@ -98,6 +120,8 @@ const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "con
 const CORE_SLUGS = new Set([
   // 내장(builtin) — 이미 리치 페이지
   "salary", "dsr", "jeonse-loan", "yangdo", "refinance", "age", "dday", "bmi", "pyeong",
+  // 영어권(K-culture) — 영어 본문·FAQ·가이드 보유
+  "whatdoicallthem",
   // 금융·부동산
   "cheongyak-score-calc",
   // 생활·계산기
@@ -397,6 +421,13 @@ writeFileSync("index.html", indexHtml);
 const urls = [];
 urls.push(`  <url><loc>${SITE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`);
 for (const b of BUILTINS) if (CORE_SLUGS.has(b.slug)) urls.push(`  <url><loc>${SITE}/${b.slug}/</loc><changefreq>monthly</changefreq><priority>${b.prio}</priority></url>`);
+// 하위 문서를 직접 들고 있는 내장 앱은 그 문서들도 색인 대상(옵트인).
+// 자동 전수 탐색은 news-cards 의 일자별 아카이브 30여 개까지 쓸어담으므로 하지 않는다.
+for (const slug of SUBPAGE_INDEXED) {
+  for (const sub of walkSubpages(slug)) {
+    urls.push(`  <url><loc>${SITE}/${slug}/${sub}/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>`);
+  }
+}
 for (const d of daily) if (CORE_SLUGS.has(d.slug)) urls.push(`  <url><loc>${SITE}/${d.slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
 for (const p of ["about.html", "privacy.html", "terms.html", "contact.html"]) urls.push(`  <url><loc>${SITE}/${p}</loc><priority>0.3</priority></url>`);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
@@ -438,7 +469,7 @@ for (const b of BUILTINS) {
   // 단색 theme-color를 라이트/다크 쌍으로 정규화 + 홈 저장 테마 읽기(무쓰기) 동기화 스크립트.
   // master가 추가한 비색인 앱은 고유 디자인을 그대로 두기 위해 건드리지 않는다.
   h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
-  if (CORE_SLUGS.has(b.slug)) {
+  if (CORE_SLUGS.has(b.slug) && !SELF_MANAGED.has(b.slug)) {
     h = h.replace(/\s*<meta name="theme-color"[^>]*>/gi, "");
     const themeBlock = `<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
@@ -459,11 +490,15 @@ for (const b of BUILTINS) {
   // ── E-E-A-T/OG 주입(멱등): 기존 주입 블록은 항상 제거(정리), 추가는 색인 대상(CORE)에만 ──
   // master가 추가한 비색인 바이럴/뉴스 앱(고유 디자인·OG 보유)에는 편집·출처·OG를 덧대지 않는다.
   const dm = `${REVIEW_DATE}-01`;
-  h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
-  h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
-  h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
+  // 이 제거는 "생성기가 예전에 주입한 블록"을 걷어내는 멱등 청소다.
+  // SELF_MANAGED 앱은 애초에 주입 대상이 아니고 같은 이름의 자체 블록을 갖고 있으므로 건드리지 않는다.
+  if (!SELF_MANAGED.has(b.slug)) {
+    h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
+    h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
+    h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
+  }
 
-  if (CORE_SLUGS.has(b.slug)) {
+  if (CORE_SLUGS.has(b.slug) && !SELF_MANAGED.has(b.slug)) {
     // 1) 편집·검토 + 공식 출처 가시 블록
     const bsrc = (BUILTIN_SOURCES[b.slug] || []).filter(s => s && s.label && /^https?:\/\//.test(s.url || ""));
     const bsrcHtml = bsrc.length

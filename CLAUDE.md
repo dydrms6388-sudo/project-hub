@@ -44,6 +44,27 @@
 - 로컬 확인: `node gen-pages.mjs` 후 정적 서버로 열기. 테스트 러너 없음.
 - 검증 메타 코드는 `site.config.mjs` / env (`GOOGLE_SITE_VERIFICATION` 등)에서 주입.
 
+## 영어권(K-culture) 앱 — 프롬프트 팩 5
+- 대상이 영어권이라 **UI·본문·FAQ·JSON-LD 전부 영어**(`<html lang="en">`, `og:locale=en_US`).
+  한국어는 도구가 내놓는 호칭·예문에만 쓴다. 기계번역 톤 금지.
+- 현재: **`whatdoicallthem`** (K1, Korean Title Calculator). 허브 카테고리 `🌏 English · K-culture`.
+  - 구성: `/`(계산기) + `/titles/`(12종 레퍼런스) + `/quiz/`(15문항) + `/guide/`(3편) = 18페이지.
+  - 규칙 엔진은 `index.html` 안에 인라인(단일 파일 원칙). 데이터 테이블이 아니라 **함수형 해석기**라
+    조합 누락이 구조적으로 불가능하고, 그 사실을 게이트로 검증한다.
+- **DEPLOY GATE**: `node whatdoicallthem/coverage-test.mjs` (경고 0 / exit 0).
+  index.html 에서 엔진 블록(`title dictionary` ~ `state → URL` 주석 사이)을 떼어내 5,670개 조합을
+  전수 검사한다. 섹션 주석을 바꾸면 게이트가 먼저 깨지므로 그대로 둘 것.
+- gen-pages.mjs 연동 3가지:
+  - `BUILTINS` + `BUILTIN_CATS` + `CORE_SLUGS` 등록 → 색인·sitemap 대상.
+  - **`SELF_MANAGED`**: 자체 OG/JSON-LD/편집블록을 가진 앱. CORE 전용 한국어 주입
+    (`✍️ 작성·검토 … 2026년 고시 요율`, ko-KR SoftwareApplication, theme-sync)을 **주입도 제거도 안 한다**.
+    영어 페이지에 한국어 세법 문구가 붙는 사고를 막는 장치이므로 영어권 앱은 반드시 여기 등록.
+  - **`SUBPAGE_INDEXED`**: 하위 문서를 가진 앱만 옵트인으로 `walkSubpages()` 로 sitemap 에 싣는다
+    (전수 자동탐색은 news-cards 의 일자별 아카이브 30여 개까지 쓸어담아서 안 함).
+- 팩 5 잔여 9종(K2 hangul60, K6 koreatripcost, K3 saymykorean, K5 koreannumbers, K8
+  koreanfamilytitles, K4 koreanpoliteness, K9 hanguldaily-en, K7 koreanaddress, K10 kstylecard)은
+  미착수. 팩 문서는 Next.js 템플릿 전제이지만 이 저장소는 정적이므로 K1 과 같은 방식으로 이식한다.
+
 ## 서브프로젝트: `illusion-lab/` (별도 배포)
 - 인터랙티브 착시 실험실. **Next.js 15 App Router + 정적 export** — 허브의
   gen-pages 파이프라인과 무관하며 별도 Vercel 프로젝트(root=`illusion-lab`)로 배포.
