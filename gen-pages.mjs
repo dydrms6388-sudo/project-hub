@@ -86,7 +86,7 @@ const BUILTIN_CATS = [
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
 ];
-const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab",
+const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab", "tool-site-template", "studyroom-kr-app",
   // 팩2 자립형 마이크로사이트 (각자 별도 Vercel 프로젝트 root 예정, 손으로 관리)
   "datelab-kr", "genlab-kr", "studyroom-kr", "typingkr", "lottolab-kr",
   "typelab-kr", "talkstat", "writelab-kr", "imagelab-kr", "thumbmaker-kr"]);
