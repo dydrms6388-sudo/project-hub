@@ -1,0 +1,12 @@
+# 스톡랩 데이터 파이프라인 — Python 3.11
+# 설치: python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+pykrx>=1.0.45
+finance-datareader>=0.9.90
+pandas>=2.1
+requests>=2.31
+supabase>=2.4
+python-dotenv>=1.0
+tenacity>=8.2
+
+# 테스트 (네트워크 불필요)
+pytest>=8.0
