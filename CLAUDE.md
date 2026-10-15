@@ -11,6 +11,11 @@
 - 예외 = **내장(builtin) 앱**: `gen-pages.mjs` 의 `BUILTINS` 배열에 등록된 slug 폴더는
   손으로 관리하는 "진짜 앱"이며 생성기가 덮어쓰지 않는다 (verification 메타만 주입).
   기존: salary, dsr, jeonse-loan, yangdo, refinance, age, dday, bmi, pyeong.
+  애드센스 툴 팩(2026-09): inheritance-gift-tax, silbi-calc, winter-electric-sim (+ refinance 고도화).
+  - 세율·요금·약관 수치는 `/<slug>/*-constants.js` 한 파일에 출처 주석과 함께 분리 → 본문 JS 에 상수 하드코딩 금지.
+  - 가이드(아티클) 서브페이지 `/<slug>/<guide>/index.html` 은 `gen-pages.mjs` 의 `BUILTIN_GUIDES` 에 등록 →
+    sitemap 에 툴(0.9)보다 높은 0.95 로 실림. 공용 스타일은 `/lib/tool.css`.
+  - 광고: 결과 하단 1개만 실제 `adsbygoogle` 유닛, 그 외 위치는 빈 `.ad-slot[data-slot]` 예약 컨테이너(텍스트 없음).
 
 ## 새 자립형(client-side) 앱을 추가하는 법
 1. `/<slug>/index.html` 에 **단일 파일 완결형** 앱 작성 (백엔드/외부 API/키 금지).

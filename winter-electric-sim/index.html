@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<!--theme-sync--><script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script><!--/theme-sync-->
+<meta name="robots" content="index,follow,max-image-preview:large" />
+<title>겨울 전기요금 시뮬레이터 — 전기장판·온풍기·에어컨 난방 누진세 계산기 (한전 2026) | TomatoEggCat</title>
+<meta name="description" content="전기장판·온풍기·에어컨 난방·건조기 등 겨울 가전과 하루 사용시간을 체크하면 월 예상 전력량(kWh)과 한전 주택용 누진 구간별 전기요금을 계산합니다. 누진 구간 진입까지 남은 kWh 경고, 난방기구별 시간당 요금 비교표, 절전 가이드·FAQ 포함." />
+<link rel="canonical" href="https://tomatoeggcat.com/winter-electric-sim/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/lib/tool.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"TomatoEggCat","item":"https://tomatoeggcat.com/"},
+{"@type":"ListItem","position":2,"name":"겨울 전기요금 시뮬레이터","item":"https://tomatoeggcat.com/winter-electric-sim/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"겨울 전기요금 예상하는 방법","description":"가전별 소비전력과 하루 사용시간으로 월 전력량을 구하고 한전 주택용 누진 요금표를 적용해 청구액을 계산합니다.","totalTime":"PT2M","step":[
+{"@type":"HowToStep","position":1,"name":"평상시 사용량 입력","text":"난방기구를 쓰지 않는 달의 고지서 사용량(kWh)을 기본 사용량으로 입력합니다."},
+{"@type":"HowToStep","position":2,"name":"겨울 가전 체크","text":"전기장판·온풍기·에어컨 난방·건조기 등 사용하는 가전을 체크하고 소비전력과 하루 사용시간을 조정합니다."},
+{"@type":"HowToStep","position":3,"name":"월 전력량 계산","text":"소비전력(W) × 시간 × 30일 ÷ 1,000으로 가전별 월 kWh를 더합니다."},
+{"@type":"HowToStep","position":4,"name":"누진 요금 적용","text":"기타계절 기준 200kWh·400kWh 구간별 기본요금과 전력량요금, 기후환경요금·연료비조정요금, 부가세 10%와 전력산업기반기금 3.2%를 더해 청구액을 구합니다."}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"전기요금 누진 구간은 어떻게 나뉘나요?","acceptedAnswer":{"@type":"Answer","text":"주택용 저압은 3단계입니다. 겨울을 포함한 기타계절은 200kWh 이하 1단계(120.0원/kWh), 201~400kWh 2단계(214.6원), 400kWh 초과 3단계(307.3원)이고, 7~8월 하계는 300kWh·450kWh로 구간이 넓어집니다. 기본요금도 910원·1,600원·7,300원으로 단계별로 달라집니다."}},
+{"@type":"Question","name":"전기장판 한 달 전기요금은 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"1인용 전기장판(약 150W)을 하루 8시간 켜면 월 36kWh입니다. 1단계 구간이면 약 5천 원, 이미 3단계 구간에 있다면 추가분에 307.3원+기후·연료비 14원과 세금이 붙어 약 1만 3천 원이 추가됩니다. 어느 구간에 있느냐에 따라 같은 사용량도 요금이 2.5배 차이 납니다."}},
+{"@type":"Question","name":"온풍기와 전기장판 중 어느 쪽이 전기를 많이 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"온풍기입니다. 팬히터는 1,500~2,000W로 전기장판(100~200W)의 10배 이상입니다. 온풍기 3시간이 전기장판 30시간과 비슷한 전력량입니다. 방 전체를 데우려면 온풍기보다 에어컨 난방(히트펌프)이 같은 열량에 전기를 1/3 정도만 씁니다."}},
+{"@type":"Question","name":"에어컨 난방은 전기요금이 많이 나오나요?","acceptedAnswer":{"@type":"Answer","text":"에어컨 난방은 히트펌프 방식이라 소비전력 1kW로 3~4kW의 열을 만듭니다. 같은 난방 효과라면 온풍기·전기히터보다 전력량이 1/3~1/4이고, 인버터 에어컨은 설정 온도에 도달하면 소비전력이 크게 줄어 하루 5시간 기준 월 100~150kWh 수준입니다. 다만 외기 온도가 영하 10도 아래로 떨어지면 효율이 떨어집니다."}},
+{"@type":"Question","name":"슈퍼유저 요금은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"동계(12~2월)와 하계(7~8월)에 월 1,000kWh를 초과해 사용하면 초과분에 kWh당 736.2원의 최고 단가가 적용되는 제도입니다. 3단계 단가(307.3원)의 2.4배입니다. 전열기구를 여러 대 장시간 쓰는 가정이 해당될 수 있습니다."}},
+{"@type":"Question","name":"고지서 요금과 계산기 결과가 다른 이유는?","acceptedAnswer":{"@type":"Answer","text":"검침일 기준 사용 기간이 한 달과 다르고, 가전의 실제 소비전력이 정격보다 낮거나(온도 조절), 연료비조정요금이 분기마다 바뀌며, TV수신료·복지할인·주택용 고압(아파트 단일계약) 여부가 다르기 때문입니다. 본 계산기는 참고용이며 실제 요금과 다를 수 있습니다."}},
+{"@type":"Question","name":"아파트인데 계산이 맞나요?","acceptedAnswer":{"@type":"Answer","text":"아파트가 한전과 '단일계약'을 맺었으면 주택용 고압 단가(더 낮음)가 적용되고 공용 전기가 배분되어 계산이 다릅니다. '종합계약' 아파트나 단독·다세대 주택은 이 계산기의 주택용 저압 단가와 같습니다. 관리사무소나 고지서의 계약종별을 확인하세요."}},
+{"@type":"Question","name":"겨울 전기요금을 줄이는 가장 효과적인 방법은?","acceptedAnswer":{"@type":"Answer","text":"첫째, 다음 누진 구간을 넘지 않도록 월 사용량을 200·400kWh 아래로 관리하세요. 둘째, 방 전체 난방은 온풍기 대신 에어컨 난방으로, 개인 난방은 전기장판·온수매트로 바꾸세요. 셋째, 전기장판은 타이머로 취침 후 1~2시간에 끄고, 창문 단열재로 열 손실을 줄이면 같은 온도를 더 적은 전력으로 유지할 수 있습니다."}}
+]}
+</script>
+<!--og-eeat-->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TomatoEggCat" />
+<meta property="og:title" content="겨울 전기요금 시뮬레이터 | TomatoEggCat" />
+<meta property="og:description" content="난방 가전 사용시간으로 월 kWh·누진 구간·요금 예측" />
+<meta property="og:url" content="https://tomatoeggcat.com/winter-electric-sim/" />
+<meta property="og:image" content="https://tomatoeggcat.com/og/winter-electric-sim.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="겨울 전기요금 시뮬레이터 | TomatoEggCat" />
+<meta name="twitter:description" content="난방 가전 사용시간으로 월 kWh·누진 구간·요금 예측" />
+<meta name="twitter:image" content="https://tomatoeggcat.com/og/winter-electric-sim.png" />
+<!--/og-eeat-->
+<script type="application/ld+json" data-eeat="1">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"겨울 전기요금 시뮬레이터","description":"난방 가전 사용시간으로 월 kWh·누진 구간·요금 예측","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tomatoeggcat.com/winter-electric-sim/","inLanguage":"ko-KR","datePublished":"2026-07-01","dateModified":"2026-07-01","author":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}},"publisher":{"@type":"Organization","name":"TomatoEggCat","url":"https://tomatoeggcat.com","logo":{"@type":"ImageObject","url":"https://tomatoeggcat.com/og/logo.png"}}}</script>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="/">🍅 TomatoEggCat</a> › 겨울 전기요금 시뮬레이터</div>
+<h1>겨울 전기요금 시뮬레이터</h1>
+<p class="lead">난방 가전을 체크하고 하루 사용시간을 넣으면 <b>월 예상 전력량(kWh)</b>과 한전 주택용 <b>누진 구간별 요금</b>을 계산합니다. 다음 구간까지 <b>남은 kWh 경고</b>와 <b>난방기구별 시간당 요금 비교표</b>로 어떤 기구를 줄여야 할지 바로 보입니다.</p>
+
+<div class="card">
+  <div class="row">
+    <div><label for="baseKwh">평상시 월 사용량 (kWh) <span class="hint">난방 안 쓰는 달 고지서</span></label><input type="text" inputmode="numeric" id="baseKwh" value="250" /></div>
+    <div><label for="month">계산 월</label><select id="month"><option value="11">11월</option><option value="12" selected>12월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option></select></div>
+  </div>
+  <h3>겨울 가전 체크리스트</h3>
+  <div id="appList"></div>
+  <p class="disc">소비전력은 제품 라벨의 '정격소비전력' 대표값입니다. 온도 조절·서모스탯이 있는 기구는 실사용이 정격의 50~80%이니 직접 수정하세요. 건조기는 회당 1시간으로 두고 하루 평균 횟수(주 3회 = 0.43)를 시간에 넣으면 됩니다.</p>
+  <button class="primary" id="calc">이번 달 전기요금 예측하기</button>
+
+  <div class="out" id="out">
+    <div class="big" id="total">–</div>
+    <div class="bigsub" id="totalSub"></div>
+    <div class="bracket" id="bracket"></div>
+    <div class="banner" id="warn"></div>
+
+    <!-- 광고 슬롯 ① 결과 하단 (유일한 실제 유닛) -->
+    <div class="ad-slot" data-slot="result-bottom">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="facts" id="facts"></div>
+    <h3>가전별 기여도</h3>
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>가전</th><th class="num">월 kWh</th><th class="num">추가 요금(한계단가)</th><th class="num">비중</th></tr></thead><tbody id="contrib"></tbody></table></div>
+    <h3>난방기구 시간당 요금 비교</h3>
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>기구</th><th class="num">소비전력</th><th class="num">1단계 구간</th><th class="num">2단계 구간</th><th class="num">3단계 구간</th></tr></thead><tbody id="cmp"></tbody></table></div>
+    <p class="disc">시간당 요금 = 소비전력(kW) × (해당 구간 전력량요금 + 기후환경요금 9원 + 연료비조정요금 5원) × 1.132(부가세 10%·기반기금 3.2%). 내 사용량이 속한 구간의 열을 보세요. 에어컨 난방은 소비전력이 크지만 열효율(COP 3~4)이 높아 같은 난방량이면 온풍기보다 저렴합니다.</p>
+    <ol class="steps" id="steps"></ol>
+    <p class="disc">※ 본 계산기는 참고용이며 실제 요금과 다를 수 있습니다. 주택용 저압 단가 기준(주택용 고압·아파트 단일계약 미지원), 검침 기간 30일 가정, TV수신료·복지할인·연료비조정요금 분기 변동은 반영하지 않았습니다. 입력값은 저장·전송되지 않습니다.</p>
+  </div>
+</div>
+
+<div class="prose">
+  <h2>누진세, 왜 겨울에 요금이 튀는가</h2>
+  <p>주택용 전기요금은 많이 쓸수록 kWh당 단가가 올라가는 <b>3단계 누진제</b>입니다. 겨울을 포함한 기타계절(1~6월·9~12월)은 월 200kWh까지 1단계(120.0원), 201~400kWh 2단계(214.6원), 400kWh 초과 3단계(307.3원)로 단가가 뛰고, 기본요금도 910원에서 1,600원, 7,300원으로 함께 올라갑니다. 여기에 모든 kWh에 기후환경요금 9원과 연료비조정요금 5원이 붙고, 합계에 부가가치세 10%와 전력산업기반기금 3.2%가 더해집니다. 7~8월 하계는 구간이 300·450kWh로 넓어지지만 겨울에는 이런 완화가 없어서, 여름보다 겨울에 전열기구를 쓰는 가정이 3단계에 더 쉽게 진입합니다. 문제는 구간을 넘는 순간 <b>초과분에만 높은 단가</b>가 붙는 것이 아니라 <b>기본요금도 통째로 바뀐다</b>는 점입니다. 400kWh를 401kWh로 1kWh 더 쓰면 기본요금이 1,600원에서 7,300원으로 5,700원 올라가고, 그 뒤 1kWh마다 세금 포함 약 364원씩 붙습니다. 그래서 이 시뮬레이터는 총액보다 <b>"다음 구간까지 몇 kWh 남았는지"</b>를 먼저 보여 줍니다. 평상시 250kWh를 쓰는 집이 전기장판 하나(월 36kWh)를 더하면 2단계 안에서 끝나지만, 온풍기를 하루 3시간(월 162kWh) 켜면 448kWh로 3단계에 들어가 요금이 두 배 가까이 됩니다. 12~2월에는 월 1,000kWh를 넘는 순간 초과분에 736.2원의 <b>슈퍼유저 요금</b>이 붙으니, 전열기구를 여러 대 쓰는 가정은 이 경계도 확인하세요.</p>
+
+  <h2>절전 가이드 — 같은 따뜻함, 적은 kWh</h2>
+  <p><b>1. 난방 방식을 바꾸는 것이 가장 크다.</b> 전기를 열로 바꾸는 온풍기·전기히터·라디에이터는 1kWh의 전기로 1kWh의 열만 냅니다. 반면 에어컨 난방(히트펌프)은 바깥 공기의 열을 끌어와 1kWh 전기로 3~4kWh의 열을 만듭니다. 방 전체를 데워야 한다면 온풍기 1,800W 3시간(5.4kWh)보다 에어컨 난방 900W 5시간(4.5kWh)이 더 따뜻하고 더 적은 전기를 씁니다. 사람만 따뜻하면 되는 취침·재택 시간에는 전기장판·온수매트(100~250W)가 어떤 공간 난방보다 압도적으로 효율적입니다. <b>2. 타이머와 온도 설정.</b> 전기장판은 잠든 뒤 체온이 오르므로 취침 1~2시간 후 끄거나 최저 단계로 내리는 타이머를 쓰면 사용량이 40~50% 줄어듭니다. 온풍기는 서모스탯 설정을 20도로 낮추고 문을 닫아 공간을 좁히세요. <b>3. 열 손실을 막아라.</b> 난방기구를 아무리 효율적으로 골라도 창문으로 열이 빠지면 가동 시간이 늘어납니다. 뽁뽁이(에어캡)·문풍지·두꺼운 커튼은 몇천 원으로 난방 가동 시간을 10~20% 줄여 줍니다. <b>4. 구간 관리.</b> 이번 달 사용량이 380kWh라면 나머지 20kWh를 넘기지 않는 것이 어떤 절전보다 큽니다. 한전 앱(한전ON)이나 스마트미터로 실시간 사용량을 확인하고, 구간 경계가 가까우면 건조기 사용을 다음 달로 미루거나 전기온수기 온도를 낮추세요. <b>5. 대기전력.</b> 비데 온수·변좌, 전기포트 보온, 셋톱박스는 각각 작지만 24시간 켜져 있어 월 20~40kWh가 됩니다. 멀티탭 스위치로 끄는 것만으로 1단계 여유를 만들 수 있습니다. <b>6. 복지할인·에너지캐시백.</b> 다자녀·대가족·출산 가구는 월 최대 1만 6천 원 할인, 장애인·기초수급 가구는 동계 별도 한도가 있고, 전년 동월보다 사용량을 3% 이상 줄이면 kWh당 30~100원을 돌려주는 주택용 에너지캐시백은 한전 앱에서 신청만 하면 됩니다.</p>
+
+  <h2>가이드 더 읽기</h2>
+  <div class="guides">
+    <a href="/winter-electric-sim/heating-cost-guide/"><b>🔥 겨울 난방기구별 전기요금 총정리</b><span>전기장판·온수매트·온풍기·전기히터·라디에이터·에어컨 난방의 소비전력, 시간당·월 요금, 방 크기별 추천 조합을 표로 비교했습니다.</span></a>
+    <a href="/pyeong/"><b>📐 평수 변환기</b><span>난방 면적을 평 ↔ ㎡로 바꿔 기구 용량을 고를 때 참고하세요.</span></a>
+  </div>
+
+  <h2>자주 묻는 질문</h2>
+  <div class="faq"><b>Q. 누진 구간은 어떻게 나뉘나요?</b><p>기타계절 200kWh·400kWh, 하계(7~8월) 300kWh·450kWh 경계의 3단계입니다. 전력량요금 120.0 → 214.6 → 307.3원, 기본요금 910 → 1,600 → 7,300원으로 함께 올라갑니다.</p></div>
+  <div class="faq"><b>Q. 전기장판 한 달 요금은?</b><p>150W × 8시간 × 30일 = 36kWh. 1단계면 약 5천 원, 3단계 구간에 있다면 약 1만 3천 원이 추가됩니다. 구간에 따라 2.5배 차이입니다.</p></div>
+  <div class="faq"><b>Q. 온풍기와 전기장판 중 어느 쪽이 전기를 많이 쓰나요?</b><p>온풍기(1,500~2,000W)가 전기장판(100~200W)의 10배 이상입니다. 온풍기 3시간 ≈ 전기장판 30시간.</p></div>
+  <div class="faq"><b>Q. 에어컨 난방은 요금이 많이 나오나요?</b><p>히트펌프라 같은 열량에 온풍기의 1/3 전기를 씁니다. 인버터 기준 하루 5시간에 월 100~150kWh 수준이며, 영하 10도 아래에서는 효율이 떨어집니다.</p></div>
+  <div class="faq"><b>Q. 슈퍼유저 요금은 무엇인가요?</b><p>12~2월·7~8월에 월 1,000kWh 초과분에 736.2원/kWh가 붙는 최고 단가입니다.</p></div>
+  <div class="faq"><b>Q. 고지서와 결과가 다른 이유는?</b><p>검침 기간, 실제 소비전력, 연료비조정요금 변동, TV수신료·복지할인·계약종별 차이 때문입니다. 본 계산기는 참고용입니다.</p></div>
+  <div class="faq"><b>Q. 아파트인데 맞나요?</b><p>단일계약 아파트는 주택용 고압 단가가 적용되어 다릅니다. 종합계약 아파트·단독·다세대는 이 계산기의 저압 단가와 같습니다.</p></div>
+  <div class="faq"><b>Q. 가장 효과적인 절전법은?</b><p>구간 경계(200·400kWh)를 넘기지 않는 것, 공간 난방은 에어컨·개인 난방은 전기장판으로 바꾸는 것, 타이머와 창문 단열입니다.</p></div>
+</div>
+
+<div class="coupang-slot" data-subid="winter-electric-sim"></div>
+
+<h2>다른 도구</h2>
+<div class="more">
+  <a href="/pyeong/">평수 변환기</a>
+  <a href="/salary/">연봉 실수령액 계산기</a>
+  <a href="/refinance/">대출 갈아타기 계산기</a>
+  <a href="/">전체 도구 보기</a>
+</div>
+<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 2026년 7월 · 2026년 고시 요율·법령 기준</p>
+  <p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">한국전력공사</a> · <a href="https://www.data.go.kr" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">공공데이터포털(주택용 전기요금표)</a></p>
+</div>
+<footer>
+  🍅🥚🐈 TomatoEggCat — 일상에 유용한 무료 도구<br/>
+  <a href="/about.html">소개</a>·<a href="/privacy.html">개인정보처리방침</a>·<a href="/terms.html">이용약관</a>·<a href="/contact.html">문의</a>
+</footer>
+</div>
+
+<script src="/winter-electric-sim/tariff-constants.js"></script>
+<script>
+(function(){
+  var T=window.TARIFF_CONSTANTS, R=T.residentialLow, $=function(id){return document.getElementById(id)};
+  function won(n){ return isFinite(n)?Math.round(n).toLocaleString('ko-KR')+'원':'—'; }
+  function numv(id){ return Math.max(0,Number(String($(id).value||'').replace(/[^0-9.]/g,''))||0); }
+  var SUR=1+R.vat+R.fund; // 세금 배수(근사)
+
+  // 가전 리스트 렌더
+  $('appList').innerHTML=T.appliances.map(function(a,i){
+    return '<div class="row" style="align-items:center;border-top:1px dashed var(--line);padding:8px 0">'+
+      '<div style="flex:2"><label class="chk" style="margin:0" title="'+a.note+'"><input type="checkbox" data-i="'+i+'" class="appck" '+(i<2?'checked':'')+' /> '+a.name+'</label></div>'+
+      '<div><label style="margin:0;font-size:11px">소비전력(W)</label><input type="number" min="1" max="10000" class="appw" data-i="'+i+'" value="'+a.watts+'" /></div>'+
+      '<div><label style="margin:0;font-size:11px">하루 시간</label><input type="number" min="0" max="24" step="0.1" class="apph" data-i="'+i+'" value="'+a.hours+'" /></div></div>';
+  }).join('');
+
+  function tiers(month){ return (month===7||month===8)?R.summer:R.other; }
+  function bill(kwh,month){
+    var tr=tiers(month), base=0, energy=0, prev=0, stage=0;
+    for(var i=0;i<tr.length;i++){ var t=tr[i]; if(kwh>prev){ var span=Math.min(kwh,t.upTo)-prev; energy+=span*t.rate; base=t.base; stage=i+1; } prev=isFinite(t.upTo)?t.upTo:prev; }
+    var superKwh=0; if(R.superUser.months.indexOf(month)>=0&&kwh>R.superUser.threshold){ superKwh=kwh-R.superUser.threshold; energy+=superKwh*(R.superUser.rate-tr[tr.length-1].rate); }
+    var climate=kwh*R.climateFee, fuel=kwh*R.fuelAdjustment, sub=base+energy+climate+fuel;
+    var vat=Math.round(sub*R.vat), fund=Math.floor(sub*R.fund/10)*10, total=Math.floor((sub+vat+fund)/10)*10;
+    return {base:base,energy:energy,climate:climate,fuel:fuel,sub:sub,vat:vat,fund:fund,total:total,stage:stage,superKwh:superKwh,tiers:tr};
+  }
+  function marginalRate(kwh,month){ var tr=tiers(month); for(var i=0;i<tr.length;i++) if(kwh<=tr[i].upTo) return {rate:tr[i].rate,stage:i+1}; return {rate:tr[tr.length-1].rate,stage:tr.length}; }
+  function renderBracket(kwh,month){
+    var tr=tiers(month), caps=[tr[0].upTo,tr[1].upTo,Math.max(1000,Math.ceil(kwh/100)*100)], widths=[2,2,3], tot=7, prev=0, html='<div class="bar">', labs='<div class="lab">';
+    for(var k=0;k<3;k++){ var w=widths[k]/tot*100, span=caps[k]-prev, fill=Math.max(0,Math.min(1,(kwh-prev)/span)); html+='<span style="width:'+w+'%"><i style="width:'+(fill*100)+'%"></i></span>'; labs+='<span style="width:'+w+'%">'+(k+1)+'단계 '+tr[k].rate+'원 · '+(isFinite(tr[k].upTo)?'~'+tr[k].upTo+'kWh':tr[1].upTo+'kWh~')+'</span>'; prev=caps[k]; }
+    $('bracket').innerHTML=html+'</div>'+labs+'</div>';
+  }
+
+  $('calc').addEventListener('click',function(){
+    var month=Number($('month').value), base=numv('baseKwh'), items=[];
+    document.querySelectorAll('.appck').forEach(function(ck){ if(!ck.checked) return; var i=Number(ck.getAttribute('data-i')); var w=Number(document.querySelector('.appw[data-i="'+i+'"]').value)||0, h=Number(document.querySelector('.apph[data-i="'+i+'"]').value)||0; items.push({name:T.appliances[i].name,w:w,h:h,kwh:w*h*30/1000}); });
+    var addKwh=items.reduce(function(s,x){return s+x.kwh},0), kwh=base+addKwh;
+    var b=bill(kwh,month), b0=bill(base,month), tr=b.tiers;
+    $('total').textContent=won(b.total); $('total').className='big'+(b.stage>=3?' warn':'');
+    $('totalSub').textContent=month+'월 예상 청구액 · 총 '+Math.round(kwh)+'kWh ('+b.stage+'단계 구간) · 난방 가전 추가분 '+Math.round(addKwh)+'kWh = +'+won(b.total-b0.total);
+    renderBracket(kwh,month);
+    // 경고
+    var w=$('warn'), next=null; for(var i=0;i<tr.length-1;i++) if(kwh<=tr[i].upTo){ next=tr[i]; break; }
+    if(b.superKwh>0) w.innerHTML='<b>⚠️ 슈퍼유저 구간</b> · 1,000kWh 초과분 '+Math.round(b.superKwh)+'kWh에 736.2원/kWh 최고 단가가 적용됐습니다. 전열기구 1~2대만 줄여도 크게 내려갑니다.';
+    else if(next){ var left=next.upTo-kwh; var nb=bill(next.upTo+1,month); w.innerHTML='<b>'+(left<=30?'⚠️':'ℹ️')+' 다음 누진 구간까지 '+Math.round(left)+'kWh 남음</b> · '+next.upTo+'kWh를 넘기면 기본요금이 '+won(tr[tr.indexOf(next)+1].base)+'으로 바뀌고 1kWh당 '+Math.round((tr[tr.indexOf(next)+1].rate+R.climateFee+R.fuelAdjustment)*SUR)+'원씩 붙어 그 시점 요금이 약 '+won(nb.total-bill(next.upTo,month).total)+' 점프합니다.'+(left<=30?' 전기장판 하루 '+Math.round(left/(0.15*30)*10)/10+'시간 분량입니다.':''); }
+    else { var over=kwh-tr[1].upTo; w.innerHTML='<b>⚠️ 최고 구간(3단계)</b> · '+tr[1].upTo+'kWh를 '+Math.round(over)+'kWh 초과했습니다. 초과분을 줄이면 1kWh당 약 '+Math.round((tr[2].rate+R.climateFee+R.fuelAdjustment)*SUR)+'원, '+tr[1].upTo+'kWh 아래로 내리면 기본요금 '+won(tr[2].base-tr[1].base)+'까지 절약됩니다.'+(R.superUser.months.indexOf(month)>=0?' 1,000kWh 초과 시 슈퍼유저 요금(736.2원)이 붙습니다.':''); }
+    // facts
+    $('facts').innerHTML=[['기본요금',won(b.base)],['전력량요금',won(b.energy)],['기후환경+연료비조정',won(b.climate+b.fuel)],['부가세+기반기금',won(b.vat+b.fund)],['난방 가전 추가 요금',won(b.total-b0.total),'bad'],['평상시 대비',(b0.total>0?'+'+Math.round((b.total/b0.total-1)*100)+'%':'—')]].map(function(f){return '<div class="fact"><div class="k">'+f[0]+'</div><div class="v'+(f[2]?' '+f[2]:'')+'">'+f[1]+'</div></div>'}).join('');
+    // 기여도: 한계단가 기준(현재 구간 단가 × 세금)
+    var mr=marginalRate(kwh,month), unit=(mr.rate+R.climateFee+R.fuelAdjustment)*SUR;
+    $('contrib').innerHTML=(items.length?items.sort(function(a,b){return b.kwh-a.kwh}).map(function(x){return '<tr><td>'+x.name+'<br/><span style="font-size:11px;color:var(--mute2)">'+x.w+'W × '+x.h+'h × 30일</span></td><td class="num">'+Math.round(x.kwh)+'</td><td class="num">'+won(x.kwh*unit)+'</td><td class="num">'+(kwh>0?Math.round(x.kwh/kwh*100):0)+'%</td></tr>'}).join(''):'<tr><td colspan="4" style="color:var(--mute2)">체크된 가전이 없습니다.</td></tr>');
+    // 시간당 비교
+    var cmpList=['fanheat','pad1','acheat','radiant','oilrad','pad2'].map(function(id){return T.appliances.filter(function(a){return a.id===id})[0]});
+    $('cmp').innerHTML=cmpList.map(function(a){ var kw=a.watts/1000; return '<tr'+(mr.stage?'':'')+'><td>'+a.name+'</td><td class="num">'+a.watts+'W</td>'+tr.map(function(t,i){return '<td class="num"'+(i+1===mr.stage?' style="color:var(--acc3);font-weight:700"':'')+'>'+won(kw*(t.rate+R.climateFee+R.fuelAdjustment)*SUR)+'</td>'}).join('')+'</tr>'; }).join('');
+    $('steps').innerHTML=[['평상시 '+base+'kWh + 난방 가전 '+Math.round(addKwh)+'kWh','= '+Math.round(kwh)+'kWh'],['기본요금('+b.stage+'단계)',won(b.base)],['전력량요금(구간별 누진 합산'+(b.superKwh>0?' + 슈퍼유저':'')+')',won(b.energy)],['기후환경요금 9원 + 연료비조정 5원 × kWh',won(b.climate+b.fuel)],['부가세 10% + 전력산업기반기금 3.2%',won(b.vat+b.fund)],['= 예상 청구액(10원 미만 절사)',won(b.total)]].map(function(s){return '<li>'+s[0]+'<b>'+s[1]+'</b></li>'}).join('');
+    $('out').classList.add('show'); $('out').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
+</script>
+<script src="/coupang.js"></script>
+</body>
+</html>
