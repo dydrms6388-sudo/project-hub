@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>아기 성장 백분위 계산기 — LMS z점수로 보는 몸무게·키 백분위 | BabyCalc</title>
+<meta name="description" content="아기의 몸무게·키·머리둘레를 입력하면 성장도표 LMS 값으로 z점수와 백분위를 계산하고 표준곡선(3·15·50·85·97 백분위) 그래프에 함께 그려 줍니다. 측정 기록 저장·CSV 내보내기 지원.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/growth-percentile/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="아기 성장 백분위 계산기 — z점수·표준곡선 그래프">
+<meta property="og:description" content="몸무게·키를 입력하면 LMS z점수로 백분위 계산 + 표준곡선 그래프에 표시.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/growth-percentile/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"아기 성장 백분위 계산기","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"아기의 몸무게·키·머리둘레를 입력하면 성장도표 LMS 값으로 z점수와 백분위를 계산하고 표준곡선(3·15·50·85·97 백분위) 그래프에 함께 그려 줍니다. 측정 기록 저장·CSV 내보내기 지원.","url":"https://babycalc-kr.vercel.app/growth-percentile/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"백분위가 낮으면 문제가 있는 건가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 백분위는 또래 중 위치를 나타내는 값이며, 3~97백분위 사이는 일반적으로 정상 범위로 봅니다. 중요한 것은 한 시점의 숫자가 아니라 자기 성장 곡선을 따라 꾸준히 자라는지입니다. 걱정되면 소아과 전문의와 상담하세요."}},{"@type":"Question","name":"어떤 성장도표를 쓰나요?","acceptedAnswer":{"@type":"Answer","text":"0~35개월 구간은 질병관리청 2017 소아청소년 성장도표가 WHO Child Growth Standards(2006)를 그대로 채택했기 때문에 두 표의 LMS 값이 같습니다. 이 계산기는 확인된 월령의 LMS 값만 사용합니다."}},{"@type":"Question","name":"어떤 월령은 왜 \"확인 필요\"라고 나오나요?","acceptedAnswer":{"@type":"Answer","text":"해당 월령의 L·S 값을 원표와 대조하지 못했기 때문입니다. 근거 없이 값을 추정해 넣는 대신 계산을 하지 않고 표시만 합니다. 그 월령의 백분위는 병원 성장도표로 확인하세요."}},{"@type":"Question","name":"이른둥이는 어떻게 입력하나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 만 2세 무렵까지는 교정연령으로 평가합니다. 생년월일 대신 출산 예정일을 입력하면 교정연령 기준의 위치를 볼 수 있으나, 적용 여부는 담당 의료진과 상의하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"성장 백분위","item":"https://babycalc-kr.vercel.app/growth-percentile/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">성장 백분위</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📈</div>
+    <h1>아기 성장 백분위 계산기</h1>
+    <p class="lead">몸무게·키·머리둘레가 또래 중 어디쯤인지, 성장도표 LMS 공식으로 계산해 그래프에 표시해 드려요.</p>
+  </div>
+  <p class="med-notice">⚠ 이 페이지는 <strong>참고용이며 진단이 아닙니다</strong>. 아이의 건강·발달과 관련한 판단은 반드시 <strong>소아과 전문의와 상담</strong>하세요.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>측정값 입력</h2>
+    <div class="row2">
+      <div class="field">
+        <label for="sex">성별</label>
+        <select id="sex"><option value="boy">남아</option><option value="girl">여아</option></select>
+      </div>
+      <div class="field">
+        <label for="measure">측정 항목</label>
+        <select id="measure">
+          <option value="weight">몸무게 (kg)</option>
+          <option value="length">키 / 누운키 (cm)</option>
+          <option value="head">머리둘레 (cm)</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="birth">생년월일</label>
+        <input type="date" id="birth" required>
+      </div>
+      <div class="field">
+        <label for="mdate">측정일</label>
+        <input type="date" id="mdate">
+        <p class="hint">비우면 오늘</p>
+      </div>
+    </div>
+    <div class="field">
+      <label for="value">측정값</label>
+      <input type="number" id="value" step="0.01" min="0" required placeholder="예: 6.4">
+      <p class="hint">몸무게는 kg, 키·머리둘레는 cm 단위로 입력하세요.</p>
+    </div>
+    <button class="btn" type="submit">백분위 계산</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>계산 결과</h2>
+    <p class="res-big" id="pctBig">—</p>
+    <p class="res-sub" id="pctSub"></p>
+    <div id="detail"></div>
+    <div class="chart-box" id="chartBox"></div>
+    <p class="res-sub" id="chartNote" style="font-size:12.5px;color:var(--muted)"></p>
+    <h2 style="margin-top:18px">내 기록</h2>
+    <div class="tbl-scroll"><table class="tbl" id="recTbl">
+      <thead><tr><th>측정일</th><th>월령</th><th>항목</th><th>값</th><th>z</th><th>백분위</th><th class="no-print">삭제</th></tr></thead><tbody></tbody>
+    </table></div>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" id="csvBtn">기록 CSV 내보내기</button>
+      <button class="btn sm sec" type="button" id="jsonBtn">기록 JSON 내보내기</button>
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+      <button class="btn sm danger" type="button" id="clearBtn">기록 전체 삭제</button>
+    </div>
+    <p class="local-note">✅ 측정 기록은 이 브라우저(localStorage)에만 저장됩니다. <strong>서버 저장 없음.</strong></p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>백분위는 어떻게 계산하나요?</h2>
+    <p>성장도표는 월령·성별마다 <strong>L(왜도) · M(중앙값) · S(변동계수)</strong> 세 값을 가지고 있습니다. 측정값 X의 z점수는 다음 공식으로 구합니다.</p><p style="background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px">z = ((X / M)<sup>L</sup> − 1) / (L × S)&nbsp;&nbsp;<span style="color:var(--muted)">(L ≠ 0)</span><br>z = ln(X / M) / S&nbsp;&nbsp;<span style="color:var(--muted)">(L = 0)</span></p><p>이렇게 얻은 z점수를 표준정규분포 누적확률로 바꾸면 백분위가 됩니다. 예를 들어 측정값이 중앙값 M과 같으면 z = 0이고 백분위는 50%입니다. 그래프의 곡선은 반대로 z를 고정하고 X를 역산해(X = M(1 + LSz)<sup>1/L</sup>) 그린 <strong>표준곡선</strong>입니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>성별과 측정 항목을 고르고, 생년월일·측정일·측정값을 입력합니다.</li><li>계산하면 z점수·백분위와 함께 표준곡선 그래프 위에 아기의 위치가 점으로 표시됩니다.</li><li>계산할 때마다 기록이 브라우저에 쌓여 성장 추이를 볼 수 있고, CSV·JSON으로 내보낼 수 있습니다.</li></ol>
+
+    <h2>백분위 숫자를 어떻게 읽어야 하나요?</h2><p>백분위 25%는 "또래 100명 중 아래에서 25번째쯤"이라는 <strong>위치</strong>일 뿐, 좋고 나쁨이 아닙니다. 소아과에서 실제로 중요하게 보는 것은 한 번의 숫자보다 <strong>자기 곡선을 따라 꾸준히 자라는지(성장 속도)</strong>입니다. 3백분위 미만이거나 97백분위를 넘는 경우, 또는 백분위가 짧은 기간에 크게 변한 경우에는 진료 시 상담하세요.</p><p>2세 미만은 <strong>누운 키(신장)</strong>, 2세 이상은 선 키로 측정 방식이 달라 도표도 달라집니다. 이른둥이는 <a href="../months-age/">교정연령</a>을 기준으로 보는 것이 일반적입니다.</p><h2>데이터 범위 안내</h2><p>이 계산기는 원표와 대조해 확인된 월령의 LMS 값만 정밀 계산에 사용합니다. 아직 대조하지 못한 월령은 <span class="badge todo">확인 필요</span>로 표시하고 <strong>백분위를 계산하지 않습니다</strong> — 값을 추정해 채우지 않는 것이 안전하다고 판단했기 때문입니다.</p>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 백분위가 낮으면 문제가 있는 건가요?</p><p class="a">아닙니다. 백분위는 또래 중 위치를 나타내는 값이며, 3~97백분위 사이는 일반적으로 정상 범위로 봅니다. 중요한 것은 한 시점의 숫자가 아니라 자기 성장 곡선을 따라 꾸준히 자라는지입니다. 걱정되면 소아과 전문의와 상담하세요.</p></div>
+      <div class="qa"><p class="q">Q. 어떤 성장도표를 쓰나요?</p><p class="a">0~35개월 구간은 질병관리청 2017 소아청소년 성장도표가 WHO Child Growth Standards(2006)를 그대로 채택했기 때문에 두 표의 LMS 값이 같습니다. 이 계산기는 확인된 월령의 LMS 값만 사용합니다.</p></div>
+      <div class="qa"><p class="q">Q. 어떤 월령은 왜 "확인 필요"라고 나오나요?</p><p class="a">해당 월령의 L·S 값을 원표와 대조하지 못했기 때문입니다. 근거 없이 값을 추정해 넣는 대신 계산을 하지 않고 표시만 합니다. 그 월령의 백분위는 병원 성장도표로 확인하세요.</p></div>
+      <div class="qa"><p class="q">Q. 이른둥이는 어떻게 입력하나요?</p><p class="a">일반적으로 만 2세 무렵까지는 교정연령으로 평가합니다. 생년월일 대신 출산 예정일을 입력하면 교정연령 기준의 위치를 볼 수 있으나, 적용 여부는 담당 의료진과 상의하세요.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 질병관리청 2017 소아청소년 성장도표 (0~35개월: WHO Child Growth Standards) — <a href="https://knhanes.kdca.go.kr" target="_blank" rel="noopener">https://knhanes.kdca.go.kr</a> / WHO LMS 원표 <a href="https://www.who.int/tools/child-growth-standards/standards" target="_blank" rel="noopener">who.int</a> (확인일 2026-08-19). 현재 정밀 계산이 가능한 월령: 몸무게·키 0~3개월, 머리둘레 0개월. 나머지 월령의 LMS 값은 원표 대조 후 추가 예정(확인 필요).</div>
+
+    <p class="disclaimer">성장 백분위는 참고용 계산입니다. 진단이 아니며, 성장 평가는 반복 측정과 진찰을 통해 소아과 전문의가 판단합니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../months-age/"><span class="ic">📅</span>아기 개월수 계산기</a>
+      <a class="rel" href="../formula-amount/"><span class="ic">🍼</span>분유 수유량 계산기</a>
+      <a class="rel" href="../milestone/"><span class="ic">🧸</span>발달 이정표 체크</a>
+      <a class="rel" href="https://tomatoeggcat.com/baby-vaccine-schedule/"><span class="ic">🍅</span>예방접종 도우미 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { mkDate, babyAge, fmtDate, zFromLMS, xFromZ, percentileFromZ } from '../assets/calc.mjs';
+import { GROWTH, MEASURE_LABEL, findRow } from '../data/growth.mjs';
+const $ = (s) => document.querySelector(s);
+const RKEY = 'bc-growth-records';
+const BKEY = 'bc-baby-birth';
+const UNIT = { weight: 'kg', length: 'cm', head: 'cm' };
+const CURVES = [
+  { z: -1.881, label: '3%' },
+  { z: -1.036, label: '15%' },
+  { z: 0, label: '50%' },
+  { z: 1.036, label: '85%' },
+  { z: 1.881, label: '97%' },
+];
+
+function rowsChecked(measure, sex) {
+  return ((GROWTH[measure] || {})[sex] || []).filter((r) => r.checked && r.L != null && r.S != null && r.M != null);
+}
+
+function drawChart(measure, sex, records) {
+  const rows = rowsChecked(measure, sex);
+  const box = $('#chartBox');
+  const note = $('#chartNote');
+  if (rows.length < 2) {
+    box.innerHTML = '';
+    note.textContent = '이 항목(' + MEASURE_LABEL[measure] + ')은 표준곡선을 그릴 만큼의 확인된 LMS 데이터가 아직 없습니다. (확인된 월령 ' + rows.length + '개)';
+    return;
+  }
+  const W = 640, H = 340, PL = 52, PR = 74, PT = 18, PB = 40;
+  const mMin = rows[0].m, mMax = rows[rows.length - 1].m;
+  const series = CURVES.map((c) => ({
+    label: c.label,
+    pts: rows.map((r) => ({ x: r.m, y: xFromZ(c.z, r.L, r.M, r.S) })),
+  }));
+  let yMin = Infinity, yMax = -Infinity;
+  series.forEach((s) => s.pts.forEach((p) => { if (p.y < yMin) yMin = p.y; if (p.y > yMax) yMax = p.y; }));
+  const inRange = records.filter((r) => r.measure === measure && r.sex === sex && r.month >= mMin && r.month <= mMax);
+  inRange.forEach((r) => { if (r.value < yMin) yMin = r.value; if (r.value > yMax) yMax = r.value; });
+  const pad = (yMax - yMin) * 0.08 || 1;
+  yMin -= pad; yMax += pad;
+  const sx = (m) => PL + (m - mMin) / ((mMax - mMin) || 1) * (W - PL - PR);
+  const sy = (v) => H - PB - (v - yMin) / ((yMax - yMin) || 1) * (H - PT - PB);
+
+  let svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' + MEASURE_LABEL[measure] + ' 표준곡선 그래프">';
+  svg += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="none"></rect>';
+  for (let i = 0; i <= 4; i++) {
+    const v = yMin + (yMax - yMin) * i / 4;
+    const y = sy(v);
+    svg += '<line x1="' + PL + '" y1="' + y.toFixed(1) + '" x2="' + (W - PR) + '" y2="' + y.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.15"></line>';
+    svg += '<text x="' + (PL - 8) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="currentColor" fill-opacity="0.6">' + v.toFixed(1) + '</text>';
+  }
+  rows.forEach((r) => {
+    const x = sx(r.m);
+    svg += '<line x1="' + x.toFixed(1) + '" y1="' + PT + '" x2="' + x.toFixed(1) + '" y2="' + (H - PB) + '" stroke="currentColor" stroke-opacity="0.08"></line>';
+    svg += '<text x="' + x.toFixed(1) + '" y="' + (H - PB + 18) + '" text-anchor="middle" font-size="11" fill="currentColor" fill-opacity="0.6">' + r.m + '개월</text>';
+  });
+  svg += '<text x="' + (W / 2) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="currentColor" fill-opacity="0.6">월령 (개월)</text>';
+  series.forEach((s, i) => {
+    const mid = i === 2;
+    const d = s.pts.map((p, j) => (j ? 'L' : 'M') + sx(p.x).toFixed(1) + ' ' + sy(p.y).toFixed(1)).join(' ');
+    svg += '<path d="' + d + '" fill="none" stroke="currentColor" stroke-opacity="' + (mid ? '0.85' : '0.35') + '" stroke-width="' + (mid ? 2 : 1.2) + '"' + (mid ? '' : ' stroke-dasharray="4 3"') + '></path>';
+    const last = s.pts[s.pts.length - 1];
+    svg += '<text x="' + (sx(last.x) + 6) + '" y="' + (sy(last.y) + 4).toFixed(1) + '" font-size="11" fill="currentColor" fill-opacity="0.7">' + s.label + '</text>';
+  });
+  inRange.forEach((r) => {
+    svg += '<circle cx="' + sx(r.month).toFixed(1) + '" cy="' + sy(r.value).toFixed(1) + '" r="5" fill="#10b981" stroke="#fff" stroke-width="1.5"></circle>';
+  });
+  svg += '</svg>';
+  box.innerHTML = svg;
+  note.textContent = '실선 = 50백분위(중앙값), 점선 = 3·15·85·97백분위. 초록 점 = 저장된 내 기록. 확인된 LMS 데이터가 있는 ' + mMin + '~' + mMax + '개월 구간만 표시됩니다.';
+}
+
+function renderRecords() {
+  const recs = bcStore.get(RKEY, []);
+  const tb = $('#recTbl tbody');
+  tb.innerHTML = '';
+  if (!recs.length) {
+    tb.innerHTML = '<tr><td colspan="7" style="color:var(--muted)">아직 저장된 기록이 없어요.</td></tr>';
+    return recs;
+  }
+  recs.slice().sort((a, b) => (a.date < b.date ? -1 : 1)).forEach((r) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + r.date + '</td><td>' + r.month + '개월</td><td>' + (MEASURE_LABEL[r.measure] || r.measure) + '</td>' +
+      '<td>' + r.value + '</td><td>' + (r.z == null ? '—' : r.z.toFixed(2)) + '</td>' +
+      '<td>' + (r.pct == null ? '<span class="badge todo">확인 필요</span>' : r.pct.toFixed(1) + '%') + '</td>' +
+      '<td class="no-print"><button class="btn sm sec" type="button" data-del="' + r.id + '">삭제</button></td>';
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll('button[data-del]').forEach((b) => {
+    b.addEventListener('click', () => {
+      bcStore.set(RKEY, bcStore.get(RKEY, []).filter((x) => x.id !== b.dataset.del));
+      const rs = renderRecords();
+      drawChart($('#measure').value, $('#sex').value, rs);
+    });
+  });
+  return recs;
+}
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const bv = $('#birth').value, vv = parseFloat($('#value').value);
+  if (!bv || !(vv > 0)) return;
+  bcStore.set(BKEY, bv);
+  const birth = mkDate(bv);
+  const mdate = $('#mdate').value ? mkDate($('#mdate').value) : new Date();
+  const age = babyAge(birth, mdate);
+  if (!age) { alert('측정일이 생년월일보다 빠릅니다.'); return; }
+  const measure = $('#measure').value, sex = $('#sex').value;
+  const row = findRow(measure, sex, age.months);
+  let z = null, pct = null;
+  if (row && row.checked && row.L != null && row.S != null) {
+    z = zFromLMS(vv, row.L, row.M, row.S);
+    pct = percentileFromZ(z);
+  }
+
+  if (pct != null) {
+    $('#pctBig').textContent = '백분위 ' + pct.toFixed(1) + '%';
+    $('#pctSub').textContent = '생후 ' + age.months + '개월 ' + (sex === 'boy' ? '남아' : '여아') + ' · ' + MEASURE_LABEL[measure] + ' ' + vv + UNIT[measure] + ' · z점수 ' + z.toFixed(2);
+    let msg = '또래 100명 중 아래에서 약 ' + Math.max(1, Math.round(pct)) + '번째 위치예요.';
+    if (pct < 3 || pct > 97) msg += ' 3~97백분위 밖이라면 다음 진료 때 성장에 대해 상담해 보세요.';
+    $('#detail').innerHTML = '<div class="kv"><span class="k">z점수</span><span class="v">' + z.toFixed(3) + '</span></div>' +
+      '<div class="kv"><span class="k">해당 월령 중앙값(M)</span><span class="v">' + row.M + UNIT[measure] + '</span></div>' +
+      '<div class="kv"><span class="k">사용한 LMS</span><span class="v">L=' + row.L + ' / M=' + row.M + ' / S=' + row.S + '</span></div>' +
+      '<p class="res-sub" style="margin-top:10px">' + msg + '</p>';
+  } else {
+    const anyRow = row;
+    $('#pctBig').innerHTML = '백분위 계산 불가 <span class="badge todo">확인 필요</span>';
+    $('#pctSub').textContent = '생후 ' + age.months + '개월 ' + (sex === 'boy' ? '남아' : '여아') + ' · ' + MEASURE_LABEL[measure] + ' ' + vv + UNIT[measure];
+    $('#detail').innerHTML = '<p class="res-sub">이 월령(' + age.months + '개월)의 LMS 값이 아직 원표와 대조되지 않아 백분위를 계산하지 않습니다. 근거 없이 값을 추정하지 않기 위한 조치예요.' +
+      (anyRow && anyRow.M ? ' 참고로 이 월령의 중앙값(M)은 약 <strong>' + anyRow.M + UNIT[measure] + '</strong>입니다.' : '') +
+      '</p><p class="res-sub">정확한 백분위는 병원 성장도표나 아기수첩에서 확인하세요.</p>';
+  }
+
+  const recs = bcStore.get(RKEY, []);
+  recs.push({ id: 'r' + Date.now(), date: fmtDate(mdate), month: age.months, measure, sex, value: vv, z, pct });
+  bcStore.set(RKEY, recs);
+  const rs = renderRecords();
+  drawChart(measure, sex, rs);
+  bcShowResult('result');
+});
+
+$('#csvBtn').addEventListener('click', () => {
+  const recs = bcStore.get(RKEY, []);
+  const lines = ['측정일,월령,성별,항목,값,z점수,백분위'];
+  recs.forEach((r) => lines.push([r.date, r.month, r.sex === 'boy' ? '남아' : '여아', MEASURE_LABEL[r.measure] || r.measure, r.value, r.z == null ? '' : r.z.toFixed(3), r.pct == null ? '확인필요' : r.pct.toFixed(1)].map(bcCsvCell).join(',')));
+  bcDownload('baby-growth.csv', '\ufeff' + lines.join('\n'), 'text/csv');
+});
+$('#jsonBtn').addEventListener('click', () => {
+  bcDownload('baby-growth.json', JSON.stringify(bcStore.get(RKEY, []), null, 2), 'application/json');
+});
+$('#clearBtn').addEventListener('click', () => {
+  if (confirm('저장된 성장 기록을 모두 삭제할까요? (이 브라우저에서만 삭제됩니다)')) {
+    bcStore.del(RKEY);
+    renderRecords();
+    drawChart($('#measure').value, $('#sex').value, []);
+  }
+});
+$('#measure').addEventListener('change', () => drawChart($('#measure').value, $('#sex').value, bcStore.get(RKEY, [])));
+$('#sex').addEventListener('change', () => drawChart($('#measure').value, $('#sex').value, bcStore.get(RKEY, [])));
+
+const savedB = bcStore.get(BKEY, null);
+if (savedB) $('#birth').value = savedB;
+if (bcStore.get(RKEY, []).length) {
+  renderRecords();
+  drawChart($('#measure').value, $('#sex').value, bcStore.get(RKEY, []));
+  bcShowResult('result');
+} else {
+  renderRecords();
+}
+</script>
+</body>
+</html>

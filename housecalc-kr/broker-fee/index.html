@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>부동산 중개보수(복비) 계산기 — 법정 상한 요율·한도액 적용</title>
+<meta name="description" content="매매가 또는 보증금·월세를 넣으면 공인중개사법 시행규칙 별표1의 상한 요율과 한도액을 적용해 중개보수 상한을 계산합니다. 월세 거래금액 환산(보증금+월세×100, 5천만 미만은 ×70)과 부가세까지 함께 보여줍니다." />
+<link rel="canonical" href="https://housecalc-kr.vercel.app/broker-fee/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="부동산 계산기 허브" />
+<meta property="og:title" content="중개보수 계산기 — 매매·전월세 법정 상한" />
+<meta property="og:description" content="매매가 또는 보증금·월세를 넣으면 공인중개사법 시행규칙 별표1의 상한 요율과 한도액을 적용해 중개보수 상한을 계산합니다. 월세 거래금액 환산(보증금+월세×100, 5천만 미만은 ×70)과 부가세까지 함께 보여줍니다." />
+<meta property="og:url" content="https://housecalc-kr.vercel.app/broker-fee/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script defer src="../assets/common.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"부동산 중개보수 계산기","description":"매매가 또는 보증금·월세를 넣으면 공인중개사법 시행규칙 별표1의 상한 요율과 한도액을 적용해 중개보수 상한을 계산합니다. 월세 거래금액 환산(보증금+월세×100, 5천만 미만은 ×70)과 부가세까지 함께 보여줍니다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://housecalc-kr.vercel.app/broker-fee/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"한도액은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"5천만원 미만 매매(0.6%)와 5천만~2억 매매(0.5%) 등 저가 구간에는 요율로 계산한 금액이 한도액을 넘지 못하도록 상한이 걸려 있습니다. 예를 들어 매매 5천만원 미만 구간의 한도액은 25만원입니다."}},{"@type":"Question","name":"지자체마다 요율이 다른가요?","acceptedAnswer":{"@type":"Answer","text":"시·도 조례로 별표1과 다르게 정할 수 있습니다. 특히 9억 이상 고가 구간은 지자체 조례를 확인하는 것이 좋습니다."}},{"@type":"Question","name":"부가세는 꼭 내야 하나요?","acceptedAnswer":{"@type":"Answer","text":"중개사무소가 일반과세자이면 중개보수와 별도로 10%가 부과될 수 있습니다. 간이과세자는 다른 요율이 적용되므로 사업자 유형을 확인하세요."}},{"@type":"Question","name":"매수·매도 양쪽에서 각각 받나요?","acceptedAnswer":{"@type":"Answer","text":"네. 중개보수는 거래 당사자 쌍방에게 각각 청구되며, 이 계산기의 금액은 한쪽이 부담하는 상한입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://housecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"중개보수 계산기","item":"https://housecalc-kr.vercel.app/broker-fee/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🏠 부동산 계산기 허브</a> <span class="sep">›</span> <span>중개보수 계산기</span></nav>
+  <p class="topnotice"><strong>고지</strong> — 이 사이트의 모든 계산은 <strong>참고용 추정이며 실제 세액·한도는 위택스·국세청·금융기관에서 확인</strong>해야 합니다.
+  세율·한도·요율은 법령 개정과 정책 변경으로 수시로 바뀌며, 개별 사정(감면·특례·심사 기준)에 따라 결과가 달라집니다.
+  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> ·
+  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a> ·
+  <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a></p>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🤝</div>
+    <h1>부동산 중개보수 계산기</h1>
+    <p class="lead">법정 <strong>상한 요율</strong>과 한도액을 그대로 적용합니다. 실제 보수는 상한 안에서 협의하는 금액입니다.</p>
+  </div>
+
+  <section class="panel">
+    <h2>거래 정보</h2>
+    <label for="kind">거래 유형</label>
+    <select id="kind">
+      <option value="sale">주택 매매·교환</option>
+      <option value="lease">주택 임대차(전세·월세)</option>
+      <option value="osale">오피스텔 매매 (0.5%)</option>
+      <option value="olease">오피스텔 임대차 (0.4%)</option>
+      <option value="etc">주택 외(상가·토지 등, 0.9% 이내)</option>
+    </select>
+    <div id="saleWrap">
+      <label for="price">매매가 <span class="opt">(만원)</span></label>
+      <input type="text" id="price" data-comma value="50,000" />
+      <p class="src" id="priceEcho"></p>
+    </div>
+    <div id="leaseWrap" hidden>
+      <div class="row2">
+        <div>
+          <label for="deposit">보증금 <span class="opt">(만원)</span></label>
+          <input type="text" id="deposit" data-comma value="30,000" />
+        </div>
+        <div>
+          <label for="monthly">월세 <span class="opt">(만원, 전세면 0)</span></label>
+          <input type="text" id="monthly" data-comma value="0" />
+        </div>
+      </div>
+    </div>
+    <label><input type="checkbox" id="vat" /> 부가가치세 10% 포함해 보기 (일반과세 중개사무소)</label>
+    <div class="btnrow"><button class="btn" id="go">중개보수 상한 계산하기</button></div>
+  </section>
+  
+  <section class="result" id="result" hidden aria-live="polite">
+    <p class="sub">계산 결과 (참고용 추정)</p>
+    <p class="big" id="big"></p>
+    <p class="sub" id="sub"></p>
+    <div id="detail"></div>
+  </section>
+
+  <div class="adbox" id="adbox" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>중개보수는 "정해진 금액"이 아닙니다</h2>
+    <p>공인중개사법 시행규칙 별표1이 정하는 것은 <strong>상한 요율</strong>입니다. 실제 보수는 그 한도 안에서 의뢰인과 중개사가 협의해 정하며, 거래계약서 작성 전에 확정하는 것이 원칙입니다. 이 계산기가 보여주는 금액은 "받을 수 있는 최대치"이므로, 협의의 출발점으로 사용하세요.</p>
+    <p>월세 거래는 보증금과 월세를 하나의 거래금액으로 환산합니다. 기본은 <strong>보증금 + 월세 × 100</strong>이고, 그 값이 5천만원 미만이면 <strong>보증금 + 월세 × 70</strong>으로 다시 계산합니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>거래 유형을 고릅니다. 오피스텔은 전용 85㎡ 이하 등 요건을 갖춘 주거용에 별도 요율이 적용됩니다.</li>
+      <li>매매면 매매가를, 임대차면 보증금과 월세를 입력합니다(전세는 월세 0).</li>
+      <li>결과에서 적용 구간·요율·한도액과 상한 금액을 확인합니다.</li>
+      <li>세금계산서를 받는 경우 부가세 10%가 별도로 붙을 수 있습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 한도액은 무엇인가요?</p><p class="a">5천만원 미만 매매(0.6%)와 5천만~2억 매매(0.5%) 등 저가 구간에는 요율로 계산한 금액이 한도액을 넘지 못하도록 상한이 걸려 있습니다. 예를 들어 매매 5천만원 미만 구간의 한도액은 25만원입니다.</p></div>
+    <div class="qa"><p class="q">Q. 지자체마다 요율이 다른가요?</p><p class="a">시·도 조례로 별표1과 다르게 정할 수 있습니다. 특히 9억 이상 고가 구간은 지자체 조례를 확인하는 것이 좋습니다.</p></div>
+    <div class="qa"><p class="q">Q. 부가세는 꼭 내야 하나요?</p><p class="a">중개사무소가 일반과세자이면 중개보수와 별도로 10%가 부과될 수 있습니다. 간이과세자는 다른 요율이 적용되므로 사업자 유형을 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 매수·매도 양쪽에서 각각 받나요?</p><p class="a">네. 중개보수는 거래 당사자 쌍방에게 각각 청구되며, 이 계산기의 금액은 한쪽이 부담하는 상한입니다.</p></div>
+    <h2>계산에 쓰인 값과 출처</h2>
+    <div class="tbwrap"><table class="tb">
+      <thead><tr><th>항목</th><th>값</th><th>근거</th><th>확인일</th></tr></thead>
+      <tbody>
+        <tr><td>주택 매매 상한 요율</td><td>0.6~0.7% 구간별 + 한도액</td><td><a href="https://www.law.go.kr/법령/공인중개사법시행규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>주택 임대차 상한 요율</td><td>0.5~0.6% 구간별 + 한도액</td><td><a href="https://www.law.go.kr/법령/공인중개사법시행규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>월세 거래금액 환산</td><td>보증금+월세×100 (5천만 미만은 ×70)</td><td><a href="https://www.law.go.kr/법령/공인중개사법시행령/제27조의2" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>오피스텔 요율</td><td>매매 0.5% / 임대차 0.4%</td><td><a href="https://www.law.go.kr/법령/공인중개사법시행규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>주택 외 요율</td><td>0.9% 이내 협의</td><td><a href="https://www.law.go.kr/법령/공인중개사법시행규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>부가가치세</td><td>별도 부과 가능</td><td><a href="https://www.law.go.kr/법령/부가가치세법" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note warn">이 계산기의 결과는 <strong>참고용 추정치</strong>이며 실제 부과·승인 금액을 확정하지 않습니다.
+    세금은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>(지방세)·<a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a>(국세),
+    대출 한도는 거래 금융기관, 등기 비용은 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 반드시 확인하세요.
+    이 사이트는 이름·연락처·주민등록번호 등 개인정보를 수집하지 않으며 모든 계산은 브라우저 안에서만 이뤄집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 계산기</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../move-in-cost/"><span>📦</span> 입주 총비용 계산기</a>
+      <a class="rel" href="../acquisition-tax/"><span>🧾</span> 취득세 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-monthly-convert/" target="_blank" rel="noopener"><span>🔄</span> 전월세 전환 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-loan/" target="_blank" rel="noopener"><span>🏦</span> 전세자금대출 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">부동산 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { brokerFeeCalc, leaseAmount } from "../assets/calc.mjs";
+import { brokerFee } from "../data/brokerfee.mjs";
+import { $, raw, man, txt, on, won, manwon, eok, pctStr, fbox, srcLine, setHtml, setText, showResult, echo, chips } from "../assets/ui.mjs";
+echo("price", "priceEcho");
+function isLease() { var k = $("kind").value; return k === "lease" || k === "olease"; }
+function tog() { $("saleWrap").hidden = isLease(); $("leaseWrap").hidden = !isLease(); }
+$("kind").addEventListener("change", tog); tog();
+$("go").addEventListener("click", function () {
+  var k = $("kind").value;
+  var amount = isLease() ? leaseAmount(man("deposit"), man("monthly"), brokerFee.monthlyConversion.value) : man("price");
+  if (amount <= 0) { setText("big", "거래금액을 입력하세요"); setText("sub", ""); setHtml("detail", ""); showResult(); return; }
+  var rows = [];
+  if (isLease()) {
+    var base = man("deposit") + man("monthly") * brokerFee.monthlyConversion.value.multiplier;
+    var small = base < brokerFee.monthlyConversion.value.smallThreshold;
+    rows.push(["보증금", eok(man("deposit"))]);
+    rows.push(["월세 환산 (월세 × " + (small ? brokerFee.monthlyConversion.value.smallMultiplier : brokerFee.monthlyConversion.value.multiplier) + ")", eok(amount - man("deposit"))]);
+    rows.push(["거래금액 합계" + (small ? " (5천만 미만이라 ×70 재환산)" : ""), eok(amount)]);
+  } else {
+    rows.push(["거래금액", eok(amount)]);
+  }
+  var fee, ratePct, cap = null, capped = false, basis;
+  if (k === "sale" || k === "lease") {
+    var br = k === "sale" ? brokerFee.saleBrackets.value : brokerFee.leaseBrackets.value;
+    var r = brokerFeeCalc(amount, br);
+    fee = r.fee; ratePct = r.ratePct; cap = r.cap; capped = r.capped;
+    basis = "공인중개사법 시행규칙 별표1 구간 요율";
+  } else if (k === "osale" || k === "olease") {
+    ratePct = k === "osale" ? brokerFee.officetel.value.salePct : brokerFee.officetel.value.leasePct;
+    fee = Math.round(amount * ratePct / 100);
+    basis = "오피스텔 고정 요율";
+  } else {
+    ratePct = brokerFee.nonHousing.value.maxPct;
+    fee = Math.round(amount * ratePct / 100);
+    basis = "주택 외 상한 0.9% 이내 협의";
+  }
+  rows.push(["적용 상한 요율", pctStr(ratePct, 2) + " — " + basis]);
+  rows.push(["요율 계산 = 거래금액 × 요율", won(amount * ratePct / 100)]);
+  if (cap != null) rows.push(["한도액", won(cap) + (capped ? " (한도 적용됨)" : " (미달, 요율 적용)")]);
+  rows.push(["중개보수 상한", won(fee)]);
+  var total = fee;
+  if (on("vat")) { rows.push(["부가가치세 10%", won(fee * 0.1)]); total = fee * 1.1; rows.push(["부가세 포함 합계", won(total)]); }
+  setText("big", won(total));
+  setText("sub", "거래금액 " + eok(amount) + " · 상한 요율 " + pctStr(ratePct, 2) + (on("vat") ? " · 부가세 포함" : " · 부가세 별도"));
+  setHtml("detail", fbox("산출 과정", rows, "상한 금액입니다. 실제 보수는 이 범위 안에서 협의하며, 시·도 조례로 요율이 다를 수 있습니다.")
+    + srcLine("요율표", k === "sale" ? brokerFee.saleBrackets : k === "lease" ? brokerFee.leaseBrackets : k === "etc" ? brokerFee.nonHousing : brokerFee.officetel)
+    + (isLease() ? srcLine("월세 환산", brokerFee.monthlyConversion) : ""));
+  showResult();
+});
+</script>
+</body>
+</html>

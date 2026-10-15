@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>분유 수유량 계산기 — 체중으로 보는 하루 총량과 1회 수유량 | BabyCalc</title>
+<meta name="description" content="아기 체중을 입력하면 하루 총 분유량(체중 1kg당 120~150mL 참고 범위)과 수유 횟수에 따른 1회 수유량을 계산합니다. 월령별 참고 수유량 표도 함께 제공합니다.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/formula-amount/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="분유 수유량 계산기 — 하루 총량·1회량">
+<meta property="og:description" content="체중 입력 → 하루 총 분유량과 1회 수유량 참고 범위를 바로 계산.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/formula-amount/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"분유 수유량 계산기","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"아기 체중을 입력하면 하루 총 분유량(체중 1kg당 120~150mL 참고 범위)과 수유 횟수에 따른 1회 수유량을 계산합니다. 월령별 참고 수유량 표도 함께 제공합니다.","url":"https://babycalc-kr.vercel.app/formula-amount/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"계산한 양보다 적게 먹어요.","acceptedAnswer":{"@type":"Answer","text":"아기마다 필요량은 다르고 하루하루도 달라집니다. 활기가 있고 소변 기저귀가 충분히 나오며 체중이 곡선을 따라 늘고 있다면 대개 괜찮습니다. 지속적으로 적게 먹고 체중이 늘지 않으면 진료를 받으세요."}},{"@type":"Question","name":"모유 수유 중인데도 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"이 계산기는 분유 기준입니다. 모유 수유는 양을 재기 어렵기 때문에 수유 횟수, 소변·대변 횟수, 체중 증가로 판단하며 계산값을 그대로 적용하기 어렵습니다."}},{"@type":"Question","name":"이유식을 시작했는데 분유량은 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"이유식 초기에는 모유·분유가 여전히 주식이고 이유식은 연습 단계입니다. 후기로 갈수록 이유식 비중이 늘면서 수유량이 자연스럽게 줄어듭니다. 이유식 단계 계산기에서 단계를 확인해 보세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"분유 수유량","item":"https://babycalc-kr.vercel.app/formula-amount/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">분유 수유량</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🍼</div>
+    <h1>분유 수유량 계산기</h1>
+    <p class="lead">아기 체중과 수유 횟수를 넣으면 하루 총량과 1회 수유량의 일반적인 참고 범위를 계산해 드려요.</p>
+  </div>
+  <p class="med-notice">⚠ 이 페이지는 <strong>참고용이며 진단이 아닙니다</strong>. 아이의 건강·발달과 관련한 판단은 반드시 <strong>소아과 전문의와 상담</strong>하세요.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>아기 정보</h2>
+    <div class="row2">
+      <div class="field">
+        <label for="kg">현재 체중 (kg)</label>
+        <input type="number" id="kg" step="0.01" min="1" max="20" required placeholder="예: 5.2">
+      </div>
+      <div class="field">
+        <label for="feeds">하루 수유 횟수</label>
+        <input type="number" id="feeds" step="1" min="1" max="14" value="7" required>
+      </div>
+    </div>
+    <button class="btn" type="submit">수유량 계산</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>계산 결과</h2>
+    <p class="res-big" id="perFeed">—</p>
+    <p class="res-sub" id="perFeedSub">1회 수유량 참고 범위</p>
+    <div class="kv"><span class="k">하루 총량 (체중 × 120~150mL)</span><span class="v" id="kTotal">—</span></div>
+    <div class="kv"><span class="k">적용된 하루 총량</span><span class="v" id="kApplied">—</span></div>
+    <div class="kv"><span class="k">수유 횟수</span><span class="v" id="kFeeds">—</span></div>
+    <p class="res-sub" id="capNote" style="margin-top:10px"></p>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>어떤 기준으로 계산하나요?</h2>
+    <p>분유 수유량은 흔히 <strong>체중 1kg당 하루 120~150mL</strong>를 참고 범위로 안내합니다. 체중 5kg 아기라면 하루 600~750mL 정도가 되고, 여기에 수유 횟수를 나누면 1회 수유량의 대략적인 범위가 나옵니다. 다만 하루 총량은 일반적으로 약 <strong>1,000mL를 넘지 않게</strong> 안내되는 경우가 많습니다.</p><p>이 수치는 <span class="badge todo">확인 필요</span> — 널리 통용되는 일반 참고 범위이며, 아기마다 필요량 차이가 매우 큽니다. 실제로 중요한 것은 계산값보다 <strong>아기의 배고픔·포만 신호</strong>와 <strong>체중이 성장 곡선을 따라 늘고 있는지</strong>입니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>최근에 잰 체중(kg)과 하루 수유 횟수를 입력합니다.</li><li>하루 총량 범위와 1회 수유량 범위가 계산됩니다.</li><li>아래 월령별 표와 비교해 보되, 두 값이 다르면 아기의 반응과 체중 증가를 우선하세요.</li></ol>
+
+    <h2>월령별 참고 수유량</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>월령</th><th>1회 수유량</th><th>횟수</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>0~1개월</td><td>60~120mL</td><td>하루 7~8회</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>1~2개월</td><td>120~160mL</td><td>하루 6~7회</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>2~4개월</td><td>160~200mL</td><td>하루 5~6회</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>4~6개월</td><td>200~240mL</td><td>하루 4~5회</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>6개월~</td><td>이유식 병행, 200~240mL</td><td>하루 3~4회</td><td><span class="badge todo">확인 필요</span></td></tr>
+      </tbody>
+    </table></div><p>표의 값은 <span class="badge todo">확인 필요</span> 상태입니다 — 분유 제조사 안내와 육아 서적에서 널리 쓰이는 관행 수준의 범위이며, 공식 표준표와 대조하기 전까지는 참고용으로만 봐 주세요.</p><h2>이런 경우에는 진료를 받으세요</h2><ul><li>하루 수유량이 갑자기 크게 줄고 늘지 않을 때</li><li>소변 기저귀 수가 눈에 띄게 줄었을 때(탈수 신호)</li><li>체중이 늘지 않거나 오히려 줄 때</li><li>수유 때마다 심하게 토하거나 힘들어할 때</li></ul>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 계산한 양보다 적게 먹어요.</p><p class="a">아기마다 필요량은 다르고 하루하루도 달라집니다. 활기가 있고 소변 기저귀가 충분히 나오며 체중이 곡선을 따라 늘고 있다면 대개 괜찮습니다. 지속적으로 적게 먹고 체중이 늘지 않으면 진료를 받으세요.</p></div>
+      <div class="qa"><p class="q">Q. 모유 수유 중인데도 쓸 수 있나요?</p><p class="a">이 계산기는 분유 기준입니다. 모유 수유는 양을 재기 어렵기 때문에 수유 횟수, 소변·대변 횟수, 체중 증가로 판단하며 계산값을 그대로 적용하기 어렵습니다.</p></div>
+      <div class="qa"><p class="q">Q. 이유식을 시작했는데 분유량은 어떻게 하나요?</p><p class="a">이유식 초기에는 모유·분유가 여전히 주식이고 이유식은 연습 단계입니다. 후기로 갈수록 이유식 비중이 늘면서 수유량이 자연스럽게 줄어듭니다. <a href="../weaning-stage/">이유식 단계 계산기</a>에서 단계를 확인해 보세요.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 국가건강정보포털(질병관리청) 영아 영양 안내 — <a href="https://health.kdca.go.kr" target="_blank" rel="noopener">https://health.kdca.go.kr</a> (확인일 2026-08-19). 체중당 120~150mL/일, 하루 상한 약 1000mL는 널리 통용되는 일반 참고 범위로 <strong>원문 문구 대조가 필요한 상태(확인 필요)</strong>입니다.</div>
+
+    <p class="disclaimer">수유량 계산은 참고용이며 진단·처방이 아닙니다. 수유량·체중 증가가 걱정되면 소아과 전문의와 상담하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../growth-percentile/"><span class="ic">📈</span>성장 백분위 계산기</a>
+      <a class="rel" href="../weaning-stage/"><span class="ic">🥣</span>이유식 단계 계산기</a>
+      <a class="rel" href="../months-age/"><span class="ic">📅</span>아기 개월수 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/baby-vaccine-schedule/"><span class="ic">🍅</span>예방접종 도우미 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/due-date-calc/"><span class="ic">🍅</span>출산 예정일 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { DAILY_PER_KG } from '../data/formula.mjs';
+const $ = (s) => document.querySelector(s);
+const KEY = 'bc-formula-input';
+
+function calc(kg, feeds) {
+  const lo = kg * DAILY_PER_KG.min, hi = kg * DAILY_PER_KG.max;
+  const cap = DAILY_PER_KG.dailyCap;
+  const loA = Math.min(lo, cap), hiA = Math.min(hi, cap);
+  const r = (n) => Math.round(n / 5) * 5;
+  $('#kTotal').textContent = r(lo) + ' ~ ' + r(hi) + ' mL';
+  $('#kApplied').textContent = r(loA) + ' ~ ' + r(hiA) + ' mL';
+  $('#kFeeds').textContent = feeds + '회';
+  $('#perFeed').innerHTML = r(loA / feeds) + ' ~ ' + r(hiA / feeds) + ' <span class="unit">mL / 1회</span>';
+  $('#perFeedSub').textContent = '체중 ' + kg + 'kg · 하루 ' + feeds + '회 기준 참고 범위';
+  $('#capNote').innerHTML = (hi > cap
+    ? '⚠ 계산값이 하루 참고 상한(약 ' + cap + 'mL)을 넘어 상한을 적용했습니다. '
+    : '') + '이 수치는 <span class="badge todo">확인 필요</span> 상태의 일반 참고 범위입니다. 아기의 배고픔 신호와 체중 증가가 계산값보다 우선입니다.';
+  bcShowResult('result');
+}
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const kg = parseFloat($('#kg').value), feeds = parseInt($('#feeds').value, 10);
+  if (!(kg > 0) || !(feeds > 0)) return;
+  bcStore.set(KEY, { kg, feeds });
+  calc(kg, feeds);
+});
+
+const saved = bcStore.get(KEY, null);
+if (saved && saved.kg) { $('#kg').value = saved.kg; $('#feeds').value = saved.feeds; calc(saved.kg, saved.feeds); }
+</script>
+</body>
+</html>

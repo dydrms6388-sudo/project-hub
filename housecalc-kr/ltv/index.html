@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>LTV 계산기 — 방공제까지 반영한 주택담보대출 한도</title>
+<meta name="description" content="시세와 LTV 비율을 넣으면 주택담보대출 한도를 계산하고, 은행이 실제로 차감하는 방공제(소액임차보증금)를 반영한 실행 가능액까지 보여줍니다. LTV·방공제 값은 지역과 시점에 따라 달라 직접 입력할 수 있습니다." />
+<link rel="canonical" href="https://housecalc-kr.vercel.app/ltv/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="부동산 계산기 허브" />
+<meta property="og:title" content="LTV 계산기 — 방공제 반영 실제 한도" />
+<meta property="og:description" content="시세와 LTV 비율을 넣으면 주택담보대출 한도를 계산하고, 은행이 실제로 차감하는 방공제(소액임차보증금)를 반영한 실행 가능액까지 보여줍니다. LTV·방공제 값은 지역과 시점에 따라 달라 직접 입력할 수 있습니다." />
+<meta property="og:url" content="https://housecalc-kr.vercel.app/ltv/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script defer src="../assets/common.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"LTV 한도 계산기","description":"시세와 LTV 비율을 넣으면 주택담보대출 한도를 계산하고, 은행이 실제로 차감하는 방공제(소액임차보증금)를 반영한 실행 가능액까지 보여줍니다. LTV·방공제 값은 지역과 시점에 따라 달라 직접 입력할 수 있습니다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://housecalc-kr.vercel.app/ltv/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"시세는 무엇을 기준으로 하나요?","acceptedAnswer":{"@type":"Answer","text":"아파트는 통상 KB시세·한국부동산원 시세의 일반 평균가를, 그 외 주택은 감정평가액을 사용합니다. 매매가보다 낮게 인정되면 한도도 그만큼 줄어듭니다."}},{"@type":"Question","name":"방공제를 피할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"MCI·MCG에 가입하면 방공제 없이 한도를 채우는 경우가 있습니다. 다만 보험료가 들고 차주·물건 조건에 따라 가입이 안 될 수 있어 은행 확인이 필요합니다."}},{"@type":"Question","name":"LTV 프리셋을 왜 그대로 쓰면 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"규제지역 지정과 정책이 바뀔 때마다 비율이 달라지기 때문입니다. 이 사이트는 확정값을 보증하지 않고 직접 입력하도록 만들었습니다."}},{"@type":"Question","name":"생애최초면 더 많이 되나요?","acceptedAnswer":{"@type":"Answer","text":"생애최초 구입자에게 더 높은 LTV가 적용되어 왔지만 요건과 한도액 상한이 함께 걸립니다. 반드시 은행에서 최신 기준을 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://housecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"LTV 계산기","item":"https://housecalc-kr.vercel.app/ltv/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🏠 부동산 계산기 허브</a> <span class="sep">›</span> <span>LTV 계산기</span></nav>
+  <p class="topnotice"><strong>고지</strong> — 이 사이트의 모든 계산은 <strong>참고용 추정이며 실제 세액·한도는 위택스·국세청·금융기관에서 확인</strong>해야 합니다.
+  세율·한도·요율은 법령 개정과 정책 변경으로 수시로 바뀌며, 개별 사정(감면·특례·심사 기준)에 따라 결과가 달라집니다.
+  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> ·
+  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a> ·
+  <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a></p>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📐</div>
+    <h1>LTV 한도 계산기</h1>
+    <p class="lead">"시세 × LTV"가 끝이 아닙니다. 은행은 여기서 <strong>방공제(소액임차보증금)</strong>를 한 번 더 뺍니다.</p>
+  </div>
+
+  <section class="panel">
+    <h2>담보와 비율</h2>
+    <label for="price">주택 시세(감정가) <span class="opt">(만원)</span></label>
+    <input type="text" id="price" data-comma value="60,000" />
+    <p class="src" id="priceEcho"></p>
+    <label for="ltv">적용 LTV <span class="opt">(%)</span> <span class="badge warn">확인 필요</span></label>
+    <input type="number" id="ltv" step="1" min="0" max="100" value="70" />
+    <div class="seg" id="ltvChips">
+      <button type="button" data-v="70">비규제지역 (무주택·1주택 처분조건) 70%</button>
+      <button type="button" data-v="50">규제지역 (무주택·1주택 처분조건) 50%</button>
+      <button type="button" data-v="80">생애최초 구입자 80%</button>
+      <button type="button" data-v="30">규제지역 다주택자 30%</button>
+    </div>
+    <p class="note warn">LTV 상한은 규제지역 지정·해제와 정책 변경으로 <strong>수시로 바뀝니다</strong>. 위 프리셋은 참고용이며 이 사이트가 현재 적용값을 보증하지 않습니다.
+      실제 적용 비율은 거래 은행과 <a href="https://www.law.go.kr/행정규칙/은행업감독규정" target="_blank" rel="noopener">은행업감독규정</a>에서 확인해 직접 입력하세요.</p>
+  </section>
+  <section class="panel">
+    <h2>방공제 (소액임차보증금)</h2>
+    <label><input type="checkbox" id="useRoom" checked /> 방공제 차감 적용 (MCI·MCG 미가입 시 통상 차감)</label>
+    <div class="row2">
+      <div>
+        <label for="region">지역 선택</label>
+        <select id="region">
+          <option value="55000000" selected>서울 — 5,500만원</option>
+          <option value="48000000">과밀억제권역·용인·화성·세종·김포 — 4,800만원</option>
+          <option value="28000000">광역시·안산·광주·파주·이천·평택 — 2,800만원</option>
+          <option value="25000000">그 밖의 지역 — 2,500만원</option>
+        </select>
+      </div>
+      <div>
+        <label for="room">방공제 금액 <span class="opt">(만원)</span> <span class="badge warn">확인 필요</span></label>
+        <input type="text" id="room" data-comma value="5,500" />
+      </div>
+    </div>
+    <p class="note"><span class="badge warn">확인 필요</span> 소액임차보증금 기준은 주택임대차보호법 시행령 개정으로 바뀔 수 있고, 방 개수만큼 차감하는 은행도 있습니다. 최신 금액은 은행에 확인해 직접 수정하세요.</p>
+    <div class="btnrow"><button class="btn" id="go">대출 한도 계산하기</button></div>
+  </section>
+  
+  <section class="result" id="result" hidden aria-live="polite">
+    <p class="sub">계산 결과 (참고용 추정)</p>
+    <p class="big" id="big"></p>
+    <p class="sub" id="sub"></p>
+    <div id="detail"></div>
+  </section>
+
+  <div class="adbox" id="adbox" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>왜 계산한 만큼 안 나올까</h2>
+    <p>LTV(주택담보인정비율)는 담보 가치 대비 대출 한도의 상한입니다. 그런데 은행은 여기서 임차인이 우선변제받을 수 있는 <strong>소액임차보증금(방공제)</strong>을 뺀 금액까지만 실행합니다. 서울 기준 5,500만원 안팎이 그대로 한도에서 사라지는 셈입니다. MCI(모기지신용보험)나 MCG(모기지신용보증)에 가입하면 방공제 없이 실행되기도 하지만, 상품과 차주 조건에 따라 가입이 제한됩니다.</p>
+    <p>그리고 LTV로 나온 금액이 곧 승인액도 아닙니다. <strong>DSR</strong> 한도가 더 낮으면 그쪽이 실제 한도가 됩니다. 두 계산을 반드시 함께 하세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>시세(또는 KB시세·감정가)를 입력합니다. 실거래가가 아니라 은행이 인정하는 담보가치가 기준입니다.</li>
+      <li>적용 LTV를 확인해 입력합니다. 프리셋은 참고용입니다.</li>
+      <li>방공제 지역을 고르거나 금액을 직접 입력합니다.</li>
+      <li>결과의 한도와 DSR 계산기 결과 중 <strong>작은 쪽</strong>이 실제 가능액입니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 시세는 무엇을 기준으로 하나요?</p><p class="a">아파트는 통상 KB시세·한국부동산원 시세의 일반 평균가를, 그 외 주택은 감정평가액을 사용합니다. 매매가보다 낮게 인정되면 한도도 그만큼 줄어듭니다.</p></div>
+    <div class="qa"><p class="q">Q. 방공제를 피할 수 있나요?</p><p class="a">MCI·MCG에 가입하면 방공제 없이 한도를 채우는 경우가 있습니다. 다만 보험료가 들고 차주·물건 조건에 따라 가입이 안 될 수 있어 은행 확인이 필요합니다.</p></div>
+    <div class="qa"><p class="q">Q. LTV 프리셋을 왜 그대로 쓰면 안 되나요?</p><p class="a">규제지역 지정과 정책이 바뀔 때마다 비율이 달라지기 때문입니다. 이 사이트는 확정값을 보증하지 않고 직접 입력하도록 만들었습니다.</p></div>
+    <div class="qa"><p class="q">Q. 생애최초면 더 많이 되나요?</p><p class="a">생애최초 구입자에게 더 높은 LTV가 적용되어 왔지만 요건과 한도액 상한이 함께 걸립니다. 반드시 은행에서 최신 기준을 확인하세요.</p></div>
+    <h2>계산에 쓰인 값과 출처</h2>
+    <div class="tbwrap"><table class="tb">
+      <thead><tr><th>항목</th><th>값</th><th>근거</th><th>확인일</th></tr></thead>
+      <tbody>
+        <tr><td>LTV 상한 프리셋 <span class="badge warn">확인 필요</span></td><td>직접 입력 기본 — 프리셋은 참고용</td><td><a href="https://www.law.go.kr/행정규칙/은행업감독규정" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>방공제(소액임차보증금) <span class="badge warn">확인 필요</span></td><td>지역별 금액, 직접 수정 가능</td><td><a href="https://www.law.go.kr/법령/주택임대차보호법시행령/제10조" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>차주단위 DSR 한도</td><td>LTV와 함께 더 낮은 쪽이 실제 한도</td><td><a href="https://www.law.go.kr/행정규칙/은행업감독규정" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note warn"><strong>확인 필요 항목</strong> — 아래 값은 개정·변동 가능성이 있어 이 사이트가 임의로 확정하지 않습니다. 계산에서 제외하거나 직접 입력하도록 했습니다.
+      <ul>
+        <li><strong>LTV 상한 프리셋</strong> — LTV 상한은 지역 규제 지정·해제와 함께 수시로 바뀜. 최신 규제지역 여부와 함께 은행 확인 필요 — 직접 입력 옵션 제공.</li>
+        <li><strong>방공제(소액임차보증금)</strong> — 소액임차보증금(방공제) 금액은 시행령 개정으로 바뀔 수 있음 — 직접 입력 확인 필요.</li>
+      </ul>
+    </div>
+    <p class="note warn">이 계산기의 결과는 <strong>참고용 추정치</strong>이며 실제 부과·승인 금액을 확정하지 않습니다.
+    세금은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>(지방세)·<a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a>(국세),
+    대출 한도는 거래 금융기관, 등기 비용은 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 반드시 확인하세요.
+    이 사이트는 이름·연락처·주민등록번호 등 개인정보를 수집하지 않으며 모든 계산은 브라우저 안에서만 이뤄집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 계산기</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../dsr/"><span>📉</span> DSR 계산기</a>
+      <a class="rel" href="../affordability/"><span>🏡</span> 내 집 마련 예산 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/dsr-limit-check/" target="_blank" rel="noopener"><span>🚦</span> DSR 한도 점검 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-loan/" target="_blank" rel="noopener"><span>🏦</span> 전세자금대출 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">부동산 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { loanRules } from "../data/loan.mjs";
+import { $, raw, man, txt, on, won, manwon, eok, pctStr, fbox, srcLine, setHtml, setText, showResult, echo, chips } from "../assets/ui.mjs";
+echo("price", "priceEcho");
+chips("ltvChips", "ltv");
+$("region").addEventListener("change", function () {
+  $("room").value = (Number($("region").value) / 10000).toLocaleString("ko-KR");
+});
+$("go").addEventListener("click", function () {
+  var price = man("price"), ltv = raw("ltv");
+  if (price <= 0 || ltv <= 0) { setText("big", "시세와 LTV를 입력하세요"); setText("sub", ""); setHtml("detail", ""); showResult(); return; }
+  var gross = price * ltv / 100;
+  var room = on("useRoom") ? man("room") : 0;
+  var net = Math.max(0, gross - room);
+  var rows = [
+    ["주택 시세(감정가)", eok(price)],
+    ["적용 LTV", pctStr(ltv, 1)],
+    ["① LTV 한도 = 시세 × LTV", won(gross)],
+    ["② 방공제 차감" + (on("useRoom") ? "" : " (미적용)"), "− " + won(room)],
+    ["실행 가능 예상액 ① − ②", won(net)],
+    ["필요 자기자본 = 시세 − 실행액", won(Math.max(0, price - net))]
+  ];
+  setText("big", won(net));
+  setText("sub", "시세 " + eok(price) + " · LTV " + pctStr(ltv, 1) + (on("useRoom") ? " · 방공제 " + manwon(room) + " 차감" : " · 방공제 미적용"));
+  setHtml("detail", fbox("산출 과정", rows, "이 금액은 담보 기준 상한입니다. DSR 한도가 더 낮으면 그쪽이 실제 한도가 되므로 DSR 계산기도 함께 확인하세요.")
+    + srcLine("LTV 프리셋", loanRules.ltvPresets)
+    + srcLine("방공제", loanRules.smallDeposit));
+  showResult();
+});
+</script>
+</body>
+</html>

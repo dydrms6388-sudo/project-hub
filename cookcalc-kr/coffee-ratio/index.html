@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>커피 원두·물 비율 계산기 — 핸드드립·콜드브루 추출 비율</title>
+<meta name="description" content="원두 20g이면 물 몇 ml? 핸드드립·프렌치프레스·에어로프레스·콜드브루·에스프레소별 추출 비율로 원두와 물의 양을 양방향 계산합니다. 잔 수 기준 계산도 지원합니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/coffee-ratio/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="커피 비율 계산기 — 원두↔물 역산" />
+<meta property="og:description" content="원두 20g이면 물 몇 ml? 핸드드립·프렌치프레스·에어로프레스·콜드브루·에스프레소별 추출 비율로 원두와 물의 양을 양방향 계산합니다. 잔 수 기준 계산도 지원합니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/coffee-ratio/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"커피 비율 계산기","description":"원두 20g이면 물 몇 ml? 핸드드립·프렌치프레스·에어로프레스·콜드브루·에스프레소별 추출 비율로 원두와 물의 양을 양방향 계산합니다. 잔 수 기준 계산도 지원합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/coffee-ratio/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"물 온도는 몇 도가 좋나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 90~94℃를 권합니다. 끓인 물을 30초~1분 두면 그 범위에 들어옵니다. 로스팅이 강한 원두는 88~90℃로 낮추면 쓴맛이 덜합니다."}},{"@type":"Question","name":"콜드브루 원액은 그대로 마시나요?","acceptedAnswer":{"@type":"Answer","text":"1:12 정도로 뽑은 원액은 상당히 진하므로 물이나 우유로 1:1~1:2 희석해 마시는 것이 일반적입니다. 냉장 보관하며 되도록 일주일 안에 드세요."}},{"@type":"Question","name":"에스프레소 비율 1:2는 무슨 뜻인가요?","acceptedAnswer":{"@type":"Answer","text":"원두 18g으로 추출액 36g을 받는다는 뜻입니다. 부피(ml)가 아니라 저울로 잰 무게 기준이며, 이 비율을 고정하면 머신이 달라도 맛의 방향을 맞추기 쉽습니다."}},{"@type":"Question","name":"분쇄도는 어떻게 정하나요?","acceptedAnswer":{"@type":"Answer","text":"추출 시간이 기준입니다. 핸드드립 2분 30초~3분 30초, 프렌치프레스 4분이 목표이고, 너무 빨리 내려가면 더 곱게, 느리면 더 굵게 갑니다. 비율은 그대로 두고 분쇄도만 바꾸세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"커피 비율 계산","item":"https://cookcalc-kr.vercel.app/coffee-ratio/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>커피 비율 계산</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">☕</div>
+    <h1>커피 비율 계산기</h1>
+    <p class="lead">추출 방식만 고르면 <strong>원두 ↔ 물</strong>을 양방향으로 계산합니다. 매번 같은 맛을 내는 가장 쉬운 방법입니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>추출 조건</h2>
+    <label class="f">추출 방식
+      <select id="method"><option value="handdrip" selected>핸드드립(푸어오버) — 1:16</option><option value="frenchpress">프렌치프레스 — 1:15</option><option value="aeropress">에어로프레스 — 1:14</option><option value="coldbrew">콜드브루(원액) — 1:12</option><option value="espresso">에스프레소 — 1:2</option></select>
+    </label>
+    <div style="margin-top:12px">
+      <span class="f" style="display:block">무엇을 알고 계신가요?</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="계산 방향">
+        <button type="button" data-v="bean" aria-pressed="true">원두 양을 안다</button>
+        <button type="button" data-v="water" aria-pressed="false">물 양을 안다</button>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f" id="beanWrap">원두 <span class="u">(g)</span>
+        <input type="number" id="bean" inputmode="decimal" min="1" step="1" value="20" />
+      </label>
+      <label class="f" id="waterWrap" hidden>물 <span class="u">(ml)</span>
+        <input type="number" id="water" inputmode="decimal" min="10" step="10" value="320" />
+      </label>
+      <label class="f">비율 미세 조정 <span class="u">(1 : n)</span>
+        <input type="number" id="ratio" inputmode="decimal" min="1" step="0.5" value="16" />
+      </label>
+    </div>
+    <button class="btn" id="calcBtn">계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>추출 계산 결과</h2>
+      <p class="big"><span class="num" id="mainOut"></span></p>
+      <div id="tableOut"></div>
+      <p class="note" id="noteOut"></p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>비율 하나만 고정해도 맛이 안정된다</h2>
+    <p>집에서 내린 커피 맛이 매번 다른 가장 큰 이유는 원두와 물의 비율이 들쭉날쭉하기 때문입니다. 분쇄도·물 온도·시간도 영향을 주지만, 그것들은 비율이 고정된 뒤에야 의미 있게 조정할 수 있습니다. 핸드드립의 표준은 <strong>1:16</strong>(원두 20g에 물 320ml)이고, 진하게 마시려면 1:15, 산미를 살리려면 1:17 쪽으로 움직입니다.</p>
+    <p>주의할 점은 <strong>물 흡수량</strong>입니다. 원두는 자기 무게의 약 2배에 해당하는 물을 머금고 남기므로, 20g으로 320ml를 부으면 잔에 담기는 양은 약 280ml입니다. 이 계산기는 그 손실분도 함께 보여줍니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>추출 방식을 고릅니다. 방식별 기본 비율이 자동으로 채워집니다.</li>
+      <li>원두 양을 알면 "원두 양을 안다", 물 양(또는 만들 커피 양)을 알면 반대로 고릅니다.</li>
+      <li>필요하면 비율을 미세 조정합니다(진하게 = 숫자를 줄이고, 연하게 = 숫자를 늘림).</li>
+      <li>결과에서 원두·물·예상 추출량을 확인합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 물 온도는 몇 도가 좋나요?</p><p class="a">일반적으로 90~94℃를 권합니다. 끓인 물을 30초~1분 두면 그 범위에 들어옵니다. 로스팅이 강한 원두는 88~90℃로 낮추면 쓴맛이 덜합니다.</p></div>
+    <div class="qa"><p class="q">Q. 콜드브루 원액은 그대로 마시나요?</p><p class="a">1:12 정도로 뽑은 원액은 상당히 진하므로 물이나 우유로 1:1~1:2 희석해 마시는 것이 일반적입니다. 냉장 보관하며 되도록 일주일 안에 드세요.</p></div>
+    <div class="qa"><p class="q">Q. 에스프레소 비율 1:2는 무슨 뜻인가요?</p><p class="a">원두 18g으로 추출액 36g을 받는다는 뜻입니다. 부피(ml)가 아니라 저울로 잰 무게 기준이며, 이 비율을 고정하면 머신이 달라도 맛의 방향을 맞추기 쉽습니다.</p></div>
+    <div class="qa"><p class="q">Q. 분쇄도는 어떻게 정하나요?</p><p class="a">추출 시간이 기준입니다. 핸드드립 2분 30초~3분 30초, 프렌치프레스 4분이 목표이고, 너무 빨리 내려가면 더 곱게, 느리면 더 굵게 갑니다. 비율은 그대로 두고 분쇄도만 바꾸세요.</p></div>
+    <h2>비율 기준</h2>
+    <p class="note">방식별 추출 비율은 널리 쓰이는 <strong>관행 범위</strong>입니다(출처: 자체 정리, 확인일 2026-08-19).
+    원두 상태·분쇄도·취향에 따라 조정하는 값이며 <span class="badge warn">참고용</span>입니다.</p>
+    <p class="disclaimer">본 계산 결과는 <strong>참고용 추정치</strong>입니다. 추출 비율은 취향에 따라 조정하는 관행값입니다.
+    재료의 상태·계량 방법·기기 차이에 따라 실제 결과가 달라질 수 있으며, 진단·의료·영양 처방의 근거로 사용할 수 없습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../sugar-syrup/"><span class="e">🍯</span> 과일청 비율 계산</a>
+      <a class="rel" href="../timer-multi/"><span class="e">⏲️</span> 동시 타이머</a>
+      <a class="rel" href="https://tomatoeggcat.com/home-cafe-recipe/" target="_blank" rel="noopener"><span class="e">☕</span> 홈카페 레시피 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/seasonal-food/" target="_blank" rel="noopener"><span class="e">🥬</span> 제철 음식 달력 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { COFFEE_RATIO } from "../data/misc.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+let mode = "bean";
+const sel = $("method");
+function syncRatio() {
+  const c = COFFEE_RATIO.find((x) => x.key === sel.value);
+  $("ratio").value = c.ratio;
+}
+sel.addEventListener("change", syncRatio);
+segInit($("modeSeg"), (v) => {
+  mode = v;
+  $("beanWrap").hidden = v !== "bean";
+  $("waterWrap").hidden = v === "bean";
+});
+$("calcBtn").addEventListener("click", () => {
+  const c = COFFEE_RATIO.find((x) => x.key === sel.value);
+  const r = num($("ratio"), c.ratio);
+  let bean, water;
+  if (mode === "bean") { bean = num($("bean"), 20); water = bean * r; }
+  else { water = num($("water"), 320); bean = water / r; }
+  const absorbed = c.key === "espresso" ? 0 : bean * 2;
+  const yieldMl = Math.max(0, water - absorbed);
+  $("mainOut").textContent = mode === "bean" ? "물 " + ml(water) : "원두 " + fmt(bean, 1) + "g";
+  $("tableOut").innerHTML = kv([
+    ["추출 방식", c.name],
+    ["적용 비율", "1 : " + fmt(r, 1) + " (기본 " + c.range + ")"],
+    ["원두", fmt(bean, 1) + "g"],
+    ["물", ml(water) + " (물 1ml ≈ 1g)"],
+    [c.key === "espresso" ? "추출액" : "원두가 머금는 물", c.key === "espresso" ? fmt(water, 1) + "g" : "약 " + ml(absorbed)],
+    ["예상 잔 분량", c.key === "espresso" ? fmt(water, 1) + "g (샷)" : "약 " + ml(yieldMl)],
+  ]);
+  $("noteOut").textContent = c.note;
+  $("srcOut").innerHTML = srcBox("비율 출처", [{ text: c.name + " " + c.range + " — " + c.source, checkedAt: c.checkedAt }]);
+  show("resultBox");
+});
+syncRatio();
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

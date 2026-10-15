@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>국제 회의 시간 찾기 — 여러 나라 근무시간 겹치는 시간대</title>
+<meta name="description" content="서울·뉴욕·런던처럼 시차가 다른 도시들의 근무시간이 겹치는 구간을 24시간 표로 보여줍니다. 주말 여부까지 표시해 화상회의·국제전화 시간을 정할 수 있습니다. 서머타임 자동 반영." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/meeting-time/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="국제 회의 시간 찾기" />
+<meta property="og:description" content="서울·뉴욕·런던처럼 시차가 다른 도시들의 근무시간이 겹치는 구간을 24시간 표로 보여줍니다. 주말 여부까지 표시해 화상회의·국제전화 시간을 정할 수 있습니다. 서머타임 자동 반영." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/meeting-time/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"국제 회의 시간 찾기","description":"서울·뉴욕·런던처럼 시차가 다른 도시들의 근무시간이 겹치는 구간을 24시간 표로 보여줍니다. 주말 여부까지 표시해 화상회의·국제전화 시간을 정할 수 있습니다. 서머타임 자동 반영.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/meeting-time/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"겹치는 시간이 하나도 없다고 나옵니다.","acceptedAnswer":{"@type":"Answer","text":"서울과 미국 동부처럼 시차가 13~14시간이면 9~18시 기준으로는 겹치는 구간이 없는 것이 정상입니다. 근무 시간을 8~20시로 넓히거나, 한쪽이 이른 아침/늦은 저녁을 감수하는 시간을 골라야 합니다. 표에서 초록색 칸이 가장 많은 줄을 참고하세요."}},{"@type":"Question","name":"주말은 어떻게 처리되나요?","acceptedAnswer":{"@type":"Answer","text":"각 도시의 현지 요일이 토·일이면 근무시간이라도 겹침에서 제외하고 노란색으로 표시합니다. 중동 등 주말이 금·토인 지역은 이 규칙과 다를 수 있으니 표의 현지 요일을 직접 확인하세요."}},{"@type":"Question","name":"서머타임 때문에 결과가 달라지나요?","acceptedAnswer":{"@type":"Answer","text":"네, 그래서 기준 날짜를 입력받습니다. 3월과 11월처럼 전환 시기 전후로 겹치는 구간이 한 시간씩 밀릴 수 있어 실제 회의 날짜로 계산하는 것이 정확합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"회의 시간 찾기","item":"https://tripcalc-kr.vercel.app/meeting-time/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>회의 시간 찾기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🤝</div>
+    <h1>국제 회의 시간 찾기</h1>
+    <p class="lead">여러 도시의 <strong>근무시간이 겹치는 구간</strong>을 24시간 표로 찾아줍니다. 주말이면 주말이라고 알려줍니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>참여 도시 (2~6곳)</h2>
+    <div class="grid2">
+      <label class="f">도시 추가 <select id="citySel"></select></label>
+      <label class="f">&nbsp;<button class="btn2" id="addBtn" type="button" style="width:100%;padding:11px">➕ 추가</button></label>
+    </div>
+    <div class="chips" id="picked"></div>
+    <div class="grid3" style="margin-top:14px">
+      <label class="f">근무 시작 <input type="number" id="ws" min="0" max="23" value="9" /></label>
+      <label class="f">근무 종료 <input type="number" id="we" min="1" max="24" value="18" /></label>
+      <label class="f">기준 날짜 <input type="date" id="day" /></label>
+    </div>
+    <button class="btn" id="goBtn" type="button">겹치는 시간 찾기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>겹치는 시간대</h2>
+      <p class="big"><span class="num" id="bestOut">-</span></p>
+      <p class="note" id="bestNote"></p>
+      <div class="slots" id="grid"></div>
+      <p class="note">초록색 = 그 도시의 근무시간(주말 제외) 안. 표의 각 줄은 같은 순간을 각 도시 현지 시각으로 표시한 것입니다.</p>
+      <div class="share">
+        <button class="btn2" id="linkBtn" type="button">🔗 이 조합 링크 복사</button>
+        <button class="btn2" id="textBtn" type="button">📋 회의 후보 시간 복사</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>"몇 시에 하면 되죠?"를 끝내는 표</h2>
+  <p>서울·런던·뉴욕이 함께 회의를 잡으려면 세 도시의 근무시간이 동시에 열려 있는 구간을 찾아야 합니다. 그런데 서울과 뉴욕은 13~14시간 차이라 하루 중 겹치는 구간이 거의 없고, 있어도 한쪽이 이른 아침이거나 늦은 저녁입니다. 머릿속으로 더하고 빼다 보면 날짜를 하루 착각하기 쉽습니다.</p>
+  <p>이 도구는 하루 24개 슬롯 각각에 대해 모든 도시의 현지 시각을 계산해 근무시간 안인지, 주말인지 표시합니다. 완전히 겹치는 구간이 있으면 가장 긴 구간을 뽑아 알려주고, 하나도 없으면 없다고 분명히 말합니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>참여 도시를 2~6곳 추가합니다(칩을 누르면 삭제).</li>
+    <li>근무 시작·종료 시각을 조정합니다. 기본은 9시~18시이고, 유연근무라면 8~20처럼 넓혀도 됩니다.</li>
+    <li>기준 날짜를 고릅니다. 주말 여부와 서머타임 적용이 날짜에 따라 달라지므로 실제 회의 예정일을 넣는 것이 좋습니다.</li>
+    <li>"겹치는 시간 찾기"를 누르면 24시간 표와 가장 긴 공통 구간이 나옵니다.</li>
+  </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 겹치는 시간이 하나도 없다고 나옵니다.</p><p class="a">서울과 미국 동부처럼 시차가 13~14시간이면 9~18시 기준으로는 겹치는 구간이 없는 것이 정상입니다. 근무 시간을 8~20시로 넓히거나, 한쪽이 이른 아침/늦은 저녁을 감수하는 시간을 골라야 합니다. 표에서 초록색 칸이 가장 많은 줄을 참고하세요.</p></div>
+    <div class="qa"><p class="q">Q. 주말은 어떻게 처리되나요?</p><p class="a">각 도시의 현지 요일이 토·일이면 근무시간이라도 겹침에서 제외하고 노란색으로 표시합니다. 중동 등 주말이 금·토인 지역은 이 규칙과 다를 수 있으니 표의 현지 요일을 직접 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 서머타임 때문에 결과가 달라지나요?</p><p class="a">네, 그래서 기준 날짜를 입력받습니다. 3월과 11월처럼 전환 시기 전후로 겹치는 구간이 한 시간씩 밀릴 수 있어 실제 회의 날짜로 계산하는 것이 정확합니다.</p></div>
+    <h2>시차 계산 방식</h2>
+    <p class="note">시차는 표를 하드코딩하지 않고 <strong>IANA 타임존 데이터베이스</strong>(예: <code>Asia/Seoul</code>)를 브라우저의
+    <code>Intl</code> API 로 계산합니다. 따라서 서머타임(일광절약시간) 시행·해제가 자동으로 반영되고, 브라우저의 tzdb 가 갱신되면 결과도 함께 갱신됩니다.
+    출처: <a href="https://www.iana.org/time-zones" target="_blank" rel="noopener">IANA Time Zone Database</a> (확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. </p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-pin/" target="_blank" rel="noopener"><span class="e">📍</span> 여행 핀 지도 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/split-bill/" target="_blank" rel="noopener"><span class="e">🧾</span> 더치페이 정산 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, fillSelect, esc, copyText } from "../assets/app.mjs";
+import { overlapSlots, bestBlocks, localParts } from "../lib/tz.mjs";
+const CITIES = [{"v":"Asia/Seoul|서울","n":"서울"},{"v":"Asia/Seoul|부산","n":"부산"},{"v":"Asia/Seoul|제주","n":"제주"},{"v":"Asia/Seoul|대구","n":"대구"},{"v":"Asia/Tokyo|도쿄","n":"도쿄"},{"v":"Asia/Tokyo|오사카","n":"오사카"},{"v":"Asia/Tokyo|나고야","n":"나고야"},{"v":"Asia/Tokyo|후쿠오카","n":"후쿠오카"},{"v":"Asia/Tokyo|삿포로","n":"삿포로"},{"v":"Asia/Tokyo|오키나와","n":"오키나와"},{"v":"Asia/Shanghai|베이징","n":"베이징"},{"v":"Asia/Shanghai|상하이","n":"상하이"},{"v":"Asia/Shanghai|광저우","n":"광저우"},{"v":"Asia/Shanghai|선전","n":"선전"},{"v":"Asia/Hong_Kong|홍콩","n":"홍콩"},{"v":"Asia/Macau|마카오","n":"마카오"},{"v":"Asia/Taipei|타이베이","n":"타이베이"},{"v":"Asia/Singapore|싱가포르","n":"싱가포르"},{"v":"Asia/Kuala_Lumpur|쿠알라룸푸르","n":"쿠알라룸푸르"},{"v":"Asia/Bangkok|방콕","n":"방콕"},{"v":"Asia/Bangkok|치앙마이","n":"치앙마이"},{"v":"Asia/Bangkok|푸껫","n":"푸껫"},{"v":"Asia/Ho_Chi_Minh|호치민","n":"호치민"},{"v":"Asia/Ho_Chi_Minh|하노이","n":"하노이"},{"v":"Asia/Ho_Chi_Minh|다낭","n":"다낭"},{"v":"Asia/Ho_Chi_Minh|나트랑","n":"나트랑"},{"v":"Asia/Manila|마닐라","n":"마닐라"},{"v":"Asia/Manila|세부","n":"세부"},{"v":"Asia/Manila|클라크","n":"클라크"},{"v":"Asia/Makassar|발리","n":"발리"},{"v":"Asia/Jakarta|자카르타","n":"자카르타"},{"v":"Asia/Phnom_Penh|프놈펜","n":"프놈펜"},{"v":"Asia/Kolkata|델리","n":"델리"},{"v":"Asia/Kolkata|뭄바이","n":"뭄바이"},{"v":"Asia/Tashkent|타슈켄트","n":"타슈켄트"},{"v":"Asia/Ulaanbaatar|울란바토르","n":"울란바토르"},{"v":"Asia/Dubai|두바이","n":"두바이"},{"v":"Asia/Dubai|아부다비","n":"아부다비"},{"v":"Asia/Qatar|도하","n":"도하"},{"v":"Europe/Istanbul|이스탄불","n":"이스탄불"},{"v":"Asia/Jerusalem|텔아비브","n":"텔아비브"},{"v":"Europe/London|런던","n":"런던"},{"v":"Europe/Paris|파리","n":"파리"},{"v":"Europe/Berlin|프랑크푸르트","n":"프랑크푸르트"},{"v":"Europe/Berlin|뮌헨","n":"뮌헨"},{"v":"Europe/Amsterdam|암스테르담","n":"암스테르담"},{"v":"Europe/Brussels|브뤼셀","n":"브뤼셀"},{"v":"Europe/Zurich|취리히","n":"취리히"},{"v":"Europe/Zurich|제네바","n":"제네바"},{"v":"Europe/Vienna|빈","n":"빈"},{"v":"Europe/Prague|프라하","n":"프라하"},{"v":"Europe/Warsaw|바르샤바","n":"바르샤바"},{"v":"Europe/Budapest|부다페스트","n":"부다페스트"},{"v":"Europe/Rome|로마","n":"로마"},{"v":"Europe/Rome|밀라노","n":"밀라노"},{"v":"Europe/Rome|베네치아","n":"베네치아"},{"v":"Europe/Madrid|바르셀로나","n":"바르셀로나"},{"v":"Europe/Madrid|마드리드","n":"마드리드"},{"v":"Europe/Lisbon|리스본","n":"리스본"},{"v":"Europe/Athens|아테네","n":"아테네"},{"v":"Europe/Dublin|더블린","n":"더블린"},{"v":"Europe/Copenhagen|코펜하겐","n":"코펜하겐"},{"v":"Europe/Stockholm|스톡홀름","n":"스톡홀름"},{"v":"Europe/Oslo|오슬로","n":"오슬로"},{"v":"Europe/Helsinki|헬싱키","n":"헬싱키"},{"v":"Atlantic/Reykjavik|레이캬비크","n":"레이캬비크"},{"v":"Europe/Moscow|모스크바","n":"모스크바"},{"v":"Asia/Vladivostok|블라디보스토크","n":"블라디보스토크"},{"v":"America/New_York|뉴욕","n":"뉴욕"},{"v":"America/New_York|보스턴","n":"보스턴"},{"v":"America/New_York|워싱턴 D.C.","n":"워싱턴 D.C."},{"v":"America/Chicago|시카고","n":"시카고"},{"v":"America/Chicago|댈러스","n":"댈러스"},{"v":"America/New_York|애틀랜타","n":"애틀랜타"},{"v":"America/New_York|마이애미","n":"마이애미"},{"v":"America/Los_Angeles|로스앤젤레스","n":"로스앤젤레스"},{"v":"America/Los_Angeles|샌프란시스코","n":"샌프란시스코"},{"v":"America/Los_Angeles|시애틀","n":"시애틀"},{"v":"America/Los_Angeles|라스베이거스","n":"라스베이거스"},{"v":"America/Los_Angeles|샌디에이고","n":"샌디에이고"},{"v":"Pacific/Honolulu|호놀룰루","n":"호놀룰루"},{"v":"America/Vancouver|밴쿠버","n":"밴쿠버"},{"v":"America/Toronto|토론토","n":"토론토"},{"v":"America/Mexico_City|멕시코시티","n":"멕시코시티"},{"v":"America/Cancun|칸쿤","n":"칸쿤"},{"v":"America/Sao_Paulo|상파울루","n":"상파울루"},{"v":"America/Argentina/Buenos_Aires|부에노스아이레스","n":"부에노스아이레스"},{"v":"America/Santiago|산티아고","n":"산티아고"},{"v":"America/Lima|리마","n":"리마"},{"v":"Australia/Sydney|시드니","n":"시드니"},{"v":"Australia/Melbourne|멜버른","n":"멜버른"},{"v":"Australia/Brisbane|브리즈번","n":"브리즈번"},{"v":"Australia/Perth|퍼스","n":"퍼스"},{"v":"Pacific/Auckland|오클랜드","n":"오클랜드"},{"v":"Pacific/Auckland|크라이스트처치","n":"크라이스트처치"},{"v":"Pacific/Guam|괌","n":"괌"},{"v":"Pacific/Saipan|사이판","n":"사이판"},{"v":"Pacific/Fiji|피지 난디","n":"피지 난디"},{"v":"Africa/Cairo|카이로","n":"카이로"},{"v":"Africa/Casablanca|카사블랑카","n":"카사블랑카"},{"v":"Africa/Johannesburg|요하네스버그","n":"요하네스버그"},{"v":"Africa/Johannesburg|케이프타운","n":"케이프타운"}];
+fillSelect($("citySel"), CITIES, "Asia/Seoul|서울");
+const q = new URLSearchParams(location.search);
+let picked = (q.get("c") || "서울,런던,뉴욕").split(",").map((n) => CITIES.find((c) => c.n === n)).filter(Boolean);
+function pad(n) { return String(n).padStart(2, "0"); }
+function renderChips() {
+  $("picked").innerHTML = picked.map((c, i) => '<button class="chip" aria-pressed="true" data-i="' + i + '" type="button">' + esc(c.n) + ' ✕</button>').join("");
+  [...$("picked").querySelectorAll("button")].forEach((b) => b.addEventListener("click", () => { picked.splice(+b.dataset.i, 1); renderChips(); }));
+}
+$("addBtn").addEventListener("click", () => {
+  const c = CITIES.find((x) => x.v === $("citySel").value);
+  if (c && !picked.some((p) => p.v === c.v) && picked.length < 6) picked.push(c);
+  renderChips();
+});
+renderChips();
+const t0 = new Date();
+$("day").value = t0.getFullYear() + "-" + pad(t0.getMonth() + 1) + "-" + pad(t0.getDate());
+let lastText = "";
+function run() {
+  if (picked.length < 2) { alert("도시를 2곳 이상 골라주세요."); return; }
+  const ws = Math.max(0, Math.min(23, +$("ws").value || 9));
+  const we = Math.max(ws + 1, Math.min(24, +$("we").value || 18));
+  const [y, m, d] = $("day").value.split("-").map(Number);
+  const base = new Date(Date.UTC(y, m - 1, d));
+  const zones = picked.map((c) => { const [tz, label] = c.v.split("|"); return { tz, label }; });
+  const slots = overlapSlots(zones, { start: ws, end: we }, base);
+  const blocks = bestBlocks(slots);
+  $("resultBox").hidden = false;
+  if (blocks.length) {
+    const b = blocks[0];
+    const cells = b.from.cells.map((c, i) => c.label + " " + pad(c.h) + ":00");
+    $("bestOut").textContent = b.len + "시간 겹침";
+    lastText = "겹치는 시간: " + cells.join(" / ") + " 부터 " + b.len + "시간";
+    $("bestNote").innerHTML = "가장 긴 공통 구간 시작 시각 — " + esc(cells.join(" · ")) + " (총 " + b.len + "시간)";
+  } else {
+    $("bestOut").textContent = "겹치는 구간 없음";
+    lastText = "이 조건으로는 겹치는 근무시간이 없습니다.";
+    $("bestNote").textContent = "근무 시간을 넓히거나(예: 8~20시) 한쪽이 이른 아침·늦은 저녁을 감수해야 합니다. 아래 표에서 초록 칸이 가장 많은 줄을 고르세요.";
+  }
+  const head = "<tr><th>UTC</th>" + zones.map((z) => "<th>" + esc(z.label) + "</th>").join("") + "<th>겹침</th></tr>";
+  const rows = slots.map((s) => {
+    const cls = s.all ? ' class="best"' : "";
+    return "<tr" + cls + "><td>" + pad(s.utcHour) + ":00</td>" + s.cells.map((c) =>
+      '<td class="' + (c.ok ? "on" : c.weekend ? "wknd" : "off") + '">' + pad(c.h) + ":00<br /><span class=\"mini\">" + c.wd + "</span></td>").join("") +
+      "<td>" + s.okCount + "/" + zones.length + "</td></tr>";
+  }).join("");
+  $("grid").innerHTML = "<table><thead>" + head + "</thead><tbody>" + rows + "</tbody></table>";
+  showAd();
+}
+$("goBtn").addEventListener("click", run);
+$("linkBtn").addEventListener("click", () => {
+  const u = new URL(location.href);
+  u.search = "?c=" + encodeURIComponent(picked.map((p) => p.n).join(","));
+  copyText(u.toString(), "링크를 복사했습니다");
+});
+$("textBtn").addEventListener("click", () => copyText(lastText + "\n(tripcalc-kr.vercel.app/meeting-time)"));
+
+</script>
+</body>
+</html>

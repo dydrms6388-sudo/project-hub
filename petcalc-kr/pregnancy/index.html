@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>강아지 임신 계산기 — 교배일로 보는 출산 예정일 | PetCalc</title>
+<meta name="description" content="교배일을 넣으면 평균 63일 기준 출산 예정일과 58~68일 범위, 초음파·X-ray 확인 시기 등 주요 시점을 날짜로 계산합니다. 캘린더(.ics) 내려받기도 지원합니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/pregnancy/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="강아지 임신 계산기 — 교배일로 보는 출산 예정일 | PetCalc">
+<meta property="og:description" content="교배일을 넣으면 평균 63일 기준 출산 예정일과 58~68일 범위, 초음파·X-ray 확인 시기 등 주요 시점을 날짜로 계산합니다. 캘린더(.ics) 내려받기도 지원합니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/pregnancy/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"강아지 임신 계산기 — 교배일로 보는 출산 예정일 | PetCalc","description":"교배일을 넣으면 평균 63일 기준 출산 예정일과 58~68일 범위, 초음파·X-ray 확인 시기 등 주요 시점을 날짜로 계산합니다. 캘린더(.ics) 내려받기도 지원합니다.","url":"https://petcalc-kr.vercel.app/pregnancy/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"임신 여부는 언제 확인할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"초음파는 보통 교배 후 25~35일, 릴랙신 호르몬 검사는 25~30일 이후에 확인이 가능합니다. 태아 수는 45일 이후 X-ray로 세는 것이 정확합니다."}},{"@type":"Question","name":"예정일보다 며칠 빨리 낳아도 괜찮나요?","acceptedAnswer":{"@type":"Answer","text":"58~68일 범위 안이면 정상 범위로 봅니다. 다만 56일 이전 출산은 미숙아 위험이 있어 즉시 진료가 필요합니다."}},{"@type":"Question","name":"임신 중 사료는 어떻게 바꾸나요?","acceptedAnswer":{"@type":"Answer","text":"보통 임신 후반부(5~6주 이후)부터 열량과 단백질 요구가 크게 늘어 성장기용 사료로 바꾸고 양을 나눠 급여합니다. 구체적인 양은 수의사와 상의하세요."}},{"@type":"Question","name":"계획하지 않은 교배였습니다. 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"가능한 한 빨리 병원에 연락해 상담하세요. 시기와 건강 상태에 따라 선택지가 다르며, 이 페이지에서 판단할 문제가 아닙니다."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"임신·출산 예정일","item":"https://petcalc-kr.vercel.app/pregnancy/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">임신·출산 예정일</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">🐾</div>
+  <h1>강아지 임신·출산 예정일 계산기</h1>
+  <p class="lead">교배일 기준 평균 63일. 예정일과 함께 초음파·X-ray 확인 시기, 산실 준비 시점을 날짜로 알려드립니다.</p>
+</header>
+<p class="notice warn"><b>참고용이며 진단이 아닙니다.</b> 이 페이지의 계산·정보는 일반적인 기준을 안내할 뿐이며, 개체의 건강 상태를 판단하지 않습니다. 증상이 있거나 결정을 내려야 한다면 반드시 <b>수의사와 상담하세요</b>.</p>
+<p class="notice">같은 나이·체중이라도 품종, 중성화 여부, 활동량, 지병에 따라 결과가 달라집니다. <b>개체차가 있습니다</b> — 수치는 출발점으로만 쓰세요.</p>
+<section class="card">
+  <h2>교배일 입력</h2>
+  <div class="field"><label for="md">교배일 <span class="hint">여러 번이면 첫 교배일</span></label><input type="date" id="md"></div>
+  <button class="btn" id="go" type="button">출산 예정일 계산</button>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>예상 일정</h2>
+  <p class="big" id="big"></p>
+  <div id="lines"></div>
+  <div class="rt-wrap"><table class="rt"><thead><tr><th>시점</th><th>경과일</th><th>날짜</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <button class="btn sub" id="ics" type="button">📅 캘린더(.ics) 내려받기</button>
+  <p class="src">임신 여부는 계산이 아니라 병원 검사(초음파·릴랙신 호르몬)로 확인해야 합니다.</p>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>강아지 임신 기간</h2>
+<p>개의 임신 기간은 교배일 기준 <b>평균 약 63일</b>이고, 정상 범위는 58~68일입니다. 교배일과 실제 배란일이 며칠 어긋날 수 있어 예정일에는 오차가 생깁니다. 병원에서 배란일(프로게스테론 검사)을 확인했다면 그 기준이 훨씬 정확합니다.</p>
+<h3>주요 확인 시점</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>경과일</th><th>무엇을 하나</th></tr></thead><tbody>
+<tr><td>25일</td><td>초음파로 임신 확인 가능 시점(약 25~35일)</td></tr><tr><td>30일</td><td>호르몬(릴랙신) 검사 가능 시점(약 25~30일 이후)</td></tr><tr><td>45일</td><td>X-ray로 태아 수 확인 가능 시점(약 45일 이후)</td></tr><tr><td>57일</td><td>출산 준비(산실 마련) 권장 시점</td></tr>
+</tbody></table></div>
+<h2>사용법</h2>
+<ol>
+<li>첫 교배일을 입력합니다.</li>
+<li>예정일과 정상 범위, 병원 방문이 필요한 시점을 확인합니다.</li>
+<li>캘린더로 내려받아 초음파·X-ray 예약을 미리 잡아 두세요.</li>
+</ol>
+<h2>출산 임박 신호와 위험 신호</h2>
+<ul>
+<li><b>임박</b>: 체온이 평소보다 1℃가량 떨어짐, 안절부절못하며 바닥을 파는 행동, 식욕 저하</li>
+<li><b>즉시 병원</b>: 진통이 2시간 이상 이어지는데 새끼가 나오지 않음 · 초록빛 분비물 후 30분 이상 진행 없음 · 심한 출혈 · 축 늘어짐</li>
+</ul>
+<p class="notice warn">난산은 응급 상황입니다. 조금이라도 이상하면 기다리지 말고 야간 진료가 가능한 병원에 바로 연락하세요.</p>
+<p class="src">출처: 교배일 기준 평균 63일(약 9주), 정상 범위 58~68일. 배란일 기준으로는 65±1일로 더 정확함. — <a href="https://www.akc.org/expert-advice/dog-breeding/dog-pregnancy-week-by-week/" rel="nofollow noopener" target="_blank">https://www.akc.org/expert-advice/dog-breeding/dog-pregnancy-week-by-week/</a> (확인일 2026-08-19)</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 임신 여부는 언제 확인할 수 있나요?</p><p class="a">초음파는 보통 교배 후 25~35일, 릴랙신 호르몬 검사는 25~30일 이후에 확인이 가능합니다. 태아 수는 45일 이후 X-ray로 세는 것이 정확합니다.</p></div>
+<div class="qa"><p class="q">Q. 예정일보다 며칠 빨리 낳아도 괜찮나요?</p><p class="a">58~68일 범위 안이면 정상 범위로 봅니다. 다만 56일 이전 출산은 미숙아 위험이 있어 즉시 진료가 필요합니다.</p></div>
+<div class="qa"><p class="q">Q. 임신 중 사료는 어떻게 바꾸나요?</p><p class="a">보통 임신 후반부(5~6주 이후)부터 열량과 단백질 요구가 크게 늘어 성장기용 사료로 바꾸고 양을 나눠 급여합니다. 구체적인 양은 수의사와 상의하세요.</p></div>
+<div class="qa"><p class="q">Q. 계획하지 않은 교배였습니다. 어떻게 하나요?</p><p class="a">가능한 한 빨리 병원에 연락해 상담하세요. 시기와 건강 상태에 따라 선택지가 다르며, 이 페이지에서 판단할 문제가 아닙니다.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../heat-cycle/index.html"><span class="ic">🌙</span><span>고양이 발정 주기 계산기</span></a>
+      <a class="rel" href="../vet-consult/index.html"><span class="ic">🏥</span><span>수의사 상담이 필요한 순간</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-vet-cost/" rel="noopener"><span class="ic">🏥</span><span>동물병원 진료비 참고</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-age-calc/" rel="noopener"><span class="ic">🐾</span><span>반려동물 나이 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-meal-calc/" rel="noopener"><span class="ic">🍚</span><span>반려동물 사료량 계산기</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var M=[{"day":25,"label":"초음파로 임신 확인 가능 시점(약 25~35일)"},{"day":30,"label":"호르몬(릴랙신) 검사 가능 시점(약 25~30일 이후)"},{"day":45,"label":"X-ray로 태아 수 확인 가능 시점(약 45일 이후)"},{"day":57,"label":"출산 준비(산실 마련) 권장 시점"}];
+var AVG=63, LO=58, HI=68;
+var ev=[];
+pcQ('go').addEventListener('click',function(){
+  var v=pcQ('md').value;
+  if(!v){alert('교배일을 선택해 주세요.');return;}
+  var b=new Date(v+'T00:00:00');
+  if(isNaN(b.getTime())){alert('날짜를 확인해 주세요.');return;}
+  var due=pcAddDays(b,AVG);
+  var today=new Date();today.setHours(0,0,0,0);
+  var gone=Math.floor((today-b)/86400000);
+  pcQ('big').innerHTML='출산 예정일 <b>'+pcDate(due)+'</b>';
+  pcQ('lines').innerHTML=
+    '<div class="res-line"><span class="k">평균 임신 기간</span><span class="v">'+AVG+'일</span></div>'+
+    '<div class="res-line"><span class="k">정상 범위</span><span class="v">'+pcDate(pcAddDays(b,LO))+' ~ '+pcDate(pcAddDays(b,HI))+' ('+LO+'~'+HI+'일)</span></div>'+
+    (gone>=0?'<div class="res-line"><span class="k">오늘 기준 경과</span><span class="v">'+gone+'일차 · 예정일까지 '+(AVG-gone)+'일</span></div>':'');
+  var rows='';ev=[];
+  M.forEach(function(m){
+    var d=pcAddDays(b,m.day);
+    rows+='<tr><td>'+m.label+'</td><td>'+m.day+'일</td><td>'+pcDate(d)+'</td></tr>';
+    ev.push({date:pcDate(d),title:'[임신 '+m.day+'일차] '+m.label,desc:'교배일 '+v+' 기준 계산'});
+  });
+  rows+='<tr><td>출산 예정일(평균 '+AVG+'일)</td><td>'+AVG+'일</td><td>'+pcDate(due)+'</td></tr>';
+  ev.push({date:pcDate(due),title:'출산 예정일',desc:'교배일 '+v+' 기준 평균 '+AVG+'일'});
+  pcQ('tb').innerHTML=rows;
+  pcShow('res');
+});
+pcQ('ics').addEventListener('click',function(){
+  if(!ev.length){alert('먼저 계산해 주세요.');return;}
+  pcIcs('petcalc-pregnancy.ics',ev);
+});
+})();
+</script>
+
+</body>
+</html>

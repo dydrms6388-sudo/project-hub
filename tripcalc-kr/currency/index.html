@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>환율 계산기 — 원화 환산·실시간 공개 환율 (28개 통화)</title>
+<meta name="description" content="달러·엔·유로·위안 등 28개 통화를 원화로 환산합니다. 유럽중앙은행 기준환율 공개 API를 브라우저에서 직접 불러오고 24시간 캐시하며, 연결이 안 되면 마지막 환율을 표시합니다. 참고용이며 은행 고시 환율이 아닙니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/currency/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="환율 계산기 — 원화 환산" />
+<meta property="og:description" content="달러·엔·유로·위안 등 28개 통화를 원화로 환산합니다. 유럽중앙은행 기준환율 공개 API를 브라우저에서 직접 불러오고 24시간 캐시하며, 연결이 안 되면 마지막 환율을 표시합니다. 참고용이며 은행 고시 환율이 아닙니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/currency/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"환율 계산기","description":"달러·엔·유로·위안 등 28개 통화를 원화로 환산합니다. 유럽중앙은행 기준환율 공개 API를 브라우저에서 직접 불러오고 24시간 캐시하며, 연결이 안 되면 마지막 환율을 표시합니다. 참고용이며 은행 고시 환율이 아닙니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/currency/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"환율은 얼마나 자주 갱신되나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저에 24시간 캐시합니다. 그 사이에도 '환율 새로 받기' 버튼을 누르면 즉시 다시 받아옵니다. 기준환율 자체는 영업일 기준으로 하루 한 번 갱신되므로 주말·공휴일에는 직전 영업일 값이 표시됩니다."}},{"@type":"Question","name":"비행기 안이나 데이터가 없는 곳에서도 되나요?","acceptedAnswer":{"@type":"Answer","text":"한 번이라도 환율을 받아온 적이 있다면 됩니다. 저장된 환율로 계산하고 화면에 '마지막으로 받아온 환율'이라고 표시합니다. 한 번도 받아온 적이 없으면 계산하지 않고 안내 메시지만 보여줍니다."}},{"@type":"Question","name":"은행에서 환전하면 이 금액 그대로 받나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 표시되는 값은 기준환율이며 실제로는 환전 스프레드와 수수료가 붙습니다. 참고용이며 은행 고시 환율이 아닙니다."}},{"@type":"Question","name":"베트남 동(VND)이나 대만 달러(TWD)는 왜 없나요?","acceptedAnswer":{"@type":"Answer","text":"무료 공개 환율 API가 지원하는 통화만 선택지에 넣었습니다. 없는 통화를 넣고 임의의 값을 표시하는 대신, 지원되는 통화만 정확하게 보여주는 쪽을 택했습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"환율 계산기","item":"https://tripcalc-kr.vercel.app/currency/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>환율 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">💱</div>
+    <h1>환율 계산기</h1>
+    <p class="lead">금액과 통화만 고르면 <strong>바로 환산</strong>됩니다. 환율은 공개 API에서 불러와 24시간 저장하고, 연결이 끊겨도 마지막 값을 보여줍니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>금액·통화 선택</h2>
+    <label class="f">금액
+      <input type="number" id="amt" inputmode="decimal" min="0" step="any" value="100" />
+    </label>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">바꿀 통화 <select id="from"></select></label>
+      <label class="f">받을 통화 <select id="to"></select></label>
+    </div>
+    <div class="row">
+      <button class="btn2" id="swapBtn" type="button">⇅ 통화 바꾸기</button>
+      <button class="btn2" id="refreshBtn" type="button">🔄 환율 새로 받기</button>
+    </div>
+    <button class="btn" id="goBtn" type="button">환율 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>환산 결과</h2>
+      <p class="big"><span class="num" id="out">-</span></p>
+      <div id="rateLines"></div>
+      <div id="quickTbl"></div>
+      <p class="note" id="fxStatus"></p>
+      <div class="share">
+        <button class="btn2" id="copyBtn" type="button">📋 결과 복사</button>
+        <button class="btn2" id="linkBtn" type="button">🔗 링크 복사</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-label="통화쌍 바로가기">
+    <h2>자주 찾는 통화쌍</h2>
+    <div class="chips">
+      <a class="chip" href="usd-krw/">🇺🇸 USD → KRW</a>
+      <a class="chip" href="jpy-krw/">🇯🇵 JPY → KRW</a>
+      <a class="chip" href="eur-krw/">🇮🇪 EUR → KRW</a>
+      <a class="chip" href="cny-krw/">🇨🇳 CNY → KRW</a>
+      <a class="chip" href="gbp-krw/">🇬🇧 GBP → KRW</a>
+      <a class="chip" href="thb-krw/">🇹🇭 THB → KRW</a>
+      <a class="chip" href="sgd-krw/">🇸🇬 SGD → KRW</a>
+      <a class="chip" href="aud-krw/">🇦🇺 AUD → KRW</a>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>왜 또 하나의 환율 계산기인가</h2>
+  <p>포털 환율은 대개 "매매기준율" 하나만 보여주고, 앱은 설치를 요구합니다. 이 계산기는 설치 없이 열자마자 계산되고, <strong>왜 그 숫자가 나왔는지</strong>(어느 기관 기준환율인지, 언제 받아온 값인지)를 화면에 같이 적어 둡니다.</p>
+  <p>또 하나 중요한 점은 <strong>연결이 끊겼을 때의 동작</strong>입니다. 해외 로밍이 불안정한 상황에서 환율 앱이 빈 화면을 띄우면 아무 쓸모가 없습니다. 이 계산기는 받아온 환율을 브라우저에 24시간 저장해 두고, 네트워크가 실패하면 "마지막으로 받아온 환율"이라고 명시한 뒤 그 값으로 계산합니다. 저장된 값조차 없으면 아무 숫자도 지어내지 않고 안내만 표시합니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>금액을 입력하고 바꿀 통화 / 받을 통화를 고릅니다.</li>
+    <li>"환율 계산하기"를 누르면 환산 금액과 함께 <strong>1단위 환율·역환율</strong>, 그리고 1·10·100·1,000 단위 빠른 표가 나옵니다.</li>
+    <li>환율이 오래됐다고 느껴지면 "환율 새로 받기"로 강제 갱신합니다(24시간 캐시 무시).</li>
+    <li>결과 아래 "링크 복사"로 같은 조건의 계산 화면을 그대로 공유할 수 있습니다.</li>
+  </ol>
+  <h2>실제 환전할 때 이 숫자와 달라지는 이유</h2>
+  <p>여기 표시되는 값은 기관 간 거래에 쓰이는 <strong>기준환율</strong>입니다. 실제 은행·환전소·카드사는 여기에 스프레드(살 때/팔 때 차이)와 수수료를 붙입니다. 현금 환전은 보통 기준환율보다 불리하고, 해외 카드 결제는 카드사 매입 환율에 해외이용수수료가 더해집니다. 따라서 이 화면의 숫자는 <strong>"대략 얼마인지 감을 잡는 용도"</strong>로 쓰고, 실제 지불액은 은행 고시 환율로 확인하세요.</p>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 환율은 얼마나 자주 갱신되나요?</p><p class="a">브라우저에 24시간 캐시합니다. 그 사이에도 '환율 새로 받기' 버튼을 누르면 즉시 다시 받아옵니다. 기준환율 자체는 영업일 기준으로 하루 한 번 갱신되므로 주말·공휴일에는 직전 영업일 값이 표시됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 비행기 안이나 데이터가 없는 곳에서도 되나요?</p><p class="a">한 번이라도 환율을 받아온 적이 있다면 됩니다. 저장된 환율로 계산하고 화면에 '마지막으로 받아온 환율'이라고 표시합니다. 한 번도 받아온 적이 없으면 계산하지 않고 안내 메시지만 보여줍니다.</p></div>
+    <div class="qa"><p class="q">Q. 은행에서 환전하면 이 금액 그대로 받나요?</p><p class="a">아닙니다. 표시되는 값은 기준환율이며 실제로는 환전 스프레드와 수수료가 붙습니다. 참고용이며 은행 고시 환율이 아닙니다.</p></div>
+    <div class="qa"><p class="q">Q. 베트남 동(VND)이나 대만 달러(TWD)는 왜 없나요?</p><p class="a">무료 공개 환율 API가 지원하는 통화만 선택지에 넣었습니다. 없는 통화를 넣고 임의의 값을 표시하는 대신, 지원되는 통화만 정확하게 보여주는 쪽을 택했습니다.</p></div>
+    <h2>환율 데이터의 출처와 한계</h2>
+    <p class="note">환율은 <a href="https://api.frankfurter.dev/" target="_blank" rel="noopener">Frankfurter</a>(유럽중앙은행 기준환율)의 공개 API 를 브라우저에서 직접 불러오고, 실패하면
+    <a href="https://open.er-api.com/" target="_blank" rel="noopener">ExchangeRate-API 공개 엔드포인트</a>를 시도합니다.
+    받아온 값은 브라우저에 24시간 캐시되고, 두 곳 모두 실패하면 마지막으로 저장된 값을 "오래된 값" 표시와 함께 보여줍니다.
+    저장된 값조차 없으면 숫자를 지어내지 않고 안내 메시지만 표시합니다.
+    환율은 참고용이며 은행 고시 환율이 아닙니다. 실제 환전 시에는 스프레드·수수료가 더해집니다. 기준환율은 영업일에만 갱신되므로 주말·공휴일에는 직전 영업일 값이 표시됩니다. (확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. </p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/split-bill/" target="_blank" rel="noopener"><span class="e">🧾</span> 더치페이 정산 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/china-travel/" target="_blank" rel="noopener"><span class="e">🇨🇳</span> 중국여행 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, fillSelect, copyText, esc } from "../assets/app.mjs";
+import { getRates, rateOf, fxFmt, fetchedLabel, FX_DISCLAIMER } from "../lib/fx.mjs";
+const OPTS = [{"v":"KRW","n":"🇰🇷 KRW · 원 (대한민국)"},{"v":"USD","n":"🇺🇸 USD · 달러 (미국)"},{"v":"JPY","n":"🇯🇵 JPY · 엔 (일본)"},{"v":"EUR","n":"🇮🇪 EUR · 유로 (아일랜드)"},{"v":"CNY","n":"🇨🇳 CNY · 위안 (중국)"},{"v":"GBP","n":"🇬🇧 GBP · 파운드 (영국)"},{"v":"HKD","n":"🇭🇰 HKD · 홍콩 달러 (홍콩)"},{"v":"SGD","n":"🇸🇬 SGD · 싱가포르 달러 (싱가포르)"},{"v":"THB","n":"🇹🇭 THB · 바트 (태국)"},{"v":"AUD","n":"🇦🇺 AUD · 호주 달러 (호주)"},{"v":"BRL","n":"🇧🇷 BRL · 헤알 (브라질)"},{"v":"CAD","n":"🇨🇦 CAD · 캐나다 달러 (캐나다)"},{"v":"CHF","n":"🇨🇭 CHF · 스위스 프랑 (스위스)"},{"v":"CZK","n":"🇨🇿 CZK · 코루나 (체코)"},{"v":"DKK","n":"🇩🇰 DKK · 크로네 (덴마크)"},{"v":"HUF","n":"🇭🇺 HUF · 포린트 (헝가리)"},{"v":"IDR","n":"🇮🇩 IDR · 루피아 (인도네시아)"},{"v":"ILS","n":"🇮🇱 ILS · 셰켈 (이스라엘)"},{"v":"INR","n":"🇮🇳 INR · 루피 (인도)"},{"v":"ISK","n":"🇮🇸 ISK · 크로나 (아이슬란드)"},{"v":"MXN","n":"🇲🇽 MXN · 페소 (멕시코)"},{"v":"MYR","n":"🇲🇾 MYR · 링깃 (말레이시아)"},{"v":"NOK","n":"🇳🇴 NOK · 크로네 (노르웨이)"},{"v":"NZD","n":"🇳🇿 NZD · 뉴질랜드 달러 (뉴질랜드)"},{"v":"PHP","n":"🇵🇭 PHP · 페소 (필리핀)"},{"v":"PLN","n":"🇵🇱 PLN · 즈워티 (폴란드)"},{"v":"SEK","n":"🇸🇪 SEK · 크로나 (스웨덴)"},{"v":"TRY","n":"🇹🇷 TRY · 리라 (튀르키예)"},{"v":"ZAR","n":"🇿🇦 ZAR · 랜드 (남아프리카공화국)"}];
+const q = new URLSearchParams(location.search);
+const from = $("from"), to = $("to"), amt = $("amt");
+fillSelect(from, OPTS, q.get("from") || "USD");
+fillSelect(to, OPTS, q.get("to") || "KRW");
+if (q.get("amt")) amt.value = q.get("amt");
+let state = null;
+function status(st) {
+  if (!st) return "";
+  if (!st.ok) return "⚠ " + esc(st.message);
+  const when = fetchedLabel(st);
+  const stale = st.stale ? "<strong>마지막으로 받아온 환율</strong>을 사용 중입니다. " + esc(st.message) + " " : "";
+  return stale + "출처: " + esc(st.src || "저장된 값") + (st.date ? " · 기준일 " + esc(st.date) : "") + (when ? " · 받아온 시각 " + esc(when) : "") + "<br />" + FX_DISCLAIMER;
+}
+async function run(force) {
+  const f = from.value, t = to.value, a = Number(amt.value) || 0;
+  $("resultBox").hidden = false;
+  $("fxStatus").innerHTML = "환율을 불러오는 중…";
+  state = await getRates(f, { force: !!force });
+  $("fxStatus").innerHTML = status(state);
+  const r = rateOf(state, f, t);
+  if (r == null) { $("out").textContent = "-"; $("rateLines").innerHTML = ""; $("quickTbl").innerHTML = ""; showAd(); return; }
+  $("out").textContent = fxFmt(a * r, t) + " " + t;
+  $("rateLines").innerHTML =
+    '<div class="fxline"><span>1 ' + f + "</span><b>" + fxFmt(r, t) + " " + t + "</b></div>" +
+    '<div class="fxline"><span>1 ' + t + "</span><b>" + fxFmt(1 / r, f) + " " + f + "</b></div>";
+  const units = [1, 10, 100, 1000, 10000];
+  $("quickTbl").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>' + f + "</th><th>" + t + '</th></tr></thead><tbody>' +
+    units.map((u) => "<tr><td>" + u.toLocaleString("ko-KR") + "</td><td>" + fxFmt(u * r, t) + "</td></tr>").join("") + "</tbody></table></div>";
+  showAd();
+}
+$("goBtn").addEventListener("click", () => run(false));
+$("refreshBtn").addEventListener("click", () => run(true));
+$("swapBtn").addEventListener("click", () => { const a = from.value; from.value = to.value; to.value = a; run(false); });
+$("copyBtn").addEventListener("click", () => copyText(amt.value + " " + from.value + " = " + $("out").textContent + " (tripcalc-kr.vercel.app/currency)"));
+$("linkBtn").addEventListener("click", () => {
+  const u = new URL(location.href);
+  u.search = "?amt=" + encodeURIComponent(amt.value) + "&from=" + from.value + "&to=" + to.value;
+  copyText(u.toString(), "링크를 복사했습니다");
+});
+run(false);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>아기 발달 이정표 체크리스트 — 월령별 대표 항목 | BabyCalc</title>
+<meta name="description" content="생년월일을 입력하면 지금 월령에 해당하는 대표 발달 항목을 체크리스트로 보여 줍니다. 체크 기록은 브라우저에 저장되고 CSV·JSON으로 내보낼 수 있습니다. 선별검사·진단을 대신하지 않습니다.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/milestone/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="아기 발달 이정표 체크리스트">
+<meta property="og:description" content="월령별 대표 발달 항목을 체크하고 기록으로 남겨 보세요.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/milestone/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"발달 이정표 체크리스트","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"생년월일을 입력하면 지금 월령에 해당하는 대표 발달 항목을 체크리스트로 보여 줍니다. 체크 기록은 브라우저에 저장되고 CSV·JSON으로 내보낼 수 있습니다. 선별검사·진단을 대신하지 않습니다.","url":"https://babycalc-kr.vercel.app/milestone/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"항목을 못 하면 발달 지연인가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 발달에는 넓은 정상 범위가 있고 순서도 아이마다 다릅니다. 이 목록은 진단 기준이 아니라 관찰을 돕는 참고 목록입니다. 걱정되면 영유아 건강검진과 소아과 상담을 받으세요."}},{"@type":"Question","name":"이른둥이는 어떻게 보나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 만 2세 무렵까지는 교정연령을 기준으로 발달을 평가합니다. 개월수 계산기에서 교정연령을 확인해 보세요."}},{"@type":"Question","name":"K-DST와 같은 건가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. K-DST는 영유아 건강검진에서 사용하는 공식 발달선별검사이며, 이 체크리스트는 공개된 일반 발달 정보를 참고해 재구성한 목록입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"발달 이정표","item":"https://babycalc-kr.vercel.app/milestone/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">발달 이정표</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🧸</div>
+    <h1>발달 이정표 체크리스트</h1>
+    <p class="lead">지금 월령에 흔히 나타나는 발달 항목을 체크해 보고, 영유아 건강검진 문진 준비에 참고해 보세요.</p>
+  </div>
+  <p class="med-notice">⚠ 이 체크리스트는 <strong>K-DST 원문 문항이 아니며 선별검사·진단을 대신할 수 없습니다</strong>. 참고용이며 진단이 아닙니다. 아이마다 발달 속도가 다르니, 걱정되면 <strong>소아과 전문의와 상담</strong>하세요.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>아기 정보</h2>
+    <div class="field">
+      <label for="birth">생년월일</label>
+      <input type="date" id="birth" required>
+      <p class="hint">이른둥이는 교정연령 기준으로 보는 것이 일반적입니다.</p>
+    </div>
+    <button class="btn" type="submit">내 월령 항목 보기</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>지금 월령</h2>
+    <p class="res-big" id="ageBig">—</p>
+    <p class="res-sub" id="ageSub"></p>
+    <div class="bar" aria-hidden="true"><span id="progBar" style="width:0"></span></div>
+    <p class="res-sub" id="progTxt"></p>
+  </section>
+
+  <section class="card">
+    <h2>발달 항목 체크</h2>
+    <div class="btnrow no-print" style="margin:0 0 6px">
+      <button class="btn sm sec" type="button" id="toggleAll">전체 구간 보기 / 내 월령만 보기</button>
+    </div>
+    <div id="msList">
+      <div class="ms-group" data-from="1" data-to="2"><h2 style="font-size:15px;margin:18px 0 6px">1~2개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="1-0"><span class="chk-tx">큰 소리에 반응한다(놀라거나 움직임이 멈춤)</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="1-1"><span class="chk-tx">엎드려 놓으면 고개를 잠깐 든다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="1-2"><span class="chk-tx">사람 얼굴을 바라본다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="1-3"><span class="chk-tx">&quot;아&quot;, &quot;우&quot; 같은 소리를 내기 시작한다</span></label></div>
+      <div class="ms-group" data-from="3" data-to="4"><h2 style="font-size:15px;margin:18px 0 6px">3~4개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="3-0"><span class="chk-tx">눈을 맞추고 웃는다(사회적 미소)</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="3-1"><span class="chk-tx">고개를 안정되게 가눈다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="3-2"><span class="chk-tx">장난감을 향해 손을 뻗는다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="3-3"><span class="chk-tx">소리 내어 옹알이를 한다</span></label></div>
+      <div class="ms-group" data-from="5" data-to="6"><h2 style="font-size:15px;margin:18px 0 6px">5~6개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="5-0"><span class="chk-tx">뒤집기를 한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="5-1"><span class="chk-tx">받쳐 주면 앉는다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="5-2"><span class="chk-tx">이름을 부르면 쳐다보는 반응이 나타난다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="5-3"><span class="chk-tx">물건을 손 전체로 잡는다</span></label></div>
+      <div class="ms-group" data-from="7" data-to="9"><h2 style="font-size:15px;margin:18px 0 6px">7~9개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="7-0"><span class="chk-tx">혼자 앉는다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="7-1"><span class="chk-tx">배밀이 또는 기기를 한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="7-2"><span class="chk-tx">&quot;마마&quot;, &quot;바바&quot; 같은 반복 옹알이를 한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="7-3"><span class="chk-tx">낯가림이 나타난다</span></label></div>
+      <div class="ms-group" data-from="10" data-to="12"><h2 style="font-size:15px;margin:18px 0 6px">10~12개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="10-0"><span class="chk-tx">붙잡고 일어선다 / 잡고 옆으로 걷는다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="10-1"><span class="chk-tx">엄지와 검지로 작은 것을 집는다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="10-2"><span class="chk-tx">&quot;엄마&quot;, &quot;아빠&quot; 등 의미 있는 단어 비슷한 말을 한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="10-3"><span class="chk-tx">바이바이 손 흔들기 등 몸짓을 따라 한다</span></label></div>
+      <div class="ms-group" data-from="13" data-to="18"><h2 style="font-size:15px;margin:18px 0 6px">13~18개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="13-0"><span class="chk-tx">혼자 걷는다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="13-1"><span class="chk-tx">의미 있는 단어를 몇 개 말한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="13-2"><span class="chk-tx">간단한 지시(&quot;이리 와&quot;)를 이해한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="13-3"><span class="chk-tx">컵으로 마시는 흉내를 낸다</span></label></div>
+      <div class="ms-group" data-from="19" data-to="24"><h2 style="font-size:15px;margin:18px 0 6px">19~24개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="19-0"><span class="chk-tx">두 단어를 이어 말한다(&quot;엄마 물&quot;)</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="19-1"><span class="chk-tx">계단을 잡고 오른다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="19-2"><span class="chk-tx">숟가락으로 먹으려 한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="19-3"><span class="chk-tx">간단한 심부름을 한다</span></label></div>
+      <div class="ms-group" data-from="25" data-to="36"><h2 style="font-size:15px;margin:18px 0 6px">25~36개월</h2><label class="chk-item"><input type="checkbox" class="ms" data-key="25-0"><span class="chk-tx">짧은 문장으로 말한다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="25-1"><span class="chk-tx">제자리에서 두 발로 뛴다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="25-2"><span class="chk-tx">원을 흉내 내어 그린다</span></label><label class="chk-item"><input type="checkbox" class="ms" data-key="25-3"><span class="chk-tx">다른 아이들 옆에서 노는 것에 관심을 보인다</span></label></div>
+    </div>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" id="csvBtn">체크 CSV 내보내기</button>
+      <button class="btn sm sec" type="button" id="jsonBtn">체크 JSON 내보내기</button>
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+      <button class="btn sm danger" type="button" id="clearBtn">체크 전체 삭제</button>
+    </div>
+    <p class="local-note">✅ 체크 기록은 이 브라우저(localStorage)에만 저장됩니다. <strong>서버 저장 없음.</strong></p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>이 체크리스트는 무엇인가요?</h2>
+    <p>월령대별로 흔히 나타나는 <strong>대표적인 발달 항목</strong>을 간추린 목록입니다. 영유아 건강검진 문진표를 작성하기 전에 아이를 관찰해 보는 용도로 쓰기 좋습니다.</p><p>다만 이것은 <strong>선별검사(K-DST)의 원문 문항이 아니고 진단 도구도 아닙니다</strong> <span class="badge todo">확인 필요</span>. 항목을 아직 못 한다고 해서 문제가 있다는 뜻이 아니며, 같은 월령이라도 아이마다 발달 순서와 속도가 다릅니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>생년월일을 입력하면 현재 월령 구간이 자동으로 표시됩니다.</li><li>아이가 할 수 있는 항목을 체크합니다. 체크는 브라우저에 저장돼 다음에 다시 열어도 유지됩니다.</li><li>"전체 구간 보기"로 이전·이후 월령 항목도 확인할 수 있고, CSV·JSON으로 내보낼 수 있습니다.</li></ol>
+
+    <h2>영유아 건강검진</h2>
+    <p>영유아 건강검진은 생후 14일~71개월 사이 시기별로 시행된다(국민건강보험공단). 검진 시기를 놓치지 말고 문진표를 미리 작성해 가면 좋다.</p><h2>이런 경우에는 상담을 받아 보세요</h2><ul><li>이전에 하던 것을 더 이상 하지 않게 된 경우(발달 퇴행)</li><li>이름을 불러도 반응이 거의 없거나 눈맞춤이 잘 되지 않는 경우</li><li>또래보다 여러 영역에서 뚜렷하게 늦다고 느껴지는 경우</li><li>부모가 보기에 걱정이 지속되는 경우 — 이유가 분명하지 않아도 상담할 수 있습니다.</li></ul>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 항목을 못 하면 발달 지연인가요?</p><p class="a">아닙니다. 발달에는 넓은 정상 범위가 있고 순서도 아이마다 다릅니다. 이 목록은 진단 기준이 아니라 관찰을 돕는 참고 목록입니다. 걱정되면 영유아 건강검진과 소아과 상담을 받으세요.</p></div>
+      <div class="qa"><p class="q">Q. 이른둥이는 어떻게 보나요?</p><p class="a">일반적으로 만 2세 무렵까지는 교정연령을 기준으로 발달을 평가합니다. <a href="../months-age/">개월수 계산기</a>에서 교정연령을 확인해 보세요.</p></div>
+      <div class="qa"><p class="q">Q. K-DST와 같은 건가요?</p><p class="a">아닙니다. K-DST는 영유아 건강검진에서 사용하는 공식 발달선별검사이며, 이 체크리스트는 공개된 일반 발달 정보를 참고해 재구성한 목록입니다.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 영유아 건강검진(K-DST) 안내 · 국가건강정보포털 발달 정보 (참고 재구성) — <a href="https://health.kdca.go.kr" target="_blank" rel="noopener">health.kdca.go.kr</a> / <a href="https://www.nhis.or.kr" target="_blank" rel="noopener">nhis.or.kr</a> (확인일 2026-08-19). 항목은 공개 자료를 참고해 재구성한 <span class="badge todo">확인 필요</span> 수준의 목록이며 K-DST 원문 문항이 아닙니다.</div>
+
+    <p class="disclaimer">이 체크리스트는 참고용이며 발달 선별검사나 진단이 아닙니다. 발달이 걱정되면 영유아 건강검진을 받고 소아과 전문의와 상담하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../months-age/"><span class="ic">📅</span>아기 개월수 계산기</a>
+      <a class="rel" href="../growth-percentile/"><span class="ic">📈</span>성장 백분위 계산기</a>
+      <a class="rel" href="../vaccine-schedule/"><span class="ic">💉</span>예방접종 일정표</a>
+      <a class="rel" href="https://tomatoeggcat.com/baby-vaccine-schedule/"><span class="ic">🍅</span>예방접종 도우미 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { mkDate, babyAge, fmtDate } from '../assets/calc.mjs';
+const $ = (s) => document.querySelector(s);
+const KEY = 'bc-milestone';
+const BKEY = 'bc-baby-birth';
+const groups = Array.prototype.slice.call(document.querySelectorAll('.ms-group'));
+let showAll = false;
+let curMonth = null;
+
+function applyFilter() {
+  groups.forEach((g) => {
+    const from = parseInt(g.dataset.from, 10), to = parseInt(g.dataset.to, 10);
+    const mine = curMonth != null && curMonth >= from && curMonth <= to;
+    g.style.display = (showAll || curMonth == null || mine) ? '' : 'none';
+    g.style.opacity = (!showAll && mine) ? '1' : '';
+  });
+}
+
+function loadChecks() {
+  const done = bcStore.get(KEY, {});
+  document.querySelectorAll('.ms').forEach((cb) => { cb.checked = !!done[cb.dataset.key]; syncRow(cb); });
+}
+function syncRow(cb) {
+  const item = cb.closest('.chk-item');
+  if (item) item.classList.toggle('done', cb.checked);
+}
+function progress() {
+  const vis = groups.filter((g) => g.style.display !== 'none');
+  const boxes = [];
+  vis.forEach((g) => Array.prototype.push.apply(boxes, Array.prototype.slice.call(g.querySelectorAll('.ms'))));
+  const done = boxes.filter((b) => b.checked).length;
+  const pct = boxes.length ? Math.round(done / boxes.length * 100) : 0;
+  $('#progBar').style.width = pct + '%';
+  $('#progTxt').textContent = '표시 중인 항목 ' + done + ' / ' + boxes.length + '개 체크 (' + pct + '%) · 못 한 항목이 있어도 이상이 있다는 뜻은 아닙니다.';
+}
+
+document.querySelectorAll('.ms').forEach((cb) => cb.addEventListener('change', () => {
+  const done = bcStore.get(KEY, {});
+  if (cb.checked) done[cb.dataset.key] = fmtDate(new Date()); else delete done[cb.dataset.key];
+  bcStore.set(KEY, done);
+  syncRow(cb);
+  progress();
+}));
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const b = $('#birth').value;
+  if (!b) return;
+  bcStore.set(BKEY, b);
+  const a = babyAge(mkDate(b), new Date());
+  if (!a) return;
+  curMonth = a.months;
+  $('#ageBig').textContent = '생후 ' + a.months + '개월 ' + a.days + '일';
+  $('#ageSub').textContent = '해당 월령 구간의 항목만 표시하고 있어요. 전체를 보려면 아래 버튼을 누르세요.';
+  showAll = false;
+  applyFilter();
+  progress();
+  bcShowResult('result');
+});
+
+$('#toggleAll').addEventListener('click', () => { showAll = !showAll; applyFilter(); progress(); });
+$('#csvBtn').addEventListener('click', () => {
+  const done = bcStore.get(KEY, {});
+  const lines = ['구간,항목,체크,체크일'];
+  groups.forEach((g) => {
+    const range = g.querySelector('h2').textContent;
+    g.querySelectorAll('.chk-item').forEach((it) => {
+      const cb = it.querySelector('.ms');
+      lines.push([range, it.querySelector('.chk-tx').textContent, cb.checked ? 'Y' : 'N', done[cb.dataset.key] || ''].map(bcCsvCell).join(','));
+    });
+  });
+  bcDownload('baby-milestone.csv', '\ufeff' + lines.join('\n'), 'text/csv');
+});
+$('#jsonBtn').addEventListener('click', () => bcDownload('baby-milestone.json', JSON.stringify(bcStore.get(KEY, {}), null, 2), 'application/json'));
+$('#clearBtn').addEventListener('click', () => {
+  if (confirm('체크 기록을 모두 삭제할까요? (이 브라우저에서만 삭제됩니다)')) {
+    bcStore.del(KEY);
+    document.querySelectorAll('.ms').forEach((cb) => { cb.checked = false; syncRow(cb); });
+    progress();
+  }
+});
+
+loadChecks();
+const saved = bcStore.get(BKEY, null);
+if (saved) {
+  $('#birth').value = saved;
+  const a = babyAge(mkDate(saved), new Date());
+  if (a) {
+    curMonth = a.months;
+    $('#ageBig').textContent = '생후 ' + a.months + '개월 ' + a.days + '일';
+    $('#ageSub').textContent = '해당 월령 구간의 항목만 표시하고 있어요.';
+    applyFilter();
+    bcShowResult('result');
+  }
+}
+progress();
+</script>
+</body>
+</html>

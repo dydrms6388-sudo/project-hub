@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>페인트 양 계산기 — 도포율·도장 횟수로 필요 리터 산출 | 홈캘크</title>
+<meta name="description" content="칠할 면적과 도장 횟수, 제품 라벨의 도포율(㎡/L)을 넣으면 필요한 페인트 리터와 4L·1L 캔 조합을 계산합니다. 도포율은 제품 표기 직접 입력이 우선입니다." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/paint/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="페인트 양 계산기 — 필요 리터" />
+<meta property="og:description" content="칠할 면적과 도장 횟수, 제품 라벨의 도포율(㎡/L)을 넣으면 필요한 페인트 리터와 4L·1L 캔 조합을 계산합니다. 도포율은 제품 표기 직접 입력이 우선입니다." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/paint/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"페인트 양 계산기","url":"https://homecalc-kr.vercel.app/paint/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"칠할 면적과 도장 횟수, 제품 라벨의 도포율(㎡/L)을 넣으면 필요한 페인트 리터와 4L·1L 캔 조합을 계산합니다. 도포율은 제품 표기 직접 입력이 우선입니다."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"도포율이 라벨에 없으면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"수성 페인트 기준 1회 도장 8~14㎡/L 범위가 통상값입니다. 기본값 10㎡/L은 참고용이므로 제품 정보를 확인해 수정하는 것을 권장합니다."}},{"@type":"Question","name":"젯소(프라이머)도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"이 계산기는 마감 페인트 기준입니다. 젯소는 별도 제품 도포율로 다시 계산하세요. 보통 1회 도장분으로 잡습니다."}},{"@type":"Question","name":"캔 조합은 어떻게 나오나요?","acceptedAnswer":{"@type":"Answer","text":"계산된 리터를 4L 캔과 1L 캔 조합으로 올림해 제안합니다. 실제 판매 규격(0.9L·3.6L·18L 등)은 제품마다 다릅니다."}},{"@type":"Question","name":"롤러·붓 도구도 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"네. 롤러, 트레이, 마스킹 테이프, 커버링 비닐 등 부자재는 별도이며 이 계산에는 포함되지 않습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"페인트 양 계산기","item":"https://homecalc-kr.vercel.app/paint/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">페인트 양 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🎨</div>
+    <h1>페인트 양 계산기</h1>
+    <p class="lead">면적 × 도장 횟수 ÷ <strong>제품 도포율</strong>로 필요한 페인트 리터와 캔 조합을 계산합니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>도장 조건 입력</h2>
+    <div class="grid2">
+      <label class="f">칠할 면적 (㎡)
+        <input type="number" id="area" inputmode="decimal" step="any" min="0" value="40" />
+      </label>
+      <label class="f">도장 횟수 (회)
+        <select id="coats"><option value="1">1회 (덧칠·보수)</option><option value="2" selected>2회 (일반)</option><option value="3">3회 (색상 변경·진한 색)</option></select>
+      </label>
+      <label class="f">제품 도포율 (㎡/L) <span class="hint">— 제품 라벨 값 우선</span>
+        <input type="number" id="cov" inputmode="decimal" step="any" min="0.1" value="10" />
+      </label>
+      <label class="f">여유율 <span class="hint">— 조정 가능</span>
+        <select id="loss">
+          <option value="0">0% (라벨 도포율 그대로)</option>
+          <option value="0.05" selected>+5% (일반 여유)</option>
+          <option value="0.1">+10% (거친 면·롤러 흡수)</option>
+        </select>
+      </label>
+    </div>
+    <p class="sub">벽 면적을 모르면 (벽 둘레 × 높이 − 문·창 면적)으로 구하세요. <a href="../wallpaper/">도배 계산기</a>의 면적 산식과 같습니다.</p>
+    <button class="btn full" id="calcBtn" type="button">필요 리터 계산</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>페인트 필요량은 <strong>제품 도포율</strong>에 좌우됩니다. 같은 1L라도 제품에 따라 8㎡에서 14㎡까지 차이가 나므로, 반드시 구매하려는 제품 캔에 적힌 "도포율 ○㎡/L(1회 도장 기준)"을 그대로 입력하는 것이 가장 정확합니다.</p>
+    <p>도포율이 범위(예: 10~12㎡/L)로 적혀 있으면 작은 값을 넣는 편이 안전합니다. 흰색 위에 진한 색을 칠하거나 그 반대인 경우 3회 도장이 필요할 수 있습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>칠할 면적(㎡)을 입력합니다. 천장까지 칠한다면 천장 면적도 더합니다.</li>
+      <li>도장 횟수를 고릅니다. 일반적으로 2회 도장이 기본입니다.</li>
+      <li>제품 라벨의 도포율(㎡/L)을 입력하고 계산합니다. 4L·1L 캔 조합이 함께 표시됩니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 도포율이 라벨에 없으면 어떻게 하나요?</p><p class="a">수성 페인트 기준 1회 도장 8~14㎡/L 범위가 통상값입니다. 기본값 10㎡/L은 참고용이므로 제품 정보를 확인해 수정하는 것을 권장합니다.</p></div>
+    <div class="qa"><p class="q">Q. 젯소(프라이머)도 계산되나요?</p><p class="a">이 계산기는 마감 페인트 기준입니다. 젯소는 별도 제품 도포율로 다시 계산하세요. 보통 1회 도장분으로 잡습니다.</p></div>
+    <div class="qa"><p class="q">Q. 캔 조합은 어떻게 나오나요?</p><p class="a">계산된 리터를 4L 캔과 1L 캔 조합으로 올림해 제안합니다. 실제 판매 규격(0.9L·3.6L·18L 등)은 제품마다 다릅니다.</p></div>
+    <div class="qa"><p class="q">Q. 롤러·붓 도구도 필요한가요?</p><p class="a">네. 롤러, 트레이, 마스킹 테이프, 커버링 비닐 등 부자재는 별도이며 이 계산에는 포함되지 않습니다.</p></div>
+<p class="note">이 계산은 <strong>업계 일반 관행값</strong>을 사용한 <strong>참고용</strong> 결과입니다. 제품 라벨·시방서 표기가 있으면 그 값을 직접 입력하세요. 실제 시공 전에는 시공사 실측 견적이 우선합니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../wallpaper/"><span class="ic">🧻</span>도배 자재 계산기</a>
+      <a class="rel" href="../curtain/"><span class="ic">🪟</span>커튼 치수 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong/" rel="noopener"><span class="ic">📐</span>평수 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-isagak/" rel="noopener"><span class="ic">📦</span>이사각 — 이사 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { paintCalc } from "../lib/calc.mjs";
+const $ = (id) => document.getElementById(id);
+$("calcBtn").addEventListener("click", () => {
+  const areaM2 = parseFloat($("area").value);
+  const coveragePerL = parseFloat($("cov").value);
+  const coats = parseInt($("coats").value, 10);
+  const lossRate = parseFloat($("loss").value);
+  if (!isFinite(areaM2) || areaM2 <= 0 || !isFinite(coveragePerL) || coveragePerL <= 0) { hcToast("면적과 도포율을 입력하세요"); return; }
+  const r = paintCalc({ areaM2, coats, coveragePerL, lossRate });
+  const cans = (r.can4 ? r.can4 + "개의 4L 캔" : "") + (r.can4 && r.can1 ? " + " : "") + (r.can1 ? r.can1 + "개의 1L 캔" : "");
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = "약 <span>" + hcFmt(r.litersUp, 1) + "L</span> <small>필요</small>";
+  $("resSub").textContent = "면적 " + hcFmt(areaM2, 1) + "㎡ × " + coats + "회 ÷ " + coveragePerL + "㎡/L" + (lossRate ? " + 여유 " + Math.round(lossRate * 100) + "%" : "") + " = " + hcFmt(r.liters, 2) + "L · 캔 조합 예시: " + (cans || "1L 미만");
+  $("resFormula").textContent = "필요 리터 = 면적 × 도장 횟수 ÷ 도포율(㎡/L) × (1 + 여유율)";
+  $("srcLine").innerHTML = "도포율 기본값 10㎡/L은 통상 범위 8~14㎡/L의 참고값입니다. <strong>구매 제품 라벨의 도포율을 직접 입력</strong>하세요 · 확인일 2026-08-19 <span class=\"badge todo\">확인 필요</span>";
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>

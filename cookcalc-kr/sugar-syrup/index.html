@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>과일청 설탕 비율 계산기 — 매실청·레몬청 설탕 양과 병 용량</title>
+<meta name="description" content="과일 1kg에 설탕 얼마? 1:1 표준 비율과 1:0.8 저당 비율로 설탕 양을 계산하고, 발효 가스 여유를 포함한 필요 유리병 용량까지 알려줍니다. 저당 청의 보관 주의사항도 함께 안내합니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/sugar-syrup/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="과일청 설탕 비율 계산기" />
+<meta property="og:description" content="과일 1kg에 설탕 얼마? 1:1 표준 비율과 1:0.8 저당 비율로 설탕 양을 계산하고, 발효 가스 여유를 포함한 필요 유리병 용량까지 알려줍니다. 저당 청의 보관 주의사항도 함께 안내합니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/sugar-syrup/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"과일청·설탕 시럽 계산기","description":"과일 1kg에 설탕 얼마? 1:1 표준 비율과 1:0.8 저당 비율로 설탕 양을 계산하고, 발효 가스 여유를 포함한 필요 유리병 용량까지 알려줍니다. 저당 청의 보관 주의사항도 함께 안내합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/sugar-syrup/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"병은 어떻게 소독하나요?","acceptedAnswer":{"@type":"Answer","text":"끓는 물에 5분 이상 소독하거나, 열탕이 어려운 큰 병은 도수 높은 술로 내부를 닦고 완전히 말립니다. 물기가 남으면 곰팡이의 시작점이 되므로 완전 건조가 핵심입니다."}},{"@type":"Question","name":"왜 병을 가득 채우면 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"숙성 중 발효로 가스가 생겨 내용물이 밀려 올라옵니다. 재료 부피의 1.5~1.6배 용량 병을 쓰고, 가끔 뚜껑을 열어 가스를 빼 주세요."}},{"@type":"Question","name":"설탕이 잘 안 녹아요.","acceptedAnswer":{"@type":"Answer","text":"하루 한 번 위아래를 뒤집어 섞어 주면 2~3일 안에 대부분 녹습니다. 바닥에 굳어 있으면 국자로 저어 주세요. 완전히 녹기 전까지는 곰팡이가 생기기 쉬운 시기입니다."}},{"@type":"Question","name":"얼마나 숙성하나요?","acceptedAnswer":{"@type":"Answer","text":"재료에 따라 다르지만 실온 1~2주 뒤 건더기를 걸러 내고 냉장에서 1개월 이상 두면 맛이 안정됩니다. 매실은 100일 숙성이 관행이지만 씨의 성분 때문에 걸러 내는 시점을 지키는 것이 좋습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"과일청 비율","item":"https://cookcalc-kr.vercel.app/sugar-syrup/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>과일청 비율</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🍯</div>
+    <h1>과일청 비율 계산기</h1>
+    <p class="lead">과일 무게를 넣으면 <strong>설탕 양과 필요한 병 용량</strong>을 계산합니다. 저당 청은 보관 조건이 달라집니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>과일과 비율</h2>
+    <div class="grid2">
+      <label class="f">과일 무게 <span class="u">(g · 손질 후)</span>
+        <input type="number" id="fruit" inputmode="decimal" min="100" step="100" value="1000" />
+      </label>
+      <label class="f">설탕 비율 <span class="u">(과일 1에 대한 설탕)</span>
+        <input type="number" id="ratio" inputmode="decimal" min="0.5" max="1.5" step="0.05" value="1" />
+      </label>
+    </div>
+    <div style="margin-top:12px">
+      <span class="f" style="display:block">비율 프리셋</span>
+      <div class="seg" id="pSeg" role="group" aria-label="비율 프리셋">
+        <button type="button" data-v="1" aria-pressed="true">기본(1:1)</button>
+        <button type="button" data-v="0.8" aria-pressed="false">저당(1:0.8)</button>
+      </div>
+    </div>
+    <button class="btn" id="calcBtn">계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">설탕 <span class="num" id="sugarOut"></span></p>
+      <div id="tableOut"></div>
+      <p class="note" id="noteOut"></p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>설탕은 단맛이 아니라 보존료다</h2>
+    <p>과일청에서 설탕은 맛을 내는 재료이면서 동시에 <strong>보존 장치</strong>입니다. 설탕 농도가 높으면 삼투압으로 미생물이 자라지 못해 실온에서도 오래 갑니다. 그래서 전통적인 비율이 과일:설탕 = 1:1입니다.</p>
+    <p>요즘 흔한 1:0.8, 1:0.5 같은 저당 청은 덜 달고 산뜻하지만 그만큼 <strong>곰팡이·발효 위험이 올라갑니다</strong>. 저당으로 만들 때는 반드시 냉장 숙성·냉장 보관하고, 표면에 뜬 과일이 공기에 노출되지 않도록 눌러 주며, 되도록 빨리 소비하세요.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>손질을 마친(꼭지·씨 제거, 물기 완전 제거) 과일 무게를 넣습니다.</li>
+      <li>비율 프리셋에서 1:1 또는 저당 1:0.8을 고르거나 직접 조정합니다.</li>
+      <li>결과의 설탕 양을 과일과 켜켜이 담고, 맨 위는 설탕으로 덮습니다.</li>
+      <li>필요한 병 용량을 확인해 넉넉한 크기의 소독한 유리병을 준비합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 병은 어떻게 소독하나요?</p><p class="a">끓는 물에 5분 이상 소독하거나, 열탕이 어려운 큰 병은 도수 높은 술로 내부를 닦고 완전히 말립니다. 물기가 남으면 곰팡이의 시작점이 되므로 완전 건조가 핵심입니다.</p></div>
+    <div class="qa"><p class="q">Q. 왜 병을 가득 채우면 안 되나요?</p><p class="a">숙성 중 발효로 가스가 생겨 내용물이 밀려 올라옵니다. 재료 부피의 1.5~1.6배 용량 병을 쓰고, 가끔 뚜껑을 열어 가스를 빼 주세요.</p></div>
+    <div class="qa"><p class="q">Q. 설탕이 잘 안 녹아요.</p><p class="a">하루 한 번 위아래를 뒤집어 섞어 주면 2~3일 안에 대부분 녹습니다. 바닥에 굳어 있으면 국자로 저어 주세요. 완전히 녹기 전까지는 곰팡이가 생기기 쉬운 시기입니다.</p></div>
+    <div class="qa"><p class="q">Q. 얼마나 숙성하나요?</p><p class="a">재료에 따라 다르지만 실온 1~2주 뒤 건더기를 걸러 내고 냉장에서 1개월 이상 두면 맛이 안정됩니다. 매실은 100일 숙성이 관행이지만 씨의 성분 때문에 걸러 내는 시점을 지키는 것이 좋습니다.</p></div>
+    <h2>기준값</h2>
+    <p class="note">표준 1:1, 저당 1:0.8, 병 용량 = (과일g + 설탕g) × 1.6ml(발효 가스 여유 포함)를 기준으로 계산합니다
+    (출처: 자체 정리 관행값, 확인일 2026-08-19). <span class="badge warn">참고용</span> — 저당 비율은 보관 위험이 올라가므로 냉장 보관을 전제로 하세요.</p>
+    <p class="disclaimer">본 결과는 <strong>참고용</strong>이며 식품의 안전을 보증하지 않습니다.
+    보관 기간은 구입 시 신선도·포장·냉장고 온도에 따라 크게 달라지므로 <strong>보관 상태에 따라 다름</strong>을 전제로 보시고,
+    제품에 표시된 소비기한·유통기한이 있으면 표시를 우선하세요. 냄새·색·점액 등 이상이 있으면 기간과 무관하게 폐기하고,
+    육류·가금류·달걀·해산물은 반드시 속까지 완전히 익혀 드세요. 자세한 기준은
+    <a href="https://www.foodsafetykorea.go.kr" target="_blank" rel="noopener">식품안전나라</a>를 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../coffee-ratio/"><span class="e">☕</span> 커피 비율 계산</a>
+      <a class="rel" href="../storage/"><span class="e">🧊</span> 식재료 보관기간</a>
+      <a class="rel" href="https://tomatoeggcat.com/seasonal-food/" target="_blank" rel="noopener"><span class="e">🥬</span> 제철 음식 달력 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/home-cafe-recipe/" target="_blank" rel="noopener"><span class="e">☕</span> 홈카페 레시피 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { SYRUP } from "../data/misc.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+segInit($("pSeg"), (v) => { $("ratio").value = v; });
+$("calcBtn").addEventListener("click", () => {
+  const fruit = num($("fruit"), 1000);
+  const r = num($("ratio"), 1);
+  const sugar = fruit * r;
+  const jar = (fruit + sugar) * SYRUP.jarFactor.value;
+  const low = r < 0.95;
+  $("sugarOut").textContent = fmt(sugar) + "g";
+  $("tableOut").innerHTML = kv([
+    ["과일 (손질 후)", fmt(fruit) + "g"],
+    ["설탕", fmt(sugar) + "g (1 : " + fmt(r, 2) + ")"],
+    ["총 재료 무게", fmt(fruit + sugar) + "g"],
+    ["필요한 병 용량", "약 " + fmt(Math.ceil(jar / 100) * 100) + "ml 이상"],
+    ["보관", low ? "냉장 숙성·냉장 보관 필수" : "실온 숙성 가능 · 걸러 낸 뒤 냉장 권장"],
+    ["맨 위 마감", "설탕으로 덮어 과일이 공기에 닿지 않게"],
+  ]);
+  $("noteOut").textContent = low ? SYRUP.lowSugar.note : SYRUP.standard.note;
+  $("srcOut").innerHTML = srcBox("기준값 출처", [
+    { text: (low ? SYRUP.lowSugar.note : SYRUP.standard.note) + " — " + SYRUP.standard.source, checkedAt: SYRUP.standard.checkedAt },
+    { text: "병 용량 계수 " + SYRUP.jarFactor.value + " — " + SYRUP.jarFactor.note, checkedAt: SYRUP.jarFactor.checkedAt },
+  ]);
+  show("resultBox");
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

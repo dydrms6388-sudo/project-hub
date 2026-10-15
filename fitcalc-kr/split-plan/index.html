@@ -1,0 +1,160 @@
+<!doctype html>
+<!-- ⚠ 자동 생성 파일: fitcalc-kr/gen.mjs 가 재생성합니다. 수정은 src/tools/split-plan.mjs 에서. -->
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>마라톤 스플릿 플랜 — km별 통과 시간표 + 네거티브 스플릿 (인쇄용)</title>
+<meta name="description" content="목표 거리와 목표 완주 시간을 넣으면 1km 단위 구간 페이스와 누적 통과 시간표를 만듭니다. 네거티브 스플릿(후반 가속) 비율을 조정할 수 있고, 인쇄 버튼으로 손목 밴드용 표를 뽑을 수 있습니다." />
+<link rel="canonical" href="https://fitcalc-kr.vercel.app/split-plan/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="FitCalc 운동 계산기" />
+<meta property="og:title" content="마라톤 스플릿 플랜 — km별 통과 시간표 + 네거티브 스플릿 (인쇄용)" />
+<meta property="og:description" content="목표 거리와 목표 완주 시간을 넣으면 1km 단위 구간 페이스와 누적 통과 시간표를 만듭니다. 네거티브 스플릿(후반 가속) 비율을 조정할 수 있고, 인쇄 버튼으로 손목 밴드용 표를 뽑을 수 있습니다." />
+<meta property="og:url" content="https://fitcalc-kr.vercel.app/split-plan/" />
+<meta name="twitter:card" content="summary" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💪</text></svg>">
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"스플릿 플랜 (구간 통과표)","url":"https://fitcalc-kr.vercel.app/split-plan/","description":"목표 거리와 목표 완주 시간을 넣으면 1km 단위 구간 페이스와 누적 통과 시간표를 만듭니다. 네거티브 스플릿(후반 가속) 비율을 조정할 수 있고, 인쇄 버튼으로 손목 밴드용 표를 뽑을 수 있습니다.","applicationCategory":"HealthApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"isAccessibleForFree":true},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"네거티브 스플릿 2% 는 정확히 어떤 의미인가요?","acceptedAnswer":{"@type":"Answer","text":"후반 절반의 평균 페이스가 전반 절반보다 2% 빠르다는 뜻입니다. 4시간 목표라면 전반 약 2시간 1분, 후반 약 1시간 59분이 됩니다."}},{"@type":"Question","name":"왜 후반을 빠르게 뛰라고 하나요?","acceptedAnswer":{"@type":"Answer","text":"초반에 목표보다 빠르게 나가면 글리코겐 소모와 근피로가 앞당겨져 후반에 페이스가 급격히 무너집니다. 전반을 참으면 같은 총 노력으로 더 좋은 기록이 나오는 경우가 많습니다."}},{"@type":"Question","name":"42.195km 처럼 딱 떨어지지 않는 거리는요?","acceptedAnswer":{"@type":"Answer","text":"마지막 남은 구간(예: 0.195km)을 별도 행으로 표시하고, 그 구간의 페이스와 시간도 함께 계산합니다."}},{"@type":"Question","name":"인쇄하면 무엇이 나오나요?","acceptedAnswer":{"@type":"Answer","text":"제목, 목표 요약, 스플릿 표만 인쇄됩니다. 입력 폼·관련 도구·광고·푸터는 인쇄 CSS(@media print)로 제외됩니다."}},{"@type":"Question","name":"포지티브 스플릿 옵션은 왜 있나요?","acceptedAnswer":{"@type":"Answer","text":"일부러 전반을 빠르게 잡는 전략(내리막 코스 등)을 비교해 보기 위한 옵션입니다. 일반적인 대회에서는 권장하지 않습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FitCalc 운동 계산기","item":"https://fitcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"스플릿 플랜 (구간 통과표)","item":"https://fitcalc-kr.vercel.app/split-plan/"}]}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb no-print" aria-label="breadcrumb"><a href="../">FitCalc 운동 계산기</a> <span class="sep">›</span> <span class="c-cur">스플릿 플랜 (구간 통과표)</span></nav>
+  <header class="hero">
+    <div class="emoji" aria-hidden="true">📋</div>
+    <h1>스플릿 플랜 (구간 통과표)</h1>
+    <p class="lead">목표 시간 → km별 통과 시간표. 네거티브 스플릿을 적용하고 그대로 인쇄해 손목에 붙이세요.</p>
+  </header>
+  <div class="notice no-print"><strong>⚠ 참고용 안내</strong> — 이 결과는 일반적인 공식·공개 자료에 따른 <b>참고용 추정</b>이며 개인차가 큽니다. 의료·진단 정보가 아니며, 운동 중 통증·어지럼 등 이상 증상이 있으면 즉시 중단하고 의사·전문 트레이너 등 전문가와 상담하세요.</div>
+
+  <section class="tool no-print">
+    <h2>목표 설정</h2>
+    <div class="field">
+      <label for="preset">거리</label>
+      <select id="preset"></select>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="dist">거리 (km)</label>
+        <input type="number" id="dist" inputmode="decimal" min="1" step="0.001" value="42.195" />
+      </div>
+      <div class="field">
+        <label for="goal">목표 시간 (h:mm:ss)</label>
+        <input type="text" id="goal" inputmode="numeric" placeholder="4:00:00" value="4:00:00" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="neg">네거티브 스플릿 (후반이 전반보다 빠른 정도)</label>
+      <select id="neg">
+        <option value="0">이븐 페이스 — 처음부터 끝까지 같은 페이스</option>
+        <option value="0.01">1% — 아주 완만한 후반 가속</option>
+        <option value="0.02" selected>2% — 표준 권장</option>
+        <option value="0.03">3% — 뚜렷한 후반 가속</option>
+        <option value="0.05">5% — 공격적 (전반을 크게 참아야 함)</option>
+        <option value="-0.02">-2% — 포지티브 스플릿(전반이 빠름, 비권장)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="step">표 간격</label>
+      <select id="step">
+        <option value="1">1 km</option>
+        <option value="2">2 km</option>
+        <option value="5">5 km</option>
+      </select>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="calcBtn" type="button">스플릿 표 만들기</button>
+      <button class="btn sub" id="printBtn" type="button" hidden>표 인쇄하기</button>
+    </div>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <h2>스플릿 플랜</h2>
+    <p class="big"><span id="goalOut">-</span></p>
+    <div class="kv"><span class="k">평균 페이스</span><span class="v" id="avgOut">-</span></div>
+    <div class="kv"><span class="k">전반 / 후반</span><span class="v" id="halfOut">-</span></div>
+    <div class="kv"><span class="k">첫 구간 / 마지막 구간 페이스</span><span class="v" id="edgeOut">-</span></div>
+    <div class="rt-scroll">
+      <table class="rt">
+        <thead><tr><th class="num">지점</th><th class="num">구간 페이스</th><th class="num">구간 시간</th><th class="num">누적 통과</th></tr></thead>
+        <tbody id="sBody"></tbody>
+      </table>
+    </div>
+    <p class="hint" style="margin-top:10px">※ 급수대·오르막·바람에 따라 실제 통과 시간은 달라집니다. 표는 목표 감각을 잡기 위한 기준선으로 쓰세요.</p>
+  </section>
+  <section class="ad-box no-print" id="adBox" hidden aria-label="광고"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins></section>
+  <section class="about no-print">
+    <h2>소개</h2>
+    <p>스플릿 플랜은 목표 완주 시간을 <b>구간별 통과 시간</b>으로 쪼갠 표입니다. 대회 중에는 시계의 평균 페이스만 보면 "지금 빠른가 느린가"를 판단하기 어렵지만, 각 km 지점의 목표 통과 시각을 알고 있으면 표지판을 지날 때마다 바로 확인할 수 있습니다.</p>
+    <p><b>네거티브 스플릿</b>은 후반을 전반보다 빠르게 뛰는 전략입니다. 초반 오버페이스로 후반에 무너지는 것을 막아 주기 때문에 마라톤에서 널리 권장됩니다. 이 계산기는 거리에 따라 페이스가 선형으로 빨라지도록 배분하되, 합계가 정확히 목표 시간이 되도록 맞춥니다.</p>
+    <p>완성된 표는 인쇄 버튼으로 바로 뽑을 수 있습니다. 인쇄 시에는 입력 폼·광고·메뉴가 모두 빠지고 표만 남습니다.</p>
+    <h2>사용법</h2><ol><li>거리를 프리셋에서 고르거나 직접 입력합니다 (기본값은 풀 마라톤 42.195km).</li><li>목표 완주 시간을 h:mm:ss 로 넣습니다. 목표가 막연하면 <a href="../race-predict/">완주 기록 예측</a>으로 먼저 예상치를 구하세요.</li><li>네거티브 스플릿 비율을 고릅니다. 처음이라면 2% 를 권합니다.</li><li>표 간격(1/2/5km)을 고르고 표를 만든 뒤, 인쇄 버튼으로 출력해 손목 밴드나 번호표 뒤에 붙입니다.</li></ol>
+    <h2>자주 묻는 질문</h2><div class="qa"><p class="q">Q. 네거티브 스플릿 2% 는 정확히 어떤 의미인가요?</p><p class="a">A. 후반 절반의 평균 페이스가 전반 절반보다 2% 빠르다는 뜻입니다. 4시간 목표라면 전반 약 2시간 1분, 후반 약 1시간 59분이 됩니다.</p></div><div class="qa"><p class="q">Q. 왜 후반을 빠르게 뛰라고 하나요?</p><p class="a">A. 초반에 목표보다 빠르게 나가면 글리코겐 소모와 근피로가 앞당겨져 후반에 페이스가 급격히 무너집니다. 전반을 참으면 같은 총 노력으로 더 좋은 기록이 나오는 경우가 많습니다.</p></div><div class="qa"><p class="q">Q. 42.195km 처럼 딱 떨어지지 않는 거리는요?</p><p class="a">A. 마지막 남은 구간(예: 0.195km)을 별도 행으로 표시하고, 그 구간의 페이스와 시간도 함께 계산합니다.</p></div><div class="qa"><p class="q">Q. 인쇄하면 무엇이 나오나요?</p><p class="a">A. 제목, 목표 요약, 스플릿 표만 인쇄됩니다. 입력 폼·관련 도구·광고·푸터는 인쇄 CSS(@media print)로 제외됩니다.</p></div><div class="qa"><p class="q">Q. 포지티브 스플릿 옵션은 왜 있나요?</p><p class="a">A. 일부러 전반을 빠르게 잡는 전략(내리막 코스 등)을 비교해 보기 위한 옵션입니다. 일반적인 대회에서는 권장하지 않습니다.</p></div>
+    <div class="edbox no-print"><p class="ed-by"><strong>수치 출처 · 확인일 2026-08-19</strong></p><p class="ed-src"><a href="https://en.wikipedia.org/wiki/Marathon" target="_blank" rel="noopener">마라톤 공인 거리 42.195km</a> · <a href="https://en.wikipedia.org/wiki/Half_marathon" target="_blank" rel="noopener">하프 마라톤 공인 거리 21.0975km</a> · <a href="https://en.wikipedia.org/wiki/Negative_split" target="_blank" rel="noopener">네거티브 스플릿 개념</a></p></div>
+  </section>
+  <section class="related no-print"><h2>관련 도구</h2><div class="rel-grid"><a class="rel" href="../race-predict/"><span class="re">🎯</span>완주 기록 예측 (Riegel)</a><a class="rel" href="../running-pace/"><span class="re">🏃</span>러닝 페이스 계산기</a><a class="rel" href="../hr-zone/"><span class="re">❤️</span>심박수 존 계산기</a><a class="rel" href="https://tomatoeggcat.com/running-pace-calc/" target="_blank" rel="noopener"><span class="re">🔗</span>TomatoEggCat 러닝 페이스 계산기</a><a class="rel" href="https://tomatoeggcat.com/calorie-burn-calc/" target="_blank" rel="noopener"><span class="re">🔗</span>TomatoEggCat 소모 칼로리 계산기</a></div></section>
+  <footer class="no-print">
+  <p style="margin:0 0 8px">💪 <a href="../">FitCalc 운동 계산기</a> — 러닝·헬스 계산기 모음 (무료 · 서버 저장 없음)</p>
+  <p style="margin:0"><a href="../">홈</a>·<a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+</footer>
+</div>
+<script type="module">
+import { RACE_DISTANCES, parseHMS, fmtHMS, fmtPace } from "../data/pace.mjs";
+import { $, showAd, fmt } from "../assets/app.mjs";
+
+const sel = $("#preset");
+sel.innerHTML = RACE_DISTANCES.map((d) => '<option value="' + d.km.value + '"' + (d.id === "full" ? " selected" : "") + ">" + d.name + " (" + d.km.value + "km)</option>").join("") + '<option value="">직접 입력</option>';
+sel.addEventListener("change", () => { if (sel.value) $("#dist").value = sel.value; });
+
+/* 페이스를 거리에 대해 선형 배분: p(x) = pAvg * (1 + d - 2d·x/D)
+   전반 평균 = pAvg(1+d/2), 후반 평균 = pAvg(1-d/2) → 후반이 X% 빠르려면 d = 2X/(2-X) */
+function makePlan(D, total, X) {
+  const pAvg = total / D;
+  const d = (2 * X) / (2 - X);
+  const cum = (x) => pAvg * ((1 + d) * x - (d * x * x) / D);
+  return { pAvg: pAvg, d: d, cum: cum, paceAt: (x) => pAvg * (1 + d - (2 * d * x) / D) };
+}
+
+function run() {
+  const D = parseFloat($("#dist").value);
+  const total = parseHMS($("#goal").value);
+  const X = parseFloat($("#neg").value) || 0;
+  const step = parseFloat($("#step").value) || 1;
+  if (!isFinite(D) || D <= 0) { alert("거리를 확인해 주세요."); return; }
+  if (total == null) { alert("목표 시간 형식을 확인해 주세요. 예: 4:00:00"); return; }
+  const plan = makePlan(D, total, X);
+
+  const rows = [];
+  let a = 0;
+  while (a < D - 1e-9) {
+    const b = Math.min(a + step, D);
+    const segT = plan.cum(b) - plan.cum(a);
+    rows.push({ a: a, b: b, len: b - a, segT: segT, cum: plan.cum(b) });
+    a = b;
+  }
+  const half = plan.cum(D / 2);
+  $("#goalOut").textContent = fmt(D, 3) + "km · 목표 " + fmtHMS(total);
+  $("#avgOut").textContent = fmtPace(plan.pAvg) + " /km";
+  $("#halfOut").textContent = fmtHMS(half) + " / " + fmtHMS(total - half) + (X > 0 ? " (후반 " + fmt(X * 100, 0) + "% 빠름)" : X < 0 ? " (전반이 빠름)" : " (이븐)");
+  $("#edgeOut").textContent = fmtPace(plan.paceAt(0.0001)) + " → " + fmtPace(plan.paceAt(D - 0.0001)) + " /km";
+  $("#sBody").innerHTML = rows
+    .map((r) => {
+      const label = (Math.abs(r.b - Math.round(r.b)) < 1e-6 ? String(Math.round(r.b)) : fmt(r.b, 3)) + " km" + (r.len < step - 1e-9 ? " (마지막 " + fmt(r.len, 3) + "km)" : "");
+      return "<tr><td class=\"num\">" + label + "</td><td class=\"num\">" + fmtPace(r.segT / r.len) + "</td><td class=\"num\">" + fmtHMS(r.segT) + "</td><td class=\"num\">" + fmtHMS(r.cum) + "</td></tr>";
+    })
+    .join("");
+  $("#resultBox").hidden = false;
+  $("#printBtn").hidden = false;
+  showAd();
+}
+$("#calcBtn").addEventListener("click", run);
+$("#printBtn").addEventListener("click", () => window.print());
+$("#goal").addEventListener("keydown", (e) => { if (e.key === "Enter") run(); });
+</script>
+</body>
+</html>

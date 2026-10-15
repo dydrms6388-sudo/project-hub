@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>해외 전압·콘센트 플러그 확인 — 변압기가 필요한가?</title>
+<meta name="description" content="나라를 고르면 전압·주파수·콘센트 타입을 보여주고, 한국 220V 기기를 그대로 쓸 수 있는지 어댑터만 필요한지 변압기까지 필요한지 판정합니다. 고데기·드라이어처럼 사고가 잦은 기기도 따로 안내합니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/voltage/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="해외 전압·플러그 확인" />
+<meta property="og:description" content="나라를 고르면 전압·주파수·콘센트 타입을 보여주고, 한국 220V 기기를 그대로 쓸 수 있는지 어댑터만 필요한지 변압기까지 필요한지 판정합니다. 고데기·드라이어처럼 사고가 잦은 기기도 따로 안내합니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/voltage/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"전압·플러그 확인","description":"나라를 고르면 전압·주파수·콘센트 타입을 보여주고, 한국 220V 기기를 그대로 쓸 수 있는지 어댑터만 필요한지 변압기까지 필요한지 판정합니다. 고데기·드라이어처럼 사고가 잦은 기기도 따로 안내합니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/voltage/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"어댑터만 있으면 되나요?","acceptedAnswer":{"@type":"Answer","text":"기기가 프리볼트(100-240V)라면 어댑터만으로 충분합니다. 특정 전압 전용 기기라면 목적지 전압과 다를 때 변압기가 필요합니다. 기기 표기를 반드시 확인하세요."}},{"@type":"Question","name":"주파수(50Hz/60Hz)가 다르면 문제가 되나요?","acceptedAnswer":{"@type":"Answer","text":"충전기·노트북 같은 전자기기는 대부분 문제가 없습니다. 다만 모터가 회전 속도에 의존하는 일부 구형 기기나 시계 기능이 있는 기기는 동작이 달라질 수 있습니다."}},{"@type":"Question","name":"호텔에 어댑터가 있나요?","acceptedAnswer":{"@type":"Answer","text":"호텔마다 다릅니다. 프런트에서 대여해 주는 곳도 있지만 수량이 한정적입니다. 멀티 어댑터 하나를 챙기는 편이 안전합니다."}},{"@type":"Question","name":"고데기를 꼭 가져가야 한다면?","acceptedAnswer":{"@type":"Answer","text":"듀얼 볼티지(전압 전환 스위치가 있거나 100-240V 표기) 제품을 사거나 현지에서 구매·대여하는 편이 안전합니다. 열기구는 소비전력이 커서 여행용 소형 변압기로는 감당하지 못하는 경우가 많습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"전압·플러그 확인","item":"https://tripcalc-kr.vercel.app/voltage/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>전압·플러그 확인</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🔌</div>
+    <h1>해외 전압·플러그 확인</h1>
+    <p class="lead">나라를 고르면 <strong>어댑터만 필요한지, 변압기까지 필요한지</strong> 알려드립니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>목적지 선택</h2>
+    <label class="f">나라 <select id="country"></select></label>
+    <span class="f" style="display:block;margin-top:14px">가져갈 기기</span>
+    <div class="chips" id="devs">
+      <button class="chip" type="button" data-v="phone" aria-pressed="true">📱 휴대폰·노트북 충전기</button>
+      <button class="chip" type="button" data-v="hair" aria-pressed="false">💇 드라이어·고데기</button>
+      <button class="chip" type="button" data-v="shaver" aria-pressed="false">🪒 전기면도기·전동칫솔</button>
+      <button class="chip" type="button" data-v="rice" aria-pressed="false">🍚 소형 가전(전기포트 등)</button>
+    </div>
+    <button class="btn" id="goBtn" type="button">사용 가능 여부 확인</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>확인 결과</h2>
+      <p class="big"><span class="num" id="verdict">-</span></p>
+      <dl class="kv" id="spec"></dl>
+      <div id="devOut"></div>
+      <p class="note">한국은 220V 60Hz, 플러그 C/F타입입니다. 판정은 이 값을 기준으로 합니다.</p>
+    </div>
+  </section>
+
+  <section class="card" aria-label="나라별 카드">
+    <h2>나라별 전압 카드</h2>
+    <p class="note" style="margin-top:0">자주 찾는 나라의 전용 페이지입니다.</p>
+    <div class="chips">
+      <a class="chip" href="../country/japan/">🇯🇵 일본</a>
+      <a class="chip" href="../country/usa/">🇺🇸 미국</a>
+      <a class="chip" href="../country/vietnam/">🇻🇳 베트남</a>
+      <a class="chip" href="../country/thailand/">🇹🇭 태국</a>
+      <a class="chip" href="../country/uk/">🇬🇧 영국</a>
+      <a class="chip" href="../country/france/">🇫🇷 프랑스</a>
+      <a class="chip" href="../country/australia/">🇦🇺 호주</a>
+      <a class="chip" href="../country/china/">🇨🇳 중국</a>
+      <a class="chip" href="../country/">전체 55개국 →</a>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>어댑터와 변압기는 완전히 다른 물건입니다</h2>
+  <p>여행 준비에서 가장 흔한 오해가 이것입니다. <strong>어댑터(플러그 변환기)</strong>는 콘센트 구멍 모양만 바꿔 줄 뿐 전압은 그대로 통과시킵니다. <strong>변압기</strong>는 전압 자체를 바꿉니다. 110V 나라에서 220V 전용 고데기를 어댑터만 끼워 꽂으면 제대로 작동하지 않거나 고장 나고, 반대로 110V 전용 기기를 220V에 꽂으면 타 버립니다.</p>
+  <p>다행히 요즘 휴대폰·노트북 충전기는 대부분 <em>INPUT 100-240V 50/60Hz</em> 프리볼트라서 플러그 모양만 맞추면 됩니다. 문제는 헤어드라이어·고데기·전기포트처럼 열을 내는 기기입니다. 이런 기기는 소비전력이 커서 여행용 소형 변압기로도 감당이 안 되는 경우가 많습니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>목적지 나라를 고릅니다.</li>
+    <li>가져갈 기기 종류를 고릅니다(복수 선택).</li>
+    <li>"사용 가능 여부 확인"을 누르면 전압·주파수·플러그 타입과 함께 기기별 판정이 나옵니다.</li>
+  </ol>
+  <h2>출발 전 직접 확인하는 법</h2>
+  <p>충전기나 어댑터 몸통의 작은 글씨를 보세요. <strong>INPUT: 100-240V ~ 50/60Hz</strong> 라고 적혀 있으면 전 세계 어디서나 플러그만 맞추면 됩니다. <strong>INPUT: 220V 60Hz</strong> 처럼 한 가지만 적혀 있으면 그 전압에서만 써야 합니다.</p>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 어댑터만 있으면 되나요?</p><p class="a">기기가 프리볼트(100-240V)라면 어댑터만으로 충분합니다. 특정 전압 전용 기기라면 목적지 전압과 다를 때 변압기가 필요합니다. 기기 표기를 반드시 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 주파수(50Hz/60Hz)가 다르면 문제가 되나요?</p><p class="a">충전기·노트북 같은 전자기기는 대부분 문제가 없습니다. 다만 모터가 회전 속도에 의존하는 일부 구형 기기나 시계 기능이 있는 기기는 동작이 달라질 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 호텔에 어댑터가 있나요?</p><p class="a">호텔마다 다릅니다. 프런트에서 대여해 주는 곳도 있지만 수량이 한정적입니다. 멀티 어댑터 하나를 챙기는 편이 안전합니다.</p></div>
+    <div class="qa"><p class="q">Q. 고데기를 꼭 가져가야 한다면?</p><p class="a">듀얼 볼티지(전압 전환 스위치가 있거나 100-240V 표기) 제품을 사거나 현지에서 구매·대여하는 편이 안전합니다. 열기구는 소비전력이 커서 여행용 소형 변압기로는 감당하지 못하는 경우가 많습니다.</p></div>
+    <h2>전압·플러그 데이터 출처</h2>
+    <p class="note">국가별 전압·주파수·플러그 타입은 <a href="https://www.iec.ch/world-plugs" target="_blank" rel="noopener">IEC World Plugs</a> 기준입니다(확인일 2026-08-19).
+    같은 나라 안에서도 건물 연식·지역에 따라 콘센트가 다를 수 있고, 브라질처럼 지역별로 전압이 다른 나라도 있습니다. 숙소 안내를 함께 확인하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 기기 손상·화재 위험이 있는 판단이므로 반드시 기기 본체의 전압 표기를 직접 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-packing/" target="_blank" rel="noopener"><span class="e">🎒</span> 여행 짐 체크리스트 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/china-travel/" target="_blank" rel="noopener"><span class="e">🇨🇳</span> 중국여행 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, fillSelect, multiInit } from "../assets/app.mjs";
+const C = [{"slug":"japan","n":"일본","flag":"🇯🇵","v":"100V","f":"50/60Hz","p":["A","B"],"tz":"Asia/Tokyo","cur":"JPY","curN":"엔","tip":"팁 문화 없음. 팁을 건네면 오히려 사양하는 경우가 많다.","pct":null},{"slug":"china","n":"중국","flag":"🇨🇳","v":"220V","f":"50Hz","p":["A","C","I"],"tz":"Asia/Shanghai","cur":"CNY","curN":"위안","tip":"팁 문화 없음. 일부 외국계 호텔에서만 소액 관행.","pct":null},{"slug":"taiwan","n":"대만","flag":"🇹🇼","v":"110V","f":"60Hz","p":["A","B"],"tz":"Asia/Taipei","cur":"TWD","curN":"신 타이완 달러","tip":"팁 필수 아님. 식당은 10% 봉사료가 계산서에 포함되는 경우가 많다.","pct":null},{"slug":"hongkong","n":"홍콩","flag":"🇭🇰","v":"220V","f":"50Hz","p":["G"],"tz":"Asia/Hong_Kong","cur":"HKD","curN":"홍콩 달러","tip":"식당 10% 봉사료 포함이 일반적. 별도 팁은 잔돈 정도.","pct":null},{"slug":"macau","n":"마카오","flag":"🇲🇴","v":"220V","f":"50Hz","p":["G","D"],"tz":"Asia/Macau","cur":"MOP","curN":"파타카","tip":"10% 봉사료 포함이 일반적. 별도 팁 필수 아님.","pct":null},{"slug":"mongolia","n":"몽골","flag":"🇲🇳","v":"230V","f":"50Hz","p":["C","E"],"tz":"Asia/Ulaanbaatar","cur":"MNT","curN":"투그릭","tip":"팁 의무 아님. 관광 가이드·기사에게 소액 팁 관행.","pct":[5,10]},{"slug":"singapore","n":"싱가포르","flag":"🇸🇬","v":"230V","f":"50Hz","p":["G"],"tz":"Asia/Singapore","cur":"SGD","curN":"싱가포르 달러","tip":"식당은 10% 봉사료+GST가 붙는다. 별도 팁 불필요.","pct":null},{"slug":"thailand","n":"태국","flag":"🇹🇭","v":"220V","f":"50Hz","p":["A","B","C","O"],"tz":"Asia/Bangkok","cur":"THB","curN":"바트","tip":"의무 아님. 식당에서 잔돈을 남기거나 20~50밧 정도의 소액 팁 관행.","pct":[0,10]},{"slug":"vietnam","n":"베트남","flag":"🇻🇳","v":"220V","f":"50Hz","p":["A","C"],"tz":"Asia/Ho_Chi_Minh","cur":"VND","curN":"동","tip":"팁 의무 아님. 고급 식당·스파·투어에서 5~10% 정도 관행.","pct":[5,10]},{"slug":"philippines","n":"필리핀","flag":"🇵🇭","v":"220V","f":"60Hz","p":["A","B","C"],"tz":"Asia/Manila","cur":"PHP","curN":"페소","tip":"봉사료(service charge)가 없으면 5~10% 팁 관행.","pct":[5,10]},{"slug":"malaysia","n":"말레이시아","flag":"🇲🇾","v":"240V","f":"50Hz","p":["G"],"tz":"Asia/Kuala_Lumpur","cur":"MYR","curN":"링깃","tip":"팁 의무 아님. 봉사료 10%가 포함되는 곳이 많다.","pct":null},{"slug":"indonesia","n":"인도네시아","flag":"🇮🇩","v":"230V","f":"50Hz","p":["C","F"],"tz":"Asia/Jakarta","cur":"IDR","curN":"루피아","tip":"봉사료 포함이 많음. 없으면 5~10% 소액 팁 관행.","pct":[5,10]},{"slug":"cambodia","n":"캄보디아","flag":"🇰🇭","v":"230V","f":"50Hz","p":["A","C","G"],"tz":"Asia/Phnom_Penh","cur":"KHR","curN":"리엘(달러 병용)","tip":"의무 아님. 가이드·기사·식당에 1~2달러 소액 팁 관행.","pct":[0,10]},{"slug":"laos","n":"라오스","flag":"🇱🇦","v":"230V","f":"50Hz","p":["A","B","C","E","F"],"tz":"Asia/Vientiane","cur":"LAK","curN":"킵","tip":"팁 문화 거의 없음. 투어 가이드에게 소액 관행.","pct":null},{"slug":"india","n":"인도","flag":"🇮🇳","v":"230V","f":"50Hz","p":["C","D","M"],"tz":"Asia/Kolkata","cur":"INR","curN":"루피","tip":"식당 5~10% 관행(봉사료 포함 여부 확인). 포터·기사 소액 팁.","pct":[5,10]},{"slug":"uzbekistan","n":"우즈베키스탄","flag":"🇺🇿","v":"220V","f":"50Hz","p":["C","F"],"tz":"Asia/Tashkent","cur":"UZS","curN":"솜","tip":"식당 계산서에 봉사료 10~15%가 붙는 경우가 많다. 별도 팁 의무 아님.","pct":null},{"slug":"uae","n":"아랍에미리트(두바이)","flag":"🇦🇪","v":"230V","f":"50Hz","p":["G","C","D"],"tz":"Asia/Dubai","cur":"AED","curN":"디르함","tip":"봉사료 포함이 많음. 없으면 10~15% 선택 팁 관행.","pct":[10,15]},{"slug":"qatar","n":"카타르","flag":"🇶🇦","v":"240V","f":"50Hz","p":["D","G"],"tz":"Asia/Qatar","cur":"QAR","curN":"리얄","tip":"봉사료 포함이 많음. 없으면 10% 내외 선택 팁.","pct":[0,10]},{"slug":"israel","n":"이스라엘","flag":"🇮🇱","v":"230V","f":"50Hz","p":["C","H","M"],"tz":"Asia/Jerusalem","cur":"ILS","curN":"셰켈","tip":"식당 10~15% 팁이 일반 관행(현금 선호 업장 있음).","pct":[10,15]},{"slug":"turkiye","n":"튀르키예","flag":"🇹🇷","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Istanbul","cur":"TRY","curN":"리라","tip":"식당 5~10% 팁 관행. 현금 팁 선호.","pct":[5,10]},{"slug":"uk","n":"영국","flag":"🇬🇧","v":"230V","f":"50Hz","p":["G"],"tz":"Europe/London","cur":"GBP","curN":"파운드","tip":"식당 10~12.5%. 봉사료(service charge) 포함 여부를 계산서에서 확인.","pct":[10,13]},{"slug":"ireland","n":"아일랜드","flag":"🇮🇪","v":"230V","f":"50Hz","p":["G"],"tz":"Europe/Dublin","cur":"EUR","curN":"유로","tip":"식당 10% 내외 선택 팁. 펍 카운터 주문은 팁 불필요.","pct":[0,10]},{"slug":"france","n":"프랑스","flag":"🇫🇷","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Paris","cur":"EUR","curN":"유로","tip":"봉사료(service compris)가 가격에 포함. 만족 시 잔돈 라운드업 정도.","pct":[0,5]},{"slug":"germany","n":"독일","flag":"🇩🇪","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Berlin","cur":"EUR","curN":"유로","tip":"5~10% 또는 라운드업. 결제 시 총액을 말하는 방식이 일반적.","pct":[5,10]},{"slug":"italy","n":"이탈리아","flag":"🇮🇹","v":"230V","f":"50Hz","p":["C","F","L"],"tz":"Europe/Rome","cur":"EUR","curN":"유로","tip":"자릿세(coperto)가 붙는 대신 팁 의무 없음. 만족 시 잔돈 정도.","pct":[0,5]},{"slug":"spain","n":"스페인","flag":"🇪🇸","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Madrid","cur":"EUR","curN":"유로","tip":"팁 의무 아님. 만족 시 잔돈 라운드업 또는 5% 내외.","pct":[0,5]},{"slug":"portugal","n":"포르투갈","flag":"🇵🇹","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Lisbon","cur":"EUR","curN":"유로","tip":"팁 의무 아님. 식당에서 5~10% 정도 선택 팁.","pct":[0,10]},{"slug":"netherlands","n":"네덜란드","flag":"🇳🇱","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Amsterdam","cur":"EUR","curN":"유로","tip":"봉사료 포함. 만족 시 5~10% 또는 라운드업.","pct":[0,10]},{"slug":"belgium","n":"벨기에","flag":"🇧🇪","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Brussels","cur":"EUR","curN":"유로","tip":"봉사료 포함이 원칙. 별도 팁 의무 없음.","pct":[0,5]},{"slug":"switzerland","n":"스위스","flag":"🇨🇭","v":"230V","f":"50Hz","p":["C","J"],"tz":"Europe/Zurich","cur":"CHF","curN":"스위스 프랑","tip":"봉사료 포함. 만족 시 라운드업 정도.","pct":[0,5]},{"slug":"austria","n":"오스트리아","flag":"🇦🇹","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Vienna","cur":"EUR","curN":"유로","tip":"5~10% 팁 관행. 결제 시 총액을 말하는 방식.","pct":[5,10]},{"slug":"czechia","n":"체코","flag":"🇨🇿","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Prague","cur":"CZK","curN":"코루나","tip":"식당 5~10% 또는 라운드업 관행.","pct":[5,10]},{"slug":"poland","n":"폴란드","flag":"🇵🇱","v":"230V","f":"50Hz","p":["C","E"],"tz":"Europe/Warsaw","cur":"PLN","curN":"즈워티","tip":"식당 10% 내외 팁 관행.","pct":[5,10]},{"slug":"hungary","n":"헝가리","flag":"🇭🇺","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Budapest","cur":"HUF","curN":"포린트","tip":"봉사료 10~15%가 계산서에 포함되는 경우 많음. 없으면 10% 내외.","pct":[0,10]},{"slug":"greece","n":"그리스","flag":"🇬🇷","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Athens","cur":"EUR","curN":"유로","tip":"팁 의무 아님. 만족 시 5~10% 또는 라운드업.","pct":[0,10]},{"slug":"denmark","n":"덴마크","flag":"🇩🇰","v":"230V","f":"50Hz","p":["C","E","F","K"],"tz":"Europe/Copenhagen","cur":"DKK","curN":"크로네","tip":"봉사료 포함이 원칙. 별도 팁 불필요.","pct":null},{"slug":"sweden","n":"스웨덴","flag":"🇸🇪","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Stockholm","cur":"SEK","curN":"크로나","tip":"팁 의무 없음. 만족 시 라운드업 정도.","pct":[0,5]},{"slug":"norway","n":"노르웨이","flag":"🇳🇴","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Oslo","cur":"NOK","curN":"크로네","tip":"팁 의무 없음. 만족 시 5~10% 선택.","pct":[0,10]},{"slug":"finland","n":"핀란드","flag":"🇫🇮","v":"230V","f":"50Hz","p":["C","F"],"tz":"Europe/Helsinki","cur":"EUR","curN":"유로","tip":"팁 문화 거의 없음. 봉사료 포함.","pct":null},{"slug":"iceland","n":"아이슬란드","flag":"🇮🇸","v":"230V","f":"50Hz","p":["C","F"],"tz":"Atlantic/Reykjavik","cur":"ISK","curN":"크로나","tip":"팁 문화 없음. 가격에 서비스 포함.","pct":null},{"slug":"russia","n":"러시아","flag":"🇷🇺","v":"220V","f":"50Hz","p":["C","F"],"tz":"Europe/Moscow","cur":"RUB","curN":"루블","tip":"식당 5~10% 팁 관행.","pct":[5,10]},{"slug":"usa","n":"미국","flag":"🇺🇸","v":"120V","f":"60Hz","p":["A","B"],"tz":"America/New_York","cur":"USD","curN":"달러","tip":"식당 테이블 서비스 15~20% 사실상 필수. 택시·미용 등도 팁 관행.","pct":[15,20]},{"slug":"canada","n":"캐나다","flag":"🇨🇦","v":"120V","f":"60Hz","p":["A","B"],"tz":"America/Toronto","cur":"CAD","curN":"캐나다 달러","tip":"식당 15~20% 팁 관행(미국과 유사).","pct":[15,20]},{"slug":"mexico","n":"멕시코","flag":"🇲🇽","v":"127V","f":"60Hz","p":["A","B"],"tz":"America/Mexico_City","cur":"MXN","curN":"페소","tip":"식당 10~15% 팁 관행.","pct":[10,15]},{"slug":"brazil","n":"브라질","flag":"🇧🇷","v":"127V/220V(지역별 상이)","f":"60Hz","p":["C","N"],"tz":"America/Sao_Paulo","cur":"BRL","curN":"헤알","tip":"식당 계산서에 10% 봉사료(serviço) 포함이 일반적.","pct":null},{"slug":"argentina","n":"아르헨티나","flag":"🇦🇷","v":"220V","f":"50Hz","p":["C","I"],"tz":"America/Argentina/Buenos_Aires","cur":"ARS","curN":"페소","tip":"식당 10% 팁 관행(현금 선호).","pct":[10,10]},{"slug":"chile","n":"칠레","flag":"🇨🇱","v":"220V","f":"50Hz","p":["C","L"],"tz":"America/Santiago","cur":"CLP","curN":"페소","tip":"계산서에 10% 팁(propina) 제안이 표시되는 것이 일반적.","pct":[10,10]},{"slug":"peru","n":"페루","flag":"🇵🇪","v":"220V","f":"60Hz","p":["A","C"],"tz":"America/Lima","cur":"PEN","curN":"솔","tip":"고급 식당 10% 내외. 일반 식당은 의무 아님.","pct":[0,10]},{"slug":"australia","n":"호주","flag":"🇦🇺","v":"230V","f":"50Hz","p":["I"],"tz":"Australia/Sydney","cur":"AUD","curN":"호주 달러","tip":"팁 의무 아님. 고급 식당에서 10% 정도 선택.","pct":[0,10]},{"slug":"newzealand","n":"뉴질랜드","flag":"🇳🇿","v":"230V","f":"50Hz","p":["I"],"tz":"Pacific/Auckland","cur":"NZD","curN":"뉴질랜드 달러","tip":"팁 의무 아님. 만족 시 10% 정도 선택.","pct":[0,10]},{"slug":"guam","n":"괌(미국령)","flag":"🇬🇺","v":"120V","f":"60Hz","p":["A","B"],"tz":"Pacific/Guam","cur":"USD","curN":"달러","tip":"미국식 팁 문화. 식당 15~20%, 봉사료 포함 여부 확인.","pct":[15,20]},{"slug":"saipan","n":"사이판(북마리아나)","flag":"🇲🇵","v":"120V","f":"60Hz","p":["A","B"],"tz":"Pacific/Saipan","cur":"USD","curN":"달러","tip":"미국식 팁 문화. 식당 15~20% 관행.","pct":[15,20]},{"slug":"egypt","n":"이집트","flag":"🇪🇬","v":"220V","f":"50Hz","p":["C","F"],"tz":"Africa/Cairo","cur":"EGP","curN":"파운드","tip":"박시시(팁) 문화가 강함. 식당 10% 내외+각종 서비스 소액 팁.","pct":[10,15]},{"slug":"morocco","n":"모로코","flag":"🇲🇦","v":"220V","f":"50Hz","p":["C","E"],"tz":"Africa/Casablanca","cur":"MAD","curN":"디르함","tip":"식당 5~10% 팁 관행. 가이드·포터 소액 팁.","pct":[5,10]},{"slug":"southafrica","n":"남아프리카공화국","flag":"🇿🇦","v":"230V","f":"50Hz","p":["C","D","M","N"],"tz":"Africa/Johannesburg","cur":"ZAR","curN":"랜드","tip":"식당 10~15% 팁 관행.","pct":[10,15]}];
+const KO = { v: "220V", f: "60Hz", p: ["C","F"] };
+fillSelect($("country"), C.map((c) => ({ v: c.slug, n: c.flag + " " + c.n })), "japan");
+const dv = multiInit($("devs"));
+function volts(s) { const m = String(s).match(/(\d+)/g) || ["220"]; return m.map(Number); }
+$("goBtn").addEventListener("click", () => {
+  const c = C.find((x) => x.slug === $("country").value);
+  const vs = volts(c.v), lo = Math.min(...vs);
+  const samePlug = c.p.some((p) => KO.p.includes(p));
+  const sameVolt = vs.some((v) => Math.abs(v - 220) <= 20);
+  const verdict = samePlug && sameVolt ? "그대로 사용 가능" : sameVolt ? "어댑터 필요" : "어댑터 + 전압 확인 필요";
+  $("resultBox").hidden = false;
+  $("verdict").textContent = verdict;
+  $("spec").innerHTML =
+    "<dt>전압</dt><dd>" + esc(c.v) + "</dd>" +
+    "<dt>주파수</dt><dd>" + esc(c.f) + "</dd>" +
+    "<dt>플러그 타입</dt><dd>" + c.p.join(", ") + "형</dd>" +
+    "<dt>한국(" + KO.v + " " + KO.f + ", " + KO.p.join("/") + "형) 대비</dt><dd>" + (samePlug ? "플러그 호환" : "플러그 변환 필요") + " / " + (sameVolt ? "전압 유사" : "전압 다름") + "</dd>";
+  const picked = dv.get();
+  const rules = {
+    phone: lo < 200
+      ? ["📱 휴대폰·노트북 충전기", "대부분 프리볼트(100-240V)라 <strong>플러그 어댑터만</strong> 있으면 됩니다. 충전기에 100-240V 표기가 있는지 확인하세요.", "ok"]
+      : ["📱 휴대폰·노트북 충전기", "전압이 한국과 비슷해 " + (samePlug ? "그대로 꽂아 쓸 수 있습니다." : "어댑터만 있으면 됩니다."), "ok"],
+    hair: lo < 200
+      ? ["💇 드라이어·고데기", "220V 전용 제품이면 <strong>사용 불가</strong>합니다. 듀얼 볼티지 제품인지 확인하고, 아니라면 현지 구매·대여를 권합니다. 소비전력이 커서 여행용 변압기로 감당이 어렵습니다.", "warn"]
+      : ["💇 드라이어·고데기", "전압은 맞지만 숙소 콘센트 용량·플러그 모양을 확인하세요. 열기구는 소비전력이 큽니다.", "ok"],
+    shaver: ["🪒 전기면도기·전동칫솔", "대부분 프리볼트 충전 방식이라 어댑터만으로 충전됩니다. 본체가 아닌 충전 어댑터의 표기를 확인하세요.", "ok"],
+    rice: lo < 200
+      ? ["🍚 소형 가전(전기포트 등)", "220V 전용이면 <strong>사용 불가</strong>. 열기구는 소비전력(1,000W 이상)이 커서 여행용 변압기로 감당하기 어렵습니다. 가져가지 않기를 권합니다.", "warn"]
+      : ["🍚 소형 가전(전기포트 등)", "전압은 맞지만 콘센트 용량과 숙소 규정을 확인하세요. 화재 위험이 있어 금지하는 숙소도 있습니다.", "warn"],
+  };
+  $("devOut").innerHTML = picked.map((k) => {
+    const r = rules[k];
+    return '<div class="alert" style="border-color:var(--' + (r[2] === "ok" ? "acc" : "warn") + ');color:var(--tx2)"><strong>' + r[0] + "</strong><br />" + r[1] + "</div>";
+  }).join("");
+  showAd();
+});
+
+</script>
+</body>
+</html>

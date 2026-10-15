@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>여행 예산 계산기 — 항목별·1인당·N빵 정산 (환율 연동)</title>
+<meta name="description" content="항공·숙소·식비·교통·액티비티를 현지 통화로 입력하면 공개 환율 API로 원화 환산해 총액·1인당·하루당 예산을 계산하고, 누가 얼마 냈는지 넣으면 N빵 정산 송금 내역까지 만들어 줍니다. 저장은 브라우저에만 합니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/budget/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="여행 예산 계산기 — 1인당·N빵" />
+<meta property="og:description" content="항공·숙소·식비·교통·액티비티를 현지 통화로 입력하면 공개 환율 API로 원화 환산해 총액·1인당·하루당 예산을 계산하고, 누가 얼마 냈는지 넣으면 N빵 정산 송금 내역까지 만들어 줍니다. 저장은 브라우저에만 합니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/budget/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"여행 예산 계산기","description":"항공·숙소·식비·교통·액티비티를 현지 통화로 입력하면 공개 환율 API로 원화 환산해 총액·1인당·하루당 예산을 계산하고, 누가 얼마 냈는지 넣으면 N빵 정산 송금 내역까지 만들어 줍니다. 저장은 브라우저에만 합니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/budget/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"환율이 안 불러와지면 계산이 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"원화(KRW)로 입력한 항목은 그대로 계산됩니다. 현지 통화 항목은 마지막으로 받아온 환율이 있으면 그 값으로 계산하고 화면에 표시합니다. 저장된 환율도 없으면 안내 메시지를 띄우고 환산을 건너뜁니다."}},{"@type":"Question","name":"N빵 정산은 어떤 방식인가요?","acceptedAnswer":{"@type":"Answer","text":"총 지출을 인원수로 나눠 1인당 부담액을 구한 뒤, 덜 낸 사람에서 더 낸 사람으로 가는 송금 목록을 만듭니다. 큰 금액부터 상계해 송금 횟수를 줄입니다."}},{"@type":"Question","name":"입력한 예산이 서버에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 모든 계산은 브라우저에서 이뤄지고, '저장' 버튼을 눌렀을 때만 이 브라우저의 localStorage에 남습니다. 서버 저장은 없습니다."}},{"@type":"Question","name":"예비비는 얼마나 잡아야 하나요?","acceptedAnswer":{"@type":"Answer","text":"정답은 없지만 총예산의 10~15%를 별도로 두는 방식이 흔합니다. '보험·로밍·기타' 항목에 예비비를 함께 넣어 계산해 보세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"여행 예산 계산기","item":"https://tripcalc-kr.vercel.app/budget/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>여행 예산 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">💰</div>
+    <h1>여행 예산 계산기</h1>
+    <p class="lead">항목별 예산을 <strong>현지 통화 그대로</strong> 넣으면 환율로 원화 환산해 총액·1인당·하루당까지 계산합니다. N빵 정산도 함께.</p>
+  </div>
+
+  <div id="ctaBox" hidden></div>
+  <section class="card" aria-label="여행 조건">
+    <h2>여행 조건</h2>
+    <div class="grid3">
+      <label class="f">인원 <span class="u">(명)</span><input type="number" id="people" min="1" max="30" value="2" /></label>
+      <label class="f">기간 <span class="u">(일)</span><input type="number" id="days" min="1" max="90" value="5" /></label>
+      <label class="f">현지 통화 <select id="cur"></select></label>
+    </div>
+    <p class="note" id="fxNote">환율은 결과를 계산할 때 불러옵니다.</p>
+  </section>
+
+  <section class="card" aria-label="예산 항목">
+    <h2>항목별 예산</h2>
+    <p class="note" style="margin-top:0">각 항목의 단위(총액 / 1인당 / 1인 1일)를 함께 고르세요. 금액은 원화(KRW)나 현지 통화 중 하나로 넣습니다.</p>
+    <div id="rows"></div>
+    <button class="btn" id="goBtn" type="button">예산 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>예산 합계</h2>
+      <p class="big">총 예산 <span class="num" id="total">-</span></p>
+      <dl class="kv" id="summary"></dl>
+      <div id="breakdown"></div>
+      <p class="note" id="fxStatus"></p>
+    </div>
+    <div class="card">
+      <h2>N빵 정산 — 누가 얼마 냈나</h2>
+      <div id="payers"></div>
+      <div class="row">
+        <button class="btn2" id="addPayer" type="button">➕ 사람 추가</button>
+        <button class="btn2" id="settleBtn" type="button">🧮 정산하기</button>
+      </div>
+      <div id="settleOut"></div>
+    </div>
+    <div class="card">
+      <h2>저장·공유</h2>
+      <p class="note">입력한 값은 <strong>브라우저 안에서만</strong> 처리되며 서버로 전송되거나 저장되지 않습니다. 저장 기능은 이 브라우저의 localStorage 만 사용합니다(서버 저장 없음).</p>
+      <div class="share">
+        <button class="btn2" id="saveBtn" type="button">💾 이 브라우저에 저장</button>
+        <button class="btn2" id="linkBtn" type="button">🔗 링크 복사</button>
+        <button class="btn2" id="expBtn" type="button">⬇️ 텍스트로 내보내기</button>
+        <button class="btn2" id="shareBtn" type="button">📤 공유</button>
+        <button class="btn2" id="clearBtn" type="button">🗑️ 저장 기록 전체 삭제</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>여행 예산이 항상 빗나가는 이유</h2>
+  <p>예산을 세울 때 사람들은 보통 항공권과 숙소만 더합니다. 하지만 실제로 지갑을 여는 건 <strong>매일 반복되는 지출</strong>입니다. 하루 식비 3만 원은 5일이면 15만 원이고, 2명이면 30만 원입니다. 이 계산기가 항목마다 "총액 / 1인당 / 1인 1일" 단위를 따로 받는 이유가 여기에 있습니다.</p>
+  <p>또 현지에서 본 가격은 현지 통화입니다. 매번 머리로 환산하다 보면 자릿수를 놓치기 쉽습니다(특히 엔·동·루피아). 여기서는 현지 통화로 그대로 적어 두면 공개 환율 API로 원화 환산해 합산합니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>인원·기간·현지 통화를 정합니다.</li>
+    <li>항목별 금액을 넣고 단위를 고릅니다. 예를 들어 항공권은 "1인당", 숙소는 "총액", 식비는 "1인 1일"이 자연스럽습니다.</li>
+    <li>"예산 계산하기"를 누르면 총액·1인당·하루당·1인 1일 예산과 항목별 비중이 나옵니다.</li>
+    <li>여행이 끝난 뒤에는 아래 "N빵 정산"에 각자 낸 금액을 넣으면 <strong>누가 누구에게 얼마를 보내면 되는지</strong> 송금 횟수를 최소화해 계산합니다.</li>
+    <li>저장은 이 브라우저에만 됩니다. "저장 기록 전체 삭제"로 언제든 지울 수 있습니다.</li>
+  </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 환율이 안 불러와지면 계산이 안 되나요?</p><p class="a">원화(KRW)로 입력한 항목은 그대로 계산됩니다. 현지 통화 항목은 마지막으로 받아온 환율이 있으면 그 값으로 계산하고 화면에 표시합니다. 저장된 환율도 없으면 안내 메시지를 띄우고 환산을 건너뜁니다.</p></div>
+    <div class="qa"><p class="q">Q. N빵 정산은 어떤 방식인가요?</p><p class="a">총 지출을 인원수로 나눠 1인당 부담액을 구한 뒤, 덜 낸 사람에서 더 낸 사람으로 가는 송금 목록을 만듭니다. 큰 금액부터 상계해 송금 횟수를 줄입니다.</p></div>
+    <div class="qa"><p class="q">Q. 입력한 예산이 서버에 저장되나요?</p><p class="a">아닙니다. 모든 계산은 브라우저에서 이뤄지고, '저장' 버튼을 눌렀을 때만 이 브라우저의 localStorage에 남습니다. 서버 저장은 없습니다.</p></div>
+    <div class="qa"><p class="q">Q. 예비비는 얼마나 잡아야 하나요?</p><p class="a">정답은 없지만 총예산의 10~15%를 별도로 두는 방식이 흔합니다. '보험·로밍·기타' 항목에 예비비를 함께 넣어 계산해 보세요.</p></div>
+    <h2>환율 데이터의 출처와 한계</h2>
+    <p class="note">환율은 <a href="https://api.frankfurter.dev/" target="_blank" rel="noopener">Frankfurter</a>(유럽중앙은행 기준환율)의 공개 API 를 브라우저에서 직접 불러오고, 실패하면
+    <a href="https://open.er-api.com/" target="_blank" rel="noopener">ExchangeRate-API 공개 엔드포인트</a>를 시도합니다.
+    받아온 값은 브라우저에 24시간 캐시되고, 두 곳 모두 실패하면 마지막으로 저장된 값을 "오래된 값" 표시와 함께 보여줍니다.
+    저장된 값조차 없으면 숫자를 지어내지 않고 안내 메시지만 표시합니다.
+    환율은 참고용이며 은행 고시 환율이 아닙니다. 실제 환전 시에는 스프레드·수수료가 더해집니다. 기준환율은 영업일에만 갱신되므로 주말·공휴일에는 직전 영업일 값이 표시됩니다. (확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 환율은 참고용 기준환율이며 실제 결제 금액은 카드사·환전 수수료에 따라 달라집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/split-bill/" target="_blank" rel="noopener"><span class="e">🧾</span> 더치페이 정산 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-packing/" target="_blank" rel="noopener"><span class="e">🎒</span> 여행 짐 체크리스트 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, fmt, won, copyText, store, download, fillSelect, readR, shareUrl, sharedCta, wireShare, toast } from "../assets/app.mjs";
+import { totalize, settle, BUDGET_CATS } from "../lib/budget.mjs";
+import { getRates, rateOf, fetchedLabel, FX_DISCLAIMER } from "../lib/fx.mjs";
+const OPTS = [{"v":"KRW","n":"🇰🇷 KRW · 원 (대한민국)"},{"v":"USD","n":"🇺🇸 USD · 달러 (미국)"},{"v":"JPY","n":"🇯🇵 JPY · 엔 (일본)"},{"v":"EUR","n":"🇮🇪 EUR · 유로 (아일랜드)"},{"v":"CNY","n":"🇨🇳 CNY · 위안 (중국)"},{"v":"GBP","n":"🇬🇧 GBP · 파운드 (영국)"},{"v":"HKD","n":"🇭🇰 HKD · 홍콩 달러 (홍콩)"},{"v":"SGD","n":"🇸🇬 SGD · 싱가포르 달러 (싱가포르)"},{"v":"THB","n":"🇹🇭 THB · 바트 (태국)"},{"v":"AUD","n":"🇦🇺 AUD · 호주 달러 (호주)"},{"v":"BRL","n":"🇧🇷 BRL · 헤알 (브라질)"},{"v":"CAD","n":"🇨🇦 CAD · 캐나다 달러 (캐나다)"},{"v":"CHF","n":"🇨🇭 CHF · 스위스 프랑 (스위스)"},{"v":"CZK","n":"🇨🇿 CZK · 코루나 (체코)"},{"v":"DKK","n":"🇩🇰 DKK · 크로네 (덴마크)"},{"v":"HUF","n":"🇭🇺 HUF · 포린트 (헝가리)"},{"v":"IDR","n":"🇮🇩 IDR · 루피아 (인도네시아)"},{"v":"ILS","n":"🇮🇱 ILS · 셰켈 (이스라엘)"},{"v":"INR","n":"🇮🇳 INR · 루피 (인도)"},{"v":"ISK","n":"🇮🇸 ISK · 크로나 (아이슬란드)"},{"v":"MXN","n":"🇲🇽 MXN · 페소 (멕시코)"},{"v":"MYR","n":"🇲🇾 MYR · 링깃 (말레이시아)"},{"v":"NOK","n":"🇳🇴 NOK · 크로네 (노르웨이)"},{"v":"NZD","n":"🇳🇿 NZD · 뉴질랜드 달러 (뉴질랜드)"},{"v":"PHP","n":"🇵🇭 PHP · 페소 (필리핀)"},{"v":"PLN","n":"🇵🇱 PLN · 즈워티 (폴란드)"},{"v":"SEK","n":"🇸🇪 SEK · 크로나 (스웨덴)"},{"v":"TRY","n":"🇹🇷 TRY · 리라 (튀르키예)"},{"v":"ZAR","n":"🇿🇦 ZAR · 랜드 (남아프리카공화국)"}];
+const S = store("tc-budget-v1");
+fillSelect($("cur"), OPTS.filter((o) => o.v !== "KRW"), "JPY");
+const PER = [["trip", "총액"], ["person", "1인당"], ["personDay", "1인 1일"]];
+$("rows").innerHTML = BUDGET_CATS.map((c) =>
+  '<div class="grid3" style="margin-top:10px"><label class="f">' + c.emoji + " " + esc(c.name) +
+  '<input type="number" min="0" step="any" id="a_' + c.id + '" value="0" /></label>' +
+  '<label class="f">통화<select id="c_' + c.id + '"><option value="KRW">KRW 원</option><option value="LOC">현지 통화</option></select></label>' +
+  '<label class="f">단위<select id="p_' + c.id + '">' + PER.map((p) => '<option value="' + p[0] + '"' + (p[0] === c.per ? " selected" : "") + ">" + p[1] + "</option>").join("") + "</select></label></div>").join("");
+let payers = [{ name: "나", paid: 0 }, { name: "동행 1", paid: 0 }];
+function renderPayers() {
+  $("payers").innerHTML = payers.map((p, i) =>
+    '<div class="grid2" style="margin-top:8px"><label class="f">이름<input type="text" data-k="name" data-i="' + i + '" value="' + esc(p.name) + '" /></label>' +
+    '<label class="f">낸 금액(원)<input type="number" data-k="paid" data-i="' + i + '" min="0" value="' + (p.paid || 0) + '" /></label></div>').join("");
+  [...$("payers").querySelectorAll("input")].forEach((inp) => inp.addEventListener("input", () => {
+    const i = +inp.dataset.i;
+    payers[i][inp.dataset.k] = inp.dataset.k === "paid" ? (Number(inp.value) || 0) : inp.value;
+  }));
+}
+renderPayers();
+$("addPayer").addEventListener("click", () => { payers.push({ name: "동행 " + payers.length, paid: 0 }); renderPayers(); });
+function stateOf() {
+  const items = BUDGET_CATS.map((c) => ({
+    id: c.id, name: c.name, emoji: c.emoji,
+    amount: Number($("a_" + c.id).value) || 0,
+    currency: $("c_" + c.id).value === "LOC" ? $("cur").value : "KRW",
+    per: $("p_" + c.id).value,
+  }));
+  return { people: +$("people").value || 1, days: +$("days").value || 1, cur: $("cur").value, items };
+}
+function applyState(st) {
+  if (!st) return;
+  $("people").value = st.people; $("days").value = st.days; $("cur").value = st.cur;
+  for (const it of st.items || []) {
+    if (!$("a_" + it.id)) continue;
+    $("a_" + it.id).value = it.amount;
+    $("c_" + it.id).value = it.currency === "KRW" ? "KRW" : "LOC";
+    $("p_" + it.id).value = it.per;
+  }
+}
+const shared = readR();
+applyState(shared || S.load(null));
+if (shared) sharedCta($("ctaBox"), "나도 여행 예산 계산하기");
+let last = null;
+async function run() {
+  const st = stateOf();
+  $("resultBox").hidden = false;
+  const need = st.items.some((i) => i.currency !== "KRW" && i.amount > 0);
+  let fx = null;
+  if (need) {
+    $("fxStatus").textContent = "환율을 불러오는 중…";
+    fx = await getRates(st.cur);
+    $("fxStatus").innerHTML = fx.ok
+      ? (fx.stale ? "<strong>마지막으로 받아온 환율</strong> 사용 중. " : "") + "출처: " + esc(fx.src || "저장된 값") + (fx.date ? " · 기준일 " + esc(fx.date) : "") + " · " + esc(fetchedLabel(fx)) + "<br />" + FX_DISCLAIMER
+      : "⚠ " + esc(fx.message) + " 현지 통화 항목은 합계에서 제외했습니다.";
+  } else { $("fxStatus").innerHTML = "원화로만 입력해 환율 조회가 필요하지 않았습니다."; }
+  const rateToKrw = (code) => (fx && fx.ok ? (rateOf(fx, code, "KRW") || 0) : 0);
+  const r = totalize({ items: st.items, people: st.people, days: st.days, rateToKrw });
+  last = { st, r };
+  $("total").textContent = won(r.total);
+  $("summary").innerHTML =
+    "<dt>1인당</dt><dd>" + won(r.perPerson) + "</dd>" +
+    "<dt>하루당</dt><dd>" + won(r.perDay) + "</dd>" +
+    "<dt>1인 1일</dt><dd>" + won(r.perPersonDay) + "</dd>" +
+    "<dt>인원 · 기간</dt><dd>" + r.people + "명 · " + r.days + "일</dd>";
+  const max = Math.max(1, ...r.rows.map((x) => x.krw));
+  $("breakdown").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>항목</th><th>입력</th><th>원화 합계</th></tr></thead><tbody>' +
+    r.rows.map((x) => "<tr><td>" + esc(x.emoji + " " + x.name) + '<div class="bar"><i style="width:' + Math.round((x.krw / max) * 100) + '%"></i></div></td><td class="mut">' +
+      fmt(x.amount) + " " + x.currency + " × " + x.mult + "</td><td>" + won(x.krw) + "</td></tr>").join("") +
+    '<tr class="sum"><td>합계</td><td></td><td>' + won(r.total) + "</td></tr></tbody></table></div>";
+  showAd();
+}
+$("goBtn").addEventListener("click", run);
+$("settleBtn").addEventListener("click", () => {
+  const s = settle(payers);
+  $("settleOut").innerHTML = '<p class="note">총 지출 ' + won(s.total) + " · 1인당 " + won(s.each) + "</p>" +
+    (s.transfers.length
+      ? '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>보내는 사람</th><th>받는 사람</th><th>금액</th></tr></thead><tbody>' +
+        s.transfers.map((t) => "<tr><td>" + esc(t.from) + "</td><td>" + esc(t.to) + "</td><td>" + won(t.amount) + "</td></tr>").join("") + "</tbody></table></div>"
+      : '<p class="note">정산할 금액이 없습니다(모두 균등하게 냈습니다).</p>');
+});
+function asText() {
+  if (!last) return "";
+  return "여행 예산 (" + last.st.people + "명 · " + last.st.days + "일)\n" +
+    last.r.rows.map((x) => "- " + x.name + ": " + won(x.krw)).join("\n") +
+    "\n총 " + won(last.r.total) + " / 1인당 " + won(last.r.perPerson);
+}
+$("saveBtn").addEventListener("click", () => { S.save(stateOf()); toast("이 브라우저에 저장했습니다"); });
+$("expBtn").addEventListener("click", () => download("travel-budget.txt", asText()));
+$("clearBtn").addEventListener("click", () => { S.clear(); toast("저장 기록을 삭제했습니다"); });
+wireShare({
+  linkBtn: $("linkBtn"), textBtn: null, xBtn: null, shareBtn: $("shareBtn"),
+  getUrl: () => shareUrl(stateOf()),
+  getText: () => (last ? "여행 예산 " + won(last.r.total) + " (1인당 " + won(last.r.perPerson) + ")" : "여행 예산 계산기"),
+  title: "여행 예산 계산기",
+});
+if (shared) run();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>전기요금 고지서 보는 법 — 항목별 뜻과 검산 도구</title>
+<meta name="description" content="기본요금·전력량요금·기후환경요금·연료비조정요금·부가가치세·전력산업기반기금 등 전기요금 고지서 항목의 의미를 정리하고, 사용량과 청구액을 넣어 계산이 맞는지 검산합니다." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/bill-reader/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="전기요금 고지서 보는 법 — 항목별 뜻과 검산 도구" />
+<meta property="og:description" content="기본요금·전력량요금·기후환경요금·연료비조정요금·부가가치세·전력산업기반기금 등 전기요금 고지서 항목의 의미를 정리하고, 사용량과 청구액을 넣어 계산이 맞는지 검산합니다." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/bill-reader/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"전기요금 고지서 보는 법","description":"기본요금·전력량요금·기후환경요금·연료비조정요금·부가가치세·전력산업기반기금 등 전기요금 고지서 항목의 의미를 정리하고, 사용량과 청구액을 넣어 계산이 맞는지 검산합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/bill-reader/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"계산 결과와 고지서 금액이 다릅니다. 왜 그런가요?","acceptedAnswer":{"@type":"Answer","text":"가장 흔한 원인은 세 가지입니다. 첫째 복지할인 등 개별 할인이 적용된 경우, 둘째 검침 기간이 두 계절에 걸쳐 요금이 일할 혼합된 경우, 셋째 고지서 금액에 TV수신료 같은 별도 항목이 포함된 경우입니다."}},{"@type":"Question","name":"TV수신료도 전기요금인가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 전기요금 고지서에 함께 징수될 뿐 전기 사용량과는 무관한 별도 항목입니다. 검산할 때는 청구금액에서 수신료를 뺀 금액으로 비교하세요."}},{"@type":"Question","name":"아파트 관리비에 나오는 전기요금은 어떻게 확인하나요?","acceptedAnswer":{"@type":"Answer","text":"단지 일괄계약(고압) 아파트는 단지 전체 사용량으로 한전에 요금을 내고 세대별로 배분합니다. 계약 종류를 고압으로 두고 계산하면 근사치를 확인할 수 있지만, 공용 전기요금 배분분이 더해지므로 관리비 고지서 금액과는 차이가 납니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"고지서 보는 법","item":"https://billcalc-kr.vercel.app/bill-reader/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <span>고지서 보는 법</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📄</div>
+    <h1>전기요금 고지서 보는 법</h1>
+    <p class="lead">고지서에 찍힌 항목이 각각 무슨 뜻인지 정리했습니다. 아래에서 <strong>내 고지서 숫자로 검산</strong>도 할 수 있습니다.</p>
+  </div>
+
+  <section class="card" aria-label="항목 설명">
+    <h2>고지서 항목 한눈에 보기</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>항목</th><th>뜻</th><th>계산 방식</th></tr></thead>
+      <tbody>
+        <tr><td>기본요금</td><td>사용량과 무관하게 누진 단계에 따라 붙는 고정 요금</td><td>저압 910 / 1,600 / 7,300원 (단계별)</td></tr>
+        <tr><td>전력량요금</td><td>실제 사용한 전기의 값. 누진 3단계로 나눠 계산</td><td>구간별 사용량 × 구간 단가의 합</td></tr>
+        <tr><td>기후환경요금</td><td>신재생에너지 의무이행·온실가스 배출권 비용 등을 사용량에 비례해 부과</td><td>사용량 × 9원/kWh</td></tr>
+        <tr><td>연료비조정요금</td><td>발전 연료비 변동을 분기마다 반영하는 조정 항목 (±5원/kWh 한도)</td><td>사용량 × 조정단가</td></tr>
+        <tr><td>전기요금계</td><td>위 네 항목의 합계 (세금 붙기 전 금액)</td><td>기본 + 전력량 + 기후환경 + 연료비조정</td></tr>
+        <tr><td>부가가치세</td><td>전기요금계에 붙는 세금</td><td>전기요금계 × 10% (원 미만 반올림)</td></tr>
+        <tr><td>전력산업기반기금</td><td>전력산업 발전을 위한 법정 부담금</td><td>전기요금계 × 2.7% (10원 미만 절사)</td></tr>
+        <tr class="sum"><td>청구금액</td><td>실제로 내야 하는 금액</td><td>전기요금계 + 부가세 + 기금 (10원 미만 절사)</td></tr>
+        <tr><td>검침일 / 사용기간</td><td>요금이 계산된 기간. 월초~월말이 아닐 수 있음</td><td>계절이 바뀌면 일할 혼합 적용</td></tr>
+        <tr><td>당월/전월 사용량</td><td>같은 기간 비교용. 증가 원인을 찾는 출발점</td><td>-</td></tr>
+        <tr><td>복지할인</td><td>다자녀·대가족·장애인·기초생활수급 등 대상 할인 <span class="badge warn">확인 필요</span></td><td>대상·금액은 한전에서 확인</td></tr>
+        <tr><td>TV수신료</td><td>전기요금과 함께 징수되는 별도 항목 (전기요금 계산과 무관)</td><td>월정액</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="card" aria-label="검산">
+    <h2>내 고지서 검산하기</h2>
+    <div class="grid2">
+      <label class="f">고지서의 사용량 <span class="u">(kWh)</span>
+        <input type="number" id="kwh" inputmode="decimal" min="0" step="1" value="350" />
+      </label>
+      <label class="f">고지서의 청구금액 <span class="u">(원 · 선택)</span>
+        <input type="number" id="paid" inputmode="decimal" min="0" step="10" value="" placeholder="예: 62000" />
+      </label>
+    </div>
+    <div class="grid2">
+      <label class="f">계산 월 <span class="u">(7~8월 하계 구간)</span>
+        <select id="month"></select>
+      </label>
+      <label class="f">계약 종류
+        <select id="voltage"><option value="low">저압 (대부분 가정)</option><option value="high">고압 (아파트 일괄계약)</option></select>
+      </label>
+    </div>
+    <details class="adv">
+      <summary>고급 설정 — 연료비조정·기금 요율 직접 수정</summary>
+      <div class="grid2">
+        <label class="f">연료비조정요금 <span class="u">(원/kWh, 한도 ±5)</span>
+          <input type="number" id="fuelAdj" step="0.1" value="5" />
+        </label>
+        <label class="f">전력산업기반기금 <span class="u">(%, 2025.7부터 2.7)</span>
+          <input type="number" id="fundRate" step="0.1" value="2.7" />
+        </label>
+      </div>
+    </details>
+    <button class="btn" id="calcBtn">검산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>검산 결과</h2>
+      <p class="big">계산상 청구금액 <span class="num" id="totalOut"></span></p>
+      <p class="note" id="diffOut"></p>
+      <div id="tableOut"></div>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>고지서를 볼 때 먼저 확인할 세 가지</h2>
+    <p>첫째는 <strong>사용기간</strong>입니다. 검침일이 매월 15일 전후인 집도 많아서, 7월 고지서라도 6월 중순~7월 중순 사용분일 수 있습니다. 이 경우 하계 요금과 기타계절 요금이 날짜 비율로 섞여 계산됩니다.</p>
+    <p>둘째는 <strong>누진 단계</strong>입니다. 전월 대비 사용량이 조금 늘었을 뿐인데 요금이 크게 뛰었다면, 대개 단계가 올라가면서 기본요금과 단가가 함께 오른 경우입니다. 셋째는 <strong>전기요금계와 세금의 구분</strong>입니다. 부가세와 전력산업기반기금은 전기요금계를 기준으로 계산되므로, 전기요금계가 맞는지 먼저 확인하면 나머지는 자동으로 따라옵니다.</p>
+    <h2>검산 사용법</h2>
+    <ol>
+      <li>고지서의 사용량(kWh)과 청구금액을 입력합니다.</li>
+      <li>사용기간이 속한 달과 계약 종류(저압·고압)를 고릅니다.</li>
+      <li>계산 결과와 고지서 금액의 차이를 확인합니다. 차이가 크다면 복지할인, 계절 혼합 적용, 연료비조정단가 차이, TV수신료 포함 여부를 살펴보세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 계산 결과와 고지서 금액이 다릅니다. 왜 그런가요?</p><p class="a">가장 흔한 원인은 세 가지입니다. 첫째 복지할인 등 개별 할인이 적용된 경우, 둘째 검침 기간이 두 계절에 걸쳐 요금이 일할 혼합된 경우, 셋째 고지서 금액에 TV수신료 같은 별도 항목이 포함된 경우입니다.</p></div>
+    <div class="qa"><p class="q">Q. TV수신료도 전기요금인가요?</p><p class="a">아닙니다. 전기요금 고지서에 함께 징수될 뿐 전기 사용량과는 무관한 별도 항목입니다. 검산할 때는 청구금액에서 수신료를 뺀 금액으로 비교하세요.</p></div>
+    <div class="qa"><p class="q">Q. 아파트 관리비에 나오는 전기요금은 어떻게 확인하나요?</p><p class="a">단지 일괄계약(고압) 아파트는 단지 전체 사용량으로 한전에 요금을 내고 세대별로 배분합니다. 계약 종류를 고압으로 두고 계산하면 근사치를 확인할 수 있지만, 공용 전기요금 배분분이 더해지므로 관리비 고지서 금액과는 차이가 납니다.</p></div>
+    <h2>요금표 기준일과 출처</h2>
+    <p class="note">전기요금 단가는 <strong>2023년 5월 16일 개정 기준</strong>의 주택용 전력 요금표를 사용합니다(데이터 확인일 2026-08-19).
+    연료비조정요금은 분기마다, 전력산업기반기금 요율은 제도 개정에 따라 바뀌므로
+    최신 단가는 <a href="https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp" target="_blank" rel="noopener">한국전력 사이버지점 요금표</a>에서 확인하고,
+    고지서 값과 다르면 각 계산기의 <strong>고급 설정</strong>에서 직접 수정해 계산하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../electric-bill/"><span class="e">⚡</span> 전기요금 계산기</a>
+      <a class="rel" href="../gas-unit/"><span class="e">🔵</span> 도시가스 단위 변환</a>
+      <a class="rel" href="../save-simulator/"><span class="e">📉</span> 절약 시뮬레이터</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { calcBill } from "../lib/elec.mjs";
+import { won, num, fmt, showAd, initTheme, billTableHtml, tariffSourceHtml } from "../assets/app.mjs";
+const $ = (id) => document.getElementById(id);
+const monthSel = $("month");
+const nowM = new Date().getMonth() + 1;
+for (let m = 1; m <= 12; m++) { const o = document.createElement("option"); o.value = m; o.textContent = m + "월" + (m === 7 || m === 8 ? " (하계)" : ""); if (m === nowM) o.selected = true; monthSel.appendChild(o); }
+$("calcBtn").addEventListener("click", () => {
+  const r = calcBill(num($("kwh"), 350), { month: +monthSel.value, voltage: $("voltage").value, fuelAdj: num($("fuelAdj"), 5), fundRate: num($("fundRate"), 2.7) / 100 });
+  $("totalOut").textContent = won(r.total);
+  const paid = num($("paid"), 0);
+  const diff = paid - r.total;
+  $("diffOut").innerHTML = paid > 0
+    ? '고지서 ' + won(paid) + ' − 계산 ' + won(r.total) + ' = <strong>' + (diff >= 0 ? "+" : "") + won(diff) + '</strong>' +
+      (Math.abs(diff) <= Math.max(500, r.total * 0.02) ? ' — 오차 범위 안입니다(단수 처리·단가 차이).' : ' — 차이가 큽니다. 복지할인·계절 혼합 검침·TV수신료 포함 여부를 확인해 보세요.')
+    : '고지서 청구금액을 입력하면 차이를 비교합니다. 누진 ' + r.tier + '단계 · ' + (r.isSummer ? '하계' : '기타계절') + ' 기준.';
+  $("tableOut").innerHTML = billTableHtml(r);
+  $("srcOut").innerHTML = tariffSourceHtml();
+  $("resultBox").hidden = false;
+  showAd();
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

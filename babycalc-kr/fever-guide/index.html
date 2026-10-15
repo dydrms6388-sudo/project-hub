@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>아기 발열 대처 가이드 — 월령·체온·증상으로 보는 진료 기준 | BabyCalc</title>
+<meta name="description" content="아기 월령과 체온, 동반 증상을 입력하면 즉시 진료가 필요한 상황인지 공개된 소아 발열 안내 기준 그대로 확인할 수 있습니다. 해열제 용량은 계산하지 않으며 가정 대처 요령만 안내합니다.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/fever-guide/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="아기 발열 대처 가이드 — 언제 병원에 가야 할까">
+<meta property="og:description" content="월령·체온·증상으로 보는 소아 발열 진료 기준과 가정 대처 요령.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/fever-guide/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"아기 발열 대처 가이드","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"아기 월령과 체온, 동반 증상을 입력하면 즉시 진료가 필요한 상황인지 공개된 소아 발열 안내 기준 그대로 확인할 수 있습니다. 해열제 용량은 계산하지 않으며 가정 대처 요령만 안내합니다.","url":"https://babycalc-kr.vercel.app/fever-guide/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"생후 3개월 미만인데 열이 나요.","acceptedAnswer":{"@type":"Answer","text":"생후 3개월(90일) 미만의 38.0℃ 이상 발열은 검사가 필요한 경우가 많아, 시간과 관계없이 즉시 진료(응급실 포함)를 받도록 안내됩니다. 집에서 지켜보지 마세요."}},{"@type":"Question","name":"열이 40도인데 위험한가요?","acceptedAnswer":{"@type":"Answer","text":"체온 숫자만으로 중증도를 판단하지는 않습니다. 다만 고열이면서 처지거나, 경련·호흡곤란·의식 저하가 있으면 즉시 진료가 필요합니다. 판단이 어려우면 진료를 받는 쪽이 안전합니다."}},{"@type":"Question","name":"해열제는 얼마나 먹여야 하나요?","acceptedAnswer":{"@type":"Answer","text":"이 페이지는 용량을 계산하지 않습니다. 해열제 종류와 용량은 아기 체중과 상태에 따라 다르므로 소아과에서 안내받은 용법·용량을 그대로 지키세요."}},{"@type":"Question","name":"열성경련을 하면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"경련은 즉시 119 또는 응급실 대상입니다. 경련 중에는 입에 아무것도 넣지 말고, 옆으로 눕혀 기도를 확보하고, 시작 시각과 지속 시간을 확인해 의료진에게 알려 주세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"발열 대처","item":"https://babycalc-kr.vercel.app/fever-guide/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">발열 대처</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🌡️</div>
+    <h1>아기 발열 대처 가이드</h1>
+    <p class="lead">지금 병원에 가야 할 상황인지, 공개된 소아 발열 안내 기준을 그대로 확인해 보세요.</p>
+  </div>
+  <p class="med-notice">🚨 <strong>응급 상황이면 이 페이지를 보지 말고 즉시 119 또는 응급실로 연락하세요.</strong> 이 페이지는 참고용이며 진단이 아닙니다. 반드시 소아과 전문의와 상담하세요.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>아기 상태</h2>
+    <div class="row2">
+      <div class="field">
+        <label for="month">월령 (개월)</label>
+        <input type="number" id="month" min="0" max="72" step="1" required placeholder="예: 5">
+      </div>
+      <div class="field">
+        <label for="temp">체온 (℃)</label>
+        <input type="number" id="temp" min="34" max="43" step="0.1" required placeholder="예: 38.4">
+        <p class="hint">측정 부위(고막·겨드랑이·항문)에 따라 값이 다릅니다.</p>
+      </div>
+    </div>
+    <h2 style="margin-top:16px">동반 증상 (해당하는 항목 체크)</h2>
+    <div id="symbox">
+      <label class="chk-item"><input type="checkbox" class="sym" data-id="seizure"><span class="chk-tx">경련(열성경련 포함)을 하거나 의식이 처짐<span class="chk-sub">즉시 119 또는 응급실. </span></span></label>
+      <label class="chk-item"><input type="checkbox" class="sym" data-id="breathing"><span class="chk-tx">숨쉬기 힘들어함, 입술이 파래짐<span class="chk-sub">즉시 119 또는 응급실. </span></span></label>
+      <label class="chk-item"><input type="checkbox" class="sym" data-id="dehydration"><span class="chk-tx">소변량이 크게 줄고 입이 마르는 등 탈수 의심, 수유·수분 섭취 거부<span class="chk-sub">당일 진료. </span></span></label>
+      <label class="chk-item"><input type="checkbox" class="sym" data-id="rash"><span class="chk-tx">눌러도 사라지지 않는 발진·자반이 함께 나타남<span class="chk-sub">즉시 진료. </span></span></label>
+      <label class="chk-item"><input type="checkbox" class="sym" data-id="persistent"><span class="chk-tx">해열제에도 처지고 반응이 둔함, 심하게 보채고 달래지지 않음<span class="chk-sub">당일 진료. </span></span></label>
+      <label class="chk-item"><input type="checkbox" class="sym" data-id="long"><span class="chk-tx">발열이 48~72시간 이상 지속<span class="chk-sub">진료를 받아 원인 확인. (자료마다 기준 상이 — 확인 필요)</span></span></label>
+    </div>
+    <button class="btn" type="submit" style="margin-top:12px">확인하기</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>확인 결과</h2>
+    <p class="res-big" id="verdict">—</p>
+    <p class="res-sub" id="verdictSub"></p>
+    <div id="matched"></div>
+    <div id="homecare"></div>
+    <p class="res-sub" style="margin-top:14px;color:var(--warn)">이 결과는 공개된 안내 기준에 입력값을 대조한 것일 뿐 <strong>진단이 아닙니다</strong>. 체크한 항목이 없어도 아이가 평소와 다르게 처지면 체온과 관계없이 진료를 받으세요.</p>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>발열은 몇 도부터인가요?</h2>
+    <p>일반적으로 <strong>38℃ 이상</strong>을 발열로 봅니다. 다만 측정 부위(고막·겨드랑이·항문·이마)에 따라 값이 달라지므로, 같은 방식으로 반복해서 재고 그 흐름을 보는 것이 더 중요합니다.</p><p>열 자체는 몸이 감염과 싸우는 반응입니다. 그래서 소아과에서는 <strong>숫자보다 아이의 상태</strong>(잘 먹는지, 놀 수 있는지, 처지지는 않는지)를 더 중요하게 봅니다. 이 페이지는 널리 안내되는 "즉시 진료가 필요한 상황"을 <strong>출처 문구 그대로</strong> 보여 줄 뿐, 열의 원인을 판단하지 않습니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>아기의 월령과 지금 잰 체온을 입력합니다.</li><li>해당하는 동반 증상을 체크합니다.</li><li>체크한 항목 중 즉시 진료 기준에 해당하는 것이 있으면 그대로 표시됩니다.</li></ol><p><strong>이 도구는 해열제 용량을 계산하지 않습니다.</strong> 해열제는 소아과에서 아기 체중에 맞춰 안내받은 용법·용량대로만 사용하세요.</p>
+
+    <h2>즉시·당일 진료가 필요한 상황</h2>
+    <div class="tbl-scroll"><table class="tbl"><thead><tr><th>상황</th><th>안내</th><th>근거</th></tr></thead><tbody>
+        <tr><td>생후 3개월(90일) 미만 + 38.0℃ 이상</td><td>즉시 진료(응급실 포함). 이 월령의 발열은 검사가 필요한 경우가 많다.</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>경련(열성경련 포함)을 하거나 의식이 처짐</td><td>즉시 119 또는 응급실.</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>숨쉬기 힘들어함, 입술이 파래짐</td><td>즉시 119 또는 응급실.</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>소변량이 크게 줄고 입이 마르는 등 탈수 의심, 수유·수분 섭취 거부</td><td>당일 진료.</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>눌러도 사라지지 않는 발진·자반이 함께 나타남</td><td>즉시 진료.</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>해열제에도 처지고 반응이 둔함, 심하게 보채고 달래지지 않음</td><td>당일 진료.</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>발열이 48~72시간 이상 지속</td><td>진료를 받아 원인 확인.</td><td><span class="badge todo">확인 필요</span></td></tr>
+      </tbody></table></div><h2>가정에서의 대처</h2>
+    <ul><li>옷을 가볍게 입히고 실내 온도를 시원하게(과도한 이불·땀 빼기 금지).</li><li>수분(모유·분유·물)을 자주 조금씩 보충.</li><li>해열제는 소아과에서 안내받은 용법·용량대로만. 이 페이지는 용량을 계산해 주지 않는다.</li><li>알코올 마사지·얼음물 목욕은 하지 않는다.</li><li>체온과 함께 아이의 전반적인 상태(먹기·놀기·처짐)를 관찰한다.</li></ul><h2>야간·휴일에 갈 수 있는 곳</h2><p>문 여는 병원과 응급실은 <a href="https://www.e-gen.or.kr" target="_blank" rel="noopener">응급의료포털 E-GEN</a> 또는 전화 <strong>119</strong>(응급의료 상담)에서 확인할 수 있습니다. 아이가 처지거나 숨쉬기 힘들어하면 기다리지 말고 바로 119에 연락하세요.</p>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 생후 3개월 미만인데 열이 나요.</p><p class="a">생후 3개월(90일) 미만의 38.0℃ 이상 발열은 검사가 필요한 경우가 많아, 시간과 관계없이 즉시 진료(응급실 포함)를 받도록 안내됩니다. 집에서 지켜보지 마세요.</p></div>
+      <div class="qa"><p class="q">Q. 열이 40도인데 위험한가요?</p><p class="a">체온 숫자만으로 중증도를 판단하지는 않습니다. 다만 고열이면서 처지거나, 경련·호흡곤란·의식 저하가 있으면 즉시 진료가 필요합니다. 판단이 어려우면 진료를 받는 쪽이 안전합니다.</p></div>
+      <div class="qa"><p class="q">Q. 해열제는 얼마나 먹여야 하나요?</p><p class="a">이 페이지는 용량을 계산하지 않습니다. 해열제 종류와 용량은 아기 체중과 상태에 따라 다르므로 소아과에서 안내받은 용법·용량을 그대로 지키세요.</p></div>
+      <div class="qa"><p class="q">Q. 열성경련을 하면 어떻게 하나요?</p><p class="a">경련은 즉시 119 또는 응급실 대상입니다. 경련 중에는 입에 아무것도 넣지 말고, 옆으로 눕혀 기도를 확보하고, 시작 시각과 지속 시간을 확인해 의료진에게 알려 주세요.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 국가건강정보포털(질병관리청) 소아 발열 · 응급의료포털 E-GEN — <a href="https://health.kdca.go.kr" target="_blank" rel="noopener">health.kdca.go.kr</a> / <a href="https://www.e-gen.or.kr" target="_blank" rel="noopener">e-gen.or.kr</a> (확인일 2026-08-19). 표의 문구는 출처 안내를 그대로 옮긴 것이며, 자료마다 기준이 다른 항목(발열 지속 시간 등)은 <span class="badge todo">확인 필요</span>로 표기하고 보수적으로 안내합니다.</div>
+
+    <p class="disclaimer">이 페이지는 참고용 정보이며 진단·처방이 아닙니다. 발열의 원인 판단과 치료는 소아과 전문의의 진료가 필요합니다. 응급 상황에서는 즉시 119에 연락하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../vaccine-schedule/"><span class="ic">💉</span>예방접종 일정표</a>
+      <a class="rel" href="../months-age/"><span class="ic">📅</span>아기 개월수 계산기</a>
+      <a class="rel" href="../milestone/"><span class="ic">🧸</span>발달 이정표 체크</a>
+      <a class="rel" href="https://tomatoeggcat.com/baby-vaccine-schedule/"><span class="ic">🍅</span>예방접종 도우미 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { URGENT_RULES, HOME_CARE, FEVER_THRESHOLD } from '../data/fever.mjs';
+const $ = (s) => document.querySelector(s);
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const m = parseInt($('#month').value, 10);
+  const t = parseFloat($('#temp').value);
+  if (isNaN(m) || isNaN(t)) return;
+  const hits = [];
+  if (m < 3 && t >= FEVER_THRESHOLD.value) hits.push(URGENT_RULES.find((r) => r.id === 'under90d'));
+  document.querySelectorAll('.sym:checked').forEach((cb) => {
+    const r = URGENT_RULES.find((x) => x.id === cb.dataset.id);
+    if (r) hits.push(r);
+  });
+  const fever = t >= FEVER_THRESHOLD.value;
+  const emergency = hits.some((h) => h.action.indexOf('119') >= 0 || h.action.indexOf('즉시') >= 0);
+
+  if (hits.length) {
+    $('#verdict').innerHTML = emergency ? '🚨 즉시 진료가 필요한 항목에 해당합니다' : '⚠ 당일 진료가 권고되는 항목에 해당합니다';
+    $('#verdictSub').textContent = '생후 ' + m + '개월 · 체온 ' + t.toFixed(1) + '℃ · 해당 항목 ' + hits.length + '건';
+    $('#matched').innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>해당 상황</th><th>안내(출처 문구)</th></tr></thead><tbody>' +
+      hits.map((h) => '<tr><td>' + h.cond + '</td><td><strong>' + h.action + '</strong></td></tr>').join('') +
+      '</tbody></table></div>';
+    $('#homecare').innerHTML = '<p class="res-sub">이동 중에도 아이의 의식·호흡·피부색을 계속 살피세요. 야간·휴일 진료기관은 응급의료포털 E-GEN 또는 119에서 확인할 수 있습니다.</p>';
+  } else {
+    $('#verdict').textContent = fever ? '체크한 즉시 진료 항목은 없습니다' : '발열 기준(' + FEVER_THRESHOLD.value + '℃) 미만입니다';
+    $('#verdictSub').textContent = '생후 ' + m + '개월 · 체온 ' + t.toFixed(1) + '℃' + (fever ? ' · 발열 상태' : '');
+    $('#matched').innerHTML = '<p class="res-sub">입력하신 정보로는 위 표의 즉시 진료 항목에 해당하지 않습니다. 다만 이는 <strong>안심해도 된다는 뜻이 아니며</strong>, 아이가 평소와 다르게 처지거나 상태가 나빠지면 체온과 무관하게 진료를 받아야 합니다.</p>';
+    $('#homecare').innerHTML = '<h2 style="font-size:15px;margin-top:16px">가정에서의 대처</h2><ul style="padding-left:20px;color:var(--tx2);font-size:14.5px">' +
+      HOME_CARE.map((h) => '<li style="margin:6px 0">' + h + '</li>').join('') + '</ul>';
+  }
+  bcShowResult('result');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>입주 총비용 계산기 — 취득세·중개보수·등기·이사비 합산</title>
+<meta name="description" content="매매가만 넣으면 취득세와 지방교육세·농특세, 중개보수 상한, 등기신청수수료·인지세·국민주택채권, 법무사 보수, 이사비·입주청소까지 한 번에 합산해 실제로 준비해야 할 현금 총액을 보여줍니다." />
+<link rel="canonical" href="https://housecalc-kr.vercel.app/move-in-cost/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="부동산 계산기 허브" />
+<meta property="og:title" content="집 살 때 총 얼마 드나 (입주 총비용)" />
+<meta property="og:description" content="매매가만 넣으면 취득세와 지방교육세·농특세, 중개보수 상한, 등기신청수수료·인지세·국민주택채권, 법무사 보수, 이사비·입주청소까지 한 번에 합산해 실제로 준비해야 할 현금 총액을 보여줍니다." />
+<meta property="og:url" content="https://housecalc-kr.vercel.app/move-in-cost/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script defer src="../assets/common.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"입주 총비용 계산기","description":"매매가만 넣으면 취득세와 지방교육세·농특세, 중개보수 상한, 등기신청수수료·인지세·국민주택채권, 법무사 보수, 이사비·입주청소까지 한 번에 합산해 실제로 준비해야 할 현금 총액을 보여줍니다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://housecalc-kr.vercel.app/move-in-cost/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"대출로 부대비용을 충당할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 어렵습니다. 주택담보대출은 매매대금 지급에 쓰이고 취득세·중개보수는 별도 현금이 필요합니다. 신용대출로 메우면 DSR이 올라가 주담대 한도가 줄어드는 역효과가 납니다."}},{"@type":"Question","name":"채권 할인율을 비워 두면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"채권 본인부담을 0으로 두고 나머지만 합산합니다. 매일 바뀌는 값을 임의로 넣지 않기 위한 설계입니다. 통상 수십만원 수준이 추가된다고 보면 됩니다."}},{"@type":"Question","name":"중개보수를 상한으로 계산하는 이유는?","acceptedAnswer":{"@type":"Answer","text":"법정 상한이 계산 가능한 유일한 기준값이기 때문입니다. 실제로는 협의로 낮아지는 경우가 많으니 보수적인 예산으로 보세요."}},{"@type":"Question","name":"전세 입주도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"이 계산기는 매매 기준입니다. 전세는 취득세·등기 항목이 빠지고 중개보수와 이사비, 보증보험료가 주된 비용입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://housecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"입주 총비용","item":"https://housecalc-kr.vercel.app/move-in-cost/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🏠 부동산 계산기 허브</a> <span class="sep">›</span> <span>입주 총비용</span></nav>
+  <p class="topnotice"><strong>고지</strong> — 이 사이트의 모든 계산은 <strong>참고용 추정이며 실제 세액·한도는 위택스·국세청·금융기관에서 확인</strong>해야 합니다.
+  세율·한도·요율은 법령 개정과 정책 변경으로 수시로 바뀌며, 개별 사정(감면·특례·심사 기준)에 따라 결과가 달라집니다.
+  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> ·
+  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a> ·
+  <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a></p>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📦</div>
+    <h1>입주 총비용 계산기</h1>
+    <p class="lead">집값 말고 <strong>추가로 나가는 돈</strong>. 취득세·중개보수·등기·이사비를 한 화면에서 합산합니다.</p>
+  </div>
+
+  <section class="panel">
+    <h2>1. 매매 정보</h2>
+    <label for="price">매매가 <span class="opt">(만원)</span></label>
+    <input type="text" id="price" data-comma value="50,000" />
+    <p class="src" id="priceEcho"></p>
+    <div class="row2">
+      <div>
+        <label for="homes">취득 후 보유 주택 수</label>
+        <select id="homes">
+          <option value="1">1주택 (표준세율)</option>
+          <option value="2">2주택</option>
+          <option value="3">3주택</option>
+          <option value="4">4주택 이상</option>
+        </select>
+      </div>
+      <div>
+        <label for="stdPrice">시가표준액 <span class="opt">(만원, 채권 기준)</span></label>
+        <input type="text" id="stdPrice" data-comma value="35,000" />
+      </div>
+    </div>
+    <label><input type="checkbox" id="adjusted" /> 조정대상지역</label>
+    <label><input type="checkbox" id="over85" /> 전용면적 85㎡ 초과</label>
+  </section>
+  <section class="panel">
+    <h2>2. 중개·등기</h2>
+    <label><input type="checkbox" id="useBroker" checked /> 중개보수 포함(법정 상한 기준)</label>
+    <label><input type="checkbox" id="vat" /> 중개보수 부가세 10% 포함</label>
+    <div class="row2">
+      <div>
+        <label for="bondRegion">채권 매입률 지역</label>
+        <select id="bondRegion">
+          <option value="metro">특별시·광역시</option>
+          <option value="other">그 밖의 지역</option>
+        </select>
+      </div>
+      <div>
+        <label for="discount">채권 할인율 <span class="opt">(%)</span> <span class="badge warn">확인 필요</span></label>
+        <input type="number" id="discount" step="0.001" min="0" placeholder="비우면 채권 제외" />
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label for="legal">법무사 보수 <span class="opt">(만원)</span></label>
+        <input type="text" id="legal" data-comma value="0" />
+      </div>
+      <div>
+        <label for="mortgage">근저당 설정금액 <span class="opt">(만원)</span></label>
+        <input type="text" id="mortgage" data-comma value="0" />
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>3. 이사·정착 비용</h2>
+    <div class="row3">
+      <div>
+        <label for="moving">이사비 <span class="opt">(만원)</span></label>
+        <input type="text" id="moving" data-comma value="120" />
+      </div>
+      <div>
+        <label for="cleaning">입주청소 <span class="opt">(만원)</span></label>
+        <input type="text" id="cleaning" data-comma value="40" />
+      </div>
+      <div>
+        <label for="etc">기타(도배·수리 등) <span class="opt">(만원)</span></label>
+        <input type="text" id="etc" data-comma value="0" />
+      </div>
+    </div>
+    <div class="btnrow"><button class="btn" id="go">총비용 계산하기</button></div>
+  </section>
+  
+  <section class="result" id="result" hidden aria-live="polite">
+    <p class="sub">계산 결과 (참고용 추정)</p>
+    <p class="big" id="big"></p>
+    <p class="sub" id="sub"></p>
+    <div id="detail"></div>
+  </section>
+
+  <div class="adbox" id="adbox" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>집값 외에 나가는 돈</h2>
+    <p>5억짜리 집을 사면 5억만 준비하면 될까요? 취득세와 지방교육세로 550만원, 중개보수 상한으로 200만원, 등기 관련 비용과 법무사 보수로 수십만~수백만원, 이사비와 입주청소로 150만원 안팎이 추가로 나갑니다. 통상 <strong>집값의 1.5~3%</strong>가 별도 현금으로 필요하며, 이 돈은 대출로 충당하기 어렵습니다.</p>
+    <p>이 계산기는 다른 계산기들의 로직을 그대로 불러와 한 화면에서 합산합니다. 항목별 근거는 각 계산기 페이지에서 확인할 수 있습니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>매매가와 주택 수, 지역·면적 조건을 입력합니다.</li>
+      <li>채권 할인율(인터넷등기소 당일 값)과 법무사 견적을 넣으면 등기비용이 정확해집니다.</li>
+      <li>이사비·입주청소 견적을 넣습니다.</li>
+      <li>결과에서 항목별 금액과 집값 대비 비율을 확인합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 대출로 부대비용을 충당할 수 있나요?</p><p class="a">일반적으로 어렵습니다. 주택담보대출은 매매대금 지급에 쓰이고 취득세·중개보수는 별도 현금이 필요합니다. 신용대출로 메우면 DSR이 올라가 주담대 한도가 줄어드는 역효과가 납니다.</p></div>
+    <div class="qa"><p class="q">Q. 채권 할인율을 비워 두면 어떻게 되나요?</p><p class="a">채권 본인부담을 0으로 두고 나머지만 합산합니다. 매일 바뀌는 값을 임의로 넣지 않기 위한 설계입니다. 통상 수십만원 수준이 추가된다고 보면 됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 중개보수를 상한으로 계산하는 이유는?</p><p class="a">법정 상한이 계산 가능한 유일한 기준값이기 때문입니다. 실제로는 협의로 낮아지는 경우가 많으니 보수적인 예산으로 보세요.</p></div>
+    <div class="qa"><p class="q">Q. 전세 입주도 계산되나요?</p><p class="a">이 계산기는 매매 기준입니다. 전세는 취득세·등기 항목이 빠지고 중개보수와 이사비, 보증보험료가 주된 비용입니다.</p></div>
+    <h2>계산에 쓰인 값과 출처</h2>
+    <div class="tbwrap"><table class="tb">
+      <thead><tr><th>항목</th><th>값</th><th>근거</th><th>확인일</th></tr></thead>
+      <tbody>
+        <tr><td>취득세 표준세율</td><td>6억 이하 1% / 6~9억 산식 / 9억 초과 3%</td><td><a href="https://www.law.go.kr/법령/지방세법/제11조" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>다주택 중과세율 <span class="badge warn">확인 필요</span></td><td>8·12% (조문값, 확인 필요)</td><td><a href="https://www.law.go.kr/법령/지방세법/제13조의2" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>중개보수 상한</td><td>구간별 요율·한도액</td><td><a href="https://www.law.go.kr/법령/공인중개사법시행규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>등기신청수수료</td><td>서면 15,000 / 전자 10,000원</td><td><a href="https://www.law.go.kr/대법원규칙/등기사항증명서등수수료규칙" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>인지세</td><td>1억 이하 주택 비과세</td><td><a href="https://www.law.go.kr/법령/인지세법/제3조" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>국민주택채권 매입률 <span class="badge warn">확인 필요</span></td><td>시가표준액·지역별</td><td><a href="https://www.law.go.kr/법령/주택도시기금법시행령" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>채권 할인율 <span class="badge warn">확인 필요</span></td><td>계산 제외 — 직접 입력</td><td><a href="https://www.iros.go.kr" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note warn"><strong>확인 필요 항목</strong> — 아래 값은 개정·변동 가능성이 있어 이 사이트가 임의로 확정하지 않습니다. 계산에서 제외하거나 직접 입력하도록 했습니다.
+      <ul>
+        <li><strong>다주택 중과세율</strong> — 다주택 중과세율 완화 개정안이 논의된 바 있어 최신 개정·시행 여부 확인 필요. 직접 입력 옵션 사용 가능.</li>
+        <li><strong>국민주택채권 매입률</strong> — 국민주택채권 매입률 별표는 개정될 수 있음 — 인터넷등기소 계산기로 최종 확인 필요.</li>
+        <li><strong>채권 할인율</strong> — 채권 할인율은 매일 변동 — 인터넷등기소 '채권 고객부담률'에서 당일 값 확인 후 입력.</li>
+      </ul>
+    </div>
+    <p class="note warn">이 계산기의 결과는 <strong>참고용 추정치</strong>이며 실제 부과·승인 금액을 확정하지 않습니다.
+    세금은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>(지방세)·<a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a>(국세),
+    대출 한도는 거래 금융기관, 등기 비용은 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 반드시 확인하세요.
+    이 사이트는 이름·연락처·주민등록번호 등 개인정보를 수집하지 않으며 모든 계산은 브라우저 안에서만 이뤄집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 계산기</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../acquisition-tax/"><span>🧾</span> 취득세 계산기</a>
+      <a class="rel" href="../registration/"><span>📑</span> 등기비용 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/yangdo/" target="_blank" rel="noopener"><span>🧾</span> 양도소득세 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/refinance/" target="_blank" rel="noopener"><span>🔁</span> 대출 갈아타기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">부동산 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { acquisitionTax, brokerFeeCalc, stampDuty } from "../assets/calc.mjs";
+import { acquisition } from "../data/acquisition.mjs";
+import { brokerFee } from "../data/brokerfee.mjs";
+import { registration } from "../data/registration.mjs";
+import { $, raw, man, txt, on, won, manwon, eok, pctStr, fbox, srcLine, setHtml, setText, showResult, echo, chips } from "../assets/ui.mjs";
+echo("price", "priceEcho");
+$("go").addEventListener("click", function () {
+  var price = man("price");
+  if (price <= 0) { setText("big", "매매가를 입력하세요"); setText("sub", ""); setHtml("detail", ""); showResult(); return; }
+  var acq = acquisitionTax(price, { homes: Number($("homes").value), adjusted: on("adjusted"), areaOver85: on("over85") });
+  var broker = 0, bRate = 0;
+  if (on("useBroker")) {
+    var bf = brokerFeeCalc(price, brokerFee.saleBrackets.value);
+    bRate = bf.ratePct; broker = on("vat") ? Math.round(bf.fee * 1.1) : bf.fee;
+  }
+  var filing = registration.filingFee.value.eFormWon;
+  var stamp = stampDuty(price, registration.stampDuty.value, { isHouse: true, houseExemptMax: registration.stampDutyHouseExempt.value.maxPriceWon });
+  var std = man("stdPrice"), metro = $("bondRegion").value === "metro", br = null;
+  for (var i = 0; i < registration.bondBrackets.value.length; i++) {
+    var b = registration.bondBrackets.value[i];
+    if (std >= b[0] && std < b[1]) { br = b; break; }
+  }
+  var bondPct = br ? (metro ? br[2] : br[3]) : 0;
+  var bondBuy = br ? Math.round(std * bondPct / 100 / 10000) * 10000 : 0;
+  var disc = raw("discount");
+  var bondCost = disc > 0 ? Math.round(bondBuy * disc / 100) : 0;
+  var legal = man("legal"), mort = man("mortgage");
+  var mortTax = Math.round(mort * registration.mortgageRegTax.value.ratePct / 100);
+  var mortEdu = Math.round(mortTax * registration.mortgageRegTax.value.eduSurchargePct / 100);
+  var life = man("moving") + man("cleaning") + man("etc");
+  var regTotal = filing + stamp + bondCost + legal + mortTax + mortEdu;
+  var total = acq.total + broker + regTotal + life;
+  var h = '<div class="tbwrap"><table class="tb"><thead><tr><th>항목</th><th>금액</th><th>산출 근거</th></tr></thead><tbody>';
+  function row(a1, a2, a3) { h += "<tr><td>" + a1 + "</td><td>" + a2 + "</td><td>" + a3 + "</td></tr>"; }
+  row("취득세", won(acq.tax), "매매가 × " + pctStr(acq.ratePct, 4) + " — " + acq.basis);
+  row("지방교육세", won(acq.eduTax), "매매가 × " + pctStr(acq.eduPct, 4));
+  row("농어촌특별세", won(acq.ruralTax), on("over85") ? "85㎡ 초과 " + pctStr(acq.ruralPct, 2) : "85㎡ 이하 비과세");
+  row("중개보수" + (on("vat") ? " (부가세 포함)" : ""), won(broker), on("useBroker") ? "상한 요율 " + pctStr(bRate, 2) : "미포함");
+  row("등기신청수수료", won(filing), "e-Form 기준");
+  row("인지세", won(stamp), stamp === 0 ? "주택 1억 이하 비과세" : "기재금액 구간");
+  row("국민주택채권 본인부담", won(bondCost), disc > 0 ? "매입 " + won(bondBuy) + " × 할인율 " + pctStr(disc, 3) : "할인율 미입력 — 제외");
+  row("법무사 보수", won(legal), "직접 입력");
+  row("근저당 등록면허세+교육세", won(mortTax + mortEdu), mort > 0 ? "설정금액 " + eok(mort) + " × 0.2% + 20%" : "대출 없음");
+  row("이사·청소·기타", won(life), "직접 입력");
+  row("<b>합계</b>", "<b>" + won(total) + "</b>", "<b>매매가의 " + pctStr(total / price * 100, 2) + "</b>");
+  h += "</tbody></table></div>";
+  setText("big", won(total));
+  setText("sub", "매매가 " + eok(price) + " 외 추가로 필요한 현금 (매매가의 " + pctStr(total / price * 100, 2) + ")");
+  setHtml("detail", h + fbox("요약", [
+    ["취득 관련 세금 합계", won(acq.total)],
+    ["중개보수", won(broker)],
+    ["등기 관련 비용", won(regTotal)],
+    ["이사·정착 비용", won(life)],
+    ["총 부대비용", won(total)],
+    ["집값 + 부대비용", won(price + total)]
+  ], "생애최초 감면·일시적 2주택 특례 등은 반영하지 않았습니다. 채권 할인율을 비우면 채권 부담이 빠져 실제보다 적게 나옵니다.")
+    + srcLine("취득세", acquisition.standardRates)
+    + srcLine("중개보수", brokerFee.saleBrackets)
+    + srcLine("채권 매입률", registration.bondBrackets)
+    + srcLine("채권 할인율", registration.bondDiscount));
+  showResult();
+});
+</script>
+</body>
+</html>

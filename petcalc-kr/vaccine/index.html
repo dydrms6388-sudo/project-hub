@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>예방접종 스케줄 계산기 — 강아지·고양이 백신 날짜와 .ics | PetCalc</title>
+<meta name="description" content="생년월일만 넣으면 강아지·고양이 코어 백신(종합·광견병) 권장 시기를 날짜로 바꿔 표로 보여주고, 심장사상충 월별 예방 일정을 포함한 캘린더(.ics) 파일을 내려받을 수 있습니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/vaccine/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="예방접종 스케줄 계산기 — 강아지·고양이 백신 날짜와 .ics | PetCalc">
+<meta property="og:description" content="생년월일만 넣으면 강아지·고양이 코어 백신(종합·광견병) 권장 시기를 날짜로 바꿔 표로 보여주고, 심장사상충 월별 예방 일정을 포함한 캘린더(.ics) 파일을 내려받을 수 있습니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/vaccine/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"예방접종 스케줄 계산기 — 강아지·고양이 백신 날짜와 .ics | PetCalc","description":"생년월일만 넣으면 강아지·고양이 코어 백신(종합·광견병) 권장 시기를 날짜로 바꿔 표로 보여주고, 심장사상충 월별 예방 일정을 포함한 캘린더(.ics) 파일을 내려받을 수 있습니다.","url":"https://petcalc-kr.vercel.app/vaccine/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"접종 간격을 놓쳤어요. 처음부터 다시 맞아야 하나요?","acceptedAnswer":{"@type":"Answer","text":"대부분은 처음부터 다시 시작하지 않고 남은 차수를 이어서 맞습니다. 다만 간격이 많이 벌어졌다면 병원에서 상태를 보고 판단하므로 담당 수의사와 상의하세요."}},{"@type":"Question","name":"광견병 접종은 의무인가요?","acceptedAnswer":{"@type":"Answer","text":"국내에서는 생후 3개월 이상 개가 광견병 예방접종 대상입니다. 지자체별 무료·할인 접종 사업이 있으니 관할 지자체 공고를 확인해 보세요."}},{"@type":"Question","name":"실내에서만 지내는 고양이도 접종이 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"네. 사람의 옷·신발로 바이러스가 들어올 수 있어 코어 백신은 권장됩니다. 백혈병(FeLV) 같은 비코어 백신은 외출·동거묘 여부에 따라 상담 후 결정합니다."}},{"@type":"Question","name":"접종 후 무엇을 지켜봐야 하나요?","acceptedAnswer":{"@type":"Answer","text":"당일에는 목욕과 격한 운동을 피하고, 얼굴 부종·구토·심한 무기력·호흡 곤란이 보이면 즉시 병원에 연락하세요."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"예방접종 스케줄","item":"https://petcalc-kr.vercel.app/vaccine/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">예방접종 스케줄</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">💉</div>
+  <h1>예방접종 스케줄 계산기</h1>
+  <p class="lead">생년월일을 넣으면 접종 권장 시기를 실제 날짜로 계산합니다. 심장사상충 월별 예방까지 캘린더(.ics)로 받아 가세요.</p>
+</header>
+<p class="notice warn"><b>참고용이며 진단이 아닙니다.</b> 이 페이지의 계산·정보는 일반적인 기준을 안내할 뿐이며, 개체의 건강 상태를 판단하지 않습니다. 증상이 있거나 결정을 내려야 한다면 반드시 <b>수의사와 상담하세요</b>.</p>
+
+<section class="card">
+  <h2>기본 정보</h2>
+  <div class="field"><label>종류</label>
+    <div class="seg" id="sp">
+      <button type="button" data-v="dog" aria-pressed="true">🐕 강아지</button>
+      <button type="button" data-v="cat" aria-pressed="false">🐈 고양이</button>
+    </div>
+  </div>
+  <div class="field"><label for="bd">생년월일 <span class="hint">추정일이라도 괜찮습니다</span></label><input type="date" id="bd"></div>
+  <div class="field"><label for="hm">심장사상충 예방 캘린더</label>
+    <select id="hm"><option value="12">12개월치 만들기(연중 예방 권장)</option><option value="6">6개월치만</option><option value="0">넣지 않기</option></select>
+  </div>
+  <button class="btn" id="go" type="button">스케줄 만들기</button>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>권장 스케줄</h2>
+  <div class="rt-wrap"><table class="rt"><thead><tr><th>항목</th><th>권장 시기</th><th>예상 날짜</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <p class="src">병원·지역·제품에 따라 차수와 간격이 다를 수 있습니다. 실제 접종일은 담당 수의사 안내를 따르세요.</p>
+  <button class="btn sub" id="ics" type="button">📅 캘린더(.ics) 내려받기</button>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>기본 접종 스케줄</h2>
+<p>어린 강아지·고양이는 어미에게 받은 이행 항체가 남아 있어 한 번의 접종으로는 충분한 면역이 생기지 않습니다. 그래서 2~4주 간격으로 여러 차례 접종하고, <b>마지막 차수는 생후 16주 이후</b>에 맞추는 것이 권장됩니다.</p>
+<h3>강아지</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>항목</th><th>권장 시기</th><th>메모</th></tr></thead><tbody><tr><td>종합백신(DHPPi) 1차</td><td>생후 6주~</td><td>홍역·간염·파보·파라인플루엔자. 생후 6~8주에 시작</td></tr><tr><td>종합백신(DHPPi) 2차</td><td>생후 9주~</td><td>1차 후 2~4주 간격</td></tr><tr><td>종합백신(DHPPi) 3차</td><td>생후 12주~</td><td>2~4주 간격으로 계속</td></tr><tr><td>종합백신(DHPPi) 마지막 차수</td><td>생후 16주~</td><td>마지막 접종은 생후 16주 이후에 이뤄져야 함</td></tr><tr><td>광견병 백신</td><td>생후 12주~</td><td>국내는 생후 3개월(약 12주) 이상 개는 광견병 예방접종 의무 대상. 이후 보강 주기는 병원·지자체 안내에 따름</td></tr><tr><td>켄넬코프(보데텔라) 등 비코어</td><td>생후 9주~</td><td>생활 환경(애견카페·호텔 등 접촉 많음)에 따라 수의사와 상담 후 선택</td></tr><tr><td>보강 접종(부스터)</td><td>생후 26주~</td><td>마지막 유년기 접종 후 6개월~1년 사이 보강, 이후 코어 백신은 3년 이상 간격 재접종(항체검사로 대체 가능)</td></tr><tr><td>심장사상충 예방 시작</td><td>생후 8주~</td><td>생후 8주부터 시작 가능, 이후 매월 1회 연중 예방 권장</td></tr></tbody></table></div>
+<h3>고양이</h3>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>항목</th><th>권장 시기</th><th>메모</th></tr></thead><tbody><tr><td>종합백신(FVRCP) 1차</td><td>생후 6주~</td><td>허피스·칼리시·범백혈구감소증. 생후 6~8주에 시작</td></tr><tr><td>종합백신(FVRCP) 2차</td><td>생후 9주~</td><td>2~4주 간격</td></tr><tr><td>종합백신(FVRCP) 3차</td><td>생후 12주~</td><td>2~4주 간격으로 계속</td></tr><tr><td>종합백신(FVRCP) 마지막 차수</td><td>생후 16주~</td><td>마지막 접종은 생후 16주 이후 권장</td></tr><tr><td>광견병 백신</td><td>생후 12주~</td><td>외출·다묘 환경 등 위험도에 따라 수의사와 상담 (지역 규정 확인)</td></tr><tr><td>백혈병(FeLV) 등 비코어</td><td>생후 9주~</td><td>외출 여부·동거묘에 따라 수의사와 상담 후 선택</td></tr><tr><td>보강 접종(부스터)</td><td>생후 26주~</td><td>유년기 접종 완료 6개월~1년 후 보강, 이후 재접종 주기는 수의사와 상담</td></tr><tr><td>심장사상충 예방 시작</td><td>생후 8주~</td><td>고양이도 감염됨. 매월 1회 예방 권장</td></tr></tbody></table></div>
+<h2>심장사상충은 왜 매달인가요?</h2>
+<p>심장사상충 예방약은 지난 한 달 사이 감염된 유충을 없애는 방식으로 작용합니다. 그래서 <b>한 달에 한 번, 날짜를 지켜</b> 투여하는 것이 중요하고, 미국심장사상충학회는 연중 예방을 권장합니다. 예방을 중단했다가 다시 시작할 때는 감염 검사를 먼저 받는 것이 안전합니다.</p>
+<h2>사용법</h2>
+<ol>
+<li>종류를 고르고 생년월일(추정일 가능)을 입력합니다.</li>
+<li>표에서 각 접종의 예상 날짜를 확인합니다. 이미 지난 시기는 표시됩니다.</li>
+<li>“캘린더(.ics) 내려받기”를 눌러 구글 캘린더·애플 캘린더에 가져오면 알림을 받을 수 있습니다.</li>
+</ol>
+<p class="src">출처: WSAVA Vaccination Guidelines — <a href="https://wsava.org/global-guidelines/vaccination-guidelines/" rel="nofollow noopener" target="_blank">https://wsava.org/global-guidelines/vaccination-guidelines/</a> (확인일 2026-08-19)</p>
+<p class="src">출처: American Heartworm Society — 매월 1회, 연중(12개월) 예방 권장 — <a href="https://www.heartwormsociety.org/heartworms" rel="nofollow noopener" target="_blank">https://www.heartwormsociety.org/heartworms</a> (확인일 2026-08-19)</p>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 접종 간격을 놓쳤어요. 처음부터 다시 맞아야 하나요?</p><p class="a">대부분은 처음부터 다시 시작하지 않고 남은 차수를 이어서 맞습니다. 다만 간격이 많이 벌어졌다면 병원에서 상태를 보고 판단하므로 담당 수의사와 상의하세요.</p></div>
+<div class="qa"><p class="q">Q. 광견병 접종은 의무인가요?</p><p class="a">국내에서는 생후 3개월 이상 개가 광견병 예방접종 대상입니다. 지자체별 무료·할인 접종 사업이 있으니 관할 지자체 공고를 확인해 보세요.</p></div>
+<div class="qa"><p class="q">Q. 실내에서만 지내는 고양이도 접종이 필요한가요?</p><p class="a">네. 사람의 옷·신발로 바이러스가 들어올 수 있어 코어 백신은 권장됩니다. 백혈병(FeLV) 같은 비코어 백신은 외출·동거묘 여부에 따라 상담 후 결정합니다.</p></div>
+<div class="qa"><p class="q">Q. 접종 후 무엇을 지켜봐야 하나요?</p><p class="a">당일에는 목욕과 격한 운동을 피하고, 얼굴 부종·구토·심한 무기력·호흡 곤란이 보이면 즉시 병원에 연락하세요.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../dog-age/index.html"><span class="ic">🐕</span><span>강아지 나이 계산기</span></a>
+      <a class="rel" href="../vet-consult/index.html"><span class="ic">🏥</span><span>수의사 상담이 필요한 순간</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-vet-cost/" rel="noopener"><span class="ic">🏥</span><span>동물병원 진료비 참고</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-age-calc/" rel="noopener"><span class="ic">🐾</span><span>반려동물 나이 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-petsafe/" rel="noopener"><span class="ic">⚠️</span><span>반려동물 위험물 체크</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var S={"dog":[{"weeks":6,"name":"종합백신(DHPPi) 1차","note":"홍역·간염·파보·파라인플루엔자. 생후 6~8주에 시작","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":9,"name":"종합백신(DHPPi) 2차","note":"1차 후 2~4주 간격","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":12,"name":"종합백신(DHPPi) 3차","note":"2~4주 간격으로 계속","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":16,"name":"종합백신(DHPPi) 마지막 차수","note":"마지막 접종은 생후 16주 이후에 이뤄져야 함","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":12,"name":"광견병 백신","note":"국내는 생후 3개월(약 12주) 이상 개는 광견병 예방접종 의무 대상. 이후 보강 주기는 병원·지자체 안내에 따름","core":true,"source":"https://www.qia.go.kr/","checkedAt":"2026-08-19"},{"weeks":9,"name":"켄넬코프(보데텔라) 등 비코어","note":"생활 환경(애견카페·호텔 등 접촉 많음)에 따라 수의사와 상담 후 선택","core":false,"source":"https://www.aaha.org/resources/2022-aaha-canine-vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":26,"name":"보강 접종(부스터)","note":"마지막 유년기 접종 후 6개월~1년 사이 보강, 이후 코어 백신은 3년 이상 간격 재접종(항체검사로 대체 가능)","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":8,"name":"심장사상충 예방 시작","note":"생후 8주부터 시작 가능, 이후 매월 1회 연중 예방 권장","core":true,"source":"https://www.heartwormsociety.org/heartworms","checkedAt":"2026-08-19"}],"cat":[{"weeks":6,"name":"종합백신(FVRCP) 1차","note":"허피스·칼리시·범백혈구감소증. 생후 6~8주에 시작","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":9,"name":"종합백신(FVRCP) 2차","note":"2~4주 간격","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":12,"name":"종합백신(FVRCP) 3차","note":"2~4주 간격으로 계속","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":16,"name":"종합백신(FVRCP) 마지막 차수","note":"마지막 접종은 생후 16주 이후 권장","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":12,"name":"광견병 백신","note":"외출·다묘 환경 등 위험도에 따라 수의사와 상담 (지역 규정 확인)","core":true,"source":"https://catvets.com/guidelines/practice-guidelines/","checkedAt":"2026-08-19"},{"weeks":9,"name":"백혈병(FeLV) 등 비코어","note":"외출 여부·동거묘에 따라 수의사와 상담 후 선택","core":false,"source":"https://catvets.com/guidelines/practice-guidelines/","checkedAt":"2026-08-19"},{"weeks":26,"name":"보강 접종(부스터)","note":"유년기 접종 완료 6개월~1년 후 보강, 이후 재접종 주기는 수의사와 상담","core":true,"source":"https://wsava.org/global-guidelines/vaccination-guidelines/","checkedAt":"2026-08-19"},{"weeks":8,"name":"심장사상충 예방 시작","note":"고양이도 감염됨. 매월 1회 예방 권장","core":true,"source":"https://www.heartwormsociety.org/heartworms","checkedAt":"2026-08-19"}]};
+var sp='dog', ev=[];
+pcSeg('sp',function(v){sp=v;});
+pcQ('go').addEventListener('click',function(){
+  var bv=pcQ('bd').value;
+  if(!bv){alert('생년월일을 입력해 주세요.');return;}
+  var b=new Date(bv+'T00:00:00');
+  if(isNaN(b.getTime())){alert('날짜 형식을 확인해 주세요.');return;}
+  var list=S[sp].slice().sort(function(a,c){return a.weeks-c.weeks;});
+  var rows='', today=new Date(); today.setHours(0,0,0,0);
+  ev=[];
+  list.forEach(function(it){
+    var d=pcAddDays(b,it.weeks*7), ds=pcDate(d);
+    var past = d<today ? ' <span class="badge ok">지난 시기</span>' : '';
+    rows+='<tr><td>'+it.name+(it.core?'':' <span class="badge caution">선택</span>')+'</td><td>생후 '+it.weeks+'주</td><td>'+ds+past+'</td></tr>';
+    ev.push({date:ds,title:'['+(sp==='dog'?'강아지':'고양이')+'] '+it.name,desc:it.note});
+  });
+  var hm=parseInt(pcQ('hm').value,10)||0;
+  if(hm>0){
+    var start=pcAddDays(b,8*7);
+    if(start<today) start=new Date(today.getTime());
+    for(var i=0;i<hm;i++){
+      var d2=new Date(start.getTime()); d2.setMonth(d2.getMonth()+i);
+      var ds2=pcDate(d2);
+      ev.push({date:ds2,title:'심장사상충 예방 '+(i+1)+'회차',desc:'매월 1회, 연중(12개월) 예방 권장'});
+      if(i<3) rows+='<tr><td>심장사상충 예방 '+(i+1)+'회차</td><td>매월 1회</td><td>'+ds2+'</td></tr>';
+    }
+    rows+='<tr><td>심장사상충 예방(이후)</td><td>매월 1회 · '+hm+'개월치</td><td>.ics 파일에 모두 포함</td></tr>';
+  }
+  pcQ('tb').innerHTML=rows;
+  pcShow('res');
+});
+pcQ('ics').addEventListener('click',function(){
+  if(!ev.length){alert('먼저 스케줄을 만들어 주세요.');return;}
+  ev.sort(function(a,b){return a.date<b.date?-1:1;});
+  pcIcs('petcalc-'+sp+'-vaccine.ics',ev);
+});
+})();
+</script>
+
+</body>
+</html>

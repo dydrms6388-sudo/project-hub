@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>전월세 전환 계산기 — 법정 전환율 상한(기준금리+2%p) | 홈캘크</title>
+<meta name="description" content="보증금을 월세로, 월세를 보증금으로 환산합니다. 주택임대차보호법 제7조의2 전환율 상한(연 10%와 기준금리+2%p 중 낮은 값)을 적용하며 기준금리는 직접 입력합니다." />
+<link rel="canonical" href="https://homecalc-kr.vercel.app/deposit-conv/" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏦</text></svg>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="홈캘크 HomeCalc" />
+<meta property="og:title" content="전월세 전환 계산기 — 법정 상한 산식" />
+<meta property="og:description" content="보증금을 월세로, 월세를 보증금으로 환산합니다. 주택임대차보호법 제7조의2 전환율 상한(연 10%와 기준금리+2%p 중 낮은 값)을 적용하며 기준금리는 직접 입력합니다." />
+<meta property="og:url" content="https://homecalc-kr.vercel.app/deposit-conv/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"전월세 전환 계산기","url":"https://homecalc-kr.vercel.app/deposit-conv/","applicationCategory":"UtilityApplication","operatingSystem":"Web","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"보증금을 월세로, 월세를 보증금으로 환산합니다. 주택임대차보호법 제7조의2 전환율 상한(연 10%와 기준금리+2%p 중 낮은 값)을 적용하며 기준금리는 직접 입력합니다."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"전환율 상한은 어떤 법에 있나요?","acceptedAnswer":{"@type":"Answer","text":"주택임대차보호법 제7조의2와 같은 법 시행령 제9조에 따라 연 10%와 한국은행 기준금리에 대통령령으로 정하는 이율(2%p)을 더한 비율 중 낮은 쪽이 상한입니다."}},{"@type":"Question","name":"왜 기준금리를 직접 넣어야 하나요?","acceptedAnswer":{"@type":"Answer","text":"기준금리는 한국은행 금융통화위원회 결정에 따라 수시로 바뀝니다. 잘못된 고정값이 계산 전체를 틀리게 만들 수 있어 직접 입력받고 확인 링크를 제공합니다."}},{"@type":"Question","name":"상한을 넘는 월세로 계약해도 되나요?","acceptedAnswer":{"@type":"Answer","text":"상한 규정은 기존 계약의 보증금을 월세로 전환하는 경우에 적용됩니다. 구체적인 적용 여부와 효력은 사안마다 달라 법률 전문가나 대한법률구조공단 등에 확인하세요."}},{"@type":"Question","name":"실제 시장 전환율은 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"지역·주택 유형에 따라 다르며 법정 상한보다 낮거나 높게 형성되기도 합니다. 한국부동산원 통계 등에서 지역별 실거래 전환율을 확인할 수 있습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://homecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"전월세 전환 계산기","item":"https://homecalc-kr.vercel.app/deposit-conv/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="../">🏠 홈캘크 <span>HomeCalc</span></a>
+    <button class="theme-btn" type="button" aria-label="테마 전환">☀/🌙</button>
+  </div>
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">홈</a> <span class="sep">›</span> <span class="cur">전월세 전환 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🏦</div>
+    <h1>전월세 전환 계산기</h1>
+    <p class="lead">보증금↔월세를 <strong>법정 전환율 상한</strong>(연 10%와 기준금리+2%p 중 낮은 값)으로 환산합니다.</p>
+  </div>
+
+  <div class="card">
+    <h2>전환 조건 입력</h2>
+    <div class="grid2">
+      <label class="f">한국은행 기준금리 (%) <span class="hint">— 직접 확인 후 입력</span>
+        <input type="number" id="base" inputmode="decimal" step="0.05" min="0" value="2.50" />
+      </label>
+      <label class="f">적용 전환율
+        <select id="mode"><option value="cap" selected>법정 상한 자동 계산</option><option value="manual">직접 입력</option></select>
+      </label>
+      <label class="f">직접 입력 전환율 (연 %)
+        <input type="number" id="manual" inputmode="decimal" step="0.1" min="0" value="5.5" disabled />
+      </label>
+      <label class="f">계산 방향
+        <select id="dir"><option value="d2m" selected>보증금 → 월세</option><option value="m2d">월세 → 보증금</option></select>
+      </label>
+      <label class="f" id="lblDep">월세로 돌릴 보증금 (만원)
+        <input type="number" id="dep" inputmode="decimal" step="any" min="0" value="10000" />
+      </label>
+      <label class="f" id="lblMon">월세 (만원)
+        <input type="number" id="mon" inputmode="decimal" step="any" min="0" value="50" disabled />
+      </label>
+    </div>
+    <button class="btn full" id="calcBtn" type="button">전환 계산하기</button>
+    <div class="result" id="resultBox" hidden aria-live="polite">
+      <p class="big" id="resMain">—</p>
+      <p class="sub" id="resSub"></p>
+      <div class="formula" id="resFormula"></div>
+      <p class="src" id="srcLine"></p>
+      <div class="ad-slot" id="adSlot" hidden>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>소개</h2>
+    <p>전세를 반전세로 돌리거나 월세를 보증금으로 낮출 때 쓰는 비율이 <strong>전월세 전환율</strong>입니다. 주택임대차보호법 제7조의2와 시행령 제9조는 이 비율의 <strong>상한</strong>을 정하고 있습니다.</p>
+    <div class="formula">전환율 상한 = min( 연 10%, 한국은행 기준금리 + 2%p )<br />월세 = 전환할 보증금 × 전환율 ÷ 12 · 보증금 = 월세 × 12 ÷ 전환율</div>
+    <p>기준금리는 수시로 바뀌므로 이 계산기는 값을 고정하지 않고 <strong>직접 입력</strong>받습니다. 현재 기준금리는 <a href="https://www.bok.or.kr/portal/singl/baseRate/progress.do" rel="noopener">한국은행 기준금리 추이</a>에서 확인하세요. 상한은 기존 계약을 전환할 때 적용되는 기준이며, 신규 계약의 조건은 당사자 합의로 정해집니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>한국은행 기준금리를 확인해 %로 입력합니다. (예: 2.5)</li>
+      <li>계산 방향(보증금→월세 / 월세→보증금)을 고릅니다.</li>
+      <li>금액을 만원 단위로 입력하면 법정 상한 전환율 기준 환산액이 나옵니다. 실제 계약 조건이 다르면 전환율을 직접 입력해 비교하세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 전환율 상한은 어떤 법에 있나요?</p><p class="a">주택임대차보호법 제7조의2와 같은 법 시행령 제9조에 따라 연 10%와 한국은행 기준금리에 대통령령으로 정하는 이율(2%p)을 더한 비율 중 낮은 쪽이 상한입니다.</p></div>
+    <div class="qa"><p class="q">Q. 왜 기준금리를 직접 넣어야 하나요?</p><p class="a">기준금리는 한국은행 금융통화위원회 결정에 따라 수시로 바뀝니다. 잘못된 고정값이 계산 전체를 틀리게 만들 수 있어 직접 입력받고 확인 링크를 제공합니다.</p></div>
+    <div class="qa"><p class="q">Q. 상한을 넘는 월세로 계약해도 되나요?</p><p class="a">상한 규정은 기존 계약의 보증금을 월세로 전환하는 경우에 적용됩니다. 구체적인 적용 여부와 효력은 사안마다 달라 법률 전문가나 대한법률구조공단 등에 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 실제 시장 전환율은 얼마인가요?</p><p class="a">지역·주택 유형에 따라 다르며 법정 상한보다 낮거나 높게 형성되기도 합니다. 한국부동산원 통계 등에서 지역별 실거래 전환율을 확인할 수 있습니다.</p></div>
+<p class="note">본 계산은 법정 산식에 따른 <strong>참고용</strong>이며 법률 자문이 아닙니다. 기준금리는 <span class="badge todo">확인 필요</span> — 계산 전 <a href="https://www.bok.or.kr/portal/singl/baseRate/progress.do" rel="noopener">한국은행 발표</a>에서 현재 값을 확인해 입력하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../moving-cost/"><span class="ic">🚚</span>이사 견적 항목 계산기</a>
+      <a class="rel" href="../pyeong/"><span class="ic">📐</span>평수 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-monthly-convert/" rel="noopener"><span class="ic">🏦</span>전월세 전환 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/moving-cost-calc/" rel="noopener"><span class="ic">🚚</span>이사 비용 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">홈캘크 HomeCalc</a> — 집·인테리어·이사 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { legalCapRate, depositToMonthly, monthlyToDeposit } from "../lib/calc.mjs";
+const CAP = {"fixedCap":0.1,"baseRateSpread":0.02};
+const $ = (id) => document.getElementById(id);
+function syncDir() {
+  const d2m = $("dir").value === "d2m";
+  $("dep").disabled = !d2m;
+  $("mon").disabled = d2m;
+  $("lblDep").firstChild.nodeValue = d2m ? "월세로 돌릴 보증금 (만원)" : "환산될 보증금 (만원)";
+  $("lblMon").firstChild.nodeValue = d2m ? "환산될 월세 (만원)" : "보증금으로 돌릴 월세 (만원)";
+}
+$("dir").addEventListener("change", syncDir);
+$("mode").addEventListener("change", () => { $("manual").disabled = $("mode").value !== "manual"; });
+syncDir();
+$("calcBtn").addEventListener("click", () => {
+  const basePct = parseFloat($("base").value);
+  if (!isFinite(basePct) || basePct < 0) { hcToast("기준금리를 입력하세요"); return; }
+  const cap = legalCapRate(basePct / 100, { fixedCap: CAP.fixedCap, spread: CAP.baseRateSpread });
+  let rate = cap, how = "법정 상한";
+  if ($("mode").value === "manual") {
+    const m = parseFloat($("manual").value);
+    if (!isFinite(m) || m <= 0) { hcToast("전환율을 입력하세요"); return; }
+    rate = m / 100; how = "직접 입력";
+  }
+  const d2m = $("dir").value === "d2m";
+  let msg = "", sub = "";
+  if (d2m) {
+    const dep = parseFloat($("dep").value);
+    if (!isFinite(dep) || dep <= 0) { hcToast("보증금을 입력하세요"); return; }
+    const monthly = depositToMonthly(dep * 10000, rate);
+    $("mon").value = Math.round(monthly / 10000 * 100) / 100;
+    msg = "월세 <span>" + hcFmt(monthly / 10000, 1) + "만원</span> <small>(" + hcFmt(monthly) + "원/월)</small>";
+    sub = "보증금 " + hcFmt(dep) + "만원을 연 " + hcFmt(rate * 100, 2) + "% (" + how + ")로 전환 · 연 " + hcFmt(dep * 10000 * rate) + "원 ÷ 12개월";
+  } else {
+    const mon = parseFloat($("mon").value);
+    if (!isFinite(mon) || mon <= 0) { hcToast("월세를 입력하세요"); return; }
+    const dep = monthlyToDeposit(mon * 10000, rate);
+    $("dep").value = Math.round(dep / 10000);
+    msg = "보증금 <span>" + hcFmt(dep / 10000) + "만원</span> <small>(" + hcFmt(dep) + "원)</small>";
+    sub = "월세 " + hcFmt(mon) + "만원을 연 " + hcFmt(rate * 100, 2) + "% (" + how + ")로 환산 · 연 " + hcFmt(mon * 12) + "만원 ÷ 전환율";
+  }
+  $("resultBox").hidden = false;
+  $("resMain").innerHTML = msg;
+  $("resSub").textContent = sub + " · 법정 상한: min(연 " + (CAP.fixedCap * 100) + "%, 기준금리 " + basePct + "% + " + (CAP.baseRateSpread * 100) + "%p) = 연 " + hcFmt(cap * 100, 2) + "%";
+  $("resFormula").textContent = "월세 = 보증금 × 전환율 ÷ 12 · 보증금 = 월세 × 12 ÷ 전환율 · 전환율 상한 = min(10%, 기준금리+2%p)";
+  $("srcLine").innerHTML = "산식 출처: <a href=\"https://www.law.go.kr/법령/주택임대차보호법/제7조의2\" rel=\"noopener\">주택임대차보호법 제7조의2·시행령 제9조</a> · 기준금리는 <a href=\"https://www.bok.or.kr/portal/singl/baseRate/progress.do\" rel=\"noopener\">한국은행</a> 발표값 직접 입력 <span class=\"badge todo\">확인 필요</span> · 확인일 2026-08-19";
+  hcShowResultAd();
+});
+</script>
+</body>
+</html>

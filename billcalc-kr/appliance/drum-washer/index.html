@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>드럼세탁기 전기요금 계산 — 700W 기준 한 달 요금</title>
+<meta name="description" content="드럼세탁기(약 700W)를 하루 0.7시간 쓰면 월 약 14.7kWh. 누진 구간을 반영한 실제 요금 증가액을 계산하고 절약 방법을 정리했습니다." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/appliance/drum-washer/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="드럼세탁기 전기요금 계산 — 700W 기준 한 달 요금" />
+<meta property="og:description" content="드럼세탁기(약 700W)를 하루 0.7시간 쓰면 월 약 14.7kWh. 누진 구간을 반영한 실제 요금 증가액을 계산하고 절약 방법을 정리했습니다." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/appliance/drum-washer/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"드럼세탁기 전기요금 계산기","description":"드럼세탁기(약 700W)를 하루 0.7시간 쓰면 월 약 14.7kWh. 누진 구간을 반영한 실제 요금 증가액을 계산하고 절약 방법을 정리했습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/appliance/drum-washer/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"드럼세탁기는 하루 종일 켜두면 요금이 얼마나 늘어나나요?","acceptedAnswer":{"@type":"Answer","text":"700W 기준으로 24시간 30일이면 약 504kWh입니다. 여기에 누진 단계가 올라가면 1kWh당 실질 부담이 커지므로, 계산기에서 사용 시간을 24로 바꿔 증가액을 직접 비교해 보세요."}},{"@type":"Question","name":"표시된 700W는 어디서 나온 값인가요?","acceptedAnswer":{"@type":"Answer","text":"한국에너지공단 효율등급 제품정보와 제조사 사양표를 참고한 일반적인 범위(200~2000W)의 대표값입니다. 모델별 편차가 크므로 제품 라벨의 값을 직접 입력하는 것을 권장합니다."}},{"@type":"Question","name":"계산 결과가 고지서와 다를 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"실제 고지서에는 다른 모든 가전의 사용량, 복지할인, 검침 기간에 따른 계절 혼합 적용 등이 함께 반영됩니다. 이 계산기는 해당 기기 하나가 청구금액을 얼마나 밀어 올리는지 보여주는 참고 도구입니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"가전제품별 전기요금","item":"https://billcalc-kr.vercel.app/appliance/"},{"@type":"ListItem","position":3,"name":"드럼세탁기 전기요금","item":"https://billcalc-kr.vercel.app/appliance/drum-washer/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <a href="../../appliance/">가전제품별 전기요금</a> <span class="sep">›</span> <span>드럼세탁기 전기요금</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🔌</div>
+    <h1>드럼세탁기 전기요금</h1>
+    <p class="lead">드럼세탁기 약 <strong>700W</strong> 기준 · 하루 0.7시간이면 월 약 14.7kWh. 기존 사용량을 넣으면 <strong>누진 반영 증가액</strong>이 나옵니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>드럼세탁기 사용 조건</h2>
+    <div class="grid2">
+      <label class="f">소비전력 <span class="u">(W · 참고 200~2000)</span>
+        <input type="number" id="watt" inputmode="decimal" min="0" step="10" value="700" />
+      </label>
+      <label class="f">하루 사용 시간 <span class="u">(시간)</span>
+        <input type="number" id="hours" inputmode="decimal" min="0" max="24" step="0.5" value="0.7" />
+      </label>
+      <label class="f">한 달 사용 일수 <span class="u">(일)</span>
+        <input type="number" id="days" inputmode="decimal" min="0" max="31" step="1" value="30" />
+      </label>
+      <label class="f">이 기기를 뺀 월 사용량 <span class="u">(kWh)</span>
+        <input type="number" id="baseKwh" inputmode="decimal" min="0" step="1" value="250" />
+      </label>
+    </div>
+    <div class="grid2">
+      <label class="f">계산 월 <span class="u">(7~8월 하계 구간)</span>
+        <select id="month"></select>
+      </label>
+      <label class="f">계약 종류
+        <select id="voltage"><option value="low">저압 (대부분 가정)</option><option value="high">고압 (아파트 일괄계약)</option></select>
+      </label>
+    </div>
+    <details class="adv">
+      <summary>고급 설정 — 연료비조정·기금 요율 직접 수정</summary>
+      <div class="grid2">
+        <label class="f">연료비조정요금 <span class="u">(원/kWh, 한도 ±5)</span>
+          <input type="number" id="fuelAdj" step="0.1" value="5" />
+        </label>
+        <label class="f">전력산업기반기금 <span class="u">(%, 2025.7부터 2.7)</span>
+          <input type="number" id="fundRate" step="0.1" value="2.7" />
+        </label>
+      </div>
+    </details>
+    <button class="btn" id="calcBtn">드럼세탁기 전기요금 계산</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">드럼세탁기 때문에 늘어나는 금액 <span class="num" id="totalOut"></span></p>
+      <p class="note">월 사용량 <strong id="addOut"></strong> · 1년이면 <span id="yearOut"></span></p>
+      <div id="cmpOut"></div>
+    </div>
+    <div class="card">
+      <h2>드럼세탁기 포함 전체 요금 산출 과정</h2>
+      <div id="tableOut"></div>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>드럼세탁기, 한 달에 얼마나 나올까?</h2>
+    <p>드럼세탁기의 일반적인 소비전력은 약 <strong>700W</strong>이며 제품에 따라 200~2000W 범위에서 달라집니다. 하루 0.7시간, 한 달 30일을 기준으로 하면 약 <strong>14.7kWh</strong>를 사용합니다. 히터(온수·건조) 사용 여부에 따라 편차 매우 큼.</p>
+    <p>다만 이 사용량이 요금으로 얼마가 되는지는 <strong>우리 집이 원래 얼마나 쓰는지</strong>에 달려 있습니다. 주택용 전기요금은 누진제라서, 같은 14.7kWh라도 월 150kWh를 쓰는 집과 380kWh를 쓰는 집의 추가 요금은 두 배 이상 차이 납니다. 위 계산기에 기존 사용량을 함께 넣으면 그 차이가 반영된 실제 증가액이 나옵니다.</p>
+    <p class="note">분류: 세탁·의류 — 세탁·건조 가전은 물을 데우거나 히터를 쓰는 구간에서 전력이 몰립니다.</p>
+    <h2>정확하게 계산하려면</h2>
+    <ol>
+      <li>제품 뒷면 라벨이나 설명서에서 정격 소비전력(W)을 확인해 입력합니다. 라벨에 "월간 소비전력량(kWh/월)"이 있으면 그 값을 720시간으로 나눠 평균 W로 환산하는 편이 더 정확합니다.</li>
+      <li>하루 실제 사용 시간을 넣습니다. 쓰지 않는 날이 있으면 사용 일수를 함께 줄이세요.</li>
+      <li>이 기기를 제외한 월 사용량을 넣어야 누진 구간이 제대로 반영됩니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 드럼세탁기는 하루 종일 켜두면 요금이 얼마나 늘어나나요?</p><p class="a">700W 기준으로 24시간 30일이면 약 504kWh입니다. 여기에 누진 단계가 올라가면 1kWh당 실질 부담이 커지므로, 계산기에서 사용 시간을 24로 바꿔 증가액을 직접 비교해 보세요.</p></div>
+    <div class="qa"><p class="q">Q. 표시된 700W는 어디서 나온 값인가요?</p><p class="a">한국에너지공단 효율등급 제품정보와 제조사 사양표를 참고한 일반적인 범위(200~2000W)의 대표값입니다. 모델별 편차가 크므로 제품 라벨의 값을 직접 입력하는 것을 권장합니다.</p></div>
+    <div class="qa"><p class="q">Q. 계산 결과가 고지서와 다를 수 있나요?</p><p class="a">실제 고지서에는 다른 모든 가전의 사용량, 복지할인, 검침 기간에 따른 계절 혼합 적용 등이 함께 반영됩니다. 이 계산기는 해당 기기 하나가 청구금액을 얼마나 밀어 올리는지 보여주는 참고 도구입니다.</p></div>
+    <h2>요금표 기준일과 출처</h2>
+    <p class="note">전기요금 단가는 <strong>2023년 5월 16일 개정 기준</strong>의 주택용 전력 요금표를 사용합니다(데이터 확인일 2026-08-19).
+    연료비조정요금은 분기마다, 전력산업기반기금 요율은 제도 개정에 따라 바뀌므로
+    최신 단가는 <a href="https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp" target="_blank" rel="noopener">한국전력 사이버지점 요금표</a>에서 확인하고,
+    고지서 값과 다르면 각 계산기의 <strong>고급 설정</strong>에서 직접 수정해 계산하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 가전 소비전력은 모델별 편차가 커 참고 범위를 사용합니다.
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../../appliance/"><span class="e">📚</span> 가전제품별 전기요금 목록</a>
+      <a class="rel" href="../../appliance-cost/"><span class="e">🔌</span> 가전제품 전기요금 계산기</a>
+      <a class="rel" href="../../electric-bill/"><span class="e">⚡</span> 전기요금 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../../privacy.html">개인정보처리방침</a>·<a href="../../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { calcDelta, naiveDelta, kwhOf } from "../../lib/elec.mjs";
+import { won, num, kwhFmt, showAd, initTheme, billTableHtml, deltaTableHtml, tariffSourceHtml } from "../../assets/app.mjs";
+const $ = (id) => document.getElementById(id);
+const monthSel = $("month");
+const nowM = new Date().getMonth() + 1;
+for (let m = 1; m <= 12; m++) { const o = document.createElement("option"); o.value = m; o.textContent = m + "월" + (m === 7 || m === 8 ? " (하계)" : ""); if (m === nowM) o.selected = true; monthSel.appendChild(o); }
+$("calcBtn").addEventListener("click", () => {
+  const add = kwhOf(num($("watt"), 700), num($("hours"), 0.7), num($("days"), 30));
+  const base = num($("baseKwh"), 250);
+  const opts = { month: +monthSel.value, voltage: $("voltage").value, fuelAdj: num($("fuelAdj"), 5), fundRate: num($("fundRate"), 2.7) / 100 };
+  const d = calcDelta(base, add, opts);
+  const nv = naiveDelta(base, add, opts);
+  $("totalOut").textContent = won(d.delta);
+  $("addOut").textContent = kwhFmt(add);
+  $("yearOut").textContent = won(d.delta * 12);
+  $("cmpOut").innerHTML = deltaTableHtml(d, nv, "드럼세탁기");
+  $("tableOut").innerHTML = billTableHtml(d.after);
+  $("srcOut").innerHTML = tariffSourceHtml();
+  $("resultBox").hidden = false;
+  showAd();
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

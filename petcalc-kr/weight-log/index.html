@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>반려동물 체중 기록 그래프 — 브라우저 저장·CSV 내보내기 | PetCalc</title>
+<meta name="description" content="강아지·고양이 체중을 날짜별로 기록해 변화 그래프로 확인합니다. 기록은 서버로 전송되지 않고 브라우저에만 저장되며, CSV 내보내기와 전체 삭제를 지원합니다. BCS(체형 점수) 확인법도 함께 안내합니다.">
+<link rel="canonical" href="https://petcalc-kr.vercel.app/weight-log/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PetCalc 반려동물 계산기">
+<meta property="og:title" content="반려동물 체중 기록 그래프 — 브라우저 저장·CSV 내보내기 | PetCalc">
+<meta property="og:description" content="강아지·고양이 체중을 날짜별로 기록해 변화 그래프로 확인합니다. 기록은 서버로 전송되지 않고 브라우저에만 저장되며, CSV 내보내기와 전체 삭제를 지원합니다. BCS(체형 점수) 확인법도 함께 안내합니다.">
+<meta property="og:url" content="https://petcalc-kr.vercel.app/weight-log/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"반려동물 체중 기록 그래프 — 브라우저 저장·CSV 내보내기 | PetCalc","description":"강아지·고양이 체중을 날짜별로 기록해 변화 그래프로 확인합니다. 기록은 서버로 전송되지 않고 브라우저에만 저장되며, CSV 내보내기와 전체 삭제를 지원합니다. BCS(체형 점수) 확인법도 함께 안내합니다.","url":"https://petcalc-kr.vercel.app/weight-log/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ko","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"PetCalc 반려동물 계산기","url":"https://petcalc-kr.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"기록이 다른 기기에서도 보이나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 서버에 저장하지 않기 때문에 기록한 브라우저에서만 보입니다. 옮기려면 CSV로 내보낸 뒤 새 기기에서 다시 입력하세요."}},{"@type":"Question","name":"여러 마리를 함께 기록할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"이름 칸에 각각의 이름을 적으면 표에서 구분됩니다. 그래프는 전체 기록을 시간순으로 함께 그리므로, 정확한 비교가 필요하면 CSV로 내보내 이름별로 보세요."}},{"@type":"Question","name":"얼마나 자주 재는 게 좋나요?","acceptedAnswer":{"@type":"Answer","text":"건강한 성견·성묘는 월 1회, 감량 중이거나 지병이 있으면 2주에 한 번이 적당합니다. 성장기 어린 개체는 주 1회를 권합니다."}},{"@type":"Question","name":"체중이 갑자기 줄었어요.","acceptedAnswer":{"@type":"Answer","text":"식욕이 있는데도 체중이 줄면 갑상선·당뇨·신장·소화기 문제일 수 있습니다. 이 도구는 진단을 하지 않으므로 수의사 진료를 받으세요."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://petcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"체중 기록","item":"https://petcalc-kr.vercel.app/weight-log/"}]}</script>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span class="c-cur">체중 기록</span></nav>
+<header class="hero">
+  <div class="emoji" aria-hidden="true">📈</div>
+  <h1>체중 기록 · 변화 그래프</h1>
+  <p class="lead">체중을 날짜별로 남기면 그래프로 흐름을 보여줍니다. 기록은 이 브라우저에만 저장되고 서버로 전송되지 않습니다.</p>
+</header>
+<p class="notice warn"><b>참고용이며 진단이 아닙니다.</b> 이 페이지의 계산·정보는 일반적인 기준을 안내할 뿐이며, 개체의 건강 상태를 판단하지 않습니다. 증상이 있거나 결정을 내려야 한다면 반드시 <b>수의사와 상담하세요</b>.</p>
+
+<section class="card">
+  <h2>기록 추가</h2>
+  <div class="row2">
+    <div class="field"><label for="d">날짜</label><input type="date" id="d"></div>
+    <div class="field"><label for="w">체중(kg)</label><input type="number" id="w" step="0.01" min="0.1" max="120" inputmode="decimal" placeholder="5.20"></div>
+  </div>
+  <div class="field"><label for="nm">이름 <span class="hint">여러 마리를 따로 기록할 때 사용</span></label><input type="text" id="nm" maxlength="20" placeholder="예: 콩이"></div>
+  <button class="btn" id="add" type="button">기록 추가</button>
+  <p class="src">이름·날짜·체중만 저장합니다. 개인정보(연락처·주소 등)는 입력하지 마세요.</p>
+</section>
+<section class="card result" id="res" hidden aria-live="polite">
+  <h2>체중 변화</h2>
+  <p class="big" id="big"></p>
+  <div id="lines"></div>
+  <svg class="chart" id="ch" viewBox="0 0 640 280" role="img" aria-label="체중 변화 그래프"></svg>
+  <div class="rt-wrap"><table class="rt"><thead><tr><th>날짜</th><th>이름</th><th>체중</th><th>변화</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+  <p style="margin-top:12px"><button class="btn sub" id="csv" type="button">⬇ CSV 내보내기</button> <button class="btn danger" id="clr" type="button">전체 삭제</button></p>
+</section>
+<div class="ad-wrap" hidden data-pending>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+<section class="about">
+<h2>체중은 가장 빠른 건강 신호입니다</h2>
+<p>반려동물은 아픈 것을 잘 숨깁니다. 체중은 보호자가 집에서 확인할 수 있는 가장 객관적인 지표로, <b>3개월 사이 5% 이상</b>의 원인 모를 변화는 검진이 필요한 신호로 봅니다. 특히 고양이는 몇 백 그램의 감소도 의미가 큽니다.</p>
+<h3>집에서 정확히 재는 법</h3>
+<ol>
+<li>보호자가 먼저 체중계에 올라가 무게를 잽니다.</li>
+<li>반려동물을 안고 다시 잰 뒤 두 값을 뺍니다.</li>
+<li>같은 요일·같은 시간대(예: 아침 식사 전)에 재면 비교가 정확합니다.</li>
+</ol>
+<h2>BCS(체형 점수) 확인법</h2>
+<p>체중 숫자만으로는 마른지 살쪘는지 알기 어렵습니다. 세계적으로 쓰이는 9점 척도 BCS를 손으로 확인해 보세요.</p>
+<div class="rt-wrap"><table class="rt"><thead><tr><th>점수</th><th>상태</th><th>손으로 만졌을 때</th></tr></thead><tbody>
+<tr><td>1~3</td><td>저체중</td><td>갈비뼈·등뼈·골반이 쉽게 보이고 지방층이 거의 없음</td></tr>
+<tr><td>4~5</td><td>이상적</td><td>가볍게 누르면 갈비뼈가 만져지고, 위에서 봤을 때 허리 굴곡이 보임</td></tr>
+<tr><td>6~7</td><td>과체중</td><td>지방 때문에 갈비뼈가 잘 만져지지 않고 허리 굴곡이 사라짐</td></tr>
+<tr><td>8~9</td><td>비만</td><td>배가 처지고 등·꼬리 밑에 지방이 두껍게 잡힘</td></tr>
+</tbody></table></div>
+<p>이상적인 상태는 <b>보이지는 않지만 만져지는</b> 갈비뼈입니다. BCS가 6 이상이면 급여량을 다시 계산해 보세요.</p>
+<h2>저장과 개인정보</h2>
+<ul>
+<li>기록은 <b>이 브라우저(localStorage)에만</b> 저장되며 <b>서버로 전송되지 않습니다</b>.</li>
+<li>다른 기기·시크릿 모드에서는 보이지 않고, 브라우저 데이터를 지우면 함께 사라집니다.</li>
+<li>백업이 필요하면 CSV 내보내기를 사용하세요. “전체 삭제”를 누르면 저장분이 즉시 지워집니다.</li>
+</ul>
+<h2>자주 묻는 질문</h2>
+<div class="qa"><p class="q">Q. 기록이 다른 기기에서도 보이나요?</p><p class="a">아니요. 서버에 저장하지 않기 때문에 기록한 브라우저에서만 보입니다. 옮기려면 CSV로 내보낸 뒤 새 기기에서 다시 입력하세요.</p></div>
+<div class="qa"><p class="q">Q. 여러 마리를 함께 기록할 수 있나요?</p><p class="a">이름 칸에 각각의 이름을 적으면 표에서 구분됩니다. 그래프는 전체 기록을 시간순으로 함께 그리므로, 정확한 비교가 필요하면 CSV로 내보내 이름별로 보세요.</p></div>
+<div class="qa"><p class="q">Q. 얼마나 자주 재는 게 좋나요?</p><p class="a">건강한 성견·성묘는 월 1회, 감량 중이거나 지병이 있으면 2주에 한 번이 적당합니다. 성장기 어린 개체는 주 1회를 권합니다.</p></div>
+<div class="qa"><p class="q">Q. 체중이 갑자기 줄었어요.</p><p class="a">식욕이 있는데도 체중이 줄면 갑상선·당뇨·신장·소화기 문제일 수 있습니다. 이 도구는 진단을 하지 않으므로 수의사 진료를 받으세요.</p></div>
+</section>
+<nav class="related">
+  <h2>관련 도구</h2>
+  <div class="rel-grid">
+      <a class="rel" href="../food-amount/index.html"><span class="ic">🍚</span><span>사료 급여량 계산기</span></a>
+      <a class="rel" href="../pet-cost/index.html"><span class="ic">💰</span><span>양육비 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/dydrms-slimpet/" rel="noopener"><span class="ic">⚖️</span><span>반려동물 다이어트 도우미</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-meal-calc/" rel="noopener"><span class="ic">🍚</span><span>반려동물 사료량 계산기</span></a>
+      <a class="rel" href="https://tomatoeggcat.com/pet-vet-cost/" rel="noopener"><span class="ic">🏥</span><span>동물병원 진료비 참고</span></a>
+  </div>
+</nav>
+<footer>
+  <a href="../index.html">홈</a>·
+  <a href="../privacy/index.html">개인정보처리방침</a>·
+  <a href="../terms/index.html">이용약관</a>
+  <p>© PetCalc 반려동물 계산기 · 모든 계산은 브라우저에서만 이뤄지며 서버로 전송되지 않습니다.</p>
+</footer>
+</main>
+<script src="../assets/app.js"></script>
+<script>
+(function(){
+var KEY='petcalc-weight-v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+function save(a){try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){alert('브라우저 저장 공간을 사용할 수 없습니다.');}}
+var data=load();
+pcQ('d').value=pcDate(new Date());
+function chart(rows){
+  var el=pcQ('ch'); var W=640,H=280,P=44;
+  if(rows.length<2){el.innerHTML='<text x="20" y="140" fill="currentColor" font-size="15">기록이 2개 이상 쌓이면 그래프가 그려집니다.</text>';return;}
+  var xs=rows.map(function(r){return new Date(r.d+'T00:00:00').getTime();});
+  var ys=rows.map(function(r){return r.w;});
+  var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs);
+  var y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+  if(y1-y0<0.2){y0=y0-0.2;y1=y1+0.2;} else {var pad=(y1-y0)*0.15;y0-=pad;y1+=pad;}
+  if(x1===x0){x1=x0+86400000;}
+  function px(t){return P+(W-P-14)*((t-x0)/(x1-x0));}
+  function py(v){return H-P-(H-P-18)*((v-y0)/(y1-y0));}
+  var s='';
+  for(var i=0;i<=3;i++){
+    var v=y0+(y1-y0)*i/3, y=py(v);
+    s+='<line x1="'+P+'" y1="'+y.toFixed(1)+'" x2="'+(W-14)+'" y2="'+y.toFixed(1)+'" stroke="currentColor" stroke-opacity="0.15"/>';
+    s+='<text x="4" y="'+(y+4).toFixed(1)+'" font-size="12" fill="currentColor" fill-opacity="0.6">'+v.toFixed(1)+'</text>';
+  }
+  var pts=rows.map(function(r,i){return px(xs[i]).toFixed(1)+','+py(ys[i]).toFixed(1);}).join(' ');
+  s+='<polyline points="'+pts+'" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" style="color:#10b981"/>';
+  rows.forEach(function(r,i){s+='<circle cx="'+px(xs[i]).toFixed(1)+'" cy="'+py(ys[i]).toFixed(1)+'" r="3.5" fill="#10b981"/>';});
+  s+='<text x="'+P+'" y="'+(H-14)+'" font-size="12" fill="currentColor" fill-opacity="0.6">'+rows[0].d+'</text>';
+  s+='<text x="'+(W-14)+'" y="'+(H-14)+'" font-size="12" text-anchor="end" fill="currentColor" fill-opacity="0.6">'+rows[rows.length-1].d+'</text>';
+  el.innerHTML=s;
+}
+function render(){
+  if(!data.length){pcQ('res').hidden=true;return;}
+  data.sort(function(a,b){return a.d<b.d?-1:(a.d>b.d?1:0);});
+  var last=data[data.length-1], first=data[0];
+  var diff=last.w-first.w;
+  pcQ('big').innerHTML='최근 체중 <b>'+last.w.toFixed(2)+' kg</b> <small>('+last.d+')</small>';
+  pcQ('lines').innerHTML=
+    '<div class="res-line"><span class="k">기록 수</span><span class="v">'+data.length+'개</span></div>'+
+    '<div class="res-line"><span class="k">첫 기록</span><span class="v">'+first.w.toFixed(2)+' kg ('+first.d+')</span></div>'+
+    '<div class="res-line"><span class="k">전체 변화</span><span class="v">'+(diff>=0?'+':'')+diff.toFixed(2)+' kg ('+(first.w?((diff/first.w)*100).toFixed(1):'0')+'%)</span></div>';
+  var tb='';
+  for(var i=data.length-1;i>=0;i--){
+    var r=data[i], prev=i>0?data[i-1]:null;
+    var dv=prev?(r.w-prev.w):0;
+    tb+='<tr><td>'+r.d+'</td><td>'+(r.n||'-')+'</td><td>'+r.w.toFixed(2)+' kg</td><td>'+(prev?((dv>=0?'+':'')+dv.toFixed(2)):'-')+'</td>'+
+        '<td><button class="btn sub" data-i="'+i+'" type="button">삭제</button></td></tr>';
+  }
+  pcQ('tb').innerHTML=tb;
+  chart(data);
+  pcShow('res');
+}
+pcQ('add').addEventListener('click',function(){
+  var d=pcQ('d').value, w=pcNum('w'), n=(pcQ('nm').value||'').slice(0,20);
+  if(!d){alert('날짜를 선택해 주세요.');return;}
+  if(!isFinite(w)||w<=0||w>120){alert('체중을 확인해 주세요. (0.1~120kg)');return;}
+  data.push({d:d,w:w,n:n});
+  save(data); pcQ('w').value=''; render();
+});
+pcQ('tb').addEventListener('click',function(e){
+  var b=e.target.closest?e.target.closest('button'):null;
+  if(!b||!b.hasAttribute('data-i'))return;
+  data.splice(parseInt(b.getAttribute('data-i'),10),1);
+  save(data); render();
+  if(!data.length) pcQ('res').hidden=true;
+});
+pcQ('csv').addEventListener('click',function(){
+  var rows=[['date','name','weight_kg']].concat(data.map(function(r){return [r.d,(r.n||'').replace(/[",]/g,' '),r.w];}));
+  pcDownload('petcalc-weight.csv','\ufeff'+rows.map(function(r){return r.join(',');}).join('\r\n'),'text/csv');
+});
+pcQ('clr').addEventListener('click',function(){
+  if(!confirm('저장된 체중 기록을 모두 삭제할까요? 되돌릴 수 없습니다.'))return;
+  data=[]; try{localStorage.removeItem(KEY);}catch(e){}
+  pcQ('tb').innerHTML=''; pcQ('res').hidden=true;
+});
+render();
+})();
+</script>
+
+</body>
+</html>

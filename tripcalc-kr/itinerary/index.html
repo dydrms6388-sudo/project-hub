@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>여행 일정표 만들기 — 날짜별 일정 표·인쇄용 PDF 저장</title>
+<meta name="description" content="여행 시작일과 기간을 넣고 날짜별 일정을 추가하면 보기 좋은 일정표가 만들어집니다. 인쇄(PDF로 저장) 레이아웃, 결과 카드 이미지 저장, 링크 공유, 텍스트 내보내기를 지원하며 저장은 브라우저에만 합니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/itinerary/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="여행 일정표 만들기" />
+<meta property="og:description" content="여행 시작일과 기간을 넣고 날짜별 일정을 추가하면 보기 좋은 일정표가 만들어집니다. 인쇄(PDF로 저장) 레이아웃, 결과 카드 이미지 저장, 링크 공유, 텍스트 내보내기를 지원하며 저장은 브라우저에만 합니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/itinerary/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"여행 일정표 만들기","description":"여행 시작일과 기간을 넣고 날짜별 일정을 추가하면 보기 좋은 일정표가 만들어집니다. 인쇄(PDF로 저장) 레이아웃, 결과 카드 이미지 저장, 링크 공유, 텍스트 내보내기를 지원하며 저장은 브라우저에만 합니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/itinerary/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"일정이 서버에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 이 브라우저의 localStorage에만 저장되고, 공유 링크에는 일정 내용이 링크 자체에 인코딩되어 담깁니다. 서버에는 아무것도 남지 않습니다."}},{"@type":"Question","name":"링크가 너무 깁니다.","acceptedAnswer":{"@type":"Answer","text":"일정 내용을 서버 없이 담기 위해 링크 안에 인코딩하기 때문입니다. 일정이 많을수록 길어집니다. 메신저로 보낼 때는 문제가 없습니다."}},{"@type":"Question","name":"PDF로 저장하려면?","acceptedAnswer":{"@type":"Answer","text":"'인쇄 / PDF 저장' 버튼을 누른 뒤 인쇄 대화상자의 대상에서 'PDF로 저장'을 고르세요. 인쇄 레이아웃에서는 광고·버튼이 제외됩니다."}},{"@type":"Question","name":"지도나 예약 정보도 넣을 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"현재는 시각과 내용 텍스트만 지원합니다. 예약번호처럼 짧은 정보는 내용란에 함께 적어 두면 인쇄물에 같이 나옵니다. 여권번호 등 민감한 정보는 넣지 마세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"여행 일정표 만들기","item":"https://tripcalc-kr.vercel.app/itinerary/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>여행 일정표 만들기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🗓️</div>
+    <h1>여행 일정표 만들기</h1>
+    <p class="lead">날짜별 일정을 넣으면 <strong>인쇄해서 들고 다닐 수 있는 일정표</strong>가 됩니다. 링크로 공유도 됩니다.</p>
+  </div>
+
+  <div id="ctaBox" hidden></div>
+  <section class="card noprint" aria-label="입력">
+    <h2>여행 기본 정보</h2>
+    <div class="grid3">
+      <label class="f">여행 제목 <input type="text" id="title" value="도쿄 여행" maxlength="40" /></label>
+      <label class="f">시작일 <input type="date" id="start" /></label>
+      <label class="f">기간 <span class="u">(일)</span><input type="number" id="days" min="1" max="30" value="4" /></label>
+    </div>
+    <h2 style="margin-top:18px">일정 추가</h2>
+    <div class="grid3">
+      <label class="f">몇째 날 <select id="dayNo"></select></label>
+      <label class="f">시각 <input type="time" id="at" value="10:00" /></label>
+      <label class="f">내용 <input type="text" id="what" placeholder="예: 아사쿠사 센소지" maxlength="60" /></label>
+    </div>
+    <button class="btn" id="addBtn" type="button">➕ 일정 추가</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2 id="planTitle">일정표</h2>
+      <div class="itin" id="itin"></div>
+      <p class="note">입력한 값은 <strong>브라우저 안에서만</strong> 처리되며 서버로 전송되거나 저장되지 않습니다. 저장 기능은 이 브라우저의 localStorage 만 사용합니다(서버 저장 없음).</p>
+      <div class="share noprint">
+        <button class="btn2" id="printBtn" type="button">🖨️ 인쇄 / PDF 저장</button>
+        <button class="btn2" id="pngBtn" type="button">🖼️ 이미지로 저장</button>
+        <button class="btn2" id="linkBtn" type="button">🔗 링크 복사</button>
+        <button class="btn2" id="textBtn" type="button">📋 텍스트 복사</button>
+        <button class="btn2" id="expBtn" type="button">⬇️ 파일로 내보내기</button>
+        <button class="btn2" id="shareBtn" type="button">📤 공유</button>
+        <button class="btn2" id="clearBtn" type="button">🗑️ 저장 기록 전체 삭제</button>
+      </div>
+      <canvas id="cardCv" class="cardimg" hidden></canvas>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>일정표는 결국 "종이로 들고 다닐 수 있어야" 쓸모 있다</h2>
+  <p>여행 일정을 메신저 대화나 메모 앱에 흩어 두면 정작 현지에서 찾기 어렵습니다. 배터리가 없거나 데이터가 안 될 때도 있습니다. 그래서 이 도구는 화면에서 만든 일정표를 <strong>그대로 인쇄</strong>할 수 있게 만들었습니다. 인쇄 화면에서는 광고·버튼·메뉴가 모두 사라지고 일정만 남습니다. 브라우저의 "PDF로 저장"을 고르면 파일로도 남습니다.</p>
+  <p>동행과 공유할 때는 링크 하나면 됩니다. 일정 내용이 링크 안에 담겨 있어 서버에 저장하지 않고도 상대방 화면에 같은 일정표가 뜹니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>여행 제목·시작일·기간을 입력합니다.</li>
+    <li>몇째 날인지 고르고 시각과 내용을 넣어 "일정 추가"를 누릅니다. 시각순으로 자동 정렬됩니다.</li>
+    <li>각 항목 오른쪽 ✕ 로 삭제할 수 있습니다.</li>
+    <li>"인쇄 / PDF 저장"을 누르면 일정만 남은 인쇄 화면이 나옵니다. 대상에서 "PDF로 저장"을 고르면 파일이 됩니다.</li>
+    <li>"링크 복사"로 동행에게 공유하고, "이미지로 저장"으로 요약 카드를 저장할 수 있습니다.</li>
+  </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 일정이 서버에 저장되나요?</p><p class="a">아닙니다. 이 브라우저의 localStorage에만 저장되고, 공유 링크에는 일정 내용이 링크 자체에 인코딩되어 담깁니다. 서버에는 아무것도 남지 않습니다.</p></div>
+    <div class="qa"><p class="q">Q. 링크가 너무 깁니다.</p><p class="a">일정 내용을 서버 없이 담기 위해 링크 안에 인코딩하기 때문입니다. 일정이 많을수록 길어집니다. 메신저로 보낼 때는 문제가 없습니다.</p></div>
+    <div class="qa"><p class="q">Q. PDF로 저장하려면?</p><p class="a">'인쇄 / PDF 저장' 버튼을 누른 뒤 인쇄 대화상자의 대상에서 'PDF로 저장'을 고르세요. 인쇄 레이아웃에서는 광고·버튼이 제외됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 지도나 예약 정보도 넣을 수 있나요?</p><p class="a">현재는 시각과 내용 텍스트만 지원합니다. 예약번호처럼 짧은 정보는 내용란에 함께 적어 두면 인쇄물에 같이 나옵니다. 여권번호 등 민감한 정보는 넣지 마세요.</p></div>
+    
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 여권번호·카드번호 등 민감한 개인정보는 입력하지 마세요. 공유 링크에 그대로 담깁니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-pin/" target="_blank" rel="noopener"><span class="e">📍</span> 여행 핀 지도 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-packing/" target="_blank" rel="noopener"><span class="e">🎒</span> 여행 짐 체크리스트 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, copyText, store, download, readR, shareUrl, sharedCta, wireShare, toast, drawCard, saveCanvas } from "../assets/app.mjs";
+const S = store("tc-itin-v1");
+function pad(n) { return String(n).padStart(2, "0"); }
+const t0 = new Date();
+$("start").value = t0.getFullYear() + "-" + pad(t0.getMonth() + 1) + "-" + pad(t0.getDate());
+let evs = [];
+const shared = readR();
+const init = shared || S.load(null);
+if (init) { $("title").value = init.title || "여행"; $("start").value = init.start || $("start").value; $("days").value = init.days || 4; evs = init.evs || []; }
+if (shared) sharedCta($("ctaBox"), "나도 일정표 만들기");
+function fillDays() {
+  const n = Math.max(1, +$("days").value || 1);
+  $("dayNo").innerHTML = Array.from({ length: n }, (_, i) => "<option value=\"" + (i + 1) + "\">" + (i + 1) + "일차</option>").join("");
+}
+$("days").addEventListener("change", () => { fillDays(); render(); });
+fillDays();
+function stateOf() { return { title: $("title").value, start: $("start").value, days: +$("days").value || 1, evs }; }
+function dateOf(i) {
+  const [y, m, d] = $("start").value.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d + i));
+  const wd = ["일", "월", "화", "수", "목", "금", "토"][dt.getUTCDay()];
+  return (dt.getUTCMonth() + 1) + "/" + dt.getUTCDate() + " (" + wd + ")";
+}
+function render() {
+  const st = stateOf();
+  $("resultBox").hidden = false;
+  $("planTitle").textContent = st.title + " · " + st.days + "일 일정표";
+  let html = "";
+  for (let i = 0; i < st.days; i++) {
+    const list = evs.filter((e) => e.d === i + 1).sort((a, b) => a.t.localeCompare(b.t));
+    html += '<div class="d"><h3>' + (i + 1) + "일차 · " + dateOf(i) + "</h3>" +
+      (list.length ? list.map((e) => {
+        const idx = evs.indexOf(e);
+        return '<div class="ev"><span class="t">' + esc(e.t) + '</span><span>' + esc(e.w) + '</span><button class="x noprint" data-i="' + idx + '" type="button" aria-label="삭제">✕</button></div>';
+      }).join("") : '<p class="note" style="margin:0">아직 일정이 없습니다.</p>') + "</div>";
+  }
+  $("itin").innerHTML = html;
+  [...$("itin").querySelectorAll(".x")].forEach((b) => b.addEventListener("click", () => { evs.splice(+b.dataset.i, 1); S.save(stateOf()); render(); }));
+  S.save(st);
+}
+$("addBtn").addEventListener("click", () => {
+  const w = $("what").value.trim();
+  if (!w) { alert("일정 내용을 입력하세요."); return; }
+  evs.push({ d: +$("dayNo").value, t: $("at").value, w });
+  $("what").value = "";
+  render();
+  showAd();
+});
+function asText() {
+  const st = stateOf();
+  let s = st.title + " (" + st.days + "일)\n";
+  for (let i = 0; i < st.days; i++) {
+    s += "\n[" + (i + 1) + "일차 " + dateOf(i) + "]\n";
+    const list = evs.filter((e) => e.d === i + 1).sort((a, b) => a.t.localeCompare(b.t));
+    s += list.length ? list.map((e) => "  " + e.t + "  " + e.w).join("\n") + "\n" : "  (일정 없음)\n";
+  }
+  return s;
+}
+$("printBtn").addEventListener("click", () => window.print());
+$("textBtn").addEventListener("click", () => copyText(asText()));
+$("expBtn").addEventListener("click", () => download("itinerary.txt", asText()));
+$("clearBtn").addEventListener("click", () => { S.clear(); evs = []; render(); toast("저장 기록을 삭제했습니다"); });
+$("pngBtn").addEventListener("click", () => {
+  const st = stateOf();
+  const lines = [];
+  for (let i = 0; i < Math.min(st.days, 5); i++) {
+    const list = evs.filter((e) => e.d === i + 1).sort((a, b) => a.t.localeCompare(b.t));
+    lines.push("· " + (i + 1) + "일차 " + dateOf(i) + " — " + (list.length ? list.slice(0, 2).map((e) => e.t + " " + e.w).join(", ") : "자유"));
+  }
+  const cv = drawCard({ title: st.title, big: st.days + "일 일정", lines, slug: "itinerary" });
+  const box = $("cardCv");
+  box.hidden = false;
+  box.width = cv.width; box.height = cv.height;
+  box.getContext("2d").drawImage(cv, 0, 0);
+  saveCanvas(cv, "itinerary.png");
+});
+wireShare({
+  linkBtn: $("linkBtn"), textBtn: null, xBtn: null, shareBtn: $("shareBtn"),
+  getUrl: () => shareUrl(stateOf()),
+  getText: () => stateOf().title + " " + stateOf().days + "일 일정표",
+  title: "여행 일정표",
+});
+if (init) { render(); showAd(); }
+
+</script>
+</body>
+</html>

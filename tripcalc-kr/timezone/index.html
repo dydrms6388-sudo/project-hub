@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>세계 시차 계산기 — 한국 시각 ↔ 현지 시각 (서머타임 자동)</title>
+<meta name="description" content="도시를 고르면 지금 현지 시각과 한국과의 시차를 보여주고, 특정 날짜·시각을 현지 시각으로 변환합니다. 서머타임은 IANA 타임존 데이터로 자동 반영되어 하드코딩된 시차표보다 정확합니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/timezone/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="세계 시차 계산기 — 현지 시각 변환" />
+<meta property="og:description" content="도시를 고르면 지금 현지 시각과 한국과의 시차를 보여주고, 특정 날짜·시각을 현지 시각으로 변환합니다. 서머타임은 IANA 타임존 데이터로 자동 반영되어 하드코딩된 시차표보다 정확합니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/timezone/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"세계 시차 계산기","description":"도시를 고르면 지금 현지 시각과 한국과의 시차를 보여주고, 특정 날짜·시각을 현지 시각으로 변환합니다. 서머타임은 IANA 타임존 데이터로 자동 반영되어 하드코딩된 시차표보다 정확합니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/timezone/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"서머타임이 자동으로 반영되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 시차를 저장하지 않고 IANA 타임존 데이터베이스를 브라우저 Intl API로 조회해 계산하므로, 서머타임 시행·해제가 그대로 반영됩니다. 화면에도 현재 서머타임 적용 여부를 표시합니다."}},{"@type":"Question","name":"같은 나라인데 도시마다 시각이 다르게 나옵니다.","acceptedAnswer":{"@type":"Answer","text":"정상입니다. 미국·캐나다·호주·인도네시아 등은 한 나라에 여러 시간대가 있습니다. 그래서 이 도구는 국가가 아니라 도시(공항 소재지) 단위로 시각을 계산합니다."}},{"@type":"Question","name":"날짜가 하루 앞서거나 뒤처져 보입니다.","acceptedAnswer":{"@type":"Answer","text":"시차가 큰 지역에서는 흔한 일입니다. 각 시계에 요일과 날짜를 함께 표시하니 '어제/오늘/내일'을 반드시 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"세계 시차 계산기","item":"https://tripcalc-kr.vercel.app/timezone/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>세계 시차 계산기</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🕐</div>
+    <h1>세계 시차 계산기</h1>
+    <p class="lead">도시를 고르면 <strong>지금 현지 시각</strong>과 한국과의 시차가 바로 나옵니다. 서머타임은 자동 반영됩니다.</p>
+  </div>
+
+  <section class="card" aria-label="도시 선택">
+    <h2>도시 선택 (여러 개 가능)</h2>
+    <div class="grid2">
+      <label class="f">도시 추가 <select id="citySel"></select></label>
+      <label class="f">&nbsp;<button class="btn2" id="addBtn" type="button" style="width:100%;padding:11px">➕ 시계 추가</button></label>
+    </div>
+    <div class="chips" id="picked"></div>
+    <button class="btn" id="goBtn" type="button">현지 시각 보기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>지금 이 순간</h2>
+      <div id="clocks"></div>
+      <p class="note">기준: 대한민국 서울(Asia/Seoul, UTC+09:00, 서머타임 없음). 시차는 브라우저의 IANA 타임존 데이터로 계산합니다.</p>
+    </div>
+    <div class="card">
+      <h2>특정 시각 변환</h2>
+      <div class="grid2">
+        <label class="f">한국 날짜·시각 <input type="datetime-local" id="when" /></label>
+        <label class="f">&nbsp;<button class="btn2" id="convBtn" type="button" style="width:100%;padding:11px">🔁 현지 시각으로 변환</button></label>
+      </div>
+      <div id="convOut"></div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>시차표를 외우지 않아도 되는 이유</h2>
+  <p>"파리는 한국보다 8시간 느리다"는 문장은 절반만 맞습니다. 유럽은 3월 마지막 일요일부터 10월 마지막 일요일까지 서머타임을 시행해 그 기간에는 7시간 차이가 됩니다. 미국은 시행 기간이 유럽과 다르고, 호주는 남반구라 방향이 반대이며, 같은 나라 안에서도 주(州)별로 시행 여부가 갈립니다.</p>
+  <p>그래서 이 도구는 시차를 표로 저장해 두지 않습니다. 도시마다 <strong>IANA 타임존 ID</strong>(예: <code>Europe/Paris</code>)만 저장해 두고, 실제 시차는 계산하는 순간 브라우저의 타임존 데이터베이스에서 구합니다. 서머타임 전환일이 바뀌어도, 어떤 나라가 서머타임을 폐지해도 결과가 자동으로 따라갑니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>도시를 골라 "시계 추가"를 누릅니다. 여러 도시를 동시에 볼 수 있습니다(칩을 다시 누르면 삭제).</li>
+    <li>"현지 시각 보기"를 누르면 각 도시의 현재 시각과 서울 대비 시차가 1초마다 갱신됩니다.</li>
+    <li>아래 "특정 시각 변환"에 한국 날짜·시각을 넣으면 그 순간의 각 도시 현지 시각을 계산합니다. 화상회의·국제전화 약속 잡을 때 씁니다.</li>
+  </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 서머타임이 자동으로 반영되나요?</p><p class="a">네. 시차를 저장하지 않고 IANA 타임존 데이터베이스를 브라우저 Intl API로 조회해 계산하므로, 서머타임 시행·해제가 그대로 반영됩니다. 화면에도 현재 서머타임 적용 여부를 표시합니다.</p></div>
+    <div class="qa"><p class="q">Q. 같은 나라인데 도시마다 시각이 다르게 나옵니다.</p><p class="a">정상입니다. 미국·캐나다·호주·인도네시아 등은 한 나라에 여러 시간대가 있습니다. 그래서 이 도구는 국가가 아니라 도시(공항 소재지) 단위로 시각을 계산합니다.</p></div>
+    <div class="qa"><p class="q">Q. 날짜가 하루 앞서거나 뒤처져 보입니다.</p><p class="a">시차가 큰 지역에서는 흔한 일입니다. 각 시계에 요일과 날짜를 함께 표시하니 '어제/오늘/내일'을 반드시 확인하세요.</p></div>
+    <h2>시차 계산 방식</h2>
+    <p class="note">시차는 표를 하드코딩하지 않고 <strong>IANA 타임존 데이터베이스</strong>(예: <code>Asia/Seoul</code>)를 브라우저의
+    <code>Intl</code> API 로 계산합니다. 따라서 서머타임(일광절약시간) 시행·해제가 자동으로 반영되고, 브라우저의 tzdb 가 갱신되면 결과도 함께 갱신됩니다.
+    출처: <a href="https://www.iana.org/time-zones" target="_blank" rel="noopener">IANA Time Zone Database</a> (확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. </p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-pin/" target="_blank" rel="noopener"><span class="e">📍</span> 여행 핀 지도 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/china-travel/" target="_blank" rel="noopener"><span class="e">🇨🇳</span> 중국여행 준비 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, fillSelect, esc } from "../assets/app.mjs";
+import { offsetMinutes, offsetLabel, diffHours, diffLabel, localParts, isDst } from "../lib/tz.mjs";
+const CITIES = [{"v":"Asia/Seoul|서울","n":"서울"},{"v":"Asia/Seoul|부산","n":"부산"},{"v":"Asia/Seoul|제주","n":"제주"},{"v":"Asia/Seoul|대구","n":"대구"},{"v":"Asia/Tokyo|도쿄","n":"도쿄"},{"v":"Asia/Tokyo|오사카","n":"오사카"},{"v":"Asia/Tokyo|나고야","n":"나고야"},{"v":"Asia/Tokyo|후쿠오카","n":"후쿠오카"},{"v":"Asia/Tokyo|삿포로","n":"삿포로"},{"v":"Asia/Tokyo|오키나와","n":"오키나와"},{"v":"Asia/Shanghai|베이징","n":"베이징"},{"v":"Asia/Shanghai|상하이","n":"상하이"},{"v":"Asia/Shanghai|광저우","n":"광저우"},{"v":"Asia/Shanghai|선전","n":"선전"},{"v":"Asia/Hong_Kong|홍콩","n":"홍콩"},{"v":"Asia/Macau|마카오","n":"마카오"},{"v":"Asia/Taipei|타이베이","n":"타이베이"},{"v":"Asia/Singapore|싱가포르","n":"싱가포르"},{"v":"Asia/Kuala_Lumpur|쿠알라룸푸르","n":"쿠알라룸푸르"},{"v":"Asia/Bangkok|방콕","n":"방콕"},{"v":"Asia/Bangkok|치앙마이","n":"치앙마이"},{"v":"Asia/Bangkok|푸껫","n":"푸껫"},{"v":"Asia/Ho_Chi_Minh|호치민","n":"호치민"},{"v":"Asia/Ho_Chi_Minh|하노이","n":"하노이"},{"v":"Asia/Ho_Chi_Minh|다낭","n":"다낭"},{"v":"Asia/Ho_Chi_Minh|나트랑","n":"나트랑"},{"v":"Asia/Manila|마닐라","n":"마닐라"},{"v":"Asia/Manila|세부","n":"세부"},{"v":"Asia/Manila|클라크","n":"클라크"},{"v":"Asia/Makassar|발리","n":"발리"},{"v":"Asia/Jakarta|자카르타","n":"자카르타"},{"v":"Asia/Phnom_Penh|프놈펜","n":"프놈펜"},{"v":"Asia/Kolkata|델리","n":"델리"},{"v":"Asia/Kolkata|뭄바이","n":"뭄바이"},{"v":"Asia/Tashkent|타슈켄트","n":"타슈켄트"},{"v":"Asia/Ulaanbaatar|울란바토르","n":"울란바토르"},{"v":"Asia/Dubai|두바이","n":"두바이"},{"v":"Asia/Dubai|아부다비","n":"아부다비"},{"v":"Asia/Qatar|도하","n":"도하"},{"v":"Europe/Istanbul|이스탄불","n":"이스탄불"},{"v":"Asia/Jerusalem|텔아비브","n":"텔아비브"},{"v":"Europe/London|런던","n":"런던"},{"v":"Europe/Paris|파리","n":"파리"},{"v":"Europe/Berlin|프랑크푸르트","n":"프랑크푸르트"},{"v":"Europe/Berlin|뮌헨","n":"뮌헨"},{"v":"Europe/Amsterdam|암스테르담","n":"암스테르담"},{"v":"Europe/Brussels|브뤼셀","n":"브뤼셀"},{"v":"Europe/Zurich|취리히","n":"취리히"},{"v":"Europe/Zurich|제네바","n":"제네바"},{"v":"Europe/Vienna|빈","n":"빈"},{"v":"Europe/Prague|프라하","n":"프라하"},{"v":"Europe/Warsaw|바르샤바","n":"바르샤바"},{"v":"Europe/Budapest|부다페스트","n":"부다페스트"},{"v":"Europe/Rome|로마","n":"로마"},{"v":"Europe/Rome|밀라노","n":"밀라노"},{"v":"Europe/Rome|베네치아","n":"베네치아"},{"v":"Europe/Madrid|바르셀로나","n":"바르셀로나"},{"v":"Europe/Madrid|마드리드","n":"마드리드"},{"v":"Europe/Lisbon|리스본","n":"리스본"},{"v":"Europe/Athens|아테네","n":"아테네"},{"v":"Europe/Dublin|더블린","n":"더블린"},{"v":"Europe/Copenhagen|코펜하겐","n":"코펜하겐"},{"v":"Europe/Stockholm|스톡홀름","n":"스톡홀름"},{"v":"Europe/Oslo|오슬로","n":"오슬로"},{"v":"Europe/Helsinki|헬싱키","n":"헬싱키"},{"v":"Atlantic/Reykjavik|레이캬비크","n":"레이캬비크"},{"v":"Europe/Moscow|모스크바","n":"모스크바"},{"v":"Asia/Vladivostok|블라디보스토크","n":"블라디보스토크"},{"v":"America/New_York|뉴욕","n":"뉴욕"},{"v":"America/New_York|보스턴","n":"보스턴"},{"v":"America/New_York|워싱턴 D.C.","n":"워싱턴 D.C."},{"v":"America/Chicago|시카고","n":"시카고"},{"v":"America/Chicago|댈러스","n":"댈러스"},{"v":"America/New_York|애틀랜타","n":"애틀랜타"},{"v":"America/New_York|마이애미","n":"마이애미"},{"v":"America/Los_Angeles|로스앤젤레스","n":"로스앤젤레스"},{"v":"America/Los_Angeles|샌프란시스코","n":"샌프란시스코"},{"v":"America/Los_Angeles|시애틀","n":"시애틀"},{"v":"America/Los_Angeles|라스베이거스","n":"라스베이거스"},{"v":"America/Los_Angeles|샌디에이고","n":"샌디에이고"},{"v":"Pacific/Honolulu|호놀룰루","n":"호놀룰루"},{"v":"America/Vancouver|밴쿠버","n":"밴쿠버"},{"v":"America/Toronto|토론토","n":"토론토"},{"v":"America/Mexico_City|멕시코시티","n":"멕시코시티"},{"v":"America/Cancun|칸쿤","n":"칸쿤"},{"v":"America/Sao_Paulo|상파울루","n":"상파울루"},{"v":"America/Argentina/Buenos_Aires|부에노스아이레스","n":"부에노스아이레스"},{"v":"America/Santiago|산티아고","n":"산티아고"},{"v":"America/Lima|리마","n":"리마"},{"v":"Australia/Sydney|시드니","n":"시드니"},{"v":"Australia/Melbourne|멜버른","n":"멜버른"},{"v":"Australia/Brisbane|브리즈번","n":"브리즈번"},{"v":"Australia/Perth|퍼스","n":"퍼스"},{"v":"Pacific/Auckland|오클랜드","n":"오클랜드"},{"v":"Pacific/Auckland|크라이스트처치","n":"크라이스트처치"},{"v":"Pacific/Guam|괌","n":"괌"},{"v":"Pacific/Saipan|사이판","n":"사이판"},{"v":"Pacific/Fiji|피지 난디","n":"피지 난디"},{"v":"Africa/Cairo|카이로","n":"카이로"},{"v":"Africa/Casablanca|카사블랑카","n":"카사블랑카"},{"v":"Africa/Johannesburg|요하네스버그","n":"요하네스버그"},{"v":"Africa/Johannesburg|케이프타운","n":"케이프타운"}];
+const SEOUL = "Asia/Seoul";
+fillSelect($("citySel"), CITIES, "Asia/Tokyo|도쿄");
+const q = new URLSearchParams(location.search);
+let picked = (q.get("c") || "도쿄,파리,뉴욕").split(",").map((n) => CITIES.find((c) => c.n === n)).filter(Boolean);
+function renderChips() {
+  $("picked").innerHTML = picked.map((c, i) => '<button class="chip" aria-pressed="true" data-i="' + i + '" type="button">' + esc(c.n) + ' ✕</button>').join("");
+  [...$("picked").querySelectorAll("button")].forEach((b) => b.addEventListener("click", () => { picked.splice(+b.dataset.i, 1); renderChips(); }));
+}
+$("addBtn").addEventListener("click", () => {
+  const v = $("citySel").value;
+  const c = CITIES.find((x) => x.v === v);
+  if (c && !picked.some((p) => p.v === c.v) && picked.length < 8) picked.push(c);
+  renderChips();
+});
+renderChips();
+let timer = null;
+function tick() {
+  const now = new Date();
+  $("clocks").innerHTML = picked.map((c) => {
+    const [tz, name] = c.v.split("|");
+    const p = localParts(tz, now);
+    const d = diffHours(SEOUL, tz, now);
+    const dst = isDst(tz, now) ? ' <span class="badge ok">서머타임</span>' : "";
+    return '<div class="clock"><div><div class="city">' + esc(name) + dst + '</div><div class="zone">' + esc(tz) + " · UTC" + offsetLabel(offsetMinutes(tz, now)) + " · 서울 대비 " + esc(diffLabel(d)) + '</div></div>' +
+      '<div><div class="time">' + String(p.h).padStart(2, "0") + ":" + String(p.mi).padStart(2, "0") + '</div><div class="day">' + p.m + "/" + p.d + " (" + p.wd + ")</div></div></div>";
+  }).join("") || '<p class="note">도시를 추가하세요.</p>';
+}
+$("goBtn").addEventListener("click", () => {
+  $("resultBox").hidden = false;
+  tick();
+  if (timer) clearInterval(timer);
+  timer = setInterval(tick, 1000);
+  showAd();
+});
+function pad(n) { return String(n).padStart(2, "0"); }
+const n0 = new Date();
+$("when").value = n0.getFullYear() + "-" + pad(n0.getMonth() + 1) + "-" + pad(n0.getDate()) + "T" + pad(n0.getHours()) + ":00";
+$("convBtn").addEventListener("click", () => {
+  const v = $("when").value;
+  if (!v) return;
+  const [ds, ts] = v.split("T");
+  const [y, mo, da] = ds.split("-").map(Number);
+  const [hh, mi] = ts.split(":").map(Number);
+  const guess = Date.UTC(y, mo - 1, da, hh, mi) - offsetMinutes(SEOUL, new Date(Date.UTC(y, mo - 1, da, hh, mi))) * 60000;
+  const at = new Date(guess);
+  $("convOut").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>도시</th><th>현지 날짜</th><th>현지 시각</th></tr></thead><tbody>' +
+    picked.map((c) => {
+      const [tz, name] = c.v.split("|");
+      const p = localParts(tz, at);
+      return "<tr><td>" + esc(name) + "</td><td>" + p.y + "-" + pad(p.m) + "-" + pad(p.d) + " (" + p.wd + ")</td><td>" + pad(p.h) + ":" + pad(p.mi) + "</td></tr>";
+    }).join("") + "</tbody></table></div>";
+});
+
+</script>
+</body>
+</html>

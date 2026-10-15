@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>시차적응 플래너 — 적응 기간 추정과 출발 전 수면 조정</title>
+<meta name="description" content="출발지와 도착지를 고르면 시차의 방향과 크기로 적응에 걸리는 대략의 기간을 추정하고, 출발 며칠 전부터 취침 시각을 어떻게 옮기면 좋은지 일정표를 만들어 줍니다. 의학적 조언이 아닌 일반적인 생활 정보입니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/jetlag/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="시차적응 플래너" />
+<meta property="og:description" content="출발지와 도착지를 고르면 시차의 방향과 크기로 적응에 걸리는 대략의 기간을 추정하고, 출발 며칠 전부터 취침 시각을 어떻게 옮기면 좋은지 일정표를 만들어 줍니다. 의학적 조언이 아닌 일반적인 생활 정보입니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/jetlag/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"시차적응 플래너","description":"출발지와 도착지를 고르면 시차의 방향과 크기로 적응에 걸리는 대략의 기간을 추정하고, 출발 며칠 전부터 취침 시각을 어떻게 옮기면 좋은지 일정표를 만들어 줍니다. 의학적 조언이 아닌 일반적인 생활 정보입니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/jetlag/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"적응 기간 추정은 얼마나 정확한가요?","acceptedAnswer":{"@type":"Answer","text":"개인차가 매우 큽니다. 나이·평소 수면 습관·비행 시간대·현지 활동량에 따라 달라지므로 '대략 이 정도'의 감을 잡는 용도로만 쓰세요. 의학적 조언이 아닙니다."}},{"@type":"Question","name":"짧은 출장에도 시차를 맞춰야 하나요?","acceptedAnswer":{"@type":"Answer","text":"2~3일처럼 아주 짧은 일정이라면 한국 시각을 유지하는 편이 나을 수 있습니다. 어차피 적응이 끝나기 전에 돌아오기 때문입니다. 중요한 일정이 있는 시간대에 컨디션이 좋도록 맞추는 편이 실용적입니다."}},{"@type":"Question","name":"수면제나 멜라토닌은 어떤가요?","acceptedAnswer":{"@type":"Answer","text":"약물·보충제 사용은 이 사이트가 다루지 않습니다. 복용 여부와 용량은 반드시 의사·약사와 상의하세요."}},{"@type":"Question","name":"밤 비행기와 낮 비행기 중 어느 쪽이 나은가요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 도착 시각이 현지 저녁이면 그날 밤 자연스럽게 잠들 수 있어 적응이 수월하다고 여겨집니다. 다만 기내에서 얼마나 잘 수 있는지가 사람마다 달라 일률적인 정답은 없습니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"시차적응 플래너","item":"https://tripcalc-kr.vercel.app/jetlag/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>시차적응 플래너</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">😵‍💫</div>
+    <h1>시차적응 플래너</h1>
+    <p class="lead">동쪽으로 갈수록 힘든 이유부터. <strong>출발 전 수면 조정 일정</strong>과 도착 후 행동 요령을 만들어 드립니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>여정 입력</h2>
+    <div class="grid2">
+      <label class="f">출발 도시 <select id="fromCity"></select></label>
+      <label class="f">도착 도시 <select id="toCity"></select></label>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">출발 날짜 <input type="date" id="date" /></label>
+      <label class="f">평소 취침 시각 <input type="time" id="sleep" value="23:30" /></label>
+    </div>
+    <label class="f" style="display:block;margin-top:12px">체류 기간 <span class="u">(일)</span>
+      <input type="number" id="stay" min="1" max="60" value="7" />
+    </label>
+    <button class="btn" id="goBtn" type="button">시차적응 계획 만들기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>적응 예상</h2>
+      <p class="big">완전 적응까지 대략 <span class="num" id="daysOut">-</span></p>
+      <dl class="kv" id="sum"></dl>
+      <p class="note" id="dirNote"></p>
+    </div>
+    <div class="card">
+      <h2>출발 전 수면 조정 일정</h2>
+      <div id="plan"></div>
+      <p class="note">하루 30분~1시간씩 취침·기상 시각을 목적지 방향으로 옮기는 방식입니다. 무리해서 한꺼번에 옮기면 오히려 수면 부족이 겹칩니다.</p>
+    </div>
+    <div class="card">
+      <h2>도착 후 행동 요령</h2>
+      <div id="after"></div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>왜 동쪽 여행이 더 힘든가</h2>
+  <p>사람의 생체 시계는 자연 상태에서 24시간보다 조금 길게 도는 경향이 있습니다. 그래서 <strong>하루를 늘리는 방향(서쪽으로 이동)</strong>이 <strong>하루를 줄이는 방향(동쪽으로 이동)</strong>보다 대체로 수월합니다. 서울에서 유럽으로 갈 때(서쪽)보다 유럽에서 서울로 돌아올 때(동쪽) 더 힘든 이유가 여기에 있습니다.</p>
+  <p>흔히 쓰이는 경험칙은 <strong>시차 1시간당 하루 정도</strong> 적응 기간이 필요하다는 것입니다. 서쪽 이동은 이보다 조금 빠르고, 동쪽 이동은 조금 더 걸리는 편입니다. 이 도구는 이 경험칙으로 대략의 기간을 추정하고, 출발 전에 미리 시계를 옮겨 두는 일정을 만들어 줍니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>출발·도착 도시와 출발 날짜, 평소 취침 시각을 입력합니다.</li>
+    <li>"시차적응 계획 만들기"를 누르면 시차 방향(동/서), 적응 예상 기간, 출발 전 며칠간의 취침·기상 조정표가 나옵니다.</li>
+    <li>체류 기간이 짧으면(2~3일) 굳이 현지 시각에 맞추지 않는 편이 나을 수 있다는 안내도 함께 표시됩니다.</li>
+  </ol>
+  <h2>도착 후에 도움이 되는 습관</h2>
+  <ul>
+    <li>도착 당일 낮에는 <strong>바깥 햇빛</strong>을 쬐고, 낮잠은 짧게(20~30분) 제한합니다.</li>
+    <li>기내와 도착 첫날은 <strong>수분 섭취</strong>를 늘리고 술·카페인은 줄입니다.</li>
+    <li>첫날부터 현지 시각에 맞춰 식사하면 몸이 시간을 인식하는 데 도움이 됩니다.</li>
+    <li>일정을 짤 때 도착 첫날은 가볍게 잡아 두면 이후가 편합니다.</li>
+  </ul>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 적응 기간 추정은 얼마나 정확한가요?</p><p class="a">개인차가 매우 큽니다. 나이·평소 수면 습관·비행 시간대·현지 활동량에 따라 달라지므로 '대략 이 정도'의 감을 잡는 용도로만 쓰세요. 의학적 조언이 아닙니다.</p></div>
+    <div class="qa"><p class="q">Q. 짧은 출장에도 시차를 맞춰야 하나요?</p><p class="a">2~3일처럼 아주 짧은 일정이라면 한국 시각을 유지하는 편이 나을 수 있습니다. 어차피 적응이 끝나기 전에 돌아오기 때문입니다. 중요한 일정이 있는 시간대에 컨디션이 좋도록 맞추는 편이 실용적입니다.</p></div>
+    <div class="qa"><p class="q">Q. 수면제나 멜라토닌은 어떤가요?</p><p class="a">약물·보충제 사용은 이 사이트가 다루지 않습니다. 복용 여부와 용량은 반드시 의사·약사와 상의하세요.</p></div>
+    <div class="qa"><p class="q">Q. 밤 비행기와 낮 비행기 중 어느 쪽이 나은가요?</p><p class="a">일반적으로 도착 시각이 현지 저녁이면 그날 밤 자연스럽게 잠들 수 있어 적응이 수월하다고 여겨집니다. 다만 기내에서 얼마나 잘 수 있는지가 사람마다 달라 일률적인 정답은 없습니다.</p></div>
+    <h2>시차 계산 방식</h2>
+    <p class="note">시차는 표를 하드코딩하지 않고 <strong>IANA 타임존 데이터베이스</strong>(예: <code>Asia/Seoul</code>)를 브라우저의
+    <code>Intl</code> API 로 계산합니다. 따라서 서머타임(일광절약시간) 시행·해제가 자동으로 반영되고, 브라우저의 tzdb 가 갱신되면 결과도 함께 갱신됩니다.
+    출처: <a href="https://www.iana.org/time-zones" target="_blank" rel="noopener">IANA Time Zone Database</a> (확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 시차적응 안내는 일반적인 생활 정보이며 의학적 진단·처방·치료 조언이 아닙니다. 수면 문제가 지속되면 전문가와 상담하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-pin/" target="_blank" rel="noopener"><span class="e">📍</span> 여행 핀 지도 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-packing/" target="_blank" rel="noopener"><span class="e">🎒</span> 여행 짐 체크리스트 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, fillSelect } from "../assets/app.mjs";
+import { diffHours, diffLabel, localParts } from "../lib/tz.mjs";
+const CITIES = [{"v":"Asia/Seoul|서울","n":"서울"},{"v":"Asia/Seoul|부산","n":"부산"},{"v":"Asia/Seoul|제주","n":"제주"},{"v":"Asia/Seoul|대구","n":"대구"},{"v":"Asia/Tokyo|도쿄","n":"도쿄"},{"v":"Asia/Tokyo|오사카","n":"오사카"},{"v":"Asia/Tokyo|나고야","n":"나고야"},{"v":"Asia/Tokyo|후쿠오카","n":"후쿠오카"},{"v":"Asia/Tokyo|삿포로","n":"삿포로"},{"v":"Asia/Tokyo|오키나와","n":"오키나와"},{"v":"Asia/Shanghai|베이징","n":"베이징"},{"v":"Asia/Shanghai|상하이","n":"상하이"},{"v":"Asia/Shanghai|광저우","n":"광저우"},{"v":"Asia/Shanghai|선전","n":"선전"},{"v":"Asia/Hong_Kong|홍콩","n":"홍콩"},{"v":"Asia/Macau|마카오","n":"마카오"},{"v":"Asia/Taipei|타이베이","n":"타이베이"},{"v":"Asia/Singapore|싱가포르","n":"싱가포르"},{"v":"Asia/Kuala_Lumpur|쿠알라룸푸르","n":"쿠알라룸푸르"},{"v":"Asia/Bangkok|방콕","n":"방콕"},{"v":"Asia/Bangkok|치앙마이","n":"치앙마이"},{"v":"Asia/Bangkok|푸껫","n":"푸껫"},{"v":"Asia/Ho_Chi_Minh|호치민","n":"호치민"},{"v":"Asia/Ho_Chi_Minh|하노이","n":"하노이"},{"v":"Asia/Ho_Chi_Minh|다낭","n":"다낭"},{"v":"Asia/Ho_Chi_Minh|나트랑","n":"나트랑"},{"v":"Asia/Manila|마닐라","n":"마닐라"},{"v":"Asia/Manila|세부","n":"세부"},{"v":"Asia/Manila|클라크","n":"클라크"},{"v":"Asia/Makassar|발리","n":"발리"},{"v":"Asia/Jakarta|자카르타","n":"자카르타"},{"v":"Asia/Phnom_Penh|프놈펜","n":"프놈펜"},{"v":"Asia/Kolkata|델리","n":"델리"},{"v":"Asia/Kolkata|뭄바이","n":"뭄바이"},{"v":"Asia/Tashkent|타슈켄트","n":"타슈켄트"},{"v":"Asia/Ulaanbaatar|울란바토르","n":"울란바토르"},{"v":"Asia/Dubai|두바이","n":"두바이"},{"v":"Asia/Dubai|아부다비","n":"아부다비"},{"v":"Asia/Qatar|도하","n":"도하"},{"v":"Europe/Istanbul|이스탄불","n":"이스탄불"},{"v":"Asia/Jerusalem|텔아비브","n":"텔아비브"},{"v":"Europe/London|런던","n":"런던"},{"v":"Europe/Paris|파리","n":"파리"},{"v":"Europe/Berlin|프랑크푸르트","n":"프랑크푸르트"},{"v":"Europe/Berlin|뮌헨","n":"뮌헨"},{"v":"Europe/Amsterdam|암스테르담","n":"암스테르담"},{"v":"Europe/Brussels|브뤼셀","n":"브뤼셀"},{"v":"Europe/Zurich|취리히","n":"취리히"},{"v":"Europe/Zurich|제네바","n":"제네바"},{"v":"Europe/Vienna|빈","n":"빈"},{"v":"Europe/Prague|프라하","n":"프라하"},{"v":"Europe/Warsaw|바르샤바","n":"바르샤바"},{"v":"Europe/Budapest|부다페스트","n":"부다페스트"},{"v":"Europe/Rome|로마","n":"로마"},{"v":"Europe/Rome|밀라노","n":"밀라노"},{"v":"Europe/Rome|베네치아","n":"베네치아"},{"v":"Europe/Madrid|바르셀로나","n":"바르셀로나"},{"v":"Europe/Madrid|마드리드","n":"마드리드"},{"v":"Europe/Lisbon|리스본","n":"리스본"},{"v":"Europe/Athens|아테네","n":"아테네"},{"v":"Europe/Dublin|더블린","n":"더블린"},{"v":"Europe/Copenhagen|코펜하겐","n":"코펜하겐"},{"v":"Europe/Stockholm|스톡홀름","n":"스톡홀름"},{"v":"Europe/Oslo|오슬로","n":"오슬로"},{"v":"Europe/Helsinki|헬싱키","n":"헬싱키"},{"v":"Atlantic/Reykjavik|레이캬비크","n":"레이캬비크"},{"v":"Europe/Moscow|모스크바","n":"모스크바"},{"v":"Asia/Vladivostok|블라디보스토크","n":"블라디보스토크"},{"v":"America/New_York|뉴욕","n":"뉴욕"},{"v":"America/New_York|보스턴","n":"보스턴"},{"v":"America/New_York|워싱턴 D.C.","n":"워싱턴 D.C."},{"v":"America/Chicago|시카고","n":"시카고"},{"v":"America/Chicago|댈러스","n":"댈러스"},{"v":"America/New_York|애틀랜타","n":"애틀랜타"},{"v":"America/New_York|마이애미","n":"마이애미"},{"v":"America/Los_Angeles|로스앤젤레스","n":"로스앤젤레스"},{"v":"America/Los_Angeles|샌프란시스코","n":"샌프란시스코"},{"v":"America/Los_Angeles|시애틀","n":"시애틀"},{"v":"America/Los_Angeles|라스베이거스","n":"라스베이거스"},{"v":"America/Los_Angeles|샌디에이고","n":"샌디에이고"},{"v":"Pacific/Honolulu|호놀룰루","n":"호놀룰루"},{"v":"America/Vancouver|밴쿠버","n":"밴쿠버"},{"v":"America/Toronto|토론토","n":"토론토"},{"v":"America/Mexico_City|멕시코시티","n":"멕시코시티"},{"v":"America/Cancun|칸쿤","n":"칸쿤"},{"v":"America/Sao_Paulo|상파울루","n":"상파울루"},{"v":"America/Argentina/Buenos_Aires|부에노스아이레스","n":"부에노스아이레스"},{"v":"America/Santiago|산티아고","n":"산티아고"},{"v":"America/Lima|리마","n":"리마"},{"v":"Australia/Sydney|시드니","n":"시드니"},{"v":"Australia/Melbourne|멜버른","n":"멜버른"},{"v":"Australia/Brisbane|브리즈번","n":"브리즈번"},{"v":"Australia/Perth|퍼스","n":"퍼스"},{"v":"Pacific/Auckland|오클랜드","n":"오클랜드"},{"v":"Pacific/Auckland|크라이스트처치","n":"크라이스트처치"},{"v":"Pacific/Guam|괌","n":"괌"},{"v":"Pacific/Saipan|사이판","n":"사이판"},{"v":"Pacific/Fiji|피지 난디","n":"피지 난디"},{"v":"Africa/Cairo|카이로","n":"카이로"},{"v":"Africa/Casablanca|카사블랑카","n":"카사블랑카"},{"v":"Africa/Johannesburg|요하네스버그","n":"요하네스버그"},{"v":"Africa/Johannesburg|케이프타운","n":"케이프타운"}];
+fillSelect($("fromCity"), CITIES, "Asia/Seoul|서울");
+fillSelect($("toCity"), CITIES, "America/New_York|뉴욕");
+function pad(n) { return String(n).padStart(2, "0"); }
+const t0 = new Date();
+$("date").value = t0.getFullYear() + "-" + pad(t0.getMonth() + 1) + "-" + pad(t0.getDate());
+$("goBtn").addEventListener("click", () => {
+  const [fz, fn] = $("fromCity").value.split("|");
+  const [tz, tn] = $("toCity").value.split("|");
+  const [y, m, d] = $("date").value.split("-").map(Number);
+  const when = new Date(Date.UTC(y, m - 1, d, 3));
+  const diff = diffHours(fz, tz, when);
+  const east = diff > 0;
+  const abs = Math.abs(diff);
+  const stay = Math.max(1, +$("stay").value || 7);
+  const days = abs === 0 ? 0 : Math.round(abs * (east ? 1.1 : 0.75) * 10) / 10;
+  $("resultBox").hidden = false;
+  $("daysOut").textContent = abs === 0 ? "시차 없음" : days + "일";
+  $("sum").innerHTML =
+    "<dt>시차</dt><dd>" + esc(fn) + " 대비 " + esc(diffLabel(diff)) + "</dd>" +
+    "<dt>이동 방향</dt><dd>" + (abs === 0 ? "동일 시간대" : east ? "동쪽 (하루가 짧아짐)" : "서쪽 (하루가 길어짐)") + "</dd>" +
+    "<dt>도착지 현재 시각</dt><dd>" + (function () { const p = localParts(tz); return pad(p.h) + ":" + pad(p.mi) + " (" + p.wd + ")"; })() + "</dd>" +
+    "<dt>체류 기간</dt><dd>" + stay + "일</dd>";
+  $("dirNote").innerHTML = abs === 0
+    ? "시차가 없어 특별한 조정이 필요하지 않습니다. 비행 피로만 관리하세요."
+    : east
+      ? "동쪽 이동은 하루를 <strong>줄이는</strong> 방향이라 대체로 더 힘듭니다. 출발 며칠 전부터 <strong>일찍 자고 일찍 일어나는</strong> 쪽으로 옮겨 두면 도움이 됩니다."
+      : "서쪽 이동은 하루를 <strong>늘리는</strong> 방향이라 상대적으로 수월합니다. 출발 전 <strong>늦게 자고 늦게 일어나는</strong> 쪽으로 조금씩 옮겨 보세요.";
+  const shiftDays = Math.min(4, Math.ceil(abs / 2));
+  const [sh, sm] = $("sleep").value.split(":").map(Number);
+  let rows = "";
+  for (let i = shiftDays; i >= 1; i--) {
+    const move = (shiftDays - i + 1) * (east ? -1 : 1);
+    const t = new Date(2000, 0, 1, sh, sm);
+    t.setMinutes(t.getMinutes() + move * 45);
+    const day = new Date(Date.UTC(y, m - 1, d - i));
+    rows += "<tr><td>출발 " + i + "일 전 (" + (day.getUTCMonth() + 1) + "/" + day.getUTCDate() + ")</td><td>" +
+      pad(t.getHours()) + ":" + pad(t.getMinutes()) + "</td><td class=\"mut\">평소보다 " + Math.abs(move * 45) + "분 " + (east ? "일찍" : "늦게") + "</td></tr>";
+  }
+  $("plan").innerHTML = abs === 0 ? '<p class="note">조정할 시차가 없습니다.</p>'
+    : '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>날짜</th><th>권장 취침</th><th>변화</th></tr></thead><tbody>' + rows + "</tbody></table></div>";
+  const tips = [];
+  if (stay <= 3 && abs >= 5) tips.push("체류가 " + stay + "일로 짧습니다. 시차를 완전히 맞추기보다 <strong>한국 시각을 어느 정도 유지</strong>하면서 중요한 일정 시간대에 컨디션을 맞추는 편이 실용적일 수 있습니다.");
+  tips.push(east
+    ? "도착 후 <strong>아침 햇빛</strong>을 충분히 쬐고 늦은 밤 밝은 화면은 줄이세요."
+    : "도착 후 <strong>저녁 무렵 밝은 빛</strong>에 노출되면 늦게까지 깨어 있기 쉬워 적응에 도움이 됩니다.");
+  tips.push("도착 첫날 낮잠은 20~30분으로 제한하고, 현지 시각에 맞춰 식사하세요.");
+  tips.push("기내와 도착 첫날은 수분을 넉넉히 섭취하고 술·카페인은 줄이세요.");
+  tips.push("도착 첫날 일정은 가볍게 잡아 두면 남은 일정이 편해집니다.");
+  $("after").innerHTML = '<ul class="about" style="margin:0;padding-left:20px">' + tips.map((t) => "<li style=\"margin:8px 0;color:var(--tx2)\">" + t + "</li>").join("") + "</ul>";
+  showAd();
+});
+
+</script>
+</body>
+</html>

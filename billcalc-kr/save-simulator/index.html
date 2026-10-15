@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>전기요금 절약 시뮬레이터 — 온도·시간 조정 효과를 그래프로</title>
+<meta name="description" content="냉방 설정온도 1℃ 조정, 에어컨 사용시간 단축, 대기전력 차단, 조명 교체 등의 절약 효과를 합산해 월 전기요금이 얼마나 줄어드는지 누진 구간 곡선 그래프로 보여줍니다." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/save-simulator/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="전기요금 절약 시뮬레이터 — 온도·시간 조정 효과를 그래프로" />
+<meta property="og:description" content="냉방 설정온도 1℃ 조정, 에어컨 사용시간 단축, 대기전력 차단, 조명 교체 등의 절약 효과를 합산해 월 전기요금이 얼마나 줄어드는지 누진 구간 곡선 그래프로 보여줍니다." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/save-simulator/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"전기요금 절약 시뮬레이터","description":"냉방 설정온도 1℃ 조정, 에어컨 사용시간 단축, 대기전력 차단, 조명 교체 등의 절약 효과를 합산해 월 전기요금이 얼마나 줄어드는지 누진 구간 곡선 그래프로 보여줍니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/save-simulator/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"설정온도 1℃에 7%는 믿을 만한 수치인가요?","acceptedAnswer":{"@type":"Answer","text":"에너지절약 캠페인에서 널리 쓰이는 참고치이며 보장된 값이 아닙니다. 단열 상태, 외기 온도, 기기 효율에 따라 크게 달라지므로 이 계산기는 절감률을 직접 수정할 수 있게 했습니다. 보수적으로 보려면 3~5%로 낮춰 계산해 보세요."}},{"@type":"Question","name":"누진 경계 근처면 얼마나 이득인가요?","acceptedAnswer":{"@type":"Answer","text":"예를 들어 기타계절에 410kWh를 쓰는 집이 사용량을 400kWh 아래로 낮추면 3단계 단가와 7,300원짜리 기본요금이 함께 사라져, 10kWh 절감만으로 만 원 안팎이 줄어들 수 있습니다. 그래프의 꺾이는 지점이 그 경계입니다."}},{"@type":"Question","name":"절감 항목이 겹치면 중복 계산되지 않나요?","acceptedAnswer":{"@type":"Answer","text":"설정온도 조정은 '냉·난방 사용량'에만 적용되고, 사용시간 단축은 입력한 기기 소비전력 기준으로 계산됩니다. 두 항목을 동시에 크게 넣으면 냉·난방 사용량보다 절감량이 커질 수 있어, 계산 시 냉·난방 사용량을 넘지 않도록 제한합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"절약 시뮬레이터","item":"https://billcalc-kr.vercel.app/save-simulator/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <span>절약 시뮬레이터</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">📉</div>
+    <h1>전기요금 절약 시뮬레이터</h1>
+    <p class="lead">조정 항목을 바꾸면 절감 kWh와 요금이 즉시 계산되고, <strong>누진 곡선 위 내 위치</strong>가 그래프로 표시됩니다.</p>
+  </div>
+
+  <section class="card" aria-label="현재 상태">
+    <h2>1. 현재 상태</h2>
+    <div class="grid2">
+      <label class="f">현재 월 사용량 <span class="u">(kWh)</span>
+        <input type="number" id="baseKwh" inputmode="decimal" min="0" step="1" value="400" />
+      </label>
+      <label class="f">그중 냉·난방 사용량 <span class="u">(kWh · 대략)</span>
+        <input type="number" id="hvacKwh" inputmode="decimal" min="0" step="1" value="150" />
+      </label>
+    </div>
+    <div class="grid2">
+      <label class="f">계산 월 <span class="u">(7~8월 하계 구간)</span>
+        <select id="month"></select>
+      </label>
+      <label class="f">계약 종류
+        <select id="voltage"><option value="low">저압 (대부분 가정)</option><option value="high">고압 (아파트 일괄계약)</option></select>
+      </label>
+    </div>
+  </section>
+
+  <section class="card" aria-label="조정">
+    <h2>2. 무엇을 바꿔볼까요</h2>
+    <div class="grid2">
+      <label class="f">냉·난방 설정온도 조정 <span class="u">(℃ · 여름은 높게/겨울은 낮게)</span>
+        <input type="number" id="deg" inputmode="decimal" min="0" max="5" step="1" value="1" />
+      </label>
+      <label class="f">1℃당 절감률 <span class="u">(% · 참고치)</span> 
+        <input type="number" id="degRate" inputmode="decimal" min="0" max="20" step="0.5" value="7" />
+      </label>
+      <label class="f">냉·난방 기기 소비전력 <span class="u">(W)</span>
+        <input type="number" id="watt" inputmode="decimal" min="0" step="10" value="1800" />
+      </label>
+      <label class="f">하루 사용시간 단축 <span class="u">(시간)</span>
+        <input type="number" id="cutH" inputmode="decimal" min="0" max="24" step="0.5" value="2" />
+      </label>
+      <label class="f">차단할 대기전력 <span class="u">(W · 24시간 기준)</span>
+        <input type="number" id="stbW" inputmode="decimal" min="0" step="1" value="20" />
+      </label>
+      <label class="f">조명 교체 절감 <span class="u">(W · 사용 6시간 기준)</span>
+        <input type="number" id="lightW" inputmode="decimal" min="0" step="10" value="0" />
+      </label>
+    </div>
+    <p class="note">설정온도 1℃당 절감률 7%는 에너지절약 캠페인에서 쓰이는 <strong>참고치</strong>입니다 <span class="badge warn">확인 필요</span> — 단열·외기온·기기에 따라 달라지므로 값을 직접 조정해 비교해 보세요.</p>
+    <details class="adv">
+      <summary>고급 설정 — 연료비조정·기금 요율 직접 수정</summary>
+      <div class="grid2">
+        <label class="f">연료비조정요금 <span class="u">(원/kWh, 한도 ±5)</span>
+          <input type="number" id="fuelAdj" step="0.1" value="5" />
+        </label>
+        <label class="f">전력산업기반기금 <span class="u">(%, 2025.7부터 2.7)</span>
+          <input type="number" id="fundRate" step="0.1" value="2.7" />
+        </label>
+      </div>
+    </details>
+    <button class="btn" id="calcBtn">절약 효과 시뮬레이션</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>시뮬레이션 결과</h2>
+      <p class="big">월 절감액 <span class="num" id="totalOut"></span></p>
+      <p class="note" id="sumOut"></p>
+      <div id="chartOut"></div>
+      <div id="cmpOut"></div>
+    </div>
+    <div class="card">
+      <h2>절약 후 요금 산출 과정</h2>
+      <div id="tableOut"></div>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>같은 10kWh를 아껴도 절감액이 다른 이유</h2>
+    <p>누진제에서는 <strong>마지막에 쓴 1kWh가 가장 비쌉니다</strong>. 저압 기준 1단계 단가는 120원이지만 3단계는 307.3원이고, 여기에 기후환경요금·연료비조정요금·부가세·전력기금이 얹히면 실질 부담은 400원을 넘습니다. 그래서 사용량이 3단계 초입에 걸쳐 있는 집이 10kWh를 아끼면 1단계에 머무는 집보다 세 배 넘게 절감할 수 있습니다.</p>
+    <p>아래 그래프는 사용량에 따른 청구금액 곡선입니다. 누진 경계에서 계단처럼 꺾이는 지점이 보이고, 현재 위치와 절약 후 위치가 점으로 표시됩니다. 경계 바로 위에 있다면 조금만 줄여도 효과가 큽니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>현재 월 사용량과 그중 냉·난방이 차지하는 대략의 비중을 입력합니다(모르면 전체의 30~40%로 시작).</li>
+      <li>설정온도 조정 폭, 하루 사용시간 단축, 차단할 대기전력을 넣습니다.</li>
+      <li>그래프에서 현재 위치와 절약 후 위치, 누진 단계 변화를 확인합니다.</li>
+      <li>1℃당 절감률은 참고치이므로 값을 바꿔가며 보수적인 시나리오도 함께 보세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 설정온도 1℃에 7%는 믿을 만한 수치인가요?</p><p class="a">에너지절약 캠페인에서 널리 쓰이는 참고치이며 보장된 값이 아닙니다. 단열 상태, 외기 온도, 기기 효율에 따라 크게 달라지므로 이 계산기는 절감률을 직접 수정할 수 있게 했습니다. 보수적으로 보려면 3~5%로 낮춰 계산해 보세요.</p></div>
+    <div class="qa"><p class="q">Q. 누진 경계 근처면 얼마나 이득인가요?</p><p class="a">예를 들어 기타계절에 410kWh를 쓰는 집이 사용량을 400kWh 아래로 낮추면 3단계 단가와 7,300원짜리 기본요금이 함께 사라져, 10kWh 절감만으로 만 원 안팎이 줄어들 수 있습니다. 그래프의 꺾이는 지점이 그 경계입니다.</p></div>
+    <div class="qa"><p class="q">Q. 절감 항목이 겹치면 중복 계산되지 않나요?</p><p class="a">설정온도 조정은 '냉·난방 사용량'에만 적용되고, 사용시간 단축은 입력한 기기 소비전력 기준으로 계산됩니다. 두 항목을 동시에 크게 넣으면 냉·난방 사용량보다 절감량이 커질 수 있어, 계산 시 냉·난방 사용량을 넘지 않도록 제한합니다.</p></div>
+    <h2>요금표 기준일과 출처</h2>
+    <p class="note">전기요금 단가는 <strong>2023년 5월 16일 개정 기준</strong>의 주택용 전력 요금표를 사용합니다(데이터 확인일 2026-08-19).
+    연료비조정요금은 분기마다, 전력산업기반기금 요율은 제도 개정에 따라 바뀌므로
+    최신 단가는 <a href="https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp" target="_blank" rel="noopener">한국전력 사이버지점 요금표</a>에서 확인하고,
+    고지서 값과 다르면 각 계산기의 <strong>고급 설정</strong>에서 직접 수정해 계산하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../ac-cost/"><span class="e">❄️</span> 에어컨 전기요금</a>
+      <a class="rel" href="../standby-power/"><span class="e">🔋</span> 대기전력 계산기</a>
+      <a class="rel" href="../electric-bill/"><span class="e">⚡</span> 전기요금 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { calcBill, kwhOf } from "../lib/elec.mjs";
+import { GAS } from "../data/gas.mjs";
+import { won, num, fmt, kwhFmt, showAd, initTheme, billTableHtml, tariffSourceHtml, chartSvg } from "../assets/app.mjs";
+const $ = (id) => document.getElementById(id);
+const monthSel = $("month");
+const nowM = new Date().getMonth() + 1;
+for (let m = 1; m <= 12; m++) { const o = document.createElement("option"); o.value = m; o.textContent = m + "월" + (m === 7 || m === 8 ? " (하계)" : ""); if (m === nowM) o.selected = true; monthSel.appendChild(o); }
+$("calcBtn").addEventListener("click", () => {
+  const base = Math.max(0, num($("baseKwh"), 400));
+  const hvac = Math.min(base, Math.max(0, num($("hvacKwh"), 150)));
+  const opts = { month: +monthSel.value, voltage: $("voltage").value, fuelAdj: num($("fuelAdj"), 5), fundRate: num($("fundRate"), 2.7) / 100 };
+  const degCut = Math.min(hvac, hvac * (num($("deg"), 1) * num($("degRate"), 7) / 100));
+  const timeCut = Math.min(hvac - degCut, kwhOf(num($("watt"), 1800), num($("cutH"), 2), 30));
+  const stbCut = kwhOf(num($("stbW"), 20), 24, 30);
+  const lightCut = kwhOf(num($("lightW"), 0), 6, 30);
+  const cut = Math.min(base, degCut + timeCut + stbCut + lightCut);
+  const before = calcBill(base, opts);
+  const after = calcBill(base - cut, opts);
+  const save = before.total - after.total;
+  $("totalOut").textContent = won(save);
+  $("sumOut").innerHTML = "절감 사용량 <strong>" + kwhFmt(cut) + "</strong> · " + kwhFmt(base) + " → " + kwhFmt(base - cut) +
+    " · 누진 " + before.tier + "단계 → " + after.tier + "단계 · 연 " + won(save * 12);
+  const maxX = Math.max(500, Math.ceil((base * 1.25) / 50) * 50);
+  const pts = [];
+  for (let x = 0; x <= maxX; x += Math.max(5, Math.round(maxX / 120))) pts.push({ x, y: calcBill(x, opts).total });
+  $("chartOut").innerHTML = chartSvg({
+    pts,
+    marks: [
+      { x: base, y: before.total, label: "현재 " + won(before.total), color: "var(--bad)" },
+      { x: base - cut, y: after.total, label: "절약 후 " + won(after.total), color: "var(--acc)" },
+    ],
+  });
+  const rows = [
+    ["설정온도 " + num($("deg"), 1) + "℃ 조정", degCut],
+    ["하루 " + num($("cutH"), 2) + "시간 단축", timeCut],
+    ["대기전력 " + num($("stbW"), 20) + "W 차단", stbCut],
+    ["조명 " + num($("lightW"), 0) + "W 절감", lightCut],
+  ].filter((r) => r[1] > 0);
+  const perKwh = cut > 0 ? save / cut : 0;
+  $("cmpOut").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>절약 항목</th><th>절감 사용량</th><th>절감액(추정 배분)</th></tr></thead><tbody>' +
+    rows.map((r) => '<tr><td>' + r[0] + '</td><td>' + kwhFmt(r[1]) + '</td><td>' + won(r[1] * perKwh) + '</td></tr>').join('') +
+    '<tr class="sum"><td>합계</td><td>' + kwhFmt(cut) + '</td><td>' + won(save) + '</td></tr></tbody></table></div>' +
+    '<div class="note">1kWh당 실질 절감 단가 ' + fmt(perKwh) + '원으로 항목별 배분했습니다. 절감률 기본값 ' + (GAS.savePerDegree.value * 100) + '%/℃는 참고치입니다.</div>';
+  $("tableOut").innerHTML = billTableHtml(after);
+  $("srcOut").innerHTML = tariffSourceHtml();
+  $("resultBox").hidden = false;
+  showAd();
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

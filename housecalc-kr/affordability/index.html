@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>내 집 마련 예산 계산기 — DSR 역산으로 구하는 최대 대출·집값</title>
+<meta name="description" content="연소득과 기존 대출, 자기자본을 넣으면 DSR 한도를 역산해 최대 대출금액을 구하고, LTV 상한과 비교해 실제로 매수 가능한 주택 가격을 계산합니다. 취득 부대비용까지 감안한 현실적인 예산을 보여줍니다." />
+<link rel="canonical" href="https://housecalc-kr.vercel.app/affordability/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="부동산 계산기 허브" />
+<meta property="og:title" content="얼마짜리 집을 살 수 있을까 (DSR 역산)" />
+<meta property="og:description" content="연소득과 기존 대출, 자기자본을 넣으면 DSR 한도를 역산해 최대 대출금액을 구하고, LTV 상한과 비교해 실제로 매수 가능한 주택 가격을 계산합니다. 취득 부대비용까지 감안한 현실적인 예산을 보여줍니다." />
+<meta property="og:url" content="https://housecalc-kr.vercel.app/affordability/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script defer src="../assets/common.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"내 집 마련 예산 계산기","description":"연소득과 기존 대출, 자기자본을 넣으면 DSR 한도를 역산해 최대 대출금액을 구하고, LTV 상한과 비교해 실제로 매수 가능한 주택 가격을 계산합니다. 취득 부대비용까지 감안한 현실적인 예산을 보여줍니다.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://housecalc-kr.vercel.app/affordability/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"DSR 기준과 LTV 기준 중 뭐가 중요한가요?","acceptedAnswer":{"@type":"Answer","text":"둘 중 더 낮은 쪽이 실제 한도입니다. 소득이 낮으면 DSR이, 현금이 적으면 LTV가 발목을 잡습니다. 결과에 어느 쪽이 제약인지 표시됩니다."}},{"@type":"Question","name":"부대비용은 왜 빼야 하나요?","acceptedAnswer":{"@type":"Answer","text":"취득세·중개보수·등기비·이사비는 대출로 충당하기 어려워 현금에서 나갑니다. 집값의 2% 안팎을 가정으로 두었으니 실제 견적으로 바꿔 계산하세요."}},{"@type":"Question","name":"생활비 여유는 반영되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. DSR 한도를 꽉 채우면 월 상환액이 소득의 상당 부분을 차지합니다. 결과의 월 상환액을 보고 감당 가능한지 스스로 판단해야 합니다."}},{"@type":"Question","name":"전세를 끼고 사는 경우는요?","acceptedAnswer":{"@type":"Answer","text":"이 계산기는 대출 기반 매수 기준입니다. 보증금을 승계하는 방식은 자기자본과 대출 구조가 달라 별도 검토가 필요합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://housecalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"내 집 마련 예산","item":"https://housecalc-kr.vercel.app/affordability/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🏠 부동산 계산기 허브</a> <span class="sep">›</span> <span>내 집 마련 예산</span></nav>
+  <p class="topnotice"><strong>고지</strong> — 이 사이트의 모든 계산은 <strong>참고용 추정이며 실제 세액·한도는 위택스·국세청·금융기관에서 확인</strong>해야 합니다.
+  세율·한도·요율은 법령 개정과 정책 변경으로 수시로 바뀌며, 개별 사정(감면·특례·심사 기준)에 따라 결과가 달라집니다.
+  <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a> ·
+  <a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a> ·
+  <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a></p>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🏡</div>
+    <h1>내 집 마련 예산 계산기</h1>
+    <p class="lead">"얼마짜리 집을 살 수 있나"는 <strong>DSR 역산</strong>으로 답합니다. LTV 상한과 비교해 더 낮은 쪽이 정답입니다.</p>
+  </div>
+
+  <section class="panel">
+    <h2>1. 소득과 기존 부채</h2>
+    <div class="row2">
+      <div>
+        <label for="income">연소득 <span class="opt">(만원, 세전)</span></label>
+        <input type="text" id="income" data-comma value="6,000" />
+      </div>
+      <div>
+        <label for="limit">적용 DSR 한도</label>
+        <select id="limit">
+          <option value="40">은행권 40%</option>
+          <option value="50">제2금융권 50%</option>
+        </select>
+      </div>
+    </div>
+    <label for="existing">기존 대출의 연간 원리금 합계 <span class="opt">(만원)</span></label>
+    <input type="text" id="existing" data-comma value="0" />
+    <p class="note">기존 원리금이 얼마인지 모르면 <a href="../dsr/">DSR 계산기</a>에서 먼저 구해 오세요.</p>
+  </section>
+  <section class="panel">
+    <h2>2. 대출 조건과 자기자본</h2>
+    <div class="row3">
+      <div>
+        <label for="rate">금리 <span class="opt">(%)</span></label>
+        <input type="number" id="rate" step="0.01" value="4.2" />
+      </div>
+      <div>
+        <label for="years">기간 <span class="opt">(년)</span></label>
+        <input type="number" id="years" step="1" value="30" />
+      </div>
+      <div>
+        <label for="stress">스트레스 가산 <span class="opt">(%p)</span> <span class="badge warn">확인 필요</span></label>
+        <input type="number" id="stress" step="0.01" value="0" />
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label for="cash">자기자본 <span class="opt">(만원, 현금)</span></label>
+        <input type="text" id="cash" data-comma value="20,000" />
+      </div>
+      <div>
+        <label for="ltv">적용 LTV <span class="opt">(%)</span> <span class="badge warn">확인 필요</span></label>
+        <input type="number" id="ltv" step="1" min="0" max="100" value="70" />
+      </div>
+    </div>
+    <label for="costPct">취득 부대비용 가정 <span class="opt">(집값의 %, 취득세·중개보수·등기)</span></label>
+    <input type="number" id="costPct" step="0.1" value="2" />
+    <p class="note warn">스트레스 DSR 가산금리와 LTV 상한은 <strong>확정값을 넣지 않았습니다</strong>. 최신 기준을 확인해 직접 입력해야 현실적인 결과가 나옵니다.</p>
+    <div class="btnrow"><button class="btn" id="go">예산 계산하기</button></div>
+  </section>
+  
+  <section class="result" id="result" hidden aria-live="polite">
+    <p class="sub">계산 결과 (참고용 추정)</p>
+    <p class="big" id="big"></p>
+    <p class="sub" id="sub"></p>
+    <div id="detail"></div>
+  </section>
+
+  <div class="adbox" id="adbox" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>집값부터 정하면 틀립니다</h2>
+    <p>대부분 "이 집을 사려면 대출이 얼마 필요한가"를 계산하지만, 실제 심사는 반대로 갑니다. 은행은 <strong>내 소득으로 감당 가능한 연 원리금</strong>을 먼저 정하고(DSR 한도), 거기서 역산해 대출 가능액을 뽑습니다. 이 계산기는 그 순서를 그대로 따릅니다.</p>
+    <p>계산은 두 갈래입니다. ① DSR 한도로 정해지는 최대 대출액, ② LTV 상한(집값 × LTV)으로 정해지는 최대 대출액. 둘 중 <strong>작은 쪽</strong>이 실제 한도이며, 여기에 자기자본을 더한 값이 매수 가능한 집값의 상한입니다. 취득세·중개보수·등기비로 집값의 2% 안팎이 추가로 나가므로 그만큼 예산을 줄여 잡아야 합니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>세전 연소득과 기존 대출의 연간 원리금을 입력합니다.</li>
+      <li>금리·기간을 넣고, 확인한 스트레스 가산금리가 있으면 더합니다.</li>
+      <li>보유 현금(자기자본)과 적용 LTV를 입력합니다.</li>
+      <li>결과에서 DSR 기준과 LTV 기준 중 어느 쪽이 내 한도를 결정하는지 확인합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. DSR 기준과 LTV 기준 중 뭐가 중요한가요?</p><p class="a">둘 중 더 낮은 쪽이 실제 한도입니다. 소득이 낮으면 DSR이, 현금이 적으면 LTV가 발목을 잡습니다. 결과에 어느 쪽이 제약인지 표시됩니다.</p></div>
+    <div class="qa"><p class="q">Q. 부대비용은 왜 빼야 하나요?</p><p class="a">취득세·중개보수·등기비·이사비는 대출로 충당하기 어려워 현금에서 나갑니다. 집값의 2% 안팎을 가정으로 두었으니 실제 견적으로 바꿔 계산하세요.</p></div>
+    <div class="qa"><p class="q">Q. 생활비 여유는 반영되나요?</p><p class="a">아니요. DSR 한도를 꽉 채우면 월 상환액이 소득의 상당 부분을 차지합니다. 결과의 월 상환액을 보고 감당 가능한지 스스로 판단해야 합니다.</p></div>
+    <div class="qa"><p class="q">Q. 전세를 끼고 사는 경우는요?</p><p class="a">이 계산기는 대출 기반 매수 기준입니다. 보증금을 승계하는 방식은 자기자본과 대출 구조가 달라 별도 검토가 필요합니다.</p></div>
+    <h2>계산에 쓰인 값과 출처</h2>
+    <div class="tbwrap"><table class="tb">
+      <thead><tr><th>항목</th><th>값</th><th>근거</th><th>확인일</th></tr></thead>
+      <tbody>
+        <tr><td>차주단위 DSR 한도</td><td>은행 40% / 비은행 50%</td><td><a href="https://www.law.go.kr/행정규칙/은행업감독규정" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>스트레스 DSR 가산금리 <span class="badge warn">확인 필요</span></td><td>계산 제외 — 직접 입력(기본 0)</td><td><a href="https://www.fsc.go.kr/no010101" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+        <tr><td>LTV 상한 <span class="badge warn">확인 필요</span></td><td>직접 입력 — 프리셋은 참고용</td><td><a href="https://www.law.go.kr/행정규칙/은행업감독규정" target="_blank" rel="noopener">근거 보기</a></td><td>2026-08-19</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note warn"><strong>확인 필요 항목</strong> — 아래 값은 개정·변동 가능성이 있어 이 사이트가 임의로 확정하지 않습니다. 계산에서 제외하거나 직접 입력하도록 했습니다.
+      <ul>
+        <li><strong>스트레스 DSR 가산금리</strong> — 스트레스 DSR 가산금리는 금융위 단계별 시행값이 바뀔 수 있어 최신 발표 확인 필요. 아래 입력란에서 직접 조정.</li>
+        <li><strong>LTV 상한</strong> — LTV 상한은 지역 규제 지정·해제와 함께 수시로 바뀜. 최신 규제지역 여부와 함께 은행 확인 필요 — 직접 입력 옵션 제공.</li>
+      </ul>
+    </div>
+    <p class="note warn">이 계산기의 결과는 <strong>참고용 추정치</strong>이며 실제 부과·승인 금액을 확정하지 않습니다.
+    세금은 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>(지방세)·<a href="https://www.hometax.go.kr" target="_blank" rel="noopener">홈택스</a>(국세),
+    대출 한도는 거래 금융기관, 등기 비용은 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 반드시 확인하세요.
+    이 사이트는 이름·연락처·주민등록번호 등 개인정보를 수집하지 않으며 모든 계산은 브라우저 안에서만 이뤄집니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 계산기</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../dsr/"><span>📉</span> DSR 계산기</a>
+      <a class="rel" href="../ltv/"><span>📐</span> LTV 한도 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/dsr-limit-check/" target="_blank" rel="noopener"><span>🚦</span> DSR 한도 점검 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/jeonse-loan/" target="_blank" rel="noopener"><span>🏦</span> 전세자금대출 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🏠 <a href="../">부동산 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { dsrMaxLoan, monthlyPayment } from "../assets/calc.mjs";
+import { loanRules } from "../data/loan.mjs";
+import { $, raw, man, txt, on, won, manwon, eok, pctStr, fbox, srcLine, setHtml, setText, showResult, echo, chips } from "../assets/ui.mjs";
+$("go").addEventListener("click", function () {
+  var income = man("income"), lim = Number($("limit").value), ex = man("existing");
+  var rate = raw("rate"), stress = raw("stress"), years = raw("years");
+  var cash = man("cash"), ltv = raw("ltv"), costPct = raw("costPct");
+  if (income <= 0 || years <= 0) { setText("big", "연소득과 기간을 입력하세요"); setText("sub", ""); setHtml("detail", ""); showResult(); return; }
+  var d = dsrMaxLoan({ annualIncome: income, dsrLimitPct: lim, existingAnnual: ex, ratePct: rate, stressAddPct: stress, months: years * 12 });
+  var dsrLoan = Math.max(0, d.maxLoan);
+  // 집값 P: 대출 L = min(dsrLoan, P×LTV), 자기자본 = P×(1+부대비용%) − L
+  var k = 1 + costPct / 100;
+  var pLtv = ltv > 0 ? cash / (k - ltv / 100) : cash / k;      // LTV가 제약일 때(ltv 0이면 전액 자기자본)
+  var pDsr = (cash + dsrLoan) / k;                              // DSR이 제약일 때
+  var price = Math.max(0, Math.min(pLtv, pDsr));
+  var loan = Math.min(dsrLoan, price * ltv / 100);
+  var bind = pLtv < pDsr ? "LTV(자기자본)" : "DSR(소득)";
+  var pay = monthlyPayment(loan, rate + stress, years * 12);
+  var rows = [
+    ["연소득 × DSR 한도 " + lim + "%", won(income * lim / 100)],
+    ["− 기존 대출 연 원리금", "− " + won(ex)],
+    ["신규 대출에 쓸 수 있는 연 원리금", won(d.capacityYear)],
+    ["월 상환 여력 = ÷ 12", won(d.monthlyBudget)],
+    ["① DSR 기준 최대 대출 (금리 " + pctStr(rate + stress, 2) + " · " + years + "년 역산)", won(dsrLoan)],
+    ["② LTV 기준 = 집값 × " + pctStr(ltv, 0), won(price * ltv / 100)],
+    ["실제 대출 = 둘 중 작은 값", won(loan)],
+    ["자기자본", won(cash)],
+    ["취득 부대비용 가정 = 집값 × " + pctStr(costPct, 1), won(price * costPct / 100)],
+    ["매수 가능 집값 (부대비용 포함 예산 반영)", won(price)],
+    ["예상 월 상환액", won(pay)]
+  ];
+  setText("big", eok(price));
+  setText("sub", "제약 조건: " + bind + " · 대출 " + eok(loan) + " · 월 상환 " + won(pay));
+  setHtml("detail", fbox("산출 과정", rows, "실제 승인액은 소득 인정 방식·대출 종류별 산입 기준·물건 심사에 따라 달라집니다. 스트레스 가산금리를 0으로 두면 낙관적인 결과가 나옵니다.")
+    + srcLine("DSR 한도", loanRules.dsrLimit)
+    + srcLine("스트레스 DSR", loanRules.stressRate)
+    + srcLine("LTV 상한", loanRules.ltvPresets));
+  showResult();
+});
+</script>
+</body>
+</html>

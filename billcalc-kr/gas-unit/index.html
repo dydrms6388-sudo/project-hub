@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('bc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>도시가스 단위 변환 — ㎥·MJ·kWh 환산과 요금 계산</title>
+<meta name="description" content="도시가스 사용량 ㎥를 MJ(열량)와 kWh로 변환합니다. 고지서의 평균열량(MJ/㎥)과 단가(원/MJ)를 넣으면 기본요금·부가세까지 포함한 요금도 함께 계산합니다." />
+<link rel="canonical" href="https://billcalc-kr.vercel.app/gas-unit/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="전기가스요금 계산기 허브" />
+<meta property="og:title" content="도시가스 단위 변환 — ㎥·MJ·kWh 환산과 요금 계산" />
+<meta property="og:description" content="도시가스 사용량 ㎥를 MJ(열량)와 kWh로 변환합니다. 고지서의 평균열량(MJ/㎥)과 단가(원/MJ)를 넣으면 기본요금·부가세까지 포함한 요금도 함께 계산합니다." />
+<meta property="og:url" content="https://billcalc-kr.vercel.app/gas-unit/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"도시가스 단위 변환기","description":"도시가스 사용량 ㎥를 MJ(열량)와 kWh로 변환합니다. 고지서의 평균열량(MJ/㎥)과 단가(원/MJ)를 넣으면 기본요금·부가세까지 포함한 요금도 함께 계산합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://billcalc-kr.vercel.app/gas-unit/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"1㎥는 몇 kWh인가요?","acceptedAnswer":{"@type":"Answer","text":"평균열량 42.7MJ/㎥을 적용하면 1㎥ ≈ 42.7MJ ≈ 11.86kWh입니다. 평균열량이 43.1이면 약 11.97kWh로 조금 달라지므로 고지서 값을 넣는 것이 정확합니다."}},{"@type":"Question","name":"가스요금 단가가 지역마다 다른 이유는?","acceptedAnswer":{"@type":"Answer","text":"도매(한국가스공사) 단가는 전국이 비슷하지만, 소매 공급비용은 지역 도시가스사가 시·도의 승인을 받아 각각 고시하기 때문입니다. 그래서 같은 사용량이라도 지역에 따라 요금이 다를 수 있습니다."}},{"@type":"Question","name":"이 계산에 부가세가 포함되나요?","acceptedAnswer":{"@type":"Answer","text":"포함됩니다. (기본요금 + 사용량요금)에 부가가치세 10%를 더하고 10원 미만을 절사해 청구금액을 계산합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://billcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"도시가스 단위 변환","item":"https://billcalc-kr.vercel.app/gas-unit/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">⚡ 전기가스요금 계산기 허브</a> <span class="sep">›</span> <span>도시가스 단위 변환</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🔵</div>
+    <h1>도시가스 단위 변환기</h1>
+    <p class="lead">㎥ · MJ · kWh 아무 칸에나 입력하면 나머지가 즉시 변환됩니다. 단가를 넣으면 <strong>요금</strong>까지 계산합니다.</p>
+  </div>
+
+  <section class="card" aria-label="변환">
+    <h2>단위 변환</h2>
+    <div class="grid2">
+      <label class="f">부피 <span class="u">(㎥ · 계량기 사용량)</span>
+        <input type="number" id="m3" inputmode="decimal" min="0" step="0.1" value="100" />
+      </label>
+      <label class="f">열량 <span class="u">(MJ · 요금 계산 기준)</span>
+        <input type="number" id="mj" inputmode="decimal" min="0" step="1" value="4270" />
+      </label>
+      <label class="f">전력 환산 <span class="u">(kWh · 1kWh = 3.6MJ)</span>
+        <input type="number" id="kwh" inputmode="decimal" min="0" step="0.1" value="1186.1" />
+      </label>
+      <label class="f">평균열량 <span class="u">(MJ/㎥ · 고지서 값)</span>
+        <input type="number" id="factor" inputmode="decimal" min="1" step="0.1" value="42.7" />
+      </label>
+    </div>
+    <p class="note">평균열량은 지역 도시가스사가 월별로 고시합니다(대략 42~43.5 MJ/㎥ 수준). 정확한 계산을 위해 고지서의 "평균열량"을 입력하세요. <span class="badge warn">확인 필요</span></p>
+  </section>
+
+  <section class="card" aria-label="요금">
+    <h2>요금 계산 <span class="badge warn">단가 확인 필요</span></h2>
+    <div class="grid2">
+      <label class="f">단가 <span class="u">(원/MJ · 고지서 값)</span>
+        <input type="number" id="price" inputmode="decimal" min="0" step="0.01" value="" placeholder="예: 20.00" />
+      </label>
+      <label class="f">월 기본요금 <span class="u">(원)</span>
+        <input type="number" id="baseCharge" inputmode="decimal" min="0" step="10" value="1000" />
+      </label>
+    </div>
+    <button class="btn" id="calcBtn">가스요금 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">예상 청구금액 <span class="num" id="totalOut"></span></p>
+      <div id="tableOut"></div>
+    </div>
+    <div id="gasSrcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>도시가스는 왜 ㎥가 아니라 MJ로 요금을 매길까?</h2>
+    <p>계량기는 부피(㎥)를 재지만, 같은 1㎥라도 가스의 성분과 온도·압력에 따라 담긴 열량이 다릅니다. 그래서 도시가스 요금은 <strong>사용량(㎥) × 평균열량(MJ/㎥) × 단가(원/MJ)</strong> 구조로 계산합니다. 고지서에 ㎥와 MJ가 함께 찍혀 있는 이유입니다.</p>
+    <p>전기와 비교하고 싶을 때는 kWh로 바꾸면 편합니다. 1kWh = 3.6MJ은 국제 단위 정의값이라 지역·계절과 무관하게 항상 같습니다. 100㎥를 평균열량 42.7로 환산하면 약 4,270MJ ≈ 1,186kWh로, 4인 가구 전기 사용량 서너 달치에 해당하는 에너지입니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>고지서의 평균열량(MJ/㎥)을 먼저 입력합니다.</li>
+      <li>㎥·MJ·kWh 중 아는 값을 한 칸에 넣으면 나머지가 자동으로 채워집니다.</li>
+      <li>단가(원/MJ)와 기본요금을 넣고 계산하면 공급가액·부가세·청구금액이 나옵니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 1㎥는 몇 kWh인가요?</p><p class="a">평균열량 42.7MJ/㎥을 적용하면 1㎥ ≈ 42.7MJ ≈ 11.86kWh입니다. 평균열량이 43.1이면 약 11.97kWh로 조금 달라지므로 고지서 값을 넣는 것이 정확합니다.</p></div>
+    <div class="qa"><p class="q">Q. 가스요금 단가가 지역마다 다른 이유는?</p><p class="a">도매(한국가스공사) 단가는 전국이 비슷하지만, 소매 공급비용은 지역 도시가스사가 시·도의 승인을 받아 각각 고시하기 때문입니다. 그래서 같은 사용량이라도 지역에 따라 요금이 다를 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 이 계산에 부가세가 포함되나요?</p><p class="a">포함됩니다. (기본요금 + 사용량요금)에 부가가치세 10%를 더하고 10원 미만을 절사해 청구금액을 계산합니다.</p></div>
+    <h2>도시가스 단가 기준</h2>
+    <p class="note">도시가스 소매 단가(원/MJ)·기본요금·평균열량(MJ/㎥)은 <strong>지역 도시가스사가 각각 고시</strong>하므로
+    전국 공통값이 없습니다. 이 사이트는 단가를 임의로 넣지 않고 <span class="badge warn">확인 필요</span> 표시와 함께
+    직접 입력받습니다. 내 지역 단가는
+    <a href="https://www.citygas.or.kr" target="_blank" rel="noopener">한국도시가스협회</a>에서 지역사를 찾아 확인하거나
+    고지서의 단가·평균열량을 그대로 입력하세요. (데이터 확인일 2026-08-19)</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 청구 금액을 확정하지 않습니다. 
+    정확한 금액은 <a href="https://cyber.kepco.co.kr" target="_blank" rel="noopener">한국전력 사이버지점</a> 또는 고지서에서 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../heating-cost/"><span class="e">🔥</span> 난방비 비교 계산기</a>
+      <a class="rel" href="../bill-reader/"><span class="e">📄</span> 고지서 보는 법</a>
+      <a class="rel" href="../electric-bill/"><span class="e">⚡</span> 전기요금 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/electric-bill-calc/" target="_blank" rel="noopener"><span class="e">🔌</span> 전기요금시뮬 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/pyeong-electric/" target="_blank" rel="noopener"><span class="e">🏠</span> 평수별 전기요금 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">⚡ <a href="../">전기가스요금 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { m3ToMj, mjToM3, mjToKwh, kwhToMj, calcGasBill } from "../lib/gas.mjs";
+import { GAS } from "../data/gas.mjs";
+import { won, num, fmt, showAd, initTheme, gasSourceHtml } from "../assets/app.mjs";
+const $ = (id) => document.getElementById(id);
+const r1 = (v) => Math.round(v * 10) / 10;
+let lock = false;
+function sync(from) {
+  if (lock) return; lock = true;
+  const f = Math.max(1, num($("factor"), GAS.heatFactor.value));
+  let mj;
+  if (from === "m3") mj = m3ToMj(num($("m3"), 0), f);
+  else if (from === "kwh") mj = kwhToMj(num($("kwh"), 0));
+  else mj = num($("mj"), 0);
+  if (from !== "mj") $("mj").value = r1(mj);
+  if (from !== "m3") $("m3").value = r1(mjToM3(mj, f));
+  if (from !== "kwh") $("kwh").value = r1(mjToKwh(mj));
+  lock = false;
+}
+$("m3").addEventListener("input", () => sync("m3"));
+$("mj").addEventListener("input", () => sync("mj"));
+$("kwh").addEventListener("input", () => sync("kwh"));
+$("factor").addEventListener("input", () => sync("m3"));
+sync("m3");
+$("calcBtn").addEventListener("click", () => {
+  const f = Math.max(1, num($("factor"), GAS.heatFactor.value));
+  const price = num($("price"), 0);
+  const g = calcGasBill(num($("m3"), 0), price, { baseCharge: num($("baseCharge"), 0), factor: f });
+  $("totalOut").textContent = price > 0 ? won(g.total) : "단가 입력 필요";
+  $("tableOut").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>항목</th><th>계산</th><th>금액</th></tr></thead><tbody>' +
+    '<tr><td>기본요금</td><td class="mut">월정액</td><td>' + won(g.baseCharge) + '</td></tr>' +
+    '<tr><td>사용량요금</td><td class="mut">' + fmt(g.m3) + '㎥ × ' + f + 'MJ/㎥ × ' + price + '원</td><td>' + won(g.usageCharge) + '</td></tr>' +
+    '<tr class="sum"><td>공급가액</td><td></td><td>' + won(g.supply) + '</td></tr>' +
+    '<tr><td>부가가치세 <span class="mut">(10%)</span></td><td></td><td>' + won(g.vat) + '</td></tr>' +
+    '<tr class="sum"><td>청구금액 <span class="mut">(10원 미만 절사)</span></td><td></td><td>' + won(g.total) + '</td></tr>' +
+    '</tbody></table></div><div class="note">열량 환산: ' + fmt(g.m3) + '㎥ = ' + fmt(g.mj) + 'MJ = ' + fmt(mjToKwh(g.mj)) + 'kWh</div>';
+  $("gasSrcOut").innerHTML = gasSourceHtml(GAS.retailPrice.links);
+  $("resultBox").hidden = false;
+  showAd();
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

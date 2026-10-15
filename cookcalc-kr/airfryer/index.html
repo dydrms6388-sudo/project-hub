@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>에어프라이어 온도·시간 변환기 — 오븐 레시피를 그대로 옮기기</title>
+<meta name="description" content="오븐 레시피의 온도와 시간을 에어프라이어 기준으로 변환합니다(온도 20℃ 낮추고 시간 20% 단축 — 관행 규칙, 참고용). 냉동식품·육류·해산물·채소 등 재료 48종의 기본 온도·시간표도 함께 제공합니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/airfryer/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="에어프라이어 변환기 — 오븐 온도·시간 환산" />
+<meta property="og:description" content="오븐 레시피의 온도와 시간을 에어프라이어 기준으로 변환합니다(온도 20℃ 낮추고 시간 20% 단축 — 관행 규칙, 참고용). 냉동식품·육류·해산물·채소 등 재료 48종의 기본 온도·시간표도 함께 제공합니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/airfryer/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"에어프라이어 변환기","description":"오븐 레시피의 온도와 시간을 에어프라이어 기준으로 변환합니다(온도 20℃ 낮추고 시간 20% 단축 — 관행 규칙, 참고용). 냉동식품·육류·해산물·채소 등 재료 48종의 기본 온도·시간표도 함께 제공합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/airfryer/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"예열이 꼭 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"냉동식품처럼 오래 굽는 것은 예열 없이 넣어도 큰 차이가 없지만, 고기·생선처럼 표면을 빠르게 익혀야 하는 재료는 3~5분 예열하면 결과가 좋습니다. 예열했다면 표시 시간에서 1~2분 줄이세요."}},{"@type":"Question","name":"종이호일을 깔아도 되나요?","acceptedAnswer":{"@type":"Answer","text":"재료 아래에 눌러 깔고 가장자리가 팬에 닿지 않게 하면 사용할 수 있습니다. 다만 바닥을 완전히 덮으면 공기 순환이 막혀 아래쪽이 눅눅해지므로 구멍이 뚫린 제품을 쓰거나 필요한 부분만 까세요. 예열 중 빈 종이호일만 넣는 것은 위험합니다."}},{"@type":"Question","name":"기름을 발라야 하나요?","acceptedAnswer":{"@type":"Answer","text":"튀김옷이 있는 냉동식품은 대개 기름 없이도 됩니다. 채소·두부처럼 마른 재료는 기름을 아주 얇게 발라야 표면이 마르지 않고 바삭해집니다. 분무기로 뿌리면 양 조절이 쉽습니다."}},{"@type":"Question","name":"시간표대로 했는데 덜 익었어요.","acceptedAnswer":{"@type":"Answer","text":"재료 두께와 양이 표 기준보다 크면 시간이 더 필요합니다. 특히 바스켓을 가득 채우면 공기가 돌지 못해 시간이 1.5배까지 늘어납니다. 한 겹으로 펼치고, 부족하면 3분씩 추가하며 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"에어프라이어 변환","item":"https://cookcalc-kr.vercel.app/airfryer/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>에어프라이어 변환</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🍟</div>
+    <h1>에어프라이어 변환기</h1>
+    <p class="lead">오븐 레시피를 <strong>에어프라이어 온도·시간으로</strong> 바꾸고, 재료 48종 기본표를 함께 확인하세요.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>오븐 → 에어프라이어 변환</h2>
+    <div class="grid2">
+      <label class="f">오븐 온도 <span class="u">(℃)</span>
+        <input type="number" id="temp" inputmode="decimal" min="80" max="280" step="5" value="200" />
+      </label>
+      <label class="f">오븐 시간 <span class="u">(분)</span>
+        <input type="number" id="time" inputmode="decimal" min="1" step="1" value="25" />
+      </label>
+    </div>
+    <p class="note">적용 규칙: 온도 20℃ 낮추고 시간 20% 단축 <span class="badge warn">관행 규칙, 참고용</span></p>
+    <button class="btn" id="calcBtn">에어프라이어 기준으로 변환</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>변환 결과</h2>
+      <p class="big">에어프라이어 <span class="num" id="tempOut"></span></p>
+      <div id="tableOut"></div>
+      <p class="note">표시 시간의 70% 지점에서 한 번 열어 상태를 확인하고, 겉이 빨리 타면 온도를 10℃ 더 낮추세요. 육류·가금류는 속까지 완전히 익은 것을 확인한 뒤 드세요.</p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <section class="card">
+    <h2>재료별 기본 온도·시간표 <span class="pill">48종</span></h2>
+    <label class="f">재료 검색
+      <input type="search" id="q" placeholder="예: 감자, 삼겹살, 만두" autocomplete="off" />
+    </label>
+    <div id="listBox">
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">냉동식품 <span class="mut">(15)</span></h3>
+    <div class="linkgrid"><a href="naengdonggamjatwigim/" data-n="냉동감자튀김">냉동감자튀김 <span class="mut">190℃ 12~15분</span></a><a href="chikinneoget/" data-n="치킨너겟">치킨너겟 <span class="mut">180℃ 8~10분</span></a><a href="naengdongdonkkaseu/" data-n="냉동돈까스">냉동돈까스 <span class="mut">180℃ 12~15분</span></a><a href="naengdongmandu/" data-n="냉동만두">냉동만두 <span class="mut">180℃ 10~12분</span></a><a href="naengdonghatdogeu/" data-n="냉동핫도그">냉동핫도그 <span class="mut">180℃ 8~10분</span></a><a href="chijeuseutik/" data-n="치즈스틱">치즈스틱 <span class="mut">180℃ 7~9분</span></a><a href="naengdongsaeutwigim/" data-n="냉동새우튀김">냉동새우튀김 <span class="mut">180℃ 10~12분</span></a><a href="naengdonggimmali/" data-n="냉동김말이">냉동김말이 <span class="mut">180℃ 8~10분</span></a><a href="naengdongtteokgalbi/" data-n="냉동떡갈비">냉동떡갈비 <span class="mut">180℃ 10~12분</span></a><a href="naengdongyangparing/" data-n="냉동양파링">냉동양파링 <span class="mut">190℃ 8~10분</span></a><a href="naengdonggoroke/" data-n="냉동고로케">냉동고로케 <span class="mut">180℃ 10~12분</span></a><a href="naengdongchyureoseu/" data-n="냉동츄러스">냉동츄러스 <span class="mut">180℃ 8~10분</span></a><a href="naengdongbungeoppang/" data-n="냉동붕어빵">냉동붕어빵 <span class="mut">180℃ 5~7분</span></a><a href="naengdongpija/" data-n="냉동피자">냉동피자 <span class="mut">180℃ 6~8분</span></a><a href="naengdongbokeumbap/" data-n="냉동볶음밥">냉동볶음밥 <span class="mut">200℃ 12~15분</span></a></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">육류 <span class="mut">(10)</span></h3>
+    <div class="linkgrid"><a href="samgyeopsal/" data-n="삼겹살">삼겹살 <span class="mut">180℃ 15~20분</span></a><a href="moksal/" data-n="목살">목살 <span class="mut">180℃ 18~22분</span></a><a href="daknalgae/" data-n="닭날개">닭날개 <span class="mut">190℃ 18~20분</span></a><a href="dakdari/" data-n="닭다리">닭다리 <span class="mut">190℃ 22~25분</span></a><a href="dakbong/" data-n="닭봉">닭봉 <span class="mut">190℃ 18~20분</span></a><a href="dakgaseumsal/" data-n="닭가슴살">닭가슴살 <span class="mut">180℃ 15~18분</span></a><a href="tongdak/" data-n="통닭">통닭 <span class="mut">180℃ 40~50분</span></a><a href="beikeon/" data-n="베이컨">베이컨 <span class="mut">180℃ 8~10분</span></a><a href="sosiji/" data-n="소시지">소시지 <span class="mut">180℃ 8~10분</span></a><a href="tteokgalbi/" data-n="떡갈비">떡갈비 <span class="mut">180℃ 12~15분</span></a></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">해산물 <span class="mut">(6)</span></h3>
+    <div class="linkgrid"><a href="godeungeo/" data-n="고등어">고등어 <span class="mut">180℃ 15~18분</span></a><a href="samchi/" data-n="삼치">삼치 <span class="mut">180℃ 15~18분</span></a><a href="galchi/" data-n="갈치">갈치 <span class="mut">180℃ 12~15분</span></a><a href="yeoneo/" data-n="연어">연어 <span class="mut">180℃ 10~12분</span></a><a href="saeu/" data-n="새우">새우 <span class="mut">180℃ 8~10분</span></a><a href="ojingeo/" data-n="오징어">오징어 <span class="mut">180℃ 8~10분</span></a></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">채소·구황 <span class="mut">(11)</span></h3>
+    <div class="linkgrid"><a href="gungoguma/" data-n="군고구마">군고구마 <span class="mut">190℃ 35~45분</span></a><a href="gamja/" data-n="감자">감자 <span class="mut">190℃ 35~40분</span></a><a href="danhobak/" data-n="단호박">단호박 <span class="mut">180℃ 15~20분</span></a><a href="oksusu/" data-n="옥수수">옥수수 <span class="mut">180℃ 10~12분</span></a><a href="beurokolri/" data-n="브로콜리">브로콜리 <span class="mut">180℃ 8~10분</span></a><a href="aseuparageoseu/" data-n="아스파라거스">아스파라거스 <span class="mut">180℃ 6~8분</span></a><a href="gaji/" data-n="가지">가지 <span class="mut">180℃ 10~12분</span></a><a href="aehobak/" data-n="애호박">애호박 <span class="mut">180℃ 8~10분</span></a><a href="beoseot/" data-n="버섯">버섯 <span class="mut">180℃ 8~10분</span></a><a href="tongmaneul/" data-n="통마늘">통마늘 <span class="mut">180℃ 10~12분</span></a><a href="bam/" data-n="밤">밤 <span class="mut">200℃ 15~20분</span></a></div>
+    <h3 class="f" style="margin:18px 0 0;font-size:14px">빵·간식 <span class="mut">(6)</span></h3>
+    <div class="linkgrid"><a href="sikppang/" data-n="식빵">식빵 <span class="mut">180℃ 4~5분</span></a><a href="maneulppang/" data-n="마늘빵">마늘빵 <span class="mut">180℃ 5~6분</span></a><a href="keuruasangdeugi/" data-n="크루아상데우기">크루아상데우기 <span class="mut">160℃ 3~4분</span></a><a href="dubugui/" data-n="두부구이">두부구이 <span class="mut">180℃ 15~18분</span></a><a href="amondeuroseuting/" data-n="아몬드로스팅">아몬드로스팅 <span class="mut">160℃ 8~10분</span></a><a href="sikeuntwigimdeugi/" data-n="식은튀김데우기">식은튀김데우기 <span class="mut">180℃ 5~7분</span></a></div>
+    </div>
+    <p class="note" id="empty" hidden>검색 결과가 없습니다. 다른 이름으로 찾아보세요.</p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>오븐 시간을 그대로 쓰면 왜 탈까</h2>
+    <p>에어프라이어는 작은 챔버 안에서 팬으로 뜨거운 공기를 강하게 순환시키는 <strong>소형 컨벡션 오븐</strong>입니다. 같은 온도라도 공기가 빠르게 움직이면 표면에서 열이 훨씬 잘 전달되기 때문에, 오븐 레시피의 온도·시간을 그대로 쓰면 겉은 타고 속은 덜 익는 일이 생깁니다. 그래서 관행적으로 <strong>온도를 20℃ 낮추고 시간을 20% 줄이는</strong> 규칙을 씁니다.</p>
+    <p>이 규칙은 공식 규격이 아니라 경험칙입니다. 기기 용량이 작을수록(3~4L) 열이 더 세게 닿고, 바스켓에 재료를 가득 채우면 공기가 돌지 않아 오히려 오븐보다 오래 걸립니다. 한 겹으로 펼치고, 중간에 한 번 흔들어 주는 것이 시간보다 중요합니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>오븐 레시피에 적힌 온도(℃)와 시간(분)을 입력합니다.</li>
+      <li>변환된 온도와 시간 범위를 확인합니다. 범위로 나오는 이유는 기기 편차 때문입니다.</li>
+      <li>아래 표에서 만들려는 재료를 검색해 기본 온도·시간과 비교합니다.</li>
+      <li>재료 이름을 누르면 그 재료만 다룬 상세 페이지(예열·뒤집기·응용)로 이동합니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 예열이 꼭 필요한가요?</p><p class="a">냉동식품처럼 오래 굽는 것은 예열 없이 넣어도 큰 차이가 없지만, 고기·생선처럼 표면을 빠르게 익혀야 하는 재료는 3~5분 예열하면 결과가 좋습니다. 예열했다면 표시 시간에서 1~2분 줄이세요.</p></div>
+    <div class="qa"><p class="q">Q. 종이호일을 깔아도 되나요?</p><p class="a">재료 아래에 눌러 깔고 가장자리가 팬에 닿지 않게 하면 사용할 수 있습니다. 다만 바닥을 완전히 덮으면 공기 순환이 막혀 아래쪽이 눅눅해지므로 구멍이 뚫린 제품을 쓰거나 필요한 부분만 까세요. 예열 중 빈 종이호일만 넣는 것은 위험합니다.</p></div>
+    <div class="qa"><p class="q">Q. 기름을 발라야 하나요?</p><p class="a">튀김옷이 있는 냉동식품은 대개 기름 없이도 됩니다. 채소·두부처럼 마른 재료는 기름을 아주 얇게 발라야 표면이 마르지 않고 바삭해집니다. 분무기로 뿌리면 양 조절이 쉽습니다.</p></div>
+    <div class="qa"><p class="q">Q. 시간표대로 했는데 덜 익었어요.</p><p class="a">재료 두께와 양이 표 기준보다 크면 시간이 더 필요합니다. 특히 바스켓을 가득 채우면 공기가 돌지 못해 시간이 1.5배까지 늘어납니다. 한 겹으로 펼치고, 부족하면 3분씩 추가하며 확인하세요.</p></div>
+    <h2>변환 규칙의 근거</h2>
+    <p class="note">오븐 레시피를 에어프라이어로 옮길 때 쓰는 <strong>"온도 20℃ 낮추고 시간 20% 줄이기"</strong>는
+    공식 규격이 아니라 널리 쓰이는 <span class="badge warn">관행 규칙, 참고용</span>입니다. 에어프라이어는 좁은 공간에서 뜨거운 바람을 강하게 돌리므로
+    같은 온도에서도 표면이 훨씬 빨리 익습니다. 기기 용량(3L·5L·7L), 예열 여부, 재료 두께와 양에 따라 결과가 달라지므로
+    <strong>표시 시간의 70% 지점에서 한 번 열어 상태를 확인</strong>하고 조절하세요. (데이터 확인일 2026-08-19)</p>
+    <p class="disclaimer">본 계산 결과는 <strong>참고용 추정치</strong>입니다. 온도·시간은 기기·용량·재료 두께에 따라 달라지는 관행값입니다. 육류·가금류는 반드시 속까지 완전히 익혀 드세요.
+    재료의 상태·계량 방법·기기 차이에 따라 실제 결과가 달라질 수 있으며, 진단·의료·영양 처방의 근거로 사용할 수 없습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../timer-multi/"><span class="e">⏲️</span> 동시 타이머</a>
+      <a class="rel" href="../brine/"><span class="e">🧂</span> 염지 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/airfryer-time/" target="_blank" rel="noopener"><span class="e">🍟</span> 에어프라이어 시간표 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/fridge-recipe/" target="_blank" rel="noopener"><span class="e">🧊</span> 냉장고 재료 레시피 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { OVEN_RULE } from "../data/airfryer.mjs";
+import { ovenToAir } from "../lib/cook.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+$("calcBtn").addEventListener("click", () => {
+  const t = num($("temp"), 200), m = num($("time"), 20);
+  const r = ovenToAir(t, m, OVEN_RULE);
+  $("tempOut").textContent = r.temp + "℃ / " + r.minMin + "~" + r.minMax + "분";
+  $("tableOut").innerHTML = kv([
+    ["오븐 기준", t + "℃ · " + m + "분"],
+    ["온도 변환", t + "℃ − " + Math.abs(OVEN_RULE.tempDelta.value) + "℃ → " + r.temp + "℃ (5℃ 단위 반올림)"],
+    ["시간 변환", m + "분 × " + OVEN_RULE.timeFactor.value + " → 약 " + r.mid + "분"],
+    ["권장 확인 시점", Math.max(1, Math.round(r.mid * 0.7)) + "분 (한 번 열어 확인·뒤집기)"],
+  ]);
+  $("srcOut").innerHTML = srcBox("변환 규칙 출처", [
+    { text: "온도 " + OVEN_RULE.tempDelta.value + "℃ · 시간 × " + OVEN_RULE.timeFactor.value + " — " + OVEN_RULE.tempDelta.source + " [" + OVEN_RULE.label + "]", checkedAt: OVEN_RULE.tempDelta.checkedAt },
+  ]);
+  show("resultBox");
+});
+const q = $("q");
+q.addEventListener("input", () => {
+  const v = q.value.trim().toLowerCase();
+  let hit = 0;
+  for (const a of document.querySelectorAll("#listBox a")) {
+    const on = !v || (a.dataset.n || "").toLowerCase().includes(v);
+    a.style.display = on ? "" : "none";
+    if (on) hit++;
+  }
+  for (const h of document.querySelectorAll("#listBox h3")) {
+    const grid = h.nextElementSibling;
+    const any = [...grid.querySelectorAll("a")].some((a) => a.style.display !== "none");
+    h.style.display = any ? "" : "none";
+    grid.style.display = any ? "" : "none";
+  }
+  $("empty").hidden = hit > 0;
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>여행 짐 싸기 목록 만들기 — 기후·기간·유형별 체크리스트</title>
+<meta name="description" content="목적지 기후(더운 나라·온화·추운 곳·건조), 여행 기간, 여행 유형(관광·휴양·액티비티·출장·아이 동반)을 고르면 빠뜨리기 쉬운 항목까지 포함한 짐 목록을 만들어 줍니다. 체크 상태는 브라우저에 저장되고 링크로 공유할 수 있습니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/packing-list/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="여행 짐 싸기 체크리스트 만들기" />
+<meta property="og:description" content="목적지 기후(더운 나라·온화·추운 곳·건조), 여행 기간, 여행 유형(관광·휴양·액티비티·출장·아이 동반)을 고르면 빠뜨리기 쉬운 항목까지 포함한 짐 목록을 만들어 줍니다. 체크 상태는 브라우저에 저장되고 링크로 공유할 수 있습니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/packing-list/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"여행 짐 싸기 목록","description":"목적지 기후(더운 나라·온화·추운 곳·건조), 여행 기간, 여행 유형(관광·휴양·액티비티·출장·아이 동반)을 고르면 빠뜨리기 쉬운 항목까지 포함한 짐 목록을 만들어 줍니다. 체크 상태는 브라우저에 저장되고 링크로 공유할 수 있습니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/packing-list/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"체크한 내용이 다른 기기에서도 보이나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 서버에 저장하지 않고 이 브라우저의 localStorage에만 저장하므로 기기·브라우저가 바뀌면 보이지 않습니다. 다른 기기로 옮기려면 '링크 복사'로 조건을 공유하거나 '텍스트로 내보내기'를 사용하세요."}},{"@type":"Question","name":"보조배터리는 왜 기내 반입만 되나요?","acceptedAnswer":{"@type":"Answer","text":"리튬 배터리는 위탁 수하물에 넣을 수 없고 기내에 들고 타야 합니다. 용량 제한(대개 100Wh 이하 자유, 100~160Wh는 항공사 승인)이 있으므로 대용량 배터리는 항공사 규정을 확인하세요."}},{"@type":"Question","name":"액체류는 얼마나 가져갈 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"기내 반입은 개별 용기 100mL 이하로, 모두 합쳐 1L 투명 지퍼백 1개에 들어가야 합니다. 위탁 수하물에는 이 제한이 없습니다. 자세한 기준은 이용 공항·항공사 안내를 확인하세요."}},{"@type":"Question","name":"목록에 없는 항목을 추가할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"현재는 생성된 항목을 체크하는 방식만 지원합니다. 개인 항목은 '텍스트로 내보내기' 후 메모 앱에서 덧붙이는 방식을 권합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"짐 싸기 목록","item":"https://tripcalc-kr.vercel.app/packing-list/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>짐 싸기 목록</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🎒</div>
+    <h1>여행 짐 싸기 목록</h1>
+    <p class="lead">기후·기간·유형만 고르면 <strong>체크리스트가 만들어집니다</strong>. 체크 상태는 이 브라우저에 저장되고, 링크로 공유할 수 있습니다.</p>
+  </div>
+
+  <div id="ctaBox" hidden></div>
+  <section class="card" aria-label="입력">
+    <h2>여행 조건</h2>
+    <span class="f" style="display:block">목적지 기후</span>
+    <div class="chips" id="climate">
+      <button class="chip" type="button" data-v="tropical" aria-pressed="false">🌴 더운 나라</button>
+      <button class="chip" type="button" data-v="temperate" aria-pressed="true">🍃 온화</button>
+      <button class="chip" type="button" data-v="cold" aria-pressed="false">❄️ 추운 곳</button>
+      <button class="chip" type="button" data-v="desert" aria-pressed="false">🏜️ 건조·사막</button>
+    </div>
+    <span class="f" style="display:block;margin-top:14px">여행 유형</span>
+    <div class="chips" id="ttype">
+      <button class="chip" type="button" data-v="city" aria-pressed="true">🏙️ 도시 관광</button>
+      <button class="chip" type="button" data-v="resort" aria-pressed="false">🏖️ 휴양</button>
+      <button class="chip" type="button" data-v="activity" aria-pressed="false">🥾 액티비티</button>
+      <button class="chip" type="button" data-v="business" aria-pressed="false">💼 출장</button>
+      <button class="chip" type="button" data-v="family" aria-pressed="false">👨‍👩‍👧 아이 동반</button>
+    </div>
+    <span class="f" style="display:block;margin-top:14px">추가 조건 (복수 선택)</span>
+    <div class="chips" id="opts">
+      <button class="chip" type="button" data-v="carryonly" aria-pressed="false">🧳 기내 수하물만</button>
+      <button class="chip" type="button" data-v="swim" aria-pressed="false">🏊 물놀이</button>
+      <button class="chip" type="button" data-v="camera" aria-pressed="false">📷 카메라</button>
+      <button class="chip" type="button" data-v="longhaul" aria-pressed="false">✈️ 장거리 비행</button>
+      <button class="chip" type="button" data-v="driving" aria-pressed="false">🚗 렌터카</button>
+    </div>
+    <label class="f" style="margin-top:14px;display:block">여행 기간 <span class="u">(박이 아닌 총 일수)</span>
+      <input type="number" id="days" min="1" max="60" value="5" />
+    </label>
+    <button class="btn" id="goBtn" type="button">짐 목록 만들기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>내 짐 목록 <span class="mini" id="progress"></span></h2>
+      <div class="bar"><i id="barFill" style="width:0%"></i></div>
+      <div id="qty"></div>
+      <div id="list"></div>
+      <p class="note">입력한 값은 <strong>브라우저 안에서만</strong> 처리되며 서버로 전송되거나 저장되지 않습니다. 저장 기능은 이 브라우저의 localStorage 만 사용합니다(서버 저장 없음).</p>
+      <div class="share">
+        <button class="btn2" id="linkBtn" type="button">🔗 링크 복사</button>
+        <button class="btn2" id="textBtn" type="button">📋 목록 텍스트 복사</button>
+        <button class="btn2" id="expBtn" type="button">⬇️ 텍스트로 내보내기</button>
+        <button class="btn2" id="xBtn" type="button">𝕏 공유</button>
+        <button class="btn2" id="shareBtn" type="button">📤 공유</button>
+        <button class="btn2" id="clearBtn" type="button">🗑️ 저장 기록 전체 삭제</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>짐은 "빠뜨린 것" 때문에 문제가 됩니다</h2>
+  <p>여행 짐에서 진짜 문제는 많이 싸는 게 아니라 <strong>하나를 빠뜨리는 것</strong>입니다. 보조배터리를 위탁 수하물에 넣어 공항에서 꺼내야 하거나, 렌터카를 예약해 두고 국제운전면허증을 안 챙기거나, 한겨울 유럽에서 립밤 하나가 없어 고생하는 식입니다.</p>
+  <p>이 도구는 목적지 기후·기간·여행 유형을 조합해 <strong>그 조건에서 실제로 필요한 항목</strong>만 추립니다. 예를 들어 "기내 수하물만"을 고르면 액체류 100mL 규정이, "렌터카"를 고르면 국제운전면허증·국내면허증·여권 3종 세트가 목록에 추가됩니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>기후·여행 유형·추가 조건을 고르고 기간을 입력합니다.</li>
+    <li>"짐 목록 만들기"를 누르면 카테고리별 체크리스트와 <strong>기간에 맞는 수량 가이드</strong>(상의 몇 벌, 속옷 몇 세트)가 나옵니다.</li>
+    <li>체크한 상태는 이 브라우저에 자동 저장됩니다. 짐을 싸면서 하나씩 지워 나가면 됩니다.</li>
+    <li>"링크 복사"로 같은 조건의 목록을 동행에게 보내고, "텍스트로 내보내기"로 파일 저장할 수 있습니다.</li>
+    <li>"저장 기록 전체 삭제"를 누르면 이 브라우저에 저장된 내용이 즉시 지워집니다.</li>
+  </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 체크한 내용이 다른 기기에서도 보이나요?</p><p class="a">아니요. 서버에 저장하지 않고 이 브라우저의 localStorage에만 저장하므로 기기·브라우저가 바뀌면 보이지 않습니다. 다른 기기로 옮기려면 '링크 복사'로 조건을 공유하거나 '텍스트로 내보내기'를 사용하세요.</p></div>
+    <div class="qa"><p class="q">Q. 보조배터리는 왜 기내 반입만 되나요?</p><p class="a">리튬 배터리는 위탁 수하물에 넣을 수 없고 기내에 들고 타야 합니다. 용량 제한(대개 100Wh 이하 자유, 100~160Wh는 항공사 승인)이 있으므로 대용량 배터리는 항공사 규정을 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 액체류는 얼마나 가져갈 수 있나요?</p><p class="a">기내 반입은 개별 용기 100mL 이하로, 모두 합쳐 1L 투명 지퍼백 1개에 들어가야 합니다. 위탁 수하물에는 이 제한이 없습니다. 자세한 기준은 이용 공항·항공사 안내를 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 목록에 없는 항목을 추가할 수 있나요?</p><p class="a">현재는 생성된 항목을 체크하는 방식만 지원합니다. 개인 항목은 '텍스트로 내보내기' 후 메모 앱에서 덧붙이는 방식을 권합니다.</p></div>
+    
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 기내 반입·위탁 수하물 규정은 항공사와 출발 공항에 따라 다르므로 반드시 항공사 공지를 확인하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-packing/" target="_blank" rel="noopener"><span class="e">🎒</span> 여행 짐 체크리스트 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-pin/" target="_blank" rel="noopener"><span class="e">📍</span> 여행 핀 지도 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, segInit, multiInit, copyText, store, download, readR, shareUrl, sharedCta, wireShare } from "../assets/app.mjs";
+import { buildList } from "../lib/packing.mjs";
+const S = store("tc-packing-v1");
+const cl = segInit($("climate"));
+const ty = segInit($("ttype"));
+const op = multiInit($("opts"));
+let checked = new Set();
+const shared = readR();
+const saved = S.load(null);
+const init = shared || saved;
+if (init) {
+  cl.set(init.climate); ty.set(init.type); op.set(init.options || []);
+  $("days").value = init.days || 5;
+  checked = new Set(init.checked || []);
+}
+if (shared) sharedCta($("ctaBox"), "나도 내 짐 목록 만들기");
+function stateOf() {
+  return { climate: cl.get(), type: ty.get(), options: op.get(), days: +$("days").value || 5, checked: [...checked] };
+}
+let cur = null;
+function render() {
+  const st = stateOf();
+  cur = buildList(st);
+  $("qty").innerHTML = '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>' + st.days + '일 기준 수량 가이드</th><th>권장</th></tr></thead><tbody>' +
+    cur.quantities.map((q) => "<tr><td>" + esc(q.name) + "</td><td>" + esc(q.qty) + "</td></tr>").join("") + "</tbody></table></div>";
+  $("list").innerHTML = cur.groups.map((g) =>
+    '<div class="grp"><h3>' + esc(g.cat) + '<span class="c">' + g.items.length + '개</span></h3><ul class="list">' +
+    g.items.map((it) => {
+      const on = checked.has(it.name);
+      return '<li class="' + (on ? "done" : "") + '"><input type="checkbox" data-n="' + esc(it.name) + '"' + (on ? " checked" : "") + ' /><span class="nm">' + esc(it.name) +
+        (it.note ? '<span class="hint">' + esc(it.note) + "</span>" : "") + "</span></li>";
+    }).join("") + "</ul></div>").join("");
+  [...$("list").querySelectorAll("input")].forEach((b) => b.addEventListener("change", () => {
+    if (b.checked) checked.add(b.dataset.n); else checked.delete(b.dataset.n);
+    b.closest("li").classList.toggle("done", b.checked);
+    S.save(stateOf());
+    progress();
+  }));
+  progress();
+  S.save(st);
+}
+function progress() {
+  const total = cur ? cur.count : 0;
+  const done = cur ? cur.groups.reduce((s, g) => s + g.items.filter((i) => checked.has(i.name)).length, 0) : 0;
+  $("progress").textContent = done + " / " + total + " 완료";
+  $("barFill").style.width = (total ? Math.round((done / total) * 100) : 0) + "%";
+}
+function asText() {
+  if (!cur) return "";
+  return "여행 짐 목록 (" + stateOf().days + "일)\n" + cur.groups.map((g) =>
+    "\n[" + g.cat + "]\n" + g.items.map((i) => (checked.has(i.name) ? "[v] " : "[ ] ") + i.name).join("\n")).join("\n");
+}
+$("goBtn").addEventListener("click", () => { $("resultBox").hidden = false; render(); showAd(); });
+$("expBtn").addEventListener("click", () => download("packing-list.txt", asText()));
+$("textBtn").addEventListener("click", () => copyText(asText()));
+$("clearBtn").addEventListener("click", () => { S.clear(); checked = new Set(); render(); alert("이 브라우저에 저장된 짐 목록 기록을 삭제했습니다."); });
+wireShare({
+  linkBtn: $("linkBtn"), textBtn: null, xBtn: $("xBtn"), shareBtn: $("shareBtn"),
+  getUrl: () => shareUrl(stateOf()),
+  getText: () => "여행 짐 목록 " + (cur ? cur.count : 0) + "개 항목을 만들었어요",
+  title: "여행 짐 싸기 목록",
+});
+if (init) { $("resultBox").hidden = false; render(); showAd(); }
+
+</script>
+</body>
+</html>

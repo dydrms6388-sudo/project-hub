@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>비행시간·거리 계산기 — 대권거리 기반 추정과 도착 현지 시각</title>
+<meta name="description" content="공항 두 곳을 고르면 대권거리(km)를 계산하고 예상 비행시간과 도착지 현지 시각을 알려줍니다. 인천-뉴욕처럼 시차가 큰 노선의 도착 날짜·요일까지 확인할 수 있습니다. 대권거리 기반 추정치입니다." />
+<link rel="canonical" href="https://tripcalc-kr.vercel.app/flight-time/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해외여행 계산기 허브" />
+<meta property="og:title" content="비행시간·거리 계산기" />
+<meta property="og:description" content="공항 두 곳을 고르면 대권거리(km)를 계산하고 예상 비행시간과 도착지 현지 시각을 알려줍니다. 인천-뉴욕처럼 시차가 큰 노선의 도착 날짜·요일까지 확인할 수 있습니다. 대권거리 기반 추정치입니다." />
+<meta property="og:url" content="https://tripcalc-kr.vercel.app/flight-time/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"비행시간·거리 계산기","description":"공항 두 곳을 고르면 대권거리(km)를 계산하고 예상 비행시간과 도착지 현지 시각을 알려줍니다. 인천-뉴욕처럼 시차가 큰 노선의 도착 날짜·요일까지 확인할 수 있습니다. 대권거리 기반 추정치입니다.","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://tripcalc-kr.vercel.app/flight-time/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"실제 항공사 시간표와 차이가 납니다.","acceptedAnswer":{"@type":"Answer","text":"대권거리를 기준으로 한 추정치이기 때문입니다. 실제 항로는 항공로·관제·영공 우회로 더 길고, 제트기류 영향으로 같은 노선도 방향에 따라 1시간 이상 차이가 납니다. 정확한 시간은 항공사 시간표를 확인하세요."}},{"@type":"Question","name":"도착 시각이 출발 시각보다 이른 것으로 나옵니다.","acceptedAnswer":{"@type":"Answer","text":"시차 때문입니다. 예를 들어 인천에서 아침에 출발해 미국 서부에 같은 날 아침에 도착하는 일은 실제로 일어납니다. 결과에 도착지 현지 날짜와 요일을 함께 표시하니 확인하세요."}},{"@type":"Question","name":"경유 노선도 계산되나요?","acceptedAnswer":{"@type":"Answer","text":"직항 기준 대권거리만 계산합니다. 경유편은 각 구간을 따로 계산한 뒤 환승 대기시간을 더해 보세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://tripcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"비행시간·거리","item":"https://tripcalc-kr.vercel.app/flight-time/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🧳 해외여행 계산기 허브</a> <span class="sep">›</span> <span>비행시간·거리</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">✈️</div>
+    <h1>비행시간·거리 계산기</h1>
+    <p class="lead">공항 두 곳만 고르면 <strong>거리·예상 비행시간·도착 현지 시각</strong>이 한 번에 나옵니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>노선 선택</h2>
+    <div class="grid2">
+      <label class="f">출발 공항 <select id="dep"></select></label>
+      <label class="f">도착 공항 <select id="arr"></select></label>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <label class="f">출발 날짜 <input type="date" id="date" /></label>
+      <label class="f">출발 시각 <span class="u">(출발지 현지)</span><input type="time" id="time" value="10:00" /></label>
+    </div>
+    <div class="row"><button class="btn2" id="swapBtn" type="button">⇅ 출발·도착 바꾸기</button></div>
+    <button class="btn" id="goBtn" type="button">비행시간 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>계산 결과</h2>
+      <p class="big">예상 비행시간 <span class="num" id="hOut">-</span></p>
+      <dl class="kv" id="sum"></dl>
+      <p class="note">대권거리 기반 <strong>추정치</strong>입니다. 실제 항로는 대권거리보다 길고, 편서풍 때문에 동쪽으로 갈 때가 서쪽으로 갈 때보다 대체로 빠릅니다.</p>
+      <div class="share"><button class="btn2" id="copyBtn" type="button">📋 결과 복사</button></div>
+    </div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>지도 위 직선이 실제 항로는 아니다</h2>
+  <p>인천에서 뉴욕까지의 거리를 평면 지도에서 재면 실제보다 훨씬 멀게 나옵니다. 지구는 구체라서 두 지점의 최단 경로는 <strong>대권(great circle)</strong>, 즉 지구 중심을 지나는 평면이 표면과 만나는 원호입니다. 인천-뉴욕 노선이 북극 근처를 지나는 것도 그것이 최단 경로이기 때문입니다.</p>
+  <p>이 계산기는 공항 좌표로 대권거리를 구하고, 거리 구간별 평균 순항 속도와 이착륙·지상활주 시간을 더해 비행시간을 추정합니다. 실제 스케줄과는 보통 10% 안쪽에서 차이가 나며, 영공 우회나 강한 맞바람이 있으면 더 벌어집니다.</p>
+    <h2>사용법</h2>
+  <ol>
+    <li>출발·도착 공항을 IATA 코드나 도시 이름으로 고릅니다.</li>
+    <li>출발 날짜와 <strong>출발지 현지 시각</strong>을 넣습니다.</li>
+    <li>"비행시간 계산하기"를 누르면 거리·예상 비행시간과 함께 <strong>도착지 현지 날짜·시각</strong>이 나옵니다. 날짜가 바뀌면 함께 표시됩니다.</li>
+  </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 실제 항공사 시간표와 차이가 납니다.</p><p class="a">대권거리를 기준으로 한 추정치이기 때문입니다. 실제 항로는 항공로·관제·영공 우회로 더 길고, 제트기류 영향으로 같은 노선도 방향에 따라 1시간 이상 차이가 납니다. 정확한 시간은 항공사 시간표를 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 도착 시각이 출발 시각보다 이른 것으로 나옵니다.</p><p class="a">시차 때문입니다. 예를 들어 인천에서 아침에 출발해 미국 서부에 같은 날 아침에 도착하는 일은 실제로 일어납니다. 결과에 도착지 현지 날짜와 요일을 함께 표시하니 확인하세요.</p></div>
+    <div class="qa"><p class="q">Q. 경유 노선도 계산되나요?</p><p class="a">직항 기준 대권거리만 계산합니다. 경유편은 각 구간을 따로 계산한 뒤 환승 대기시간을 더해 보세요.</p></div>
+    <h2>거리·비행시간 계산 근거</h2>
+    <p class="note">두 공항 사이 거리는 좌표를 이용한 <strong>대권거리(great-circle distance)</strong>이며 지구를 완전한 구로 가정한 <strong>추정치</strong>입니다.
+    실제 항로는 항공로·관제·영공 우회·바람 때문에 대권거리보다 길고, 비행시간도 편서풍 방향(동행/서행)에 따라 1시간 이상 차이가 납니다.
+    좌표 출처: <a href="https://ourairports.com/" target="_blank" rel="noopener">OurAirports</a> (확인일 2026-08-19). 실제 소요시간은 항공사 시간표를 확인하세요.</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 어떤 확정 정보도 보증하지 않습니다. 비행시간은 대권거리 기반 추정치이며 실제 운항 시간표와 다를 수 있습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/travel-pin/" target="_blank" rel="noopener"><span class="e">📍</span> 여행 핀 지도 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/travel-budget/" target="_blank" rel="noopener"><span class="e">💰</span> 여행 예산 계산기 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🧳 <a href="../">해외여행 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { initTheme } from "../assets/app.mjs";
+initTheme(document.getElementById("themeBtn"));
+</script>
+<script type="module">
+
+import { $, showAd, esc, fillSelect, copyText, fmt } from "../assets/app.mjs";
+import { haversine, flightHours, hoursToKo } from "../lib/geo.mjs";
+import { offsetMinutes, diffHours, diffLabel, localParts } from "../lib/tz.mjs";
+const A = {"ICN":{"c":"서울/인천","n":"인천국제공항","lat":37.4602,"lon":126.4407,"tz":"Asia/Seoul"},"GMP":{"c":"서울","n":"김포국제공항","lat":37.5583,"lon":126.7906,"tz":"Asia/Seoul"},"PUS":{"c":"부산","n":"김해국제공항","lat":35.1795,"lon":128.9382,"tz":"Asia/Seoul"},"CJU":{"c":"제주","n":"제주국제공항","lat":33.5113,"lon":126.493,"tz":"Asia/Seoul"},"TAE":{"c":"대구","n":"대구국제공항","lat":35.8941,"lon":128.6589,"tz":"Asia/Seoul"},"NRT":{"c":"도쿄","n":"나리타국제공항","lat":35.7653,"lon":140.3856,"tz":"Asia/Tokyo"},"HND":{"c":"도쿄","n":"하네다공항","lat":35.5533,"lon":139.7811,"tz":"Asia/Tokyo"},"KIX":{"c":"오사카","n":"간사이국제공항","lat":34.4342,"lon":135.2441,"tz":"Asia/Tokyo"},"NGO":{"c":"나고야","n":"주부국제공항","lat":34.8584,"lon":136.8049,"tz":"Asia/Tokyo"},"FUK":{"c":"후쿠오카","n":"후쿠오카공항","lat":33.5859,"lon":130.4508,"tz":"Asia/Tokyo"},"CTS":{"c":"삿포로","n":"신치토세공항","lat":42.7752,"lon":141.6923,"tz":"Asia/Tokyo"},"OKA":{"c":"오키나와","n":"나하공항","lat":26.1958,"lon":127.6459,"tz":"Asia/Tokyo"},"PEK":{"c":"베이징","n":"베이징 서우두","lat":40.0801,"lon":116.5846,"tz":"Asia/Shanghai"},"PKX":{"c":"베이징","n":"베이징 다싱","lat":39.5098,"lon":116.4109,"tz":"Asia/Shanghai"},"PVG":{"c":"상하이","n":"상하이 푸둥","lat":31.1434,"lon":121.8052,"tz":"Asia/Shanghai"},"SHA":{"c":"상하이","n":"상하이 훙차오","lat":31.1979,"lon":121.3363,"tz":"Asia/Shanghai"},"CAN":{"c":"광저우","n":"광저우 바이윈","lat":23.3924,"lon":113.2988,"tz":"Asia/Shanghai"},"SZX":{"c":"선전","n":"선전 바오안","lat":22.6393,"lon":113.8107,"tz":"Asia/Shanghai"},"HKG":{"c":"홍콩","n":"홍콩국제공항","lat":22.308,"lon":113.9185,"tz":"Asia/Hong_Kong"},"MFM":{"c":"마카오","n":"마카오국제공항","lat":22.1496,"lon":113.5915,"tz":"Asia/Macau"},"TPE":{"c":"타이베이","n":"타오위안국제공항","lat":25.0797,"lon":121.2342,"tz":"Asia/Taipei"},"TSA":{"c":"타이베이","n":"쑹산공항","lat":25.0694,"lon":121.5525,"tz":"Asia/Taipei"},"SIN":{"c":"싱가포르","n":"창이공항","lat":1.3644,"lon":103.9915,"tz":"Asia/Singapore"},"KUL":{"c":"쿠알라룸푸르","n":"쿠알라룸푸르국제공항","lat":2.7456,"lon":101.7099,"tz":"Asia/Kuala_Lumpur"},"BKK":{"c":"방콕","n":"수완나품공항","lat":13.6811,"lon":100.7473,"tz":"Asia/Bangkok"},"DMK":{"c":"방콕","n":"돈므앙공항","lat":13.9126,"lon":100.6068,"tz":"Asia/Bangkok"},"CNX":{"c":"치앙마이","n":"치앙마이공항","lat":18.7668,"lon":98.9626,"tz":"Asia/Bangkok"},"HKT":{"c":"푸껫","n":"푸껫공항","lat":8.1132,"lon":98.3169,"tz":"Asia/Bangkok"},"SGN":{"c":"호치민","n":"떤선녓공항","lat":10.8188,"lon":106.652,"tz":"Asia/Ho_Chi_Minh"},"HAN":{"c":"하노이","n":"노이바이공항","lat":21.2212,"lon":105.8072,"tz":"Asia/Ho_Chi_Minh"},"DAD":{"c":"다낭","n":"다낭공항","lat":16.0439,"lon":108.1994,"tz":"Asia/Ho_Chi_Minh"},"CXR":{"c":"나트랑","n":"깜라인공항","lat":11.9982,"lon":109.2194,"tz":"Asia/Ho_Chi_Minh"},"MNL":{"c":"마닐라","n":"니노이 아키노공항","lat":14.5086,"lon":121.0197,"tz":"Asia/Manila"},"CEB":{"c":"세부","n":"막탄 세부공항","lat":10.3075,"lon":123.9789,"tz":"Asia/Manila"},"CRK":{"c":"클라크","n":"클라크공항","lat":15.186,"lon":120.56,"tz":"Asia/Manila"},"DPS":{"c":"발리","n":"응우라라이공항","lat":-8.7482,"lon":115.1672,"tz":"Asia/Makassar"},"CGK":{"c":"자카르타","n":"수카르노하타공항","lat":-6.1256,"lon":106.6559,"tz":"Asia/Jakarta"},"PNH":{"c":"프놈펜","n":"프놈펜국제공항","lat":11.5466,"lon":104.8441,"tz":"Asia/Phnom_Penh"},"DEL":{"c":"델리","n":"인디라 간디공항","lat":28.5562,"lon":77.1,"tz":"Asia/Kolkata"},"BOM":{"c":"뭄바이","n":"차트라파티 시바지공항","lat":19.0896,"lon":72.8656,"tz":"Asia/Kolkata"},"TAS":{"c":"타슈켄트","n":"타슈켄트국제공항","lat":41.2579,"lon":69.2812,"tz":"Asia/Tashkent"},"UBN":{"c":"울란바토르","n":"칭기즈칸국제공항","lat":47.6467,"lon":106.8199,"tz":"Asia/Ulaanbaatar"},"DXB":{"c":"두바이","n":"두바이국제공항","lat":25.2532,"lon":55.3657,"tz":"Asia/Dubai"},"AUH":{"c":"아부다비","n":"아부다비 자예드공항","lat":24.433,"lon":54.6511,"tz":"Asia/Dubai"},"DOH":{"c":"도하","n":"하마드국제공항","lat":25.2731,"lon":51.6081,"tz":"Asia/Qatar"},"IST":{"c":"이스탄불","n":"이스탄불공항","lat":41.2753,"lon":28.7519,"tz":"Europe/Istanbul"},"TLV":{"c":"텔아비브","n":"벤구리온공항","lat":32.0114,"lon":34.8867,"tz":"Asia/Jerusalem"},"LHR":{"c":"런던","n":"히스로공항","lat":51.47,"lon":-0.4543,"tz":"Europe/London"},"LGW":{"c":"런던","n":"개트윅공항","lat":51.1537,"lon":-0.1821,"tz":"Europe/London"},"CDG":{"c":"파리","n":"샤를 드골공항","lat":49.0097,"lon":2.5479,"tz":"Europe/Paris"},"ORY":{"c":"파리","n":"오를리공항","lat":48.7262,"lon":2.3652,"tz":"Europe/Paris"},"FRA":{"c":"프랑크푸르트","n":"프랑크푸르트공항","lat":50.0379,"lon":8.5622,"tz":"Europe/Berlin"},"MUC":{"c":"뮌헨","n":"뮌헨공항","lat":48.3538,"lon":11.7861,"tz":"Europe/Berlin"},"AMS":{"c":"암스테르담","n":"스히폴공항","lat":52.3105,"lon":4.7683,"tz":"Europe/Amsterdam"},"BRU":{"c":"브뤼셀","n":"브뤼셀공항","lat":50.901,"lon":4.4844,"tz":"Europe/Brussels"},"ZRH":{"c":"취리히","n":"취리히공항","lat":47.4647,"lon":8.5492,"tz":"Europe/Zurich"},"GVA":{"c":"제네바","n":"제네바공항","lat":46.2381,"lon":6.109,"tz":"Europe/Zurich"},"VIE":{"c":"빈","n":"빈국제공항","lat":48.1103,"lon":16.5697,"tz":"Europe/Vienna"},"PRG":{"c":"프라하","n":"바츨라프 하벨공항","lat":50.1008,"lon":14.2632,"tz":"Europe/Prague"},"WAW":{"c":"바르샤바","n":"바르샤바 쇼팽공항","lat":52.1657,"lon":20.9671,"tz":"Europe/Warsaw"},"BUD":{"c":"부다페스트","n":"부다페스트공항","lat":47.4298,"lon":19.2611,"tz":"Europe/Budapest"},"FCO":{"c":"로마","n":"피우미치노공항","lat":41.8003,"lon":12.2389,"tz":"Europe/Rome"},"MXP":{"c":"밀라노","n":"말펜사공항","lat":45.6306,"lon":8.7231,"tz":"Europe/Rome"},"VCE":{"c":"베네치아","n":"마르코 폴로공항","lat":45.5053,"lon":12.3519,"tz":"Europe/Rome"},"BCN":{"c":"바르셀로나","n":"엘프라트공항","lat":41.2974,"lon":2.0833,"tz":"Europe/Madrid"},"MAD":{"c":"마드리드","n":"바라하스공항","lat":40.4983,"lon":-3.5676,"tz":"Europe/Madrid"},"LIS":{"c":"리스본","n":"리스본공항","lat":38.7756,"lon":-9.1354,"tz":"Europe/Lisbon"},"ATH":{"c":"아테네","n":"아테네국제공항","lat":37.9364,"lon":23.9445,"tz":"Europe/Athens"},"DUB":{"c":"더블린","n":"더블린공항","lat":53.4264,"lon":-6.2499,"tz":"Europe/Dublin"},"CPH":{"c":"코펜하겐","n":"코펜하겐공항","lat":55.618,"lon":12.6508,"tz":"Europe/Copenhagen"},"ARN":{"c":"스톡홀름","n":"알란다공항","lat":59.6498,"lon":17.9238,"tz":"Europe/Stockholm"},"OSL":{"c":"오슬로","n":"가르데르모엔공항","lat":60.1976,"lon":11.1004,"tz":"Europe/Oslo"},"HEL":{"c":"헬싱키","n":"헬싱키 반타공항","lat":60.3172,"lon":24.9633,"tz":"Europe/Helsinki"},"KEF":{"c":"레이캬비크","n":"케플라비크공항","lat":63.985,"lon":-22.6056,"tz":"Atlantic/Reykjavik"},"SVO":{"c":"모스크바","n":"셰레메티예보공항","lat":55.9728,"lon":37.4147,"tz":"Europe/Moscow"},"VVO":{"c":"블라디보스토크","n":"블라디보스토크공항","lat":43.399,"lon":132.148,"tz":"Asia/Vladivostok"},"JFK":{"c":"뉴욕","n":"존 F. 케네디공항","lat":40.6413,"lon":-73.7781,"tz":"America/New_York"},"EWR":{"c":"뉴욕","n":"뉴어크공항","lat":40.6895,"lon":-74.1745,"tz":"America/New_York"},"BOS":{"c":"보스턴","n":"로건공항","lat":42.3656,"lon":-71.0096,"tz":"America/New_York"},"IAD":{"c":"워싱턴 D.C.","n":"덜레스공항","lat":38.9531,"lon":-77.4565,"tz":"America/New_York"},"ORD":{"c":"시카고","n":"오헤어공항","lat":41.9742,"lon":-87.9073,"tz":"America/Chicago"},"DFW":{"c":"댈러스","n":"댈러스 포트워스공항","lat":32.8998,"lon":-97.0403,"tz":"America/Chicago"},"ATL":{"c":"애틀랜타","n":"하츠필드 잭슨공항","lat":33.6407,"lon":-84.4277,"tz":"America/New_York"},"MIA":{"c":"마이애미","n":"마이애미공항","lat":25.7959,"lon":-80.287,"tz":"America/New_York"},"LAX":{"c":"로스앤젤레스","n":"로스앤젤레스공항","lat":33.9416,"lon":-118.4085,"tz":"America/Los_Angeles"},"SFO":{"c":"샌프란시스코","n":"샌프란시스코공항","lat":37.6213,"lon":-122.379,"tz":"America/Los_Angeles"},"SEA":{"c":"시애틀","n":"시애틀 터코마공항","lat":47.4502,"lon":-122.3088,"tz":"America/Los_Angeles"},"LAS":{"c":"라스베이거스","n":"해리 리드공항","lat":36.084,"lon":-115.1537,"tz":"America/Los_Angeles"},"SAN":{"c":"샌디에이고","n":"샌디에이고공항","lat":32.7338,"lon":-117.1933,"tz":"America/Los_Angeles"},"HNL":{"c":"호놀룰루","n":"호놀룰루공항","lat":21.3187,"lon":-157.9224,"tz":"Pacific/Honolulu"},"YVR":{"c":"밴쿠버","n":"밴쿠버공항","lat":49.1967,"lon":-123.1815,"tz":"America/Vancouver"},"YYZ":{"c":"토론토","n":"토론토 피어슨공항","lat":43.6777,"lon":-79.6248,"tz":"America/Toronto"},"MEX":{"c":"멕시코시티","n":"멕시코시티공항","lat":19.4363,"lon":-99.0721,"tz":"America/Mexico_City"},"CUN":{"c":"칸쿤","n":"칸쿤공항","lat":21.0365,"lon":-86.8771,"tz":"America/Cancun"},"GRU":{"c":"상파울루","n":"과룰류스공항","lat":-23.4356,"lon":-46.4731,"tz":"America/Sao_Paulo"},"EZE":{"c":"부에노스아이레스","n":"에세이사공항","lat":-34.8222,"lon":-58.5358,"tz":"America/Argentina/Buenos_Aires"},"SCL":{"c":"산티아고","n":"아르투로 베니테스공항","lat":-33.393,"lon":-70.7858,"tz":"America/Santiago"},"LIM":{"c":"리마","n":"호르헤 차베스공항","lat":-12.0219,"lon":-77.1143,"tz":"America/Lima"},"SYD":{"c":"시드니","n":"시드니 킹스포드 스미스공항","lat":-33.9399,"lon":151.1753,"tz":"Australia/Sydney"},"MEL":{"c":"멜버른","n":"멜버른공항","lat":-37.669,"lon":144.841,"tz":"Australia/Melbourne"},"BNE":{"c":"브리즈번","n":"브리즈번공항","lat":-27.3842,"lon":153.1175,"tz":"Australia/Brisbane"},"PER":{"c":"퍼스","n":"퍼스공항","lat":-31.9385,"lon":115.9672,"tz":"Australia/Perth"},"AKL":{"c":"오클랜드","n":"오클랜드공항","lat":-37.0082,"lon":174.785,"tz":"Pacific/Auckland"},"CHC":{"c":"크라이스트처치","n":"크라이스트처치공항","lat":-43.4894,"lon":172.5322,"tz":"Pacific/Auckland"},"GUM":{"c":"괌","n":"괌 국제공항","lat":13.4839,"lon":144.796,"tz":"Pacific/Guam"},"SPN":{"c":"사이판","n":"사이판국제공항","lat":15.1197,"lon":145.7283,"tz":"Pacific/Saipan"},"NAN":{"c":"피지 난디","n":"난디국제공항","lat":-17.7554,"lon":177.4434,"tz":"Pacific/Fiji"},"CAI":{"c":"카이로","n":"카이로국제공항","lat":30.1219,"lon":31.4056,"tz":"Africa/Cairo"},"CMN":{"c":"카사블랑카","n":"무함마드 5세공항","lat":33.3675,"lon":-7.59,"tz":"Africa/Casablanca"},"JNB":{"c":"요하네스버그","n":"O.R. 탐보공항","lat":-26.1392,"lon":28.246,"tz":"Africa/Johannesburg"},"CPT":{"c":"케이프타운","n":"케이프타운공항","lat":-33.9715,"lon":18.6021,"tz":"Africa/Johannesburg"}};
+const OPTS = [{"v":"ICN","n":"ICN · 서울/인천 인천국제공항"},{"v":"GMP","n":"GMP · 서울 김포국제공항"},{"v":"PUS","n":"PUS · 부산 김해국제공항"},{"v":"CJU","n":"CJU · 제주 제주국제공항"},{"v":"TAE","n":"TAE · 대구 대구국제공항"},{"v":"NRT","n":"NRT · 도쿄 나리타국제공항"},{"v":"HND","n":"HND · 도쿄 하네다공항"},{"v":"KIX","n":"KIX · 오사카 간사이국제공항"},{"v":"NGO","n":"NGO · 나고야 주부국제공항"},{"v":"FUK","n":"FUK · 후쿠오카 후쿠오카공항"},{"v":"CTS","n":"CTS · 삿포로 신치토세공항"},{"v":"OKA","n":"OKA · 오키나와 나하공항"},{"v":"PEK","n":"PEK · 베이징 베이징 서우두"},{"v":"PKX","n":"PKX · 베이징 베이징 다싱"},{"v":"PVG","n":"PVG · 상하이 상하이 푸둥"},{"v":"SHA","n":"SHA · 상하이 상하이 훙차오"},{"v":"CAN","n":"CAN · 광저우 광저우 바이윈"},{"v":"SZX","n":"SZX · 선전 선전 바오안"},{"v":"HKG","n":"HKG · 홍콩 홍콩국제공항"},{"v":"MFM","n":"MFM · 마카오 마카오국제공항"},{"v":"TPE","n":"TPE · 타이베이 타오위안국제공항"},{"v":"TSA","n":"TSA · 타이베이 쑹산공항"},{"v":"SIN","n":"SIN · 싱가포르 창이공항"},{"v":"KUL","n":"KUL · 쿠알라룸푸르 쿠알라룸푸르국제공항"},{"v":"BKK","n":"BKK · 방콕 수완나품공항"},{"v":"DMK","n":"DMK · 방콕 돈므앙공항"},{"v":"CNX","n":"CNX · 치앙마이 치앙마이공항"},{"v":"HKT","n":"HKT · 푸껫 푸껫공항"},{"v":"SGN","n":"SGN · 호치민 떤선녓공항"},{"v":"HAN","n":"HAN · 하노이 노이바이공항"},{"v":"DAD","n":"DAD · 다낭 다낭공항"},{"v":"CXR","n":"CXR · 나트랑 깜라인공항"},{"v":"MNL","n":"MNL · 마닐라 니노이 아키노공항"},{"v":"CEB","n":"CEB · 세부 막탄 세부공항"},{"v":"CRK","n":"CRK · 클라크 클라크공항"},{"v":"DPS","n":"DPS · 발리 응우라라이공항"},{"v":"CGK","n":"CGK · 자카르타 수카르노하타공항"},{"v":"PNH","n":"PNH · 프놈펜 프놈펜국제공항"},{"v":"DEL","n":"DEL · 델리 인디라 간디공항"},{"v":"BOM","n":"BOM · 뭄바이 차트라파티 시바지공항"},{"v":"TAS","n":"TAS · 타슈켄트 타슈켄트국제공항"},{"v":"UBN","n":"UBN · 울란바토르 칭기즈칸국제공항"},{"v":"DXB","n":"DXB · 두바이 두바이국제공항"},{"v":"AUH","n":"AUH · 아부다비 아부다비 자예드공항"},{"v":"DOH","n":"DOH · 도하 하마드국제공항"},{"v":"IST","n":"IST · 이스탄불 이스탄불공항"},{"v":"TLV","n":"TLV · 텔아비브 벤구리온공항"},{"v":"LHR","n":"LHR · 런던 히스로공항"},{"v":"LGW","n":"LGW · 런던 개트윅공항"},{"v":"CDG","n":"CDG · 파리 샤를 드골공항"},{"v":"ORY","n":"ORY · 파리 오를리공항"},{"v":"FRA","n":"FRA · 프랑크푸르트 프랑크푸르트공항"},{"v":"MUC","n":"MUC · 뮌헨 뮌헨공항"},{"v":"AMS","n":"AMS · 암스테르담 스히폴공항"},{"v":"BRU","n":"BRU · 브뤼셀 브뤼셀공항"},{"v":"ZRH","n":"ZRH · 취리히 취리히공항"},{"v":"GVA","n":"GVA · 제네바 제네바공항"},{"v":"VIE","n":"VIE · 빈 빈국제공항"},{"v":"PRG","n":"PRG · 프라하 바츨라프 하벨공항"},{"v":"WAW","n":"WAW · 바르샤바 바르샤바 쇼팽공항"},{"v":"BUD","n":"BUD · 부다페스트 부다페스트공항"},{"v":"FCO","n":"FCO · 로마 피우미치노공항"},{"v":"MXP","n":"MXP · 밀라노 말펜사공항"},{"v":"VCE","n":"VCE · 베네치아 마르코 폴로공항"},{"v":"BCN","n":"BCN · 바르셀로나 엘프라트공항"},{"v":"MAD","n":"MAD · 마드리드 바라하스공항"},{"v":"LIS","n":"LIS · 리스본 리스본공항"},{"v":"ATH","n":"ATH · 아테네 아테네국제공항"},{"v":"DUB","n":"DUB · 더블린 더블린공항"},{"v":"CPH","n":"CPH · 코펜하겐 코펜하겐공항"},{"v":"ARN","n":"ARN · 스톡홀름 알란다공항"},{"v":"OSL","n":"OSL · 오슬로 가르데르모엔공항"},{"v":"HEL","n":"HEL · 헬싱키 헬싱키 반타공항"},{"v":"KEF","n":"KEF · 레이캬비크 케플라비크공항"},{"v":"SVO","n":"SVO · 모스크바 셰레메티예보공항"},{"v":"VVO","n":"VVO · 블라디보스토크 블라디보스토크공항"},{"v":"JFK","n":"JFK · 뉴욕 존 F. 케네디공항"},{"v":"EWR","n":"EWR · 뉴욕 뉴어크공항"},{"v":"BOS","n":"BOS · 보스턴 로건공항"},{"v":"IAD","n":"IAD · 워싱턴 D.C. 덜레스공항"},{"v":"ORD","n":"ORD · 시카고 오헤어공항"},{"v":"DFW","n":"DFW · 댈러스 댈러스 포트워스공항"},{"v":"ATL","n":"ATL · 애틀랜타 하츠필드 잭슨공항"},{"v":"MIA","n":"MIA · 마이애미 마이애미공항"},{"v":"LAX","n":"LAX · 로스앤젤레스 로스앤젤레스공항"},{"v":"SFO","n":"SFO · 샌프란시스코 샌프란시스코공항"},{"v":"SEA","n":"SEA · 시애틀 시애틀 터코마공항"},{"v":"LAS","n":"LAS · 라스베이거스 해리 리드공항"},{"v":"SAN","n":"SAN · 샌디에이고 샌디에이고공항"},{"v":"HNL","n":"HNL · 호놀룰루 호놀룰루공항"},{"v":"YVR","n":"YVR · 밴쿠버 밴쿠버공항"},{"v":"YYZ","n":"YYZ · 토론토 토론토 피어슨공항"},{"v":"MEX","n":"MEX · 멕시코시티 멕시코시티공항"},{"v":"CUN","n":"CUN · 칸쿤 칸쿤공항"},{"v":"GRU","n":"GRU · 상파울루 과룰류스공항"},{"v":"EZE","n":"EZE · 부에노스아이레스 에세이사공항"},{"v":"SCL","n":"SCL · 산티아고 아르투로 베니테스공항"},{"v":"LIM","n":"LIM · 리마 호르헤 차베스공항"},{"v":"SYD","n":"SYD · 시드니 시드니 킹스포드 스미스공항"},{"v":"MEL","n":"MEL · 멜버른 멜버른공항"},{"v":"BNE","n":"BNE · 브리즈번 브리즈번공항"},{"v":"PER","n":"PER · 퍼스 퍼스공항"},{"v":"AKL","n":"AKL · 오클랜드 오클랜드공항"},{"v":"CHC","n":"CHC · 크라이스트처치 크라이스트처치공항"},{"v":"GUM","n":"GUM · 괌 괌 국제공항"},{"v":"SPN","n":"SPN · 사이판 사이판국제공항"},{"v":"NAN","n":"NAN · 피지 난디 난디국제공항"},{"v":"CAI","n":"CAI · 카이로 카이로국제공항"},{"v":"CMN","n":"CMN · 카사블랑카 무함마드 5세공항"},{"v":"JNB","n":"JNB · 요하네스버그 O.R. 탐보공항"},{"v":"CPT","n":"CPT · 케이프타운 케이프타운공항"}];
+fillSelect($("dep"), OPTS, "ICN");
+fillSelect($("arr"), OPTS, "JFK");
+function pad(n) { return String(n).padStart(2, "0"); }
+const t0 = new Date();
+$("date").value = t0.getFullYear() + "-" + pad(t0.getMonth() + 1) + "-" + pad(t0.getDate());
+$("swapBtn").addEventListener("click", () => { const a = $("dep").value; $("dep").value = $("arr").value; $("arr").value = a; });
+let lastTxt = "";
+$("goBtn").addEventListener("click", () => {
+  const d = A[$("dep").value], r = A[$("arr").value];
+  if (!d || !r || $("dep").value === $("arr").value) { alert("서로 다른 공항을 골라주세요."); return; }
+  const km = haversine(d.lat, d.lon, r.lat, r.lon);
+  const h = flightHours(km);
+  const [y, m, da] = $("date").value.split("-").map(Number);
+  const [hh, mi] = $("time").value.split(":").map(Number);
+  const naive = Date.UTC(y, m - 1, da, hh, mi);
+  const depUtc = new Date(naive - offsetMinutes(d.tz, new Date(naive)) * 60000);
+  const arrUtc = new Date(depUtc.getTime() + h * 3600000);
+  const p = localParts(r.tz, arrUtc);
+  const dayDiff = Math.round((Date.UTC(p.y, p.m - 1, p.d) - Date.UTC(y, m - 1, da)) / 86400000);
+  $("resultBox").hidden = false;
+  $("hOut").textContent = hoursToKo(h);
+  $("sum").innerHTML =
+    "<dt>대권거리</dt><dd>약 " + fmt(km) + " km (" + fmt(km * 0.539957) + " NM)</dd>" +
+    "<dt>노선</dt><dd>" + esc($("dep").value + " " + d.c) + " → " + esc($("arr").value + " " + r.c) + "</dd>" +
+    "<dt>시차</dt><dd>" + esc(diffLabel(diffHours(d.tz, r.tz, depUtc))) + "</dd>" +
+    "<dt>도착 현지 시각</dt><dd>" + p.y + "-" + pad(p.m) + "-" + pad(p.d) + " (" + p.wd + ") " + pad(p.h) + ":" + pad(p.mi) +
+      (dayDiff === 0 ? "" : dayDiff > 0 ? " <span class=\"badge warn\">+" + dayDiff + "일</span>" : " <span class=\"badge warn\">" + dayDiff + "일</span>") + "</dd>";
+  lastTxt = $("dep").value + "→" + $("arr").value + " 약 " + fmt(km) + "km · 예상 " + hoursToKo(h);
+  showAd();
+});
+$("copyBtn").addEventListener("click", () => copyText(lastTxt + " (추정치, tripcalc-kr.vercel.app/flight-time)"));
+
+</script>
+</body>
+</html>

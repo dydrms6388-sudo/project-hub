@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>아기 수면 스케줄 만들기 — 월령별 권장 수면시간·낮잠 타임라인 | BabyCalc</title>
+<meta name="description" content="월령과 아침 기상 시각을 입력하면 권장 총 수면시간과 깨어있는 시간(wake window)을 바탕으로 낮잠·취침 타임라인 예시를 만들어 드립니다. 수면 기록 저장과 CSV 내보내기도 지원합니다.">
+<link rel="canonical" href="https://babycalc-kr.vercel.app/sleep-schedule/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BabyCalc 육아 계산기 허브">
+<meta property="og:title" content="아기 수면 스케줄 만들기">
+<meta property="og:description" content="월령별 권장 수면시간과 낮잠 타임라인 예시를 한 번에.">
+<meta property="og:url" content="https://babycalc-kr.vercel.app/sleep-schedule/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"아기 수면 스케줄 만들기","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"월령과 아침 기상 시각을 입력하면 권장 총 수면시간과 깨어있는 시간(wake window)을 바탕으로 낮잠·취침 타임라인 예시를 만들어 드립니다. 수면 기록 저장과 CSV 내보내기도 지원합니다.","url":"https://babycalc-kr.vercel.app/sleep-schedule/","inLanguage":"ko-KR"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"권장 수면시간보다 적게 자요.","acceptedAnswer":{"@type":"Answer","text":"권장치는 범위이고 개인차가 큽니다. 낮에 기분이 좋고 잘 먹으며 발달이 순조롭다면 대개 괜찮습니다. 지속적으로 심하게 부족하거나 자다가 자주 깨서 힘들어한다면 소아과에서 상담해 보세요."}},{"@type":"Question","name":"낮잠을 안 자려고 해요.","acceptedAnswer":{"@type":"Answer","text":"깨어있는 시간이 너무 짧거나 반대로 너무 길면 잠들기 어려워집니다. 타임라인을 참고해 30분 단위로 조정해 보고, 졸림 신호(눈 비비기·칭얼거림)를 놓치지 않는 것이 도움이 됩니다."}},{"@type":"Question","name":"통잠은 몇 개월부터 자나요?","acceptedAnswer":{"@type":"Answer","text":"아기마다 편차가 매우 커서 정해진 시점이 없습니다. 밤중 수유가 필요한 시기, 이앓이, 발달 도약 등으로 다시 자주 깨는 시기도 흔합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"BabyCalc 육아 허브","item":"https://babycalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"수면 스케줄","item":"https://babycalc-kr.vercel.app/sleep-schedule/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">BabyCalc 육아 허브</a> <span class="sep">›</span> <span class="cur">수면 스케줄</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">😴</div>
+    <h1>아기 수면 스케줄 만들기</h1>
+    <p class="lead">몇 시에 재워야 할지 막막할 때, 월령별 권장 수면시간과 깨어있는 시간으로 하루 타임라인을 그려 드려요.</p>
+  </div>
+  <p class="med-notice">⚠ 이 페이지는 <strong>참고용이며 진단이 아닙니다</strong>. 아이의 건강·발달과 관련한 판단은 반드시 <strong>소아과 전문의와 상담</strong>하세요.</p>
+
+  <form class="card" id="form" autocomplete="off">
+    <h2>아기 정보</h2>
+    <div class="row2">
+      <div class="field">
+        <label for="month">월령 (개월)</label>
+        <input type="number" id="month" min="0" max="60" step="1" required placeholder="예: 7">
+      </div>
+      <div class="field">
+        <label for="wake">아침 기상 시각</label>
+        <input type="time" id="wake" value="07:00" required>
+      </div>
+    </div>
+    <button class="btn" type="submit">스케줄 만들기</button>
+  </form>
+
+  <section class="card result" id="result" aria-live="polite">
+    <h2>추천 타임라인</h2>
+    <p class="res-big" id="totalBig">—</p>
+    <p class="res-sub" id="totalSub"></p>
+    <div class="kv"><span class="k">낮잠 횟수 (참고)</span><span class="v" id="kNaps">—</span></div>
+    <div class="kv"><span class="k">깨어있는 시간 (참고)</span><span class="v" id="kWake">—</span></div>
+    <div class="tbl-scroll"><table class="tbl" id="tlTbl">
+      <thead><tr><th>시각</th><th>일정</th></tr></thead><tbody></tbody>
+    </table></div>
+    <p class="res-sub" id="tlNote" style="font-size:12.5px;color:var(--muted)"></p>
+    <div class="btnrow no-print">
+      <button class="btn sm sec" type="button" onclick="window.print()">인쇄</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>수면 기록</h2>
+    <div class="row3">
+      <div class="field"><label for="rDate">날짜</label><input type="date" id="rDate"></div>
+      <div class="field"><label for="rBed">취침</label><input type="time" id="rBed"></div>
+      <div class="field"><label for="rUp">기상</label><input type="time" id="rUp"></div>
+    </div>
+    <div class="field">
+      <label for="rNap">낮잠 합계 (분)</label>
+      <input type="number" id="rNap" min="0" max="900" step="5" placeholder="예: 120">
+    </div>
+    <div class="btnrow">
+      <button class="btn sm" type="button" id="addRec">기록 추가</button>
+      <button class="btn sm sec" type="button" id="csvBtn">CSV 내보내기</button>
+      <button class="btn sm sec" type="button" id="jsonBtn">JSON 내보내기</button>
+      <button class="btn sm danger" type="button" id="clearBtn">기록 전체 삭제</button>
+    </div>
+    <div class="tbl-scroll"><table class="tbl" id="recTbl">
+      <thead><tr><th>날짜</th><th>취침</th><th>기상</th><th>밤잠</th><th>낮잠</th><th>총 수면</th><th class="no-print">삭제</th></tr></thead><tbody></tbody>
+    </table></div>
+    <p class="local-note">✅ 수면 기록은 이 브라우저(localStorage)에만 저장됩니다. <strong>서버 저장 없음.</strong></p>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>어떤 기준으로 만드나요?</h2>
+    <p>하루 총 수면시간은 <strong>미국수면재단(NSF) 2015 연령별 권장 수면시간</strong>을 기준으로 합니다. 여기에 월령별로 흔히 안내되는 <strong>깨어있는 시간(wake window)</strong>을 더해 기상 시각부터 낮잠·취침까지의 타임라인 예시를 만듭니다.</p><p>총 수면시간 권장치는 출처가 분명한 값이지만, <strong>낮잠 횟수·깨어있는 시간·낮잠 길이는 공식 표준이 없는 일반적 육아 참고</strong>라 <span class="badge todo">확인 필요</span>로 표시합니다. 타임라인은 "이렇게 짜 볼 수 있다"는 예시일 뿐, 아기의 졸림 신호가 항상 우선입니다.</p>
+
+    <h2>사용법</h2>
+    <ol><li>월령과 오늘 아침 기상 시각을 입력합니다.</li><li>깨어있는 시간을 기준으로 낮잠 시작 시각과 밤 취침 시각 예시가 나옵니다.</li><li>아래 수면 기록에 실제 취침·기상 시각을 적어 두면 패턴을 볼 수 있고, CSV로 내보낼 수 있습니다.</li></ol>
+
+    <h2>월령별 권장 총 수면시간</h2>
+    <div class="tbl-scroll"><table class="tbl"><thead><tr><th>연령</th><th>하루 총 수면(낮잠 포함)</th><th>근거</th></tr></thead><tbody>
+        <tr><td>0~3개월</td><td>14~17시간</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>4~11개월</td><td>12~15시간</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>1~2세</td><td>11~14시간</td><td><span class="badge ok">확인됨</span></td></tr>
+        <tr><td>3~5세</td><td>10~13시간</td><td><span class="badge ok">확인됨</span></td></tr>
+      </tbody></table></div><h2>낮잠 횟수와 깨어있는 시간</h2>
+    <div class="tbl-scroll"><table class="tbl"><thead><tr><th>월령</th><th>낮잠 횟수</th><th>깨어있는 시간</th><th>근거</th></tr></thead><tbody>
+        <tr><td>0~2개월</td><td>4회 이상(불규칙)</td><td>약 45~60분</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>3~4개월</td><td>3~4회</td><td>약 1~2시간</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>5~8개월</td><td>2~3회</td><td>약 2~3시간</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>9~12개월</td><td>2회</td><td>약 3~4시간</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>13~17개월</td><td>1~2회</td><td>약 4~5시간</td><td><span class="badge todo">확인 필요</span></td></tr>
+        <tr><td>18~35개월</td><td>1회</td><td>약 5~6시간</td><td><span class="badge todo">확인 필요</span></td></tr>
+      </tbody></table></div><p>이 표의 값은 공식 표준이 아니라 널리 통용되는 참고 범위입니다. 같은 월령이라도 아기마다 1~2시간씩 차이가 나는 것이 자연스럽습니다.</p><h2>안전한 수면 환경</h2><ul><li>돌 전에는 <strong>등을 대고 눕혀</strong> 재웁니다.</li><li>단단한 매트리스에, 베개·인형·두꺼운 이불 없이.</li><li>같은 방에서 자되 <strong>같은 침구는 공유하지 않는 것</strong>이 권장됩니다.</li><li>실내는 덥지 않게, 두껍게 싸매지 않도록 합니다.</li></ul>
+
+    <h2>자주 묻는 질문</h2>
+      <div class="qa"><p class="q">Q. 권장 수면시간보다 적게 자요.</p><p class="a">권장치는 범위이고 개인차가 큽니다. 낮에 기분이 좋고 잘 먹으며 발달이 순조롭다면 대개 괜찮습니다. 지속적으로 심하게 부족하거나 자다가 자주 깨서 힘들어한다면 소아과에서 상담해 보세요.</p></div>
+      <div class="qa"><p class="q">Q. 낮잠을 안 자려고 해요.</p><p class="a">깨어있는 시간이 너무 짧거나 반대로 너무 길면 잠들기 어려워집니다. 타임라인을 참고해 30분 단위로 조정해 보고, 졸림 신호(눈 비비기·칭얼거림)를 놓치지 않는 것이 도움이 됩니다.</p></div>
+      <div class="qa"><p class="q">Q. 통잠은 몇 개월부터 자나요?</p><p class="a">아기마다 편차가 매우 커서 정해진 시점이 없습니다. 밤중 수유가 필요한 시기, 이앓이, 발달 도약 등으로 다시 자주 깨는 시기도 흔합니다.</p></div>
+
+    <div class="src-box"><strong>출처</strong> · 미국수면재단(NSF) 2015 연령별 권장 수면시간 — <a href="https://www.sleepfoundation.org/how-sleep-works/how-much-sleep-do-we-really-need" target="_blank" rel="noopener">sleepfoundation.org</a> (확인일 2026-08-19). 총 수면시간만 이 출처의 확정 값이며, <strong>낮잠 횟수·깨어있는 시간·낮잠 길이는 공식 표준이 없는 일반 참고(확인 필요)</strong>입니다.</div>
+
+    <p class="disclaimer">수면 안내는 참고용이며 진단이 아닙니다. 수면 중 호흡 이상, 심한 수면 부족 등이 걱정되면 소아과 전문의와 상담하세요.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../months-age/"><span class="ic">📅</span>아기 개월수 계산기</a>
+      <a class="rel" href="../milestone/"><span class="ic">🧸</span>발달 이정표 체크</a>
+      <a class="rel" href="../growth-percentile/"><span class="ic">📈</span>성장 백분위 계산기</a>
+      <a class="rel" href="https://tomatoeggcat.com/baby-vaccine-schedule/"><span class="ic">🍅</span>예방접종 도우미 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/korean-age/"><span class="ic">🍅</span>만 나이 계산기</a>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 8px">👶 <a href="../">BabyCalc</a> — 육아 계산기 허브</p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/">TomatoEggCat</a></p>
+  </footer>
+</div>
+<script src="../assets/app.js"></script>
+<script type="module">
+import { TOTAL_SLEEP, NAP_GUIDE } from '../data/sleep.mjs';
+import { fmtDate } from '../assets/calc.mjs';
+const $ = (s) => document.querySelector(s);
+const RKEY = 'bc-sleep-records';
+const IKEY = 'bc-sleep-input';
+const NAP_ASSUME = 60; /* 낮잠 길이 가정(분) — 아기마다 다름, 예시용 */
+
+function parseWake(str) {
+  const m = str.match(/(\d+)~(\d+)(분|시간)/);
+  if (!m) return 120;
+  const lo = parseInt(m[1], 10), hi = parseInt(m[2], 10);
+  const mid = (lo + hi) / 2;
+  return m[3] === '시간' ? mid * 60 : mid;
+}
+function parseNaps(str) {
+  const m = str.match(/(\d+)/);
+  return m ? parseInt(m[1], 10) : 2;
+}
+function hhmm(mins) {
+  const t = ((mins % 1440) + 1440) % 1440;
+  const h = Math.floor(t / 60), m = Math.round(t % 60);
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+function toMin(v) {
+  if (!v) return null;
+  const p = v.split(':');
+  return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+}
+
+function build(month, wakeStr) {
+  const total = TOTAL_SLEEP.find((t) => month >= t.fromM && month <= t.toM) || TOTAL_SLEEP[TOTAL_SLEEP.length - 1];
+  const nap = NAP_GUIDE.find((n) => month >= n.fromM && month <= n.toM) || NAP_GUIDE[NAP_GUIDE.length - 1];
+  const ww = parseWake(nap.wake);
+  const naps = parseNaps(nap.naps);
+  $('#totalBig').textContent = '하루 ' + total.hours;
+  $('#totalSub').textContent = '생후 ' + month + '개월 · ' + total.range + ' 권장 총 수면(낮잠 포함) · 미국수면재단 2015';
+  $('#kNaps').innerHTML = nap.naps + ' <span class="badge todo">확인 필요</span>';
+  $('#kWake').innerHTML = nap.wake + ' <span class="badge todo">확인 필요</span>';
+
+  const start = toMin(wakeStr);
+  const rows = [{ t: start, label: '기상' }];
+  let cur = start;
+  for (let i = 1; i <= naps; i++) {
+    cur += ww;
+    rows.push({ t: cur, label: i + '번째 낮잠 시작 (예시)' });
+    cur += NAP_ASSUME;
+    rows.push({ t: cur, label: i + '번째 낮잠 종료 (약 ' + NAP_ASSUME + '분 가정)' });
+  }
+  cur += ww;
+  rows.push({ t: cur, label: '밤 취침' });
+  const tb = $('#tlTbl tbody');
+  tb.innerHTML = '';
+  rows.forEach((r) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + hhmm(r.t) + '</td><td>' + r.label + '</td>';
+    tb.appendChild(tr);
+  });
+  $('#tlNote').textContent = '깨어있는 시간 ' + Math.round(ww) + '분, 낮잠 길이 ' + NAP_ASSUME + '분을 가정한 예시입니다. 낮잠 길이는 아기마다 크게 달라 공식 기준이 없습니다. 아기의 졸림 신호가 시간표보다 우선입니다.';
+  bcShowResult('result');
+}
+
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const m = parseInt($('#month').value, 10), w = $('#wake').value;
+  if (isNaN(m) || !w) return;
+  bcStore.set(IKEY, { m, w });
+  build(m, w);
+});
+
+function renderRecs() {
+  const recs = bcStore.get(RKEY, []);
+  const tb = $('#recTbl tbody');
+  tb.innerHTML = '';
+  if (!recs.length) { tb.innerHTML = '<tr><td colspan="7" style="color:var(--muted)">아직 기록이 없어요.</td></tr>'; return; }
+  recs.slice().sort((a, b) => (a.date < b.date ? 1 : -1)).forEach((r) => {
+    const night = r.night, tot = night + (r.nap || 0);
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + r.date + '</td><td>' + r.bed + '</td><td>' + r.up + '</td>' +
+      '<td>' + Math.floor(night / 60) + '시간 ' + (night % 60) + '분</td>' +
+      '<td>' + Math.floor((r.nap || 0) / 60) + '시간 ' + ((r.nap || 0) % 60) + '분</td>' +
+      '<td><strong>' + Math.floor(tot / 60) + '시간 ' + (tot % 60) + '분</strong></td>' +
+      '<td class="no-print"><button class="btn sm sec" type="button" data-del="' + r.id + '">삭제</button></td>';
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll('button[data-del]').forEach((b) => b.addEventListener('click', () => {
+    bcStore.set(RKEY, bcStore.get(RKEY, []).filter((x) => x.id !== b.dataset.del));
+    renderRecs();
+  }));
+}
+
+$('#addRec').addEventListener('click', () => {
+  const date = $('#rDate').value || fmtDate(new Date());
+  const bed = $('#rBed').value, up = $('#rUp').value;
+  if (!bed || !up) { alert('취침·기상 시각을 입력해 주세요.'); return; }
+  let night = toMin(up) - toMin(bed);
+  if (night <= 0) night += 1440;
+  const recs = bcStore.get(RKEY, []);
+  recs.push({ id: 's' + Date.now(), date, bed, up, night, nap: parseInt($('#rNap').value, 10) || 0 });
+  bcStore.set(RKEY, recs);
+  $('#rNap').value = '';
+  renderRecs();
+});
+$('#csvBtn').addEventListener('click', () => {
+  const lines = ['날짜,취침,기상,밤잠(분),낮잠(분),총수면(분)'];
+  bcStore.get(RKEY, []).forEach((r) => lines.push([r.date, r.bed, r.up, r.night, r.nap || 0, r.night + (r.nap || 0)].map(bcCsvCell).join(',')));
+  bcDownload('baby-sleep.csv', '\ufeff' + lines.join('\n'), 'text/csv');
+});
+$('#jsonBtn').addEventListener('click', () => bcDownload('baby-sleep.json', JSON.stringify(bcStore.get(RKEY, []), null, 2), 'application/json'));
+$('#clearBtn').addEventListener('click', () => {
+  if (confirm('수면 기록을 모두 삭제할까요? (이 브라우저에서만 삭제됩니다)')) { bcStore.del(RKEY); renderRecs(); }
+});
+
+$('#rDate').value = fmtDate(new Date());
+renderRecs();
+const si = bcStore.get(IKEY, null);
+if (si && si.m != null) { $('#month').value = si.m; $('#wake').value = si.w; build(si.m, si.w); }
+</script>
+</body>
+</html>

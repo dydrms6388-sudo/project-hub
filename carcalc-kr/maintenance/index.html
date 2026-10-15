@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('tec-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>소모품 교체 주기 기록 — 주행거리 기반 D-day 알림</title>
+<meta name="description" content="엔진오일·에어컨 필터·브레이크액 등 12개 소모품의 마지막 교체 시점을 기록하면 현재 주행거리와 월 평균 주행거리로 다음 교체까지 남은 거리와 D-day를 계산합니다. 기록은 내 브라우저에만 저장되고 CSV로 내보낼 수 있습니다." />
+<link rel="canonical" href="https://carcalc-kr.vercel.app/maintenance/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="카캘크 — 자동차 계산기 허브" />
+<meta property="og:title" content="소모품 교체 주기 기록 — D-day" />
+<meta property="og:description" content="엔진오일·에어컨 필터·브레이크액 등 12개 소모품의 마지막 교체 시점을 기록하면 현재 주행거리와 월 평균 주행거리로 다음 교체까지 남은 거리와 D-day를 계산합니다. 기록은 내 브라우저에만 저장되고 CSV로 내보낼 수 있습니다." />
+<meta property="og:url" content="https://carcalc-kr.vercel.app/maintenance/" />
+<meta name="twitter:card" content="summary" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script src="../assets/app.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"소모품 교체 주기 기록","description":"엔진오일·에어컨 필터·브레이크액 등 12개 소모품의 마지막 교체 시점을 기록하면 현재 주행거리와 월 평균 주행거리로 다음 교체까지 남은 거리와 D-day를 계산합니다. 기록은 내 브라우저에만 저장되고 CSV로 내보낼 수 있습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://carcalc-kr.vercel.app/maintenance/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"엔진오일은 정말 5,000km마다 갈아야 하나요?","acceptedAnswer":{"@type":"Answer","text":"일반 조건이라면 제조사 권고는 대체로 1만km 또는 12개월입니다. 다만 짧은 거리 위주 주행 등 가혹조건에서는 5,000~7,500km 권고가 붙습니다. 내 주행 패턴이 어디에 해당하는지부터 판단하세요."}},{"@type":"Question","name":"타이어는 주행거리로 갈면 되나요?","acceptedAnswer":{"@type":"Answer","text":"거리보다 마모 상태가 기준입니다. 트레드 마모한계선(1.6mm)에 닿으면 법정 안전기준상 교체 대상입니다. 편마모를 줄이려면 1만km마다 위치 교환을 함께 하세요."}},{"@type":"Question","name":"기록은 다른 기기에서도 보이나요?","acceptedAnswer":{"@type":"Answer","text":"보이지 않습니다. 기록은 사용 중인 브라우저의 localStorage에만 저장되며 서버로 전송되지 않습니다. 기기를 옮기려면 CSV로 내보낸 뒤 새 기기에서 다시 입력하세요."}},{"@type":"Question","name":"주기가 지났는데 아직 멀쩡해 보입니다.","acceptedAnswer":{"@type":"Answer","text":"브레이크액이나 냉각수처럼 겉으로 상태를 알기 어려운 항목이 있습니다. 주기가 지났다면 교체 전에 최소한 점검은 받아보는 편이 안전합니다."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://carcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"소모품 교체 주기 기록","item":"https://carcalc-kr.vercel.app/maintenance/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🚗 카캘크</a> <span class="sep">›</span> <span class="c-cur">소모품 교체 주기 기록</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🔧</div>
+    <h1>소모품 교체 주기 기록</h1>
+    <p class="lead">언제 갈았는지만 적어두면 <strong>다음 교체까지 남은 거리와 D-day</strong>를 계산합니다. 서버 저장 없음.</p>
+  </div>
+
+  <p class="notice">제조사 일반 권고, 참고용 — 실제 주기는 차량 취급설명서·정비지침 기준. 가혹조건(짧은 거리 반복 주행, 잦은 공회전, 비포장·먼지 많은 환경)에서는 주기를 절반 가까이 당겨야 할 수 있습니다.</p>
+  <div class="card">
+    <div class="row2">
+      <div class="field"><label for="odo">현재 주행거리 <span class="hint">km</span></label><input type="number" id="odo" inputmode="numeric" placeholder="62000" value="62000" /></div>
+      <div class="field"><label for="avg">월 평균 주행 <span class="hint">km/월</span></label><input type="number" id="avg" inputmode="numeric" placeholder="1200" value="1200" /></div>
+    </div>
+    <p class="src">아래 표에서 <strong>기억나는 항목만</strong> 채우면 됩니다. 마지막 교체 시점의 주행거리(km) 또는 날짜 중 하나만 있어도 계산합니다.</p>
+    <div id="mTbl"></div>
+    <div class="btnrow">
+      <button class="btn" id="go" type="button">교체 시기 계산</button>
+      <button class="btn ghost" id="save" type="button">기록 저장</button>
+      <button class="btn ghost" id="csv" type="button">CSV 내보내기</button>
+      <button class="btn danger" id="clear" type="button">전체 삭제</button>
+    </div>
+  </div>
+  <div class="result" id="out" hidden></div>
+  <p class="disclaimer">입력한 값은 <strong>서버로 전송되지 않고</strong> 브라우저 안에서만 계산됩니다. 기록은 이 브라우저의 localStorage에만 저장되며(<strong>서버 저장 없음</strong>) 기기·브라우저를 바꾸면 보이지 않습니다. CSV로 내보내 백업하세요.</p>
+
+  <div class="ad-wrap" id="adBox" hidden>
+    <p class="ad-label">스폰서</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>교체 주기를 놓치는 이유는 기억이 아니라 기록의 문제</h2>
+    <p>엔진오일을 언제 갈았는지는 대개 기억나지만, 브레이크액이나 냉각수는 몇 년 전인지 가물가물합니다. 정비소에서 "이제 갈 때 됐다"는 말을 들어도 근거를 확인하기 어렵습니다. 이 도구는 <strong>마지막 교체 시점의 주행거리(또는 날짜)</strong>만 적어두면, 현재 주행거리와 월 평균 주행량으로 남은 거리와 D-day를 계산해 우선순위대로 정렬해 줍니다.</p>
+    <p>수록된 주기는 제조사 일반 권고 수준의 참고값입니다. <strong>가혹조건</strong>—왕복 8km 이하 짧은 거리 반복, 잦은 공회전, 험로·먼지 많은 지역, 극단적 기온—에 해당하면 권장 주기를 절반 가까이 당기는 것이 안전합니다. 최종 기준은 언제나 내 차 취급설명서입니다.</p>
+    <h2>사용 방법</h2>
+    <ol>
+      <li><strong>현재 주행거리</strong>와 <strong>월 평균 주행거리</strong>를 입력합니다. 월 평균은 D-day 환산에 쓰입니다.</li>
+      <li>표에서 기억나는 항목의 <strong>마지막 교체 주행거리</strong>나 <strong>교체일</strong>을 채웁니다. 전부 채울 필요는 없습니다.</li>
+      <li>"교체 시기 계산"을 누르면 급한 순서대로 정렬됩니다. "기록 저장"을 누르면 다음 방문 때 그대로 불러옵니다.</li>
+      <li>정비 이력을 남기려면 CSV로 내보내 보관하세요.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 엔진오일은 정말 5,000km마다 갈아야 하나요?</p><p class="a">일반 조건이라면 제조사 권고는 대체로 1만km 또는 12개월입니다. 다만 짧은 거리 위주 주행 등 가혹조건에서는 5,000~7,500km 권고가 붙습니다. 내 주행 패턴이 어디에 해당하는지부터 판단하세요.</p></div>
+    <div class="qa"><p class="q">Q. 타이어는 주행거리로 갈면 되나요?</p><p class="a">거리보다 마모 상태가 기준입니다. 트레드 마모한계선(1.6mm)에 닿으면 법정 안전기준상 교체 대상입니다. 편마모를 줄이려면 1만km마다 위치 교환을 함께 하세요.</p></div>
+    <div class="qa"><p class="q">Q. 기록은 다른 기기에서도 보이나요?</p><p class="a">보이지 않습니다. 기록은 사용 중인 브라우저의 localStorage에만 저장되며 서버로 전송되지 않습니다. 기기를 옮기려면 CSV로 내보낸 뒤 새 기기에서 다시 입력하세요.</p></div>
+    <div class="qa"><p class="q">Q. 주기가 지났는데 아직 멀쩡해 보입니다.</p><p class="a">브레이크액이나 냉각수처럼 겉으로 상태를 알기 어려운 항목이 있습니다. 주기가 지났다면 교체 전에 최소한 점검은 받아보는 편이 안전합니다.</p></div>
+    <h2>데이터 출처와 확인일</h2>
+    <p class="src"><a href="https://www.hyundai.com/kr/ko/e/customer/center/manual" target="_blank" rel="noopener">현대자동차 오너스 매뉴얼</a> · <a href="https://www.kia.com/kr/customer-service/center/manual" target="_blank" rel="noopener">기아 취급설명서</a> · <a href="https://www.law.go.kr/법령/자동차및자동차부품의성능과기준에관한규칙" target="_blank" rel="noopener">자동차 및 자동차부품의 성능과 기준에 관한 규칙</a><br />데이터 확인일: 2026-08-19</p>
+    <p class="disclaimer">본 결과는 참고용 추정치이며 실제 부과·청구 금액을 확정하지 않습니다. 주기는 참고용이며 최종 기준은 차량 취급설명서와 정비 지침입니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="https://tomatoeggcat.com/car-maintenance-cycle/" target="_blank" rel="noopener"><span class="ic">🔩</span>차량 소모품 교체주기 가이드</a>
+      <a class="rel" href="../tire-decoder/"><span class="ic">🛞</span>타이어 규격 해독기</a>
+      <a class="rel" href="https://tomatoeggcat.com/car-insurance-rider/" target="_blank" rel="noopener"><span class="ic">🛡️</span>자동차보험 특약 점검</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🚗 <a href="../">카캘크 — 자동차 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+  </footer>
+</div>
+
+<script type="module">
+import { MAINT_ITEMS } from "../data/maintenance.mjs";
+const $ = (id) => document.getElementById(id);
+const C = window.CC;
+const KEY = 'cc-maint';
+const saved = C.lsGet(KEY, { odo: 0, avg: 0, items: {} });
+if (saved.odo) $('odo').value = saved.odo;
+if (saved.avg) $('avg').value = saved.avg;
+
+let html = '<div class="tblwrap"><table class="tbl"><thead><tr><th>소모품</th><th>권장 주기</th><th>마지막 교체 (km)</th><th>마지막 교체일</th></tr></thead><tbody>';
+for (const it of MAINT_ITEMS) {
+  const cyc = (it.km ? C.fmt(it.km) + 'km' : '') + (it.km && it.months ? ' / ' : '') + (it.months ? it.months + '개월' : '');
+  const s = saved.items[it.key] || {};
+  html += '<tr><td><strong>' + it.name + '</strong><br /><span class="src">' + C.esc(it.note) + '</span></td>' +
+    '<td class="num">' + cyc + '</td>' +
+    '<td><input type="number" id="k_' + it.key + '" inputmode="numeric" value="' + (s.km || '') + '" placeholder="예: 52000" /></td>' +
+    '<td><input type="date" id="d_' + it.key + '" value="' + (s.date || '') + '" /></td></tr>';
+}
+$('mTbl').innerHTML = html + '</tbody></table></div>';
+
+function collect() {
+  const items = {};
+  for (const it of MAINT_ITEMS) {
+    const km = C.num($('k_' + it.key));
+    const date = $('d_' + it.key).value;
+    if (km > 0 || date) items[it.key] = { km: km || 0, date: date || '' };
+  }
+  return { odo: C.num($('odo')), avg: C.num($('avg')), items: items };
+}
+function daysBetween(a, b) { return Math.round((b - a) / 86400000); }
+function run() {
+  const s = collect();
+  if (s.odo <= 0) { alert('현재 주행거리를 입력하세요.'); return; }
+  const perDay = s.avg > 0 ? s.avg / 30.4 : 0;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const list = [];
+  for (const it of MAINT_ITEMS) {
+    const rec = s.items[it.key];
+    if (!rec) continue;
+    let remainKm = null, remainDays = null, nextKm = null, nextDate = null;
+    if (rec.km > 0 && it.km) { nextKm = rec.km + it.km; remainKm = nextKm - s.odo; if (perDay > 0) remainDays = Math.round(remainKm / perDay); }
+    if (rec.date && it.months) {
+      const d = new Date(rec.date + 'T00:00:00'); d.setMonth(d.getMonth() + it.months);
+      nextDate = d; const dd = daysBetween(today, d);
+      remainDays = remainDays == null ? dd : Math.min(remainDays, dd);
+    }
+    if (remainKm == null && remainDays == null) continue;
+    const urgent = (remainKm != null && remainKm <= 0) || (remainDays != null && remainDays <= 0);
+    const soon = !urgent && ((remainKm != null && remainKm <= 1000) || (remainDays != null && remainDays <= 30));
+    list.push({ it: it, nextKm: nextKm, remainKm: remainKm, nextDate: nextDate, remainDays: remainDays, rank: urgent ? 0 : soon ? 1 : 2,
+      badge: urgent ? '<span class="badge bad">교체 시기 지남</span>' : soon ? '<span class="badge todo">임박</span>' : '<span class="badge ok">여유</span>' });
+  }
+  if (!list.length) { alert('마지막 교체 주행거리 또는 날짜를 한 개 이상 입력하세요.'); return; }
+  list.sort(function (a, b) { return a.rank - b.rank || ((a.remainKm == null ? 1e9 : a.remainKm) - (b.remainKm == null ? 1e9 : b.remainKm)); });
+  const rows = list.map(function (x) {
+    return [x.it.name + ' ' + x.badge,
+      x.nextKm != null ? C.fmt(x.nextKm) + 'km' : '-',
+      x.remainKm != null ? (x.remainKm <= 0 ? C.fmt(-x.remainKm) + 'km 초과' : C.fmt(x.remainKm) + 'km') : '-',
+      x.remainDays != null ? (x.remainDays <= 0 ? 'D+' + (-x.remainDays) : 'D-' + x.remainDays) : '-'];
+  });
+  const top = list[0];
+  C.result('out', {
+    big: top.it.name,
+    sub: top.rank === 0 ? '교체 시기가 지났습니다. 가장 먼저 점검하세요.' : top.rank === 1 ? '교체 시기가 임박했습니다.' : '가장 먼저 돌아오는 교체 항목입니다.',
+    rows: [
+      ['현재 주행거리', C.fmt(s.odo) + ' km'],
+      ['월 평균 주행', s.avg > 0 ? C.fmt(s.avg) + ' km/월 (일 ' + perDay.toFixed(1) + 'km)' : '미입력 — D-day 계산 제외'],
+      ['점검 대상 항목', list.length + '건'],
+      ['가장 급한 항목', top.it.name + (top.remainKm != null ? ' (' + (top.remainKm <= 0 ? C.fmt(-top.remainKm) + 'km 초과' : '남은 ' + C.fmt(top.remainKm) + 'km') + ')' : ''), 'total'],
+    ],
+    foot: C.tbl(['소모품 / 상태', '다음 교체 주행거리', '남은 거리', 'D-day'], rows) +
+      C.steps([
+        '남은 거리 = (마지막 교체 주행거리 + 권장 주기) − 현재 주행거리',
+        '일 평균 주행 = 월 평균 ÷ 30.4 = ' + perDay.toFixed(1) + 'km/일',
+        'D-day = 남은 거리 ÷ 일 평균 주행 (기간 주기가 있는 항목은 날짜 기준과 비교해 더 이른 쪽 표시)',
+      ]),
+  });
+}
+$('go').addEventListener('click', run);
+$('save').addEventListener('click', function () { C.lsSet(KEY, collect()); alert('이 브라우저에 저장했습니다.'); });
+$('csv').addEventListener('click', function () {
+  const s = collect();
+  const rows = [['소모품', '권장주기(km)', '권장주기(개월)', '마지막교체(km)', '마지막교체일', '다음교체(km)', '현재주행(km)']];
+  for (const it of MAINT_ITEMS) {
+    const r = s.items[it.key] || {};
+    rows.push([it.name, it.km || '', it.months || '', r.km || '', r.date || '', r.km && it.km ? r.km + it.km : '', s.odo]);
+  }
+  C.downloadCsv('carcalc-maintenance.csv', rows);
+});
+$('clear').addEventListener('click', function () {
+  if (!confirm('저장된 정비 기록을 모두 삭제할까요? 되돌릴 수 없습니다.')) return;
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  location.reload();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+<script>try{var t=localStorage.getItem('cc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>김치 절임 소금 계산기 — 배추 무게별 절임물·소금 양과 시간</title>
+<meta name="description" content="배추 몇 kg에 굵은소금 얼마? 절임물 양, 소금 농도(8~10%), 켜켜이 뿌릴 소금, 여름·겨울 절임 시간을 배추 무게 기준으로 계산합니다. 꽃소금 사용 시 보정도 안내합니다." />
+<link rel="canonical" href="https://cookcalc-kr.vercel.app/kimchi-salt/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="요리 계산기 허브" />
+<meta property="og:title" content="김치 절임 소금 계산기" />
+<meta property="og:description" content="배추 몇 kg에 굵은소금 얼마? 절임물 양, 소금 농도(8~10%), 켜켜이 뿌릴 소금, 여름·겨울 절임 시간을 배추 무게 기준으로 계산합니다. 꽃소금 사용 시 보정도 안내합니다." />
+<meta property="og:url" content="https://cookcalc-kr.vercel.app/kimchi-salt/" />
+<meta name="google-adsense-account" content="ca-pub-5567719201265106" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5567719201265106" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../assets/style.css" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"김치 절임 계산기","description":"배추 몇 kg에 굵은소금 얼마? 절임물 양, 소금 농도(8~10%), 켜켜이 뿌릴 소금, 여름·겨울 절임 시간을 배추 무게 기준으로 계산합니다. 꽃소금 사용 시 보정도 안내합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"https://cookcalc-kr.vercel.app/kimchi-salt/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"다 절여진 것을 어떻게 확인하나요?","acceptedAnswer":{"@type":"Answer","text":"가장 두꺼운 줄기를 잘라 90도로 접어 봅니다. 뚝 부러지면 덜 절여진 것이고, 부드럽게 휘면 완료입니다. 시간은 참고일 뿐이며 배추 크기·온도에 따라 2~3시간 차이가 납니다."}},{"@type":"Question","name":"절인 뒤 헹구면 소금이 빠지지 않나요?","acceptedAnswer":{"@type":"Answer","text":"헹구는 것은 표면의 소금과 이물을 씻는 과정이라 조직 안의 염분은 크게 줄지 않습니다. 흐르는 물에 2~3번 헹구고 30분 이상 물기를 완전히 빼야 양념이 겉돌지 않습니다."}},{"@type":"Question","name":"너무 짜게 절였으면 어떻게 하나요?","acceptedAnswer":{"@type":"Answer","text":"찬물에 20~30분 담가 두면 염분이 어느 정도 빠집니다. 다만 조직이 물러질 수 있으니 오래 담그지 말고, 양념의 젓갈·소금을 줄여 균형을 맞추세요."}},{"@type":"Question","name":"여름 김치도 같은 비율인가요?","acceptedAnswer":{"@type":"Answer","text":"여름에는 온도가 높아 절임이 빨리 진행되므로 시간을 줄입니다. 소금 농도는 같게 두고 시간을 6~8시간으로 짧게 잡되, 중간에 상태를 더 자주 확인하세요."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://cookcalc-kr.vercel.app/"},{"@type":"ListItem","position":2,"name":"김치 절임 계산","item":"https://cookcalc-kr.vercel.app/kimchi-salt/"}]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumb" aria-label="breadcrumb"><a href="../">🍳 요리 계산기 허브</a> <span class="sep">›</span> <span>김치 절임 계산</span></nav>
+  <div class="hero">
+    <div class="emoji" aria-hidden="true">🥬</div>
+    <h1>김치 절임 계산기</h1>
+    <p class="lead">배추 무게만 넣으면 <strong>절임물·소금 양·절임 시간</strong>을 계산합니다. 김장 실패의 절반은 절임에서 갈립니다.</p>
+  </div>
+
+  <section class="card" aria-label="입력">
+    <h2>배추 무게 입력</h2>
+    <div class="grid2">
+      <label class="f">배추 총 무게 <span class="u">(kg · 다듬은 뒤)</span>
+        <input type="number" id="kg" inputmode="decimal" min="0.5" step="0.5" value="10" />
+      </label>
+      <label class="f">절임물 소금 농도 <span class="u">(% · 8~10 권장)</span>
+        <input type="number" id="pct" inputmode="decimal" min="5" max="15" step="0.5" value="10" />
+      </label>
+    </div>
+    <div style="margin-top:12px">
+      <span class="f" style="display:block">소금 종류</span>
+      <div class="seg" id="saltSeg" role="group" aria-label="소금 종류">
+        <button type="button" data-v="coarse" aria-pressed="true">굵은소금(천일염)</button>
+        <button type="button" data-v="fine" aria-pressed="false">꽃소금(가는 소금)</button>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <span class="f" style="display:block">계절</span>
+      <div class="seg" id="seasonSeg" role="group" aria-label="계절">
+        <button type="button" data-v="summer" aria-pressed="false">여름 (더울 때)</button>
+        <button type="button" data-v="winter" aria-pressed="true">겨울 (김장철)</button>
+      </div>
+    </div>
+    <button class="btn" id="calcBtn">절임 계산하기</button>
+  </section>
+
+  <section class="result" id="resultBox" hidden aria-live="polite">
+    <div class="card">
+      <h2>절임 계산 결과</h2>
+      <p class="big">총 소금 <span class="num" id="saltOut"></span></p>
+      <div id="tableOut"></div>
+      <p class="note" id="noteOut"></p>
+    </div>
+    <div id="srcOut"></div>
+  </section>
+
+  <div class="ad-wrap" id="adWrap" hidden>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5567719201265106" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <section class="about">
+    <h2>절임이 김치의 8할</h2>
+    <p>배추 절임은 <strong>수분을 빼고 조직을 유연하게 만드는</strong> 과정입니다. 덜 절여지면 양념이 겉돌고 물이 생기며, 과하게 절여지면 짜고 물러집니다. 기준은 시간이 아니라 상태입니다 — 줄기 부분을 접었을 때 부러지지 않고 <strong>휘어지면</strong> 완료입니다.</p>
+    <p>일반적인 방식은 8~10% 소금물에 담그고, 두꺼운 줄기 사이에는 소금을 따로 뿌리는 것입니다. 줄기와 잎의 두께가 다르기 때문에 물에만 담그면 줄기가 덜 절여집니다. 이 계산기는 배추 무게에서 절임물·소금물 소금·켜켜이 소금을 나눠 계산합니다.</p>
+    <h2>사용법</h2>
+    <ol>
+      <li>다듬어서 4등분한 배추의 총 무게(kg)를 넣습니다. 20포기 김장이면 대략 40~60kg입니다.</li>
+      <li>소금 종류를 고릅니다. 꽃소금은 같은 부피에서 짠맛이 강해 양을 약 20% 줄입니다.</li>
+      <li>계절을 고르면 절임 시간이 달라집니다(여름은 짧게, 겨울은 길게).</li>
+      <li>결과의 절임물·소금 양으로 절이고, 중간에 위아래를 한 번 뒤집습니다.</li>
+    </ol>
+    <h2>자주 묻는 질문</h2>
+    <div class="qa"><p class="q">Q. 다 절여진 것을 어떻게 확인하나요?</p><p class="a">가장 두꺼운 줄기를 잘라 90도로 접어 봅니다. 뚝 부러지면 덜 절여진 것이고, 부드럽게 휘면 완료입니다. 시간은 참고일 뿐이며 배추 크기·온도에 따라 2~3시간 차이가 납니다.</p></div>
+    <div class="qa"><p class="q">Q. 절인 뒤 헹구면 소금이 빠지지 않나요?</p><p class="a">헹구는 것은 표면의 소금과 이물을 씻는 과정이라 조직 안의 염분은 크게 줄지 않습니다. 흐르는 물에 2~3번 헹구고 30분 이상 물기를 완전히 빼야 양념이 겉돌지 않습니다.</p></div>
+    <div class="qa"><p class="q">Q. 너무 짜게 절였으면 어떻게 하나요?</p><p class="a">찬물에 20~30분 담가 두면 염분이 어느 정도 빠집니다. 다만 조직이 물러질 수 있으니 오래 담그지 말고, 양념의 젓갈·소금을 줄여 균형을 맞추세요.</p></div>
+    <div class="qa"><p class="q">Q. 여름 김치도 같은 비율인가요?</p><p class="a">여름에는 온도가 높아 절임이 빨리 진행되므로 시간을 줄입니다. 소금 농도는 같게 두고 시간을 6~8시간으로 짧게 잡되, 중간에 상태를 더 자주 확인하세요.</p></div>
+    <h2>기준값</h2>
+    <p class="note">절임물은 배추 무게의 약 50%, 소금 농도 10%(8~10% 관행), 켜켜이 뿌리는 소금은 배추 무게의 약 2%를 기준으로 계산합니다.
+    굵은소금(천일염) 기준. 꽃소금 사용 시 양을 약 20% 줄임 (출처: 국내 김장 관행값 정리, 확인일 2026-08-19) — <span class="badge warn">참고용</span> 배추 크기·수분·기온에 따라 조정이 필요합니다.</p>
+    <p class="disclaimer">본 계산 결과는 <strong>참고용 추정치</strong>입니다. 절임 상태는 시간이 아니라 줄기가 휘는지로 판단하세요.
+    재료의 상태·계량 방법·기기 차이에 따라 실제 결과가 달라질 수 있으며, 진단·의료·영양 처방의 근거로 사용할 수 없습니다.</p>
+  </section>
+
+  <section class="related">
+    <h2>관련 도구</h2>
+    <div class="rel-grid">
+      <a class="rel" href="../brine/"><span class="e">🧂</span> 염지 계산기</a>
+      <a class="rel" href="../storage/"><span class="e">🧊</span> 식재료 보관기간</a>
+      <a class="rel" href="https://tomatoeggcat.com/seasonal-food/" target="_blank" rel="noopener"><span class="e">🥬</span> 제철 음식 달력 (TomatoEggCat)</a>
+      <a class="rel" href="https://tomatoeggcat.com/fridge-recipe/" target="_blank" rel="noopener"><span class="e">🧊</span> 냉장고 재료 레시피 (TomatoEggCat)</a>
+    </div>
+  </section>
+  <footer>
+    <p style="margin:0 0 8px">🍳 <a href="../">요리 계산기 허브</a></p>
+    <p style="margin:0"><a href="../privacy.html">개인정보처리방침</a>·<a href="../terms.html">이용약관</a>·<a href="https://tomatoeggcat.com/" target="_blank" rel="noopener">TomatoEggCat</a></p>
+    <button class="theme" id="themeBtn" type="button">🌓 테마 전환</button>
+  </footer>
+</div>
+
+<script type="module">
+import { KIMCHI } from "../data/misc.mjs";
+import { $, num, fmt, g, ml, show, kv, srcBox, segInit, initTheme, beep, mmss } from "../assets/app.mjs";
+let salt = "coarse", season = "winter";
+segInit($("saltSeg"), (v) => { salt = v; });
+segInit($("seasonSeg"), (v) => { season = v; });
+$("calcBtn").addEventListener("click", () => {
+  const kg = num($("kg"), 10);
+  const cabbageG = kg * 1000;
+  const pct = num($("pct"), KIMCHI.brinePct.value) / 100;
+  const k = salt === "fine" ? 0.8 : 1;
+  const waterG = cabbageG * KIMCHI.waterPerCabbage.value;
+  const brineSalt = waterG * pct * k;
+  const sprinkle = cabbageG * (KIMCHI.sprinklePct.value / 100) * k;
+  const total = brineSalt + sprinkle;
+  $("saltOut").textContent = fmt(total / 1000, 2) + "kg (" + fmt(total) + "g)";
+  $("tableOut").innerHTML = kv([
+    ["배추", fmt(kg, 1) + "kg"],
+    ["절임물(물)", ml(waterG) + " (약 " + fmt(waterG / 1000, 1) + "L)"],
+    ["절임물에 풀 소금", fmt(brineSalt) + "g · 농도 " + fmt(pct * 100, 1) + "%"],
+    ["줄기에 켜켜이 뿌릴 소금", fmt(sprinkle) + "g"],
+    ["총 소금", fmt(total) + "g"],
+    ["소금 종류", salt === "fine" ? "꽃소금 (굵은소금 대비 20% 감량 적용)" : "굵은소금(천일염) 기준"],
+    ["절임 시간", season === "summer" ? "여름 6~8시간" : "겨울 8~10시간"],
+    ["중간 작업", "3~4시간 뒤 위아래 뒤집기 1회"],
+  ]);
+  $("noteOut").textContent = "줄기를 접었을 때 부러지지 않고 휘면 완료입니다. 헹군 뒤 30분 이상 물기를 빼세요. " + KIMCHI.time.value;
+  $("srcOut").innerHTML = srcBox("기준값 출처", [
+    { text: "절임물 비율·농도·시간 — " + KIMCHI.brinePct.source, checkedAt: KIMCHI.brinePct.checkedAt },
+  ]);
+  show("resultBox");
+});
+initTheme(document.getElementById("themeBtn"));
+</script>
+</body>
+</html>
