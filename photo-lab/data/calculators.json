@@ -1,0 +1,451 @@
+{
+  "meta": {
+    "note": "내부 계산 단위: 길이 mm(심도·광학), 화소 피치 μm, 시간 s, 각도 rad(계산)/deg(표시). 표시 단위만 m/ft 등으로 변환. testCases의 tolerance는 표기 자릿수 기준 허용 오차.",
+    "excluded": [
+      {
+        "candidate": "상반칙불궤(필름 장노출) 보정",
+        "reason": "보정 곡선이 필름 유제별 제조사 데이터시트에 의존해 단일 공식의 출처를 특정할 수 없음 → 제외"
+      },
+      {
+        "candidate": "달 노출 계산기 (Looney 11)",
+        "reason": "경험칙으로 널리 인용되나 표준 문서·교재 수준의 근거를 특정하기 어려움 → 제외 (달 표면 휘도 기반 정밀 계산은 위상·대기감쇠 모델이 추가로 필요)"
+      },
+      {
+        "candidate": "은하수 중심 방위/고도 캘린더",
+        "reason": "정확한 구현에는 항성시+은하좌표 변환이 필요하며 가능은 하나, 1차분에서는 검증 앵커 확보가 어려워 보류"
+      }
+    ],
+    "fStopClicksThird": [1.0, 1.1, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.5, 2.8, 3.2, 3.5, 4.0, 4.5, 5.0, 5.6, 6.3, 7.1, 8.0, 9.0, 10.0, 11.0, 13.0, 14.0, 16.0, 18.0, 20.0, 22.0],
+    "fStopClicksHalf": [1.0, 1.2, 1.4, 1.7, 2.0, 2.4, 2.8, 3.3, 4.0, 4.8, 5.6, 6.7, 8.0, 9.5, 11.0, 13.0, 16.0, 19.0, 22.0],
+    "shutterClicksThird": ["1/8000", "1/6400", "1/5000", "1/4000", "1/3200", "1/2500", "1/2000", "1/1600", "1/1250", "1/1000", "1/800", "1/640", "1/500", "1/400", "1/320", "1/250", "1/200", "1/160", "1/125", "1/100", "1/80", "1/60", "1/50", "1/40", "1/30", "1/25", "1/20", "1/15", "1/13", "1/10", "1/8", "1/6", "1/5", "1/4", "1/3", "0.4", "0.5", "0.6", "0.8", "1", "1.3", "1.6", "2", "2.5", "3.2", "4", "5", "6", "8", "10", "13", "15", "20", "25", "30"],
+    "clickValuesNote": "표기값은 명목값(nominal). 실제 스톱 계산은 2^(n/3) 정확값으로 수행하고 표시만 명목값 사용 (예: 1/125 표기 = 1/128 정확값). 근거: ISO 517(조리개 표기), 관례적 셔터 계열"
+  },
+  "calculators": [
+    {
+      "slug": "depth-of-field",
+      "name": "심도 계산기",
+      "category": "depth",
+      "formula": "H = f²/(N·c) + f;  근점 Dn = s(H−f)/(H+s−2f);  원점 Df = s(H−f)/(H−s), 단 s ≥ H이면 Df = ∞",
+      "formulaSource": {
+        "문헌명": "Sidney F. Ray, Applied Photographic Optics, 3rd ed., Focal Press (2002), ch.22; Allen R. Greenleaf, Photographic Optics, Macmillan (1950), pp.25–27",
+        "출처": "대칭 렌즈·박막렌즈 근사 기반 표준 심도 방정식. DOFMaster 등 통용 계산기와 동일 식"
+      },
+      "inputs": [
+        { "name": "focalLength", "unit": "mm", "min": 4, "max": 1200, "default": 50 },
+        { "name": "aperture", "unit": "f-number", "min": 0.95, "max": 64, "default": 8 },
+        { "name": "subjectDistance", "unit": "m", "min": 0.1, "max": 3000, "default": 10 },
+        { "name": "coc", "unit": "mm", "min": 0.005, "max": 0.06, "default": 0.03, "note": "센서/출력 조건에서 자동 산출, 수동 오버라이드 가능" }
+      ],
+      "testCases": [
+        { "input": { "f": 50, "N": 8, "c": 0.03, "s": 10 }, "expected": { "nearM": 5.12, "farM": 223.2 }, "tolerance": 0.01, "source": "DOFMaster 공표값(FF 50mm f/8 10m: 5.12m/223m)과 일치. 표준 심도식 대입값" },
+        { "input": { "f": 35, "N": 11, "c": 0.03, "s": 3 }, "expected": { "nearM": 1.668, "farM": 14.91 }, "tolerance": 0.01, "source": "표준 심도식 대입 (H=3.747m)" },
+        { "input": { "f": 25, "N": 1.4, "c": 0.015, "s": 2 }, "expected": { "nearM": 1.876, "farM": 2.142 }, "tolerance": 0.005, "source": "MFT(c=diag/1442≈0.015) 대입값" },
+        { "input": { "f": 24, "N": 11, "c": 0.03, "s": 5 }, "expected": { "nearM": 1.298, "farM": "Infinity" }, "tolerance": 0.005, "source": "s(5m) > H(1.769m) → 원점 무한대. 경계조건 검증" },
+        { "input": { "f": 85, "N": 1.8, "c": 0.03, "s": 3 }, "expected": { "nearM": 2.936, "farM": 3.067 }, "tolerance": 0.005, "source": "인물 촬영 대표 조건 대입값" },
+        { "input": { "f": 50, "N": 2.8, "c": 0.019, "s": 1.5 }, "expected": { "nearM": 1.455, "farM": 1.548 }, "tolerance": 0.005, "source": "APS-C(c≈0.019) 대입값" }
+      ],
+      "complexity": "고"
+    },
+    {
+      "slug": "hyperfocal",
+      "name": "과초점거리 계산기",
+      "category": "depth",
+      "formula": "H = f²/(N·c) + f. H에 맞추면 H/2부터 ∞까지 허용 선명",
+      "formulaSource": {
+        "문헌명": "Sidney F. Ray, Applied Photographic Optics, 3rd ed. (2002), ch.22",
+        "출처": "표준 과초점거리 정의식(정확형, +f 항 포함)"
+      },
+      "inputs": [
+        { "name": "focalLength", "unit": "mm", "min": 4, "max": 400, "default": 24 },
+        { "name": "aperture", "unit": "f-number", "min": 0.95, "max": 64, "default": 8 },
+        { "name": "coc", "unit": "mm", "min": 0.005, "max": 0.06, "default": 0.03 }
+      ],
+      "testCases": [
+        { "input": { "f": 50, "N": 8, "c": 0.03 }, "expected": { "H_m": 10.467 }, "tolerance": 0.005, "source": "표준식 대입. DOFMaster 동일 조건 10.5m와 일치" },
+        { "input": { "f": 24, "N": 8, "c": 0.03 }, "expected": { "H_m": 2.424 }, "tolerance": 0.005, "source": "풍경 대표 조건" },
+        { "input": { "f": 35, "N": 11, "c": 0.019 }, "expected": { "H_m": 5.896 }, "tolerance": 0.005, "source": "APS-C 조건" },
+        { "input": { "f": 16, "N": 2.8, "c": 0.03 }, "expected": { "H_m": 3.064 }, "tolerance": 0.005, "source": "은하수 촬영 대표 조건" },
+        { "input": { "f": 85, "N": 1.4, "c": 0.03 }, "expected": { "H_m": 172.1 }, "tolerance": 0.1, "source": "망원·개방 극단값 — H가 사실상 도달 불가함을 보여주는 케이스" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "circle-of-confusion",
+      "name": "착란원(CoC) 계산기",
+      "category": "depth",
+      "formula": "기본: c = 센서대각선/d (기본 d=1500). 감상조건형: c = 0.2mm × (감상거리/250mm) ÷ (인화대각선/센서대각선)",
+      "formulaSource": {
+        "문헌명": "Sidney F. Ray, Applied Photographic Optics, 3rd ed. (2002), ch.22 — 25cm 명시거리에서 시력 1분각 ≈ 0.2mm 흐림 허용 관례; Zeiss 관례 d=1730",
+        "출처": "감상거리·확대율 기반 CoC 유도. d=1500은 통용값 0.030mm(FF)의 역산 관례"
+      },
+      "inputs": [
+        { "name": "sensor", "unit": "preset", "min": 0, "max": 0, "default": "full-frame" },
+        { "name": "printDiagonal", "unit": "mm", "min": 100, "max": 3000, "default": 325, "note": "8×10인치 인화 대각선" },
+        { "name": "viewingDistance", "unit": "mm", "min": 200, "max": 5000, "default": 250 }
+      ],
+      "testCases": [
+        { "input": { "sensor": "full-frame", "mode": "d", "d": 1442 }, "expected": { "cocMm": 0.03 }, "tolerance": 0.0005, "source": "43.267/1442=0.0300 — 통용값 0.030mm 재현" },
+        { "input": { "sensor": "full-frame", "mode": "d", "d": 1730 }, "expected": { "cocMm": 0.025 }, "tolerance": 0.0005, "source": "Zeiss 관례 d=1730 → 0.025mm" },
+        { "input": { "sensor": "full-frame", "printDiagMm": 325.1, "viewMm": 250 }, "expected": { "cocMm": 0.0266 }, "tolerance": 0.0005, "source": "8×10인치(203×254mm) 인화·25cm 감상: 확대율 7.52배 → 0.2/7.52" },
+        { "input": { "sensor": "full-frame", "printDiagMm": 727.4, "viewMm": 500 }, "expected": { "cocMm": 0.0238 }, "tolerance": 0.0005, "source": "A2(420×594mm)·50cm 감상 — 감상거리를 늘려도 확대율 증가가 우세한 사례" },
+        { "input": { "sensor": "mft", "printDiagMm": 325.1, "viewMm": 250 }, "expected": { "cocMm": 0.0133 }, "tolerance": 0.0005, "source": "같은 인화 조건에서 MFT는 확대율 15배 → CoC 절반 이하" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "npf-rule",
+      "name": "별 셔터속도 (NPF vs 500법칙)",
+      "category": "astro",
+      "formula": "NPF: t = (35N + 30p) / f ÷ cos(δ)  (p=화소피치 μm, δ=적위).  비교용 500법칙: t = 500/f_환산",
+      "formulaSource": {
+        "문헌명": "Frédéric Michaud, «Règle NPF», Société Astronomique du Havre (sahavre.fr) — 회절+화소피치+항성 이동을 결합한 간이형; 500법칙은 필름 시대 경험칙(출처 불명 관례)",
+        "출처": "NPF 간이식 (35N+30p)/f. 적위 보정은 항성 각속도 ∝ cos(δ)에서 유도"
+      },
+      "inputs": [
+        { "name": "focalLength", "unit": "mm", "min": 8, "max": 200, "default": 20 },
+        { "name": "aperture", "unit": "f-number", "min": 0.95, "max": 8, "default": 2.8 },
+        { "name": "pixelPitch", "unit": "μm", "min": 0.6, "max": 9, "default": 6.0, "note": "센서 프리셋+화소수에서 자동 산출" },
+        { "name": "declination", "unit": "deg", "min": 0, "max": 80, "default": 0 }
+      ],
+      "testCases": [
+        { "input": { "N": 2.8, "p": 6.0, "f": 20, "decl": 0 }, "expected": { "npfS": 13.9, "rule500S": 25.0 }, "tolerance": 0.1, "source": "FF 24MP 20mm f/2.8 — NPF 공식 대입. 500법칙과 1.8배 차이 시연" },
+        { "input": { "N": 1.8, "p": 3.79, "f": 14, "decl": 0 }, "expected": { "npfS": 12.6, "rule500S": 35.7 }, "tolerance": 0.1, "source": "FF 61MP(피치 3.79μm) — 고화소에서 500법칙이 3배 가까이 과대함" },
+        { "input": { "N": 2.8, "p": 6.0, "f": 20, "decl": 60 }, "expected": { "npfS": 27.8 }, "tolerance": 0.1, "source": "적위 60° → cos(60°)=0.5, 허용 시간 2배 (북극성 부근일수록 느리게 이동)" },
+        { "input": { "N": 4, "p": 3.34, "f": 24, "decl": 0 }, "expected": { "npfS": 10.0 }, "tolerance": 0.1, "source": "MFT 20MP(피치 3.34μm) 24mm f/4 대입값" },
+        { "input": { "N": 1.4, "p": 5.94, "f": 35, "decl": 0 }, "expected": { "npfS": 6.49 }, "tolerance": 0.05, "source": "35mm 준광각 — 초점거리 증가에 따른 급감 확인" }
+      ],
+      "complexity": "고"
+    },
+    {
+      "slug": "star-trail-length",
+      "name": "별 궤적 길이 계산기",
+      "category": "astro",
+      "formula": "각이동 = 15.041″/s × t × cos(δ);  센서상 길이 = f × (각이동″/206265) mm;  픽셀 = 길이×1000/p",
+      "formulaSource": {
+        "문헌명": "항성일 23h56m4.1s(86164.1s) → 항성 각속도 1,296,000″/86164.1s = 15.041″/s. 소각 근사 1 rad = 206265″. Jean Meeus, Astronomical Algorithms, 2nd ed. (1998)",
+        "출처": "항성시 정의와 초점면 투영(플레이트 스케일) 기하"
+      },
+      "inputs": [
+        { "name": "focalLength", "unit": "mm", "min": 8, "max": 800, "default": 50 },
+        { "name": "exposure", "unit": "s", "min": 0.5, "max": 3600, "default": 30 },
+        { "name": "declination", "unit": "deg", "min": 0, "max": 89, "default": 0 },
+        { "name": "pixelPitch", "unit": "μm", "min": 0.6, "max": 9, "default": 6.0 }
+      ],
+      "testCases": [
+        { "input": { "f": 50, "t": 30, "decl": 0, "p": 6 }, "expected": { "trailUm": 109.4, "trailPx": 18.2 }, "tolerance": 0.5, "source": "천구 적도의 별, 50mm 30s → 18px 궤적. '30초면 점상'이라는 통념 반증 케이스" },
+        { "input": { "f": 20, "t": 25, "decl": 0, "p": 6 }, "expected": { "trailPx": 6.08 }, "tolerance": 0.05, "source": "500법칙(500/20=25s) 적용 시에도 6px 흐름 — 500법칙 한계의 정량 근거" },
+        { "input": { "f": 14, "t": 13, "decl": 0, "p": 3.79 }, "expected": { "trailPx": 3.5 }, "tolerance": 0.1, "source": "61MP+NPF 근사 시간 → 3.5px(NPF 설계 목표 수준)" },
+        { "input": { "f": 50, "t": 30, "decl": 60, "p": 6 }, "expected": { "trailPx": 9.12 }, "tolerance": 0.1, "source": "적위 60°에서 궤적이 정확히 절반(cos 60°=0.5)" },
+        { "input": { "f": 200, "t": 2, "decl": 0, "p": 4.39 }, "expected": { "trailPx": 6.64 }, "tolerance": 0.1, "source": "망원 200mm는 2초로도 6px 이동 — 적도의 없이는 망원 성야 불가함의 근거" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "sun-altitude",
+      "name": "골든아워·블루아워·박명 계산기",
+      "category": "astro",
+      "formula": "NOAA 태양 위치 알고리즘(율리우스일→태양 적위·균시차→시간각). 고도 구간 정의: 골든 +6°~−4°, 블루 −4°~−6°, 시민박명 0°~−6°, 항해박명 −6°~−12°, 천문박명 −12°~−18°, 일출·일몰 −0.833°(굴절+시반경)",
+      "formulaSource": {
+        "문헌명": "Jean Meeus, Astronomical Algorithms, 2nd ed. (1998), ch.25 'Solar Coordinates'; NOAA Global Monitoring Laboratory Solar Calculator(동일 알고리즘); 박명 정의: 미 해군천문대(USNO) 표준",
+        "출처": "클라이언트 전용 계산. 위치는 좌표 직접 입력 또는 도시 프리셋(위치 API·외부 호출 없음). 오차 ±1~2분(ΔT·기압굴절 변동)"
+      },
+      "inputs": [
+        { "name": "latitude", "unit": "deg", "min": -66, "max": 66, "default": 37.5665 },
+        { "name": "longitude", "unit": "deg", "min": -180, "max": 180, "default": 126.978 },
+        { "name": "date", "unit": "date", "min": 0, "max": 0, "default": "today" },
+        { "name": "utcOffset", "unit": "h", "min": -12, "max": 14, "default": 9 }
+      ],
+      "testCases": [
+        { "input": { "date": "2026-06-21", "quantity": "declination" }, "expected": { "deg": 23.44 }, "tolerance": 0.05, "source": "하지 태양 적위 = 황도경사 23.44° (천문 상수)" },
+        { "input": { "date": "2026-02-11", "quantity": "equationOfTime" }, "expected": { "min": -14.2 }, "tolerance": 0.3, "source": "균시차 연중 최소 극값(2월 중순 −14.2분) — Meeus ch.28 공표 극값" },
+        { "input": { "lat": 37.5665, "lon": 126.978, "date": "2026-06-21", "tz": 9 }, "expected": { "sunset": "19:57" }, "tolerance": "±3min", "source": "서울 하지 일몰 — 한국천문연구원 역서 공표값 19:57과 일치" },
+        { "input": { "lat": 37.5665, "lon": 126.978, "date": "2026-01-01", "tz": 9 }, "expected": { "sunrise": "07:47", "sunset": "17:24" }, "tolerance": "±3min", "source": "서울 1월 1일 — 한국천문연구원 공표값(07:47/17:24)과 일치" },
+        { "input": { "lat": 0, "lon": 0, "date": "2026-03-20" }, "expected": { "dayLengthH": 12.12 }, "tolerance": 0.08, "source": "적도 주야평분: 굴절+시반경으로 12시간+약 7분 (표준 천문 사실)" },
+        { "input": { "lat": 69.649, "lon": 18.955, "date": "2026-12-21" }, "expected": { "sunrise": "none(극야)" }, "tolerance": "-", "source": "트롬쇠(69.65°N) 동지 극야 — 태양이 −0.833° 위로 오르지 않음" }
+      ],
+      "complexity": "고"
+    },
+    {
+      "slug": "exposure-equivalent",
+      "name": "등가 노출 조합표",
+      "category": "exposure",
+      "formula": "N²/t ÷ (ISO/100) = 일정. 한 축 고정 → 나머지 두 축의 실존 클릭값 조합을 표로 생성. 스톱 간격 1/3·1/2·1 전환",
+      "formulaSource": {
+        "문헌명": "ISO 2720:1974 (사진 노출계 표준, K·C 캘리브레이션); APEX 체계(Av+Tv=Bv+Sv, ANSI PH2.5-1960)",
+        "출처": "노출 방정식 N²/t = L·S/K. 클릭값은 명목값 표기·정확값 계산(meta.clickValuesNote)"
+      },
+      "inputs": [
+        { "name": "aperture", "unit": "f-number", "min": 0.95, "max": 32, "default": 8 },
+        { "name": "shutter", "unit": "s", "min": 0.000125, "max": 30, "default": 0.008 },
+        { "name": "iso", "unit": "ISO", "min": 50, "max": 102400, "default": 100 },
+        { "name": "stopStep", "unit": "stop", "min": 0.333, "max": 1, "default": 0.333 }
+      ],
+      "testCases": [
+        { "input": { "from": ["f/8", "1/125", 100], "fix": "iso", "target": "f/5.6" }, "expected": { "shutter": "1/250" }, "tolerance": "정확 1스톱", "source": "조리개 1스톱 개방 ↔ 셔터 1스톱 단축 (노출 방정식)" },
+        { "input": { "from": ["f/8", "1/125", 100], "fix": "aperture", "target": "ISO 400" }, "expected": { "shutter": "1/500" }, "tolerance": "정확 2스톱", "source": "ISO 2스톱 증가 ↔ 셔터 2스톱 단축" },
+        { "input": { "from": ["f/2.8", "1/60", 3200], "fix": "shutter", "target": "ISO 100" }, "expected": { "aperture": "개방 한계 초과 → 불가 표시" }, "tolerance": "-", "source": "5스톱 보상에 f/0.5 필요 — 실존 클릭값 밖 조합은 '불가'로 처리하는 경계조건" },
+        { "input": { "ev": ["f/16", "1/125", 100] }, "expected": { "EV100": 15 }, "tolerance": 0.05, "source": "Sunny 16 조건 = EV 15 (명목값 1/125→정확값 1/128로 계산 시 15.00)" },
+        { "input": { "from": ["f/4", "1/30", 100], "step": "1/3", "fix": "iso", "target": "f/5.0" }, "expected": { "shutter": "1/20" }, "tolerance": "정확 2/3스톱", "source": "1/3스톱 계열 이동 검증 (f/4→f/5.0 = 2/3스톱 감광)" }
+      ],
+      "complexity": "고"
+    },
+    {
+      "slug": "ev-calculator",
+      "name": "EV(노출값) 계산기",
+      "category": "exposure",
+      "formula": "EV = log₂(N²/t);  ISO 반영 EV₁₀₀ = EV − log₂(ISO/100)",
+      "formulaSource": {
+        "문헌명": "ISO 2720:1974; APEX 체계 (Ev = Av + Tv)",
+        "출처": "EV 정의식. 대표 장면 EV표는 ANSI PH2.7-1986 노출 가이드 준거"
+      },
+      "inputs": [
+        { "name": "aperture", "unit": "f-number", "min": 0.95, "max": 64, "default": 8 },
+        { "name": "shutter", "unit": "s", "min": 0.000125, "max": 3600, "default": 0.008 },
+        { "name": "iso", "unit": "ISO", "min": 50, "max": 409600, "default": 100 }
+      ],
+      "testCases": [
+        { "input": { "N": 1, "t": 1, "iso": 100 }, "expected": { "EV": 0 }, "tolerance": 0.001, "source": "EV 0의 정의: f/1·1초·ISO100" },
+        { "input": { "N": 16, "t": "1/125", "iso": 100 }, "expected": { "EV": 14.97 }, "tolerance": 0.05, "source": "Sunny 16 = EV≈15 (명목값 계산 시 14.97, 정확값 계산 시 15.00)" },
+        { "input": { "N": 2.8, "t": 30, "iso": 3200 }, "expected": { "EV100": -6.94 }, "tolerance": 0.05, "source": "은하수 촬영 대표 설정 ≈ EV −7 (야간 하늘 휘도 영역)" },
+        { "input": { "N": 5.6, "t": "1/60", "iso": 100 }, "expected": { "EV": 10.88 }, "tolerance": 0.05, "source": "실내 밝은 조명 영역(EV 10~11) 검증" },
+        { "input": { "N": 8, "t": "1/250", "iso": 400 }, "expected": { "EV100": 11.97 }, "tolerance": 0.05, "source": "ISO 보정 항 검증: EV 13.97 − 2스톱" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "nd-filter",
+      "name": "ND 필터 노출 계산기",
+      "category": "exposure",
+      "formula": "t′ = t × 2^(스톱수). 표기 대응: ND2ⁿ=n스톱, 광학밀도 OD → 스톱 = OD/log₁₀2. 중첩 시 OD 합산(스톱 합산)",
+      "formulaSource": {
+        "문헌명": "광학 밀도 정의 OD = −log₁₀(투과율) — 표준 광학(Born & Wolf, Principles of Optics 등); 필터 표기 관례(ND8/0.9/3-stop 동치)",
+        "출처": "투과율·밀도 정의에서 직접 유도. ND1000은 명목 10스톱(정확값 2^9.97)"
+      },
+      "inputs": [
+        { "name": "baseShutter", "unit": "s", "min": 0.000125, "max": 30, "default": 0.0167 },
+        { "name": "stops", "unit": "stop", "min": 1, "max": 20, "default": 10 }
+      ],
+      "testCases": [
+        { "input": { "t": "1/60", "factor": 1000 }, "expected": { "tS": 16.7 }, "tolerance": 0.1, "source": "ND1000 = 투과 1/1000 → 1/60×1000 = 16.7s (2^10=1024 환산 시 17.1s — 명목/정확 차이를 표기)" },
+        { "input": { "t": "1/125", "stops": 3 }, "expected": { "tS": 0.064 }, "tolerance": 0.001, "source": "ND8 = 3스톱: 8/125" },
+        { "input": { "stack": ["OD0.9", "OD1.8"] }, "expected": { "stops": 8.97 }, "tolerance": 0.05, "source": "중첩은 밀도 합산: OD2.7 = 2.7/0.30103 ≈ 9스톱" },
+        { "input": { "t": 0.25, "stops": 6 }, "expected": { "tS": 16.0 }, "tolerance": 0.01, "source": "ND64 = 6스톱: 0.25×64" },
+        { "input": { "t": "1/8000", "stops": 20 }, "expected": { "tS": 131.1, "warning": "장노출 노이즈·명목값 오차 고지" }, "tolerance": 0.5, "source": "극단값(20스톱 스택) 경계조건: 2^20/8000" }
+      ],
+      "complexity": "저"
+    },
+    {
+      "slug": "macro-exposure",
+      "name": "접사 배율·노출 보정 계산기",
+      "category": "exposure",
+      "formula": "노출 배수 = (1+m)² (대칭 렌즈, 동공비 P=1);  보정 스톱 = 2·log₂(1+m);  유효 조리개 N_eff = N(1+m);  접사링: m = 연장량/f (무한대 초점 기준)",
+      "formulaSource": {
+        "문헌명": "Sidney F. Ray, Applied Photographic Optics, 3rd ed. (2002), ch.14 'Close-up photography' — bellows factor",
+        "출처": "렌즈 연장에 따른 유효 f수 증가의 표준 유도. 비대칭 렌즈는 동공비 P 보정 필요함을 페이지에 고지"
+      },
+      "inputs": [
+        { "name": "magnification", "unit": "배", "min": 0.05, "max": 5, "default": 1 },
+        { "name": "aperture", "unit": "f-number", "min": 1.4, "max": 32, "default": 8 },
+        { "name": "extension", "unit": "mm", "min": 0, "max": 100, "default": 0 },
+        { "name": "focalLength", "unit": "mm", "min": 20, "max": 200, "default": 50 }
+      ],
+      "testCases": [
+        { "input": { "m": 1 }, "expected": { "factor": 4, "stops": 2 }, "tolerance": 0.01, "source": "등배(1:1) = 2스톱 감광 — 접사 표준 사실" },
+        { "input": { "m": 0.5 }, "expected": { "factor": 2.25, "stops": 1.17 }, "tolerance": 0.01, "source": "(1.5)² 대입" },
+        { "input": { "m": 2 }, "expected": { "factor": 9, "stops": 3.17, "NeffAtF2.8": 8.4 }, "tolerance": 0.01, "source": "2배 초접사 — 유효 f/8.4로 회절 영향권 진입" },
+        { "input": { "ext": 25, "f": 50 }, "expected": { "m": 0.5 }, "tolerance": 0.001, "source": "무한대 초점 렌즈 + 25mm 접사링: m = 25/50" },
+        { "input": { "m": 0.25, "N": 5.6 }, "expected": { "stops": 0.64, "Neff": 7.0 }, "tolerance": 0.01, "source": "저배율에서 보정이 1스톱 미만임을 확인" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "motion-blur",
+      "name": "움직임 흐림(셔터속도) 계산기",
+      "category": "exposure",
+      "formula": "상면 이동속도 = v × m,  m = f/(d−f);  흐림량 = v·m·t;  픽셀 환산 = 흐림량(mm)×1000/p. (센서면과 평행 이동 가정, 비스듬한 이동은 cos 성분)",
+      "formulaSource": {
+        "문헌명": "박막렌즈 배율 m = f/(d−f) — Sidney F. Ray, Applied Photographic Optics, 3rd ed. (2002), ch.4 (가우스 결상식)",
+        "출처": "결상 배율과 등속 운동의 투영. 표준 기하 유도"
+      },
+      "inputs": [
+        { "name": "subjectSpeed", "unit": "m/s", "min": 0.1, "max": 100, "default": 5, "note": "표시 단위 km/h 전환 제공" },
+        { "name": "distance", "unit": "m", "min": 0.5, "max": 500, "default": 10 },
+        { "name": "focalLength", "unit": "mm", "min": 8, "max": 800, "default": 50 },
+        { "name": "shutter", "unit": "s", "min": 0.000125, "max": 1, "default": 0.002 },
+        { "name": "pixelPitch", "unit": "μm", "min": 0.6, "max": 9, "default": 6.0 }
+      ],
+      "testCases": [
+        { "input": { "v": 5, "d": 10, "f": 50, "t": "1/500", "p": 6 }, "expected": { "blurUm": 50.3, "blurPx": 8.4 }, "tolerance": 0.2, "source": "달리기(5m/s) 10m 거리 50mm 1/500 — 8px 흐림. 기하 대입값" },
+        { "input": { "v": 1.5, "d": 3, "f": 35, "t": "1/60", "p": 6 }, "expected": { "blurPx": 49.2 }, "tolerance": 0.5, "source": "보행자 3m 1/60 → 49px: 실내 인물 셔터 하한의 정량 근거" },
+        { "input": { "v": 27.78, "d": 20, "f": 70, "t": "1/1000", "p": 4.35 }, "expected": { "blurPx": 22.4 }, "tolerance": 0.3, "source": "100km/h 차량 20m 1/1000에서도 22px — 패닝 필요성의 근거" },
+        { "input": { "v": 5, "d": 10, "f": 50, "t": "1/500", "p": 6, "angleDeg": 60 }, "expected": { "blurPx": 4.2 }, "tolerance": 0.1, "source": "이동 방향이 센서면과 60° 기울면 평행 성분은 v·cos(60°)=0.5v → 흐림 8.4×0.5=4.2px (성분 분해)" },
+        { "input": { "v": 0.5, "d": 2, "f": 100, "t": "1/125", "p": 3.79 }, "expected": { "blurPx": 55.5 }, "tolerance": 1, "source": "접사 영역(고배율)에서 미세 움직임도 큰 흐림 — m=f/(d−f)=0.0526 대입" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "angle-of-view",
+      "name": "화각 계산기",
+      "category": "framing",
+      "formula": "AOV = 2·arctan(치수/2f) — 수평(폭)·수직(높이)·대각 3종. 무한대 초점 기준(근접 시 좁아짐을 고지)",
+      "formulaSource": {
+        "문헌명": "Sidney F. Ray, Applied Photographic Optics, 3rd ed. (2002), ch.5 'Field of view'",
+        "출처": "핀홀/박막렌즈 투영 기하 표준식"
+      },
+      "inputs": [
+        { "name": "focalLength", "unit": "mm", "min": 4, "max": 1200, "default": 50 },
+        { "name": "sensor", "unit": "preset", "min": 0, "max": 0, "default": "full-frame" }
+      ],
+      "testCases": [
+        { "input": { "f": 50, "sensor": "full-frame" }, "expected": { "diagDeg": 46.8, "hDeg": 39.6, "vDeg": 27.0 }, "tolerance": 0.1, "source": "표준렌즈 50mm 대각 46.8° — 제조사 공표 화각표와 일치" },
+        { "input": { "f": 24, "sensor": "full-frame" }, "expected": { "diagDeg": 84.1 }, "tolerance": 0.1, "source": "24mm 대각 84° — 공표 화각표 일치" },
+        { "input": { "f": 85, "sensor": "full-frame" }, "expected": { "diagDeg": 28.6 }, "tolerance": 0.1, "source": "85mm 공표 화각 28°30′ 일치" },
+        { "input": { "f": 25, "sensor": "mft" }, "expected": { "diagDeg": 46.8 }, "tolerance": 0.1, "source": "MFT 25mm = FF 50mm과 동일 대각 화각 (크롭 2.0 교차검증)" },
+        { "input": { "f": 14, "sensor": "full-frame" }, "expected": { "hDeg": 104.3 }, "tolerance": 0.1, "source": "초광각 수평 화각 — 파노라마 계산기와 교차검증용" }
+      ],
+      "complexity": "저"
+    },
+    {
+      "slug": "equivalent-focal",
+      "name": "환산 초점거리·등가 계산기",
+      "category": "framing",
+      "formula": "f_eq = f × crop;  동일 화각·동일 심도 등가: N_eq = N × crop (심도식에 c ∝ 1/crop 대입 시 유도)",
+      "formulaSource": {
+        "문헌명": "crop = 대각선비 정의; 심도 등가는 표준 심도식(Ray, ch.22)에서 c와 f를 crop 배율로 치환하여 유도",
+        "출처": "기하 정의 + 심도식 대수 유도 (페이지에 유도 과정 게재)"
+      },
+      "inputs": [
+        { "name": "focalLength", "unit": "mm", "min": 4, "max": 1200, "default": 25 },
+        { "name": "aperture", "unit": "f-number", "min": 0.95, "max": 32, "default": 1.8 },
+        { "name": "sensorFrom", "unit": "preset", "min": 0, "max": 0, "default": "mft" },
+        { "name": "sensorTo", "unit": "preset", "min": 0, "max": 0, "default": "full-frame" }
+      ],
+      "testCases": [
+        { "input": { "f": 25, "from": "mft" }, "expected": { "fEq": 50 }, "tolerance": 0.5, "source": "MFT crop 2.0 정의" },
+        { "input": { "f": 50, "from": "aps-c-canon" }, "expected": { "fEq": 80.7 }, "tolerance": 0.5, "source": "캐논 APS-C 대각 26.82mm → crop 1.613" },
+        { "input": { "f": 25, "N": 1.8, "from": "mft" }, "expected": { "NEqDof": 3.6 }, "tolerance": 0.05, "source": "심도 등가: MFT f/1.8 ≈ FF f/3.6 (동일 화각·동일 거리·동일 출력 기준)" },
+        { "input": { "f": 6.9, "from": "phone-1-1.56" }, "expected": { "fEq": 29.2 }, "tolerance": 0.5, "source": "스마트폰 주카메라(f=6.9mm, 1/1.56″) → 약 29mm 상당 — 공표 '환산 29mm' 스펙과 일치 구조" },
+        { "input": { "f": 63, "from": "medium-44x33" }, "expected": { "fEq": 49.8 }, "tolerance": 0.5, "source": "중형 63mm ≈ FF 50mm (crop 0.79)" }
+      ],
+      "complexity": "저"
+    },
+    {
+      "slug": "panorama-shots",
+      "name": "파노라마 촬영 매수 계산기",
+      "category": "framing",
+      "formula": "1컷 화각 = 2·arctan(w/2f) (회전축 기준 방향 치수);  스텝각 = 화각×(1−중첩률);  매수 = ⌈목표각/스텝각⌉",
+      "formulaSource": {
+        "문헌명": "화각식(Ray, ch.5) + 등간격 회전 분할 기하",
+        "출처": "표준 기하. 시차(패럴랙스) 회피는 입사동 회전 필요 — 해설 페이지로 연결"
+      },
+      "inputs": [
+        { "name": "focalLength", "unit": "mm", "min": 8, "max": 200, "default": 24 },
+        { "name": "orientation", "unit": "가로/세로", "min": 0, "max": 1, "default": "세로" },
+        { "name": "overlap", "unit": "%", "min": 15, "max": 60, "default": 30 },
+        { "name": "totalAngle", "unit": "deg", "min": 60, "max": 360, "default": 360 }
+      ],
+      "testCases": [
+        { "input": { "f": 24, "w": 24, "overlap": 0.3, "total": 360 }, "expected": { "shotFovDeg": 53.1, "shots": 10 }, "tolerance": 0.1, "source": "FF 24mm 세로구도 360° 파노: 화각 2·atan(0.5)=53.13°" },
+        { "input": { "f": 50, "w": 24, "overlap": 0.25, "total": 180 }, "expected": { "shots": 9 }, "tolerance": 0, "source": "FF 50mm 세로 180°: 27.0°×0.75=20.2° 스텝" },
+        { "input": { "f": 35, "w": 36, "overlap": 0.3, "total": 360 }, "expected": { "shots": 10 }, "tolerance": 0, "source": "가로구도(회전 방향 치수 36mm) 검증" },
+        { "input": { "f": 14, "w": 24, "overlap": 0.3, "total": 360 }, "expected": { "shotFovDeg": 81.2, "shots": 7 }, "tolerance": 0.2, "source": "초광각 극단값: 2·atan(24/28)=81.2° — 스텝 56.8°, ⌈360/56.8⌉=7" },
+        { "input": { "f": 200, "w": 24, "overlap": 0.3, "total": 90 }, "expected": { "shots": 19 }, "tolerance": 0, "source": "망원 기가픽셀형: 화각 6.87°, 스텝 4.81°, ⌈90/4.81⌉=19" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "diffraction-limit",
+      "name": "회절 한계 계산기",
+      "category": "sharpness",
+      "formula": "에어리 원반 지름 = 2.44·λ·N (μm, λ=0.55μm 기본);  회절 체감 시작점: 에어리 지름 ≈ 2×화소피치가 되는 N* = 2p/(2.44λ)",
+      "formulaSource": {
+        "문헌명": "레일리 기준·에어리 패턴 — Max Born & Emil Wolf, Principles of Optics, 7th ed. (1999), §8.5.2",
+        "출처": "프라운호퍼 회절의 표준 결과. '2×피치' 기준은 나이퀴스트 표본화 근거(임계값은 정의에 따라 ±1스톱 변동 가능함을 고지)"
+      },
+      "inputs": [
+        { "name": "aperture", "unit": "f-number", "min": 0.95, "max": 64, "default": 8 },
+        { "name": "wavelength", "unit": "nm", "min": 400, "max": 700, "default": 550 },
+        { "name": "pixelPitch", "unit": "μm", "min": 0.6, "max": 9, "default": 4.35 }
+      ],
+      "testCases": [
+        { "input": { "N": 8, "lambda": 550 }, "expected": { "airyUm": 10.7 }, "tolerance": 0.05, "source": "2.44×0.55×8 표준 대입값" },
+        { "input": { "N": 16, "lambda": 550 }, "expected": { "airyUm": 21.5 }, "tolerance": 0.05, "source": "f/16 — 24MP FF 피치(6μm)의 3.6배로 명백한 회절 영역" },
+        { "input": { "N": 2.8, "lambda": 550 }, "expected": { "airyUm": 3.76 }, "tolerance": 0.05, "source": "개방측 하한 확인" },
+        { "input": { "p": 4.35, "lambda": 550 }, "expected": { "Nstar": 6.5 }, "tolerance": 0.1, "source": "45MP FF: f/6.5부터 회절 체감 시작 (2p 기준)" },
+        { "input": { "p": 6.0, "lambda": 550 }, "expected": { "Nstar": 8.9 }, "tolerance": 0.1, "source": "24MP FF: f/9 부근 — 화소수에 따라 한계 조리개가 달라짐의 정량 근거" }
+      ],
+      "complexity": "중"
+    },
+    {
+      "slug": "pixel-pitch",
+      "name": "화소 피치·플레이트 스케일 계산기",
+      "category": "sharpness",
+      "formula": "피치 p = 센서폭(mm)×1000/가로화소;  화소밀도 = 1/p² ;  플레이트 스케일 = 206.265×p(μm)/f(mm) ″/px",
+      "formulaSource": {
+        "문헌명": "기하 정의; 플레이트 스케일 206265″/rad — 천체사진 표준 공식 (Meeus, Astronomical Algorithms 부록 상수)",
+        "출처": "라디안-각초 환산 상수에서 직접 유도"
+      },
+      "inputs": [
+        { "name": "sensor", "unit": "preset", "min": 0, "max": 0, "default": "full-frame" },
+        { "name": "horizontalPixels", "unit": "px", "min": 2000, "max": 20000, "default": 6000 },
+        { "name": "focalLength", "unit": "mm", "min": 8, "max": 2000, "default": 400, "note": "플레이트 스케일용(선택)" }
+      ],
+      "testCases": [
+        { "input": { "wMm": 36, "px": 6000 }, "expected": { "pitchUm": 6.0 }, "tolerance": 0.01, "source": "FF 24MP 정의 대입" },
+        { "input": { "wMm": 36, "px": 9504 }, "expected": { "pitchUm": 3.79 }, "tolerance": 0.01, "source": "FF 61MP" },
+        { "input": { "wMm": 17.3, "px": 5184 }, "expected": { "pitchUm": 3.34 }, "tolerance": 0.01, "source": "MFT 20MP" },
+        { "input": { "p": 6.0, "f": 400 }, "expected": { "arcsecPerPx": 3.09 }, "tolerance": 0.01, "source": "플레이트 스케일: 206.265×6/400" },
+        { "input": { "wMm": 9.79, "px": 16320 }, "expected": { "pitchUm": 0.6 }, "tolerance": 0.01, "source": "ISOCELL HP2 공표 0.6μm 재현 — 센서 데이터 교차검증" }
+      ],
+      "complexity": "저"
+    },
+    {
+      "slug": "flash-guide-number",
+      "name": "플래시 가이드넘버 계산기",
+      "category": "flash",
+      "formula": "GN = 거리(m) × N (ISO100 기준);  N = GN/거리;  ISO 보정: GN′ = GN × √(ISO/100). 직광·무반사 가정",
+      "formulaSource": {
+        "문헌명": "ISO 1230:2007 (Photography — Determination of flash guide numbers)",
+        "출처": "GN 정의 표준. 실내 반사·바운스·줌헤드 배광으로 실효값이 달라짐을 페이지에 고지"
+      },
+      "inputs": [
+        { "name": "guideNumber", "unit": "m (ISO100)", "min": 5, "max": 80, "default": 36 },
+        { "name": "distance", "unit": "m", "min": 0.5, "max": 30, "default": 3 },
+        { "name": "iso", "unit": "ISO", "min": 50, "max": 12800, "default": 100 },
+        { "name": "power", "unit": "1/n 광량", "min": 0.0078125, "max": 1, "default": 1 }
+      ],
+      "testCases": [
+        { "input": { "GN": 36, "d": 3, "iso": 100 }, "expected": { "N": 12 }, "tolerance": 0.01, "source": "GN 정의 직접 대입 → f/11+1/3 클릭 안내" },
+        { "input": { "GN": 36, "iso": 400 }, "expected": { "GNeff": 72 }, "tolerance": 0.1, "source": "ISO 4배 → GN 2배 (√4)" },
+        { "input": { "GN": 60, "N": 8, "iso": 100 }, "expected": { "dM": 7.5 }, "tolerance": 0.01, "source": "도달 거리 역산" },
+        { "input": { "GN": 36, "d": 5, "iso": 100 }, "expected": { "N": 7.2 }, "tolerance": 0.01, "source": "실존 클릭 f/7.1 매칭 케이스" },
+        { "input": { "GN": 36, "d": 3, "iso": 100, "power": 0.25 }, "expected": { "N": 6 }, "tolerance": 0.01, "source": "1/4 광량 → GN×√(1/4)=18 → N=6 (광량 ∝ GN²)" }
+      ],
+      "complexity": "저"
+    },
+    {
+      "slug": "timelapse",
+      "name": "타임랩스 계산기",
+      "category": "planning",
+      "formula": "컷 수 = 재생시간×fps;  촬영 소요 = 컷 수×인터벌;  용량 = 컷 수×장당 용량;  배속 = 인터벌×fps",
+      "formulaSource": {
+        "문헌명": "프레임레이트 정의(SMPTE 표준 24/25/30fps)에 따른 산술",
+        "출처": "정의식. 인터벌 하한은 셔터+저장 시간 제약임을 고지"
+      },
+      "inputs": [
+        { "name": "clipSeconds", "unit": "s", "min": 1, "max": 300, "default": 10 },
+        { "name": "fps", "unit": "fps", "min": 24, "max": 60, "default": 24 },
+        { "name": "interval", "unit": "s", "min": 0.5, "max": 3600, "default": 5 },
+        { "name": "fileSizeMb", "unit": "MB", "min": 1, "max": 200, "default": 30 }
+      ],
+      "testCases": [
+        { "input": { "clip": 10, "fps": 24 }, "expected": { "shots": 240 }, "tolerance": 0, "source": "정의 산술" },
+        { "input": { "shots": 240, "interval": 5 }, "expected": { "durationMin": 20 }, "tolerance": 0, "source": "정의 산술" },
+        { "input": { "shots": 240, "sizeMb": 30 }, "expected": { "storageGb": 7.03 }, "tolerance": 0.01, "source": "240×30/1024" },
+        { "input": { "interval": 5, "fps": 24 }, "expected": { "speedup": 120 }, "tolerance": 0, "source": "배속 = 인터벌×fps" },
+        { "input": { "clip": 30, "fps": 30, "interval": 2 }, "expected": { "shots": 900, "durationMin": 30 }, "tolerance": 0, "source": "복합 검증" }
+      ],
+      "complexity": "저"
+    }
+  ]
+}
