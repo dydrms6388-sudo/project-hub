@@ -23,16 +23,19 @@
     chats: {},   // pid -> [{who,t,at}]
     votes: {},
     lastSwipe: null,
-    settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 },
-    filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all" },
+    discView: "swipe", taps: {}, rightNowUntil: 0,
+    settings: { pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0, lang: "ko" },
+    filters: { ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" },
     stats: { likesSent: 0, matches: 0 },
     items: { teleport: 0, spotlight: 0, superlike: 0, boostticket: 0, refill: 0, gachaticket: 0 },
     fx: { teleport: null, spotlightUntil: 0 }, // teleport: {region, until}
     cards: {}, // charId -> {n, lv}
     gacha: { day: "", freeUsed: false, pity: 0 },
     roulette: { day: "" },
+    wc: { day: "", champ: "" },
     battle: { day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 },
     balance: {},
+    lounge: { day: "", posts: {}, liked: {} },
     streak: { last: "", n: 0 },
     joinedAt: Date.now(),
   });
@@ -54,14 +57,94 @@
   });
   S.gacha = Object.assign({ day: "", freeUsed: false, pity: 0 }, S.gacha || {});
   S.roulette = Object.assign({ day: "" }, S.roulette || {});
+  S.wc = Object.assign({ day: "", champ: "" }, S.wc || {});
+  S.discView = S.discView === "grid" ? "grid" : "swipe";
+  S.taps = S.taps || {};
+  S.rightNowUntil = S.rightNowUntil || 0;
   S.battle = Object.assign({ day: "", plays: 0, winsToday: 0, rewarded: 0, streak: 0, best: 0, totalWins: 0 }, S.battle || {});
   S.balance = S.balance || {};
+  S.lounge = Object.assign({ day: "", posts: {}, liked: {} }, S.lounge || {});
+  S.lounge.posts = S.lounge.posts || {}; S.lounge.liked = S.lounge.liked || {};
   S.streak = Object.assign({ last: "", n: 0 }, S.streak || {});
-  S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0 }, S.settings || {});
-  S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all" }, S.filters || {});
+  S.settings = Object.assign({ pin: null, hideDistance: false, privateMode: false, bgLock: true, disguise: false, fontScale: 0, lang: "ko" }, S.settings || {});
+  S.filters = Object.assign({ ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" }, S.filters || {});
   if (S.filters.ageMax === 45) S.filters.ageMax = 50; // 구버전 기본값 승격
   S.stats = Object.assign({ likesSent: 0, matches: 0 }, S.stats || {});
-  const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
+  // 프로필 신규 필드 마이그레이션 (사진/성향/스타일/찾는관계 다중/커밍아웃)
+  if (S.user) {
+    if (!Array.isArray(S.user.photos)) S.user.photos = [];
+    if (!Array.isArray(S.user.privatePhotos)) S.user.privatePhotos = [];
+    if (!Array.isArray(S.user.lookingList)) S.user.lookingList = S.user.lookingFor ? [S.user.lookingFor] : [];
+    if (!Array.isArray(S.user.styles)) S.user.styles = [];
+    if (typeof S.user.position !== "string") S.user.position = "";
+    if (typeof S.user.outLevel !== "string") S.user.outLevel = "";
+    if (!Array.isArray(S.user.topics)) S.user.topics = [];
+  }
+  const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {
+    // localStorage 초과(사진 과다) 시 안내
+    toast && toast("⚠️ 저장 공간이 가득 찼어요. 사진 수를 줄여주세요");
+  } };
+
+  /* ══ 다국어 (i18n) — 한국어 원문 → 영어 사전, 미번역 문자열은 한국어 폴백 ══ */
+  const I18N_EN = {
+    // 탭 · 상단
+    "둘러보기": "Discover", "좋아요": "Likes", "채팅": "Chats", "라운지": "Lounge", "카드": "Cards",
+    // 라운지 피드
+    "가볍게 글을 남기고 공감으로 시작해보세요": "Leave a short post and start with a like",
+    "지금 무슨 생각해요? (120자)": "What's on your mind? (120 chars)",
+    "올리기": "Post", "오늘 첫 글을 올리면 뽑기권 +1": "First post today earns +1 gacha ticket",
+    "라운지 참여하고 글쓰기": "Join this lounge to post",
+    "아직 글이 없어요. 첫 글의 주인공이 되어보세요!": "No posts yet. Be the first!",
+    "아이템 상점": "Item Shop", "프리미엄": "Premium", "프로필": "Profile", "무료": "Free",
+    // 웰컴
+    "나를 숨기지 않는 만남 — 게이·바이·퀴어 남성 모두 환영": "Dating without hiding — all gay, bi & queer men welcome",
+    "시작하기": "Get Started",
+    "기본 무료 · 가입 없이 이 기기에서 바로 · 19세 이상": "Free · No sign-up, runs on this device · 19+",
+    "본 서비스는 데모 버전으로, 등장하는 프로필은 모두 가상 인물입니다.": "This is a demo — all profiles are fictional.",
+    // 디스커버
+    "필터": "Filter", "패스": "Pass", "슈퍼": "Super", "되돌리기": "Rewind", "부스트": "Boost",
+    "오늘 좋아요": "Likes today", "슈퍼라이크": "Super Likes", "무제한": "Unlimited",
+    "그리드": "Grid", "스와이프": "Swipe", "가까운 순": "nearest first", "탭 보내기": "Send a Tap", "탭 보냄": "Tapped",
+    "지금 만나요": "Right Now",
+    "탐색 필터": "Discovery Filters", "적용하기": "Apply", "초기화": "Reset",
+    // 섹션 헤더
+    "받은 좋아요": "Likes You", "크러시 카드 도감": "Crush Card Collection",
+    "만남 전에, 가볍게 서로를 알아가는 공간": "A light space to get to know each other first",
+    "매치된 사람들과의 대화": "Conversations with your matches",
+    // 게임
+    "데일리 룰렛": "Daily Roulette", "매력 배틀": "Charm Battle", "이상형 월드컵": "Ideal-Type World Cup",
+    "무료 뽑기": "Free pull", "10연챠": "10-Pull",
+    // MY 메뉴
+    "프로필 수정": "Edit Profile", "프로필 인증하기": "Verify Profile", "홈 화면에 앱 설치": "Install App",
+    "글자 크기": "Font Size", "앱 잠금 (PIN)": "App Lock (PIN)", "화면 이탈 시 즉시 잠금": "Lock instantly on leave",
+    "위장 제목 항상 사용": "Always disguise title", "거리 숨기기": "Hide distance",
+    "프라이빗 모드 (새 노출 중단)": "Private mode (pause exposure)", "안전 센터": "Safety Center",
+    "차단 목록": "Blocked Users", "데이터 초기화 (계정 삭제)": "Reset Data (delete account)",
+    "언어": "Language", "프라이버시 · 안전": "Privacy · Safety",
+    "무료 플랜 이용 중": "On the Free plan", "플랜 관리": "Manage Plan",
+    "프로필 완성도": "Profile Completion",
+    "인증됨 ✔︎": "Verified ✔︎", "미인증": "Not verified", "사용 중": "On", "꺼짐": "Off",
+    // 공용 버튼
+    "닫기": "Close", "확인": "OK", "취소": "Cancel", "저장": "Save", "다음": "Next", "다음에": "Later",
+  };
+  const curLang = () => (S.settings && S.settings.lang) || "ko";
+  const t = (s) => curLang() === "en" ? (I18N_EN[s] || s) : s;
+  /* 정적 화면(웰컴·탭바) 텍스트 재도색 */
+  function paintStatic() {
+    const TAB_LB = { discover: "둘러보기", likes: "좋아요", chats: "채팅", community: "라운지", cards: "카드", my: "MY" };
+    $$("#tabbar .tab").forEach((b) => { const lb = $(".t-lb", b); if (lb) lb.textContent = t(TAB_LB[b.dataset.tab] || lb.textContent); });
+    const wt = $(".w-tag"); if (wt) wt.textContent = t("나를 숨기지 않는 만남 — 게이·바이·퀴어 남성 모두 환영");
+    const bs = $("#btn-start"); if (bs) bs.textContent = t("시작하기");
+    const wn = $(".w-note"); if (wn) wn.textContent = t("기본 무료 · 가입 없이 이 기기에서 바로 · 19세 이상");
+    const wd = $(".w-demo"); if (wd) wd.textContent = t("본 서비스는 데모 버전으로, 등장하는 프로필은 모두 가상 인물입니다.");
+    if (curLang() === "en") {
+      const FE = [["Anti-outing by design", "PIN lock · stealth mode · everything stays on this device"],
+        ["Taste-based matching", "Compatibility scored by interests, distance & activity"],
+        ["Easy first conversations", "Icebreaker prompts the moment you match"],
+        ["Safety Center", "One-tap block & report, queer dating safety guide"]];
+      $$(".w-feats li").forEach((li, i) => { if (FE[i]) { const b = $("b", li), s = $("small", li); if (b) b.textContent = FE[i][0]; if (s) s.textContent = FE[i][1]; } });
+    }
+  }
 
   const PLANS = {
     free:  { label: "무료",        likes: 20, supers: 1, seeLikes: false, rewind: 1,        boost: 0, ads: true,  read: false },
@@ -101,7 +184,7 @@
   const cardOwned = (id) => cardTotal(id) > 0;
   const cardLikeBonus = () => Math.min(30, Object.keys(S.cards).reduce((a, id) => a + Math.max(0, cardMaxLv(id) - 1), 0));
   const cardSuperBonus = () => Math.min(3, Object.keys(S.cards).filter((id) => cardOwned(id) && (cardOf(id) || {}).rarity === "SSR").length);
-  const likeLimit = () => plan().likes === Infinity ? Infinity : plan().likes + cardLikeBonus();
+  const likeLimit = () => plan().likes === Infinity ? Infinity : plan().likes + cardLikeBonus() + profileBonusLikes();
   const superLimit = () => plan().supers + cardSuperBonus();
   const gachaFreeMax = () => (S.premium.plan === "black" ? 2 : 1); // Black: 매일 무료 뽑기 2회
   const gachaFreeLeft = () => S.gacha.day !== todayStr() ? gachaFreeMax() : Math.max(0, gachaFreeMax() - (S.gacha.freeCount || 0));
@@ -162,9 +245,185 @@
     if (sameArea(p)) { sc += 6; if (p.distanceKm < 5) sc += 6; else if (p.distanceKm < 15) sc += 3; }
     else sc -= 8; // 타 권역 감산
     if (p.lookingFor === S.user.lookingFor) sc += 6;
+    sc += Math.min(9, sharedTopics(p).length * 5); // 같은 라운지 참여 가산
     return Math.max(31, Math.min(99, sc));
   }
   const sharedTags = (p) => (S.user ? p.tags.filter((t) => S.user.tags.includes(t)) : []);
+  /* ── 주제별 라운지 (관심 주제 방 · 커뮤니티 ↔ 매칭 연결) ── */
+  const TOPICS = [["운동", "💪"], ["전시·문화", "🎨"], ["반려동물", "🐾"], ["여행", "✈️"], ["게임", "🎮"], ["맛집·요리", "🍜"], ["영화·드라마", "🎬"], ["동네모임", "🏘️"]];
+  const TOPIC_EM = (name) => (TOPICS.find((t) => t[0] === name) || ["", "🏳️‍🌈"])[1];
+  const TAG2TOPIC = { 러닝: "운동", 헬스: "운동", 등산: "운동", 클라이밍: "운동", 전시: "전시·문화", 미술: "전시·문화", 사진: "전시·문화", 공연: "전시·문화", 반려동물: "반려동물", 강아지: "반려동물", 고양이: "반려동물", 여행: "여행", 캠핑: "여행", 게임: "게임", 보드게임: "게임", 맛집탐방: "맛집·요리", 베이킹: "맛집·요리", 요리: "맛집·요리", 와인: "맛집·요리", 커피: "맛집·요리", 카페투어: "맛집·요리", 영화: "영화·드라마", 음악: "영화·드라마", 넷플릭스: "영화·드라마" };
+  // 데모 프로필의 주제 파생(태그 기반 + id 시드 보장)
+  const demoTopics = (p) => {
+    if (p.topics) return p.topics;
+    const set = new Set();
+    (p.tags || []).forEach((t) => { if (TAG2TOPIC[t]) set.add(TAG2TOPIC[t]); });
+    if (!set.size) set.add(TOPICS[demoHash(p.id) % TOPICS.length][0]);
+    return Array.from(set).slice(0, 3);
+  };
+  const myTopics = () => (S.user && Array.isArray(S.user.topics) ? S.user.topics : []);
+  const sharedTopics = (p) => { const mine = myTopics(); return demoTopics(p).filter((t) => mine.includes(t)); };
+  const topicMembers = (name) => D.profiles.filter((p) => !S.blocked.includes(p.id) && demoTopics(p).includes(name));
+
+  /* ── 라운지 피드 (주제 방 짧은 글 + 공감) ── */
+  const LOUNGE_TXT = {
+    "운동": ["오운완 💪 오늘은 어깨 조졌습니다. 내일 팔 못 들 예정", "강남 쪽 짐메이트 구해요! 혼자 하니까 자꾸 째게 됨", "3대 400 드디어 찍었어요 🎉 소소하지만 축하해주세요", "주말 아침 한강 러닝 크루 하실 분? 뛰고 브런치까지", "헬스장에서 눈인사만 3주째인 분이 있는데... 용기가 안 나요", "클라이밍 입문했는데 완전 빠졌어요. 양재 쪽 같이 가실 분!"],
+    "전시·문화": ["이번 주말 리움 새 전시 보러 갈 사람? 혼자 가기 아쉬움", "연극 한 편 보고 수다 떠는 모임 어때요. 대학로 자주 감", "필름카메라 들고 서촌 산책 — 사진 취미인 분 반가워요 📷", "국립현대미술관 야간개장 다녀왔는데 분위기 미쳤음", "좋아하는 전시 같이 볼 사람 있다는 게 얼마나 큰 행운인지", "인상파전 예매 성공! 같이 갈 분 댓글 주세요"],
+    "반려동물": ["저희 집 고양이가 오늘도 절 무시합니다. 그래도 사랑해 🐈", "강아지 산책 친구 구해요! 저녁 8시 보라매공원", "유기묘 임보 시작했어요. 조언 주실 집사님들 계신가요", "반려견 동반 카페 리스트 공유해요. 성수 쪽 3곳 발견", "우리 애 발바닥 냄새는 왜 고소할까요... 저만 그런가요", "펫로스 겪은 분들, 서로 위로해요. 혼자 견디지 마세요"],
+    "여행": ["다음 달 치앙마이 한 달 살기 갑니다 ✈️ 팁 주실 분!", "제주 게스트하우스에서 만난 인연, 아직도 연락해요", "혼자 여행 좋아하는데 가끔은 둘이 가고 싶더라구요", "방콕 프라이드 다녀온 후기 — 진짜 인생 경험이었음", "주말 당일치기 강릉 어때요? 바다 보면서 커피 한 잔", "여권 갱신하다가 설레는 사람 저뿐인가요 ㅋㅋ"],
+    "게임": ["롤 듀오 구합니다. 실력보다 멘탈이 좋으신 분 🎮", "스팀 여름 세일 뭐 샀는지 공유해요. 전 또 안 할 게임 삼", "보드게임 카페 정모 어때요? 4인 이상이면 재밌는 거 많음", "젤다 이제 시작했는데 퇴근이 기다려지는 삶", "발로란트 같이 하실 분! 짜증 안 내는 사람만 ㅎㅎ", "닌텐도 스위치2 산 사람? 후기 궁금해요"],
+    "맛집·요리": ["을지로 노포에서 혼술 하다가 문득 — 같이 올 사람 있었으면", "주말에 바스크 치즈케이크 구웠어요 🧀 성공적", "와인 입문하고 싶은데 뭐부터 마셔야 하나요?", "이태원 브런치 맛집 리스트 최근 업데이트본 공유합니다", "요리 해주는 거 좋아하는 사람입니다. 먹어줄 사람 구함 ㅋㅋ", "김치찌개 하나로 사람 홀리는 법 알려드림 (진지함)"],
+    "영화·드라마": ["어제 심야영화 혼자 봤는데 옆자리 비어있는 게 아쉽더라", "왕가위 영화 좋아하는 사람 손 🙋 화양연화 재개봉 가자", "넷플 신작 정주행 하실 분, 각자 보고 수다 떠는 것도 좋아요", "퀴어 영화 추천 받아요. 해피엔딩인 걸로만...", "OST 플레이리스트 교환해요. 제 최애는 콜미바이유어네임", "영화관 팝콘은 왜 항상 반도 못 먹고 남을까요"],
+    "동네모임": ["종로 쪽 사시는 분들, 평일 저녁 가볍게 산책 모임 어때요", "동네 단골 카페 사장님이 절 알아보기 시작함... 정착했다", "이사 왔는데 아는 사람이 없어요. 동네 친구 환영합니다 🏘️", "합정 근처 조용한 술집 아는 분? 시끄러운 데 지쳤어요", "주말 아침 동네 청소 플로깅 하는데 은근 힐링됩니다", "근처 살면 부담 없이 커피 한 잔 — 그게 제일 좋은 시작"],
+  };
+  const fmtAgo = (min) => min < 60 ? `${min}분 전` : `${Math.floor(min / 60)}시간 전`;
+  // 데모 글: 주제·날짜 시드 고정 (하루마다 새 글 로테이션)
+  function demoLoungePosts(topic) {
+    const pool = LOUNGE_TXT[topic] || [];
+    const mem = topicMembers(topic);
+    if (!pool.length || !mem.length) return [];
+    const day = dayOfYear();
+    const out = [];
+    const n = Math.min(pool.length, 4);
+    for (let i = 0; i < n; i++) {
+      const ti = (day + i * 3 + topic.length) % pool.length;
+      const seed = demoHash(topic + ":" + day + ":" + i);
+      out.push({
+        key: `${topic}:${day}:${i}`, p: mem[seed % mem.length],
+        text: pool[ti], ago: 12 + (seed % 400), likes: 2 + (seed % 15),
+      });
+    }
+    return out;
+  }
+  function openLounge(topic) {
+    const joined = myTopics().includes(topic);
+    const myPosts = (S.lounge.posts[topic] || []).slice().reverse();
+    const demo = demoLoungePosts(topic);
+    const post = (av, name, sub, text, key, likes, mine) => {
+      const liked = !!S.lounge.liked[key];
+      return `<div class="lg-post ${mine ? "mine" : ""}">
+        <div class="lg-head">${av}<div class="lg-who"><b>${esc(name)}</b><small>${sub}</small></div></div>
+        <p class="lg-text">${esc(text)}</p>
+        <button class="lg-like ${liked ? "on" : ""}" data-lkey="${esc(key)}" ${mine ? "disabled" : ""}>❤️ ${likes + (liked ? 1 : 0)}</button></div>`;
+    };
+    const feed = [
+      ...myPosts.map((mp) => post(`<span class="avatar lg-av" style="${avStyle(S.user)}">${avEm(S.user)}</span>`, `${S.user.nick} (나)`, fmtAgo(Math.max(1, Math.round((Date.now() - mp.ts) / 60000))), mp.text, "me:" + mp.id, mp.likes || 0, true)),
+      ...demo.map((d) => post(`<span class="avatar lg-av" style="background:linear-gradient(135deg,${d.p.grad[0]},${d.p.grad[1]})" data-pid="${d.p.id}">${d.p.emoji}</span>`, `${d.p.name}, ${d.p.age}`, fmtAgo(d.ago), d.text, d.key, d.likes, false)),
+    ].join("");
+    const m = modal(`<div class="sheet lg-sheet"><div class="grip"></div>
+      <h3 style="margin:0 0 2px">${TOPIC_EM(topic)} ${esc(topic)} ${t("라운지")}</h3>
+      <p class="tiny" style="margin:0 0 10px">${topicMembers(topic).length}명 참여 · ${t("가볍게 글을 남기고 공감으로 시작해보세요")}</p>
+      ${joined ? `<div class="lg-write"><input id="lg-input" maxlength="120" placeholder="${t("지금 무슨 생각해요? (120자)")}"><button class="btn-grad" id="lg-send">${t("올리기")}</button></div>
+        ${S.lounge.day !== todayStr() ? `<p class="tiny" style="margin:4px 2px 10px">✨ ${t("오늘 첫 글을 올리면 뽑기권 +1")}</p>` : ""}` :
+        `<button class="btn-grad big" id="lg-join" style="margin-bottom:12px">${t("라운지 참여하고 글쓰기")}</button>`}
+      <div class="lg-feed">${feed || `<p class="tiny">${t("아직 글이 없어요. 첫 글의 주인공이 되어보세요!")}</p>`}</div></div>`);
+    $$(".lg-like:not([disabled])", m).forEach((b) => b.onclick = () => {
+      const k = b.dataset.lkey;
+      S.lounge.liked[k] = !S.lounge.liked[k]; save(); vibrate(8);
+      const base = +b.textContent.replace(/[^0-9]/g, "") - (S.lounge.liked[k] ? 0 : 1);
+      b.classList.toggle("on", !!S.lounge.liked[k]);
+      b.innerHTML = `❤️ ${base + (S.lounge.liked[k] ? 1 : 0)}`;
+    });
+    $$(".lg-av[data-pid]", m).forEach((a) => a.onclick = () => { m.remove(); openProfile(a.dataset.pid, "likes"); });
+    const jb = $("#lg-join", m);
+    if (jb) jb.onclick = () => {
+      S.user.topics = Array.isArray(S.user.topics) ? S.user.topics : [];
+      if (!S.user.topics.includes(topic)) S.user.topics.push(topic);
+      save(); toast(`${TOPIC_EM(topic)} ${topic} 라운지 참여!`); m.remove(); openLounge(topic);
+      if (tab === "community") vCommunity();
+    };
+    const sb = $("#lg-send", m);
+    if (sb) sb.onclick = () => {
+      const inp = $("#lg-input", m);
+      const txt = (inp.value || "").trim();
+      if (txt.length < 2) { toast("2자 이상 적어주세요"); return; }
+      S.lounge.posts[topic] = S.lounge.posts[topic] || [];
+      S.lounge.posts[topic].push({ id: Date.now(), text: txt.slice(0, 120), ts: Date.now(), likes: 0 });
+      let firstToday = false;
+      if (S.lounge.day !== todayStr()) { S.lounge.day = todayStr(); S.items.gachaticket += 1; firstToday = true; }
+      save(); vibrate(12);
+      toast(firstToday ? "📝 글 등록! 오늘 첫 글 보너스 — 뽑기권 +1 🎟️" : "📝 글이 등록됐어요");
+      // 데모: 잠시 후 라운지 멤버가 공감해줘요
+      const mem = topicMembers(topic);
+      if (mem.length) {
+        const who = mem[demoHash(topic + Date.now()) % mem.length];
+        setTimeout(() => {
+          const arr = S.lounge.posts[topic] || [];
+          if (arr.length) { arr[arr.length - 1].likes = (arr[arr.length - 1].likes || 0) + 1; save(); }
+          toast(`${who.emoji} <b>${esc(who.name)}</b>님이 회원님의 글에 공감했어요 ❤️`);
+          if (document.body.contains(m)) { m.remove(); openLounge(topic); }
+        }, 2600);
+      }
+      m.remove(); openLounge(topic);
+    };
+  }
+  /* ── 프로필 완성도 (가중 100점) ── */
+  function profileScore() {
+    const u = S.user; if (!u) return { pct: 0, items: [] };
+    const items = [
+      { label: "사진 등록", done: (u.photos || []).length > 0, w: 22, go: "edit" },
+      { label: "사진 2장 이상", done: (u.photos || []).length >= 2, w: 10, go: "edit" },
+      { label: "자기소개 20자+", done: (u.intro || "").trim().length >= 20, w: 15, go: "edit" },
+      { label: "관심사 3개+", done: (u.tags || []).length >= 3, w: 10, go: "edit" },
+      { label: "성향 선택", done: !!u.position, w: 8, go: "edit" },
+      { label: "스타일 태그", done: (u.styles || []).length > 0, w: 8, go: "edit" },
+      { label: "찾는 관계", done: (u.lookingList || []).length > 0, w: 7, go: "edit" },
+      { label: "관심 주제 참여", done: (u.topics || []).length > 0, w: 8, go: "community" },
+      { label: "프로필 인증", done: !!u.verified, w: 12, go: "verify" },
+    ];
+    const pct = items.filter((i) => i.done).reduce((a, i) => a + i.w, 0);
+    return { pct, items };
+  }
+  const profileBonusLikes = () => profileScore().pct >= 80 ? 5 : 0; // 완성 보너스: 일일 좋아요 +5
+
+  /* ── 데이트 코스 추천 (공통 주제·지역 기반) ── */
+  const DATE_SPOTS = {
+    "운동": ["한강공원에서 같이 러닝하고 스트레칭", "클라이밍장 원데이 클래스 도전", "올림픽공원 자전거 라이딩"],
+    "전시·문화": ["요즘 화제인 전시 함께 관람", "독립서점·소품샵 구경", "소극장 공연 관람"],
+    "반려동물": ["애견 동반 카페에서 힐링", "반려동물 소품샵 구경 후 산책", "펫 프렌들리 공원 나들이"],
+    "여행": ["근교로 당일치기 드라이브", "안 가본 동네 골목 투어", "루프탑에서 도시 전망 감상"],
+    "게임": ["보드게임 카페에서 한판 승부", "방탈출 협동전", "레트로 오락실 대결"],
+    "맛집·요리": ["줄 서는 맛집 도장깨기", "둘이 쿠킹 클래스 참여", "야시장 먹방 투어"],
+    "영화·드라마": ["심야 영화 한 편 관람", "감성 카페에서 인생영화 토크", "브런치 후 드라마 정주행 수다"],
+    "동네모임": ["동네 카페 탐방", "골목 산책 후 포차 한잔", "플리마켓 구경"],
+  };
+  const DATE_FINALE = ["근처 조용한 바에서 한 잔", "야경 좋은 곳에서 산책 마무리", "디저트 카페에서 도란도란", "강변 벤치에서 야식 나눔"];
+  function dateCourse(p, salt) {
+    const seed = demoHash(p.id + "date" + (salt || 0));
+    const topics = sharedTopics(p).length ? sharedTopics(p) : demoTopics(p);
+    const topic = topics[seed % topics.length];
+    const spots = DATE_SPOTS[topic] || DATE_SPOTS["동네모임"];
+    const region = (p.region || "").split(" ")[0] || "우리 동네";
+    return {
+      topic, shared: sharedTopics(p).length,
+      steps: [
+        { em: "📍", t: `${esc(region)} 근처에서 만나 가볍게 인사`, s: "부담 없이 카페에서 첫 대화" },
+        { em: TOPIC_EM(topic), t: esc(spots[seed % spots.length]), s: `${esc(topic)} 취향이 통하는 코스` },
+        { em: "🌙", t: esc(DATE_FINALE[(seed >> 3) % DATE_FINALE.length]), s: "여운 남기는 마무리" },
+      ],
+    };
+  }
+  function dateCourseModal(pid, salt, withChat) {
+    const p = P(pid); if (!p) return;
+    salt = salt || 0;
+    const c = dateCourse(p, salt);
+    const m = modal(`<div class="dialog dc-dialog"><div class="em">💡</div>
+      <h3>${esc(p.name)}님과 이런 데이트 어때요?</h3>
+      <p style="font-size:12.5px;margin:0 0 12px">${c.shared ? `공통 관심 <b style="color:var(--vio)">${TOPIC_EM(c.topic)} ${esc(c.topic)}</b> 기반 추천` : `${TOPIC_EM(c.topic)} ${esc(c.topic)} 테마 추천`} · 데모 아이디어예요</p>
+      <div class="dc-steps">${c.steps.map((s, i) => `<div class="dc-step"><span class="dc-em">${s.em}</span><div><b>${i + 1}. ${s.t}</b><small>${s.s}</small></div></div>`).join("")}</div>
+      ${withChat ? `<button class="btn-grad big" data-chat style="margin-bottom:8px">💬 이 얘기로 대화 시작</button>` : ""}
+      <div class="row"><button class="btn-ghost" data-x>닫기</button><button class="btn-grad" data-again>다른 코스</button></div></div>`, { center: true });
+    $("[data-x]", m).onclick = () => m.remove();
+    $("[data-again]", m).onclick = () => { m.remove(); dateCourseModal(pid, salt + 1, withChat); };
+    const ch = $("[data-chat]", m); if (ch) ch.onclick = () => { m.remove(); openChat(pid); };
+  }
+  // 최초 100% 달성 시 1회 보상
+  function checkProfileComplete() {
+    if (profileScore().pct >= 100 && !S.profileComplete100) {
+      S.profileComplete100 = true; S.items.gachaticket += 3; save();
+      setTimeout(() => toast("🏆 프로필 100% 완성! 크러시 팩 뽑기권 +3 보너스"), 400);
+    }
+  }
 
   /* ── 토스트/모달 ── */
   function toast(msg, ms) {
@@ -298,7 +557,57 @@
 
   /* ══ 온보딩 ══ */
   const REGIONS = ["서울", "경기", "인천", "부산", "대구", "대전", "광주", "울산", "세종", "강원", "충청", "전라", "경상", "제주"];
-  const LOOKING = ["진지한 연애", "가볍게 친구부터", "천천히 알아가기", "동네 친구", "운동 메이트"];
+  const LOOKING = ["진지한 연애", "가볍게 친구부터", "천천히 알아가기", "동네 친구", "운동 메이트", "취미 메이트", "여행 메이트"];
+  /* ── 게이 데이팅 프로필 요소 ── */
+  const POSITIONS = ["탑", "바텀", "올라운더", "버서블", "미정 · 천천히"];       // 성향(포지션)
+  const STYLES = ["곰", "트윙크", "머슬", "늑대", "슬림", "탄탄", "댄디", "젠틀", "털보", "베어"]; // 스타일/체형(커뮤니티 표현)
+  const OUT_LEVELS = ["비공개 (조심스러워요)", "일부만 알아요", "완전히 오픈"];   // 커밍아웃 정도
+  const posShort = (p) => (p || "").split(" ")[0];
+  // 데모 프로필 파생(고정 시드) — 시연용 포지션/스타일
+  const demoHash = (id) => Array.from(String(id)).reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const posOf = (p) => p.position || POSITIONS[demoHash(p.id) % POSITIONS.length];
+  const stylesOf = (p) => p.styles || (() => { const h = demoHash(p.id + "s"); return [STYLES[h % STYLES.length], STYLES[(h >> 3) % STYLES.length]].filter((v, i, a) => a.indexOf(v) === i); })();
+
+  /* ── 사진 업로드: 캔버스 리사이즈 → dataURL (localStorage 절약) ── */
+  function downscaleFile(file, maxDim, cb) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width: w, height: h } = img;
+        if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+        const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+        cv.getContext("2d").drawImage(img, 0, 0, w, h);
+        try { cb(cv.toDataURL("image/jpeg", 0.82)); } catch (err) { cb(null); }
+      };
+      img.onerror = () => cb(null);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => cb(null);
+    reader.readAsDataURL(file);
+  }
+  function pickPhotos(multiple, onDone) {
+    const inp = document.createElement("input");
+    inp.type = "file"; inp.accept = "image/*"; inp.multiple = !!multiple;
+    inp.style.display = "none";
+    document.body.appendChild(inp);
+    inp.onchange = () => {
+      const files = Array.from(inp.files || []).slice(0, 6);
+      if (!files.length) { inp.remove(); return; }
+      const out = []; let done = 0;
+      files.forEach((f) => downscaleFile(f, 900, (url) => {
+        if (url) out.push(url); done++;
+        if (done === files.length) { inp.remove(); onDone(out); }
+      }));
+    };
+    inp.click();
+  }
+  // 아바타: 사진 있으면 대표사진, 없으면 이모지+그라데이션
+  const avStyle = (o) => (o && o.photos && o.photos[0])
+    ? `background-image:url('${o.photos[0]}');background-size:cover;background-position:center`
+    : `background:linear-gradient(135deg,${(o && o.grad && o.grad[0]) || "#8b5cf6"},${(o && o.grad && o.grad[1]) || "#ec4899"})`;
+  const avEm = (o) => (o && o.photos && o.photos[0]) ? "" : ((o && o.emoji) || "🙂");
   const MBTIS = ["ISTJ","ISFJ","INFJ","INTJ","ISTP","ISFP","INFP","INTP","ESTP","ESFP","ENFP","ENTP","ESTJ","ESFJ","ENFJ","ENTJ"];
   const AV_EMOJIS = ["😎","🦊","🐻","🐯","🌊","🔥","🌙","⚡","🎧","🎨","🏀","🌵","🍀","🦁","🐺","🚀"];
   const AV_GRADS = [["#8b5cf6","#ec4899"],["#2563eb","#2dd4bf"],["#f59e0b","#ef4444"],["#10b981","#3b82f6"],["#d946ef","#f43f5e"],["#0ea5e9","#8b5cf6"],["#f97316","#eab308"],["#14b8a6","#a3e635"]];
@@ -309,7 +618,8 @@
   let ob = {};
   function startOnboarding() {
     ob = { step: 0, birthYear: "", agree1: false, agree2: false, name: "", region: "서울", town: "",
-      height: 175, mbti: "ENFP", lookingFor: LOOKING[0], tags: [], emoji: AV_EMOJIS[0], grad: AV_GRADS[0], intro: "" };
+      height: 175, mbti: "ENFP", lookingList: [LOOKING[0]], position: "", styles: [], outLevel: "",
+      tags: [], emoji: AV_EMOJIS[0], grad: AV_GRADS[0], photos: [], privatePhotos: [], intro: "" };
     show("scr-onboarding"); renderOb();
   }
   function renderOb() {
@@ -340,12 +650,19 @@
       ${obNextBtn(ob.name.trim().length >= 1)}`;
   }
   function obBasic() {
-    return `<h2 class="ob-h">기본 정보</h2><p class="ob-sub">매칭 추천에 활용돼요.</p>
+    return `<h2 class="ob-h">기본 정보</h2><p class="ob-sub">매칭 추천에 활용돼요. 성향·스타일은 나중에 언제든 바꿀 수 있어요.</p>
       <div class="ob-field"><label>키 — <b id="f-height-v">${ob.height}</b>cm</label>
         <input type="range" id="f-height" min="150" max="200" value="${ob.height}" style="width:100%;accent-color:var(--vio)"></div>
       <div class="ob-field"><label>MBTI</label><select class="ob-input" id="f-mbti">${MBTIS.map((m) => `<option ${m === ob.mbti ? "selected" : ""}>${m}</option>`).join("")}</select></div>
-      <div class="ob-field"><label>찾고 있는 관계</label><div class="seg" id="f-looking">${LOOKING.map((l) => `<button class="chip ${l === ob.lookingFor ? "on" : ""}" data-v="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
-      ${obNextBtn(true)}`;
+      <div class="ob-field"><label>성향 (포지션) <small class="tiny" style="font-weight:400">· 선택 · 프로필에만 표시</small></label>
+        <div class="chips" id="f-pos">${POSITIONS.map((p) => `<button class="chip ${p === ob.position ? "on" : ""}" data-v="${esc(p)}">${esc(p)}</button>`).join("")}</div></div>
+      <div class="ob-field"><label>스타일 <small class="tiny" style="font-weight:400">· 나를 표현하는 태그 (여러 개)</small></label>
+        <div class="chips" id="f-styles">${STYLES.map((s) => `<button class="chip ${ob.styles.includes(s) ? "on" : ""}" data-v="${esc(s)}">${esc(s)}</button>`).join("")}</div></div>
+      <div class="ob-field"><label>찾고 있는 관계 <small class="tiny" style="font-weight:400">· 여러 개 선택 가능</small></label>
+        <div class="chips" id="f-looking">${LOOKING.map((l) => `<button class="chip ${ob.lookingList.includes(l) ? "on" : ""}" data-v="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
+      <div class="ob-field"><label>커밍아웃 상태 <small class="tiny" style="font-weight:400">· 선택 · 안전을 위해</small></label>
+        <div class="chips" id="f-out">${OUT_LEVELS.map((o) => `<button class="chip ${o === ob.outLevel ? "on" : ""}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>
+      ${obNextBtn(ob.lookingList.length >= 1)}`;
   }
   function obTags() {
     return `<h2 class="ob-h">관심사를 골라주세요</h2><p class="ob-sub">3~5개 · 겹치는 관심사가 많을수록 궁합 점수가 올라가요.</p>
@@ -353,9 +670,15 @@
       ${obNextBtn(ob.tags.length >= 3, `다음 (${ob.tags.length}/5)`)}`;
   }
   function obAvatar() {
-    return `<h2 class="ob-h">아바타 만들기</h2><p class="ob-sub">사진 대신 아바타로 시작해요. 신원 노출 걱정 없이.</p>
-      <div class="av-preview"><span class="avatar" style="width:88px;height:88px;font-size:42px;background:linear-gradient(135deg,${ob.grad[0]},${ob.grad[1]})">${ob.emoji}</span><small>미리보기</small></div>
-      <div class="ob-field"><label>이모지</label><div class="avatar-pick" id="f-emoji">${AV_EMOJIS.map((e) => `<button class="av-opt ${e === ob.emoji ? "on" : ""}" data-v="${e}" aria-label="아바타 이모지 ${e}">${e}</button>`).join("")}</div></div>
+    const av = ob.photos[0]
+      ? `<span class="avatar" style="width:88px;height:88px;background-image:url('${ob.photos[0]}');background-size:cover;background-position:center"></span>`
+      : `<span class="avatar" style="width:88px;height:88px;font-size:42px;background:linear-gradient(135deg,${ob.grad[0]},${ob.grad[1]})">${ob.emoji}</span>`;
+    return `<h2 class="ob-h">프로필 사진</h2><p class="ob-sub">실제 사진을 올리거나, 아바타로 시작해도 돼요. 사진은 서버로 전송되지 않고 이 기기에만 저장돼요.</p>
+      <div class="av-preview">${av}<small>${ob.photos.length ? "대표 사진" : "아바타 미리보기"}</small></div>
+      <div class="ob-field"><label>내 사진 <small class="tiny" style="font-weight:400">· 여러 장 (최대 6) · 첫 장이 대표</small></label>
+        <div class="photo-grid" id="f-photos">${ob.photos.map((u, i) => `<div class="pg-item"><img src="${u}" alt=""><button class="pg-del" data-pi="${i}" aria-label="삭제">×</button>${i === 0 ? '<span class="pg-main">대표</span>' : ""}</div>`).join("")}
+          ${ob.photos.length < 6 ? `<button class="pg-add" id="f-photo-add">＋<small>사진 추가</small></button>` : ""}</div></div>
+      <div class="ob-field"><label>또는 아바타 이모지</label><div class="avatar-pick" id="f-emoji">${AV_EMOJIS.map((e) => `<button class="av-opt ${e === ob.emoji ? "on" : ""}" data-v="${e}" aria-label="아바타 이모지 ${e}">${e}</button>`).join("")}</div></div>
       <div class="ob-field"><label>배경 색감</label><div class="avatar-pick" id="f-grad">${AV_GRADS.map((g, i) => `<button class="av-opt ${g === ob.grad ? "on" : ""}" data-i="${i}" style="background:linear-gradient(135deg,${g[0]},${g[1]})" aria-label="배경 색 ${i + 1}"></button>`).join("")}</div></div>
       ${obNextBtn(true)}`;
   }
@@ -376,7 +699,23 @@
     on("#f-region", "change", (e) => { ob.region = e.target.value; });
     on("#f-height", "input", (e) => { ob.height = +e.target.value; $("#f-height-v").textContent = ob.height; });
     on("#f-mbti", "change", (e) => { ob.mbti = e.target.value; });
-    on("#f-looking", "click", (e) => { const b = e.target.closest(".chip"); if (b) { ob.lookingFor = b.dataset.v; re(); } });
+    on("#f-pos", "click", (e) => { const b = e.target.closest(".chip"); if (b) { ob.position = ob.position === b.dataset.v ? "" : b.dataset.v; re(); } });
+    on("#f-out", "click", (e) => { const b = e.target.closest(".chip"); if (b) { ob.outLevel = ob.outLevel === b.dataset.v ? "" : b.dataset.v; re(); } });
+    on("#f-styles", "click", (e) => {
+      const b = e.target.closest(".chip"); if (!b) return; const v = b.dataset.v;
+      if (ob.styles.includes(v)) { ob.styles = ob.styles.filter((x) => x !== v); b.classList.remove("on"); }
+      else if (ob.styles.length < 4) { ob.styles.push(v); b.classList.add("on"); }
+      else toast("스타일은 4개까지 고를 수 있어요");
+    });
+    on("#f-looking", "click", (e) => {
+      const b = e.target.closest(".chip"); if (!b) return; const v = b.dataset.v;
+      if (ob.lookingList.includes(v)) { ob.lookingList = ob.lookingList.filter((x) => x !== v); b.classList.remove("on"); }
+      else if (ob.lookingList.length < 3) { ob.lookingList.push(v); b.classList.add("on"); }
+      else { toast("최대 3개까지 고를 수 있어요"); return; }
+      const nx = $("#ob-next", el); if (nx) nx.disabled = ob.lookingList.length < 1;
+    });
+    on("#f-photo-add", "click", () => pickPhotos(true, (arr) => { ob.photos = ob.photos.concat(arr).slice(0, 6); re(); }));
+    on("#f-photos", "click", (e) => { const d = e.target.closest(".pg-del"); if (d) { ob.photos.splice(+d.dataset.pi, 1); re(); } });
     on("#f-tags", "click", (e) => {
       // 전체 리렌더 없이 in-place 토글 (스크롤·포커스 유지)
       const b = e.target.closest(".chip"); if (!b) return;
@@ -396,8 +735,9 @@
       else {
         const nowY = new Date().getFullYear();
         S.user = { name: ob.name.trim().slice(0, 10), age: nowY - (+ob.birthYear), region: ob.region + (ob.town.trim() ? " " + ob.town.trim() : ""),
-          height: ob.height, mbti: ob.mbti, lookingFor: ob.lookingFor, tags: ob.tags.slice(),
-          emoji: ob.emoji, grad: ob.grad.slice(), intro: ob.intro.trim() };
+          height: ob.height, mbti: ob.mbti, lookingList: ob.lookingList.slice(), lookingFor: ob.lookingList[0] || LOOKING[0],
+          position: ob.position, styles: ob.styles.slice(), outLevel: ob.outLevel, topics: [], tags: ob.tags.slice(),
+          emoji: ob.emoji, grad: ob.grad.slice(), photos: ob.photos.slice(), privatePhotos: ob.privatePhotos.slice(), intro: ob.intro.trim() };
         S.joinedAt = Date.now();
         seedIncoming(3); save();
         enterMain();
@@ -435,7 +775,7 @@
   }
   function paintTopbar() {
     const b = $("#btn-premium-badge");
-    b.textContent = plan().label;
+    b.textContent = t(plan().label);
     b.className = "tb-premium" + (S.premium.plan === "plus" ? " plus" : S.premium.plan === "black" ? " black" : "");
   }
   function badges() {
@@ -444,7 +784,7 @@
     const bl = $("#badge-likes"), bc = $("#badge-chats"), bcd = $("#badge-cards");
     bl.hidden = !newLikes; bl.textContent = newLikes;
     bc.hidden = !unread; bc.textContent = unread;
-    if (bcd) { bcd.hidden = !(gachaFreeAvail() || rouletteAvail()); bcd.textContent = "!"; }
+    if (bcd) { bcd.hidden = !(gachaFreeAvail() || rouletteAvail() || wcAvail()); bcd.textContent = "!"; }
   }
   function go(t) {
     tab = t;
@@ -467,7 +807,8 @@
       .filter((p) => p.age >= F.ageMin && (F.ageMax >= 50 || p.age <= F.ageMax)) // 50 = "50+" (상한 없음)
       .filter((p) => F.area === "all" || (F.area === "mine" ? sameArea(p) : zoneOf(areaOf(p)) === F.area))
       .filter((p) => F.looking === "all" || p.lookingFor === F.looking)
-      .map((p) => ({ p, sc: compat(p) + Math.random() * 8 + (tp && groupOf(areaOf(p)) === groupOf(tp.region) ? 100 : 0) }))
+      .filter((p) => !F.position || F.position === "all" || posOf(p) === F.position)
+      .map((p) => ({ p, sc: compat(p) + Math.random() * 8 + (tp && groupOf(areaOf(p)) === groupOf(tp.region) ? 100 : 0) + (rightNowOn() && isRightNow(p) ? 60 : 0) }))
       .sort((a, b) => b.sc - a.sc).map((x) => x.p);
     // 되돌린 카드는 항상 맨 위로 (필터에 걸려도 복귀 보장)
     if (S.restoredPid) {
@@ -476,6 +817,62 @@
       else if (i < 0) { const rp = P(S.restoredPid); if (rp && !S.blocked.includes(rp.id)) deck.unshift(rp); }
       S.restoredPid = null;
     }
+  }
+  /* ── ⚡ 지금 만나요 (Right Now) — 1시간 상태, 온라인끼리 우선 매칭 ── */
+  const rightNowOn = () => Date.now() < S.rightNowUntil;
+  const isRightNow = (p) => p.lastActiveMin < 30; // 데모: 방금 활동 = 지금 만나요 후보
+  function toggleRightNow() {
+    if (rightNowOn()) {
+      confirmDlg("⚡", "지금 만나요 끄기", "상태를 끄면 우선 노출·매칭 가산이 사라져요.", "끄기", () => { S.rightNowUntil = 0; save(); vDiscover(); });
+      return;
+    }
+    confirmDlg("⚡", "지금 만나요 켜기", "1시간 동안 <b>지금 온라인인 사람들</b>과 서로 우선 노출되고<br>매칭 확률이 올라가요. (무료)", "1시간 켜기", () => {
+      S.rightNowUntil = Date.now() + 3600000;
+      seedIncoming(1 + Math.floor(Math.random() * 2));
+      save(); vDiscover(); badges(); vibrate([20, 40, 20]);
+      toast("⚡ 지금 만나요 ON — 온라인인 사람들이 먼저 보여요");
+    });
+  }
+
+  /* ── 탭(👋) — 좋아요보다 가벼운 관심 신호 ── */
+  function tapPid(pid) {
+    if (S.taps[pid]) { toast("이미 👋 탭을 보냈어요"); return; }
+    S.taps[pid] = Date.now(); save(); vibrate(14);
+    const p = P(pid);
+    toast(`👋 ${esc(p ? p.name : "")}님에게 탭을 보냈어요 — 무료·무제한`);
+    // 데모 회신 루프: 35% 확률로 잠시 후 상대가 좋아요를 보냄
+    if (Math.random() < 0.35 && p && !S.incoming.includes(pid) && !S.matches.some((m) => m.pid === pid)) {
+      setTimeout(() => {
+        if (S.incoming.includes(pid) || S.matches.some((m) => m.pid === pid)) return;
+        S.incoming.push(pid); save(); badges();
+        toast(`💜 ${esc(p.name)}님이 탭에 답했어요 — 받은 좋아요 확인!`);
+      }, 6000 + Math.random() * 9000);
+    }
+    if (tab === "discover" && S.discView === "grid") paintGridTap(pid);
+  }
+  function paintGridTap(pid) { const b = $(`.dg-tap[data-tap="${pid}"]`); if (b) { b.classList.add("on"); b.textContent = "👋✓"; } }
+  /* 그리드에서 특정 프로필 직접 좋아요/패스 */
+  function gridLike(pid) {
+    const p = P(pid); if (!p) return;
+    if (!canAct("like")) return;
+    S.likesUsed++; S.stats.likesSent++; S.liked.push(pid); S.lastSwipe = { pid, kind: "like" };
+    const boostOn = Date.now() < S.boostUntil;
+    const prob = compat(p) / 100 * 0.42 + (boostOn ? 0.2 : 0) + (rightNowOn() && isRightNow(p) ? 0.15 : 0);
+    const sure = p.likedYou || S.incoming.includes(pid);
+    vibrate(12);
+    if (sure || Math.random() < prob) makeMatch(pid);
+    else { save(); vDiscover(); toast(`💜 ${esc(p.name)}님에게 좋아요를 보냈어요`); }
+  }
+  function gridPass(pid) { S.passed.push(pid); S.lastSwipe = { pid, kind: "nope" }; save(); vDiscover(); }
+  function gridPool() {
+    const gone = new Set([...S.passed, ...S.blocked, ...S.matches.map((m) => m.pid)]);
+    const F = S.filters;
+    return D.profiles.filter((p) => !gone.has(p.id))
+      .filter((p) => p.age >= F.ageMin && (F.ageMax >= 50 || p.age <= F.ageMax))
+      .filter((p) => F.area === "all" || (F.area === "mine" ? sameArea(p) : zoneOf(areaOf(p)) === F.area))
+      .filter((p) => F.looking === "all" || p.lookingFor === F.looking)
+      .filter((p) => !F.position || F.position === "all" || posOf(p) === F.position)
+      .sort((a, b) => (rightNowOn() ? (isRightNow(b) - isRightNow(a)) : 0) || (sameArea(b) - sameArea(a)) || (a.distanceKm - b.distanceKm)); // (지금 만나요 우선) → 가까운 순
   }
   function vDiscover() {
     buildDeck();
@@ -486,23 +883,60 @@
       tp ? `🌏 텔레포트: ${esc(tp.region)} ${Math.ceil((tp.until - Date.now()) / 3600000)}시간` : "",
       spotlightActive() ? `✨ 스포트라이트 ${Math.ceil((S.fx.spotlightUntil - Date.now()) / 60000)}분` : "",
     ].filter(Boolean);
+    const rnChip = `<button class="fx-chip rn-chip ${rightNowOn() ? "live" : ""}" id="d-rightnow">⚡ ${t("지금 만나요")}${rightNowOn() ? ` ${Math.ceil((S.rightNowUntil - Date.now()) / 60000)}분` : ""}</button>`;
     const F = S.filters;
-    const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all";
+    const filterOn = F.ageMin > 20 || F.ageMax < 50 || F.area !== "all" || F.looking !== "all" || (F.position && F.position !== "all");
+    const isGrid = S.discView === "grid";
+    if (isGrid) {
+      const pool = gridPool();
+      $("#view").innerHTML = `<div class="disc" style="padding-bottom:0">
+        <div class="fx-row">
+          <button class="fx-chip fx-btn" id="d-view" aria-label="보기 전환">🃏 ${t("스와이프")}</button>
+          <button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ ${t("필터")}${filterOn ? " ●" : ""}</button>
+          ${rnChip}${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
+        <p class="tiny" style="margin:0 2px 8px">🔳 ${t("그리드")} · ${t("가까운 순")} ${pool.length}명 · 👋 탭은 무료 시그널이에요</p>
+        <div class="dgrid">${pool.map((p) => `
+          <button class="dg-card" data-pid="${p.id}">
+            <span class="dg-ph" style="background:linear-gradient(150deg,${p.grad[0]},${p.grad[1]})">${p.emoji}
+              ${p.lastActiveMin < 30 ? '<i class="dg-on"></i>' : ""}
+              ${rightNowOn() && isRightNow(p) ? '<i class="dg-rn">⚡</i>' : ""}
+              ${S.liked.includes(p.id) ? '<i class="dg-liked">💜</i>' : ""}</span>
+            <span class="dg-nm">${esc(p.name)}, ${p.age}</span>
+            <span class="dg-meta">${sameArea(p) ? p.distanceKm + "km" : esc(areaOf(p))}</span>
+            <span class="dg-tap ${S.taps[p.id] ? "on" : ""}" data-tap="${p.id}" role="button" aria-label="탭 보내기">${S.taps[p.id] ? "👋✓" : "👋"}</span>
+          </button>`).join("")}</div>
+        ${!pool.length ? `<div class="empty"><div class="em">🔳</div>조건에 맞는 프로필이 없어요.<br>필터를 넓혀보세요.</div>` : ""}
+        <div class="quota" style="margin-top:10px">${likeLimit() === Infinity
+          ? `<span>💜 ${t("좋아요")} <b>${t("무제한")}</b></span>` : `<span>${t("오늘 좋아요")} <b>${Math.max(0, likeLimit() - S.likesUsed)}</b>/${likeLimit()}</span>`}
+          <span>👋 ${t("탭 보내기")}: 무료</span></div>
+        ${adSlot()}</div>`;
+      $("#d-view").onclick = () => { S.discView = "swipe"; save(); vDiscover(); };
+      $("#d-filter").onclick = filterSheet;
+      $("#d-rightnow").onclick = toggleRightNow;
+      $$(".dg-card").forEach((c) => c.onclick = (e) => {
+        const tapBtn = e.target.closest(".dg-tap");
+        if (tapBtn) { e.stopPropagation(); tapPid(tapBtn.dataset.tap); return; }
+        openProfile(c.dataset.pid, "grid");
+      });
+      return;
+    }
     $("#view").innerHTML = `<div class="disc">
-      <div class="fx-row"><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ 필터${filterOn ? " ●" : ""}</button>${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
+      <div class="fx-row"><button class="fx-chip fx-btn" id="d-view" aria-label="보기 전환">🔳 ${t("그리드")}</button><button class="fx-chip fx-btn ${filterOn ? "on" : ""}" id="d-filter" aria-label="탐색 필터 설정">⚙️ ${t("필터")}${filterOn ? " ●" : ""}</button>${rnChip}${fxChips.map((c) => `<span class="fx-chip fx-live">${c}</span>`).join("")}</div>
       <div class="deck" id="deck"></div>
       <div class="actions">
-        <div class="act-w"><button class="act md rew" id="a-rew" aria-label="마지막 카드 되돌리기">↩${rewindLeft() > 0 ? "" : '<span class="lock">🔒</span>'}</button><small>되돌리기</small></div>
-        <div class="act-w"><button class="act lg nope" id="a-nope" aria-label="패스">✕</button><small>패스</small></div>
-        <div class="act-w"><button class="act md sup" id="a-sup" aria-label="슈퍼라이크 보내기">⭐</button><small>슈퍼</small></div>
-        <div class="act-w"><button class="act lg like" id="a-like" aria-label="좋아요 보내기">💜</button><small>좋아요</small></div>
-        <div class="act-w"><button class="act md boost" id="a-boost" aria-label="부스트 사용">🚀${plan().boost || S.items.boostticket ? "" : '<span class="lock">🔒</span>'}</button><small>부스트</small></div>
+        <div class="act-w"><button class="act md rew" id="a-rew" aria-label="마지막 카드 되돌리기">↩${rewindLeft() > 0 ? "" : '<span class="lock">🔒</span>'}</button><small>${t("되돌리기")}</small></div>
+        <div class="act-w"><button class="act lg nope" id="a-nope" aria-label="패스">✕</button><small>${t("패스")}</small></div>
+        <div class="act-w"><button class="act md sup" id="a-sup" aria-label="슈퍼라이크 보내기">⭐</button><small>${t("슈퍼")}</small></div>
+        <div class="act-w"><button class="act lg like" id="a-like" aria-label="좋아요 보내기">💜</button><small>${t("좋아요")}</small></div>
+        <div class="act-w"><button class="act md boost" id="a-boost" aria-label="부스트 사용">🚀${plan().boost || S.items.boostticket ? "" : '<span class="lock">🔒</span>'}</button><small>${t("부스트")}</small></div>
       </div>
       <div class="quota">${likeLimit() === Infinity
-        ? `<span>💜 좋아요 <b>무제한</b></span>` : `<span>오늘 좋아요 <b>${Math.max(0, likeLimit() - S.likesUsed)}</b>/${likeLimit()}${cardLikeBonus() ? ` <i class="buff" title="카드 버프">+${cardLikeBonus()}🎴</i>` : ""}</span>`}
-        <span>⭐ 슈퍼라이크 <b>${Math.max(0, superLimit() - S.supersUsed)}</b>/${superLimit()}${S.items.superlike ? ` <i class="buff">+${S.items.superlike}📦</i>` : ""}</span></div>
+        ? `<span>💜 ${t("좋아요")} <b>${t("무제한")}</b></span>` : `<span>${t("오늘 좋아요")} <b>${Math.max(0, likeLimit() - S.likesUsed)}</b>/${likeLimit()}${cardLikeBonus() ? ` <i class="buff" title="카드 버프">+${cardLikeBonus()}🎴</i>` : ""}</span>`}
+        <span>⭐ ${t("슈퍼라이크")} <b>${Math.max(0, superLimit() - S.supersUsed)}</b>/${superLimit()}${S.items.superlike ? ` <i class="buff">+${S.items.superlike}📦</i>` : ""}</span></div>
       ${adSlot()}</div>`;
     paintDeck();
+    $("#d-view").onclick = () => { S.discView = "grid"; save(); vDiscover(); };
+    $("#d-rightnow").onclick = toggleRightNow;
     $("#a-nope").onclick = () => swipeTop("nope");
     $("#a-like").onclick = () => swipeTop("like");
     $("#a-sup").onclick = () => swipeTop("sup");
@@ -512,7 +946,7 @@
   }
   function filterSheet() {
     const F = S.filters;
-    const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 4px">탐색 필터</h3>
+    const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 4px">${t("탐색 필터")}</h3>
       <p class="muted" style="font-size:13px;margin:0 0 16px">원하는 조건의 사람만 보여드려요. 필터는 전 플랜 무료.</p>
       <div class="ob-field"><label>나이 — <b id="fv-age">${F.ageMin}~${F.ageMax >= 50 ? "50+" : F.ageMax + "세"}</b></label>
         <div style="display:flex;gap:12px;align-items:center">
@@ -524,12 +958,15 @@
         <button class="chip ${F.area === "mine" ? "on" : ""}" data-area="mine">내 권역 (${esc(zoneOf(myArea()) || "내 지역")})</button>
         ${ZONES.filter((z) => z !== zoneOf(myArea())).map((z) => `<button class="chip ${F.area === z ? "on" : ""}" data-area="${z}">${z}</button>`).join("")}</div>
         <p class="tiny" style="margin:6px 0 0">다른 권역도 무료로 탐색할 수 있어요 · 텔레포트는 해당 권역을 우선 노출해주는 아이템이에요</p></div>
+      <div class="ob-field"><label>성향 (포지션)</label><div class="chips" id="f-pos">
+        <button class="chip ${(F.position || "all") === "all" ? "on" : ""}" data-pos="all">전체</button>
+        ${POSITIONS.map((p) => `<button class="chip ${F.position === p ? "on" : ""}" data-pos="${esc(p)}">${esc(p)}</button>`).join("")}</div></div>
       <div class="ob-field"><label>찾는 관계</label><div class="chips" id="f-look">
         <button class="chip ${F.looking === "all" ? "on" : ""}" data-look="all">전체</button>
         ${LOOKING.map((l) => `<button class="chip ${F.looking === l ? "on" : ""}" data-look="${esc(l)}">${esc(l)}</button>`).join("")}</div></div>
       <div class="row" style="display:flex;gap:9px">
-        <button class="btn-ghost" style="flex:1" id="f-reset">초기화</button>
-        <button class="btn-grad" style="flex:2" id="f-apply">적용하기</button></div></div>`);
+        <button class="btn-ghost" style="flex:1" id="f-reset">${t("초기화")}</button>
+        <button class="btn-grad" style="flex:2" id="f-apply">${t("적용하기")}</button></div></div>`);
     const amin = $("#f-amin", m), amax = $("#f-amax", m);
     const sync = () => {
       if (+amin.value > +amax.value) amax.value = amin.value;
@@ -541,12 +978,15 @@
       if (a) { $$("[data-area]", m).forEach((x) => x.classList.remove("on")); a.classList.add("on"); }
       const lk = e.target.closest("[data-look]");
       if (lk) { $$("[data-look]", m).forEach((x) => x.classList.remove("on")); lk.classList.add("on"); }
+      const ps = e.target.closest("[data-pos]");
+      if (ps) { $$("[data-pos]", m).forEach((x) => x.classList.remove("on")); ps.classList.add("on"); }
     });
-    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 50, area: "all", looking: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
+    $("#f-reset", m).onclick = () => { S.filters = { ageMin: 20, ageMax: 50, area: "all", looking: "all", position: "all" }; save(); m.remove(); vDiscover(); toast("필터를 초기화했어요"); };
     $("#f-apply", m).onclick = () => {
       S.filters = { ageMin: +amin.value, ageMax: +amax.value,
         area: ($(".chip.on[data-area]", m) || {}).dataset ? $(".chip.on[data-area]", m).dataset.area : "all",
-        looking: ($(".chip.on[data-look]", m) || {}).dataset ? $(".chip.on[data-look]", m).dataset.look : "all" };
+        looking: ($(".chip.on[data-look]", m) || {}).dataset ? $(".chip.on[data-look]", m).dataset.look : "all",
+        position: ($(".chip.on[data-pos]", m) || {}).dataset ? $(".chip.on[data-pos]", m).dataset.pos : "all" };
       save(); m.remove(); vDiscover();
     };
   }
@@ -680,7 +1120,7 @@
     deck.shift();
     // 매칭 판정
     const boostOn = Date.now() < S.boostUntil;
-    let prob = compat(p) / 100 * 0.42 + (kind === "sup" ? 0.3 : 0) + (boostOn ? 0.2 : 0);
+    let prob = compat(p) / 100 * 0.42 + (kind === "sup" ? 0.3 : 0) + (boostOn ? 0.2 : 0) + (rightNowOn() && isRightNow(p) ? 0.15 : 0);
     const sure = p.likedYou || S.incoming.includes(p.id);
     vibrate(12);
     if (sure || Math.random() < prob) {
@@ -709,16 +1149,18 @@
     m.innerHTML = `${confettiHTML()}
       <h2>우리, 통했어요!</h2><p>${esc(p.name)}님과 서로 좋아요를 눌렀어요 🎉</p>
       <div class="match-avs">
-        <div class="avatar" style="background:linear-gradient(135deg,${u.grad[0]},${u.grad[1]})">${u.emoji}</div>
+        <div class="avatar" style="${avStyle(u)}">${avEm(u)}</div>
         <span class="heart">💜</span>
         <div class="avatar" style="background:linear-gradient(135deg,${p.grad[0]},${p.grad[1]})">${p.emoji}</div>
       </div>
       <div class="match-btns">
         <button class="btn-grad big" data-chat>바로 메시지 보내기 💬</button>
+        <button class="btn-line" data-course>💡 데이트 코스 추천 보기</button>
         <button class="btn-ghost" data-keep>계속 둘러보기</button>
       </div>`;
     $("#modal-root").appendChild(m);
     $("[data-chat]", m).onclick = () => { m.remove(); openChat(pid); };
+    $("[data-course]", m).onclick = () => { m.remove(); dateCourseModal(pid, 0, true); };
     $("[data-keep]", m).onclick = () => { m.remove(); vDiscover(); badges(); };
   }
   function confettiHTML() {
@@ -770,7 +1212,7 @@
     const sh = sharedTags(p);
     const o = document.createElement("div");
     o.className = "ovl";
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">프로필</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">${t("프로필")}</span></div>
       <div class="ovl-body">
         <div class="pd-hero" style="background:linear-gradient(150deg,${p.grad[0]},${p.grad[1]})"><span class="em">${p.emoji}</span><div class="veil"></div></div>
         <div class="pd-body">
@@ -781,7 +1223,13 @@
             <div class="pd-fact"><small>직업</small>${esc(p.job)}</div>
             <div class="pd-fact"><small>키</small>${p.height}cm</div>
             <div class="pd-fact"><small>MBTI</small>${p.mbti}</div>
-            <div class="pd-fact"><small>찾는 관계</small>${esc(p.lookingFor)}</div></div></div>
+            <div class="pd-fact"><small>성향</small>${esc(posOf(p))}</div></div></div>
+          <div class="pd-sec"><h4>스타일</h4>
+            <div class="chips">${stylesOf(p).map((s) => `<span class="chip" style="cursor:default">${esc(s)}</span>`).join("")}</div></div>
+          <div class="pd-sec"><h4>찾는 관계</h4>
+            <div class="chips">${(p.lookingList || [p.lookingFor]).map((l) => `<span class="chip on" style="cursor:default">${esc(l)}</span>`).join("")}</div></div>
+          ${(() => { const st = sharedTopics(p); return `<div class="pd-sec"><h4>주제 라운지 ${st.length ? `· <span style="color:var(--vio)">${st.length}개 함께</span>` : ""}</h4>
+            <div class="chips">${demoTopics(p).map((t) => `<span class="chip ${st.includes(t) ? "on" : ""}" style="cursor:default">${TOPIC_EM(t)} ${esc(t)}</span>`).join("")}</div></div>`; })()}
           <div class="pd-sec"><h4>관심사 ${sh.length ? `· <span style="color:var(--vio)">${sh.length}개 겹침</span>` : ""}</h4>
             <div class="chips">${p.tags.map((t) => `<span class="chip ${sh.includes(t) ? "on" : ""}" style="cursor:default">${esc(t)}</span>`).join("")}</div></div>
           <div class="pd-sec"><h4>프라이빗 앨범</h4>
@@ -793,6 +1241,10 @@
           ${ctx === "deck" ? `<div class="pd-actions">
             <button class="btn-line" data-nope style="color:var(--red)">✕ 패스</button>
             <button class="btn-grad" data-like style="flex:1">💜 좋아요</button></div>` : ""}
+          ${ctx === "grid" ? `<div class="pd-actions">
+            <button class="btn-line" data-gnope style="color:var(--red)">✕ ${t("패스")}</button>
+            <button class="btn-line" data-gtap>👋 ${S.taps[p.id] ? t("탭 보냄") : "탭"}</button>
+            <button class="btn-grad" data-glike style="flex:1">💜 ${t("좋아요")}</button></div>` : ""}
           ${ctx === "likes" ? `<div class="pd-actions">
             <button class="btn-line" data-lpass style="color:var(--red)">✕ 지나가기</button>
             <button class="btn-grad" data-lmatch style="flex:1">💜 나도 좋아요 (바로 매치!)</button></div>` : ""}
@@ -807,6 +1259,10 @@
     const nb = $("[data-nope]", o), lb = $("[data-like]", o);
     if (nb) nb.onclick = () => { close(); swipeTop("nope"); };
     if (lb) lb.onclick = () => { close(); swipeTop("like"); };
+    const gn = $("[data-gnope]", o), gl = $("[data-glike]", o), gt = $("[data-gtap]", o);
+    if (gn) gn.onclick = () => { close(); gridPass(pid); };
+    if (gl) gl.onclick = () => { close(); gridLike(pid); };
+    if (gt) gt.onclick = () => { tapPid(pid); gt.textContent = "👋 " + t("탭 보냄"); };
     const lp = $("[data-lpass]", o), lm = $("[data-lmatch]", o);
     if (lp) lp.onclick = () => { S.incoming = S.incoming.filter((x) => x !== pid); S.passed.push(pid); save(); close(); go("likes"); };
     if (lm) lm.onclick = () => { close(); makeMatch(pid); };
@@ -860,7 +1316,7 @@
       }
     }
     const freePid = !can && S.freeReveal ? S.freeReveal.pid : null;
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">받은 좋아요 ${list.length ? `<span style="color:var(--pink)">${list.length}</span>` : ""}</div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("받은 좋아요")} ${list.length ? `<span style="color:var(--pink)">${list.length}</span>` : ""}</div>
       <p class="sec-sub">${can ? "나를 좋아요한 사람들이에요. 탭해서 확인하고 바로 매치하세요." : "매일 1명은 무료로 공개! 나머지는 PRISM+에서 바로 확인해요."}</p>
       ${S.settings.privateMode ? `<p class="tiny" style="margin:4px 0 0">🕶️ 프라이빗 모드 중 — 새로운 노출·좋아요 유입이 멈춰 있어요.</p>` : ""}
       <p class="tiny" style="margin:4px 0 0">데모 안내: 가상 프로필의 반응이에요. 정식 버전에서는 실제 사용자만 표시됩니다.</p></div>
@@ -888,8 +1344,8 @@
     const ms = S.matches.slice().sort((a, b) => lastMsgAt(b) - lastMsgAt(a));
     const fresh = ms.filter((m) => !(S.chats[m.pid] || []).some((x) => x.who !== "sys"));
     const convs = ms.filter((m) => (S.chats[m.pid] || []).some((x) => x.who !== "sys"));
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">채팅</div>
-      <p class="sec-sub">매치된 사람들과의 대화</p></div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("채팅")}</div>
+      <p class="sec-sub">${t("매치된 사람들과의 대화")}</p></div>
       ${fresh.length ? `<div style="padding:0 16px 4px"><h4 class="tiny" style="margin:0 0 8px;letter-spacing:.5px">새로운 매치 ✨</h4></div>
       <div class="new-matches">${fresh.map((m) => { const p = P(m.pid); return p ? `
         <button class="nm-item unread" data-pid="${p.id}">
@@ -974,10 +1430,12 @@
     $(".cr-back", o).onclick = () => { o.remove(); if (tab === "chats") go("chats"); badges(); };
     $(".cr-menu", o).onclick = () => {
       const sheet = modal(`<div class="sheet"><div class="grip"></div>
+        <button class="btn-line" style="margin-bottom:8px" data-course>💡 데이트 코스 추천</button>
         <button class="btn-line" style="margin-bottom:8px" data-prof>프로필 보기</button>
         <button class="btn-line" style="margin-bottom:8px" data-unmatch>매치 해제</button>
         <button class="btn-line" style="margin-bottom:8px;color:var(--red)" data-block>차단하기</button>
         <button class="btn-line" style="color:var(--red)" data-report>신고하기</button></div>`);
+      $("[data-course]", sheet).onclick = () => { sheet.remove(); dateCourseModal(pid); };
       $("[data-prof]", sheet).onclick = () => { sheet.remove(); openProfile(pid, "chat"); };
       $("[data-unmatch]", sheet).onclick = () => {
         sheet.remove();
@@ -1097,8 +1555,8 @@
     const voted = S.votes[idx] !== undefined;
     const dist = q ? voteDist(idx, q.options.length) : [];
     const total = dist.reduce((a, b) => a + b, 0) + (voted ? 1 : 0);
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">라운지</div>
-      <p class="sec-sub">만남 전에, 가볍게 서로를 알아가는 공간</p></div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("라운지")}</div>
+      <p class="sec-sub">${t("만남 전에, 가볍게 서로를 알아가는 공간")}</p></div>
       ${q ? `<div class="dq-card"><div class="dq-tag">오늘의 질문 · ${new Date().getMonth() + 1}/${new Date().getDate()}</div>
         <h3>${esc(q.q)}</h3>
         ${q.options.map((op, i) => {
@@ -1120,8 +1578,26 @@
         return `<div class="past-q"><small>${d}일 전 · ${pt.toLocaleString()}명 참여</small><b>${esc(pq.q)}</b>
           <span>1위 — ${esc(pq.options[win])} (${Math.round(pd[win] / pt * 100)}%)</span></div>`;
       }).join("")}</div>` : ""}
-      <div class="lounge-note">🏳️‍🌈 <b>주제별 라운지</b>(운동·전시·반려동물·동네 모임)는 정식 버전에서 열릴 예정이에요. 오늘의 질문에 참여하며 기다려주세요!</div>
-      <div class="sec" style="padding-top:0"><div class="sec-h" style="font-size:16px">🛡️ 오늘의 안전 팁</div></div>
+      <div class="sec" style="padding:2px 16px 0"><div class="sec-h" style="font-size:16px">🏳️‍🌈 주제별 라운지</div>
+        <p class="sec-sub" style="margin:2px 0 0">방을 누르면 <b>피드</b>가 열려요. 참여하면 글쓰기 + <b>같은 주제 궁합 가산</b> (+최대 9점).</p></div>
+      <div class="topic-grid">${TOPICS.map(([name, em]) => {
+        const joined = myTopics().includes(name);
+        const n = topicMembers(name).length;
+        const np = demoLoungePosts(name).length + ((S.lounge.posts[name] || []).length);
+        return `<button class="topic-room ${joined ? "on" : ""}" data-topic="${esc(name)}">
+          <span class="tr-em">${em}</span><b>${esc(name)}</b>
+          <small>${n}명 참여 · 글 ${np}${joined ? " · 참여 중" : ""}</small>
+          <span class="tr-join">${joined ? "나가기" : "참여"}</span></button>`;
+      }).join("")}</div>
+      ${myTopics().length ? (() => {
+        const feat = myTopics()[dayOfYear() % myTopics().length];
+        const mem = shuffle(topicMembers(feat).slice()).slice(0, 4);
+        return `<div class="sec" style="padding:8px 16px 0"><b style="font-size:13px;color:var(--tx3)">${TOPIC_EM(feat)} ${esc(feat)} 라운지 · 이번 주 멤버</b></div>
+        <div class="topic-mem">${mem.length ? mem.map((p) => `<button class="tm-item" data-pid="${p.id}">
+          <span class="avatar" style="width:46px;height:46px;font-size:20px;background:linear-gradient(135deg,${p.grad[0]},${p.grad[1]})">${p.emoji}</span>
+          <small>${esc(p.name)}, ${p.age}</small></button>`).join("") : `<p class="tiny" style="padding:6px 2px">아직 이 방에 표시할 멤버가 없어요.</p>`}</div>`;
+      })() : `<p class="tiny" style="padding:6px 18px 2px">아직 참여한 주제가 없어요. 위에서 관심 주제를 눌러 참여해보세요!</p>`}
+      <div class="sec" style="padding-top:6px"><div class="sec-h" style="font-size:16px">🛡️ 오늘의 안전 팁</div></div>
       <div class="safe-list">${shuffle((D.safetyTips || []).slice()).slice(0, 2).map((t) => `<div class="safe-it"><span>💡</span>${esc(t)}</div>`).join("")}</div>
       ${adSlot()}`;
     $$(".dq-opt:not([disabled])").forEach((b) => b.onclick = () => {
@@ -1132,6 +1608,18 @@
     });
     const bn = $("#bal-next");
     if (bn) bn.onclick = () => { balPtr = (balPtr + 1) % BQ.length; vCommunity(); };
+    $$(".topic-room").forEach((b) => b.onclick = (e) => {
+      const name = b.dataset.topic;
+      if (e.target.closest(".tr-join")) { // 참여/나가기 버튼
+        S.user.topics = Array.isArray(S.user.topics) ? S.user.topics : [];
+        if (S.user.topics.includes(name)) { S.user.topics = S.user.topics.filter((x) => x !== name); toast(`${TOPIC_EM(name)} ${name} 라운지에서 나왔어요`); }
+        else { S.user.topics.push(name); toast(`${TOPIC_EM(name)} ${name} 라운지 참여! 같은 주제 친구와 궁합이 올라가요`); vibrate(10); }
+        save(); vCommunity();
+        return;
+      }
+      openLounge(name); // 타일 클릭 → 피드 열기
+    });
+    $$(".tm-item").forEach((b) => b.onclick = () => openProfile(b.dataset.pid, "likes"));
   }
   const dayOfYear = () => Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
   function voteDist(idx, n) {
@@ -1145,36 +1633,50 @@
   function vMy() {
     const u = S.user;
     const pl = S.premium.plan;
+    checkProfileComplete();
+    const ps = profileScore();
+    const missing = ps.items.filter((i) => !i.done);
     $("#view").innerHTML = `
       <div class="my-head">
-        <span class="avatar" style="background:linear-gradient(135deg,${u.grad[0]},${u.grad[1]})">${u.emoji}</span>
-        <div><div class="mh-nm">${esc(u.name)}, ${u.age}</div>
-        <div class="mh-sub">📍 ${esc(u.region)} · ${u.mbti} · ${esc(u.lookingFor)}</div></div>
+        <span class="avatar" style="${avStyle(u)}">${avEm(u)}</span>
+        <div><div class="mh-nm">${esc(u.name)}, ${u.age} ${u.verified ? '<span class="vbadge" title="인증된 프로필">✔︎ 인증</span>' : ""}</div>
+        <div class="mh-sub">📍 ${esc(u.region)} · ${u.mbti}${u.position ? " · " + esc(posShort(u.position)) : ""}</div>
+        ${(u.styles && u.styles.length) || (u.lookingList && u.lookingList.length) ? `<div class="mh-tags">${(u.styles || []).map((s) => `<span class="mtag st">${esc(s)}</span>`).join("")}${(u.lookingList || []).slice(0, 2).map((l) => `<span class="mtag lk">${esc(l)}</span>`).join("")}</div>` : ""}</div>
+      </div>
+      ${u.photos && u.photos.length ? `<div class="my-photos">${u.photos.map((ph) => `<div class="myp" style="background-image:url('${ph}')"></div>`).join("")}${u.privatePhotos && u.privatePhotos.length ? `<div class="myp priv"><span>🔒 비밀 ${u.privatePhotos.length}</span></div>` : ""}</div>` : ""}
+      <div class="pcompl ${ps.pct >= 100 ? "done" : ""}">
+        <div class="pc-top"><b>${t("프로필 완성도")}</b><span class="pc-pct">${ps.pct}%</span></div>
+        <div class="pc-bar"><i style="width:${ps.pct}%"></i></div>
+        ${ps.pct >= 100
+          ? `<p class="pc-msg">🏆 완벽해요! 완성 보너스로 <b>매일 좋아요 +5</b> 적용 중이에요.</p>`
+          : `<p class="pc-msg">${ps.pct >= 80 ? "완성 보너스(<b>좋아요 +5/일</b>) 적용 중 · " : ""}채우면 추천에 더 잘 노출돼요:</p>
+             <div class="pc-todo">${missing.slice(0, 4).map((m) => `<button class="pc-chip" data-go="${m.go}">＋ ${esc(m.label)}</button>`).join("")}</div>`}
       </div>
       <div class="my-plan ${pl === "free" ? "free" : ""}">
-        <b>${pl === "free" ? "무료 플랜 이용 중" : "🎉 " + plan().label + " 이용 중"}</b>
+        <b>${pl === "free" ? t("무료 플랜 이용 중") : "🎉 " + plan().label}</b>
         <p>누적 — 보낸 좋아요 <b>${S.stats.likesSent}</b> · 매치 <b>${S.stats.matches}</b>${pl === "free" ? " — PRISM+면 좋아요 무제한, 받은 좋아요 공개, 광고 제거." : " — 프리미엄 혜택 적용 중. 언제든 변경 가능."}</p>
-        <button class="btn-grad" id="my-premium" style="font-size:14px;padding:11px 18px">${pl === "free" ? "PRISM+ 시작하기 💜" : "플랜 관리"}</button>
+        <button class="btn-grad" id="my-premium" style="font-size:14px;padding:11px 18px">${pl === "free" ? "PRISM+ 💜" : t("플랜 관리")}</button>
       </div>
       <div class="menu">
-        <button class="menu-it" id="m-edit"><span class="mi-ic">✏️</span>프로필 수정<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-verify"><span class="mi-ic">✔︎</span>프로필 인증하기<span class="mi-val">${u.verified ? "인증됨 ✔︎" : "미인증"}</span></button>
-        <button class="menu-it" id="m-shop"><span class="mi-ic">🛍️</span>아이템 상점<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-install"><span class="mi-ic">📲</span>홈 화면에 앱 설치<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-font"><span class="mi-ic">🔠</span>글자 크기<span class="mi-val">${["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]}</span></button>
+        <button class="menu-it" id="m-edit"><span class="mi-ic">✏️</span>${t("프로필 수정")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-verify"><span class="mi-ic">✔︎</span>${t("프로필 인증하기")}<span class="mi-val">${u.verified ? t("인증됨 ✔︎") : t("미인증")}</span></button>
+        <button class="menu-it" id="m-shop"><span class="mi-ic">🛍️</span>${t("아이템 상점")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-install"><span class="mi-ic">📲</span>${t("홈 화면에 앱 설치")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-font"><span class="mi-ic">🔠</span>${t("글자 크기")}<span class="mi-val">${["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]}</span></button>
+        <button class="menu-it" id="m-lang"><span class="mi-ic">🌐</span>${t("언어")}<span class="mi-val">${curLang() === "en" ? "English" : "한국어"}</span></button>
       </div>
-      <div class="sec" style="padding:0 18px 8px"><b style="font-size:13px;color:var(--tx3)">프라이버시 · 안전</b></div>
+      <div class="sec" style="padding:0 18px 8px"><b style="font-size:13px;color:var(--tx3)">${t("프라이버시 · 안전")}</b></div>
       <div class="menu">
-        <button class="menu-it" id="m-pin"><span class="mi-ic">🔐</span>앱 잠금 (PIN)<span class="mi-val">${hasPin() ? "사용 중" : "꺼짐"}</span></button>
-        ${hasPin() ? `<button class="menu-it" id="m-bglock" role="switch" aria-checked="${S.settings.bgLock}"><span class="mi-ic">🫥</span>화면 이탈 시 즉시 잠금<span class="switch ${S.settings.bgLock ? "on" : ""}"></span></button>` : ""}
-        <button class="menu-it" id="m-disguise" role="switch" aria-checked="${S.settings.disguise}"><span class="mi-ic">🎭</span>위장 제목 항상 사용<span class="switch ${S.settings.disguise ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-dist" role="switch" aria-checked="${S.settings.hideDistance}"><span class="mi-ic">📍</span>거리 숨기기<span class="switch ${S.settings.hideDistance ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-private" role="switch" aria-checked="${S.settings.privateMode}"><span class="mi-ic">🕶️</span>프라이빗 모드 (새 노출 중단)<span class="switch ${S.settings.privateMode ? "on" : ""}"></span></button>
-        <button class="menu-it" id="m-safety"><span class="mi-ic">🛡️</span>안전 센터<span class="mi-arrow">›</span></button>
-        <button class="menu-it" id="m-blocked"><span class="mi-ic">🚫</span>차단 목록<span class="mi-val">${S.blocked.length}명</span></button>
+        <button class="menu-it" id="m-pin"><span class="mi-ic">🔐</span>${t("앱 잠금 (PIN)")}<span class="mi-val">${hasPin() ? t("사용 중") : t("꺼짐")}</span></button>
+        ${hasPin() ? `<button class="menu-it" id="m-bglock" role="switch" aria-checked="${S.settings.bgLock}"><span class="mi-ic">🫥</span>${t("화면 이탈 시 즉시 잠금")}<span class="switch ${S.settings.bgLock ? "on" : ""}"></span></button>` : ""}
+        <button class="menu-it" id="m-disguise" role="switch" aria-checked="${S.settings.disguise}"><span class="mi-ic">🎭</span>${t("위장 제목 항상 사용")}<span class="switch ${S.settings.disguise ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-dist" role="switch" aria-checked="${S.settings.hideDistance}"><span class="mi-ic">📍</span>${t("거리 숨기기")}<span class="switch ${S.settings.hideDistance ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-private" role="switch" aria-checked="${S.settings.privateMode}"><span class="mi-ic">🕶️</span>${t("프라이빗 모드 (새 노출 중단)")}<span class="switch ${S.settings.privateMode ? "on" : ""}"></span></button>
+        <button class="menu-it" id="m-safety"><span class="mi-ic">🛡️</span>${t("안전 센터")}<span class="mi-arrow">›</span></button>
+        <button class="menu-it" id="m-blocked"><span class="mi-ic">🚫</span>${t("차단 목록")}<span class="mi-val">${S.blocked.length}명</span></button>
       </div>
       <div class="menu">
-        <button class="menu-it" id="m-reset"><span class="mi-ic">🗑️</span><span style="color:var(--red)">데이터 초기화 (계정 삭제)</span></button>
+        <button class="menu-it" id="m-reset"><span class="mi-ic">🗑️</span><span style="color:var(--red)">${t("데이터 초기화 (계정 삭제)")}</span></button>
       </div>
       <p class="tiny" style="text-align:center;padding:0 20px 8px">PRISM 데모 v2.0 · 모든 데이터는 이 기기에만 저장 ·
         <a href="/privacy.html" target="_blank" rel="noopener" style="color:var(--tx3)">개인정보</a> ·
@@ -1182,6 +1684,12 @@
         <a href="/contact.html" target="_blank" rel="noopener" style="color:var(--tx3)">문의</a></p>
       ${adSlot()}`;
     $("#my-premium").onclick = () => openPremium();
+    $$(".pc-chip").forEach((b) => b.onclick = () => {
+      const g = b.dataset.go;
+      if (g === "edit") editProfileSheet();
+      else if (g === "community") go("community");
+      else if (g === "verify") $("#m-verify").click();
+    });
     $("#m-edit").onclick = editProfileSheet;
     $("#m-shop").onclick = () => openShop();
     $("#m-install").onclick = installApp;
@@ -1189,6 +1697,11 @@
       S.settings.fontScale = (S.settings.fontScale + 1) % 4;
       save(); applyFontScale(); vMy();
       toast("글자 크기: " + ["보통", "크게", "아주 크게", "최대"][S.settings.fontScale]);
+    };
+    $("#m-lang").onclick = () => {
+      S.settings.lang = curLang() === "ko" ? "en" : "ko";
+      save(); paintStatic(); paintTopbar(); vMy();
+      toast(curLang() === "en" ? "Language: English — main UI translated (demo content stays Korean)" : "언어: 한국어");
     };
     $("#m-verify").onclick = () => {
       if (u.verified) { toast("이미 인증된 프로필이에요 ✔︎"); return; }
@@ -1216,26 +1729,74 @@
   }
   function editProfileSheet() {
     const u = S.user;
-    const m = modal(`<div class="sheet"><div class="grip"></div><h3 style="margin:0 0 14px">프로필 수정</h3>
-      <div class="ob-field"><label>닉네임</label><input class="ob-input" id="e-name" maxlength="10" value="${esc(u.name)}"></div>
-      <div class="ob-field"><label>자기소개</label><textarea class="ob-input" id="e-intro" maxlength="120">${esc(u.intro)}</textarea></div>
-      <div class="ob-field"><label>관심사 (3~5개)</label><div class="chips" id="e-tags">${masterTags().map((t) => `<button class="chip ${u.tags.includes(t) ? "on" : ""}" data-v="${esc(t)}">${esc(t)}</button>`).join("")}</div></div>
-      <button class="btn-grad big" id="e-save">저장</button></div>`);
-    const tags = u.tags.slice();
-    $("#e-tags", m).onclick = (e) => {
-      const b = e.target.closest(".chip"); if (!b) return;
-      const t = b.dataset.v;
-      if (tags.includes(t)) { tags.splice(tags.indexOf(t), 1); b.classList.remove("on"); }
-      else if (tags.length < 5) { tags.push(t); b.classList.add("on"); }
-      else toast("최대 5개까지 고를 수 있어요");
+    // 로컬 드래프트 (저장 눌러야 반영)
+    const d = { name: u.name, intro: u.intro || "", tags: u.tags.slice(),
+      photos: (u.photos || []).slice(), privatePhotos: (u.privatePhotos || []).slice(),
+      position: u.position || "", styles: (u.styles || []).slice(),
+      lookingList: (u.lookingList || (u.lookingFor ? [u.lookingFor] : [])).slice(), outLevel: u.outLevel || "" };
+    const m = modal(`<div class="sheet edit-sheet"><div class="grip"></div><h3 style="margin:0 0 14px">프로필 수정</h3><div id="edit-body"></div></div>`);
+    const body = $("#edit-body", m);
+    const chips = (arr, sel, active) => arr.map((v) => `<button class="chip ${active(v) ? "on" : ""}" data-${sel}="${esc(v)}">${esc(v)}</button>`).join("");
+    const render = () => {
+      body.innerHTML = `
+        <div class="ob-field"><label>프로필 사진 <small class="tiny" style="font-weight:400">· 여러 장 · 첫 장이 대표</small></label>
+          <div class="photo-grid" id="e-photos">${d.photos.map((ph, i) => `<div class="pg-item"><img src="${ph}" alt=""><button class="pg-del" data-del="${i}" aria-label="삭제">×</button>${i === 0 ? '<span class="pg-main">대표</span>' : `<button class="pg-star" data-main="${i}" aria-label="대표로">☆</button>`}<button class="pg-lock" data-hide="${i}" aria-label="비밀사진으로">🔒</button></div>`).join("")}
+            ${d.photos.length < 6 ? `<button class="pg-add" id="e-photo-add">＋<small>사진 추가</small></button>` : ""}</div></div>
+        <div class="ob-field"><label>🔒 비밀 사진 <small class="tiny" style="font-weight:400">· 매치된 상대에게만 공개</small></label>
+          <div class="photo-grid" id="e-priv">${d.privatePhotos.map((ph, i) => `<div class="pg-item priv"><img src="${ph}" alt=""><button class="pg-del" data-pdel="${i}" aria-label="삭제">×</button><button class="pg-unlock" data-show="${i}" aria-label="공개사진으로">🔓</button></div>`).join("")}
+            ${d.privatePhotos.length < 6 ? `<button class="pg-add" id="e-priv-add">＋<small>비밀 추가</small></button>` : ""}</div>
+          <p class="tiny" style="margin:4px 0 0">사진의 🔒를 누르면 비밀 사진으로, 🔓를 누르면 공개로 옮겨져요.</p></div>
+        <div class="ob-field"><label>닉네임</label><input class="ob-input" id="e-name" maxlength="10" value="${esc(d.name)}"></div>
+        <div class="ob-field"><label>자기소개</label><textarea class="ob-input" id="e-intro" maxlength="120">${esc(d.intro)}</textarea></div>
+        <div class="ob-field"><label>성향 (포지션)</label><div class="chips" id="e-pos">${chips(POSITIONS, "pos", (v) => d.position === v)}</div></div>
+        <div class="ob-field"><label>스타일 (최대 4)</label><div class="chips" id="e-styles">${chips(STYLES, "sty", (v) => d.styles.includes(v))}</div></div>
+        <div class="ob-field"><label>찾는 관계 (최대 3)</label><div class="chips" id="e-look">${chips(LOOKING, "look", (v) => d.lookingList.includes(v))}</div></div>
+        <div class="ob-field"><label>커밍아웃 상태</label><div class="chips" id="e-out">${chips(OUT_LEVELS, "out", (v) => d.outLevel === v)}</div></div>
+        <div class="ob-field"><label>관심사 (3~5개)</label><div class="chips" id="e-tags">${chips(masterTags(), "tag", (v) => d.tags.includes(v))}</div></div>
+        <button class="btn-grad big" id="e-save">저장</button>`;
+      bind();
     };
-    $("#e-save", m).onclick = () => {
-      const nm = $("#e-name", m).value.trim();
-      if (!nm) { toast("닉네임을 입력해주세요"); return; }
-      if (tags.length < 3) { toast("관심사를 3개 이상 골라주세요"); return; }
-      u.name = nm.slice(0, 10); u.intro = $("#e-intro", m).value.trim(); u.tags = tags;
-      save(); m.remove(); vMy(); toast("저장했어요 ✓");
+    const toggleIn = (arr, v, max) => {
+      const i = arr.indexOf(v);
+      if (i >= 0) arr.splice(i, 1);
+      else if (arr.length < max) arr.push(v);
+      else { toast(`최대 ${max}개까지 고를 수 있어요`); return false; }
+      return true;
     };
+    const bind = () => {
+      $("#e-photo-add", body) && ($("#e-photo-add", body).onclick = () => pickPhotos(true, (a) => { d.photos = d.photos.concat(a).slice(0, 6); render(); }));
+      $("#e-priv-add", body) && ($("#e-priv-add", body).onclick = () => pickPhotos(true, (a) => { d.privatePhotos = d.privatePhotos.concat(a).slice(0, 6); render(); }));
+      $("#e-photos", body).onclick = (e) => {
+        const del = e.target.closest("[data-del]"), mn = e.target.closest("[data-main]"), hd = e.target.closest("[data-hide]");
+        if (del) { d.photos.splice(+del.dataset.del, 1); render(); }
+        else if (mn) { const [x] = d.photos.splice(+mn.dataset.main, 1); d.photos.unshift(x); render(); }
+        else if (hd) { const [x] = d.photos.splice(+hd.dataset.hide, 1); d.privatePhotos.push(x); d.privatePhotos = d.privatePhotos.slice(0, 6); render(); }
+      };
+      $("#e-priv", body).onclick = (e) => {
+        const del = e.target.closest("[data-pdel]"), sh = e.target.closest("[data-show]");
+        if (del) { d.privatePhotos.splice(+del.dataset.pdel, 1); render(); }
+        else if (sh) { const [x] = d.privatePhotos.splice(+sh.dataset.show, 1); d.photos.push(x); d.photos = d.photos.slice(0, 6); render(); }
+      };
+      $("#e-pos", body).onclick = (e) => { const b = e.target.closest("[data-pos]"); if (b) { d.position = d.position === b.dataset.pos ? "" : b.dataset.pos; render(); } };
+      $("#e-out", body).onclick = (e) => { const b = e.target.closest("[data-out]"); if (b) { d.outLevel = d.outLevel === b.dataset.out ? "" : b.dataset.out; render(); } };
+      $("#e-styles", body).onclick = (e) => { const b = e.target.closest("[data-sty]"); if (b && toggleIn(d.styles, b.dataset.sty, 4)) render(); };
+      $("#e-look", body).onclick = (e) => { const b = e.target.closest("[data-look]"); if (b && toggleIn(d.lookingList, b.dataset.look, 3)) render(); };
+      $("#e-tags", body).onclick = (e) => { const b = e.target.closest("[data-tag]"); if (b && toggleIn(d.tags, b.dataset.tag, 5)) render(); };
+      $("#e-name", body).oninput = (e) => { d.name = e.target.value; };
+      $("#e-intro", body).oninput = (e) => { d.intro = e.target.value; };
+      $("#e-save", body).onclick = () => {
+        const nm = d.name.trim();
+        if (!nm) { toast("닉네임을 입력해주세요"); return; }
+        if (d.tags.length < 3) { toast("관심사를 3개 이상 골라주세요"); return; }
+        if (d.lookingList.length < 1) { toast("찾는 관계를 1개 이상 골라주세요"); return; }
+        u.name = nm.slice(0, 10); u.intro = d.intro.trim(); u.tags = d.tags.slice();
+        u.photos = d.photos.slice(); u.privatePhotos = d.privatePhotos.slice();
+        u.position = d.position; u.styles = d.styles.slice();
+        u.lookingList = d.lookingList.slice(); u.lookingFor = d.lookingList[0] || u.lookingFor; u.outLevel = d.outLevel;
+        save(); m.remove(); vMy(); toast("저장했어요 ✓");
+      };
+    };
+    render();
   }
   function pinSheet(after) {
     if (hasPin()) {
@@ -1276,7 +1837,7 @@
   function openSafety() {
     const o = document.createElement("div");
     o.className = "ovl";
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">🛡️ 안전 센터</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">🛡️ ${t("안전 센터")}</span></div>
       <div class="ovl-body">
         <div class="sec"><div class="sec-h" style="font-size:17px">퀴어 데이팅 안전 가이드</div>
         <p class="sec-sub">모든 안전 기능은 무료예요. 언제나.</p></div>
@@ -1325,7 +1886,7 @@
     const o = document.createElement("div");
     o.className = "ovl";
     const cur = S.premium.plan;
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">프리미엄</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">${t("프리미엄")}</span></div>
       <div class="ovl-body">
         <div class="pm-hero"><img src="favicon.svg" alt="" width="46" height="46" style="border-radius:12px"><h2><span class="prism-mark">PRISM</span> 프리미엄</h2>
         <p>기본 기능은 언제나 무료. 더 빠른 만남을 원할 때만.</p></div>
@@ -1401,7 +1962,7 @@
     o.className = "ovl";
     const disc = itemDiscount();
     const inv = SHOP.filter((it) => S.items[it.key] > 0 || (it.key === "superlike" && S.items.superlike > 0));
-    o.innerHTML = `<div class="ovl-top"><button class="ovl-close" aria-label="닫기">‹</button><span class="ovl-title">🛍️ 아이템 상점</span></div>
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close" aria-label="닫기">‹</button><span class="ovl-title">🛍️ ${t("아이템 상점")}</span></div>
       <div class="ovl-body">
         <div class="pm-hero" style="padding-top:18px"><h2 style="font-size:20px">필요할 때, 필요한 만큼만</h2>
         <p>구독 없이 골라 쓰는 소모품${disc ? ` · <b style="color:var(--amber)">${plan().label} ${disc * 100}% 할인 적용 중</b>` : ""}</p></div>
@@ -1530,6 +2091,65 @@
       wheel.addEventListener("transitionend", finish, { once: true });
       setTimeout(finish, 4800); // transitionend 유실 대비
     };
+  }
+
+  /* ══ 이상형 월드컵 (8강 토너먼트로 '오늘의 최애' 선정) ══ */
+  const wcAvail = () => S.wc.day !== todayStr();
+  function openWorldcup() {
+    // 참가자 8명: 보유 카드 우선, 부족분은 랜덤으로 채움
+    const owned = shuffle(CD.CHARS.filter((c) => cardOwned(c.id)).slice());
+    const rest = shuffle(CD.CHARS.filter((c) => !cardOwned(c.id)).slice());
+    const pool = owned.concat(rest).slice(0, 8);
+    if (pool.length < 2) { toast("카드가 부족해요 — 먼저 뽑기를 해보세요 🎴"); return; }
+    let round = pool.slice(), roundName = pool.length >= 8 ? "8강" : pool.length >= 4 ? "4강" : "결승";
+    let queue = round.slice(), winners = [], idx = 0;
+    const o = document.createElement("div");
+    o.className = "ovl wc-ovl";
+    o.innerHTML = `<div class="ovl-top"><button class="ovl-close">‹</button><span class="ovl-title">👑 이상형 월드컵</span><span class="wc-round" id="wc-round">${roundName}</span></div>
+      <div class="ovl-body wc-body"><p class="wc-q" id="wc-q">더 취향인 쪽을 골라요</p><div class="wc-pair" id="wc-pair"></div></div>`;
+    $("#overlay-root").appendChild(o);
+    const cardHtml = (c) => { const R = CD.RARITY[c.rarity]; return `<button class="wc-card r-${c.rarity}" data-id="${c.id}" style="--frame:${R.color};--fgrad:${R.frame}">
+      ${c.rarity === "SSR" ? '<div class="holo"></div>' : ""}${CD.charSVG(c, { uid: "wc" + Math.floor(Math.random() * 1e6) })}
+      <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${c.rarity}</span><b>${esc(c.name)}</b><small>${c.age}세 · ${esc(c.job)}</small></div></button>`; };
+    const paintPair = () => {
+      const a = queue[idx], b = queue[idx + 1];
+      $("#wc-round", o).textContent = roundName + ` · ${Math.floor(idx / 2) + 1}/${Math.floor(queue.length / 2)}`;
+      $("#wc-pair", o).innerHTML = cardHtml(a) + `<div class="wc-vs">VS</div>` + cardHtml(b);
+      $$(".wc-card", o).forEach((btn) => btn.onclick = () => {
+        winners.push(queue.find((c) => c.id === btn.dataset.id));
+        btn.classList.add("wc-pick"); vibrate(12);
+        setTimeout(next, 260);
+      });
+    };
+    const next = () => {
+      idx += 2;
+      if (idx < queue.length - (queue.length % 2)) { paintPair(); return; }
+      // 홀수면 남은 1명 부전승
+      if (queue.length % 2) winners.push(queue[queue.length - 1]);
+      if (winners.length === 1) { finishWC(winners[0]); return; }
+      queue = winners; winners = []; idx = 0;
+      roundName = queue.length >= 4 ? "4강" : queue.length >= 2 ? "결승" : "우승";
+      paintPair();
+    };
+    const finishWC = (champ) => {
+      const first = wcAvail();
+      S.wc = { day: todayStr(), champ: champ.id };
+      let reward = 0;
+      if (first) { reward = 1; S.items.gachaticket += 1; }
+      save(); badges(); vibrate([40, 60, 40, 60, 80]);
+      const R = CD.RARITY[champ.rarity];
+      $("#wc-pair", o).innerHTML = "";
+      $("#wc-q", o).textContent = "";
+      const dlg = modal(`<div class="dialog wc-win"><div class="em">👑</div><h3>오늘의 최애!</h3>
+        <div class="ccard big r-${champ.rarity}" style="--frame:${R.color};--fgrad:${R.frame};width:150px;margin:6px auto 10px">${champ.rarity === "SSR" ? '<div class="holo"></div>' : ""}${CD.charSVG(champ, { animate: true, uid: "wcw" })}
+          <div class="ccard-info"><span class="ccard-r" style="color:${R.color}">${champ.rarity}</span><b>${esc(champ.name)}</b><small>${champ.age}세 · ${esc(champ.job)}</small></div></div>
+        <p style="font-size:12.5px">"${esc(champ.line)}"</p>
+        <p style="font-size:12.5px;margin:6px 0 0">${reward ? `🎁 완주 보상: 크러시 팩 뽑기권 <b>+1</b>` : "오늘 보상은 이미 받았어요 — 재미로 다시 즐겨요!"}</p>
+        <button class="btn-grad big" data-ok style="margin-top:10px">좋아요!</button></div>`, { center: true, sticky: true });
+      $("[data-ok]", dlg).onclick = () => { dlg.remove(); o.remove(); if (tab === "cards") vCards(); };
+    };
+    $(".ovl-close", o).onclick = () => o.remove();
+    paintPair();
   }
 
   /* ══ 매력 배틀 아레나 (모은 카드로 3판 2선승 상성 배틀) ══
@@ -1771,11 +2391,12 @@
     const FILTERS = [["all", "전체"], ["owned", "보유"], ["N", "N"], ["R", "R"], ["SR", "SR"], ["SSR", "SSR"]];
     const list = CD.CHARS.filter((c) =>
       albumFilter === "all" ? true : albumFilter === "owned" ? cardOwned(c.id) : c.rarity === albumFilter);
-    $("#view").innerHTML = `<div class="sec"><div class="sec-h">크러시 카드 도감</div>
+    $("#view").innerHTML = `<div class="sec"><div class="sec-h">${t("크러시 카드 도감")}</div>
       <p class="sec-sub">128명의 일러스트 캐릭터 — 뽑고, 모으고, <b>같은 레벨끼리 합성</b>해서 매칭 버프를 키우세요</p></div>
       <div class="game-row">
-        <button class="game-tile" id="g-roulette"><span class="gt-em">🎡</span><b>데일리 룰렛</b><small>${rouletteAvail() ? "오늘 무료 1회! 꽝 없음" : "내일 다시 돌려요"}</small>${rouletteAvail() ? '<i class="gt-dot"></i>' : ""}</button>
-        <button class="game-tile" id="g-battle"><span class="gt-em">⚔️</span><b>매력 배틀</b><small>오늘 ${battleLeft()}/${BATTLE_MAX}회${S.battle.streak ? ` · 🔥연승 ${S.battle.streak}` : ""}${S.battle.best ? ` · 최고 ${S.battle.best}` : ""}</small>${battleLeft() > 0 ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile" id="g-roulette"><span class="gt-em">🎡</span><b>${t("데일리 룰렛")}</b><small>${rouletteAvail() ? "오늘 무료 1회! 꽝 없음" : "내일 다시 돌려요"}</small>${rouletteAvail() ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile" id="g-battle"><span class="gt-em">⚔️</span><b>${t("매력 배틀")}</b><small>오늘 ${battleLeft()}/${BATTLE_MAX}회${S.battle.streak ? ` · 🔥연승 ${S.battle.streak}` : ""}${S.battle.best ? ` · 최고 ${S.battle.best}` : ""}</small>${battleLeft() > 0 ? '<i class="gt-dot"></i>' : ""}</button>
+        <button class="game-tile wide" id="g-worldcup"><span class="gt-em">👑</span><b>${t("이상형 월드컵")}</b><small>${wcAvail() ? "오늘의 최애를 뽑아요 — 완주 시 뽑기권 +1" : `오늘의 최애: ${esc((cardOf(S.wc.champ) || {}).name || "완료")} · 다시 즐기기`}</small>${wcAvail() ? '<i class="gt-dot"></i>' : ""}</button>
       </div>
       <div class="streak-chip">🔥 연속 출석 <b>${S.streak.n || 1}일</b> — 3일마다 뽑기권 1장, 7일마다 3장이 쌓여요</div>
       <div class="gacha-box">
@@ -1783,8 +2404,8 @@
           <div class="gb-bar"><i style="width:${owned / 128 * 100}%"></i></div>
           <small>${lb || sb ? `버프: ${lb ? `좋아요 +${lb}/일` : ""}${lb && sb ? " · " : ""}${sb ? `슈퍼라이크 +${sb}/일` : ""}` : "카드를 합성해 ★을 올리면 좋아요 한도가 늘어나요"}</small></div>
         <div style="display:flex;flex-direction:column;gap:7px">
-          <button class="btn-grad" id="g-pull">${free ? `무료 뽑기 ${gachaFreeLeft()}회 🎴` : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
-          <button class="btn-ghost" id="g-pull10" style="font-size:12px;padding:9px 12px">10연챠 ${S.items.gachaticket >= 10 ? "" : "🛍️"}</button>
+          <button class="btn-grad" id="g-pull">${free ? `${t("무료 뽑기")} ${gachaFreeLeft()}회 🎴` : `뽑기 (권 ${S.items.gachaticket}장)`}</button>
+          <button class="btn-ghost" id="g-pull10" style="font-size:12px;padding:9px 12px">${t("10연챠")} ${S.items.gachaticket >= 10 ? "" : "🛍️"}</button>
         </div>
       </div>
       <p class="tiny" style="padding:0 18px 4px">천장: SR+ 확정까지 <b>${Math.max(0, 10 - (S.gacha.pity || 0) - 1) + 1}회</b> · SSR 확정까지 <b>${Math.max(0, 40 - (S.gacha.ssrPity || 0))}회</b></p>
@@ -1806,6 +2427,7 @@
       ${adSlot()}`;
     $("#g-pull").onclick = doGacha;
     $("#g-pull10").onclick = doGacha10;
+    $("#g-worldcup").onclick = openWorldcup;
     $("#g-roulette").onclick = openRoulette;
     $("#g-battle").onclick = battleSetup;
     const pkv = $("[data-pkview]");
@@ -1945,6 +2567,7 @@
     dailyTick();
     applyFontScale();
     applyDisguise();
+    paintStatic();
     // 구버전 평문 PIN → 해시 마이그레이션
     if (S.settings.pin && !S.settings.pinHash) {
       pinHash(S.settings.pin).then((h) => { S.settings.pinHash = h; S.settings.pin = null; save(); });
