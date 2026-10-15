@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">생활 도구</span> <span class="sep">›</span> <span class="c-cur">Onsaemiro (온새미로)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.3 2.3-2.3-.4-.4-2.3z"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">온새미로는 생활 계산기, 학습 도구, 취미·건강 관련 유틸리티를 한 곳에 모아 제공하는 무료 웹 서비스 허브입니다.</p>
     <a class="cta" href="https://onsaemiro-six.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>Onsaemiro (온새미로) 소개</h2>
-    <p>온새미로는 생활 계산기, 학습 도구, 취미·건강 관련 유틸리티를 한 곳에 모아 제공하는 무료 웹 서비스 허브입니다. 앱을 따로 설치할 필요 없이 브라우저에서 바로 접속해 원하는 도구를 즉시 사용할 수 있으며, 가볍게 쓸 수 있는 도구부터 계산이 복잡한 생활 밀착형 서비스까지 폭넓게 갖추고 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>스마트폰 앱 설치 없이 웹 브라우저 하나로 다양한 기능을 쓰는 방식은 PWA(Progressive Web App) 개념과 함께 확산되었습니다. 웹 도구 허브는 개별 앱을 내려받아 관리하는 번거로움 없이 필요한 순간 바로 쓰고 닫을 수 있다는 점에서 실용적입니다. 특히 계산기, 변환기, 테스트, 일정 관련 도구처럼 가끔 쓰지만 필요할 때 즉시 꺼내 쓰고 싶은 기능들을 단일 공간에서 찾을 수 있다는 것이 허브형 서비스의 핵심 가치입니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 온새미로는 생활 계산기, 학습 도구, 취미·건강 관련 유틸리티를 한 곳에 모아 제공하는…</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>갑자기 계산이 필요한 상황에서 앱을 찾아 설치하는 대신 브라우저 주소창에 바로 접속해 원하는 도구를 꺼내 쓸 수 있습니다.</li>
+        <li>학습, 건강, 재무 관련 여러 도구를 번갈아 써야 할 때, 각각의 앱을 오가지 않고 한 탭에서 이동하며 처리할 수 있습니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · Onsaemiro (온새미로)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>메인 화면의 카테고리 탭 또는 검색창에서 원하는 도구를 찾습니다.</li>
         <li>도구를 선택하면 해당 페이지로 바로 이동해 즉시 사용할 수 있습니다.</li>
@@ -133,15 +166,14 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>신규 도구는 메인 페이지나 카테고리 목록에 우선 노출됩니다.</li>
         <li>도구를 사용하다 개선 의견이 생기면 피드백 기능으로 의견을 남길 수 있습니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>갑자기 계산이 필요한 상황에서 앱을 찾아 설치하는 대신 브라우저 주소창에 바로 접속해 원하는 도구를 꺼내 쓸 수 있습니다.</li>
-        <li>학습, 건강, 재무 관련 여러 도구를 번갈아 써야 할 때, 각각의 앱을 오가지 않고 한 탭에서 이동하며 처리할 수 있습니다.</li>
-    </ul>
+        <p>온새미로는 생활 계산기, 학습 도구, 취미·건강 관련 유틸리티를 한 곳에 모아 제공하는 무료 웹 서비스 허브입니다. 앱을 따로 설치할 필요 없이 브라우저에서 바로 접속해 원하는 도구를 즉시 사용할 수 있으며, 가볍게 쓸 수 있는 도구부터 계산이 복잡한 생활 밀착형 서비스까지 폭넓게 갖추고 있습니다.</p>
+        <p>스마트폰 앱 설치 없이 웹 브라우저 하나로 다양한 기능을 쓰는 방식은 PWA(Progressive Web App) 개념과 함께 확산되었습니다. 웹 도구 허브는 개별 앱을 내려받아 관리하는 번거로움 없이 필요한 순간 바로 쓰고 닫을 수 있다는 점에서 실용적입니다. 특히 계산기, 변환기, 테스트, 일정 관련 도구처럼 가끔 쓰지만 필요할 때 즉시 꺼내 쓰고 싶은 기능들을 단일 공간에서 찾을 수 있다는 것이 허브형 서비스의 핵심 가치입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>카테고리 탭을 먼저 살펴보면 검색어가 떠오르지 않을 때도 비슷한 도구를 빠르게 발견할 수 있습니다.</li>
-        <li>스마트폰 브라우저의 '홈 화면에 추가' 기능을 쓰면 앱처럼 아이콘으로 등록해 더 빠르게 접근할 수 있습니다.</li>
+        <li>스마트폰 브라우저의 &#39;홈 화면에 추가&#39; 기능을 쓰면 앱처럼 아이콘으로 등록해 더 빠르게 접근할 수 있습니다.</li>
         <li>검색창에 기능 키워드를 입력하면 관련 도구가 바로 나타나므로, 정확한 도구 이름을 몰라도 쉽게 찾을 수 있습니다.</li>
     </ul>
     <h2>주의사항</h2>

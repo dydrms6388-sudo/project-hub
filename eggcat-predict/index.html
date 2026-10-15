@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">엔터·바이럴</span> <span class="sep">›</span> <span class="c-cur">에그캣 ($EGGCAT)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18 15l.7 1.8L20.5 17l-1.8.7L18 19.5l-.7-1.8L15.5 17l1.8-.7z"/></svg></div>
@@ -121,23 +142,34 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상 포인트 게임입니다.</p>
     <a class="cta" href="https://dydrms-eggcat.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>에그캣 ($EGGCAT) 소개</h2>
-    <p>에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상 포인트 게임입니다. EGG는 게임 내 포인트로 실제 자금이 아니며, 도박이나 투자 권유와 무관한 엔터테인먼트 서비스입니다. 시세 흐름을 읽는 감각을 재미있게 익히고 싶은 사람에게 적합합니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>암호화폐 시세는 주식보다 변동성이 크고 24시간 쉬지 않고 움직입니다. 비트코인·이더리움을 비롯한 주요 코인의 가격은 거래소 수요·공급, 거시경제 지표, 규제 뉴스, 소셜미디어 여론 등 다양한 요인이 복합적으로 작용해 결정됩니다. 단기 방향성 예측은 전문 트레이더들도 틀리기 쉬운 영역이며, 실제 자금 없이 이런 흐름을 관찰하고 감각을 기르는 시뮬레이션 방식은 시장 구조를 이해하는 데 도움이 될 수 있습니다. 풀 배분 방식(맞춘 쪽이 틀린 쪽 포인트를 나눠 갖는 구조)은 전통 예측 시장의 원리를 단순화한 것입니다.</p>
-    <h2>이렇게 사용하세요</h2>
-    <ol>
-        <li>라이브 보드에서 예측할 코인(비트코인, 이더리움 등 14종 중 선택)을 고른다.</li>
-        <li>오픈 구간 3분 안에 '상승' 또는 '하락' 방향을 선택하고 포인트를 건다.</li>
-        <li>락 구간 2분 동안 실시간 스파크라인으로 가격 변화를 지켜본다.</li>
-        <li>라운드 종료 후 정산 결과를 확인하고 EGG 포인트를 수령한다.</li>
-        <li>다음 라운드 자동 참여 설정으로 연속 베팅하고 연승 보상을 노린다.</li>
-    </ol>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상…</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    
     <h2>이럴 때 유용해요</h2>
     <ul>
         <li>코인 시장이 처음이라 실제 투자 전에 가격 흐름 읽는 연습을 해보고 싶을 때 부담 없이 활용할 수 있습니다.</li>
         <li>여러 코인의 단기 변동성을 동시에 비교 관찰하며 어떤 코인이 상대적으로 안정적인지 감을 잡고 싶을 때 유용합니다.</li>
     </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 에그캣 ($EGGCAT)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
+    <ol>
+        <li>라이브 보드에서 예측할 코인(비트코인, 이더리움 등 14종 중 선택)을 고른다.</li>
+        <li>오픈 구간 3분 안에 &#39;상승&#39; 또는 &#39;하락&#39; 방향을 선택하고 포인트를 건다.</li>
+        <li>락 구간 2분 동안 실시간 스파크라인으로 가격 변화를 지켜본다.</li>
+        <li>라운드 종료 후 정산 결과를 확인하고 EGG 포인트를 수령한다.</li>
+        <li>다음 라운드 자동 참여 설정으로 연속 베팅하고 연승 보상을 노린다.</li>
+    </ol>
+        <p>에그캣은 실시간 코인 시세를 바탕으로 5분 안에 가격이 오를지 내릴지 예측해보는 가상 포인트 게임입니다. EGG는 게임 내 포인트로 실제 자금이 아니며, 도박이나 투자 권유와 무관한 엔터테인먼트 서비스입니다. 시세 흐름을 읽는 감각을 재미있게 익히고 싶은 사람에게 적합합니다.</p>
+        <p>암호화폐 시세는 주식보다 변동성이 크고 24시간 쉬지 않고 움직입니다. 비트코인·이더리움을 비롯한 주요 코인의 가격은 거래소 수요·공급, 거시경제 지표, 규제 뉴스, 소셜미디어 여론 등 다양한 요인이 복합적으로 작용해 결정됩니다. 단기 방향성 예측은 전문 트레이더들도 틀리기 쉬운 영역이며, 실제 자금 없이 이런 흐름을 관찰하고 감각을 기르는 시뮬레이션 방식은 시장 구조를 이해하는 데 도움이 될 수 있습니다. 풀 배분 방식(맞춘 쪽이 틀린 쪽 포인트를 나눠 갖는 구조)은 전통 예측 시장의 원리를 단순화한 것입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>락 구간에 표시되는 잠정 승패는 아직 최종 가격이 아니므로 라운드가 완전히 끝날 때까지 결과를 단정하지 마세요.</li>

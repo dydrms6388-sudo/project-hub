@@ -466,7 +466,7 @@ $("copyTextBtn").addEventListener("click",function(){ if(current) copy(shareText
 $("xBtn").addEventListener("click",function(){
   if(!current) return;
   var t = "오늘도 마음속으로 사직서 제출 완료 📨 (통장잔고: 반려) 마음속 퇴사 지수 "+current.out.idx+"/100";
-  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank");
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(resultUrl()),"_blank","noopener");
 });
 if(navigator.share){
   $("shareBtn").style.display="";

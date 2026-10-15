@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">반려·식물</span> <span class="sep">›</span> <span class="c-cur">SniffQuest (스니프퀘스트)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 21c-4 0-7-3-7-7 0-6 4-10 15-10 0 11-4 17-8 17z"/><path d="M4.5 20.5C8 18 11 15 13 11"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">강아지의 코는 사람보다 수천 배 민감하며, 후각을 쓸 때 뇌 전체가 활성화됩니다.</p>
     <a class="cta" href="https://sniffquest.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>SniffQuest (스니프퀘스트) 소개</h2>
-    <p>강아지의 코는 사람보다 수천 배 민감하며, 후각을 쓸 때 뇌 전체가 활성화됩니다. 이 도구는 강아지의 나이·크기·성격을 바탕으로 오늘 시도해볼 노즈워크와 두뇌놀이를 매일 새롭게 추천해, 산책만으로는 채우기 어려운 정신적 자극을 실내에서 제공합니다. 반응을 기록하다 보면 내 강아지에게 진짜 잘 맞는 활동이 무엇인지 점점 선명해집니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>노즈워크(nosework)는 원래 마약 탐지견 훈련에서 파생된 후각 자극 활동으로, 강아지가 코를 써서 목표물을 찾는 과정 자체에서 뇌가 활발하게 일합니다. 연구에 따르면 20분의 노즈워크가 1시간의 신체 운동과 비슷한 피로감을 줄 수 있다고 알려져 있으며, 이는 비나 더위로 산책이 어려운 날에도 에너지를 충분히 소진시키는 방법이 됩니다. 관절이 약한 노령견이나 수술 후 안정 중인 강아지에게도 적합하며, 과잉 짖음·파괴 행동의 원인이 자극 부족인 경우 개선에 도움이 되는 경우가 많습니다. 강아지가 직접 문제를 해결하고 보상을 찾는 과정은 자신감과 집중력을 높이는 데도 긍정적인 영향을 줍니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>이럴 때</b> 비·폭염·한파로 바깥 산책이 힘든 날, 실내에서 충분한 정신 자극을 주고 싶을 때 유용합니다.</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>관절 문제가 있는 노령견이나 수술 후 안정이 필요한 강아지에게 몸에 무리 없이 자극을 줄 수 있습니다.</li>
+        <li>입양 후 낯선 환경에 적응 중인 강아지가 자신감을 키우는 초반 훈련 루틴으로 활용할 수 있습니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · SniffQuest (스니프퀘스트)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>강아지의 생후 개월 수 또는 나이, 체형(소·중·대형), 평소 활동성을 입력합니다.</li>
         <li>오늘의 추천 활동 목록을 확인하고 준비할 재료(간식·수건·컵 등)를 파악합니다.</li>
@@ -134,12 +167,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>발도장 컬렉션에서 새 활동에 도전하며 경험한 종류를 늘려갑니다.</li>
         <li>연속 기록을 이어가며 꾸준한 일과로 자리 잡게 합니다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>비·폭염·한파로 바깥 산책이 힘든 날, 실내에서 충분한 정신 자극을 주고 싶을 때 유용합니다.</li>
-        <li>관절 문제가 있는 노령견이나 수술 후 안정이 필요한 강아지에게 몸에 무리 없이 자극을 줄 수 있습니다.</li>
-        <li>입양 후 낯선 환경에 적응 중인 강아지가 자신감을 키우는 초반 훈련 루틴으로 활용할 수 있습니다.</li>
-    </ul>
+        <p>강아지의 코는 사람보다 수천 배 민감하며, 후각을 쓸 때 뇌 전체가 활성화됩니다. 이 도구는 강아지의 나이·크기·성격을 바탕으로 오늘 시도해볼 노즈워크와 두뇌놀이를 매일 새롭게 추천해, 산책만으로는 채우기 어려운 정신적 자극을 실내에서 제공합니다. 반응을 기록하다 보면 내 강아지에게 진짜 잘 맞는 활동이 무엇인지 점점 선명해집니다.</p>
+        <p>노즈워크(nosework)는 원래 마약 탐지견 훈련에서 파생된 후각 자극 활동으로, 강아지가 코를 써서 목표물을 찾는 과정 자체에서 뇌가 활발하게 일합니다. 연구에 따르면 20분의 노즈워크가 1시간의 신체 운동과 비슷한 피로감을 줄 수 있다고 알려져 있으며, 이는 비나 더위로 산책이 어려운 날에도 에너지를 충분히 소진시키는 방법이 됩니다. 관절이 약한 노령견이나 수술 후 안정 중인 강아지에게도 적합하며, 과잉 짖음·파괴 행동의 원인이 자극 부족인 경우 개선에 도움이 되는 경우가 많습니다. 강아지가 직접 문제를 해결하고 보상을 찾는 과정은 자신감과 집중력을 높이는 데도 긍정적인 영향을 줍니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>처음에는 아주 쉬운 난이도(눈앞에 간식 숨기기)부터 시작해 성공 경험을 쌓게 해주세요. 난이도는 익숙해진 후 올립니다.</li>
@@ -156,7 +187,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <h2>자주 묻는 질문</h2>
     <div class="qa"><p class="q">Q. 노즈워크를 전혀 해본 적 없는 강아지도 괜찮을까요?</p><p class="a">처음부터 어렵지 않습니다. 가장 쉬운 단계는 보호자 손 위에 간식을 올려 냄새 맡게 하는 것으로, 거의 모든 강아지가 본능적으로 반응합니다. 난이도는 강아지의 반응을 보며 천천히 높여가면 됩니다.</p></div>
     <div class="qa"><p class="q">Q. 매일 해도 강아지가 질리지 않을까요?</p><p class="a">노즈워크는 28가지 이상의 다양한 활동이 순환되므로 같은 패턴이 반복되는 일이 적습니다. 강아지가 특정 활동에 흥미를 잃은 것처럼 보이면 다른 유형으로 바꿔보면 됩니다.</p></div>
-    <div class="qa"><p class="q">Q. 강아지가 간식에 집착이 심해지지 않을까요?</p><p class="a">노즈워크의 보상은 간식 자체보다 '찾아내는 행위'에 있습니다. 찾는 순간에 주는 소량의 간식은 행동을 강화하는 도구로, 평소 식사량에서 일부를 덜어 활용하면 과다 급여를 방지할 수 있습니다.</p></div>
+    <div class="qa"><p class="q">Q. 강아지가 간식에 집착이 심해지지 않을까요?</p><p class="a">노즈워크의 보상은 간식 자체보다 &#39;찾아내는 행위&#39;에 있습니다. 찾는 순간에 주는 소량의 간식은 행동을 강화하는 도구로, 평소 식사량에서 일부를 덜어 활용하면 과다 급여를 방지할 수 있습니다.</p></div>
     <div class="qa"><p class="q">Q. 다견 가정에서 여러 마리가 함께 해도 되나요?</p><p class="a">노즈워크는 개별 진행이 원칙입니다. 여러 마리가 동시에 하면 자원을 두고 경쟁이 생길 수 있으므로 한 마리씩 번갈아 진행하는 것을 권장합니다.</p></div>
     <div class="qa"><p class="q">Q. 견종이나 품종을 따로 입력해야 하나요?</p><p class="a">견종보다 크기와 활동성이 추천의 주요 기준입니다. 품종을 몰라도, 혹은 믹스견이어도 체형과 성격 입력만으로 맞춤 추천을 받을 수 있습니다.</p></div>
     

@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">운세·심리</span> <span class="sep">›</span> <span class="c-cur">케미코드 (ChemiCode)</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 13.5A8 8 0 1 1 10.5 3.5a6 6 0 0 0 10 10z"/><path d="M18 4l.6 1.6L20 6l-1.4.4L18 8l-.6-1.6L16 6l1.4-.4z"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의 답을 조합해 독자적인 케미 점수와 궁합 카드를 만들어 주는 페어형 심리 테스트입니다.</p>
     <a class="cta" href="https://dydrms-chemicode.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>케미코드 (ChemiCode) 소개</h2>
-    <p>12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의 답을 조합해 독자적인 케미 점수와 궁합 카드를 만들어 주는 페어형 심리 테스트입니다. 상대가 누구냐에 따라 결과가 달라지기 때문에, 여러 사람과 비교하며 자신의 관계 패턴을 살펴볼 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>연애 성향 유형화는 MBTI나 애착 유형 이론처럼 개인의 행동·감정 패턴을 몇 가지 축으로 나누어 자기 이해를 돕는 방식입니다. 실제 심리학에서는 회피형·불안형·안정형 같은 애착 스타일이 친밀한 관계에서의 반응 방식을 상당 부분 설명한다고 봅니다. 두 사람의 유형이 어떻게 상호작용하는지를 보는 궁합 개념은, 서로 어떤 부분에서 맞고 어긋날 수 있는지를 대화로 꺼내는 출발점이 될 수 있습니다. 물론 실제 관계는 수치 하나로 결정되지 않으며, 소통과 노력이 훨씬 큰 변수입니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의…</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>새로 사귄 상대와 서로의 연애 스타일이 얼마나 다른지 부담 없이 확인해 보고 싶을 때 대화 소재로 활용할 수 있습니다.</li>
+        <li>오랫동안 알고 지낸 친구와 테스트를 해 보면 의외의 공통점이나 차이점을 발견해 새로운 이야기거리가 생기기도 합니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 케미코드 (ChemiCode)</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>화면의 12개 질문을 읽고 직관적으로 느끼는 답을 선택한다.</li>
         <li>결과 페이지에서 나의 연애 유형과 성향 설명을 확인한다.</li>
@@ -134,11 +167,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>궁합 카드를 함께 보며 서로의 성향 차이와 공통점을 이야기 나눈다.</li>
         <li>여러 사람에게 링크를 보내 각각의 케미 결과를 컬렉션으로 모아본다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>새로 사귄 상대와 서로의 연애 스타일이 얼마나 다른지 부담 없이 확인해 보고 싶을 때 대화 소재로 활용할 수 있습니다.</li>
-        <li>오랫동안 알고 지낸 친구와 테스트를 해 보면 의외의 공통점이나 차이점을 발견해 새로운 이야기거리가 생기기도 합니다.</li>
-    </ul>
+        <p>12개 질문으로 자신의 연애 성향 유형을 파악한 뒤, 링크를 상대에게 보내면 두 사람의 답을 조합해 독자적인 케미 점수와 궁합 카드를 만들어 주는 페어형 심리 테스트입니다. 상대가 누구냐에 따라 결과가 달라지기 때문에, 여러 사람과 비교하며 자신의 관계 패턴을 살펴볼 수 있습니다.</p>
+        <p>연애 성향 유형화는 MBTI나 애착 유형 이론처럼 개인의 행동·감정 패턴을 몇 가지 축으로 나누어 자기 이해를 돕는 방식입니다. 실제 심리학에서는 회피형·불안형·안정형 같은 애착 스타일이 친밀한 관계에서의 반응 방식을 상당 부분 설명한다고 봅니다. 두 사람의 유형이 어떻게 상호작용하는지를 보는 궁합 개념은, 서로 어떤 부분에서 맞고 어긋날 수 있는지를 대화로 꺼내는 출발점이 될 수 있습니다. 물론 실제 관계는 수치 하나로 결정되지 않으며, 소통과 노력이 훨씬 큰 변수입니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>첫 느낌으로 빠르게 답하면 평소 실제 행동에 가까운 결과가 나옵니다. 이상적인 모습을 고르면 결과가 실제 성향에서 멀어질 수 있습니다.</li>

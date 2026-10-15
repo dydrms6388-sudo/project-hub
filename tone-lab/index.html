@@ -504,7 +504,7 @@ $('btnText').addEventListener('click',function(){
 $('btnX').addEventListener('click',function(){
   var r=results[state.p];
   var msg='이 문장 '+r.name+'로 바꿨더니… 🎭\n"'+r.out.split('\n')[0].slice(0,60)+'"';
-  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(msg)+'&url='+encodeURIComponent(shareUrl()),'_blank');
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(msg)+'&url='+encodeURIComponent(shareUrl()),'_blank','noopener');
 });
 $('btnShare').addEventListener('click',function(){
   if(navigator.share){navigator.share({title:'말투연구소',text:'같은 문장, 5가지 말투 🎭',url:shareUrl()}).catch(function(){});}

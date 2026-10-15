@@ -62,7 +62,12 @@ a:focus-visible,.cta:focus-visible,.rel:focus-visible{outline:2px solid var(--ac
 @media (max-width:640px){.coupang-slot{min-height:224px}}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px 64px}
 a{color:var(--acc)}
-.crumb{font-size:13px;color:var(--muted);margin:18px 0 0;line-height:1.7}
+.site-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0}
+.site-top .brand{font-weight:900;font-size:17px;color:var(--txs);text-decoration:none;letter-spacing:-.01em}
+.site-top .brand .bm{margin-right:6px}
+.site-top .brand-search{font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;white-space:nowrap}
+.site-top .brand-search:hover{color:var(--acc2)}
+.crumb{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
 .crumb a{color:var(--link);text-decoration:none}
 .crumb a:hover{text-decoration:underline}
 .crumb .sep{color:var(--sep);margin:0 2px}
@@ -76,13 +81,28 @@ h1{font-size:28px;font-weight:900;margin:8px 0 0;background:linear-gradient(90de
 .cta{display:inline-block;margin-top:22px;background:var(--acc2);color:var(--cta-tx);font-weight:800;font-size:16px;text-decoration:none;padding:13px 26px;border-radius:14px;transition:transform .14s}
 .cta:hover{transform:translateY(-2px)}
 .about{margin:34px 0 0}
-.about h2{font-size:17px;font-weight:800;color:var(--txs);margin:26px 0 10px}
-.about p{color:var(--tx2);font-size:15px;margin:0 0 12px}
-.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:14.5px}
+.about h2{font-size:18px;font-weight:800;color:var(--txs);margin:30px 0 11px;letter-spacing:-.01em}
+.about h2:first-child{margin-top:8px}
+.about p{color:var(--tx2);font-size:15.5px;line-height:1.8;margin:0 0 13px;max-width:64ch}
+.about .topnote{color:var(--tx3);font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 13px;margin:0 0 16px;line-height:1.6}
+.about .tldr{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:6px 0 20px}
+.about .tldr-h{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.about .tldr ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.about .tldr li{margin:0;font-size:14.5px;color:var(--tx2);line-height:1.6;padding-left:0}
+.about .tldr li b{display:inline-block;min-width:52px;color:var(--txs);font-weight:700;margin-right:6px}
+.about .deep{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel)}
+.about .deep>summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:14.5px;font-weight:700;color:var(--txs);display:flex;align-items:center;gap:8px}
+.about .deep>summary::-webkit-details-marker{display:none}
+.about .deep>summary::before{content:"▸";color:var(--acc);font-size:12px;transition:transform .15s}
+.about .deep[open]>summary::before{transform:rotate(90deg)}
+.about .deep>summary:hover{color:var(--acc)}
+.about .deep .deep-body{padding:2px 16px 16px}
+.about .deep .deep-body p:first-child{margin-top:0}
+.about ul,.about ol{margin:0 0 12px;padding-left:22px;color:var(--tx2);font-size:15px}
 .about li{margin:6px 0}
 .about .qa{margin:0 0 14px}
 .about .qa .q{color:var(--txs);font-weight:700;margin:0 0 4px;font-size:14.5px}
-.about .qa .a{color:var(--tx3);margin:0;font-size:14.5px}
+.about .qa .a{color:var(--tx2);margin:0;font-size:14.5px}
 .about ul.cautions{list-style:none;padding-left:0}
 .about ul.cautions li{position:relative;padding-left:22px;margin:7px 0}
 .about ul.cautions li::before{content:"⚠";position:absolute;left:0;top:0;color:var(--warn);font-size:13px}
@@ -114,6 +134,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
 </head>
 <body>
 <div class="wrap">
+  <header class="site-top"><a class="brand" href="/"><span class="bm" aria-hidden="true">🍅🥚🐈</span> TomatoEggCat</a><a class="brand-search" href="/#filters">도구 전체 보기 →</a></header>
   <nav class="crumb" aria-label="breadcrumb"><a href="/">홈</a> <span class="sep">›</span> <span class="c-cat">금융·부동산</span> <span class="sep">›</span> <span class="c-cur">보험과진단</span></nav>
   <div class="hero">
     <div class="emoji" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></div>
@@ -121,11 +142,23 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
     <p class="lead">가입한 보험의 종류를 선택해 추가하면 실손 중복, 과보험, 보장 공백 구간을 한 화면에 시각화해 주는 자가 진단 도구입니다.</p>
     <a class="cta" href="https://insurance-overlap-check.vercel.app" target="_blank" rel="noopener">바로 실행하기 →</a>
   </div>
-  <section class="about"><h2>보험과진단 소개</h2>
-    <p>가입한 보험의 종류를 선택해 추가하면 실손 중복, 과보험, 보장 공백 구간을 한 화면에 시각화해 주는 자가 진단 도구입니다. 보험료는 매달 빠져나가지만 내가 어디서 중복 납부하고 어디가 비어 있는지 파악하기 어려운데, 이 도구로 전체 구조를 직접 들여다볼 수 있습니다.</p>
-    <h2>알아두면 좋은 배경지식</h2>
-    <p>국내에서 실손의료보험은 '비례보상' 원칙이 적용되어, 여러 곳에 가입했다고 해서 각각 전액을 받는 것이 아니라 실제 손해액 범위 안에서 비례 분담됩니다. 반면 암 진단금·수술비 같은 정액형 보험은 가입 건수만큼 중복 지급이 가능합니다. 이 구분을 모르면 실손보험을 두 개 유지하며 보험료를 이중으로 내거나, 정작 필요한 보장은 빠져 있는 상황이 생깁니다. 보험 계약은 장기간 유지되므로 한 번 구조를 점검해 불필요한 지출을 줄이는 것이 중요합니다.</p>
-    <h2>이렇게 사용하세요</h2>
+  <section class="about"><div class="tldr">
+      <p class="tldr-h">한눈에 보기</p>
+      <ul>
+        <li><b>무엇을</b> 가입한 보험의 종류를 선택해 추가하면 실손 중복, 과보험, 보장 공백 구간을 한 화면에…</li>
+        <li><b>이용</b> 무료 · 설치·회원가입 없음 · 입력값을 서버로 보내지 않음</li>
+      </ul>
+    </div>
+    <p class="topnote">ⓘ 참고용 추정입니다. 실제 적용 기준은 관계 기관·전문가 확인을 권장하며, 세법·요율 기준 시점은 2026년 7월입니다.</p>
+    <h2>이럴 때 유용해요</h2>
+    <ul>
+        <li>직장인이 된 뒤 부모님이 들어준 어릴 적 보험과 새로 가입한 보험이 겹치는지 한눈에 파악하고 싶을 때 유용합니다.</li>
+        <li>보험료 지출을 줄이고 싶지만 어떤 보험을 해지해도 되는지 판단이 서지 않을 때 구조 파악 용도로 활용할 수 있습니다.</li>
+    </ul>
+    <details class="deep">
+      <summary>사용법과 자세한 설명 보기 · 보험과진단</summary>
+      <div class="deep-body">
+        <h2>이렇게 사용하세요</h2>
     <ol>
         <li>가입한 보험 종류(실손, 종신, 암, 상해, 운전자 등)를 목록에서 선택해 추가한다.</li>
         <li>각 보험의 보장 유형이 비례형인지 정액형인지 확인·조정한다.</li>
@@ -133,11 +166,10 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
         <li>실손 중복 구간, 미보장 구간, 과보험 위험 항목을 순서대로 검토한다.</li>
         <li>결과를 참고해 정리가 필요한 보험과 추가가 필요한 보장을 메모한다.</li>
     </ol>
-    <h2>이럴 때 유용해요</h2>
-    <ul>
-        <li>직장인이 된 뒤 부모님이 들어준 어릴 적 보험과 새로 가입한 보험이 겹치는지 한눈에 파악하고 싶을 때 유용합니다.</li>
-        <li>보험료 지출을 줄이고 싶지만 어떤 보험을 해지해도 되는지 판단이 서지 않을 때 구조 파악 용도로 활용할 수 있습니다.</li>
-    </ul>
+        <p>가입한 보험의 종류를 선택해 추가하면 실손 중복, 과보험, 보장 공백 구간을 한 화면에 시각화해 주는 자가 진단 도구입니다. 보험료는 매달 빠져나가지만 내가 어디서 중복 납부하고 어디가 비어 있는지 파악하기 어려운데, 이 도구로 전체 구조를 직접 들여다볼 수 있습니다.</p>
+        <p>국내에서 실손의료보험은 &#39;비례보상&#39; 원칙이 적용되어, 여러 곳에 가입했다고 해서 각각 전액을 받는 것이 아니라 실제 손해액 범위 안에서 비례 분담됩니다. 반면 암 진단금·수술비 같은 정액형 보험은 가입 건수만큼 중복 지급이 가능합니다. 이 구분을 모르면 실손보험을 두 개 유지하며 보험료를 이중으로 내거나, 정작 필요한 보장은 빠져 있는 상황이 생깁니다. 보험 계약은 장기간 유지되므로 한 번 구조를 점검해 불필요한 지출을 줄이는 것이 중요합니다.</p>
+      </div>
+    </details>
     <h2>활용 팁</h2>
     <ul>
         <li>실손보험은 1세대·2세대·3세대·4세대로 나뉘며 갱신 주기와 보장 범위가 다릅니다. 단순히 개수를 줄이기 전에 어느 세대인지 확인하세요.</li>
@@ -165,7 +197,7 @@ footer a{color:var(--link);margin:0 7px;text-decoration:none}
   <section class="related">
     <h2>관련 서비스</h2>
     <div class="rel-grid"><a class="rel" href="/pyeong-converter-plus/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 평수변환플러스</a>
-      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 연봉상위 (SalaryRank)</a>
+      <a class="rel" href="/salary-rank/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M6 20v-5"/><path d="M12 20V6"/><path d="M18 20v-9"/></svg></span> 연봉상위 (SalaryRank)</a>
       <a class="rel" href="/cheongyak-score-calc/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 청약가점기</a>
       <a class="rel" href="/jeonse-loan-limit/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 전세대출되나 (전세자금대출 한도 계산기)</a>
       <a class="rel" href="/salary-net-pay/"><span class="rel-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></span> 급여실수령 (연봉 실수령액 계산기)</a>
