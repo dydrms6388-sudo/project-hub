@@ -1,0 +1,27 @@
+{
+  "name": "@ggu/pangyeolso",
+  "version": "0.0.0",
+  "private": true,
+  "description": "판결소 — 사연을 올리면 대중이 판결하는 UGC 서비스. @ggu/ugc-core의 첫 실제 소비자 앱.",
+  "scripts": {
+    "predev": "npm run build -w @ggu/ugc-core",
+    "dev": "next dev -p 3001",
+    "prebuild": "npm run build -w @ggu/ugc-core",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ggu/ugc-core": "*",
+    "@supabase/supabase-js": "^2.45.0",
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.5.4"
+  }
+}

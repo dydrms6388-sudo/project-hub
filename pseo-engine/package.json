@@ -1,0 +1,21 @@
+{
+  "name": "pseo-engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "공공데이터 프로그래매틱 SEO 엔진 (아이디어 A). 공공데이터 API → 롱테일 페이지 자동 생성·갱신. 정적 사이트(tomatoeggcat)와 완전 분리된 독립 워크스페이스.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.5"
+  }
+}
