@@ -78,6 +78,7 @@ const BUILTINS = [
   { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
+  { slug: "mind-care", emoji: "🌿", name: "마음케어", desc: "따라하는 명상·요가·근육이완 + 공황 SOS 호흡·마음안정", k: "명상 요가 스트레칭 이완 마음안정 우울 불안 공황 호흡 그라운딩 멘탈", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
@@ -85,6 +86,7 @@ const BUILTIN_CATS = [
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
+  { title: "🌿 마음 건강", tag: "자기돌봄", slugs: ["mind-care"] },
 ];
 const RESERVED = new Set([...BUILTINS.map(b => b.slug), "privacy", "terms", "contact", "sitemap", "robots", "coupang", "ads", "templates", "index", "api", "lib", "auth-billing", "_next", "404", "og", "site.config", "prism", "illusion-lab", "pattern-lab", "physics-lab",
   // 팩2 자립형 마이크로사이트 (각자 별도 Vercel 프로젝트 root 예정, 손으로 관리)
