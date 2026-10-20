@@ -342,12 +342,9 @@ export async function unblock(db: Db, userId: string, targetId: string) {
   await db.query(`delete from public.blocks where blocker_id = $1 and blocked_id = $2`, [userId, targetId]);
 }
 
-export async function listBlocked(db: Db, userId: string) {
-  const r = await db.query<{ blocked_id: string; created_at: string }>(
-    `select blocked_id, created_at from public.blocks where blocker_id = $1 order by created_at desc`,
-    [userId],
-  );
-  return r.rows.map((x) => ({ blocked_id: x.blocked_id, created_at: iso(x.created_at)! }));
+export async function listBlocked(db: Db): Promise<{ blocked_id: string; nickname: string | null; created_at: string }[]> {
+  const r = await db.query("select blocked_id, nickname, created_at from public.my_blocked_list()");
+  return r.rows.map((x) => ({ blocked_id: x.blocked_id, nickname: x.nickname, created_at: iso(x.created_at)! }));
 }
 
 export async function report(db: Db, userId: string, targetId: string, reason: string, detail: string | null) {

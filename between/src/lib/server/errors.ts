@@ -1,6 +1,6 @@
 // Server Action 공통 결과 타입
-export type ActionResult<T = undefined> =
-  | ({ ok: true } & (T extends undefined ? { data?: undefined } : { data: T }))
+export type ActionResult<T = null> =
+  | { ok: true; data: T }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
 export class AppError extends Error {
