@@ -23,7 +23,7 @@ export async function proxy(request: NextRequest) {
     `frame-ancestors 'none'`,
     `manifest-src 'self'`,
     `worker-src 'self'`,
-    ...(isDev ? [] : ["upgrade-insecure-requests"]),
+    ...(process.env.APP_ORIGIN?.startsWith("https:") ? ["upgrade-insecure-requests"] : []),
   ].join("; ");
 
   const requestHeaders = new Headers(request.headers);

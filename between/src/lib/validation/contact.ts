@@ -25,7 +25,6 @@ export function validateHttpsUrl(raw: string): ContactResult {
   const input = raw.trim();
   if (!input) return { ok: false, error: "링크를 입력해 주세요." };
   if (input.length > MAX_LEN) return { ok: false, error: "링크가 너무 길어요." };
-  // eslint-disable-next-line no-control-regex
   if (/[\s<>"'`\\\u0000-\u001F\u007F]/.test(input)) return { ok: false, error: "링크에 허용되지 않는 문자가 있어요." };
   let u: URL;
   try {
