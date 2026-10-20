@@ -48,6 +48,10 @@
 - 정화 머리방 고객 관리 + 알림톡 자동화. **Next.js 15 App Router + Supabase + Vercel Cron**
   — 허브 파이프라인과 무관, 별도 Vercel 프로젝트(root=`salon`)로 배포. 상세는 `salon/README.md`.
 - Phase 1(고객/방문/알림톡 크론)만 구현됨. Phase 게이트(실사용 1주) 통과 전 다음 Phase 코드 금지.
+  예외: Phase 2 중 "매일 콘텐츠 초안 1개"는 소유자 지시로 선행 구현됨 —
+  `.github/workflows/salon-daily-post.yml` → `salon/scripts/daily-post.mjs`(Claude API) →
+  `salon/content/drafts/YYYY-MM-DD.md` 커밋. 자동 게시 없음(사장님 확인 후 수동 게시),
+  고객 DB·사진 미사용, 리포 시크릿 `ANTHROPIC_API_KEY` 없으면 스스로 스킵(하루 1회 유료 호출).
 - 접근 제어 3중: middleware(로그인) → `requireOwner()`(owners 화이트리스트) → RLS(DB).
   service role 키를 쓰는 `lib/supabase.ts` 는 `server-only` import 로 클라이언트 유출 시 빌드 실패.
 - 검증: `cd salon && npm run check` (tsc --noEmit + `node --test` 순수 유틸 단위 테스트).

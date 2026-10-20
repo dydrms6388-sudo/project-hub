@@ -5,6 +5,9 @@
 - **스택**: Next.js 15 App Router · Supabase (DB + Auth 매직링크) · Vercel Cron · Solapi 알림톡
 - **배포**: 허브(`tomatoeggcat.com`)와 무관한 **별도 Vercel 프로젝트** (Root Directory = `salon`)
 - **원칙**: Phase 1 배포 → 친구가 실제 1주 사용 → 그 다음에 Phase 2(콘텐츠 에이전트) 시작
+- **예외(사장님 지시)**: Phase 2 중 "매일 콘텐츠 초안 1개"만 게이트 전에 먼저 넣었다.
+  앱 기능·스키마는 Phase 1 그대로이고, 초안 생성은 앱 밖(GitHub Actions)에서 돈다 →
+  [콘텐츠 초안](#콘텐츠-초안-매일-1개-phase-2-선행)
 
 ## 화면
 | 경로 | 내용 |
@@ -63,6 +66,25 @@
 - [ ] 실제 고객 5명 입력, 리뷰 알림톡 실제 수신 확인
 - [ ] 여기까지 끝나기 전에 Phase 2 시작 안 함
 
+## 콘텐츠 초안 매일 1개 (Phase 2 선행)
+
+매일 KST 06:10 에 GitHub Actions 가 글 초안 1개를 만들어 `content/drafts/YYYY-MM-DD.md` 로
+커밋한다. **자동 게시는 없다** — 사장님이 읽고 고쳐서 직접 올린다.
+
+- 워크플로: `.github/workflows/salon-daily-post.yml` (리포 루트)
+- 스크립트: `scripts/daily-post.mjs` (Claude API) + 순수 로직 `lib/content.ts`
+- 초안 구성: 제목 · 블로그 본문(800~1200자) · 스레드 캡션 · 사장님 확인 3개 ·
+  해시태그 15개(로컬 5 + 시술 5 + 일반 5)
+- 주제 30개 풀을 돌리고 최근 2주 주제는 피한다. 후킹 형식 5종도 날짜별로 순환.
+- **고객 데이터·사진 미사용**: 스크립트는 Supabase 에 접근하지 않는다 → `consent_photo`
+  동의 문제가 생길 여지 없음.
+- 금지 표현(의학적 치료 주장·효과 보장·외모 비하·전화번호·주민번호) 검사를 통과하지
+  못하면 1회 재작성, 그래도 걸리면 파일을 쓰지 않고 실패한다.
+- 켜고 끄기: 리포 시크릿 `ANTHROPIC_API_KEY`. 없으면 경고만 남기고 커밋 없이 성공 종료.
+  **하루 1회 유료 API 호출이 발생한다** (끄려면 시크릿 삭제 또는 워크플로 disable).
+
+자세한 내용과 수동 실행법: [`content/README.md`](content/README.md)
+
 ## 개발
 ```bash
 cd salon
@@ -73,8 +95,9 @@ npm run check                # 타입체크 + 단위 테스트
 ```
 크론 수동 테스트: `curl -H "Authorization: Bearer $CRON_SECRET" localhost:3000/api/cron/review`
 
-테스트는 `node --experimental-strip-types --test`로 순수 유틸(`lib/dates.ts`, `lib/validate.ts`)을 검증한다
-— KST 경계, 윤년, 전화번호·가격 형식, PostgREST 필터 인젝션 방지 등.
+테스트는 `node --experimental-strip-types --test`로 순수 유틸(`lib/dates.ts`, `lib/validate.ts`,
+`lib/content.ts`)을 검증한다 — KST 경계, 윤년, 전화번호·가격 형식, PostgREST 필터 인젝션 방지,
+콘텐츠 주제·해시태그 로테이션과 금지 표현 검사.
 
 ## 스키마 메모 (스펙 대비 추가분)
 - `visits.completed_at` — "시술 완료" 버튼이 채움. 후기 알림톡은 완료된 방문에만 발송(노쇼 방지).
