@@ -22,6 +22,11 @@ const ADSENSE = "ca-pub-5567719201265106";
 // dateModified가 흔들려 신뢰도 신호가 오히려 약해지므로 편집 검토 기준월을 고정한다.
 // 개별 문서에서 landing-content.json 의 "reviewed"(YYYY-MM)로 덮어쓸 수 있다.
 const REVIEW_DATE = "2026-07";
+// "2026년 고시 요율·법령 기준" 은 실제로 요율·법령을 계산에 쓰는 도구에만 붙인다.
+// 작곡 같은 창작 도구에 붙으면 사실과 다르고, 법률·금융 확정 표기 금지 규칙에도 걸린다.
+const RATE_LAW_SLUGS = new Set(["salary","dsr","jeonse-loan","yangdo","refinance","age","dday","bmi","pyeong"]);
+// 나중에 합류한 도구는 제 검토 시점을 쓴다 (전 사이트 공통 REVIEW_DATE 가 아니라)
+const SLUG_REVIEW_DATE = { songlab: "2026-10" };
 const REVIEW_LABEL = (ym) => { const [y, m] = String(ym).split("-"); return `${y}년 ${Number(m)}월`; };
 const PUBLISHER = { "@type": "Organization", name: "TomatoEggCat", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/og/logo.png` } };
 // OG 이미지 경로 결정: 해당 slug 전용 카드가 있으면 사용, 없으면 기본 카드.
@@ -116,6 +121,8 @@ const CORE_SLUGS = new Set([
   "mbti-match",
   // 운세·심리
   "today-fortune",
+  // 음악·창작 — 고유 본문(소개·사용법·허밍 원리·FAQ 6)과 JSON-LD 보유, 리뷰 16차 90.75점
+  "songlab",
   // 뷰티·패션
   "personal-color-test",
   // ── 2차 색인 확대(batch3): 5-에이전트 재작성 루프로 86~89점 달성한 비생물학 도구 ──
@@ -466,7 +473,7 @@ for (const b of BUILTINS) {
 
   // ── E-E-A-T/OG 주입(멱등): 기존 주입 블록은 항상 제거(정리), 추가는 색인 대상(CORE)에만 ──
   // master가 추가한 비색인 바이럴/뉴스 앱(고유 디자인·OG 보유)에는 편집·출처·OG를 덧대지 않는다.
-  const dm = `${REVIEW_DATE}-01`;
+  const dm = `${SLUG_REVIEW_DATE[b.slug] || REVIEW_DATE}-01`;
   h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
   h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
   h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
@@ -478,7 +485,7 @@ for (const b of BUILTINS) {
       ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
       : "";
     const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
-  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(SLUG_REVIEW_DATE[b.slug] || REVIEW_DATE)}${RATE_LAW_SLUGS.has(b.slug) ? " · 2026년 고시 요율·법령 기준" : ""}</p>
   ${bsrcHtml}
 </div>\n`;
     if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);
