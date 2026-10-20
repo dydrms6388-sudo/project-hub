@@ -22,6 +22,11 @@ const ADSENSE = "ca-pub-5567719201265106";
 // dateModified가 흔들려 신뢰도 신호가 오히려 약해지므로 편집 검토 기준월을 고정한다.
 // 개별 문서에서 landing-content.json 의 "reviewed"(YYYY-MM)로 덮어쓸 수 있다.
 const REVIEW_DATE = "2026-07";
+// "2026년 고시 요율·법령 기준" 은 실제로 요율·법령을 계산에 쓰는 도구에만 붙인다.
+// 작곡 같은 창작 도구에 붙으면 사실과 다르고, 법률·금융 확정 표기 금지 규칙에도 걸린다.
+const RATE_LAW_SLUGS = new Set(["salary","dsr","jeonse-loan","yangdo","refinance","age","dday","bmi","pyeong"]);
+// 나중에 합류한 도구는 제 검토 시점을 쓴다 (전 사이트 공통 REVIEW_DATE 가 아니라)
+const SLUG_REVIEW_DATE = { songlab: "2026-10" };
 const REVIEW_LABEL = (ym) => { const [y, m] = String(ym).split("-"); return `${y}년 ${Number(m)}월`; };
 const PUBLISHER = { "@type": "Organization", name: "TomatoEggCat", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/og/logo.png` } };
 // OG 이미지 경로 결정: 해당 slug 전용 카드가 있으면 사용, 없으면 기본 카드.
@@ -77,11 +82,13 @@ const BUILTINS = [
   { slug: "office-translate", emoji: "🏢", name: "직장인 번역기", desc: "회사어 ↔ 진심 양방향 통역 + 빡침 게이지", k: "직장인 번역 회사어 속마음 넵", prio: "0.7" },
   { slug: "haengsi", emoji: "✍️", name: "N행시 자판기", desc: "이름·단어 넣으면 테마별 N행시가 툭", k: "n행시 이행시 삼행시 이름 자판기", prio: "0.7" },
   { slug: "quit-letter", emoji: "📨", name: "밈 사직서 생성기", desc: "마음속 사직서를 기안문 카드로, 결재는 반려", k: "사직서 퇴사 밈 직장인 기안문", prio: "0.7" },
+  { slug: "songlab", emoji: "🎼", name: "AI 작사작곡 스튜디오", desc: "무드 고르면 코드·멜로디·가사 완성, 허밍은 악보·코드로 추출", k: "작곡 작사 멜로디 코드 악보 허밍 미디 노래만들기", prio: "0.7" },
   { slug: "news-cards", emoji: "🗞️", name: "오늘의 카드뉴스", desc: "매일 아침 자동 갱신되는 헤드라인 브리핑·카드 저장", k: "뉴스 카드뉴스 헤드라인 브리핑 오늘", prio: "0.8" },
 ];
 const BUILTIN_CATS = [
   { title: "💰 필수 금융", tag: "실생활 필수", slugs: ["salary", "dsr", "jeonse-loan", "yangdo", "refinance"] },
   { title: "🔢 기본 계산기", tag: "", slugs: ["age", "dday", "bmi", "pyeong"] },
+  { title: "🎼 음악 · 창작", tag: "신규", slugs: ["songlab"] },
   { title: "🎭 취향 · 바이럴", tag: "재미", slugs: ["taste-dna", "future-letter", "first-impress", "tone-lab", "roast-edit", "dark-history"] },
   { title: "😂 밈 · 직장인 놀이터", tag: "재미", slugs: ["excuse-factory", "apology-maker", "nag-menu", "fight-judge", "meme-exam", "year-book", "pay-timer", "office-translate", "haengsi", "quit-letter"] },
   { title: "🗞️ 데일리 뉴스", tag: "매일 자동", slugs: ["news-cards"] },
@@ -114,6 +121,8 @@ const CORE_SLUGS = new Set([
   "mbti-match",
   // 운세·심리
   "today-fortune",
+  // 음악·창작 — 고유 본문(소개·사용법·허밍 원리·FAQ 6)과 JSON-LD 보유, 리뷰 16차 90.75점
+  "songlab",
   // 뷰티·패션
   "personal-color-test",
   // ── 2차 색인 확대(batch3): 5-에이전트 재작성 루프로 86~89점 달성한 비생물학 도구 ──
@@ -437,7 +446,13 @@ for (const b of BUILTINS) {
   // 테마 대응(멱등): 내가 CSS 변수로 테마화한 색인 대상(CORE) 내장에만 적용.
   // 단색 theme-color를 라이트/다크 쌍으로 정규화 + 홈 저장 테마 읽기(무쓰기) 동기화 스크립트.
   // master가 추가한 비색인 앱은 고유 디자인을 그대로 두기 위해 건드리지 않는다.
-  h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
+  // 단, 자기 테마 동기화 블록을 직접 넣은 앱(songlab 등)은 지우지 않는다 —
+  // 지우면 홈에서 라이트를 고른 사용자가 그 앱에서만 다크를 보게 된다.
+  if (!CORE_SLUGS.has(b.slug) && /<!--theme-sync-->/.test(h)) {
+    // 그대로 둔다
+  } else {
+    h = h.replace(/\s*<!--theme-sync-->[\s\S]*?<!--\/theme-sync-->/i, "");
+  }
   if (CORE_SLUGS.has(b.slug)) {
     h = h.replace(/\s*<meta name="theme-color"[^>]*>/gi, "");
     const themeBlock = `<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
@@ -458,7 +473,7 @@ for (const b of BUILTINS) {
 
   // ── E-E-A-T/OG 주입(멱등): 기존 주입 블록은 항상 제거(정리), 추가는 색인 대상(CORE)에만 ──
   // master가 추가한 비색인 바이럴/뉴스 앱(고유 디자인·OG 보유)에는 편집·출처·OG를 덧대지 않는다.
-  const dm = `${REVIEW_DATE}-01`;
+  const dm = `${SLUG_REVIEW_DATE[b.slug] || REVIEW_DATE}-01`;
   h = h.replace(/\s*<div class="eeat"[\s\S]*?<\/div>\s*(?=<footer)/i, "\n");
   h = h.replace(/\s*<!--og-eeat-->[\s\S]*?<!--\/og-eeat-->/i, "");
   h = h.replace(/\s*<script type="application\/ld\+json" data-eeat="1">[\s\S]*?<\/script>/i, "");
@@ -470,7 +485,7 @@ for (const b of BUILTINS) {
       ? `<p style="margin:7px 0 0;color:var(--x8b8f98,#8b8f98);font-size:12.5px;line-height:1.7">참고 자료: ${bsrc.map(s => `<a href="${s.url}" target="_blank" rel="noopener nofollow" style="color:var(--x7aa2ff,#7aa2ff);text-decoration:none">${esc(s.label)}</a>`).join(" · ")}</p>`
       : "";
     const eeat = `<div class="eeat" style="margin:22px 0 0;padding:13px 15px;background:var(--x101512,#101512);border:1px solid var(--x1e2a24,#1e2a24);border-radius:11px">
-  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(REVIEW_DATE)} · 2026년 고시 요율·법령 기준</p>
+  <p style="margin:0;color:var(--xaeb6bf,#aeb6bf);font-size:13px">✍️ 작성·검토: <strong style="color:var(--xd6dbe2,#d6dbe2)">TomatoEggCat 편집팀</strong> · 콘텐츠 최종 점검 ${REVIEW_LABEL(SLUG_REVIEW_DATE[b.slug] || REVIEW_DATE)}${RATE_LAW_SLUGS.has(b.slug) ? " · 2026년 고시 요율·법령 기준" : ""}</p>
   ${bsrcHtml}
 </div>\n`;
     if (/<footer/i.test(h)) h = h.replace(/(?=<footer)/i, eeat);
