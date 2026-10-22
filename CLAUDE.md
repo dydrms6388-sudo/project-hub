@@ -52,3 +52,8 @@
   (`src/lib/content/`) 3종 등록 필요 — `node scripts/check-coverage.mjs` 로 검사.
 - 빌드: `cd illusion-lab && npm install && npm run build` → `out/`.
 - gen-pages.mjs 의 RESERVED 에 `illusion-lab` 등록됨(고아 정리 보호).
+
+## 서브프로젝트: `between/` (별도 배포)
+- 한국형 성인 남성 소개팅 웹서비스 BETWEEN. **Next.js 16 + Supabase(Postgres RLS/Anonymous Auth/Storage)**,
+  허브 gen-pages 파이프라인과 무관하며 별도 Vercel 프로젝트(root=`between`)로 배포.
+- 상세 규칙·명령어는 `between/CLAUDE.md`. gen-pages.mjs 의 RESERVED 에 `between` 등록됨(고아 정리 보호).
