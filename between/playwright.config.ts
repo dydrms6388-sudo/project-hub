@@ -11,6 +11,8 @@ const env = {
   LOCAL_STORAGE_DIR: ".data/e2e-uploads",
   LOCAL_JWT_SECRET: "e2e-secret-e2e-secret-e2e-secret-e2e-secret",
   CRON_SECRET: "e2e-cron",
+  // 모든 테스트 사용자가 127.0.0.1 에서 생성되므로 가입 레이트리밋만 상향 (운영 기본값 8/시간)
+  START_RATE_LIMIT_PER_HOUR: "500",
 };
 Object.assign(process.env, env);
 

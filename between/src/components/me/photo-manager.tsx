@@ -58,7 +58,11 @@ export function PhotoManager({ photos, nickname }: { photos: Photo[]; nickname: 
     <div>
       <ul className="grid grid-cols-3 gap-2" data-testid="photo-list">
         {photos.map((p, i) => (
-          <li key={p.id} className="relative aspect-[3/4] overflow-hidden rounded-xl bg-secondary" data-testid="my-photo">
+          <li
+            key={p.id}
+            className="bg-secondary relative aspect-[3/4] overflow-hidden rounded-xl"
+            data-testid="my-photo"
+          >
             <ProfilePhoto photoId={p.id} name={nickname} seed={p.id} className="absolute inset-0 size-full" />
             {busyId === p.id && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/50">
@@ -66,7 +70,7 @@ export function PhotoManager({ photos, nickname }: { photos: Photo[]; nickname: 
               </div>
             )}
             {i === 0 && (
-              <span className="absolute top-1.5 left-1.5 rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold text-white">
+              <span className="bg-brand absolute top-1.5 left-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold text-white">
                 대표
               </span>
             )}
@@ -111,7 +115,7 @@ export function PhotoManager({ photos, nickname }: { photos: Photo[]; nickname: 
           <li className="aspect-[3/4]">
             <label
               className={cn(
-                "flex size-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-white/15 text-muted-foreground transition-colors hover:border-primary hover:text-foreground",
+                "text-muted-foreground hover:border-primary hover:text-foreground flex size-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-white/15 transition-colors",
                 uploading && "pointer-events-none opacity-60",
               )}
             >
@@ -134,8 +138,9 @@ export function PhotoManager({ photos, nickname }: { photos: Photo[]; nickname: 
           </li>
         )}
       </ul>
-      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-        업로드한 사진은 위치정보(EXIF)를 지우고 다시 저장돼요. 얼굴 사진이 아니어도 괜찮아요. 타인의 사진·노출 사진은 제재 대상이에요.
+      <p className="text-muted-foreground mt-3 text-xs leading-relaxed">
+        업로드한 사진은 위치정보(EXIF)를 지우고 다시 저장돼요. 얼굴 사진이 아니어도 괜찮아요. 타인의 사진·노출 사진은
+        제재 대상이에요.
       </p>
     </div>
   );

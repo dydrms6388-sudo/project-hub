@@ -17,7 +17,11 @@ export default async function BlockedPage() {
       <PageHeader
         title={
           <span className="flex items-center gap-1">
-            <Link href="/me" aria-label="뒤로" className="-ml-2 flex size-9 items-center justify-center rounded-full hover:bg-secondary">
+            <Link
+              href="/me"
+              aria-label="뒤로"
+              className="hover:bg-secondary -ml-2 flex size-9 items-center justify-center rounded-full"
+            >
               <ChevronLeft className="size-6" />
             </Link>
             차단 목록
@@ -25,7 +29,7 @@ export default async function BlockedPage() {
         }
       />
       <BlockedList items={items} />
-      <p className="mt-3 px-1 text-xs text-muted-foreground">차단을 해제해도 이전 매칭은 복구되지 않아요.</p>
+      <p className="text-muted-foreground mt-3 px-1 text-xs">차단을 해제해도 이전 매칭은 복구되지 않아요.</p>
     </div>
   );
 }

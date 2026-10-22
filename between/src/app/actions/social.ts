@@ -83,7 +83,8 @@ export async function reportAction(input: z.input<typeof reportSchema>) {
       try {
         await repo.report(db, s.userId, targetId, reason, detail || null);
       } catch (e) {
-        if ((e as { code?: string }).code === "23505") throw new AppError("이미 신고한 사용자예요. 운영팀이 검토 중이에요.");
+        if ((e as { code?: string }).code === "23505")
+          throw new AppError("이미 신고한 사용자예요. 운영팀이 검토 중이에요.");
         throw e;
       }
     });

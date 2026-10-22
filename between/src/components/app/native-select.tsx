@@ -10,14 +10,14 @@ export const NativeSelect = forwardRef<HTMLSelectElement, React.SelectHTMLAttrib
         <select
           ref={ref}
           className={cn(
-            "h-11 w-full appearance-none rounded-xl border border-input bg-input/30 pr-9 pl-3.5 text-[15px] outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-50 aria-invalid:border-destructive",
+            "border-input bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive h-11 w-full appearance-none rounded-xl border pr-9 pl-3.5 text-[15px] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:opacity-50",
             className,
           )}
           {...props}
         >
           {children}
         </select>
-        <ChevronDown className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <ChevronDown className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2" />
       </div>
     );
   },

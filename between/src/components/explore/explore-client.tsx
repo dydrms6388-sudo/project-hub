@@ -135,7 +135,7 @@ export function ExploreClient({
               <SlidersHorizontal />
               필터
               {count > 0 && (
-                <span className="ml-0.5 rounded-full bg-brand px-1.5 text-[10px] leading-4 font-bold text-white">
+                <span className="bg-brand ml-0.5 rounded-full px-1.5 text-[10px] leading-4 font-bold text-white">
                   {count}
                 </span>
               )}
@@ -153,7 +153,11 @@ export function ExploreClient({
         >
           <Zap className="size-3.5" /> 지금 가능
         </Chip>
-        <Chip size="sm" selected={onlineOn} onClick={() => apply({ ...filters, activeWithin: onlineOn ? "any" : "online" })}>
+        <Chip
+          size="sm"
+          selected={onlineOn}
+          onClick={() => apply({ ...filters, activeWithin: onlineOn ? "any" : "online" })}
+        >
           접속 중
         </Chip>
         <Chip size="sm" selected={filters.hasPhoto} onClick={() => apply({ ...filters, hasPhoto: !filters.hasPhoto })}>
@@ -171,7 +175,7 @@ export function ExploreClient({
             </Chip>
             <button
               type="button"
-              className="inline-flex h-7 items-center rounded-r-full border border-l-0 border-white/10 bg-secondary/60 px-1.5 text-muted-foreground hover:text-foreground"
+              className="bg-secondary/60 text-muted-foreground hover:text-foreground inline-flex h-7 items-center rounded-r-full border border-l-0 border-white/10 px-1.5"
               onClick={() => removeSaved(s.id, s.name)}
               aria-label={`저장된 필터 ${s.name} 삭제`}
             >
@@ -208,7 +212,10 @@ export function ExploreClient({
             }
           />
         ) : view === "grid" ? (
-          <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" data-testid="explore-grid">
+          <ul
+            className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            data-testid="explore-grid"
+          >
             {items.map((p, i) => (
               <li key={p.id}>
                 <ProfileGridCard p={p} priority={i < 6} />
@@ -241,7 +248,7 @@ export function ExploreClient({
         )}
         <div ref={sentinel} aria-hidden className="h-8" />
         {!hasNextPage && items.length > 0 && (
-          <p className="py-6 text-center text-xs text-muted-foreground">
+          <p className="text-muted-foreground py-6 text-center text-xs">
             {isFetchingNextPage ? <Loader2 className="mx-auto size-4 animate-spin" /> : "모두 확인했어요"}
           </p>
         )}

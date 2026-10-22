@@ -6,7 +6,8 @@ import { env } from "@/lib/server/env";
 
 // 사진 저장소. 경로 형식은 항상 "<userId>/<photoId>.webp" (서버 생성) — 사용자 입력이 경로에 섞이지 않는다.
 export const BUCKET = "profile-photos";
-const PATH_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.webp$/;
+const PATH_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.webp$/;
 
 export function photoPath(userId: string, photoId: string) {
   const p = `${userId}/${photoId}.webp`;

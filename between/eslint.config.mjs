@@ -12,7 +12,10 @@ const config = [
       "react/no-danger": "error",
       "no-restricted-syntax": [
         "error",
-        { selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']", message: "XSS 위험: dangerouslySetInnerHTML 금지" },
+        {
+          selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']",
+          message: "XSS 위험: dangerouslySetInnerHTML 금지",
+        },
       ],
     },
   },

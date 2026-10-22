@@ -32,15 +32,15 @@ export function ContactLinks({ contacts, nickname }: { contacts: Contact[]; nick
               <button
                 type="button"
                 onClick={() => setPending(c)}
-                className="flex w-full items-center gap-3 rounded-xl bg-secondary/70 p-2.5 text-left transition-colors hover:bg-secondary"
+                className="bg-secondary/70 hover:bg-secondary flex w-full items-center gap-3 rounded-xl p-2.5 text-left transition-colors"
                 data-testid={`contact-${c.kind}`}
               >
                 <ContactIcon kind={c.kind} />
                 <span className="flex-1">
                   <span className="block text-sm font-semibold">{labelOf(CONTACT_KINDS, c.kind)}</span>
-                  <span className="block truncate text-xs text-muted-foreground">{displayOf(c)}</span>
+                  <span className="text-muted-foreground block truncate text-xs">{displayOf(c)}</span>
                 </span>
-                <ExternalLink className="size-4 text-muted-foreground" />
+                <ExternalLink className="text-muted-foreground size-4" />
               </button>
             </li>
           );
@@ -57,11 +57,11 @@ export function ContactLinks({ contacts, nickname }: { contacts: Contact[]; nick
                   {nickname}님의 {pending && labelOf(CONTACT_KINDS, pending.kind)}(으)로 이동합니다. BETWEEN 밖의 대화는
                   운영팀이 확인할 수 없어요.
                 </p>
-                <p className="flex gap-1.5 rounded-lg bg-destructive/10 p-2 text-xs text-foreground/90">
-                  <ShieldAlert className="size-4 shrink-0 text-destructive" />
+                <p className="bg-destructive/10 text-foreground/90 flex gap-1.5 rounded-lg p-2 text-xs">
+                  <ShieldAlert className="text-destructive size-4 shrink-0" />
                   송금·선입금·개인정보(주민번호, 계좌, 인증번호) 요구는 사기일 가능성이 높아요.
                 </p>
-                <p className="break-all font-mono text-xs text-muted-foreground">{href}</p>
+                <p className="text-muted-foreground font-mono text-xs break-all">{href}</p>
               </div>
             </AlertDialogDescription>
           </AlertDialogHeader>

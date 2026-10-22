@@ -11,7 +11,14 @@ import { startAction } from "@/app/actions/session";
 import { NativeSelect } from "@/components/app/native-select";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ADULT_NOTICE, PRIVACY_SUMMARY, SENSITIVE_NOTICE } from "@/lib/domain/legal";
@@ -61,8 +68,8 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-6" noValidate>
-      <div className="rounded-2xl border border-accent/30 bg-accent/10 p-4 text-[13px] leading-relaxed">
-        <p className="mb-1 flex items-center gap-1.5 font-semibold text-accent">
+      <div className="border-accent/30 bg-accent/10 rounded-2xl border p-4 text-[13px] leading-relaxed">
+        <p className="text-accent mb-1 flex items-center gap-1.5 font-semibold">
           <ShieldCheck className="size-4" /> 성인 전용 서비스
         </p>
         <p className="text-foreground/85">{ADULT_NOTICE}</p>
@@ -80,7 +87,7 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
             className="h-11 rounded-xl"
             {...register("nickname")}
           />
-          {errors.nickname && <p className="text-xs text-destructive">{errors.nickname.message}</p>}
+          {errors.nickname && <p className="text-destructive text-xs">{errors.nickname.message}</p>}
         </div>
 
         <div className="space-y-1.5">
@@ -93,7 +100,7 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
               </option>
             ))}
           </NativeSelect>
-          {errors.birthYear && <p className="text-xs text-destructive">{errors.birthYear.message}</p>}
+          {errors.birthYear && <p className="text-destructive text-xs">{errors.birthYear.message}</p>}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -111,7 +118,7 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
                 </option>
               ))}
             </NativeSelect>
-            {errors.sido && <p className="text-xs text-destructive">{errors.sido.message}</p>}
+            {errors.sido && <p className="text-destructive text-xs">{errors.sido.message}</p>}
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="sigungu">
@@ -137,12 +144,12 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
         </div>
       </div>
 
-      <fieldset className="space-y-3 rounded-2xl bg-card p-4 ring-1 ring-white/5">
+      <fieldset className="bg-card space-y-3 rounded-2xl p-4 ring-1 ring-white/5">
         <legend className="sr-only">필수 동의</legend>
         <button
           type="button"
           onClick={allAgree}
-          className="w-full rounded-xl bg-secondary py-2.5 text-sm font-semibold transition-colors hover:bg-secondary/80"
+          className="bg-secondary hover:bg-secondary/80 w-full rounded-xl py-2.5 text-sm font-semibold transition-colors"
         >
           모두 동의하기
         </button>
@@ -159,7 +166,7 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
           error={errors.privacyConsent?.message}
           action={
             <Dialog>
-              <DialogTrigger className="text-xs text-muted-foreground underline underline-offset-2">보기</DialogTrigger>
+              <DialogTrigger className="text-muted-foreground text-xs underline underline-offset-2">보기</DialogTrigger>
               <DialogContent className="max-h-[85dvh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>개인정보 수집·이용 안내</DialogTitle>
@@ -169,11 +176,11 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
                   {PRIVACY_SUMMARY.map((s) => (
                     <div key={s.title}>
                       <dt className="font-semibold">{s.title}</dt>
-                      <dd className="mt-0.5 text-muted-foreground">{s.body}</dd>
+                      <dd className="text-muted-foreground mt-0.5">{s.body}</dd>
                     </div>
                   ))}
                 </dl>
-                <Link href="/privacy" className="text-sm text-primary underline" target="_blank">
+                <Link href="/privacy" className="text-primary text-sm underline" target="_blank">
                   개인정보 처리방침 전문
                 </Link>
               </DialogContent>
@@ -185,7 +192,7 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
           name="sensitiveConsent"
           label="[필수] 민감정보 처리 동의"
           error={errors.sensitiveConsent?.message}
-          detail={<p className="mt-1 text-xs leading-relaxed text-muted-foreground">{SENSITIVE_NOTICE}</p>}
+          detail={<p className="text-muted-foreground mt-1 text-xs leading-relaxed">{SENSITIVE_NOTICE}</p>}
         />
       </fieldset>
 
@@ -194,22 +201,23 @@ export function OnboardingForm({ maxYear }: { maxYear: number }) {
           type="submit"
           size="lg"
           disabled={pending}
-          className="h-12 w-full rounded-2xl bg-brand text-base font-bold text-white shadow-lg shadow-primary/30"
+          className="bg-brand shadow-primary/30 h-12 w-full rounded-2xl text-base font-bold text-white shadow-lg"
           data-testid="start-submit"
         >
           {pending && <Loader2 className="animate-spin" />}
           익명으로 시작하기
         </Button>
-        <p className="text-center text-xs leading-relaxed text-muted-foreground">
+        <p className="text-muted-foreground text-center text-xs leading-relaxed">
           가입·이메일·전화번호 없이 이 기기의 익명 세션으로 시작돼요.
           <br />
-          세션을 잃으면 복구가 어려우니 시작 후 <b className="text-foreground">내 프로필 → 계정 복구</b>를 설정해 주세요.
+          세션을 잃으면 복구가 어려우니 시작 후 <b className="text-foreground">내 프로필 → 계정 복구</b>를 설정해
+          주세요.
         </p>
         <p className="text-center text-sm">
           <Link href="/restore" className="text-primary underline underline-offset-4">
             이전 계정 복구하기
           </Link>
-          <span className="mx-2 text-muted-foreground">·</span>
+          <span className="text-muted-foreground mx-2">·</span>
           <Link href="/terms" className="text-muted-foreground underline underline-offset-4">
             이용약관
           </Link>
@@ -258,7 +266,7 @@ function ConsentRow({
             {action}
           </div>
           {detail}
-          {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
+          {error && <p className="text-destructive mt-1 text-xs">{error}</p>}
         </div>
       </div>
     </div>

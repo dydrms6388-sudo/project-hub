@@ -17,12 +17,12 @@ export function Section({
   return (
     <section id={id} className={cn("mb-5", className)} aria-labelledby={title && id ? `${id}-title` : undefined}>
       {title && (
-        <h2 id={id ? `${id}-title` : undefined} className="mb-2 px-1 text-[13px] font-semibold text-muted-foreground">
+        <h2 id={id ? `${id}-title` : undefined} className="text-muted-foreground mb-2 px-1 text-[13px] font-semibold">
           {title}
         </h2>
       )}
-      <div className="rounded-2xl bg-card p-4 ring-1 ring-white/5">{children}</div>
-      {description && <p className="mt-2 px-1 text-xs leading-relaxed text-muted-foreground">{description}</p>}
+      <div className="bg-card rounded-2xl p-4 ring-1 ring-white/5">{children}</div>
+      {description && <p className="text-muted-foreground mt-2 px-1 text-xs leading-relaxed">{description}</p>}
     </section>
   );
 }

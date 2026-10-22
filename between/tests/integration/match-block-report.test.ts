@@ -50,7 +50,12 @@ describe("좋아요 · 매칭", () => {
     const b = await makeUser();
     const outsider = await makeUser();
     await expect(
-      as(a, (db) => db.query("insert into public.matches (user_a, user_b) values ($1, $2)", [a.id < b.id ? a.id : b.id, a.id < b.id ? b.id : a.id])),
+      as(a, (db) =>
+        db.query("insert into public.matches (user_a, user_b) values ($1, $2)", [
+          a.id < b.id ? a.id : b.id,
+          a.id < b.id ? b.id : a.id,
+        ]),
+      ),
     ).rejects.toThrow(/permission denied/);
     await as(a, (db) => swipe(db, a.id, b.id, "like"));
     await as(b, (db) => swipe(db, b.id, a.id, "like"));
@@ -69,7 +74,9 @@ describe("연락처 공개 범위", () => {
     const matched = await makeUser();
     const stranger = await makeUser();
     await as(owner, (db) => upsertContact(db, owner.id, "instagram", "https://instagram.com/between_owner", "public"));
-    await as(owner, (db) => upsertContact(db, owner.id, "kakao_openchat", "https://open.kakao.com/o/sAbCdEf1", "matches"));
+    await as(owner, (db) =>
+      upsertContact(db, owner.id, "kakao_openchat", "https://open.kakao.com/o/sAbCdEf1", "matches"),
+    );
 
     expect((await as(stranger, (db) => listContacts(db, owner.id))).map((c) => c.kind)).toEqual(["instagram"]);
 
@@ -96,9 +103,11 @@ describe("연락처 공개 범위", () => {
 
   it("http/javascript 스킴은 DB 제약으로도 거부된다", async () => {
     const u = await makeUser();
-    for (const bad of ["javascript:alert(1)", "http://example.com", "https://x.com/\"><script>"]) {
+    for (const bad of ["javascript:alert(1)", "http://example.com", 'https://x.com/"><script>']) {
       await expect(
-        as(u, (db) => db.query("insert into public.contact_methods (user_id, kind, value) values ($1, 'link', $2)", [u.id, bad])),
+        as(u, (db) =>
+          db.query("insert into public.contact_methods (user_id, kind, value) values ($1, 'link', $2)", [u.id, bad]),
+        ),
       ).rejects.toThrow(/check constraint/);
     }
   });
@@ -146,7 +155,9 @@ describe("신고 · 운영", () => {
     const viewer = await makeUser();
     const reporters = [await makeUser(), await makeUser(), await makeUser()];
     await as(reporters[0], (db) => report(db, reporters[0].id, target.id, "spam", "광고 계정"));
-    const others = await as(reporters[1], (db) => db.query("select * from public.reports where reported_id = $1", [target.id]));
+    const others = await as(reporters[1], (db) =>
+      db.query("select * from public.reports where reported_id = $1", [target.id]),
+    );
     expect(others.rowCount).toBe(0);
     await as(reporters[1], (db) => report(db, reporters[1].id, target.id, "scam", null));
     expect(await as(viewer, (db) => getCard(db, target.id))).not.toBeNull();
@@ -166,15 +177,17 @@ describe("신고 · 운영", () => {
     await withService((db) => db.query("insert into public.admin_roles (user_id) values ($1)", [u.id]));
     expect(await as(u, (db) => isAdmin(db))).toBe(false);
     await expect(
-      as(u, (db) => moderate(db, { target: u.id, action: "warn", reason: null, hours: null, reportId: null, photoId: null })),
+      as(u, (db) =>
+        moderate(db, { target: u.id, action: "warn", reason: null, hours: null, reportId: null, photoId: null }),
+      ),
     ).rejects.toThrow(/FORBIDDEN/);
   });
 
   it("일반 사용자는 admin_roles 를 쓸 수 없다", async () => {
     const u = await makeUser();
-    await expect(as(u, (db) => db.query("insert into public.admin_roles (user_id) values ($1)", [u.id]))).rejects.toThrow(
-      /permission denied/,
-    );
+    await expect(
+      as(u, (db) => db.query("insert into public.admin_roles (user_id) values ($1)", [u.id])),
+    ).rejects.toThrow(/permission denied/);
   });
 
   it("운영자는 신고 큐를 보고 정지/복구할 수 있다", async () => {
@@ -191,13 +204,19 @@ describe("신고 · 운영", () => {
       moderate(db, { target: bad.id, action: "suspend", reason: "욕설", hours: 24, reportId: item.id, photoId: null }),
     );
     expect(await as(viewer, (db) => getCard(db, bad.id))).toBeNull();
-    const st = await as(admin, (db) => db.query("select status, suspended_until from public.profiles where id = $1", [bad.id]));
+    const st = await as(admin, (db) =>
+      db.query("select status, suspended_until from public.profiles where id = $1", [bad.id]),
+    );
     expect(st.rows[0].status).toBe("suspended");
     expect((await as(admin, (db) => reportQueue(db))).find((r) => r.id === item.id)).toBeUndefined();
 
-    await as(admin, (db) => moderate(db, { target: bad.id, action: "restore", reason: null, hours: null, reportId: null, photoId: null }));
+    await as(admin, (db) =>
+      moderate(db, { target: bad.id, action: "restore", reason: null, hours: null, reportId: null, photoId: null }),
+    );
     expect(await as(viewer, (db) => getCard(db, bad.id))).not.toBeNull();
-    const log = await as(admin, (db) => db.query("select action from public.moderation_actions where target_user_id = $1 order by created_at", [bad.id]));
+    const log = await as(admin, (db) =>
+      db.query("select action from public.moderation_actions where target_user_id = $1 order by created_at", [bad.id]),
+    );
     expect(log.rows.map((r) => r.action)).toEqual(["suspend", "restore"]);
     const asUser = await as(viewer, (db) => db.query("select * from public.moderation_actions"));
     expect(asUser.rowCount).toBe(0);

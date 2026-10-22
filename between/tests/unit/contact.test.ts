@@ -13,7 +13,10 @@ describe("validateContact", () => {
   });
 
   it("아이디를 플랫폼 URL 로 변환한다", () => {
-    expect(validateContact("instagram", "@Between_KR")).toMatchObject({ ok: true, url: "https://instagram.com/between_kr" });
+    expect(validateContact("instagram", "@Between_KR")).toMatchObject({
+      ok: true,
+      url: "https://instagram.com/between_kr",
+    });
     expect(validateContact("telegram", "between_kr")).toMatchObject({ ok: true, url: "https://t.me/between_kr" });
     expect(validateContact("line", "my.line-id")).toMatchObject({ ok: true, url: "https://line.me/ti/p/~my.line-id" });
     expect(validateContact("telegram", "ab").ok).toBe(false);

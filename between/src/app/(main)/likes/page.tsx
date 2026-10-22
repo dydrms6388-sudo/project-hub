@@ -42,7 +42,7 @@ export default async function LikesPage({ searchParams }: { searchParams: Promis
   return (
     <>
       <PageHeader title="좋아요·매칭" />
-      <nav className="mb-4 flex gap-1 rounded-2xl bg-secondary/60 p-1" aria-label="좋아요 탭">
+      <nav className="bg-secondary/60 mb-4 flex gap-1 rounded-2xl p-1" aria-label="좋아요 탭">
         {TABS.map((t) => (
           <Link
             key={t.key}
@@ -56,7 +56,7 @@ export default async function LikesPage({ searchParams }: { searchParams: Promis
             )}
           >
             {t.label}
-            {counts[t.key] > 0 && <span className="ml-1 text-xs text-primary">{counts[t.key]}</span>}
+            {counts[t.key] > 0 && <span className="text-primary ml-1 text-xs">{counts[t.key]}</span>}
           </Link>
         ))}
       </nav>
@@ -72,7 +72,7 @@ export default async function LikesPage({ searchParams }: { searchParams: Promis
                 action={
                   <Link
                     href={`/p/${m.profile.id}#contact`}
-                    className="rounded-xl bg-brand px-3 py-2 text-sm font-semibold text-white"
+                    className="bg-brand rounded-xl px-3 py-2 text-sm font-semibold text-white"
                     data-testid="match-contact"
                   >
                     연락하기
@@ -87,7 +87,7 @@ export default async function LikesPage({ searchParams }: { searchParams: Promis
             title="아직 매칭이 없어요"
             description="서로 좋아요를 누르면 매칭되고, 상대가 매칭 상대에게 공개한 연락 방법을 볼 수 있어요."
             action={
-              <Link href="/swipe" className="mt-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white">
+              <Link href="/swipe" className="bg-brand mt-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white">
                 스와이프 하러 가기
               </Link>
             }
@@ -107,7 +107,11 @@ export default async function LikesPage({ searchParams }: { searchParams: Promis
             ))}
           </ul>
         ) : (
-          <EmptyState icon={<Heart />} title="받은 좋아요가 없어요" description="사진과 자기소개를 채우면 더 많은 관심을 받아요." />
+          <EmptyState
+            icon={<Heart />}
+            title="받은 좋아요가 없어요"
+            description="사진과 자기소개를 채우면 더 많은 관심을 받아요."
+          />
         ))}
 
       {tab === "sent" &&
@@ -126,7 +130,7 @@ export default async function LikesPage({ searchParams }: { searchParams: Promis
 
 function PersonRow({ p, meta, action }: { p: ProfileCard; meta: string; action?: React.ReactNode }) {
   return (
-    <li className="flex items-center gap-3 rounded-2xl bg-card p-2.5 ring-1 ring-white/5">
+    <li className="bg-card flex items-center gap-3 rounded-2xl p-2.5 ring-1 ring-white/5">
       <Link href={`/p/${p.id}`} className="flex min-w-0 flex-1 items-center gap-3">
         <div className="relative size-14 shrink-0 overflow-hidden rounded-full">
           <ProfilePhoto photoId={p.primary_photo_id} name={p.nickname} seed={p.id} className="size-full text-lg" />
@@ -134,10 +138,10 @@ function PersonRow({ p, meta, action }: { p: ProfileCard; meta: string; action?:
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 truncate font-semibold">
             <PresenceDot presence={p.presence} />
-            {p.nickname} <span className="font-normal text-muted-foreground">{p.age}</span>
+            {p.nickname} <span className="text-muted-foreground font-normal">{p.age}</span>
             <AvailabilityBadge availability={p.availability} />
           </p>
-          <p className="truncate text-xs text-muted-foreground">
+          <p className="text-muted-foreground truncate text-xs">
             {[p.sido, p.sigungu].filter(Boolean).join(" ")} · {meta}
           </p>
         </div>

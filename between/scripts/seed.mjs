@@ -4,17 +4,93 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import sharp from "sharp";
 
-const NAMES = ["하늘", "도윤", "서준", "민재", "지호", "태오", "건우", "시우", "우진", "준혁", "로운", "은찬", "한결", "윤호", "다온", "이안", "주원", "선우", "유찬", "도현", "재윤", "현우", "seojun", "Leo", "Min", "JH", "곰돌", "러너", "카페러버", "산책왕", "밤산책", "주말여행", "헬린이", "독서남", "커피한잔", "부산바다", "제주살이", "고양이집사", "운동하는개발자", "음악듣는밤"];
+const NAMES = [
+  "하늘",
+  "도윤",
+  "서준",
+  "민재",
+  "지호",
+  "태오",
+  "건우",
+  "시우",
+  "우진",
+  "준혁",
+  "로운",
+  "은찬",
+  "한결",
+  "윤호",
+  "다온",
+  "이안",
+  "주원",
+  "선우",
+  "유찬",
+  "도현",
+  "재윤",
+  "현우",
+  "seojun",
+  "Leo",
+  "Min",
+  "JH",
+  "곰돌",
+  "러너",
+  "카페러버",
+  "산책왕",
+  "밤산책",
+  "주말여행",
+  "헬린이",
+  "독서남",
+  "커피한잔",
+  "부산바다",
+  "제주살이",
+  "고양이집사",
+  "운동하는개발자",
+  "음악듣는밤",
+];
 const REGIONS = [
-  ["서울", "마포구"], ["서울", "강남구"], ["서울", "용산구"], ["서울", "성동구"], ["서울", "송파구"], ["서울", "종로구"],
-  ["서울", "영등포구"], ["경기", "성남시 분당구"], ["경기", "수원시 영통구"], ["경기", "고양시 일산동구"], ["인천", "연수구"],
-  ["부산", "해운대구"], ["부산", "수영구"], ["대구", "수성구"], ["대전", "유성구"], ["광주", "서구"], ["제주", "제주시"],
+  ["서울", "마포구"],
+  ["서울", "강남구"],
+  ["서울", "용산구"],
+  ["서울", "성동구"],
+  ["서울", "송파구"],
+  ["서울", "종로구"],
+  ["서울", "영등포구"],
+  ["경기", "성남시 분당구"],
+  ["경기", "수원시 영통구"],
+  ["경기", "고양시 일산동구"],
+  ["인천", "연수구"],
+  ["부산", "해운대구"],
+  ["부산", "수영구"],
+  ["대구", "수성구"],
+  ["대전", "유성구"],
+  ["광주", "서구"],
+  ["제주", "제주시"],
 ];
 const BODY = ["slim", "slender", "average", "toned", "muscular", "chubby", "big"];
 const POS = ["top", "bottom", "versatile", "other", "undisclosed"];
 const STYLES = ["clean", "cute", "manly", "dandy", "sporty", "street", "glasses", "beard", "tattoo", "bear"];
 const PERS = ["calm", "cheerful", "sweet", "funny", "shy", "honest", "thoughtful", "homebody", "outgoing", "introvert"];
-const INTS = ["workout", "running", "hiking", "travel", "food", "cafe", "cooking", "movies", "music", "concert", "games", "reading", "art", "photo", "fashion", "pets", "drink", "dance", "swim", "kpop"];
+const INTS = [
+  "workout",
+  "running",
+  "hiking",
+  "travel",
+  "food",
+  "cafe",
+  "cooking",
+  "movies",
+  "music",
+  "concert",
+  "games",
+  "reading",
+  "art",
+  "photo",
+  "fashion",
+  "pets",
+  "drink",
+  "dance",
+  "swim",
+  "kpop",
+];
 const PURP = ["friend", "dating", "relationship", "chat", "meal", "drink", "workout_buddy", "travel"];
 const TIMES = ["morning", "afternoon", "evening", "night", "late_night", "weekend"];
 const BIOS = [
@@ -30,12 +106,18 @@ const BIOS = [
 ];
 
 let s = 42;
-const rnd = () => ((s = (s * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
+const rnd = () => (s = (s * 1103515245 + 12345) % 2 ** 31) / 2 ** 31;
 const pick = (a) => a[Math.floor(rnd() * a.length)];
 const some = (a, max) => a.filter(() => rnd() < max / a.length).slice(0, max);
 
 async function avatar(i) {
-  const hues = [[124, 58, 237], [219, 39, 119], [79, 70, 229], [192, 38, 211], [37, 99, 235]];
+  const hues = [
+    [124, 58, 237],
+    [219, 39, 119],
+    [79, 70, 229],
+    [192, 38, 211],
+    [37, 99, 235],
+  ];
   const [r, g, b] = hues[i % hues.length];
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200">
     <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -50,7 +132,9 @@ async function avatar(i) {
 export async function seed(c, root) {
   const dir = resolve(root, process.env.LOCAL_STORAGE_DIR ?? ".data/uploads");
   const year = new Date().getFullYear();
-  const existing = await c.query("select count(*)::int as n from public.profiles where nickname like '%' and bio like '%[demo]%'");
+  const existing = await c.query(
+    "select count(*)::int as n from public.profiles where nickname like '%' and bio like '%[demo]%'",
+  );
   if (existing.rows[0].n > 0) {
     console.log("seed: already seeded");
     return;
@@ -68,14 +152,27 @@ export async function seed(c, root) {
        values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18, now(), now(), $19,
                now() - ($20 || ' minutes')::interval, now() - ($21 || ' days')::interval)`,
       [
-        id, NAMES[i], year - 20 - Math.floor(rnd() * 25), sido, sigungu,
+        id,
+        NAMES[i],
+        year - 20 - Math.floor(rnd() * 25),
+        sido,
+        sigungu,
         rnd() < 0.85 ? 165 + Math.floor(rnd() * 25) : null,
         rnd() < 0.6 ? 55 + Math.floor(rnd() * 35) : null,
-        pick(BODY), consent ? pick(POS) : null, some(STYLES, 3), some(PERS, 3), some(INTS, 5),
-        (pick(BIOS) ?? "반가워요") + " [demo]", some(PURP, 3), some(TIMES, 2),
-        pick(["no", "sometimes", "yes"]), pick(["no", "sometimes", "often"]),
+        pick(BODY),
+        consent ? pick(POS) : null,
+        some(STYLES, 3),
+        some(PERS, 3),
+        some(INTS, 5),
+        (pick(BIOS) ?? "반가워요") + " [demo]",
+        some(PURP, 3),
+        some(TIMES, 2),
+        pick(["no", "sometimes", "yes"]),
+        pick(["no", "sometimes", "often"]),
         JSON.stringify(consent && rnd() < 0.6 ? { position: "public", weight: "public" } : {}),
-        consent ? new Date() : null, Math.floor(rnd() * 60 * 24 * 5), Math.floor(rnd() * 30),
+        consent ? new Date() : null,
+        Math.floor(rnd() * 60 * 24 * 5),
+        Math.floor(rnd() * 30),
       ],
     );
     const status = rnd() < 0.25 ? "now" : pick(["off", "off", "tonight", "weekend", "flexible"]);

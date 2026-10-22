@@ -70,10 +70,16 @@ export function ProfileActions({
   return (
     <>
       <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 px-4 pb-3 md:left-1/2 md:max-w-xl md:-translate-x-1/2">
-        <div className="flex items-center gap-2 rounded-3xl bg-background/80 p-2 shadow-2xl ring-1 ring-white/10 backdrop-blur-xl">
+        <div className="bg-background/80 flex items-center gap-2 rounded-3xl p-2 shadow-2xl ring-1 ring-white/10 backdrop-blur-xl">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-lg" className="rounded-2xl" aria-label="더보기" data-testid="profile-menu">
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                className="rounded-2xl"
+                aria-label="더보기"
+                data-testid="profile-menu"
+              >
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
@@ -107,7 +113,7 @@ export function ProfileActions({
                 <X className="size-5" /> 패스
               </Button>
               <Button
-                className="h-12 flex-[1.4] rounded-2xl bg-brand text-base font-bold text-white shadow-lg shadow-accent/30"
+                className="bg-brand shadow-accent/30 h-12 flex-[1.4] rounded-2xl text-base font-bold text-white shadow-lg"
                 disabled={pending}
                 onClick={() => doSwipe("like")}
                 data-testid="detail-like"
@@ -116,7 +122,7 @@ export function ProfileActions({
               </Button>
             </>
           ) : (
-            <p className="flex-1 text-center text-sm text-muted-foreground" data-testid="swipe-state">
+            <p className="text-muted-foreground flex-1 text-center text-sm" data-testid="swipe-state">
               {matchId ? "매칭된 상대예요" : mySwipe === "like" ? "좋아요를 보냈어요" : "패스한 프로필이에요"}
             </p>
           )}
@@ -134,7 +140,9 @@ export function ProfileActions({
       <AlertDialog open={!!confirm} onOpenChange={(o) => !o && setConfirm(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{confirm === "block" ? `${nickname}님을 차단할까요?` : "매칭을 해제할까요?"}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {confirm === "block" ? `${nickname}님을 차단할까요?` : "매칭을 해제할까요?"}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {confirm === "block"
                 ? "서로의 프로필이 보이지 않고, 매칭과 연락처 공개도 해제돼요. 차단 목록에서 언제든 해제할 수 있어요."
@@ -144,7 +152,7 @@ export function ProfileActions({
           <AlertDialogFooter>
             <AlertDialogCancel>취소</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-destructive text-white hover:bg-destructive/90"
+              className="bg-destructive hover:bg-destructive/90 text-white"
               onClick={() => (confirm === "block" ? doBlock() : doUnmatch())}
               data-testid="confirm-action"
             >

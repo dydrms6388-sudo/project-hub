@@ -8,7 +8,7 @@ export function ProfileGridCard({ p, priority }: { p: ProfileCard; priority?: bo
   return (
     <Link
       href={`/p/${p.id}`}
-      className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-card ring-1 ring-white/5 transition-transform active:scale-[0.98]"
+      className="group bg-card relative block aspect-[3/4] overflow-hidden rounded-2xl ring-1 ring-white/5 transition-transform active:scale-[0.98]"
       data-testid="profile-card"
     >
       <ProfilePhoto
@@ -45,7 +45,7 @@ export function ProfileListRow({ p }: { p: ProfileCard }) {
   return (
     <Link
       href={`/p/${p.id}`}
-      className="flex items-center gap-3 rounded-2xl bg-card p-2.5 ring-1 ring-white/5 transition-colors hover:bg-secondary/60"
+      className="bg-card hover:bg-secondary/60 flex items-center gap-3 rounded-2xl p-2.5 ring-1 ring-white/5 transition-colors"
       data-testid="profile-row"
     >
       <div className="relative size-16 shrink-0 overflow-hidden rounded-xl">
@@ -55,15 +55,15 @@ export function ProfileListRow({ p }: { p: ProfileCard }) {
         <div className="flex items-center gap-1.5">
           <PresenceDot presence={p.presence} />
           <p className="truncate font-semibold">
-            {p.nickname} <span className="font-normal text-muted-foreground">{p.age}</span>
+            {p.nickname} <span className="text-muted-foreground font-normal">{p.age}</span>
           </p>
           <AvailabilityBadge availability={p.availability} className="ml-auto" />
         </div>
-        <p className="truncate text-sm text-muted-foreground">
+        <p className="text-muted-foreground truncate text-sm">
           {[p.sido, p.sigungu].filter(Boolean).join(" ")}
           {bodySummary(p) && ` · ${bodySummary(p)}`}
         </p>
-        <p className="truncate text-xs text-muted-foreground/80">
+        <p className="text-muted-foreground/80 truncate text-xs">
           {presenceLabel(p.presence)}
           {p.bio ? ` · ${p.bio}` : ""}
         </p>

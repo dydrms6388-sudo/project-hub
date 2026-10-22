@@ -76,7 +76,7 @@ function ContactRow({ kind, label, current }: { kind: ContactKind; label: string
             onClick={remove}
             disabled={pending}
             aria-label={`${label} 삭제`}
-            className="flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-destructive"
+            className="text-muted-foreground hover:bg-secondary hover:text-destructive flex size-8 items-center justify-center rounded-full"
           >
             <Trash2 className="size-4" />
           </button>
@@ -115,7 +115,7 @@ function ContactRow({ kind, label, current }: { kind: ContactKind; label: string
             type="button"
             onClick={save}
             disabled={pending || !value.trim() || !dirty}
-            className="h-11 shrink-0 rounded-xl bg-brand px-4 text-sm font-bold text-white disabled:opacity-40"
+            className="bg-brand h-11 shrink-0 rounded-xl px-4 text-sm font-bold text-white disabled:opacity-40"
             data-testid={`contact-save-${kind}`}
           >
             {pending ? <Loader2 className="size-4 animate-spin" /> : "저장"}
@@ -123,7 +123,7 @@ function ContactRow({ kind, label, current }: { kind: ContactKind; label: string
         </div>
       </div>
       {error && (
-        <p id={`${inputId}-err`} role="alert" className="mt-1.5 text-xs text-destructive">
+        <p id={`${inputId}-err`} role="alert" className="text-destructive mt-1.5 text-xs">
           {error}
         </p>
       )}

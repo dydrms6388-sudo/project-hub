@@ -52,25 +52,28 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
     return () => clearTimeout(t);
   }, [queue.length, refilling, exhausted, refill]);
 
-  const onSwiped = useCallback(async (dir: SwipeDir) => {
-    const card = queue[0];
-    if (!card) return;
-    setQueue((q) => q.slice(1)); // 낙관적 제거
-    setBusy(true);
-    const r = await swipeAction({ targetId: card.id, kind: dir });
-    setBusy(false);
-    if (!r.ok) {
-      toast.error(r.error);
-      setQueue((q) => [card, ...q]); // 복구
-      return;
-    }
-    if (r.data.matched) {
-      setMatch(card);
-      setLast(null); // 매칭 후에는 되돌리기 불가
-    } else {
-      setLast({ card, kind: dir });
-    }
-  }, [queue]);
+  const onSwiped = useCallback(
+    async (dir: SwipeDir) => {
+      const card = queue[0];
+      if (!card) return;
+      setQueue((q) => q.slice(1)); // 낙관적 제거
+      setBusy(true);
+      const r = await swipeAction({ targetId: card.id, kind: dir });
+      setBusy(false);
+      if (!r.ok) {
+        toast.error(r.error);
+        setQueue((q) => [card, ...q]); // 복구
+        return;
+      }
+      if (r.data.matched) {
+        setMatch(card);
+        setLast(null); // 매칭 후에는 되돌리기 불가
+      } else {
+        setLast({ card, kind: dir });
+      }
+    },
+    [queue],
+  );
 
   const undo = async () => {
     if (!last) return;
@@ -107,7 +110,7 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
       <SlidersHorizontal />
       필터
       {count > 0 && (
-        <span className="ml-0.5 rounded-full bg-brand px-1.5 text-[10px] leading-4 font-bold text-white">{count}</span>
+        <span className="bg-brand ml-0.5 rounded-full px-1.5 text-[10px] leading-4 font-bold text-white">{count}</span>
       )}
     </Button>
   );
@@ -127,7 +130,7 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
             {next && (
               <div
                 key={`next-${next.id}`}
-                className="absolute inset-0 scale-95 overflow-hidden rounded-3xl bg-card opacity-70 ring-1 ring-white/5"
+                className="bg-card absolute inset-0 scale-95 overflow-hidden rounded-3xl opacity-70 ring-1 ring-white/5"
                 aria-hidden
               >
                 <CardFace p={next} />
@@ -136,11 +139,11 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
             <SwipeCard key={top.id} ref={topRef} p={top} onSwiped={onSwiped} />
           </>
         ) : refilling ? (
-          <div className="flex h-full items-center justify-center rounded-3xl bg-card ring-1 ring-white/5">
-            <Loader2 className="size-8 animate-spin text-primary" aria-label="불러오는 중" />
+          <div className="bg-card flex h-full items-center justify-center rounded-3xl ring-1 ring-white/5">
+            <Loader2 className="text-primary size-8 animate-spin" aria-label="불러오는 중" />
           </div>
         ) : (
-          <div className="flex h-full items-center rounded-3xl bg-card ring-1 ring-white/5" data-testid="swipe-empty">
+          <div className="bg-card flex h-full items-center rounded-3xl ring-1 ring-white/5" data-testid="swipe-empty">
             <EmptyState
               icon={<Layers />}
               title="주변의 새 프로필을 모두 봤어요"
@@ -150,7 +153,12 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
                   <Button asChild variant="secondary">
                     <Link href="/explore">탐색으로</Link>
                   </Button>
-                  <FilterSheet value={filters} onApply={apply} trigger={<Button>필터 바꾸기</Button>} allowSave={false} />
+                  <FilterSheet
+                    value={filters}
+                    onApply={apply}
+                    trigger={<Button>필터 바꾸기</Button>}
+                    allowSave={false}
+                  />
                 </div>
               }
             />
@@ -163,7 +171,7 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
           <RotateCcw className="size-5 text-amber-300" />
         </RoundButton>
         <RoundButton label="패스" onClick={() => press("pass")} disabled={!top || busy} testId="swipe-pass">
-          <X className="size-8 text-destructive" strokeWidth={2.6} />
+          <X className="text-destructive size-8" strokeWidth={2.6} />
         </RoundButton>
         <RoundButton label="좋아요" onClick={() => press("like")} disabled={!top || busy} testId="swipe-like" brand>
           <Heart className="size-8 fill-white text-white" />
@@ -172,7 +180,7 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
           <Link
             href={`/p/${top.id}`}
             aria-label="프로필 자세히 보기"
-            className="flex size-12 items-center justify-center rounded-full bg-secondary ring-1 ring-white/10 transition active:scale-90"
+            className="bg-secondary flex size-12 items-center justify-center rounded-full ring-1 ring-white/10 transition active:scale-90"
           >
             <Info className="size-5 text-sky-300" />
           </Link>
@@ -180,7 +188,7 @@ export function SwipeDeck({ filters, initial }: { filters: ExploreFilters; initi
           <span className="size-12" />
         )}
       </div>
-      <p className="mt-3 hidden text-center text-xs text-muted-foreground md:block">키보드 ← 패스 · → 좋아요</p>
+      <p className="text-muted-foreground mt-3 hidden text-center text-xs md:block">키보드 ← 패스 · → 좋아요</p>
 
       <MatchDialog profile={match} onClose={() => setMatch(null)} />
     </div>

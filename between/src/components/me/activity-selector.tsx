@@ -51,7 +51,7 @@ export function ActivitySelector({ initial }: { initial: ActivityStatus }) {
   return (
     <div className="space-y-4">
       {isNow && (
-        <div className="flex items-center gap-3 rounded-xl bg-brand p-3 text-white" data-testid="now-active">
+        <div className="bg-brand flex items-center gap-3 rounded-xl p-3 text-white" data-testid="now-active">
           <Zap className="size-5 fill-current" />
           <div className="text-sm">
             <p className="font-bold">지금 만남 가능으로 표시 중</p>
@@ -79,9 +79,9 @@ export function ActivitySelector({ initial }: { initial: ActivityStatus }) {
       </div>
 
       {status === "now" && (
-        <div className="space-y-2 rounded-xl bg-secondary/40 p-3">
+        <div className="bg-secondary/40 space-y-2 rounded-xl p-3">
           <p className="flex items-center gap-1.5 text-sm font-medium">
-            <Clock className="size-4 text-primary" /> 얼마 동안 표시할까요?
+            <Clock className="text-primary size-4" /> 얼마 동안 표시할까요?
           </p>
           <div className="flex flex-wrap gap-2">
             {NOW_DURATIONS.map((d) => (
@@ -94,7 +94,7 @@ export function ActivitySelector({ initial }: { initial: ActivityStatus }) {
             type="button"
             disabled={pending}
             onClick={() => save("now", hours)}
-            className="mt-1 h-10 w-full rounded-xl bg-brand text-sm font-bold text-white transition-opacity active:opacity-80 disabled:opacity-50"
+            className="bg-brand mt-1 h-10 w-full rounded-xl text-sm font-bold text-white transition-opacity active:opacity-80 disabled:opacity-50"
             data-testid="activity-now-save"
           >
             {isNow ? "시간 다시 설정" : `${hours}시간 동안 '지금 가능' 표시`}
@@ -102,8 +102,9 @@ export function ActivitySelector({ initial }: { initial: ActivityStatus }) {
         </div>
       )}
 
-      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <MapPinOff className="size-3.5" /> 정확한 위치나 이동 경로는 공유되지 않아요. 설정한 시간이 지나면 자동으로 해제돼요.
+      <p className="text-muted-foreground flex items-center gap-1.5 text-xs">
+        <MapPinOff className="size-3.5" /> 정확한 위치나 이동 경로는 공유되지 않아요. 설정한 시간이 지나면 자동으로
+        해제돼요.
       </p>
     </div>
   );

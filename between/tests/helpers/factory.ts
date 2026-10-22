@@ -7,7 +7,9 @@ import { onboardingSchema } from "@/lib/validation/profile";
 export type TestUser = { id: string; claims: Claims };
 
 let n = 0;
-export async function makeUser(over: Partial<{ nickname: string; birthYear: number; sido: string; sigungu: string }> = {}): Promise<TestUser> {
+export async function makeUser(
+  over: Partial<{ nickname: string; birthYear: number; sido: string; sigungu: string }> = {},
+): Promise<TestUser> {
   const id = await createLocalAnonymousUser();
   const claims: Claims = { sub: id, role: "authenticated", is_anonymous: true };
   n++;
@@ -30,7 +32,10 @@ export function as<T>(u: TestUser, fn: Parameters<typeof withUser<T>>[1]) {
 
 export async function makeAdmin(u: TestUser): Promise<TestUser> {
   await withService(async (db) => {
-    await db.query("update auth.users set is_anonymous = false, email = $2 where id = $1", [u.id, `${u.id}@admin.test`]);
+    await db.query("update auth.users set is_anonymous = false, email = $2 where id = $1", [
+      u.id,
+      `${u.id}@admin.test`,
+    ]);
     await db.query("insert into public.admin_roles (user_id, role) values ($1, 'admin')", [u.id]);
   });
   return { id: u.id, claims: { ...u.claims, is_anonymous: false } };

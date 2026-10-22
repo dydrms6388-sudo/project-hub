@@ -13,15 +13,21 @@ export function BlockedList({ items }: { items: Item[] }) {
   const router = useRouter();
   const [pending, start] = useTransition();
   if (!items.length) {
-    return <EmptyState icon={<UserX className="size-6" />} title="차단한 사용자가 없어요" description="차단한 사람은 서로의 프로필을 볼 수 없어요." />;
+    return (
+      <EmptyState
+        icon={<UserX className="size-6" />}
+        title="차단한 사용자가 없어요"
+        description="차단한 사람은 서로의 프로필을 볼 수 없어요."
+      />
+    );
   }
   return (
-    <ul className="divide-y divide-white/5 rounded-2xl bg-card px-4 ring-1 ring-white/5">
+    <ul className="bg-card divide-y divide-white/5 rounded-2xl px-4 ring-1 ring-white/5">
       {items.map((b) => (
         <li key={b.blocked_id} className="flex items-center gap-3 py-3" data-testid="blocked-item">
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">{b.nickname ?? "알 수 없는 사용자"}</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               {new Date(b.created_at).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })} 차단
             </p>
           </div>
@@ -36,7 +42,7 @@ export function BlockedList({ items }: { items: Item[] }) {
                 router.refresh();
               })
             }
-            className="h-9 rounded-full bg-secondary px-4 text-sm font-semibold hover:bg-secondary/70"
+            className="bg-secondary hover:bg-secondary/70 h-9 rounded-full px-4 text-sm font-semibold"
           >
             차단 해제
           </button>

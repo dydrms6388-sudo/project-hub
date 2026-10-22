@@ -35,9 +35,15 @@ export function PrivacySettings({ hidden, expiresAt }: { hidden: boolean; expire
       <div className="flex items-center gap-3 pb-3">
         <label htmlFor="hide-profile" className="flex-1">
           <span className="block text-sm font-semibold">프로필 숨김</span>
-          <span className="block text-xs text-muted-foreground">켜면 다른 사람에게 내 프로필이 보이지 않아요.</span>
+          <span className="text-muted-foreground block text-xs">켜면 다른 사람에게 내 프로필이 보이지 않아요.</span>
         </label>
-        <Switch id="hide-profile" checked={value} disabled={pending} onCheckedChange={toggle} data-testid="hide-profile" />
+        <Switch
+          id="hide-profile"
+          checked={value}
+          disabled={pending}
+          onCheckedChange={toggle}
+          data-testid="hide-profile"
+        />
       </div>
       <Row href="/me/edit#exposure" title="자동 만료" detail={expiry} />
       <Row href="/me/blocked" title="차단 목록" />
@@ -51,8 +57,8 @@ function Row({ href, title, detail }: { href: string; title: string; detail?: st
   return (
     <Link href={href} className="flex items-center gap-3 py-3 last:pb-0">
       <span className="flex-1 text-sm font-semibold">{title}</span>
-      {detail && <span className="text-xs text-muted-foreground">{detail}</span>}
-      <ChevronRight className="size-4 text-muted-foreground" />
+      {detail && <span className="text-muted-foreground text-xs">{detail}</span>}
+      <ChevronRight className="text-muted-foreground size-4" />
     </Link>
   );
 }

@@ -23,7 +23,7 @@ export function LikeBackButton({ targetId, nickname }: { targetId: string; nickn
           router.refresh();
         })
       }
-      className="flex size-11 items-center justify-center rounded-full bg-brand text-white shadow-lg shadow-accent/30 transition-transform active:scale-90"
+      className="bg-brand shadow-accent/30 flex size-11 items-center justify-center rounded-full text-white shadow-lg transition-transform active:scale-90"
     >
       {pending ? <Loader2 className="size-5 animate-spin" /> : <Heart className="size-5 fill-current" />}
     </button>

@@ -33,8 +33,8 @@ export default async function MePage() {
     <div className="mx-auto max-w-xl">
       <PageHeader title="내 프로필" />
 
-      <div className="mb-5 flex items-center gap-4 rounded-2xl bg-card p-4 ring-1 ring-white/5">
-        <div className="relative size-20 shrink-0 overflow-hidden rounded-2xl ring-2 ring-primary/60">
+      <div className="bg-card mb-5 flex items-center gap-4 rounded-2xl p-4 ring-1 ring-white/5">
+        <div className="ring-primary/60 relative size-20 shrink-0 overflow-hidden rounded-2xl ring-2">
           <ProfilePhoto
             photoId={photos[0]?.id ?? null}
             name={profile.nickname}
@@ -45,9 +45,10 @@ export default async function MePage() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-lg font-bold" data-testid="my-nickname">
-            {profile.nickname} <span className="font-medium text-muted-foreground">{ageFromBirthYear(profile.birth_year)}</span>
+            {profile.nickname}{" "}
+            <span className="text-muted-foreground font-medium">{ageFromBirthYear(profile.birth_year)}</span>
           </p>
-          <p className="truncate text-sm text-muted-foreground">{regionLabel(profile)}</p>
+          <p className="text-muted-foreground truncate text-sm">{regionLabel(profile)}</p>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {profile.is_hidden && (
               <StatusChip>
@@ -71,14 +72,14 @@ export default async function MePage() {
       <div className="mb-6 grid grid-cols-2 gap-2">
         <Link
           href="/me/edit"
-          className="flex h-11 items-center justify-center gap-1.5 rounded-xl bg-brand text-sm font-bold text-white"
+          className="bg-brand flex h-11 items-center justify-center gap-1.5 rounded-xl text-sm font-bold text-white"
           data-testid="edit-profile"
         >
           <Pencil className="size-4" /> 프로필 수정
         </Link>
         <Link
           href={`/p/${profile.id}`}
-          className="flex h-11 items-center justify-center gap-1.5 rounded-xl bg-secondary text-sm font-semibold"
+          className="bg-secondary flex h-11 items-center justify-center gap-1.5 rounded-xl text-sm font-semibold"
         >
           <UserRound className="size-4" /> 미리보기
         </Link>
@@ -114,8 +115,8 @@ function StatusChip({ children, danger }: { children: React.ReactNode; danger?: 
     <span
       className={
         danger
-          ? "inline-flex items-center gap-1 rounded-full bg-destructive/15 px-2 py-0.5 text-[11px] font-semibold text-destructive"
-          : "inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-muted-foreground"
+          ? "bg-destructive/15 text-destructive inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
+          : "bg-secondary text-muted-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
       }
     >
       {children}

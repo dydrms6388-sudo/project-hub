@@ -34,7 +34,7 @@ function Section({ title, hint, children }: { title: string; hint?: string; chil
     <section className="space-y-2.5 border-b border-white/5 py-4 last:border-b-0">
       <div className="flex items-baseline justify-between gap-2">
         <h3 className="text-sm font-semibold">{title}</h3>
-        {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
+        {hint && <span className="text-muted-foreground text-xs">{hint}</span>}
       </div>
       {children}
     </section>
@@ -73,7 +73,11 @@ export function FilterSheet({
   const toggleSido = (sido: string) => {
     setDraft((d) => {
       if (d.sido.includes(sido)) {
-        return { ...d, sido: d.sido.filter((s) => s !== sido), sigungu: d.sigungu.filter((s) => !s.startsWith(sido + ":")) };
+        return {
+          ...d,
+          sido: d.sido.filter((s) => s !== sido),
+          sigungu: d.sigungu.filter((s) => !s.startsWith(sido + ":")),
+        };
       }
       return { ...d, sido: [...d.sido, sido] };
     });
@@ -105,14 +109,14 @@ export function FilterSheet({
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         side="bottom"
-        className="mx-auto flex max-h-[88dvh] w-full max-w-2xl flex-col gap-0 rounded-t-3xl border-white/10 bg-popover p-0"
+        className="bg-popover mx-auto flex max-h-[88dvh] w-full max-w-2xl flex-col gap-0 rounded-t-3xl border-white/10 p-0"
       >
         <SheetHeader className="border-b border-white/5 px-5 pt-4 pb-3">
           <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-white/20" aria-hidden />
           <SheetTitle>상세 필터</SheetTitle>
           <SheetDescription className="text-xs">
-            조건끼리는 모두 만족(AND), 한 조건 안의 여러 선택은 하나라도 만족(OR)해요. 비공개로 설정된 정보는 필터에 걸리지
-            않아요.
+            조건끼리는 모두 만족(AND), 한 조건 안의 여러 선택은 하나라도 만족(OR)해요. 비공개로 설정된 정보는 필터에
+            걸리지 않아요.
           </SheetDescription>
         </SheetHeader>
 
@@ -126,13 +130,18 @@ export function FilterSheet({
               ))}
             </div>
             {draft.sido.map((sido) => (
-              <div key={sido} className="space-y-2 rounded-2xl bg-secondary/40 p-3">
-                <p className="text-xs font-medium text-muted-foreground">{sido} 세부 지역 (선택 안 하면 전체)</p>
+              <div key={sido} className="bg-secondary/40 space-y-2 rounded-2xl p-3">
+                <p className="text-muted-foreground text-xs font-medium">{sido} 세부 지역 (선택 안 하면 전체)</p>
                 <div className="flex flex-wrap gap-1.5">
                   {REGIONS[sido].map((g) => {
                     const key = `${sido}:${g}`;
                     return (
-                      <Chip key={key} size="sm" selected={draft.sigungu.includes(key)} onClick={() => toggleSigungu(key)}>
+                      <Chip
+                        key={key}
+                        size="sm"
+                        selected={draft.sigungu.includes(key)}
+                        onClick={() => toggleSigungu(key)}
+                      >
                         {g}
                       </Chip>
                     );
@@ -183,11 +192,20 @@ export function FilterSheet({
           </Section>
 
           <Section title="지금 만나기">
-            <ChipGroup size="sm" options={AVAIL_OPTS} value={draft.availability} onChange={(v) => set("availability", v)} />
+            <ChipGroup
+              size="sm"
+              options={AVAIL_OPTS}
+              value={draft.availability}
+              onChange={(v) => set("availability", v)}
+            />
           </Section>
 
           <Section title="최근 활동">
-            <div className="grid grid-cols-4 gap-1 rounded-xl bg-secondary/60 p-1" role="radiogroup" aria-label="최근 활동">
+            <div
+              className="bg-secondary/60 grid grid-cols-4 gap-1 rounded-xl p-1"
+              role="radiogroup"
+              aria-label="최근 활동"
+            >
               {ACTIVE_WITHIN.map((a) => (
                 <button
                   key={a.value}
@@ -208,7 +226,7 @@ export function FilterSheet({
 
           <Section title="사진">
             <label className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">사진이 있는 프로필만</span>
+              <span className="text-muted-foreground text-sm">사진이 있는 프로필만</span>
               <Switch checked={draft.hasPhoto} onCheckedChange={(v) => set("hasPhoto", v)} aria-label="사진 있음" />
             </label>
           </Section>
@@ -242,7 +260,7 @@ export function FilterSheet({
           </Section>
 
           {allowSave && showSave && (
-            <div className="sticky bottom-0 flex gap-2 bg-popover py-3">
+            <div className="bg-popover sticky bottom-0 flex gap-2 py-3">
               <Input
                 autoFocus
                 placeholder="필터 이름 (예: 마포 주말)"
@@ -281,7 +299,7 @@ export function FilterSheet({
           )}
           <Button
             type="button"
-            className="h-12 flex-1 rounded-xl bg-brand text-base font-semibold text-white hover:opacity-90"
+            className="bg-brand h-12 flex-1 rounded-xl text-base font-semibold text-white hover:opacity-90"
             onClick={() => {
               onApply(draft);
               setOpen(false);

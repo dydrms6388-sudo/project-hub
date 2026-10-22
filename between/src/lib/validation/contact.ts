@@ -8,13 +8,37 @@ const MAX_LEN = 300;
 
 // 단축 URL / 리다이렉터 / 익명 파일 공유 등 피싱에 자주 쓰이는 도메인
 const BLOCKED_HOSTS = [
-  "bit.ly", "tinyurl.com", "goo.gl", "t.co", "ow.ly", "is.gd", "buff.ly", "rebrand.ly", "cutt.ly",
-  "shorturl.at", "rb.gy", "han.gl", "me2.do", "vo.la", "url.kr", "naver.me", "lrl.kr", "tiny.cc",
-  "s.id", "linktr.ee", "grabify.link", "iplogger.org", "iplogger.com", "2no.co", "yip.su",
-  "blasze.com", "ps3cfw.com",
+  "bit.ly",
+  "tinyurl.com",
+  "goo.gl",
+  "t.co",
+  "ow.ly",
+  "is.gd",
+  "buff.ly",
+  "rebrand.ly",
+  "cutt.ly",
+  "shorturl.at",
+  "rb.gy",
+  "han.gl",
+  "me2.do",
+  "vo.la",
+  "url.kr",
+  "naver.me",
+  "lrl.kr",
+  "tiny.cc",
+  "s.id",
+  "linktr.ee",
+  "grabify.link",
+  "iplogger.org",
+  "iplogger.com",
+  "2no.co",
+  "yip.su",
+  "blasze.com",
+  "ps3cfw.com",
 ];
 // 리다이렉트 파라미터 (open redirect 악용)
-const REDIRECT_PARAMS = /^(url|u|redirect|redirect_uri|redirect_url|next|target|dest|destination|continue|return|returnurl|go|link|out)$/i;
+const REDIRECT_PARAMS =
+  /^(url|u|redirect|redirect_uri|redirect_url|next|target|dest|destination|continue|return|returnurl|go|link|out)$/i;
 
 function hostBlocked(host: string): boolean {
   return BLOCKED_HOSTS.some((b) => host === b || host.endsWith("." + b));

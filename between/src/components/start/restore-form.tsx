@@ -34,7 +34,7 @@ export function RestoreForm({ provider }: { provider: "local" | "supabase" }) {
 
   if (sent) {
     return (
-      <p className="mt-8 rounded-2xl bg-card p-4 text-sm ring-1 ring-white/5">
+      <p className="bg-card mt-8 rounded-2xl p-4 text-sm ring-1 ring-white/5">
         연결된 이메일이 있다면 로그인 링크를 보냈어요. 메일함을 확인해 주세요.
       </p>
     );
@@ -55,7 +55,11 @@ export function RestoreForm({ provider }: { provider: "local" | "supabase" }) {
           data-testid="restore-input"
         />
       </div>
-      <Button type="submit" disabled={pending || value.length < 5} className="h-12 w-full rounded-2xl bg-brand font-bold text-white">
+      <Button
+        type="submit"
+        disabled={pending || value.length < 5}
+        className="bg-brand h-12 w-full rounded-2xl font-bold text-white"
+      >
         {pending && <Loader2 className="animate-spin" />}
         {provider === "local" ? "복구하기" : "로그인 링크 받기"}
       </Button>

@@ -23,13 +23,15 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   if (!data) notFound();
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pt-safe pb-16">
+    <main className="pt-safe mx-auto max-w-5xl px-4 pb-16">
       <header className="flex flex-wrap items-center justify-between gap-3 py-5">
         <div>
           <h1 className="text-2xl font-bold">신고 검토</h1>
-          <p className="text-sm text-muted-foreground">미성년자 의심 신고가 가장 먼저 표시돼요. 모든 조치는 감사 기록에 남아요.</p>
+          <p className="text-muted-foreground text-sm">
+            미성년자 의심 신고가 가장 먼저 표시돼요. 모든 조치는 감사 기록에 남아요.
+          </p>
         </div>
-        <nav className="flex gap-1 rounded-xl bg-secondary p-1 text-sm">
+        <nav className="bg-secondary flex gap-1 rounded-xl p-1 text-sm">
           {(["open", "all"] as const).map((s) => (
             <Link
               key={s}
@@ -43,11 +45,11 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       </header>
 
       {data.length === 0 ? (
-        <p className="rounded-2xl bg-card p-8 text-center text-muted-foreground">처리할 신고가 없어요.</p>
+        <p className="bg-card text-muted-foreground rounded-2xl p-8 text-center">처리할 신고가 없어요.</p>
       ) : (
         <ul className="grid gap-3" data-testid="report-queue">
           {data.map((r) => (
-            <li key={r.id} className="rounded-2xl bg-card p-4 ring-1 ring-white/5">
+            <li key={r.id} className="bg-card rounded-2xl p-4 ring-1 ring-white/5">
               <div className="flex flex-wrap items-center gap-2 text-sm">
                 <span
                   className={cn(
@@ -58,16 +60,18 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   {labelOf(REPORT_REASONS, r.reason as never)}
                 </span>
                 <span className="font-semibold">{r.reported_nickname ?? "(삭제된 사용자)"}</span>
-                <code className="text-xs text-muted-foreground">{r.reported_id.slice(0, 8)}</code>
-                <span className="text-xs text-muted-foreground">
+                <code className="text-muted-foreground text-xs">{r.reported_id.slice(0, 8)}</code>
+                <span className="text-muted-foreground text-xs">
                   계정 상태: {r.reported_status ?? "-"} · 미처리 신고 {r.open_count}건
                 </span>
-                <span className="ml-auto text-xs text-muted-foreground">
+                <span className="text-muted-foreground ml-auto text-xs">
                   {new Date(r.created_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}
                 </span>
               </div>
-              {r.detail && <p className="mt-2 rounded-xl bg-secondary/60 p-3 text-sm whitespace-pre-line">{r.detail}</p>}
-              <p className="mt-1 text-xs text-muted-foreground">처리 상태: {r.status}</p>
+              {r.detail && (
+                <p className="bg-secondary/60 mt-2 rounded-xl p-3 text-sm whitespace-pre-line">{r.detail}</p>
+              )}
+              <p className="text-muted-foreground mt-1 text-xs">처리 상태: {r.status}</p>
               {r.status === "open" && <ModerationButtons target={r.reported_id} reportId={r.id} />}
             </li>
           ))}

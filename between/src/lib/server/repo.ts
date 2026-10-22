@@ -66,9 +66,28 @@ export async function updateProfile(db: Db, userId: string, v: ProfileUpdate): P
        sensitive_consent_at = case when $22::boolean then coalesce(sensitive_consent_at, now()) else null end
      where id = $1`,
     [
-      userId, v.nickname, v.birthYear, v.sido, v.sigungu, v.dong, v.height, v.weight, v.bodyType, position,
-      v.styles, v.personality, v.interests, v.bio, v.purposes, v.activeTimes, v.smoking, v.drinking,
-      JSON.stringify(v.visibility), v.isHidden, expiresAt, v.positionConsent,
+      userId,
+      v.nickname,
+      v.birthYear,
+      v.sido,
+      v.sigungu,
+      v.dong,
+      v.height,
+      v.weight,
+      v.bodyType,
+      position,
+      v.styles,
+      v.personality,
+      v.interests,
+      v.bio,
+      v.purposes,
+      v.activeTimes,
+      v.smoking,
+      v.drinking,
+      JSON.stringify(v.visibility),
+      v.isHidden,
+      expiresAt,
+      v.positionConsent,
     ],
   );
   if (r.rowCount !== 1) throw new Error("FORBIDDEN");
@@ -93,10 +112,7 @@ export async function getCard(db: Db, targetId: string): Promise<ProfileCard | n
 // 탐색 / 스와이프
 // ---------------------------------------------------------------------------
 export async function getViewer(db: Db, userId: string): Promise<Viewer | null> {
-  const r = await db.query<Viewer>(
-    `select id, sido, sigungu, interests from public.profiles where id = $1`,
-    [userId],
-  );
+  const r = await db.query<Viewer>(`select id, sido, sigungu, interests from public.profiles where id = $1`, [userId]);
   return r.rows[0] ?? null;
 }
 
@@ -332,26 +348,30 @@ function endOfWeekend(): Date {
 // 차단 / 신고
 // ---------------------------------------------------------------------------
 export async function block(db: Db, userId: string, targetId: string) {
-  await db.query(
-    `insert into public.blocks (blocker_id, blocked_id) values ($1, $2) on conflict do nothing`,
-    [userId, targetId],
-  );
+  await db.query(`insert into public.blocks (blocker_id, blocked_id) values ($1, $2) on conflict do nothing`, [
+    userId,
+    targetId,
+  ]);
 }
 
 export async function unblock(db: Db, userId: string, targetId: string) {
   await db.query(`delete from public.blocks where blocker_id = $1 and blocked_id = $2`, [userId, targetId]);
 }
 
-export async function listBlocked(db: Db): Promise<{ blocked_id: string; nickname: string | null; created_at: string }[]> {
+export async function listBlocked(
+  db: Db,
+): Promise<{ blocked_id: string; nickname: string | null; created_at: string }[]> {
   const r = await db.query("select blocked_id, nickname, created_at from public.my_blocked_list()");
   return r.rows.map((x) => ({ blocked_id: x.blocked_id, nickname: x.nickname, created_at: iso(x.created_at)! }));
 }
 
 export async function report(db: Db, userId: string, targetId: string, reason: string, detail: string | null) {
-  await db.query(
-    `insert into public.reports (reporter_id, reported_id, reason, detail) values ($1, $2, $3, $4)`,
-    [userId, targetId, reason, detail],
-  );
+  await db.query(`insert into public.reports (reporter_id, reported_id, reason, detail) values ($1, $2, $3, $4)`, [
+    userId,
+    targetId,
+    reason,
+    detail,
+  ]);
 }
 
 // ---------------------------------------------------------------------------
@@ -401,7 +421,14 @@ export async function reportQueue(db: Db, status: "open" | "all" = "open"): Prom
 
 export async function moderate(
   db: Db,
-  a: { target: string; action: string; reason: string | null; hours: number | null; reportId: string | null; photoId: string | null },
+  a: {
+    target: string;
+    action: string;
+    reason: string | null;
+    hours: number | null;
+    reportId: string | null;
+    photoId: string | null;
+  },
 ) {
   await db.query("select public.moderate($1, $2::public.moderation_kind, $3, $4, $5, $6)", [
     a.target,

@@ -42,7 +42,14 @@ export async function POST(req: Request) {
     await storage.put(path, clean.data);
     try {
       await withUser(s.claims, (db) =>
-        insertPhoto(db, { id, userId: s.userId, path, width: clean.width, height: clean.height, bytes: clean.data.length }),
+        insertPhoto(db, {
+          id,
+          userId: s.userId,
+          path,
+          width: clean.width,
+          height: clean.height,
+          bytes: clean.data.length,
+        }),
       );
     } catch (e) {
       await storage.remove([path]);

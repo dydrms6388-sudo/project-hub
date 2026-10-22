@@ -44,7 +44,10 @@ export function CardFace({ p }: { p: ProfileCard }) {
         {p.interests.length > 0 && (
           <div className="flex flex-wrap gap-1.5 pt-1">
             {p.interests.slice(0, 4).map((i) => (
-              <span key={i} className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur">
+              <span
+                key={i}
+                className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur"
+              >
                 {labelOf(INTERESTS, i as never)}
               </span>
             ))}
@@ -78,7 +81,7 @@ export const SwipeCard = forwardRef<SwipeCardHandle, { p: ProfileCard; onSwiped:
 
     return (
       <motion.div
-        className="absolute inset-0 cursor-grab touch-pan-y overflow-hidden rounded-3xl bg-card shadow-2xl ring-1 ring-white/10 active:cursor-grabbing"
+        className="bg-card absolute inset-0 cursor-grab touch-pan-y overflow-hidden rounded-3xl shadow-2xl ring-1 ring-white/10 active:cursor-grabbing"
         style={{ x, rotate }}
         drag="x"
         dragElastic={0.9}
@@ -92,8 +95,16 @@ export const SwipeCard = forwardRef<SwipeCardHandle, { p: ProfileCard; onSwiped:
         aria-label={`${p.nickname}, ${p.age}세`}
       >
         <CardFace p={p} />
-        <Stamp label="LIKE" style={{ opacity: likeOpacity }} className="left-5 -rotate-12 border-success text-success" />
-        <Stamp label="PASS" style={{ opacity: passOpacity }} className="right-5 rotate-12 border-destructive text-destructive" />
+        <Stamp
+          label="LIKE"
+          style={{ opacity: likeOpacity }}
+          className="border-success text-success left-5 -rotate-12"
+        />
+        <Stamp
+          label="PASS"
+          style={{ opacity: passOpacity }}
+          className="border-destructive text-destructive right-5 rotate-12"
+        />
       </motion.div>
     );
   },

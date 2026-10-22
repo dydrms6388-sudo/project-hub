@@ -3,7 +3,14 @@ import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { withService } from "@/lib/server/db";
 import { sanitizePhoto } from "@/lib/server/image";
-import { insertPhoto, listPhotos, makePrimaryPhoto, photoStoragePath, setPhotoVisibility, swipe } from "@/lib/server/repo";
+import {
+  insertPhoto,
+  listPhotos,
+  makePrimaryPhoto,
+  photoStoragePath,
+  setPhotoVisibility,
+  swipe,
+} from "@/lib/server/repo";
 import { photoPath, storage } from "@/lib/storage";
 import { as, makeUser } from "../helpers/factory";
 
@@ -19,7 +26,9 @@ async function upload(u: { id: string; claims: never } | Awaited<ReturnType<type
   const id = randomUUID();
   const path = photoPath(u.id, id);
   await storage.put(path, clean.data);
-  await as(u, (db) => insertPhoto(db, { id, userId: u.id, path, width: clean.width, height: clean.height, bytes: clean.data.length }));
+  await as(u, (db) =>
+    insertPhoto(db, { id, userId: u.id, path, width: clean.width, height: clean.height, bytes: clean.data.length }),
+  );
   return { id, path, clean };
 }
 
@@ -38,7 +47,9 @@ describe("사진 업로드 파이프라인", () => {
     await expect(sanitizePhoto(Buffer.from("<script>alert(1)</script>"))).rejects.toThrow(/JPG, PNG, WEBP/);
     const fakeJpeg = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff]), Buffer.from("not really")]);
     await expect(sanitizePhoto(fakeJpeg)).rejects.toThrow(/읽을 수 없어요/);
-    const tiny = await sharp({ create: { width: 50, height: 50, channels: 3, background: "#fff" } }).png().toBuffer();
+    const tiny = await sharp({ create: { width: 50, height: 50, channels: 3, background: "#fff" } })
+      .png()
+      .toBuffer();
     await expect(sanitizePhoto(tiny)).rejects.toThrow(/너무 작아요/);
   });
 
@@ -66,7 +77,9 @@ describe("사진 업로드 파이프라인", () => {
     const b = await makeUser();
     const id = randomUUID();
     await expect(
-      as(a, (db) => insertPhoto(db, { id, userId: a.id, path: `${b.id}/${id}.webp`, width: 10, height: 10, bytes: 10 })),
+      as(a, (db) =>
+        insertPhoto(db, { id, userId: a.id, path: `${b.id}/${id}.webp`, width: 10, height: 10, bytes: 10 }),
+      ),
     ).rejects.toThrow(/storage_path_owner|row-level security/);
   });
 

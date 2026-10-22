@@ -14,7 +14,11 @@ export default async function EditProfilePage() {
       <PageHeader
         title={
           <span className="flex items-center gap-1">
-            <Link href="/me" aria-label="뒤로" className="-ml-2 flex size-9 items-center justify-center rounded-full hover:bg-secondary">
+            <Link
+              href="/me"
+              aria-label="뒤로"
+              className="hover:bg-secondary -ml-2 flex size-9 items-center justify-center rounded-full"
+            >
               <ChevronLeft className="size-6" />
             </Link>
             프로필 수정

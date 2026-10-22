@@ -30,7 +30,10 @@ describe("options ↔ DB 제약 동기화", () => {
   });
 
   it("enum 타입", () => {
-    const en = (t: string) => [...core.match(new RegExp(`create type public.${t} as enum \\(([^)]*)\\)`))![1].matchAll(/'([a-z_]+)'/g)].map((x) => x[1]).sort();
+    const en = (t: string) =>
+      [...core.match(new RegExp(`create type public.${t} as enum \\(([^)]*)\\)`))![1].matchAll(/'([a-z_]+)'/g)]
+        .map((x) => x[1])
+        .sort();
     expect(en("availability")).toEqual(vals(O.AVAILABILITY));
     expect(en("contact_kind")).toEqual(vals(O.CONTACT_KINDS));
     expect(en("report_reason")).toEqual(vals(O.REPORT_REASONS));

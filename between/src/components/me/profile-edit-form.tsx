@@ -29,7 +29,12 @@ import {
 import { REGIONS, SIDO_LIST } from "@/lib/domain/regions";
 import type { MyProfile } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { ageFromBirthYear, maxAdultBirthYear, profileUpdateSchema, type ProfileUpdateInput } from "@/lib/validation/profile";
+import {
+  ageFromBirthYear,
+  maxAdultBirthYear,
+  profileUpdateSchema,
+  type ProfileUpdateInput,
+} from "@/lib/validation/profile";
 import { NativeSelect } from "./native-select";
 import { Section } from "./section";
 
@@ -62,7 +67,8 @@ function nearestExpiry(expiresAt: string | null): number {
   if (!expiresAt) return 0;
   const days = (new Date(expiresAt).getTime() - Date.now()) / 86_400_000;
   const choices = EXPIRY_CHOICES.filter((c) => c.days > 0);
-  return choices.reduce((best, c) => (Math.abs(c.days - days) < Math.abs(best.days - days) ? c : best), choices[0]).days;
+  return choices.reduce((best, c) => (Math.abs(c.days - days) < Math.abs(best.days - days) ? c : best), choices[0])
+    .days;
 }
 
 export function toFormValues(p: MyProfile): ProfileFormValues {
@@ -126,7 +132,7 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
 
   const err = (k: string) =>
     errors[k]?.message ? (
-      <p role="alert" className="mt-1 text-xs text-destructive">
+      <p role="alert" className="text-destructive mt-1 text-xs">
         {errors[k]?.message}
       </p>
     ) : null;
@@ -144,7 +150,13 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
       <Section title="기본 정보" description="닉네임·나이·시/도는 필수예요. 정확한 주소는 입력하지 마세요.">
         <div className="space-y-4">
           <Field id="nickname" label="닉네임" error={err("nickname")}>
-            <Input id="nickname" maxLength={16} autoComplete="off" className="h-11 rounded-xl" {...register("nickname")} />
+            <Input
+              id="nickname"
+              maxLength={16}
+              autoComplete="off"
+              className="h-11 rounded-xl"
+              {...register("nickname")}
+            />
           </Field>
           <Field id="birthYear" label="출생연도" error={err("birthYear")}>
             <NativeSelect id="birthYear" {...register("birthYear", { valueAsNumber: true })}>
@@ -185,7 +197,13 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
             </Field>
           </div>
           <Field id="dong" label="동/읍/면 (선택)" extra={vis("dong")} error={err("dong")}>
-            <Input id="dong" placeholder="예: 역삼동" maxLength={20} className="h-11 rounded-xl" {...register("dong")} />
+            <Input
+              id="dong"
+              placeholder="예: 역삼동"
+              maxLength={20}
+              className="h-11 rounded-xl"
+              {...register("dong")}
+            />
           </Field>
         </div>
       </Section>
@@ -195,14 +213,28 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
           <div className="grid grid-cols-2 gap-3">
             <Field id="height" label="키" extra={vis("height")} error={err("height")}>
               <div className="relative">
-                <Input id="height" type="number" inputMode="numeric" placeholder="175" className="h-11 rounded-xl pr-10" {...register("height")} />
-                <span className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground">cm</span>
+                <Input
+                  id="height"
+                  type="number"
+                  inputMode="numeric"
+                  placeholder="175"
+                  className="h-11 rounded-xl pr-10"
+                  {...register("height")}
+                />
+                <span className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2 text-sm">cm</span>
               </div>
             </Field>
             <Field id="weight" label="몸무게" extra={vis("weight")} error={err("weight")}>
               <div className="relative">
-                <Input id="weight" type="number" inputMode="numeric" placeholder="70" className="h-11 rounded-xl pr-10" {...register("weight")} />
-                <span className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground">kg</span>
+                <Input
+                  id="weight"
+                  type="number"
+                  inputMode="numeric"
+                  placeholder="70"
+                  className="h-11 rounded-xl pr-10"
+                  {...register("weight")}
+                />
+                <span className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2 text-sm">kg</span>
               </div>
             </Field>
           </div>
@@ -234,7 +266,7 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
               )}
             />
             <span className="text-sm">
-              <ShieldCheck className="mr-1 inline size-4 text-primary" />
+              <ShieldCheck className="text-primary mr-1 inline size-4" />
               성향 정보는 민감정보예요. 저장·공개에 별도로 동의합니다
             </span>
           </label>
@@ -279,7 +311,7 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
               className="rounded-xl"
               {...register("bio")}
             />
-            <p className="mt-1 flex justify-between text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-1 flex justify-between text-xs">
               <span>전화번호·이메일·링크는 입력할 수 없어요.</span>
               <span>{bio.length}/500</span>
             </p>
@@ -287,7 +319,11 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
         </div>
       </Section>
 
-      <Section title="노출 설정" id="exposure" description="자동 만료를 설정하면 기간이 지난 뒤 프로필이 숨겨지고, 7일 후 모든 정보가 삭제돼요.">
+      <Section
+        title="노출 설정"
+        id="exposure"
+        description="자동 만료를 설정하면 기간이 지난 뒤 프로필이 숨겨지고, 7일 후 모든 정보가 삭제돼요."
+      >
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <label htmlFor="isHidden" className="flex-1 text-sm font-semibold">
@@ -315,7 +351,7 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
         <button
           type="submit"
           disabled={formState.isSubmitting}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-brand text-[15px] font-bold text-white shadow-xl shadow-primary/30 transition-opacity active:opacity-85 disabled:opacity-60"
+          className="bg-brand shadow-primary/30 flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-[15px] font-bold text-white shadow-xl transition-opacity active:opacity-85 disabled:opacity-60"
           data-testid="save-profile"
         >
           {formState.isSubmitting && <Loader2 className="size-4 animate-spin" />}

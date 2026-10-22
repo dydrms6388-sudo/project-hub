@@ -15,11 +15,11 @@ export default async function StartPage() {
     if (profile) redirect("/explore");
   }
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pt-safe pb-10">
+    <main className="pt-safe mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pb-10">
       <section className="relative mt-10 mb-8 text-center">
-        <div className="pointer-events-none absolute -top-16 left-1/2 size-64 -translate-x-1/2 rounded-full bg-primary/25 blur-3xl" />
-        <p className="relative text-[42px] font-black tracking-[0.18em] text-brand">BETWEEN</p>
-        <p className="relative mt-2 text-sm text-muted-foreground">우리 사이, 가까운 곳에서</p>
+        <div className="bg-primary/25 pointer-events-none absolute -top-16 left-1/2 size-64 -translate-x-1/2 rounded-full blur-3xl" />
+        <p className="text-brand relative text-[42px] font-black tracking-[0.18em]">BETWEEN</p>
+        <p className="text-muted-foreground relative mt-2 text-sm">우리 사이, 가까운 곳에서</p>
       </section>
       <OnboardingForm maxYear={maxAdultBirthYear()} />
     </main>

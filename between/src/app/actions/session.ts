@@ -24,7 +24,7 @@ import { onboardingSchema, type OnboardingInput } from "@/lib/validation/profile
 export async function startAction(input: OnboardingInput) {
   return run(async () => {
     const data = onboardingSchema.parse(input);
-    await limitIp("start", 8, 3600);
+    await limitIp("start", env().START_RATE_LIMIT_PER_HOUR, 3600);
     // 이미 익명 세션이 있으면(프로필만 없는 경우) 그 세션을 재사용
     let session = await getSession();
     if (session) {

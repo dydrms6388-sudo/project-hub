@@ -61,10 +61,17 @@ function RecoveryCode() {
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">
-        복구 코드를 저장해 두면 다른 기기나 브라우저에서도 이 프로필로 돌아올 수 있어요. 새로 발급하면 이전 코드는 사용할 수 없어요.
+      <p className="text-muted-foreground text-sm">
+        복구 코드를 저장해 두면 다른 기기나 브라우저에서도 이 프로필로 돌아올 수 있어요. 새로 발급하면 이전 코드는
+        사용할 수 없어요.
       </p>
-      <Button onClick={issue} disabled={pending} variant="secondary" className="h-11 w-full rounded-xl" data-testid="issue-recovery">
+      <Button
+        onClick={issue}
+        disabled={pending}
+        variant="secondary"
+        className="h-11 w-full rounded-xl"
+        data-testid="issue-recovery"
+      >
         {pending ? <Loader2 className="animate-spin" /> : <KeyRound />}
         복구 코드 발급
       </Button>
@@ -72,16 +79,18 @@ function RecoveryCode() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>복구 코드</DialogTitle>
-            <DialogDescription>이 코드는 지금 한 번만 보여요. 안전한 곳(비밀번호 관리자 등)에 보관하세요.</DialogDescription>
+            <DialogDescription>
+              이 코드는 지금 한 번만 보여요. 안전한 곳(비밀번호 관리자 등)에 보관하세요.
+            </DialogDescription>
           </DialogHeader>
           <p
-            className="rounded-xl bg-secondary p-4 text-center font-mono text-lg font-bold tracking-wider break-all select-all"
+            className="bg-secondary rounded-xl p-4 text-center font-mono text-lg font-bold tracking-wider break-all select-all"
             data-testid="recovery-code"
           >
             {code}
           </p>
-          <p className="flex gap-2 text-xs text-muted-foreground">
-            <ShieldAlert className="size-4 shrink-0 text-accent" />
+          <p className="text-muted-foreground flex gap-2 text-xs">
+            <ShieldAlert className="text-accent size-4 shrink-0" />
             코드를 아는 사람은 누구나 내 프로필에 접근할 수 있어요. 다른 사람에게 절대 알려주지 마세요.
           </p>
           <DialogFooter>
@@ -111,7 +120,9 @@ function EmailLink({ isAnonymous }: { isAnonymous: boolean }) {
   const [sent, setSent] = useState(false);
   const [pending, start] = useTransition();
   if (!isAnonymous) {
-    return <p className="text-sm">이메일이 연결된 계정이에요. 다른 기기에서는 이메일 로그인 링크로 복구할 수 있어요.</p>;
+    return (
+      <p className="text-sm">이메일이 연결된 계정이에요. 다른 기기에서는 이메일 로그인 링크로 복구할 수 있어요.</p>
+    );
   }
   return (
     <form
@@ -125,7 +136,7 @@ function EmailLink({ isAnonymous }: { isAnonymous: boolean }) {
         });
       }}
     >
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         선택 사항이에요. 이메일은 계정 복구에만 사용되고 다른 사용자에게 공개되지 않아요.
       </p>
       <label htmlFor="recovery-email" className="sr-only">
@@ -145,7 +156,7 @@ function EmailLink({ isAnonymous }: { isAnonymous: boolean }) {
         {pending ? <Loader2 className="animate-spin" /> : <Mail />}
         확인 메일 보내기
       </Button>
-      {sent && <p className="text-sm text-success">확인 메일을 보냈어요. 메일의 링크를 누르면 연결이 완료돼요.</p>}
+      {sent && <p className="text-success text-sm">확인 메일을 보냈어요. 메일의 링크를 누르면 연결이 완료돼요.</p>}
     </form>
   );
 }
@@ -168,7 +179,7 @@ function SignOut() {
       }}
       className="flex w-full items-center gap-3 pb-3 text-left text-sm font-semibold"
     >
-      <LogOut className="size-4 text-muted-foreground" /> 로그아웃
+      <LogOut className="text-muted-foreground size-4" /> 로그아웃
     </button>
   );
 }
@@ -182,7 +193,7 @@ function DeleteAccount() {
       <AlertDialogTrigger asChild>
         <button
           type="button"
-          className="flex w-full items-center gap-3 pt-3 text-left text-sm font-semibold text-destructive"
+          className="text-destructive flex w-full items-center gap-3 pt-3 text-left text-sm font-semibold"
           data-testid="delete-account"
         >
           <Trash2 className="size-4" /> 계정·개인정보 완전 삭제
@@ -192,8 +203,8 @@ function DeleteAccount() {
         <AlertDialogHeader>
           <AlertDialogTitle>모든 정보를 삭제할까요?</AlertDialogTitle>
           <AlertDialogDescription>
-            프로필, 사진, 연락 방법, 좋아요·매칭 기록이 즉시 영구 삭제되고 복구할 수 없어요. 계속하려면 아래에 &lsquo;삭제&rsquo;를
-            입력하세요.
+            프로필, 사진, 연락 방법, 좋아요·매칭 기록이 즉시 영구 삭제되고 복구할 수 없어요. 계속하려면 아래에
+            &lsquo;삭제&rsquo;를 입력하세요.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <label htmlFor="delete-confirm" className="sr-only">

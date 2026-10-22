@@ -28,7 +28,7 @@ export function PhotoCarousel({ photos, name, seed }: { photos: string[]; name: 
           </div>
         ))}
       </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
+      <div className="from-background pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t to-transparent" />
       {list.length > 1 && (
         <div className="absolute inset-x-0 top-[max(env(safe-area-inset-top),8px)] flex gap-1 px-16">
           {list.map((_, i) => (

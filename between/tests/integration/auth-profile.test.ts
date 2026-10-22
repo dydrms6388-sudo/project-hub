@@ -27,7 +27,9 @@ describe("익명 인증 (local 드라이버)", () => {
     const [h, p, s] = token.split(".");
     const forged = JSON.parse(Buffer.from(p, "base64url").toString());
     forged.sub = "00000000-0000-0000-0000-000000000000";
-    expect(await verifyLocalSession(`${h}.${Buffer.from(JSON.stringify(forged)).toString("base64url")}.${s}`)).toBeNull();
+    expect(
+      await verifyLocalSession(`${h}.${Buffer.from(JSON.stringify(forged)).toString("base64url")}.${s}`),
+    ).toBeNull();
     expect(await verifyLocalSession("garbage")).toBeNull();
   });
 
@@ -38,7 +40,9 @@ describe("익명 인증 (local 드라이버)", () => {
     await saveRecoveryCode(u.id, code);
     expect(await findUserByRecoveryCode(code.toLowerCase())).toBe(u.id);
     expect(await findUserByRecoveryCode(generateRecoveryCode())).toBeNull();
-    const stored = await withService((db) => db.query("select code_hash from public.account_recovery where user_id = $1", [u.id]));
+    const stored = await withService((db) =>
+      db.query("select code_hash from public.account_recovery where user_id = $1", [u.id]),
+    );
     expect(stored.rows[0].code_hash).not.toContain(code.replace(/-/g, ""));
   });
 
@@ -87,11 +91,13 @@ describe("프로필 CRUD + 소유권", () => {
 
   it("상태 컬럼(status, last_active_at)은 본인도 직접 수정할 수 없다", async () => {
     const u = await makeUser();
-    await expect(as(u, (db) => db.query("update public.profiles set status = 'active' where id = $1", [u.id]))).rejects.toThrow(
-      /permission denied/,
-    );
     await expect(
-      as(u, (db) => db.query("update public.profiles set last_active_at = now() + interval '1 year' where id = $1", [u.id])),
+      as(u, (db) => db.query("update public.profiles set status = 'active' where id = $1", [u.id])),
+    ).rejects.toThrow(/permission denied/);
+    await expect(
+      as(u, (db) =>
+        db.query("update public.profiles set last_active_at = now() + interval '1 year' where id = $1", [u.id]),
+      ),
     ).rejects.toThrow(/permission denied/);
   });
 
@@ -126,15 +132,18 @@ describe("프로필 CRUD + 소유권", () => {
 
   it("성향은 민감정보 동의 없이 저장할 수 없다", async () => {
     const u = await makeUser();
-    await expect(as(u, (db) => db.query("update public.profiles set position = 'top' where id = $1", [u.id]))).rejects.toThrow(
-      /position_requires_sensitive_consent/,
-    );
+    await expect(
+      as(u, (db) => db.query("update public.profiles set position = 'top' where id = $1", [u.id])),
+    ).rejects.toThrow(/position_requires_sensitive_consent/);
   });
 
   it("계정 삭제 시 개인 데이터가 cascade 로 모두 삭제된다", async () => {
     const u = await makeUser();
     await as(u, (db) =>
-      db.query("insert into public.contact_methods (user_id, kind, value) values ($1, 'telegram', 'https://t.me/abcde')", [u.id]),
+      db.query(
+        "insert into public.contact_methods (user_id, kind, value) values ($1, 'telegram', 'https://t.me/abcde')",
+        [u.id],
+      ),
     );
     await withService((db) => db.query("delete from auth.users where id = $1", [u.id]));
     const left = await withService((db) =>

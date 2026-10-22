@@ -63,7 +63,9 @@ describe("SQL 빌더", () => {
     expect(q.values).toEqual(expect.arrayContaining([2026 - 30, 2026 - 25]));
   });
   it("관심사 all 은 @>, any 는 &&", () => {
-    expect(buildExploreQuery(parseFiltersLenient({ interests: ["cafe"], interestsMode: "all" }), viewer, 0).text).toContain("c.interests @>");
+    expect(
+      buildExploreQuery(parseFiltersLenient({ interests: ["cafe"], interestsMode: "all" }), viewer, 0).text,
+    ).toContain("c.interests @>");
     expect(buildExploreQuery(parseFiltersLenient({ interests: ["cafe"] }), viewer, 0).text).toContain("c.interests &&");
   });
   it("페이지네이션 상한 + 다음 페이지 확인용 limit+1", () => {

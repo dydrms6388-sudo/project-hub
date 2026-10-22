@@ -70,7 +70,9 @@ describe("공개 프로필 뷰 (마스킹 + 접근제어)", () => {
   it("정지된 사용자는 다른 프로필을 탐색할 수 없다", async () => {
     const suspended = await makeUser();
     const other = await makeUser();
-    await withService((db) => db.query("update public.profiles set status = 'suspended' where id = $1", [suspended.id]));
+    await withService((db) =>
+      db.query("update public.profiles set status = 'suspended' where id = $1", [suspended.id]),
+    );
     expect(await as(suspended, (db) => getCard(db, other.id))).toBeNull();
   });
 
@@ -80,7 +82,9 @@ describe("공개 프로필 뷰 (마스킹 + 접근제어)", () => {
     await as(owner, (db) => setActivity(db, owner.id, "now", 2));
     expect((await as(viewer, (db) => getCard(db, owner.id)))?.availability).toBe("now");
     await withService((db) =>
-      db.query("update public.activity_status set expires_at = now() - interval '1 second' where user_id = $1", [owner.id]),
+      db.query("update public.activity_status set expires_at = now() - interval '1 second' where user_id = $1", [
+        owner.id,
+      ]),
     );
     expect((await as(viewer, (db) => getCard(db, owner.id)))?.availability).toBe("off");
   });
@@ -88,13 +92,16 @@ describe("공개 프로필 뷰 (마스킹 + 접근제어)", () => {
   it("'지금 가능' 은 만료시각 없이 또는 6시간 초과로 설정할 수 없다", async () => {
     const u = await makeUser();
     await expect(
-      as(u, (db) => db.query("update public.activity_status set status = 'now', expires_at = null where user_id = $1", [u.id])),
+      as(u, (db) =>
+        db.query("update public.activity_status set status = 'now', expires_at = null where user_id = $1", [u.id]),
+      ),
     ).rejects.toThrow(/NOW_REQUIRES_EXPIRY/);
     await expect(
       as(u, (db) =>
-        db.query("update public.activity_status set status = 'now', expires_at = now() + interval '1 day' where user_id = $1", [
-          u.id,
-        ]),
+        db.query(
+          "update public.activity_status set status = 'now', expires_at = now() + interval '1 day' where user_id = $1",
+          [u.id],
+        ),
       ),
     ).rejects.toThrow(/NOW_REQUIRES_EXPIRY/);
   });

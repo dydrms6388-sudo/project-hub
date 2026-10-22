@@ -58,15 +58,17 @@ const regionFields = {
     z
       .string()
       .transform(cleanText)
-      .pipe(z.string().max(20).regex(/^[가-힣0-9]{1,18}(동|읍|면|가|리)$/, "동/읍/면 이름만 입력해 주세요. (예: 역삼동)"))
+      .pipe(
+        z
+          .string()
+          .max(20)
+          .regex(/^[가-힣0-9]{1,18}(동|읍|면|가|리)$/, "동/읍/면 이름만 입력해 주세요. (예: 역삼동)"),
+      )
       .nullable(),
   ),
 };
 
-function refineRegion(
-  v: { sido: string; sigungu: string | null; dong: string | null },
-  ctx: z.RefinementCtx,
-) {
+function refineRegion(v: { sido: string; sigungu: string | null; dong: string | null }, ctx: z.RefinementCtx) {
   if (v.sigungu && !isValidSigungu(v.sido, v.sigungu)) {
     ctx.addIssue({ code: "custom", path: ["sigungu"], message: "시/군/구를 다시 선택해 주세요." });
   }
@@ -111,9 +113,7 @@ const optionalInt = (min: number, max: number, label: string) =>
       .nullable(),
   );
 
-export const visibilitySchema = z
-  .partialRecord(z.enum(VISIBILITY_FIELDS), z.enum(["public", "private"]))
-  .default({});
+export const visibilitySchema = z.partialRecord(z.enum(VISIBILITY_FIELDS), z.enum(["public", "private"])).default({});
 
 export const profileUpdateSchema = z
   .object({
@@ -133,11 +133,7 @@ export const profileUpdateSchema = z
     drinking: optionalEnum(values(DRINKING)),
     bio: z.preprocess(
       emptyToNull,
-      z
-        .string()
-        .transform(cleanText)
-        .pipe(z.string().max(500, "자기소개는 500자 이하예요."))
-        .nullable(),
+      z.string().transform(cleanText).pipe(z.string().max(500, "자기소개는 500자 이하예요.")).nullable(),
     ),
     visibility: visibilitySchema,
     // 세부 성향 정보 공개를 위한 별도 동의 (온보딩 동의와 분리)

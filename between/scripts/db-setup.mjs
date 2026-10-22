@@ -39,7 +39,10 @@ async function withClient(url, fn) {
 await withClient(adminUrl, async (c) => {
   const exists = (await c.query("select 1 from pg_database where datname = $1", [dbName])).rowCount > 0;
   if (exists && args.has("--reset")) {
-    await c.query(`select pg_terminate_backend(pid) from pg_stat_activity where datname = $1 and pid <> pg_backend_pid()`, [dbName]);
+    await c.query(
+      `select pg_terminate_backend(pid) from pg_stat_activity where datname = $1 and pid <> pg_backend_pid()`,
+      [dbName],
+    );
     await c.query(`drop database ${dbName}`);
   }
   if (!exists || args.has("--reset")) {
@@ -47,12 +50,18 @@ await withClient(adminUrl, async (c) => {
     console.log(`created database ${dbName}`);
   }
   for (const r of ["anon", "authenticated"]) {
-    await c.query(`do $$ begin if not exists (select 1 from pg_roles where rolname = '${r}') then create role ${r} nologin noinherit; end if; end $$`);
+    await c.query(
+      `do $$ begin if not exists (select 1 from pg_roles where rolname = '${r}') then create role ${r} nologin noinherit; end if; end $$`,
+    );
   }
-  await c.query(`do $$ begin if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role nologin noinherit bypassrls; end if; end $$`);
+  await c.query(
+    `do $$ begin if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role nologin noinherit bypassrls; end if; end $$`,
+  );
   const roleExists = (await c.query("select 1 from pg_roles where rolname = $1", [appUser])).rowCount > 0;
   if (!roleExists) {
-    await c.query(`create role ${appUser} login noinherit password ${pg.escapeLiteral ? pg.escapeLiteral(appPassword) : `'${appPassword.replace(/'/g, "''")}'`}`);
+    await c.query(
+      `create role ${appUser} login noinherit password ${pg.escapeLiteral ? pg.escapeLiteral(appPassword) : `'${appPassword.replace(/'/g, "''")}'`}`,
+    );
   }
   // 앱 접속 역할은 아무 권한 없이(noinherit) 접속해, 요청마다 SET LOCAL ROLE 로 전환한다
   await c.query(`grant anon, authenticated, service_role to ${appUser}`);
@@ -66,7 +75,9 @@ await withClient(dbAdminUrl, async (c) => {
   await c.query(`create schema if not exists local_meta;
     create table if not exists local_meta.migrations (name text primary key, applied_at timestamptz default now())`);
   const applied = new Set((await c.query("select name from local_meta.migrations")).rows.map((r) => r.name));
-  const files = readdirSync(join(root, "supabase/migrations")).filter((f) => f.endsWith(".sql")).sort();
+  const files = readdirSync(join(root, "supabase/migrations"))
+    .filter((f) => f.endsWith(".sql"))
+    .sort();
   for (const f of files) {
     if (applied.has(f)) continue;
     await c.query("begin");

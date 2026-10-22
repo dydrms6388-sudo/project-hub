@@ -21,12 +21,7 @@ export const ACTIVE_WITHIN = [
   { value: "week", label: "7일 이내" },
 ] as const;
 
-const availabilityValues = values(AVAILABILITY).filter((v) => v !== "off") as [
-  "now",
-  "tonight",
-  "weekend",
-  "flexible",
-];
+const availabilityValues = values(AVAILABILITY).filter((v) => v !== "off") as ["now", "tonight", "weekend", "flexible"];
 
 const list = <T extends z.ZodType>(item: T, max: number) => z.array(item).max(max).default([]);
 
@@ -35,7 +30,12 @@ export const exploreFiltersSchema = z
     sido: list(z.enum(SIDO_LIST as [string, ...string[]]), 17),
     // "서울:강남구" 형식 (구 이름이 시/도마다 중복되므로)
     sigungu: list(z.string().max(30), 30),
-    dong: z.string().trim().max(20).regex(/^[가-힣0-9]*$/).optional(),
+    dong: z
+      .string()
+      .trim()
+      .max(20)
+      .regex(/^[가-힣0-9]*$/)
+      .optional(),
     ageMin: z.coerce.number().int().min(19).max(99).optional(),
     ageMax: z.coerce.number().int().min(19).max(99).optional(),
     heightMin: z.coerce.number().int().min(140).max(220).optional(),
@@ -63,11 +63,31 @@ export const exploreFiltersSchema = z
 export type ExploreFilters = z.output<typeof exploreFiltersSchema>;
 export const DEFAULT_FILTERS: ExploreFilters = exploreFiltersSchema.parse({});
 
-const ARRAY_KEYS = ["sido", "sigungu", "bodyTypes", "positions", "styles", "purposes", "interests", "availability"] as const;
-const SCALAR_KEYS = ["dong", "ageMin", "ageMax", "heightMin", "heightMax", "interestsMode", "activeWithin", "sort"] as const;
+const ARRAY_KEYS = [
+  "sido",
+  "sigungu",
+  "bodyTypes",
+  "positions",
+  "styles",
+  "purposes",
+  "interests",
+  "availability",
+] as const;
+const SCALAR_KEYS = [
+  "dong",
+  "ageMin",
+  "ageMax",
+  "heightMin",
+  "heightMax",
+  "interestsMode",
+  "activeWithin",
+  "sort",
+] as const;
 
 /** URLSearchParams → 필터 (잘못된 값은 조용히 기본값으로) */
-export function filtersFromSearchParams(sp: URLSearchParams | Record<string, string | string[] | undefined>): ExploreFilters {
+export function filtersFromSearchParams(
+  sp: URLSearchParams | Record<string, string | string[] | undefined>,
+): ExploreFilters {
   const get = (k: string): string[] => {
     if (sp instanceof URLSearchParams) return sp.getAll(k);
     const v = sp[k];
@@ -75,7 +95,9 @@ export function filtersFromSearchParams(sp: URLSearchParams | Record<string, str
   };
   const raw: Record<string, unknown> = {};
   for (const k of ARRAY_KEYS) {
-    const vals = get(k).flatMap((v) => v.split(",")).filter(Boolean);
+    const vals = get(k)
+      .flatMap((v) => v.split(","))
+      .filter(Boolean);
     if (vals.length) raw[k] = vals;
   }
   for (const k of SCALAR_KEYS) {

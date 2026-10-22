@@ -35,7 +35,10 @@ export async function setHiddenAction(hidden: boolean) {
 
 const activitySchema = z.object({
   status: z.enum(["now", "tonight", "weekend", "flexible", "off"]),
-  hours: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(6)]).nullable().default(null),
+  hours: z
+    .union([z.literal(1), z.literal(2), z.literal(3), z.literal(6)])
+    .nullable()
+    .default(null),
 });
 
 export async function setActivityAction(input: z.input<typeof activitySchema>) {

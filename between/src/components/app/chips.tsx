@@ -29,8 +29,8 @@ export function Chip({
         "inline-flex shrink-0 items-center gap-1 rounded-full border font-medium whitespace-nowrap transition-all select-none active:scale-95",
         size === "sm" ? "h-7 px-2.5 text-xs" : "h-9 px-3.5 text-sm",
         selected
-          ? "border-transparent bg-brand text-white shadow-[0_4px_16px_-6px] shadow-primary/60"
-          : "border-white/10 bg-secondary/60 text-secondary-foreground hover:bg-secondary",
+          ? "bg-brand shadow-primary/60 border-transparent text-white shadow-[0_4px_16px_-6px]"
+          : "bg-secondary/60 text-secondary-foreground hover:bg-secondary border-white/10",
         className,
       )}
       {...rest}

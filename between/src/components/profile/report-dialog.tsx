@@ -6,7 +6,14 @@ import { toast } from "sonner";
 import { reportAction } from "@/app/actions/social";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,14 +52,16 @@ export function ReportDialog({
       <DialogContent className="max-h-[90dvh] overflow-y-auto" data-testid="report-dialog">
         <DialogHeader>
           <DialogTitle>{nickname}님 신고</DialogTitle>
-          <DialogDescription>신고 내용은 상대에게 알려지지 않아요. 긴급한 위험은 112 에 먼저 신고해 주세요.</DialogDescription>
+          <DialogDescription>
+            신고 내용은 상대에게 알려지지 않아요. 긴급한 위험은 112 에 먼저 신고해 주세요.
+          </DialogDescription>
         </DialogHeader>
         <RadioGroup value={reason} onValueChange={(v) => setReason(v as ReportReason)} className="gap-2">
           {REPORT_REASONS.map((r) => (
             <Label
               key={r.value}
               htmlFor={`reason-${r.value}`}
-              className="flex cursor-pointer items-center gap-3 rounded-xl bg-secondary/60 px-3 py-2.5 font-normal has-[[data-state=checked]]:ring-1 has-[[data-state=checked]]:ring-primary"
+              className="bg-secondary/60 has-[[data-state=checked]]:ring-primary flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 font-normal has-[[data-state=checked]]:ring-1"
             >
               <RadioGroupItem value={r.value} id={`reason-${r.value}`} />
               {r.label}
