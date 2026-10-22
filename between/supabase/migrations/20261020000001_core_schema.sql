@@ -77,7 +77,7 @@ create index profiles_purposes_gin on public.profiles using gin (purposes);
 create or replace function public.profiles_before_write() returns trigger
 language plpgsql set search_path = '' as $$
 begin
-  if new.birth_year > extract(year from now())::int - 19 then
+  if new.birth_year > extract(year from (now() at time zone 'Asia/Seoul'))::int - 19 then
     raise exception 'ADULT_ONLY' using errcode = 'check_violation';
   end if;
   if new.expires_at is not null and new.expires_at > now() + interval '366 days' then

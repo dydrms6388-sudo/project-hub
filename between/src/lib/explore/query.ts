@@ -1,5 +1,6 @@
 // 탐색/스와이프 SQL 빌더 (순수 함수, 파라미터 바인딩만 사용 — 문자열 보간 금지)
 // 대상은 항상 접근제어·마스킹이 적용된 public.profile_cards 뷰다.
+import { kstYear } from "@/lib/validation/profile";
 import type { ExploreFilters } from "./filters";
 
 export type Viewer = { id: string; sido: string; sigungu: string | null; interests: string[] };
@@ -36,7 +37,7 @@ function recommendedScore(p: Params, viewer: Viewer): string {
 
 export function buildWhere(f: ExploreFilters, viewer: Viewer, p: Params, now = new Date()): string[] {
   const where: string[] = [`c.id <> ${p.add(viewer.id)}`];
-  const year = now.getFullYear();
+  const year = kstYear(now);
 
   if (f.sido.length || f.sigungu.length) {
     // 시/도 선택과 시/군/구 선택은 OR (예: "부산 전체 또는 서울 마포구")

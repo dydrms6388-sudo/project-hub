@@ -29,7 +29,7 @@ import {
 import { REGIONS, SIDO_LIST } from "@/lib/domain/regions";
 import type { MyProfile } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { maxAdultBirthYear, profileUpdateSchema, type ProfileUpdateInput } from "@/lib/validation/profile";
+import { ageFromBirthYear, maxAdultBirthYear, profileUpdateSchema, type ProfileUpdateInput } from "@/lib/validation/profile";
 import { NativeSelect } from "./native-select";
 import { Section } from "./section";
 
@@ -150,7 +150,7 @@ export function ProfileEditForm({ profile }: { profile: MyProfile }) {
             <NativeSelect id="birthYear" {...register("birthYear", { valueAsNumber: true })}>
               {years.map((y) => (
                 <option key={y} value={y}>
-                  {y}년생 ({new Date().getFullYear() - y}세)
+                  {y}년생 ({ageFromBirthYear(y)}세)
                 </option>
               ))}
             </NativeSelect>

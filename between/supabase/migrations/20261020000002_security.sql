@@ -90,7 +90,7 @@ select
   p.id,
   p.nickname,
   p.birth_year,
-  (extract(year from now())::int - p.birth_year) as age,
+  (extract(year from (now() at time zone 'Asia/Seoul'))::int - p.birth_year) as age,
   p.sido,
   case when public.field_public(p.field_visibility, 'sigungu') then p.sigungu end as sigungu,
   case when public.field_public(p.field_visibility, 'dong') then p.dong end as dong,

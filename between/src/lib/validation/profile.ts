@@ -18,11 +18,16 @@ import { cleanText, findPersonalInfo, PERSONAL_INFO_MESSAGES } from "./text";
 
 /** 청소년보호법 기준: 만 19세가 되는 해의 1월 1일부터 성인 → 출생연도 ≤ 올해 - 19 */
 export function maxAdultBirthYear(now = new Date()): number {
-  return now.getFullYear() - 19;
+  return kstYear(now) - 19;
 }
 
 export function ageFromBirthYear(birthYear: number, now = new Date()): number {
-  return now.getFullYear() - birthYear;
+  return kstYear(now) - birthYear;
+}
+
+/** 서버 시간대(UTC 등)와 무관하게 한국 시간 기준 연도 */
+export function kstYear(now = new Date()): number {
+  return new Date(now.getTime() + 9 * 3_600_000).getUTCFullYear();
 }
 
 const emptyToNull = (v: unknown) => (v === "" || v === undefined ? null : v);
