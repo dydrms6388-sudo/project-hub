@@ -1,0 +1,23 @@
+{
+  "name": "mention-spike",
+  "version": "0.1.0",
+  "private": true,
+  "description": "코인 언급 급상승 탐지 — 상시 worker + Redis 큐 (10초 탐지 주기)",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "collector": "node src/workers/collector.js",
+    "engine": "node src/workers/engine.js",
+    "notifier": "node src/workers/notifier.js",
+    "api": "node src/api/server.js",
+    "test": "node --test test/*.test.js",
+    "test:alert": "node scripts/send-test-alert.js"
+  },
+  "dependencies": {
+    "ioredis": "^5.11.1",
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "smtp-server": "^3.21.1"
+  }
+}

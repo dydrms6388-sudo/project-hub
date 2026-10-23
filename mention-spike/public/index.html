@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>언급 급상승 모니터</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--ink:#1d1d1f;--mute:#6b6b70;--line:#e3e3e0;--hot:#c2410c;--hot-bg:#fff1e8;--new:#6d28d9;--new-bg:#f3edff;--ok:#15803d;--warn:#b45309;--warn-bg:#fff7e6;--accent:#2563eb}
+@media (prefers-color-scheme:dark){:root{--bg:#121214;--card:#1c1c1f;--ink:#ececee;--mute:#9a9aa2;--line:#2c2c31;--hot:#fb923c;--hot-bg:#3a1f10;--new:#c4b5fd;--new-bg:#2a2140;--ok:#4ade80;--warn:#fbbf24;--warn-bg:#352a10;--accent:#60a5fa}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:4px 0 2px}h2{font-size:15px;margin:0 0 10px}
+.sub{color:var(--mute);font-size:12.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:14px}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}@media(max-width:820px){.grid{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mute);font-weight:500;font-size:12px}
+.scroll{overflow-x:auto}
+.b{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;font-weight:600}
+.b.SPIKE{background:var(--hot-bg);color:var(--hot)}.b.NEW_SURGE{background:var(--new-bg);color:var(--new)}
+.b.fresh{color:var(--ok)}.b.stale{background:var(--warn-bg);color:var(--warn)}
+.notice{background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:8px 10px;font-size:12.5px;margin-top:10px}
+.mute{color:var(--mute)}
+input,select,button{font:inherit;color:inherit}
+input,select{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 8px;width:100%}
+button{background:var(--accent);color:#fff;border:0;border-radius:6px;padding:6px 12px;cursor:pointer}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)}
+.form{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.form label{font-size:12px;color:var(--mute);display:block}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#feed li{padding:4px 0;border-bottom:1px solid var(--line);font-size:13px;list-style:none}#feed{padding:0;margin:0;max-height:260px;overflow:auto}
+pre{margin:0;font-size:12px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<main>
+  <h1>코인 언급 급상승 모니터</h1>
+  <div class="sub" id="meta">연결 대기…</div>
+  <div class="notice" id="cadence"></div>
+
+  <div class="row card" id="auth">
+    <input id="token" type="password" placeholder="API_TOKEN" style="max-width:280px">
+    <button id="connect">연결</button><span class="mute" id="connState"></span>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>코인별 현황 <span class="sub">— 최근 구간 vs 직전 동일 길이 구간</span></h2>
+      <div class="scroll"><table><thead><tr><th>코인</th><th>최근</th><th>직전</th><th>증가율</th><th>고유 작성자</th><th>분류</th><th>사유</th></tr></thead><tbody id="coins"></tbody></table></div>
+    </section>
+    <section class="card">
+      <h2>실시간 알림 큐 투입</h2>
+      <ul id="feed"><li class="mute">아직 없음</li></ul>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>수집 소스 · 데이터 신선도</h2>
+    <div class="scroll"><table><thead><tr><th>소스</th><th>상태</th><th>마지막 수집</th><th>수집 주기</th><th>수집 정책</th><th>인정</th><th>필터 제외</th><th>오류</th></tr></thead><tbody id="sources"></tbody></table></div>
+  </section>
+
+  <section class="card">
+    <h2>사용자별 임계치 · 알림 채널</h2>
+    <div class="row" style="margin-bottom:10px">
+      <select id="userSel" style="max-width:220px"></select>
+      <input id="newId" placeholder="새 사용자 id" style="max-width:180px"><button class="ghost" id="addUser">추가</button>
+    </div>
+    <div class="form" id="form">
+      <div><label>이름</label><input name="name"></div>
+      <div><label>Telegram chat id</label><input name="telegramChatId" placeholder="123456789"></div>
+      <div><label>Email</label><input name="email" type="email"></div>
+      <div><label>최소 증가율 (%)</label><input name="minGrowthPct" type="number"></div>
+      <div><label>최신 구간 최소 언급</label><input name="minCount" type="number"></div>
+      <div><label>최소 고유 작성자</label><input name="minUniqueAuthors" type="number"></div>
+      <div><label>쿨다운 (초)</label><input name="cooldownSec" type="number"></div>
+      <div><label>재알림 배수 (×마지막 알림 언급량)</label><input name="realertMultiplier" type="number" step="0.1"></div>
+      <div><label>이벤트 종료 (조건 미충족 초)</label><input name="eventResetSec" type="number"></div>
+      <div><label>신규 급증 알림</label><select name="alertOnNewSurge"><option value="true">받기</option><option value="false">안 받기</option></select></div>
+      <div><label>Telegram</label><select name="ch_telegram"><option value="true">켜짐</option><option value="false">꺼짐</option></select></div>
+      <div><label>Email</label><select name="ch_email"><option value="true">켜짐</option><option value="false">꺼짐</option></select></div>
+      <div style="grid-column:1/-1"><label>감시 코인 (쉼표, 비우면 전체)</label><input name="coins" placeholder="BTC,ETH"></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button id="save">저장</button>
+      <button class="ghost" data-test="telegram">Telegram 실제 발송 테스트</button>
+      <button class="ghost" data-test="email">Email 실제 발송 테스트</button>
+      <span class="mute" id="saveMsg"></span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="row" style="justify-content:space-between"><h2>감사 로그</h2>
+      <div class="row"><select id="auditType" style="width:auto"><option value="">전체</option><option>detect.candidate</option><option>alert.enqueued</option><option>alert.suppressed</option><option>alert.sent</option><option>alert.failed</option><option>alert.dead_letter</option><option>alert.test_sent</option><option>alert.test_failed</option><option>settings.updated</option><option>detect.stale</option></select><button class="ghost" id="auditRefresh">새로고침</button></div></div>
+    <div class="scroll"><table><thead><tr><th>시각</th><th>유형</th><th>내용</th></tr></thead><tbody id="audit"></tbody></table></div>
+  </section>
+  <p class="sub">공개 게시물 언급량 통계일 뿐이며 투자 조언이 아닙니다.</p>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let token = "";
+try { token = localStorage.getItem("ms_token") || ""; } catch {}
+$("#token").value = token;
+const api = (p, o = {}) => fetch(p, { ...o, headers: { "content-type": "application/json", authorization: `Bearer ${token}`, ...(o.headers || {}) } }).then(async r => { const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || (j.errors || []).join(", ") || r.status); return j; });
+const t = ms => ms ? new Date(ms).toLocaleTimeString("ko-KR", { hour12: false }) : "—";
+const KIND = { SPIKE: "급상승", NEW_SURGE: "신규 급증" };
+const REASON = { below_min_count: "언급 수 미달", below_min_authors: "작성자 수 미달", below_min_growth: "증가율 미달", baseline_zero: "직전 0건", growth_threshold: "증가율 충족", stale_data: "데이터 신선도 미달", warming_up: "연속 수집 2구간 미만" };
+
+function renderSnapshot(s) {
+  $("#meta").textContent = `마지막 탐지 ${t(s.at)} · 기본 임계치 +${s.defaults.minGrowthPct}% / ${s.defaults.minCount}건 / 작성자 ${s.defaults.minUniqueAuthors}명`;
+  $("#cadence").textContent = `탐지 엔진은 ${s.tickSec}초마다 최근 ${s.windowSec}초를 직전 ${s.windowSec}초와 비교합니다. 원천 데이터는 소스별 공식 API 제약에 따른 수집 주기(아래 표)로만 갱신되므로, ${s.tickSec}초 단위 데이터 수집을 의미하지 않습니다.` + (!s.fresh ? ` ⚠ 현재 ${s.freshnessMaxLagSec}초 이내 수집에 성공한 소스가 없어 판정·알림을 중단했습니다.` : !s.warm ? ` ⏳ 연속 수집이 ${s.windowSec * 2}초 미만이라 직전 구간을 신뢰할 수 없어 판정을 대기 중입니다.` : "");
+  $("#coins").innerHTML = s.coins.map(c => `<tr><td><b>${esc(c.symbol)}</b></td><td>${c.cur}</td><td>${c.base}</td><td>${c.base === 0 ? (c.cur ? '<span class="mute">기준 0건</span>' : "—") : (c.growthPct > 0 ? "+" : "") + c.growthPct + "%"}</td><td>${c.curAuthors}</td><td>${c.kind ? `<span class="b ${c.kind}">${KIND[c.kind]}</span>` : '<span class="mute">—</span>'}</td><td class="mute">${esc(REASON[c.reason] || c.reason)}</td></tr>`).join("");
+  $("#sources").innerHTML = s.sources.length ? s.sources.map(x => `<tr><td>${esc(x.name)}</td><td><span class="b ${x.fresh ? "fresh" : "stale"}">${!x.fresh ? "지연" : x.warm ? "신선" : "예열 중"}</span></td><td>${t(x.lastSuccessAt)} <span class="mute">${x.lagSec ?? "—"}초 전</span></td><td>${x.pollIntervalSec ? x.pollIntervalSec + "초" : "push"}</td><td class="mute">${esc(x.policy)}</td><td>${x.accepted}</td><td class="mute">${esc(Object.entries(x.dropped).map(([k, v]) => `${k} ${v}`).join(", ") || "—")}</td><td class="mute">${esc(x.lastError || "")}</td></tr>`).join("") : '<tr><td colspan="8" class="mute">등록된 소스 없음</td></tr>';
+}
+function pushFeed(j) {
+  const li = document.createElement("li");
+  li.innerHTML = `${t(j.at)} <b>${esc(j.coin)}</b> <span class="b ${j.kind}">${KIND[j.kind]}</span> ${j.cur}건 (직전 ${j.base}) · ${esc(j.user)} · ${j.reason === "realert" ? "재알림 #" + j.seq : "새 이벤트"}`;
+  const feed = $("#feed");
+  if (feed.firstElementChild?.classList.contains("mute")) feed.innerHTML = "";
+  feed.prepend(li);
+}
+
+let es;
+function connect() {
+  es?.close();
+  es = new EventSource(`/api/stream?token=${encodeURIComponent(token)}`);
+  es.onopen = () => ($("#connState").textContent = "실시간 연결됨");
+  es.onerror = () => ($("#connState").textContent = "재연결 중…");
+  es.onmessage = e => { const m = JSON.parse(e.data); if (m.type === "snapshot") renderSnapshot(m.snapshot); else if (m.type === "alert") pushFeed(m.job); };
+  loadUsers(); loadAudit();
+}
+$("#connect").onclick = () => { token = $("#token").value.trim(); try { localStorage.setItem("ms_token", token); } catch {} connect(); };
+
+let users = [];
+async function loadUsers(select) {
+  users = await api("/api/users").catch(() => []);
+  $("#userSel").innerHTML = users.map(u => `<option value="${esc(u.id)}">${esc(u.name || u.id)}</option>`).join("") || "<option value=''>사용자 없음 — 추가하세요</option>";
+  if (select) $("#userSel").value = select;
+  fillForm();
+}
+function fillForm() {
+  const u = users.find(x => x.id === $("#userSel").value);
+  const f = $("#form");
+  for (const el of f.querySelectorAll("[name]")) {
+    const n = el.name;
+    el.value = !u ? "" : n.startsWith("ch_") ? String(u.channels[n.slice(3)]) : n === "coins" ? (u.coins || []).join(",") : String(u[n] ?? "");
+  }
+}
+$("#userSel").onchange = fillForm;
+$("#addUser").onclick = async () => {
+  const id = $("#newId").value.trim();
+  if (!id) return;
+  try { await api(`/api/users/${encodeURIComponent(id)}`, { method: "PUT", body: "{}" }); $("#newId").value = ""; loadUsers(id); } catch (e) { $("#saveMsg").textContent = e.message; }
+};
+$("#save").onclick = async () => {
+  const id = $("#userSel").value;
+  if (!id) return;
+  const v = Object.fromEntries([...$("#form").querySelectorAll("[name]")].map(el => [el.name, el.value]));
+  const body = { name: v.name, telegramChatId: v.telegramChatId, email: v.email, alertOnNewSurge: v.alertOnNewSurge === "true",
+    channels: { telegram: v.ch_telegram === "true", email: v.ch_email === "true" }, coins: v.coins.split(",").map(s => s.trim().toUpperCase()).filter(Boolean) };
+  for (const k of ["minGrowthPct", "minCount", "minUniqueAuthors", "cooldownSec", "realertMultiplier", "eventResetSec"]) if (v[k] !== "") body[k] = Number(v[k]);
+  try { await api(`/api/users/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(body) }); $("#saveMsg").textContent = "저장됨"; loadUsers(id); loadAudit(); }
+  catch (e) { $("#saveMsg").textContent = "오류: " + e.message; }
+};
+for (const b of document.querySelectorAll("[data-test]")) b.onclick = async () => {
+  const id = $("#userSel").value, ch = b.dataset.test;
+  if (!id) return;
+  $("#saveMsg").textContent = `${ch} 발송 중…`;
+  try { const r = await api(`/api/users/${encodeURIComponent(id)}/test-alert`, { method: "POST", body: JSON.stringify({ channels: [ch] }) }); $("#saveMsg").textContent = r[ch].ok ? `${ch} 발송 성공 (id ${r[ch].messageId ?? "-"})` : `${ch} 실패: ${r[ch].error}`; }
+  catch (e) { $("#saveMsg").textContent = "오류: " + e.message; }
+  loadAudit();
+};
+
+async function loadAudit() {
+  const type = $("#auditType").value;
+  const rows = await api(`/api/audit?count=100${type ? "&type=" + encodeURIComponent(type) : ""}`).catch(() => []);
+  $("#audit").innerHTML = rows.map(r => { const { id, ts, type, ...rest } = r; return `<tr><td>${new Date(ts).toLocaleString("ko-KR", { hour12: false })}</td><td>${esc(type)}</td><td><pre>${esc(JSON.stringify(rest))}</pre></td></tr>`; }).join("") || '<tr><td colspan="3" class="mute">없음</td></tr>';
+}
+$("#auditRefresh").onclick = loadAudit;
+$("#auditType").onchange = loadAudit;
+if (token) connect();
+</script>
+</body>
+</html>
