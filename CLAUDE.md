@@ -52,3 +52,11 @@
   (`src/lib/content/`) 3종 등록 필요 — `node scripts/check-coverage.mjs` 로 검사.
 - 빌드: `cd illusion-lab && npm install && npm run build` → `out/`.
 - gen-pages.mjs 의 RESERVED 에 `illusion-lab` 등록됨(고아 정리 보호).
+
+## 서브프로젝트: `mention-spike/` (별도 배포, 상시 서버)
+- 코인 언급 급상승 탐지. **Node worker(api/engine/collector/notifier) + Redis** — 정적 허브·Vercel 과
+  무관. 상시 프로세스 호스팅(Fly/Railway/VPS, `docker-compose.yml`) 필요.
+- 탐지 10초 tick, 60초 vs 직전 60초, +200%·20건·고유 작성자·신선도/예열 조건, 기준 0건은 `NEW_SURGE`.
+- 수집 주기는 소스별 공식 API 제약을 따름 — UI/문서에서 10초 수집으로 표기 금지.
+- 테스트: `cd mention-spike && npm ci && npm test` (redis-server 필요).
+- gen-pages.mjs 의 RESERVED 에 `mention-spike` 등록됨(고아 정리 보호).
