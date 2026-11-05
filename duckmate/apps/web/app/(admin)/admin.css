@@ -1,0 +1,10 @@
+/*
+ * (admin) 전용 스타일 엔트리 (D8).
+ * globals.css 가 아직 `@duckmate/ui/styles.css` 를 import 하지 않아(E 그룹이 교체 예정) 여기서 직접 가져온다.
+ * styles.css 가 `@import "tailwindcss"` 를 포함하므로 중복 선언하지 않는다(11_design_system §0-2).
+ * @source: packages/ui 클래스 스캔 + (admin) 디렉터리. E 그룹이 globals.css 를 교체하면 이 파일은 `@source "./"` 만 남기거나 삭제.
+ */
+@import "@duckmate/ui/styles.css";
+@source "../../../../packages/ui/src";
+@source "./";
+@source "../../lib/admin";
