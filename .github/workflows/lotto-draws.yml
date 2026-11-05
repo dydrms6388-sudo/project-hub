@@ -1,10 +1,14 @@
 # lottolab-kr 로또 회차 데이터 자동 갱신
 name: lotto-draws-update
 
+# 주간 cron 은 잠시 비활성화했다.
+# 동행복권이 GitHub Actions 러너(해외 IP)의 요청에 JSON 대신 HTML 안내 페이지를 돌려주어
+# 이 환경에서는 수집이 불가능하다 (브라우저와 동일한 헤더로도 동일, run #1·#2 확인).
+# 그대로 두면 매주 토요일 실패 알림만 쌓이므로 수동 실행만 남긴다.
+# 국내 IP에서 실행 가능한 경로가 마련되면 아래 schedule 을 되살릴 것:
+#   schedule:
+#     - cron: "40 12 * * 6"   # 매주 토요일 21:40 KST
 on:
-  schedule:
-    # 매주 토요일 21:40 KST = 토요일 12:40 UTC (추첨 20:35 KST 이후 결과 공개 시간대)
-    - cron: "40 12 * * 6"
   workflow_dispatch: {}
 
 permissions:
@@ -24,7 +28,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Fetch new draws
         run: node lottolab-kr/scripts/fetch-draws.mjs
